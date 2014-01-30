@@ -15,8 +15,6 @@
 
 package com.redhat.rhn.frontend.action.satellite;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,9 +25,6 @@ import org.apache.struts.action.ActionMapping;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
-import com.redhat.rhn.manager.setup.MirrorCredentials;
-import com.redhat.rhn.manager.setup.SetupWizardManager;
 
 /**
  * This is for now just a generic RhnAction used for all pages of the wizard.
@@ -38,9 +33,6 @@ public class SetupWizardAction extends RhnAction {
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
-
-    // Attribute keys
-    private final static String ATTRIB_MIRRCREDS_LIST = "mirrorCredsList";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -53,14 +45,6 @@ public class SetupWizardAction extends RhnAction {
 
         String path = mapping.getPath();
         logger.debug("Current path: " + path);
-
-        if (path.endsWith("MirrorCredentials")) {
-            List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
-            logger.debug("Found " + creds.size() + " pairs of credentials");
-            request.setAttribute(ListTagHelper.PARENT_URL, "");
-            request.setAttribute(ATTRIB_MIRRCREDS_LIST, creds);
-        }
-
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 }

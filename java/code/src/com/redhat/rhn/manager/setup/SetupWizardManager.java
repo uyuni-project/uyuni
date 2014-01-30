@@ -77,7 +77,7 @@ public class SetupWizardManager extends BaseManager {
             }
 
             // Create credentials object
-            creds = new MirrorCredentials(user, password, email);
+            creds = new MirrorCredentials(email, user, password);
             creds.setId(new Long(id));
             credsList.add(creds);
 
@@ -112,23 +112,38 @@ public class SetupWizardManager extends BaseManager {
             }
 
             // Create credentials object
-            creds = new MirrorCredentials(user, password, email);
+            creds = new MirrorCredentials(email, user, password);
             creds.setId(id);
         }
         return creds;
     }
 
     /**
-     * Store mirror credentials in the filesystem.
-     * TODO: Extend this to store a given list of {@link MirrorCredentials}.
+     * Store a given pair of credentials in the filesystem using the next available index.
      * @param creds mirror credentials to store
+     * @param user the current user
      * @return list of validation errors or null in case of success
      */
     public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds, User userIn) {
+        if (creds.getUser() == null || creds.getPassword() == null) {
+            return null;
+        }
+
+        // Find the first free ID
+        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+        int id = credentials.size();
+
+        // Generate suffix depending on the ID
+        String suffix = "";
+        if (id > 0) {
+            suffix = "." + id;
+        }
         ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-        configCommand.updateString(KEY_MIRRCREDS_USER, creds.getUser());
-        configCommand.updateString(KEY_MIRRCREDS_PASS, creds.getPassword());
-        configCommand.updateString(KEY_MIRRCREDS_EMAIL, creds.getEmail());
+        configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
+        configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
+        if (creds.getEmail() != null) {
+            configCommand.updateString(KEY_MIRRCREDS_EMAIL + suffix, creds.getEmail());
+        }
         return configCommand.storeConfiguration();
     }
 

@@ -26,13 +26,15 @@ import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.suse.manager.model.ncc.Subscription;
 
 /**
- * Asynchronously render page content that is loaded from NCC.
+ * Asynchronously render page content for managing mirror credentials.
  */
 public class SubscriptionsRenderer {
 
@@ -40,17 +42,63 @@ public class SubscriptionsRenderer {
     private static Logger logger = Logger.getLogger(SubscriptionsRenderer.class);
 
     // Attribute keys
-    public static final String ATTRIB_SUCCESS = "success";
+    private static final String ATTRIB_MIRRCREDS = "mirrorCredsList";
+    private static final String ATTRIB_SUCCESS = "success";
 
     // URL of the page to render
-    private static final String PAGE_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-async.jsp";
+    private static final String CREDENTIALS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
+    private static final String SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
+
+    /**
+     * Add a new pair of credentials and re-render the whole list.
+     * @param user username for new credentials
+     * @param password password for new credentials
+     * @throws IOException
+     * @throws ServletException
+     */
+    public String addCredentials(String email, String user, String password) throws ServletException, IOException {
+        // Find the current user
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+        RequestContext rhnContext = new RequestContext(request);
+        User webUser = rhnContext.getCurrentUser();
+
+        // Store the new mirror credentials
+        logger.debug("Adding credentials: " + user + ":" + password);
+        MirrorCredentials newCreds = new MirrorCredentials(email, user, password);
+        SetupWizardManager.storeMirrorCredentials(newCreds, webUser);
+        return renderCredentials();
+    }
+
+    /**
+     * Render the list of mirror credentials.
+     * @throws IOException
+     * @throws ServletException
+     */
+    public String renderCredentials() throws ServletException, IOException {
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+
+        // Find mirror credentials
+        List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
+        if (logger.isDebugEnabled()) {
+            logger.debug("Found " + creds.size() + " pairs of credentials");
+        }
+        request.setAttribute(ATTRIB_MIRRCREDS, creds);
+
+        // Set the "parentUrl" for the form (in rl:listset)
+        request.setAttribute(ListTagHelper.PARENT_URL, "");
+        HttpServletResponse response = webContext.getHttpServletResponse();
+        return RendererHelper.renderRequest(CREDENTIALS_URL, request, response);
+    }
 
     /**
      * Get subscriptions for credentials and asynchronously render the page fragment.
      * @throws IOException 
      * @throws ServletException 
      */
-    public String renderAsync(Long id) throws ServletException, IOException {
+    public String renderSubscriptions(Long id) throws ServletException, IOException {
+        logger.debug("renderSubscriptions()");
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
@@ -65,6 +113,6 @@ public class SubscriptionsRenderer {
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
-        return RendererHelper.renderRequest(PAGE_URL, request, response);
+        return RendererHelper.renderRequest(SUBSCRIPTIONS_URL, request, response);
     }
 }
