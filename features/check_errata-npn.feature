@@ -39,3 +39,7 @@ Feature: Check errata
      Then I should see a "Relevant Errata" text
       And I should see a "Test update for virgo-dummy" text
 
+  Scenario: regenerate search index for later tests
+    Given I am root
+     Then I clean the search index on the server
+

@@ -131,3 +131,9 @@ Then /^the cobbler report contains "([^"]*)"$/ do |arg1|
     end
 end
 
+Then /^I clean the search index on the server$/ do
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST /usr/sbin/rcrhn-search cleanindex 2>&1`
+    if ! $?.success?
+        raise "Execute command failed: #{$!}: #{$sshout}"
+    end
+
