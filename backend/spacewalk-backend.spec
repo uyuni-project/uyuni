@@ -45,7 +45,6 @@ BuildRequires: python-hashlib
 
 %if 0%{?suse_version}
 Requires(pre): apache2
-PreReq:         %fillup_prereq
 %else
 Requires(pre): httpd
 %endif
@@ -407,9 +406,6 @@ fi
 echo "server.secret_key = $secret_key" >> %{rhnconf}/rhn.conf
 rm -f %{rhnconf}/rhnSecret.py*
 
-%post tools
-%{fillup_only -nd reposync rhn}
-
 %files
 %defattr(-,root,root)
 %doc LICENSE
@@ -686,8 +682,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %doc LICENSE
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_satellite.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-tools
-/var/adm/fillup-templates/sysconfig.reposync
-%attr(755,root,root) %{_sysconfdir}/cron.daily/suse.de-clean-reposync-logs
 %attr(755,root,root) %{_bindir}/rhn-charsets
 %attr(755,root,root) %{_bindir}/rhn-satellite-activate
 %attr(755,root,root) %{_bindir}/rhn-schema-version
