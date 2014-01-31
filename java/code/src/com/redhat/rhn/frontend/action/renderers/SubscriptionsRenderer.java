@@ -71,6 +71,30 @@ public class SubscriptionsRenderer {
     }
 
     /**
+     * Delete a pair of credentials given by ID.
+     * @param id ID of the credentials to delete
+     * @return rendered list of credentials
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String deleteCredentials(long id) throws ServletException, IOException {
+        // Find the current user
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+        RequestContext rhnContext = new RequestContext(request);
+        User webUser = rhnContext.getCurrentUser();
+
+        // Delete the credentials
+        if (logger.isDebugEnabled()) {
+            logger.debug("Deleting credentials: " + id);
+        }
+        MirrorCredentials delCreds = new MirrorCredentials("", "", "");
+        delCreds.setId(id);
+        SetupWizardManager.storeMirrorCredentials(delCreds, webUser);
+        return renderCredentials();
+    }
+
+    /**
      * Render the list of mirror credentials.
      * @throws IOException
      * @throws ServletException

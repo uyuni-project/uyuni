@@ -49,6 +49,7 @@
     <create creator="new" javascript="SubscriptionsRenderer">
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.SubscriptionsRenderer" />
       <include method="addCredentials" />
+      <include method="deleteCredentials" />
       <include method="renderCredentials" />
       <include method="renderSubscriptions" />
     </create>
