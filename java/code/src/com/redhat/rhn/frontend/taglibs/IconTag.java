@@ -117,6 +117,7 @@ public class IconTag extends TagSupport {
         icons.put("item-download", "fa fa-download");
         icons.put("item-download-csv", "fa spacewalk-icon-download-csv");
         icons.put("item-enabled", "fa fa-check text-success");
+        icons.put("item-search", "fa fa-eye");
         icons.put("item-ssm-add", "fa fa-plus-circle");
         icons.put("item-ssm-del", "fa fa-minus-circle");
         icons.put("item-upload", "fa fa-upload");
@@ -129,6 +130,10 @@ public class IconTag extends TagSupport {
         icons.put("monitoring-warn",
                   "fa fa-1-5x spacewalk-icon-monitoring-warning text-warning");
         icons.put("nav-bullet", "fa fa-caret-right");
+        icons.put("nav-page-first", "fa fa-angle-double-left");
+        icons.put("nav-page-last", "fa fa-angle-double-right");
+        icons.put("nav-page-next", "fa fa-angle-right");
+        icons.put("nav-page-prev", "fa fa-angle-left");
         icons.put("nav-right", "fa fa-arrow-right");
         icons.put("nav-up", "fa fa-caret-up");
         icons.put("sort-down", "fa fa-arrow-circle-down");
@@ -149,11 +154,28 @@ public class IconTag extends TagSupport {
 
     /**
      * Constructor for Icon tag.
+     * @param typeIn the type of the icon
+     * @param titleIn the title of the icon
+     */
+    public IconTag(String typeIn, String titleIn) {
+        super();
+        type = typeIn;
+        title = titleIn;
+    }
+
+    /**
+     * Constructor for Icon tag.
+     * @param typeIn the type of the icon
+     */
+    public IconTag(String typeIn) {
+        this(typeIn, (String) null);
+    }
+
+    /**
+     * Constructor for Icon tag.
      */
     public IconTag() {
-        super();
-        type = null;
-        title = null;
+        this((String) null, (String) null);
     }
 
     /**
@@ -186,6 +208,16 @@ public class IconTag extends TagSupport {
      */
     public String getTitle() {
         return LocalizationService.getInstance().getMessage(title);
+    }
+
+    /**
+     * Return just the HTML
+     * @return String that contains generated HTML
+     */
+    public String render() {
+        String result = renderStartTag();
+        release();
+        return result;
     }
 
     /**
