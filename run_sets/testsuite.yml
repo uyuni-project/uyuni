@@ -1,5 +1,4 @@
 --- # List of features for a full test run
-- features/database.feature
 - features/init_user_create.feature
 - features/running.feature
 - features/login.feature
