@@ -551,11 +551,9 @@ public class ToolbarTag extends TagSupport {
             tag.setAttribute("href", getHelpUrl());
             tag.setAttribute("target", "_blank");
 
-            HtmlTag help = new HtmlTag("i");
-            help.setAttribute("class", "fa fa-question-circle");
+            IconTag help = new IconTag("header-help");
 
-            tag.addBody(help.renderOpenTag());
-            tag.addBody(help.renderCloseTag());
+            tag.addBody(help.render());
             return tag.render();
         }
         return "";
@@ -577,12 +575,8 @@ public class ToolbarTag extends TagSupport {
 
     private String renderIcon() {
         if (assertNotEmpty(getIcon())) {
-            IconTag i = new IconTag();
-            i.setPageContext(pageContext);
-            i.setParent(getParent());
-            i.setType(getIcon());
-            String result = i.renderStartTag();
-            i.release();
+            IconTag i = new IconTag(getIcon());
+            String result = i.render();
             return result;
         }
         return "";
@@ -666,13 +660,8 @@ public class ToolbarTag extends TagSupport {
         }
 
         if (assertNotEmpty(iconName)) {
-            IconTag i = new IconTag();
-            i.setPageContext(pageContext);
-            i.setParent(getParent());
-            i.setType(iconName);
-            i.setTitle(alt);
-            a.addBody(i.renderStartTag());
-            i.release();
+            IconTag i = new IconTag(iconName, alt);
+            a.addBody(i.render());
         }
 
         a.addBody(text);
