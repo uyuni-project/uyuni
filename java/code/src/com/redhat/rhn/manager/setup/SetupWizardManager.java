@@ -129,9 +129,12 @@ public class SetupWizardManager extends BaseManager {
             return null;
         }
 
-        // Find the first free ID
-        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
-        int id = credentials.size();
+        // Find the first free ID if necessary
+        Long id = creds.getId();
+        if (creds.getId() == null) {
+            List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+            id = new Long(credentials.size());
+        }
 
         // Generate suffix depending on the ID
         String suffix = "";
