@@ -21,6 +21,11 @@
             SubscriptionsRenderer.addCredentials(email, user, password,
                 makeAjaxCallback("listset-container", false));
           }
+          function deleteCredentials(id) {
+            $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
+            SubscriptionsRenderer.deleteCredentials(id,
+                makeAjaxCallback("listset-container", false));
+          }
           function downloadSubscriptions(id) {
             $("#subscriptions-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
             SubscriptionsRenderer.renderSubscriptions(id,

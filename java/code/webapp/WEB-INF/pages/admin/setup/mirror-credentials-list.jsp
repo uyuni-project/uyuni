@@ -22,9 +22,11 @@
             <a>
                 <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
             </a>
-            <a>
-                <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
-            </a>
+            <span id="delete-${current.id}">
+                <a href="javascript:void(0);" onClick="deleteCredentials('${current.id}');">
+                    <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
+                </a>
+            </span>
         </rl:column>
     </rl:list>
 </rl:listset>
