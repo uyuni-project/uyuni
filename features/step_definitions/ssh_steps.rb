@@ -136,4 +136,5 @@ Then /^I clean the search index on the server$/ do
     if ! $?.success?
         raise "Execute command failed: #{$!}: #{$sshout}"
     end
+end
 
