@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.138
+Version: 2.1.140
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -912,6 +912,22 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 31 2014 Tomas Lestach <tlestach@redhat.com> 2.1.140-1
+- allow deleting disabled users
+- return default string even if input string is null
+- move shared methods to loginhelper
+- introduce LoginHelper
+- add externally authenticated user roles according to the external group to
+  roles mapping
+- externally authenticated user does not have to be in the default org
+- add external group delete page
+- add external group edit page
+- add external group to role mapping list page
+
+* Fri Jan 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.139-1
+- add special class to help links
+- use consistent set of icons for system status
+
 * Fri Jan 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.138-1
 - reuse IconTag for help links, item search and pagination icons
 - re-style kickstart creation wizard, 1st form

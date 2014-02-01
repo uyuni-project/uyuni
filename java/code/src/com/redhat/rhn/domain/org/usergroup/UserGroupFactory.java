@@ -16,10 +16,17 @@ package com.redhat.rhn.domain.org.usergroup;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * UserGroupFactory - the singleton class used to fetch and store
@@ -29,6 +36,7 @@ import org.apache.log4j.Logger;
  */
 public class UserGroupFactory extends HibernateFactory {
 
+    private static UserGroupFactory singleton = new UserGroupFactory();
     private static Logger log = Logger.getLogger(UserGroupFactory.class);
 
     private UserGroupFactory() {
@@ -69,6 +77,60 @@ public class UserGroupFactory extends HibernateFactory {
         retval.setOrgId(org.getId());
         retval.setRole(role);
         return retval;
+    }
+
+    /**
+     * Returns the complete list of UserExtGroup
+     * @param user needs to be satellite admin
+     * @return UserExtGroup list
+     */
+    public static List<UserExtGroup> listExtAuthGroups(User user) {
+        if (!user.getRoles().contains(RoleFactory.SAT_ADMIN)) {
+            throw new PermissionException("Satellite admin role required " +
+                    "to access extauth groups");
+        }
+        return singleton.listObjectsByNamedQuery(
+                "UserExtGroup.listAll", new HashMap());
+    }
+
+    /**
+     * lookup function to search for external groups
+     * @param gidIn external group id
+     * @return external group object
+     */
+    public static UserExtGroup lookupExtGroupById(Long gidIn) {
+        Map<String, Long> params = new HashMap();
+        params.put("gid", gidIn);
+        return (UserExtGroup) singleton.lookupObjectByNamedQuery(
+                "UserExtGroup.lookupById", params);
+    }
+
+    /**
+     * save UserExtGroup object
+     * @param extGroup external group
+     */
+    public static void save(UserExtGroup extGroup) {
+        singleton.saveObject(extGroup);
+    }
+
+    /**
+     * delete UserExtGroup object
+     * @param extGroup external group
+     */
+    public static void delete(UserExtGroup extGroup) {
+        singleton.removeObject(extGroup);
+    }
+
+    /**
+     * lookup function to search for external groups
+     * @param labelIn external group label
+     * @return external group object
+     */
+    public static UserExtGroup lookupExtGroupByLabel(String labelIn) {
+        Map<String, String> params = new HashMap();
+        params.put("label", labelIn);
+        return (UserExtGroup) singleton.lookupObjectByNamedQuery(
+                "UserExtGroup.lookupByLabel", params);
     }
 }
 
