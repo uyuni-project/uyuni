@@ -1000,12 +1000,6 @@
           <context context-type="sourcefile">Login or Logout</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="account.user.wrong_org">
-        <source>Account {0} isn't available in the organization configured for external authenticated users.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Login or Logout</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="user.enable">
         <source>Reactivated user &lt;strong&gt;{0}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -2351,6 +2345,12 @@ available for this kickstart profile to function properly.
       </trans-unit>
       <trans-unit id="toolbar.create.group">
         <source>create new group</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="toolbar.create.extgroup">
+        <source>create new external group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
@@ -7127,10 +7127,19 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="message.ext_auth_updated">
-        <source>External Authentication was successfully updated.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
-        </context-group>
+        <source>External Authentication settings were successfully updated.</source>
+      </trans-unit>
+      <trans-unit id="message.extgroup.created">
+        <source>External Authentication Group '{0}' was successfully created.</source>
+      </trans-unit>
+      <trans-unit id="message.extgroup.updated">
+        <source>External Authentication Group '{0}' was successfully updated.</source>
+      </trans-unit>
+      <trans-unit id="message.extgroup.deleted">
+        <source>External Authentication Group '{0}' was successfully deleted.</source>
+      </trans-unit>
+      <trans-unit id="extgrouplabel.already.exists">
+        <source>External Authentication Group name '{0}' is already used. Please choose another one.</source>
       </trans-unit>
       <trans-unit id="message.org_name_updated">
         <source>Organization {0} was successfully updated.</source>

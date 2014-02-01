@@ -75,7 +75,7 @@ public class IconTag extends TagSupport {
         icons.put("header-file", "fa fa-file-text-o");
         icons.put("header-folder", "fa fa-folder-open-o");
         icons.put("header-globe", "fa fa-globe");
-        icons.put("header-help", "fa fa-question-circle");
+        icons.put("header-help", "fa fa-question-circle spacewalk-help-link");
         icons.put("header-info", "fa fa-info-circle");
         icons.put("header-kickstart", "fa fa-rocket");
         icons.put("header-list", "fa fa-list");
@@ -140,12 +140,12 @@ public class IconTag extends TagSupport {
         icons.put("sort-up", "fa fa-arrow-circle-up");
         icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
         icons.put("system-kickstarting", "fa fa-rocket fa-1-5x");
-        icons.put("system-locked", "fa fa-1-5x spacewalk-icon-locked-system");
+        icons.put("system-locked", "fa fa-lock fa-1-5x");
         icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
         icons.put("system-physical", "fa fa-desktop fa-1-5x");
         icons.put("system-reboot", "fa fa-refresh");
-        icons.put("system-unentitled", "fa fa-1-5x spacewalk-icon-unentitled");
-        icons.put("system-unknown", "fa fa-1-5x spacewalk-icon-unknown-system");
+        icons.put("system-unentitled", "fa fa-times-circle fa-1-5x");
+        icons.put("system-unknown", "fa fa-question-circle fa-1-5x");
         icons.put("system-virt-guest", "fa fa-1-5x spacewalk-icon-virtual-guest");
         icons.put("system-virt-host", "fa fa-1-5x spacewalk-icon-virtual-host");
         icons.put("system-bootstrap", "fa fa-1-5x fa-square-o");

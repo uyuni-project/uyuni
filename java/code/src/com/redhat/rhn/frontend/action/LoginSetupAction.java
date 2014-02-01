@@ -17,30 +17,23 @@ package com.redhat.rhn.frontend.action;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.domain.common.SatConfigFactory;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.acl.AclManager;
 import com.redhat.rhn.manager.satellite.CertificateManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
-import com.redhat.rhn.manager.user.CreateUserCommand;
-import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessages;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,7 +46,6 @@ public class LoginSetupAction extends RhnAction {
 
     private static Logger log = Logger.getLogger(LoginSetupAction.class);
     public static final String HAS_EXPIRED = "hasExpired";
-    private static final String DEFAULT_KERB_USER_PASSWORD = "0";
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -114,82 +106,18 @@ public class LoginSetupAction extends RhnAction {
             return mapping.findForward("loggedin");
         }
 
-        String remoteUserString = request.getRemoteUser();
-        if (remoteUserString != null) {
-
-            String firstname = decodeFromIso88591(
-                    (String) request.getAttribute("REMOTE_USER_FIRSTNAME"), "");
-            String lastname = decodeFromIso88591(
-                    (String) request.getAttribute("REMOTE_USER_LASTNAME"), "");
-            String email = decodeFromIso88591(
-                    (String) request.getAttribute("REMOTE_USER_EMAIL"), null);
-
-            Long defaultOrgId = SatConfigFactory.getSatConfigLongValue(
-                    SatConfigFactory.ORG_ID_FOR_EXT_AUTH);
-
-            User remoteUser = null;
-            try {
-                log.info("REMOTE_USER_CUSTOM_N: " +
-                        request.getAttribute("REMOTE_USER_CUSTOM_N"));
-                log.info("REMOTE_USER_GECOS: " +
-                        request.getAttribute("REMOTE_USER_GECOS"));
-                log.info("REMOTE_USER_GROUPS: " +
-                        request.getAttribute("REMOTE_USER_GROUPS"));
-
-                remoteUser = UserFactory.lookupByLogin(remoteUserString);
-
-                if (remoteUser.isDisabled()) {
-                    createErrorMessage(request, "account.user.disabled", remoteUserString);
-                    remoteUser = null;
-                }
-                else if (!remoteUser.getOrg().getId().equals(defaultOrgId)) {
-                    createErrorMessage(request, "account.user.wrong_org", remoteUserString);
-                    remoteUser = null;
-                }
-                if (remoteUser != null) {
-                    UpdateUserCommand updateCmd = new UpdateUserCommand(remoteUser);
-                    updateCmd.setFirstNames(firstname);
-                    updateCmd.setLastName(lastname);
-                    updateCmd.setEmail(email);
-                    updateCmd.updateUser();
-                    log.warn("Externally authenticated login " + remoteUserString +
-                                 " (" + firstname + " " + lastname + ")");
-                }
+        ActionErrors errors = new ActionErrors();
+        ActionMessages messages = new ActionMessages();
+        User remoteUser =
+                LoginHelper.checkExternalAuthentication(request, messages, errors);
+        // save stores msgs into the session (works for redirect)
+        saveMessages(request, messages);
+        addErrors(request, errors);
+        if (errors.isEmpty() && remoteUser != null) {
+            if (LoginHelper.successfulLogin(request, response, remoteUser)) {
+                return null;
             }
-            catch (LookupException le) {
-                Org defaultOrg = null;
-                if (defaultOrgId != null) {
-                    defaultOrg = OrgFactory.lookupById(defaultOrgId);
-                }
-                if (defaultOrg == null) {
-                    log.error("Cannot find organization with id: " + defaultOrgId);
-                }
-                else {
-                    CreateUserCommand createCmd = new CreateUserCommand();
-                    createCmd.setLogin(remoteUserString);
-                    // set a password, that cannot really be used
-                    createCmd.setRawPassword(DEFAULT_KERB_USER_PASSWORD);
-                    createCmd.setFirstNames(firstname);
-                    createCmd.setLastName(lastname);
-                    createCmd.setEmail(email);
-                    createCmd.setOrg(defaultOrg);
-                    createCmd.validate();
-                    createCmd.storeNewUser();
-                    remoteUser = createCmd.getUser();
-                    log.warn("Externally authenticated login " + remoteUserString +
-                                 " (" + firstname + " " + lastname + ") created.");
-                }
-            }
-            if (remoteUser != null) {
-                if (remoteUser.getPassword().equals(DEFAULT_KERB_USER_PASSWORD)) {
-                    createMessage(request, "message.kerbuserlogged",
-                            new String [] {remoteUserString});
-                }
-                if (LoginAction.successfulLogin(request, response, remoteUser)) {
-                    return null;
-                }
-                return mapping.findForward("loggedin");
-            }
+            return mapping.findForward("loggedin");
         }
 
         // store url_bounce set by pxt pages
@@ -201,16 +129,6 @@ public class LoginSetupAction extends RhnAction {
             }
         }
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-    }
-
-    private String decodeFromIso88591(String string, String defaultString) {
-        try {
-            return new String(string.getBytes("ISO8859-1"), "UTF-8");
-        }
-        catch (UnsupportedEncodingException e) {
-            log.warn("Unable to decode: " + string);
-            return defaultString;
-        }
     }
 
     private String getRpmSchemaVersion(String schemaName) {
