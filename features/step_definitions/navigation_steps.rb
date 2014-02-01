@@ -38,6 +38,13 @@ When /^I enter "([^"]*)" as "([^"]*)"$/ do |arg1, arg2|
   fill_in arg2, :with => arg1
 end
 
+When(/^I enter "(.*?)" as "(.*?)" in the content area$/) do |arg1, arg2|
+  within(:xpath, "//section") do
+    fill_in arg2, :with => arg1
+  end
+end
+
+
 #
 # Click on a button
 #
