@@ -46,8 +46,8 @@
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.ProductsRenderer" />
       <include method="renderAsync" />
     </create>
-    <create creator="new" javascript="SubscriptionsRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.SubscriptionsRenderer" />
+    <create creator="new" javascript="MirrorCredentialsRenderer">
+      <param name="class" value="com.redhat.rhn.frontend.action.renderers.MirrorCredentialsRenderer" />
       <include method="addCredentials" />
       <include method="deleteCredentials" />
       <include method="renderCredentials" />

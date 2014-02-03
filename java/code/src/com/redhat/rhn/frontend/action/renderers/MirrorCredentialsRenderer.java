@@ -36,10 +36,10 @@ import com.suse.manager.model.ncc.Subscription;
 /**
  * Asynchronously render page content for managing mirror credentials.
  */
-public class SubscriptionsRenderer {
+public class MirrorCredentialsRenderer {
 
     // The logger for this class
-    private static Logger logger = Logger.getLogger(SubscriptionsRenderer.class);
+    private static Logger logger = Logger.getLogger(MirrorCredentialsRenderer.class);
 
     // Attribute keys
     private static final String ATTRIB_MIRRCREDS = "mirrorCredsList";
@@ -118,8 +118,8 @@ public class SubscriptionsRenderer {
 
     /**
      * Get subscriptions for credentials and asynchronously render the page fragment.
-     * @throws IOException 
-     * @throws ServletException 
+     * @throws IOException
+     * @throws ServletException
      */
     public String renderSubscriptions(Long id) throws ServletException, IOException {
         logger.debug("renderSubscriptions()");
