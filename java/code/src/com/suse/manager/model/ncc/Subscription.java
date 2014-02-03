@@ -15,6 +15,8 @@
 
 package com.suse.manager.model.ncc;
 
+import java.util.Date;
+
 import org.simpleframework.xml.Element;
 
 /**
@@ -102,15 +104,15 @@ public class Subscription {
     /**
      * @return the startDate
      */
-    public long getStartDate() {
-        return startDate;
+    public Date getStartDate() {
+        return new Date(startDate * 1000);
     }
 
     /**
      * @return the endDate
      */
-    public long getEndDate() {
-        return endDate;
+    public Date getEndDate() {
+        return new Date(endDate * 1000);
     }
 
     /**
