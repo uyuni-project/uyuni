@@ -88,9 +88,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Deleting credentials: " + id);
         }
-        MirrorCredentials delCreds = new MirrorCredentials("", "", "");
-        delCreds.setId(id);
-        SetupWizardManager.storeMirrorCredentials(delCreds, webUser);
+        SetupWizardManager.deleteMirrorCredentials(id, webUser);
         return renderCredentials();
     }
 

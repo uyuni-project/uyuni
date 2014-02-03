@@ -151,6 +151,54 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
+     * Delete a pair of credentials given by their ID. Includes some sophisticated logic
+     * to shift IDs in case you delete a pair of credentials from the middle.
+     * @param id the id of credentials being deleted
+     * @param userIn the user currently logged in
+     * @return list of validation errors or null in case of success
+     */
+    public static ValidatorError[] deleteMirrorCredentials(Long id, User userIn) {
+        // Find all credentials and see what needs to be done
+        List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
+
+        if (creds.size() == id + 1) {
+            // Just store empty credentials
+            MirrorCredentials delCreds = new MirrorCredentials("", "", "");
+            delCreds.setId(id);
+            return SetupWizardManager.storeMirrorCredentials(delCreds, userIn);
+        }
+        else if (creds.size() > id + 1) {
+            // We need to shift indices
+            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+            for (MirrorCredentials c : creds) {
+                int index = creds.indexOf(c);
+                if (index > id) {
+                    String targetSuffix = "";
+                    if (index > 1) {
+                        targetSuffix = "." + (index - 1);
+                    }
+                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, c.getUser());
+                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, c.getPassword());
+                    if (c.getEmail() != null) {
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, c.getEmail());
+                    }
+                    // Empty the last pair of credentials
+                    if (index == creds.size() - 1) {
+                        targetSuffix = "." + index;
+                        configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, "");
+                        configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, "");
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, "");
+                    }
+                }
+            }
+            return configCommand.storeConfiguration();
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
      * Connect to NCC and return subscriptions for a given pair of credentials.
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
