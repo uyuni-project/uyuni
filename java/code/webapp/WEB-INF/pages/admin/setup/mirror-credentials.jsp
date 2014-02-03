@@ -6,7 +6,7 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/rhn/dwr/interface/SubscriptionsRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
         <script type="text/javascript">
           function addCredentials() {
@@ -18,17 +18,17 @@
             $('#new-creds-email').val("");
             $('#new-creds-user').val("");
             $('#new-creds-password').val("");
-            SubscriptionsRenderer.addCredentials(email, user, password,
+            MirrorCredentialsRenderer.addCredentials(email, user, password,
                 makeAjaxCallback("listset-container", false));
           }
           function deleteCredentials(id) {
             $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-            SubscriptionsRenderer.deleteCredentials(id,
+            MirrorCredentialsRenderer.deleteCredentials(id,
                 makeAjaxCallback("listset-container", false));
           }
           function downloadSubscriptions(id) {
             $("#subscriptions-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-            SubscriptionsRenderer.renderSubscriptions(id,
+            MirrorCredentialsRenderer.renderSubscriptions(id,
                 makeAjaxCallback("subscriptions-" + id, false));
           }
         </script>
@@ -58,7 +58,7 @@
         <div id="listset-container">
             <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
             <script>
-                SubscriptionsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));
+                MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));
             </script>
         </div>
         <div class="pull-right">
