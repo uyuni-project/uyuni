@@ -15,7 +15,7 @@ fi
 
 read_value() {
     local key=$1
-    local val=$( egrep -m1 "^$key[[:space:]]*=" /etc/rhn/rhn.conf | sed 's/^$key[[:space:]]*=[[:space:]]*\(.*\)/\1/' || echo "" )
+    local val=$( egrep -m1 "^$key[[:space:]]*=" /etc/rhn/rhn.conf | sed "s/^$key[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
     echo $val
     return 0
 
@@ -52,6 +52,7 @@ exists_pltclu() {
         EXISTS=$(su - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'pltclu'"';"'" $DBNAME")
     else
         EXISTS=$(echo "select lanname from pg_catalog.pg_language where lanname='pltclu';" | spacewalk-sql --select-mode - | grep pltclu | sed 's/^[[:space:]]*\(pltclu\)[[:space:]]*$/\1/')
+    fi
     if [ "x$EXISTS" == "xpltclu" ] ; then
         return 0
     else
@@ -118,7 +119,37 @@ upgrade_schema() {
 }
 
 upgrade_config() {
+    local allowed_iss_slaves=`read_value allowed_iss_slaves`
+    local iss_parent=`read_value iss_parent`
+    local iss_ca_chain=`read_value iss_ca_chain`
+    local timestamp=`date "+%Y%m%d%H%M%S"`
+    local rhnconf="/etc/rhn/rhn.conf"
+    local bak="/etc/rhn/rhn.conf.$timestamp"
 
+    if [ -n "$iss_parent" -a -n "$iss_ca_chain" ]; then
+        cp "$rhnconf" "$bak"
+        echo "Convert slave configuration to database"
+        echo "
+        INSERT INTO rhnIssMaster (id, label, is_current_master, ca_cert)
+        VALUES (sequence_nextval('rhn_issmaster_seq'), '$iss_parent', 'Y', '$iss_ca_chain');
+        " | spacewalk-sql -
+        sed -i 's/^iss_parent.*//' $rhnconf
+    fi
+    if [ -n "$allowed_iss_slaves" ]; then
+        if [ ! -e $bak ]; then
+            cp "$rhnconf" "$bak"
+        fi
+
+        echo "Convert master configuration to database"
+        IFS=', '
+        for SLAVE in $allowed_iss_slaves; do
+            echo "
+            INSERT INTO rhnISSSlave (id, slave)
+            VALUES (sequence_nextval('rhn_issslave_seq'), '$SLAVE');
+            " | spacewalk-sql -
+        done
+        sed -i 's/^allowed_iss_slaves.*//' $rhnconf
+    fi
 }
 
 DBBACKEND=`read_value db_backend`
@@ -139,8 +170,9 @@ fi
 if [ "$DBBACKEND" = "oracle" ]; then
     SQLPLUS=`which sqlplus`
     if [ -z "$SQLPLUS" ]; then
-    echo "sqlplus not found"
-    exit 1
+        echo "sqlplus not found"
+        exit 1
+    fi
 fi
 
 if [ "$DBBACKEND" = "postgresql" ]; then
@@ -152,5 +184,4 @@ fi
 upgrade_schema
 
 upgrade_config
-
 
