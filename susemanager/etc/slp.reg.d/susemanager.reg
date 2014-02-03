@@ -1,0 +1,13 @@
+#############################################################################
+#
+# OpenSLP registration file
+#
+# register SUSE Manager server
+#
+#############################################################################
+
+# Register the SUSE Manager server, if it is running
+service:susemanager:https://$HOSTNAME/rhn/Login.do,en,65535
+tcp-port=443
+type=server
+description=SUSE Manager Server

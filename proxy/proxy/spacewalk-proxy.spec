@@ -49,6 +49,7 @@ Requires: spacewalk-backend >= 1.7.24
 # but we need made it mandatory here
 %if ! 0%{?suse_version}
 Requires: squid
+Requires: openslp
 Requires: python-hashlib
 Requires: sos
 Requires(preun): initscripts
@@ -188,6 +189,8 @@ rm -rf $RPM_BUILD_ROOT
 make -f Makefile.proxy install PREFIX=$RPM_BUILD_ROOT
 install -d -m 750 $RPM_BUILD_ROOT/%{_var}/cache/rhn/proxy-auth
 install -d -m 750 $RPM_BUILD_ROOT/%{_datadir}/spacewalk
+mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
+install -m 0644 etc/slp.reg.d/susemanagerproxy.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 
 mkdir -p $RPM_BUILD_ROOT/%{_var}/spool/rhn-proxy/list
 
@@ -392,6 +395,7 @@ fi
 # mans
 %{_mandir}/man8/rhn-proxy.8*
 %dir /usr/share/rhn
+%config %{_sysconfdir}/slp.reg.d/susemanagerproxy.reg
 
 
 %changelog
