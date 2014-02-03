@@ -395,6 +395,7 @@ fi
 # mans
 %{_mandir}/man8/rhn-proxy.8*
 %dir /usr/share/rhn
+%dir %{_sysconfdir}/slp.reg.d
 %config %{_sysconfdir}/slp.reg.d/susemanagerproxy.reg
 
 
