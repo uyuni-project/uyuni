@@ -108,6 +108,7 @@ grant create synonym to $DBUSER;
 grant create trigger to $DBUSER;
 grant create role to $DBUSER;
 grant alter session to $DBUSER;
+quit
 " > /tmp/dbsetup.sql
 
     su -s /bin/bash - oracle -c "ORACLE_SID=$DBNAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
