@@ -8,12 +8,21 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
+LOGFILE="/var/log/susemanager-ora2pg.log"
+# set -x
+exec > >(tee -a $LOGFILE) 2>&1
+
+echo "################################################"
+date
+echo "################################################"
+
 if [ $UID -ne 0 ]; then
     echo "You must run this as root."
     exit
 fi
 
 TIMESTAMP=`date "+%Y%m%d%H%M%S"`
+DUMPFILE="/var/tmp/oracle-db.dump"
 
 read_value() {
     local key=$1
@@ -40,6 +49,42 @@ is_embedded_db() {
     fi
 }
 
+exists_db() {
+    EXISTS=$(su - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$DBNAME'"';"')
+    if [ "x$EXISTS" == "x $DBNAME" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+exists_plpgsql() {
+    EXISTS=$(su - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'plpgsql'"';"'" $DBNAME")
+    if [ "x$EXISTS" == "xplpgsql" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+exists_pltclu() {
+    EXISTS=$(su - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'pltclu'"';"'" $DBNAME")
+    if [ "x$EXISTS" == "xpltclu" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+exists_user() {
+    EXISTS=$(su - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$DBUSER'"';"')
+    if [ "x$EXISTS" == "x $DBUSER" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 install_latest() {
     local pkg=$1
 
@@ -59,6 +104,10 @@ install_latest() {
 }
 
 upgrade_schema() {
+    if [ -s "$DUMPFILE" ]; then
+        echo "schema dump exists. Skipping upgrade."
+        return 0
+    fi
     spacewalk-schema-upgrade
     if [ "$?" != "0" ]; then
         echo "Failed to upgrade the schema."
@@ -71,20 +120,24 @@ dump_schema() {
         echo "Missing '/usr/bin/spacewalk-dump-schema'"
         exit 1
     fi
-    local dumpfile=`mktemp --tmpdir=/var/tmp/ oracle-db.dump.XXXXXXXX`
-    perl -CSAD /usr/bin/spacewalk-dump-schema \
-     --db="$DBNAME" --user="$DBUSER" --password="$DBPASS" > $dumpfile
-    if [ "$?" != "0" ]; then
-        echo "Failed to dump the schema."
-        return 1
+    if [ ! -s "$DUMPFILE" ]; then
+        perl -CSAD /usr/bin/spacewalk-dump-schema \
+             --db="$DBNAME" --user="$DBUSER" --password="$DBPASS" > $DUMPFILE
+        if [ "$?" != "0" ]; then
+            echo "Failed to dump the schema."
+            exit 1
+        fi
+    else
+        echo "Using existing schema dump ($DUMPFILE)"
     fi
-    echo $dumpfile
-    return 0
 }
 
 import_schema() {
-    local dumpfile=$1
-    PGPASSWORD="$DBPASS" psql -h localhost -U "$DBUSER" "$DBNAME" < $dumpfile
+    if [ ! -s "$DUMPFILE" ]; then
+        echo "Unable to import schema. $DUMPFILE does not exist or is empty."
+        exit 1
+    fi
+    PGPASSWORD="$DBPASS" psql -h localhost -U "$DBUSER" "$DBNAME" < $DUMPFILE
     if [ "$?" != "0" ]; then
         echo "Failed to load the schema."
         exit 1
@@ -104,6 +157,10 @@ switch_oracle2postgres() {
         echo "Failed to switch SUSE Manager packages."
         exit 1
     fi
+}
+
+setup_postgres() {
+
     insserv postgresql
     rcpostgresql start
     if [ "$?" != "0" ]; then
@@ -111,21 +168,40 @@ switch_oracle2postgres() {
         exit 1
     fi
 
-    su - postgres -c "PGPASSWORD=$DBPASS; createdb -E UTF8 '$DBNAME';"
-    su - postgres -c "yes '$DBPASS' | createuser -P -sDR '$DBUSER'"
-    su - postgres -c "createlang plpgsql '$DBNAME';"
-    su - postgres -c "createlang pltclu '$DBNAME';"
+    if ! exists_db ; then
+            su - postgres -c "createdb '$DBNAME'"
+    fi
+    if ! exists_plpgsql ; then
+            su - postgres -c "createlang plpgsql '$DBNAME'"
+    fi
+    if ! exists_pltclu ; then
+            su - postgres -c "createlang pltclu '$DBNAME'"
+    fi
+    if ! exists_user ; then
+            su - postgres -c "yes '$DBPASS' | createuser -P -sDR '$DBUSER'" # 2>/dev/null
+    fi
 
-    cp /var/lib/pgsql/data/pg_hba.conf "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP"
-    echo "
-local $DBNAME $DBUSER md5
-host  $DBNAME $DBUSER 127.0.0.1/8 md5
-host  $DBNAME $DBUSER ::1/128 md5
-" > /var/lib/pgsql/data/pg_hba.conf
-    cat "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" /var/lib/pgsql/data/pg_hba.conf
+    mv /var/lib/pgsql/data/pg_hba.conf "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP"
+
+    if ! grep "local $DBNAME $DBUSER md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
+        echo "local $DBNAME $DBUSER md5" > /var/lib/pgsql/data/pg_hba.conf
+    fi
+    if ! grep "host $DBNAME $DBUSER 127.0.0.1/8 md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
+        echo "host $DBNAME $DBUSER 127.0.0.1/8 md5" > /var/lib/pgsql/data/pg_hba.conf
+    fi
+    if  ! grep "host $DBNAME $DBUSER ::1/128 md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
+        echo "host $DBNAME $DBUSER ::1/128 md5" > /var/lib/pgsql/data/pg_hba.conf
+    fi
+
+    cat "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" >> /var/lib/pgsql/data/pg_hba.conf
+
+    change_value db_backend postgresql
 
     smdba system-check autotuning
+    rcpostgresql restart
+}
 
+configure_suma() {
     echo "
 db-backend=postgresql
 db-user=$DBUSER
@@ -133,15 +209,16 @@ db-password=$DBPASS
 db-name=$DBNAME
 db-host=$DBHOST
 db-port=5432
-" > "/tmp/answer.txt.$TIMESTAMP"
+" > "/root/answer.txt.$TIMESTAMP"
 
    cp /etc/rhn/rhn.conf "/etc/rhn/rhn.conf.$TIMESTAMP"
 
-    spacewalk-setup --db-only --answer-file="/tmp/answer.txt.$TIMESTAMP"
+    spacewalk-setup --db-only --external-postgresql --answer-file="/root/answer.txt.$TIMESTAMP"
     if [ "$?" != "0" ]; then
         echo "Failed to setup spacewalk with db-only."
         exit 1
     fi
+    rm "/root/answer.txt.$TIMESTAMP"
 
     cp "/etc/rhn/rhn.conf.$TIMESTAMP" /etc/rhn/rhn.conf
     change_value db_backend postgresql
@@ -168,14 +245,14 @@ upgrade_schema
 
 spacewalk-service stop
 
-DUMPFILE=`dump_schema`
-if [ "$?" != "0" ]; then
-    echo "Failed to dump the schema."
-    exit 1
-fi
+dump_schema
 
 switch_oracle2postgres
 
-import_schema $DUMPFILE
+setup_postgres
+
+configure_suma
+
+import_schema
 
 spacewalk-service start
