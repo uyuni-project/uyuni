@@ -93,13 +93,13 @@ install_latest() {
         exit 1
     fi
     if ! rpm -q $pkg >/dev/null 2>&1 ; then
-        zypper in $pkg
+        zypper --non-interactive in $pkg
         if [ "$?" != "0" ]; then
             echo "Failed to install '$pkg'"
             exit 1
         fi
     else
-        zypper up $pkg
+        zypper --non-interactive up $pkg
     fi
 }
 
@@ -151,7 +151,8 @@ switch_oracle2postgres() {
         exit 1
     fi
     insserv -r oracle
-    zypper in +spacewalk-postgresql +spacewalk-java-postgresql +spacewalk-backend-sql-postgresql \
+    zypper --non-interactive in \
+              +spacewalk-postgresql +spacewalk-java-postgresql +spacewalk-backend-sql-postgresql \
               -spacewalk-oracle -spacewalk-java-oracle -spacewalk-backend-sql-oracle
     if [ "$?" != "0" ]; then
         echo "Failed to switch SUSE Manager packages."
