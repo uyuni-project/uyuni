@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.140
+Version: 2.1.143
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -912,6 +912,24 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Feb 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.143-1
+- restored Monitoring Scout label
+- removed unnecessary spacing and restored left side labels
+- unify probe detail page look
+
+* Tue Feb 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.142-1
+- swapping struts tag with input html to allow the use of the placeholder
+- perform password validation within the java class
+- removing obsolete code related to PLACEHOLDER_PASSWORD
+
+* Mon Feb 03 2014 Tomas Lestach <tlestach@redhat.com> 2.1.141-1
+- enable creating externally authenticated users in organization according to
+  REMOTE_USER_ORGUNIT
+- do not close last row of tables with two </tr> tags
+- make search work when search form is submitted by enter
+- make ExpansionDecorator work again
+- new icon for item edit
+
 * Fri Jan 31 2014 Tomas Lestach <tlestach@redhat.com> 2.1.140-1
 - allow deleting disabled users
 - return default string even if input string is null
