@@ -35,6 +35,7 @@
 - features/check_support_data.feature
 - features/check_registration.feature
 - features/erratapage.feature
+- features/lock_packages_on_client.feature
 - features/install_package.feature
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
