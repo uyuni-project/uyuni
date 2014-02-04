@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.37
+Version:        2.1.39
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Tue Feb 04 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.39-1
+- upgrade script for Fedora 20 GPG key
+
+* Mon Feb 03 2014 Tomas Lestach <tlestach@redhat.com> 2.1.38-1
+- rename one and add another rhnConfiguration key
+- update rhnUserExtGroupMapping triggers
+
 * Wed Jan 22 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.37-1
 - Revert "1053591 - refresh_newest_package: lock rhnChannel at the beginning"
 - Revert "'is' followed by 'declare' is rarely needed"

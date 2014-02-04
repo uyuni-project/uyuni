@@ -36,6 +36,7 @@ import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.RhnListTagFunctions;
+import com.redhat.rhn.frontend.taglibs.list.decorators.ExpansionDecorator;
 import com.redhat.rhn.frontend.taglibs.list.decorators.ListDecorator;
 import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
@@ -450,6 +451,9 @@ public class ListTag extends BodyTagSupport {
                 dec.beforeTopPagination();
             }
         }
+        if (filter != null && manip.getUnfilteredDataSize() !=  0) {
+            ListTagUtil.renderFilterSubmit(pageContext, getUniqueName());
+        }
         renderTopPaginationControls();
         pageContext.popBody();
 
@@ -635,7 +639,6 @@ public class ListTag extends BodyTagSupport {
     private int doAfterBodyRenderAfterData() throws JspException {
         ListTagUtil.setCurrentCommand(pageContext, getUniqueName(),
                 ListCommand.AFTER_RENDER);
-        ListTagUtil.write(pageContext, "</tr>");
         ListTagUtil.write(pageContext, "</tbody>");
         return BodyTagSupport.EVAL_BODY_AGAIN;
     }
@@ -999,7 +1002,13 @@ public class ListTag extends BodyTagSupport {
     }
 
     private void startTable() throws JspException {
-        ListTagUtil.write(pageContext, "<table class=\"table table-striped\"");
+        if (hasExpansionDecorator()) {
+            ListTagUtil.write(pageContext, "<table class=\"table table-striped\"" +
+                "id=\"" + this.getStyleId() + "_exp\"");
+        }
+        else {
+            ListTagUtil.write(pageContext, "<table class=\"table table-striped\"");
+        }
 
         if (width != null) {
             ListTagUtil.write(pageContext, " width=\"");
@@ -1237,4 +1246,14 @@ public class ListTag extends BodyTagSupport {
     public void setReflinkkeyarg0(String refLinkKeyArg0In) {
         this.refLinkKeyArg0 = refLinkKeyArg0In;
     }
+
+    private boolean hasExpansionDecorator() {
+        for (ListDecorator dec : getDecorators()) {
+            if (dec.getClass().equals(ExpansionDecorator.class)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
