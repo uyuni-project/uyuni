@@ -49,13 +49,13 @@ Requires: spacewalk-backend >= 1.7.24
 # but we need made it mandatory here
 %if ! 0%{?suse_version}
 Requires: squid
-Requires: openslp-server
 Requires: python-hashlib
 Requires: sos
 Requires(preun): initscripts
 Requires: spacewalk-proxy-selinux
 %else
 Requires: http_proxy
+Requires: openslp-server
 %endif
 Requires: spacewalk-base-minimal-config
 Requires: %{name}-broker = %{version}
