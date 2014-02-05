@@ -6,7 +6,7 @@ Then /^"(.*?)" is locked on this client$/ do |pkg|
   fail unless File.exists?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
-  fail unless locks.find{|lock| lock['solvable_name'] == pkg}
+  fail unless locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
 Then /^Package "(.*?)" is reported as locked$/ do |pkg|
@@ -22,7 +22,7 @@ Then /^"(.*?)" is unlocked on this client$/ do |pkg|
   fail unless File.exists?(zypp_lock_file)
 
   locks = read_zypp_lock_file(zypp_lock_file)
-  fail if locks.find{|lock| lock['solvable_name'] == pkg}
+  fail if locks.find{|lock| pkg =~ /^#{lock['solvable_name']}/ }
 end
 
 Then /^Package "(.*?)" is reported as unlocked$/ do |pkg|
