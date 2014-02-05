@@ -3694,7 +3694,7 @@
                  path="/systems/ssm/misc/Index.do" redirect="true"/>
     </action>
 
-        <action path="/systems/ssm/ListSystems"
+    <action path="/systems/ssm/ListSystems"
         scope="request"
         input="/WEB-INF/pages/ssm/systems/list.jsp"
         type="com.redhat.rhn.frontend.action.ssm.ListSystemsAction"
@@ -3706,6 +3706,17 @@
                  path="/systems/ssm/ListSystems.do" redirect="true"/>
      </action>
 
+    <action path="/systems/ssm/ErrataSystemsAffected"
+        scope="request"
+        name="SSMPatchListForm"
+        input="/WEB-INF/pages/ssm/systems/ssm-errata-systems-affected.jsp"
+        type="com.redhat.rhn.frontend.action.ssm.ErrataSystemsAffectedListAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/systems/ssm-errata-systems-affected.jsp" />
+    </action>
+
     <action path="/systems/ssm/ListPatches"
         scope="request"
         name="SSMPatchListForm"
@@ -3716,7 +3727,22 @@
         <forward name="default"
                  path="/WEB-INF/pages/ssm/systems/ssm-errata.jsp" />
         <forward name="confirm"
-                 path="/WEB-INF/pages/ssm/ssmindex.jsp" />
+                 path="/systems/ssm/ListPatchesConfirm.do"
+                 redirect="true" />
+    </action>
+
+    <action path="/systems/ssm/ListPatchesConfirm"
+        scope="request"
+        name="SSMPatchListForm"
+        input="/WEB-INF/pages/ssm/systems/ssm-errata.jsp"
+        type="com.redhat.rhn.frontend.action.ssm.ErrataListConfirmAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/systems/ssm-errata-confirm.jsp" />
+        <forward name="confirm"
+                 path="/systems/ssm/ListPatches.do"
+                 redirect="true" />
     </action>
 
     <action path="/systems/ssm/MigrateSystems"

@@ -1,7 +1,7 @@
 #
 # spec file for package susestudio-java-client
 #
-# Copyright (c) 2012 SUSE LINUX Products GmbH, Nuremberg, Germany.
+# Copyright (c) 2014 SUSE LINUX Products GmbH, Nuremberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,19 +12,16 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
-#
-
 %define third_party_jars simple-xml
 
 Name:           susestudio-java-client
 Summary:        Java client library for SUSE Studio
-Version:        0.1.2
+Version:        0.1.4
 Release:        2%{?dist}
 License:        MIT
 Group:          Development/Libraries/Java
 Url:            https://github.com/susestudio/susestudio-lib-java
-Source0:        %{name}-%{version}.tar.bz2
+Source0:        https://github.com/susestudio/susestudio-lib-java/archive/v%{version}.tar.gz#/susestudio-lib-java-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildRequires:  ant
 BuildRequires:  java-devel
@@ -41,12 +38,12 @@ Provides:       java(com.suse.studio:susestudio-java-client) == %{version}
 A Java client library for accessing SUSE Studio via its REST API.
 
 %prep
-%setup
+%setup -n susestudio-lib-java-%{version}
 rm lib/*.jar
 build-jar-repository -p lib/ %third_party_jars
 
 %build
-ant -Dant.build.javac.source=1.5 -Dant.build.javac.target=1.5
+ant -Dant.build.javac.source=1.5 -Dant.build.javac.target=1.5 dist-jar
 
 %install
 install -d -m 0755 $RPM_BUILD_ROOT%{_javadir}
@@ -61,6 +58,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadir}/*.jar
 
 %changelog
+* Wed Feb 05 2014 Michael Mraka <michael.mraka@redhat.com> 0.1.4-2
+- source file is named differently
+
+* Wed Feb 05 2014 Michael Mraka <michael.mraka@redhat.com> 0.1.4-1
+- Update susestudio-java-client spec file for building version 0.1.4
+
 * Tue Jan 07 2014 Tomas Lestach <tlestach@redhat.com> 0.1.2-2
 - jpackage-utils were replaced with javapackages-tools in fc20
 
