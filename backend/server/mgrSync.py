@@ -29,8 +29,8 @@ def handle(environ, start_response):
 
     req = wsgiRequest.WsgiRequest(environ, start_response)
 
-    if suseLib.isAllowedSlave(req.get_remote_host()):
-        log_error('ISS Slave [%s] not alowed' % req.server.server_hostname)
+    if not suseLib.isAllowedSlave(req.get_remote_host()):
+        log_error('ISS Slave [%s] not alowed' % req.get_remote_host())
         req.send_http_header(status=apache.HTTP_FORBIDDEN)
         return req.output
 
