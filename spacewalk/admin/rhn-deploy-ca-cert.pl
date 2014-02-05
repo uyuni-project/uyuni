@@ -88,8 +88,6 @@ if ($ret) {
 # on SUSE create a link to /etc/ssl/certs/ and call c_rehash
 if ( -e '/etc/SuSE-release' )
 {
-  if ( ! -e "/etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem" )
-  {
     $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/ssl/certs/OWN-SUSE-MANAGER-TRUSTED-SSL-CERT.pem");
     if ($ret) 
     {
@@ -99,6 +97,5 @@ if ( -e '/etc/SuSE-release' )
     {
       `/usr/bin/c_rehash /etc/ssl/certs >/dev/null`;
     }
-  }
 }
 exit 0;
