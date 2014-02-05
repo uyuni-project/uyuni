@@ -49,7 +49,7 @@ Requires: spacewalk-backend >= 1.7.24
 # but we need made it mandatory here
 %if ! 0%{?suse_version}
 Requires: squid
-Requires: openslp
+Requires: openslp-server
 Requires: python-hashlib
 Requires: sos
 Requires(preun): initscripts
