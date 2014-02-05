@@ -568,15 +568,14 @@ do_setup() {
     setup_spacewalk
 
     if [ -n "$ISS_PARENT" ]; then
-        if ! egrep "^iss_parent[[:space:]]*=" /etc/rhn/rhn.conf >/dev/null; then
-            echo "iss_parent = $ISS_PARENT" >> /etc/rhn/rhn.conf
-        else
-            sed -i "s!^iss_parent[[:space:]]*=.*!iss_parent = $ISS_PARENT!" /etc/rhn/rhn.conf
-        fi
-        sed -i "s!^disable_iss[[:space:]]*=.*!disable_iss=0!" /etc/rhn/rhn.conf
-        curl -s -S -o /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT "http://$ISS_PARENT/pub/RHN-ORG-TRUSTED-SSL-CERT"
-        ln -s /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT /etc/ssl/certs/RHN-ORG-TRUSTED-SSL-CERT.pem
+        local certname=`echo "MASTER-$ISS_PARENT-TRUSTED-SSL-CERT" | sed 's/\./_/g'`
+        curl -s -S -o /usr/share/rhn/$certname "http://$ISS_PARENT/pub/RHN-ORG-TRUSTED-SSL-CERT"
+        ln -s /usr/share/rhn/$certname /etc/ssl/certs/$certname.pem
         c_rehash /etc/ssl/certs/ >/dev/null
+        echo "
+        INSERT INTO rhnISSMaster (id, label, is_current_master, ca_cert)
+        VALUES (sequence_nextval('rhn_issmaster_seq'), '$ISS_PARENT', 'Y', '/usr/share/rhn/$certname');
+        " | spacewalk-sql -
     fi
 }
 
