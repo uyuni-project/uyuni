@@ -50,7 +50,7 @@ PKGLIST11 = [
                 "rhnlib",
                 "rpm-python",
                 "satsolver-tools",
-                "slang"
+                "slang",
                 "spacewalk-check",
                 "spacewalk-client-setup",
                 "spacewalk-client-tools",
