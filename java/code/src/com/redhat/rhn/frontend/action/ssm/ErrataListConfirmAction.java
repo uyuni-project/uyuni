@@ -30,23 +30,26 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.SetLabels;
+import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.SystemOverview;
-import com.redhat.rhn.frontend.events.SsmSystemRebootEvent;
+import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListRhnSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 /**
- * Confirm reboot of given systems
+ * Confirm application of errata to systems in SSM.
  */
-public class RebootSystemConfirmAction extends RhnAction
-    implements Listable<SystemOverview> {
-
+public class ErrataListConfirmAction extends RhnAction implements
+        Listable<ErrataOverview> {
     /** {@inheritDoc} */
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -57,9 +60,9 @@ public class RebootSystemConfirmAction extends RhnAction
 
         ListRhnSetHelper helper = new ListRhnSetHelper(this, request, getSetDecl());
         helper.setWillClearSet(false);
-        helper.setDataSetName(RequestContext.PAGE_LIST);
-        helper.setListName("systemList");
+        helper.setListName("errataList");
         helper.execute();
+
         if (helper.isDispatched()) {
             return handleDispatch(mapping, (DynaActionForm) formIn, request);
         }
@@ -70,47 +73,51 @@ public class RebootSystemConfirmAction extends RhnAction
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
-    /** {@inheritDoc} */
-    protected RhnSetDecl getSetDecl() {
-        return RhnSetDecl.SSM_SYSTEMS_REBOOT;
-    }
-
     private ActionForward handleDispatch(
             ActionMapping mapping,
             DynaActionForm formIn,
             HttpServletRequest request) {
-
         RequestContext context = new RequestContext(request);
-        RhnSet set = getSetDecl().get(context.getCurrentUser());
-        List<Long> systemsToReboot = new ArrayList<Long>();
-        systemsToReboot.addAll(set.getElementValues());
+        User user = context.getLoggedInUser();
 
         Date earliest = getStrutsDelegate().readDatePicker(formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);
 
-        MessageQueue.publish(new SsmSystemRebootEvent(
-                context.getLoggedInUser().getId(),
-                earliest, systemsToReboot));
-
-        int n = set.size();
-        if (n == 1) {
-            createSuccessMessage(request, "ssm.misc.reboot.message.success.singular",
-                    LocalizationService.getInstance().formatNumber(new Integer(n)));
-        }
-        else {
-            createSuccessMessage(request, "ssm.misc.reboot.message.success.plural",
-                    LocalizationService.getInstance().formatNumber(new Integer(n)));
+        List<SystemOverview> systems = SystemManager.inSet(user, SetLabels.SYSTEM_LIST);
+        List<Long> serverIds = new ArrayList<Long>(systems.size());
+        for (SystemOverview s : systems) {
+            serverIds.add(s.getId());
         }
 
+        RhnSet erratas = getSetDecl().get(context.getCurrentUser());
+        List<Long> errataIds = new ArrayList<Long>(erratas.size());
+        errataIds.addAll(erratas.getElementValues());
+
+        MessageQueue.publish(new SsmErrataEvent(
+                user.getId(),
+                earliest,
+                errataIds,
+                serverIds)
+        );
+
+        createMessage(request, "ssm.errata.message.scheduled",
+                new String[] {LocalizationService.getInstance().formatDate(
+                        earliest, request.getLocale())});
+
+        RhnSet set = getSetDecl().get(context.getCurrentUser());
         set.clear();
         RhnSetManager.store(set);
 
         return mapping.findForward("confirm");
     }
 
+    protected RhnSetDecl getSetDecl() {
+        return RhnSetDecl.ERRATA;
+    }
+
     /** {@inheritDoc} */
-    public List<SystemOverview> getResult(RequestContext context) {
-        return SystemManager.inSet(context.getCurrentUser(),
-              getSetDecl().getLabel());
+    public List<ErrataOverview> getResult(RequestContext context) {
+        return ErrataManager.lookupErrataListFromSet(context.getCurrentUser(),
+                getSetDecl().getLabel());
     }
 }

@@ -21,7 +21,7 @@
                     <rhn:csrf />
                     <div class="form-group">
                         <label for="admin_email" class="col-lg-3 control-label">
-                            <rhn:required-field key="general.jsp.admin_email"/>:
+                            <rhn:required-field key="general.jsp.admin_email"/>
                         </label>
                         <div class="col-lg-6">
                             <html:text property="traceback_mail"
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label for="hostname" class="col-lg-3 control-label">
-                            <rhn:required-field key="general.jsp.hostname"/>:
+                            <rhn:required-field key="general.jsp.hostname"/>
                         </label>
                         <div class="col-lg-6">
                             <html:text property="server|jabber_server"
@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proxy" class="col-lg-3 control-label">
-                            <bean:message key="general.jsp.proxy"/>:
+                            <bean:message key="general.jsp.proxy"/>
                         </label>
                         <div class="col-lg-6">
                             <html:text property="server|satellite|http_proxy"
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proxy_user" class="col-lg-3 control-label">
-                            <bean:message key="general.jsp.proxy_username"/>:
+                            <bean:message key="general.jsp.proxy_username"/>
                         </label>
                         <div class="col-lg-6">
                             <html:text property="server|satellite|http_proxy_username"
@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proxy_password" class="col-lg-3 control-label">
-                            <bean:message key="general.jsp.proxy_password"/>:
+                            <bean:message key="general.jsp.proxy_password"/>
                         </label>
                         <div class="col-lg-6">
                             <html:password property="server|satellite|http_proxy_password"
@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label for="proxy_password_confirm" class="col-lg-3 control-label">
-                            <bean:message key="general.jsp.proxy_password_confirm"/>:
+                            <bean:message key="general.jsp.proxy_password_confirm"/>
                         </label>
                         <div class="col-lg-6">
                                     <html:password property="server|satellite|http_proxy_password_confirm"
@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group">
                         <label for="mount_point" class="col-lg-3 control-label">
-                            <bean:message key="general.jsp.mount_point"/>:
+                            <bean:message key="general.jsp.mount_point"/>
                         </label>
                         <div class="col-lg-6">
                             <html:text property="mount_point" size="32"
@@ -90,35 +90,43 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-3 col-lg-6">
-                            <label for="ssl_available">
+                        <label class="col-lg-3 control-label" for="web|ssl_available">
+                            <bean:message key="general.jsp.defaultTo_ssl"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="checkbox">
                                 <html:checkbox property="web|ssl_available" styleId="ssl_available" />
-                                <bean:message key="general.jsp.defaultTo_ssl"/>
-                            </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group hidden">
-                        <div class="col-lg-offset-3 col-lg-6">
-                            <label for="solaris">
+                        <label class="col-lg-3 control-label" for="web|enable_solaris_support">
+                            <bean:message key="general.jsp.solaris"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="checkbox">
                                 <html:checkbox property="web|enable_solaris_support" styleId="solaris" />
-                                <bean:message key="general.jsp.solaris"/>
-                            </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group hidden">
-                        <div class="col-lg-offset-3 col-lg-6">
-                            <label for="disconnected">
+                        <label class="col-lg-3 control-label" for="disconnected">
+                            <bean:message key="general.jsp.disconnected"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="checkbox">
                                 <html:checkbox property="disconnected" styleId="disconnected" />
-                                <bean:message key="general.jsp.disconnected"/>
-                            </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-lg-offset-3 col-lg-6">
-                            <label for="is_monitoring_backend">
+                        <label class="col-lg-3 control-label" for="web|is_monitoring_backend">
+                            <bean:message key="general.jsp.monitoring_backend"/>
+                        </label>
+                        <div class="col-lg-6">
+                            <div class="checkbox">
                                 <html:checkbox property="web|is_monitoring_backend" styleId="is_monitoring_backend" />
-                                <bean:message key="general.jsp.monitoring_backend"/>
-                            </label>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
