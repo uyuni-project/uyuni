@@ -22,7 +22,7 @@ BuildRequires:  suseRegisterInfo
 BuildRequires:  pyxml
 
 PreReq:         %fillup_prereq %insserv_prereq atftp
-Requires:       openslp
+Requires:       openslp-server
 Requires:       spacewalk-setup spacewalk-admin cobbler spacewalk-schema
 Requires:       rsync less
 Requires:       susemanager-tools
