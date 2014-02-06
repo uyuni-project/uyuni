@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
@@ -32,6 +33,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,7 +104,6 @@ public class ActionChainManager {
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return the package action
-     * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageUpgrade
      */
     public static PackageAction schedulePackageUpgrade(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
@@ -140,10 +141,10 @@ public class ActionChainManager {
     private static Action schedulePackageAction(User scheduler,
         List<Map<String, Long>> packages, ActionType type, Date earliest,
         ActionChain actionChain, Server server) {
-        Set<Server> servers = new HashSet<Server>();
-        servers.add(server);
+        Set<Long> serverIds = new HashSet<Long>();
+        serverIds.add(server.getId());
         return schedulePackageAction(scheduler, packages, type, earliest, actionChain,
-            servers).iterator().next();
+            serverIds).iterator().next();
     }
 
     /**
@@ -159,13 +160,9 @@ public class ActionChainManager {
      */
     private static Set<Action> schedulePackageAction(User scheduler,
         List<Map<String, Long>> packages, ActionType type, Date earliestAction,
-        ActionChain actionChain, Set<Server> servers) {
+        ActionChain actionChain, Set<Long> serverIds) {
 
         String name = ActionManager.getActionName(type);
-        Set<Long> serverIds = new HashSet<Long>();
-        for (Server server : servers) {
-            serverIds.add(server.getId());
-        }
 
         Set<Action> result = scheduleAction(scheduler, type, name, earliestAction,
             actionChain, serverIds);
@@ -285,6 +282,39 @@ public class ActionChainManager {
     }
 
     /**
+     * Schedules one or more package installation actions on one or more servers.
+     * @param user the user scheduling actions
+     * @param serverIds server IDs for which the packages should be installed
+     * @param packages the packages involved
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @return scheduled actions
+     */
+    public static List<Action> schedulePackageInstall(User user,
+        Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
+        ActionChain actionChain) {
+
+        return scheduleActionByOs(user, serverIds, packages, earliest, actionChain,
+            ActionFactory.TYPE_PACKAGES_UPDATE, ActionFactory.TYPE_SOLARISPKGS_INSTALL);
+    }
+
+    /**
+     * Schedules one or more package removal actions on one or more servers.
+     * @param user the user scheduling actions
+     * @param serverIds server IDs for which the packages should be installed
+     * @param packages the packages involved
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @return scheduled actions
+     */
+    public static List<Action> schedulePackageRemoval(User user,
+        Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
+        ActionChain actionChain) {
+        return scheduleActionByOs(user, serverIds, packages, earliest, actionChain,
+            ActionFactory.TYPE_PACKAGES_REMOVE, ActionFactory.TYPE_SOLARISPKGS_REMOVE);
+    }
+
+    /**
      * Schedules generic actions on multiple servers.
      *
      * @param scheduler the scheduler
@@ -307,14 +337,50 @@ public class ActionChainManager {
             result.add(action);
         }
         else {
+            int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
             for (Long serverId : serverIds) {
                 Action action = ActionManager.createAction(scheduler, type, name,
                     earliest);
-                ActionChainFactory.queueActionChainEntry(action, actionChain, serverId);
+                ActionChainFactory.queueActionChainEntry(action, actionChain, serverId,
+                    sortOrder);
                 result.add(action);
             }
         }
 
+        return result;
+    }
+
+    /**
+     * Schedules actions differentiating their type among Linux and Solaris
+     * servers.
+     * @param user the user scheduling actions
+     * @param serverIds server IDs for which the packages should be installed
+     * @param packages the packages involved
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @param linuxActionType the action type to apply to Linux servers
+     * @param solarisActionType the action type to apply to Solaris servers
+     * @return scheduled actions
+     */
+    private static List<Action> scheduleActionByOs(User user, Collection<Long> serverIds,
+        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
+        ActionType linuxActionType, ActionType solarisActionType) {
+
+        List<Action> result = new LinkedList<Action>();
+        Set<Long> rhelServers = new HashSet<Long>();
+        rhelServers.addAll(ServerFactory.listLinuxSystems(serverIds));
+        Set<Long> solarisServers = new HashSet<Long>();
+        solarisServers.addAll(ServerFactory.listSolarisSystems(serverIds));
+
+        if (!rhelServers.isEmpty()) {
+            result.addAll(schedulePackageAction(user, packages, linuxActionType, earliest,
+                actionChain, rhelServers));
+        }
+
+        if (!solarisServers.isEmpty()) {
+            result.addAll(schedulePackageAction(user, packages, solarisActionType,
+                earliest, actionChain, solarisServers));
+        }
         return result;
     }
 }
