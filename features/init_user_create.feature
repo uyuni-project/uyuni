@@ -26,7 +26,7 @@ Feature: Create initial users
   Scenario: Enable Monitoring
     Given I am authorized as "admin" with password "admin"
     When I go to the admin configuration page
-     And I check "Monitoring"
+     And I check "Enable Monitoring"
      And I click on "Update"
     Then I should see a "The SUSE Manager must be restarted to reflect these changes" text
      And I should see "is_monitoring_backend" as checked
