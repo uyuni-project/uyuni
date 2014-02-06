@@ -10,7 +10,7 @@ Then /^"(.*?)" is locked on this client$/ do |pkg|
 end
 
 Then /^Package "(.*?)" is reported as locked$/ do |pkg|
-  find(:xpath, "//a[text()='#{pkg}']")
+  find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   fail if locked_pkgs.empty?
@@ -26,7 +26,7 @@ Then /^"(.*?)" is unlocked on this client$/ do |pkg|
 end
 
 Then /^Package "(.*?)" is reported as unlocked$/ do |pkg|
-  find(:xpath, "//a[text()='#{pkg}']")
+  find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, "//i[@class='fa fa-lock']/../a")
 
   fail if locked_pkgs.find{|a| a.text =~ /^#{pkg}/}
