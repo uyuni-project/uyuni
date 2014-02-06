@@ -33,7 +33,7 @@ SELECT * FROM
             AND  p.evr_id = pe.id
             AND  p.package_arch_id = pa.id
        GROUP BY  p.name_id, pa.label, pa.id, pe.id
-) as avl
+) avl
        left join rhnpackagename pn on pn.id = avl.name_id
        left join rhnpackage pkg on pkg.name_id = avl.name_id and pkg.evr_id = avl.evr_id and pkg.package_arch_id = avl.arch_id
        LEFT JOIN rhnlockedpackages lck ON lck.name_id = pkg.name_id
