@@ -485,6 +485,19 @@ def hasISSSlaves():
         return True
     return False
 
+def hasISSMaster():
+    rhnSQL.initDB()
+    if rhnSQL.fetchone_dict("select 1 from rhnISSMaster where is_current_master = 'Y'"):
+        return True
+    return False
+
+def getISSCurrentMaster():
+    rhnSQL.initDB()
+    master = rhnSQL.fetchone_dict("select label from rhnISSMaster where is_current_master = 'Y'")
+    if not master:
+        return None
+    return master['label']
+
 def _parse_curl_proxy_credentials(text):
     """Parse proxy credentials from the string :text:
 
