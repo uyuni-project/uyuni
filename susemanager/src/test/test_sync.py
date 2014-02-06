@@ -32,6 +32,7 @@ class SyncTest(unittest.TestCase):
         ncc_sync.suseLib.get_mirror_credentials = Mock(return_value=[("user", "pass")])
         ncc_sync.suseLib.getProductProfile = Mock(return_value=
                                                   {"guid":"bogus_guid"})
+        ncc_sync.suseLib.hasISSMaster = Mock(return_value=False)
         ncc_sync.MASTER_CACHE_LOCATION = "/tmp/ncc-data"
         self.sync = ncc_sync.NCCSync()
 
