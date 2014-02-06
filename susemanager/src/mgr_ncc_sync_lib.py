@@ -123,7 +123,7 @@ class NCCSync(object):
             if not os.path.exists(MASTER_CACHE_LOCATION):
                 os.mkdir(MASTER_CACHE_LOCATION)
 
-        if CFG.iss_parent:
+        if suseLib.hasISSMaster():
             self.is_iss_slave = True
 
         self.namespace = "http://www.novell.com/xml/center/regsvc-1_0"
@@ -145,8 +145,8 @@ class NCCSync(object):
             self.subs_req = None
             self.prod_req = None
         elif self.is_iss_slave:
-            self.ncc_url_prods = 'https://%s/center/regsvc/?command=regdata&lang=en-US&version=1.0' % CFG.iss_parent
-            self.ncc_url_subs  = "https://%s/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0" % CFG.iss_parent
+            self.ncc_url_prods = 'https://%s/center/regsvc/?command=regdata&lang=en-US&version=1.0' % suseLib.getISSCurrentMaster()
+            self.ncc_url_subs  = "https://%s/center/regsvc/?command=listsubscriptions&lang=en-US&version=1.0" % suseLib.getISSCurrentMaster()
             self.ncc_repoindex = None
             # XML documents which are used in POST requests to the NCC
             self.subs_req = ('<?xml version="1.0" encoding="UTF-8"?>'

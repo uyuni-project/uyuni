@@ -52,9 +52,9 @@ class Register:
     self.authemail = CFG.mirrcred_email
     self.is_iss_slave = False
     self.regurl = CFG.reg_url
-    if CFG.iss_parent:
+    if suseLib.hasISSMaster():
         self.is_iss_slave = True
-        self.regurl = "https://%s/center/regsvc" % CFG.iss_parent
+        self.regurl = "https://%s/center/regsvc" % suseLib.getISSCurrentMaster()
 
 
   def main(self):
