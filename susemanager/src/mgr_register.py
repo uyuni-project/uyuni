@@ -184,12 +184,17 @@ class Register:
     f = suseLib.send(new_url, xml)
 
     # parse the answer
-    for event, elem in iterparse(f):
-      if elem.tag != ("{%s}bulkstatus" % (self.ns)):
-        continue
-      for child in elem:
-        if child.tag == ("{%s}status" % (self.ns)):
-          self._parse_status(child)
+    try:
+      for event, elem in iterparse(f):
+        if elem.tag != ("{%s}bulkstatus" % (self.ns)):
+          continue
+        for child in elem:
+          if child.tag == ("{%s}status" % (self.ns)):
+            self._parse_status(child)
+    except SyntaxError, e:
+      log_error("Unable to parse the response from the registration server")
+      f.seek(0)
+      log_debug(2, "RESPONSE: %s" % f.read())
 
   def _parse_status(self, elem):
     operation = elem.attrib.get("operation")
