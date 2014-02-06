@@ -83,8 +83,8 @@ def handle(environ, start_response):
                 req.write(f.read())
         elif root.tag.endswith('bulkop'):
             # authentication is ok, lets forward the request to the parent
-            if CFG.ISS_PARENT:
-                url = suseLib.URL('https://%s' % (CFG.ISS_PARENT))
+            if suseLib.hasISSMaster():
+                url = suseLib.URL('https://%s' % (suseLib.getISSCurrentMaster()))
             else:
                 url = suseLib.URL(CFG.reg_url)
             u = urlparse.urlsplit(req.uri)
