@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:54:04 CET 2014 - mc@suse.de
+
+- version 2.1.27.1-1
+- create api for channel errata syncing, have clone-by-date call it
+- adding postgresql92-postgresql to possible db service names
+- Changed gpg keys so they match reality.
+- Removing unsupported Fedora 17
+- Adding Fedora 20 to spacewalk-common-channels
+- adding 2.1 repositories to spacewalk-common-channels
+- remove openSUSE 12.2 and add openSUSE 13.1 channels
+- clone-by-date: fix with dependency check enabled (bnc#858652)
+- Updating the copyright years info
+
+-------------------------------------------------------------------
 Mon Jan 13 09:43:53 CET 2014 - mc@suse.de
 
 - version 2.1.23.1-1
