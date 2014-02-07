@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 07 12:52:00 CET 2014 - mc@suse.de
+
+- version 2.1.6.1-1
+- avoid insecure use of /var/tmp
+- Update .po and .pot files for yum-rhn-plugin.
+
+-------------------------------------------------------------------
 Mon Dec 09 16:07:34 CET 2013 - mc@suse.de
 
 - version 2.1.5.1-1
