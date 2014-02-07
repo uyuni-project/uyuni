@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:16:58 CET 2014 - mc@suse.de
+
+- version 2.1.49.1-1
+- add functions to query ISS Master server from DB
+- apply exclude filters to dependencies in repo-sync
+- don't remove files referenced from other distributions/trees
+- propagate --skip-kickstart-trees to delete_channels()
+- remove clean-reposync-logs cronjob
+- fixed man page for spacewalk-remove-channel
+- added option to skip kickstart trees removal
+- sw-remove-channel does not rm ks trees.
+- Inter server sync: export also errata's severity
+- Fixing InvalidPackageError when importing from channel dump
+- commit after updating server's package profile
+- Add extra log folder /var/log/rhn/tasko/sat/ in spacewalk-debug.
+  [bnc#854090]
+- allow CVE-IDs with more then 13 chars
+  new syntax since 2014
+- fixing sat-sync daylight-savings-related 'NoneType is
+  unsubscriptable' error
+
+-------------------------------------------------------------------
 Mon Jan 13 09:53:00 CET 2014 - mc@suse.de
 
 - version 2.1.39.1-1
