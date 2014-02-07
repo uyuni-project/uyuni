@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 07 12:53:56 CET 2014 - mc@suse.de
+
+- version 5.11.33.1-1
+- create rc links on SUSE distributions
+- make reboot_in_progress a public function (bnc#859541)
+
+-------------------------------------------------------------------
 Mon Jan 13 09:35:06 CET 2014 - mc@suse.de
 
 - version 5.11.32.2-1
