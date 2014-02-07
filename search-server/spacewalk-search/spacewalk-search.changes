@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:34:14 CET 2014 - mc@suse.de
+
+- version 2.1.13.1-1
+- Allow null as createdBy and lastModifiedBy (bnc#834415)
+- %%attr() mode not applicaple to symlink
+
+-------------------------------------------------------------------
 Mon Jan 13 09:24:07 CET 2014 - mc@suse.de
 
 - version 2.1.12.1-1
