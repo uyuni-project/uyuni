@@ -1,7 +1,9 @@
 -------------------------------------------------------------------
-Mon Feb  3 15:37:50 CET 2014 - mantel@suse.de
+Fri Feb 07 13:49:36 CET 2014 - mc@suse.de
 
+- version 2.1.15.1-1
 - add SLP support
+- Updating the copyright years info
 
 -------------------------------------------------------------------
 Mon Jan 13 09:40:30 CET 2014 - mc@suse.de
