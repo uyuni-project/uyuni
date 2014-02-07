@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Fri Feb 07 12:58:53 CET 2014 - mc@suse.de
+
+- version 2.1.54.1-1
+- changes in the logic to update the tick icon. 
+  Differentiating between edit user form and create user form.
+- adding caller script and tick icon function
+- Fixed unstyled form in PXT page: SSM/Groups
+- Fixed unstyled form in PXT page: SSM/Provisioning/TagSystems
+- Add a rhn-date tag
+- Implement rhn:formatDate that uses moment.js on the client side. It supports
+  also most of fmt:formatDate options.
+- porting system group monitoring probes page to java
+- relocate placeholder function to new file
+- port reboot_confirm.pxt from perl to java
+- point links to new java ProbesList pages
+- use package name to require sudo
+- Updating the copyright years info
+
+-------------------------------------------------------------------
 Mon Jan 13 09:29:11 CET 2014 - mc@suse.de
 
 - version 2.1.47.1-1
