@@ -570,8 +570,15 @@ do_setup() {
     if [ -n "$ISS_PARENT" ]; then
         local certname=`echo "MASTER-$ISS_PARENT-TRUSTED-SSL-CERT" | sed 's/\./_/g'`
         curl -s -S -o /usr/share/rhn/$certname "http://$ISS_PARENT/pub/RHN-ORG-TRUSTED-SSL-CERT"
-        ln -s /usr/share/rhn/$certname /etc/ssl/certs/$certname.pem
-        c_rehash /etc/ssl/certs/ >/dev/null
+        if [ -e /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT ] && \
+           cmp -s /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT /usr/share/rhn/$certname ; then
+            # equal - use it
+            rm -f /usr/share/rhn/$certname
+            certname=RHN-ORG-TRUSTED-SSL-CERT
+        else
+            ln -s /usr/share/rhn/$certname /etc/ssl/certs/$certname.pem
+            c_rehash /etc/ssl/certs/ >/dev/null
+        fi
         echo "
         INSERT INTO rhnISSMaster (id, label, is_current_master, ca_cert)
         VALUES (sequence_nextval('rhn_issmaster_seq'), '$ISS_PARENT', 'Y', '/usr/share/rhn/$certname');
@@ -670,6 +677,10 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     setup_dobby
     # Finaly call mgr-ncc-sync
     /usr/sbin/mgr-ncc-sync --refresh
+    if [ -n "$ISS_PARENT" ]; then
+        # call inter-sync list - this updates the org data
+        /usr/bin/mgr-inter-sync -l
+    fi
 fi
 
 # vim: set expandtab:
