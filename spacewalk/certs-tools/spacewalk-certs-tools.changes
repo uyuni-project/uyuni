@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:43:23 CET 2014 - mc@suse.de
+
+- version 2.1.6.1-1
+- create certificates which use sha256 for the signature algorythm
+- Log stdout and stderr of ssh-copy-id command into LOGFILE
+- ssh-keygen fails with an error when known_hosts doesn't exist
+- use package name to require sudo
+- Updating the copyright years info
+- Call the new ssh push script from the old one and print
+  deprecation warning
+- Refactor and cleanup new ssh push init script
+
+-------------------------------------------------------------------
 Mon Jan 13 09:34:02 CET 2014 - mc@suse.de
 
 - version 2.1.5.1-1
