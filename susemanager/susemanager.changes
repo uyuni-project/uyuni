@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:45:32 CET 2014 - mc@suse.de
+
+- version 2.1.4-1
+- ISS: if registered before setup is called use the CA cert from the
+  registration
+- query and get ISS master from the right place
+- Catch SyntaxError in registration server response (bnc#849333)
+- store master SSL certificate under a different name and store
+  ISS values in DB
+- add script for changing database from oracle to postgresql
+- add SLP support
+- buildrequire postgresql backend
+- remove scripts used for local oracle DB.
+- implement ISS to DB migration and fix some syntax errors
+- introduce new susemanager upgrade script
+- Bootstrap repositories data: minor code refactoring
+- Added more packages to the sle11 bootstrap repo
+
+-------------------------------------------------------------------
 Mon Feb  3 15:38:23 CET 2014 . mantel@suse.de
 
 - add SLP support
