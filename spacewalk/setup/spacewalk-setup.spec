@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.13
+Version:        2.1.14
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -97,12 +97,6 @@ install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewal
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
 install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
 
-# Oracle specific stuff, possible candidate for sub-package down the road:
-install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/oracle/
-install -m 0755 share/oracle/install-db.sh %{buildroot}/%{_datadir}/spacewalk/setup/oracle
-install -m 0755 share/oracle/remove-db.sh %{buildroot}/%{_datadir}/spacewalk/setup/oracle
-install -m 0755 share/oracle/upgrade-db.sh %{buildroot}/%{_datadir}/spacewalk/setup/oracle
-
 # create a directory for misc. Spacewalk things
 install -d -m 755 %{buildroot}/%{misc_path}/spacewalk
 
@@ -179,6 +173,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Feb 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.14-1
+- removed embedded oracle code
+
 * Wed Jan 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.13-1
 - fixed typo in library path
 - tomcat on RHEL5 and RHEL6 needs more parameters

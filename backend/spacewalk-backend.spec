@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.47
+Version: 2.1.49
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -347,6 +347,10 @@ ln -s rhn-satellite-exporter $RPM_BUILD_ROOT/usr/bin/mgr-exporter
 
 
 %find_lang %{name}-server
+
+%if 0%{?fedora} || 0%{?rhel} > 6
+sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/spacewalk-backend-*
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -764,6 +768,13 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Thu Feb 06 2014 Jan Dobes 2.1.49-1
+- 1056515 - adapting to different logrotate version in fedora and rhel
+- 870990 - sw-rm-ch -l when satellite-sync runs.
+
+* Wed Feb 05 2014 Aron Parsons <parsonsa@bit-sys.com> 2.1.48-1
+- apply exclude filters to dependencies in repo-sync
+
 * Fri Jan 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.47-1
 - 1058431 - don't remove files referenced from other distributions/trees
 - 1058431 - propagate --skip-kickstart-trees to delete_channels()
