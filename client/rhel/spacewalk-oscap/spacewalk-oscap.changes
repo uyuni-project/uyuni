@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 07 12:50:22 CET 2014 - mc@suse.de
+
+- version 0.0.23.1-1
+- Add tailoring support to the Spacewalk (OpenSCAP enabled) client
+
+-------------------------------------------------------------------
 Mon Dec 09 17:23:37 CET 2013 - mc@suse.de
 
 - version 0.0.22.1-1
