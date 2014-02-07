@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 07 12:56:00 CET 2014 - mc@suse.de
+
+- version 5.0.14.3-1
+- call find_lang after removal of unsupported translations
+- remove unsupported translations and fix rc link
+
+-------------------------------------------------------------------
 Mon Jan 20 15:15:43 CET 2014 - mc@suse.de
 
 - version 5.0.14.2-1
