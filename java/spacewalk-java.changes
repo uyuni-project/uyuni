@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:01:47 CET 2014 - mc@suse.de
+
+- version 2.1.146.1-1
+- patch to handle systems registered with the --nohardware flag
+- fixing layout of various pages
+- Generification of Listable
+- Improve package search performance
+- Add confirmation page to ssm/ListPatches
+- Extracted "list systems in ssm related to errata" into separate action
+- allow deleting disabled users
+- add external group pages
+- create external authentication pages
+- create api for channel errata syncing, have clone-by-date call it
+- Fixed ssm reboot scheduling.
+- Update RHEL 7 VM memory requirements to 1024 MB
+- Datepicker UI unification
+- fix deadlock when cloning using spacewalk-clone-by-date
+- fix ISE when cobbler components are missing (not installed)
+- port reboot_confirm.pxt from perl to java
+- SUSE Studio endpoint stops working via unencrypted HTTP (bnc#859762)
+- fix CVE URL in updateinfo references (bnc#859637)
+- CVE-2010-2236, Cleanse backticks from monitoring-probes where
+  appropriate
+- CVE-2012-6149, Fix XSS in notes.jsp
+- CVE-2013-1869, Only follow internal return_urls
+- CVE-2013-1871, Fix XSS in edit-address JSPs
+- increase column length for CVE ids.
+  Required for new CVE ID syntax
+
+-------------------------------------------------------------------
 Mon Jan 13 09:54:49 CET 2014 - mc@suse.de
 
 - version 2.1.113.1-1
