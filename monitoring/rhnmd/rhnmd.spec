@@ -14,7 +14,7 @@ Summary:        Spacewalk Monitoring Daemon
 Name:           rhnmd
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:        5.3.18.1
+Version:        5.3.18.2
 Release:        1%{?dist}
 License:        GPLv2
 BuildArch:      noarch

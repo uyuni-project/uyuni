@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Feb 07 14:02:34 CET 2014 - mc@suse.de
+
+- version 5.3.18.2-1
+- creat rc link on SUSE distributions
+- add rc links for service files
+
+-------------------------------------------------------------------
 Mon Dec 09 16:53:37 CET 2013 - mc@suse.de
 
 - version 5.3.18.1-1
