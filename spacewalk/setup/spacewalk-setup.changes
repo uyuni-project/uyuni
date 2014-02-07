@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:41:07 CET 2014 - mc@suse.de
+
+- version 2.1.14.1-1
+- remove setup embedded oracle code
+- add oracle library path directly to commandline
+- install tomcat6 filter
+- disable ehcache check for updates
+- spacewalk-setup-tomcat packaging
+- Updating the copyright years info
+
+-------------------------------------------------------------------
 Mon Jan 13 09:27:50 CET 2014 - mc@suse.de
 
 - version 2.1.7.1-1
