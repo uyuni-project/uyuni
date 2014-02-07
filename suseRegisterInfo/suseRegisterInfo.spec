@@ -17,7 +17,7 @@
 
 
 Name:           suseRegisterInfo
-Version:        2.1.2
+Version:        2.1.3
 Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0
