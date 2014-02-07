@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.25
+Version:    2.1.26
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,11 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Feb 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.26-1
+- fixed create probe page aligning
+- required field marker used to be red
+- password meter needs pwstrength-bootstrap
+
 * Tue Feb 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.25-1
 - help links are already hidden via spacewalk-help-link class
 - move toolbar items right for all header levels
