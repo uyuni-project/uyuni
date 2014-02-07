@@ -1,5 +1,5 @@
 Name:           sm-ncc-sync-data
-Version:        2.1.2
+Version:        2.1.3
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Productivity/Other
