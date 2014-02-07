@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Fri Feb 07 13:58:12 CET 2014 - mc@suse.de
+
+- version 2.1.26.1-1
+- fixed create probe page aligning
+- required field marker used to be red
+- password meter needs pwstrength-bootstrap
+- help links are already hidden via spacewalk-help-link class
+- move toolbar items right for all header levels
+- add special class to help links
+- style table for system comparsion
+- update copyright year in perl footer
+- highlight column by which is list sorted and hovered row
+- add sort order icons and alphaResult icon
+- adding custom styles
+- removing old spacewalk css
+- Add a rhn-date tag
+- Roboto font has been moved to separate package
+- font-awesome has been moved to separate package
+- PNG image used as background in CSS has been deleted
+- fix path to less files
+- allow to use .less files in development mode
+
+-------------------------------------------------------------------
 Mon Jan 13 09:48:24 CET 2014 - mc@suse.de
 
 - version 2.1.16.1-1
