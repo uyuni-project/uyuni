@@ -1329,20 +1329,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package verification actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliest Earliest occurrence of the script.
-     * @return Currently scheduled PackageAction
-     */
-    public static PackageAction schedulePackageVerify(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliest) {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_VERIFY, earliest, srvr);
-    }
-
-    /**
      * Schedules one or more package lock actions for the given server.
      * @param scheduler
      * @param server
