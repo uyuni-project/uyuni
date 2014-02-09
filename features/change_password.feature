@@ -28,8 +28,7 @@ Feature: Change the user's password
       And I enter "A" as "desiredpassword"
       And I enter "A" as "desiredpasswordConfirm"
       And I click on "Update"
-      Then I should see a "Desired Password cannot be less than 5 characters." text
-      And I should see a "Confirm Password cannot be less than 5 characters." text
+      Then I should see a "Passwords must be at least 5 characters." text
     Given I sign out
       And I enter "admin" as "username"
       And I enter "A" as "password"
