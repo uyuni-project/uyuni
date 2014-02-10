@@ -3769,6 +3769,16 @@
 			<product_id name="SUSE-Cloud">4120</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-pool-x86_64" name="SUSE-Cloud-3.0-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Pool/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
+		<products>
+			<product_id name="SUSE-Cloud">4360</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-updates-x86_64" name="SUSE-Cloud-3.0-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
+		<products>
+			<product_id name="SUSE-Cloud">4360</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Manager Proxy 1.2" family="SMP" is_signed="Y" label="suse-manager-proxy-1.2-pool-x86_64" name="SUSE-Manager-Proxy-1.2-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE-Manager-Proxy" product_version="1.2" source_url="https://nu.novell.com/repo/$RCE/SUSE-Manager-Proxy-1.2-Pool/sle-11-x86_64/" summary="SUSE Manager Proxy 1.2" update_tag="slemap12sp1">
 		<products>
 			<product_id name="SUSE-Manager-Proxy">2680</product_id>
