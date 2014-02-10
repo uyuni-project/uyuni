@@ -4,13 +4,11 @@
 PREFIX		?=
 
 CONFIG		= up2date.config
-MACROS_CONFIG   = macros.up2date
 
 # Directories for installation
 PAMD_DIR	= $(PREFIX)/etc/pam.d
 SECURITY_DIR	= $(PREFIX)/etc/security/console.apps
 CONFIG_DIR	= $(PREFIX)/etc/sysconfig/rhn
-MACROS_DIR	= $(PREFIX)/etc/rpm/
 CAPS_DIR	= $(PREFIX)/etc/sysconfig/rhn/clientCaps.d
 ALLOWED_ACTIONS_SCRIPT = $(PREFIX)/etc/sysconfig/rhn/allowed-actions/script
 ALLOWED_ACTIONS_CONFIG = $(PREFIX)/etc/sysconfig/rhn/allowed-actions/configfiles
@@ -20,7 +18,7 @@ YUM_REPO_DIR    = $(PREFIX)/etc/yum.repos.d
 # all dirs
 DIRS		= $(PAMD_DIR) $(SECURITY_DIR) $(CONFIG_DIR) \
 		  $(LOGROTATE_DIR) $(YUM_REPO_DIR)\
-		  $(MACROS_DIR) $(CAPS_DIR) $(ALLOWED_ACTIONS_SCRIPT) \
+		  $(CAPS_DIR) $(ALLOWED_ACTIONS_SCRIPT) \
                   $(ALLOWED_ACTIONS_CONFIG)
 
 # INSTALL scripts 
@@ -40,9 +38,6 @@ install:: all $(DIRS)
 
 	[ -f $(CONFIG_DIR)/up2date ] && true || \
 		$(INSTALL_DATA) $(CONFIG) $(CONFIG_DIR)/up2date
-
-	[ -f $(MACROS_DIR)/macros.up2date ] && true || \
-		$(INSTALL_DATA) $(MACROS_CONFIG) $(MACROS_DIR)/macros.up2date
 
 	$(INSTALL_DATA) up2date.logrotate $(LOGROTATE_DIR)/up2date
 
