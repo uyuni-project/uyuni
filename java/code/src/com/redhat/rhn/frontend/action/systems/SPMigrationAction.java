@@ -173,7 +173,8 @@ public class SPMigrationAction extends RhnAction {
 
             // Determine mandatory channels
             List<EssentialChannelDto> requiredChannels =
-                    DistUpgradeManager.getRequiredChannels(targetProducts);
+                    DistUpgradeManager.getRequiredChannels(
+                            targetProducts, suseBaseChannel.getId());
 
             // Get available alternatives
             HashMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.

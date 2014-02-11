@@ -117,15 +117,18 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
-     * Return all channels *required* for migrating to a certain {@link SUSEProductSet}.
+     * Return all child channels *required* for migrating to a certain
+     * {@link SUSEProductSet}.
      *
      * @param productSet product set
      * @return list of channel DTOs
      */
     @SuppressWarnings("unchecked")
-    public static List<EssentialChannelDto> getRequiredChannels(SUSEProductSet productSet) {
+    public static List<EssentialChannelDto> getRequiredChannels(
+            SUSEProductSet productSet, long baseChannelID) {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<String, Object>();
+        params.put("base_channel_id", baseChannelID);
         SelectMode m = ModeFactory.getMode("distupgrade_queries",
                     "channels_required_for_product_set");
         return m.execute(params, productIDs);
@@ -370,7 +373,7 @@ public class DistUpgradeManager extends BaseManager {
         List<ClonedChannel> allClones = getAllClones(suseBaseChannel);
         // Get required channels for this product set
         List<EssentialChannelDto> requiredChildChannels =
-                getRequiredChannels(targetProducts);
+                getRequiredChannels(targetProducts, suseBaseChannel.getId());
 
         // For all possible alternatives (clones of base channel)
         for (ClonedChannel clone : allClones) {
