@@ -460,6 +460,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/__init__.py*
 %{rhnroot}/wsgi/wsgiHandler.py*
 %{rhnroot}/wsgi/wsgiRequest.py*
+%if 0%{?suse_version}
+%dir %{rhnroot}
+%endif
 
 %files sql
 %defattr(-,root,root)
