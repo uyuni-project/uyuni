@@ -37,8 +37,13 @@ test    ::
 	$(MAKE) -C server/test/unit-test
 
 unittest ::
-	unit2 discover -s satellite_tools/test/unit
-	unit2 discover -s common/test/unit-test
+	if test -x /usr/bin/unit2 ; then \
+		unit2 discover -s satellite_tools/test/unit; \
+		unit2 discover -s common/test/unit-test; \
+	else \
+		python -munittest discover -s satellite_tools/test/unit; \
+		python -munittest discover -s common/test/unit-test; \
+	fi
 
 docker_no_db_tests ::
 	mkdir -p $(CURDIR)/reports
