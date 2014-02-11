@@ -1,3 +1,5 @@
+
+%define rhn_client_tools spacewalk-client-tools
 %define rhnroot %{_datadir}/rhn
 
 Name:          rhnpush
@@ -12,17 +14,17 @@ BuildArch:     noarch
 Requires:      rpm-python
 Requires:      rhnlib
 Requires:      spacewalk-backend-libs >= 1.7.17
-Requires:      rhn-client-tools
+Requires:      %{rhn_client_tools}
 %if 0%{?suse_version}
 # provides rhn directories for filelist check in OBS
-BuildRequires:      rhn-client-tools
+BuildRequires:      %{rhn_client_tools}
 %endif
 BuildRequires: docbook-utils, gettext
 BuildRequires: python-devel
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} == 1110
 # pylint check
 BuildRequires:  spacewalk-pylint >= 0.6
-BuildRequires:  rhn-client-tools
+BuildRequires:  %{rhn_client_tools}
 BuildRequires:  spacewalk-backend-libs > 1.8.33
 %endif
 
