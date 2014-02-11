@@ -128,7 +128,13 @@ Group: Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires: %{name}-sql = %{version}-%{release}
 # /etc/rhn/rhn.conf should be available before run this %post script
+%if 0%{?suse_version} == 1315
+# no pre yet for SLE12. We only need -libs package for the client tools
+# and do not want to build the whole chain. A pre-requires is a buildrequire
+Requires: spacewalk-config
+%else
 Requires(pre): spacewalk-config
+%endif
 Requires: PyPAM
 Obsoletes: rhns-server < 5.3.0
 Provides: rhns-server = 1:%{version}-%{release}
@@ -367,7 +373,7 @@ make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
-%if 0%{?suse_version} != 1350
+%if 0%{?suse_version} != 1315
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
@@ -397,6 +403,13 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES perl
 
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
+
+%if 0%{?suse_version} == 1315
+if [ ! -d %{rhnconf} ]; then
+    # happens if we do not pre-require spacewalk-config
+    exit 0
+fi
+%endif
 
 if grep -E -i $regex %{rhnconf}/rhn.conf > /dev/null 2>&1 ; then
     # secret key already there
