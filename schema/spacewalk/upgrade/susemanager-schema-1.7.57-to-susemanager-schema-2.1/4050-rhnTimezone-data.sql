@@ -10,4 +10,3 @@ insert into rhnTimezone (id, olson_name, display_name) (
               and display_name = 'Saudi Arabia'
      )
 );
-
