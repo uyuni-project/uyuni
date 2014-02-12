@@ -1,0 +1,126 @@
+/**
+ * Copyright (c) 2014 SUSE
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.schedule;
+
+import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntryGroup;
+import com.redhat.rhn.domain.action.ActionChainFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnHelper;
+
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.DynaActionForm;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Controller for the Action Chain list page.
+ * @author Silvio Moioli <smoioli@suse.de>
+ */
+public class ActionChainEditAction extends RhnAction {
+
+    /** Action forward after Action Chain deletion. */
+    private static final String TO_LIST_FORWARD = "to_list";
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+        HttpServletRequest request, HttpServletResponse response) {
+        DynaActionForm form = (DynaActionForm) formIn;
+        RequestContext requestContext = new RequestContext(request);
+        ActionChain actionChain = ActionChainFactory.getActionChain(Long
+            .valueOf((String) request.getParameter("id")));
+
+        if (isSubmitted(form)) {
+            if (requestContext.wasDispatched("actionchain.jsp.delete")) {
+                return delete(mapping, request, actionChain);
+            }
+            if (requestContext.wasDispatched("actionchain.jsp.saveandschedule")) {
+                return schedule(mapping, request, form, actionChain);
+            }
+        }
+        setAttributes(request, form, actionChain);
+
+        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
+
+    /**
+     * Schedules an Action Chain.
+     * @param mapping current mapping object
+     * @param request current request object
+     * @param form current form object
+     * @param actionChain current Action Chain
+     * @return
+     */
+    private ActionForward schedule(ActionMapping mapping, HttpServletRequest request,
+        DynaActionForm form, ActionChain actionChain) {
+        Date date = getStrutsDelegate().readDatePicker(form, "date",
+            DatePicker.YEAR_RANGE_POSITIVE);
+        ActionChainFactory.schedule(actionChain, date);
+        ActionMessages messages = new ActionMessages();
+        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+            "actionchain.jsp.scheduled", actionChain.getLabel()));
+        getStrutsDelegate().saveMessages(request, messages);
+        return mapping.findForward(TO_LIST_FORWARD);
+    }
+
+    /**
+     * Deletes an Action Chain.
+     * @param mapping current mapping object
+     * @param request current request object
+     * @param actionChain current Action Chain
+     * @return a forward
+     */
+    private ActionForward delete(ActionMapping mapping, HttpServletRequest request,
+        ActionChain actionChain) {
+        String label = actionChain.getLabel();
+        ActionChainFactory.delete(actionChain);
+        ActionMessages messages = new ActionMessages();
+        messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+            "actionchain.jsp.deleted", label));
+        getStrutsDelegate().saveMessages(request, messages);
+        return mapping.findForward(TO_LIST_FORWARD);
+    }
+
+    /**
+     * Sets page attributes.
+     * @param request current request object
+     * @param form current DynaActionForm
+     * @param actionChain current Action Chain
+     */
+    private void setAttributes(HttpServletRequest request, DynaActionForm form,
+        ActionChain actionChain) {
+        List<ActionChainEntryGroup> groups = ActionChainFactory
+            .getActionChainEntryGroups(actionChain);
+        request.setAttribute("actionChain", actionChain);
+        request.setAttribute("groups", groups);
+        request.setAttribute(
+            "date",
+            getStrutsDelegate().prepopulateDatePicker(request, form, "date",
+                DatePicker.YEAR_RANGE_POSITIVE));
+    }
+}

@@ -58,6 +58,7 @@ public class IconTag extends TagSupport {
         icons.put("file-symlink", "fa spacewalk-icon-listicon-cfg-symlink");
         icons.put("header-action", "fa fa-clock-o");
         icons.put("header-activation-key", "fa fa-key");
+        icons.put("header-chain", "fa fa-chain");
         icons.put("header-channel", "fa spacewalk-icon-software-channels");
         icons.put("header-channel-configuration",
                   "fa spacewalk-icon-software-channel-management");

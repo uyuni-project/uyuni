@@ -38,8 +38,12 @@
       <link rel="stylesheet" href="/css/spacewalk.css" />
     </rhn:require>
 
+    <link rel="stylesheet" href="/javascript/select2/select2.css" />
+    <link rel="stylesheet" href="/javascript/select2/select2-bootstrap.css" />
+
     <script src="/javascript/jquery.js"></script>
     <script src="/javascript/bootstrap.js"></script>
+    <script src="/javascript/select2/select2.js"></script>
     <script src="/javascript/spacewalk-essentials.js"></script>
     <script src="/javascript/spacewalk-checkall.js"></script>
 

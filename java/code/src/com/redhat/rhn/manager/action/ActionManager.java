@@ -61,7 +61,6 @@ import com.redhat.rhn.domain.rhnpackage.PatchSet;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -446,66 +445,6 @@ public class ActionManager extends BaseManager {
                 ActionFactory.TYPE_CONFIGFILES_DIFF, new Date());
     }
 
-
-
-
-    /**
-     *
-     * Create a Config Action.
-     * @param user The user scheduling the action.
-     * @param serverConfigMap A map of server ids -> Collections of revision ids
-     * @param type The type of config action
-     * @param earliest The earliest time this action could execute.
-     * @return The created config action
-     */
-    public static Action createConfigActionForServers(User user,
-            Map<Long, Collection<Long>> serverConfigMap, ActionType type, Date earliest) {
-
-        //create the action
-        ConfigAction a = (ConfigAction)ActionFactory.createAction(type, earliest);
-        a.setName(a.getActionType().getName());
-        a.setOrg(user.getOrg());
-        a.setSchedulerUser(user);
-
-        ActionFactory.save(a);
-        ActionFactory.getSession().flush();
-
-
-        for (Long sid : serverConfigMap.keySet()) {
-            if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(type) &&
-                    !SystemManager.clientCapable(sid,
-                            SystemManager.CAP_CONFIGFILES_DEPLOY)) {
-                throw new MissingCapabilityException(SystemManager.CAP_CONFIGFILES_DEPLOY,
-                        ServerFactory.lookupById(sid));
-            }
-            ActionFactory.addServerToAction(sid, a);
-            //now that we made a server action, we must make config revision actions
-            //which depend on the server as well.
-            for (Long revId : serverConfigMap.get(sid)) {
-                WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                        "add_config_rev_to_action");
-                Map params = new HashMap();
-                params.put("sid", sid);
-                params.put("aid", a.getId());
-                params.put("crid", revId);
-                m.executeUpdate(params);
-            }
-        }
-        if (a.getServerActions().size() < 1) {
-            return null;
-        }
-        ActionFactory.save(a);
-        ActionFactory.getSession().refresh(a);
-        return a;
-    }
-
-
-
-
-
-
-
-
     /**
      * Create a Config Action.
      * @param user The user scheduling the action.
@@ -519,7 +458,68 @@ public class ActionManager extends BaseManager {
             Collection<Long> revisions,
             Collection<Server> servers,
             ActionType type, Date earliest) {
-        //create the action
+        ConfigAction a = createConfigAction(user, type, earliest);
+        for (Server server : servers) {
+            checkConfigActionOnServer(type, server);
+            ActionFactory.addServerToAction(server.getId(), a);
+
+            //now that we made a server action, we must make config revision actions
+            //which depend on the server as well.
+            addConfigurationRevisionsToAction(user, revisions, a, server);
+        }
+        if (a.getServerActions().size() < 1) {
+            return null;
+        }
+        ActionFactory.save(a);
+        return a;
+    }
+
+    /**
+     * Adds configuration revisions to a ConfigurationAction object
+     * @param user the user scheduling the action
+     * @param revisions a set of revision ids as Longs
+     * @param configAction the action to add revisions to
+     * @param server a server object
+     */
+    public static void addConfigurationRevisionsToAction(User user,
+        Collection<Long> revisions, ConfigAction configAction, Server server) {
+        for (Long revId : revisions) {
+            try {
+                ConfigRevision rev = ConfigurationManager.getInstance()
+                    .lookupConfigRevision(user, revId);
+                ActionFactory.addConfigRevisionToAction(rev, server, configAction);
+            }
+            catch (LookupException e) {
+                log.error("Failed lookup for revision " + revId + "by user " +
+                    user.getId());
+            }
+        }
+    }
+
+    /**
+     * Checks that a server can be the target of a ConfigAction
+     * @param type type of ConfigAction
+     * @param server a server object
+     * @throws MissingCapabilityException if server does not have needed capabilities
+     */
+    public static void checkConfigActionOnServer(ActionType type, Server server) {
+        if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(type) &&
+                !SystemManager.clientCapable(server.getId(),
+                        SystemManager.CAP_CONFIGFILES_DEPLOY)) {
+            throw new MissingCapabilityException(
+                    SystemManager.CAP_CONFIGFILES_DEPLOY, server);
+        }
+    }
+
+    /**
+     * Returns a new ConfigAction object
+     * @param user the user scheduling the action
+     * @param type type of ConfigAction
+     * @param earliest earliest action scheduling date
+     * @return a ConfigAction
+     */
+    public static ConfigAction createConfigAction(User user, ActionType type,
+        Date earliest) {
         ConfigAction a = (ConfigAction)ActionFactory.createAction(type, earliest);
 
         /** This is not localized, because the perl that prints this when the action is
@@ -530,37 +530,8 @@ public class ActionManager extends BaseManager {
         a.setName(a.getActionType().getName());
         a.setOrg(user.getOrg());
         a.setSchedulerUser(user);
-        for (Server server : servers) {
-            if (ActionFactory.TYPE_CONFIGFILES_DEPLOY.equals(type) &&
-                    !SystemManager.clientCapable(server.getId(),
-                            SystemManager.CAP_CONFIGFILES_DEPLOY)) {
-                throw new MissingCapabilityException(
-                        SystemManager.CAP_CONFIGFILES_DEPLOY, server);
-            }
-            ActionFactory.addServerToAction(server.getId(), a);
-
-            //now that we made a server action, we must make config revision actions
-            //which depend on the server as well.
-            for (Long revId : revisions) {
-                try {
-                    ConfigRevision rev = ConfigurationManager.getInstance()
-                            .lookupConfigRevision(user, revId);
-                    ActionFactory.addConfigRevisionToAction(rev, server, a);
-                }
-                catch (LookupException e) {
-                    log.error("Failed lookup for revision " + revId +
-                            "by user " + user.getId());
-                } //catch
-            }
-        }
-        if (a.getServerActions().size() < 1) {
-            return null;
-        }
-        ActionFactory.save(a);
         return a;
     }
-
-
 
     /**
      * Create a Config Action.
@@ -1276,79 +1247,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package removal actions on one or more servers.
-     *
-     * @param scheduler      user scheduling the action.
-     * @param serverIds      servers from which to remove the packages
-     * @param pkgs           list of packages to be removed.
-     * @param earliestAction date of earliest action to be executed
-     * @return List of actions (can be more than one, if mix of Solaris/Rhel servers)
-     */
-    public static List<Action> schedulePackageRemoval(User scheduler,
-            Collection<Long> serverIds, List<Map<String, Long>> pkgs, Date earliestAction) {
-
-        List<Action> actions = new ArrayList<Action>();
-        Action anAction;
-
-        // Different handling for package removal on solaris v. rhel, so split out
-        // the servers first in case the list is mixed.
-        Set<Long> rhelServers = new HashSet<Long>();
-        rhelServers.addAll(ServerFactory.listLinuxSystems(serverIds));
-        Set<Long> solarisServers = new HashSet<Long>();
-        solarisServers.addAll(ServerFactory.listSolarisSystems(serverIds));
-
-        // Since the solaris v. rhel distinction results in a different action type,
-        // we'll end up with 2 actions created if the server list is mixed
-        if (!rhelServers.isEmpty()) {
-            anAction = schedulePackageAction(scheduler, pkgs,
-                    ActionFactory.TYPE_PACKAGES_REMOVE, earliestAction, rhelServers);
-            actions.add(anAction);
-        }
-
-        if (!solarisServers.isEmpty()) {
-            anAction = schedulePackageAction(scheduler, pkgs,
-                    ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliestAction, solarisServers);
-            actions.add(anAction);
-        }
-        return actions;
-    }
-
-    /**
-     * Schedules one or more package upgrade actions for the given servers.
-     * Note: package upgrade = package install
-     * @param scheduler User scheduling the action.
-     * @param sysPkgMapping  The set of packages to be upgraded.
-     * @param earliestAction Date of earliest action to be executed
-     * @return actions       list of all scheduled upgrades
-     */
-    public static List<Action> schedulePackageUpgrades(User scheduler,
-            Map<Long, List<Map<String, Long>>> sysPkgMapping, Date earliestAction) {
-        List<Action> actions = new ArrayList<Action>();
-
-        for (Long sid : sysPkgMapping.keySet()) {
-            List<Long> ids = new ArrayList<Long>();
-            ids.add(sid);
-            actions.addAll(schedulePackageInstall(scheduler, ids, sysPkgMapping.get(sid),
-                    earliestAction));
-        }
-        return actions;
-    }
-
-    /**
-     * Schedules one or more package upgrade actions for the given server.
-     * Note: package upgrade = package install
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliestAction Date of earliest action to be executed
-     * @return Currently scheduled PackageAction
-     */
-    public static PackageAction schedulePackageUpgrade(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliestAction) {
-        return schedulePackageInstall(scheduler, srvr, pkgs, earliestAction);
-    }
-
-    /**
      * Schedules one or more package installation actions for the given server.
      * @param scheduler User scheduling the action.
      * @param srvr Server for which the action affects.
@@ -1367,43 +1265,6 @@ public class ActionManager extends BaseManager {
     }
 
     /**
-     * Schedules one or more package installation actions on one or more servers.
-     * @param scheduler      user scheduling the action.
-     * @param serverIds        server ids for which the packages should be installed
-     * @param pkgs           set of packages to be removed.
-     * @param earliestAction date of earliest action to be executed
-     * @return TODO
-     */
-    public static List<Action> schedulePackageInstall(User scheduler,
-            Collection<Long> serverIds, List pkgs, Date earliestAction) {
-
-        List<Action> actions = new ArrayList<Action>();
-        Action anAction;
-
-        // Different handling for package installs on solaris v. rhel, so split out
-        // the servers first in case the list is mixed.
-        Set<Long> rhelServers = new HashSet<Long>();
-        rhelServers.addAll(ServerFactory.listLinuxSystems(serverIds));
-        Set<Long> solarisServers = new HashSet<Long>();
-        solarisServers.addAll(ServerFactory.listSolarisSystems(serverIds));
-
-        // Since the solaris v. rhel distinction results in a different action type,
-        // we'll end up with 2 actions created if the server list is mixed
-        if (!rhelServers.isEmpty()) {
-            anAction = schedulePackageAction(scheduler, pkgs,
-                    ActionFactory.TYPE_PACKAGES_UPDATE, earliestAction, rhelServers);
-            actions.add(anAction);
-        }
-
-        if (!solarisServers.isEmpty()) {
-            anAction = schedulePackageAction(scheduler, pkgs,
-                    ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliestAction, solarisServers);
-            actions.add(anAction);
-        }
-        return actions;
-    }
-
-    /**
      * Schedules one or more package verification actions for the given server.
      * @param scheduler User scheduling the action.
      * @param srvr Server for which the action affects.
@@ -1415,20 +1276,6 @@ public class ActionManager extends BaseManager {
             Server srvr, RhnSet pkgs, Date earliest) {
         return (PackageAction) schedulePackageAction(scheduler, srvr, pkgs,
                 ActionFactory.TYPE_PACKAGES_VERIFY, earliest);
-    }
-
-    /**
-     * Schedules one or more package verification actions for the given server.
-     * @param scheduler User scheduling the action.
-     * @param srvr Server for which the action affects.
-     * @param pkgs The set of packages to be removed.
-     * @param earliest Earliest occurrence of the script.
-     * @return Currently scheduled PackageAction
-     */
-    public static PackageAction schedulePackageVerify(User scheduler,
-            Server srvr, List<Map<String, Long>> pkgs, Date earliest) {
-        return (PackageAction) schedulePackageAction(scheduler, pkgs,
-                ActionFactory.TYPE_PACKAGES_VERIFY, earliest, srvr);
     }
 
     /**
@@ -1464,6 +1311,25 @@ public class ActionManager extends BaseManager {
     public static ScriptRunAction scheduleScriptRun(User scheduler, List<Long> sids,
             String name, ScriptActionDetails script, Date earliest) {
 
+        checkScriptingOnServers(sids);
+
+        Set<Long> sidSet = new HashSet<Long>();
+        sidSet.addAll(sids);
+        ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
+                ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
+        sra.setScriptActionDetails(script);
+        ActionFactory.save(sra);
+        return sra;
+    }
+
+    /**
+     * Checks that ScriptRunActions can be run on the servers with specified
+     * IDs.
+     * @param sids servers' ids
+     * @throws MissingCapabilityException if scripts cannot be run
+     */
+    public static void checkScriptingOnServers(List<Long> sids)
+        throws MissingCapabilityException {
         for (Long sid : sids) {
             if (!SystemManager.clientCapable(sid, "script.run")) {
                 throw new MissingCapabilityException("script.run", sid);
@@ -1471,19 +1337,9 @@ public class ActionManager extends BaseManager {
 
             if (!SystemManager.hasEntitlement(sid, EntitlementManager.PROVISIONING)) {
                 throw new MissingEntitlementException(
-                        EntitlementManager.PROVISIONING.getHumanReadableLabel());
+                    EntitlementManager.PROVISIONING.getHumanReadableLabel());
             }
         }
-
-        Set<Long> sidSet = new HashSet<Long>();
-        sidSet.addAll(sids);
-
-        // Only execute if all servers have capability script.run and Provisioning
-        ScriptRunAction sra = (ScriptRunAction) scheduleAction(scheduler,
-                ActionFactory.TYPE_SCRIPT_RUN, name, earliest, sidSet);
-        sra.setScriptActionDetails(script);
-        ActionFactory.save(sra);
-        return sra;
     }
 
     /**
@@ -1504,6 +1360,40 @@ public class ActionManager extends BaseManager {
 
     private static Action scheduleAction(User scheduler, ActionType type, String name,
             Date earliestAction, Set<Long> serverIds) {
+        Action action = createAction(scheduler, type, name, earliestAction);
+        scheduleForExecution(action, serverIds);
+
+        return action;
+    }
+
+    /**
+     * Schedules an action for execution on one or more servers (adding rows to
+     * rhnServerAction)
+     * @param action the action
+     * @param serverIds server IDs
+     */
+    public static void scheduleForExecution(Action action, Set<Long> serverIds) {
+        Map params = new HashMap();
+        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
+        params.put("tries", REMAINING_TRIES);
+        params.put("parent_id", action.getId());
+
+        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
+        List<Long> sidList = new ArrayList<Long>();
+        sidList.addAll(serverIds);
+        m.executeUpdate(params, sidList);
+    }
+
+    /**
+     * Creates, saves and returns a new Action
+     * @param user the user who created this action
+     * @param type the action type
+     * @param name the action name
+     * @param earliestAction the earliest execution date
+     * @return a saved Action
+     */
+    public static Action createAction(User user, ActionType type, String name,
+        Date earliestAction) {
         /**
          * We have to relookup the type here, because most likely a static final variable
          *  was passed in.  If we use this and the .reload() gets called below
@@ -1511,28 +1401,10 @@ public class ActionManager extends BaseManager {
          *  will be different than the final static variable
          *  sometimes hibernate is no fun
          */
-        type = ActionFactory.lookupActionTypeByLabel(type.getLabel());
-        Action action = createScheduledAction(scheduler, type, name, earliestAction);
+        ActionType lookedUpType = ActionFactory.lookupActionTypeByLabel(type.getLabel());
+        Action action = createScheduledAction(user, lookedUpType, name, earliestAction);
         ActionFactory.save(action);
         ActionFactory.getSession().flush();
-        //ActionFactory.getSession().refresh(action);
-
-
-        Map params = new HashMap();
-        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", REMAINING_TRIES);
-        params.put("parent_id", action.getId());
-        //params.put("sid", sid);
-
-        WriteMode m = ModeFactory.getWriteMode("Action_queries",
-                "insert_server_actions");
-        List<Long> sidList = new ArrayList<Long>();
-        sidList.addAll(serverIds);
-        m.executeUpdate(params,  sidList);
-
-
-        //action.addServerAction(sa);
-
         return action;
     }
 
@@ -1807,7 +1679,7 @@ public class ActionManager extends BaseManager {
                 packagesList.add(pkgMeta);
             }
             return schedulePackageAction(scheduler, packagesList, type,
-                                         earliestAction, serverIds);            
+                                         earliestAction, serverIds);
         }
         else {
             return schedulePackageAction(scheduler, pkgs, type,
@@ -1833,7 +1705,76 @@ public class ActionManager extends BaseManager {
             Date earliestAction,
             Set<Long> serverIds) {
 
-        String pkgActionParameter = "upgrade"; // Default for install and upgrade (!?)
+        String name = getActionName(type);
+
+        Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
+        ActionFactory.save(action);
+
+        addPackageActionDetails(action, pkgs);
+
+        return action;
+    }
+
+    /**
+     * Adds package details to an Action
+     * @param action the action
+     * @param packages A list of maps containing keys 'name_id', 'evr_id' and
+     *            optional 'arch_id' with Long values.
+     */
+    public static void addPackageActionDetails(Action action, List packages) {
+        if (packages != null) {
+            // for each item in the set create a package action detail
+            // I'm using datasource to insert the records instead of
+            // hibernate. It seems terribly inefficient to lookup a
+            // packagename and packageevr object to insert the ids into the
+            // correct table if I already have the ids.
+            for (Iterator itr = packages.iterator(); itr.hasNext();) {
+                Map rse = (Map) itr.next();
+                Map params = new HashMap();
+                Long nameId = (Long) rse.get("name_id");
+                Long evrId = (Long) rse.get("evr_id");
+                Long archId = (Long) rse.get("arch_id");
+                if (nameId == null || evrId == null) {
+                    throw new IllegalArgumentException("name_id or " +
+                            "evr_id are not in the Map passed into " +
+                            "this method.  Please populate the Map " +
+                            "with the name_id and evr_id items");
+                }
+                params.put("action_id", action.getId());
+                params.put("name_id", nameId);
+                params.put("evr_id", evrId);
+                params.put("pkg_parameter", getPackageParameter(action));
+
+                if (archId != null) {
+                    params.put("arch_id", archId);
+                }
+
+                ModeFactory.getWriteMode("Action_queries",
+                    "schedule_action" + (archId == null ? "_no_arch" : "")).executeUpdate(
+                    params);
+            }
+        }
+    }
+
+    /**
+     * Returns the pkg_parameter parameter to the schedule_action queries in
+     * Action_queries.xml
+     * @param action the action
+     * @return a parameter value
+     */
+    private static String getPackageParameter(Action action) {
+        if (action.getActionType().equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
+            return "lock";
+        }
+        return "upgrade";
+    }
+
+    /**
+     * Returns a name string from an Action type
+     * @param type the type
+     * @return a name
+     */
+    public static String getActionName(ActionType type) {
         String name = "";
         if (type.equals(ActionFactory.TYPE_PACKAGES_REMOVE) ||
                 type.equals(ActionFactory.TYPE_SOLARISPKGS_REMOVE)) {
@@ -1854,46 +1795,8 @@ public class ActionManager extends BaseManager {
         }
         else if (type.equals(ActionFactory.TYPE_PACKAGES_LOCK)) {
             name = "Lock packages";
-            pkgActionParameter = "lock";
         }
-
-        Action action = scheduleAction(scheduler, type, name, earliestAction, serverIds);
-        ActionFactory.save(action);
-
-        if (pkgs != null) {
-            // for each item in the set create a package action detail
-            // I'm using datasource to insert the records instead of
-            // hibernate. It seems terribly inefficient to lookup a
-            // packagename and packageevr object to insert the ids into the
-            // correct table if I already have the ids.
-            for (Iterator itr = pkgs.iterator(); itr.hasNext();) {
-                Map rse = (Map) itr.next();
-                Map params = new HashMap();
-                Long nameId = (Long) rse.get("name_id");
-                Long evrId = (Long) rse.get("evr_id");
-                Long archId = (Long) rse.get("arch_id");
-                if (nameId == null || evrId == null) {
-                    throw new IllegalArgumentException("name_id or " +
-                            "evr_id are not in the Map passed into " +
-                            "this method.  Please populate the Map " +
-                            "with the name_id and evr_id items");
-                }
-                params.put("action_id", action.getId());
-                params.put("name_id", nameId);
-                params.put("evr_id", evrId);
-                params.put("pkg_parameter", pkgActionParameter);
-
-                if (archId != null) {
-                    params.put("arch_id", archId);
-                }
-
-                ModeFactory.getWriteMode("Action_queries",
-                                         "schedule_action"+ (archId == null ? "_no_arch" : ""))
-                        .executeUpdate(params);
-            }
-        }
-
-        return action;
+        return name;
     }
 
     /**
