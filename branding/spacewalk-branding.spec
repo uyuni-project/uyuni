@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.26.1
+Version:    2.1.27
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Feb 11 2014 Grant Gainey 2.1.27-1
+- 1063915, CVE-2013-4415 - Missed changing Search.do to post, perl-side
+
 * Thu Feb 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.26-1
 - fixed create probe page aligning
 - required field marker used to be red

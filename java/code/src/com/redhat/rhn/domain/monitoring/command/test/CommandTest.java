@@ -17,10 +17,8 @@ package com.redhat.rhn.domain.monitoring.command.test;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.collections.Transformer;
-import org.hibernate.HibernateException;
 
 import com.redhat.rhn.domain.monitoring.MonitoringConstants;
 import com.redhat.rhn.domain.monitoring.MonitoringFactory;
@@ -40,7 +38,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import java.util.Map;
+import org.apache.commons.collections.Transformer;
+import org.hibernate.HibernateException;
+
 /**
  * CommandTest
  * @version $Rev: 52080 $
