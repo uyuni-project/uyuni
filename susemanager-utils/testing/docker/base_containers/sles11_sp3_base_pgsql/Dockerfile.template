@@ -33,9 +33,14 @@ RUN useradd tomcat
 # inside of the container at build time, hence we are going to cheat a little...
 
 RUN mkdir -p /manager/spacewalk/admin/
-RUN cd /manager/spacewalk/admin; touch spacewalk-servicel rhn-config-schema.pl
+RUN touch /manager/spacewalk/admin/{spacewalk-service,rhn-config-schema.pl,rhn-config-satellite.pl}
 RUN ln -s /manager/spacewalk/admin/spacewalk-service /usr/sbin/
 RUN ln -s /manager/spacewalk/admin/rhn-config-schema.pl /usr/bin/
+RUN ln -s /manager/spacewalk/admin/rhn-config-satellite.pl /usr/bin/
+RUN mkdir -p /manager/spacewalk/setup/bin/
+RUN ln -s /manager/spacewalk/setup/bin/spacewalk-make-mount-points /usr/bin/
+RUN mkdir -p /var/lib/rhn/rhn-satellite-prep/etc/rhn
+RUN ln -s /etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/
 RUN rm -rf /manager
 
 # The symlinks are broken right now, but they will work fine when we mount our
