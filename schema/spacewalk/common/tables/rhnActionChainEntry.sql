@@ -27,7 +27,6 @@ CREATE TABLE rhnActionChainEntry
     sort_order     NUMBER NOT NULL,
     created        DATE DEFAULT(SYSDATE) NOT NULL,
     modified       DATE DEFAULT(SYSDATE) NOT NULL,
-
     CONSTRAINT rhn_actchainent_cid_sid_so_uq UNIQUE 
         (actionchain_id, server_id, sort_order)
     DEFERRABLE INITIALLY DEFERRED
