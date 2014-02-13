@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 9d82b3ecee986c3f87264c25c7a9ca42ea75ed8d
+-- oracle equivalent source sha1 4f8432877a362623b3a58d48561acb6a21a0bd98
 --
 -- Copyright (c) 2008--2013 Red Hat, Inc.
 --
@@ -67,11 +67,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         is_fve_char             char(1) := 'N';
         update_lock             numeric;
     BEGIN
-        select 1
-          into update_lock
-          from rhnServer
-         where id = server_id_in
-           for update;
         if user_id_in is not null then
             allowed := rhn_channel.user_role_check(channel_id_in, user_id_in, 'subscribe');
         else
@@ -154,6 +149,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                 from    rhnChannel c
                 where   c.id = channel_id_in
             );
+
+            select 1
+              into update_lock
+              from rhnServerNeededCache
+             where server_id = server_id_in
+               for update;
+
             UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
             INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, is_fve_char);
 			IF recalcfamily_in > 0
@@ -503,11 +505,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                     and label = 'rhn-satellite';
         child record;
     BEGIN
-        select 1
-          into update_lock
-          from rhnServer
-         where id = server_id_in
-           for update;
         -- In PostgreSQL recursion with opened cursors is not allowed so we use
         -- FOR IN SELECT form which is ok.
         FOR child IN select  c.id
@@ -547,6 +544,12 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           from    rhnChannel c
           where   c.id = channel_id_in
       );
+
+        select 1
+          into update_lock
+          from rhnServerNeededCache
+         where server_id = server_id_in
+           for update;
 
         UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
    end if;
