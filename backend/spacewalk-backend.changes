@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Feb 13 15:24:31 CET 2014 - mc@suse.de
+
+- version 2.1.49.2-1
+- query should not end with semicolon in oracle
+- add /usr/share/rhn to filelist
+- no pre-requires of spacewalk-config on SLE12
+- make unittests work on python 2.7 and higher without
+  extra package installed
+- no pylint on SLE12
+
+-------------------------------------------------------------------
 Fri Feb 07 13:16:58 CET 2014 - mc@suse.de
 
 - version 2.1.49.1-1
