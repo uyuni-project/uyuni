@@ -9,17 +9,33 @@
         <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
         <script type="text/javascript">
-          function addCredentials() {
-            // Read values
-            var email = $('#new-creds-email').val();
-            var user = $('#new-creds-user').val();
-            var password = $('#new-creds-password').val();
-            // Empty input fields
-            $('#new-creds-email').val("");
-            $('#new-creds-user').val("");
-            $('#new-creds-password').val("");
-            MirrorCredentialsRenderer.addCredentials(email, user, password,
-                makeAjaxCallback("listset-container", false));
+          function initModal(id, email, user) {
+            console.log("initModal(): " + id);
+            $('#modal-id').val(id);
+            $('#modal-email').val(email);
+            $('#modal-user').val(user);
+          }
+          function emptyModal() {
+              console.log("emptyModal()");
+              $('#modal-id').val("");
+              $('#modal-email').val("");
+              $('#modal-user').val("");
+              $('#modal-password').val("");
+          }
+          function hideModal() {
+              console.log("hideModal()");
+              $('#edit-credentials-modal').modal('hide');
+          }
+          function saveCredentials() {
+              // Read values
+              var id = $('#modal-id').val();
+              var email = $('#modal-email').val();
+              var user = $('#modal-user').val();
+              var password = $('#modal-password').val();
+              emptyModal();
+              console.log("Saving credentials: " + id);
+              MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
+                  makeAjaxCallback("listset-container", false));
           }
           function deleteCredentials(id) {
             $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
@@ -34,6 +50,46 @@
         </script>
     </head>
     <body>
+        <!-- BEGIN MODAL -->
+        <div class="modal fade" id="edit-credentials-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Credentials</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form">
+                            <input type="hidden" id="modal-id">
+                            <div class="form-group">
+                                <label for="modal-email" class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="modal-email" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-user" class="col-sm-2 control-label">User</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="modal-user" placeholder="Username">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-password" class="col-sm-2 control-label">Password</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="modal-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Save credentials</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MODAL -->
+
         <rhn:toolbar base="h1" icon="header-preferences">
             <bean:message key="Setup Wizard" />
         </rhn:toolbar>
@@ -41,20 +97,8 @@
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
-            Please configure your mirror credentials below.
+            Test and edit your mirror credentials below or <a href="javascript:void(0);" data-toggle="modal" data-target="#edit-credentials-modal">add some</a>.
         </p>
-        <form class="form-inline">
-            <div class="form-group">
-                <input type="text" class="form-control" id="new-creds-email" placeholder="Email" />
-            </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="new-creds-user" placeholder="Username" />
-            </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="new-creds-password" placeholder="Password" />
-            </div>
-            <button class="btn btn-default" type="button" onClick="addCredentials();">Add</button>
-        </form>
         <div id="listset-container">
             <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
             <script>

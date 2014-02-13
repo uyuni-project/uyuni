@@ -48,7 +48,7 @@
     </create>
     <create creator="new" javascript="MirrorCredentialsRenderer">
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.MirrorCredentialsRenderer" />
-      <include method="addCredentials" />
+      <include method="saveCredentials" />
       <include method="deleteCredentials" />
       <include method="renderCredentials" />
       <include method="renderSubscriptions" />

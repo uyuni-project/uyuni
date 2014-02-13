@@ -56,17 +56,35 @@ public class MirrorCredentialsRenderer {
      * @throws IOException
      * @throws ServletException
      */
-    public String addCredentials(String email, String user, String password) throws ServletException, IOException {
+    public String saveCredentials(Long id, String email, String user, String password) throws ServletException, IOException {
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
 
-        // Store the new mirror credentials
-        logger.debug("Adding credentials: " + user + ":" + password);
-        MirrorCredentials newCreds = new MirrorCredentials(email, user, password);
-        SetupWizardManager.storeMirrorCredentials(newCreds, webUser);
+        MirrorCredentials creds;
+        if (id != null) {
+            // Save an existing pair of credentials
+            creds = SetupWizardManager.findMirrorCredentials(id);
+            creds.setEmail(email);
+            // User and password are mandatory, but can be left unchanged
+            if (user != null && !user.isEmpty()) {
+                creds.setUser(user);
+            }
+            if (password != null && !password.isEmpty()) {
+                creds.setPassword(password);
+            }
+        }
+        else {
+            // Add a new pair of credentials
+            creds = new MirrorCredentials(email, user, password);
+        }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Saving credentials: " + user + ":" + password);
+        }
+        SetupWizardManager.storeMirrorCredentials(creds, webUser);
         return renderCredentials();
     }
 
