@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Feb 13 15:15:12 CET 2014 - mc@suse.de
+
+- version 2.1.43.1-1
+- New tables and upgrade scripts added for Action chaining
+- lock rhnServerNeededCache to avoid a db deadlock
+- Add missing GMT+3 timezone as Saudi Arabia
+- fix rhn_channel.update_needed_cache() deadlock
+- avoid deadlocks when altering base channels via ssm
+- Add missing timezone schema migration into 1.7 to 2.1 (bnc#862406)
+- Fix GMT+3 timezone missing (bnc#862406)
+
+-------------------------------------------------------------------
 Fri Feb 07 13:23:08 CET 2014 - mc@suse.de
 
 - version 2.1.39.1-1
