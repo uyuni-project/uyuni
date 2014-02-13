@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Feb 13 15:12:54 CET 2014 - mc@suse.de
+
+- version 2.1.56.1-1
+- Action Chain Edit page added
+- Front-end code for action chain creation/selection added
+- Fixes bar going from 0..9 A..Z on
+  /rhn/systems/details/packages/PackageList.do but A..Z 0..9 on
+  /rhn/systems/SystemEntitlements.do and
+  /network/systems/system_list/regular_in_channel_family.pxt
+- different set of pagination arrows on
+  /network/systems/system_list/regular_in_channel_family.pxt
+- 1063915, CVE-2013-4415 - Missed changing Search.do to post, perl-side
+- javascript not needed anymore
+
+-------------------------------------------------------------------
 Fri Feb 07 12:58:53 CET 2014 - mc@suse.de
 
 - version 2.1.54.1-1
