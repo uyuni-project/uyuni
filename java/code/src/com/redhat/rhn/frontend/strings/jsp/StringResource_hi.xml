@@ -6875,13 +6875,6 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
         <target>इससे पहले क्रिया अनुसूचित न करें:</target>
       </trans-unit>
-      <trans-unit id="confirm.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
-        </context-group>
-        <target>अनुसूचित यथासंभव जल्दी</target>
-      </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm">
         <source>Confirm</source>
         <context-group name="ctx">
@@ -13174,13 +13167,6 @@ You may grant provisioning entitlements _here_.
         </context-group>
         <target>आप इस तैनाती को यथासंभव जल्द नियोजित कर सकते हैं, या निर्दिष्ट समय से पहले नहीं</target>
       </trans-unit>
-      <trans-unit id="deploy.jsp.now">
-        <source>&lt;strong&gt;Schedule this file to be deployed as soon as possible&lt;/strong&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-        </context-group>
-        <target>&lt;strong&gt;इस फाइल को जल्द से जल्द तैनात किया जाना चाहिए&lt;/strong&gt;</target>
-      </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
         <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
@@ -14958,10 +14944,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
           <target>आप विन्यास फाइल तैनाती क्रिया के लिए नियोजित कर सकते हैं नीचे दिए समय में होने के लिए. &lt;br/&gt; &lt;strong&gt;नोट: नीचे दिया समय सबसे पहले का समय प्रतिरूपित करता है जिसमें क्रिया होनी सकता था&lt;/strong&gt;.</target>
         </trans-unit>
-        <trans-unit id="deployconfirm.jsp.now">
-          <source>Schedule configuration file deploys as soon as possible.</source>
-          <target>यथासंभव जल्द नियोजित विन्यास फाइल तैनात करें.</target>
-        </trans-unit>
         <trans-unit id="deployconfirm.jsp.usedate">
           <source>Schedule configuration file deploys for no sooner than:</source>
           <target>विन्यास फाइल तैनाती को इससे पहले नियोजित करें:</target>
@@ -15601,10 +15583,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule this import action to take place as soon as possible, or for no sooner than a specified time</source>
           <target>अगर आप इस आयात क्रिया को यथासंभव जल्दी कर सकते हैं, या निर्दिष्ट समय से पहले नहीं:</target>
         </trans-unit>
-        <trans-unit id="sdcimportconfirm.jsp.now">
-          <source>Schedule import action as soon as possible.</source>
-          <target>नियोजित आयात क्रिया यथासंभव जल्दी.</target>
-        </trans-unit>
         <trans-unit id="sdcimportconfirm.jsp.usedate">
           <source>Schedule import action for no sooner than:</source>
           <target>इससे पहले आयात क्रिया अनुसूचित न करें:</target>
@@ -15649,10 +15627,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
           <target>आप विन्यास क्रिया नीचे के समय के लिये जरूर चुन सकते हैं.</target>
-        </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.now">
-          <source>Schedule configuration actions as soon as possible.</source>
-          <target>यथासंभव विन्यास क्रिया निजोयति करें.</target>
         </trans-unit>
         <trans-unit id="sdcconfigconfirm.jsp.usedate">
           <source>Schedule configuration actions for no sooner than:</source>
@@ -16215,13 +16189,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>किकस्टार्ट नियोजित करें</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
-        </context-group>
-        <target>किकस्टार्ट अगले सिस्टम चेकइन पर शुरू करें.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule kickstart no sooner than:</source>

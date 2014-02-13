@@ -7589,13 +7589,6 @@ pour ce droit d'accès, moins la consommation par défaut de l'organisation.</ta
         </context-group>
         <target>Programmer l'action pas avant :</target>
       </trans-unit>
-      <trans-unit id="confirm.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
-        </context-group>
-        <target>Programmer l'action dès que possible</target>
-      </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm">
         <source>Confirm</source>
         <context-group name="ctx">
@@ -14725,13 +14718,6 @@ You may grant provisioning entitlements _here_.
         </context-group>
         <target>Vous pouvez programmer ce déploiement pour qu'il commence le plus tôt possible ou à partir d'une date spécifiée.</target>
       </trans-unit>
-      <trans-unit id="deploy.jsp.now">
-        <source>&lt;strong&gt;Schedule this file to be deployed as soon as possible&lt;/strong&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-        </context-group>
-        <target>&lt;strong&gt;Programmer ce fichier pour qu'il soit déployé le plus tôt possible&lt;/strong&gt;</target>
-      </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
         <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
@@ -16526,10 +16512,6 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
           <target>Vous pouvez programmer les actions de déploiement des fichiers de configuration à la date et à l'heure indiquées ci-dessous. &lt;br/&gt; &lt;strong&gt;Remarque : l'action ne peut pas se produire avant la date et l'heure indiquées&lt;/strong&gt;.</target>
         </trans-unit>
-        <trans-unit id="deployconfirm.jsp.now">
-          <source>Schedule configuration file deploys as soon as possible.</source>
-          <target>Programmer les déploiements de fichiers de configuration dès que possible.</target>
-        </trans-unit>
         <trans-unit id="deployconfirm.jsp.usedate">
           <source>Schedule configuration file deploys for no sooner than:</source>
           <target>Programmer les déploiements de fichiers de configuration pas avant :</target>
@@ -17169,10 +17151,6 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
           <source>You may schedule this import action to take place as soon as possible, or for no sooner than a specified time</source>
           <target>Vous pouvez programmer cette action d'import pour qu'elle commence aussi tôt que possible ou pas avant une date spécifiée</target>
         </trans-unit>
-        <trans-unit id="sdcimportconfirm.jsp.now">
-          <source>Schedule import action as soon as possible.</source>
-          <target>Programmer l'action d'import dès que possible.</target>
-        </trans-unit>
         <trans-unit id="sdcimportconfirm.jsp.usedate">
           <source>Schedule import action for no sooner than:</source>
           <target>Programmer une action d'import pas avant :</target>
@@ -17217,10 +17195,6 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
           <target>Vous pouvez programmer des actions de configuration à la date et à l'heure indiquées ci-dessous.</target>
-        </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.now">
-          <source>Schedule configuration actions as soon as possible.</source>
-          <target>Programmer les actions de configuration dès que possible.</target>
         </trans-unit>
         <trans-unit id="sdcconfigconfirm.jsp.usedate">
           <source>Schedule configuration actions for no sooner than:</source>
@@ -17791,13 +17765,6 @@ pour abonner des systèmes aux canaux de logiciels durant le kickstart.&lt;/span
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>Programmer le kickstart</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
-        </context-group>
-        <target>Commence le kickstart à la prochaine connexion du système.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule kickstart no sooner than:</source>
