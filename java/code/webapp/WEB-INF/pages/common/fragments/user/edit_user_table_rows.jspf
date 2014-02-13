@@ -46,9 +46,8 @@
     <th><bean:message key="password.displayname"/></th>
     <td>
       <script language="javascript" src="/javascript/pwstrengthmeter.js"></script>
-      <script language="javascript" src="/javascript/placeholder-check.js"></script>
       <div style="position:relative;">
-        <html:password property="desiredpassword" size="20" maxlength="${passwordLength}" styleId="desiredpass" onkeyup="checkPassword();"/>
+        <input id="desiredpass" type="password" name="desiredpassword" class="form-control" size="15" maxlength="${passwordLength}" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" onkeyup="checkPassword();"/> 
         <span id="pwstrength-result" style="position:absolute; left:165px; top:8px; font-size:11px;"></span><br/>
         <span id="pwstrength-graybar" style="position:absolute; left:2px; top:30px; width:155px; height:4px; background:#DDDDDD;"></span>
         <span id="pwstrength-colorbar" style="position:absolute; left:2px; top:30px; width:0px; height:4px; background-image: url(/img/pwstrength.png);"></span>
@@ -59,7 +58,7 @@
   <tr>
     <th><bean:message key="confirmpass.displayname"/></th>
     <td>
-      <html:password property="desiredpasswordConfirm" size="20" maxlength="${passwordLength}"/>
+      <input id="confirmpass" type="password" name="desiredpasswordConfirm" class="form-control" size="15" maxlength="${passwordLength}" onkeyup="updateTickIcon()" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;"/>
     </td>
   </tr>
   <tr>
