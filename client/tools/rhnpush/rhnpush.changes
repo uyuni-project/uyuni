@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 13 15:03:40 CET 2014 - mc@suse.de
+
+- version 5.5.71.2-1
+- use SUSE package name in requires
+- pylint check only on SLE11
+
+-------------------------------------------------------------------
 Tue Dec 10 14:11:22 CET 2013 - mc@suse.de
 
 - version 5.5.71.1-1
