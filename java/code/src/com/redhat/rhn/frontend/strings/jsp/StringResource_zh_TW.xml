@@ -7585,13 +7585,6 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
         <target>排程動作不晚於：</target>
       </trans-unit>
-      <trans-unit id="confirm.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
-        </context-group>
-        <target>立即排程動作</target>
-      </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm">
         <source>Confirm</source>
         <context-group name="ctx">
@@ -14721,13 +14714,6 @@ You may grant provisioning entitlements _here_.
         </context-group>
         <target>您可以排程此建置作業，讓它儘早發生，或不早於特定時間</target>
       </trans-unit>
-      <trans-unit id="deploy.jsp.now">
-        <source>&lt;strong&gt;Schedule this file to be deployed as soon as possible&lt;/strong&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-        </context-group>
-        <target>&lt;strong&gt;儘快排程此檔案的建置動作&lt;/strong&gt;</target>
-      </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
         <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
@@ -16523,10 +16509,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
           <target>您能夠將配置檔案的建置動作排程在下列的時間中。&lt;br/&gt; &lt;strong&gt;請注意：下列顯示的時間代表此動作能發生的最早時間&lt;/strong&gt;。</target>
         </trans-unit>
-        <trans-unit id="deployconfirm.jsp.now">
-          <source>Schedule configuration file deploys as soon as possible.</source>
-          <target>儘快排程配置檔案的建置動作。</target>
-        </trans-unit>
         <trans-unit id="deployconfirm.jsp.usedate">
           <source>Schedule configuration file deploys for no sooner than:</source>
           <target>將配置檔案的建置動作排程在不早於：</target>
@@ -17166,10 +17148,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule this import action to take place as soon as possible, or for no sooner than a specified time</source>
           <target>您能夠為這個匯入的動作排程作業，讓它儘早發生，或不早於特定時間</target>
         </trans-unit>
-        <trans-unit id="sdcimportconfirm.jsp.now">
-          <source>Schedule import action as soon as possible.</source>
-          <target>儘早排程匯入動作。</target>
-        </trans-unit>
         <trans-unit id="sdcimportconfirm.jsp.usedate">
           <source>Schedule import action for no sooner than:</source>
           <target>將匯入動作排程不早於：</target>
@@ -17214,10 +17192,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
           <target>您能夠將配置動作排程在下列的時段中。</target>
-        </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.now">
-          <source>Schedule configuration actions as soon as possible.</source>
-          <target>儘早排程配置動作。</target>
         </trans-unit>
         <trans-unit id="sdcconfigconfirm.jsp.usedate">
           <source>Schedule configuration actions for no sooner than:</source>
@@ -17788,13 +17762,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>排程 Kickstart</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
-        </context-group>
-        <target>在下一次系統登入時，開始 kickstart。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule kickstart no sooner than:</source>

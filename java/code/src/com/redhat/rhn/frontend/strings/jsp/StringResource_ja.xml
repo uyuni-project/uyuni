@@ -7590,13 +7590,6 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
         <target>次の日付以降に動作をスケジュール:</target>
       </trans-unit>
-      <trans-unit id="confirm.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
-        </context-group>
-        <target>可能な限り早く動作をスケジュール</target>
-      </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm">
         <source>Confirm</source>
         <context-group name="ctx">
@@ -14726,13 +14719,6 @@ You may grant provisioning entitlements _here_.
         </context-group>
         <target>この配備をできるだけ早く実施するようスケジュールするか、または指定時間以降に実施するようスケジュールすることができます</target>
       </trans-unit>
-      <trans-unit id="deploy.jsp.now">
-        <source>&lt;strong&gt;Schedule this file to be deployed as soon as possible&lt;/strong&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-        </context-group>
-        <target>&lt;strong&gt;できるだけ早くこのファイルが配備されるようスケジュール&lt;/strong&gt;</target>
-      </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
         <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
@@ -16528,10 +16514,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
           <target>以下の時間で設定ファイル配備の動作を実行するようスケジュールすることができます。&lt;br/&gt; &lt;strong&gt; 注記: 以下の時間が動作を実行できる最も早い時間になります。&lt;/strong&gt;</target>
         </trans-unit>
-        <trans-unit id="deployconfirm.jsp.now">
-          <source>Schedule configuration file deploys as soon as possible.</source>
-          <target>できるだけ早く設定ファイルの配備をスケジュールします。</target>
-        </trans-unit>
         <trans-unit id="deployconfirm.jsp.usedate">
           <source>Schedule configuration file deploys for no sooner than:</source>
           <target>指定時間以降に設定ファイルの配備をスケジュール:</target>
@@ -17171,10 +17153,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule this import action to take place as soon as possible, or for no sooner than a specified time</source>
           <target>このインポート動作をできるだけ早く実施するようスケジュールするか、または指定時間以降に実施するようスケジュールすることができます</target>
         </trans-unit>
-        <trans-unit id="sdcimportconfirm.jsp.now">
-          <source>Schedule import action as soon as possible.</source>
-          <target>できるだけ早くインポート動作をスケジュール</target>
-        </trans-unit>
         <trans-unit id="sdcimportconfirm.jsp.usedate">
           <source>Schedule import action for no sooner than:</source>
           <target>指定時間以降にインポート動作をスケジュール:</target>
@@ -17219,10 +17197,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
           <target>以下の時間で設定の動作をスケジュールすることができます。</target>
-        </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.now">
-          <source>Schedule configuration actions as soon as possible.</source>
-          <target>できるだけ早く設定の動作をスケジュールします。</target>
         </trans-unit>
         <trans-unit id="sdcconfigconfirm.jsp.usedate">
           <source>Schedule configuration actions for no sooner than:</source>
@@ -17794,13 +17768,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>キックスタートのスケジュール</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
-        </context-group>
-        <target>次回のシステムチェックインでキックスタートを開始します。</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule kickstart no sooner than:</source>

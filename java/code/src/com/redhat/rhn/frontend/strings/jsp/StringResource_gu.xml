@@ -6875,13 +6875,6 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
         <target>આનાં કરતાંની જલદી નહિં તેવી રીતે ક્રિયા સુનિશ્ચિત કરો:</target>
       </trans-unit>
-      <trans-unit id="confirm.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/InstallConfirm.do</context>
-        </context-group>
-        <target>શક્ય હોય એટલી જલદી ક્રિયા સુનિશ્ચિત કરો</target>
-      </trans-unit>
       <trans-unit id="installconfirm.jsp.confirm">
         <source>Confirm</source>
         <context-group name="ctx">
@@ -13174,13 +13167,6 @@ You may grant provisioning entitlements _here_.
         </context-group>
         <target>તમે આ જમાવટને શક્ય એટલું જલદી, અથવા સ્પષ્ટ થયેલ સમય કરતાં વહેલું નહિં બને તે માટે સુનિશ્ચિત કરી શકશો</target>
       </trans-unit>
-      <trans-unit id="deploy.jsp.now">
-        <source>&lt;strong&gt;Schedule this file to be deployed as soon as possible&lt;/strong&gt;</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
-        </context-group>
-        <target>&lt;strong&gt;આ ફાઈલને શક્ય એટલી જલદી જમાવાઈ જાય તે માટે સુનિશ્ચિત કરો&lt;/strong&gt;</target>
-      </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
         <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
@@ -14958,10 +14944,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule configuration file deploy actions to occur for the time below. &lt;br/&gt; &lt;strong&gt;Note: The time below represents the earliest time the action could occur&lt;/strong&gt;.</source>
           <target>તમે નીચેના સમય માટે રૂપરેખાંકન ફાઈલ જમાવટ ક્રિયા સુનિશ્ચિત કરી શકશો. &lt;br/&gt; &lt;strong&gt;નોંધ: નીચેનો સમય ક્રિયા થવા માટેનો વહેલો સમય રજૂ કરે છે&lt;/strong&gt;.</target>
         </trans-unit>
-        <trans-unit id="deployconfirm.jsp.now">
-          <source>Schedule configuration file deploys as soon as possible.</source>
-          <target>રૂપરેખાંકન ફાઈલ જમાવટ શક્ય એટલી જલદી સુનિશ્ચિત કરો.</target>
-        </trans-unit>
         <trans-unit id="deployconfirm.jsp.usedate">
           <source>Schedule configuration file deploys for no sooner than:</source>
           <target>રૂપરેખાંકન ફાઈલ જમાવટો આનાં કરતાં જલદી નહિં હોય એમ સુનિશ્ચિત કરો:</target>
@@ -15601,10 +15583,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule this import action to take place as soon as possible, or for no sooner than a specified time</source>
           <target>તમે આ આયાત ક્રિયાને શક્ય એટલું જલદી કરવા માટે સુનિશ્ચિત કરશે, અથવા ચોક્કસ સમય કરતાં વહેલું નહિં એમ</target>
         </trans-unit>
-        <trans-unit id="sdcimportconfirm.jsp.now">
-          <source>Schedule import action as soon as possible.</source>
-          <target>શક્ય એટલી જલદી આયાત ક્રિયા સુનિશ્ચિત કરો.</target>
-        </trans-unit>
         <trans-unit id="sdcimportconfirm.jsp.usedate">
           <source>Schedule import action for no sooner than:</source>
           <target>આના કરતાં જલદી નહિં એવી આયાત ક્રિયા સુનિશ્ચિત કરો:</target>
@@ -15649,10 +15627,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
           <target>તમે નીચેના સમયે રૂપરેખાંકન ક્રિયાઓ સુનિશ્ચિત કરી શકશો.</target>
-        </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.now">
-          <source>Schedule configuration actions as soon as possible.</source>
-          <target>રૂપરેખાંકન ક્રિયાઓ શક્ય એટલી જલદી સુનિશ્ચિત કરો.</target>
         </trans-unit>
         <trans-unit id="sdcconfigconfirm.jsp.usedate">
           <source>Schedule configuration actions for no sooner than:</source>
@@ -16215,13 +16189,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
         </context-group>
         <target>કિકસ્ટાર્ટ સુનિશ્ચિત કરો</target>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.heading3.option1.jsp">
-        <source>Begin kickstart at the next system check in.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/ScheduleWizard.do</context>
-        </context-group>
-        <target>આગળની સિસ્ટમ ચકાસણીએ કિકસ્ટાર્ટ શરૂ કરો.</target>
       </trans-unit>
       <trans-unit id="kickstart.schedule.heading3.option2.jsp">
         <source>Schedule kickstart no sooner than:</source>
