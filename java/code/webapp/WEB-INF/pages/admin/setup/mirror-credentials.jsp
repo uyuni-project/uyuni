@@ -9,22 +9,23 @@
         <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
         <script type="text/javascript">
-          function initModal(id, email, user) {
-            console.log("initModal(): " + id);
+          function initEdit(id, email, user) {
+            console.log("initEdit(): " + id);
             $('#modal-id').val(id);
             $('#modal-email').val(email);
             $('#modal-user').val(user);
+            $('#modal-password').val("");
           }
-          function emptyModal() {
-              console.log("emptyModal()");
-              $('#modal-id').val("");
-              $('#modal-email').val("");
-              $('#modal-user').val("");
-              $('#modal-password').val("");
+          function initDelete(id, email, user) {
+            console.log("initDelete(): " + id);
+            $('#delete-id').val(id);
+            $('#delete-email').text(email);
+            $('#delete-user').text(user);
           }
           function hideModal() {
               console.log("hideModal()");
               $('#edit-credentials-modal').modal('hide');
+              $('#delete-credentials-modal').modal('hide');
           }
           function saveCredentials() {
               // Read values
@@ -32,12 +33,13 @@
               var email = $('#modal-email').val();
               var user = $('#modal-user').val();
               var password = $('#modal-password').val();
-              emptyModal();
+              initEdit("", "", "");
               console.log("Saving credentials: " + id);
               MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
                   makeAjaxCallback("listset-container", false));
           }
-          function deleteCredentials(id) {
+          function deleteCredentials() {
+            var id = $('#delete-id').val();
             $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
             MirrorCredentialsRenderer.deleteCredentials(id,
                 makeAjaxCallback("listset-container", false));
@@ -50,7 +52,7 @@
         </script>
     </head>
     <body>
-        <!-- BEGIN MODAL -->
+        <!-- BEGIN EDIT MODAL -->
         <div class="modal fade" id="edit-credentials-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -88,7 +90,42 @@
                 </div>
             </div>
         </div>
-        <!-- END MODAL -->
+        <!-- END EDIT MODAL -->
+
+        <!-- BEGIN DELETE MODAL -->
+        <div class="modal fade" id="delete-credentials-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Delete Credentials</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are about to delete the credentials for:</p>
+                        <form class="form-horizontal" role="form">
+                            <input type="hidden" id="delete-id">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Email</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" id="delete-email"></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">User</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-static" id="delete-user"></p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">Delete credentials</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END DELETE MODAL -->
 
         <rhn:toolbar base="h1" icon="header-preferences">
             <bean:message key="Setup Wizard" />
