@@ -21,11 +21,11 @@
                     <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
                 </a>
             </span>
-            <a href="javascript:void(0);" onCLick="initModal('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#edit-credentials-modal">
+            <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#edit-credentials-modal">
                 <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
             </a>
             <span id="delete-${current.id}">
-                <a href="javascript:void(0);" onClick="deleteCredentials('${current.id}');">
+                <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.email}', '${current.user}');" data-toggle="modal" data-target="#delete-credentials-modal">
                     <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
                 </a>
             </span>
