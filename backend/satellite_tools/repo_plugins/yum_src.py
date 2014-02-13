@@ -330,8 +330,13 @@ class ContentSource:
                         d['epoch'] = child.get('epoch')
                         if d['epoch'] == '0' or d['epoch'] == '':
                             d['epoch'] = None
+                        if child.get('arch'):
+                            d['arch'] = child.get('arch')
+
                     elif child.tag.endswith('keyword'):
                         d['keywords'].append(child.text)
+                    elif child.tag == 'eula':
+                        d['eula'] = child.text
                 susedata.append(d)
         return susedata
 
