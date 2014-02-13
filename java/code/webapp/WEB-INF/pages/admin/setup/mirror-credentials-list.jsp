@@ -8,12 +8,12 @@
     <rl:list name="mirrorCredsList"
              dataset="mirrorCredsList"
              emptykey="mirror-credentials.jsp.empty">
-        <rl:column headerkey="mirror-credentials.jsp.user"
-                   bound="true"
-                   attr="user" />
         <rl:column headerkey="mirror-credentials.jsp.email"
                    bound="true"
                    attr="email" />
+        <rl:column headerkey="mirror-credentials.jsp.user"
+                   bound="true"
+                   attr="user" />
         <rl:column headerkey="mirror-credentials.jsp.actions"
                    bound="false">
             <span id="subscriptions-${current.id}">
