@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Thu Feb 13 15:32:20 CET 2014 - mc@suse.de
+
+- version 2.1.150.1-1
+- remove unused localization string
+- Schedule action unification
+- Separate datepicker and its label
+- make package search faster
+- Create and manage action chains for single systems and SSM
+  * remote command
+  * reboot
+  * configuration file deploy
+  * patch action
+  * package actions
+- style pages
+- CVE-2013-4415 - Fix XSS flaws in Spacewalk-search
+- CVE-2013-4415 - Fix XSS in new-list-tag by escaping _LABEL_SELECTED
+- CVE-2013-1871, Fix XSS in edit-address JSPs
+- CVE-2013-1869, close header-injection hole
+- CVE-2010-2236, Cleanse backticks from monitoring-probes where
+  appropriate
+- CVE-2013-1869, Only follow internal return_urls
+- CVE-2012-6149, Fix XSS in notes.jsp
+- Fix cloned channels not available for SP migration (bnc#852582)
+- Fix an ISE that could happen after clearing cookies (elaborator not bound)
+- Fix GMT+3 timezone missing (bnc#862406)
+- New Bare-metal icon added
+- javascript not needed anymore
+
+-------------------------------------------------------------------
 Fri Feb 07 13:01:47 CET 2014 - mc@suse.de
 
 - version 2.1.146.1-1
