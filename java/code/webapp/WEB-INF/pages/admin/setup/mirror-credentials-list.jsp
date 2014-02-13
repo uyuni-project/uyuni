@@ -1,6 +1,8 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
+<script>hideModal();</script>
+
 <rl:listset name="mirrorCredsListSet">
     <rhn:csrf />
     <rl:list name="mirrorCredsList"
@@ -19,7 +21,7 @@
                     <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
                 </a>
             </span>
-            <a>
+            <a href="javascript:void(0);" onCLick="initModal('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#edit-credentials-modal">
                 <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
             </a>
             <span id="delete-${current.id}">
