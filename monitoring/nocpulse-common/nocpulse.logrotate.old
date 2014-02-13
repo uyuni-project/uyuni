@@ -1,10 +1,45 @@
-/var/log/nocpulse/*log {
+/var/log/nocpulse/ack_handler.log /var/log/nocpulse/dequeue.log
+/var/log/nocpulse/generate_config.log /var/log/nocpulse/kernel.log
+/var/log/nocpulse/notif-escalator.log /var/log/nocpulse/notifier.log
+/var/log/nocpulse/notif-launcher.log
+{
     missingok
     notifempty
     rotate 5
     compress
     sharedscripts
     su nocpulse nocpulse
+    postrotate
+        /sbin/service Monitoring restart < /dev/null >/dev/null 2>/dev/null || true
+        /sbin/service MonitoringScout restart < /dev/null >/dev/null 2>/dev/null || true
+    endscript
+}
+
+/var/log/nocpulse/Dequeuer-errors.log /var/log/nocpulse/execute_commands.log
+/var/log/nocpulse/GenerateNotifConfig-error.log /var/log/nocpulse/kernel-error.log
+/var/log/nocpulse/NotifEscalator-error.log /var/log/nocpulse/Notifier-error.log
+/var/log/nocpulse/NotifLauncher-error.log /var/log/nocpulse/SputLite-errors.log
+/var/log/nocpulse/TSDBLocalQueue-errors.log
+{
+    missingok
+    notifempty
+    rotate 5
+    compress
+    sharedscripts
+    su root nocpulse
+    postrotate
+        /sbin/service Monitoring restart < /dev/null >/dev/null 2>/dev/null || true
+        /sbin/service MonitoringScout restart < /dev/null >/dev/null 2>/dev/null || true
+    endscript
+}
+
+/var/log/nocpulse/enqueue.log {
+    missingok
+    notifempty
+    rotate 5
+    compress
+    sharedscripts
+    su wwwrun www
     postrotate
         /sbin/service Monitoring restart < /dev/null >/dev/null 2>/dev/null || true
         /sbin/service MonitoringScout restart < /dev/null >/dev/null 2>/dev/null || true
