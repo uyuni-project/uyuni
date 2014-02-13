@@ -58,7 +58,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Credentials</h4>
+                        <h4 class="modal-title">Edit Credentials</h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
@@ -98,7 +98,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Delete Credentials</h4>
+                        <h4 class="modal-title">Delete Credentials</h4>
                     </div>
                     <div class="modal-body">
                         <p>You are about to delete the credentials for:</p>
