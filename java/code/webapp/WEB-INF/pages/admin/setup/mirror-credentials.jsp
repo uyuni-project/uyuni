@@ -64,19 +64,19 @@
                         <form class="form-horizontal" role="form">
                             <input type="hidden" id="modal-id">
                             <div class="form-group">
-                                <label for="modal-email" class="col-sm-2 control-label">Email</label>
+                                <label for="modal-email" class="col-sm-2 control-label">Email:</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" id="modal-email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="modal-user" class="col-sm-2 control-label">User</label>
+                                <label for="modal-user" class="col-sm-2 control-label">User:</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="modal-user" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="modal-password" class="col-sm-2 control-label">Password</label>
+                                <label for="modal-password" class="col-sm-2 control-label">Password:</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" id="modal-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
                                 </div>
@@ -85,13 +85,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Save credentials</button>
+                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Add credentials</button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END EDIT MODAL -->
-
         <!-- BEGIN DELETE MODAL -->
         <div class="modal fade" id="delete-credentials-modal">
             <div class="modal-dialog">
@@ -101,17 +100,17 @@
                         <h4 class="modal-title">Delete Credentials</h4>
                     </div>
                     <div class="modal-body">
-                        <p>You are about to delete the credentials for:</p>
+                        <p>Do you really want to delete these credentials?</p>
                         <form class="form-horizontal" role="form">
                             <input type="hidden" id="delete-id">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Email</label>
+                                <label class="col-sm-2 control-label">Email:</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static" id="delete-email"></p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">User</label>
+                                <label class="col-sm-2 control-label">User:</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static" id="delete-user"></p>
                                 </div>
@@ -134,7 +133,10 @@
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
-            Test and edit your mirror credentials below or <a href="javascript:void(0);" data-toggle="modal" data-target="#edit-credentials-modal">add some</a>.
+            Please configure and test your mirror credentials below.
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#edit-credentials-modal">
+                <rhn:icon type="item-add"></rhn:icon>Add
+            </button>
         </p>
         <div id="listset-container">
             <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
