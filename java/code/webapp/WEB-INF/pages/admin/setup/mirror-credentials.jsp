@@ -23,20 +23,20 @@
             $('#delete-user').text(user);
           }
           function hideModal() {
-              console.log("hideModal()");
-              $('#edit-credentials-modal').modal('hide');
-              $('#delete-credentials-modal').modal('hide');
+            console.log("hideModal()");
+            $('#edit-credentials-modal').modal('hide');
+            $('#delete-credentials-modal').modal('hide');
           }
           function saveCredentials() {
-              // Read values
-              var id = $('#modal-id').val();
-              var email = $('#modal-email').val();
-              var user = $('#modal-user').val();
-              var password = $('#modal-password').val();
-              initEdit("", "", "");
-              console.log("Saving credentials: " + id);
-              MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
-                  makeAjaxCallback("listset-container", false));
+            // Read values
+            var id = $('#modal-id').val();
+            var email = $('#modal-email').val();
+            var user = $('#modal-user').val();
+            var password = $('#modal-password').val();
+            initEdit("", "", "");
+            console.log("Saving credentials: " + id);
+            MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
+                makeAjaxCallback("listset-container", false));
           }
           function deleteCredentials() {
             var id = $('#delete-id').val();
