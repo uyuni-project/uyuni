@@ -8,48 +8,7 @@
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/MirrorCredentialsRenderer.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
-        <script type="text/javascript">
-          function initEdit(id, email, user) {
-            console.log("initEdit(): " + id);
-            $('#modal-id').val(id);
-            $('#modal-email').val(email);
-            $('#modal-user').val(user);
-            $('#modal-password').val("");
-          }
-          function initDelete(id, email, user) {
-            console.log("initDelete(): " + id);
-            $('#delete-id').val(id);
-            $('#delete-email').text(email);
-            $('#delete-user').text(user);
-          }
-          function hideModal() {
-            console.log("hideModal()");
-            $('#edit-credentials-modal').modal('hide');
-            $('#delete-credentials-modal').modal('hide');
-          }
-          function saveCredentials() {
-            // Read values
-            var id = $('#modal-id').val();
-            var email = $('#modal-email').val();
-            var user = $('#modal-user').val();
-            var password = $('#modal-password').val();
-            initEdit("", "", "");
-            console.log("Saving credentials: " + id);
-            MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
-                makeAjaxCallback("listset-container", false));
-          }
-          function deleteCredentials() {
-            var id = $('#delete-id').val();
-            $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-            MirrorCredentialsRenderer.deleteCredentials(id,
-                makeAjaxCallback("listset-container", false));
-          }
-          function downloadSubscriptions(id) {
-            $("#subscriptions-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-            MirrorCredentialsRenderer.renderSubscriptions(id,
-                makeAjaxCallback("subscriptions-" + id, false));
-          }
-        </script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
     </head>
     <body>
         <!-- BEGIN EDIT MODAL -->
