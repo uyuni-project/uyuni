@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Feb 14 10:23:24 CET 2014 - mc@suse.de
+
+- version 2.1.43.2-1
+- bugfix for locking rhnServerNeededCache table with oracle DB
+
+-------------------------------------------------------------------
 Thu Feb 13 15:15:12 CET 2014 - mc@suse.de
 
 - version 2.1.43.1-1
