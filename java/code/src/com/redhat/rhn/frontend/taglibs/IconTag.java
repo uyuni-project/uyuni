@@ -145,6 +145,7 @@ public class IconTag extends TagSupport {
         icons.put("repo-schedule-sync", "fa fa-calendar");
         icons.put("sort-down", "fa fa-arrow-circle-down");
         icons.put("sort-up", "fa fa-arrow-circle-up");
+        icons.put("spinner", "fa fa-spinner fa-spin");
         icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
         icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
 		icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
