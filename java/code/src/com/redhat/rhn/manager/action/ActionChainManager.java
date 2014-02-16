@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -94,6 +95,28 @@ public class ActionChainManager {
         }
         return (PackageAction) schedulePackageAction(user, packages,
             ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliest, actionChain, server);
+    }
+
+    /**
+     * Schedules one or more package upgrade actions for the given servers.
+     * Note: package upgrade = package install
+     * @param scheduler User scheduling the action.
+     * @param sysPkgMapping  The set of packages to be upgraded.
+     * @param earliestAction Date of earliest action to be executed
+     * @param actionChain the action chain or null
+     * @return actions       list of all scheduled upgrades
+     */
+    public static List<Action> schedulePackageUpgrades(User scheduler,
+            Map<Long, List<Map<String, Long>>> sysPkgMapping, Date earliestAction,
+            ActionChain actionChain) {
+        List<Action> actions = new ArrayList<Action>();
+
+        for (Long sid : sysPkgMapping.keySet()) {
+            Server server = SystemManager.lookupByIdAndUser(sid, scheduler);
+            actions.add(schedulePackageInstall(scheduler, server, sysPkgMapping.get(sid),
+                    earliestAction, actionChain));
+        }
+        return actions;
     }
 
     /**
