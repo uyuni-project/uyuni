@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.43.2
+Version:        2.1.45
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -75,6 +75,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Feb 14 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.45-1
+- fix ORA-01403: no data found, when unsubscribing a system
+
+* Fri Feb 14 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.44-1
+- rename upgrade scripts to be included in schema upgrade
+- fix ORA-01403: no data found, during system registration
+
 * Wed Feb 12 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.43-1
 - 1063821 - lock rhnServerNeededCache to avoid a db deadlock
 

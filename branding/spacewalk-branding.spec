@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.27.1
+Version:    2.1.30
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,17 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Sat Feb 15 2014 Matej Kollar <mkollar@redhat.com> 2.1.30-1
+- Use jquery-timepicker-1.3.3
+
+* Fri Feb 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.29-1
+- datepicker needs bootstrap-datepicker and jquery-timepicker
+
+* Fri Feb 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.28-1
+- simplify datepicker layout and unify look of date/time part
+- Introduce a date-time picker.
+- style CreateUser page so it resembles old look
+
 * Tue Feb 11 2014 Grant Gainey 2.1.27-1
 - 1063915, CVE-2013-4415 - Missed changing Search.do to post, perl-side
 

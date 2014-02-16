@@ -165,9 +165,8 @@ IS
                   from rhnServerNeededCache
                  where server_id = server_id_in
                    for update;
-            exception
-                when NO_DATA_FOUND then
-                    update_lock := 0;
+            exception WHEN no_data_found THEN
+                null;
             end;
 
             UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
@@ -530,16 +529,15 @@ IS
           where   c.id = channel_id_in
       );
 
-      begin
-        select 1
-          into update_lock
-          from rhnServerNeededCache
-         where server_id = server_id_in
-           for update;
-      exception
-          when NO_DATA_FOUND then
-              update_lock := 0;
-      end;
+        begin
+            select 1
+              into update_lock
+              from rhnServerNeededCache
+             where server_id = server_id_in
+               for update;
+        exception when no_data_found then
+            null;
+        end;
 
         UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
    end if;
