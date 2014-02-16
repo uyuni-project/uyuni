@@ -49,7 +49,7 @@ public class SsmUpgradePackagesAction extends SsmPackagesAction {
         SsmUpgradePackagesEvent supe = (SsmUpgradePackagesEvent) event;
         Map<Long, List<Map<String, Long>>> packageListItems = supe.getSysPackageSet();
 
-        return ActionChainManager.schedulePackageInstall(user, sids, packageListItems, earliest,
+        return ActionChainManager.schedulePackageUpgrades(user, packageListItems, earliest,
             actionChain);
     }
 
