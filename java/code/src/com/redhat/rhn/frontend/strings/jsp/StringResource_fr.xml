@@ -7940,13 +7940,6 @@ ni aux outils de gestion d'organisation si vous choisissez de supprimer ce rôle
         </context-group>
         <target>Programmer l'action pas avant :</target>
       </trans-unit>
-      <trans-unit id="syncprofile.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/profiles/SyncProfiles.do</context>
-        </context-group>
-        <target>Programmer l'action dès que possible</target>
-      </trans-unit>
       <trans-unit id="missingpkgs.jsp.channels">
         <source>Channels</source>
         <context-group name="ctx">
@@ -14719,11 +14712,11 @@ You may grant provisioning entitlements _here_.
         <target>Vous pouvez programmer ce déploiement pour qu'il commence le plus tôt possible ou à partir d'une date spécifiée.</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
-        <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
+        <source>Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target>&lt;strong&gt;Programmer ce fichier pour qu'il ne soit pas déployé avant le :&lt;/strong&gt;</target>
+        <target>Programmer ce fichier pour qu'il ne soit pas déployé avant le :&lt;/strong&gt;</target>
       </trans-unit>
       <!-- regular -->
       <trans-unit id="deploy.jsp.header2">

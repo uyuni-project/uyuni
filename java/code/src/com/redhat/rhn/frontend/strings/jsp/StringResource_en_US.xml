@@ -6493,7 +6493,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.jsp.at">
-        <source>Schedule no sooner than a specified time:</source>
+        <source>Schedule no sooner than:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ScheduleRemoteCommand.do</context>
         </context-group>
@@ -7252,12 +7252,6 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
       <trans-unit id="syncprofile.jsp.than">
         <source>Schedule action for no sooner than:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/profiles/SyncProfiles.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="syncprofile.jsp.now">
-        <source>Schedule action as soon as possible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/profiles/SyncProfiles.do</context>
         </context-group>
@@ -13140,7 +13134,7 @@ You may grant provisioning entitlements _here_.
         </context-group>
       </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
-        <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
+        <source>Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>

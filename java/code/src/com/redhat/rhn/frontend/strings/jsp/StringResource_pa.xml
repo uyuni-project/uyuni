@@ -7222,13 +7222,6 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target>ਇਸ ਤੋਂ ਪਹਿਲਾਂ ਕਾਰਵਾਈ ਲਈ ਸਮਾਂ-ਤਹਿ ਨਾ ਕਰੋ:</target>
       </trans-unit>
-      <trans-unit id="syncprofile.jsp.now">
-        <source>Schedule action as soon as possible</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/packages/profiles/SyncProfiles.do</context>
-        </context-group>
-        <target>ਜਿੰਨਾ ਵੀ ਛੇਤੇ ਹੋਵੇ, ਕਾਰਵਾਈ ਲਈ ਸਮਾਂ-ਤਹਿ ਕਰੋ</target>
-      </trans-unit>
       <trans-unit id="missingpkgs.jsp.channels">
         <source>Channels</source>
         <context-group name="ctx">
@@ -13167,11 +13160,11 @@ You may grant provisioning entitlements _here_.
         <target>ਤੁਸੀਂ ਛੇਤੀ ਤੋਂ ਛੇਤੀ ਸ਼ਾਮਿਲ ਕਾਰਵਾਈ ਤਹਿ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਇੱਕ ਦਿੱਤੇ ਸਮੇਂ ਪਹਿਲਾਂ ਨਹੀਂ:</target>
       </trans-unit>
       <trans-unit id="deploy.jsp.usedate">
-        <source>&lt;strong&gt;Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
+        <source>Schedule this file to be deployed no earlier than:&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/RevisionDeploy.do</context>
         </context-group>
-        <target>&lt;strong&gt;ਇਸ ਫਾਇਲ ਨੂੰ ਸ਼ਾਮਿਲ ਹੋਣ ਲਈ ਸਮਾ-ਤਹਿ ਕਰੋ, ਇਸ ਸਮੇਂ ਤੋਂ ਬਾਅਦ:&lt;/strong&gt;</target>
+        <target>ਇਸ ਫਾਇਲ ਨੂੰ ਸ਼ਾਮਿਲ ਹੋਣ ਲਈ ਸਮਾ-ਤਹਿ ਕਰੋ, ਇਸ ਸਮੇਂ ਤੋਂ ਬਾਅਦ:&lt;/strong&gt;</target>
       </trans-unit>
       <!-- regular -->
       <trans-unit id="deploy.jsp.header2">
