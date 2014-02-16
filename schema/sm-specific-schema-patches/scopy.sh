@@ -15,6 +15,41 @@ function new_path () {
 
 }
 
+function find_source ()  {
+    local s=$1
+    local bp="$2.."
+    local db=""
+
+    local imp_packages=(rhn_entitlements.pkb rhn_channel.pks rhn_channel.pkb rhn_server.pkb)
+    local imp_procs=(pg_dblink_exec create_first_org create_new_org)
+
+    if [[ "$s" == *oracle ]]; then
+	db="oracle"
+    elif [[ "$s" == *postgresql ]]; then
+	db="postgres"
+    else
+        echo "$s"
+	return 0
+    fi
+
+    for p in ${imp_packages[*]}; do
+	if [[ "$s" == *$p* ]]; then
+            echo "return new source: $bp/$db/packages/$p" >&2
+            echo "$bp/$db/packages/$p"
+	    return 0
+        fi
+    done
+    for p in ${imp_procs[*]}; do
+        if [[ "$s" == *$p* ]]; then
+            echo "return new source: $bp/$db/procs/$p.sql" >&2
+            echo "$bp/$db/procs/$p.sql"
+            return 0
+        fi
+    done
+    echo "$s"
+    return 0
+}
+
 templatedir=`dirname $0`
 templatedir="$templatedir/template"
 
@@ -47,24 +82,25 @@ for d in ${dirs[*]}; do
             target=`sha1sum $dest| awk '{print $1}'`
             #echo "SRC: $src TARGET: $target"
             if [ "$src" != "$target" ]; then
-                if ! grep "already applied in Manager" "$dest" > /dev/null; then
-                    templatename=`basename $dest`
-                    #echo "Searching for template: $templatedir/$templatename.dif"
-                    if [ -e "$templatedir/$templatename.dif" ]; then
-                        DIFF1=`diff -ub $i $dest`
-                        DIFF2=`cat "$templatedir/$templatename.dif"`
-                        if [ "$DIFF1" = "$DIFF2" ]; then
-                            continue
-                        fi
-                    fi
-		    echo "NEED CHECK: diff -ub $i $dest"
+                if grep "already applied in Manager" "$dest" > /dev/null; then
+                    continue
                 fi
+                templatename=`basename $dest`
+                #echo "Searching for template: $templatedir/$templatename.dif"
+                if [ -e "$templatedir/$templatename.dif" ]; then
+                    DIFF1=`diff -ub $i $dest`
+                    DIFF2=`cat "$templatedir/$templatename.dif"`
+                    if [ "$DIFF1" = "$DIFF2" ]; then
+                        continue
+                    fi
+                fi
+		echo "NEED CHECK: diff -ub $i $dest"
 	    fi
 	    continue
 	fi
-
-    	#echo ">cp $i $dest"
-    	cp -v $i $dest
+        source=`find_source $i $basepath`
+    	#echo ">cp $source $dest"
+    	cp -v $source $dest
     done
     incr
 done
