@@ -34,14 +34,14 @@ function find_source ()  {
 
     for p in ${imp_packages[*]}; do
 	if [[ "$s" == *$p* ]]; then
-            echo "return new source: $bp/$db/packages/$p" >&2
+            #echo "return new source: $bp/$db/packages/$p" >&2
             echo "$bp/$db/packages/$p"
 	    return 0
         fi
     done
     for p in ${imp_procs[*]}; do
         if [[ "$s" == *$p* ]]; then
-            echo "return new source: $bp/$db/procs/$p.sql" >&2
+            #echo "return new source: $bp/$db/procs/$p.sql" >&2
             echo "$bp/$db/procs/$p.sql"
             return 0
         fi
