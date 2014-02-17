@@ -10,7 +10,7 @@
         <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
-            COMING SOON: Setup your system groups.
+            COMING SOON
         </p>
     </body>
 </html>

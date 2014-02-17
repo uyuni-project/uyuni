@@ -1,15 +1,24 @@
 <?xml version="1.0"?>
 <rhn-navi-tree label="setup_wizard" invisible="1" title-depth="1">
+  <rhn-tab name="HTTP Proxy" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/HttpProxy.do</rhn-tab-url>
+  </rhn-tab>
   <rhn-tab name="Mirror Credentials" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
   </rhn-tab>
   <rhn-tab name="SUSE Products" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
   </rhn-tab>
+  <rhn-tab name="Sync Schedule" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/SyncSchedule.do</rhn-tab-url>
+  </rhn-tab>
   <rhn-tab name="System Groups" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/setup/SystemGroups.do</rhn-tab-url>
   </rhn-tab>
   <rhn-tab name="Activation Keys" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/setup/ActivationKeys.do</rhn-tab-url>
+  </rhn-tab>
+  <rhn-tab name="Bootstrap" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/Bootstrap.do</rhn-tab-url>
   </rhn-tab>
 </rhn-navi-tree>
