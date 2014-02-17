@@ -49,7 +49,7 @@
         string serv = settings["ISS_PARENT"]:"";
         if (serv == "")
             serv = "nu.novell.com";
-        string url  = sformat("https://%1/", serv);
+        string url  = sformat("https://%1", serv);
 
 	// File for writing the credentials
 	string test_file = Directory::tmpdir + "/curl_input_file";
