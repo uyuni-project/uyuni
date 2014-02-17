@@ -117,7 +117,7 @@ chown root.root /etc/sysconfig
 
 %files
 %defattr(-,root,root,-)
-#%doc doc/*
+%doc COPYING
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir /etc/YaST2
