@@ -46,6 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%doc COPYING
 %dir %{_datadir}/openscap
 %dir %{_datadir}/openscap/xsl
 %dir %{_datadir}/rhn
