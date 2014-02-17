@@ -98,7 +98,7 @@
             </button>
         </p>
         <div id="listset-container">
-            <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
+            <rhn:icon type="spinner"></rhn:icon><span>Loading ...</span>
             <script>
                 MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));
             </script>

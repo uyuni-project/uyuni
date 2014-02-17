@@ -19,7 +19,7 @@
             Select SUSE Products below to trigger the synchronization of software channels.
         </p>
         <div id="products-content">
-            <i class='fa fa-spinner fa-spin'></i><span>Loading ...</span>
+            <rhn:icon type="spinner"></rhn:icon><span>Loading ...</span>
             <script type="text/javascript">
                 ProductsRenderer.renderAsync(makeAjaxCallback("products-content", false));
             </script>
