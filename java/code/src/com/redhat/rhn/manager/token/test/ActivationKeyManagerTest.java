@@ -53,7 +53,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         manager = ActivationKeyManager.getInstance();
     }
     public void testDelete() throws Exception {
-        user.addRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp = manager.lookupByKey(key.getKey(), user);
         assertNotNull(temp);
@@ -119,7 +119,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
 
     public void testLookup() {
         //first lets just check on permissions...
-        user.addRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         final ActivationKey key = manager.createNewActivationKey(user, "Test");
         ActivationKey temp;
         //we make newuser
@@ -188,7 +188,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     public void testCreate() throws Exception {
-        user.addRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         String note = "Test";
         final ActivationKey key = manager.createNewActivationKey(user, note);
         assertEquals(user.getOrg(), key.getOrg());
@@ -229,7 +229,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
     }
 
     public ActivationKey createActivationKey() throws Exception {
-        user.addRole(RoleFactory.ACTIVATION_KEY_ADMIN);
+        user.addPermanentRole(RoleFactory.ACTIVATION_KEY_ADMIN);
         return  manager.createNewActivationKey(user, TestUtils.randomString());
     }
 
