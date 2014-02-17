@@ -1843,11 +1843,20 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Setup Wizard">
         <source>Setup Wizard</source>
       </trans-unit>
+      <trans-unit id="HTTP Proxy">
+        <source>HTTP Proxy</source>
+      </trans-unit>
       <trans-unit id="Mirror Credentials">
         <source>Mirror Credentials</source>
       </trans-unit>
       <trans-unit id="SUSE Products">
         <source>SUSE Products</source>
+      </trans-unit>
+      <trans-unit id="Sync Schedule">
+        <source>Sync Schedule</source>
+      </trans-unit>
+      <trans-unit id="Bootstrap">
+        <source>Bootstrap</source>
       </trans-unit>
 
       <!-- Mirror Credentials -->
