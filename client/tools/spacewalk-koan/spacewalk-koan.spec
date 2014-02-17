@@ -53,6 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%doc COPYING
 %config(noreplace)  %{_sysconfdir}/sysconfig/rhn/clientCaps.d/kickstart
 %{_sbindir}/*
 %{_datadir}/rhn/spacewalkkoan/
