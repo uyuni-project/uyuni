@@ -605,7 +605,7 @@ default_or_input "Create and populate configuration channel $CHANNEL_LABEL?" POP
 POPULATE_CONFIG_CHANNEL=$(yes_no $POPULATE_CONFIG_CHANNEL)
 if [ "$POPULATE_CONFIG_CHANNEL" = "1" ]; then
     RHNCFG_STATUS=1
-    default_or_input "RHN username:" RHN_USER ''
+    default_or_input "SUSE Manager username:" RHN_USER ''
     while [ $RHNCFG_STATUS != 0 ] ; do
         CONFIG_CHANNELS=$(rhncfg-manager list-channels ${RHN_USER:+--username="${RHN_USER}"} ${RHN_PASSWORD:+--password="${RHN_PASSWORD}"} --server-name="$RHN_PARENT")
         RHNCFG_STATUS=$?
