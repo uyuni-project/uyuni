@@ -165,8 +165,6 @@ public class ActionChain extends BaseDomainHelper {
         return new ToStringBuilder(this)
         .append("id", getId())
         .append("label", getLabel())
-        .append("user", getUser())
-        .append("entries", getEntries())
         .toString();
     }
 }

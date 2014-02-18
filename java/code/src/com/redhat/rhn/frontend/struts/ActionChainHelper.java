@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.DynaActionForm;
 import org.stringtree.json.JSONWriter;
 
@@ -46,6 +47,9 @@ public class ActionChainHelper {
     public static final String EXISTING_ACTION_CHAINS_PROPERTY_NAME =
             "existingActionChains";
 
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ActionChainHelper.class);
+
     /**
      * Default constructor.
      */
@@ -65,6 +69,7 @@ public class ActionChainHelper {
             String label = sanitizeLabel((String) form.get(LABEL_PROPERTY_NAME));
 
             if (!StringUtils.isBlank(label)) {
+                log.debug("Reading Action Chain from label " + label);
                 return ActionChainFactory.getOrCreateActionChain(label, user);
             }
         }
@@ -77,6 +82,7 @@ public class ActionChainHelper {
      * @param request the request
      */
     public static void prepopulateActionChains(HttpServletRequest request) {
+        log.debug("Prepopulating Action Chains");
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
         List<ActionChain> actionChains = ActionChainFactory
             .getActionChainsByModificationDate();

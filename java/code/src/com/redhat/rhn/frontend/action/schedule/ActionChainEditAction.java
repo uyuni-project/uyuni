@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -43,6 +44,9 @@ public class ActionChainEditAction extends RhnAction {
 
     /** Action forward after Action Chain deletion. */
     private static final String TO_LIST_FORWARD = "to_list";
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ActionChainEditAction.class);
 
     /**
      * {@inheritDoc}
@@ -116,6 +120,7 @@ public class ActionChainEditAction extends RhnAction {
         ActionChain actionChain) {
         List<ActionChainEntryGroup> groups = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
+        log.debug("Found " + groups.size() + " Action Chain Entry groups");
         request.setAttribute("actionChain", actionChain);
         request.setAttribute("groups", groups);
         request.setAttribute(
