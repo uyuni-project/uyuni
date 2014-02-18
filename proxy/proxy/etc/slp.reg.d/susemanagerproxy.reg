@@ -7,7 +7,7 @@
 #############################################################################
 
 # Register the SUSE Manager server, if it is running
-service:susemanager:https://$HOSTNAME/rhn/Login.do,en,65535
-tcp-port=443
+service:susemanager:http://$HOSTNAME/,en,65535
+tcp-port=80
 type=proxy
 description=SUSE Manager Proxy
