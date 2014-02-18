@@ -160,7 +160,7 @@ IS
             );
 
             begin
-                select 1
+                select min(1)
                   into update_lock
                   from rhnServerNeededCache
                  where server_id = server_id_in
@@ -530,7 +530,7 @@ IS
       );
 
         begin
-            select 1
+            select min(1)
               into update_lock
               from rhnServerNeededCache
              where server_id = server_id_in
