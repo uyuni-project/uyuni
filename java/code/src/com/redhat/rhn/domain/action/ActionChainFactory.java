@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.action;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -36,7 +35,7 @@ import java.util.Map;
 public class ActionChainFactory extends HibernateFactory {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(ChannelFactory.class);
+    private static Logger log = Logger.getLogger(ActionChainFactory.class);
 
     /** Singleton instance */
     private static ActionChainFactory singleton = new ActionChainFactory();
@@ -54,6 +53,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain or null if not found
      */
     public static ActionChain getActionChain(String label) {
+        log.debug("Looking up Action Chain with label " + label);
         return (ActionChain) getSession()
             .createCriteria(ActionChain.class)
             .add(Restrictions.eq("label", label))
@@ -66,6 +66,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the Action Chain or null if not found
      */
     public static ActionChain getActionChain(Long id) {
+        log.debug("Looking up Action Chain with id " + id);
         if (id == null) {
             return null;
         }
@@ -91,6 +92,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @return the action chain
      */
     public static ActionChain createActionChain(String label, User user) {
+        log.debug("Creating Action Chain with label " + label);
         ActionChain result = new ActionChain();
         result.setLabel(label);
         result.setUser(user);
@@ -139,6 +141,8 @@ public class ActionChainFactory extends HibernateFactory {
      */
     public static ActionChainEntry queueActionChainEntry(Action action,
         ActionChain actionChain, Server server, int sortOrder) {
+        log.debug("Queuing action " + action + " to Action Chain " + actionChain +
+            " with sort order " + sortOrder);
         ActionChainEntry result = new ActionChainEntry();
 
         result.setAction(action);
@@ -266,6 +270,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param actionChain the action chain to delete
      */
     public static void delete(ActionChain actionChain) {
+        log.debug("Deleting Action Chain " + actionChain);
         singleton.removeObject(actionChain);
     }
 
@@ -275,6 +280,7 @@ public class ActionChainFactory extends HibernateFactory {
      * @param date first action's minimum timestamp
      */
     public static void schedule(ActionChain actionChain, Date date) {
+        log.debug("Scheduling Action Chain " +  actionChain + " to date " + date);
         Map<Server, Action> latest = new HashMap<Server, Action>();
         int maxSortOrder = getNextSortOrderValue(actionChain);
         for (int sortOrder = 0; sortOrder < maxSortOrder; sortOrder++) {
@@ -282,6 +288,7 @@ public class ActionChainFactory extends HibernateFactory {
                 Server server = entry.getServer();
                 Action action = entry.getAction();
 
+                log.debug("Scheduling Action " + action + " to server " + server);
                 ActionFactory.addServerToAction(server.getId(), action);
                 action.setPrerequisite(latest.get(server));
                 action.setEarliestAction(date);
@@ -289,6 +296,8 @@ public class ActionChainFactory extends HibernateFactory {
                 latest.put(server, action);
             }
         }
+        log.debug("Action Chain " + actionChain + " scheduled to date " + date +
+            ", deleting");
         delete(actionChain);
     }
 

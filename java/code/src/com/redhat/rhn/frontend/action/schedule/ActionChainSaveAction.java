@@ -65,14 +65,18 @@ public class ActionChainSaveAction {
             ActionChain sameLabelActionChain = ActionChainFactory.getActionChain(label);
             if (sameLabelActionChain != null &&
                 !sameLabelActionChain.getId().equals(actionChainId)) {
+                log.debug("Action Chain label " + label + " exists");
                 return makeResult(false, "actionchain.jsp.labelexists");
             }
 
             // change label
+            log.debug("Editing Action Chain " + actionChain + ", changing label to " +
+                label);
             actionChain.setLabel(ActionChainHelper.sanitizeLabel(label));
 
             // delete entries
             for (Long id : deletedEntries) {
+                log.debug("Deleting entry " + id);
                 try {
                     actionChain.getEntries().remove(
                         ActionChainFactory.getActionChainEntry(id));
@@ -84,6 +88,7 @@ public class ActionChainSaveAction {
 
             // delete groups
             for (Integer sortOrder : deletedSortOrders) {
+                log.debug("Deleting group with sort order " + sortOrder);
                 List<ActionChainEntry> entries = ActionChainFactory.getActionChainEntries(
                     actionChain, sortOrder);
                 actionChain.getEntries().removeAll(entries);
@@ -97,6 +102,8 @@ public class ActionChainSaveAction {
                     actionChain, reorderedSortOrders.get(sortOrder)));
             }
             for (int sortOrder = 0; sortOrder < reorderedSortOrders.size(); sortOrder++) {
+                log.debug("Changing group order from " + entryGroups.get(sortOrder) +
+                    " to " + sortOrder);
                 for (ActionChainEntry entry : entryGroups.get(sortOrder)) {
                     entry.setSortOrder(sortOrder);
                 }
