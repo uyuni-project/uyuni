@@ -76,3 +76,21 @@ Then(/^the date picker title should be "([^"]*)"$/) do |arg1|
   fail unless switch.has_content?(arg1)
 end
 
+Given(/^I pick "([^"]*)" as time$/) do |arg1|
+  find('.ui-timepicker-input').click
+  timepicker = first('ul.ui-timepicker-list')
+  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{arg1}']")
+  time.click
+end
+
+Then(/^the time field is set to "([^"]*)"$/) do |arg1|
+  h, m = arg1.chomp.split(':').map(&:to_i)
+  # the fields that give backwards compatibility
+  h_compat = find('input#date_hour', visible: false)
+  m_compat = find('input#date_minute', visible: false)
+  ampm_compat = find('input#date_am_pm', visible: false)
+
+  fail if h_compat.value.to_i != h % 12
+  fail if m_compat.value.to_i != m
+  fail if ampm_compat.value.to_i != (h >= 12 ? 1 : 0)
+end
