@@ -10,6 +10,8 @@ print_help() {
 usage: configure-proxy.sh [options]
 
 options:
+  --activate-SLP
+            activate the SLP server so SUSE Manager proxy gets advertised
   --answer-file=filename
             Indicates the location of an answer file to be use for answering
             questions asked during the installation process. See man page for
@@ -115,6 +117,7 @@ eval set -- "$OPTS"
 while : ; do
     case "$1" in
         --help|-h)  print_help;;
+        --activate-SLP) ACTIVATE_SLP=1;;
         --answer-file) set_value "$1" ANSWER_FILE "$2";
                        parse_answer_file "$ANSWER_FILE"; shift;;
         --non-interactive) INTERACTIVE=0;;
@@ -640,6 +643,15 @@ for service in squid httpd jabberd $MonitoringScout; do
         /sbin/insserv -d $service
     fi
 done
+
+default_or_input "Activate advertising proxy via SLP?" ACTIVATE_SLP "Y/n"
+ACTIVATE_SLP=$(yes_no $ACTIVATE_SLP)
+if [ $ACTIVATE_SLP -ne 0 ]; then
+    sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427"
+    sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427"
+    insserv slpd
+    rcslpd start
+fi
 
 # default is 1
 START_SERVICES=$(yes_no ${START_SERVICES:-1})
