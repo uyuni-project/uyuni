@@ -116,6 +116,11 @@ $(function() {
         callback: function(resultString) {
           var result = $.parseJSON(resultString);
           if (result.success) {
+            $(".entry.deleted").remove();
+            $(".group.deleted").remove();
+            $(".group").each(function(i, element){
+              $(element).data("sort-order", i);
+            });
             onSuccess(result.text);
           }
           else {
