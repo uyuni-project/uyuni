@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
 
 import org.apache.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
 import org.stringtree.json.JSONWriter;
 
 import java.util.Date;
@@ -77,13 +76,8 @@ public class ActionChainSaveAction {
             // delete entries
             for (Long id : deletedEntries) {
                 log.debug("Deleting entry " + id);
-                try {
-                    actionChain.getEntries().remove(
-                        ActionChainFactory.getActionChainEntry(id));
-                }
-                catch (ObjectNotFoundException e) {
-                    // has been deleted in a previous call to save(). Ignore.
-                }
+                actionChain.getEntries().remove(
+                    ActionChainFactory.getActionChainEntry(id));
             }
 
             // delete groups
