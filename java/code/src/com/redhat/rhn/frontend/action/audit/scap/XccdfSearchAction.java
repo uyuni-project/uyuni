@@ -96,10 +96,8 @@ public class XccdfSearchAction extends BaseSearchAction {
         if (dateSrch instanceof Boolean) {
             return ((Boolean)dateSrch).booleanValue();
         }
-        else {
-            String strDateSearch = (String)request.getAttribute(SCAN_DATE_SEARCH);
-            return "on".equals(strDateSearch);
-        }
+        String strDateSearch = (String)request.getAttribute(SCAN_DATE_SEARCH);
+        return "on".equals(strDateSearch);
     }
 
     private DateRangePicker setupDatePicker(DynaActionForm form,
@@ -157,7 +155,7 @@ public class XccdfSearchAction extends BaseSearchAction {
         setupRuleResultLabelOptions(request);
         setupShowAsOption(form);
         Map m = form.getMap();
-        Set<String> keys = (Set<String>)m.keySet();
+        Set<String> keys = m.keySet();
         for (String key : keys) {
             Object vObj = m.get(key);
             request.setAttribute(key, vObj);
