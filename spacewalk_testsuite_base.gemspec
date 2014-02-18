@@ -17,8 +17,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency("pg", ["~> 0.11.0"])
   s.add_development_dependency("ruby-oci8", ["~> 2.0.4"])
   s.add_development_dependency("dbi", ["~> 0.4.5"])
-  s.add_development_dependency("cucumber", ["~> 1.0"])
-  s.add_development_dependency("capybara", ["~> 1.0"])
+  s.add_development_dependency("cucumber", ["~> 1.3.0"])
+  s.add_development_dependency("capybara", ["~> 2.1.0"])
+  s.add_development_dependency('selenium-webdriver')
+  s.add_development_dependency('rubyzip')
 
   s.files        = Dir.glob("lib/**/*.rb") + Dir.glob("features/**/*.rb") + Dir.glob("test/**/*.rb") + %w(CHANGELOG.rdoc README.rdoc)
   s.require_path = 'lib'
