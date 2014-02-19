@@ -17,7 +17,8 @@
 
     map<string,string> settings	= $[
 	"MANAGER_IP"		: "",
-	"MANAGER_ADMIN_EMAIL"	: "susemanager@" + Hostname::CurrentDomain ()
+	"MANAGER_ADMIN_EMAIL"	: "susemanager@" + Hostname::CurrentDomain (),
+	"ACTIVATE_SLP"          : "n"
     ];
     if (migration)
     {
@@ -66,7 +67,8 @@
 	`InputField (`id ("MANAGER_ADMIN_EMAIL"), `opt (`hstretch),
 	    // text entry label
 	    _("SUSE Manager &Administrator E-mail Address"), settings["MANAGER_ADMIN_EMAIL"]:""),
-	`VSpacing (0.5)
+	`VSpacing (0.5),
+	`Left (`CheckBox (`id ("ACTIVATE_SLP"), _("Advertise SUSE Manager via SLP"), false))
     ), `HSpacing (1));
 
 
@@ -118,7 +120,10 @@
 		string val	= value;
 		if (UI::WidgetExists (`id (key)))
 		{
-		    val		= (string) UI::QueryWidget (`id (key), `Value);
+		    if (key == "ACTIVATE_SLP")
+			val = (UI::QueryWidget (`id (key), `Value) == true) ? "y" : "n";
+                    else
+			val = (string) UI::QueryWidget (`id (key), `Value);
 		}
 		setenv (key, val, true);
 		// write env files

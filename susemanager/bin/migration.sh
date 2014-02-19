@@ -488,6 +488,7 @@ do_migration() {
     CERT_PASS="dummy"
     CERT_EMAIL="dummy@example.net"
     MANAGER_ENABLE_TFTP="n"
+    ACTIVATE_SLP="n"
 
     check_remote_type
     wait_step
@@ -538,6 +539,7 @@ do_setup() {
         echo -n "NCC_PASS="           ; read NCC_PASS
         echo -n "NCC_EMAIL="          ; read NCC_EMAIL
         echo -n "ISS_PARENT="         ; read ISS_PARENT
+        echo -n "ACTIVATE_SLP="       ; read ACTIVATE_SLP
     fi;
     if [ -z "$SYS_DB_PASS" ]; then
         SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
@@ -680,6 +682,15 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ -n "$ISS_PARENT" ]; then
         # call inter-sync list - this updates the org data
         /usr/bin/mgr-inter-sync -l
+    fi
+fi
+
+if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
+    if [ "$ACTIVATE_SLP" = "y" ]; then
+	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427"
+	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427"
+	insserv slpd
+	rcslpd start
     fi
 fi
 
