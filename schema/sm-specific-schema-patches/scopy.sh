@@ -88,7 +88,7 @@ for d in ${dirs[*]}; do
                 templatename=`basename $dest`
                 #echo "Searching for template: $templatedir/$templatename.dif"
                 if [ -e "$templatedir/$templatename.dif" ]; then
-                    DIFF1=`diff -ub $i $dest`
+                    DIFF1=`diff -ub $i $dest | tail -n +3`
                     DIFF2=`cat "$templatedir/$templatename.dif"`
                     if [ "$DIFF1" = "$DIFF2" ]; then
                         continue
