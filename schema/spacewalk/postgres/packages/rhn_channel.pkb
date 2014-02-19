@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 a67992197731f9dd005f97fcf19f4a1b1472850b
+-- oracle equivalent source sha1 8788cb5bb57fcd79bd64d07a7a3633c4f9876e5f
 --
 -- Copyright (c) 2008--2013 Red Hat, Inc.
 --
@@ -65,7 +65,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         consenting_user         NUMERIC;
         allowed                 numeric;
         is_fve_char             char(1) := 'N';
-        update_lock             numeric;
     BEGIN
         if user_id_in is not null then
             allowed := rhn_channel.user_role_check(channel_id_in, user_id_in, 'subscribe');
@@ -150,19 +149,17 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                 where   c.id = channel_id_in
             );
 
-            select min(1)
-              into update_lock
-              from rhnServerNeededCache
-             where server_id = server_id_in
-               for update;
-
-            UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
             INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, is_fve_char);
 			IF recalcfamily_in > 0
 			THEN
                 perform rhn_channel.update_family_counts(channel_family_id_val, server_org_id_val);
 			END IF;
+
             perform queue_server(server_id_in, immediate_in);
+
+            update rhnServer
+               set channels_changed = current_timestamp
+             where id = server_id_in;
         ELSE
             perform rhn_exception.raise_exception('channel_family_no_subscriptions');
         END IF;
@@ -492,7 +489,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         server_org_id_val       NUMERIC;
         available_subscriptions NUMERIC; 
         server_already_in_chan  BOOLEAN;
-        update_lock             numeric;
         channel_family_is_proxy cursor(channel_family_id_in numeric) for
                 select  1
                 from    rhnChannelFamily
@@ -535,7 +531,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         END IF;
         
    if deleting_server = 0 then 
-
       insert into rhnServerHistory (id,server_id,summary,details) (
           select  nextval('rhn_event_id_seq'),
                 server_id_in,
@@ -544,20 +539,16 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           from    rhnChannel c
           where   c.id = channel_id_in
       );
-
-        select min(1)
-          into update_lock
-          from rhnServerNeededCache
-         where server_id = server_id_in
-           for update;
-
-        UPDATE rhnServer SET channels_changed = current_timestamp WHERE id = server_id_in;
    end if;
         
    DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
 
    if deleting_server = 0 then 
         perform queue_server(server_id_in, immediate_in);
+
+        update rhnServer
+           set channels_changed = current_timestamp
+         where id = server_id_in;
    end if;
 
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
