@@ -52,6 +52,7 @@ public class NewChannelHelper {
     private String gpgFingerprint;
     private String description;
     private ProductName productName;
+    private String updateTag;
 
     /**
      * Creates a cloned channel based off the info contained within this object
@@ -108,6 +109,7 @@ public class NewChannelHelper {
         cloned.setBaseDir("/dev/null");  //this is how the perl code did it
         cloned.setOriginal(toClone);
         cloned.setProductName(productName);
+        cloned.setUpdateTag(updateTag);
 
         if (parent != null) {
            cloned.setParentChannel(parent);
@@ -316,7 +318,7 @@ public class NewChannelHelper {
         this.user = userIn;
     }
 
-
-
-
+    public void setUpdateTag(String updateTagIn) {
+        this.updateTag = updateTagIn;
+    }
 }
