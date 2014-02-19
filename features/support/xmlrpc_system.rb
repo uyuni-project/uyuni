@@ -6,7 +6,7 @@ require 'xmlrpctest'
 
 class XMLRPCSystemTest < XMLRPCBaseTest
   def listSystems()
-    return (@connection.call("system.listSystems", @sid) or [])
+    return (@connection.call("system.listSystems", @sid) || [])
   end
 
 
