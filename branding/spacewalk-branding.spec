@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.31
+Version:    2.1.33
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,13 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Feb 18 2014 Matej Kollar <mkollar@redhat.com> 2.1.33-1
+- The fix should have been the other way round...
+
+* Tue Feb 18 2014 Matej Kollar <mkollar@redhat.com> 2.1.32-1
+- do not use fixed size
+- add space after alphabar result sign
+
 * Mon Feb 17 2014 Tomas Kasparek <tkasparek@redhat.com> 2.1.31-1
 - 1064573 - sidenav css should respect valid html constructions
 
