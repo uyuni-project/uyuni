@@ -113,8 +113,9 @@ public class UpdateInfoWriter extends RepomdWriter {
         handler.startElement("update", attr);
 
         String id = new String();
-        if (channel.getUpdateTag() != null && channel.getUpdateTag().length() > 0) {
-            id += channel.getUpdateTag() + "-";
+        String updateTag = findUpdateTag(channel);
+        if (updateTag != null) {
+            id += updateTag + "-";
         }
         id += erratum.getAdvisoryName();
 
@@ -275,5 +276,26 @@ public class UpdateInfoWriter extends RepomdWriter {
         else {
             return "errata";
         }
+    }
+
+    /**
+     * Find the update tag for a given channel looking also at original channels
+     * in case the given channel is a clone.
+     * @param channel channel
+     * @return update tag or null
+     */
+    private String findUpdateTag(Channel channel) {
+        String updateTag = channel.getUpdateTag();
+        if (updateTag == null || updateTag.isEmpty()) {
+            Channel current = channel;
+            while (current.isCloned()) {
+                current = current.getOriginal();
+                updateTag = current.getUpdateTag();
+                if (updateTag != null && !updateTag.isEmpty()) {
+                    break;
+                }
+            }
+        }
+        return updateTag;
     }
 }
