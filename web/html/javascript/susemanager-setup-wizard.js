@@ -49,3 +49,8 @@ function downloadSubscriptions(id) {
       makeAjaxCallback("subscriptions-" + id, false));
 }
 
+// document.ready handler for susemanager-setup-wizard.jsp
+$(document).on("ready", function() {
+  SetupWizardRenderer.renderPage(0, makeAjaxCallback('setup-wizard-content', false));
+});
+
