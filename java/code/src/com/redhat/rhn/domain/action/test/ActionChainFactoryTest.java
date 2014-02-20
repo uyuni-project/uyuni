@@ -26,7 +26,12 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.hibernate.ObjectNotFoundException;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Silvio Moioli <smoioli@suse.de>
@@ -35,7 +40,6 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests createActionChain() and getActionChain().
-     *
      * @throws Exception if something bad happens
      */
     public void testCreateActionChain() throws Exception {
@@ -47,11 +51,35 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(retrievedActionChain);
         assertEquals(label, retrievedActionChain.getLabel());
         assertEquals(user, retrievedActionChain.getUser());
+
+        retrievedActionChain = ActionChainFactory.getActionChain(actionChain.getId());
+        assertNotNull(retrievedActionChain);
+        assertEquals(label, retrievedActionChain.getLabel());
+        assertEquals(user, retrievedActionChain.getUser());
+    }
+
+    /**
+     * Tests delete().
+     * @throws Exception if something bad happens
+     */
+    public void testDelete() throws Exception {
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        assertNotNull(actionChain);
+
+        ActionChainFactory.delete(actionChain);
+
+        try {
+            ActionChainFactory.getActionChain(actionChain.getId());
+            fail();
+        }
+        catch (ObjectNotFoundException e) {
+            // correct
+        }
     }
 
     /**
      * Tests getActionChains().
-     *
      * @throws Exception if something bad happens
      */
     public void testGetActionChains() throws Exception {
@@ -66,7 +94,6 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests getOrCreateActionChain().
-     *
      * @throws Exception if something bad happens
      */
     public void testGetOrCreateActionChain() throws Exception {
@@ -83,7 +110,6 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests queueActionChainEntry().
-     *
      * @throws Exception if something bad happens
      */
     public void testQueueActionChainEntry() throws Exception {
@@ -120,6 +146,26 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             secondActionChain, server);
         assertNotNull(thirdEntry);
         assertEquals(0, thirdEntry.getSortOrder().intValue());
+    }
+
+    /**
+     * Tests testGetActionChainEntry().
+     * @throws Exception if something bad happens
+     */
+    public void testGetActionChainEntry() throws Exception {
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        action.setOrg(user.getOrg());
+        ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
+            actionChain, ServerFactoryTest.createTestServer(user), 0);
+
+        HibernateFactory.getSession().flush();
+
+        ActionChainEntry retrievedEntry = ActionChainFactory.getActionChainEntry(entry
+            .getId());
+        assertEquals(entry.getServerId(), retrievedEntry.getServerId());
+        assertEquals(entry.getSortOrder(), retrievedEntry.getSortOrder());
     }
 
     /**
@@ -177,6 +223,58 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (ActionChainEntry entry : entries) {
             assertEquals(actionChain.getId(), entry.getActionChainId());
             assertEquals((Integer) 0, entry.getSortOrder());
+        }
+    }
+
+    /**
+     * Tests schedule().
+     * @throws Exception if something bad happens
+     */
+    public void testSchedule() throws Exception {
+        String label = TestUtils.randomString();
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        Server server1 = ServerFactoryTest.createTestServer(user);
+        Server server2 = ServerFactoryTest.createTestServer(user);
+        Map<Long, Integer> sortOrders = new HashMap<Long, Integer>();
+        for (int i = 0; i < 10; i++) {
+            Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+            action.setOrg(user.getOrg());
+            ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
+            TestUtils.saveAndFlush(action);
+            sortOrders.put(action.getId(), i);
+            if (i % 2 == 0) {
+                action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+                action.setOrg(user.getOrg());
+                ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
+                TestUtils.saveAndFlush(action);
+                sortOrders.put(action.getId(), i);
+            }
+        }
+
+        ActionChainFactory.schedule(actionChain, new Date());
+
+        // check action chain does not exist anymore
+        try {
+            ActionChainFactory.getActionChain(actionChain.getId());
+            fail();
+        }
+        catch (ObjectNotFoundException e) {
+            // correct
+        }
+
+        // check actions are scheduled in correct order
+        for (ActionChainEntry entry : actionChain.getEntries()) {
+            Action action = entry.getAction();
+            Action prerequisite = action.getPrerequisite();
+            if (prerequisite != null) {
+                assertTrue(sortOrders.get(action.getId()) > sortOrders.get(prerequisite
+                    .getId()));
+            }
+        }
+
+        // check ServerAction objects have been created
+        for (ActionChainEntry entry : actionChain.getEntries()) {
+            assertNotEmpty(entry.getAction().getServerActions());
         }
     }
 }
