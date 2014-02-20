@@ -70,12 +70,15 @@ def main():
                       help='Dump NCC xml data into the given directory')
     parser.add_option("--from-dir", action="store", dest='fromdir',
                       help="read data from directory instead of NCC")
+    parser.add_option("--from-mirror", action="store", dest="mirror",
+                      help="hostname of a local mirror like SMT. Only to download the RPMs.")
 
     (options, args) = parser.parse_args()
 
     syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet,
                                       debug=options.debug,
-                                      fromdir=options.fromdir)
+                                      fromdir=options.fromdir,
+                                      mirror=options.mirror)
     if options.list:
         if syncer.is_iss_slave:
             print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
