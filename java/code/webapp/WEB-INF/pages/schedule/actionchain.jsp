@@ -19,7 +19,7 @@
             <span id="label-link-text"><c:out value="${actionChain.label}"/></span>
             <i class="fa fa-pencil"></i>
         </a>
-        <input id="label-input" type="text" value='<c:out value="${actionChain.label}"/>' autocomplete="off" hidden>
+        <input id="label-input" type="text" value='<c:out value="${actionChain.label}"/>' autocomplete="off" hidden/>
     </rhn:toolbar>
 
     <div class="alert alert-success" id="success-message" hidden></div>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="hidden" name="use_date" value="true">
+                    <input type="hidden" name="use_date" value="true"/>
                     <rhn:csrf/>
                     <rhn:submitted/>
                     <div class="col-md-offset-3 col-md-6">
