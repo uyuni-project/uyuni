@@ -52,6 +52,7 @@ sequences = {
     'rhnPackageChangeLogData'   : 'rhn_pkg_cld_id_seq',
     'suseProductFile'           : 'suse_prod_file_id_seq',
     'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
+    'suseEula'                  : 'suse_eulas_id_seq',
 }
 
 class Backend:
@@ -174,6 +175,43 @@ class Backend:
         h.executemany(id=toinsert[0], name=toinsert[1], evr_id=toinsert[2], package_arch_id=toinsert[3],
                       vendor=toinsert[4], summary=toinsert[5], description=toinsert[6])
 
+    def processSuseEulas(self, eulaHash):
+        sql = """
+            SELECT id
+              FROM suseEulas
+             WHERE text = :text
+               AND checksum = :checksum
+        """
+        h = self.dbmodule.prepare(sql)
+        toinsert = [[], [], []]
+
+        for text, checksum in eulaHash.keys():
+            val = {}
+            _buildExternalValue(val, { 'text'     : text,
+                                       'checksum' : checksum
+                                     }, self.tables['suseEulas'])
+            h.execute(text=val['text'], checksum=val['checksum'])
+            row = h.fetchone_dict()
+            if row:
+                eulaHash[(text, checksum)] = row['id']
+                continue
+
+            id = self.sequences['suseEula'].next()
+            eulaHash[(text, checksum)] = id
+
+            toinsert[0].append(id)
+            toinsert[1].append(val['text'])
+            toinsert[2].append(val['checksum'])
+
+        if not toinsert[0]:
+            # Nothing to do
+            return
+
+        sql = """
+            INSERT INTO suseEulas (id, text, checksum)
+            VALUES (:id, :text, :checksum)"""
+        h = self.dbmodule.prepare(sql)
+        h.executemany(id=toinsert[0], text=toinsert[1], checksum=toinsert[2])
 
     def processCVEs(self, cveHash):
         # First figure out which CVE's are already inserted
@@ -792,6 +830,7 @@ class Backend:
             'rhnPackageFile':       'package_id',
             'rhnPackageChangeLogRec':  'package_id',
             'susePackageProductFile':  'package_id',
+            'susePackageEula':         'package_id',
         }
 
         solarisChildTables = {

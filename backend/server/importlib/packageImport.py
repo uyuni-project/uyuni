@@ -212,6 +212,7 @@ class PackageImport(ChannelPackageSubscription):
         self.sourceRPMs = {}
         self.changelog_data = {}
         self.suseProdfile_data = {}
+        self.suseEula_data = {}
 
     def _processPackage(self, package):
         ChannelPackageSubscription._processPackage(self, package)
@@ -296,6 +297,11 @@ class PackageImport(ChannelPackageSubscription):
                 key = (prodFile['name'], prodFile['evr'], prodFile['package_arch_id'], prodFile['vendor'], prodFile['summary'], prodFile['description'])
                 self.suseProdfile_data[key] = None
 
+        if package['eulas'] is not None:
+            for eula in package['eulas']:
+                key = (eula['text'], eula['checksum'])
+                self.suseEula_data[key] = None
+
     def fix(self):
         # If capabilities are available, process them
         if self.capabilities:
@@ -310,6 +316,7 @@ class PackageImport(ChannelPackageSubscription):
 
         self.backend.processChangeLog(self.changelog_data)
         self.backend.processSuseProductFiles(self.suseProdfile_data)
+        self.backend.processSuseEulas(self.suseEula_data)
 
         ChannelPackageSubscription.fix(self)
 
@@ -393,6 +400,9 @@ class PackageImport(ChannelPackageSubscription):
         if package['product_files'] is not None:
             for p in package['product_files']:
                 p['prodfile_id'] = self.suseProdfile_data[(p['name'], p['evr'], p['package_arch_id'], p['vendor'], p['summary'], p['description'])]
+        if package['eulas'] is not None:
+            for e in package['eulas']:
+                e['eula_id'] = self.suseEula_data[(e['text'], e['checksum'])]
         fileList = package['files']
         for f in fileList:
             f['checksum_id'] = self.checksums[(f['checksum_type'], f['checksum'])]

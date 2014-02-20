@@ -313,6 +313,12 @@ class ProductFile(Information):
         'description'       : StringType
     }
 
+class Eula(Information):
+    attributeTypes = {
+        'text'              : StringType,
+        'checksum'          : StringType,
+    }
+
 class IncompletePackage(BaseInformation):
     attributeTypes = {
         'package_id'        : StringType, # RH db id
@@ -398,6 +404,7 @@ class Package(IncompletePackage):
         'channels'          : [StringType],
         'checksum_list'     : [Checksum],
         'product_files'     : [ProductFile],
+        'eulas'             : [Eula],
     }
     def __init__(self):
         # Inherit from IncompletePackage
