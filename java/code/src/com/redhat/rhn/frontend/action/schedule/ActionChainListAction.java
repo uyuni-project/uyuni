@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
  * Controller for the Action Chain list page.
  * @author Silvio Moioli <smoioli@suse.de>
  */
-public class ActionChainListAction extends RhnAction implements Listable {
+public class ActionChainListAction extends RhnAction implements Listable<ActionChain> {
 
     /**
      * {@inheritDoc}
