@@ -42,10 +42,6 @@
 	  	<param name="class" value="com.redhat.rhn.frontend.taglibs.DWRItemSelector" />
 	  	<include method="select" />	  	
 	  </create>	  
-    <create creator="new" javascript="SetupWizardRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.SetupWizardRenderer" />
-      <include method="renderPage" />
-    </create>
     <create creator="new" javascript="ProductsRenderer">
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.ProductsRenderer" />
       <include method="renderAsync" />

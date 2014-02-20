@@ -262,9 +262,14 @@
       <rhn-tab-url>/rhn/monitoring/config/ProbeSuiteSystemsEdit.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
-  <rhn-tab name="Admin" url="/rhn/admin/setup/SetupWizard.do" active-image="tab-tools-selected.gif" inactive-image="tab-tools.gif" acl="user_role(satellite_admin)">
-    <rhn-tab name="Setup Wizard" acl="user_role(satellite_admin)" url="/rhn/admin/setup/SetupWizard.do">
-      <rhn-tab-url>/rhn/admin/setup/SetupWizard.do</rhn-tab-url>
+  <rhn-tab name="Admin" url="/rhn/admin/setup/HttpProxy.do" active-image="tab-tools-selected.gif" inactive-image="tab-tools.gif" acl="user_role(satellite_admin)">
+    <rhn-tab name="Setup Wizard" acl="user_role(satellite_admin)" url="/rhn/admin/setup/HttpProxy.do">
+      <rhn-tab-url>/rhn/admin/setup/HttpProxy.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/SyncSchedule.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/SystemGroups.do</rhn-tab-url>
+      <rhn-tab-url>/rhn/admin/setup/ActivationKeys.do</rhn-tab-url>
     </rhn-tab>
 
     <rhn-tab name="Organizations" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/Organizations.do">
