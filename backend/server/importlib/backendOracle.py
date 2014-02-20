@@ -636,6 +636,23 @@ class OracleBackend(Backend):
             pk          = ['package_id', 'prodfile_id'],
             attribute   = 'product_files',
         ),
+        Table('suseEulas',
+            fields      = {
+                'id'       : DBint(),
+                'text'     : DBblob(),
+                'checksum' : DBstring(64),
+            },
+            pk          = ['id'],
+            nullable    = [],
+        ),
+        Table('susePackageEula',
+            fields      = {
+                'package_id' : DBint(),
+                'eula_id'    : DBint(),
+            },
+            pk          = ['package_id', 'eula_id'],
+            attribute   = 'eulas',
+        ),
     )
 
     def __init__(self):
