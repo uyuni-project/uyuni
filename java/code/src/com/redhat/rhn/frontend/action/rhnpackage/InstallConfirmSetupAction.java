@@ -70,7 +70,7 @@ public class InstallConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     protected PackageAction schedulePackageAction(ActionForm formIn,
         RequestContext context, List<Map<String, Long>> pkgs, Date earliest,
         ActionChain actionChain) {
-        return ActionChainManager.schedulePackageInstall(context.getLoggedInUser(),
+        return ActionChainManager.schedulePackageInstall(context.getCurrentUser(),
             context.lookupAndBindServer(), pkgs, earliest, actionChain);
     }
 

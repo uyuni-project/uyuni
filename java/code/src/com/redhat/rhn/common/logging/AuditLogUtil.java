@@ -209,7 +209,7 @@ public class AuditLogUtil {
         TraceBackEvent evt = new TraceBackEvent();
         if (request != null) {
             RequestContext requestContext = new RequestContext(request);
-            User usr = requestContext.getLoggedInUser();
+            User usr = requestContext.getCurrentUser();
             evt.setUser(usr);
             evt.setRequest(request);
         }

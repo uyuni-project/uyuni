@@ -76,7 +76,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         RequestContext context = new RequestContext(request);
         DynaActionForm form = (DynaActionForm) actionForm;
         Long sid = context.getRequiredParam("sid");
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
         Set selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
@@ -188,9 +188,9 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             throws Exception {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
         List<Package> container = new ArrayList<Package>();
-        
+
         // Wipe all previously scheduled actions
         this.wipeActions(user, Boolean.TRUE);
 
@@ -225,7 +225,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                                       HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
 
         // Unlock all previous packages temporarily
         PackageManager.unlockPackages(sid, container);
