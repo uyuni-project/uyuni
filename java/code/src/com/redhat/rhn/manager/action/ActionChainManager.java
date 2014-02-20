@@ -190,7 +190,7 @@ public class ActionChainManager {
 
         String name = ActionManager.getActionName(type);
 
-        Set<Action> result = scheduleAction(user, type, name, earliestAction,
+        Set<Action> result = scheduleActions(user, type, name, earliestAction,
             actionChain, serverIds);
 
         for (Action action : result) {
@@ -224,7 +224,7 @@ public class ActionChainManager {
         Set<Long> sidSet = new HashSet<Long>();
         sidSet.addAll(sids);
 
-        Set<Action> result = scheduleAction(user, ActionFactory.TYPE_SCRIPT_RUN, name,
+        Set<Action> result = scheduleActions(user, ActionFactory.TYPE_SCRIPT_RUN, name,
             earliest, actionChain, sidSet);
         for (Action action : result) {
             ((ScriptRunAction)action).setScriptActionDetails(script);
@@ -361,7 +361,7 @@ public class ActionChainManager {
      */
     public static Set<Action> scheduleRebootAction(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) {
-        Set<Action> actions = scheduleAction(user, ActionFactory.TYPE_REBOOT,
+        Set<Action> actions = scheduleActions(user, ActionFactory.TYPE_REBOOT,
             ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, serverIds);
         return actions;
     }
@@ -380,7 +380,7 @@ public class ActionChainManager {
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) {
 
-        return scheduleActionByOs(user, serverIds, packages, earliest, actionChain,
+        return scheduleActionsByOs(user, serverIds, packages, earliest, actionChain,
             ActionFactory.TYPE_PACKAGES_UPDATE, ActionFactory.TYPE_SOLARISPKGS_INSTALL);
     }
 
@@ -397,7 +397,7 @@ public class ActionChainManager {
     public static List<Action> schedulePackageRemoval(User user,
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) {
-        return scheduleActionByOs(user, serverIds, packages, earliest, actionChain,
+        return scheduleActionsByOs(user, serverIds, packages, earliest, actionChain,
             ActionFactory.TYPE_PACKAGES_REMOVE, ActionFactory.TYPE_SOLARISPKGS_REMOVE);
     }
 
@@ -412,7 +412,7 @@ public class ActionChainManager {
      * @return scheduled actions
      * @see com.redhat.rhn.manager.action.ActionManager#scheduleAction
      */
-    private static Set<Action> scheduleAction(User user, ActionType type, String name,
+    private static Set<Action> scheduleActions(User user, ActionType type, String name,
         Date earliest, ActionChain actionChain, Set<Long> serverIds) {
         Set<Action> result = new HashSet<Action>();
 
@@ -446,7 +446,7 @@ public class ActionChainManager {
      * @param solarisActionType the action type to apply to Solaris servers
      * @return scheduled actions
      */
-    private static List<Action> scheduleActionByOs(User user, Collection<Long> serverIds,
+    private static List<Action> scheduleActionsByOs(User user, Collection<Long> serverIds,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
         ActionType linuxActionType, ActionType solarisActionType) {
 
