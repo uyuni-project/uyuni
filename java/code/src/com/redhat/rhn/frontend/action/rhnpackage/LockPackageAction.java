@@ -65,7 +65,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         DataResult result = PackageManager.systemTotalPackages(server.getId(), null);
         return result;
     }
-    
+
 
     @Override
     public ActionForward execute(ActionMapping mapping,
@@ -129,7 +129,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                     // 2. disable the "request lock" button
                     // 3. switch to "show all packages" button, which do the otherwise above
                 }
-            } else {            
+            } else {
                 RhnHelper.handleEmptySelection(request);
             }
         }
@@ -148,14 +148,14 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         }
 
         request.setAttribute("system", server);
-        request.setAttribute(ListTagHelper.PARENT_URL, 
+        request.setAttribute(ListTagHelper.PARENT_URL,
                              request.getRequestURI() + "?sid=" + server.getId());
         request.setAttribute("date", this.getStrutsDelegate().prepopulateDatePicker(
                 request, form, "date", DatePicker.YEAR_RANGE_POSITIVE));
         request.setAttribute("dataset", dataSet);
         request.setAttribute(Globals.MESSAGE_KEY, infoMessages);
         request.setAttribute(Globals.ERROR_KEY, errorMessages);
-        
+
         SdcHelper.ssmCheck(request, server.getId(), user);
         ListTagHelper.bindSetDeclTo(LIST_NAME, getDecl(sid), request);
         TagHelper.bindElaboratorTo(LIST_NAME, dataSet.getElaborator(), request);
@@ -166,12 +166,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
     /**
      * Wipe actions.
-     * @param user 
+     * @param user
      */
     private void wipeActions(User user, Boolean unlock) {
         Map params = new HashMap();
         params.put(PackageLockAction.PARAM_PENDING, PackageManager.PKG_PENDING_UNLOCK);
-        
+
         for (Iterator it = ActionManager.allActions(user, null).iterator(); it.hasNext();) {
             Action action = ActionManager.lookupAction(user,
                                                        ((ScheduledAction) it.next()).getId());
@@ -179,7 +179,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             if (action != null && action.getActionType().getId() == 502) {
                 ActionManager.cancelAction(user, action, unlock ? params : null);
             }
-        }        
+        }
     }
 
     private void unlockSelectedPackages(HttpServletRequest request,
@@ -216,7 +216,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param container
      * @param scheduleDate
      * @param server
-     * @param request 
+     * @param request
      */
     private void lockSelectedPackages(DataResult lockedPackages,
                                       List<Package> container,
@@ -234,7 +234,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
             container.add(this.findPackage(sid, label, user));
         }
-        
+
         for (int i = 0; i < container.size(); i++) {
             container.get(i).setLockPending(Boolean.TRUE);
         }
@@ -250,7 +250,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
     /**
      * Find the package.
-     * 
+     *
      * @param sid System ID
      * @param combo Package combo (Separated by "|" name ID, evr ID and arch ID).
      * @param user User.
