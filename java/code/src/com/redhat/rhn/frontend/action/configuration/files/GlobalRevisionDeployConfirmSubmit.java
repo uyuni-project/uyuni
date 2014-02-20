@@ -85,7 +85,7 @@ public class GlobalRevisionDeployConfirmSubmit extends RhnListDispatchAction {
         RequestContext requestContext = new RequestContext(request);
 
         //schedule diff actions
-        User user = requestContext.getLoggedInUser();
+        User user = requestContext.getCurrentUser();
         ConfigRevision cr = ConfigActionHelper.findRevision(request);
 
         RhnSet systems = RhnSetDecl.CONFIG_FILE_DEPLOY_SYSTEMS.get(user);

@@ -104,7 +104,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable 
     public List getResult(RequestContext context) {
 
         HttpServletRequest request = context.getRequest();
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
 
         // Stuff packages into an RhnSet to be used in the query
         String packagesDecl = (String) request.getAttribute("packagesDecl");
@@ -179,7 +179,7 @@ public class SchedulePackageUpgradeAction extends RhnAction implements Listable 
 
         RequestContext context = new RequestContext(request);
         StrutsDelegate strutsDelegate = getStrutsDelegate();
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
 
         // Load the date selected by the user
         DynaActionForm form = (DynaActionForm) formIn;
