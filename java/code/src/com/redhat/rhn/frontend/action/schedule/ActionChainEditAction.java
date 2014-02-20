@@ -42,6 +42,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ActionChainEditAction extends RhnAction {
 
+    /** Query string parameter name. */
+    public static final String ACTION_CHAIN_ID_PARAMETER = "id";
+
+    /** Page attribute name. */
+    public static final String DATE_ATTRIBUTE = "date";
+
+    /** Page attribute name. */
+    public static final String GROUPS_ATTRIBUTE = "groups";
+
+    /** Page attribute name. */
+    public static final String ACTION_CHAIN_ATTRIBUTE = "actionChain";
+
     /** Action forward after Action Chain deletion. */
     private static final String TO_LIST_FORWARD = "to_list";
 
@@ -57,7 +69,7 @@ public class ActionChainEditAction extends RhnAction {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext requestContext = new RequestContext(request);
         ActionChain actionChain = ActionChainFactory.getActionChain(Long
-            .valueOf((String) request.getParameter("id")));
+            .valueOf((String) request.getParameter(ACTION_CHAIN_ID_PARAMETER)));
 
         if (isSubmitted(form)) {
             if (requestContext.wasDispatched("actionchain.jsp.delete")) {
@@ -82,7 +94,7 @@ public class ActionChainEditAction extends RhnAction {
      */
     private ActionForward schedule(ActionMapping mapping, HttpServletRequest request,
         DynaActionForm form, ActionChain actionChain) {
-        Date date = getStrutsDelegate().readDatePicker(form, "date",
+        Date date = getStrutsDelegate().readDatePicker(form, DATE_ATTRIBUTE,
             DatePicker.YEAR_RANGE_POSITIVE);
         ActionChainFactory.schedule(actionChain, date);
         ActionMessages messages = new ActionMessages();
@@ -121,11 +133,10 @@ public class ActionChainEditAction extends RhnAction {
         List<ActionChainEntryGroup> groups = ActionChainFactory
             .getActionChainEntryGroups(actionChain);
         log.debug("Found " + groups.size() + " Action Chain Entry groups");
-        request.setAttribute("actionChain", actionChain);
-        request.setAttribute("groups", groups);
-        request.setAttribute(
-            "date",
-            getStrutsDelegate().prepopulateDatePicker(request, form, "date",
-                DatePicker.YEAR_RANGE_POSITIVE));
+        request.setAttribute(ACTION_CHAIN_ATTRIBUTE, actionChain);
+        request.setAttribute(GROUPS_ATTRIBUTE, groups);
+        DatePicker datePicker = getStrutsDelegate().prepopulateDatePicker(request, form,
+            DATE_ATTRIBUTE, DatePicker.YEAR_RANGE_POSITIVE);
+        request.setAttribute(DATE_ATTRIBUTE, datePicker);
     }
 }
