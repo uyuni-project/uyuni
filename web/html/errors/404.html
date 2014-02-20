@@ -1,107 +1,76 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>Error</title>
-    <link rel="shortcut icon" href="/img/favicon.ico">
-    <link rel="stylesheet" href="/css/rhn-base.css" type="text/css">
-  <script src="/javascript/prototype-1.6.0.js"></script>
+  <title>Error</title>
+  <link rel="shortcut icon" href="/img/favicon.ico">
 
+  <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="/fonts/font-spacewalk/css/spacewalk-font.css" />
+  <meta name="viewport" content="initial-scale=1">
 
+  <link rel="stylesheet/less" type="text/css" href="/css/spacewalk.css" />
 
-  </head><body><div class="wrap" id="top-wrap">
+</head>
 
-
-
-
-
-
-  <div class="top-content"> <!--Added for the purpose of SuSE Manager. Header wrap [et]-->
-    
-<div id="utility">
-        <div id="utilityAccount">
-        <p>
-	 <a href="/help">Documentation</a><span class="navPipe">|</span> <!-- Moved over from utilityLinks as most of those are now gone, and there is no need to keep it as a separate bar. -->
-	</p>
+<body>
+  <div class="spacewalk-top-wrap">
+    <header>
+      <div class="spacewalk-header-container">
+        <div id="logo" class="spacewalk-logo">
+          <a href="/" title="SUSE Manager">
+            <img src="/img/susemanager/logo-header.png" alt="SUSE Manager" />
+          </a>
         </div>
-
-</div>
-
-<div id="header">
-	<a href="/"><img src="/img/logo.png" id="rhnLogo"></a>
- <div id="searchbar">
-      <form name="form1" action="/rhn/Search.do" method="post">
-      <select name="search_type">
-
-            <option value="systems">Systems</option>
-
-      <option value="packages">Packages</option>
-      <option value="errata">Patches</option>
-      <option value="docs">Documentation</option>
-      </select><input name="search_string" maxlength="40" size="20" type="text" accesskey="4" autofocus="autofocus">
-
-      <input name="submitted" value="true" type="hidden">
-      <input class="button" name="image-1" value="Search" type="submit" align="top"></form>
-  </div>
-</div>
-
-<div id="navWrap">
-<div id="mainNavWrap">
-
-
-<ul>
-<li id="mainFirst-active"><a href="/">Sign In</a></li>
-
-<li id="mainLast"><a href="/help/about.pxt" class="mainLastLink">About</a></li>
-</ul>
-</div><!-- end mainNavWrap -->
-</div><!-- end navWrap -->
-
-</div> <!--.top-content-->
-
-
-
-
-
-
-
-<div id="bar">
-
-</div>
-<!-- close bar -->
-
-  </div> <!--class="wrap" id="top-wrap"-->
-
-
-
+        <div class="spacewalk-header-links">
+          <form name="form1" action="/rhn/Search.do" method="get" class="form-inline hidden-xs" role="form">
+            <div class="form-group">
+              <select name="search_type" class="form-control input-sm">
+                <option value="systems">Systems</option>
+                <option value="packages">Packages</option>
+                <option value="errata">Patches</option>
+                <option value="docs">Documentation</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input name="search_string" maxlength="40" size="20" type="search" accesskey="4" class="form-control input-sm" placeholder="Search"/>
+            </div>
+            <div class="form-group">
+              <input name="submitted" value="true" type="hidden"/>
+              <button type="submit" class="btn btn-info input-sm" id="search-btn">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <nav class="navbar navbar-inverse spacewalk-main-nav" role="navigation">
+        <button class="pull-left main-menu-mobile" data-toggle="collapse" data-target=".main-menu-hor"></button>
+          <ul class="nav navbar-nav collapse main-menu-hor in">
+            <li><a href="/">Sign In</a></li>
+            <li><a href="/help/about.pxt" class="mainLastLink">About</a></li>
+          </ul>
+      </nav>
+    </header>
+    <div class="spacewalk-main-column-layout">
+      <section id="error-page">
+        <div class="error-page-wrap">
+          <h1>404</h1> 
+          <h2>Error - File Not Found</h2>
+          <hr/>
+          <p>Please report this error to your local administrator.</p>
+        </div>
+      </section>
     </div>
-    <div class="wrap" id="bottom-wrap">
-  <div id="content">
-    <table width="100%" cellspacing="0">
-      <tbody><tr>
-        <td class="sidebar">
-
-
-<div id="sidenavp"><ul></ul>
-</div>
-
-	</td>
-        <td class="page-content" width="100%">
-
-
-      <h1>404 Error - File Not Found</h1>
-      <p>Please report this error to your local administrator.</p>
-
-	</td>
-      </tr>
-    </tbody></table>
-
-    <div id="footer"> 
-      <a href="/help/copyright.pxt">Copyright Notice</a> 
-      <div style="color: black">SUSE Manager release <a href="/rhn/help/dispatcher/release_notes">1.7</a></div>  
-      <p></p> 
-    </div> 
-
-  </div> <!-- close content -->
-  </div> <!-- close wrap -->
-
-  </body></html>
+  </div>
+  <footer>
+    <div>
+      <a href="/help/copyright.pxt">Copyright Notice</a> | 
+      SUSE Manager release <a href="/rhn/help/dispatcher/release_notes">2.1 nightly</a>
+    </div>
+    <div>
+      <img src="/img/susemanager/logo-footer.png" alt="SUSE Manager project">
+    </div>
+  </footer>
+</body>
+</html>
