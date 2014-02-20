@@ -85,9 +85,8 @@ public class RebootSystemConfirmAction extends RhnAction
             HttpServletRequest request) {
 
         RequestContext context = new RequestContext(request);
-        RhnSet set = getSetDecl().get(context.getCurrentUser());
-
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
+        RhnSet set = getSetDecl().get(user);
 
         Date earliest = getStrutsDelegate().readDatePicker(formIn,
                 "date", DatePicker.YEAR_RANGE_POSITIVE);

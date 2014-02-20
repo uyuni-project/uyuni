@@ -55,7 +55,7 @@ public class VerifyConfirmSetupAction extends BaseSystemPackagesConfirmAction {
     protected PackageAction schedulePackageAction(ActionForm formIn,
         RequestContext context, List<Map<String, Long>> pkgs, Date earliest,
         ActionChain actionChain) {
-        return ActionChainManager.schedulePackageVerify(context.getLoggedInUser(),
+        return ActionChainManager.schedulePackageVerify(context.getCurrentUser(),
             context.lookupAndBindServer(), pkgs, earliest, actionChain);
     }
 
