@@ -82,7 +82,7 @@
             </table></div></div>
 
             <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8">
+                <div class="col-md-offset-3 col-md-6">
                     <button class="btn btn-primary" id="save"><bean:message key="actionchain.jsp.save"/></button>
                     <button class="btn btn-default" id="cancel"><bean:message key="actionchain.jsp.cancel"/></button>
                 </div>
@@ -107,13 +107,13 @@
                     <input type="hidden" name="use_date" value="true">
                     <rhn:csrf/>
                     <rhn:submitted/>
-                    <div class="col-sm-offset-4 col-sm-8">
+                    <div class="col-md-offset-3 col-md-6">
                         <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
                             <jsp:param name="widget" value="date"/>
                         </jsp:include>
                     </div>
                 </div>
-                <div class="col-sm-offset-4 col-sm-8">
+                <div class="col-md-offset-3 col-md-6">
                     <input type="hidden" name="dispatch" value='<bean:message key="actionchain.jsp.saveandschedule"/>'/>
                     <button type="button" class="btn btn-success" id="save-and-schedule">
                         <bean:message key="actionchain.jsp.saveandschedule"/>
