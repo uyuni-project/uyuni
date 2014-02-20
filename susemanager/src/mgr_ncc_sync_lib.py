@@ -62,7 +62,7 @@ class ChannelNotMirrorable(Exception): pass
 class NCCSync(object):
     """This class is used to sync SUSE Manager Channels and NCC repositories"""
 
-    def __init__(self, quiet=False, debug=-1, fromdir=None):
+    def __init__(self, quiet=False, debug=-1, fromdir=None, mirror=None):
         """Setup configuration"""
         self.quiet = quiet
         self.debug = debug
@@ -77,6 +77,7 @@ class NCCSync(object):
                 sys.exit(1)
             fromdir = urljoin('file://', fdir)
         self.fromdir = fromdir
+        self.mirror = mirror
 
         self.ncc_rhn_ent_mapping = {
             "SM_ENT_MON_S"       : [ "monitoring_entitled" ],
@@ -1148,7 +1149,8 @@ class NCCSync(object):
                 channel.set('update_tag', None)
 
         # make the repository urls point to our local path defined in 'fromdir'
-        if self.fromdir:
+        # if we don't have a mirror given
+        if self.fromdir and not self.mirror:
             for channel in filtered:
                 if channel.get('source_url'):
                     # pylint: disable=E1101
@@ -1453,6 +1455,7 @@ class NCCSync(object):
         :arg channel_id: DB id of the channel the repo should belong to
 
         """
+        self._alternativeMirrorUrl(channel)
         self._channel_add_mirrcred(channel)
 
         channel_data = channel.attrib
@@ -1650,7 +1653,7 @@ class NCCSync(object):
             udt = c.get('update_tag')
             if udt == '':
                 udt = None
-            if self.fromdir:
+            if self.fromdir and not self.mirror:
                 if c.get('source_url'):
                     # pylint: disable=E1101
                     path = urlparse(c.get('source_url')).path
@@ -1712,6 +1715,7 @@ class NCCSync(object):
         for label, source_url in result:
             if label in channels_xml:
                 channel = channels_xml[label]
+                self._alternativeMirrorUrl(channel)
                 if channel['source_url'] != source_url:
                     # remove the credentials from the URL
                     query = rhnSQL.prepare("UPDATE RHNCONTENTSOURCE "
@@ -1805,6 +1809,21 @@ class NCCSync(object):
     def is_entitlement(self, product):
         return product in self.ncc_rhn_ent_mapping
 
+    def _alternativeMirrorUrl(self, channel):
+        """change the URL in case and alternalive mirror is available.
+           Otherwise the URL stay as it is
+        """
+        # rewrite url if mirror is given
+        if self.mirror:
+            if channel.get('source_url'):
+                url = suseLib.URL(channel.get('source_url'))
+                url.host = self.mirror
+                if suseLib.accessible(url.getURL()):
+                    if isinstance(channel, type({})):
+                        channel['source_url'] = url.getURL()
+                    else:
+                        channel.set('source_url', url.getURL())
+
     def _channel_add_mirrcred(self, channel):
         """Add the mirrorcred query string to the url in channel['source_url']"""
         channel_url = channel.get('source_url')
@@ -1814,7 +1833,7 @@ class NCCSync(object):
         if not channel_url:
             return
 
-        if self.fromdir is not None:
+        if self.fromdir and not self.mirror:
             if channel_url.startswith('file://'):
                 return
             # pylint: disable=E1101
