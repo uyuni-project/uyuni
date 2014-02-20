@@ -24,7 +24,7 @@
         <div class="col-sm-6">
             <input type="hidden" id="action-chain" name="action_chain"
                 data-existing-action-chains='${existingActionChains}'
-            >
+            />
         </div>
     </div>
 </div>
