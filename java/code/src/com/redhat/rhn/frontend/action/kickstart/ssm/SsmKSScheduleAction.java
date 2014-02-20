@@ -75,7 +75,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         RequestContext context = new RequestContext(request);
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
         DynaActionForm form = (DynaActionForm)formIn;
         if ("ip".equals(mapping.getParameter())) {
             request.setAttribute(SCHEDULE_TYPE_IP, Boolean.TRUE);
@@ -158,7 +158,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
     private ScheduleActionResult schedule(HttpServletRequest request, ActionForm form,
         RequestContext context) {
         SSMScheduleCommand com  = null;
-        User user = context.getLoggedInUser();
+        User user = context.getCurrentUser();
 
 
         DynaActionForm dynaForm = (DynaActionForm) form;
@@ -231,7 +231,7 @@ public class SsmKSScheduleAction extends RhnAction implements Listable {
             return Collections.EMPTY_LIST;
         }
 
-        User user = ctx.getLoggedInUser();
+        User user = ctx.getCurrentUser();
         List profiles = KickstartLister.getInstance().listProfilesForSsm(user);
 
         if (profiles.isEmpty()) {

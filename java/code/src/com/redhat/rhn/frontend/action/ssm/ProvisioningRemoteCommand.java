@@ -24,6 +24,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -326,10 +327,8 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable {
         }
 
         return MessageFormat.format(body,
-                                    scriptType,
-                                    servers.size(),
-                                    servers.size() > 1 ? plrl : sngl,
-                                    summary);
+                scriptType, servers.size(), servers.size() > 1 ? plrl : sngl,
+                StringEscapeUtils.escapeXml(summary.toString()));
     }
 
 
@@ -338,11 +337,11 @@ public class ProvisioningRemoteCommand extends RhnAction implements Listable {
      */
     public List<SystemOverview> getResult(RequestContext context) {
         List<SystemOverview> dataset = new ArrayList<SystemOverview>();
-        List<SystemOverview> sysOvr = SystemManager.inSet(context.getLoggedInUser(),
+        List<SystemOverview> sysOvr = SystemManager.inSet(context.getCurrentUser(),
             RhnSetDecl.SYSTEMS.getLabel(), true);
         for (int i = 0; i < sysOvr.size(); i++) {
             Server server = SystemManager.lookupByIdAndUser(sysOvr.get(i).getId(),
-                                                            context.getLoggedInUser());
+                                                            context.getCurrentUser());
             if (server != null &&
                 server.hasEntitlement(EntitlementManager.PROVISIONING) &&
                 server.getCapabilities() != null) {

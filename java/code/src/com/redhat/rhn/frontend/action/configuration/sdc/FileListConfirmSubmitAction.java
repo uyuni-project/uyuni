@@ -90,7 +90,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     public ActionForward importFile(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) {
         RequestContext ctxt = new RequestContext(request);
-        User user = ctxt.getLoggedInUser();
+        User user = ctxt.getCurrentUser();
         Server server = ctxt.lookupServer();
 
         //The set of config file names to add to the action.
@@ -153,7 +153,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
     private ActionForward createRevisionAction(HttpServletRequest request, ActionForm form,
             ActionMapping mapping, ActionType type, String successKey) {
         RequestContext ctxt = new RequestContext(request);
-        User user = ctxt.getLoggedInUser();
+        User user = ctxt.getCurrentUser();
         Long sid = ctxt.getRequiredParam("sid");
 
         //create a set of config revisions from the set of config file names
