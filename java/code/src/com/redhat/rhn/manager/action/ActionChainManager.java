@@ -74,7 +74,6 @@ public class ActionChainManager {
             ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliest, actionChain, server);
     }
 
-
     /**
      * Schedules s package removal on a server.
      * @param user the user scheduling actions
@@ -168,7 +167,7 @@ public class ActionChainManager {
         ActionChain actionChain, Server server) {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(server.getId());
-        return schedulePackageAction(user, packages, type, earliest, actionChain,
+        return schedulePackageActions(user, packages, type, earliest, actionChain,
             serverIds).iterator().next();
     }
 
@@ -184,7 +183,7 @@ public class ActionChainManager {
      * @see com.redhat.rhn.manager.action.ActionManager#schedulePackageAction
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
-    private static Set<Action> schedulePackageAction(User user,
+    private static Set<Action> schedulePackageActions(User user,
         List<Map<String, Long>> packages, ActionType type, Date earliestAction,
         ActionChain actionChain, Set<Long> serverIds) {
 
@@ -347,19 +346,19 @@ public class ActionChainManager {
         ActionChain actionChain) {
         Set<Long> serverIds = new HashSet<Long>();
         serverIds.add(server.getId());
-        Set<Action> actions = scheduleRebootAction(user, serverIds, earliest, actionChain);
+        Set<Action> actions = scheduleRebootActions(user, serverIds, earliest, actionChain);
         return actions.iterator().next();
     }
 
     /**
-     * Schedules a reboot action on multiple servers.
+     * Schedules one or more reboot actions on multiple servers.
      * @param user the user scheduling actions
      * @param serverIds the affected servers' IDs
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
      * @return scheduled actions
      */
-    public static Set<Action> scheduleRebootAction(User user, Set<Long> serverIds,
+    public static Set<Action> scheduleRebootActions(User user, Set<Long> serverIds,
         Date earliest, ActionChain actionChain) {
         Set<Action> actions = scheduleActions(user, ActionFactory.TYPE_REBOOT,
             ActionFactory.TYPE_REBOOT.getName(), earliest, actionChain, serverIds);
@@ -376,11 +375,11 @@ public class ActionChainManager {
      * @return scheduled actions
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
-    public static List<Action> schedulePackageInstall(User user,
+    public static List<Action> schedulePackageInstalls(User user,
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) {
 
-        return scheduleActionsByOs(user, serverIds, packages, earliest, actionChain,
+        return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
             ActionFactory.TYPE_PACKAGES_UPDATE, ActionFactory.TYPE_SOLARISPKGS_INSTALL);
     }
 
@@ -394,10 +393,10 @@ public class ActionChainManager {
      * @return scheduled actions
      * @see ActionManager#addPackageActionDetails(Action, List) for "package map"
      */
-    public static List<Action> schedulePackageRemoval(User user,
+    public static List<Action> schedulePackageRemovals(User user,
         Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
         ActionChain actionChain) {
-        return scheduleActionsByOs(user, serverIds, packages, earliest, actionChain,
+        return schedulePackageActionsByOs(user, serverIds, packages, earliest, actionChain,
             ActionFactory.TYPE_PACKAGES_REMOVE, ActionFactory.TYPE_SOLARISPKGS_REMOVE);
     }
 
@@ -435,7 +434,7 @@ public class ActionChainManager {
     }
 
     /**
-     * Schedules actions differentiating their type among Linux and Solaris
+     * Schedules package actions differentiating their type among Linux and Solaris
      * servers.
      * @param user the user scheduling actions
      * @param serverIds the affected servers' IDs
@@ -446,9 +445,9 @@ public class ActionChainManager {
      * @param solarisActionType the action type to apply to Solaris servers
      * @return scheduled actions
      */
-    private static List<Action> scheduleActionsByOs(User user, Collection<Long> serverIds,
-        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
-        ActionType linuxActionType, ActionType solarisActionType) {
+    private static List<Action> schedulePackageActionsByOs(User user,
+        Collection<Long> serverIds, List<Map<String, Long>> packages, Date earliest,
+        ActionChain actionChain, ActionType linuxActionType, ActionType solarisActionType) {
 
         List<Action> result = new LinkedList<Action>();
         Set<Long> rhelServers = new HashSet<Long>();
@@ -457,12 +456,12 @@ public class ActionChainManager {
         solarisServers.addAll(ServerFactory.listSolarisSystems(serverIds));
 
         if (!rhelServers.isEmpty()) {
-            result.addAll(schedulePackageAction(user, packages, linuxActionType, earliest,
+            result.addAll(schedulePackageActions(user, packages, linuxActionType, earliest,
                 actionChain, rhelServers));
         }
 
         if (!solarisServers.isEmpty()) {
-            result.addAll(schedulePackageAction(user, packages, solarisActionType,
+            result.addAll(schedulePackageActions(user, packages, solarisActionType,
                 earliest, actionChain, solarisServers));
         }
         return result;
