@@ -74,7 +74,7 @@
     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
 	<!--  DoIt Button -->
 	<div class="text-right">
-		<html:submit property="dispatch">
+		<html:submit styleClass="btn btn-default" property="dispatch">
 			<bean:message key="deployconfirm.jsp.confirmbutton" />
 		</html:submit>
 	</div>

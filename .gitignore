@@ -15,6 +15,7 @@ java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
 java/.classpath
 java/.externalToolBuilders
+java/.pmd
 java/.project
 java/.settings/*
 java/conf/eclipse/bin
