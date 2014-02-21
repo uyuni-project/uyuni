@@ -71,7 +71,7 @@ def main():
     parser.add_option("--from-dir", action="store", dest='fromdir',
                       help="read data from directory instead of NCC")
     parser.add_option("--from-mirror", action="store", dest="mirror",
-                      help="hostname of a local mirror like SMT. Only to download the RPMs.")
+                      help="URL of a local mirror like SMT. Only to download the RPMs.")
 
     (options, args) = parser.parse_args()
 
