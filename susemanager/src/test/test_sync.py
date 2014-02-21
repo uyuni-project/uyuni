@@ -31,6 +31,8 @@ class SyncTest(unittest.TestCase):
         ncc_sync.suseLib.getProductProfile = Mock(return_value=
                                                   {"guid":"bogus_guid"})
         ncc_sync.MASTER_CACHE_LOCATION = "/tmp/ncc-data"
+        ncc_sync.CFG.fromdir = None
+        ncc_sync.CFG.mirror = None
         self.sync = ncc_sync.NCCSync()
 
     def tearDown(self):
