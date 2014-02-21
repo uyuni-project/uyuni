@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Feb 21 15:34:31 CET 2014 - fcastelli@suse.com
+
+- version 2.1.5-1
+- Add option --from-mirror to download RPMs from an alternative mirror
+- Remove duplicate grant statement
+- Add configuration option for SLP on server as well
+- Advertise registration URL via SLP
+- Fix the test for the mirror credentials (bnc#864246)
+- Add COPYING to %%doc
+
+-------------------------------------------------------------------
 Fri Feb 07 13:45:32 CET 2014 - mc@suse.de
 
 - version 2.1.4-1
