@@ -1834,6 +1834,8 @@ class NCCSync(object):
                 url.host = mirror.host
                 url.port = mirror.port
                 url.path = os.path.join(mirror.path, url.path)
+                # remove credentials query paramater
+                url.query = ""
                 if suseLib.accessible(url.getURL()):
                     if isinstance(channel, type({})):
                         channel['source_url'] = url.getURL()
