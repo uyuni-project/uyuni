@@ -55,6 +55,13 @@ When /^file "([^"]*)" contains "([^"]*)"$/ do |arg1, arg2|
     end
 end
 
+When /^I check the tomcat logs$/ do
+  $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep ERROR /var/log/tomcat6/catalina.out 2>&1`
+  $sshout.each_line() do |line|
+    puts line
+  end
+end
+    
 
 Then /^I want to get "([^"]*)"$/ do |arg1|
     found = false
