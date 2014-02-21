@@ -70,15 +70,6 @@ class NCCSync(object):
         self.is_iss_master = False
         self.is_iss_slave = False
 
-        if fromdir is not None:
-            fdir = os.path.abspath(fromdir)
-            if not os.path.isdir(fdir):
-                sys.stderr.write("'%s' is not a directory\n" % fdir)
-                sys.exit(1)
-            fromdir = urljoin('file://', fdir)
-        self.fromdir = fromdir
-        self.mirror = mirror
-
         self.ncc_rhn_ent_mapping = {
             "SM_ENT_MON_S"       : [ "monitoring_entitled" ],
             "SM_ENT_PROV_S"      : [ "provisioning_entitled" ],
@@ -102,10 +93,24 @@ class NCCSync(object):
 
         self.log_msg("\nStarted: %s" % (time.asctime(time.localtime())))
 
+        self.fromdir = CFG.fromdir
+        self.mirror = CFG.mirror
+
+        if fromdir is not None:
+            fdir = os.path.abspath(fromdir)
+            if not os.path.isdir(fdir):
+                self.error_msg("'%s' is not a directory" % fdir)
+                sys.exit(1)
+            self.fromdir = urljoin('file://', fdir)
+
+        if mirror is not None:
+            self.mirror = mirror
+
         self.smtguid  = suseLib.getProductProfile()['guid']
         self.authuser = CFG.mirrcred_user
         self.authpass = CFG.mirrcred_pass
         if not self.authuser or not self.authpass:
+            self.error_msg("Could not read mirror credentials.")
             raise Exception("Could not read mirror credentials. Please make "
                             "sure that server.susemanager.mirrcred_user and "
                             "server.susemanager.mirrcred_pass are set correctly "
