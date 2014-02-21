@@ -105,9 +105,9 @@ class NCCSync(object):
 
         if mirror is not None:
             self.mirror = mirror
-        if self.mirror and not suseLib.accessible("https://%s" % self.mirror):
-            self.error_msg("Mirror not accessible via HTTPS. Please make sure "
-                           "you have trusted the SSL CA certificate of the mirror.")
+
+        if self.mirror and not suseLib.accessible(self.mirror):
+            self.error_msg("""Mirror (%s) not accessible.""" % self.mirror)
 
         self.smtguid  = suseLib.getProductProfile()['guid']
         self.authuser = CFG.mirrcred_user
@@ -1825,9 +1825,15 @@ class NCCSync(object):
         """
         # rewrite url if mirror is given
         if self.mirror:
+            mirror = suseLib.URL(self.mirror)
             if channel.get('source_url'):
                 url = suseLib.URL(channel.get('source_url'))
-                url.host = self.mirror
+                url.scheme = mirror.scheme
+                url.username = mirror.username
+                url.password = mirror.password
+                url.host = mirror.host
+                url.port = mirror.port
+                url.path = os.path.join(mirror.path, url.path)
                 if suseLib.accessible(url.getURL()):
                     if isinstance(channel, type({})):
                         channel['source_url'] = url.getURL()
