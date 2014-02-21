@@ -86,6 +86,7 @@ public class RepoDetailsAction extends RhnAction {
                                   HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext ctx = new RequestContext(request);
+        Map params = makeParamMap(request);
 
         request.setAttribute(mapping.getParameter(), Boolean.TRUE);
 
@@ -105,9 +106,7 @@ public class RepoDetailsAction extends RhnAction {
                     if (!errors.isEmpty()) {
                         addErrors(request, errors);
                         setupPopup(ctx);
-                        return getStrutsDelegate().forwardParam(
-                                mapping.findForward(RhnHelper.DEFAULT_FORWARD), "id",
-                                repo.getId().toString());
+                        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
                     }
                     if (isCreateMode(request)) {
                         createSuccessMessage(request,
@@ -119,9 +118,9 @@ public class RepoDetailsAction extends RhnAction {
                     }
                     request.removeAttribute(CREATE_MODE);
                     setupRepo(request, form, repo);
-                    return getStrutsDelegate().forwardParam(
-                            mapping.findForward("success"), "id",
-                            repo.getId().toString());
+                    params.put("id", repo.getId());
+                    return getStrutsDelegate().forwardParams(
+                            mapping.findForward("success"), params);
                 }
                 catch (ValidatorException ve) {
                     getStrutsDelegate().saveMessages(request, ve.getResult());

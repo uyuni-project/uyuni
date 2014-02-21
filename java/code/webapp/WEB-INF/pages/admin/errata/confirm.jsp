@@ -38,7 +38,7 @@
                 <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-6">
-                        <html:submit property="dispatch">
+                          <html:submit styleClass="btn btn-default" property="dispatch">
                             <bean:message key="confirm.jsp.confirm" />
                         </html:submit>
                     </div>
