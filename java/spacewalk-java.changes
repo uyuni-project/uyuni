@@ -1,4 +1,41 @@
 -------------------------------------------------------------------
+Fri Feb 21 15:37:40 CET 2014 - fcastelli@suse.com
+
+- version 2.1.161.1-1
+- Action Chaining: use the same sort order for all systems in an SSM package
+  update
+- Action Chaining: list page columns changed as suggested by upstream
+- fixing ISE in create repo form
+- Styling unstyled submit buttons.
+- improved performance of system.listLatestUpgradeablePackages and
+  UpgradableList.do
+- Action Chaining: bootstrap classes tuned
+- Use enhanced for loop
+- For clones extend search for update tag to original channels (bnc#864028)
+- escaping system name for /rhn/monitoring/config/ProbeSuiteSystemsEdit.do
+- Transfer the origin's update tag to any cloned channels (bnc#864028)
+- escaping system name for /rhn/systems/ssm/provisioning/RemoteCommand.do
+- Simple attempt to find problematic things in jsps
+- don't add &amp; twice to the parameters of the url
+- Action Chaining: audit log configuration added
+- Action Chaining: avoid errors on double save
+- Action Chaining: proper logging added
+- add schedulePackageUpgrades() method
+- SSM package upgrades should not install packages if not an upgrade
+- fixed errors in date/time format conversions
+- put all javascript into one tag
+- simplify datepicker layout and unify look of date/time part
+- simplified getJavascriptPickerDayIndex()
+- extend renderOpenTag() to be able to render self closing tags
+- make the time format also localized
+- close the date picker after click
+- Use the start of the week day from the locale
+- Introduce a date-time picker.
+- Make the HtmlTag HTML5 compliant, by knowing that void elements can't be
+  closed. The BaseTag remains agnostic.
+- Added tool to manipulate localization files (format, del, sed).
+
+-------------------------------------------------------------------
 Thu Feb 13 15:32:20 CET 2014 - mc@suse.de
 
 - version 2.1.150.1-1
