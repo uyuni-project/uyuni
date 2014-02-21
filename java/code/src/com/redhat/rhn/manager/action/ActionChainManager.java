@@ -65,13 +65,8 @@ public class ActionChainManager {
      */
     public static PackageAction schedulePackageInstall(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
-
-        if (!server.isSolaris()) {
-            return (PackageAction) schedulePackageAction(user, packages,
-                ActionFactory.TYPE_PACKAGES_UPDATE, earliest, actionChain, server);
-        }
-        return (PackageAction) schedulePackageAction(user, packages,
-            ActionFactory.TYPE_SOLARISPKGS_INSTALL, earliest, actionChain, server);
+        return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
+            ActionFactory.TYPE_PACKAGES_UPDATE, ActionFactory.TYPE_SOLARISPKGS_INSTALL);
     }
 
     /**
@@ -86,12 +81,8 @@ public class ActionChainManager {
      */
     public static PackageAction schedulePackageRemoval(User user, Server server,
         List<Map<String, Long>> packages, Date earliest, ActionChain actionChain) {
-        if (!server.isSolaris()) {
-            return (PackageAction) schedulePackageAction(user, packages,
-                ActionFactory.TYPE_PACKAGES_REMOVE, earliest, actionChain, server);
-        }
-        return (PackageAction) schedulePackageAction(user, packages,
-            ActionFactory.TYPE_SOLARISPKGS_REMOVE, earliest, actionChain, server);
+        return schedulePackageActionByOs(user, server, packages, earliest, actionChain,
+            ActionFactory.TYPE_PACKAGES_REMOVE, ActionFactory.TYPE_SOLARISPKGS_REMOVE);
     }
 
     /**
@@ -431,6 +422,29 @@ public class ActionChainManager {
         }
 
         return result;
+    }
+
+    /**
+     * Schedules package actions differentiating their type among Linux and Solaris
+     * servers.
+     * @param user the user scheduling actions
+     * @param server the server
+     * @param packages the packages
+     * @param earliest the earliest execution date
+     * @param actionChain the action chain or null
+     * @param linuxActionType the action type to apply to Linux servers
+     * @param solarisActionType the action type to apply to Solaris servers
+     * @return scheduled action
+     */
+    private static PackageAction schedulePackageActionByOs(User user, Server server,
+        List<Map<String, Long>> packages, Date earliest, ActionChain actionChain,
+        ActionType linuxActionType, ActionType solarisActionType) {
+        if (!server.isSolaris()) {
+            return (PackageAction) schedulePackageAction(user, packages,
+                linuxActionType, earliest, actionChain, server);
+        }
+        return (PackageAction) schedulePackageAction(user, packages,
+            solarisActionType, earliest, actionChain, server);
     }
 
     /**
