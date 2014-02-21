@@ -97,7 +97,6 @@ upgrade_oracle() {
     fi
     echo "
 grant connect to $DBUSER;
-grant alter session to $DBUSER;
 grant create table to $DBUSER;
 grant create view to $DBUSER;
 grant create type to $DBUSER;
