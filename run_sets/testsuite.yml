@@ -50,6 +50,7 @@
 #- features/walk_hrefs.feature
 - features/powermanagement-test.feature
 - features/CVE-ID-new-syntax.feature
+- features/datepicker.feature
 - features/delete_system_profile.feature
 - features/bare-metal-test.feature
 - features/ssh_push.feature
@@ -60,3 +61,4 @@
 - features/xmlrpc_channel.feature
 - features/change_password.feature
 - features/spacewalk-debug.feature
+- features/tomcat_errors.feature
