@@ -279,10 +279,11 @@ UPGRADE="yum upgrade"
 if [ "$INTERACTIVE" = "0" ]; then
     YUM="$YUM -y"
     UPGRADE="$UPGRADE -y"
-elif [ -x /usr/bin/zypper ]; then
+fi
+if [ -x /usr/bin/zypper ]; then
 	YUM="zypper install"
 	UPGRADE="zypper update"
-	# add -y for non-interactive installation
+	# add --non-interactive for non-interactive installation
 	if [ "$INTERACTIVE" = "0" ]; then
 		YUM="zypper --non-interactive install"
 		UPGRADE="zypper --non-interactive update"
