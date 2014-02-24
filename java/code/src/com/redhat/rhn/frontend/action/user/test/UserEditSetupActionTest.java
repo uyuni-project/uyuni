@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.user.test;
 
+import java.util.Iterator;
+import java.util.List;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.role.Role;
@@ -21,16 +24,12 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
-import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.frontend.action.user.UserEditSetupAction;
 import com.redhat.rhn.frontend.action.user.UserRoleStatusBean;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.TestUtils;
-
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * UserEditSetupActionTest
@@ -117,8 +116,5 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         form.addExpectedProperty("lastName", user.getLastName());
         form.addExpectedProperty("title", user.getTitle());
         form.addExpectedProperty("prefix", user.getPrefix());
-        form.addExpectedProperty(UserActionHelper.DESIRED_PASS, "******");
-        form.addExpectedProperty(UserActionHelper.DESIRED_PASS_CONFIRM, "******");
-
     }
 }

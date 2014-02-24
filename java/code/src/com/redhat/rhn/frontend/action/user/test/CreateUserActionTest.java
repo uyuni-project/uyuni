@@ -65,6 +65,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(forwardPath.startsWith("/users/ActiveList.do?uid="));
     }
 
+    // This had better  fail if there are any users created in this satellite!
     public void testCreateFirstSatUser() {
         // ensure no other user exists
         for (Org org : OrgFactory.lookupAllOrgs()) {
@@ -77,7 +78,7 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
             fillOutForm("createSatelliteForm", CreateUserAction.TYPE_CREATE_SAT);
         setActionForm(form);
         actionPerform();
-        this.verifyForward(CreateUserAction.SUCCESS_SAT);
+        assertTrue(getActualForward().startsWith(CreateUserAction.PERMISSION_ERROR));
     }
 
     /**
