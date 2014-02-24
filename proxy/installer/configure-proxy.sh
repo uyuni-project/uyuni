@@ -280,11 +280,11 @@ if [ "$INTERACTIVE" = "0" ]; then
     YUM="$YUM -y"
     UPGRADE="$UPGRADE -y"
 elif [ -x /usr/bin/zypper ]; then
-	YUM_OR_UPDATE="zypper install"
+	YUM="zypper install"
 	UPGRADE="zypper update"
 	# add -y for non-interactive installation
 	if [ "$INTERACTIVE" = "0" ]; then
-		YUM_OR_UPDATE="zypper --non-interactive install"
+		YUM="zypper --non-interactive install"
 		UPGRADE="zypper --non-interactive update"
 	fi
 fi
@@ -632,7 +632,7 @@ echo "Enabling Spacewalk Proxy."
 if [ $ENABLE_SCOUT -ne 0 ]; then
     MonitoringScout="MonitoringScout"
 fi
-for service in squid httpd jabberd $MonitoringScout; do
+for service in squid apache2 jabberd $MonitoringScout; do
     if [ -x /usr/bin/systemctl ] ; then
         /usr/bin/systemctl enable $service
     else
