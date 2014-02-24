@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.53
+Version: 2.1.54
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -157,6 +157,10 @@ receivers and get them enabled automatically.
 Summary: Handler for /XMLRPC
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
+%if 0%{?fedora} >= 20
+# temporary workaround for bug BZ#1067443
+Requires: rpm-python <= 4.11.1-7
+%endif
 Obsoletes: rhns-server-xmlrpc < 5.3.0
 Obsoletes: rhns-xmlrpc < 5.3.0
 Provides: rhns-server-xmlrpc = 1:%{version}-%{release}
@@ -790,6 +794,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Mon Feb 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.54-1
+- 1067443 - workaround for rpm-python bug
+
 * Fri Feb 21 2014 Stephen Herr <sherr@redhat.com> 2.1.53-1
 - 1045083 - update openstack guest requirements
 
