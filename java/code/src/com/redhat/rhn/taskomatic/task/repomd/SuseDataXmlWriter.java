@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task.repomd;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageDto;
+import com.redhat.rhn.manager.EulaManager;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
@@ -23,6 +24,7 @@ import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Writer;
+import java.util.List;
 
 /**
  * susedata.xml writer class
@@ -32,6 +34,7 @@ import java.io.Writer;
 public class SuseDataXmlWriter extends RepomdWriter {
 
     private KeywordIterator keywordIterator;
+
     /**
      *
      * @param writer The writer object for susedata xml
@@ -97,8 +100,11 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     public void addPackage(PackageDto pkgDto) {
         long pkgId = pkgDto.getId().longValue();
-        if (!keywordIterator.hasNextForPackage(pkgId)) {
-            // this package has no keywords
+        List<String> eulas = new EulaManager().getEulasForPackage(pkgId);
+
+        if (!keywordIterator.hasNextForPackage(pkgId) &&
+            eulas.isEmpty()) {
+            // this package has no keywords and no EULA
             return;
         }
         try {
@@ -121,6 +127,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
             tmpHandler.startElement("version", attr);
             tmpHandler.endElement("version");
 
+            addEulas(pkgId, eulas, tmpHandler);
             addKeywords(pkgDto, tmpHandler);
             tmpHandler.endElement("package");
             tmpHandler.endDocument();
@@ -141,11 +148,27 @@ public class SuseDataXmlWriter extends RepomdWriter {
     private void addKeywords(PackageDto pkgDto,
             SimpleContentHandler localHandler) throws SAXException {
         long pkgId = pkgDto.getId().longValue();
-        do {
+        while (keywordIterator.hasNextForPackage(pkgId)) {
             localHandler.startElement("keyword");
             localHandler.addCharacters(sanitize(pkgId,
                     keywordIterator.getString("keyword")));
             localHandler.endElement("keyword");
-        } while (keywordIterator.hasNextForPackage(pkgId));
+        }
+    }
+
+    /**
+     * Adds the specified EULA strings to the package
+     * @param pkgId ID of the package
+     * @param eulas EULA strings
+     * @param localHandler SAX helper
+     * @throws SAXException if anything goes wrong
+     */
+    private void addEulas(long pkgId, List<String> eulas, SimpleContentHandler localHandler)
+        throws SAXException {
+        for (String eula : eulas) {
+            localHandler.startElement("eula");
+            localHandler.addCharacters(sanitize(pkgId, eula));
+            localHandler.endElement("eula");
+        }
     }
 }
