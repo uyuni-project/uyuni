@@ -76,7 +76,7 @@ def getSUSEInstalledProducts():
             'release' : product.getAttribute('release'),
             'arch' : product.getAttribute('arch'),
             'baseproduct' : 'N' }
-        if product.getAttribute('isbase') == "1":
+        if product.getAttribute('isbase') in ("1", "true", "yes"):
             p['baseproduct'] = 'Y'
         ret.append(p)
     return ret
