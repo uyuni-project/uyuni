@@ -198,11 +198,8 @@ Feature: Check client registration
      And I should see a "timeout" element in "remoteCommandForm" form
      And I should see a "lbl" element in "remoteCommandForm" form
      And I should see a "script_body" element in "remoteCommandForm" form
-     And I should see a "date_month" element in "remoteCommandForm" form
-     And I should see a "date_day" element in "remoteCommandForm" form
-     And I should see a "date_year" element in "remoteCommandForm" form
-     And I should see a "date_hour" element in "remoteCommandForm" form
-     And I should see a "date_minute" element in "remoteCommandForm" form
+     And I should see a "date_datepicker_widget_input" element in "remoteCommandForm" form
+     And I should see a "date_timepicker_widget_input" element in "remoteCommandForm" form
      And I should see a "Schedule" button
 
   Scenario: check tab links "Details" => "Reactivation"
