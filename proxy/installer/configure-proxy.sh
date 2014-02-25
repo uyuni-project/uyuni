@@ -105,7 +105,7 @@ set_value() {
 INTERACTIVE=1
 CNAME_INDEX=0
 
-OPTS=$(getopt --longoptions=help,answer-file:,non-interactive,version:,traceback-email:,use-ssl::,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring::,enable-scout::,monitoring-parent:,monitoring-parent-ip:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
+OPTS=$(getopt --longoptions=help,activate-SLP,answer-file:,non-interactive,version:,traceback-email:,use-ssl::,force-own-ca,http-proxy:,http-username:,http-password:,ssl-build-dir:,ssl-org:,ssl-orgunit:,ssl-common:,ssl-city:,ssl-state:,ssl-country:,ssl-email:,ssl-password:,ssl-cname:,install-monitoring::,enable-scout::,monitoring-parent:,monitoring-parent-ip:,populate-config-channel::,start-services:: -n ${0##*/} -- h "$@")
 
 if [ $? != 0 ] ; then
     print_help
