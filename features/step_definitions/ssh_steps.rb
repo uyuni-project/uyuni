@@ -55,12 +55,20 @@ When /^file "([^"]*)" contains "([^"]*)"$/ do |arg1, arg2|
     end
 end
 
-When /^I check the tomcat logs$/ do
+When /^I check the tomcat logs for errors$/ do
   $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep ERROR /var/log/tomcat6/catalina.out 2>&1`
   $sshout.each_line() do |line|
     puts line
   end
 end
+
+When /^I check the tomcat logs for NullPointerExceptions$/ do
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST grep -n1 NullPointer /var/log/tomcat6/catalina.out 2>&1`
+    $sshout.each_line() do |line|
+        puts line
+    end
+end
+
     
 
 Then /^I want to get "([^"]*)"$/ do |arg1|
@@ -80,7 +88,7 @@ Then /^I wont get "([^"]*)"$/ do |arg1|
     found = false
     $sshout.each_line() do |line|
         if line.include?(arg1)
-            found = true
+            found = strue
             break
         end
     end

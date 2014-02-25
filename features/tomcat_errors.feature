@@ -6,4 +6,5 @@
 Feature: Check tomcat logs for errors
     
   Scenario: Check the tomcat log
-    Then I check the tomcat logs
+    Then I check the tomcat logs for errors
+     And I check the tomcat logs for NullPointerExceptions
