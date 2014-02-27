@@ -1,7 +1,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:         nocpulse-common
-Version:      2.2.7.1
+Version:      2.2.7.2
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
