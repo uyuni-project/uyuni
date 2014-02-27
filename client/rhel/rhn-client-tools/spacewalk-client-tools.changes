@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:11:10 CET 2014 - fcastelli@suse.com
+
+- version 2.1.16.1-1
+- remove up2date_config.rpmmacros client action
+- remove macros.up2date from package build
+
+-------------------------------------------------------------------
 Thu Feb 13 15:23:41 CET 2014 - mc@suse.de
 
 - version 2.1.14.3-1
