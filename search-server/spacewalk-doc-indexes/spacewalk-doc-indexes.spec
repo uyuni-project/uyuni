@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.1.1.1
+Version: 2.1.2
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -49,6 +49,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn/search/indexes
 
 %changelog
+* Wed Feb 26 2014 Matej Kollar <mkollar@redhat.com> 2.1.2-1
+- Updating search index
+
 * Mon Nov 18 2013 Tomas Lestach <tlestach@redhat.com> 2.1.1-1
 - updated documentation indexes
 - index actual documentation
