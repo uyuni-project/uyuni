@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:29:55 CET 2014 - fcastelli@suse.com
+
+- version 2.1.6.3-1
+- add missing activate-SLP to option list
+- correctly tell yum from zypper; not only in interactive mode
+- Various fixes for configure-proxy.sh (rename YUM_OR_UPDATE to YUM, httpd to
+  apache2)
+- fix wrong product name in configure-proxy.sh
+- Add SLP activation to configure-proxy.sh; fix SLP registration file for proxy
+
+-------------------------------------------------------------------
 Fri Feb 07 13:57:39 CET 2014 - mc@suse.de
 
 - version 2.1.6.2-1
