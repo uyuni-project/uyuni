@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 27 14:55:10 CET 2014 - fcastelli@suse.com
+
+- version 2.1.54.1-1
+- workaround for rpm-python bug
+- update openstack guest requirements
+
+-------------------------------------------------------------------
 Fri Feb 21 15:31:07 CET 2014 - fcastelli@suse.com
 
 - version 2.1.52.1-1
