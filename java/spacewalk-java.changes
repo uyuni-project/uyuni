@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:31:17 CET 2014 - fcastelli@suse.com
+
+- version 2.1.163.1-1
+- fix reboot required (bnc#865161)
+- Avoid double translation, rhn:icon will localize the text
+- Remove unused import
+- We rmvd DESIRED_PASS/CONFIRM params from UserEditSetupAction - rmv from
+  expected in test
+- Testing createFirstUser() now looks to be forbidden
+- verifyForward() and redirects-w/params do not like each other
+- Tweaking some tag Junits to work
+
+-------------------------------------------------------------------
 Fri Feb 21 15:37:40 CET 2014 - fcastelli@suse.com
 
 - version 2.1.161.1-1
