@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.1.2
+Version: 2.1.2.1
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
