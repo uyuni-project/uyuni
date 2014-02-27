@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:22:41 CET 2014 - fcastelli@suse.com
+
+- version 2.1.15.2-1
+- advertise registration URL via SLP
+- Add SLP activation to configure-proxy.sh; fix SLP registration file for proxy
+
+-------------------------------------------------------------------
 Fri Feb 07 13:49:36 CET 2014 - mc@suse.de
 
 - version 2.1.15.1-1
