@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:24:45 CET 2014 - fcastelli@suse.com
+
+- version 2.1.5.2-1
+- fix enabling RewriteLock for apache 2.2
+- change apache RedirectMatch into a RewriteRule to prevent warnings
+
+-------------------------------------------------------------------
 Mon Jan 13 09:50:57 CET 2014 - mc@suse.de
 
 - version 2.1.5.1-1
