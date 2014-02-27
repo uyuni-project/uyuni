@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:32:51 CET 2014 - fcastelli@suse.com
+
+- version 2.1.60.1-1
+- bug fixed in error pages in perl - they were not reading the stylesheet
+  correctly
+- remove "nightly" from footer version
+- Error pages in Perl formated to the new layout of SUMa
+- give generated buttons appropriate class
+- Styling unstyled submit buttons.
+- Perl Pages: Styling unstyled submit buttons
+- Revert "Refeactored cookie parsing code to better handle malformed cookies"
+- Action Chaining: avoid errors on double save
+- Refeactored cookie parsing code to better handle malformed cookies
+- make the time format also localized
+- Introduce a date-time picker.
+
+-------------------------------------------------------------------
 Thu Feb 13 15:12:54 CET 2014 - mc@suse.de
 
 - version 2.1.56.1-1
