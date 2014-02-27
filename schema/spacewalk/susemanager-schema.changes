@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:26:12 CET 2014 - fcastelli@suse.com
+
+- version 2.1.51-1
+- enable migration from 1.7 to 2.1
+- increase length of rhnCVE name column
+- fix invalid syntax for postgresql migration
+- write insert of bootstrap entitlement in a way, that it can be called
+  multiple times
+- copy upstream schema migrations to SUSE Manager schema upgrade
+- replacing view must have the same number of columns (in postgresql)
+- db: add new upgrade migration
+- updated rhnServerOutdatePackages to include arch
+- rhnServerOutdatedPackages schema upgrade script
+- improved performance of system.listLatestUpgradeablePackages and
+  UpgradableList.do
+- Automatic commit of package [spacewalk-schema] release [2.1.47-1].
+- update rhnServer after queue_server to avoid a deadlock
+- copy upstream schema migration to SUSE Manager schema upgrade
+- fix ORA-01422 error when removing a channel
+- copy upstream schema changes to SUSE Manager schema upgrade
+- fix ORA-01403: no data found, when unsubscribing a system
+- rename upgrade scripts to be included in schema upgrade
+- fix ORA-01403: no data found, during system registration
+
+-------------------------------------------------------------------
 Fri Feb 14 10:23:24 CET 2014 - mc@suse.de
 
 - version 2.1.43.2-1
