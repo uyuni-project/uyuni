@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Feb 27 15:00:07 CET 2014 - fcastelli@suse.com
+
+- version 2.1.33.1-1
+- Changes in sidenav ul>li by spacewalk have been adapted to manager
+- Error pages in Perl formated to the new layout of SUMa
+- Do not use fixed size
+- Add space after alphabar result sign
+- Sidenav css should respect valid html constructions
+- Use jquery-timepicker-1.3.3
+- Datepicker needs bootstrap-datepicker and jquery-timepicker
+- Simplify datepicker layout and unify look of date/time part
+- Introduce a date-time picker.
+
+-------------------------------------------------------------------
 Thu Feb 13 15:22:38 CET 2014 - mc@suse.de
 
 - version 2.1.27.1-1
