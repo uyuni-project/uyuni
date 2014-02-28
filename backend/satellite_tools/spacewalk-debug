@@ -103,7 +103,7 @@ cp -fapRd /etc/apache2/conf* $DIR/conf/httpd
 if [ $IS_SUSE -eq 1 ]; then
     cp -fapRd /etc/apache2/vhosts* $DIR/conf/httpd
 fi
-cp -fapRd /etc/rhn $DIR/conf/rhn
+cp -fapRdL /etc/rhn $DIR/conf/rhn
 sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
