@@ -16,6 +16,8 @@ package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -48,6 +50,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import java.net.ConnectException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -423,8 +426,17 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         String label = c.getLabel();
         c = (Channel) reload(c);
-        assertEquals(1, csh.delete(adminKey, label));
-        // should be assertTrue
+
+        try {
+            assertEquals(1, csh.delete(adminKey, label));
+        }
+        catch (ValidatorException e) {
+            // taskomatic is down
+            assertEquals("message.channel.cannot-be-deleted.no-taskomatic", e.getResult()
+                .getErrors().get(0).getKey());
+            return;
+        }
+        // taskomatic is up
         assertNull(reload(c));
     }
 

@@ -272,7 +272,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
         c = (Channel) reload(c);
-        ChannelManager.deleteChannel(user, c.getLabel());
+        ChannelManager.deleteChannel(user, c.getLabel(), true);
         assertNull(reload(c));
     }
 

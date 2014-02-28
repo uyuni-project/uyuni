@@ -846,6 +846,21 @@ public class ChannelManager extends BaseManager {
      */
     public static void deleteChannel(User user, String label)
         throws InvalidChannelRoleException, NoSuchChannelException {
+        deleteChannel(user, label, false);
+    }
+
+    /**
+     * Deletes a software channel
+     * @param user User with access to delete the channel.
+     * @param label Channel label
+     * @param skipTaskomatic skips Taskomatic schedule deletion, useful for testing
+     * @throws InvalidChannelRoleException thrown if User does not have access
+     * to delete channel.
+     * @throws NoSuchChannelException thrown if no channel exists with the
+     * given label
+     */
+    public static void deleteChannel(User user, String label, boolean skipTaskomatic)
+        throws InvalidChannelRoleException, NoSuchChannelException {
 
         Channel toRemove = ChannelFactory.lookupByLabel(user.getOrg(), label);
 
@@ -868,11 +883,13 @@ public class ChannelManager extends BaseManager {
                         "message.channel.cannot-be-deleted.has-distros");
 
             }
-            if (!new TaskomaticApi().isRunning()) {
-                ValidatorException
-                    .raiseException("message.channel.cannot-be-deleted.no-taskomatic");
+            if (!skipTaskomatic) {
+                if (!new TaskomaticApi().isRunning()) {
+                    ValidatorException
+                        .raiseException("message.channel.cannot-be-deleted.no-taskomatic");
+                }
+                ChannelManager.unscheduleEventualRepoSync(toRemove, user);
             }
-            ChannelManager.unscheduleEventualRepoSync(toRemove, user);
             ChannelManager.queueChannelChange(label,
                     user.getLogin(), "java::deleteChannel");
             ChannelFactory.remove(toRemove);
