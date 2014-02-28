@@ -140,22 +140,25 @@ public class IconTag extends TagSupport {
         icons.put("nav-page-prev", "fa fa-angle-left");
         icons.put("nav-right", "fa fa-arrow-right");
         icons.put("nav-up", "fa fa-caret-up");
+        icons.put("repo-sync", "fa fa-refresh");
+        icons.put("repo-schedule-sync", "fa fa-calendar");
         icons.put("sort-down", "fa fa-arrow-circle-down");
         icons.put("sort-up", "fa fa-arrow-circle-up");
-        icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
+        icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
+        icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
+        icons.put("system-bootstrap", "fa fa-1-5x fa-square-o");		
+		icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
         icons.put("system-kickstarting", "fa fa-rocket fa-1-5x");
         icons.put("system-locked", "fa fa-lock fa-1-5x");
-        icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
+		icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
         icons.put("system-physical", "fa fa-desktop fa-1-5x");
         icons.put("system-reboot", "fa fa-refresh");
         icons.put("system-unentitled", "fa fa-times-circle fa-1-5x");
         icons.put("system-unknown", "fa fa-question-circle fa-1-5x");
         icons.put("system-virt-guest", "fa fa-1-5x spacewalk-icon-virtual-guest");
         icons.put("system-virt-host", "fa fa-1-5x spacewalk-icon-virtual-host");
-        icons.put("system-bootstrap", "fa fa-1-5x fa-square-o");
         icons.put("system-warn", "fa fa-exclamation-triangle fa-1-5x text-warning");
-        icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
-        icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
+        
     }
 
     /**
