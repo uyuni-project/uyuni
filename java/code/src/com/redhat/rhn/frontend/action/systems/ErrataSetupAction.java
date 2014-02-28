@@ -128,7 +128,12 @@ public class ErrataSetupAction extends RhnAction implements Listable {
     }
 
 
-    private List<Map<String, Object>> getComboList(HttpServletRequest request) {
+    /**
+     * Set up the filter combo
+     * @param request the request
+     * @return the map for the combo
+     */
+    protected List<Map<String, Object>> getComboList(HttpServletRequest request) {
 
         String selected = request.getParameter(SELECTOR);
 
@@ -240,6 +245,36 @@ public class ErrataSetupAction extends RhnAction implements Listable {
         return params;
     }
 
+    /**
+     * convert combo box types to ErrataFactory types
+     * @param type the type from the combo box
+     * @return a list of types to get
+     */
+    protected List<String> getTypes(String type) {
+        List<String> typeList = new ArrayList<String>();
+        LocalizationService ls = LocalizationService.getInstance();
+
+        if (ls.getMessage(BUGFIX).equals(type)) {
+            typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
+        }
+        else if (ls.getMessage(SECUR).equals(type)) {
+            typeList.add(ErrataFactory.ERRATA_TYPE_SECURITY);
+        }
+        else if (ls.getMessage(ENHANCE).equals(type)) {
+            typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
+        }
+        else if (ls.getMessage(NON_CRITICAL).equals(type)) {
+            typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
+            typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
+        }
+        else { // ALL
+            typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
+            typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
+            typeList.add(ErrataFactory.ERRATA_TYPE_SECURITY);
+        }
+        return typeList;
+    }
+
 
     /**
      *
@@ -254,23 +289,9 @@ public class ErrataSetupAction extends RhnAction implements Listable {
 
          LocalizationService ls = LocalizationService.getInstance();
 
-         List<String> typeList = new ArrayList<String>();
          String eType = new String();
 
-         if (ls.getMessage(BUGFIX).equals(type)) {
-             typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
-         }
-         else if (ls.getMessage(SECUR).equals(type)) {
-             typeList.add(ErrataFactory.ERRATA_TYPE_SECURITY);
-         }
-         else if (ls.getMessage(ENHANCE).equals(type)) {
-             typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
-         }
-         else if (ls.getMessage(NON_CRITICAL).equals(type)) {
-             typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
-             typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
-         }
-         else if (ls.getMessage(SECUR_CRIT).equals(type)) {
+         if (ls.getMessage(SECUR_CRIT).equals(type)) {
              eType = ErrataFactory.ERRATA_TYPE_SECURITY;
              severity = Severity.CRITICAL_LABEL;
              currency = true;
@@ -290,15 +311,12 @@ public class ErrataSetupAction extends RhnAction implements Listable {
              severity = Severity.LOW_LABEL;
              currency = true;
          }
-         else { // ALL
-             typeList.add(ErrataFactory.ERRATA_TYPE_BUG);
-             typeList.add(ErrataFactory.ERRATA_TYPE_ENHANCEMENT);
-             typeList.add(ErrataFactory.ERRATA_TYPE_SECURITY);
-         }
 
         if (currency) {
             return SystemManager.relevantCurrencyErrata(user, sid, eType, severity);
         }
+
+        List<String> typeList = getTypes(type);
         return SystemManager.relevantErrata(user, sid, typeList);
     }
 
