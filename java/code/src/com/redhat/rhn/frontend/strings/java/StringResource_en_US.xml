@@ -8310,6 +8310,9 @@ Follow this url to see the full list of inactive systems:
      <trans-unit id="message.channel.cannot-be-deleted.has-distros">
         <source>There are currently autoinstallable distributions associated to this channel. Please disassociate or delete the autoinstallable distributions before proceeding to delete the channel.</source>
      </trans-unit>
+     <trans-unit id="message.channel.cannot-be-deleted.no-taskomatic">
+        <source>The scheduling service appears down, channel cannot be deleted at the moment. Please contact your administrator.</source>
+     </trans-unit>
      <trans-unit id="message.channelupdated">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
      </trans-unit>

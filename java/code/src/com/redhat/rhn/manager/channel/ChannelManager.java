@@ -892,6 +892,10 @@ public class ChannelManager extends BaseManager {
                         "message.channel.cannot-be-deleted.has-distros");
 
             }
+            if (!new TaskomaticApi().isRunning()) {
+                ValidatorException
+                    .raiseException("message.channel.cannot-be-deleted.no-taskomatic");
+            }
             ChannelManager.unscheduleEventualRepoSync(toRemove, user);
             ChannelManager.queueChannelChange(label,
                     user.getLogin(), "java::deleteChannel");
@@ -914,8 +918,9 @@ public class ChannelManager extends BaseManager {
                 tapi.unscheduleRepoSync(channel, user);
             }
         }
-        catch (Exception e) {
+        catch (RuntimeException e) {
             log.warn("Failed to unschedule repo sync for channel " + channel.getLabel());
+            throw e;
         }
     }
 
