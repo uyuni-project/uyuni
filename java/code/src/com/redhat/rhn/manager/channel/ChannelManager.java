@@ -1292,7 +1292,7 @@ public class ChannelManager extends BaseManager {
 
     /**
      * List the errata applicable to a channel between start and end date
-     * @deprecated
+     * @deprecated Use appropriate listErrata
      * @param channel channel whose errata are sought
      * @param start start date
      * @param end end date
