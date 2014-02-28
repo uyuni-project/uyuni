@@ -97,6 +97,7 @@ public class DatePicker {
     private int      currentYear;
     private int yearRangeDirection;
     private boolean disableTime;
+    private boolean disableDate;
 
     /**
      * Create a new date picker that extracts fields prefixed with
@@ -121,6 +122,7 @@ public class DatePicker {
         analyzeDateFormat();
         yearRangeDirection = yearRangeDirection0;
         disableTime = false;
+        disableDate = false;
     }
 
     /**
@@ -144,6 +146,7 @@ public class DatePicker {
         analyzeDateFormat();
         yearRangeDirection = yearRangeDirection0;
         disableTime = true;
+        disableDate = false;
     }
 
     /**
@@ -577,6 +580,21 @@ public class DatePicker {
      */
     public boolean getDisableTime() {
         return this.disableTime;
+    }
+
+    /**
+     * Set disableDate property (Picker doesn't offer to set date)
+     */
+    public void setDisableDate() {
+        this.disableDate = true;
+    }
+
+    /**
+     * Returns disableDate property
+     * @return disableDate property
+     */
+    public boolean getDisableDate() {
+        return this.disableDate;
     }
 
     /**
