@@ -67,12 +67,6 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
 
     // This had better  fail if there are any users created in this satellite!
     public void testCreateFirstSatUser() {
-        // ensure no other user exists
-        for (Org org : OrgFactory.lookupAllOrgs()) {
-            for (User user : UserFactory.getInstance().findAllUsers(org)) {
-                UserFactory.deleteUser(user.getId());
-            }
-        }
         setRequestPathInfo("/newlogin/CreateFirstUserSubmit");
         RhnMockDynaActionForm form =
             fillOutForm("createSatelliteForm", CreateUserAction.TYPE_CREATE_SAT);
