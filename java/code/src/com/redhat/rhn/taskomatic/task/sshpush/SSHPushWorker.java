@@ -28,6 +28,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -51,6 +52,9 @@ public class SSHPushWorker implements QueueWorker {
 
     // Message text used for error detection
     private static final String PORT_FORWARDING_FAILED = "remote port forwarding failed";
+
+    // Config key
+    private static final String CONFIG_KEY_USE_HOSTNAME = "ssh_push_use_hostname";
 
     // Client and proxy hostnames
     private String proxy;
@@ -145,10 +149,16 @@ public class SSHPushWorker implements QueueWorker {
         try {
             parentQueue.workerStarting();
 
-            // Get the client's address
+            // Get the client's hostname or address
             Server server = (Server) HibernateFactory.getSession().load(
                     Server.class, system.getId());
-            client = server.getIpAddress();
+            if (Config.get().getBoolean(CONFIG_KEY_USE_HOSTNAME)) {
+                client = server.getHostname();
+            }
+            else {
+                client = server.getIpAddress();
+            }
+
             if (log.isDebugEnabled()) {
                 log.debug("Running 'rhn_check' for: " + client);
             }
@@ -228,11 +238,11 @@ public class SSHPushWorker implements QueueWorker {
             Throwable cause = e.getCause();
             if (cause instanceof NoRouteToHostException ||
                     cause instanceof ConnectException) {
-                log.warn(cause.getMessage() + " [" + system.getName() + "]");
+                log.warn(cause.getMessage() + " [" + client + "]");
             }
             // Check if a tunnel is currently open
             else if (e.getMessage().startsWith(PORT_FORWARDING_FAILED)) {
-                log.info("Skipping " + system.getName() + ", tunnel seems to be busy");
+                log.info("Skipping " + client + ", tunnel seems to be busy");
                 if (log.isDebugEnabled()) {
                     log.debug(e.getMessage());
                 }
