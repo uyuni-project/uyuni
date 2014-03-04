@@ -10,7 +10,7 @@ CONF_DIRS = apache-conf httpd-conf rhn-conf logrotate
 # httpd-conf, logrotate)
 EXTRA_DIRS = /var/log/rhn /var/log/rhn/reposync /var/cache/rhn
 
-DOCKER_CONTAINER = ix64smc161.qa.suse.de/manager_python_testing_pgsql_1_7
+DOCKER_CONTAINER = suma-docker-registry.cloud.suse.de/manager_python_testing_pgsql_1_7
 DOCKER_RUN_EXPORT = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src"
 DOCKER_VOLUMES = -v "$(CURDIR)/../:/manager"
 
