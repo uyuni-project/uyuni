@@ -134,6 +134,7 @@
       <fileset file="${build.dir}/rhn.jar" />
       <fileset dir="${lib.dir}">
         <include name="**/*.jar" />
+        <exclude name="**/el-api*" />
         <exclude name="**/jasper*" />
         <exclude name="**/jspapi*" />
       </fileset>
