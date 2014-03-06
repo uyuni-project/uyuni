@@ -1858,6 +1858,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Bootstrap">
         <source>Bootstrap</source>
       </trans-unit>
+      <trans-unit id="setup-wizard.prev">
+        <source>Prev</source>
+      </trans-unit>
+      <trans-unit id="setup-wizard.next">
+        <source>Next</source>
+      </trans-unit>
 
       <!-- Mirror Credentials -->
       <trans-unit id="mirror-credentials.jsp.empty">
@@ -1889,9 +1895,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed">
         <source>verification failed</source>
-      </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.dispatch">
-        <source>Next</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title">
         <source>Edit credentials</source>
