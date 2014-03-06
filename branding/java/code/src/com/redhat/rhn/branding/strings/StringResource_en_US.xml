@@ -1863,8 +1863,8 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.empty">
         <source>No credentials</source>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.user">
-        <source>User</source>
+      <trans-unit id="mirror-credentials.jsp.username">
+        <source>Username</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.password">
         <source>Password</source>
@@ -1891,7 +1891,13 @@ tree will not be usable for autoinstalling.
         <source>verification failed</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.dispatch">
-        <source>Configure Products</source>
+        <source>Next</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-edit.title">
+        <source>Edit credentials</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-delete.title">
+        <source>Are you sure you want to delete these credentials?</source>
       </trans-unit>
 
       <!-- SUSE Products -->
