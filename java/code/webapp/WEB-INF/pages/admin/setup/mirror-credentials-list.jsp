@@ -11,7 +11,7 @@
         <rl:column headerkey="mirror-credentials.jsp.email"
                    bound="true"
                    attr="email" />
-        <rl:column headerkey="mirror-credentials.jsp.user"
+        <rl:column headerkey="mirror-credentials.jsp.username"
                    bound="true"
                    attr="user" />
         <rl:column headerkey="mirror-credentials.jsp.actions"

@@ -17,25 +17,25 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Edit Credentials</h4>
+                        <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
                             <input type="hidden" id="modal-id">
                             <div class="form-group">
-                                <label for="modal-email" class="col-sm-2 control-label">Email:</label>
+                                <label for="modal-email" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control" id="modal-email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="modal-user" class="col-sm-2 control-label">User:</label>
+                                <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="modal-user" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="modal-password" class="col-sm-2 control-label">Password:</label>
+                                <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" id="modal-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
                                 </div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Add credentials</button>
+                        <button type="button" class="btn btn-success" onClick="saveCredentials();">Save</button>
                     </div>
                 </div>
             </div>
@@ -56,20 +56,19 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Delete Credentials</h4>
+                        <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-delete.title" /></h4>
                     </div>
                     <div class="modal-body">
-                        <p>Do you really want to delete these credentials?</p>
                         <form class="form-horizontal" role="form">
                             <input type="hidden" id="delete-id">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">Email:</label>
+                                <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static" id="delete-email"></p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">User:</label>
+                                <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static" id="delete-user"></p>
                                 </div>
@@ -78,7 +77,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">Delete credentials</button>
+                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">Delete</button>
                     </div>
                 </div>
             </div>
