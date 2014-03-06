@@ -104,8 +104,11 @@
         </div>
         <div class="pull-right">
             <hr />
-            <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do">
-                <bean:message key="mirror-credentials.jsp.dispatch" />
+            <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do">
+                <bean:message key="setup-wizard.prev" />
+            </a>
+            <a class="btn btn-default" href="/rhn/admin/setup/SUSEProducts.do">
+                <bean:message key="setup-wizard.next" />
             </a>
         </div>
     </body>
