@@ -27,8 +27,8 @@ function initSubscriptions(id) {
 // Hide any modal dialogs
 function hideModal() {
   console.log("hideModal()");
-  $('#edit-credentials-modal').modal('hide');
-  $('#delete-credentials-modal').modal('hide');
+  $('#modal-edit-credentials').modal('hide');
+  $('#modal-delete-credentials').modal('hide');
 }
 
 // Save credentials from modal dialog

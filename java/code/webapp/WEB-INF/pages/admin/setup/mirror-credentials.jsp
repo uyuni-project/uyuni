@@ -109,7 +109,7 @@
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
         <p>
             Please configure and test your mirror credentials below.
-            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#edit-credentials-modal">
+            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-edit-credentials">
                 <rhn:icon type="item-add"></rhn:icon>Add
             </button>
         </p>
