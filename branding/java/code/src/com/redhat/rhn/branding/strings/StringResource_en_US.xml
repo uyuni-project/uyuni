@@ -1884,6 +1884,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.download">
         <source>download subscriptions</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.subscriptions">
+        <source>list subscriptions</source>
+      </trans-unit>
       <trans-unit id="mirror-credentials.jsp.edit">
         <source>edit credentials</source>
       </trans-unit>
@@ -1901,6 +1904,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-delete.title">
         <source>Are you sure you want to delete these credentials?</source>
+      </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.modal-subscriptions.title">
+        <source>Subscriptions related to these credentials</source>
       </trans-unit>
 
       <!-- SUSE Products -->
