@@ -494,7 +494,6 @@ public class CVEAuditManagerTestHelper {
      * @return the newly created installed package
      * @throws Exception if anything goes wrong
      */
-    @SuppressWarnings("unchecked")
     public static InstalledPackage createTestInstalledPackage(Package packageIn,
             Server server) throws Exception {
         InstalledPackage result = new InstalledPackage();
