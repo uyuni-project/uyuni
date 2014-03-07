@@ -82,7 +82,10 @@ def create_server_obj(server_url):
 
 
 def read_username():
-    print("SUSE Manager username: ")
+    tty = open("/dev/tty", "r+")
+    tty.write('SUSE Manager username: ')
+    tty.close()
+
     try:
         username = sys.stdin.readline().rstrip('\n')
     except KeyboardInterrupt:
