@@ -59,7 +59,7 @@ public class CVEAuditManagerTestHelper {
      */
     public static User createTestUser() {
         User user = UserTestUtils.findNewUser("testuser", "testorg");
-        user.addRole(RoleFactory.ORG_ADMIN);
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
         return user;
     }
 
