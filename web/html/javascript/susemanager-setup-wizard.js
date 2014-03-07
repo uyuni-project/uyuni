@@ -1,10 +1,10 @@
 // Init the edit modal with given values
 function initEdit(id, email, user) {
   console.log("initEdit(): " + id);
-  $('#modal-id').val(id);
-  $('#modal-email').val(email);
-  $('#modal-user').val(user);
-  $('#modal-password').val("");
+  $('#edit-id').val(id);
+  $('#edit-email').val(email);
+  $('#edit-user').val(user);
+  $('#edit-password').val("");
 }
 
 // Init the delete confirmation modal with given values
@@ -33,11 +33,10 @@ function hideModal() {
 
 // Save credentials from modal dialog
 function saveCredentials() {
-  var id = $('#modal-id').val();
-  var email = $('#modal-email').val();
-  var user = $('#modal-user').val();
-  var password = $('#modal-password').val();
-  initEdit("", "", "");
+  var id = $('#edit-id').val();
+  var email = $('#edit-email').val();
+  var user = $('#edit-user').val();
+  var password = $('#edit-password').val();
   console.log("Saving credentials: " + id);
   MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
       makeAjaxCallback("listset-container", false));
@@ -60,7 +59,12 @@ function verifyCredentials(id) {
 
 // Stuff to do when document is ready
 $(document).ready(function() {
-  // Register listener to load subscriptions when modal is shown
+  // Clear input fields whenever the edit modal is hidden
+  $('#modal-edit-credentials').on('hidden.bs.modal', function() {
+    initEdit("", "", "");
+  })
+
+  // Load subscriptions when modal is shown
   $('#modal-list-subscriptions').on('show.bs.modal', function() {
     $("#modal-list-subscriptions-body").html("<i class='fa fa-spinner fa-spin'></i>");
     MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
