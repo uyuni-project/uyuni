@@ -15,6 +15,15 @@ function initDelete(id, email, user) {
   $('#delete-user').text(user);
 }
 
+// Temp store for credentials ID to list subscriptions for
+var subscriptionsId;
+
+// Init the modal to list subscriptions
+function initSubscriptions(id) {
+  console.log("initSubscriptions(): " + id);
+  subscriptionsId = id;
+}
+
 // Hide any modal dialogs
 function hideModal() {
   console.log("hideModal()");
@@ -43,9 +52,19 @@ function deleteCredentials() {
 }
 
 // Download the subscriptions for given ID
-function downloadSubscriptions(id) {
-  $("#subscriptions-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-  MirrorCredentialsRenderer.renderSubscriptions(id,
-      makeAjaxCallback("subscriptions-" + id, false));
+function verifyCredentials(id) {
+  $("#verify-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
+  MirrorCredentialsRenderer.verifyCredentials(id,
+      makeAjaxCallback("verify-" + id, false));
 }
+
+// Stuff to do when document is ready
+$(document).ready(function() {
+  // Register listener to load subscriptions when modal is shown
+  $('#modal-list-subscriptions').on('show.bs.modal', function() {
+    $("#modal-list-subscriptions-body").html("<i class='fa fa-spinner fa-spin'></i>");
+    MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
+      makeAjaxCallback("modal-list-subscriptions-body", false));
+  })
+});
 

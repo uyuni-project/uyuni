@@ -16,16 +16,23 @@
                    attr="user" />
         <rl:column headerkey="mirror-credentials.jsp.actions"
                    bound="false">
-            <span id="subscriptions-${current.id}">
-                <a href="javascript:void(0);" onClick="downloadSubscriptions('${current.id}');">
+            <span id="verify-${current.id}">
+                <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}');">
                     <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
                 </a>
             </span>
-            <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#edit-credentials-modal">
-                <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
-            </a>
+            <span>
+                <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
+                    <rhn:icon type="item-list" title="mirror-credentials.jsp.subscriptions" />
+                </a>
+            </span>
+            <span>
+                <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#modal-edit-credentials">
+                    <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
+                </a>
+            </span>
             <span id="delete-${current.id}">
-                <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.email}', '${current.user}');" data-toggle="modal" data-target="#delete-credentials-modal">
+                <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.email}', '${current.user}');" data-toggle="modal" data-target="#modal-delete-credentials">
                     <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
                 </a>
             </span>

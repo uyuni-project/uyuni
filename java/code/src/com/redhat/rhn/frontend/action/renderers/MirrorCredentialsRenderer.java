@@ -44,10 +44,12 @@ public class MirrorCredentialsRenderer {
     // Attribute keys
     private static final String ATTRIB_MIRRCREDS = "mirrorCredsList";
     private static final String ATTRIB_SUCCESS = "success";
+    private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
 
     // URL of the page to render
     private static final String CREDENTIALS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
     private static final String SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
+    private static final String LIST_SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/modal-subscriptions-body.jsp";
 
     /**
      * Add a new pair of credentials and re-render the whole list.
@@ -137,8 +139,8 @@ public class MirrorCredentialsRenderer {
      * @throws IOException
      * @throws ServletException
      */
-    public String renderSubscriptions(Long id) throws ServletException, IOException {
-        logger.debug("renderSubscriptions()");
+    public String verifyCredentials(Long id) throws ServletException, IOException {
+        logger.debug("verifyCredentials()");
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
@@ -154,5 +156,28 @@ public class MirrorCredentialsRenderer {
         request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(SUBSCRIPTIONS_URL, request, response);
+    }
+
+    /**
+     * Get subscriptions for credentials and asynchronously render the page fragment.
+     * @throws IOException
+     * @throws ServletException
+     */
+    public String listSubscriptions(Long id) throws ServletException, IOException {
+        logger.debug("listSubscriptions()");
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+
+        // Load credentials for given ID and the subscriptions
+        MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(id);
+        if (logger.isDebugEnabled()) {
+            logger.debug("List subscriptions: " + creds.getUser());
+        }
+        // TODO: Cache subscriptions in the session
+        List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
+        request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
+
+        HttpServletResponse response = webContext.getHttpServletResponse();
+        return RendererHelper.renderRequest(LIST_SUBSCRIPTIONS_URL, request, response);
     }
 }
