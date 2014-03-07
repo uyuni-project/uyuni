@@ -109,7 +109,7 @@
         <div class="panel-body">
           <table class="table">
             <tr>
-              <td><label for="firstNames"><rhn:required-field key="usercreate.names"/>:</td></label>
+              <td><label for="firstNames"><rhn:required-field key="usercreate.names"/>:</label></td>
               <td>
                 <html:select styleClass="form-control margin-bottom-xs box-small" property="prefix">
                   <html:options collection="availablePrefixes"
