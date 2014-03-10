@@ -80,3 +80,4 @@ $(document).ready(function() {
       makeAjaxCallback("modal-list-subscriptions-body", false));
   });
 });
+
