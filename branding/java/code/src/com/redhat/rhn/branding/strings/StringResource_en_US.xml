@@ -1825,6 +1825,14 @@ tree will not be usable for autoinstalling.
       <trans-unit id="channelName">
         <source>Channel Name</source>
       </trans-unit>
+      
+      <!-- Action Chaining -->
+      <trans-unit id="actionchain.jsp.errata.update">
+        <source>Apply patch(es) {0} on</source>
+          <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
 
       <!-- Power Management -->
       <trans-unit id="cobbler.powermanagement.ipmitool">
