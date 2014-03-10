@@ -43,12 +43,13 @@ public class MirrorCredentialsRenderer {
 
     // Attribute keys
     private static final String ATTRIB_MIRRCREDS = "mirrorCredsList";
+    private static final String ATTRIB_CREDS_ID = "credentialsId";
     private static final String ATTRIB_SUCCESS = "success";
     private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
 
     // URL of the page to render
-    private static final String CREDENTIALS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
-    private static final String SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
+    private static final String CREDS_LIST_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
+    private static final String CREDS_VERIFY_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
     private static final String LIST_SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/modal-subscriptions-body.jsp";
 
     /**
@@ -131,7 +132,7 @@ public class MirrorCredentialsRenderer {
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
-        return RendererHelper.renderRequest(CREDENTIALS_URL, request, response);
+        return RendererHelper.renderRequest(CREDS_LIST_URL, request, response);
     }
 
     /**
@@ -147,15 +148,16 @@ public class MirrorCredentialsRenderer {
         // Load credentials for given ID and the subscriptions
         MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
-            logger.debug("List subscriptions: " + creds.getUser());
+            logger.debug("Verify credentials: " + creds.getUser());
         }
         List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
+        request.setAttribute(ATTRIB_CREDS_ID, id);
 
         // Set the "parentUrl" for the form (in rl:listset)
         request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
-        return RendererHelper.renderRequest(SUBSCRIPTIONS_URL, request, response);
+        return RendererHelper.renderRequest(CREDS_VERIFY_URL, request, response);
     }
 
     /**

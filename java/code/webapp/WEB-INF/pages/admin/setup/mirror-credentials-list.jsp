@@ -18,7 +18,7 @@
                    bound="false">
             <span id="verify-${current.id}">
                 <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}');">
-                    <rhn:icon type="item-cloud-download" title="mirror-credentials.jsp.download" />
+                    <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
                 </a>
             </span>
             <span>
