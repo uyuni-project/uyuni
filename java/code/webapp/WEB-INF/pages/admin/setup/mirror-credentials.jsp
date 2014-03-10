@@ -42,6 +42,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
+                        <span id="edit-credentials-spinner"></span>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-success" onClick="saveCredentials();">Save</button>
                     </div>
@@ -74,6 +75,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
+                        <span id="delete-credentials-spinner"></span>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-success" onClick="deleteCredentials();">Delete</button>
                     </div>

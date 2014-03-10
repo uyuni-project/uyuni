@@ -30,30 +30,38 @@ function initSubscriptions(id) {
 // Hide any modal dialogs
 function hideModal() {
   console.log("hideModal()");
-  $('#modal-edit-credentials').modal('hide');
-  $('#modal-delete-credentials').modal('hide');
+  $("#edit-credentials-spinner").html("");
+  $("#modal-edit-credentials").modal('hide');
+  $("#delete-credentials-spinner").html("");
+  $("#modal-delete-credentials").modal('hide');
+}
+
+// Show spinner as inner HTML of an element given by ID
+function showSpinner(elementId) {
+  $("#" + elementId).html("<i class='fa fa-spinner fa-spin'></i>");
 }
 
 // Save credentials from edit dialog
 function saveCredentials() {
+  console.log("Saving credentials: " + editId);
   var email = $('#edit-email').val();
   var user = $('#edit-user').val();
   var password = $('#edit-password').val();
-  console.log("Saving credentials: " + editId);
+  showSpinner("edit-credentials-spinner");
   MirrorCredentialsRenderer.saveCredentials(editId, email, user, password,
       makeAjaxCallback("listset-container", false));
 }
 
 // Delete credentials from modal
 function deleteCredentials() {
-  $("#delete-" + deleteId).html("<i class='fa fa-spinner fa-spin'></i>");
+  showSpinner("delete-credentials-spinner");
   MirrorCredentialsRenderer.deleteCredentials(deleteId,
       makeAjaxCallback("listset-container", false));
 }
 
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id) {
-  $("#verify-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
+  showSpinner("verify-" + id);
   MirrorCredentialsRenderer.verifyCredentials(id,
       makeAjaxCallback("verify-" + id, false));
 }
@@ -67,7 +75,7 @@ $(document).ready(function() {
 
   // Load subscriptions when modal is shown
   $('#modal-list-subscriptions').on('show.bs.modal', function() {
-    $("#modal-list-subscriptions-body").html("<i class='fa fa-spinner fa-spin'></i>");
+    showSpinner("modal-list-subscriptions-body");
     MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
       makeAjaxCallback("modal-list-subscriptions-body", false));
   });
