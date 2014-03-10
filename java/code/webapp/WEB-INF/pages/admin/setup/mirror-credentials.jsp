@@ -21,7 +21,6 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
-                            <input type="hidden" id="edit-id">
                             <div class="form-group">
                                 <label for="modal-email" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
                                 <div class="col-sm-10">
@@ -60,7 +59,6 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
-                            <input type="hidden" id="delete-id">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
                                 <div class="col-sm-10">
