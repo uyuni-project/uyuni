@@ -1,22 +1,25 @@
-// Init the edit modal with given values
+// Temporarily store credential IDs
+// XXX: One variable should be enough?
+var editId;
+var deleteId;
+var subscriptionsId;
+
+// Init modal to edit credentials
 function initEdit(id, email, user) {
   console.log("initEdit(): " + id);
-  $('#edit-id').val(id);
+  editId = id;
   $('#edit-email').val(email);
   $('#edit-user').val(user);
   $('#edit-password').val("");
 }
 
-// Init the delete confirmation modal with given values
+// Init modal to delete credentials
 function initDelete(id, email, user) {
   console.log("initDelete(): " + id);
-  $('#delete-id').val(id);
+  deleteId = id;
   $('#delete-email').text(email);
   $('#delete-user').text(user);
 }
-
-// Temp store for credentials ID to list subscriptions for
-var subscriptionsId;
 
 // Init the modal to list subscriptions
 function initSubscriptions(id) {
@@ -31,26 +34,24 @@ function hideModal() {
   $('#modal-delete-credentials').modal('hide');
 }
 
-// Save credentials from modal dialog
+// Save credentials from edit dialog
 function saveCredentials() {
-  var id = $('#edit-id').val();
   var email = $('#edit-email').val();
   var user = $('#edit-user').val();
   var password = $('#edit-password').val();
-  console.log("Saving credentials: " + id);
-  MirrorCredentialsRenderer.saveCredentials(id, email, user, password,
+  console.log("Saving credentials: " + editId);
+  MirrorCredentialsRenderer.saveCredentials(editId, email, user, password,
       makeAjaxCallback("listset-container", false));
 }
 
-// Delete credentials from confirmation modal
+// Delete credentials from modal
 function deleteCredentials() {
-  var id = $('#delete-id').val();
-  $("#delete-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
-  MirrorCredentialsRenderer.deleteCredentials(id,
+  $("#delete-" + deleteId).html("<i class='fa fa-spinner fa-spin'></i>");
+  MirrorCredentialsRenderer.deleteCredentials(deleteId,
       makeAjaxCallback("listset-container", false));
 }
 
-// Download the subscriptions for given ID
+// Verify credentials by downloading subscriptions
 function verifyCredentials(id) {
   $("#verify-" + id).html("<i class='fa fa-spinner fa-spin'></i>");
   MirrorCredentialsRenderer.verifyCredentials(id,
@@ -62,13 +63,12 @@ $(document).ready(function() {
   // Clear input fields whenever the edit modal is hidden
   $('#modal-edit-credentials').on('hidden.bs.modal', function() {
     initEdit("", "", "");
-  })
+  });
 
   // Load subscriptions when modal is shown
   $('#modal-list-subscriptions').on('show.bs.modal', function() {
     $("#modal-list-subscriptions-body").html("<i class='fa fa-spinner fa-spin'></i>");
     MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
       makeAjaxCallback("modal-list-subscriptions-body", false));
-  })
+  });
 });
-
