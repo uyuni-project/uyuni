@@ -114,7 +114,7 @@ public class IconTag extends TagSupport {
         icons.put("header-users-big", "fa fa-group fa-3x");
         icons.put("item-add", "fa fa-plus");
         icons.put("item-clone", "fa fa-files-o");
-        icons.put("item-cloud-download", "fa fa-cloud-download");
+        icons.put("item-verify", "fa fa-check-square");
         icons.put("item-del", "fa fa-trash-o");
         icons.put("item-disabled", "fa fa-circle-o text-muted");
         icons.put("item-download", "fa fa-download");
