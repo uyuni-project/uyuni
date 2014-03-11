@@ -6,6 +6,7 @@ $(function() {
     $("#label-link").hide();
     $("#label-input").show().focus();
     setUnsavedData();
+    return false;
   });
 
   // handle clik on +/- icons
@@ -28,11 +29,13 @@ $(function() {
     else {
       list.fadeToggle();
     }
+    return false;
   });
 
   // handle click on "delete action chain"
   $("#delete-acthin-chain").click(function (event, target) {
     clearUnsavedData();
+    return false;
   });
 
   // handle click on "delete action" (that is: delete an action chain
@@ -41,6 +44,7 @@ $(function() {
     var group = $(this).closest(".group");
 
     group.fadeOut(400, renumberGroups).addClass("deleted");
+    return false;
   });
 
   // handle click on "delete system" (that is: delete an action chain
@@ -58,6 +62,7 @@ $(function() {
         updateSystemCounter(ul, group.data("sort-order"));
       }).addClass("deleted");
     }
+    return false;
   });
 
   // handle click on save changes
@@ -71,6 +76,7 @@ $(function() {
       $("#label-input").hide();
       clearUnsavedData();
     });
+    return false;
   });
 
   // handle click on cancel
@@ -85,6 +91,7 @@ $(function() {
       clearUnsavedData();
       $("form.schedule").submit();
     });
+    return false;
   });
 
   // handle drag and drop
