@@ -60,7 +60,7 @@ rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
-ln -s /srv/www/htdocs/javascript/bootstrap css/bootstrap
+ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
 %{lesscmd} css/spacewalk.less > css/spacewalk.css
 rm -f css/bootstrap
 
