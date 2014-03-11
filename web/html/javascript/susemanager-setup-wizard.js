@@ -60,9 +60,10 @@ function deleteCredentials() {
 }
 
 // Verify credentials by downloading subscriptions
-function verifyCredentials(id) {
+function verifyCredentials(id, refresh) {
+  console.log("refresh = " + refresh);
   showSpinner("verify-" + id);
-  MirrorCredentialsRenderer.verifyCredentials(id,
+  MirrorCredentialsRenderer.verifyCredentials(id, refresh,
       makeAjaxCallback("verify-" + id, false));
 }
 

@@ -17,9 +17,10 @@
         <rl:column headerkey="mirror-credentials.jsp.actions"
                    bound="false">
             <span id="verify-${current.id}">
-                <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}');">
+                <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}', true);">
                     <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
                 </a>
+                <script>verifyCredentials('${current.id}', false);</script>
             </span>
             <span>
                 <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">

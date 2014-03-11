@@ -19,7 +19,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -52,6 +57,9 @@ public class SetupWizardManager extends BaseManager {
 
     // NCC URL for listing subscriptions
     private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
+
+    // Session attribute keys
+    private final static String SUBSCRIPTIONS_KEY = "SETUP_WIZARD_SUBSCRIPTIONS";
 
     // Maximum number of redirects that will be followed
     private final static int MAX_REDIRECTS = 10;
@@ -161,6 +169,7 @@ public class SetupWizardManager extends BaseManager {
         // Find all credentials and see what needs to be done
         List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
 
+        // TODO: Delete subscriptions from session cache
         if (creds.size() == id + 1) {
             // Just store empty credentials
             MirrorCredentials delCreds = new MirrorCredentials("", "", "");
@@ -203,7 +212,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      */
-    public static List<Subscription> listSubscriptions(MirrorCredentials creds) {
+    public static List<Subscription> downloadSubscriptions(MirrorCredentials creds) {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
@@ -258,5 +267,47 @@ public class SetupWizardManager extends BaseManager {
             post.releaseConnection();
         }
         return subscriptions;
+    }
+
+    /**
+     * Put a list of subscriptions in the session cache.
+     * @param subscriptions
+     * @param request
+     */
+    @SuppressWarnings("unchecked")
+    public static void storeSubsInSession(List<Subscription> subscriptions,
+            MirrorCredentials creds, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Map<String, List<Subscription>> subsMap =
+                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+
+        // Create the map for caching if it doesn't exist
+        if (subsMap == null) {
+            subsMap = new HashMap<String, List<Subscription>>();
+            session.setAttribute(SUBSCRIPTIONS_KEY, subsMap);
+        }
+
+        // Store or update the subscriptions
+        logger.debug("Storing subscriptions for " + creds.getUser());
+        subsMap.put(creds.getUser(), subscriptions);
+    }
+
+    /**
+     * Return cached list of subscriptions or null if it's not in the cache.
+     * @param creds
+     * @param request
+     * @return list of subscriptions or null
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Subscription> getSubsFromSession(MirrorCredentials creds,
+            HttpServletRequest request) {
+        List<Subscription> ret = null;
+        HttpSession session = request.getSession();
+        Map<String, List<Subscription>> subsMap =
+                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        if (subsMap != null) {
+            ret = subsMap.get(creds.getUser());
+        }
+        return ret;
     }
 }
