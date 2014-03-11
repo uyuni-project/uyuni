@@ -140,7 +140,7 @@ public class MirrorCredentialsRenderer {
      * @throws IOException
      * @throws ServletException
      */
-    public String verifyCredentials(Long id) throws ServletException, IOException {
+    public String verifyCredentials(Long id, boolean refresh) throws ServletException, IOException {
         logger.debug("verifyCredentials()");
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
@@ -150,7 +150,13 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Verify credentials: " + creds.getUser());
         }
-        List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
+
+        // Load subscriptions from NCC if not cached
+        List<Subscription> subs = SetupWizardManager.getSubsFromSession(creds, request);
+        if (subs == null || refresh) {
+            subs = SetupWizardManager.downloadSubscriptions(creds);
+            SetupWizardManager.storeSubsInSession(subs, creds, request);
+        }
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
 
@@ -175,8 +181,13 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("List subscriptions: " + creds.getUser());
         }
-        // TODO: Cache subscriptions in the session
-        List<Subscription> subs = SetupWizardManager.listSubscriptions(creds);
+
+        // Load subscriptions from NCC if not cached
+        List<Subscription> subs = SetupWizardManager.getSubsFromSession(creds, request);
+        if (subs == null) {
+            subs = SetupWizardManager.downloadSubscriptions(creds);
+            SetupWizardManager.storeSubsInSession(subs, creds, request);
+        }
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
 
         HttpServletResponse response = webContext.getHttpServletResponse();
