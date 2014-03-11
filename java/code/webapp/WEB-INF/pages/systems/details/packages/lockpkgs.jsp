@@ -73,7 +73,7 @@
                 <p><bean:message key="installconfirm.jsp.widgetsummary"/></p>
                 <div class="form-group">
                     <label class="col-md-3 control-label" for="radio_use_date_now">
-                        <bean:message key="scheduleremote.jsp.nosoonerthan"/>:
+                        <bean:message key="schedule.jsp.at"/>:
                     </label>
                     <div class="col-md-9">
                         <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
