@@ -8,7 +8,7 @@
     <div class="form-group">
         <div class="col-sm-3 control-label">
             <input type="radio" name="use_date" value="true" checked="checked" id="schedule-by-date"/>
-            <label for="schedule-by-date"><bean:message key="schedule.jsp.at"/></label>
+            <label for="schedule-by-date"><bean:message key="schedule.jsp.at"/>:</label>
         </div>
         <div class="col-sm-6">
             <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
