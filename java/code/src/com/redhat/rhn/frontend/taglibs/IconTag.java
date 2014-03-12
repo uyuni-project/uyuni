@@ -109,7 +109,6 @@ public class IconTag extends TagSupport {
         icons.put("header-system-physical", "fa fa-desktop");
         icons.put("header-system-virt-guest", "fa spacewalk-icon-virtual-guest");
         icons.put("header-system-virt-host", "fa spacewalk-icon-virtual-host");
-        icons.put("header-system-bootstrap", "fa fa-square-o");
         icons.put("header-taskomatic", "fa fa-tachometer");
         icons.put("header-user", "fa fa-user");
         icons.put("header-users-big", "fa fa-group fa-3x");
@@ -146,7 +145,6 @@ public class IconTag extends TagSupport {
         icons.put("sort-up", "fa fa-arrow-circle-up");
         icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
         icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
-        icons.put("system-bootstrap", "fa fa-1-5x fa-square-o");		
 		icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
         icons.put("system-kickstarting", "fa fa-rocket fa-1-5x");
         icons.put("system-locked", "fa fa-lock fa-1-5x");
