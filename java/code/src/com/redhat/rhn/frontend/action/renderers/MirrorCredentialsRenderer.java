@@ -141,7 +141,6 @@ public class MirrorCredentialsRenderer {
      * @throws ServletException
      */
     public String verifyCredentials(Long id, boolean refresh) throws ServletException, IOException {
-        logger.debug("verifyCredentials()");
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
@@ -151,11 +150,16 @@ public class MirrorCredentialsRenderer {
             logger.debug("Verify credentials: " + creds.getUser());
         }
 
-        // Load subscriptions from NCC if not cached
-        List<Subscription> subs = SetupWizardManager.getSubsFromSession(creds, request);
-        if (subs == null || refresh) {
+        // Download subscriptions or get from session cache
+        List<Subscription> subs;
+
+        // Download if forced refresh or status unknown
+        if (refresh || SetupWizardManager.verificationStatusUnknown(creds, request)) {
             subs = SetupWizardManager.downloadSubscriptions(creds);
             SetupWizardManager.storeSubsInSession(subs, creds, request);
+        }
+        else {
+            subs = SetupWizardManager.getSubsFromSession(creds, request);
         }
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
@@ -172,7 +176,6 @@ public class MirrorCredentialsRenderer {
      * @throws ServletException
      */
     public String listSubscriptions(Long id) throws ServletException, IOException {
-        logger.debug("listSubscriptions()");
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
@@ -182,9 +185,9 @@ public class MirrorCredentialsRenderer {
             logger.debug("List subscriptions: " + creds.getUser());
         }
 
-        // Load subscriptions from NCC if not cached
+        // Download subscriptions only if verification status is unknown
         List<Subscription> subs = SetupWizardManager.getSubsFromSession(creds, request);
-        if (subs == null) {
+        if (subs == null && SetupWizardManager.verificationStatusUnknown(creds, request)) {
             subs = SetupWizardManager.downloadSubscriptions(creds);
             SetupWizardManager.storeSubsInSession(subs, creds, request);
         }
