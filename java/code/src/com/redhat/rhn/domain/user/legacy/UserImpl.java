@@ -288,7 +288,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
-    public void addPermanentRole(Role label) {
+    public void addRole(Role label) {
         addRole(label, false);
     }
 
@@ -314,7 +314,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
-    public void removePermanentRole(Role label) {
+    public void removeRole(Role label) {
         removeRole(label, false);
     }
 

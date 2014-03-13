@@ -39,7 +39,7 @@ public class MasterHandlerTest extends BaseHandlerTestCase {
     public void setUp() throws Exception {
         super.setUp();
         masterName = "testMaster" + TestUtils.randomString();
-        admin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        admin.addRole(RoleFactory.SAT_ADMIN);
     }
 
     public void testCreate() {

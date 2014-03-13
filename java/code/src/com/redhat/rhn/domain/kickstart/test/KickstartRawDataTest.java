@@ -46,7 +46,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
 
     public void setUp() throws Exception {
         super.setUp();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         tree = KickstartableTreeTest.createTestKickstartableTree();
         ksdata = createRawData(user, "boring" + TestUtils.randomString(), tree,
                 fileContents,

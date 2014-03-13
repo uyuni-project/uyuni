@@ -135,7 +135,7 @@ public interface User {
     * Add a role to this User's Role Set.
     * @param label The label of the Role you want to add.
     */
-    void addPermanentRole(Role label);
+    void addRole(Role label);
 
     /**
     * Add a temporaty role to this User's Role Set.
@@ -147,7 +147,7 @@ public interface User {
     * Remove a role from the User's Role Set.
     * @param label The label of the Role you want to remove.
     */
-    void removePermanentRole(Role label);
+    void removeRole(Role label);
 
     /**
     * Remove a temporary role from the User's Role Set.

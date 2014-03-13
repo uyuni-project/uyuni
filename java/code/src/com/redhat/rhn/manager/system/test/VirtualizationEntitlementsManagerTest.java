@@ -56,7 +56,7 @@ public class VirtualizationEntitlementsManagerTest extends BaseTestCaseWithUser 
 
     public void setUp() throws Exception {
         super.setUp();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
     }
 

@@ -49,7 +49,7 @@ public class SolarisPatchSetListSetupTest extends RhnBaseTestCase {
         sah.setupClampListBounds();
 
         User user = sah.getUser();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         sah.getRequest().setupAddParameter("sid", server.getId().toString());

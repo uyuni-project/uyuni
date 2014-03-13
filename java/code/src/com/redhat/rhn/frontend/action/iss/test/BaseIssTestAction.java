@@ -68,7 +68,7 @@ public abstract class BaseIssTestAction extends RhnMockStrutsTestCase {
     protected void doPerform(boolean asSatAdmin) {
         setRequestPathInfo(getUrl());
         if (asSatAdmin) {
-            user.addPermanentRole(RoleFactory.SAT_ADMIN);
+            user.addRole(RoleFactory.SAT_ADMIN);
         }
         actionPerform();
     }

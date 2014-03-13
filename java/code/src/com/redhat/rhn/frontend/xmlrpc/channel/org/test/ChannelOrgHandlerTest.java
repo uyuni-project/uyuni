@@ -39,7 +39,7 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 
     public void setUp() throws Exception {
         super.setUp();
-        admin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        admin.addRole(RoleFactory.SAT_ADMIN);
         TestUtils.saveAndFlush(admin);
     }
 

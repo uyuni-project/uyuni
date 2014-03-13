@@ -72,7 +72,7 @@ public class MigrationManagerTest extends RhnBaseTestCase {
         origOrg = origOrgAdmins.iterator().next().getOrg();
         for (Integer i = 0; i < 2; i++) {
             User user = UserTestUtils.createUser("origAdmin", origOrg.getId());
-            user.addPermanentRole(RoleFactory.ORG_ADMIN);
+            user.addRole(RoleFactory.ORG_ADMIN);
             UserFactory.save(user);
             origOrgAdmins.add(user);
         }
@@ -81,7 +81,7 @@ public class MigrationManagerTest extends RhnBaseTestCase {
         destOrg = destOrgAdmins.iterator().next().getOrg();
         for (Integer i = 0; i < 2; i++) {
             User user = UserTestUtils.createUser("destAdmin", destOrg.getId());
-            user.addPermanentRole(RoleFactory.ORG_ADMIN);
+            user.addRole(RoleFactory.ORG_ADMIN);
             UserFactory.save(user);
             destOrgAdmins.add(user);
         }

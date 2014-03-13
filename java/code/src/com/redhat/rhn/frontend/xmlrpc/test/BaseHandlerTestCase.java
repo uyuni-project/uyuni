@@ -37,11 +37,11 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
         admin = UserTestUtils.createUserInOrgOne();
-        admin.addPermanentRole(RoleFactory.ORG_ADMIN);
+        admin.addRole(RoleFactory.ORG_ADMIN);
         TestUtils.saveAndFlush(admin);
 
         regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
-        regular.removePermanentRole(RoleFactory.ORG_ADMIN);
+        regular.removeRole(RoleFactory.ORG_ADMIN);
 
         assertTrue(admin.hasRole(RoleFactory.ORG_ADMIN));
         assertTrue(!regular.hasRole(RoleFactory.ORG_ADMIN));
@@ -58,6 +58,6 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
 
     protected void addRole(User user, Role role) {
         user.getOrg().addRole(role);
-        user.addPermanentRole(role);
+        user.addRole(role);
     }
 }
