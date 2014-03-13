@@ -60,14 +60,14 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
      When I follow "Configuration" in the tabs
       And I follow "Configuration Channels" in the left menu
-      And I follow "New Test Channel"
+      And I follow "Test Channel"
       And I follow "Deploy Files" in the content area
       And I click on "Deploy All Files" 
       And I check "sumacltt.suse.de" in the list
       And I click on "Confirm & Deploy to Selected Systems"
       And I check radio button "schedule-by-action-chain"
       And I click on "Deploy Files to Selected Systems"
-     # And I should see a "Action has been successfully added to the Action Chain" text
+      And I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a reboot action to the action chain
     Given I am on the Systems overview page of this client
@@ -83,7 +83,7 @@ Feature: Test action chaining
       And I follow "new action chain"
       And I should see a "1. Install or update hoag-dummy on 1 system" text
       And I should see a "2. Run a remote command on 1 system" text
-      And I should see a "3. Apply" text
+      And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
       And I should see a "4. Remove adaptec-firmware from 1 system" text
       And I should see a "5. Verify andromeda-dummy on 1 system" text
       And I should see a "6. Deploy /etc/mgr-test-file.cnf" text
