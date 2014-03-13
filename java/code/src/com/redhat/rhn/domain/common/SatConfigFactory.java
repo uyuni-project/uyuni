@@ -37,9 +37,8 @@ public class SatConfigFactory extends HibernateFactory {
     private static SatConfigFactory singleton = new SatConfigFactory();
     private static Logger log = Logger.getLogger(CommonFactory.class);
 
-    public static final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
-    public static final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
-    public static final String EXT_AUTH_KEEP_ROLES = "extauth_keep_temproles";
+    public static  final String EXT_AUTH_DEFAULT_ORGID = "extauth_default_orgid";
+    public static  final String EXT_AUTH_USE_ORGUNIT = "extauth_use_orgunit";
 
     private SatConfigFactory() {
         super();
