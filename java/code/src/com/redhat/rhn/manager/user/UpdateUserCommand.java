@@ -50,7 +50,7 @@ public class UpdateUserCommand {
     private boolean lastNameChanged = false;
     private boolean rolesChanged = false;
     private boolean needsUpdate = false;
-    private Set<Role> temporaryRoles;
+    private Set<Role> roles;
 
 
     /**
@@ -119,7 +119,9 @@ public class UpdateUserCommand {
         }
 
         if (rolesChanged) {
-            UserManager.resetTemporaryRoles(user, temporaryRoles);
+            for (Role role : roles) {
+                user.addRole(role);
+            }
         }
     }
 
@@ -252,19 +254,19 @@ public class UpdateUserCommand {
     /**
      * @return Returns the roles.
      */
-    public Set<Role> getTemporaryRoles() {
-        return temporaryRoles;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
 
     /**
      * @param rolesIn The roles to set.
      */
-    public void setTemporaryRoles(Set<Role> rolesIn) {
+    public void setRoles(Set<Role> rolesIn) {
         if (!rolesIn.equals(user.getRoles())) {
             rolesChanged = true;
             needsUpdate = true;
-            temporaryRoles = rolesIn;
+            roles = rolesIn;
         }
     }
 }
