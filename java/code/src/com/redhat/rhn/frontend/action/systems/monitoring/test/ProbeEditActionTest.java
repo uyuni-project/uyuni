@@ -53,7 +53,7 @@ public class ProbeEditActionTest extends RhnBaseTestCase {
         ah.setUpAction(action);
 
         user = ah.getUser();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         Server s = ServerFactoryTest.createTestServer(user, true);
 
         UserTestUtils.addMonitoringScoutOrg(user);

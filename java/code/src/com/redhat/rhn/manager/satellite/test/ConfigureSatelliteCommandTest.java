@@ -51,7 +51,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         // TODO Auto-generated method stub
         super.setUp();
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        user.addRole(RoleFactory.SAT_ADMIN);
     }
 
     public void testCreateCommand() throws Exception {
@@ -155,9 +155,9 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         assertFalse(cm.getDefinition().startsWith("**"));
         assertFalse(cm.getDefinition().endsWith("**"));
         assertTrue(user.getOrg().hasRole(RoleFactory.MONITORING_ADMIN));
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         assertTrue(user.hasRole(RoleFactory.MONITORING_ADMIN));
-        user.removePermanentRole(RoleFactory.ORG_ADMIN);
+        user.removeRole(RoleFactory.ORG_ADMIN);
     }
 
     public void testDisableMonitoring() throws Exception {
@@ -234,7 +234,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
 
     public void testRoles() throws Exception {
 
-        user.removePermanentRole(RoleFactory.SAT_ADMIN);
+        user.removeRole(RoleFactory.SAT_ADMIN);
         try {
             cmd = new ConfigureSatelliteCommand(user);
             fail("Should have thrown an IllegalArgumentException");
@@ -242,8 +242,8 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
         catch (IllegalArgumentException iae) {
             // noop
         }
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.MONITORING_ADMIN);
+        user.addRole(RoleFactory.SAT_ADMIN);
+        user.addRole(RoleFactory.MONITORING_ADMIN);
         cmd = new ConfigureSatelliteCommand(user);
         assertNotNull(cmd);
     }

@@ -212,7 +212,7 @@ public class UserTest extends RhnBaseTestCase {
             role.setName("Role " + i);
 
             org.addRole(role);
-            usr.addPermanentRole(role);
+            usr.addRole(role);
         }
 
         Set roles = usr.getRoles();

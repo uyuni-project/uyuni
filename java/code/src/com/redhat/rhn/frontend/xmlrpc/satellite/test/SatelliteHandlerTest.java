@@ -59,7 +59,7 @@ public class SatelliteHandlerTest extends BaseHandlerTestCase {
 
 
     public void testGetCertificateExpiration() throws Exception  {
-        admin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        admin.addRole(RoleFactory.SAT_ADMIN);
         handler.getCertificateExpirationDate(adminKey);
     }
 

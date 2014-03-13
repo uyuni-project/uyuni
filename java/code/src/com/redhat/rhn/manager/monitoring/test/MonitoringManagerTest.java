@@ -296,13 +296,13 @@ public class MonitoringManagerTest extends RhnBaseTestCase {
             return;
         }
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         assertTrue(MonitoringManager.getInstance()
                 .getEditableConfigMacros(user).size() > 0);
-        user.removePermanentRole(RoleFactory.ORG_ADMIN);
+        user.removeRole(RoleFactory.ORG_ADMIN);
         assertTrue(MonitoringManager.getInstance()
                 .getEditableConfigMacros(user).size() == 0);
-        user.addPermanentRole(RoleFactory.MONITORING_ADMIN);
+        user.addRole(RoleFactory.MONITORING_ADMIN);
         assertTrue(MonitoringManager.getInstance()
                 .getEditableConfigMacros(user).size() > 0);
 
@@ -317,13 +317,13 @@ public class MonitoringManagerTest extends RhnBaseTestCase {
                 return;
             }
         };
-        user.removePermanentRole(RoleFactory.ORG_ADMIN);
+        user.removeRole(RoleFactory.ORG_ADMIN);
         assertFalse(man.restartMonitoringServices(user));
         user.getOrg().addRole(RoleFactory.MONITORING_ADMIN);
-        user.addPermanentRole(RoleFactory.MONITORING_ADMIN);
+        user.addRole(RoleFactory.MONITORING_ADMIN);
         assertTrue(man.restartMonitoringServices(user));
-        user.removePermanentRole(RoleFactory.MONITORING_ADMIN);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        user.removeRole(RoleFactory.MONITORING_ADMIN);
+        user.addRole(RoleFactory.ORG_ADMIN);
         assertTrue(man.restartMonitoringServices(user));
     }
 
