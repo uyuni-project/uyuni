@@ -199,10 +199,6 @@ public class UserEditSetupAction extends RhnAction {
         request.setAttribute("adminRoles", adminRoles);
         request.setAttribute("regularRoles", regularRoles);
         request.setAttribute("disabledRoles", disabledRoles);
-        Set<Role> tempRoles = targetUser.getTemporaryRoles();
-        if (!tempRoles.isEmpty()) {
-            request.setAttribute("temporaryRoles", UserManager.roleNames(tempRoles));
-        }
 
         request.setAttribute("orgAdmin", hasOrgAdmin);
     }

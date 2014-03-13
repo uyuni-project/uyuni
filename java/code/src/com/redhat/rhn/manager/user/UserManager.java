@@ -1017,21 +1017,4 @@ public class UserManager extends BaseManager {
             }
         }
     }
-
-    /**
-     * serialize role names
-     * @param rolesIn roles to put into string
-     * @return roles string
-     */
-    public static String roleNames(Set<Role> rolesIn) {
-        String roleNames = null;
-        for (Role role : rolesIn) {
-            roleNames = (roleNames == null) ? role.getName() :
-                roleNames + ", " + role.getName();
-        }
-        if (roleNames == null) {
-            return "(normal user)";
-        }
-        return roleNames;
-    }
 }
