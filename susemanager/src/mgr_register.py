@@ -255,10 +255,11 @@ class Register:
     products = h.fetchall_dict()
 
     found_registerable_product = False
-    for prod in products:
-      if self.is_registerable(prod):
-        found_registerable_product = True
-        break
+    if products:
+      for prod in products:
+        if self.is_registerable(prod):
+          found_registerable_product = True
+          break
 
     if not found_registerable_product:
       return False
