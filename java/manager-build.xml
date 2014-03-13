@@ -8,7 +8,7 @@
  
  https://github.com/SUSE/spacewalk/wiki/Java-Development-Environment
 -->
-<project name="SUSE Manager" default="deploy-restart" basedir=".">
+<project name="SUSE Manager" default="deploy" basedir=".">
   <!-- User-defined properties -->
   <property file="buildconf/manager-developer-build.properties" />
 
