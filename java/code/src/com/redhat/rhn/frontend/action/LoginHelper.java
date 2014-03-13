@@ -102,7 +102,7 @@ public class LoginHelper {
                     updateCmd.setFirstNames(firstname);
                     updateCmd.setLastName(lastname);
                     updateCmd.setEmail(email);
-                    updateCmd.setTemporaryRoles(roles);
+                    updateCmd.setRoles(roles);
                     updateCmd.updateUser();
                     log.warn("Externally authenticated login " + remoteUserString +
                                  " (" + firstname + " " + lastname + ")");
@@ -139,7 +139,7 @@ public class LoginHelper {
                     createCmd.setLastName(lastname);
                     createCmd.setEmail(email);
                     createCmd.setOrg(newUserOrg);
-                    createCmd.setTemporaryRoles(roles);
+                    createCmd.setRoles(roles);
                     createCmd.validate();
                     createCmd.storeNewUser();
                     remoteUser = createCmd.getUser();

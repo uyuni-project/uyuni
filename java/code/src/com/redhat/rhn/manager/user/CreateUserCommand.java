@@ -50,7 +50,7 @@ public class CreateUserCommand {
     private Address addr;
     private boolean makeOrgAdmin;
     private boolean makeSatAdmin;
-    private Set<Role> temporaryRoles;
+    private Set<Role> roles;
 
     private List<ValidatorError> errors;
     private List<ValidatorError> passwordErrors;
@@ -139,7 +139,11 @@ public class CreateUserCommand {
             user.addRole(RoleFactory.SAT_ADMIN);
         }
         user.setUsePamAuthentication(usePam); //set it back
-        UserManager.resetTemporaryRoles(user, temporaryRoles);
+        if (roles != null) {
+            for (Role role : roles) {
+                user.addRole(role);
+            }
+        }
         UserManager.storeUser(user); //save the user via hibernate
     }
 
@@ -389,15 +393,15 @@ public class CreateUserCommand {
     /**
      * @return Returns the roles.
      */
-    public Set<Role> getTemporaryRoles() {
-        return temporaryRoles;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
 
     /**
      * @param rolesIn The roles to set.
      */
-    public void setTemporaryRoles(Set<Role> rolesIn) {
-        temporaryRoles = rolesIn;
+    public void setRoles(Set<Role> rolesIn) {
+        roles = rolesIn;
     }
 }
