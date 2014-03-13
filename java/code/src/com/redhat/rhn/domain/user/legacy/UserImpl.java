@@ -22,8 +22,6 @@ import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
-import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
-import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -65,7 +63,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     private String login;
     private String loginUc;
     private String password;
-    private Set<UserGroupMembers> groupMembers;
+    private Set usergroups;
     private Org org;
     private Set stateChanges;
     private Set addresses;
@@ -87,7 +85,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Create a new empty user
      */
     public UserImpl() {
-        groupMembers = new HashSet<UserGroupMembers>();
+        usergroups = new HashSet();
         personalInfo = new PersonalInfo();
         personalInfo.setUser(this);
         userInfo = new UserInfo();
@@ -182,37 +180,26 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /**
-     * Set the user group members set
-     * @param ugIn The new Set of UserGroupMembers to set
+     * Set the usergroup set
+     * @param ugIn The new Set of UserGroups to set
      */
-    protected void setGroupMembers(Set<UserGroupMembers> ugIn) {
-        groupMembers = ugIn;
+    protected void setUsergroups(Set ugIn) {
+        usergroups = ugIn;
     }
 
     /** get the set of usergroups
      * @return Set of UserGroups
      */
-    protected Set<UserGroup> getUserGroups() {
-        Set<UserGroup> ugmSet = new HashSet<UserGroup>();
-        for (UserGroupMembers ugm : groupMembers) {
-            ugmSet.add(ugm.getUserGroup());
-        }
-        return ugmSet;
-    }
-
-    /** get the set of user group members
-     * @return Set of UserGroupMembers
-     */
-    protected Set<UserGroupMembers> getGroupMembers() {
-        return groupMembers;
+    protected Set getUsergroups() {
+        return usergroups;
     }
 
     /** {@inheritDoc} */
     public Set getRoles() {
         Set userRoles = new HashSet();
-        for (Iterator i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = (UserGroupMembers) i.next();
-            userRoles.add(ugm.getUserGroup().getRole());
+        for (Iterator i = usergroups.iterator(); i.hasNext();) {
+            UserGroup ug = (UserGroup)i.next();
+            userRoles.add(ug.getRole());
         }
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
@@ -235,31 +222,22 @@ public class UserImpl extends BaseDomainHelper implements User {
     /** {@inheritDoc} */
     public void addRole(Role label) {
         checkOrgAdmin();
-        if (!this.getRoles().contains(label)) {
-            UserGroup ug = org.getUserGroup(label);
-            if (ug != null) {
-                UserGroupMembers ugm = new UserGroupMembers(this, ug);
-                groupMembers.add(ugm);
-                UserGroupFactory.save(ugm);
-            }
-            else {
-                throw new IllegalArgumentException("Org doesn't have role: " + label);
-            }
+        UserGroup ug = org.getUserGroup(label);
+        if (ug != null) {
+            usergroups.add(ug);
+        }
+        else {
+            throw new IllegalArgumentException("Org doesn't have role: " + label);
         }
     }
+
 
     /** {@inheritDoc} */
     public void removeRole(Role label) {
         checkOrgAdmin();
         UserGroup ug = org.getUserGroup(label);
         if (ug != null) {
-            for (Iterator<UserGroupMembers> ugmIter = groupMembers.iterator();
-                    ugmIter.hasNext();) {
-                UserGroupMembers ugm = ugmIter.next();
-                if (ugm.getUserGroup().equals(ug)) {
-                    UserGroupFactory.delete(ugm);
-                }
-            }
+            usergroups.remove(ug);
         }
     }
 
