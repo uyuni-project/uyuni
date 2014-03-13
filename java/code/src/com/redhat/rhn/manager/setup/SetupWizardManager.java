@@ -270,9 +270,10 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
-     * Put a list of subscriptions in the session cache.
-     * @param subscriptions
-     * @param request
+     * Put a list of subscriptions in the session cache, while 'null' is stored whenever the
+     * verification status is "failed" for a given pair of credentials.
+     * @param subscriptions subscriptions
+     * @param request request
      */
     @SuppressWarnings("unchecked")
     public static void storeSubsInSession(List<Subscription> subscriptions,
@@ -293,10 +294,10 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
-     * Return cached list of subscriptions or null if it's not in the cache.
-     * @param creds
-     * @param request
-     * @return list of subscriptions or null
+     * Return cached list of subscriptions or null for signaling "verification failed".
+     * @param creds credentials
+     * @param request request
+     * @return list of subscriptions or null signaling "verification failed"
      */
     @SuppressWarnings("unchecked")
     public static List<Subscription> getSubsFromSession(MirrorCredentials creds,
@@ -307,6 +308,25 @@ public class SetupWizardManager extends BaseManager {
                 (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
         if (subsMap != null) {
             ret = subsMap.get(creds.getUser());
+        }
+        return ret;
+    }
+
+    /**
+     * Check if the verification status of any given credentials is unknown.
+     * @param creds credentials
+     * @param request request
+     * @return true if verification status is unknown for the given creds, otherwise false.
+     */
+    @SuppressWarnings("unchecked")
+    public static boolean verificationStatusUnknown(MirrorCredentials creds,
+            HttpServletRequest request) {
+        boolean ret = true;
+        HttpSession session = request.getSession();
+        Map<String, List<Subscription>> subsMap =
+                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        if (subsMap != null && subsMap.containsKey(creds.getUser())) {
+            ret = false;
         }
         return ret;
     }
