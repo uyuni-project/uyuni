@@ -128,7 +128,6 @@ public class LoginSetupAction extends RhnAction {
                 hs.setAttribute("url_bounce", urlBounce);
             }
         }
-
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
