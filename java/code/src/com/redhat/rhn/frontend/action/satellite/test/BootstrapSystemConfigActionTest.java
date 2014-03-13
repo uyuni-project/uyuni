@@ -36,7 +36,7 @@ public class BootstrapSystemConfigActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        user.addRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/BootstrapSystems");
     }
 
