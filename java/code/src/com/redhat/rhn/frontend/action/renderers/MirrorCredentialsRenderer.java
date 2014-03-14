@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 
+import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -87,7 +88,10 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-        SetupWizardManager.storeMirrorCredentials(creds, webUser, request);
+
+        // TODO: Handle errors
+        @SuppressWarnings("unused")
+        ValidatorError[] errors = SetupWizardManager.storeMirrorCredentials(creds, webUser, request);
         return renderCredentials();
     }
 
