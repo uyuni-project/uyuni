@@ -87,7 +87,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-        SetupWizardManager.storeMirrorCredentials(creds, webUser);
+        SetupWizardManager.storeMirrorCredentials(creds, webUser, request);
         return renderCredentials();
     }
 
@@ -109,7 +109,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Deleting credentials: " + id);
         }
-        SetupWizardManager.deleteMirrorCredentials(id, webUser);
+        SetupWizardManager.deleteMirrorCredentials(id, webUser, request);
         return renderCredentials();
     }
 
