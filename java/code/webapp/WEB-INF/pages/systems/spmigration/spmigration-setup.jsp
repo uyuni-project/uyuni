@@ -57,7 +57,7 @@
               <bean:message key="spmigration.jsp.setup.installed-products" />
             </label>
             <div class="col-sm-10">
-              <ul class="products-list">
+              <ul class="form-control-static products-list">
                 <li>
                   <strong><c:out value="${system.installedProducts.baseProduct.friendlyName}" /></strong>
                   <ul>
@@ -74,7 +74,7 @@
               <bean:message key="spmigration.jsp.setup.target-products" />
             </label>
             <div class="col-sm-10">
-              <ul class="products-list">
+              <ul class="form-control-static products-list">
                 <li>
                   <strong><c:out value="${targetProducts.baseProduct.friendlyName}" /></strong>
                   <ul>
