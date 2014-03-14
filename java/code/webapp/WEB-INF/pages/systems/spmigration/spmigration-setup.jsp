@@ -10,7 +10,7 @@
   <script type="text/javascript" src="/javascript/sp-migration.js"></script>
 </head>
 
-<body onload="initChannelSelect();">
+<body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
   <h2>
     <img src="/img/rhn-icon-channels.gif" alt="channel" />
@@ -50,64 +50,72 @@
         </div>
         </div>
       </c:if>
-      <html:form method="post" styleId="migrationForm" action="/systems/details/SPMigration.do?sid=${system.id}" onsubmit="prepareSubmitChannels();">
-        <table class="details" align="center">
-          <tbody>
-            <tr>
-              <th><bean:message key="spmigration.jsp.setup.installed-products" /></th>
-              <td>
-                <ul class="products-list">
-                  <li>
-                    <strong><c:out value="${system.installedProducts.baseProduct.friendlyName}" /></strong>
-                    <ul>
-                      <c:forEach items="${system.installedProducts.addonProducts}" var="addonProduct">
-                        <li class="addon-product"><c:out value="${addonProduct.friendlyName}" /></li>
-                      </c:forEach>
-                    </ul>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <th><bean:message key="spmigration.jsp.setup.target-products" /></th>
-              <td>
-                <ul class="products-list">
-                  <li>
-                    <strong><c:out value="${targetProducts.baseProduct.friendlyName}" /></strong>
-                    <ul>
-                      <c:forEach items="${targetProducts.addonProducts}" var="addonProduct">
-                        <li class="addon-product" id="${addonProduct.id}"><c:out value="${addonProduct.friendlyName}" /></li>
-                      </c:forEach>
-                    </ul>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            <c:if test="${empty targetProducts.missingChannels}">
-              <tr>
-                <th><bean:message key="spmigration.jsp.setup.base-channel" /></th>
-                <td>
-                  <select name="baseChannel" id="base-channel-select" onchange="showChannelTree(this.options[selectedIndex].value);">
-                    <c:forEach items="${channelMap}" var="alternative">
-                      <option value="${alternative.key.id}" title="${alternative.key.name}">
-                        <c:out value="${alternative.key.name}" />
-                      </option>
+      <html:form method="post" styleId="migrationForm" action="/systems/details/SPMigration.do?sid=${system.id}">
+        <div class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <bean:message key="spmigration.jsp.setup.installed-products" />
+            </label>
+            <div class="col-sm-10">
+              <ul class="products-list">
+                <li>
+                  <strong><c:out value="${system.installedProducts.baseProduct.friendlyName}" /></strong>
+                  <ul>
+                    <c:forEach items="${system.installedProducts.addonProducts}" var="addonProduct">
+                      <li class="addon-product"><c:out value="${addonProduct.friendlyName}" /></li>
                     </c:forEach>
-                  </select>
-                </td>
-              </tr>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <bean:message key="spmigration.jsp.setup.target-products" />
+            </label>
+            <div class="col-sm-10">
+              <ul class="products-list">
+                <li>
+                  <strong><c:out value="${targetProducts.baseProduct.friendlyName}" /></strong>
+                  <ul>
+                    <c:forEach items="${targetProducts.addonProducts}" var="addonProduct">
+                      <li class="addon-product" id="${addonProduct.id}"><c:out value="${addonProduct.friendlyName}" /></li>
+                    </c:forEach>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <c:if test="${empty targetProducts.missingChannels}">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">
+              <bean:message key="spmigration.jsp.setup.base-channel" />
+            </label>
+            <div class="col-sm-10 col-lg-4">
+              <select class="form-control" name="baseChannel" id="base-channel-select">
+                <c:forEach items="${channelMap}" var="alternative">
+                  <option value="${alternative.key.id}" title="${alternative.key.name}">
+                    <c:out value="${alternative.key.name}" />
+                  </option>
+                </c:forEach>
+              </select>
+            </div>
+          </div>
+          </c:if>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <c:if test="${empty targetProducts.missingChannels}">
+              <%@ include file="/WEB-INF/pages/systems/spmigration/channel-details.jspf" %>
             </c:if>
-          </tbody>
-        </table>
-        <c:if test="${empty targetProducts.missingChannels}">
-          <%@ include file="/WEB-INF/pages/systems/spmigration/channel-details.jspf" %>
-        </c:if>
-
-        <hr />
-        <div class="button-submit">
-          <html:submit styleId="submitButton" property="dispatch" disabled="${not empty targetProducts.missingChannels}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary" id="submitButton"
+                  name="dispatch"<c:if test="${not empty targetProducts.missingChannels}"> disabled</c:if>>
             <bean:message key="spmigration.jsp.setup.submit" />
-          </html:submit>
+          </button>
+          </div>
         </div>
         <html:hidden property="baseProduct" value="${targetProducts.baseProduct.id}" />
         <c:forEach items="${targetProducts.addonProducts}" var="current">
@@ -116,6 +124,7 @@
         <html:hidden property="step" value="setup" />
         <html:hidden property="submitted" value="true" />
         <rhn:csrf />
+        </div>
       </html:form>
     </c:otherwise>
   </c:choose>
