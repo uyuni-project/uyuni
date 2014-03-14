@@ -11,10 +11,11 @@
 
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
-  <h2>
-    <img src="/img/rhn-icon-channels.gif" alt="channel" />
+
+  <rhn:toolbar base="h2" icon="header-channel">
     <bean:message key="spmigration.jsp.confirm.title" />
-  </h2>
+  </rhn:toolbar>
+
   <div class="page-summary">
     <p><bean:message key="spmigration.jsp.confirm.description" /></p>
     <ul class="list-channel">
@@ -47,44 +48,33 @@
 
   <html:form method="post" action="/systems/details/SPMigration.do?sid=${system.id}">
     <hr />
-    <div>
-      <table class="schedule-action-interface" align="center">
-        <tr>
-          <td><input type="radio" id="radio-1" name="use_date" value="false" checked="checked" /></td>
-          <th><label for="radio-1"><bean:message key="confirm.jsp.now"/></label></th>
-        </tr>
-        <tr>
-          <td><input type="radio" id="radio-2" name="use_date" value="true" /></td>
-          <th><label for="radio-2"><bean:message key="confirm.jsp.than"/></label></th>
-        </tr>
-        <tr>
-          <th><img src="/img/rhn-icon-schedule.gif" alt="<bean:message key="confirm.jsp.selection"/>"
-                                                  title="<bean:message key="confirm.jsp.selection"/>"/>
-          </th>
-          <td>
-            <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
-              <jsp:param name="widget" value="date"/>
-            </jsp:include>
-          </td>
-        </tr>
-      </table>
+    <input type="hidden" name="use_date" value="true" />
+    <div class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><bean:message key="confirm.jsp.than"/></label>
+        <div class="col-sm-9 col-lg-4">
+          <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
+            <jsp:param name="widget" value="date"/>
+          </jsp:include>
+        </div>
+      </div>
     </div>
-
     <hr />
-    <div class="button-back">
-      <html:button property="dispatch" onclick="javascript:history.back();">
-        <bean:message key="spmigration.jsp.confirm.back" />
-      </html:button>
+    <div>
+      <div class="pull-left">
+        <html:button styleClass="btn btn-default" property="dispatch" onclick="javascript:history.back();">
+          <bean:message key="spmigration.jsp.confirm.back" />
+        </html:button>
+      </div>
+      <div class="pull-right">
+        <html:submit styleClass="btn btn-primary" property="dispatch">
+          <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
+        </html:submit>
+        <html:submit styleClass="btn btn-danger" property="dispatch">
+          <bean:message key="spmigration.jsp.confirm.submit" />
+        </html:submit>
+      </div>
     </div>
-    <div class="button-submit">
-      <html:submit property="dispatch">
-        <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
-      </html:submit>
-      <html:submit property="dispatch">
-        <bean:message key="spmigration.jsp.confirm.submit" />
-      </html:submit>
-    </div>
-
     <html:hidden property="baseProduct" value="${baseProduct.id}" />
     <c:forEach items="${addonProducts}" var="current">
       <html:hidden property="addonProducts[]" value="${current.id}" />
