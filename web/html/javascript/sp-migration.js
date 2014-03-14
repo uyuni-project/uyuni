@@ -1,37 +1,20 @@
 // Event handler methods
 function initChannelSelect() {
-  var baseChannelSelect = $('base-channel-select');
-  if (baseChannelSelect != null) {
-    $('base-channel-select').selectedIndex = 0;
-  }
+  $('#base-channel-select').val(0);
 }
 // Show child channels of selected base channel
 function showChannelTree(channelID) {
-  $$('div.channels-tree').each(function(element) {
-    if (element.id == 'channels-tree-' + channelID) {
-      element.show();
-    } else {
-      element.hide();
-    }
-  });
+  $('.channels-tree#channels-tree-' + channelID).show();
+  $('.channels-tree[id != channels-tree-' + channelID + ']').hide();
 }
 // Create hidden inputs to submit channel IDs
 function prepareSubmitChannels() {
-  $('migrationForm').getInputs('hidden', 'childChannels[]').each(
-    function(element) {
-      element.remove();
-    }
-  );
+  $('#migrationForm input[type="hidden", name="childChannels[]"]').remove();
   // Submit all checked child channel's IDs
-  $$('div.channels-tree').each(function(element) {
-    if (element.visible()) {
-      element.select('input').each(function(checkbox) {
-        if (checkbox.checked == true) {
-          $('migrationForm').appendChild(
-            createHiddenInput('childChannels[]', checkbox.value));
-        }
-      });
-    }
+  $('.channels-tree:visible input:checked').each(function(checkbox) {
+    $('#migrationForm').append(
+      createHiddenInput('childChannels[]', checkbox.val())
+    );
   });
   return true;
 }
@@ -44,3 +27,14 @@ function createHiddenInput(name, value) {
   return el;
 }
 
+$(function() {
+  initChannelSelect();
+
+  $('#migrationForm').submit(function() {
+    prepareSubmitChannels();
+  });
+
+  $('#base-channel-select').change(function() {
+    showChannelTree($(this).val());
+  });
+});
