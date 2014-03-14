@@ -12,10 +12,11 @@
 
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
-  <h2>
-    <img src="/img/rhn-icon-channels.gif" alt="channel" />
+
+  <rhn:toolbar base="h2" icon="header-channel">
     <bean:message key="spmigration.jsp.setup.title" />
-  </h2>
+  </rhn:toolbar>
+
   <c:choose>
     <c:when test="${not empty migrationScheduled}">
       <div class="page-summary">
