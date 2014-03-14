@@ -80,8 +80,8 @@ public class SetupWizardManager extends BaseManager {
         MirrorCredentials creds;
         int id = 0;
         while (user != null && password != null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Found credentials (" + id + "): " + user);
+            if (logger.isTraceEnabled()) {
+                logger.trace("Found credentials (" + id + "): " + user);
             }
 
             // Create credentials object
@@ -116,9 +116,8 @@ public class SetupWizardManager extends BaseManager {
         MirrorCredentials creds = null;
         if (user != null && password != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Found credentials (" + id + "): " + user);
+                logger.debug("Found credentials for ID: " + id);
             }
-
             // Create credentials object
             creds = new MirrorCredentials(email, user, password);
             creds.setId(id);
@@ -127,12 +126,14 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
-     * Store a given pair of credentials in the filesystem using the next available index.
+     * Store a given pair of credentials in the filesystem after editing or using the next
+     * available free index for new credentials.
      * @param creds mirror credentials to store
      * @param user the current user
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds, User userIn) {
+    public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds,
+            User userIn, HttpServletRequest request) {
         if (creds.getUser() == null || creds.getPassword() == null) {
             return null;
         }
@@ -144,18 +145,30 @@ public class SetupWizardManager extends BaseManager {
             id = new Long(credentials.size());
         }
 
-        // Generate suffix depending on the ID
-        String suffix = "";
-        if (id > 0) {
-            suffix = "." + id;
+        // Check if there is changes by looking at previous object
+        MirrorCredentials oldCreds = SetupWizardManager.findMirrorCredentials(id);
+        if (!creds.equals(oldCreds)) {
+            // Generate suffix depending on the ID
+            String suffix = "";
+            if (id > 0) {
+                suffix = "." + id;
+            }
+            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+            configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
+            configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
+            if (creds.getEmail() != null) {
+                configCommand.updateString(KEY_MIRRCREDS_EMAIL + suffix, creds.getEmail());
+            }
+            // Remove old credentials data from cache
+            if (oldCreds != null) {
+                removeSubsFromSession(oldCreds, request);
+            }
+            return configCommand.storeConfiguration();
         }
-        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-        configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
-        configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
-        if (creds.getEmail() != null) {
-            configCommand.updateString(KEY_MIRRCREDS_EMAIL + suffix, creds.getEmail());
+        else {
+            // Nothing to do
+            return null;
         }
-        return configCommand.storeConfiguration();
     }
 
     /**
@@ -165,16 +178,21 @@ public class SetupWizardManager extends BaseManager {
      * @param userIn the user currently logged in
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] deleteMirrorCredentials(Long id, User userIn) {
+    public static ValidatorError[] deleteMirrorCredentials(Long id, User userIn,
+            HttpServletRequest request) {
+        ValidatorError[] errors = null;
+
+        // Store credentials to empty cache later
+        MirrorCredentials credentials = SetupWizardManager.findMirrorCredentials(id);
+
         // Find all credentials and see what needs to be done
         List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
 
-        // TODO: Delete subscriptions from session cache
+        // Special case: delete the last pair of credentials
         if (creds.size() == id + 1) {
-            // Just store empty credentials
             MirrorCredentials delCreds = new MirrorCredentials("", "", "");
             delCreds.setId(id);
-            return SetupWizardManager.storeMirrorCredentials(delCreds, userIn);
+            errors = SetupWizardManager.storeMirrorCredentials(delCreds, userIn, request);
         }
         else if (creds.size() > id + 1) {
             // We need to shift indices
@@ -200,11 +218,12 @@ public class SetupWizardManager extends BaseManager {
                     }
                 }
             }
-            return configCommand.storeConfiguration();
+            errors = configCommand.storeConfiguration();
+            // Clean deleted credentials data from cache
+            removeSubsFromSession(credentials, request);
         }
-        else {
-            return null;
-        }
+
+        return errors;
     }
 
     /**
@@ -329,5 +348,21 @@ public class SetupWizardManager extends BaseManager {
             ret = false;
         }
         return ret;
+    }
+
+    /**
+     * Delete cached subscriptions for a given pair of credentials.
+     * @param creds credentials
+     */
+    @SuppressWarnings("unchecked")
+    private static void removeSubsFromSession(MirrorCredentials creds,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Map<String, List<Subscription>> subsMap =
+                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        subsMap.remove(creds.getUser());
+        if (logger.isDebugEnabled()) {
+            logger.debug("removed " + creds.getUser());
+        }
     }
 }
