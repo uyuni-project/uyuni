@@ -60,7 +60,7 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
      When I follow "Configuration" in the tabs
       And I follow "Configuration Channels" in the left menu
-      And I follow "Test Channel"
+      And I follow "New Test Channel"
       And I follow "Deploy Files" in the content area
       And I click on "Deploy All Files" 
       And I check "sumacltt.suse.de" in the list
@@ -88,5 +88,10 @@ Feature: Test action chaining
       And I should see a "5. Verify andromeda-dummy on 1 system" text
       And I should see a "6. Deploy /etc/mgr-test-file.cnf" text
       And I should see a "7. Reboot 1 system" text
+     Then I pick "2016-08-17" as date
+      And I pick "5:30 pm" as time
+      And I click on "Save and Schedule"
+      And I should see a "Action Chain new action chain has been scheduled for execution." text
+
     
 
