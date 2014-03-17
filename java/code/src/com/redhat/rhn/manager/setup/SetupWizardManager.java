@@ -219,10 +219,10 @@ public class SetupWizardManager extends BaseManager {
                 }
             }
             errors = configCommand.storeConfiguration();
+
             // Clean deleted credentials data from cache
             removeSubsFromSession(credentials, request);
         }
-
         return errors;
     }
 
@@ -329,7 +329,7 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
-     * Put a list of subscriptions in the session cache, while 'null' is stored whenever the
+     * Put a list of subscriptions in the session cache, while "null" is stored whenever the
      * verification status is "failed" for a given pair of credentials.
      * @param subscriptions subscriptions
      * @param request request
