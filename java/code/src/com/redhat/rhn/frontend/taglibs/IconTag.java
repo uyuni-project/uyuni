@@ -114,7 +114,7 @@ public class IconTag extends TagSupport {
         icons.put("header-users-big", "fa fa-group fa-3x");
         icons.put("item-add", "fa fa-plus");
         icons.put("item-clone", "fa fa-files-o");
-        icons.put("item-verify", "fa fa-check-square");
+        icons.put("item-default", "fa fa-star");
         icons.put("item-del", "fa fa-trash-o");
         icons.put("item-disabled", "fa fa-circle-o text-muted");
         icons.put("item-download", "fa fa-download");
@@ -123,10 +123,12 @@ public class IconTag extends TagSupport {
         icons.put("item-enabled", "fa fa-check text-success");
         icons.put("item-import", "fa fa-level-down");
         icons.put("item-list", "fa fa-list");
+        icons.put("item-make-default", "fa fa-star-o");
         icons.put("item-search", "fa fa-eye");
         icons.put("item-ssm-add", "fa fa-plus-circle");
         icons.put("item-ssm-del", "fa fa-minus-circle");
         icons.put("item-upload", "fa fa-upload");
+        icons.put("item-verify", "fa fa-check-square");
         icons.put("monitoring-crit",
                   "fa fa-1-5x spacewalk-icon-monitoring-down text-danger");
         icons.put("monitoring-ok", "fa fa-1-5x spacewalk-icon-monitoring-ok text-success");

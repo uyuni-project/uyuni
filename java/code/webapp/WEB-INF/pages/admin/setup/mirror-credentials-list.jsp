@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
@@ -21,6 +22,16 @@
                     <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
                 </a>
                 <script>verifyCredentials('${current.id}', false);</script>
+            </span>
+            <span id="primary-${current.id}">
+                <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
+                    <c:if test="${current.id == 0}">
+                        <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
+                    </c:if>
+                    <c:if test="${current.id > 0}">
+                        <rhn:icon type="item-make-default" title="mirror-credentials.jsp.primary" />
+                    </c:if>
+                </a>
             </span>
             <span>
                 <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">

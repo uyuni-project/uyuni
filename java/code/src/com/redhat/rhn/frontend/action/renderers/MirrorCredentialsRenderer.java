@@ -118,6 +118,28 @@ public class MirrorCredentialsRenderer {
     }
 
     /**
+     * Make primary credentials for a given ID.
+     * @param id ID of credentials to make the primary ones
+     * @return rendered list of credentials
+     * @throws ServletException
+     * @throws IOException
+     */
+    public String makePrimaryCredentials(long id) throws ServletException, IOException {
+        // Find the current user
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+        RequestContext rhnContext = new RequestContext(request);
+        User webUser = rhnContext.getCurrentUser();
+
+        // Make primary credentials
+        if (logger.isDebugEnabled()) {
+            logger.debug("Make primary credentials: " + id);
+        }
+        SetupWizardManager.makePrimaryCredentials(id, webUser, request);
+        return renderCredentials();
+    }
+
+    /**
      * Render the list of mirror credentials.
      * @throws IOException
      * @throws ServletException

@@ -59,6 +59,13 @@ function deleteCredentials() {
       makeAjaxCallback("listset-container", false));
 }
 
+// Make primary credentials
+function makePrimaryCredentials(id) {
+  showSpinner("primary-" + id);
+  MirrorCredentialsRenderer.makePrimaryCredentials(id,
+      makeAjaxCallback("listset-container", false));
+}
+
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id, refresh) {
   console.log("refresh = " + refresh);

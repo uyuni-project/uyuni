@@ -227,6 +227,46 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
+     * Make primary credentials for a given credentials ID.
+     * Cache is not affected by reordering, because username is used as the key.
+     * @return list of validation errors or null in case of success
+     */
+    public static ValidatorError[] makePrimaryCredentials(Long id, User userIn,
+            HttpServletRequest request) {
+        ValidatorError[] errors = null;
+        List<MirrorCredentials> allCreds = SetupWizardManager.findMirrorCredentials();
+        if (allCreds.size() > 1) {
+            // Find the future primary creds before reordering
+            MirrorCredentials primaryCreds = SetupWizardManager.findMirrorCredentials(id);
+            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+
+            // Shift all indices starting from 1
+            int i = 1;
+            for (MirrorCredentials c : allCreds) {
+                if (allCreds.indexOf(c) != id) {
+                    String targetSuffix = "." + i;
+                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, c.getUser());
+                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, c.getPassword());
+                    if (c.getEmail() != null) {
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, c.getEmail());
+                    }
+                    i++;
+                }
+            }
+
+            // Set the primary credentials and store
+            primaryCreds.setId(0L);
+            configCommand.updateString(KEY_MIRRCREDS_USER, primaryCreds.getUser());
+            configCommand.updateString(KEY_MIRRCREDS_PASS, primaryCreds.getPassword());
+            if (primaryCreds.getEmail() != null) {
+                configCommand.updateString(KEY_MIRRCREDS_EMAIL, primaryCreds.getEmail());
+            }
+            errors = configCommand.storeConfiguration();
+        }
+        return errors;
+    }
+
+    /**
      * Connect to NCC and return subscriptions for a given pair of credentials.
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials

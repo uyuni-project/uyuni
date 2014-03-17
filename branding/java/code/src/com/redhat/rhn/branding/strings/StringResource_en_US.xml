@@ -1884,6 +1884,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.verify">
         <source>verify credentials</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.primary">
+        <source>make primary credentials</source>
+      </trans-unit>
       <trans-unit id="mirror-credentials.jsp.subscriptions">
         <source>list subscriptions</source>
       </trans-unit>

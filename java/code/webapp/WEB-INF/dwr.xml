@@ -50,6 +50,7 @@
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.MirrorCredentialsRenderer" />
       <include method="saveCredentials" />
       <include method="deleteCredentials" />
+      <include method="makePrimaryCredentials" />
       <include method="renderCredentials" />
       <include method="verifyCredentials" />
       <include method="listSubscriptions" />
