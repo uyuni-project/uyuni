@@ -68,7 +68,6 @@ function makePrimaryCredentials(id) {
 
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id, refresh) {
-  console.log("refresh = " + refresh);
   showSpinner("verify-" + id);
   MirrorCredentialsRenderer.verifyCredentials(id, refresh,
       makeAjaxCallback("verify-" + id, false));
