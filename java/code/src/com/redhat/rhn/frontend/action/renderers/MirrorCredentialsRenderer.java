@@ -32,7 +32,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
-import com.suse.manager.model.ncc.Subscription;
+import com.redhat.rhn.manager.setup.SubscriptionDto;
 
 /**
  * Asynchronously render page content for managing mirror credentials.
@@ -177,7 +177,7 @@ public class MirrorCredentialsRenderer {
         }
 
         // Download subscriptions or get from session cache
-        List<Subscription> subs;
+        List<SubscriptionDto> subs;
 
         // Download if forced refresh or status unknown
         if (refresh || SetupWizardManager.verificationStatusUnknown(creds, request)) {
@@ -212,7 +212,7 @@ public class MirrorCredentialsRenderer {
         }
 
         // Download subscriptions only if verification status is unknown
-        List<Subscription> subs = SetupWizardManager.getSubsFromSession(creds, request);
+        List<SubscriptionDto> subs = SetupWizardManager.getSubsFromSession(creds, request);
         if (subs == null && SetupWizardManager.verificationStatusUnknown(creds, request)) {
             subs = SetupWizardManager.downloadSubscriptions(creds);
             SetupWizardManager.storeSubsInSession(subs, creds, request);

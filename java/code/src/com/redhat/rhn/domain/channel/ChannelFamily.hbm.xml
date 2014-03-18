@@ -50,4 +50,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	<query name="ChannelFamily.findByOrgId">
 		<![CDATA[from com.redhat.rhn.domain.channel.ChannelFamily as cfam where cfam.org.id = :orgId]]>
 	</query>
+
+    <sql-query name="ChannelFamily.getNameByLabel">
+        <return-scalar type="string" column="name"/>
+        <![CDATA[select name from rhnChannelFamily where label = :label]]>
+    </sql-query>
 </hibernate-mapping>
