@@ -110,8 +110,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!selectedPkgs.isEmpty()) {
                 if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestlock"))) {
-                    this.lockSelectedPackages(lockedPackagesResult, container,
-                                              scheduleDate, server, request);
+                    this.lockSelectedPackages(container, scheduleDate, server, request);
                     this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess", infoMessages);
                 }
                 else if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestunlock"))) {
@@ -212,14 +211,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * Lock the packages, adding to the existing list of locked packages,
      * yet re-issuing the action.
      *
-     * @param lockedPackages
      * @param container
      * @param scheduleDate
      * @param server
      * @param request
      */
-    private void lockSelectedPackages(DataResult lockedPackages,
-                                      List<Package> container,
+    private void lockSelectedPackages(List<Package> container,
                                       Date scheduleDate,
                                       Server server,
                                       HttpServletRequest request) {
