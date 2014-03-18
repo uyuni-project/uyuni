@@ -204,4 +204,16 @@ public class ChannelFamilyFactory extends HibernateFactory {
         return  c.list();
     }
 
+    /**
+     * Return the name for a given channel family label.
+     * @param label channel family label
+     * @return name for given label or null
+     */
+    public static String getNameByLabel(String label) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("label", label);
+        Object o = singleton.lookupObjectByNamedQuery(
+                "ChannelFamily.getNameByLabel", params, false);
+        return (String) o;
+    }
 }

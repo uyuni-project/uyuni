@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.simpleframework.xml.core.Persister;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
@@ -271,7 +273,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      */
-    public static List<Subscription> downloadSubscriptions(MirrorCredentials creds) {
+    public static List<SubscriptionDto> downloadSubscriptions(MirrorCredentials creds) {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
@@ -325,7 +327,68 @@ public class SetupWizardManager extends BaseManager {
             logger.debug("Releasing connection");
             post.releaseConnection();
         }
-        return subscriptions;
+        return makeDtos(subscriptions);
+    }
+
+    /**
+     * Make DTOs from a given list of {@link Subscription} objects read from NCC. While doing
+     * that, filter out only active subscriptions and get human readable names from DB.
+     * @param subscriptions
+     * @return list of subscription DTOs
+     */
+    private static List<SubscriptionDto> makeDtos(List<Subscription> subscriptions) {
+        if (subscriptions == null) {
+            return null;
+        }
+        // Go through all of the given subscriptions
+        List<SubscriptionDto> dtos = new ArrayList<SubscriptionDto>();
+        for (Subscription sub : subscriptions) {
+            if (sub.getSubstatus().equals("EXPIRED")) {
+                continue;
+            }
+
+            // Determine subscription name from given product class
+            String subName = null;
+            String productClass = sub.getProductClass();
+
+            // Check if there is a comma separated list of product classes
+            if (productClass.indexOf(',') == -1) {
+                subName = ChannelFamilyFactory.getNameByLabel(sub.getProductClass());
+                if (subName == null || subName.isEmpty()) {
+                    logger.warn("Empty name for: " + sub.getProductClass());
+                    continue;
+                }
+            }
+            else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("List of product classes: " + sub.getProductClass());
+                }
+                List<String> productClasses = Arrays.asList(productClass.split(","));
+                for (String s : productClasses) {
+                    String name = ChannelFamilyFactory.getNameByLabel(s);
+                    if (name == null || name.isEmpty()) {
+                        logger.warn("Empty name for: " + sub.getProductClass());
+                        continue;
+                    }
+
+                    // This is an or relationship so for now: append with an 'or'
+                    if (subName == null) {
+                        subName = name;
+                    }
+                    else {
+                        subName = subName + " or " + name;
+                    }
+                }
+            }
+
+            // We have a valid subscription, add it as DTO
+            SubscriptionDto dto = new SubscriptionDto();
+            dto.setName(subName);
+            dto.setStartDate(sub.getStartDate());
+            dto.setEndDate(sub.getEndDate());
+            dtos.add(dto);
+        }
+        return dtos;
     }
 
     /**
@@ -335,15 +398,15 @@ public class SetupWizardManager extends BaseManager {
      * @param request request
      */
     @SuppressWarnings("unchecked")
-    public static void storeSubsInSession(List<Subscription> subscriptions,
+    public static void storeSubsInSession(List<SubscriptionDto> subscriptions,
             MirrorCredentials creds, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Map<String, List<Subscription>> subsMap =
-                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        Map<String, List<SubscriptionDto>> subsMap =
+                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
 
         // Create the map for caching if it doesn't exist
         if (subsMap == null) {
-            subsMap = new HashMap<String, List<Subscription>>();
+            subsMap = new HashMap<String, List<SubscriptionDto>>();
             session.setAttribute(SUBSCRIPTIONS_KEY, subsMap);
         }
 
@@ -359,12 +422,12 @@ public class SetupWizardManager extends BaseManager {
      * @return list of subscriptions or null signaling "verification failed"
      */
     @SuppressWarnings("unchecked")
-    public static List<Subscription> getSubsFromSession(MirrorCredentials creds,
+    public static List<SubscriptionDto> getSubsFromSession(MirrorCredentials creds,
             HttpServletRequest request) {
-        List<Subscription> ret = null;
+        List<SubscriptionDto> ret = null;
         HttpSession session = request.getSession();
-        Map<String, List<Subscription>> subsMap =
-                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        Map<String, List<SubscriptionDto>> subsMap =
+                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
         if (subsMap != null) {
             ret = subsMap.get(creds.getUser());
         }
@@ -398,8 +461,8 @@ public class SetupWizardManager extends BaseManager {
     private static void removeSubsFromSession(MirrorCredentials creds,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Map<String, List<Subscription>> subsMap =
-                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        Map<String, List<SubscriptionDto>> subsMap =
+                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
         subsMap.remove(creds.getUser());
         if (logger.isDebugEnabled()) {
             logger.debug("removed " + creds.getUser());
