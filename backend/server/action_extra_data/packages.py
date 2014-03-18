@@ -195,8 +195,18 @@ _query_set_locks = rhnSQL.Statement("""
 """)
 _query_remove_locks = rhnSQL.Statement("""
     DELETE FROM rhnLockedPackages
-        WHERE pending = 'U' AND
-              server_id = :server_id
+      WHERE rhnLockedPackages.server_id = :server_id AND
+        rhnLockedPackages.pkg_id IN (
+        SELECT pkg_id
+          FROM rhnLockedPackages JOIN rhnActionPackage
+            ON rhnLockedPackages.name_id = rhnActionPackage.name_id
+            AND rhnLockedPackages.evr_id = rhnActionPackage.evr_id
+            AND rhnLockedPackages.arch_id = rhnActionPackage.package_arch_id
+          WHERE rhnActionPackage.action_id = :action_id
+            AND rhnLockedPackages.server_id = :server_id
+            AND rhnActionPackage.parameter = 'lock'
+            AND rhnLockedPackages.pending = 'U'
+      )
 """)
 def setLocks(server_id, action_id, data={}):
     log_debug(3, action_id)
@@ -205,7 +215,7 @@ def setLocks(server_id, action_id, data={}):
     h.execute(server_id = server_id, action_id = action_id)
 
     h = rhnSQL.prepare(_query_remove_locks)
-    h.execute(server_id = server_id)
+    h.execute(server_id = server_id, action_id = action_id)
 
 # Exception raised when an invalid line is found
 class InvalidResponseLine(Exception):
