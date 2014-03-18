@@ -558,7 +558,6 @@ public class PackageManager extends BaseManager {
      * @param packages List of packages to lock.
      */
     public static void lockPackages(Long sid, List<Package> packages) {
-        PackageManager.unlockPackages(sid, packages);
         for (int i = 0; i < packages.size(); i++) {
             Package pkg = packages.get(i);
             Map params = new HashMap();
