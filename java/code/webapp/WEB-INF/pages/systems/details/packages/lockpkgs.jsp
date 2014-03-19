@@ -25,7 +25,7 @@
                 <rl:decorator name="ElaborationDecorator"/>
                 <rl:decorator name="SelectableDecorator"/>
                 <rl:selectablecolumn value="${current.selectionKey}"
-                                     selected="${current.selected}"
+                                     selected="${current.selected and empty current.pending}"
                                      disabled="${not current.selectable or not empty current.pending}"/>
                                          
                 <rl:column headerkey="packagelist.jsp.packagename"
