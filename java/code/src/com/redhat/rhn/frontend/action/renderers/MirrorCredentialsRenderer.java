@@ -29,7 +29,6 @@ import org.directwebremoting.WebContextFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
@@ -185,9 +184,6 @@ public class MirrorCredentialsRenderer {
         }
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
-
-        // Set the "parentUrl" for the form (in rl:listset)
-        request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(CREDS_VERIFY_URL, request, response);
     }
