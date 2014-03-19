@@ -14,26 +14,22 @@
         <div class="panel-footer">
             <div class="row">
                 <div class="text-left col-xs-10">
-                    <span id="verify-${current.id}">
-                        <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}', true);">
-                            <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
-                        </a>
-                    </span>
+                    <span id="verify-${current.id}"></span>
                     <span id="primary-${current.id}">
                         <c:if test="${current.id == 0}">
-                            <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
+                            <rhn:icon type="setup-wizard-creds-primary" title="mirror-credentials.jsp.primary" />
                         </c:if>
                         <c:if test="${current.id > 0}">
                             <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
-                                <rhn:icon type="item-make-default" title="mirror-credentials.jsp.make-primary" />
+                                <rhn:icon type="setup-wizard-creds-make-primary" title="mirror-credentials.jsp.make-primary" />
                             </a>
                         </c:if>
                     </span>
                     <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
-                        <rhn:icon type="item-list" title="mirror-credentials.jsp.subscriptions" />
+                        <rhn:icon type="setup-wizard-creds-subscriptions" title="mirror-credentials.jsp.subscriptions" />
                     </a>
                     <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#modal-edit-credentials">
-                        <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
+                        <rhn:icon type="setup-wizard-creds-edit" title="mirror-credentials.jsp.edit" />
                     </a>
                 </div>
                 <div class="text-right col-xs-2">

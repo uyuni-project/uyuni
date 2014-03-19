@@ -3,9 +3,9 @@
 
 <a href="javascript:void(0);" onClick="verifyCredentials('${credentialsId}', true);">
     <c:if test="${success}">
-        <rhn:icon type="action-ok" title="mirror-credentials.jsp.success" />
+        <rhn:icon type="setup-wizard-creds-verified" title="mirror-credentials.jsp.success" />
     </c:if>
     <c:if test="${! success}">
-        <rhn:icon type="action-failed" title="mirror-credentials.jsp.failed" />
+        <rhn:icon type="setup-wizard-creds-failed" title="mirror-credentials.jsp.failed" />
     </c:if>
 </a>
