@@ -18,8 +18,6 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
-import com.redhat.rhn.domain.action.Action;
-import com.redhat.rhn.domain.action.rhnpackage.PackageLockAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -32,14 +30,11 @@ import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.frontend.dto.ScheduledAction;
 import com.redhat.rhn.manager.action.ActionManager;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,7 +94,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                 // pre-select locked
                 selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
             }
-            pkgsAlreadyLocked.add(PackageManager.lookupByIdAndUser(pkg.getPackageId(), user));
+            pkgsAlreadyLocked.add(PackageManager.lookupByIdAndUser(pkg.getPackageId(),
+                                                                   user));
         }
 
         SessionSetHelper helper = new SessionSetHelper(request);
@@ -109,20 +105,37 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!selectedPkgs.isEmpty()) {
-                if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestlock"))) {
-                    this.lockSelectedPackages(pkgsAlreadyLocked, scheduleDate, server, request);
-                    this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess", infoMessages);
+                if (request.getParameter("dispatch")
+                        .equals(LocalizationService.getInstance()
+                        .getMessage("pkg.lock.requestlock"))) {
+                    this.lockSelectedPackages(pkgsAlreadyLocked,
+                                              scheduleDate,
+                                              server,
+                                              request);
+                    this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
+                                                     infoMessages);
                 }
-                else if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.requestunlock"))) {
+                else if (request.getParameter("dispatch").equals(
+                        LocalizationService.getInstance()
+                        .getMessage("pkg.lock.requestunlock"))) {
                     try {
-                        this.unlockSelectedPackages(pkgsAlreadyLocked, scheduleDate, server, request);
-                        this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess", infoMessages);
+                        this.unlockSelectedPackages(pkgsAlreadyLocked,
+                                                    scheduleDate,
+                                                    server,
+                                                    request);
+                        this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
+                                                         infoMessages);
                     } catch (Exception ex) {
-                        Logger.getLogger(LockPackageAction.class.getName()).log(Level.SEVERE, null, ex);
-                        this.getStrutsDelegate().addError(errorMessages, "pkg.lock.message.genericerror", ex.getLocalizedMessage());
+                        Logger.getLogger(LockPackageAction.class.getName())
+                                .log(Level.SEVERE, null, ex);
+                        this.getStrutsDelegate().addError(errorMessages,
+                                                          "pkg.lock.message.genericerror",
+                                                          ex.getLocalizedMessage());
                     }
                 }
-                else if (request.getParameter("dispatch").equals(LocalizationService.getInstance().getMessage("pkg.lock.showlockedonly"))) {
+                else if (request.getParameter("dispatch").equals(
+                        LocalizationService.getInstance()
+                        .getMessage("pkg.lock.showlockedonly"))) {
                     // set to the session some flag that would:
                     // 1. filter out only locked packages
                     // 2. disable the "request lock" button
@@ -188,7 +201,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         }
 
         PackageManager.setPendingStatusOnLockedPackages(pkgsToUnlock,
-                                                          PackageManager.PKG_PENDING_UNLOCK);
+                                                        PackageManager.PKG_PENDING_UNLOCK);
         ActionManager.schedulePackageLock(user, server, pkgsAlreadyLocked, scheduleDate);
     }
 
