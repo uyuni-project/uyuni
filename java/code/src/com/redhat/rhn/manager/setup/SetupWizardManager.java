@@ -273,7 +273,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      */
-    public static List<SubscriptionDto> downloadSubscriptions(MirrorCredentials creds) {
+    public static List<Subscription> downloadSubscriptions(MirrorCredentials creds) {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
@@ -327,7 +327,7 @@ public class SetupWizardManager extends BaseManager {
             logger.debug("Releasing connection");
             post.releaseConnection();
         }
-        return makeDtos(subscriptions);
+        return subscriptions;
     }
 
     /**
@@ -392,38 +392,22 @@ public class SetupWizardManager extends BaseManager {
     }
 
     /**
-     * Put a list of subscriptions in the session cache, while "null" is stored whenever the
-     * verification status is "failed" for a given pair of credentials.
-     * @param subscriptions subscriptions
-     * @param request request
-     */
-    @SuppressWarnings("unchecked")
-    public static void storeSubsInSession(List<SubscriptionDto> subscriptions,
-            MirrorCredentials creds, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Map<String, List<SubscriptionDto>> subsMap =
-                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
-
-        // Create the map for caching if it doesn't exist
-        if (subsMap == null) {
-            subsMap = new HashMap<String, List<SubscriptionDto>>();
-            session.setAttribute(SUBSCRIPTIONS_KEY, subsMap);
-        }
-
-        // Store or update the subscriptions
-        logger.debug("Storing subscriptions for " + creds.getUser());
-        subsMap.put(creds.getUser(), subscriptions);
-    }
-
-    /**
-     * Return cached list of subscriptions or null for signaling "verification failed".
+     * Return cached list of subscriptions or "null" for signaling "verification failed".
      * @param creds credentials
      * @param request request
+     * @param forceRefresh set true to refresh the cached subscriptions
      * @return list of subscriptions or null signaling "verification failed"
      */
     @SuppressWarnings("unchecked")
-    public static List<SubscriptionDto> getSubsFromSession(MirrorCredentials creds,
-            HttpServletRequest request) {
+    public static List<SubscriptionDto> getSubscriptions(MirrorCredentials creds,
+            HttpServletRequest request, boolean forceRefresh) {
+        // Implicitly download subscriptions if requested
+        if (forceRefresh) {
+            List<Subscription> subscriptions = SetupWizardManager.downloadSubscriptions(creds);
+            storeSubsInSession(makeDtos(subscriptions), creds, request);
+        }
+
+        // Return from cache
         List<SubscriptionDto> ret = null;
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
@@ -451,6 +435,30 @@ public class SetupWizardManager extends BaseManager {
             ret = false;
         }
         return ret;
+    }
+
+    /**
+     * Put a list of subscriptions in the session cache, while "null" is stored whenever the
+     * verification status is "failed" for a given pair of credentials.
+     * @param subscriptions subscriptions
+     * @param request request
+     */
+    @SuppressWarnings("unchecked")
+    private static void storeSubsInSession(List<SubscriptionDto> subscriptions,
+            MirrorCredentials creds, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Map<String, List<SubscriptionDto>> subsMap =
+                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+
+        // Create the map for caching if it doesn't exist
+        if (subsMap == null) {
+            subsMap = new HashMap<String, List<SubscriptionDto>>();
+            session.setAttribute(SUBSCRIPTIONS_KEY, subsMap);
+        }
+
+        // Store or update the subscriptions
+        logger.debug("Storing subscriptions for " + creds.getUser());
+        subsMap.put(creds.getUser(), subscriptions);
     }
 
     /**

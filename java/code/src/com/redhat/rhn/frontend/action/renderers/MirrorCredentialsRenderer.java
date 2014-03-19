@@ -181,11 +181,10 @@ public class MirrorCredentialsRenderer {
 
         // Download if forced refresh or status unknown
         if (refresh || SetupWizardManager.verificationStatusUnknown(creds, request)) {
-            subs = SetupWizardManager.downloadSubscriptions(creds);
-            SetupWizardManager.storeSubsInSession(subs, creds, request);
+            subs = SetupWizardManager.getSubscriptions(creds, request, true);
         }
         else {
-            subs = SetupWizardManager.getSubsFromSession(creds, request);
+            subs = SetupWizardManager.getSubscriptions(creds, request, false);
         }
         request.setAttribute(ATTRIB_SUCCESS, subs != null);
         request.setAttribute(ATTRIB_CREDS_ID, id);
@@ -212,10 +211,9 @@ public class MirrorCredentialsRenderer {
         }
 
         // Download subscriptions only if verification status is unknown
-        List<SubscriptionDto> subs = SetupWizardManager.getSubsFromSession(creds, request);
+        List<SubscriptionDto> subs = SetupWizardManager.getSubscriptions(creds, request, false);
         if (subs == null && SetupWizardManager.verificationStatusUnknown(creds, request)) {
-            subs = SetupWizardManager.downloadSubscriptions(creds);
-            SetupWizardManager.storeSubsInSession(subs, creds, request);
+            subs = SetupWizardManager.getSubscriptions(creds, request, true);
         }
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
 
