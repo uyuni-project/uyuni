@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-sm-6 text-center">
                         <button class="btn btn-default" disabled="disabled"><i class="fa fa-arrow-left"></i>Prev</button>
-                        <button class="btn btn-success">Next <i class="fa fa-arrow-right"></i></button>
+                        <a class="btn btn-success" href="/rhn/admin/setup/MirrorCredentials.do">Next <i class="fa fa-arrow-right"></i></a>
                     </div>
                     <div class="col-sm-3 text-right">
                         <a href="#">You can skip this step <i class="fa fa-step-forward"></i></a>
