@@ -1900,10 +1900,10 @@ tree will not be usable for autoinstalling.
         <source>delete credentials</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.success">
-        <source>credentials verified</source>
+        <source>credentials verified (click to refresh)</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.failed">
-        <source>verification failed</source>
+        <source>verification failed (click to refresh)</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.modal-edit.title">
         <source>Edit credentials</source>
