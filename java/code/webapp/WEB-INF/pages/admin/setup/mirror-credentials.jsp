@@ -17,45 +17,6 @@
         </script>
     </head>
     <body>
-        <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences">
-                <bean:message key="Setup Wizard" />
-            </rhn:toolbar>
-            <rhn:dialogmenu mindepth="0" maxdepth="1"
-                        definition="/WEB-INF/nav/setup_wizard.xml"
-                        renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="row" id="mirror-credentials">
-                    <div class="col-sm-9" id="listset-container">
-                        <rhn:icon type="spinner"></rhn:icon>
-                        <script>MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));</script>
-                    </div>
-                    <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                        <img src="img/setup-wizard/http-proxy.png" />
-                        <h4>Any help title</h4>
-                        <p>Any help description here. Any help description here. Any help description here.</p>
-                    </div>
-                </div>
-              </div>
-              <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                        1 of 7
-                    </div>
-                    <div class="col-sm-6 text-center">
-                        <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do"><i class="fa fa-arrow-left"></i><bean:message key="setup-wizard.prev" /></a>
-                        <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do"> <bean:message key="setup-wizard.next" /> <i class="fa fa-arrow-right"></i></a>
-                    </div>
-                    <div class="col-sm-3 text-right">
-                        <a href="/rhn/admin/setup/SUSEProducts.do">You can skip this step <i class="fa fa-step-forward"></i></a>
-                    </div>
-                </div>
-              </div>
-            </div>
-        </div>
-
-
         <!-- MODAL: Edit credentials -->
         <div class="modal fade" id="modal-edit-credentials">
             <div class="modal-dialog">
@@ -146,5 +107,42 @@
             </div>
         </div>
 
+        <div class="responsive-wizard">
+            <rhn:toolbar base="h1" icon="header-preferences">
+                <bean:message key="Setup Wizard" />
+            </rhn:toolbar>
+            <rhn:dialogmenu mindepth="0" maxdepth="1"
+                        definition="/WEB-INF/nav/setup_wizard.xml"
+                        renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row" id="mirror-credentials">
+                        <div class="col-sm-9" id="listset-container">
+                            <rhn:icon type="spinner"></rhn:icon>
+                            <script>MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));</script>
+                        </div>
+                        <div class="col-sm-3 hidden-xs" id="wizard-faq">
+                            <img src="img/setup-wizard/http-proxy.png" />
+                            <h4>Any help title</h4>
+                            <p>Any help description here. Any help description here. Any help description here.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-3 hidden-xs">
+                            1 of 7
+                        </div>
+                        <div class="col-sm-6 text-center">
+                            <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do"><i class="fa fa-arrow-left"></i><bean:message key="setup-wizard.prev" /></a>
+                            <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do"> <bean:message key="setup-wizard.next" /> <i class="fa fa-arrow-right"></i></a>
+                        </div>
+                        <div class="col-sm-3 text-right">
+                            <a href="/rhn/admin/setup/SUSEProducts.do">You can skip this step <i class="fa fa-step-forward"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
