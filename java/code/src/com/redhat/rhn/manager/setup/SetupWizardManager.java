@@ -163,7 +163,7 @@ public class SetupWizardManager extends BaseManager {
             }
             // Remove old credentials data from cache
             if (oldCreds != null) {
-                removeSubsFromSession(oldCreds, request);
+                removeSubscriptionsFromSession(oldCreds, request);
             }
             return configCommand.storeConfiguration();
         }
@@ -223,7 +223,7 @@ public class SetupWizardManager extends BaseManager {
             errors = configCommand.storeConfiguration();
 
             // Clean deleted credentials data from cache
-            removeSubsFromSession(credentials, request);
+            removeSubscriptionsFromSession(credentials, request);
         }
         return errors;
     }
@@ -404,7 +404,7 @@ public class SetupWizardManager extends BaseManager {
         // Implicitly download subscriptions if requested
         if (forceRefresh || verificationStatusUnknown(creds, request)) {
             List<Subscription> subscriptions = SetupWizardManager.downloadSubscriptions(creds);
-            storeSubsInSession(makeDtos(subscriptions), creds, request);
+            storeSubscriptionsInSession(makeDtos(subscriptions), creds, request);
         }
 
         // Return from cache
@@ -444,7 +444,7 @@ public class SetupWizardManager extends BaseManager {
      * @param request request
      */
     @SuppressWarnings("unchecked")
-    private static void storeSubsInSession(List<SubscriptionDto> subscriptions,
+    private static void storeSubscriptionsInSession(List<SubscriptionDto> subscriptions,
             MirrorCredentials creds, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
@@ -466,7 +466,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds credentials
      */
     @SuppressWarnings("unchecked")
-    private static void removeSubsFromSession(MirrorCredentials creds,
+    private static void removeSubscriptionsFromSession(MirrorCredentials creds,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
