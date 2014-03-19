@@ -21,11 +21,53 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.suse.manager.model.ncc.Subscription;
+import java.net.ServerSocket;
+import java.util.Date;
+import simple.http.connect.Connection;
+import simple.http.connect.ConnectionFactory;
+import simple.http.load.LoaderEngine;
 
 /**
  * Tests for {@link SetupWizardManager}.
  */
 public class SetupWizardManagerTest extends RhnBaseTestCase {
+
+    Connection nccConnection;
+    ServerSocket nccSocket;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        LoaderEngine engine = new LoaderEngine();
+        engine.load("NCC", "com.redhat.rhn.manager.setup.test.NCCServerStub");
+        engine.link("*", "NCC");
+        nccConnection = ConnectionFactory.getConnection(engine);
+        nccSocket= new ServerSocket(7730);
+        nccConnection.connect(nccSocket);
+    }
+
+    public void testDownloadSubscriptions() throws Exception {
+        setTestCredentials("testuser0", "testpass0", "testemail0", 0);
+        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+        System.out.println(credentials.get(0));
+        List<Subscription> subs = SetupWizardManager.downloadSubscriptions(credentials.get(0));
+        assertEquals(1, subs.size());
+        Subscription s = subs.get(0);
+        assertEquals("1", s.getSubid());
+        assertEquals("1234", s.getRegcode());
+        assertEquals("subname0", s.getSubname());
+        assertEquals("Gold", s.getType());
+        assertEquals("Turbo", s.getSubstatus());
+        assertEquals(new Date(1333231200000L), s.getStartDate());
+        assertEquals(new Date(1427839200000L), s.getEndDate());
+        assertEquals(3, s.getDuration());
+        assertEquals("Blade", s.getProductClass());
+        assertEquals("Blade", s.getServerClass());
+        assertEquals(10, s.getNodecount());
+        assertEquals(2, s.getConsumed());
+        assertEquals(3, s.getConsumedVirtual());
+    }
 
     public void testFindMirrorCredsEmpty() throws Exception {
         List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
@@ -75,6 +117,8 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         for (int i=0; i<=10; i++) {
             setTestCredentials("", "", "", i);
         }
+
+        nccSocket.close();
     }
 
     private void setTestCredentials(String user, String pass, String email, int index) {
