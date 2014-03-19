@@ -161,26 +161,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
-
-
-    /**
-     * Wipe actions.
-     * @param user
-     */
-    private void wipeActions(User user, Boolean unlock) {
-        Map params = new HashMap();
-        params.put(PackageLockAction.PARAM_PENDING, PackageManager.PKG_PENDING_UNLOCK);
-
-        for (Iterator it = ActionManager.allActions(user, null).iterator(); it.hasNext();) {
-            Action action = ActionManager.lookupAction(user,
-                                                       ((ScheduledAction) it.next()).getId());
-            // Hard-coded ID from DB: this is *the* design!
-            if (action != null && action.getActionType().getId() == 502) {
-                ActionManager.cancelAction(user, action, unlock ? params : null);
-            }
-        }
-    }
-
+    
     /**
      * Unlock the packages.
      *
