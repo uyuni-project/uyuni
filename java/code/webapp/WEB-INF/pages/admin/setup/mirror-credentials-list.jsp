@@ -24,14 +24,14 @@
                 <script>verifyCredentials('${current.id}', false);</script>
             </span>
             <span id="primary-${current.id}">
-                <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
-                    <c:if test="${current.id == 0}">
-                        <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
-                    </c:if>
-                    <c:if test="${current.id > 0}">
-                        <rhn:icon type="item-make-default" title="mirror-credentials.jsp.primary" />
-                    </c:if>
-                </a>
+                <c:if test="${current.id == 0}">
+                    <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
+                </c:if>
+                <c:if test="${current.id > 0}">
+                    <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
+                        <rhn:icon type="item-make-default" title="mirror-credentials.jsp.make-primary" />
+                    </a>
+                </c:if>
             </span>
             <span>
                 <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
