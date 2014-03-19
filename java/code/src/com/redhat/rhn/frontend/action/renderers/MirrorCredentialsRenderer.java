@@ -43,7 +43,7 @@ public class MirrorCredentialsRenderer {
     private static Logger logger = Logger.getLogger(MirrorCredentialsRenderer.class);
 
     // Attribute keys
-    private static final String ATTRIB_MIRRCREDS = "mirrorCredsList";
+    private static final String ATTRIB_MIRRCREDS = "credentials";
     private static final String ATTRIB_CREDS_ID = "credentialsId";
     private static final String ATTRIB_SUCCESS = "success";
     private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
@@ -140,7 +140,7 @@ public class MirrorCredentialsRenderer {
     }
 
     /**
-     * Render the list of mirror credentials.
+     * Render the mirror credentials set of panels.
      * @throws IOException
      * @throws ServletException
      */
@@ -154,9 +154,6 @@ public class MirrorCredentialsRenderer {
             logger.debug("Found " + creds.size() + " pairs of credentials");
         }
         request.setAttribute(ATTRIB_MIRRCREDS, creds);
-
-        // Set the "parentUrl" for the form (in rl:listset)
-        request.setAttribute(ListTagHelper.PARENT_URL, "");
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(CREDS_LIST_URL, request, response);
     }
