@@ -44,13 +44,30 @@
                             <div class="panel-footer">
                                 <div class="row">
                                     <div class="text-left col-xs-10">
-                                        <a href="#"><i class="fa fa-check-square text-success"></i></a>
-                                        <a href="#"><i class="fa fa-star text-warning"></i></a>
-                                        <a href="#"><i class="fa fa-pencil"></i></a>
-                                        <a href="#"><i class="fa fa-th-list"></i></a>
+                                        <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}', true);">
+                                            <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
+                                        </a>
+                                        <script>verifyCredentials('${current.id}', false);</script>
+                                        <c:if test="${current.id == 0}">
+                                            <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
+                                        </c:if>
+                                        <c:if test="${current.id > 0}">
+                                            <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
+                                                <rhn:icon type="item-make-default" title="mirror-credentials.jsp.make-primary" />
+                                            </a>
+                                        </c:if>
+                                        <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
+                                            <rhn:icon type="item-list" title="mirror-credentials.jsp.subscriptions" />
+                                        </a>
+                                        <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#modal-edit-credentials">
+                                            <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
+                                        </a>
+                                        
                                     </div>
                                     <div class="text-right col-xs-2">
-                                        <a href="#"><i class="fa fa-trash-o"></i></a>
+                                        <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.email}', '${current.user}');" data-toggle="modal" data-target="#modal-delete-credentials">
+                                            <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
+                                        </a>
                                     </div>
                                 </div>
                             </div>
