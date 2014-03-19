@@ -402,7 +402,7 @@ public class SetupWizardManager extends BaseManager {
     public static List<SubscriptionDto> getSubscriptions(MirrorCredentials creds,
             HttpServletRequest request, boolean forceRefresh) {
         // Implicitly download subscriptions if requested
-        if (forceRefresh) {
+        if (forceRefresh || verificationStatusUnknown(creds, request)) {
             List<Subscription> subscriptions = SetupWizardManager.downloadSubscriptions(creds);
             storeSubsInSession(makeDtos(subscriptions), creds, request);
         }
@@ -425,7 +425,7 @@ public class SetupWizardManager extends BaseManager {
      * @return true if verification status is unknown for the given creds, otherwise false.
      */
     @SuppressWarnings("unchecked")
-    public static boolean verificationStatusUnknown(MirrorCredentials creds,
+    private static boolean verificationStatusUnknown(MirrorCredentials creds,
             HttpServletRequest request) {
         boolean ret = true;
         HttpSession session = request.getSession();

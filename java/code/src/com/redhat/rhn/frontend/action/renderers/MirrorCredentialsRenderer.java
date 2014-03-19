@@ -177,7 +177,7 @@ public class MirrorCredentialsRenderer {
         List<SubscriptionDto> subs;
 
         // Download if forced refresh or status unknown
-        if (refresh || SetupWizardManager.verificationStatusUnknown(creds, request)) {
+        if (refresh) {
             subs = SetupWizardManager.getSubscriptions(creds, request, true);
         }
         else {
@@ -206,14 +206,8 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("List subscriptions: " + creds.getUser());
         }
-
-        // Download subscriptions only if verification status is unknown
         List<SubscriptionDto> subs = SetupWizardManager.getSubscriptions(creds, request, false);
-        if (subs == null && SetupWizardManager.verificationStatusUnknown(creds, request)) {
-            subs = SetupWizardManager.getSubscriptions(creds, request, true);
-        }
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
-
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(LIST_SUBSCRIPTIONS_URL, request, response);
     }
