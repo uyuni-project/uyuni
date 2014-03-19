@@ -1,3 +1,120 @@
+// responsive tabs
+.responsive-wizard {
+	ul.nav.nav-tabs {
+		margin: 0;
+		.disabled a {
+			color: #cecece;
+			background-color: #f3f3f3;
+			border: 1px solid #dddddd;
+			cursor: not-allowed;
+		}
+		.visited a {
+			color: #888;
+			background-color: #f6f6f6;
+			border: 1px solid #dddddd;
+		}
+	}
+	.nav-tabs > li > a  {
+		margin: 0;
+	}
+	ul.nav.nav-tabs + .panel.panel-default {
+		border-radius: 0 0 4px 4px;
+		border-top: 0px ;
+	}
+	.panel-footer {
+		background-color: transparent;
+	}
+}
+
+// Setup Wizard
+.responsive-wizard {
+	.panel-body {
+		padding-bottom: 0;
+		button.btn {
+			.btn-sm;
+		}
+		.panel{
+			box-shadow: 0px 2px 1px 0px #dadada;
+      -moz-box-shadow: 0px 2px 1px 0px #dadada;
+      -webkit-box-shadow: 0px 2px 1px 0px #dadada;
+		}
+		.panel-footer {
+			border-top: 0;
+			background: @gray-lighter;
+			.fa {
+				font-size: 1.5em;
+			}
+		}
+		form p {
+			padding-top: 7px;
+			margin: 0;
+			text-align: left;
+		}
+		a > i.fa {
+			color: @gray-dark;
+		}
+		a > i.fa.text-success {
+			.text-success;
+		}
+		a > i.fa.text-danger {
+			.text-danger;
+		}
+		a > i.fa.text-warning {
+			.text-warning;
+		}
+
+		//credentials
+		#mirror-credentials {
+			.panel {
+				width: 300px;
+				height: 140px;
+				display: inline-block;
+				padding:0; 
+				margin: 0 1.4em  1em 0;
+				vertical-align: top;
+				h3 {
+					margin-top: 0 ;
+					height: 41px;
+					overflow: x-scroll;
+				}
+			}
+			.panel-footer {
+				padding-left: 0;
+				padding-right: 0;
+			}
+			.panel-inactive {
+				background: #f7f7f7;
+				border: 1px solid #dddddd;
+				text-align: center;
+				.fa-plus-circle {
+					font-size: 4em;
+					color: @gray;
+					text-shadow: -1px -1px 0px #777, 1px 1px 0px #fff ;
+					margin-top: 13px;
+					margin-right: 0;
+				}
+				a {
+					color: @gray
+				}
+			}
+		}
+	}
+	.col-sm-9 {
+		padding-left: 0;
+	}
+	#wizard-faq {
+		border-left: 1px solid @panel-inner-border;
+		text-align: center;
+		img:first-child {
+			margin-top: 1em;
+			margin-bottom: 1em;
+		}
+		h4, p {
+			text-align: left;
+		}
+	}
+}
+
 #modal-list-subscriptions-body {
   height: 300px;
   overflow-y: auto;
@@ -6,4 +123,3 @@
 ul.subscriptions-list {
   list-style: none;
 }
-
