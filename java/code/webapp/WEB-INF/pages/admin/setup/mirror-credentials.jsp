@@ -27,62 +27,9 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 <div class="row" id="mirror-credentials">
-                    <div class="col-sm-9">
-                        <!-- Credentials OLD -->
-                        <div id="listset-container">
-                            <rhn:icon type="spinner"></rhn:icon><span>Loading ...</span>
-                            <script>
-                                MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));
-                            </script>
-                        </div>
-                        <!-- credential -->
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <h3>Name of the mirror credential</h3>
-                                <p>cynthia@suse.de</p>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="text-left col-xs-10">
-                                        <a href="javascript:void(0);" onClick="verifyCredentials('${current.id}', true);">
-                                            <rhn:icon type="item-verify" title="mirror-credentials.jsp.verify" />
-                                        </a>
-                                        <script>verifyCredentials('${current.id}', false);</script>
-                                        <c:if test="${current.id == 0}">
-                                            <rhn:icon type="item-default" title="mirror-credentials.jsp.primary" />
-                                        </c:if>
-                                        <c:if test="${current.id > 0}">
-                                            <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
-                                                <rhn:icon type="item-make-default" title="mirror-credentials.jsp.make-primary" />
-                                            </a>
-                                        </c:if>
-                                        <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
-                                            <rhn:icon type="item-list" title="mirror-credentials.jsp.subscriptions" />
-                                        </a>
-                                        <a href="javascript:void(0);" onCLick="initEdit('${current.id}','${current.email}','${current.user}')" data-toggle="modal" data-target="#modal-edit-credentials">
-                                            <rhn:icon type="item-edit" title="mirror-credentials.jsp.edit" />
-                                        </a>
-                                        
-                                    </div>
-                                    <div class="text-right col-xs-2">
-                                        <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.email}', '${current.user}');" data-toggle="modal" data-target="#modal-delete-credentials">
-                                            <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- ADD NEW credential -->
-                        
-                        <div class="panel panel-inactive" data-toggle="modal" data-target="#modal-edit-credentials">
-                            <div class="panel-body">
-
-                                    <i class="fa fa-plus-circle"></i>
-                                    <p>Add a new credential</p>
-                                
-                            </div>
-                        </div>
-
+                    <div class="col-sm-9" id="listset-container">
+                        <rhn:icon type="spinner"></rhn:icon>
+                        <script>MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));</script>
                     </div>
                     <div class="col-sm-3 hidden-xs" id="wizard-faq">
                         <img src="img/setup-wizard/http-proxy.png" />
