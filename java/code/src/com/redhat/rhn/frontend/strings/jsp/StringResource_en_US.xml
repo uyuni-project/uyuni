@@ -6982,7 +6982,12 @@ value for this entitlement, excluding the default organization's consumption.</s
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-
+      <trans-unit id="packages.setLocks">
+        <source>Packages Lock/Unlock</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="pkg.lock.locking">
         <source>Locking...</source>
         <context-group name="ctx">
