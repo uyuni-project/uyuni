@@ -131,14 +131,6 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                                                           ex.getLocalizedMessage());
                     }
                 }
-                else if (request.getParameter("dispatch").equals(
-                        LocalizationService.getInstance()
-                        .getMessage("pkg.lock.showlockedonly"))) {
-                    // set to the session some flag that would:
-                    // 1. filter out only locked packages
-                    // 2. disable the "request lock" button
-                    // 3. switch to "show all packages" button, which do the otherwise above
-                }
             }
             else {
                 RhnHelper.handleEmptySelection(request);
