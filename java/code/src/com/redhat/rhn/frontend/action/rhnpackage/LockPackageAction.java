@@ -31,15 +31,19 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.manager.action.ActionManager;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -76,12 +80,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Set selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
         ActionErrors errorMessages = new ActionErrors();
-        List<Package> pkgsAlreadyLocked = new ArrayList<Package>() {
-            @Override
-            public boolean add(Package pkg) {
-                return pkg == null ? false : (!this.contains(pkg) ? super.add(pkg) : false);
-            }
-        };
+        Set<Package> pkgsAlreadyLocked = new HashSet<Package>();
 
         if (!context.isSubmitted()) {
             selectedPkgs.clear();
@@ -94,8 +93,11 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                 // pre-select locked
                 selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
             }
-            pkgsAlreadyLocked.add(PackageManager.lookupByIdAndUser(pkg.getPackageId(),
-                                                                   user));
+
+            Package lockedPkg = PackageManager.lookupByIdAndUser(pkg.getPackageId(), user);
+            if (lockedPkg != null) {
+                pkgsAlreadyLocked.add(lockedPkg);
+            }
         }
 
         SessionSetHelper helper = new SessionSetHelper(request);
@@ -183,7 +185,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param server
      * @param request
      */
-    private void unlockSelectedPackages(List<Package> pkgsAlreadyLocked,
+    private void unlockSelectedPackages(Set<Package> pkgsAlreadyLocked,
                                         Date scheduleDate,
                                         Server server,
                                         HttpServletRequest request)
@@ -215,14 +217,14 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param server
      * @param request
      */
-    private void lockSelectedPackages(List<Package> pkgsAlreadyLocked,
+    private void lockSelectedPackages(Set<Package> pkgsAlreadyLocked,
                                       Date scheduleDate,
                                       Server server,
                                       HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
-        List<Package> pkgsToLock = new ArrayList<Package>();
+        Set<Package> pkgsToLock = new HashSet<Package>();
 
         // Lock all selected packages, if ther are not already in the list
         for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {

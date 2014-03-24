@@ -1288,10 +1288,24 @@ public class ActionManager extends BaseManager {
      */
     public static Action schedulePackageLock(User scheduler,
                                                     Server server,
-                                                    List<Package> packages,
+                                                    Set<Package> packages,
                                                     Date earliest) {
+        List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
+        for (Package pkg : packages) {
+            Map<String, Long> pkgMeta = new HashMap<String, Long>();
+            pkgMeta.put("name_id", pkg.getPackageName().getId());
+            pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
+            pkgMeta.put("arch_id", pkg.getPackageArch().getId());
+            packagesList.add(pkgMeta);
+        }
+
         return ActionManager.schedulePackageAction(
-                scheduler, packages, ActionFactory.TYPE_PACKAGES_LOCK, earliest, server);
+            scheduler,
+            packagesList,
+            ActionFactory.TYPE_PACKAGES_LOCK,
+            earliest,
+            server
+        );
     }
 
     /**
@@ -1668,23 +1682,7 @@ public class ActionManager extends BaseManager {
             serverIds.add(s.getId());
         }
 
-        if (pkgs != null && !pkgs.isEmpty() && pkgs.get(0) instanceof Package) {
-            List<Map<String, Long>> packagesList = new ArrayList<Map<String, Long>>();
-            for (Iterator it = pkgs.iterator(); it.hasNext();) {
-                Package pkg = (Package) it.next();
-                Map<String, Long> pkgMeta = new HashMap<String, Long>();
-                pkgMeta.put("name_id", pkg.getPackageName().getId());
-                pkgMeta.put("evr_id", pkg.getPackageEvr().getId());
-                pkgMeta.put("arch_id", pkg.getPackageArch().getId());
-                packagesList.add(pkgMeta);
-            }
-            return schedulePackageAction(scheduler, packagesList, type,
-                                         earliestAction, serverIds);
-        }
-        else {
-            return schedulePackageAction(scheduler, pkgs, type,
-                                         earliestAction, serverIds);
-        }
+        return schedulePackageAction(scheduler, pkgs, type, earliestAction, serverIds);
     }
 
     /**

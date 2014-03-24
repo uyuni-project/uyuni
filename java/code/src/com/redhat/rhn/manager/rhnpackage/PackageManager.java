@@ -557,9 +557,8 @@ public class PackageManager extends BaseManager {
      * @param sid Server ID.
      * @param packages List of packages to lock.
      */
-    public static void lockPackages(Long sid, List<Package> packages) {
-        for (int i = 0; i < packages.size(); i++) {
-            Package pkg = packages.get(i);
+    public static void lockPackages(Long sid, Set<Package> packages) {
+        for (Package pkg : packages) {
             Map params = new HashMap();
             params.put("sid", sid);
             params.put("pkgid", pkg.getId());
