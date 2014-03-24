@@ -101,15 +101,13 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         }
 
         SessionSetHelper helper = new SessionSetHelper(request);
-        if (request.getParameter("dispatch") != null) {
+        if (isSubmitted(form)) {
             // if its one of the Dispatch actions handle it..
             helper.updateSet(selectedPkgs, LIST_NAME);
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
             if (!selectedPkgs.isEmpty()) {
-                if (request.getParameter("dispatch")
-                        .equals(LocalizationService.getInstance()
-                        .getMessage("pkg.lock.requestlock"))) {
+                if (context.wasDispatched("pkg.lock.requestlock")) {
                     this.lockSelectedPackages(pkgsAlreadyLocked,
                                               scheduleDate,
                                               server,
@@ -117,9 +115,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                     this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
                                                      infoMessages);
                 }
-                else if (request.getParameter("dispatch").equals(
-                        LocalizationService.getInstance()
-                        .getMessage("pkg.lock.requestunlock"))) {
+                else if (context.wasDispatched("pkg.lock.requestunlock")) {
                     try {
                         this.unlockSelectedPackages(pkgsAlreadyLocked,
                                                     scheduleDate,
@@ -176,7 +172,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
-    
+
     /**
      * Unlock the packages.
      *
@@ -207,7 +203,6 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         ActionManager.schedulePackageLock(user, server, pkgsAlreadyLocked, scheduleDate);
     }
 
-
     /**
      * Lock the packages, adding to the existing list of locked packages,
      * yet re-issuing the action.
@@ -229,10 +224,11 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         // Lock all selected packages, if ther are not already in the list
         for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
             Package pkg = this.findPackage(sid, label, user);
-            
-            if (pkg == null || pkgsAlreadyLocked.contains(pkg))
+
+            if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
                 continue;
-            
+            }
+
             pkg.setLockPending(Boolean.TRUE);
             pkgsToLock.add(pkg);
         }
@@ -240,7 +236,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         if (!pkgsToLock.isEmpty()) {
             // mark the selected packages as 'pending'
             PackageManager.lockPackages(sid, pkgsToLock);
-            
+
             // Ensure pending locks and already locked items are sent to the client
             pkgsToLock.addAll(pkgsAlreadyLocked);
             ActionManager.schedulePackageLock( user, server, pkgsToLock, scheduleDate);
