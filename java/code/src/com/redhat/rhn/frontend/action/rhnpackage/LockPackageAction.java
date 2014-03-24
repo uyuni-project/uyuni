@@ -78,7 +78,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
-        Set selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
+        Set<String> selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
         ActionErrors errorMessages = new ActionErrors();
         Set<Package> pkgsAlreadyLocked = new HashSet<Package>();
@@ -87,9 +87,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             selectedPkgs.clear();
         }
 
-        DataResult lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
-        for (Iterator it = lockedPackagesResult.iterator(); it.hasNext();) {
-            PackageListItem pkg = (PackageListItem) it.next();
+        DataResult<PackageListItem> lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
+        for (PackageListItem pkg : lockedPackagesResult) {
             if (!context.isSubmitted()) {
                 // pre-select locked
                 selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
@@ -140,7 +139,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                     // 2. disable the "request lock" button
                     // 3. switch to "show all packages" button, which do the otherwise above
                 }
-            } else {
+            }
+            else {
                 RhnHelper.handleEmptySelection(request);
             }
         }
@@ -222,7 +222,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         User user = context.getCurrentUser();
         Set<Package> pkgsToLock = new HashSet<Package>();
 
-        // Lock all selected packages, if ther are not already in the list
+        // Lock all selected packages, if they are not already in the list
         for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
             Package pkg = this.findPackage(sid, label, user);
 

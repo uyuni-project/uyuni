@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.PackageComparison;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.UpgradablePackageListItem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -256,11 +257,11 @@ public class PackageManager extends BaseManager {
 
     /**
      * Call any template from the Package_queries with the system ID.
-     * 
+     *
      * @param sid
      * @param template
      * @param pc
-     * @return 
+     * @return
      */
     protected static DataResult getPackagesPerSystem(Long sid,
                                                      String template,
@@ -537,12 +538,12 @@ public class PackageManager extends BaseManager {
 
     /**
      * Get the list of locked packages, available to the particular system.
-     * 
+     *
      * @param sid System ID.
      * @param pc Page control object.
      * @return  DataResult containing locked packages data.
      */
-    public static DataResult systemLockedPackages(Long sid, PageControl pc) {
+    public static DataResult<PackageListItem> systemLockedPackages(Long sid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "system_locked_packages");
         Map params = new HashMap();
         params.put("sid", sid);
@@ -578,8 +579,7 @@ public class PackageManager extends BaseManager {
      * @param packages List of packages to unlock.
      */
     public static void unlockPackages(Long sid, List<Package> packages) {
-        for (int i = 0; i < packages.size(); i++) {
-            Package pkg = packages.get(i);
+        for (Package pkg : packages) {
             Map params = new HashMap();
             params.put("sid", sid);
             params.put("pkgid", pkg.getId());
@@ -590,7 +590,7 @@ public class PackageManager extends BaseManager {
 
     /**
      * Remove orphan locked packages, when action has been canceled.
-     * 
+     *
      * @param sid System ID
      * @param actionId Action ID
      * @param pending Pending value. If null or empty, then all packages gets sync'ed.
@@ -618,7 +618,7 @@ public class PackageManager extends BaseManager {
         params.put("pending", pending);
         ModeFactory.getWriteMode("Package_queries",
                                  query + (pending.isEmpty() ? "" : "_pending"))
-                .executeUpdate(params);        
+                .executeUpdate(params);
     }
 
     /**
@@ -626,19 +626,19 @@ public class PackageManager extends BaseManager {
      * At this moment package has different status.
      */
     public static final String PKG_PENDING_LOCK = "L";
-    
+
     /**
      * Pending status "U" corresponds that the package is going to be unlocked.
      * At this moment package has different status.
      */
     public static final String PKG_PENDING_UNLOCK = "U";
-    
+
     /**
      * Sets the pending status on locked package. If parameter "pendingStatus" is null,
      * the package is considered locked.
-     * 
+     *
      * @param pkgId
-     * @param pendingStatus 
+     * @param pendingStatus
      */
     public static void setPendingStatusOnLockedPackage(Long pkgId, String pendingStatus)
             throws Exception {
@@ -646,7 +646,7 @@ public class PackageManager extends BaseManager {
             pendingStatus = null;
         }
 
-        if (pendingStatus != null && 
+        if (pendingStatus != null &&
             (!pendingStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
              (!pendingStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
             throw new Exception(String.format("Unknown status: \"%s\"", pendingStatus));
@@ -656,7 +656,7 @@ public class PackageManager extends BaseManager {
         params.put("pkg_id", pkgId);
         params.put("pending", pendingStatus);
         ModeFactory.getWriteMode("Package_queries",
-                                 "set_pending_lock_status").executeUpdate(params);        
+                                 "set_pending_lock_status").executeUpdate(params);
     }
 
     /**
@@ -1289,7 +1289,7 @@ public class PackageManager extends BaseManager {
         params.put("sid", systemId);
         params.put("nameId", nameId);
         params.put("evrId", evrId);
-        
+
         if (archId != null && archId != 0) {
             params.put("archId", archId);
             m = ModeFactory.getMode(
