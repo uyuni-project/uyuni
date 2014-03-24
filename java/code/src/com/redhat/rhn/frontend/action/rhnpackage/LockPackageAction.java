@@ -16,8 +16,8 @@
 package com.redhat.rhn.frontend.action.rhnpackage;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.DatePicker;
+import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.systems.sdc.SdcHelper;
@@ -27,23 +27,11 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.manager.action.ActionManager;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
@@ -52,12 +40,25 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * @author bo
  */
 public class LockPackageAction extends BaseSystemPackagesAction {
     private static final String LIST_NAME = "packageList";
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(LockPackageAction.class);
 
     @Override
     protected DataResult getDataResult(Server server) {
@@ -123,9 +124,9 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                                                     request);
                         this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
                                                          infoMessages);
-                    } catch (Exception ex) {
-                        Logger.getLogger(LockPackageAction.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    }
+                    catch (Exception ex) {
+                        log.error(ex);
                         this.getStrutsDelegate().addError(errorMessages,
                                                           "pkg.lock.message.genericerror",
                                                           ex.getLocalizedMessage());
@@ -239,9 +240,10 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
             // Ensure pending locks and already locked items are sent to the client
             pkgsToLock.addAll(pkgsAlreadyLocked);
-            ActionManager.schedulePackageLock( user, server, pkgsToLock, scheduleDate);
-        } else {
-            System.err.println("No packages has been locked.");
+            ActionManager.schedulePackageLock(user, server, pkgsToLock, scheduleDate);
+        }
+        else {
+            log.info("No packages to lock");
         }
     }
 
