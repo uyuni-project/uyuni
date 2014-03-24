@@ -40,7 +40,7 @@ $(window).load(function () {
 });
 
 // On window resize
-$(window).resize( function () {
+$(window).resize(function () {
   $(".spacewalk-main-column-layout section").css("padding-bottom", "");
   columnHeight();
 });
@@ -50,21 +50,24 @@ function columnHeight() {
   //Only if the screen size is higher than the max-width set up in the Variables.less under the definition @screen-md: 
   //PLEASE: update this if you change the content of @screen-md
   if ($(document).width()>992) {
-    var sectionHeight = $(".spacewalk-main-column-layout section").outerHeight();
+    var sectionHeight = $(".spacewalk-main-column-layout section").outerHeight(true);
+    var headHeight = $("header").height();
+    var footerHeight = $("footer").outerHeight(true);
   	var heightDoc = $(document).height();
     // Column heights should equal the document height minus the header height and footer height
-    var newHeight = heightDoc - 145 - sectionHeight + "px";
+    var newHeight = heightDoc - 155 - sectionHeight + "px";
     $(".spacewalk-main-column-layout section").css("padding-bottom", newHeight);
   };
+
   //function to hide or show the Collapsable menues.
-  
   if ($(document).width()>465) {
     $(".collapse").addClass('in').css({
       "height": 'auto'
     });
   } else {
     $(".collapse").removeClass('in');
-  }; 
+  };
+
 };
 
 // Render page fragments loaded via DWR
@@ -107,6 +110,7 @@ $(document).on("ready", function() {
     });
   });
 });
+
 
 // Put the focus on a given form element
 function formFocus(form, name) {
@@ -163,3 +167,4 @@ function disableEnterKey() {
     }
   });
 }
+
