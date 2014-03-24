@@ -275,58 +275,16 @@ public class SetupWizardManager extends BaseManager {
      * @return list of subscriptions available via the given credentials
      */
     public static List<Subscription> downloadSubscriptions(MirrorCredentials creds) {
-        // Setup XML to send it with the request
-        ListSubscriptions listsubs = new ListSubscriptions();
-        listsubs.setUser(creds.getUser());
-        listsubs.setPassword(creds.getPassword());
-        PostMethod post = new PostMethod(NCC_URL);
         List<Subscription> subscriptions = null;
+        NCCClient nccClient = new NCCClient();
         try {
-            // Serialize into XML
-            Serializer serializer = new Persister();
-            StringWriter xmlString = new StringWriter();
-            serializer.write(listsubs, xmlString);
-            RequestEntity entity = new StringRequestEntity(
-                    xmlString.toString(), "text/xml", "UTF-8");
-
-            // Manually follow redirects as long as we get 302
-            HttpClient httpclient = new HttpClient();
-            int result = 0;
-            int redirects = 0;
-            do {
-                if (result == 302) {
-                    // Prepare the redirect
-                    Header locationHeader = post.getResponseHeader("Location");
-                    String location = locationHeader.getValue();
-                    logger.info("Got 302, following redirect to: " + location);
-                    post = new PostMethod(location);
-                    redirects++;
-                }
-
-                // Execute the request
-                post.setRequestEntity(entity);
-                result = httpclient.executeMethod(post);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Response status code: " + result);
-                }
-            } while (result == 302 && redirects < MAX_REDIRECTS);
-
-            // Parse the response body in case of success
-            if (result == 200) {
-                InputStream stream = post.getResponseBodyAsStream();
-                SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
-                subscriptions = subsList.getSubscriptions();
-                logger.info("Found " + subscriptions.size() + " subscriptions");
-            }
-        } catch (HttpException e) {
-            logger.error(e.getMessage());
-        } catch (IOException e) {
+            return nccClient.downloadSubscriptions(creds);
+        } catch (NCCException e) {
             logger.error(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage());
         } finally {
             logger.debug("Releasing connection");
-            post.releaseConnection();
         }
         return subscriptions;
     }
