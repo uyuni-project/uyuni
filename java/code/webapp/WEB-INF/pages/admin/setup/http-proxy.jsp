@@ -6,7 +6,7 @@
         <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
         <script type="text/javascript">
             $(document).on("ready", function(){
-                TabResizer()
+                $.tabResizer()
             });
         </script>
     </head>
