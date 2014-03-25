@@ -14,17 +14,24 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
+
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
+
+import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -89,7 +96,7 @@ public class NCCClient {
                     xmlString.toString(), "text/xml", "UTF-8");
 
             // Manually follow redirects as long as we get 302
-            HttpClient httpclient = new HttpClient();
+            HttpClient httpclient = getHttpClient();
             int result = 0;
             int redirects = 0;
             do {
@@ -124,5 +131,35 @@ public class NCCClient {
             post.releaseConnection();
         }
         return subscriptions;
+    }
+
+    /**
+     * Returns an HTTP client object to query NCC. Returned client has proxy
+     * configured.
+     * @return the http client
+     * @throws NumberFormatException if port number is not specified correctly
+     *             in documentation
+     */
+    public HttpClient getHttpClient() throws NumberFormatException {
+        HttpClient result = new HttpClient();
+
+        ConfigDefaults configDefaults = ConfigDefaults.get();
+        String proxyHost = configDefaults.getProxyHost();
+        if (!StringUtils.isEmpty(proxyHost)) {
+            int proxyPort = configDefaults.getProxyPort();
+
+            result.getHostConfiguration().setProxy(proxyHost, proxyPort);
+
+            String proxyUsername = configDefaults.getProxyUsername();
+            String proxyPassword = configDefaults.getProxyPassword();
+            if (!StringUtils.isEmpty(proxyUsername) &&
+                !StringUtils.isEmpty(proxyPassword)) {
+                Credentials proxyCredentials = new UsernamePasswordCredentials(
+                    proxyUsername, proxyPassword);
+                result.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
+            }
+        }
+
+        return result;
     }
 }
