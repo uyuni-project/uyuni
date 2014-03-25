@@ -72,7 +72,6 @@
                         1 of 2
                     </div>
                     <div class="col-sm-6 text-center">
-                        <button class="btn btn-default" disabled="disabled"><i class="fa fa-arrow-left"></i>Prev</button>
                         <a class="btn btn-success" href="/rhn/admin/setup/MirrorCredentials.do">Next <i class="fa fa-arrow-right"></i></a>
                     </div>
                 </div>
