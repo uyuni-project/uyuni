@@ -62,6 +62,16 @@ public class SetupWizardManager extends BaseManager {
         return settings;
     }
 
+    public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
+                                                         User userIn, HttpServletRequest request) {
+        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+
+        configCommand.updateString(KEY_PROXY_HOSTNAME, settings.getHostname());
+        configCommand.updateString(KEY_PROXY_USERNAME, settings.getUsername());
+        configCommand.updateString(KEY_PROXY_PASSWORD, settings.getPassword());
+
+        return configCommand.storeConfiguration();
+    }
     /**
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
