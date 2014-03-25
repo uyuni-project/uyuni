@@ -315,30 +315,30 @@ public class SetupWizardManager extends BaseManager {
 
             // Check if there is a comma separated list of product classes
             if (productClass.indexOf(',') == -1) {
-                subName = ChannelFamilyFactory.getNameByLabel(sub.getProductClass());
+                subName = ChannelFamilyFactory.getNameByLabel(productClass);
                 if (subName == null || subName.isEmpty()) {
-                    logger.warn("Empty name for: " + sub.getProductClass());
-                    continue;
+                    logger.warn("Empty name for: " + productClass);
+                    subName = productClass;
                 }
             }
             else {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("List of product classes: " + sub.getProductClass());
+                    logger.debug("List of product classes: " + productClass);
                 }
                 List<String> productClasses = Arrays.asList(productClass.split(","));
                 for (String s : productClasses) {
                     String name = ChannelFamilyFactory.getNameByLabel(s);
                     if (name == null || name.isEmpty()) {
-                        logger.warn("Empty name for: " + sub.getProductClass());
-                        continue;
+                        logger.warn("Empty name for: " + s);
+                        name = s;
                     }
 
-                    // This is an or relationship so for now: append with an 'or'
+                    // It is an OR relationship: append with OR
                     if (subName == null) {
                         subName = name;
                     }
                     else {
-                        subName = subName + " or " + name;
+                        subName = subName + " OR " + name;
                     }
                 }
             }
