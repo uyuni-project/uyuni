@@ -58,7 +58,6 @@
                                 </div>
                             </div>
                         </div>
-                        <p><small>*All fields in this form are mandatory.</small></p>
                     </div>
                     <div class="col-sm-3 hidden-xs" id="wizard-faq">
                         <img src="../../../img/setup-wizard/http-proxy.png" />
