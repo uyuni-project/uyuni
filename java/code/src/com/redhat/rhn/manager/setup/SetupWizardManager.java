@@ -57,6 +57,16 @@ public class SetupWizardManager extends BaseManager {
 
     // Maximum number of redirects that will be followed
     private final static int MAX_REDIRECTS = 10;
+    /**
+     * @return Current proxy settings
+     */
+    public static ProxySettingsDto getProxySettings() {
+        ProxySettingsDto settings = new ProxySettingsDto();
+        settings.setHostname(Config.get().getString(KEY_PROXY_HOSTNAME));
+        settings.setUsername(Config.get().getString(KEY_PROXY_USERNAME));
+        settings.setPassword(Config.get().getString(KEY_PROXY_PASSWORD));
+        return settings;
+    }
 
     /**
      * Find all valid mirror credentials and return them.
