@@ -697,6 +697,9 @@ public class ConfigDefaults {
      */
     public String getProxyHost() {
         String proxyString = getProxyString();
+        if (proxyString == null) {
+            return null;
+        }
         int colonIndex = proxyString.indexOf(":");
         return proxyString.substring(0, colonIndex > 0 ? colonIndex : proxyString.length());
     }
@@ -709,6 +712,9 @@ public class ConfigDefaults {
         int result = DEFAULT_HTTP_PROXY_PORT;
 
         String proxyString = getProxyString();
+        if (proxyString == null) {
+            return result;
+        }
         int colonIndex = proxyString.indexOf(":");
         if (colonIndex > 0) {
             String proxyPortString = proxyString.substring(colonIndex + 1);
