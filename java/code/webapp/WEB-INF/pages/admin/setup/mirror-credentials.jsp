@@ -137,10 +137,6 @@
                         </div>
                         <div class="col-sm-6 text-center">
                             <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do"><i class="fa fa-arrow-left"></i><bean:message key="setup-wizard.prev" /></a>
-                            <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do"> <bean:message key="setup-wizard.next" /> <i class="fa fa-arrow-right"></i></a>
-                        </div>
-                        <div class="col-sm-3 text-right">
-                            <a href="/rhn/admin/setup/SUSEProducts.do">You can skip this step <i class="fa fa-step-forward"></i></a>
                         </div>
                     </div>
                 </div>
