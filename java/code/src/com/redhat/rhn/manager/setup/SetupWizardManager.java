@@ -281,8 +281,6 @@ public class SetupWizardManager extends BaseManager {
             return nccClient.downloadSubscriptions(creds);
         } catch (NCCException e) {
             logger.error(e.getMessage());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
         } finally {
             logger.debug("Releasing connection");
         }
