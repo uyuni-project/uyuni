@@ -39,6 +39,7 @@ import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
  * Business logic for performing distribution upgrades.
@@ -397,7 +398,7 @@ public class DistUpgradeManager extends BaseManager {
                 long id = c.getId();
                 for (Channel child : children) {
                     // Go back to the original channel and compare the IDs
-                    Channel childOriginal = getOriginalChannel(child);
+                    Channel childOriginal = ChannelManager.getOriginalChannel(child);
                     if (childOriginal.getId() == id) {
                         // This child's checkbox needs to be selected!
                         requiredChannelIDs.add(child.getId());
@@ -417,19 +418,6 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return alternatives;
-    }
-
-    /**
-     * For a given {@link Channel}, determine the original {@link Channel}.
-     *
-     * @param channel channel
-     * @return original channel
-     */
-    public static Channel getOriginalChannel(Channel channel) {
-        while (channel.isCloned()) {
-            channel = channel.getOriginal();
-        }
-        return channel;
     }
 
     /**
