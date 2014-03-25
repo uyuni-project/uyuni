@@ -19,6 +19,7 @@ import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.List;
@@ -26,8 +27,10 @@ import java.util.List;
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
@@ -43,7 +46,9 @@ public class NCCClient {
 
     // Logger for this class
     private static final Logger logger = Logger.getLogger(NCCClient.class);
-    private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
+    private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/";
+    private final static String NCC_PING_COMMAND = "?command=ping";
+    private final static String NCC_LIST_SUBSCRIPTIONS_COMMAND = "?command=listsubscriptions";
     private String nccUrl;
     // Maximum number of redirects that will be followed
     private final static int MAX_REDIRECTS = 10;
@@ -85,7 +90,7 @@ public class NCCClient {
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
-        PostMethod post = new PostMethod(this.nccUrl);
+        PostMethod post = new PostMethod(this.nccUrl + NCC_LIST_SUBSCRIPTIONS_COMMAND);
         List<Subscription> subscriptions = null;
         try {
             // Serialize into XML
@@ -159,5 +164,24 @@ public class NCCClient {
         }
 
         return result;
+    }
+
+    /**
+     * Pings NCC.
+     * @return true if NCC is reachable, false if it is not
+     */
+    public boolean ping() {
+        try {
+            int status = getHttpClient().executeMethod(
+                new GetMethod(nccUrl + NCC_PING_COMMAND)
+            );
+            return status == 200;
+        }
+        catch (HttpException e) {
+            return false;
+        }
+        catch (IOException e) {
+            return false;
+        }
     }
 }
