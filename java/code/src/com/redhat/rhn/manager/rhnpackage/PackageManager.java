@@ -640,16 +640,9 @@ public class PackageManager extends BaseManager {
      * @param pkgId
      * @param pendingStatus
      */
-    public static void setPendingStatusOnLockedPackage(Long pkgId, String pendingStatus)
-            throws Exception {
+    public static void setPendingStatusOnLockedPackage(Long pkgId, String pendingStatus) {
         if (pendingStatus != null && pendingStatus.isEmpty()) {
             pendingStatus = null;
-        }
-
-        if (pendingStatus != null &&
-            (!pendingStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
-             (!pendingStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
-            throw new Exception(String.format("Unknown status: \"%s\"", pendingStatus));
         }
 
         Map params = new HashMap();
@@ -664,11 +657,9 @@ public class PackageManager extends BaseManager {
      * the packages in the set are considered locked.
      * @param pkgs List of packages.
      * @param pendingStatus Status for all of them.
-     * @throws java.lang.Exception
      */
     public static void setPendingStatusOnLockedPackages(List<Package> pkgs,
-                                                        String pendingStatus)
-            throws Exception {
+                                                        String pendingStatus) {
         for (int i = 0; i < pkgs.size(); i++) {
             PackageManager.setPendingStatusOnLockedPackage(pkgs.get(i).getId(),
                                                            pendingStatus);

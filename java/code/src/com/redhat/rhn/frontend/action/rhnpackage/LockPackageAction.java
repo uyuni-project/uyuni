@@ -43,7 +43,6 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -116,20 +115,12 @@ public class LockPackageAction extends BaseSystemPackagesAction {
                                                      infoMessages);
                 }
                 else if (context.wasDispatched("pkg.lock.requestunlock")) {
-                    try {
-                        this.unlockSelectedPackages(pkgsAlreadyLocked,
-                                                    scheduleDate,
-                                                    server,
-                                                    request);
-                        this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
-                                                         infoMessages);
-                    }
-                    catch (Exception ex) {
-                        log.error(ex);
-                        this.getStrutsDelegate().addError(errorMessages,
-                                                          "pkg.lock.message.genericerror",
-                                                          ex.getLocalizedMessage());
-                    }
+                    this.unlockSelectedPackages(pkgsAlreadyLocked,
+                                                scheduleDate,
+                                                server,
+                                                request);
+                    this.getStrutsDelegate().addInfo("pkg.lock.message.unlocksuccess",
+                                                     infoMessages);
                 }
             }
             else {
@@ -177,8 +168,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     private void unlockSelectedPackages(Set<Package> pkgsAlreadyLocked,
                                         Date scheduleDate,
                                         Server server,
-                                        HttpServletRequest request)
-            throws Exception {
+                                        HttpServletRequest request) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
