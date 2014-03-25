@@ -41,22 +41,28 @@ $(window).load(function () {
 
 // On window resize
 $(window).resize(function () {
-  $(".spacewalk-main-column-layout section").css("padding-bottom", "");
   columnHeight();
 });
 
 // Make columns 100% in height
 function columnHeight() {
+  $(".spacewalk-main-column-layout section").css("padding-bottom", "0px");
   //Only if the screen size is higher than the max-width set up in the Variables.less under the definition @screen-md: 
   //PLEASE: update this if you change the content of @screen-md
-  if ($(document).width()>992) {
+  if ($(document).width() > 992) {
     var sectionHeight = $(".spacewalk-main-column-layout section").outerHeight(true);
     var headHeight = $("header").height();
     var footerHeight = $("footer").outerHeight(true);
   	var heightDoc = $(document).height();
-    // Column heights should equal the document height minus the header height and footer height
-    var newHeight = heightDoc - 155 - sectionHeight + "px";
-    $(".spacewalk-main-column-layout section").css("padding-bottom", newHeight);
+    // Only if there is empty space
+    var heightElements = sectionHeight + headHeight + footerHeight;
+    if (heightElements < heightDoc) {
+      var newPaddingBottom = heightDoc - heightElements;
+      // add a padding bottom to the section to make it 100% height
+      $(".spacewalk-main-column-layout section").css("padding-bottom", newPaddingBottom + "px");
+    } else {
+      $(".spacewalk-main-column-layout section").css("padding-bottom", "0px");
+    }
   };
 
   //function to hide or show the Collapsable menues.
@@ -78,6 +84,7 @@ function makeAjaxCallback(divId, debug) {
     }
     $('#' + divId).html(text);
     $('#' + divId).fadeIn();
+    columnHeight();
   };
   return cb;
 }
