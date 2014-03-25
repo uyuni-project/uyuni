@@ -61,8 +61,8 @@
                     </div>
                     <div class="col-sm-3 hidden-xs" id="wizard-faq">
                         <img src="../../../img/setup-wizard/http-proxy.png" />
-                        <h4>Any help title</h4>
-                        <p>Any help description here. Any help description here. Any help description here. </p>
+                        <h4>HTTP Proxy</h4>
+                        <p>If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case simply click on Next.</p>
                     </div>
                 </div>
               </div>
