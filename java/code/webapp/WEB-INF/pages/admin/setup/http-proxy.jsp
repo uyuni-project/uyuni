@@ -29,7 +29,7 @@
                                         <label for="http-proxy-input-hostname" class="col-xs-4 control-label">HTTP Proxy Hostname:</label>
                                         <div class="col-xs-8">
                                             <p class="editable-text http-proxy-input-hostname">error</p>
-                                          <input type="text" class="form-control" id="http-proxy-input-hostname" value="something" placeholder="Hostname">
+                                          <input type="text" class="form-control" id="http-proxy-input-hostname" placeholder="Hostname">
                                         </div>
                                       </div>
                                       <div class="form-group">
