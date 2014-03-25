@@ -69,7 +69,7 @@
               <div class="panel-footer">
                 <div class="row">
                     <div class="col-sm-3 hidden-xs">
-                        1 of 7
+                        1 of 2
                     </div>
                     <div class="col-sm-6 text-center">
                         <button class="btn btn-default" disabled="disabled"><i class="fa fa-arrow-left"></i>Prev</button>
