@@ -126,7 +126,7 @@
                             <p>Mirror credentials are your access to SUSE product downloads.</p>
                             <img src="../../../img/setup-wizard/credentials-help.png" />
                             <h4>Where do I find my Mirror Credentials?</h4>
-                            <p>You can find and create them in your NCC admin panel. <br/> For more information <a href="https://www.suse.com/documentation/sles10/sle10_sp2_smt_guide/data/smt_mirroring_getcredentials.html" target="_blank">clic here</a></p>
+                            <p>You can find and create them in your NCC admin panel. <br/> For more information <a href="https://www.suse.com/documentation/sles10/sle10_sp2_smt_guide/data/smt_mirroring_getcredentials.html" target="_blank">click here</a>.</p>
                         </div>
                     </div>
                 </div>
