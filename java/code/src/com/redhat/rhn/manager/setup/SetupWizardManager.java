@@ -44,6 +44,10 @@ public class SetupWizardManager extends BaseManager {
     public final static String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
     public final static String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
 
+    public final static String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
+    public final static String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public final static String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+
     // NCC URL for listing subscriptions
     //private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/?command=listsubscriptions";
     private final static String NCC_URL = "http://localhost:7730/center/regsvc/?command=listsubscriptions";
