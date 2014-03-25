@@ -16,6 +16,7 @@ package com.redhat.rhn.common.conf;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.redhat.rhn.common.validator.HostPortValidator;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 
 import java.io.File;
@@ -188,6 +189,16 @@ public class ConfigDefaults {
      */
     public static final String TASKOMATIC_CHANNEL_REPODATA_WORKERS
         = "java.taskomatic_channel_repodata_workers";
+
+    /**
+     * HTTP proxy defaults
+     */
+    private static final String HTTP_PROXY = "server.satellite.http_proxy";
+    private static final String HTTP_PROXY_USERNAME =
+        "server.satellite.http_proxy_username";
+    private static final String HTTP_PROXY_PASSWORD =
+        "server.satellite.http_proxy_password";
+    private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
     private ConfigDefaults() {
     }
@@ -678,5 +689,60 @@ public class ConfigDefaults {
      */
     public int getTaskoChannelRepodataWorkers() {
         return Config.get().getInt(TASKOMATIC_CHANNEL_REPODATA_WORKERS, 1);
+    }
+
+    /**
+     * Gets the proxy host.
+     * @return the proxy host
+     */
+    public String getProxyHost() {
+        String proxyString = Config.get().getString(HTTP_PROXY);
+        if (StringUtils.isEmpty(proxyString)) {
+            return null;
+        }
+        if (!HostPortValidator.getInstance().isValid(proxyString)) {
+            throw new ConfigException(
+                "HTTP proxy address is not valid, check that it is in host:port form");
+        }
+
+        int colonIndex = proxyString.indexOf(":");
+        return proxyString.substring(0, colonIndex > 0 ? colonIndex : proxyString.length());
+    }
+
+    /**
+     * Gets the proxy port.
+     * @return the proxy port
+     */
+    public int getProxyPort() {
+        String proxyString = Config.get().getString(HTTP_PROXY);
+        if (StringUtils.isEmpty(proxyString)) {
+            return DEFAULT_HTTP_PROXY_PORT;
+        }
+        String proxyHost = getProxyHost();
+        String proxyPortString = proxyString.substring(proxyHost.length() + 1,
+            proxyString.length());
+
+        int proxyPort = DEFAULT_HTTP_PROXY_PORT;
+        if (!StringUtils.isEmpty(proxyPortString)) {
+            proxyPort = Integer.parseInt(proxyPortString);
+        }
+
+        return proxyPort;
+    }
+
+    /**
+     * Gets the proxy username.
+     * @return the proxy username
+     */
+    public String getProxyUsername() {
+        return Config.get().getString(HTTP_PROXY_USERNAME);
+    }
+
+    /**
+     * Gets the proxy password.
+     * @return the proxy password
+     */
+    public String getProxyPassword() {
+        return Config.get().getString(HTTP_PROXY_PASSWORD);
     }
 }
