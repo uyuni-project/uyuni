@@ -137,10 +137,8 @@ public class NCCClient {
      * Returns an HTTP client object to query NCC. Returned client has proxy
      * configured.
      * @return the http client
-     * @throws NumberFormatException if port number is not specified correctly
-     *             in documentation
      */
-    public HttpClient getHttpClient() throws NumberFormatException {
+    public HttpClient getHttpClient() {
         HttpClient result = new HttpClient();
 
         ConfigDefaults configDefaults = ConfigDefaults.get();
