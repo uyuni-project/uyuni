@@ -696,15 +696,7 @@ public class ConfigDefaults {
      * @return the proxy host
      */
     public String getProxyHost() {
-        String proxyString = Config.get().getString(HTTP_PROXY);
-        if (StringUtils.isEmpty(proxyString)) {
-            return null;
-        }
-        if (!HostPortValidator.getInstance().isValid(proxyString)) {
-            throw new ConfigException(
-                "HTTP proxy address is not valid, check that it is in host:port form");
-        }
-
+        String proxyString = getProxyString();
         int colonIndex = proxyString.indexOf(":");
         return proxyString.substring(0, colonIndex > 0 ? colonIndex : proxyString.length());
     }
@@ -714,20 +706,34 @@ public class ConfigDefaults {
      * @return the proxy port
      */
     public int getProxyPort() {
-        String proxyString = Config.get().getString(HTTP_PROXY);
-        if (StringUtils.isEmpty(proxyString)) {
-            return DEFAULT_HTTP_PROXY_PORT;
-        }
-        String proxyHost = getProxyHost();
-        String proxyPortString = proxyString.substring(proxyHost.length() + 1,
-            proxyString.length());
+        int result = DEFAULT_HTTP_PROXY_PORT;
 
-        int proxyPort = DEFAULT_HTTP_PROXY_PORT;
-        if (!StringUtils.isEmpty(proxyPortString)) {
-            proxyPort = Integer.parseInt(proxyPortString);
+        String proxyString = getProxyString();
+        int colonIndex = proxyString.indexOf(":");
+        if (colonIndex > 0) {
+            String proxyPortString = proxyString.substring(colonIndex + 1);
+            if (!StringUtils.isEmpty(proxyPortString)) {
+                result = Integer.parseInt(proxyPortString);
+            }
         }
 
-        return proxyPort;
+        return result;
+    }
+
+    /**
+     * Gets the whole proxy hostname:port string.
+     * @return the proxy hostname:port string
+     */
+    private String getProxyString() {
+        String result = Config.get().getString(HTTP_PROXY);
+        if (StringUtils.isEmpty(result)) {
+            return null;
+        }
+        if (!HostPortValidator.getInstance().isValid(result)) {
+            throw new ConfigException(
+                "HTTP proxy address is not valid, check that it is in host:port form");
+        }
+        return result;
     }
 
     /**
