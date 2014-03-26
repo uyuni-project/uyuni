@@ -40,37 +40,44 @@ public class HttpProxyRenderer {
      * @param settings map with the keys hostname, username, password
      * @return saved settings
      */
-    public Map<String, String> saveProxySettings(Map<String, String> settingsMap) {
+    public ProxySettingsDto saveProxySettings(ProxySettingsDto settings) {
+        ProxySettingsDto oldSettings = retrieveProxySettings();
+        if (oldSettings.equals(settings)) {
+            return settings;
+        }
+
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
 
-        ProxySettingsDto settings = new ProxySettingsDto();
-        settings.setHostname(settingsMap.get("hostname"));
-        settings.setUsername(settingsMap.get("username"));
-        settings.setPassword(settingsMap.get("password"));
-
         if (logger.isDebugEnabled()) {
             logger.debug("Saving proxy settings: " + settings.toString());
         }
 
         // TODO: Handle errors
-        //ValidatorError[] errors =
-        SetupWizardManager.storeProxySettings(settings, webUser, request);
-        return settingsMap;
+        ValidatorError[] errors = SetupWizardManager.storeProxySettings(settings, webUser, request);
+        if (errors != null) {
+            for (ValidatorError error : errors) {
+                logger.error("error: " + error.toString());
+            }
+        }
+        return settings;
     }
 
-    public Map retrieveProxySettings() {
-        ProxySettingsDto settings = SetupWizardManager.getProxySettings();
-        Map ret = new HashMap();
-        ret.put("hostname", settings.getHostname());
-        ret.put("username", settings.getUsername());
-        ret.put("password", settings.getPassword());
+    /**
+     * @return The current configured proxy settings
+     */
+    public ProxySettingsDto retrieveProxySettings() {
+        ProxySettingsDto ret = SetupWizardManager.getProxySettings();
         return ret;
     }
 
+    /**
+     * @return true if a connection to NCC with the proxy
+     *   was configured
+     */
     public boolean verifyProxySettings() {
         NCCClient client = new NCCClient();
         boolean ret = client.ping();
