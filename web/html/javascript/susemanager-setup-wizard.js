@@ -73,21 +73,6 @@ function verifyCredentials(id, refresh) {
       makeAjaxCallback("verify-" + id, false));
 }
 
-// Stuff to do when document is ready
-$(document).ready(function() {
-  // Clear input fields whenever the edit modal is hidden
-  $('#modal-edit-credentials').on('hidden.bs.modal', function() {
-    initEdit("", "", "");
-  });
-
-  // Load subscriptions when modal is shown
-  $('#modal-list-subscriptions').on('show.bs.modal', function() {
-    showSpinner("modal-list-subscriptions-body");
-    MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
-      makeAjaxCallback("modal-list-subscriptions-body", false));
-  });
-});
-
 // Save and verifiy the proxy settings
 function saveProxySettings() {
   showSpinner('http-proxy-verify');
@@ -173,3 +158,44 @@ function setProxySettingsEditable(editable) {
     $('#http-proxy-verify').show(100);
   }
 }
+
+// only relevant for the proxy settings
+$(document).ready(function() {
+
+  // set the edit button callback
+  $('#http-proxy-edit').click(function() {
+    setProxySettingsEditable(true);
+  });
+
+  // set the save button callback
+  $('#http-proxy-save').click(function() {
+    saveProxySettings();
+  });
+
+  $('#http-proxy-verify').click(function() {
+    verifyProxySettings();
+  });
+
+  setProxySettingsEditable(false);
+  retrieveProxySettings();
+});
+
+// relevant for the mirror credentials page
+$(document).ready(function() {
+  // Clear input fields whenever the edit modal is hidden
+  $('#modal-edit-credentials').on('hidden.bs.modal', function() {
+    initEdit("", "", "");
+  });
+
+  // Load subscriptions when modal is shown
+  $('#modal-list-subscriptions').on('show.bs.modal', function() {
+    showSpinner("modal-list-subscriptions-body");
+    MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
+      makeAjaxCallback("modal-list-subscriptions-body", false));
+  });
+});
+
+// relevant for the whole wizard
+$(document).ready(function() {
+  $.tabResizer();
+});
