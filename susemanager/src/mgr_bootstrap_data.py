@@ -20,7 +20,6 @@ PKGLIST10 = [
                 "spacewalk-client-setup",
                 "spacewalk-client-tools",
                 "spacewalksd",
-                "suseRegister"
                 "suseRegister",
                 "suseRegisterInfo",
                 "yast2-ncurses",
