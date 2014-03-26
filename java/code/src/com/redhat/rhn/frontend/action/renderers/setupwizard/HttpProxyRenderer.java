@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -25,7 +24,6 @@ import org.directwebremoting.WebContextFactory;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 
@@ -65,25 +63,20 @@ public class HttpProxyRenderer {
     }
 
     /**
+     * Retrieve the proxy settings from configuration.
      * @return The current configured proxy settings
      */
     public ProxySettingsDto retrieveProxySettings() {
-        ProxySettingsDto ret = SetupWizardManager.getProxySettings();
-        return ret;
+        return SetupWizardManager.getProxySettings();
     }
 
     /**
-     * @return true if a connection to NCC with the proxy
-     *   was configured
+     * Verify the configured proxy settings with NCC.
+     * @return true if the proxy works, false otherwise.
      */
-    public boolean verifyProxySettings() {
-        NCCClient client = new NCCClient();
-        boolean ret = client.ping();
-        if (logger.isDebugEnabled()) {
-            HttpClient http = client.getHttpClient();
-            String proxyHost = http.getHostConfiguration().getProxyHost();
-            logger.debug("Proxy verification for " + proxyHost + " is " + ret);
-        }
-        return ret;
+    public boolean verifyProxySettings(boolean refreshCache) {
+        WebContext webContext = WebContextFactory.get();
+        HttpServletRequest request = webContext.getHttpServletRequest();
+        return SetupWizardManager.getProxyStatus(refreshCache, request);
     }
 }
