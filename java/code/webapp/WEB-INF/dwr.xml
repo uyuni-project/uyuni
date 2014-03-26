@@ -43,11 +43,11 @@
 	  	<include method="select" />	  	
 	  </create>	  
     <create creator="new" javascript="ProductsRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.ProductsRenderer" />
+      <param name="class" value="com.redhat.rhn.frontend.action.renderers.setupwizard.ProductsRenderer" />
       <include method="renderAsync" />
     </create>
     <create creator="new" javascript="MirrorCredentialsRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.MirrorCredentialsRenderer" />
+      <param name="class" value="com.redhat.rhn.frontend.action.renderers.setupwizard.MirrorCredentialsRenderer" />
       <include method="saveCredentials" />
       <include method="deleteCredentials" />
       <include method="makePrimaryCredentials" />
@@ -57,7 +57,7 @@
     </create>
     <convert converter="bean" match="com.redhat.rhn.manager.setup.ProxySettingsDto"/>
     <create creator="new" javascript="HttpProxyRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.HttpProxyRenderer" />
+      <param name="class" value="com.redhat.rhn.frontend.action.renderers.setupwizard.HttpProxyRenderer" />
       <include method="saveProxySettings" />
       <include method="retrieveProxySettings" />
       <include method="verifyProxySettings" />
