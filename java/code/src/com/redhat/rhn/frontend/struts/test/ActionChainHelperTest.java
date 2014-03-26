@@ -72,13 +72,14 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     public void testPrepopulateActionChains() {
         List<ActionChain> actionChains = new LinkedList<ActionChain>();
         for (int i = 0; i < 10; i++) {
-            actionChains.add(ActionChainFactory.createActionChain(
-                i + TestUtils.randomString(), user));
+            actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
+                user));
         }
 
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
 
-        for (ActionChain actionChain : ActionChainFactory.getActionChains()) {
+        for (ActionChain actionChain : ActionChainFactory
+            .getActionChainsByModificationDate()) {
             Map<String, String> map = new HashMap<String, String>();
             map.put("id", actionChain.getLabel());
             map.put("text", actionChain.getLabel());
