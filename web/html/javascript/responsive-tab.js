@@ -16,7 +16,7 @@ jQuery.tabResizer = function (userSettings) {
     // nesting the default properties with the ones set up by the user
     var tabSettings = $.extend({}, tabSettingsDefault, userTabSetting);
 
-    var tabSize = $(".responsive-wizard ul.nav-tabs").width()-1;
+    var tabSize = $(".responsive-wizard ul.nav-tabs").width();
     var tabListArray = $(".responsive-wizard ul.nav-tabs").children();
     var tabNumbs = tabListArray.length;
     var allowedTabsPerRowDecimals = tabSize / tabSettings.minwidth;
