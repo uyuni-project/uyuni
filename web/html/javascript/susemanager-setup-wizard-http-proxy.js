@@ -76,11 +76,13 @@ function setProxySettingsEditable(editable) {
     $('#http-proxy form input.form-control').show(100);
     $('#http-proxy-edit').hide(100);
     $('#http-proxy-verify').hide(100);
+    $('#http-proxy-save').show(100);
   } else {
     $('#http-proxy form input.form-control').hide();
     $('#http-proxy form p.form-control-static').show(100);
     $('#http-proxy-edit').show(100);
     $('#http-proxy-verify').show(100);
+    $('#http-proxy-save').hide(100);
   }
 }
 
