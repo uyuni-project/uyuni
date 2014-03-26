@@ -50,6 +50,7 @@ public class SetupWizardManager extends BaseManager {
 
     // Session attribute keys
     private final static String SUBSCRIPTIONS_KEY = "SETUP_WIZARD_SUBSCRIPTIONS";
+    private final static String PROXY_STATUS_KEY = "SETUP_WIZARD_PROXY_STATUS";
 
     /**
      * @return Current proxy settings
@@ -454,6 +455,48 @@ public class SetupWizardManager extends BaseManager {
      */
     private static void removeAllSubscriptionsFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute(SUBSCRIPTIONS_KEY, null);
+        session.removeAttribute(SUBSCRIPTIONS_KEY);
+    }
+
+    /**
+     * Get the proxy status (with caching).
+     * @return true if validation successful, false otherwise.
+     */
+    public static boolean getProxyStatus(boolean forceRefresh, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Boolean ret = (Boolean) session.getAttribute(PROXY_STATUS_KEY);
+
+        // Ping NCC if refresh is enforced or status is unknown
+        if (forceRefresh || ret == null) {
+            NCCClient client = new NCCClient();
+            ret = client.ping();
+            if (logger.isDebugEnabled()) {
+                logger.debug("Proxy verification is " + ret);
+            }
+
+            // Put validation status in cache
+            storeProxyStatusInSession(ret, request);
+        }
+        else {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Retrieved proxy status from cache: " + ret);
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Put the proxy validation status in session cache.
+     * @param proxyStatus validation status
+     * @param request request
+     */
+    private static void storeProxyStatusInSession(boolean proxyStatus,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute(PROXY_STATUS_KEY, proxyStatus);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Proxy status stored in session: " + proxyStatus);
+        }
     }
 }

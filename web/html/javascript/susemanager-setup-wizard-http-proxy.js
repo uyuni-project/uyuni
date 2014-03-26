@@ -14,7 +14,9 @@ function saveProxySettings() {
       // TODO make sure it succeeded
       setProxySettings(settings);
       setProxySettingsEditable(false);
-      verifyProxySettings();
+
+      // Force refresh of the cache
+      verifyProxySettings(true);
     }
   );
 }
@@ -28,10 +30,10 @@ function setProxySettingsVerified(valid) {
   }
 }
 
-// verify the progress settings on the server side
-function verifyProxySettings(settings) {
+// verify the proxy settings on the server side, pass true to refresh the cache
+function verifyProxySettings(forceRefresh) {
   showSpinner('http-proxy-verify');
-  HttpProxyRenderer.verifyProxySettings(function(valid) {
+  HttpProxyRenderer.verifyProxySettings(forceRefresh, function(valid) {
     console.log("verified proxy: " + valid);
     setProxySettingsVerified(valid);
   });
@@ -60,9 +62,8 @@ function retrieveProxySettings() {
       console.log(JSON.stringify(settings));
 
       if (settings.hostname) {
-        verifyProxySettings(settings);
-      }
-      else {
+        verifyProxySettings(false);
+      } else {
         setProxySettingsEditable(true);
       }
     }
@@ -88,7 +89,6 @@ function setProxySettingsEditable(editable) {
 
 // only relevant for the proxy settings
 $(document).ready(function() {
-
   // set the edit button callback
   $('#http-proxy-edit').click(function() {
     setProxySettingsEditable(true);
@@ -100,7 +100,7 @@ $(document).ready(function() {
   });
 
   $('#http-proxy-verify').click(function() {
-    verifyProxySettings();
+    verifyProxySettings(true);
   });
 
   setProxySettingsEditable(false);
