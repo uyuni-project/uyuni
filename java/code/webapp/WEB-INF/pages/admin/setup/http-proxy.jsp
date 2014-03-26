@@ -4,13 +4,7 @@
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/HttpProxyRenderer.js"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-HTTPproxy.js"></script>
         <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
-        <script type="text/javascript">
-            $(document).on("ready", function(){
-                $.tabResizer()
-            });
-        </script>
     </head>
     <body>
         <div class="responsive-wizard">
