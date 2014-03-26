@@ -21,7 +21,6 @@
                             renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
             <div class="panel panel-default">
               <div class="panel-body">
-                <!-- HTTP proxy: 1.0 -->
                 <div class="row" id="http-proxy">
                     <div class="col-sm-9">
                         <div class="panel panel-default">
@@ -30,21 +29,21 @@
                                     <div class="form-group">
                                         <label for="http-proxy-input-hostname" class="col-xs-4 control-label">HTTP Proxy Hostname:</label>
                                         <div class="col-xs-8">
-                                            <p class="form-control-static http-proxy-hostname">error</p>
+                                            <p class="form-control-static http-proxy-hostname"></p>
                                           <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" value="something" placeholder="Hostname:Port">
                                         </div>
                                       </div>
                                       <div class="form-group">
                                         <label for="http-proxy-input-username" class="col-xs-4 control-label">HTTP Proxy Username:</label>
                                         <div class="col-xs-8">
-                                            <p class="form-control-static http-proxy-username">error</p>
+                                            <p class="form-control-static http-proxy-username"></p>
                                           <input type="text" class="form-control http-proxy-username" id="http-proxy-input-username" value="" placeholder="Username">
                                         </div>
                                       </div>
                                       <div class="form-group">
-                                        <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy password:</label>
+                                        <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy Password:</label>
                                         <div class="col-xs-8">
-                                            <p class="form-control-static http-proxy-password">error</p>
+                                            <p class="form-control-static http-proxy-password"></p>
                                           <input type="password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
                                         </div>
                                       </div>
@@ -79,22 +78,6 @@
                 </div>
               </div>
             </div>
-        </div>
-        <!-- Message when the user clicks on Verify -->
-        <div class="modal fade" id="Verify-Proxy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">HTTP Proxy Verification</h4>
-              </div>
-              <div class="modal-body">
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
         </div>
     </body>
 </html>
