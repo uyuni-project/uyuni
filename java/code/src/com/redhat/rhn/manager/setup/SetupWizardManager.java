@@ -75,7 +75,11 @@ public class SetupWizardManager extends BaseManager {
         configCommand.updateString(KEY_PROXY_HOSTNAME, settings.getHostname());
         configCommand.updateString(KEY_PROXY_USERNAME, settings.getUsername());
         configCommand.updateString(KEY_PROXY_PASSWORD, settings.getPassword());
-        return configCommand.storeConfiguration();
+        ValidatorError[] ret = configCommand.storeConfiguration();
+        // the settings have changed, we remove the cached subscriptions as
+        // the settings may not be valid anymore
+        SetupWizardManager.removeAllSubscriptionsFromSession(request);
+        return ret;
     }
 
     /**
@@ -443,5 +447,13 @@ public class SetupWizardManager extends BaseManager {
         if (logger.isDebugEnabled()) {
             logger.debug("removed " + creds.getUser());
         }
+    }
+
+    /**
+     * Delete all cached subscriptions
+     */
+    private static void removeAllSubscriptionsFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute(SUBSCRIPTIONS_KEY, null);
     }
 }
