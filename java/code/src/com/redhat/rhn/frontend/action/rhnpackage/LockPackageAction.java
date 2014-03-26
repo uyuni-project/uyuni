@@ -105,7 +105,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             helper.updateSet(selectedPkgs, LIST_NAME);
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
-            if (!selectedPkgs.isEmpty() && ListTagHelper.getSelected(LIST_NAME, request) != null) {
+            if (!selectedPkgs.isEmpty()) {
                 if (context.wasDispatched("pkg.lock.requestlock")) {
                     this.lockSelectedPackages(pkgsAlreadyLocked,
                                               scheduleDate,
@@ -174,11 +174,14 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         List<Package> pkgsToUnlock = new ArrayList<Package>();
+        String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
-        for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
-            Package pkg = this.findPackage(sid, label, user);
-            if (pkg != null) {
-                pkgsToUnlock.add(pkg);
+        if (selectedPkgs != null) {
+            for (String label : selectedPkgs) {
+                Package pkg = this.findPackage(sid, label, user);
+                if (pkg != null) {
+                    pkgsToUnlock.add(pkg);
+                }
             }
         }
 
@@ -204,17 +207,20 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         Set<Package> pkgsToLock = new HashSet<Package>();
+        String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
         // Lock all selected packages, if they are not already in the list
-        for (String label : ListTagHelper.getSelected(LIST_NAME, request)) {
-            Package pkg = this.findPackage(sid, label, user);
+        if (selectedPkgs != null) {
+            for (String label : selectedPkgs) {
+                Package pkg = this.findPackage(sid, label, user);
 
-            if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
-                continue;
+                if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
+                    continue;
+                }
+
+                pkg.setLockPending(Boolean.TRUE);
+                pkgsToLock.add(pkg);
             }
-
-            pkg.setLockPending(Boolean.TRUE);
-            pkgsToLock.add(pkg);
         }
 
         if (!pkgsToLock.isEmpty()) {
