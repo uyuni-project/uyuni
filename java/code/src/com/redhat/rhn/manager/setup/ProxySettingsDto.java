@@ -34,7 +34,7 @@ public class ProxySettingsDto {
      * @param hostname the hostname
      */
     public void setHostname(String hostname) {
-        this.hostname = hostname;
+        this.hostname = hostname != null ? hostname : "";
     }
 
     /**
@@ -49,7 +49,7 @@ public class ProxySettingsDto {
      * @param username proxy username
      */
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username != null ? username : "";
     }
 
     /**
@@ -64,6 +64,36 @@ public class ProxySettingsDto {
      * @param password The password
      */
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password != null ? password : "";
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (this.hostname != null ? this.hostname.hashCode() : 0);
+        hash = 53 * hash + (this.username != null ? this.username.hashCode() : 0);
+        hash = 53 * hash + (this.password != null ? this.password.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProxySettingsDto other = (ProxySettingsDto) obj;
+        if ((this.hostname == null) ? (other.hostname != null) : !this.hostname.equals(other.hostname)) {
+            return false;
+        }
+        if ((this.username == null) ? (other.username != null) : !this.username.equals(other.username)) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        return true;
     }
 }
