@@ -6937,7 +6937,6 @@ value for this entitlement, excluding the default organization's consumption.</s
                 &lt;li&gt;Request lock might be delayed. If package has been updated before lock took
                     action and the package is newer, the lock will be canceled.
                 &lt;/li&gt;
-                &lt;li&gt;Latency matters. Therefore your ITIL process has to be organized appropriately.&lt;/li&gt;
             &lt;/ul&gt;
         </source>
         <context-group name="ctx">
