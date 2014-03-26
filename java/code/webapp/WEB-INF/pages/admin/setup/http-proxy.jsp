@@ -31,7 +31,7 @@
                                         <label for="http-proxy-input-hostname" class="col-xs-4 control-label">HTTP Proxy Hostname:</label>
                                         <div class="col-xs-8">
                                             <p class="form-control-static http-proxy-hostname">error</p>
-                                          <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" value="something" placeholder="hostname:port">
+                                          <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" value="something" placeholder="Hostname:Port">
                                         </div>
                                       </div>
                                       <div class="form-group">
@@ -45,7 +45,7 @@
                                         <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy password:</label>
                                         <div class="col-xs-8">
                                             <p class="form-control-static http-proxy-password">error</p>
-                                          <input type="password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="password">
+                                          <input type="password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
                                         </div>
                                       </div>
                                 </form>
