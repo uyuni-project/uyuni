@@ -149,7 +149,7 @@ function retrieveProxySettings() {
       setProxySettings(settings);
       console.log(JSON.stringify(settings));
 
-      if (settings.hostname != null) {
+      if (settings.hostname) {
         verifyProxySettings(settings);
       }
       else {
