@@ -25,8 +25,8 @@
                 <rl:decorator name="ElaborationDecorator"/>
                 <rl:decorator name="SelectableDecorator"/>
                 <rl:selectablecolumn value="${current.selectionKey}"
-                                     selected="${current.selected}"
-                                     disabled="${not current.selectable}"/>
+                                     selected="${current.selected and empty current.pending}"
+                                     disabled="${not current.selectable or not empty current.pending}"/>
                                          
                 <rl:column headerkey="packagelist.jsp.packagename"
                            bound="false"
@@ -81,10 +81,12 @@
                         </jsp:include>
                     </div>
                 </div>
-                <div class="col-md-offset-3 col-md-9">
-                    <rhn:submitted/>
-                    <input type="submit" class="btn btn-success" name ="dispatch" value='<bean:message key="pkg.lock.requestlock"/>'/>
-                    <input type="submit" class="btn btn-success" name ="dispatch" value='<bean:message key="pkg.lock.requestunlock"/>'/>
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-9">
+                        <rhn:submitted/>
+                        <input type="submit" class="btn btn-success" name ="dispatch" value='<bean:message key="pkg.lock.requestlock"/>'/>
+                        <input type="submit" class="btn btn-success" name ="dispatch" value='<bean:message key="pkg.lock.requestunlock"/>'/>
+                    </div>
                 </div>
             </div>
         </rl:listset>
