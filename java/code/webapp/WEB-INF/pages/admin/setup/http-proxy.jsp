@@ -45,7 +45,7 @@
                                 </form>
                             </div>
                             <div class="panel-footer">
-                                <div id="http-save-btn" class="text-right">
+                                <div class="text-right">
                                     <button id="http-proxy-save" class="btn btn-success">Save and Verify</button>
                                 </div>
                                 <div class="text-left">
