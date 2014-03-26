@@ -25,7 +25,7 @@
                                         <label for="http-proxy-input-hostname" class="col-xs-4 control-label">HTTP Proxy Hostname:</label>
                                         <div class="col-xs-8">
                                             <p class="form-control-static http-proxy-hostname"></p>
-                                          <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" value="something" placeholder="Hostname:Port">
+                                          <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" placeholder="Hostname:Port">
                                         </div>
                                       </div>
                                       <div class="form-group">
