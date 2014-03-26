@@ -77,20 +77,20 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
-        Set<String> selectedPkgs = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
+        Set<String> pkgsToSelect = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
         ActionErrors errorMessages = new ActionErrors();
         Set<Package> pkgsAlreadyLocked = new HashSet<Package>();
 
         if (!context.isSubmitted()) {
-            selectedPkgs.clear();
+            pkgsToSelect.clear();
         }
 
         DataResult<PackageListItem> lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
         for (PackageListItem pkg : lockedPackagesResult) {
             if (!context.isSubmitted()) {
                 // pre-select locked
-                selectedPkgs.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
+                pkgsToSelect.add(pkg.getIdCombo() + "~*~" + pkg.getNvrea());
             }
 
             Package lockedPkg = PackageManager.lookupByIdAndUser(pkg.getPackageId(), user);
@@ -102,10 +102,10 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         SessionSetHelper helper = new SessionSetHelper(request);
         if (isSubmitted(form)) {
             // if its one of the Dispatch actions handle it..
-            helper.updateSet(selectedPkgs, LIST_NAME);
+            helper.updateSet(pkgsToSelect, LIST_NAME);
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
-            if (!selectedPkgs.isEmpty()) {
+            if (!pkgsToSelect.isEmpty()) {
                 if (context.wasDispatched("pkg.lock.requestlock")) {
                     this.lockSelectedPackages(pkgsAlreadyLocked,
                                               scheduleDate,
@@ -133,13 +133,13 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         // Update selection
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {
-            helper.execute(selectedPkgs, LIST_NAME, dataSet);
+            helper.execute(pkgsToSelect, LIST_NAME, dataSet);
         }
 
         // Previous selection
-        if (!selectedPkgs.isEmpty()) {
-            helper.syncSelections(selectedPkgs, dataSet);
-            ListTagHelper.setSelectedAmount(LIST_NAME, selectedPkgs.size(), request);
+        if (!pkgsToSelect.isEmpty()) {
+            helper.syncSelections(pkgsToSelect, dataSet);
+            ListTagHelper.setSelectedAmount(LIST_NAME, pkgsToSelect.size(), request);
         }
 
         request.setAttribute("system", server);
