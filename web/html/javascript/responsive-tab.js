@@ -3,10 +3,8 @@ jQuery.tabResizer = function (userSettings) {
   // save the object with settings the user sent
   var userTabSetting = userSettings;
   // call on resize and document ready
-  $( window ).on("resize", function(){
-    tabResponsive(userSettings);
-  });
-  $(document).on("ready", tabResponsive(userSettings));
+  $( window ).on("resize", tabResponsive);
+  $(document).on("ready", tabResponsive());
 
   function tabResponsive () {
     //setting up properties
@@ -16,7 +14,7 @@ jQuery.tabResizer = function (userSettings) {
     // nesting the default properties with the ones set up by the user
     var tabSettings = $.extend({}, tabSettingsDefault, userTabSetting);
 
-    var tabSize = $(".responsive-wizard ul.nav-tabs").width();
+    var tabSize = $(".responsive-wizard ul.nav-tabs").width()-1;
     var tabListArray = $(".responsive-wizard ul.nav-tabs").children();
     var tabNumbs = tabListArray.length;
     var allowedTabsPerRowDecimals = tabSize / tabSettings.minwidth;
