@@ -135,7 +135,7 @@ _query_action_setLocks = rhnSQL.Statement("""
       ap.evr_id    = pe.id AND
       ap.name_id   = pn.id AND
       lp.server_id = :serverid AND
-      lp.pending IN (NULL, 'L')
+      (lp.pending IS NULL OR lp.pending = 'L')
 """)
 def setLocks(serverId, actionId, dry_run=0):
     log_debug(3, serverId, actionId, dry_run)
