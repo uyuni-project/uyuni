@@ -6,7 +6,7 @@
 require 'rubygems'
 require 'pg'
 require 'dbi'
-require 'oci8'
+#require 'oci8'
 
 #
 # Database direct connection tester class, which original purpose was to use in a Cucumber.

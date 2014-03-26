@@ -14,8 +14,6 @@ Gem::Specification.new do |s|
   s.description = "Testsuite to QA installations of Spacewalk and its derivatives"
 
   s.required_rubygems_version = ">= 1.3.6"
-  s.add_development_dependency("pg", ["~> 0.11.0"])
-  s.add_development_dependency("ruby-oci8", ["~> 2.0.4"])
   s.add_development_dependency("dbi", ["~> 0.4.5"])
   s.add_development_dependency("cucumber", ["~> 1.3.0"])
   s.add_development_dependency("capybara", ["~> 2.1.0"])
