@@ -57,7 +57,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     private static final String LIST_NAME = "packageList";
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(LockPackageAction.class);
+    private static final Logger LOG = Logger.getLogger(LockPackageAction.class);
 
     @Override
     protected DataResult getDataResult(Server server) {
@@ -105,7 +105,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             helper.updateSet(selectedPkgs, LIST_NAME);
             Date scheduleDate = this.getStrutsDelegate().readDatePicker(
                     form, "date", DatePicker.YEAR_RANGE_POSITIVE);
-            if (!selectedPkgs.isEmpty()) {
+            if (!selectedPkgs.isEmpty() && ListTagHelper.getSelected(LIST_NAME, request) != null) {
                 if (context.wasDispatched("pkg.lock.requestlock")) {
                     this.lockSelectedPackages(pkgsAlreadyLocked,
                                               scheduleDate,
@@ -125,6 +125,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             }
             else {
                 RhnHelper.handleEmptySelection(request);
+                this.getStrutsDelegate().addError(errorMessages, "emptyselectionerror");
             }
         }
 
@@ -225,7 +226,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             ActionManager.schedulePackageLock(user, server, pkgsToLock, scheduleDate);
         }
         else {
-            log.info("No packages to lock");
+            LockPackageAction.LOG.info("No packages to lock");
         }
     }
 
