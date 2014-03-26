@@ -55,6 +55,7 @@
       <include method="verifyCredentials" />
       <include method="listSubscriptions" />
     </create>
+    <convert converter="bean" match="com.redhat.rhn.manager.setup.ProxySettingsDto"/>
     <create creator="new" javascript="HttpProxyRenderer">
       <param name="class" value="com.redhat.rhn.frontend.action.renderers.HttpProxyRenderer" />
       <include method="saveProxySettings" />
