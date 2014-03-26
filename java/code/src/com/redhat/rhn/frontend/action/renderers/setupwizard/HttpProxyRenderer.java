@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.renderers;
+package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorError;

@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.action.renderers;
+package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +28,7 @@ import org.directwebremoting.WebContextFactory;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.MirrorCredentials;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
