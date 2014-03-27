@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:06:46 CET 2014 - fcastelli@suse.com
+
+- version 5.4.22.2-1
+- Don't print newline after 'Username:' prompt
+
+-------------------------------------------------------------------
 Thu Feb 27 15:20:50 CET 2014 - fcastelli@suse.com
 
 - version 5.4.22.1-1
