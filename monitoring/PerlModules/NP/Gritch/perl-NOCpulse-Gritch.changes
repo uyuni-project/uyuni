@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:06:16 CET 2014 - fcastelli@suse.com
+
+- version 1.27.11.2-1
+- ifconfig without agrs showed only UP intefaces
+- ifconfig don't show Infiniband addresses properly
+
+-------------------------------------------------------------------
 Mon Dec 09 17:21:30 CET 2013 - mc@suse.de
 
 - version 1.27.11.1-1
