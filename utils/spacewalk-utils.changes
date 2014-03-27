@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:18:42 CET 2014 - fcastelli@suse.com
+
+- version 2.1.27.2-1
+- Make it possible to specify description from clone-be-date
+- Fixing possible nonetype error
+- Let spacewalk-api send username and password as strings
+- Fixing long lines in clone-by-date
+- Add option to clone-by-date to only clone specified errata
+- Allow user to specify channel name through clone-by-date
+- Spacwalk-repo-sync prints the same message for every channel.
+
+-------------------------------------------------------------------
 Fri Feb 07 13:54:04 CET 2014 - mc@suse.de
 
 - version 2.1.27.1-1
