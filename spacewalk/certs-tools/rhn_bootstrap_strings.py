@@ -657,7 +657,18 @@ if [ $DISABLE_LOCAL_REPOS -eq 1 ]; then
         echo "* Disable all repos not provided by SUSE Manager Server.";
 	for F in /etc/yum.repos.d/*.repo; do
 	  test -f "$F" || continue
-	  sed -i 's/^enabled=1/enabled=0/' "$F"
+	  # parse throught the file and make sure each repo section contains 'enabled=0'
+	  awk '
+	    BEGIN           { saw=0 }
+	    /^ *[[]/        { if ( saw==1 ) print "enabled=0"; else saw=1 }
+	    /^ *enabled *=/ { print "enabled=0"; saw=2; next }
+			    { print }
+	    END             { if ( saw==1 ) print "enabled=0" }
+	  ' "$F" > "$F.bootstrap.tmp" && mv "$F.bootstrap.tmp" "$F"
+	  test -f  "$F.bootstrap.tmp" && {
+	    echo "*** Error: Failed to process '$F'; check manually if all repos inside are disabled."
+	    rm "$F.bootstrap.tmp"
+	  }
 	done
     fi
 fi
