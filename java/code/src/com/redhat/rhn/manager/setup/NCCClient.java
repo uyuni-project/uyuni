@@ -145,12 +145,14 @@ public class NCCClient {
     /**
      * Returns an HTTP connection object to query NCC. Returned client has proxy
      * configured.
+     * @param method HTTP method to use
+     * @param location URL to make requests to
      * @return the http connection
-     * @throws IOException
-     * @throws MalformedURLException
+     * @throws IOException if network errors happen
+     * @throws MalformedURLException if location is not valid
      */
-    public HttpURLConnection getConnection(String method, String location) throws MalformedURLException,
-        IOException {
+    public HttpURLConnection getConnection(String method, String location)
+        throws MalformedURLException, IOException {
         ConfigDefaults configDefaults = ConfigDefaults.get();
         String proxyHost = configDefaults.getProxyHost();
         URL url = new URL(location);
