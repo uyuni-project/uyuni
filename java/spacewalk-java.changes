@@ -1,4 +1,88 @@
 -------------------------------------------------------------------
+Thu Mar 27 14:59:39 CET 2014 - fcastelli@suse.com
+
+- version 2.1.165-1
+- NCCClient: URL location bug fixed
+- NCCClient: fix behavior with 302's
+- NCCClient: swap Apache HTTPClient with java.net's HttpUrlConnection
+- Added missing translation
+- Package lock: do not show pending packages as selected
+- Package lock: do not allow selection of pending packages
+- Package lock: changed java code to handle multiple lock events
+- Cache proxy verification status in the session
+- Make the Setup Wizard visible at first run
+- invalidate subscriptions cache when storing proxy settings
+- split the js files again as the onready callbacks conflict with the available
+  dwr methods
+- change the order so that the responsive tag is defined
+- move the renderers to its own package
+- style
+- remove the custom .js for proxy settings, move everything to the main one
+- cleanup unused modal, label capitalization and placeholder strings
+- use DTOs and a converter instead of maps
+- Setup Wizard Proxy settings: make the DTO comparable and with non-null fields
+- Use the product class as name when name is not found
+- Moved to NCCClient
+- Ping method added to NCCClient to test proxy settings
+- Proxy support: fix a bug when nothing is specified
+- Proxy support: fix a bug when only the hostname is specified
+- Placeholder updated to include port number
+- Proxy support for NCC credential checking added
+- Remove superfluous links on mirror credentials page
+- HTTP Proxy description provided
+- Create a separate set of icons for the setup wizard
+- Mirror Credentials Front-End: first attempt
+- HTTP proxy front-end
+- List subscriptions with understandable names and their start/end dates
+- Implement the "make primary" functionality
+- Download subscriptions only when status unknown or on force refresh
+- Cache subscriptions and validation status in the session object
+- Fine tuning appearance of the mirror credentials page
+- Rework findMirrorCredentials(): check for null and do not log passwords
+- Move the setup wizard to the top of Admin tab
+- Introduce MAX_REDIRECTS
+- Allow bare-metal system name editing (bnc#867832)
+- Redirect instead of forwarding to overview page after a reboot (bnc#868662)
+- ActionChainHelperTest fix: use correct chain ordering
+- use default lvm partitioning for RHEL 7 kickstarts
+- package.search API returns only one match per package name
+- fix finding of the right API method to call
+- Adding Custom Errata offers RH Erratas.
+- ChannelManager.findCompatibleChildren: propose cloned children as compatible (bnc#866045)
+- ChannelManager.findCompatibleChildren: propose children correctly if old and new are equal (bnc#866045)
+- bnc#862043: fail if rhnPackage.path is NULL
+- bnc#862043: use rhnPackage.path as rhnErrataFile.filename like Perl does
+- fix filtering on the /rhn/channels/Managers.do page
+- channel.software.syncErrata clones too many packages
+- Bare-metal icon fixes
+- delete outdated repo-sync schedules (bnc#865141)
+- Fixed merging problem (bnc#859665)
+- deal with deleted users
+- RecurringDatePicker sets HOUR_OF_DAY, however DatePicker design is kind of
+  broken and it internally uses HOUR or HOUR_OF_DAY depending of the isLatin()
+  flag. This does not make much sense as in Calendar itself HOUR, HOUR_OF_DAY
+  and AM_PM are all interconnected.
+- Do not restart taskomatic with every deployment
+- Exclude el-api.jar since it causes HTTP Status 500
+- Revamp the recurring picker fragment to use the datepicker time component.
+  For this the RecurringDatePicker bean now is composed of DatePicker beans to
+  reuse functionality. With some Javascript, the repeat-task-picker disables
+  the cron frequencies that are not being used.
+- allow to disable date selection in addition to time
+- syncrepos: format the page
+- make the setup of the date picker more declarative using data- attributes in
+  order to be able to share this setup with other parts of the code that will
+  need a slightly different picker like the recurrent selector. It also saves
+  us from outputing one <script> tag in the jsp tag implementation.
+- Use hostname or address in log messages instead of system.name
+- New config option for using the hostname to connect via ssh push
+- CreateUserActionTest fixed after upstream changes
+- Fix channel deletion unit tests
+- Automatic commit of package [spacewalk-java] release [2.1.164-1].
+- filter out channels that are not assigned to a server
+- Improve error handling when deleting a channel (bnc#865141)
+
+-------------------------------------------------------------------
 Thu Feb 27 15:31:17 CET 2014 - fcastelli@suse.com
 
 - version 2.1.163.1-1
