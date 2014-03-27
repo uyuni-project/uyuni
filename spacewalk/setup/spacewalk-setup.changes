@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:16:48 CET 2014 - fcastelli@suse.com
+
+- version 2.1.14.2-1
+- Add mgr-ncc-sync to the sudo commands
+- jpam.so is in /usr/lib even on x86_64
+
+-------------------------------------------------------------------
 Fri Feb 07 13:41:07 CET 2014 - mc@suse.de
 
 - version 2.1.14.1-1
