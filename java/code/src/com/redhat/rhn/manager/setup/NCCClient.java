@@ -21,19 +21,15 @@ import com.suse.manager.model.ncc.SubscriptionList;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.List;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.RequestEntity;
-import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.Serializer;
@@ -90,41 +86,24 @@ public class NCCClient {
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
-        PostMethod post = new PostMethod(this.nccUrl + NCC_LIST_SUBSCRIPTIONS_COMMAND);
         List<Subscription> subscriptions = null;
+        HttpURLConnection connection = null;
         try {
+            // Initialize connection
+            connection = getConnection("POST", this.nccUrl +
+                NCC_LIST_SUBSCRIPTIONS_COMMAND);
+            connection.setDoOutput(true);
+
             // Serialize into XML
             Serializer serializer = new Persister();
-            StringWriter xmlString = new StringWriter();
-            serializer.write(listsubs, xmlString);
-            RequestEntity entity = new StringRequestEntity(
-                    xmlString.toString(), "text/xml", "UTF-8");
+            serializer.write(listsubs, connection.getOutputStream());
 
-            // Manually follow redirects as long as we get 302
-            HttpClient httpclient = getHttpClient();
-            int result = 0;
-            int redirects = 0;
-            do {
-                if (result == 302) {
-                    // Prepare the redirect
-                    Header locationHeader = post.getResponseHeader("Location");
-                    String location = locationHeader.getValue();
-                    logger.info("Got 302, following redirect to: " + location);
-                    post = new PostMethod(location);
-                    redirects++;
-                }
-
-                // Execute the request
-                post.setRequestEntity(entity);
-                result = httpclient.executeMethod(post);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Response status code: " + result);
-                }
-            } while (result == 302 && redirects < MAX_REDIRECTS);
+            // Perform request
+            connection.connect();
 
             // Parse the response body in case of success
-            if (result == 200) {
-                InputStream stream = post.getResponseBodyAsStream();
+            if (connection.getResponseCode() == 200) {
+                InputStream stream = connection.getInputStream();
                 SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
                 subscriptions = subsList.getSubscriptions();
                 logger.info("Found " + subscriptions.size() + " subscriptions");
@@ -132,36 +111,56 @@ public class NCCClient {
         } catch (Exception e) {
             throw new NCCException(e);
         } finally {
-            logger.debug("Releasing connection");
-            post.releaseConnection();
+            if (connection != null) {
+                logger.debug("Releasing connection");
+                connection.disconnect();
+            }
         }
         return subscriptions;
     }
 
     /**
-     * Returns an HTTP client object to query NCC. Returned client has proxy
+     * Returns an HTTP connection object to query NCC. Returned client has proxy
      * configured.
-     * @return the http client
+     * @return the http connection
+     * @throws IOException
+     * @throws MalformedURLException
      */
-    public HttpClient getHttpClient() {
-        HttpClient result = new HttpClient();
-
+    public HttpURLConnection getConnection(String method, String url) throws MalformedURLException,
+        IOException {
         ConfigDefaults configDefaults = ConfigDefaults.get();
         String proxyHost = configDefaults.getProxyHost();
+
+        HttpURLConnection result = null;
         if (!StringUtils.isEmpty(proxyHost)) {
             int proxyPort = configDefaults.getProxyPort();
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
+                proxyPort));
 
-            result.getHostConfiguration().setProxy(proxyHost, proxyPort);
+            result = (HttpURLConnection) new URL(url).openConnection(proxy);
 
             String proxyUsername = configDefaults.getProxyUsername();
             String proxyPassword = configDefaults.getProxyPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
                 !StringUtils.isEmpty(proxyPassword)) {
-                Credentials proxyCredentials = new UsernamePasswordCredentials(
-                    proxyUsername, proxyPassword);
-                result.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
+                try {
+                    byte[] encodedBytes = Base64
+                        .encodeBase64((proxyUsername + ':' + proxyPassword)
+                            .getBytes("iso-8859-1"));
+                    final String encoded = new String(encodedBytes, "iso-8859-1");
+                    result.addRequestProperty("Proxy-Authorization", encoded);
+                }
+                catch (UnsupportedEncodingException e) {
+                    // can't happen
+                }
             }
         }
+        else {
+            result = (HttpURLConnection) new URL(this.nccUrl +
+                NCC_LIST_SUBSCRIPTIONS_COMMAND).openConnection();
+        }
+
+        result.setRequestMethod(method);
 
         return result;
     }
@@ -172,13 +171,9 @@ public class NCCClient {
      */
     public boolean ping() {
         try {
-            int status = getHttpClient().executeMethod(
-                new GetMethod(nccUrl + NCC_PING_COMMAND)
-            );
-            return status == 200;
-        }
-        catch (HttpException e) {
-            return false;
+            HttpURLConnection connection = getConnection("GET", nccUrl + NCC_PING_COMMAND);
+            connection.connect();
+            return connection.getResponseCode() == 200;
         }
         catch (IOException e) {
             return false;
