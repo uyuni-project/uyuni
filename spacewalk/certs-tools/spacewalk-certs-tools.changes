@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 27 14:09:29 CET 2014 - fcastelli@suse.com
+
+- version 2.1.6.2-1
+- bootstrap: disable local yum repos on RHEL systems (bnc#864787)
+
+-------------------------------------------------------------------
 Fri Feb 07 13:43:23 CET 2014 - mc@suse.de
 
 - version 2.1.6.1-1
