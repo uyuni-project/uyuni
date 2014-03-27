@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:07:15 CET 2014 - fcastelli@suse.com
+
+- version 5.10.65.2-1
+- show server modified time with rhncfg-client diff
+
+-------------------------------------------------------------------
 Mon Dec 09 16:17:50 CET 2013 - mc@suse.de
 
 - version 5.10.65.1-1
