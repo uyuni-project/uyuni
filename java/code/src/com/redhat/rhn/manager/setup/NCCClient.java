@@ -79,38 +79,61 @@ public class NCCClient {
      * Connect to NCC and return subscriptions for a given pair of credentials.
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
-     * @throws NCCException
+     * @throws NCCException in case something bad happens with NCC
      */
-    public List<Subscription> downloadSubscriptions(MirrorCredentials creds) throws NCCException {
+    public List<Subscription> downloadSubscriptions(MirrorCredentials creds)
+        throws NCCException {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
         List<Subscription> subscriptions = null;
+        Serializer serializer = new Persister();
         HttpURLConnection connection = null;
+
         try {
-            // Initialize connection
-            connection = getConnection("POST", this.nccUrl +
-                NCC_LIST_SUBSCRIPTIONS_COMMAND);
-            connection.setDoOutput(true);
+            // Perform request(s)
+            String location = this.nccUrl + NCC_LIST_SUBSCRIPTIONS_COMMAND;
+            int result = 302;
+            int redirects = 0;
 
-            // Serialize into XML
-            Serializer serializer = new Persister();
-            serializer.write(listsubs, connection.getOutputStream());
+            while (result == 302 && redirects < MAX_REDIRECTS) {
+                // Initialize connection
+                connection = getConnection("POST", location);
+                connection.setDoOutput(true);
+                connection.setInstanceFollowRedirects(false);
 
-            // Perform request
-            connection.connect();
+                // Serialize into XML
+                serializer.write(listsubs, connection.getOutputStream());
+
+                // Execute the request
+                connection.connect();
+                result = connection.getResponseCode();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Response status code: " + result);
+                }
+
+                if (result == 302) {
+                    // Prepare the redirect
+                    location = connection.getHeaderField("Location");
+                    logger.info("Got 302, following redirect to: " + location);
+                    connection.disconnect();
+                    redirects++;
+                }
+            }
 
             // Parse the response body in case of success
-            if (connection.getResponseCode() == 200) {
+            if (result == 200) {
                 InputStream stream = connection.getInputStream();
                 SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
                 subscriptions = subsList.getSubscriptions();
                 logger.info("Found " + subscriptions.size() + " subscriptions");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new NCCException(e);
-        } finally {
+        }
+        finally {
             if (connection != null) {
                 logger.debug("Releasing connection");
                 connection.disconnect();
