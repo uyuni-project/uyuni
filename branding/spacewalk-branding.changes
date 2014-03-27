@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:13:35 CET 2014 - fcastelli@suse.com
+
+- version 2.1.33.2-1
+- Distinguish between "active" and "not active" only for now
+- Ul subscription list in modals without left padding
+- Help page in Mirror Credentials ready
+- Responsive utilities for the credentials to be correctly displayed
+- Javascript semicolons added. fixes in the calculation of the aside tag's
+  height. fixed scroll to avoid the tabs to be resized after the aside tag is
+  rendered. Function resize tab added to the Jquery Object to make it global
+- Indentation changed to spaces
+- Add 'click to refresh' to tooltips
+- For the primary credentials show only an icon
+- HTTP proxy front-end
+- img folder added. responsive tabs file added
+- List subscriptions with understandable names and their start/end dates
+- Implement the "make primary" functionality
+- Fine tuning for credentials verification
+- Initial version of a new modal to list the actual subscriptions
+- Add Prev and Next to the strings and show those as btn-default
+- Fix strings according to mockups and port them to translation file
+- Add three more pages to the setup wizard
+- Support verification of credentials and downloading subscriptions
+- Add action icons as download, edit and delete
+- Add submit button to the mirror credentials page
+- Rewrite the products page with selectablecolumn and using attr
+- Add strings for initial mirror credentials listing
+- Add translation strings for navigation and tab titles
+- Fix path after frontend-libs package has been fixed
+- Translation string for patches/actionchain
+
+-------------------------------------------------------------------
 Thu Feb 27 15:00:07 CET 2014 - fcastelli@suse.com
 
 - version 2.1.33.1-1
