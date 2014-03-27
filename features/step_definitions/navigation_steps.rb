@@ -140,3 +140,16 @@ When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
       step "I follow \"#{arg1}\""
   end
 end
+
+When /^I click on "([^"]*)" link in the setup wizard$/ do |arg1|
+  tag = case arg1
+  when /Edit/ then "i.fa-pencil"
+  when /List/ then "i.fa-th-list"
+  when /Verify/ then "i.fa-check-square"
+  else raise "Unknown element"
+  end 
+  within(".text-left") do
+     fail if not find(tag).click
+  end
+end
+      
