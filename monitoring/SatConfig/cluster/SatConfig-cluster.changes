@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:01:38 CET 2014 - fcastelli@suse.com
+
+- version 1.54.11.2-1
+- fixing ip syntax
+- Use /sbin/ip instead of /sbin/ifconfig.
+
+-------------------------------------------------------------------
 Tue Dec 10 15:30:40 CET 2013 - mc@suse.de
 
 - version 1.54.11.1-1

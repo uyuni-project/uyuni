@@ -1,6 +1,6 @@
 %define sysv_dir       %{_sysconfdir}/rc.d/np.d
 Name:         SatConfig-cluster
-Version:      1.54.11.1
+Version:      1.54.11.2
 Release:      1%{?dist}
 Summary:      Satellite Configuration System - cluster information
 URL:          https://fedorahosted.org/spacewalk
