@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:22:30 CET 2014 - fcastelli@suse.com
+
+- version 2.1.50.2-1
+- SUMA db migration: reflect changes made by bb84025a
+- Extending cron_expr length to 120
+- SUMA db migration: change size of cron_expr
+- Extending cron_expr column within the rhnTaskoSchedule table
+- SUMA DB migration: change size of web_contact-password
+- Extend length of web_contact.password to 110
+- Missing aarch64 in rhnServerArch
+- SUMA db update migration: add support for aarch64
+- Schema upgrade for ARM aarch64 architecture support
+- Support for ARM aarch64 architecture
+- SUMA db upgrade migrations: drop web_contact-old_password
+- Drop web_contact.old_password column from schema
+
+-------------------------------------------------------------------
 Thu Feb 27 16:25:04 CET 2014 - fcastelli@suse.com
 
 - version 2.1.50.1-1
