@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:12:51 CET 2014 - fcastelli@suse.com
+
+- version 2.1.55.1-1
+- Package lock - python code: handle multiple lock events
+- Catch more error message from gpg
+- Reposync: remove interrupted downloads [bnc#866490]
+- Not all machines provide manufacturer, was not None safe
+- Spacewalk-debug: dereference links [bnc#865934]
+- Specify package only with version
+-------------------------------------------------------------------
 Thu Feb 27 14:55:10 CET 2014 - fcastelli@suse.com
 
 - version 2.1.54.1-1
