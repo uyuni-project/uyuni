@@ -149,10 +149,11 @@ public class NCCClient {
      * @throws IOException
      * @throws MalformedURLException
      */
-    public HttpURLConnection getConnection(String method, String url) throws MalformedURLException,
+    public HttpURLConnection getConnection(String method, String location) throws MalformedURLException,
         IOException {
         ConfigDefaults configDefaults = ConfigDefaults.get();
         String proxyHost = configDefaults.getProxyHost();
+        URL url = new URL(location);
 
         HttpURLConnection result = null;
         if (!StringUtils.isEmpty(proxyHost)) {
@@ -160,7 +161,7 @@ public class NCCClient {
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
                 proxyPort));
 
-            result = (HttpURLConnection) new URL(url).openConnection(proxy);
+            result = (HttpURLConnection) url.openConnection(proxy);
 
             String proxyUsername = configDefaults.getProxyUsername();
             String proxyPassword = configDefaults.getProxyPassword();
@@ -179,8 +180,7 @@ public class NCCClient {
             }
         }
         else {
-            result = (HttpURLConnection) new URL(this.nccUrl +
-                NCC_LIST_SUBSCRIPTIONS_COMMAND).openConnection();
+            result = (HttpURLConnection) url.openConnection();
         }
 
         result.setRequestMethod(method);
