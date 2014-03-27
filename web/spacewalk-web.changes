@@ -1,4 +1,47 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:19:19 CET 2014 - fcastelli@suse.com
+
+- version 2.1.60.2-1
+- Cache proxy verification status in the session
+- split the js files again as the onready callbacks conflict with the available
+  dwr methods
+- remove the custom .js for proxy settings, move everything to the main one
+- handle missing proxy settings case
+- Basic save, verify and retrieve implemented.
+- bug with the gray column fixed
+- function columnHeight doesnt need to be called more than once
+- javascript semicolons added. fixes in the calculation of the aside tag's
+  height. fixed scroll to avoid the tabs to be resized after the aside tag is
+  rendered. Function resize tab added to the Jquery Object to make it global
+- HTTP proxy javascript
+- img folder added. responsive tabs file added
+- Remove debug logging
+- Implement the "make primary" functionality
+- Cache subscriptions and validation status in the session object
+- Refactor javascript and get rid of hidden form fields
+- Clear modal when it is hidden + refactor the IDs
+- Fix modal ids after refactoring
+- Initial version of a new modal to list the actual subscriptions
+- Add new javascript source file for setup wizard
+- Update edit_notification_method.pxi
+- Rewrite code for bootstrap usage
+- fixed bug unable to delete action chain
+- fixed typo in action chain jsp and js
+- bnc#862043: fail if rhnPackage.path is NULL
+- bnc#862043: avoid trimming to 128 chars
+- update navigation link: Install -> Create First User
+- system_upgradable_package_list is not referenced anymore
+- on-click and node-id attributes are relevant only to pxt pages
+- removed unused up2date_version_at_least()
+- removed unused rhn-up2date-at-least tag
+- bnc#867646: Action Chaining: avoid scrolling page after javascript handler
+- make the setup of the date picker more declarative using data- attributes in
+  order to be able to share this setup with other parts of the code that will
+  need a slightly different picker like the recurrent selector. It also saves
+  us from outputing one <script> tag in the jsp tag implementation.
+- Set 0 (false) as the default for 'ssh_push_use_hostname'
+
+-------------------------------------------------------------------
 Thu Feb 27 15:32:51 CET 2014 - fcastelli@suse.com
 
 - version 2.1.60.1-1
