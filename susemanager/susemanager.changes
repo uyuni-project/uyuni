@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Mar 27 10:21:49 CET 2014 - fcastelli@suse.com
+
+- version 2.1.6-1
+- Fix typo into bootstrap data [bnc#870415]
+- Fix crash inside of mgr_register
+
+-------------------------------------------------------------------
 Fri Feb 21 15:34:31 CET 2014 - fcastelli@suse.com
 
 - version 2.1.5-1
