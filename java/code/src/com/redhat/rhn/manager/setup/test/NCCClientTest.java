@@ -15,15 +15,16 @@
 
 package com.redhat.rhn.manager.setup.test;
 
-import java.util.List;
-import java.util.Date;
-
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.NCCException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.suse.manager.model.ncc.Subscription;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
+
+import com.suse.manager.model.ncc.Subscription;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Tests for {@link NCCClient}.

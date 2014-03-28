@@ -15,13 +15,13 @@
 
 package com.redhat.rhn.manager.setup.test;
 
-import java.util.List;
-
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+
+import java.util.List;
 
 /**
  * Tests for {@link SetupWizardManager}.

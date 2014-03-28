@@ -14,10 +14,12 @@
 package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.testing.httpservermock.Responder;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import simple.http.Response;
 
 /**
