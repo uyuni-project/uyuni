@@ -64,7 +64,7 @@ public class SetupWizardSessionCache {
      * @return true if verification status is unknown for the given creds, otherwise false.
      */
     @SuppressWarnings("unchecked")
-    public static boolean verificationStatusUnknown(MirrorCredentialsDto creds,
+    public static boolean credentialsStatusUnknown(MirrorCredentialsDto creds,
             HttpServletRequest request) {
         boolean ret = true;
         HttpSession session = request.getSession();
@@ -77,37 +77,13 @@ public class SetupWizardSessionCache {
     }
 
     /**
-     * Delete cached subscriptions for a given pair of credentials.
-     * @param creds credentials
-     */
-    @SuppressWarnings("unchecked")
-    public static void removeSubscriptionsFromSession(MirrorCredentialsDto creds,
-            HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Map<String, List<SubscriptionDto>> subsMap =
-                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
-        subsMap.remove(creds.getUser());
-        if (logger.isDebugEnabled()) {
-            logger.debug("removed " + creds.getUser());
-        }
-    }
-
-    /**
-     * Delete all cached subscriptions
-     */
-    public static void removeAllSubscriptionsFromSession(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.removeAttribute(SUBSCRIPTIONS_KEY);
-    }
-
-    /**
      * Put a list of subscriptions in the session cache, while "null" is stored whenever the
      * verification status is "failed" for a given pair of credentials.
      * @param subscriptions subscriptions
      * @param request request
      */
     @SuppressWarnings("unchecked")
-    public static void storeSubscriptionsInSession(List<SubscriptionDto> subscriptions,
+    public static void storeSubscriptions(List<SubscriptionDto> subscriptions,
             MirrorCredentialsDto creds, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
@@ -122,6 +98,30 @@ public class SetupWizardSessionCache {
         // Store or update the subscriptions
         logger.debug("Storing subscriptions for " + creds.getUser());
         subsMap.put(creds.getUser(), subscriptions);
+    }
+
+    /**
+     * Delete cached subscriptions for a given pair of credentials.
+     * @param creds credentials
+     */
+    @SuppressWarnings("unchecked")
+    public static void clearSubscriptions(MirrorCredentialsDto creds,
+            HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Map<String, List<SubscriptionDto>> subsMap =
+                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        subsMap.remove(creds.getUser());
+        if (logger.isDebugEnabled()) {
+            logger.debug("removed " + creds.getUser());
+        }
+    }
+
+    /**
+     * Delete all cached subscriptions
+     */
+    public static void clearAllSubscriptions(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute(SUBSCRIPTIONS_KEY);
     }
 
     /**
@@ -141,7 +141,7 @@ public class SetupWizardSessionCache {
             }
 
             // Put validation status in cache
-            storeProxyStatusInSession(ret, request);
+            storeProxyStatus(ret, request);
         }
         else {
             if (logger.isDebugEnabled()) {
@@ -157,7 +157,7 @@ public class SetupWizardSessionCache {
      * @param proxyStatus validation status
      * @param request request
      */
-    public static void storeProxyStatusInSession(boolean proxyStatus,
+    public static void storeProxyStatus(boolean proxyStatus,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.setAttribute(PROXY_STATUS_KEY, proxyStatus);
