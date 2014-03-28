@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
+import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -26,6 +27,15 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  * Tests for {@link SetupWizardManager}.
  */
 public class SetupWizardManagerTest extends RhnBaseTestCase {
+
+    public void testGetProxySettings() throws Exception {
+        ProxySettingsDto proxy = new ProxySettingsDto();
+        proxy.setHostname("proxy.foobar.com");
+        proxy.setUsername("foobaruser");
+        proxy.setPassword("foobarpassword");
+        setProxySettings(proxy);
+        assertTrue(proxy.equals(SetupWizardManager.getProxySettings()));
+    }
 
     public void testFindMirrorCredsEmpty() throws Exception {
         List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
@@ -80,6 +90,12 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         Config.get().setString(keyUser, user);
         Config.get().setString(keyPass, pass);
         Config.get().setString(keyEmail, email);
+    }
+
+    private void setProxySettings(ProxySettingsDto proxy) {
+        Config.get().setString(SetupWizardManager.KEY_PROXY_HOSTNAME, proxy.getHostname());
+        Config.get().setString(SetupWizardManager.KEY_PROXY_USERNAME, proxy.getUsername());
+        Config.get().setString(SetupWizardManager.KEY_PROXY_PASSWORD, proxy.getPassword());
     }
 
     @Override
