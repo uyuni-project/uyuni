@@ -38,9 +38,6 @@ public class SetupWizardAction extends RhnAction {
     public ActionForward execute(ActionMapping mapping, ActionForm formIn,
             HttpServletRequest request, HttpServletResponse response) {
 
-        // DynaActionForm form = (DynaActionForm) formIn;
-        // RequestContext ctx = new RequestContext(request);
-
         String path = mapping.getPath();
         logger.debug("Current path: " + path);
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
