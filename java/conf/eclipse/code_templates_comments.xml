@@ -6,7 +6,7 @@
  * ${tags}
  * ${see_to_target}
  */</template><template autoinsert="false" context="filecomment_context" deleted="false" description="Comment for created Java files" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.filecomment" name="filecomment">/**
- * Copyright (c) ${year} Red Hat, Inc.
+ * Copyright (c) ${year} SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
