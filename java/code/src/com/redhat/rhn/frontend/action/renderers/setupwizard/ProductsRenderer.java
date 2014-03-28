@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
 import com.redhat.rhn.common.validator.ValidatorError;
