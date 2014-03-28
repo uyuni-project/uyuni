@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
+import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 
 public class HttpProxyRenderer {
     // The logger for this class
@@ -77,6 +78,6 @@ public class HttpProxyRenderer {
     public boolean verifyProxySettings(boolean refreshCache) {
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
-        return SetupWizardManager.getProxyStatus(refreshCache, request);
+        return SetupWizardSessionCache.getProxyStatus(refreshCache, request);
     }
 }
