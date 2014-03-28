@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.dto.BaseDto;
 /**
  * Representation of a pair of mirror credentials (for either NCC or SCC).
  */
-public class MirrorCredentials extends BaseDto {
+public class MirrorCredentialsDto extends BaseDto {
 
     private Long id;
     private String user;
@@ -33,7 +33,7 @@ public class MirrorCredentials extends BaseDto {
      * @param passwordIn
      * @param emailIn
      */
-    public MirrorCredentials(String emailIn, String userIn, String passwordIn) {
+    public MirrorCredentialsDto(String emailIn, String userIn, String passwordIn) {
         this.setEmail(emailIn);
         this.setUser(userIn);
         this.setPassword(passwordIn);
@@ -122,7 +122,7 @@ public class MirrorCredentials extends BaseDto {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        MirrorCredentials other = (MirrorCredentials) obj;
+        MirrorCredentialsDto other = (MirrorCredentialsDto) obj;
         if (email == null) {
             if (other.email != null) {
                 return false;

@@ -81,7 +81,7 @@ public class NCCClient {
      * @return list of subscriptions available via the given credentials
      * @throws NCCException in case something bad happens with NCC
      */
-    public List<Subscription> downloadSubscriptions(MirrorCredentials creds)
+    public List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds)
         throws NCCException {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();

@@ -18,7 +18,7 @@ package com.redhat.rhn.manager.setup.test;
 import java.util.List;
 import java.util.Date;
 
-import com.redhat.rhn.manager.setup.MirrorCredentials;
+import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.NCCException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -31,7 +31,7 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 public class NCCClientTest extends RhnBaseTestCase {
 
     public void testDownloadSubscriptions() throws Exception {
-        final MirrorCredentials cred = new MirrorCredentials("fpp@doamin.com", "lala", "ala");
+        final MirrorCredentialsDto cred = new MirrorCredentialsDto("fpp@doamin.com", "lala", "ala");
 
         NCCRequester<List<Subscription>> requester = new NCCRequester<List<Subscription>>() {
             public List<Subscription> request(NCCClient nccClient) throws NCCException {
