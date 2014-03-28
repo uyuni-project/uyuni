@@ -31,19 +31,24 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Encapsulates domain logic for the Setup Wizard.
+ */
 public class SetupWizardManager extends BaseManager {
 
-    // Logger for this class
-    private static Logger logger = Logger.getLogger(SetupWizardManager.class);
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(SetupWizardManager.class);
 
-    // Config keys
-    public final static String KEY_MIRRCREDS_USER = "server.susemanager.mirrcred_user";
-    public final static String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
-    public final static String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
+    /** Configuration key prefix for mirror credential usernames */
+    public static final String KEY_MIRRCREDS_USER = "server.susemanager.mirrcred_user";
+    /** Configuration key prefix for mirror credential passwords */
+    public static final String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
+    /** Configuration key prefix for mirror credential email addresses */
+    public static final String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
 
-    public final static String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
-    public final static String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    public final static String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+    public static final String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
+    public static final String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
+    public static final String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
 
     /**
      * @return Current proxy settings
@@ -64,7 +69,7 @@ public class SetupWizardManager extends BaseManager {
      * @return a list of validation errors
      */
     public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
-                                                         User userIn, HttpServletRequest request) {
+            User userIn, HttpServletRequest request) {
         ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
         configCommand.updateString(KEY_PROXY_HOSTNAME, settings.getHostname());
         configCommand.updateString(KEY_PROXY_USERNAME, settings.getUsername());
@@ -92,8 +97,8 @@ public class SetupWizardManager extends BaseManager {
         MirrorCredentialsDto creds;
         int id = 0;
         while (user != null && password != null) {
-            if (logger.isTraceEnabled()) {
-                logger.trace("Found credentials (" + id + "): " + user);
+            if (log.isTraceEnabled()) {
+                log.trace("Found credentials (" + id + "): " + user);
             }
 
             // Create credentials object
@@ -112,6 +117,7 @@ public class SetupWizardManager extends BaseManager {
 
     /**
      * Find mirror credentials for a given ID.
+     * @param id the credentials ID
      * @return pair of credentials for given ID.
      */
     public static MirrorCredentialsDto findMirrorCredentials(long id) {
@@ -127,8 +133,8 @@ public class SetupWizardManager extends BaseManager {
         String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
         MirrorCredentialsDto creds = null;
         if (user != null && password != null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Found credentials for ID: " + id);
+            if (log.isDebugEnabled()) {
+                log.debug("Found credentials for ID: " + id);
             }
             // Create credentials object
             creds = new MirrorCredentialsDto(email, user, password);
@@ -141,7 +147,8 @@ public class SetupWizardManager extends BaseManager {
      * Store a given pair of credentials in the filesystem after editing or using the next
      * available free index for new credentials.
      * @param creds mirror credentials to store
-     * @param user the current user
+     * @param userIn the current user
+     * @param request the current HTTP request object, used for session caching
      * @return list of validation errors or null in case of success
      */
     public static ValidatorError[] storeMirrorCredentials(MirrorCredentialsDto creds,
@@ -153,7 +160,8 @@ public class SetupWizardManager extends BaseManager {
         // Find the first free ID if necessary
         Long id = creds.getId();
         if (creds.getId() == null) {
-            List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
+            List<MirrorCredentialsDto> credentials =
+                    SetupWizardManager.findMirrorCredentials();
             id = new Long(credentials.size());
         }
 
@@ -188,6 +196,7 @@ public class SetupWizardManager extends BaseManager {
      * to shift IDs in case you delete a pair of credentials from the middle.
      * @param id the id of credentials being deleted
      * @param userIn the user currently logged in
+     * @param request the current HTTP request object, used for session caching
      * @return list of validation errors or null in case of success
      */
     public static ValidatorError[] deleteMirrorCredentials(Long id, User userIn,
@@ -216,10 +225,13 @@ public class SetupWizardManager extends BaseManager {
                     if (index > 1) {
                         targetSuffix = "." + (index - 1);
                     }
-                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, c.getUser());
-                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, c.getPassword());
+                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
+                            c.getUser());
+                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
+                            c.getPassword());
                     if (c.getEmail() != null) {
-                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, c.getEmail());
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
+                                c.getEmail());
                     }
                     // Empty the last pair of credentials
                     if (index == creds.size() - 1) {
@@ -241,6 +253,9 @@ public class SetupWizardManager extends BaseManager {
     /**
      * Make primary credentials for a given credentials ID.
      * Cache is not affected by reordering, because username is used as the key.
+     * @param id the id of credentials being made primary
+     * @param userIn the current user
+     * @param request the current HTTP request
      * @return list of validation errors or null in case of success
      */
     public static ValidatorError[] makePrimaryCredentials(Long id, User userIn,
@@ -249,7 +264,8 @@ public class SetupWizardManager extends BaseManager {
         List<MirrorCredentialsDto> allCreds = SetupWizardManager.findMirrorCredentials();
         if (allCreds.size() > 1) {
             // Find the future primary creds before reordering
-            MirrorCredentialsDto primaryCreds = SetupWizardManager.findMirrorCredentials(id);
+            MirrorCredentialsDto primaryCreds =
+                    SetupWizardManager.findMirrorCredentials(id);
             ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
             // Shift all indices starting from 1
@@ -257,10 +273,13 @@ public class SetupWizardManager extends BaseManager {
             for (MirrorCredentialsDto c : allCreds) {
                 if (allCreds.indexOf(c) != id) {
                     String targetSuffix = "." + i;
-                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, c.getUser());
-                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, c.getPassword());
+                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
+                            c.getUser());
+                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
+                            c.getPassword());
                     if (c.getEmail() != null) {
-                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, c.getEmail());
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
+                                c.getEmail());
                     }
                     i++;
                 }
@@ -288,15 +307,17 @@ public class SetupWizardManager extends BaseManager {
         NCCClient nccClient = new NCCClient();
         try {
             return nccClient.downloadSubscriptions(creds);
-        } catch (NCCException e) {
-            logger.error(e.getMessage());
+        }
+        catch (NCCException e) {
+            log.error(e.getMessage());
         }
         return subscriptions;
     }
 
     /**
-     * Make DTOs from a given list of {@link Subscription} objects read from NCC. While doing
-     * that, filter out only active subscriptions and get human readable names from DB.
+     * Make DTOs from a given list of {@link Subscription} objects read from
+     * NCC. While doing that, filter out only active subscriptions and get human
+     * readable names from DB.
      * @param subscriptions
      * @return list of subscription DTOs
      */
@@ -319,19 +340,19 @@ public class SetupWizardManager extends BaseManager {
             if (productClass.indexOf(',') == -1) {
                 subName = ChannelFamilyFactory.getNameByLabel(productClass);
                 if (subName == null || subName.isEmpty()) {
-                    logger.warn("Empty name for: " + productClass);
+                    log.warn("Empty name for: " + productClass);
                     subName = productClass;
                 }
             }
             else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("List of product classes: " + productClass);
+                if (log.isDebugEnabled()) {
+                    log.debug("List of product classes: " + productClass);
                 }
                 List<String> productClasses = Arrays.asList(productClass.split(","));
                 for (String s : productClasses) {
                     String name = ChannelFamilyFactory.getNameByLabel(s);
                     if (name == null || name.isEmpty()) {
-                        logger.warn("Empty name for: " + s);
+                        log.warn("Empty name for: " + s);
                         name = s;
                     }
 

@@ -34,8 +34,14 @@ public class SetupWizardSessionCache {
     private static Logger logger = Logger.getLogger(SetupWizardSessionCache.class);
 
     // Session attribute keys
-    private final static String SUBSCRIPTIONS_KEY = "SETUP_WIZARD_SUBSCRIPTIONS";
-    private final static String PROXY_STATUS_KEY = "SETUP_WIZARD_PROXY_STATUS";
+    private static final String SUBSCRIPTIONS_KEY = "SETUP_WIZARD_SUBSCRIPTIONS";
+    private static final String PROXY_STATUS_KEY = "SETUP_WIZARD_PROXY_STATUS";
+
+    /**
+     * Private constructor for utility class.
+     */
+    private SetupWizardSessionCache() {
+    }
 
     /**
      * Retrieve subscriptions from cache for the given credentials.
@@ -49,7 +55,8 @@ public class SetupWizardSessionCache {
         List<SubscriptionDto> ret = null;
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
-                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+                (Map<String, List<SubscriptionDto>>) session
+                        .getAttribute(SUBSCRIPTIONS_KEY);
         if (subsMap != null) {
             ret = subsMap.get(creds.getUser());
         }
@@ -79,6 +86,7 @@ public class SetupWizardSessionCache {
      * Put a list of subscriptions in the session cache, while "null" is stored whenever the
      * verification status is "failed" for a given pair of credentials.
      * @param subscriptions subscriptions
+     * @param creds the credentials
      * @param request request
      */
     @SuppressWarnings("unchecked")
@@ -86,7 +94,8 @@ public class SetupWizardSessionCache {
             MirrorCredentialsDto creds, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
-                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+                (Map<String, List<SubscriptionDto>>) session
+                        .getAttribute(SUBSCRIPTIONS_KEY);
 
         // Create the map for caching if it doesn't exist
         if (subsMap == null) {
@@ -102,13 +111,15 @@ public class SetupWizardSessionCache {
     /**
      * Delete cached subscriptions for a given pair of credentials.
      * @param creds credentials
+     * @param request the HTTP request object
      */
     @SuppressWarnings("unchecked")
     public static void clearSubscriptions(MirrorCredentialsDto creds,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
-                (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+                (Map<String, List<SubscriptionDto>>) session
+                        .getAttribute(SUBSCRIPTIONS_KEY);
         subsMap.remove(creds.getUser());
         if (logger.isDebugEnabled()) {
             logger.debug("Removed subscriptions for: " + creds.getUser());
@@ -117,6 +128,7 @@ public class SetupWizardSessionCache {
 
     /**
      * Delete all cached subscriptions
+     * @param request the HTTP request object
      */
     public static void clearAllSubscriptions(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -125,6 +137,8 @@ public class SetupWizardSessionCache {
 
     /**
      * Get the proxy status (with caching).
+     * @param forceRefresh to force cache refresh
+     * @param request the HTTP request object
      * @return true if validation successful, false otherwise.
      */
     public static boolean getProxyStatus(boolean forceRefresh, HttpServletRequest request) {

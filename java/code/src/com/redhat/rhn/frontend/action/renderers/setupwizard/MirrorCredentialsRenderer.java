@@ -48,18 +48,25 @@ public class MirrorCredentialsRenderer {
     private static final String ATTRIB_SUBSCRIPTIONS = "subscriptions";
 
     // URL of the page to render
-    private static final String CREDS_LIST_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
-    private static final String CREDS_VERIFY_URL = "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
-    private static final String LIST_SUBSCRIPTIONS_URL = "/WEB-INF/pages/admin/setup/modal-subscriptions-body.jsp";
+    private static final String CREDS_LIST_URL =
+            "/WEB-INF/pages/admin/setup/mirror-credentials-list.jsp";
+    private static final String CREDS_VERIFY_URL =
+            "/WEB-INF/pages/admin/setup/mirror-credentials-verify.jsp";
+    private static final String LIST_SUBSCRIPTIONS_URL =
+            "/WEB-INF/pages/admin/setup/modal-subscriptions-body.jsp";
 
     /**
-     * Add a new pair of credentials and re-render the whole list.
+     * Add or edit pair of credentials and re-render the whole list.
+     * @param id ID of the credential to edit or null for new mirror credential
+     * @param email email address to set
      * @param user username for new credentials
      * @param password password for new credentials
-     * @throws IOException
-     * @throws ServletException
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
-    public String saveCredentials(Long id, String email, String user, String password) throws ServletException, IOException {
+    public String saveCredentials(Long id, String email, String user, String password)
+        throws ServletException, IOException {
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
@@ -92,16 +99,17 @@ public class MirrorCredentialsRenderer {
 
         // TODO: Handle errors
         @SuppressWarnings("unused")
-        ValidatorError[] errors = SetupWizardManager.storeMirrorCredentials(creds, webUser, request);
+        ValidatorError[] errors =
+                SetupWizardManager.storeMirrorCredentials(creds, webUser, request);
         return renderCredentials();
     }
 
     /**
      * Delete a pair of credentials given by ID.
      * @param id ID of the credentials to delete
-     * @return rendered list of credentials
-     * @throws ServletException
-     * @throws IOException
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
     public String deleteCredentials(long id) throws ServletException, IOException {
         // Find the current user
@@ -121,9 +129,9 @@ public class MirrorCredentialsRenderer {
     /**
      * Make primary credentials for a given ID.
      * @param id ID of credentials to make the primary ones
-     * @return rendered list of credentials
-     * @throws ServletException
-     * @throws IOException
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
     public String makePrimaryCredentials(long id) throws ServletException, IOException {
         // Find the current user
@@ -142,8 +150,9 @@ public class MirrorCredentialsRenderer {
 
     /**
      * Render the mirror credentials set of panels.
-     * @throws IOException
-     * @throws ServletException
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
     public String renderCredentials() throws ServletException, IOException {
         WebContext webContext = WebContextFactory.get();
@@ -161,10 +170,14 @@ public class MirrorCredentialsRenderer {
 
     /**
      * Get subscriptions for credentials and asynchronously render the page fragment.
-     * @throws IOException
-     * @throws ServletException
+     * @param id ID of the credentials to verify
+     * @param refresh force a cache refresh
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
-    public String verifyCredentials(Long id, boolean refresh) throws ServletException, IOException {
+    public String verifyCredentials(Long id, boolean refresh)
+        throws ServletException, IOException {
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
 
@@ -192,8 +205,10 @@ public class MirrorCredentialsRenderer {
 
     /**
      * Get subscriptions for credentials and asynchronously render the page fragment.
-     * @throws IOException
-     * @throws ServletException
+     * @param id ID of the credentials to use for listing
+     * @return the rendered fragment
+     * @throws ServletException in case of rendering errors
+     * @throws IOException in case something really bad happens
      */
     public String listSubscriptions(Long id) throws ServletException, IOException {
         WebContext webContext = WebContextFactory.get();
@@ -204,7 +219,8 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("List subscriptions: " + creds.getUser());
         }
-        List<SubscriptionDto> subs = SetupWizardManager.getSubscriptions(creds, request, false);
+        List<SubscriptionDto> subs =
+                SetupWizardManager.getSubscriptions(creds, request, false);
         request.setAttribute(ATTRIB_SUBSCRIPTIONS, subs);
         HttpServletResponse response = webContext.getHttpServletResponse();
         return RendererHelper.renderRequest(LIST_SUBSCRIPTIONS_URL, request, response);

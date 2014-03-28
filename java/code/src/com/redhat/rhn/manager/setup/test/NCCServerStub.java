@@ -28,28 +28,21 @@ import simple.http.Response;
  */
 public class NCCServerStub implements Responder {
 
-    private final static String FAKE_SUBSCRIPTION
-            = "<subscriptionlist lang='en'>"
-            + "<authuser>authuser1</authuser>"
-            + "<smtguid>smtguid1</smtguid>"
-            + "<subscription>"
-            + "  <subid>1</subid>"
-            + "  <regcode>1234</regcode>"
-            + "  <subname>subname0</subname>"
-            + "  <type>Gold</type>"
-            + "  <substatus>Turbo</substatus>"
-            + "  <start-date>1333231200</start-date>"
-            + "  <end-date>1427839200</end-date>"
-            + "  <duration>3</duration>"
+    private static final String FAKE_SUBSCRIPTION = "<subscriptionlist lang='en'>"
+            + "<authuser>authuser1</authuser>" + "<smtguid>smtguid1</smtguid>"
+            + "<subscription>" + "  <subid>1</subid>" + "  <regcode>1234</regcode>"
+            + "  <subname>subname0</subname>" + "  <type>Gold</type>"
+            + "  <substatus>Turbo</substatus>" + "  <start-date>1333231200</start-date>"
+            + "  <end-date>1427839200</end-date>" + "  <duration>3</duration>"
             + "  <product-class>Blade</product-class>"
             + "  <server-class>Blade</server-class>"
-            + "  <productlist>Product1</productlist>"
-            + "  <nodecount>10</nodecount>"
-            + "  <consumed>2</consumed>"
-            + "  <consumed-virtual>3</consumed-virtual>"
-            + "</subscription>"
-            + "</subscriptionlist>";
+            + "  <productlist>Product1</productlist>" + "  <nodecount>10</nodecount>"
+            + "  <consumed>2</consumed>" + "  <consumed-virtual>3</consumed-virtual>"
+            + "</subscription>" + "</subscriptionlist>";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void respond(Response response) {
         PrintStream body;
@@ -61,7 +54,8 @@ public class NCCServerStub implements Responder {
             response.setDate("Last-Modified", time);
             body.println(FAKE_SUBSCRIPTION);
             body.close();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             Logger.getLogger(NCCServerStub.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

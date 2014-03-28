@@ -43,12 +43,12 @@ public class ProductsRenderer extends BaseFragmentRenderer {
 
     private static Logger logger = Logger.getLogger(ProductsRenderer.class);
 
-    // Attribute keys
+    /** Attribute keys */
     public static final String ATTRIB_PRODUCTS_LIST = "productsList";
-    //public static final String ATTRIB_ERROR_MSG = "errorMsg";
 
-    // The URL of the page to render
-    private static final String PAGE_URL = "/WEB-INF/pages/admin/setup/suse-products-async.jsp";
+    /** The URL of the page to render */
+    private static final String PAGE_URL =
+            "/WEB-INF/pages/admin/setup/suse-products-async.jsp";
 
     /**
      * {@inheritDoc}
@@ -94,7 +94,8 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         Serializer serializer = new Persister();
         try {
             result = serializer.read(ProductList.class, stream);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return result.getProducts();

@@ -18,17 +18,28 @@ import simple.http.serve.Resource;
 import simple.http.serve.ResourceEngine;
 
 /**
- *
+ * Mocks a Simple framework ResourceEngine, which returns a Resource given an
+ * Address.
  * @author duncan
  */
 public class EngineMock implements ResourceEngine {
 
-    ServiceMock service;
+    /** The service. */
+    private ServiceMock service;
 
-    public EngineMock(ServiceMock service) {
-        this.service = service;
+    /**
+     * Instantiates a new engine mock.
+     *
+     * @param serviceIn service that will be returned by resolve()
+     */
+    public EngineMock(ServiceMock serviceIn) {
+        this.service = serviceIn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Resource resolve(String string) {
         return this.service;
     }

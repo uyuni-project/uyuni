@@ -30,15 +30,24 @@ import java.util.List;
  */
 public class NCCClientTest extends RhnBaseTestCase {
 
+    /**
+     * Tests downloadSubscriptions().
+     * @throws Exception if anything goes wrong
+     */
     public void testDownloadSubscriptions() throws Exception {
-        final MirrorCredentialsDto cred = new MirrorCredentialsDto("fpp@doamin.com", "lala", "ala");
+        final MirrorCredentialsDto cred =
+                new MirrorCredentialsDto("fpp@doamin.com", "lala", "ala");
 
-        NCCRequester<List<Subscription>> requester = new NCCRequester<List<Subscription>>() {
-            public List<Subscription> request(NCCClient nccClient) throws NCCException {
-                return nccClient.downloadSubscriptions(cred);
-            }
-        };
-       List<Subscription> subs = new HttpServerMock().getResult(requester, new NCCServerStub());
+        NCCRequester<List<Subscription>> requester =
+                new NCCRequester<List<Subscription>>() {
+                    @Override
+                    public List<Subscription> request(NCCClient nccClient)
+                        throws NCCException {
+                        return nccClient.downloadSubscriptions(cred);
+                    }
+                };
+        List<Subscription> subs =
+                new HttpServerMock().getResult(requester, new NCCServerStub());
         System.out.println(cred);
         assertEquals(1, subs.size());
         Subscription s = subs.get(0);
@@ -57,5 +66,4 @@ public class NCCClientTest extends RhnBaseTestCase {
         assertEquals(2, s.getConsumed());
         assertEquals(3, s.getConsumedVirtual());
     }
-
 }

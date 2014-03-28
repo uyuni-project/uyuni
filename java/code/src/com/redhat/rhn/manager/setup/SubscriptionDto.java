@@ -32,10 +32,10 @@ public class SubscriptionDto {
         return name;
     }
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
     /**
      * @return the startDate
@@ -44,10 +44,10 @@ public class SubscriptionDto {
         return startDate;
     }
     /**
-     * @param startDate the startDate to set
+     * @param startDateIn the startDate to set
      */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date startDateIn) {
+        this.startDate = startDateIn;
     }
     /**
      * @return the endDate
@@ -56,14 +56,14 @@ public class SubscriptionDto {
         return endDate;
     }
     /**
-     * @param endDate the endDate to set
+     * @param endDateIn the endDate to set
      */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date endDateIn) {
+        this.endDate = endDateIn;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -75,8 +75,8 @@ public class SubscriptionDto {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {

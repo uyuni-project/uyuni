@@ -27,9 +27,12 @@ import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Exposes AJAX methods to work with proxy settings.
+ */
 public class HttpProxyRenderer {
-    // The logger for this class
-    private static final Logger logger = Logger.getLogger(HttpProxyRenderer.class);
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(HttpProxyRenderer.class);
 
     /**
      * Add a new pair of credentials and re-render the whole list.
@@ -48,15 +51,16 @@ public class HttpProxyRenderer {
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Saving proxy settings: " + settings.toString());
+        if (log.isDebugEnabled()) {
+            log.debug("Saving proxy settings: " + settings.toString());
         }
 
         // TODO: Handle errors
-        ValidatorError[] errors = SetupWizardManager.storeProxySettings(settings, webUser, request);
+        ValidatorError[] errors =
+                SetupWizardManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {
             for (ValidatorError error : errors) {
-                logger.error("error: " + error.toString());
+                log.error("error: " + error.toString());
             }
         }
         return settings;
@@ -72,6 +76,7 @@ public class HttpProxyRenderer {
 
     /**
      * Verify the configured proxy settings with NCC.
+     * @param refreshCache used to force a cache refresh
      * @return true if the proxy works, false otherwise.
      */
     public boolean verifyProxySettings(boolean refreshCache) {

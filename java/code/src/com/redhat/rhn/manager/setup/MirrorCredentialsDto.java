@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.frontend.dto.BaseDto;
@@ -28,10 +27,11 @@ public class MirrorCredentialsDto extends BaseDto {
     private String email;
 
     /**
-     * Constructor.
-     * @param userIn
-     * @param passwordIn
-     * @param emailIn
+     * Instantiates a new mirror credentials DTO.
+     *
+     * @param emailIn the email
+     * @param userIn the user
+     * @param passwordIn the password
      */
     public MirrorCredentialsDto(String emailIn, String userIn, String passwordIn) {
         this.setEmail(emailIn);
@@ -39,6 +39,9 @@ public class MirrorCredentialsDto extends BaseDto {
         this.setPassword(passwordIn);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         return id;
@@ -46,10 +49,10 @@ public class MirrorCredentialsDto extends BaseDto {
 
     /**
      * Use the ranking from rhn.conf.
-     * @param the id
+     * @param idIn the id
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
@@ -60,10 +63,10 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
-     * @param user the user to set
+     * @param userIn the user to set
      */
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String userIn) {
+        this.user = userIn;
     }
 
     /**
@@ -74,10 +77,10 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
-     * @param password the password to set
+     * @param passwordIn the password to set
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String passwordIn) {
+        this.password = passwordIn;
     }
 
     /**
@@ -88,14 +91,14 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
-     * @param email the email to set
+     * @param emailIn the email to set
      */
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String emailIn) {
+        this.email = emailIn;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -108,8 +111,8 @@ public class MirrorCredentialsDto extends BaseDto {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {

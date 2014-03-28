@@ -27,6 +27,10 @@ import java.util.List;
  */
 public class SetupWizardManagerTest extends RhnBaseTestCase {
 
+    /**
+     * Tests getProxySettings().
+     * @throws Exception if something goes wrong
+     */
     public void testGetProxySettings() throws Exception {
         ProxySettingsDto proxy = new ProxySettingsDto();
         proxy.setHostname("proxy.foobar.com");
@@ -36,11 +40,19 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         assertTrue(proxy.equals(SetupWizardManager.getProxySettings()));
     }
 
+    /**
+     * Tests findMirrorCredentials().
+     * @throws Exception if something goes wrong
+     */
     public void testFindMirrorCredsEmpty() throws Exception {
         List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
         assertEquals(0, credentials.size());
     }
 
+    /**
+     * Tests findMirrorCredentials().
+     * @throws Exception if something goes wrong
+     */
     public void testFindAllMirrorCreds() throws Exception {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser1", "testpass1", "testemail1", 1);
@@ -56,6 +68,10 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         }
     }
 
+    /**
+     * Tests findMirrorCredentials().
+     * @throws Exception if something goes wrong
+     */
     public void testFindMirrorCredsMissing() throws Exception {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
@@ -64,6 +80,10 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         assertNull(SetupWizardManager.findMirrorCredentials(1));
     }
 
+    /**
+     * Tests findMirrorCredentials().
+     * @throws Exception if something goes wrong
+     */
     public void testFindMirrorCredsById() throws Exception {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser1", "testpass1", "testemail1", 1);
@@ -77,6 +97,14 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         }
     }
 
+    /**
+     * Sets the test credentials.
+     *
+     * @param user the user
+     * @param pass the pass
+     * @param email the email
+     * @param index the index
+     */
     private void setTestCredentials(String user, String pass, String email, int index) {
         String keyUser = SetupWizardManager.KEY_MIRRCREDS_USER;
         String keyPass = SetupWizardManager.KEY_MIRRCREDS_PASS;
@@ -91,17 +119,25 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         Config.get().setString(keyEmail, email);
     }
 
+    /**
+     * Sets the proxy settings.
+     *
+     * @param proxy the new proxy settings
+     */
     private void setProxySettings(ProxySettingsDto proxy) {
         Config.get().setString(SetupWizardManager.KEY_PROXY_HOSTNAME, proxy.getHostname());
         Config.get().setString(SetupWizardManager.KEY_PROXY_USERNAME, proxy.getUsername());
         Config.get().setString(SetupWizardManager.KEY_PROXY_PASSWORD, proxy.getPassword());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void tearDown() throws Exception {
         // Clear credentials from config
         super.tearDown();
-        for (int i=0; i<=10; i++) {
+        for (int i = 0; i <= 10; i++) {
             setTestCredentials("", "", "", i);
         }
     }
