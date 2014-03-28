@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.setup.test;
 import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.NCCException;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
+
 import java.util.concurrent.Callable;
 
 /**

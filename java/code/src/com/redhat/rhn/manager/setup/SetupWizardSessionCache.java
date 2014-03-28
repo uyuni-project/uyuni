@@ -15,16 +15,16 @@
 
 package com.redhat.rhn.manager.setup;
 
+import com.suse.manager.model.ncc.Subscription;
+
+import org.apache.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
-import com.suse.manager.model.ncc.Subscription;
 
 /**
  * Utility methods for caching data in the HttpSession object.

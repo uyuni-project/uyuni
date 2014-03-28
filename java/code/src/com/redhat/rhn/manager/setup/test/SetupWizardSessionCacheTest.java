@@ -15,14 +15,14 @@
 
 package com.redhat.rhn.manager.setup.test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Tests for {@link SetupWizardSessionCache}.
