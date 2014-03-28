@@ -66,6 +66,8 @@ public class MirrorCredentialsRenderer {
         HttpServletRequest request = webContext.getHttpServletRequest();
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
+        // TODO: Handle expired sessions here, i.e. check if that user is logged in.
+        // Otherwise get the current user in SetupWizardManager.
 
         MirrorCredentialsDto creds;
         if (id != null) {
