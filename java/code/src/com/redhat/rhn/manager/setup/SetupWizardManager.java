@@ -72,7 +72,7 @@ public class SetupWizardManager extends BaseManager {
         ValidatorError[] ret = configCommand.storeConfiguration();
         // the settings have changed, we remove the cached subscriptions as
         // the settings may not be valid anymore
-        SetupWizardSessionCache.removeAllSubscriptionsFromSession(request);
+        SetupWizardSessionCache.clearAllSubscriptions(request);
         return ret;
     }
 
@@ -173,7 +173,7 @@ public class SetupWizardManager extends BaseManager {
             }
             // Remove old credentials data from cache
             if (oldCreds != null) {
-                SetupWizardSessionCache.removeSubscriptionsFromSession(oldCreds, request);
+                SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
             }
             return configCommand.storeConfiguration();
         }
@@ -233,7 +233,7 @@ public class SetupWizardManager extends BaseManager {
             errors = configCommand.storeConfiguration();
 
             // Clean deleted credentials data from cache
-            SetupWizardSessionCache.removeSubscriptionsFromSession(credentials, request);
+            SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
         return errors;
     }
@@ -367,9 +367,12 @@ public class SetupWizardManager extends BaseManager {
     public static List<SubscriptionDto> getSubscriptions(MirrorCredentialsDto creds,
             HttpServletRequest request, boolean forceRefresh) {
         // Implicitly download subscriptions if requested
-        if (forceRefresh || SetupWizardSessionCache.verificationStatusUnknown(creds, request)) {
-            List<Subscription> subscriptions = SetupWizardManager.downloadSubscriptions(creds);
-            SetupWizardSessionCache.storeSubscriptionsInSession(makeDtos(subscriptions), creds, request);
+        if (forceRefresh ||
+                SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
+            List<Subscription> subscriptions =
+                    SetupWizardManager.downloadSubscriptions(creds);
+            SetupWizardSessionCache.storeSubscriptions(
+                    makeDtos(subscriptions), creds, request);
         }
 
         // Return from cache
