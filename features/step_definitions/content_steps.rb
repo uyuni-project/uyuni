@@ -210,6 +210,20 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
   end
 end
 
+When /^I uncheck "([^"]*)" in the list$/ do |arg1|
+  within(:xpath, "//section") do
+      # use div/div/div for cve audit which has two tables
+      top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
+      row = first(:xpath, top_level_xpath_query)
+      if row.nil?
+          sleep 1
+          $stderr.puts "ERROR - try again"
+          row = first(:xpath, top_level_xpath_query)
+      end
+      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(false)
+  end
+end
+
 Then /^The table should have a column named "([^"]+)"$/ do |arg1|
   find(:xpath, "//div[@class=\"table-responsive\"]/table/thead[.//th[contains(.,'#{arg1}')]]")
 end
