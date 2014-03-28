@@ -28,7 +28,7 @@ end
 
 Then /^I am logged-in$/ do
   fail if not page.find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-  fail if not page.has_content?("You have created your first user for the SUSE Manager Service. Additional configuration should be finalized by clicking here")
+  fail if not page.has_content?("You have created your first SUSE Manager user. To finalize your installation please use the Setup Wizardng here")
 end
 
 When /^I go to the admin configuration page$/ do
