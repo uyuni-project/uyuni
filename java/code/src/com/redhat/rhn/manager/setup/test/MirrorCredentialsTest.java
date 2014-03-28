@@ -22,13 +22,20 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
  */
 public class MirrorCredentialsTest extends RhnBaseTestCase {
 
-    public void testEquality() throws Exception {
-        MirrorCredentialsDto mc1 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
-        MirrorCredentialsDto mc2 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+    /**
+     * Tests MirrorCredentialsDto.equals()
+     */
+    public void testEquality() {
+        MirrorCredentialsDto mc1 =
+                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc2 =
+                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
         assertEquals(mc1, mc2);
 
-        MirrorCredentialsDto mc3 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
-        MirrorCredentialsDto mc4 = new MirrorCredentialsDto("false@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc3 =
+                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc4 =
+                new MirrorCredentialsDto("false@domain.com", "user1", "pw1");
         assertFalse(mc3.equals(mc4));
     }
 }

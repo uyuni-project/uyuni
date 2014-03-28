@@ -15,43 +15,57 @@
 package com.redhat.rhn.manager.setup;
 
 /**
- *
- * To carry proxy settings to the wizard UI
+ * To carry proxy settings to the wizard UI.
  */
 public class ProxySettingsDto {
 
+    /** The hostname. */
     private String hostname;
+
+    /** The username. */
     private String username;
+
+    /** The password. */
     private String password;
 
+    /**
+     * Gets the hostname.
+     * @return the hostname
+     */
     public String getHostname() {
         return hostname;
     }
 
     /**
-     * Set the proxy settings hostname
-     * @param hostname the hostname
+     * Set the proxy settings hostname.
+     *
+     * @param hostnameIn the hostname
      */
-    public void setHostname(String hostname) {
-        this.hostname = hostname != null ? hostname : "";
+    public void setHostname(String hostnameIn) {
+        this.hostname = hostnameIn != null ? hostnameIn : "";
     }
 
     /**
-     * @return the proxy settings hostname
+     * Gets the username.
+     *
+     * @return the proxy settings username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * Set the proxy settings username
-     * @param username proxy username
+     * Set the proxy settings username.
+     *
+     * @param usernameIn proxy username
      */
-    public void setUsername(String username) {
-        this.username = username != null ? username : "";
+    public void setUsername(String usernameIn) {
+        this.username = usernameIn != null ? usernameIn : "";
     }
 
     /**
+     * Gets the password.
+     *
      * @return proxy settings password
      */
     public String getPassword() {
@@ -59,13 +73,17 @@ public class ProxySettingsDto {
     }
 
     /**
-     * Set the proxy settings password
-     * @param password The password
+     * Set the proxy settings password.
+     *
+     * @param passwordIn The password
      */
-    public void setPassword(String password) {
-        this.password = password != null ? password : "";
+    public void setPassword(String passwordIn) {
+        this.password = passwordIn != null ? passwordIn : "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -75,6 +93,9 @@ public class ProxySettingsDto {
         return hash;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -84,13 +105,16 @@ public class ProxySettingsDto {
             return false;
         }
         final ProxySettingsDto other = (ProxySettingsDto) obj;
-        if ((this.hostname == null) ? (other.hostname != null) : !this.hostname.equals(other.hostname)) {
+        if ((this.hostname == null) ? (other.hostname != null) : !this.hostname
+                .equals(other.hostname)) {
             return false;
         }
-        if ((this.username == null) ? (other.username != null) : !this.username.equals(other.username)) {
+        if ((this.username == null) ? (other.username != null) : !this.username
+                .equals(other.username)) {
             return false;
         }
-        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+        if ((this.password == null) ? (other.password != null) : !this.password
+                .equals(other.password)) {
             return false;
         }
         return true;

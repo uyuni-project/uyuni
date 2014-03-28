@@ -43,7 +43,8 @@ public class ReadProductsCommand {
     }
 
     /**
-     * {@inheritDoc}
+     * Reads products from mgr-ncc-sync.
+     * @return validation errors, if any
      */
     public ValidatorError[] readProducts() {
         Executor e = new SystemCommandExecutor();

@@ -27,16 +27,17 @@ import java.util.concurrent.Callable;
  */
 public abstract class NCCRequester<T> implements Callable<T> {
 
+
     /**
-     * Run a request.
-     *
-     * @see java.util.concurrent.Callable#call()
+     * {@inheritDoc}
      */
+    @Override
     public T call() {
         T ret = null;
         try {
             ret = request(new NCCClient("http://localhost:" + HttpServerMock.PORT));
-        } catch (NCCException e) {
+        }
+        catch (NCCException e) {
             // Catch it in here, we are expecting it
         }
         return ret;

@@ -23,21 +23,22 @@ import simple.http.connect.ConnectionFactory;
 
 /**
  * Mocks a Web server allowing HTTP client classes to be tested.
- * 
- * @param <T>
  */
 public class HttpServerMock {
 
     /**
      * Port the mock server will listen to.
      */
-    public static int PORT = 12345;
+    public static final int PORT = 12345;
 
     /**
-     * Run an HTTP requester on this mock server, record the request and return it.
-     * 
-     * @param requester a method that will produce an HTTP request to this server (wrapped in a Callable object)
-     * @return an object that encapsulates the HTTP request as received by this server
+     * Run an HTTP requester on this mock server, record the request and return
+     * it.
+     *
+     * @param requester a method that will produce an HTTP request to this
+     * server (wrapped in a Callable object)
+     * @return an object that encapsulates the HTTP request as received by this
+     * server
      * @throws Exception if network errors arise
      */
     public Request getRequest(Callable<?> requester) throws Exception {
@@ -45,12 +46,16 @@ public class HttpServerMock {
     }
 
     /**
-     * Run an HTTP requester on this mock server, respond with responder, record the requester's result and return it.
-     * 
-     * @param requester a method that will produce an HTTP request to this server (wrapped in a Callable object)
+     * Run an HTTP requester on this mock server, respond with responder, record
+     * the requester's result and return it.
+     * @param <T> type of the requester result
+     *
+     * @param requester a method that will produce an HTTP request to this
+     * server (wrapped in a Callable object)
      * @param responder an object that can respond to the HTTP request
      * @return the requester's result
-     * @throws Exception if requester throws an exception or network errors arise
+     * @throws Exception if requester throws an exception or network errors
+     * arise
      */
     public <T> T getResult(Callable<T> requester, Responder responder) throws Exception {
         return runExchange(requester, responder).result;
@@ -58,21 +63,21 @@ public class HttpServerMock {
 
     /**
      * Run an HTTP request-response pair on this mock server.
-     *
-     * @param requester a method that will produce an HTTP request to this server (wrapped in a Callable object). Can
-     *            return a convenience result that will be returned in ExchangeDetails
-     * @param responder an object that can respond to the HTTP request
      * @param <T> type of the requester result
-     * @param ignoreRequesterExceptions if true, ignore exceptions thrown by the requester object
-     * @return an object that encapsulates the HTTP request as received by this server and the requester result
-     * @throws Exception if requester throws an exception or network errors arise
+     *
+     * @param requester a method that will produce an HTTP request to this
+     * server (wrapped in a Callable object). Can return a convenience result
+     * that will be returned in ExchangeDetails
+     * @param responder an object that can respond to the HTTP request
+     * @param ignoreRequesterExceptions if true, ignore exceptions thrown by the
+     * requester object
+     * @return an object that encapsulates the HTTP request as received by this
+     * server and the requester result
+     * @throws Exception if requester throws an exception or network errors
+     * arise
      */
-    private <T> ExchangeDetails<T> runExchange(Callable<T> requester,
-            Responder responder) throws Exception {
-
-        //LoaderEngine engine = new LoaderEngine();
-        //engine.load("ServiceMock", "com.redhat.rhn.testing.httpservermock.ServiceMock", responder);
-        //engine.link("*", "ServiceMock");
+    private <T> ExchangeDetails<T> runExchange(Callable<T> requester, Responder responder)
+        throws Exception {
         ServiceMock service = new ServiceMock(responder);
         EngineMock engine = new EngineMock(service);
 
@@ -86,10 +91,12 @@ public class HttpServerMock {
 
             try {
                 exchangeDetails.result = requester.call();
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 throw e;
             }
-        } finally {
+        }
+        finally {
             if (connection != null) {
                 socket.close();
             }
@@ -105,9 +112,9 @@ public class HttpServerMock {
     class ExchangeDetails<T> {
 
         /** An HTTP request, as received by the HTTP server. */
-        Request request = null;
+        private Request request = null;
 
         /** A generic result produced by an HTTP request. */
-        T result = null;
+        private T result = null;
     }
 }

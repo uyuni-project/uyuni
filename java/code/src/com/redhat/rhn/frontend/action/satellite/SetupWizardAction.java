@@ -34,10 +34,9 @@ public class SetupWizardAction extends RhnAction {
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
 
     /** {@inheritDoc} */
-    public ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+            HttpServletRequest request, HttpServletResponse response) {
 
         // DynaActionForm form = (DynaActionForm) formIn;
         // RequestContext ctx = new RequestContext(request);
