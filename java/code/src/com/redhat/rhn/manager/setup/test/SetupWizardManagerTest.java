@@ -68,15 +68,6 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         }
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        // Clear credentials from config
-        super.tearDown();
-        for (int i=0; i<=10; i++) {
-            setTestCredentials("", "", "", i);
-        }
-    }
-
     private void setTestCredentials(String user, String pass, String email, int index) {
         String keyUser = SetupWizardManager.KEY_MIRRCREDS_USER;
         String keyPass = SetupWizardManager.KEY_MIRRCREDS_PASS;
@@ -89,5 +80,14 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         Config.get().setString(keyUser, user);
         Config.get().setString(keyPass, pass);
         Config.get().setString(keyEmail, email);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        // Clear credentials from config
+        super.tearDown();
+        for (int i=0; i<=10; i++) {
+            setTestCredentials("", "", "", i);
+        }
     }
 }
