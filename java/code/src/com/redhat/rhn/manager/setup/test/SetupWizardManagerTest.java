@@ -18,7 +18,7 @@ package com.redhat.rhn.manager.setup.test;
 import java.util.List;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.manager.setup.MirrorCredentials;
+import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.SetupWizardManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
@@ -28,7 +28,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 public class SetupWizardManagerTest extends RhnBaseTestCase {
 
     public void testFindMirrorCredsEmpty() throws Exception {
-        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
         assertEquals(0, credentials.size());
     }
 
@@ -36,10 +36,10 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser1", "testpass1", "testemail1", 1);
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
         assertEquals(3, credentials.size());
 
-        for (MirrorCredentials creds : credentials) {
+        for (MirrorCredentialsDto creds : credentials) {
             int i = credentials.indexOf(creds);
             assertEquals("testuser" + i, creds.getUser());
             assertEquals("testpass" + i, creds.getPassword());
@@ -50,7 +50,7 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
     public void testFindMirrorCredsMissing() throws Exception {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
         assertEquals(1, credentials.size());
         assertNull(SetupWizardManager.findMirrorCredentials(1));
     }
@@ -61,7 +61,7 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
 
         for (int i = 0; i <= 2; i++) {
-            MirrorCredentials creds = SetupWizardManager.findMirrorCredentials(i);
+            MirrorCredentialsDto creds = SetupWizardManager.findMirrorCredentials(i);
             assertEquals("testuser" + i, creds.getUser());
             assertEquals("testpass" + i, creds.getPassword());
             assertEquals("testemail" + i, creds.getEmail());

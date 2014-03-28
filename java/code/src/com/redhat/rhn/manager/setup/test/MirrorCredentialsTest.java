@@ -15,21 +15,21 @@
 
 package com.redhat.rhn.manager.setup.test;
 
-import com.redhat.rhn.manager.setup.MirrorCredentials;
+import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
- * Tests for {@link MirrorCredentials}.
+ * Tests for {@link MirrorCredentialsDto}.
  */
 public class MirrorCredentialsTest extends RhnBaseTestCase {
 
     public void testEquality() throws Exception {
-        MirrorCredentials mc1 = new MirrorCredentials("fake@domain.com", "user1", "pw1");
-        MirrorCredentials mc2 = new MirrorCredentials("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc1 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc2 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
         assertEquals(mc1, mc2);
 
-        MirrorCredentials mc3 = new MirrorCredentials("fake@domain.com", "user1", "pw1");
-        MirrorCredentials mc4 = new MirrorCredentials("false@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc3 = new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc4 = new MirrorCredentialsDto("false@domain.com", "user1", "pw1");
         assertFalse(mc3.equals(mc4));
     }
 }

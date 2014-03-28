@@ -87,8 +87,8 @@ public class SetupWizardManager extends BaseManager {
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
      */
-    public static List<MirrorCredentials> findMirrorCredentials() {
-        List<MirrorCredentials> credsList = new ArrayList<MirrorCredentials>();
+    public static List<MirrorCredentialsDto> findMirrorCredentials() {
+        List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
 
         // Get the main pair of credentials
         String user = Config.get().getString(KEY_MIRRCREDS_USER);
@@ -96,7 +96,7 @@ public class SetupWizardManager extends BaseManager {
         String email = Config.get().getString(KEY_MIRRCREDS_EMAIL);
 
         // Add credentials as long as they have user and password
-        MirrorCredentials creds;
+        MirrorCredentialsDto creds;
         int id = 0;
         while (user != null && password != null) {
             if (logger.isTraceEnabled()) {
@@ -104,7 +104,7 @@ public class SetupWizardManager extends BaseManager {
             }
 
             // Create credentials object
-            creds = new MirrorCredentials(email, user, password);
+            creds = new MirrorCredentialsDto(email, user, password);
             creds.setId(new Long(id));
             credsList.add(creds);
 
@@ -121,7 +121,7 @@ public class SetupWizardManager extends BaseManager {
      * Find mirror credentials for a given ID.
      * @return pair of credentials for given ID.
      */
-    public static MirrorCredentials findMirrorCredentials(long id) {
+    public static MirrorCredentialsDto findMirrorCredentials(long id) {
         // Generate suffix depending on the ID
         String suffix = "";
         if (id > 0) {
@@ -132,13 +132,13 @@ public class SetupWizardManager extends BaseManager {
         String user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
         String password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
         String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
-        MirrorCredentials creds = null;
+        MirrorCredentialsDto creds = null;
         if (user != null && password != null) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Found credentials for ID: " + id);
             }
             // Create credentials object
-            creds = new MirrorCredentials(email, user, password);
+            creds = new MirrorCredentialsDto(email, user, password);
             creds.setId(id);
         }
         return creds;
@@ -151,7 +151,7 @@ public class SetupWizardManager extends BaseManager {
      * @param user the current user
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] storeMirrorCredentials(MirrorCredentials creds,
+    public static ValidatorError[] storeMirrorCredentials(MirrorCredentialsDto creds,
             User userIn, HttpServletRequest request) {
         if (creds.getUser() == null || creds.getPassword() == null) {
             return null;
@@ -160,12 +160,12 @@ public class SetupWizardManager extends BaseManager {
         // Find the first free ID if necessary
         Long id = creds.getId();
         if (creds.getId() == null) {
-            List<MirrorCredentials> credentials = SetupWizardManager.findMirrorCredentials();
+            List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
             id = new Long(credentials.size());
         }
 
         // Check if there is changes by looking at previous object
-        MirrorCredentials oldCreds = SetupWizardManager.findMirrorCredentials(id);
+        MirrorCredentialsDto oldCreds = SetupWizardManager.findMirrorCredentials(id);
         if (!creds.equals(oldCreds)) {
             // Generate suffix depending on the ID
             String suffix = "";
@@ -202,21 +202,21 @@ public class SetupWizardManager extends BaseManager {
         ValidatorError[] errors = null;
 
         // Store credentials to empty cache later
-        MirrorCredentials credentials = SetupWizardManager.findMirrorCredentials(id);
+        MirrorCredentialsDto credentials = SetupWizardManager.findMirrorCredentials(id);
 
         // Find all credentials and see what needs to be done
-        List<MirrorCredentials> creds = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> creds = SetupWizardManager.findMirrorCredentials();
 
         // Special case: delete the last pair of credentials
         if (creds.size() == id + 1) {
-            MirrorCredentials delCreds = new MirrorCredentials("", "", "");
+            MirrorCredentialsDto delCreds = new MirrorCredentialsDto("", "", "");
             delCreds.setId(id);
             errors = SetupWizardManager.storeMirrorCredentials(delCreds, userIn, request);
         }
         else if (creds.size() > id + 1) {
             // We need to shift indices
             ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-            for (MirrorCredentials c : creds) {
+            for (MirrorCredentialsDto c : creds) {
                 int index = creds.indexOf(c);
                 if (index > id) {
                     String targetSuffix = "";
@@ -253,15 +253,15 @@ public class SetupWizardManager extends BaseManager {
     public static ValidatorError[] makePrimaryCredentials(Long id, User userIn,
             HttpServletRequest request) {
         ValidatorError[] errors = null;
-        List<MirrorCredentials> allCreds = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> allCreds = SetupWizardManager.findMirrorCredentials();
         if (allCreds.size() > 1) {
             // Find the future primary creds before reordering
-            MirrorCredentials primaryCreds = SetupWizardManager.findMirrorCredentials(id);
+            MirrorCredentialsDto primaryCreds = SetupWizardManager.findMirrorCredentials(id);
             ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
             // Shift all indices starting from 1
             int i = 1;
-            for (MirrorCredentials c : allCreds) {
+            for (MirrorCredentialsDto c : allCreds) {
                 if (allCreds.indexOf(c) != id) {
                     String targetSuffix = "." + i;
                     configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, c.getUser());
@@ -290,7 +290,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      */
-    public static List<Subscription> downloadSubscriptions(MirrorCredentials creds) {
+    public static List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds) {
         List<Subscription> subscriptions = null;
         NCCClient nccClient = new NCCClient();
         try {
@@ -372,7 +372,7 @@ public class SetupWizardManager extends BaseManager {
      * @return list of subscriptions or null signaling "verification failed"
      */
     @SuppressWarnings("unchecked")
-    public static List<SubscriptionDto> getSubscriptions(MirrorCredentials creds,
+    public static List<SubscriptionDto> getSubscriptions(MirrorCredentialsDto creds,
             HttpServletRequest request, boolean forceRefresh) {
         // Implicitly download subscriptions if requested
         if (forceRefresh || verificationStatusUnknown(creds, request)) {
@@ -398,7 +398,7 @@ public class SetupWizardManager extends BaseManager {
      * @return true if verification status is unknown for the given creds, otherwise false.
      */
     @SuppressWarnings("unchecked")
-    private static boolean verificationStatusUnknown(MirrorCredentials creds,
+    private static boolean verificationStatusUnknown(MirrorCredentialsDto creds,
             HttpServletRequest request) {
         boolean ret = true;
         HttpSession session = request.getSession();
@@ -418,7 +418,7 @@ public class SetupWizardManager extends BaseManager {
      */
     @SuppressWarnings("unchecked")
     private static void storeSubscriptionsInSession(List<SubscriptionDto> subscriptions,
-            MirrorCredentials creds, HttpServletRequest request) {
+            MirrorCredentialsDto creds, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
                 (Map<String, List<SubscriptionDto>>) session.getAttribute(SUBSCRIPTIONS_KEY);
@@ -439,7 +439,7 @@ public class SetupWizardManager extends BaseManager {
      * @param creds credentials
      */
     @SuppressWarnings("unchecked")
-    private static void removeSubscriptionsFromSession(MirrorCredentials creds,
+    private static void removeSubscriptionsFromSession(MirrorCredentialsDto creds,
             HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<String, List<SubscriptionDto>> subsMap =
