@@ -26,15 +26,15 @@ Feature: Test action chaining
       And I click on "Schedule"
       And I should see a "Action has been successfully added to the Action Chain" text
 
-#  Scenario: I add a patch installation to the action chain
-#    Given I am on the Systems overview page of this client
-#     When I follow "Software" in the content area
-#      And I follow "Patches" in the content area
-#      And I check "andromeda-dummy-6789" in the list
-#      And I click on "Apply Patches"
-#      And I check radio button "schedule-by-action-chain"
-#      And I click on "Confirm"
-#      And I should see a "Action has been successfully added to the Action Chain" text
+  Scenario: I add a patch installation to the action chain
+    Given I am on the Systems overview page of this client
+     When I follow "Software" in the content area
+      And I follow "Patches" in the content area
+      And I check "andromeda-dummy-6789" in the list
+      And I click on "Apply Patches"
+      And I check radio button "schedule-by-action-chain"
+      And I click on "Confirm"
+      And I should see a "Action has been successfully added to the Action Chain" text
 
   Scenario: I add a remove package to the action chain
     Given I am on the Systems overview page of this client
