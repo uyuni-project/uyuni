@@ -35,7 +35,7 @@ public class HttpProxyRenderer {
     private static Logger log = Logger.getLogger(HttpProxyRenderer.class);
 
     /**
-     * Add a new pair of credentials and re-render the whole list.
+     * Save the given proxy settings to the configuration.
      * @param settings map with the keys hostname, username, password
      * @return saved settings
      */
