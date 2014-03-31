@@ -1,9 +1,12 @@
 require 'rubygems'
 require 'yaml'
 require 'cucumber/rake/task'
-require "rdoc/task"
-require "rake/testtask"
-require "rake/clean"
+require 'rdoc/task'
+require 'rake/testtask'
+require 'rake/clean'
+require 'bundler'
+Bundler.setup
+require 'zap'
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
@@ -68,6 +71,25 @@ task :install => :build do
   system "sudo gem install spacewalk_testsuite_base-#{SpacewalkTestsuiteBase::VERSION}.gem"
 end
 
+namespace :security do
+    task :test do
+       target = ENV['TARGET']
+       if target.nil?
+           raise "Target not set"
+       end
+       zap = Zap::ZapV2.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
+       unless zap.running?
+        zap.start
+        until zap.running?
+            sleep 5
+        end
+       end
+       zap.spider
+       zap.ascan
+       # TODO check if both tasks ended
+       zap.alerts.view
+    end
+end
 Rake::TestTask.new do |t|
   t.libs << File.expand_path('../test', __FILE__)
   t.libs << File.expand_path('../', __FILE__)

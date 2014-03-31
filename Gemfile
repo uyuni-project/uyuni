@@ -7,5 +7,7 @@ if ENV['DB'] == "pg"
 else
     gem "ruby-oci8", "~> 2.0.4" 
 end
+
+gem 'zap',:git=>'https://github.com/vpereira/ruby-zap.git'
 #TODO gemspec is necessary just for gems, not for application
 gemspec
