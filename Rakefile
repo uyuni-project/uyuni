@@ -5,7 +5,7 @@ require 'rdoc/task'
 require 'rake/testtask'
 require 'rake/clean'
 Bundler.setup
-require 'zap'
+require 'owasp_zap'
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
