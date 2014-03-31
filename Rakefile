@@ -4,7 +4,6 @@ require 'cucumber/rake/task'
 require 'rdoc/task'
 require 'rake/testtask'
 require 'rake/clean'
-require 'bundler'
 Bundler.setup
 require 'zap'
 
