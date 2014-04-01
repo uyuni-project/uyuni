@@ -45,6 +45,8 @@ public class SetupWizardManager extends BaseManager {
     public static final String KEY_MIRRCREDS_PASS = "server.susemanager.mirrcred_pass";
     /** Configuration key prefix for mirror credential email addresses */
     public static final String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
+    /** Configuration key separator for mirror credentials */
+    public static final String KEY_MIRRCREDS_SEPARATOR = "_";
 
     public static final String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
     public static final String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
@@ -108,9 +110,10 @@ public class SetupWizardManager extends BaseManager {
 
             // Search additional credentials with continuous enumeration
             id++;
-            user = Config.get().getString(KEY_MIRRCREDS_USER + "." + id);
-            password = Config.get().getString(KEY_MIRRCREDS_PASS + "." + id);
-            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + "." + id);
+            String suffix = KEY_MIRRCREDS_SEPARATOR + id;
+            user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
+            password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
+            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
         }
         return credsList;
     }
@@ -124,7 +127,7 @@ public class SetupWizardManager extends BaseManager {
         // Generate suffix depending on the ID
         String suffix = "";
         if (id > 0) {
-            suffix = "." + id;
+            suffix = KEY_MIRRCREDS_SEPARATOR + id;
         }
 
         // Get the credentials from config
@@ -171,7 +174,7 @@ public class SetupWizardManager extends BaseManager {
             // Generate suffix depending on the ID
             String suffix = "";
             if (id > 0) {
-                suffix = "." + id;
+                suffix = KEY_MIRRCREDS_SEPARATOR + id;
             }
             ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
             configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
@@ -223,7 +226,7 @@ public class SetupWizardManager extends BaseManager {
                 if (index > id) {
                     String targetSuffix = "";
                     if (index > 1) {
-                        targetSuffix = "." + (index - 1);
+                        targetSuffix = KEY_MIRRCREDS_SEPARATOR + (index - 1);
                     }
                     configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
                             c.getUser());
@@ -235,7 +238,7 @@ public class SetupWizardManager extends BaseManager {
                     }
                     // Empty the last pair of credentials
                     if (index == creds.size() - 1) {
-                        targetSuffix = "." + index;
+                        targetSuffix = KEY_MIRRCREDS_SEPARATOR + index;
                         configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, "");
                         configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, "");
                         configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, "");
@@ -272,7 +275,7 @@ public class SetupWizardManager extends BaseManager {
             int i = 1;
             for (MirrorCredentialsDto c : allCreds) {
                 if (allCreds.indexOf(c) != id) {
-                    String targetSuffix = "." + i;
+                    String targetSuffix = KEY_MIRRCREDS_SEPARATOR + i;
                     configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
                             c.getUser());
                     configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
