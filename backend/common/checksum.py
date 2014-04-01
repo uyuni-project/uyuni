@@ -40,6 +40,13 @@ except ImportError:
             else:
                 raise ValueError, "Incompatible checksum type"
 
+def getHashlibInstance(hash_type, used_for_security):
+    """Get an instance of a hashlib object.
+    """
+    if hashlib_has_usedforsecurity:
+        return hashlib.new(hash_type, usedforsecurity=used_for_security)
+    else:
+        return hashlib.new(hash_type)
 
 def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size=None, used_for_security=False):
     """ Compute a file's checksum
@@ -61,10 +68,7 @@ def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size
         f = open(filename, "r")
     # Rewind it
     f.seek(0, 0)
-    if hashlib_has_usedforsecurity:
-        m = hashlib.new(hashtype, usedforsecurity=used_for_security)
-    else:
-        m = hashlib.new(hashtype)
+    m = getHashlibInstance(hashtype, used_for_security)
     while 1:
         buf = f.read(buffer_size)
         if not buf:
@@ -77,7 +81,6 @@ def getFileChecksum(hashtype, filename=None, fd=None, file_obj=None, buffer_size
     else:
         f.close()
     return m.hexdigest()
-
 
 def getStringChecksum(hashtype, s):
     """ compute checksum of an arbitrary string """
