@@ -194,6 +194,7 @@ class ContentSource:
                 raise
 
         pkglist = self.sack.returnPackages()
+        pkglist = yum.misc.unique(pkglist)
         self.num_packages = len(pkglist)
 
         if not filters:
