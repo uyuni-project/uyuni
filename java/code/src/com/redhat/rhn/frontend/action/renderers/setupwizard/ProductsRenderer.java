@@ -61,44 +61,15 @@ public class ProductsRenderer extends BaseFragmentRenderer {
 
         // Parse XML into objects
         if (errors == null) {
-            String output = cmd.getXMLOutput();
-            logger.debug("Output --> " + output);
-            InputStream stream = new ByteArrayInputStream(output.getBytes());
-            List<Product> products = parse(stream);
-
-            // Only show base products
-            List<Product> productsFiltered = new ArrayList<Product>();
-            for (Product p : products) {
-                if (p.getParentProduct().isEmpty()) {
-                    productsFiltered.add(p);
-                }
-            }
+            List<Product> products = cmd.getProducts();
 
             // Sort the list
-            Collections.sort(productsFiltered);
+            Collections.sort(products);
 
             // Set the "parentUrl" for the form (in rl:listset)
             request.setAttribute(ListTagHelper.PARENT_URL, "");
-            request.setAttribute(ATTRIB_PRODUCTS_LIST, productsFiltered);
+            request.setAttribute(ATTRIB_PRODUCTS_LIST, products);
         }
-    }
-
-    /**
-     * Parse {@link InputStream} into a List of {@link Product} objects.
-     *
-     * @param stream
-     * @return list of products
-     */
-    private List<Product> parse(InputStream stream) {
-        ProductList result = null;
-        Serializer serializer = new Persister();
-        try {
-            result = serializer.read(ProductList.class, stream);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result.getProducts();
     }
 
     /**

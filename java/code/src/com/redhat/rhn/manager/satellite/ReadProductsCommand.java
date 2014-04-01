@@ -18,6 +18,15 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
+import com.suse.manager.model.products.Product;
+import com.suse.manager.model.products.ProductList;
+
+import org.apache.log4j.Logger;
+import org.apache.tools.ant.filters.StringInputStream;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,6 +35,8 @@ import java.util.List;
  * User must be SAT_ADMIN to use this Command.
  */
 public class ReadProductsCommand {
+
+    private static Logger logger = Logger.getLogger(ReadProductsCommand.class);
 
     private User user;
     private String xmlOutput;
@@ -61,15 +72,33 @@ public class ReadProductsCommand {
         }
         else {
             xmlOutput = e.getLastCommandOutput();
+            logger.debug("Output --> " + xmlOutput);
         }
         return null;
     }
 
     /**
-     * Return XML output of mgr-ncc-sync.
-     * @return xml output as string
+     * Gets the products.
+     * @return the products
      */
-    public String getXMLOutput() {
-        return xmlOutput;
+    public List<Product> getProducts() {
+        return parse(new StringInputStream(xmlOutput));
+    }
+
+    /**
+     * Parse {@link InputStream} into a List of {@link Product} objects.
+     * @param stream an input stream
+     * @return list of products
+     */
+    public List<Product> parse(InputStream stream) {
+        ProductList result = null;
+        Serializer serializer = new Persister();
+        try {
+            result = serializer.read(ProductList.class, stream);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.getProducts();
     }
 }
