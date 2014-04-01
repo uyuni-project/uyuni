@@ -97,7 +97,7 @@ public class ReadProductsCommand {
             result = serializer.read(ProductList.class, stream);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return result.getProducts();
     }
