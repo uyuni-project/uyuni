@@ -6,4 +6,7 @@
   <rhn-tab name="Mirror Credentials" acl="user_role(satellite_admin)">
     <rhn-tab-url>/rhn/admin/setup/MirrorCredentials.do</rhn-tab-url>
   </rhn-tab>
+  <rhn-tab name="SUSE Products" acl="user_role(satellite_admin)">
+    <rhn-tab-url>/rhn/admin/setup/SUSEProducts.do</rhn-tab-url>
+  </rhn-tab>
 </rhn-navi-tree>
