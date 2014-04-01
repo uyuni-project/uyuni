@@ -9,33 +9,40 @@
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
+	padding-bottom: 15px;
 }
 .table-rounded th,
 .table-rounded td{
 	text-align: left;
-	border: 1px solid @gray-light;
 }
-.table-rounded thead th{
-    padding: .7em 0 .7em 1em;
-    background: #e7e7e7;
-	border-bottom: 0px solid @gray-light;
-	border-right: 0px solid @gray-light;
+
+.table-rounded thead:first-child tr:first-child {
+	th {
+		background: #f3f3f3;
+	  border-bottom: 1px solid @gray-light;
+	  border-right: 0px solid @gray-light;
+	  border-top: 1px solid @gray-light
+	}
+	th:first-child {
+		.border-rounded(6px; 0; 0; 0);
+	  border-left: 1px solid @gray-light;
+	}
+	th:last-child {
+		.border-rounded(0; 6px; 0; 0);
+	  border-right: 1px solid @gray-light;
+	}
+	th:only-of-type {
+		.border-rounded(6px; 6px; 0; 0);
+	}
 }
-.table-rounded thead th:first-child{
-	.border-rounded(6px; 0; 0; 0);
-}
-.table-rounded thead th:last-child{
-	.border-rounded(0; 6px; 0; 0);
-	border-right: 1px solid @gray-light;
-}
-.table-rounded thead tr th:only-of-type {
-	.border-rounded(6px; 6px; 0; 0);
-}
+
 .table-rounded tbody td{
-    padding: .7em 0 .7em 1em;
 	font-weight: normal;
 	border-right: 0px solid @gray-light;
 	border-bottom: 0px solid @gray-light;
+}
+.table-rounded tbody td:first-child{
+	border-left: 1px solid @gray-light;
 }
 .table-rounded tbody td:last-child{
 	border-right: 1px solid @gray-light;
@@ -47,24 +54,24 @@
 .table-rounded tbody tr{
 	background: #fff;
 	-webkit-transition: background 0.5s ease;  
-    -moz-transition: background 0.5s ease;  
-    -o-transition: background 0.5s ease;  
-    -ms-transition: background 0.5s ease;  
-    transition: background 0.5s ease;
+  -moz-transition: background 0.5s ease;  
+  -o-transition: background 0.5s ease;  
+  -ms-transition: background 0.5s ease;  
+  transition: background 0.5s ease;
 }
 .table-rounded tbody td p{
 	float: left;
 	margin: 5px 0 0 0
 }
-.table-rounded tbody tr:last-child td:first-child{
+.table-rounded tbody:last-child tr:last-child td:first-child{
 	.border-rounded(0; 0; 0; 6px);
 	border-bottom: 1px solid @gray-light;
 }
-.table-rounded tbody tr:last-child td:last-child{
+.table-rounded tbody:last-child tr:last-child td:last-child{
 	.border-rounded(0; 0; 6px; 0);
 	border-bottom: 1px solid @gray-light;
 }
-.table-rounded tbody tr:last-child td:only-of-type{
+.table-rounded tbody:last-child tr:last-child td:only-of-type{
 	.border-rounded(0; 0; 6px; 6px);
 	border-bottom: 1px solid @gray-light;
 }
@@ -72,10 +79,29 @@
 	border-bottom: 1px solid @gray-light;
 }
 
+.table-rounded tfoot tr {
+	td:first-child {
+		border-left: 1px solid @gray-light;
+		.border-rounded(0; 0; 0; 6px);
+	}
+	td:last-child {
+		border-right: 1px solid @gray-light;
+		.border-rounded(0; 0; 6px; 0);
+	}
+	td {
+		border-bottom: 1px solid @gray-light;
+		border-right: 0px solid;
+		box-shadow: 0px 2px 1px 0px #dadada;
+    -moz-box-shadow: 0px 2px 1px 0px #dadada;
+    -webkit-box-shadow: 0px 2px 1px 0px #dadada;
+	}
+}
+
 
 .table thead > tr > td{
 	padding: 0
 }
+
 // colour to the head, except for when it is the last TR in the thead (it will be white)
 thead tr{
 	background: #e7e7e7;
@@ -131,7 +157,7 @@ background-color: darken(#d9edf7, 3%) !important;
 }
 
 .compare-list {
-	.border-rounded(0, 0, 3px, 3p);
+	.border-rounded(0, 0, 3px, 3px);
 	border: 1px solid #DDDDDD;
 	width: 100%;
 }
