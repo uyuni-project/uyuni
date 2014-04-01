@@ -2,6 +2,7 @@
 - features/init_user_create.feature
 - features/running.feature
 - features/login.feature
+- features/setup_wizard.feature
 - features/mainpage.feature
 - features/channels_add.feature
 - features/push_package.feature
