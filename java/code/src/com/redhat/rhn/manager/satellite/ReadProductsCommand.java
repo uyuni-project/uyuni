@@ -17,18 +17,16 @@ package com.redhat.rhn.manager.satellite;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
-
-import org.apache.log4j.Logger;
-import org.apache.tools.ant.filters.StringInputStream;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 /**
  * Simple command class for reading products using mgr-ncc-sync.
@@ -36,9 +34,9 @@ import java.util.List;
  */
 public class ReadProductsCommand {
 
-    private static Logger logger = Logger.getLogger(ReadProductsCommand.class);
+    private static final Logger logger = Logger.getLogger(ReadProductsCommand.class);
 
-    private User user;
+    private final User user;
     private String xmlOutput;
 
     /**
@@ -93,7 +91,8 @@ public class ReadProductsCommand {
      * @return the products
      */
     public List<Product> getProducts() {
-        return parse(new StringInputStream(xmlOutput));
+        return parse(new ByteArrayInputStream(
+                xmlOutput.getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
