@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:28:14 CEST 2014 - mc@suse.de
+
+- version 1.7.1.5-1
+- Fix channel arch on the spacewalk-create-channel man page
+- don't print traceback when entered incorrect credentials
+- channel definitions for RHEL6.5 (bnc#871103)
+- channel definitions for RHEL-5-U10 (bnc#871103)
+- the RHEL 6.4 spacewalk-create-channel definitions.(bnc#871103)
+- sort 6.1 and 6.2 Supplementary content
+- adding missing 5-u9-server-x86_64
+- adding RHEL5.9 channel definitions
+- adding RHEL4.9-Extras channel definitions
+- adding optional and supplementary RHEL6.3 channel definitions
+- fix dir to match RHEL6 supplementary channel
+- fix dir to match RHEL6 optional channel
+
+-------------------------------------------------------------------
 Fri Sep 28 16:34:07 CEST 2012 - mc@suse.de
 
 - version 1.7.1.4-1
