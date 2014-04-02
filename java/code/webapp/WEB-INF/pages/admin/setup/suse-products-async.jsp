@@ -4,28 +4,9 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<rl:listset name="productsListSet">
-    <rhn:csrf />
-    <rhn:submitted />
-    <rl:list name="productsList"
-             dataset="productsList"
-             emptykey="suse-products.jsp.noproducts">
-        <rl:selectablecolumn value="${current.ident}"
-                             selected="${current.selected}"
-                             disabled="${not current.selectable}" />
-        <rl:column headerkey="suse-products.jsp.name"
-                   bound="true"
-                   attr="name" />
-        <rl:column headerkey="suse-products.jsp.arch"
-                   bound="true"
-                   attr="arch" />
-    </rl:list>
-
-    <div class="pull-right">
-        <hr />
-        <html:submit property="dispatch"
-                     styleClass="btn btn-success">
-            <bean:message key="suse-products.jsp.dispatch" />
-        </html:submit>
-    </div>
-</rl:listset>
+<c:forEach var="product" items="${productsList}">
+    <tr>
+        <td><c:out value="${product.parentProduct}"></c:out> - <c:out value="${product.name}"></c:out></td>
+        <td><c:out value="${product.arch}"></c:out></td>
+    </tr>
+</c:forEach>
