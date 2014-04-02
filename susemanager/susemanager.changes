@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:26:07 CEST 2014 - mc@suse.de
+
+- version 1.7.28-1
+- Fix typo in bootstrap data (bnc#870415)
+- Fix crash inside of mgr_register
+- add option --from-mirror to download RPMs from an
+  alternative mirror
+- Catch SyntaxError in registration server response (bnc#849333)
+- Bootstrap repositories data: minor code refactoring
+- Added more packages to the sle11 bootstrap repo
+
+-------------------------------------------------------------------
 Mon Jan 20 16:46:06 CET 2014 - mc@suse.de
 
 - version 1.7.27-1
