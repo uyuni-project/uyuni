@@ -60,6 +60,7 @@ Feature: Create a configuration channel
 
   Scenario: Deploy Centrally Managed Files
    Given I am testing configuration
+     And I enable all actions
      And I follow "Configuration Channels" in the left menu
      And I follow "New Test Channel"
      And I follow "Deploy all configuration files to all subscribed systems"
