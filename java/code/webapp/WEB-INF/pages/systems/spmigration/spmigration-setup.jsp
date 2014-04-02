@@ -7,7 +7,7 @@
 
 <head>
   <link rel="stylesheet" type="text/css" href="/css/sp-migration.css" />
-  <script type="text/javascript" src="/javascript/sp-migration.js"></script>
+  <script src="/javascript/susemanager-sp-migration.js"></script>
 </head>
 
 <body>
