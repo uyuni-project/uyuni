@@ -48,13 +48,13 @@ public class ProductSyncManager {
     }
 
     /**
-     * @return all available base products (ie. no parent product) 
+     * @return all available base products (ie. no parent product)
      */
     public List<Product> getBaseProducts() {
         // Only show base products
         List<Product> productsFiltered = new ArrayList<Product>();
         for (Product p : getProducts()) {
-            if (p.getParentProduct().isEmpty()) {
+            if (p.getParentProductIdent().isEmpty()) {
                 productsFiltered.add(p);
             }
         }
