@@ -1,4 +1,36 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:35:36 CEST 2014 - mc@suse.de
+
+- version 1.7.54.31-1
+- Base channel update: no-op if new channel equals old one
+- ChannelManager.findCompatibleChildren: propose cloned children as
+  compatible (bnc#866045)
+- ChannelManager.findCompatibleChildren: propose children correctly
+  if old and new are equal (bnc#866045)
+- fail if rhnPackage.path is NULL (bnc#862043)
+- use rhnPackage.path as rhnErrataFile.filename like Perl does
+  (bnc#862043)
+- delete outdated repo-sync schedules (bnc#865141)
+- do not offer compatible child channel if not unique (when changing
+  base channel, bnc#849119)
+- Improve error handling when deleting a channel (bnc#865141)
+- fix (virt) system icons on system group pages (bnc#854461)
+- For clones extend search for update tag to original channels
+  (bnc#864028)
+- Transfer the origin's update tag to any cloned channels
+  (bnc#864028)
+- Removing obsolete code, and perform validation to accept an
+  empty password when other user details change
+- Fix cloned channels not available for SP migration (bnc#852582)
+- Fix GMT+3 timezone missing (bnc#862406)
+- SUSE Studio endpoint stops working via unencrypted HTTP
+  (bnc#859762)
+- increase column length for CVE ids to support new CVE ID syntax
+- fix CVE URL in updateinfo references (bnc#859637)
+- Use hostname or address in log messages instead of system.name
+- New config option for using the hostname to connect via ssh push
+
+-------------------------------------------------------------------
 Mon Jan 20 16:51:42 CET 2014 - mc@suse.de
 
 - version 1.7.54.30-1
