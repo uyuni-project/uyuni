@@ -54,18 +54,29 @@ public class ReadProductsCommand {
     }
 
     /**
-     * Reads products from mgr-ncc-sync.
-     * @return validation errors, if any
+     * Current command line
+     *
+     * @return the command line and arguments that
+     * will be executed based on the command configuration.
+     * (Useful for tests for example)
      */
-    public ValidatorError[] readProducts() {
-        Executor e = new SystemCommandExecutor();
-        ValidatorError[] errors = new ValidatorError[1];
+    public List<String> commandLine() {
         List<String> args = new LinkedList<String>();
         args.add("/usr/bin/sudo");
         args.add("/usr/sbin/mgr-ncc-sync");
         args.add("--list-products-xml");
+        return args;
+    }
 
-        int exitcode = e.execute((String[]) args.toArray(new String[0]));
+    /**
+     * Reads products from mgr-ncc-sync.
+     * @return validation errors, if any
+     */
+    public ValidatorError[] execute() {
+        Executor e = new SystemCommandExecutor();
+        ValidatorError[] errors = new ValidatorError[1];
+
+        int exitcode = e.execute((String[]) commandLine().toArray(new String[0]));
         if (exitcode != 0) {
             errors[0] = new ValidatorError("restart.config.error");
             return errors;
