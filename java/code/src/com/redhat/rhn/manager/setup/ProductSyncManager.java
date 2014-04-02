@@ -19,15 +19,10 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.ReadProductsCommand;
 import com.suse.manager.model.products.Product;
-import com.suse.manager.model.products.ProductList;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * API to operate on SUSE products and subscriptions
