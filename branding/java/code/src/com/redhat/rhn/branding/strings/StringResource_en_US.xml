@@ -1668,6 +1668,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="spmigration.jsp.confirm.channels-after-migration">
         <source>Channel subscriptions after the migration:</source>
       </trans-unit>
+      <trans-unit id="spmigration.jsp.confirm.note">
+        <source>In order to detect any possible problems it is recommended to always do a &lt;strong&gt;Dry Run&lt;/strong&gt; before scheduling the actual Service Pack Migration.</source>
+      </trans-unit>
       <trans-unit id="spmigration.jsp.confirm.back">
         <source>Go Back</source>
       </trans-unit>
