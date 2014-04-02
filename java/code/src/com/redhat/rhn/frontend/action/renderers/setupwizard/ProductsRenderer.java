@@ -20,21 +20,20 @@ import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.satellite.ReadProductsCommand;
-
+import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
-
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 
 /**
  * Asynchronously render the page content for product selection.
@@ -56,20 +55,12 @@ public class ProductsRenderer extends BaseFragmentRenderer {
     @Override
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         // Read the products
-        ReadProductsCommand cmd = new ReadProductsCommand(user);
-        ValidatorError[] errors = cmd.readProducts();
+        ProductSyncManager manager = new ProductSyncManager(user);
+        List<Product> baseProducts = manager.getBaseProducts();
 
-        // Parse XML into objects
-        if (errors == null) {
-            List<Product> products = cmd.getProducts();
-
-            // Sort the list
-            Collections.sort(products);
-
-            // Set the "parentUrl" for the form (in rl:listset)
-            request.setAttribute(ListTagHelper.PARENT_URL, "");
-            request.setAttribute(ATTRIB_PRODUCTS_LIST, products);
-        }
+        // Set the "parentUrl" for the form (in rl:listset)
+        request.setAttribute(ListTagHelper.PARENT_URL, "");
+        request.setAttribute(ATTRIB_PRODUCTS_LIST, baseProducts);
     }
 
     /**
