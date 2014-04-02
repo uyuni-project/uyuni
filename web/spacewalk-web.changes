@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:23:10 CEST 2014 - mc@suse.de
+
+- version 1.7.28.21-1
+- fail if rhnPackage.path is NULL (bnc#862043)
+- avoid trimming to 128 chars (bnc#862043)
+- Removing obsolete code, and perform validation to accept an
+  empty password when other user details change
+- make sure not to submit the placeholder as a password (bnc#823853)
+- Set 0 (false) as the default for 'ssh_push_use_hostname'
+
+-------------------------------------------------------------------
 Mon Jan 20 16:42:52 CET 2014 - mc@suse.de
 
 - version 1.7.28.20-1
