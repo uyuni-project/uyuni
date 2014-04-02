@@ -60,6 +60,10 @@
       </div>
     </div>
     <hr />
+    <div class="alert alert-danger">
+      <rhn:icon type="system-crit" />
+      <bean:message key="spmigration.jsp.confirm.note" />
+    </div>
     <div>
       <div class="pull-left">
         <html:button styleClass="btn btn-default" property="dispatch" onclick="javascript:history.back();">
