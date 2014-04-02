@@ -25,28 +25,37 @@ import org.simpleframework.xml.Root;
 
 import com.redhat.rhn.frontend.struts.Selectable;
 
+/**
+ * A SUSE Product.
+ */
 @Root(strict = false)
 public class Product implements Selectable, Comparable<Product> {
 
+    /** The architecture. */
     @Attribute
     private String arch;
 
+    /** The ident ID. */
     @Attribute
     private String ident;
 
+    /** The product readable name. */
     @Attribute
     private String name;
 
+    /** The ident ID of the parent product, if any. */
     @Attribute
     private String parent_product;
 
-    @Element(name="mandatory_channels")
+    /** The mandatory channels. */
+    @Element(name = "mandatory_channels")
     private MandatoryChannels mandatoryChannels;
 
-    @Element(name="optional_channels")
+    /** The optional channels. */
+    @Element(name = "optional_channels")
     private OptionalChannels optionalChannels;
 
-    // This product is selectable
+    /** True if this product has been selected in the GUI. */
     private boolean selected;
 
     /**
@@ -70,26 +79,50 @@ public class Product implements Selectable, Comparable<Product> {
         optionalChannels = optionalChannelsIn;
     }
 
+    /**
+     * Gets the architecture.
+     * @return the architecture
+     */
     public String getArch() {
         return arch;
     }
 
+    /**
+     * Gets the ident ID.
+     * @return the ident ID
+     */
     public String getIdent() {
         return ident;
     }
 
+    /**
+     * Gets the name.
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
-    public String getParentProduct() {
+    /**
+     * Gets the parent product's ident ID.
+     * @return the parent product
+     */
+    public String getParentProductIdent() {
         return parent_product;
     }
 
+    /**
+     * Gets the mandatory channels.
+     * @return the mandatory channels
+     */
     public List<Channel> getMandatoryChannels() {
         return mandatoryChannels.getChannels();
     }
 
+    /**
+     * Gets the optional channels.
+     * @return the optional channels
+     */
     public List<Channel> getOptionalChannels() {
         return optionalChannels.getChannels();
     }
@@ -111,6 +144,9 @@ public class Product implements Selectable, Comparable<Product> {
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int compareTo(Product product) {
         int ret = 0;
@@ -123,21 +159,33 @@ public class Product implements Selectable, Comparable<Product> {
         return ret;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSelectable() {
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isSelected() {
         return this.selected;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setSelected(boolean selected) {
-        this.selected = selected;
+    public void setSelected(boolean selectedIn) {
+        this.selected = selectedIn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectionKey() {
         return this.ident;

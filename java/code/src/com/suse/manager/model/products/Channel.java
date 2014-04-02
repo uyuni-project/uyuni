@@ -17,24 +17,28 @@ package com.suse.manager.model.products;
 
 import org.simpleframework.xml.Attribute;
 
+/**
+ * A software Channel in a Product.
+ */
 public class Channel {
 
     /** Status attributed to channels that have begun synchronization. */
-    public static final String STATE_SYNCHRONIZING = "P";
+    public static final String STATUS_SYNCHRONIZING = "P";
     /** Status attributed to channels that have not begun synchronization. */
-    public static final String STATE_NOT_SYNCHRONIZING = ".";
+    public static final String STATUS_NOT_SYNCHRONIZING = ".";
 
+    /** The label. */
     @Attribute
     private String label;
 
+    /** The status. */
     @Attribute
     private String status;
 
     /**
      * Instantiates a new channel.
-     *
-     * @param label the label
-     * @param status the status
+     * @param labelIn the label in
+     * @param statusIn the status in
      */
     public Channel(String labelIn, String statusIn) {
         super();
@@ -42,10 +46,18 @@ public class Channel {
         status = statusIn;
     }
 
+    /**
+     * Gets the label.
+     * @return the label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Gets the status.
+     * @return the status
+     */
     public String getStatus() {
         return status;
     }
@@ -56,6 +68,6 @@ public class Channel {
      * @return true or false
      */
     public boolean isSynchronizing() {
-        return STATE_SYNCHRONIZING.equals(status);
+        return STATUS_SYNCHRONIZING.equals(status);
     }
 }
