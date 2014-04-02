@@ -17,6 +17,8 @@ package com.suse.manager.model.products;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -47,6 +49,27 @@ public class Product implements Selectable, Comparable<Product> {
     // This product is selectable
     private boolean selected;
 
+    /**
+     * Instantiates a new product.
+     *
+     * @param archIn the architecture
+     * @param identIn the ident ID
+     * @param nameIn the name
+     * @param parentProductIdent the parent_product in
+     * @param mandatoryChannelsIn the mandatory channels in
+     * @param optionalChannelsIn the optional channels in
+     */
+    public Product(String archIn, String identIn, String nameIn, String parentProductIdent,
+            MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
+        super();
+        arch = archIn;
+        ident = identIn;
+        name = nameIn;
+        parent_product = parentProductIdent;
+        mandatoryChannels = mandatoryChannelsIn;
+        optionalChannels = optionalChannelsIn;
+    }
+
     public String getArch() {
         return arch;
     }
@@ -69,6 +92,23 @@ public class Product implements Selectable, Comparable<Product> {
 
     public List<Channel> getOptionalChannels() {
         return optionalChannels.getChannels();
+    }
+
+    /**
+     * Returns true if this product has already been synchronized or it is
+     * synchronizing at the moment.
+     * @return true or false
+     */
+    public boolean isSynchronizing() {
+        return CollectionUtils.exists(
+            CollectionUtils.union(getMandatoryChannels(), getOptionalChannels()),
+            new Predicate() {
+                @Override
+                public boolean evaluate(Object channel) {
+                    return ((Channel) channel).isSynchronizing();
+                }
+            }
+        );
     }
 
     @Override

@@ -27,6 +27,14 @@ public class MandatoryChannels {
     @ElementList(inline=true, required=false)
     private List<Channel> channel;
 
+    /**
+     * Instantiates a new mandatory channels object.
+     * @param channelsIn the channel
+     */
+    public MandatoryChannels(List<Channel> channelsIn) {
+        channel = channelsIn;
+    }
+
     public List<Channel> getChannels() {
         if (channel == null) {
             channel = new ArrayList<Channel>();

@@ -29,11 +29,12 @@
                                 <tr>
                                     <th>Available Products below</th>
                                     <th>Architecture</th>
+                                    <th>1-click</th>
                                 </tr>
                             </thead>
                             <tbody id="table-content">
                                 <tr id="loading-placeholder">
-                                    <td colspan=2>
+                                    <td colspan=3>
                                         <rhn:icon type="spinner"></rhn:icon>
                                         <span>Loading...</span>
                                     </td>

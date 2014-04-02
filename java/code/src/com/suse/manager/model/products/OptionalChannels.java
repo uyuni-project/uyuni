@@ -27,6 +27,14 @@ public class OptionalChannels {
     @ElementList(inline=true, required=false)
     private List<Channel> channel;
 
+    /**
+     * Instantiates a new optional channels object.
+     * @param channelsIn the channels
+     */
+    public OptionalChannels(List<Channel> channelsIn) {
+        channel = channelsIn;
+    }
+
     public List<Channel> getChannels() {
         if (channel == null) {
             channel = new ArrayList<Channel>();
