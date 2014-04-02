@@ -128,10 +128,11 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-3 hidden-xs">
-                            2 of 2
+                            2 of 3
                         </div>
                         <div class="col-sm-6 text-center">
-                            <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do"><i class="fa fa-arrow-left"></i><bean:message key="setup-wizard.prev" /></a>
+                            <a class="btn btn-default" href="/rhn/admin/setup/HttpProxy.do"><i class="fa fa-arrow-left"></i><bean:message key="setup-wizard.prev"/></a>
+                            <a class="btn btn-success" href="/rhn/admin/setup/SUSEProducts.do"><bean:message key="setup-wizard.next"/> <i class="fa fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
