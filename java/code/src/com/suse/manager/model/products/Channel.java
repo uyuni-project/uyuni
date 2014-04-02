@@ -36,12 +36,18 @@ public class Channel {
     private String status;
 
     /**
+     * Default constructor.
+     */
+    public Channel() {
+        // required by Simple XML
+    }
+
+    /**
      * Instantiates a new channel.
      * @param labelIn the label in
      * @param statusIn the status in
      */
     public Channel(String labelIn, String statusIn) {
-        super();
         label = labelIn;
         status = statusIn;
     }

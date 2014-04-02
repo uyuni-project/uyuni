@@ -59,6 +59,13 @@ public class Product implements Selectable, Comparable<Product> {
     private boolean selected;
 
     /**
+     * Default constructor.
+     */
+    public Product() {
+        // required by Simple XML
+    }
+
+    /**
      * Instantiates a new product.
      *
      * @param archIn the architecture
