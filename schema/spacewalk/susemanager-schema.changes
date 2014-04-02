@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:29:48 CEST 2014 - mc@suse.de
+
+- version 1.7.56.23-1
+- Fix GMT+3 timezone missing (bnc#862406)
+- increase length of rhnCVE name column to support new
+  CVE ID syntax
+
+-------------------------------------------------------------------
 Wed Dec 04 09:49:35 CET 2013 - mc@suse.de
 
 - version 1.7.56.22-2
