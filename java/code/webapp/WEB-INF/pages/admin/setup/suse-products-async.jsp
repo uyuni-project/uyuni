@@ -6,12 +6,17 @@
 
 <c:forEach var="product" items="${productsList}">
     <tr>
-        <td><c:out value="${product.parentProduct}"></c:out> - <c:out value="${product.name}"></c:out></td>
+        <td><c:out value="${product.parentProductIdent}"></c:out> - <c:out value="${product.name}"></c:out></td>
         <td><c:out value="${product.arch}"></c:out></td>
         <td>
-          <c:if test="${not product.synchronizing}">
-              <i class="fa fa-refresh btn-synchronize text-success"></i>
-          </c:if>
+          <c:choose>
+              <c:when test="${not product.synchronizing}">
+                  <i class="fa fa-refresh btn-synchronize text-success"></i>
+              </c:when>
+              <c:otherwise>
+                  <i class="fa fa-check text-success"></i>
+              </c:otherwise>
+          </c:choose>
         </td>
     </tr>
 </c:forEach>
