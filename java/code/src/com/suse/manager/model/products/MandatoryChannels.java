@@ -32,6 +32,13 @@ public class MandatoryChannels {
     private List<Channel> channel;
 
     /**
+     * Default constructor.
+     */
+    public MandatoryChannels() {
+        // required by Simple XML
+    }
+
+    /**
      * Instantiates a new mandatory channels object.
      * @param channelsIn the channel
      */

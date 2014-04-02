@@ -32,6 +32,13 @@ public class OptionalChannels {
     private List<Channel> channel;
 
     /**
+     * Default constructor.
+     */
+    public OptionalChannels() {
+        // required by Simple XML
+    }
+
+    /**
      * Instantiates a new optional channels object.
      * @param channelsIn the channels
      */
