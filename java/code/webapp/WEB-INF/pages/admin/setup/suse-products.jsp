@@ -10,11 +10,7 @@
     <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
     <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
     <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
-    <script type="text/javascript">
-        $(function(){
-          ProductsRenderer.renderAsync(makeAjaxCallback("table-content", false));
-        });
-    </script>
+    <script type="text/javascript" src="/javascript/susemanager-setup-wizard-suse-products.js"></script>
 </head>
 <body>
     <div class="responsive-wizard">
@@ -36,7 +32,7 @@
                                 </tr>
                             </thead>
                             <tbody id="table-content">
-                                <tr>
+                                <tr id="loading-placeholder">
                                     <td colspan=2>
                                         <rhn:icon type="spinner"></rhn:icon>
                                         <span>Loading...</span>
@@ -46,7 +42,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="3">
-                                        <button class="btn btn-success">
+                                        <button class="btn btn-success" id="synchronize">
                                             <i class="fa fa-refresh"></i> Synchronize
                                         </button>
                                     </td>
