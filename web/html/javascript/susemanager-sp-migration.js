@@ -11,9 +11,9 @@ function showChannelTree(channelID) {
 function prepareSubmitChannels() {
   $('#migrationForm input[type="hidden", name="childChannels[]"]').remove();
   // Submit all checked child channel's IDs
-  $('.channels-tree:visible input:checked').each(function(checkbox) {
+  $('.channels-tree:visible input:checked').each(function() {
     $('#migrationForm').append(
-      createHiddenInput('childChannels[]', checkbox.val())
+      createHiddenInput('childChannels[]', $(this).val())
     );
   });
   return true;
