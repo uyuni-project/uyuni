@@ -6,7 +6,7 @@
 <html:html xhtml="true">
 
 <head>
-  <link rel="stylesheet" type="text/css" href="/css/sp-migration.css" />
+  <link rel="stylesheet" type="text/css" href="/css/susemanager-sp-migration.css" />
   <script src="/javascript/susemanager-sp-migration.js"></script>
 </head>
 
