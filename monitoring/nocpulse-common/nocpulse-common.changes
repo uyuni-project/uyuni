@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:22:19 CEST 2014 - mc@suse.de
+
+- version 2.2.4.3-1
+- rotate root owned logfiles as user nocpulse but do not
+  compress rotated files
+- rotate with correct permissions (bnc#863396)
+
+-------------------------------------------------------------------
 Fri Apr 27 16:53:07 CEST 2012 - mc@suse.de
 
 - version 2.2.4.2-1
