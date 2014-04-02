@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Apr 02 13:33:26 CEST 2014 - mc@suse.de
+
+- version 1.7.38.32-1
+- reposync: remove interrupted downloads (bnc#866490)
+- spacewalk-debug: dereference links (bnc#865934)
+- Fixed typo inside of ISS dumper
+- Inter server sync: export also errata's severity
+- allow CVE-IDs with more then 13 chars to support
+  new CVE ID syntax
+
+-------------------------------------------------------------------
 Mon Jan 20 16:50:23 CET 2014 - mc@suse.de
 
 - version 1.7.38.31-1
