@@ -8,5 +8,10 @@
     <tr>
         <td><c:out value="${product.parentProduct}"></c:out> - <c:out value="${product.name}"></c:out></td>
         <td><c:out value="${product.arch}"></c:out></td>
+        <td>
+          <c:if test="${not product.synchronizing}">
+              <i class="fa fa-refresh btn-synchronize text-success"></i>
+          </c:if>
+        </td>
     </tr>
 </c:forEach>

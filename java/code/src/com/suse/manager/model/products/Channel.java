@@ -19,11 +19,28 @@ import org.simpleframework.xml.Attribute;
 
 public class Channel {
 
+    /** Status attributed to channels that have begun synchronization. */
+    public static final String STATE_SYNCHRONIZING = "P";
+    /** Status attributed to channels that have not begun synchronization. */
+    public static final String STATE_NOT_SYNCHRONIZING = ".";
+
     @Attribute
     private String label;
 
     @Attribute
     private String status;
+
+    /**
+     * Instantiates a new channel.
+     *
+     * @param label the label
+     * @param status the status
+     */
+    public Channel(String labelIn, String statusIn) {
+        super();
+        label = labelIn;
+        status = statusIn;
+    }
 
     public String getLabel() {
         return label;
@@ -31,5 +48,14 @@ public class Channel {
 
     public String getStatus() {
         return status;
+    }
+
+    /**
+     * Returns true iff this channel has already been synchronized or it is
+     * synchronizing at the moment.
+     * @return true or false
+     */
+    public boolean isSynchronizing() {
+        return STATE_SYNCHRONIZING.equals(status);
     }
 }
