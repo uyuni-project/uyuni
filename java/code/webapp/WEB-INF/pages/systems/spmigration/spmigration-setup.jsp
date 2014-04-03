@@ -112,7 +112,7 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn btn-primary" id="submitButton"
+          <button type="submit" class="btn btn-success" id="submitButton"
                   name="dispatch"<c:if test="${not empty targetProducts.missingChannels}"> disabled</c:if>>
             <bean:message key="spmigration.jsp.setup.submit" />
           </button>

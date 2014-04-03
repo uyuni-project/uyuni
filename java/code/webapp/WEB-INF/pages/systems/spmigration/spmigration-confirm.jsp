@@ -66,12 +66,12 @@
     </div>
     <div>
       <div class="pull-left">
-        <html:button styleClass="btn btn-default" property="dispatch" onclick="javascript:history.back();">
+        <html:button styleClass="btn btn-link" property="dispatch" onclick="javascript:history.back();">
           <bean:message key="spmigration.jsp.confirm.back" />
         </html:button>
       </div>
       <div class="pull-right">
-        <html:submit styleClass="btn btn-primary" property="dispatch">
+        <html:submit styleClass="btn btn-success" property="dispatch">
           <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
         </html:submit>
         <html:submit styleClass="btn btn-danger" property="dispatch">
