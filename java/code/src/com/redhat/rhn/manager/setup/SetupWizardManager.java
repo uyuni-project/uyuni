@@ -211,16 +211,20 @@ public class SetupWizardManager extends BaseManager {
 
         // Find all credentials and see what needs to be done
         List<MirrorCredentialsDto> creds = SetupWizardManager.findMirrorCredentials();
+        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
-        // Special case: delete the last pair of credentials
         if (creds.size() == id + 1) {
-            MirrorCredentialsDto delCreds = new MirrorCredentialsDto("", "", "");
-            delCreds.setId(id);
-            errors = SetupWizardManager.storeMirrorCredentials(delCreds, userIn, request);
+            // Special case: delete the last pair of credentials
+            String targetSuffix = "";
+            if (id >= 1) {
+                targetSuffix = KEY_MIRRCREDS_SEPARATOR + id;
+            }
+            configCommand.remove(KEY_MIRRCREDS_USER + targetSuffix);
+            configCommand.remove(KEY_MIRRCREDS_PASS + targetSuffix);
+            configCommand.remove(KEY_MIRRCREDS_EMAIL + targetSuffix);
         }
         else if (creds.size() > id + 1) {
-            // We need to shift indices
-            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+            // Deleting in the middle: shift indices
             for (MirrorCredentialsDto c : creds) {
                 int index = creds.indexOf(c);
                 if (index > id) {
@@ -236,20 +240,20 @@ public class SetupWizardManager extends BaseManager {
                         configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
                                 c.getEmail());
                     }
-                    // Empty the last pair of credentials
+                    // If this is the last credentials: delete
                     if (index == creds.size() - 1) {
                         targetSuffix = KEY_MIRRCREDS_SEPARATOR + index;
-                        configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix, "");
-                        configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix, "");
-                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix, "");
+                        configCommand.remove(KEY_MIRRCREDS_USER + targetSuffix);
+                        configCommand.remove(KEY_MIRRCREDS_PASS + targetSuffix);
+                        configCommand.remove(KEY_MIRRCREDS_EMAIL + targetSuffix);
                     }
                 }
             }
-            errors = configCommand.storeConfiguration();
-
-            // Clean deleted credentials data from cache
-            SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
+
+        // Store configuration and clean cache for deleted credentials
+        errors = configCommand.storeConfiguration();
+        SetupWizardSessionCache.clearSubscriptions(credentials, request);
         return errors;
     }
 
