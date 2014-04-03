@@ -216,7 +216,7 @@ public class SetupWizardManager extends BaseManager {
         if (creds.size() == id + 1) {
             // Special case: delete the last pair of credentials
             String targetSuffix = "";
-            if (id >= 1) {
+            if (id > 0) {
                 targetSuffix = KEY_MIRRCREDS_SEPARATOR + id;
             }
             configCommand.remove(KEY_MIRRCREDS_USER + targetSuffix);
