@@ -6,7 +6,7 @@
 
 <tr>
     <td>
-        <c:if test="${requestScope.addon}">
+        <c:if test="${not requestScope.product.baseProduct}">
           <i class="fa fa-ellipsis-h"></i>
         </c:if>
         <c:out value="${requestScope.product.name}"></c:out>
