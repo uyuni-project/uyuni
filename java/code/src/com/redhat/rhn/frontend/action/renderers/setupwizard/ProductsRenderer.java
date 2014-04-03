@@ -14,28 +14,20 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.satellite.ProductSyncManager;
-import com.suse.manager.model.products.Product;
-import com.suse.manager.model.products.ProductList;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.suse.manager.model.products.Product;
+
+import org.apache.log4j.Logger;
+
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -78,7 +78,6 @@ public class Product implements Selectable, Comparable<Product> {
      */
     public Product(String archIn, String identIn, String nameIn, String baseProductIdent,
             MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
-        super();
         arch = archIn;
         ident = identIn;
         name = nameIn;

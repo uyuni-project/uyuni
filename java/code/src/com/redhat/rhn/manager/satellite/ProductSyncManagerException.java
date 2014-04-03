@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 SUSE
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,37 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.satellite;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 
 /**
- * A RuntimeException indicating a fatal failure trying to use the MD5Crypt utitlity
- * <p>
-
- *
- * @version definition($Rev: 76724 $)/template($Rev: 67725 $)
+ * Represents an error while working with SUSE products.
  */
-public class ProductSyncManagerException extends RhnRuntimeException  {
+public class ProductSyncManagerException extends RhnRuntimeException {
+
     /**
-     * Constructor
+     * Message constructor.
      * @param message exception message
      */
     public ProductSyncManagerException(String message) {
         super(message);
-        // begin member variable initialization
     }
 
     /**
      * Constructor
      * @param message exception message
-     * @param cause the cause (which is saved for later retrieval
-     * by the Throwable.getCause() method). (A null value is
-     * permitted, and indicates that the cause is nonexistent or
-     * unknown.)
+     * @param cause the cause (which is saved for later retrieval by the
+     * Throwable.getCause() method). (A null value is permitted, and indicates
+     * that the cause is nonexistent or unknown.)
      */
-    public ProductSyncManagerException(String message ,   Throwable cause) {
+    public ProductSyncManagerException(String message, Throwable cause) {
         super(message, cause);
         // begin member variable initialization
     }

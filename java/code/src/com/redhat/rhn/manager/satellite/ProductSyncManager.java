@@ -1,4 +1,5 @@
-/* Copyright (c) 2014 SUSE
+/**
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,35 +17,39 @@ package com.redhat.rhn.manager.satellite;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
+
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Simple command class for interacting (listing/adding) SUSE products.
  */
 public class ProductSyncManager {
 
-    private static final Logger logger = Logger.getLogger(ProductSyncManager.class);
-    private static final String[] LIST_PRODUCT_COMMAND = {"/usr/bin/sudo",
-        "/usr/sbin/mgr-ncc-sync", "--list-products-xml"};
+    private static Logger logger = Logger.getLogger(ProductSyncManager.class);
+
+    private static final String[] LIST_PRODUCT_COMMAND = {
+        "/usr/bin/sudo", "/usr/sbin/mgr-ncc-sync", "--list-products-xml"
+    };
 
     /**
-     * Invoke external commands which lists all the available SUSE products.
-     * @return A String containing the xml description of the SUSE products.
+     * Gets the product hierarchy.
+     * @return a Map which has base products as keys and a list containing
+     *          their addon products as values
+     */
+    public Map<Product, List<Product>> getProductsHierarchy() {
+        return this.parseProducts(readProducts());
+    }
+
+    /**
+     * Invoke external commands which list all the available SUSE products.
+     * @return a String containing the XML description of the SUSE products
      */
     public String readProducts() {
         Executor executor = new SystemCommandExecutor();
@@ -64,21 +69,11 @@ public class ProductSyncManager {
     }
 
     /**
-     * Gets the product hierarchy.
-     * @return a Map which has base products as keys and a list containing
-     *          their addon products as value
-     */
-    public Map<Product, List<Product>> getProductsHierarchy() {
-        return this.parseProducts(readProducts());
-    }
-
-    /**
      * Parse {@link String} and populates the internal data structure containing
      * the products hierarchy
-     * @param xml a String containing the xml output produced by mgr-ncc-sync
-     *            list products
+     * @param xml a String containing an XML description of SUSE products
      * @return a Map which has base products as keys and a list containing
-     *          their addon products as value
+     *          their addon products as values
      */
     public Map<Product, List<Product>> parseProducts(String xml) {
         Map<Product, List<Product>> productHierarchy =
@@ -108,7 +103,6 @@ public class ProductSyncManager {
             }
 
             return productHierarchy;
-
         }
         catch (Exception e) {
             throw new RuntimeException(e);
