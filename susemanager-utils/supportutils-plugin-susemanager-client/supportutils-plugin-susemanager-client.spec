@@ -46,6 +46,7 @@ install -m 0644 susemanagerclient-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8
 
 %files
 %defattr(-,root,root)
+%doc COPYING.GPLv2
 /usr/lib/supportconfig
 /usr/lib/supportconfig/plugins
 /usr/lib/supportconfig/plugins/susemanagerclient
