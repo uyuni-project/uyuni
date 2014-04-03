@@ -42,16 +42,19 @@ public class ProductSyncManager {
      * Gets the product hierarchy.
      * @return a Map which has base products as keys and a list containing
      *          their addon products as values
+     * @throws ProductSyncManagerException if external commands or parsing fail
      */
-    public Map<Product, List<Product>> getProductsHierarchy() {
+    public Map<Product, List<Product>> getProductsHierarchy()
+        throws ProductSyncManagerException {
         return this.parseProducts(readProducts());
     }
 
     /**
      * Invoke external commands which list all the available SUSE products.
      * @return a String containing the XML description of the SUSE products
+     * @throws ProductSyncManagerException if external commands fail
      */
-    public String readProducts() {
+    public String readProducts() throws ProductSyncManagerException {
         Executor executor = new SystemCommandExecutor();
 
         int exitCode = executor.execute(LIST_PRODUCT_COMMAND);
@@ -74,8 +77,10 @@ public class ProductSyncManager {
      * @param xml a String containing an XML description of SUSE products
      * @return a Map which has base products as keys and a list containing
      *          their addon products as values
+     * @throws ProductSyncManagerException if external commands fail
      */
-    public Map<Product, List<Product>> parseProducts(String xml) {
+    public Map<Product, List<Product>> parseProducts(String xml)
+        throws ProductSyncManagerException {
         Map<Product, List<Product>> productHierarchy =
                 new TreeMap<Product, List<Product>>();
         try {
@@ -105,7 +110,7 @@ public class ProductSyncManager {
             return productHierarchy;
         }
         catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ProductSyncManagerException(e);
         }
     }
 }

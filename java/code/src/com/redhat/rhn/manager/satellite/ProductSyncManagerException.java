@@ -14,13 +14,10 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import com.redhat.rhn.common.RhnRuntimeException;
-
 /**
  * Represents an error while working with SUSE products.
  */
-public class ProductSyncManagerException extends RhnRuntimeException {
-
+public class ProductSyncManagerException extends Exception {
     /**
      * Message constructor.
      * @param message exception message
@@ -30,14 +27,10 @@ public class ProductSyncManagerException extends RhnRuntimeException {
     }
 
     /**
-     * Constructor
-     * @param message exception message
-     * @param cause the cause (which is saved for later retrieval by the
-     * Throwable.getCause() method). (A null value is permitted, and indicates
-     * that the cause is nonexistent or unknown.)
+     * Exception constructor.
+     * @param exception the exception
      */
-    public ProductSyncManagerException(String message, Throwable cause) {
-        super(message, cause);
-        // begin member variable initialization
+    public ProductSyncManagerException(Exception exception) {
+        super(exception);
     }
 }

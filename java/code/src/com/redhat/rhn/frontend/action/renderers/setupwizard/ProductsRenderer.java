@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.satellite.ProductSyncManager;
+import com.redhat.rhn.manager.satellite.ProductSyncManagerException;
 
 import com.suse.manager.model.products.Product;
 
@@ -54,13 +55,19 @@ public class ProductsRenderer extends BaseFragmentRenderer {
                     "to read the products");
         }
 
-        // Read the products
-        ProductSyncManager productSyncManager = new ProductSyncManager();
-        Set<Product> baseProducts = productSyncManager.getProductsHierarchy().keySet();
+        try {
+            // Read the products
+            ProductSyncManager productSyncManager = new ProductSyncManager();
+            Set<Product> baseProducts = productSyncManager.getProductsHierarchy().keySet();
 
-        // Set the "parentUrl" for the form (in rl:listset)
-        request.setAttribute(ListTagHelper.PARENT_URL, "");
-        request.setAttribute(ATTRIB_PRODUCTS_LIST, baseProducts);
+            // Set the "parentUrl" for the form (in rl:listset)
+            request.setAttribute(ListTagHelper.PARENT_URL, "");
+            request.setAttribute(ATTRIB_PRODUCTS_LIST, baseProducts);
+        }
+        catch (ProductSyncManagerException e) {
+            logger.error("Got an exception while rendering the product list: " + e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
