@@ -66,7 +66,7 @@ public class ProductSyncManager {
     /**
      * Gets the product hierarchy.
      * @return a Map which has base products as keys and a list containing
-     *          their child products as value
+     *          their addon products as value
      */
     public Map<Product, List<Product>> getProductsHierarchy() {
         return this.parseProducts(readProducts());
@@ -78,7 +78,7 @@ public class ProductSyncManager {
      * @param xml a String containing the xml output produced by mgr-ncc-sync
      *            list products
      * @return a Map which has base products as keys and a list containing
-     *          their child products as value
+     *          their addon products as value
      */
     public Map<Product, List<Product>> parseProducts(String xml) {
         Map<Product, List<Product>> productHierarchy =
@@ -93,13 +93,13 @@ public class ProductSyncManager {
             }
 
             for (Product product : products) {
-                if (product.getParentProductIdent().isEmpty()) {
+                if (product.getBaseProductIdent().isEmpty()) {
                     if (!productHierarchy.containsKey(product)) {
                         productHierarchy.put(product, new LinkedList<Product>());
                     }
                 }
                 else {
-                    Product parent = identProductMap.get(product.getParentProductIdent());
+                    Product parent = identProductMap.get(product.getBaseProductIdent());
                     if (!productHierarchy.containsKey(parent)) {
                         productHierarchy.put(parent, new LinkedList<Product>());
                     }

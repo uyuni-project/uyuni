@@ -43,7 +43,7 @@ public class Product implements Selectable, Comparable<Product> {
     @Attribute
     private String name;
 
-    /** The ident ID of the parent product, if any. */
+    /** The ident ID of the base product or an empty string. */
     @Attribute
     private String parent_product;
 
@@ -71,17 +71,18 @@ public class Product implements Selectable, Comparable<Product> {
      * @param archIn the architecture
      * @param identIn the ident ID
      * @param nameIn the name
-     * @param parentProductIdent the parent_product in
+     * @param baseProductIdent the ident ID of the base product or an empty string
+     * the base product ident ID
      * @param mandatoryChannelsIn the mandatory channels in
      * @param optionalChannelsIn the optional channels in
      */
-    public Product(String archIn, String identIn, String nameIn, String parentProductIdent,
+    public Product(String archIn, String identIn, String nameIn, String baseProductIdent,
             MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
         super();
         arch = archIn;
         ident = identIn;
         name = nameIn;
-        parent_product = parentProductIdent;
+        parent_product = baseProductIdent;
         mandatoryChannels = mandatoryChannelsIn;
         optionalChannels = optionalChannelsIn;
     }
@@ -111,10 +112,11 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Gets the parent product's ident ID.
-     * @return the parent product
+     * Gets the base product's ident ID, if any.
+     * @return the parent product ident ID or an empty string if this is a base
+     * product
      */
-    public String getParentProductIdent() {
+    public String getBaseProductIdent() {
         return parent_product;
     }
 
