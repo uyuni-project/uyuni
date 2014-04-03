@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 03 09:07:17 CEST 2014 - mc@suse.de
+
+- version 1.0.2-1
+- install COPYING file
+- supplements with spacewalk-common and supportutils
+
+-------------------------------------------------------------------
 Mon May 27 15:18:34 CEST 2013 - mc@suse.de
 
 - version 1.0.1-1
