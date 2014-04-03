@@ -29,6 +29,7 @@ Wed Apr 02 13:35:36 CEST 2014 - mc@suse.de
 - fix CVE URL in updateinfo references (bnc#859637)
 - Use hostname or address in log messages instead of system.name
 - New config option for using the hostname to connect via ssh push
+  (bnc#853317)
 
 -------------------------------------------------------------------
 Mon Jan 20 16:51:42 CET 2014 - mc@suse.de
