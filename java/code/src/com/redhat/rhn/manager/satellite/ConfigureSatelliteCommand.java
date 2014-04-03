@@ -149,6 +149,9 @@ public class ConfigureSatelliteCommand extends BaseConfigureCommand
         }
 
         Executor e = getExecutor();
+        if (keysToBeUpdated.isEmpty()) {
+            return null;
+        }
         if (keysToBeUpdated.contains(ConfigDefaults.WEB_IS_MONITORING_BACKEND)) {
             boolean backend = Config.get().getBoolean(
                     ConfigDefaults.WEB_IS_MONITORING_BACKEND);
