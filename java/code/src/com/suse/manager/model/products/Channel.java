@@ -15,6 +15,9 @@
 
 package com.suse.manager.model.products;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.simpleframework.xml.Attribute;
 
 /**
@@ -76,4 +79,42 @@ public class Channel {
     public boolean isSynchronizing() {
         return STATUS_SYNCHRONIZING.equals(status);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Channel)) {
+            return false;
+        }
+        Channel otherChannel = (Channel) other;
+        return new EqualsBuilder()
+            .append(getLabel(), otherChannel.getLabel())
+            .append(getStatus(), otherChannel.getStatus())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getLabel())
+            .append(getStatus())
+            .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+        .append("label", getLabel())
+        .append("status", getStatus())
+        .toString();
+    }
+
 }
