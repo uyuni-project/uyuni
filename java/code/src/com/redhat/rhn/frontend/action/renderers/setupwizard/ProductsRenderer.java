@@ -18,15 +18,10 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.satellite.ProductSyncManager;
 import com.redhat.rhn.manager.satellite.ProductSyncManagerException;
 
-import com.suse.manager.model.products.Product;
-
 import org.apache.log4j.Logger;
-
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +34,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
     private static Logger logger = Logger.getLogger(ProductsRenderer.class);
 
     /** Attribute keys */
-    public static final String ATTRIB_PRODUCTS_LIST = "productsList";
+    public static final String ATTRIB_BASE_PRODUCTS_MAP = "baseProducts";
 
     /** The URL of the page to render */
     private static final String PAGE_URL =
@@ -56,13 +51,8 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         }
 
         try {
-            // Read the products
-            ProductSyncManager productSyncManager = new ProductSyncManager();
-            Set<Product> baseProducts = productSyncManager.getProductsHierarchy().keySet();
-
-            // Set the "parentUrl" for the form (in rl:listset)
-            request.setAttribute(ListTagHelper.PARENT_URL, "");
-            request.setAttribute(ATTRIB_PRODUCTS_LIST, baseProducts);
+            request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
+                    new ProductSyncManager().getProductsHierarchy());
         }
         catch (ProductSyncManagerException e) {
             logger.error("Got an exception while rendering the product list: " + e);
