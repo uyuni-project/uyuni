@@ -6,7 +6,7 @@
 
 <c:forEach var="product" items="${productsList}">
     <tr>
-        <td><c:out value="${product.parentProductIdent}"></c:out> - <c:out value="${product.name}"></c:out></td>
+        <td><c:out value="${product.baseProductIdent}"></c:out> - <c:out value="${product.name}"></c:out></td>
         <td><c:out value="${product.arch}"></c:out></td>
         <td>
           <c:choose>
