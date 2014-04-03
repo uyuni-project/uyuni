@@ -19,7 +19,9 @@ import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -36,7 +38,7 @@ public class ProductTest extends TestCase {
                 "x86_46",
                 "test",
                 "test product",
-                null,
+                "",
                 new MandatoryChannels(new LinkedList<Channel>() { {
                     add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
                     add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
@@ -55,7 +57,7 @@ public class ProductTest extends TestCase {
                "x86_46",
                "test",
                "test product",
-               null,
+               "",
                new MandatoryChannels(new LinkedList<Channel>() { {
                    add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
                    add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
@@ -69,5 +71,54 @@ public class ProductTest extends TestCase {
       );
 
       assertEquals(true, synchronizingProduct.isSynchronizing());
+    }
+
+    public void testSorting() {
+        List<Product> products = new LinkedList<Product>();
+
+        Product prodAs390 = new Product(
+            "s390",
+            "product_a_s390",
+            "Product A",
+            "",
+            new MandatoryChannels(new LinkedList<Channel>()),
+            new OptionalChannels(new LinkedList<Channel>())
+        );
+        Product prodAx86_64 = new Product(
+            "x86_46",
+            "product_a_x86_64",
+            "Product A",
+            "",
+            new MandatoryChannels(new LinkedList<Channel>()),
+            new OptionalChannels(new LinkedList<Channel>())
+        );
+        Product prodA1s390 = new Product(
+            "s390",
+            "product_a1",
+            "Product A1",
+            "product_a1_s390",
+            new MandatoryChannels(new LinkedList<Channel>()),
+            new OptionalChannels(new LinkedList<Channel>())
+        );
+        Product prodA2s390 = new Product(
+            "s390",
+            "product_a2",
+            "Product A2",
+            "product_a2_s390",
+            new MandatoryChannels(new LinkedList<Channel>()),
+            new OptionalChannels(new LinkedList<Channel>())
+        );
+
+        products.add(prodA2s390);
+        products.add(prodA1s390);
+        products.add(prodAs390);
+        products.add(prodAx86_64);
+
+        Collections.sort(products);
+
+        assertEquals(prodAs390, products.get(0));
+        assertEquals(prodAx86_64, products.get(1));
+        assertEquals(prodA1s390, products.get(2));
+        assertEquals(prodA2s390, products.get(3));
     }
 }

@@ -124,6 +124,14 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
+     * Checks if the product is a base product.
+     * @return true if the product is a base product, false otherwise
+     */
+    public boolean isBaseProduct() {
+        return parent_product.isEmpty();
+    }
+
+    /**
      * Gets the mandatory channels.
      * @return the mandatory channels
      */
@@ -162,6 +170,7 @@ public class Product implements Selectable, Comparable<Product> {
     @Override
     public int compareTo(Product other) {
         return new CompareToBuilder()
+        .append(!this.isBaseProduct(), !other.isBaseProduct())
         .append(this.name, other.getName())
         .append(this.arch, other.getArch())
         .toComparison();
