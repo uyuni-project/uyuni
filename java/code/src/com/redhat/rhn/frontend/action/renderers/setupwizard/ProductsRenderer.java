@@ -38,7 +38,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
 
     /** The URL of the page to render */
     private static final String PAGE_URL =
-            "/WEB-INF/pages/admin/setup/suse-products-async.jsp";
+            "/WEB-INF/pages/common/fragments/setup/suse-products-async.jspf";
 
     /**
      * {@inheritDoc}
