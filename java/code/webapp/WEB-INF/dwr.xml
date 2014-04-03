@@ -62,6 +62,10 @@
       <include method="retrieveProxySettings" />
       <include method="verifyProxySettings" />
     </create>
+    <create creator="new" javascript="ProductSyncAction">
+        <param name="class" value="com.redhat.rhn.frontend.action.setupwizard.ProductSyncAction" />
+        <include method="synchronizeSingle" />
+    </create>
           <create creator="new" javascript="ImagesRenderer">
                 <param name="class" value="com.redhat.rhn.frontend.action.renderers.ImagesRenderer" />
                 <include method="renderAsync" />
