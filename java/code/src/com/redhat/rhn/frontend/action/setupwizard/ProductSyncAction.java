@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.schedule.ActionChainSaveAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.setup.ProductSyncManager;
+import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContextFactory;
@@ -45,7 +47,12 @@ public class ProductSyncAction {
                     "Must be SAT_ADMIN to synchronize the products");
         }
 
-        log.error("Unimplemented method synchronizeSingle called with productIdent: "
-                + productIdent);
+        try {
+            new ProductSyncManager().addProduct(productIdent);
+        }
+        catch (ProductSyncManagerException e) {
+            log.error(e);
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -21,6 +21,7 @@ import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -36,11 +38,38 @@ import java.util.TreeSet;
  */
 public class ProductSyncManager {
 
+    /** Product sync command command line. */
+    public static final String[] PRODUCT_SYNC_COMMAND = {
+        "/usr/bin/sudo",
+        "/usr/sbin/mgr-ncc-sync"
+    };
+
+    /** Product sync command switch to obtain a list of products. */
+    public static final String LIST_PRODUCT_SWITCH = "--list-products-xml";
+
+    /** Product sync command switch add a product. */
+    public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
+
+    /** The logger. */
     private static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
-    private static final String[] LIST_PRODUCT_COMMAND = {
-        "/usr/bin/sudo", "/usr/sbin/mgr-ncc-sync", "--list-products-xml"
-    };
+    /** The executor. */
+    private Executor executor;
+
+    /**
+     * Default constructor.
+     */
+    public ProductSyncManager() {
+        this(new SystemCommandExecutor());
+    }
+
+    /**
+     * Executor constructor, use directly for tests.
+     * @param executorIn the executor in
+     */
+    public ProductSyncManager(Executor executorIn) {
+        executor = executorIn;
+    }
 
     /**
      * Gets the product hierarchy.
@@ -59,57 +88,88 @@ public class ProductSyncManager {
      * @throws ProductSyncManagerException if external commands fail
      */
     public String readProducts() throws ProductSyncManagerException {
-        Executor executor = new SystemCommandExecutor();
+        return runProductSyncCommand(LIST_PRODUCT_SWITCH);
+    }
 
-        int exitCode = executor.execute(LIST_PRODUCT_COMMAND);
+    /**
+     * Run product sync command.
+     * @param arguments the arguments
+     * @return the string
+     * @throws ProductSyncManagerException the product sync manager exception
+     */
+    public String runProductSyncCommand(String... arguments)
+        throws ProductSyncManagerException {
+        String[] commandLine =
+                (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
+        int exitCode = executor.execute(commandLine);
         if (exitCode != 0) {
-            String error = "Error while listing products with mgr-ncc-sync, " +
+            String error = "Error while running product sync command " +
                 "got exit code " + exitCode;
             logger.error(error);
             throw new ProductSyncManagerException(error);
         }
-        String xml = executor.getLastCommandOutput();
-        logger.debug("This the output of mgr-ncc-sync");
-        logger.debug(xml);
-
-        return xml;
+        String output = executor.getLastCommandOutput();
+        logger.debug("This the output of product sync command");
+        logger.debug(output);
+        return output;
     }
 
     /**
      * Parse {@link String} and populates the internal data structure containing
-     * the products hierarchy
+     * the products hierarchy.
      * @param xml a String containing an XML description of SUSE products
-     * @return a Map which has base products as keys and a list containing
-     *          their addon products as values
+     * @return a Map which has base products as keys and a list containing their
+     * addon products as values
      * @throws ProductSyncManagerException if the xml cannot be parsed
      */
     public Map<Product, List<Product>> parseProducts(String xml)
         throws ProductSyncManagerException {
         Map<Product, List<Product>> productHierarchy =
                 new TreeMap<Product, List<Product>>();
+        Set<Product> products = getProductSet(xml);
+        Map<String, Product> identProductMap = new HashMap<String, Product>();
+        for (Product product : products) {
+            identProductMap.put(product.getIdent(), product);
+        }
+
+        for (Product product : products) {
+            if (product.isBaseProduct()) {
+                productHierarchy.put(product, new LinkedList<Product>());
+            }
+            else {
+                Product parent = identProductMap.get(product.getBaseProductIdent());
+                productHierarchy.get(parent).add(product);
+            }
+        }
+
+        return productHierarchy;
+    }
+
+    /**
+     * Gets the product set.
+     *
+     * @param xml the xml
+     * @return the product set
+     * @throws ProductSyncManagerException the product sync manager exception
+     */
+    private Set<Product> getProductSet(String xml) throws ProductSyncManagerException {
         try {
-            ProductList result = new Persister().read(
-                ProductList.class, IOUtils.toInputStream(xml));
+            ProductList result =
+                    new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
             TreeSet<Product> products = new TreeSet<Product>(result.getProducts());
-            Map<String, Product> identProductMap = new HashMap<String, Product>();
-            for (Product product : products) {
-                identProductMap.put(product.getIdent(), product);
-            }
-
-            for (Product product : products) {
-                if (product.isBaseProduct()) {
-                    productHierarchy.put(product, new LinkedList<Product>());
-                }
-                else {
-                    Product parent = identProductMap.get(product.getBaseProductIdent());
-                    productHierarchy.get(parent).add(product);
-                }
-            }
-
-            return productHierarchy;
+            return products;
         }
         catch (Exception e) {
             throw new ProductSyncManagerException(e);
         }
+    }
+
+    /**
+     * Adds the product.
+     * @param productIdent the product ident
+     * @throws ProductSyncManagerException if the product addition failed
+     */
+    public void addProduct(final String productIdent) throws ProductSyncManagerException {
+        runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
 }

@@ -1,63 +1,157 @@
 package com.redhat.rhn.manager.satellite.test;
 
+import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
-import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.products.Product;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests ProductSyncManager.
+ */
 public class ProductSyncManagerTest extends TestCase {
 
-    private ProductSyncManager helper;
-    private String productsXml;
+    /**
+     * Tests getProductsHierarchy().
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetProductsHierarchy() throws Exception {
+        Executor executor = new Executor() {
 
-    public ProductSyncManagerTest(String name) throws ClassNotFoundException, IOException {
-        super(name);
-        productsXml = TestUtils.readAll(TestUtils.findTestData("mgr_ncc_sync_products.xml"));
+            @Override
+            public String getLastCommandOutput() {
+                return getTestProductXml();
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        Map<Product, List<Product>> output = productSyncManager.getProductsHierarchy();
+
+        assertEquals(output.keySet().iterator().next().getIdent(),
+                "res-4-i386-1321-rhel-i386-es-4");
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        helper = new ProductSyncManager();
-    }
+    /**
+     * Tests runProductSyncCommand().
+     * @throws Exception if anything goes wrong
+     */
+    public void testRunProductSyncCommand() throws Exception {
+        Executor executor = new Executor() {
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        helper = null;
+            @Override
+            public String getLastCommandOutput() {
+                return "expected test output";
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], "daisan");
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        String output = productSyncManager.runProductSyncCommand("daisan");
+
+        assertEquals("expected test output", output);
     }
 
     /**
      * Tests parsing of SUSE products
-     * @throws ProductSyncManagerException if the xml cannot be parsed
+     * @throws Exception if anything goes wrong
      */
-    public void testParseProducts() throws ProductSyncManagerException {
-        Map<Product, List<Product>> productHierarchy = helper.parseProducts(productsXml);
+    public void testParseProducts() throws Exception {
+        ProductSyncManager productSyncManager = new ProductSyncManager();
+        Map<Product, List<Product>> productHierarchy =
+                productSyncManager.parseProducts(getTestProductXml());
 
         List<Product> baseProducts = new LinkedList<Product>(productHierarchy.keySet());
         assertEquals(3, baseProducts.size());
         assertEquals("res-4-i386-1321-rhel-i386-es-4", baseProducts.get(0).getIdent());
         assertEquals("res-4-x86_64-1321-rhel-x86_64-as-4", baseProducts.get(1).getIdent());
-        assertEquals("res-6-x86_64-2580-rhel-x86_64-server-6",
-                     baseProducts.get(2).getIdent());
+        assertEquals("res-6-x86_64-2580-rhel-x86_64-server-6", baseProducts.get(2)
+                .getIdent());
 
         assertTrue(productHierarchy.get(baseProducts.get(0)).isEmpty());
         assertTrue(productHierarchy.get(baseProducts.get(1)).isEmpty());
 
         List<Product> res6Addons = productHierarchy.get(baseProducts.get(2));
         assertEquals(1, res6Addons.size());
-        assertEquals("rhel-6-expanded-support-x86_64-3200-rhel-x86_64-server-6",
-                     res6Addons.get(0).getIdent());
+        assertEquals("rhel-6-expanded-support-x86_64-3200-rhel-x86_64-server-6", res6Addons
+                .get(0).getIdent());
     }
 
+    /**
+     * Tests readProducts().
+     * @throws Exception if anything goes wrong
+     */
+    public void testReadProducts() throws Exception {
+        Executor executor = new Executor() {
+
+            @Override
+            public String getLastCommandOutput() {
+                return getTestProductXml();
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        productSyncManager.readProducts();
+    }
+
+    /**
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private String getTestProductXml() {
+        try {
+            return TestUtils.readAll(TestUtils.findTestData("mgr_ncc_sync_products.xml"));
+        }
+        catch (Exception e) {
+            fail();
+            return null;
+        }
+    }
 }
