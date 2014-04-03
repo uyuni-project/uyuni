@@ -78,7 +78,7 @@ public class ProductSyncManager {
      * @param xml a String containing an XML description of SUSE products
      * @return a Map which has base products as keys and a list containing
      *          their addon products as values
-     * @throws ProductSyncManagerException if external commands fail
+     * @throws ProductSyncManagerException if the xml cannot be parsed
      */
     public Map<Product, List<Product>> parseProducts(String xml)
         throws ProductSyncManagerException {
