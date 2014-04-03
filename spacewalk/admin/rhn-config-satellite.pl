@@ -52,6 +52,7 @@ if ($tmpfile =~ m!^/etc/rhn/!) {
 }
 
 while (my $line = <TARGET>) {
+  my $removed = 0;
   if ($line =~ /\[prompt\]/ or $line =~ /^#/) {
     print TMP $line;
     next;
@@ -70,12 +71,12 @@ while (my $line = <TARGET>) {
 
   foreach (@removals) {
     if ($line =~ /^(\S*)\Q$_\E( *)=( *)/) {
-      $line = undef;
+      $removed = 1;
       delete $options{$_};
     }
   }
 
-  if (defined $line) {
+  if (!$removed) {
     print TMP $line;
   }
 }
