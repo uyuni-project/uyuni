@@ -15,15 +15,19 @@
 
 package com.suse.manager.model.products;
 
-import java.util.List;
+import com.redhat.rhn.frontend.struts.Selectable;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-import com.redhat.rhn.frontend.struts.Selectable;
+import java.util.List;
 
 /**
  * A SUSE Product.
@@ -156,15 +160,47 @@ public class Product implements Selectable, Comparable<Product> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Product product) {
-        int ret = 0;
-        if (!this.name.equals(product.getName())) {
-            ret = this.name.compareTo(product.name);
+    public int compareTo(Product other) {
+        return new CompareToBuilder()
+        .append(this.name, other.getName())
+        .append(this.arch, other.getArch())
+        .toComparison();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Product)) {
+            return false;
         }
-        else if (!this.arch.equals(product.getArch())) {
-            ret = this.arch.compareTo(product.getArch());
-        }
-        return ret;
+        Product otherProduct = (Product) other;
+        return new EqualsBuilder()
+            .append(getIdent(), otherProduct.getIdent())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getIdent())
+            .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+        .append("Name", getName())
+        .append("Arch", getArch())
+        .append("Ident", getIdent())
+        .toString();
     }
 
     /**
