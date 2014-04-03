@@ -8,11 +8,11 @@
     <c:set var="product" value="${baseProduct.key}" scope="request" />
     <c:set var="addon" value="${false}" scope="request" />
 
-    <jsp:include page="/WEB-INF/pages/admin/setup/suse-product-async.jsp" />
+    <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
 
     <c:forEach var="addonProduct" items="${baseProduct.value}">
         <c:set var="product" value="${addonProduct}" scope="request" />
         <c:set var="addon" value="${true}" scope="request" />
-        <jsp:include page="/WEB-INF/pages/admin/setup/suse-product-async.jsp" />
+        <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
     </c:forEach>
 </c:forEach>
