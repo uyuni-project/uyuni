@@ -213,43 +213,34 @@ public class SetupWizardManager extends BaseManager {
         List<MirrorCredentialsDto> creds = SetupWizardManager.findMirrorCredentials();
         ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
-        if (creds.size() == id + 1) {
-            // Special case: delete the last pair of credentials
-            String targetSuffix = "";
-            if (id > 0) {
-                targetSuffix = KEY_MIRRCREDS_SEPARATOR + id;
-            }
-            configCommand.remove(KEY_MIRRCREDS_USER + targetSuffix);
-            configCommand.remove(KEY_MIRRCREDS_PASS + targetSuffix);
-            configCommand.remove(KEY_MIRRCREDS_EMAIL + targetSuffix);
-        }
-        else if (creds.size() > id + 1) {
-            // Deleting in the middle: shift indices
-            for (MirrorCredentialsDto c : creds) {
-                int index = creds.indexOf(c);
-                if (index > id) {
-                    String targetSuffix = "";
-                    if (index > 1) {
-                        targetSuffix = KEY_MIRRCREDS_SEPARATOR + (index - 1);
-                    }
-                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
-                            c.getUser());
-                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
-                            c.getPassword());
-                    if (c.getEmail() != null) {
-                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
-                                c.getEmail());
-                    }
-                    // If this is the last credentials: delete
-                    if (index == creds.size() - 1) {
-                        targetSuffix = KEY_MIRRCREDS_SEPARATOR + index;
-                        configCommand.remove(KEY_MIRRCREDS_USER + targetSuffix);
-                        configCommand.remove(KEY_MIRRCREDS_PASS + targetSuffix);
-                        configCommand.remove(KEY_MIRRCREDS_EMAIL + targetSuffix);
-                    }
+        for (MirrorCredentialsDto c : creds) {
+            int index = creds.indexOf(c);
+            // First skip all credentials to the left of the one that should be deleted
+            if (index > id) {
+                // Then shift to the left each
+                String targetSuffix = "";
+                if (index > 1) {
+                    targetSuffix = KEY_MIRRCREDS_SEPARATOR + (index - 1);
+                }
+                configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
+                        c.getUser());
+                configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
+                        c.getPassword());
+                if (c.getEmail() != null) {
+                    configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
+                            c.getEmail());
                 }
             }
         }
+
+        // Delete the last credentials
+        String suffix = "";
+        if (creds.size() > 1) {
+            suffix = KEY_MIRRCREDS_SEPARATOR + (creds.size() - 1);
+        }
+        configCommand.remove(KEY_MIRRCREDS_USER + suffix);
+        configCommand.remove(KEY_MIRRCREDS_PASS + suffix);
+        configCommand.remove(KEY_MIRRCREDS_EMAIL + suffix);
 
         // Store configuration and clean cache for deleted credentials
         errors = configCommand.storeConfiguration();
