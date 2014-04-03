@@ -24,6 +24,7 @@ Vendor:       Novell Technical Services
 Requires:     supportconfig-plugin-resource
 Requires:     supportconfig-plugin-tag
 Requires:     spacewalk-proxy-common
+Supplements:  packageand(spacewalk-proxy-installer:supportutils)
 
 %description
 Extends supportconfig functionality to include system information about
@@ -46,6 +47,7 @@ install -m 0644 susemanagerproxy-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/
 
 %files
 %defattr(-,root,root)
+%doc COPYING.GPLv2
 /usr/lib/supportconfig
 /usr/lib/supportconfig/plugins
 /usr/lib/supportconfig/plugins/susemanagerproxy
