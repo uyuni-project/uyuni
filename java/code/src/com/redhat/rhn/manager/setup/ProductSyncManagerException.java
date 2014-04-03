@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.satellite;
+package com.redhat.rhn.manager.setup;
 
 /**
  * Represents an error while working with SUSE products.
