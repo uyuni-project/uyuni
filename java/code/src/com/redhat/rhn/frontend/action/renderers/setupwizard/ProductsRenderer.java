@@ -18,8 +18,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.satellite.ProductSyncManager;
-import com.redhat.rhn.manager.satellite.ProductSyncManagerException;
+import com.redhat.rhn.manager.setup.ProductSyncManager;
+import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 
 import org.apache.log4j.Logger;
 

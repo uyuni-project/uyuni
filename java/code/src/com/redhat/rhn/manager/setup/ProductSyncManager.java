@@ -12,7 +12,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.satellite;
+package com.redhat.rhn.manager.setup;
+
+import com.redhat.rhn.manager.satellite.Executor;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;

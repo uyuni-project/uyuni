@@ -1,8 +1,9 @@
 package com.redhat.rhn.manager.satellite.test;
 
-import com.redhat.rhn.manager.satellite.ProductSyncManager;
-import com.redhat.rhn.manager.satellite.ProductSyncManagerException;
+import com.redhat.rhn.manager.setup.ProductSyncManager;
+import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.model.products.Product;
 
 import java.io.IOException;
