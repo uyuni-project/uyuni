@@ -93,13 +93,13 @@ public class ProductSyncManager {
             }
 
             for (Product product : products) {
-                if (product.getParentProduct().isEmpty()) {
+                if (product.getParentProductIdent().isEmpty()) {
                     if (!productHierarchy.containsKey(product)) {
                         productHierarchy.put(product, new LinkedList<Product>());
                     }
                 }
                 else {
-                    Product parent = identProductMap.get(product.getParentProduct());
+                    Product parent = identProductMap.get(product.getParentProductIdent());
                     if (!productHierarchy.containsKey(parent)) {
                         productHierarchy.put(parent, new LinkedList<Product>());
                     }
