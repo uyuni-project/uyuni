@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Simple command class for interacting (listing/adding) SUSE products.
@@ -86,23 +87,18 @@ public class ProductSyncManager {
         try {
             ProductList result = new Persister().read(
                 ProductList.class, IOUtils.toInputStream(xml));
-            List<Product> products = result.getProducts();
+            TreeSet<Product> products = new TreeSet<Product>(result.getProducts());
             Map<String, Product> identProductMap = new HashMap<String, Product>();
             for (Product product : products) {
                 identProductMap.put(product.getIdent(), product);
             }
 
             for (Product product : products) {
-                if (product.getBaseProductIdent().isEmpty()) {
-                    if (!productHierarchy.containsKey(product)) {
-                        productHierarchy.put(product, new LinkedList<Product>());
-                    }
+                if (product.isBaseProduct()) {
+                    productHierarchy.put(product, new LinkedList<Product>());
                 }
                 else {
                     Product parent = identProductMap.get(product.getBaseProductIdent());
-                    if (!productHierarchy.containsKey(parent)) {
-                        productHierarchy.put(parent, new LinkedList<Product>());
-                    }
                     productHierarchy.get(parent).add(product);
                 }
             }
