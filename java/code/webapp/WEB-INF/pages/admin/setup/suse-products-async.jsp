@@ -1,22 +1,18 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
-<%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn"%>
+<%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl"%>
 
-<c:forEach var="product" items="${productsList}">
-    <tr>
-        <td><c:out value="${product.baseProductIdent}"></c:out> - <c:out value="${product.name}"></c:out></td>
-        <td><c:out value="${product.arch}"></c:out></td>
-        <td>
-          <c:choose>
-              <c:when test="${not product.synchronizing}">
-                  <i class="fa fa-refresh btn-synchronize text-success synchronize-single" data-ident="${product.ident}"></i>
-              </c:when>
-              <c:otherwise>
-                  <i class="fa fa-check text-success"></i>
-              </c:otherwise>
-          </c:choose>
-        </td>
-    </tr>
+<c:forEach var="baseProduct" items="${baseProducts}">
+    <c:set var="product" value="${baseProduct.key}" scope="request" />
+    <c:set var="addon" value="${false}" scope="request" />
+
+    <jsp:include page="/WEB-INF/pages/admin/setup/suse-product-async.jsp" />
+
+    <c:forEach var="addonProduct" items="${baseProduct.value}">
+        <c:set var="product" value="${addonProduct}" scope="request" />
+        <c:set var="addon" value="${true}" scope="request" />
+        <jsp:include page="/WEB-INF/pages/admin/setup/suse-product-async.jsp" />
+    </c:forEach>
 </c:forEach>
