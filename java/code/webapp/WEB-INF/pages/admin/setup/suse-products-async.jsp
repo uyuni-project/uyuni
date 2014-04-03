@@ -11,7 +11,7 @@
         <td>
           <c:choose>
               <c:when test="${not product.synchronizing}">
-                  <i class="fa fa-refresh btn-synchronize text-success"></i>
+                  <i class="fa fa-refresh btn-synchronize text-success synchronize-single" data-ident="${product.ident}"></i>
               </c:when>
               <c:otherwise>
                   <i class="fa fa-check text-success"></i>
