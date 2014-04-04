@@ -20,9 +20,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.products.Product;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -32,10 +30,10 @@ import junit.framework.TestCase;
 public class ProductSyncManagerTest extends TestCase {
 
     /**
-     * Tests getProductsHierarchy().
+     * Tests getBaseProducts().
      * @throws Exception if anything goes wrong
      */
-    public void testGetProductsHierarchy() throws Exception {
+    public void testGetBaseProducts() throws Exception {
         Executor executor = new Executor() {
 
             @Override
@@ -59,10 +57,9 @@ public class ProductSyncManagerTest extends TestCase {
 
         ProductSyncManager productSyncManager = new ProductSyncManager(executor);
 
-        Map<Product, List<Product>> output = productSyncManager.getProductsHierarchy();
+        List<Product> output = productSyncManager.getBaseProducts();
 
-        assertEquals(output.keySet().iterator().next().getIdent(),
-                "res-4-i386-1321-rhel-i386-es-4");
+        assertEquals(output.get(0).getIdent(), "res-4-i386-1321-rhel-i386-es-4");
     }
 
     /**
@@ -104,20 +101,19 @@ public class ProductSyncManagerTest extends TestCase {
      */
     public void testParseProducts() throws Exception {
         ProductSyncManager productSyncManager = new ProductSyncManager();
-        Map<Product, List<Product>> productHierarchy =
-                productSyncManager.parseProducts(getTestProductXml());
+        List<Product> baseProducts =
+                productSyncManager.parseBaseProducts(getTestProductXml());
 
-        List<Product> baseProducts = new LinkedList<Product>(productHierarchy.keySet());
         assertEquals(3, baseProducts.size());
         assertEquals("res-4-i386-1321-rhel-i386-es-4", baseProducts.get(0).getIdent());
         assertEquals("res-4-x86_64-1321-rhel-x86_64-as-4", baseProducts.get(1).getIdent());
         assertEquals("res-6-x86_64-2580-rhel-x86_64-server-6", baseProducts.get(2)
                 .getIdent());
 
-        assertTrue(productHierarchy.get(baseProducts.get(0)).isEmpty());
-        assertTrue(productHierarchy.get(baseProducts.get(1)).isEmpty());
+        assertTrue(baseProducts.get(0).getAddonProducts().isEmpty());
+        assertTrue(baseProducts.get(1).getAddonProducts().isEmpty());
 
-        List<Product> res6Addons = productHierarchy.get(baseProducts.get(2));
+        List<Product> res6Addons = baseProducts.get(2).getAddonProducts();
         assertEquals(1, res6Addons.size());
         assertEquals("rhel-6-expanded-support-x86_64-3200-rhel-x86_64-server-6", res6Addons
                 .get(0).getIdent());

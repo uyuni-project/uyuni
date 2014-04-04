@@ -27,6 +27,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -60,7 +61,13 @@ public class Product implements Selectable, Comparable<Product> {
     private OptionalChannels optionalChannels;
 
     /** True if this product has been selected in the GUI. */
-    private boolean selected;
+    private boolean selected = false;
+
+    /** Base product or null. */
+    private Product baseProduct = null;
+
+    /** Addon products. */
+    private List<Product> addonProducts = new LinkedList<Product>();
 
     /**
      * Default constructor.
@@ -124,14 +131,6 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Checks if the product is a base product.
-     * @return true if the product is a base product, false otherwise
-     */
-    public boolean isBaseProduct() {
-        return parent_product.isEmpty();
-    }
-
-    /**
      * Gets the mandatory channels.
      * @return the mandatory channels
      */
@@ -165,12 +164,29 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
+     * Returns true iff this is a base product
+     * @return true for base products
+     */
+    public boolean isBase() {
+        return getBaseProductIdent().isEmpty();
+    }
+
+    /**
+     * Returns true iff this product can be synchronized
+     * @return true iff synchronizable
+     */
+    public boolean isSynchronizable() {
+        return !isSynchronizing() && (isBase() || getBaseProduct().isSynchronizing());
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public int compareTo(Product other) {
         return new CompareToBuilder()
-        .append(!this.isBaseProduct(), !other.isBaseProduct())
+        // base products first
+        .append(!isBase(), !other.isBase())
         .append(this.name, other.getName())
         .append(this.arch, other.getArch())
         .toComparison();
@@ -242,5 +258,29 @@ public class Product implements Selectable, Comparable<Product> {
     @Override
     public String getSelectionKey() {
         return this.ident;
+    }
+
+    /**
+     * Gets the base product.
+     * @return the base product
+     */
+    public Product getBaseProduct() {
+        return baseProduct;
+    }
+
+    /**
+     * Sets the base product.
+     * @param baseProductIn the new base product
+     */
+    public void setBaseProduct(Product baseProductIn) {
+        baseProduct = baseProductIn;
+    }
+
+    /**
+     * Gets the addon products.
+     * @return the addon products
+     */
+    public List<Product> getAddonProducts() {
+        return addonProducts;
     }
 }

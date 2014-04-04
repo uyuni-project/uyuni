@@ -52,7 +52,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
 
         try {
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
-                    new ProductSyncManager().getProductsHierarchy());
+                    new ProductSyncManager().getBaseProducts());
         }
         catch (ProductSyncManagerException e) {
             logger.error("Got an exception while rendering the product list: " + e);

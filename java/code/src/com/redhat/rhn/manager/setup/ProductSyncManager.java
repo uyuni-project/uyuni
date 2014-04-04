@@ -30,7 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -78,14 +77,12 @@ public class ProductSyncManager {
     }
 
     /**
-     * Gets the product hierarchy.
-     * @return a Map which has base products as keys and a list containing
-     *          their addon products as values
+     * Returns a list of base products.
+     * @return the products list
      * @throws ProductSyncManagerException if external commands or parsing fail
      */
-    public Map<Product, List<Product>> getProductsHierarchy()
-        throws ProductSyncManagerException {
-        return this.parseProducts(readProducts());
+    public List<Product> getBaseProducts() throws ProductSyncManagerException {
+        return parseBaseProducts(readProducts());
     }
 
     /**
@@ -121,44 +118,43 @@ public class ProductSyncManager {
     }
 
     /**
-     * Parse {@link String} and populates the internal data structure containing
-     * the products hierarchy.
+     * Returns a list of base products from an XML string.
      * @param xml a String containing an XML description of SUSE products
      * @return a Map which has base products as keys and a list containing their
      * addon products as values
      * @throws ProductSyncManagerException if the xml cannot be parsed
      */
-    public Map<Product, List<Product>> parseProducts(String xml)
+    public List<Product> parseBaseProducts(String xml)
         throws ProductSyncManagerException {
-        Map<Product, List<Product>> productHierarchy =
-                new TreeMap<Product, List<Product>>();
-        Set<Product> products = getProductSet(xml);
+        List<Product> result = new LinkedList<Product>();
+        Set<Product> products = parsePlainProducts(xml);
         Map<String, Product> identProductMap = new HashMap<String, Product>();
         for (Product product : products) {
             identProductMap.put(product.getIdent(), product);
         }
 
         for (Product product : products) {
-            if (product.isBaseProduct()) {
-                productHierarchy.put(product, new LinkedList<Product>());
+            if (product.isBase()) {
+                result.add(product);
             }
             else {
                 Product parent = identProductMap.get(product.getBaseProductIdent());
-                productHierarchy.get(parent).add(product);
+                product.setBaseProduct(parent);
+                parent.getAddonProducts().add(product);
             }
         }
 
-        return productHierarchy;
+        return result;
     }
 
     /**
-     * Gets the product set.
-     *
+     * Parses an XML string into an ordered Set of products, does not handle
+     * base/addon relationships.
      * @param xml the xml
      * @return the product set
      * @throws ProductSyncManagerException the product sync manager exception
      */
-    private Set<Product> getProductSet(String xml) throws ProductSyncManagerException {
+    private Set<Product> parsePlainProducts(String xml) throws ProductSyncManagerException {
         try {
             ProductList result =
                     new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
