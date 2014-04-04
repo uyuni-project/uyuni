@@ -6,7 +6,7 @@
 
 <tr>
     <td>
-        <c:if test="${not requestScope.product.baseProduct}">
+        <c:if test="${not requestScope.product.base}">
             <i class="fa fa-ellipsis-h"></i>
         </c:if>
         <c:out value="${requestScope.product.name}"></c:out>
@@ -17,7 +17,7 @@
             class="fa fa-refresh btn-synchronize text-success start-sync-icon"
             data-ident="${requestScope.product.ident}"
             data-baseproductident="${requestScope.product.baseProductIdent}"
-            <c:if test="${not requestScope.synchronizable or requestScope.product.synchronizing}">
+            <c:if test="${not requestScope.product.synchronizable}">
               hidden
             </c:if>
         ></i>

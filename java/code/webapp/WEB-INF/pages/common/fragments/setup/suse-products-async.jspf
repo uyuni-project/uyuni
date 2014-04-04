@@ -5,13 +5,11 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl"%>
 
 <c:forEach var="baseProduct" items="${baseProducts}">
-    <c:set var="product" value="${baseProduct.key}" scope="request" />
-    <c:set var="synchronizable" value="${true}" scope="request" />
+    <c:set var="product" value="${baseProduct}" scope="request" />
     <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
 
-    <c:forEach var="addonProduct" items="${baseProduct.value}">
+    <c:forEach var="addonProduct" items="${baseProduct.addonProducts}">
         <c:set var="product" value="${addonProduct}" scope="request" />
-        <c:set var="synchronizable" value="${baseProduct.key.synchronizing}" scope="request" />
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
     </c:forEach>
 </c:forEach>
