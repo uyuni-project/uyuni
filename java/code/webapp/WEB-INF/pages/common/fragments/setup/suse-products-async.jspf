@@ -6,10 +6,12 @@
 
 <c:forEach var="baseProduct" items="${baseProducts}">
     <c:set var="product" value="${baseProduct.key}" scope="request" />
+    <c:set var="synchronizable" value="${true}" scope="request" />
     <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
 
     <c:forEach var="addonProduct" items="${baseProduct.value}">
         <c:set var="product" value="${addonProduct}" scope="request" />
+        <c:set var="synchronizable" value="${baseProduct.key.synchronizing}" scope="request" />
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-async.jspf" />
     </c:forEach>
 </c:forEach>

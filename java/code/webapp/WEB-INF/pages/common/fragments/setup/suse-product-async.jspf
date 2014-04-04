@@ -7,19 +7,30 @@
 <tr>
     <td>
         <c:if test="${not requestScope.product.baseProduct}">
-          <i class="fa fa-ellipsis-h"></i>
+            <i class="fa fa-ellipsis-h"></i>
         </c:if>
         <c:out value="${requestScope.product.name}"></c:out>
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
-      <c:choose>
-          <c:when test="${not requestScope.product.synchronizing}">
-              <i class="fa fa-refresh btn-synchronize text-success synchronize-single" data-ident="${requestScope.product.ident}"></i>
-          </c:when>
-          <c:otherwise>
-              <i class="fa fa-check text-success"></i>
-          </c:otherwise>
-      </c:choose>
+        <i
+            class="fa fa-refresh btn-synchronize text-success start-sync-icon"
+            data-ident="${requestScope.product.ident}"
+            data-baseproductident="${requestScope.product.baseProductIdent}"
+            <c:if test="${not requestScope.synchronizable or requestScope.product.synchronizing}">
+              hidden
+            </c:if>
+        ></i>
+
+        <span class="text-success starting-sync-icon" hidden>
+          <rhn:icon type="spinner"></rhn:icon>
+        </span>
+
+        <i
+            class="fa fa-check text-success sync-started-icon"
+            <c:if test="${not requestScope.product.synchronizing}">
+                  hidden
+            </c:if>
+        ></i>
     </td>
 </tr>
