@@ -50,6 +50,12 @@ public class ProductSyncManager {
     /** Product sync command switch add a product. */
     public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
 
+    /**
+     * Product sync command switch to refresh product, channel and subscription
+     * information without triggering any reposync.
+     */
+    public static final String REFRESH_SWITCH = "--refresh";
+
     /** The logger. */
     private static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
@@ -171,5 +177,14 @@ public class ProductSyncManager {
      */
     public void addProduct(final String productIdent) throws ProductSyncManagerException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
+    }
+
+    /**
+     * Refresh product, channel and subscription information without triggering
+     * any reposysnc.
+     * @throws ProductSyncManagerException if the refresh failed
+     */
+    public void refreshProducts() throws ProductSyncManagerException {
+        runProductSyncCommand(REFRESH_SWITCH);
     }
 }
