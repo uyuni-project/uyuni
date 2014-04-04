@@ -168,4 +168,35 @@ public class ProductSyncManagerTest extends TestCase {
             return null;
         }
     }
+
+    /**
+     * Tests refreshProducts().
+     * @throws Exception if anything goes wrong
+     */
+    public void testRefreshProducts() throws Exception {
+        Executor executor = new Executor() {
+
+            @Override
+            public String getLastCommandOutput() {
+                return "Done";
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], ProductSyncManager.REFRESH_SWITCH);
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        productSyncManager.refreshProducts();
+    }
 }
