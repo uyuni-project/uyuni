@@ -28,6 +28,7 @@
                         <table class="table table-rounded">
                             <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="select-all" /></th>
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
                                     <th>1-click</th>
@@ -43,6 +44,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
+                                    <td><input type="checkbox" id="select-all" /></td>
                                     <td colspan="3">
                                         <button class="btn btn-success" id="synchronize">
                                             <i class="fa fa-refresh"></i> Synchronize
