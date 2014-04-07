@@ -167,11 +167,22 @@ public class ProductSyncManager {
     }
 
     /**
+     * Adds multiple products.
+     * @param productIdents the product ident list
+     * @throws ProductSyncManagerException if a product addition failed
+     */
+    public void addProducts(List<String> productIdents) throws ProductSyncManagerException {
+        for (String productIdent : productIdents) {
+            addProduct(productIdent);
+        }
+    }
+
+    /**
      * Adds the product.
      * @param productIdent the product ident
      * @throws ProductSyncManagerException if the product addition failed
      */
-    public void addProduct(final String productIdent) throws ProductSyncManagerException {
+    public void addProduct(String productIdent) throws ProductSyncManagerException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
 
