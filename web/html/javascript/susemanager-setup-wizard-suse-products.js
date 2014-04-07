@@ -7,11 +7,11 @@ $(function(){
   // can be reloaded via AJAX
   $("#table-content").on("click", ".start-sync-icon", function(event) {
     var startSyncIcon = $(this);
-    var ident = startSyncIcon.data("ident");
+    var ident = startSyncIcon.closest("tr").data("ident");
 
     var startingSyncIcon = startSyncIcon.siblings(".starting-sync-icon");
     var syncStartedIcon = startSyncIcon.siblings(".sync-started-icon");
-    var addonStartSyncIcons = $(".start-sync-icon[data-baseproductident='" + ident + "']");
+    var addonStartSyncIcons = $("tr[data-baseproductident='" + ident + "'] .start-sync-icon");
 
     startSyncIcon.hide();
     startingSyncIcon.show();

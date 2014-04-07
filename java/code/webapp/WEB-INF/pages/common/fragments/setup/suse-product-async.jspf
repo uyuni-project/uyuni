@@ -4,7 +4,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
-<tr>
+<tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
     <td>
         <c:if test="${not requestScope.product.base}">
             <i class="fa fa-ellipsis-h"></i>
@@ -15,8 +15,6 @@
     <td>
         <i
             class="fa fa-refresh btn-synchronize text-success start-sync-icon"
-            data-ident="${requestScope.product.ident}"
-            data-baseproductident="${requestScope.product.baseProductIdent}"
             <c:if test="${not requestScope.product.synchronizable}">
               hidden
             </c:if>
