@@ -5,7 +5,13 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 
 <tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
-    <td><input type="checkbox" id="select-single" /></td>
+    <td>
+        <input type="checkbox" id="select-single"
+            <c:if test="${not requestScope.product.synchronizable}">
+                disabled
+            </c:if>
+        />
+    </td>
     <td>
         <c:if test="${not requestScope.product.base}">
             <i class="fa fa-ellipsis-h"></i>

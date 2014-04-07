@@ -11,7 +11,10 @@ $(function(){
 
     var startingSyncIcon = startSyncIcon.siblings(".starting-sync-icon");
     var syncStartedIcon = startSyncIcon.siblings(".sync-started-icon");
-    var addonStartSyncIcons = $("tr[data-baseproductident='" + ident + "'] .start-sync-icon");
+    var addonRows = $("tr[data-baseproductident='" + ident + "']");
+    var addonStartSyncIcons =  addonRows.find(".start-sync-icon");
+    var checkbox = $("tr[data-ident='" + ident + "'] input[type='checkbox']");
+    var addonCheckboxes = addonRows.find("input[type='checkbox']");
 
     startSyncIcon.hide();
     startingSyncIcon.show();
@@ -20,6 +23,9 @@ $(function(){
       startingSyncIcon.hide();
       syncStartedIcon.show();
       addonStartSyncIcons.show();
+
+      checkbox.prop("checked", false).prop("disabled", true);
+      addonCheckboxes.removeAttr("disabled");
     });
   });
 
