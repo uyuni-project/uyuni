@@ -28,7 +28,7 @@
                         <table class="table table-rounded">
                             <thead>
                                 <tr>
-                                    <th>Available Products below</th>
+                                    <th>Available Products Below</th>
                                     <th>Architecture</th>
                                     <th>1-click</th>
                                 </tr>
