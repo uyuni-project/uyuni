@@ -30,9 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Exposes AJAX methods to work with proxy settings.
  */
-public class HttpProxyRenderer {
+public class ProxySettingsRenderer {
+
     /** Logger instance */
-    private static Logger log = Logger.getLogger(HttpProxyRenderer.class);
+    private static Logger log = Logger.getLogger(ProxySettingsRenderer.class);
 
     /**
      * Save the given proxy settings to the configuration.
