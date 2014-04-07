@@ -16,36 +16,22 @@ package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
-import com.redhat.rhn.manager.setup.ProxySettingsDto;
-import com.redhat.rhn.manager.setup.SetupWizardManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import java.util.List;
 
 /**
- * Tests for {@link SetupWizardManager}.
+ * Tests for {@link MirrorCredentialsManager}.
  */
-public class SetupWizardManagerTest extends RhnBaseTestCase {
-
-    /**
-     * Tests getProxySettings().
-     * @throws Exception if something goes wrong
-     */
-    public void testGetProxySettings() throws Exception {
-        ProxySettingsDto proxy = new ProxySettingsDto();
-        proxy.setHostname("proxy.foobar.com");
-        proxy.setUsername("foobaruser");
-        proxy.setPassword("foobarpassword");
-        setProxySettings(proxy);
-        assertTrue(proxy.equals(SetupWizardManager.getProxySettings()));
-    }
+public class MirrorCredentialsManagerTest extends RhnBaseTestCase {
 
     /**
      * Tests findMirrorCredentials().
      * @throws Exception if something goes wrong
      */
     public void testFindMirrorCredsEmpty() throws Exception {
-        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
         assertEquals(0, credentials.size());
     }
 
@@ -57,7 +43,7 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser1", "testpass1", "testemail1", 1);
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
         assertEquals(3, credentials.size());
 
         for (MirrorCredentialsDto creds : credentials) {
@@ -75,9 +61,9 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
     public void testFindMirrorCredsMissing() throws Exception {
         setTestCredentials("testuser0", "testpass0", "testemail0", 0);
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentialsDto> credentials = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
         assertEquals(1, credentials.size());
-        assertNull(SetupWizardManager.findMirrorCredentials(1));
+        assertNull(MirrorCredentialsManager.findMirrorCredentials(1));
     }
 
     /**
@@ -90,7 +76,7 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
         setTestCredentials("testuser2", "testpass2", "testemail2", 2);
 
         for (int i = 0; i <= 2; i++) {
-            MirrorCredentialsDto creds = SetupWizardManager.findMirrorCredentials(i);
+            MirrorCredentialsDto creds = MirrorCredentialsManager.findMirrorCredentials(i);
             assertEquals("testuser" + i, creds.getUser());
             assertEquals("testpass" + i, creds.getPassword());
             assertEquals("testemail" + i, creds.getEmail());
@@ -106,13 +92,13 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
      * @param index the index
      */
     private void setTestCredentials(String user, String pass, String email, int index) {
-        String keyUser = SetupWizardManager.KEY_MIRRCREDS_USER;
-        String keyPass = SetupWizardManager.KEY_MIRRCREDS_PASS;
-        String keyEmail = SetupWizardManager.KEY_MIRRCREDS_EMAIL;
+        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
+        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
+        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
         if (index >= 1) {
-            keyUser += "." + index;
-            keyPass += "." + index;
-            keyEmail += "." + index;
+            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
+            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
+            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
         }
         Config.get().setString(keyUser, user);
         Config.get().setString(keyPass, pass);
@@ -120,14 +106,22 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Sets the proxy settings.
+     * Clean up (remove) test credentials.
      *
-     * @param proxy the new proxy settings
+     * @param index
      */
-    private void setProxySettings(ProxySettingsDto proxy) {
-        Config.get().setString(SetupWizardManager.KEY_PROXY_HOSTNAME, proxy.getHostname());
-        Config.get().setString(SetupWizardManager.KEY_PROXY_USERNAME, proxy.getUsername());
-        Config.get().setString(SetupWizardManager.KEY_PROXY_PASSWORD, proxy.getPassword());
+    private void removeTestCredentials(int index) {
+        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
+        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
+        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
+        if (index >= 1) {
+            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
+            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
+            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
+        }
+        Config.get().remove(keyUser);
+        Config.get().remove(keyPass);
+        Config.get().remove(keyEmail);
     }
 
     /**
@@ -135,10 +129,10 @@ public class SetupWizardManagerTest extends RhnBaseTestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        // Clear credentials from config
         super.tearDown();
+        // Clear credentials from config
         for (int i = 0; i <= 10; i++) {
-            setTestCredentials("", "", "", i);
+            removeTestCredentials(i);
         }
     }
 }
