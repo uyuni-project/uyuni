@@ -17,9 +17,9 @@ package com.redhat.rhn.manager.satellite.test;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.testing.TestUtils;
-
 import com.suse.manager.model.products.Product;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -194,5 +194,77 @@ public class ProductSyncManagerTest extends TestCase {
         ProductSyncManager productSyncManager = new ProductSyncManager(executor);
 
         productSyncManager.refreshProducts();
+    }
+
+    /**
+     * Tests addProduct().
+     * @throws Exception if anything goes wrong
+     */
+    public void testAddProduct() throws Exception {
+        final String productIdent = "test";
+
+        Executor executor = new Executor() {
+
+            @Override
+            public String getLastCommandOutput() {
+                return "Done";
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
+                assertEquals(argsIn[3], productIdent);
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        productSyncManager.addProduct(productIdent);
+    }
+
+    /**
+     * Tests addProducts().
+     * @throws Exception if anything goes wrong
+     */
+    public void testAddProducts() throws Exception {
+        final List<String> idents = new LinkedList<String>();
+        idents.add("first_ident");
+        idents.add("second_ident");
+
+        Executor executor = new Executor() {
+            @Override
+            public String getLastCommandOutput() {
+                return "Done";
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                String expected = idents.get(0);
+                idents.remove(0);
+
+                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
+                assertEquals(argsIn[3], expected);
+                return 0;
+            }
+        };
+
+        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+
+        productSyncManager.addProducts(idents);
     }
 }
