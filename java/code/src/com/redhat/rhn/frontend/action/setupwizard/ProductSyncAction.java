@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.setupwizard;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -22,6 +23,8 @@ import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContextFactory;
+
+import java.util.List;
 
 /**
  * Synchronizes products
@@ -37,21 +40,46 @@ public class ProductSyncAction {
      * @param productIdent the product ident
      */
     public void synchronizeSingle(String productIdent) {
-        User user = new RequestContext(WebContextFactory.get()
-                .getHttpServletRequest())
-                .getCurrentUser();
-
-        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
-            throw new IllegalArgumentException(
-                    "Must be SAT_ADMIN to synchronize the products");
-        }
+        checkUserRole();
 
         try {
             new ProductSyncManager().addProduct(productIdent);
         }
         catch (ProductSyncManagerException e) {
             log.error(e);
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
+        }
+    }
+
+    /**
+     * Synchronizes a single product.
+     * @param productIdents the product ident list
+     */
+    public void synchronizeMultiple(List<String> productIdents) {
+        checkUserRole();
+
+        try {
+            new ProductSyncManager().addProducts(productIdents);
+        }
+        catch (ProductSyncManagerException e) {
+            log.error(e);
+            throw new RhnRuntimeException(e);
+        }
+    }
+
+    /**
+     * Throws an exception if the currently logged user cannot synchronize
+     * products.
+     */
+    private void checkUserRole() {
+        User user = new RequestContext(
+                WebContextFactory.get()
+                .getHttpServletRequest())
+                .getCurrentUser();
+
+        if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new IllegalArgumentException(
+                    "Must be SAT_ADMIN to synchronize the products");
         }
     }
 }
