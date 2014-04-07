@@ -18,7 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
-import com.redhat.rhn.manager.setup.SetupWizardManager;
+import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 
 import org.apache.log4j.Logger;
@@ -57,7 +57,7 @@ public class HttpProxyRenderer {
 
         // TODO: Handle errors
         ValidatorError[] errors =
-                SetupWizardManager.storeProxySettings(settings, webUser, request);
+                ProxySettingsManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {
             for (ValidatorError error : errors) {
                 log.error("error: " + error.toString());
@@ -71,7 +71,7 @@ public class HttpProxyRenderer {
      * @return The current configured proxy settings
      */
     public ProxySettingsDto retrieveProxySettings() {
-        return SetupWizardManager.getProxySettings();
+        return ProxySettingsManager.getProxySettings();
     }
 
     /**

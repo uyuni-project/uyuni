@@ -32,12 +32,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Encapsulates domain logic for the Setup Wizard.
+ * Domain logic for the Setup Wizard mirror credentials page.
  */
-public class SetupWizardManager extends BaseManager {
+public class MirrorCredentialsManager extends BaseManager {
 
     /** Logger instance */
-    private static Logger log = Logger.getLogger(SetupWizardManager.class);
+    private static Logger log = Logger.getLogger(MirrorCredentialsManager.class);
 
     /** Configuration key prefix for mirror credential usernames */
     public static final String KEY_MIRRCREDS_USER = "server.susemanager.mirrcred_user";
@@ -47,41 +47,6 @@ public class SetupWizardManager extends BaseManager {
     public static final String KEY_MIRRCREDS_EMAIL = "server.susemanager.mirrcred_email";
     /** Configuration key separator for mirror credentials */
     public static final String KEY_MIRRCREDS_SEPARATOR = "_";
-
-    public static final String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
-    public static final String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
-    public static final String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
-
-    /**
-     * @return Current proxy settings
-     */
-    public static ProxySettingsDto getProxySettings() {
-        ProxySettingsDto settings = new ProxySettingsDto();
-        settings.setHostname(Config.get().getString(KEY_PROXY_HOSTNAME));
-        settings.setUsername(Config.get().getString(KEY_PROXY_USERNAME));
-        settings.setPassword(Config.get().getString(KEY_PROXY_PASSWORD));
-        return settings;
-    }
-
-    /**
-     * Store the proxy settings in the Spacewalk configuration
-     * @param settings DTO with the settings
-     * @param userIn current logged in user
-     * @param request the HTTP request
-     * @return a list of validation errors
-     */
-    public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
-            User userIn, HttpServletRequest request) {
-        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
-        configCommand.updateString(KEY_PROXY_HOSTNAME, settings.getHostname());
-        configCommand.updateString(KEY_PROXY_USERNAME, settings.getUsername());
-        configCommand.updateString(KEY_PROXY_PASSWORD, settings.getPassword());
-        ValidatorError[] ret = configCommand.storeConfiguration();
-        // the settings have changed, we remove the cached subscriptions as
-        // the settings may not be valid anymore
-        SetupWizardSessionCache.clearAllSubscriptions(request);
-        return ret;
-    }
 
     /**
      * Find all valid mirror credentials and return them.
@@ -164,12 +129,12 @@ public class SetupWizardManager extends BaseManager {
         Long id = creds.getId();
         if (creds.getId() == null) {
             List<MirrorCredentialsDto> credentials =
-                    SetupWizardManager.findMirrorCredentials();
+                    MirrorCredentialsManager.findMirrorCredentials();
             id = new Long(credentials.size());
         }
 
         // Check if there is changes by looking at previous object
-        MirrorCredentialsDto oldCreds = SetupWizardManager.findMirrorCredentials(id);
+        MirrorCredentialsDto oldCreds = MirrorCredentialsManager.findMirrorCredentials(id);
         if (!creds.equals(oldCreds)) {
             // Generate suffix depending on the ID
             String suffix = "";
@@ -207,10 +172,10 @@ public class SetupWizardManager extends BaseManager {
         ValidatorError[] errors = null;
 
         // Store credentials to empty cache later
-        MirrorCredentialsDto credentials = SetupWizardManager.findMirrorCredentials(id);
+        MirrorCredentialsDto credentials = MirrorCredentialsManager.findMirrorCredentials(id);
 
         // Find all credentials and see what needs to be done
-        List<MirrorCredentialsDto> creds = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> creds = MirrorCredentialsManager.findMirrorCredentials();
         ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
         for (MirrorCredentialsDto c : creds) {
@@ -259,11 +224,11 @@ public class SetupWizardManager extends BaseManager {
     public static ValidatorError[] makePrimaryCredentials(Long id, User userIn,
             HttpServletRequest request) {
         ValidatorError[] errors = null;
-        List<MirrorCredentialsDto> allCreds = SetupWizardManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> allCreds = MirrorCredentialsManager.findMirrorCredentials();
         if (allCreds.size() > 1) {
             // Find the future primary creds before reordering
             MirrorCredentialsDto primaryCreds =
-                    SetupWizardManager.findMirrorCredentials(id);
+                    MirrorCredentialsManager.findMirrorCredentials(id);
             ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
 
             // Shift all indices starting from 1
@@ -387,7 +352,7 @@ public class SetupWizardManager extends BaseManager {
         if (forceRefresh ||
                 SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
             List<Subscription> subscriptions =
-                    SetupWizardManager.downloadSubscriptions(creds);
+                    MirrorCredentialsManager.downloadSubscriptions(creds);
             SetupWizardSessionCache.storeSubscriptions(
                     makeDtos(subscriptions), creds, request);
         }
