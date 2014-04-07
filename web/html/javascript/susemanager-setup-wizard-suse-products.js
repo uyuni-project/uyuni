@@ -29,6 +29,11 @@ $(function(){
     });
   });
 
+  // handles select all top/bottom checkboxes
+  $("input.select-all").change(function() {
+    $("#suse-products input[type='checkbox']:enabled").prop("checked", $(this).is(":checked"));
+  });
+
   function refreshProducts() {
     $("#loading-placeholder").show();
     $("#table-content tr:not(#loading-placeholder)").remove();
