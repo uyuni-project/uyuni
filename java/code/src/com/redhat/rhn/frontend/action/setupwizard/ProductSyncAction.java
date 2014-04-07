@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.setupwizard;
 
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.action.schedule.ActionChainSaveAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.manager.setup.ProductSyncManagerException;
@@ -31,7 +30,7 @@ import org.directwebremoting.WebContextFactory;
 public class ProductSyncAction {
 
     /** Logger instance. */
-    private static Logger log = Logger.getLogger(ActionChainSaveAction.class);
+    private static Logger log = Logger.getLogger(ProductSyncAction.class);
 
     /**
      * Synchronizes a single product.
