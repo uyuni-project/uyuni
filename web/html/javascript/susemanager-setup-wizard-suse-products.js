@@ -1,4 +1,6 @@
 $(function(){
+  // Initially hide the error popup and get the products
+  $("#alert-popup").hide();
   refreshProducts();
 
   // click on an add product icon. Handler is attached to table because rows
@@ -36,12 +38,19 @@ $(function(){
     }));
   });
 
+  // Get the products and show message in case of errors
   function refreshProducts() {
     $("#loading-placeholder").show();
     $("#table-content tr:not(#loading-placeholder)").remove();
-    ProductsRenderer.renderAsync(function(content) {
-      $("#loading-placeholder").hide();
-      $("#table-content").append(content);
+    ProductsRenderer.renderAsync({
+      callback: function(content) {
+        $("#loading-placeholder").hide();
+        $("#table-content").append(content);
+      },
+      errorHandler: function(message) {
+        $('#loading-placeholder').hide();
+        $("#alert-popup").show();
+      }
     });
   }
 
