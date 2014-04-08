@@ -65,19 +65,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-3 hidden-xs">3 of 3</div>
-                        <div class="col-sm-6 text-center">
-                        <a class="btn btn-default"
-                            href="/rhn/admin/setup/MirrorCredentials.do">
-                            <i class="fa fa-arrow-left"></i>
-                            <bean:message key="setup-wizard.prev" />
-                        </a>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
         </div>
     </div>
 </body>
