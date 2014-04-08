@@ -36,7 +36,7 @@
                             </thead>
                             <tbody id="table-content">
                                 <tr id="loading-placeholder">
-                                    <td colspan=3>
+                                    <td colspan="4">
                                         <rhn:icon type="spinner"></rhn:icon>
                                         <span>Loading...</span>
                                     </td>
