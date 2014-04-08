@@ -51,8 +51,10 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         }
 
         try {
+            ProductSyncManager productSyncManager = new ProductSyncManager();
+            productSyncManager.refreshProducts();
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
-                    new ProductSyncManager().getBaseProducts());
+                    productSyncManager.getBaseProducts());
         }
         catch (ProductSyncManagerException e) {
             logger.error("Got an exception while rendering the product list: " + e);
