@@ -239,7 +239,13 @@ public class ProductSyncManagerTest extends TestCase {
         idents.add("first_ident");
         idents.add("second_ident");
 
+        // This list is used by the custom executor to make some assertions.
+        // Items are removed from this list, hence we cannot pass idents to it,
+        // we have to make a copy of it.
+        final List<String> expectedIdents = new LinkedList<String>(idents);
+
         Executor executor = new Executor() {
+
             @Override
             public String getLastCommandOutput() {
                 return "Done";
@@ -252,8 +258,8 @@ public class ProductSyncManagerTest extends TestCase {
 
             @Override
             public int execute(String[] argsIn) {
-                String expected = idents.get(0);
-                idents.remove(0);
+                String expected = expectedIdents.get(0);
+                expectedIdents.remove(0);
 
                 assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
                 assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
@@ -264,7 +270,7 @@ public class ProductSyncManagerTest extends TestCase {
         };
 
         ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
         productSyncManager.addProducts(idents);
+        assertTrue(expectedIdents.isEmpty());
     }
 }
