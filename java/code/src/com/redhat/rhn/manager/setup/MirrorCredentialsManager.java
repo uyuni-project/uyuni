@@ -351,6 +351,9 @@ public class MirrorCredentialsManager extends BaseManager {
         // Implicitly download subscriptions if requested
         if (forceRefresh ||
                 SetupWizardSessionCache.credentialsStatusUnknown(creds, request)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Downloading subscriptions for " + creds.getUser());
+            }
             List<Subscription> subscriptions =
                     MirrorCredentialsManager.downloadSubscriptions(creds);
             SetupWizardSessionCache.storeSubscriptions(
