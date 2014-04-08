@@ -3,28 +3,24 @@
 
 <div class="panel-footer">
     <div class="row">
-        <div class="col-sm-3 hidden-xs">
+        <div class="col-sm-2 hidden-xs">
             <c:out value="${currentStep}" />
             of
             <c:out value="${totalSteps}" />
         </div>
 
-        <c:if test="${currentStep > 1}">
-            <div class="col-sm-6 text-center">
-                <a class="btn btn-default" href="<c:out value="${previousStep}" />">
-                    <i class="fa fa-arrow-left"></i> <bean:message key="setup-wizard.prev" />
+        <div class="col-sm-8 text-center">
+            <c:if test="${currentStep > 1}">
+                <a class="btn btn-default" href="<c:out value="${previousStep}" />"> <i
+                    class="fa fa-arrow-left"></i> <bean:message key="setup-wizard.prev" />
                 </a>
-            </div>
-        </c:if>
-
-        <c:if test="${currentStep < totalSteps}">
-            <div class="col-sm-6 text-center">
-                <a class="btn btn-success" href="<c:out value="${nextStep}" />">Next
-                    <i class="fa fa-arrow-right"></i>
+            </c:if>
+            <c:if test="${currentStep < totalSteps}">
+                <a class="btn btn-success" href="<c:out value="${nextStep}" />">Next <i
+                    class="fa fa-arrow-right"></i>
                 </a>
-            </div>
-        </c:if>
-
+            </c:if>
+        </div>
     </div>
 </div>
 </div>
