@@ -50,6 +50,6 @@ end
 When /^the product should appear in the output of mgr-ncc-sync$/ do
    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-ncc-sync -l`
    fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3'
-   fail if not $sshout.include? 'sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
+   fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
 end
 
