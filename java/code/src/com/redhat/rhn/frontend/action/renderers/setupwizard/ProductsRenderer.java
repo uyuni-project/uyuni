@@ -57,7 +57,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
                     productSyncManager.getBaseProducts());
         }
         catch (ProductSyncManagerException e) {
-            logger.error("Got an exception while rendering the product list: " + e);
+            logger.error("Exception while rendering products: " + e.getMessage());
             throw new RuntimeException(e);
         }
     }
