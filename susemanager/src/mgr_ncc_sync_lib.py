@@ -1286,8 +1286,13 @@ class NCCSync(object):
                         continue
                     if c.name == "SUSE Linux Enterprise 11 Subscription Managment Tool" and p.name != "SUSE Linux Enterprise Server 11 SP1":
                         continue
-                    if c.name == "SUSE Linux Enterprise Mono Extension 2.4" and p.name != "SUSE Linux Enterprise Server 11 SP1":
-                        continue
+                    if c.name == "SUSE Linux Enterprise Mono Extension 2.4":
+                        if not p.name.startswith("SUSE Linux Enterprise Server 11 SP1"):
+                            continue
+                        if "vmware" in c.ident and p.name != "SUSE Linux Enterprise Server 11 SP1 VMWare":
+                            continue
+                        if "vmware" not in c.ident and p.name != "SUSE Linux Enterprise Server 11 SP1":
+                            continue
                     child_sp = None
                     if regex.match(c.name):
                         d, child_sp = regex.match(c.name).groups()
