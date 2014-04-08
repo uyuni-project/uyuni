@@ -106,10 +106,9 @@ public class ProductSyncManager {
                 (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
         int exitCode = executor.execute(commandLine);
         if (exitCode != 0) {
-            String error = "Error while running product sync command " +
+            String message = "Error while running product sync command, " +
                 "got exit code " + exitCode;
-            logger.error(error);
-            throw new ProductSyncManagerException(error);
+            throw new ProductSyncManagerException(message);
         }
         String output = executor.getLastCommandOutput();
         logger.debug("This the output of product sync command");
