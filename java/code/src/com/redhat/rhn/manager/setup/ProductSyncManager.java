@@ -119,8 +119,7 @@ public class ProductSyncManager {
     /**
      * Returns a list of base products from an XML string.
      * @param xml a String containing an XML description of SUSE products
-     * @return a Map which has base products as keys and a list containing their
-     * addon products as values
+     * @return list of parsed base products
      * @throws ProductSyncManagerException if the xml cannot be parsed
      */
     public List<Product> parseBaseProducts(String xml)
