@@ -36,7 +36,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-taskomatic" imgAlt="yourrhn.jsp.toolbar.img.alt"
-             helpUrl="/rhn/help/reference/en-US/s1-sm-your-rhn.jsp">
+             helpUrl="/rhn/help/user/en-US/s1-sm-your-rhn.jsp">
   <bean:message key="yourrhn.jsp.toolbar"/>
 </rhn:toolbar>
 
