@@ -45,9 +45,14 @@ $(function(){
         $("#loading-placeholder").hide();
         $("#table-content").append(content);
       },
-      errorHandler: function(message) {
-        $('#loading-placeholder').hide();
-        $("#alert-popup").show();
+      errorHandler: function(message, exception) {
+        if (exception.javaClassName.contains("InvalidMirrorCredentialException")) {
+          $('#loading-placeholder').hide();
+          $("#alert-popup").show();
+        }
+        else {
+          showFatalError();
+        }
       }
     });
   }
@@ -84,10 +89,12 @@ $(function(){
   function withErrorHandling(callbackFunction) {
       return {
         callback: callbackFunction,
-        errorHandler: function(message) {
-          alert("Unexpected error, reloading the page. Please check server logs.");
-          location.reload();
-        }
+        errorHandler: showFatalError
       }
+  }
+
+  function showFatalError() {
+    alert("Unexpected error, reloading the page. Please check server logs.");
+    location.reload();
   }
 });
