@@ -15,7 +15,7 @@
              cloneType="channel"
              cloneAcl="user_role(channel_admin)"
         >
-        <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Channel_and_Package_Management.jsp" -->
+        <!-- helpUrl="-!-/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Channel_and_Package_Management.jsp" -->
     <bean:message key="channels.manage.jsp.toolbar"/>
 </rhn:toolbar>
 

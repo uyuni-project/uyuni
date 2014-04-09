@@ -10,7 +10,7 @@
 <body>
 
 <rhn:toolbar base="h1" icon="header-errata">
-	<!-- helpUrl="/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp" -->
+	<!-- helpUrl="-!-/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp" -->
     <bean:message key="errata.publish.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 
