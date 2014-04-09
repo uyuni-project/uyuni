@@ -49,6 +49,9 @@ public class ProductSyncManager {
     /** Product sync command switch add a product. */
     public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
 
+    /** String returned by the sync command if there is any invalid mirror credential. */
+    private static final String INVALID_MIRROR_CREDENTIAL_ERROR = "HTTP error code 401";
+
     /**
      * Product sync command switch to refresh product, channel and subscription
      * information without triggering any reposync.
@@ -79,18 +82,20 @@ public class ProductSyncManager {
     /**
      * Returns a list of base products.
      * @return the products list
-     * @throws ProductSyncManagerException if external commands or parsing fail
+     * @throws ProductSyncManagerCommandException if external commands or parsing fail
+     * @throws ProductSyncManagerParseException if a parsing problem shows up
      */
-    public List<Product> getBaseProducts() throws ProductSyncManagerException {
+    public List<Product> getBaseProducts()
+        throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
         return parseBaseProducts(readProducts());
     }
 
     /**
      * Invoke external commands which list all the available SUSE products.
      * @return a String containing the XML description of the SUSE products
-     * @throws ProductSyncManagerException if external commands fail
+     * @throws ProductSyncManagerCommandException if external commands fail
      */
-    public String readProducts() throws ProductSyncManagerException {
+    public String readProducts() throws ProductSyncManagerCommandException {
         return runProductSyncCommand(LIST_PRODUCT_SWITCH);
     }
 
@@ -98,19 +103,21 @@ public class ProductSyncManager {
      * Run product sync command.
      * @param arguments the arguments
      * @return the string
-     * @throws ProductSyncManagerException the product sync manager exception
+     * @throws ProductSyncManagerCommandException the product sync manager exception
      */
     public String runProductSyncCommand(String... arguments)
-        throws ProductSyncManagerException {
+        throws ProductSyncManagerCommandException {
         String[] commandLine =
                 (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
         int exitCode = executor.execute(commandLine);
-        if (exitCode != 0) {
-            String message = "Error while running product sync command, " +
-                "got exit code " + exitCode;
-            throw new ProductSyncManagerException(message);
-        }
         String output = executor.getLastCommandOutput();
+        String errorMessage = executor.getLastCommandErrorMessage();
+        if (exitCode != 0) {
+            String message = "Error while running product sync command: "
+                + ArrayUtils.toString(commandLine);
+            throw new ProductSyncManagerCommandException(message, exitCode, output,
+                    errorMessage);
+        }
         logger.debug("This the output of product sync command");
         logger.debug(output);
         return output;
@@ -120,10 +127,10 @@ public class ProductSyncManager {
      * Returns a list of base products from an XML string.
      * @param xml a String containing an XML description of SUSE products
      * @return list of parsed base products
-     * @throws ProductSyncManagerException if the xml cannot be parsed
+     * @throws ProductSyncManagerParseException if the xml cannot be parsed
      */
     public List<Product> parseBaseProducts(String xml)
-        throws ProductSyncManagerException {
+        throws ProductSyncManagerParseException {
         List<Product> result = new LinkedList<Product>();
         Set<Product> products = parsePlainProducts(xml);
 
@@ -152,9 +159,10 @@ public class ProductSyncManager {
      * base/addon relationships.
      * @param xml the xml
      * @return the product set
-     * @throws ProductSyncManagerException the product sync manager exception
+     * @throws ProductSyncManagerParseException the product sync manager exception
      */
-    private Set<Product> parsePlainProducts(String xml) throws ProductSyncManagerException {
+    private Set<Product> parsePlainProducts(String xml)
+        throws ProductSyncManagerParseException {
         try {
             ProductList result =
                     new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
@@ -162,16 +170,17 @@ public class ProductSyncManager {
             return products;
         }
         catch (Exception e) {
-            throw new ProductSyncManagerException(e);
+            throw new ProductSyncManagerParseException(e);
         }
     }
 
     /**
      * Adds multiple products.
      * @param productIdents the product ident list
-     * @throws ProductSyncManagerException if a product addition failed
+     * @throws ProductSyncManagerCommandException if a product addition failed
      */
-    public void addProducts(List<String> productIdents) throws ProductSyncManagerException {
+    public void addProducts(List<String> productIdents)
+        throws ProductSyncManagerCommandException {
         for (String productIdent : productIdents) {
             addProduct(productIdent);
         }
@@ -180,18 +189,31 @@ public class ProductSyncManager {
     /**
      * Adds the product.
      * @param productIdent the product ident
-     * @throws ProductSyncManagerException if the product addition failed
+     * @throws ProductSyncManagerCommandException if the product addition failed
      */
-    public void addProduct(String productIdent) throws ProductSyncManagerException {
+    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
 
     /**
      * Refresh product, channel and subscription information without triggering
      * any reposysnc.
-     * @throws ProductSyncManagerException if the refresh failed
+     * @throws ProductSyncManagerCommandException if the refresh failed
+     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
      */
-    public void refreshProducts() throws ProductSyncManagerException {
-        runProductSyncCommand(REFRESH_SWITCH);
+    public void refreshProducts()
+        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException {
+        try {
+            runProductSyncCommand(REFRESH_SWITCH);
+        }
+        catch (ProductSyncManagerCommandException e) {
+            if (e.getErrorCode() == 1 &&
+                e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
+                throw new InvalidMirrorCredentialException();
+            }
+            else {
+                throw e;
+            }
+        }
     }
 }
