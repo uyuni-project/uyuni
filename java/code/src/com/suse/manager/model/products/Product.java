@@ -189,6 +189,7 @@ public class Product implements Selectable, Comparable<Product> {
         .append(!isBase(), !other.isBase())
         .append(this.name, other.getName())
         .append(this.arch, other.getArch())
+        .append(this.ident, other.getIdent())
         .toComparison();
     }
 
