@@ -25,6 +25,8 @@ import com.suse.manager.model.ncc.Subscription;
 
 import org.apache.log4j.Logger;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,11 +50,62 @@ public class MirrorCredentialsManager extends BaseManager {
     /** Configuration key separator for mirror credentials */
     public static final String KEY_MIRRCREDS_SEPARATOR = "_";
 
+    // The command class to use
+    private Class<? extends ConfigureSatelliteCommand> commandClass;
+
+    /**
+     * Default constructor.
+     */
+    public MirrorCredentialsManager() {
+        this(ConfigureSatelliteCommand.class);
+    }
+
+    /**
+     * Constructor accepting a command class, use directly for tests.
+     * @param commandClassIn the config command class to use
+     */
+    public MirrorCredentialsManager(
+            Class<? extends ConfigureSatelliteCommand> commandClassIn) {
+        commandClass = commandClassIn;
+    }
+
+    /**
+     * Return the config command instance.
+     * @return the config command instance
+     */
+    private ConfigureSatelliteCommand getConfigCommand(User user) {
+        ConfigureSatelliteCommand cmd = null;
+        try {
+            Constructor<? extends ConfigureSatelliteCommand> constructor =
+                    commandClass.getConstructor(User.class);
+            cmd = (ConfigureSatelliteCommand) constructor.newInstance(user);
+        }
+        catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return cmd;
+    }
+
     /**
      * Find all valid mirror credentials and return them.
      * @return List of all available mirror credentials
      */
-    public static List<MirrorCredentialsDto> findMirrorCredentials() {
+    public List<MirrorCredentialsDto> findMirrorCredentials() {
         List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
 
         // Get the main pair of credentials
@@ -88,7 +141,7 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param id the credentials ID
      * @return pair of credentials for given ID.
      */
-    public static MirrorCredentialsDto findMirrorCredentials(long id) {
+    public MirrorCredentialsDto findMirrorCredentials(long id) {
         // Generate suffix depending on the ID
         String suffix = "";
         if (id > 0) {
@@ -119,7 +172,7 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param request the current HTTP request object, used for session caching
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] storeMirrorCredentials(MirrorCredentialsDto creds,
+    public ValidatorError[] storeMirrorCredentials(MirrorCredentialsDto creds,
             User userIn, HttpServletRequest request) {
         if (creds.getUser() == null || creds.getPassword() == null) {
             return null;
@@ -128,20 +181,19 @@ public class MirrorCredentialsManager extends BaseManager {
         // Find the first free ID if necessary
         Long id = creds.getId();
         if (creds.getId() == null) {
-            List<MirrorCredentialsDto> credentials =
-                    MirrorCredentialsManager.findMirrorCredentials();
+            List<MirrorCredentialsDto> credentials = findMirrorCredentials();
             id = new Long(credentials.size());
         }
 
         // Check if there is changes by looking at previous object
-        MirrorCredentialsDto oldCreds = MirrorCredentialsManager.findMirrorCredentials(id);
+        MirrorCredentialsDto oldCreds = findMirrorCredentials(id);
         if (!creds.equals(oldCreds)) {
             // Generate suffix depending on the ID
             String suffix = "";
             if (id > 0) {
                 suffix = KEY_MIRRCREDS_SEPARATOR + id;
             }
-            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+            ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
             configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
             configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
             if (creds.getEmail() != null) {
@@ -167,16 +219,16 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param request the current HTTP request object, used for session caching
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] deleteMirrorCredentials(Long id, User userIn,
+    public ValidatorError[] deleteMirrorCredentials(Long id, User userIn,
             HttpServletRequest request) {
         ValidatorError[] errors = null;
 
         // Store credentials to empty cache later
-        MirrorCredentialsDto credentials = MirrorCredentialsManager.findMirrorCredentials(id);
+        MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
         // Find all credentials and see what needs to be done
-        List<MirrorCredentialsDto> creds = MirrorCredentialsManager.findMirrorCredentials();
-        ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+        List<MirrorCredentialsDto> creds = findMirrorCredentials();
+        ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
 
         for (MirrorCredentialsDto c : creds) {
             int index = creds.indexOf(c);
@@ -221,15 +273,14 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param request the current HTTP request
      * @return list of validation errors or null in case of success
      */
-    public static ValidatorError[] makePrimaryCredentials(Long id, User userIn,
+    public ValidatorError[] makePrimaryCredentials(Long id, User userIn,
             HttpServletRequest request) {
         ValidatorError[] errors = null;
-        List<MirrorCredentialsDto> allCreds = MirrorCredentialsManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> allCreds = findMirrorCredentials();
         if (allCreds.size() > 1) {
             // Find the future primary creds before reordering
-            MirrorCredentialsDto primaryCreds =
-                    MirrorCredentialsManager.findMirrorCredentials(id);
-            ConfigureSatelliteCommand configCommand = new ConfigureSatelliteCommand(userIn);
+            MirrorCredentialsDto primaryCreds = findMirrorCredentials(id);
+            ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
 
             // Shift all indices starting from 1
             int i = 1;
@@ -265,7 +316,7 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      */
-    public static List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds) {
+    public List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds) {
         List<Subscription> subscriptions = null;
         NCCClient nccClient = new NCCClient();
         try {
@@ -284,7 +335,7 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param subscriptions
      * @return list of subscription DTOs
      */
-    private static List<SubscriptionDto> makeDtos(List<Subscription> subscriptions) {
+    private List<SubscriptionDto> makeDtos(List<Subscription> subscriptions) {
         if (subscriptions == null) {
             return null;
         }
@@ -346,7 +397,7 @@ public class MirrorCredentialsManager extends BaseManager {
      * @param forceRefresh set true to refresh the cached subscriptions
      * @return list of subscriptions or null signaling "verification failed"
      */
-    public static List<SubscriptionDto> getSubscriptions(MirrorCredentialsDto creds,
+    public List<SubscriptionDto> getSubscriptions(MirrorCredentialsDto creds,
             HttpServletRequest request, boolean forceRefresh) {
         // Implicitly download subscriptions if requested
         if (forceRefresh ||
@@ -354,8 +405,7 @@ public class MirrorCredentialsManager extends BaseManager {
             if (log.isDebugEnabled()) {
                 log.debug("Downloading subscriptions for " + creds.getUser());
             }
-            List<Subscription> subscriptions =
-                    MirrorCredentialsManager.downloadSubscriptions(creds);
+            List<Subscription> subscriptions = downloadSubscriptions(creds);
             SetupWizardSessionCache.storeSubscriptions(
                     makeDtos(subscriptions), creds, request);
         }
