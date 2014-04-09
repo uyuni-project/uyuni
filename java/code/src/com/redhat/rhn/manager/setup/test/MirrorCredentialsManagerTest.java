@@ -14,114 +14,127 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import java.util.List;
 
 /**
  * Tests for {@link MirrorCredentialsManager}.
  */
-public class MirrorCredentialsManagerTest extends RhnBaseTestCase {
+public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
+
+    // Manager class instance
+    private MirrorCredentialsManager credsManager;
 
     /**
      * Tests findMirrorCredentials().
      * @throws Exception if something goes wrong
      */
     public void testFindMirrorCredsEmpty() throws Exception {
-        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         assertEquals(0, credentials.size());
     }
 
     /**
-     * Tests findMirrorCredentials().
+     * Test findMirrorCredentials().
      * @throws Exception if something goes wrong
      */
     public void testFindAllMirrorCreds() throws Exception {
-        setTestCredentials("testuser0", "testpass0", "testemail0", 0);
-        setTestCredentials("testuser1", "testpass1", "testemail1", 1);
-        setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
-        assertEquals(3, credentials.size());
-
-        for (MirrorCredentialsDto creds : credentials) {
-            int i = credentials.indexOf(creds);
-            assertEquals("testuser" + i, creds.getUser());
-            assertEquals("testpass" + i, creds.getPassword());
-            assertEquals("testemail" + i, creds.getEmail());
-        }
+        MirrorCredentialsDto creds0 = storeTestCredentials(0);
+        MirrorCredentialsDto creds1 = storeTestCredentials(1);
+        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
+        assertEquals(3, creds.size());
+        assertEquals(creds0, creds.get(0));
+        assertEquals(creds1, creds.get(1));
+        assertEquals(creds2, creds.get(2));
     }
 
     /**
-     * Tests findMirrorCredentials().
+     * Test findMirrorCredentials().
      * @throws Exception if something goes wrong
      */
     public void testFindMirrorCredsMissing() throws Exception {
-        setTestCredentials("testuser0", "testpass0", "testemail0", 0);
-        setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-        List<MirrorCredentialsDto> credentials = MirrorCredentialsManager.findMirrorCredentials();
-        assertEquals(1, credentials.size());
-        assertNull(MirrorCredentialsManager.findMirrorCredentials(1));
+        MirrorCredentialsDto creds0 = storeTestCredentials(0);
+        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
+        assertEquals(1, creds.size());
+        assertEquals(creds0, creds.get(0));
+        assertNull(credsManager.findMirrorCredentials(1));
+        assertEquals(creds2, credsManager.findMirrorCredentials(2));
     }
 
     /**
-     * Tests findMirrorCredentials().
+     * Test findMirrorCredentials(long).
      * @throws Exception if something goes wrong
      */
     public void testFindMirrorCredsById() throws Exception {
-        setTestCredentials("testuser0", "testpass0", "testemail0", 0);
-        setTestCredentials("testuser1", "testpass1", "testemail1", 1);
-        setTestCredentials("testuser2", "testpass2", "testemail2", 2);
-
-        for (int i = 0; i <= 2; i++) {
-            MirrorCredentialsDto creds = MirrorCredentialsManager.findMirrorCredentials(i);
-            assertEquals("testuser" + i, creds.getUser());
-            assertEquals("testpass" + i, creds.getPassword());
-            assertEquals("testemail" + i, creds.getEmail());
-        }
+        MirrorCredentialsDto creds0 = storeTestCredentials(0);
+        MirrorCredentialsDto creds1 = storeTestCredentials(1);
+        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        assertEquals(creds0, credsManager.findMirrorCredentials(0));
+        assertEquals(creds1, credsManager.findMirrorCredentials(1));
+        assertEquals(creds2, credsManager.findMirrorCredentials(2));
     }
 
     /**
-     * Sets the test credentials.
-     *
-     * @param user the user
-     * @param pass the pass
-     * @param email the email
-     * @param index the index
+     * Test deleteMirrorCredentials().
+     * @throws Exception if something goes wrong
      */
-    private void setTestCredentials(String user, String pass, String email, int index) {
-        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
-        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
-        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
-        if (index >= 1) {
-            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-        }
-        Config.get().setString(keyUser, user);
-        Config.get().setString(keyPass, pass);
-        Config.get().setString(keyEmail, email);
+    public void testDeleteCredentials() {
+        MirrorCredentialsDto creds0 = storeTestCredentials(0L);
+        MirrorCredentialsDto creds1 = storeTestCredentials(1L);
+        assertEquals(2, credsManager.findMirrorCredentials().size());
+        credsManager.deleteMirrorCredentials(0L, user, request);
+        List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
+        assertEquals(1, creds.size());
+        assertFalse(creds.contains(creds0));
+        assertEquals(creds1, creds.get(0));
     }
 
     /**
-     * Clean up (remove) test credentials.
-     *
-     * @param index
+     * Test makePrimaryCredentials()
+     * @throws Exception if something goes wrong
      */
-    private void removeTestCredentials(int index) {
-        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
-        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
-        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
-        if (index >= 1) {
-            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + index;
-        }
-        Config.get().remove(keyUser);
-        Config.get().remove(keyPass);
-        Config.get().remove(keyEmail);
+    public void testMakePrimaryCredentials() {
+        MirrorCredentialsDto creds0 = storeTestCredentials(0);
+        MirrorCredentialsDto creds1 = storeTestCredentials(1);
+        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        assertEquals(creds0, credsManager.findMirrorCredentials(0L));
+        credsManager.makePrimaryCredentials(1L, user, request);
+        assertEquals(creds1, credsManager.findMirrorCredentials(0L));
+        credsManager.makePrimaryCredentials(2L, user, request);
+        assertEquals(creds2, credsManager.findMirrorCredentials(0L));
+    }
+
+    /**
+     * Store test credentials for a given id.
+     *
+     * @param id the id of stored credentials
+     */
+    private MirrorCredentialsDto storeTestCredentials(long id) {
+        MirrorCredentialsDto creds = new MirrorCredentialsDto();
+        creds.setUser("testuser" + id);
+        creds.setPassword("testpass" + id);
+        creds.setEmail("testemail" + id);
+        creds.setId(id);
+        credsManager.storeMirrorCredentials(creds, user, request);
+        return creds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        // User needs to be SAT_ADMIN
+        user.addRole(RoleFactory.SAT_ADMIN);
+        // Setup manager object
+        credsManager = new MirrorCredentialsManager(NoopConfigureSatelliteCommand.class);
     }
 
     /**
@@ -131,8 +144,9 @@ public class MirrorCredentialsManagerTest extends RhnBaseTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         // Clear credentials from config
-        for (int i = 0; i <= 10; i++) {
-            removeTestCredentials(i);
+        for (long i = 0; i <= 10; i++) {
+            credsManager.deleteMirrorCredentials(i, user, request);
         }
+        credsManager = null;
     }
 }
