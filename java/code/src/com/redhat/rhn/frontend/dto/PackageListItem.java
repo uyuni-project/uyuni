@@ -31,7 +31,6 @@ import java.util.Map;
  * @version $Rev$
  */
 public class PackageListItem extends IdComboDto {
-    private String idCombo;
     private List elabIdCombo;
     private Long id;
     private String nvre;
@@ -56,11 +55,6 @@ public class PackageListItem extends IdComboDto {
     private String summary;
     private String nvrea;
     private Date installTime;
-
-    private Long idOne;
-    private Long idTwo;
-    private Long idThree;
-
     private String locked = null; // Assuming package is free to operate by default.
     private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
                                  // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
@@ -224,49 +218,6 @@ public class PackageListItem extends IdComboDto {
      */
     public void setArchId(Long archIdIn) {
         archId = archIdIn;
-    }
-    /**
-     * @return Returns the idCombo.
-     */
-    public String getIdCombo() {
-        return idCombo;
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public Long getIdOne() {
-        return idOne;
-
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public Long getIdTwo() {
-        return idTwo;
-    }
-    /**
-     * {@inheritDoc}
-     */
-    public Long getIdThree() {
-        return idThree;
-    }
-    /**
-     * @param idComboIn The idCombo to set.
-     */
-    public void setIdCombo(String idComboIn) {
-        idCombo = idComboIn;
-        if (idComboIn != null) {
-            String[] ids = idCombo.split("\\|");
-            if (ids.length > 0) {
-                idOne = Long.valueOf(ids[0]);
-            }
-            if (ids.length > 1) {
-                idTwo = Long.valueOf(ids[1]);
-            }
-            if (ids.length > 2) {
-                idThree = Long.valueOf(ids[2]);
-            }
-        }
     }
     /**
      * @return Returns the elab idCombo.
