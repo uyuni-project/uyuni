@@ -94,7 +94,6 @@ $(function(){
   }
 
   function showFatalError() {
-    alert("Unexpected error, reloading the page. Please check server logs.");
-    location.reload();
+    alert("Unexpected error, please reload the page and check server logs.");
   }
 });
