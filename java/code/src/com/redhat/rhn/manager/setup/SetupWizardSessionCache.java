@@ -120,9 +120,11 @@ public class SetupWizardSessionCache {
         Map<String, List<SubscriptionDto>> subsMap =
                 (Map<String, List<SubscriptionDto>>) session
                         .getAttribute(SUBSCRIPTIONS_KEY);
-        subsMap.remove(creds.getUser());
-        if (logger.isDebugEnabled()) {
-            logger.debug("Removed subscriptions for: " + creds.getUser());
+        if (subsMap != null) {
+            subsMap.remove(creds.getUser());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Removed subscriptions for: " + creds.getUser());
+            }
         }
     }
 
