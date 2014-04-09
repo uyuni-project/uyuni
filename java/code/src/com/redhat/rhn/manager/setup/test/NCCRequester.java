@@ -12,12 +12,12 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.NCCException;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
+
 import java.util.concurrent.Callable;
 
 /**
@@ -27,16 +27,17 @@ import java.util.concurrent.Callable;
  */
 public abstract class NCCRequester<T> implements Callable<T> {
 
+
     /**
-     * Run a request.
-     *
-     * @see java.util.concurrent.Callable#call()
+     * {@inheritDoc}
      */
+    @Override
     public T call() {
         T ret = null;
         try {
             ret = request(new NCCClient("http://localhost:" + HttpServerMock.PORT));
-        } catch (NCCException e) {
+        }
+        catch (NCCException e) {
             // Catch it in here, we are expecting it
         }
         return ret;

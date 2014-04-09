@@ -12,27 +12,31 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
-import com.redhat.rhn.manager.setup.SetupWizardManager;
+import com.redhat.rhn.manager.setup.ProxySettingsManager;
+import com.redhat.rhn.manager.setup.SetupWizardSessionCache;
 
-public class HttpProxyRenderer {
-    // The logger for this class
-    private static final Logger logger = Logger.getLogger(HttpProxyRenderer.class);
+import org.apache.log4j.Logger;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Exposes AJAX methods to work with proxy settings.
+ */
+public class ProxySettingsRenderer {
+
+    /** Logger instance */
+    private static Logger log = Logger.getLogger(ProxySettingsRenderer.class);
 
     /**
-     * Add a new pair of credentials and re-render the whole list.
+     * Save the given proxy settings to the configuration.
      * @param settings map with the keys hostname, username, password
      * @return saved settings
      */
@@ -48,15 +52,16 @@ public class HttpProxyRenderer {
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Saving proxy settings: " + settings.toString());
+        if (log.isDebugEnabled()) {
+            log.debug("Saving proxy settings: " + settings.toString());
         }
 
         // TODO: Handle errors
-        ValidatorError[] errors = SetupWizardManager.storeProxySettings(settings, webUser, request);
+        ValidatorError[] errors =
+                ProxySettingsManager.storeProxySettings(settings, webUser, request);
         if (errors != null) {
             for (ValidatorError error : errors) {
-                logger.error("error: " + error.toString());
+                log.error("error: " + error.toString());
             }
         }
         return settings;
@@ -67,16 +72,17 @@ public class HttpProxyRenderer {
      * @return The current configured proxy settings
      */
     public ProxySettingsDto retrieveProxySettings() {
-        return SetupWizardManager.getProxySettings();
+        return ProxySettingsManager.getProxySettings();
     }
 
     /**
      * Verify the configured proxy settings with NCC.
+     * @param refreshCache used to force a cache refresh
      * @return true if the proxy works, false otherwise.
      */
     public boolean verifyProxySettings(boolean refreshCache) {
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
-        return SetupWizardManager.getProxyStatus(refreshCache, request);
+        return SetupWizardSessionCache.getProxyStatus(refreshCache, request);
     }
 }

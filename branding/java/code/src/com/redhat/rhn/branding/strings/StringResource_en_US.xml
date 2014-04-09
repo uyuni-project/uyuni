@@ -1919,17 +1919,8 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- SUSE Products -->
-      <trans-unit id="suse-products.jsp.empty">
-        <source>No SUSE products found.</source>
-      </trans-unit>
-      <trans-unit id="suse-products.jsp.name">
-        <source>Name</source>
-      </trans-unit>
-      <trans-unit id="suse-products.jsp.arch">
-        <source>Architecture</source>
-      </trans-unit>
-      <trans-unit id="suse-products.jsp.dispatch">
-        <source>Sync Products</source>
+      <trans-unit id="suse-products.jsp.error">
+        <source>There was an error listing the products for the given credentials, please go &lt;a href='/rhn/admin/setup/MirrorCredentials.do'&gt;back&lt;/a&gt; to make sure that all configured mirror credentials are valid!</source>
       </trans-unit>
     </body>
   </file>

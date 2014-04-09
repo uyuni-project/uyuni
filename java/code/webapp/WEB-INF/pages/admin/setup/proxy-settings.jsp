@@ -2,10 +2,10 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="/rhn/dwr/interface/HttpProxyRenderer.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/interface/ProxySettingsRenderer.js"></script>
         <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
         <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
-        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-http-proxy.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-setup-wizard-proxy-settings.js"></script>
     </head>
     <body>
         <div class="responsive-wizard">
@@ -62,16 +62,7 @@
                     </div>
                 </div>
               </div>
-              <div class="panel-footer">
-                <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                        1 of 2
-                    </div>
-                    <div class="col-sm-6 text-center">
-                        <a class="btn btn-success" href="/rhn/admin/setup/MirrorCredentials.do">Next <i class="fa fa-arrow-right"></i></a>
-                    </div>
-                </div>
-              </div>
+              <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
             </div>
         </div>
     </body>

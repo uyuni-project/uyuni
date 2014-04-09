@@ -12,35 +12,30 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.testing.httpservermock;
+package com.redhat.rhn.manager.setup.test;
 
-import simple.http.serve.Resource;
-import simple.http.serve.ResourceEngine;
+import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 /**
- * Mocks a Simple framework ResourceEngine, which returns a Resource given an
- * Address.
- * @author duncan
+ * A {@link ConfigureSatelliteCommand} that will not try to write to rhn.conf for testing.
  */
-public class EngineMock implements ResourceEngine {
-
-    /** The service. */
-    private ServiceMock service;
-
+public class NoopConfigureSatelliteCommand extends ConfigureSatelliteCommand {
     /**
-     * Instantiates a new engine mock.
-     *
-     * @param serviceIn service that will be returned by resolve()
+     * {@inheritDoc}
+     * @param userIn user
      */
-    public EngineMock(ServiceMock serviceIn) {
-        this.service = serviceIn;
+    public NoopConfigureSatelliteCommand(User userIn) {
+        super(userIn);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Resource resolve(String string) {
-        return this.service;
+    public ValidatorError[] storeConfiguration() {
+        this.clearUpdates();
+        return null;
     }
 }

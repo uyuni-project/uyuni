@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,23 +12,18 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
-package com.redhat.rhn.frontend.action.renderers;
-
+package com.redhat.rhn.manager.setup;
 
 /**
- * Interface for rendering fragments asynchronously
- *
- * @version $Rev$
+ * Represents an error while parsing SUSE product data.
  */
-public interface FragmentRenderer {
-
-    String NEXT_TABLE_STYLE = "next-table-style";
+public class ProductSyncManagerParseException extends Exception {
 
     /**
-     * Render content, please
-     * @return generated content
-     * @throws Exception sometimes things just don't work out
+     * Exception constructor.
+     * @param exception the exception
      */
-    String renderAsync() throws Exception;
+    public ProductSyncManagerParseException(Exception exception) {
+        super(exception);
+    }
 }
