@@ -112,21 +112,6 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     }
 
     /**
-     * Store test credentials for a given id.
-     *
-     * @param id the id of stored credentials
-     */
-    private MirrorCredentialsDto storeTestCredentials(long id) {
-        MirrorCredentialsDto creds = new MirrorCredentialsDto();
-        creds.setUser("testuser" + id);
-        creds.setPassword("testpass" + id);
-        creds.setEmail("testemail" + id);
-        creds.setId(id);
-        credsManager.storeMirrorCredentials(creds, user, request);
-        return creds;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -150,6 +135,21 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         }
         // Tear down the manager class instance
         credsManager = null;
+    }
+
+    /**
+     * Store test credentials for a given id.
+     *
+     * @param id the id of stored credentials
+     */
+    private MirrorCredentialsDto storeTestCredentials(long id) {
+        MirrorCredentialsDto creds = new MirrorCredentialsDto();
+        creds.setUser("testuser" + id);
+        creds.setPassword("testpass" + id);
+        creds.setEmail("testemail" + id);
+        creds.setId(id);
+        credsManager.storeMirrorCredentials(creds, user, request);
+        return creds;
     }
 
     /**
