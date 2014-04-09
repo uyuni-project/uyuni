@@ -73,7 +73,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
     public void testCreateSystemRecordsByProfile() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         Distro distro = Distro.create(connection, "test-distro", "kernel", "initrd",
-            new HashMap<String, String>());
+            new HashMap<String, String>(), null, null);
         Profile profile = Profile.create(connection, "test-profile", distro);
         Server server1 = ServerTestUtils.createTestSystem(user,
             ServerConstants.getServerGroupTypeProvisioningEntitled());
@@ -185,7 +185,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         KickstartIpTest.addIpRangesToKickstart(kickstartData);
 
         Distro distro = Distro.create(connection, "test-distro", "kernel", "initrd",
-            new HashMap<String, String>());
+            new HashMap<String, String>(), null, null);
         Profile profile = Profile.create(connection, "test-profile", distro);
 
         Server server = ServerTestUtils.createTestSystem(user,

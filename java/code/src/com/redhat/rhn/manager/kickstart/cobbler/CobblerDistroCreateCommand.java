@@ -78,7 +78,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
     public ValidatorError store() {
         log.debug("Token : [" + xmlRpcToken + "]");
 
-        Map ksmeta = new HashMap();
+        Map<String, String> ksmeta = new HashMap<String, String>();
         KickstartUrlHelper helper = new KickstartUrlHelper(this.tree);
         ksmeta.put(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE,
                 helper.getKickstartMediaPath());
@@ -90,9 +90,12 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
             ksmeta.put("autoyast", "true");
         }
 
-        Distro distro = Distro.create(CobblerXMLRPCHelper.getConnection(user),
-                tree.getCobblerDistroName(), tree.getKernelPath(),
-                tree.getInitrdPath(), ksmeta);
+        Distro distro =
+                Distro.create(CobblerXMLRPCHelper.getConnection(user),
+                        tree.getCobblerDistroName(), tree.getKernelPath(),
+                        tree.getInitrdPath(), ksmeta,
+                        tree.getInstallType().getCobblerBreed(),
+                        tree.getInstallType().getCobblerOsVersion());
         // Setup the kickstart metadata so the URLs and activation key are setup
 
         // set architecture (fix 32bit vm's on a 64bit system)
@@ -109,9 +112,12 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
         invokeCobblerUpdate();
 
         if (tree.doesParaVirt()) {
-            Distro distroXen = Distro.create(CobblerXMLRPCHelper.getConnection(user),
-                tree.getCobblerXenDistroName(), tree.getKernelXenPath(),
-                tree.getInitrdXenPath(), ksmeta);
+            Distro distroXen =
+                    Distro.create(CobblerXMLRPCHelper.getConnection(user),
+                            tree.getCobblerXenDistroName(),
+                            tree.getKernelXenPath(), tree.getInitrdXenPath(),
+                            ksmeta, tree.getInstallType().getCobblerBreed(),
+                            tree.getInstallType().getCobblerOsVersion());
             tree.setCobblerXenId(distroXen.getUid());
             distroXen.setArch(archName);
             distroXen.save();
