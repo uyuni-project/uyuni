@@ -1,6 +1,4 @@
 $(function(){
-  // Initially hide the error popup and get the products
-  $("#alert-popup").hide();
   refreshProducts();
 
   // click on an add product icon. Handler is attached to table because rows
