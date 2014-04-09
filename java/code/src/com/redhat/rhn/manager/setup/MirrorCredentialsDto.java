@@ -27,6 +27,12 @@ public class MirrorCredentialsDto extends BaseDto {
     private String email;
 
     /**
+     * Default constructor.
+     */
+    public MirrorCredentialsDto() {
+    }
+
+    /**
      * Instantiates a new mirror credentials DTO.
      *
      * @param emailIn the email
@@ -105,7 +111,6 @@ public class MirrorCredentialsDto extends BaseDto {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((user == null) ? 0 : user.hashCode());
         return result;
@@ -132,14 +137,6 @@ public class MirrorCredentialsDto extends BaseDto {
             }
         }
         else if (!email.equals(other.email)) {
-            return false;
-        }
-        if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
-        }
-        else if (!id.equals(other.id)) {
             return false;
         }
         if (password == null) {
