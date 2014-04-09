@@ -49,7 +49,7 @@ public class SystemRecordTest extends BaseTestCaseWithUser {
         super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         Distro distro = Distro.create(connection, "test-distro", "kernel", "initrd",
-            new HashMap());
+            new HashMap(), null, null);
         Profile profile = Profile.create(connection, "test-profile", distro);
         system = SystemRecord.create(connection, "test-system", profile);
     }
