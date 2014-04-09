@@ -16,7 +16,7 @@
 <body onload="formFocus('cveAuditForm','cveIdentifierId');">
   <rhn:toolbar base="h1" icon="header-search"
     imgAlt="audit.jsp.alt"
-    helpUrl="/rhn/help/reference/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
+    helpUrl="/rhn/help/user/en-US/s1-sm-audit.jsp#s2-sm-audit-cve">
     <bean:message key="cveaudit.jsp.overview" />
   </rhn:toolbar>
   <p>

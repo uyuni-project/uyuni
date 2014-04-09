@@ -12,7 +12,7 @@
 <rhn:toolbar base="h1" icon="header-system-groups"
 	           creationUrl="ProbeSuiteCreate.do"
                creationType="probesuite"
-               helpUrl="/rhn/help/reference/en-US/s1-sm-monitor.jsp#s2-sm-monitor-psuites">
+               helpUrl="/rhn/help/user/en-US/s1-sm-monitor.jsp#s2-sm-monitor-psuites">
     <bean:message key="probesuites.jsp.header1"/>
   </rhn:toolbar>
 

@@ -1794,11 +1794,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>注記: このボックスにチェックが付いている場合には、上記のパスワードフィールドは必要ありません。ただし、このユーザーアカウントの PAM 認証が無効になっている場合にのみ機能するパスワードを入力しても構いません。</target>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>If you would like to set up your satellite to authenticate against LDAP, kerberos, and other network-based authentication systems, please visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;reference guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your satellite to authenticate against LDAP, kerberos, and other network-based authentication systems, please visit the &lt;a href="/rhn/help/install/en-US/s1-maintenance-pam-auth.jsp"&gt;reference guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
-        <target>ご使用の Satellite が LDAP、kerberos その他ネットワークベースの認証システムに対して認証を行うように設定する場合は、PAM の設定方法について &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;リファレンスガイド&lt;/a&gt; を参照してください。</target>
+        <target>ご使用の Satellite が LDAP、kerberos その他ネットワークベースの認証システムに対して認証を行うように設定する場合は、PAM の設定方法について &lt;a href="/rhn/help/install/en-US/s1-maintenance-pam-auth.jsp"&gt;リファレンスガイド&lt;/a&gt; を参照してください。</target>
       </trans-unit>
       <!-- userdetails.jsp -->
       <trans-unit id="userdetails.jsp.header">
@@ -10963,11 +10963,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>パブリックキーまたは SSL 証明書が定義されていません</target>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
+        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target>キックスタート中にシステムにキーや証明書をインストールするため、キックスタートプロファイルでこれらのキーや証明書を参照することができます。署名済みパッケージのインストールには正しいキー、@@PRODUCT_NAME@@ Proxy Server や @@PRODUCT_NAME@@ Server によるキックスタートには正しい証明書が必要になります。詳細については、 &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。</target>
+        <target>キックスタート中にシステムにキーや証明書をインストールするため、キックスタートプロファイルでこれらのキーや証明書を参照することができます。署名済みパッケージのインストールには正しいキー、@@PRODUCT_NAME@@ Proxy Server や @@PRODUCT_NAME@@ Server によるキックスタートには正しい証明書が必要になります。詳細については、 &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。</target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -11124,11 +11124,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>ファイル保持</target>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
+        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target>ファイル保持一覧は、 特定のキックスタート中にシステムに復元されるファイルの一覧です。キックスタートプロファイルでファイル保持一覧を参照することができます。詳細については &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。ユーザーの組織で使用するために作成されたファイル保持一覧は次の通りです。</target>
+        <target>ファイル保持一覧は、 特定のキックスタート中にシステムに復元されるファイルの一覧です。キックスタートプロファイルでファイル保持一覧を参照することができます。詳細については &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。ユーザーの組織で使用するために作成されたファイル保持一覧は次の通りです。</target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -11250,11 +11250,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>キックスタートファイル保持一覧の作成</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>ここに指定するファイルやディレクトリはキックスタート後に保持されます。1 ファイルまたは 1 ディレクトリを 1 行ずつ記載します。 &lt;br/&gt;各一覧の合計サイズは &lt;strong&gt;1 MB&lt;/strong&gt; に制限されています。詳細については &lt;a href="/rhn/help/reference/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。</target>
+        <target>ここに指定するファイルやディレクトリはキックスタート後に保持されます。1 ファイルまたは 1 ディレクトリを 1 行ずつ記載します。 &lt;br/&gt;各一覧の合計サイズは &lt;strong&gt;1 MB&lt;/strong&gt; に制限されています。詳細については &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN リファレンスガイド&lt;/a&gt; を参照してください。</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>

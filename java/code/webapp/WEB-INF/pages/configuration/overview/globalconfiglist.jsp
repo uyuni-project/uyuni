@@ -9,7 +9,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-channel-configuration"
- helpUrl="/rhn/help/reference/en-US/s1-sm-configuration.jsp#configuration-files-central"
+ helpUrl="/rhn/help/user/en-US/s1-sm-configuration.jsp#configuration-files-central"
  creationUrl="/rhn/configuration/ChannelCreate.do?editing=true"
  creationType="configchannel"
  creationAcl="user_role(config_admin)">
