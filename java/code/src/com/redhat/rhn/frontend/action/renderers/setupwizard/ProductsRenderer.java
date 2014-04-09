@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
-import com.redhat.rhn.manager.setup.ProductSyncManagerException;
 
 import org.apache.log4j.Logger;
 
@@ -44,7 +43,8 @@ public class ProductsRenderer extends BaseFragmentRenderer {
      * {@inheritDoc}
      */
     @Override
-    protected void render(User user, PageControl pc, HttpServletRequest request) {
+    protected void render(User user, PageControl pc, HttpServletRequest request)
+        throws Exception {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException("Must be SAT_ADMIN" +
                     "to read the products");
@@ -56,9 +56,9 @@ public class ProductsRenderer extends BaseFragmentRenderer {
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
                     productSyncManager.getBaseProducts());
         }
-        catch (ProductSyncManagerException e) {
+        catch (Exception e) {
             logger.error("Exception while rendering products: " + e.getMessage());
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 

@@ -14,12 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.setupwizard;
 
-import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
-import com.redhat.rhn.manager.setup.ProductSyncManagerException;
+import com.redhat.rhn.manager.setup.ProductSyncManagerCommandException;
 
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContextFactory;
@@ -38,32 +37,38 @@ public class ProductSyncAction {
     /**
      * Synchronizes a single product.
      * @param productIdent the product ident
+     * @throws ProductSyncManagerCommandException in case product
+     * synchronization goes wrong
      */
-    public void synchronizeSingle(String productIdent) {
+    public void synchronizeSingle(String productIdent)
+        throws ProductSyncManagerCommandException {
         checkUserRole();
 
         try {
             new ProductSyncManager().addProduct(productIdent);
         }
-        catch (ProductSyncManagerException e) {
+        catch (ProductSyncManagerCommandException e) {
             log.error(e);
-            throw new RhnRuntimeException(e);
+            throw e;
         }
     }
 
     /**
      * Synchronizes a single product.
      * @param productIdents the product ident list
+     * @throws ProductSyncManagerCommandException in case product
+     * synchronization goes wrong
      */
-    public void synchronizeMultiple(List<String> productIdents) {
+    public void synchronizeMultiple(List<String> productIdents)
+        throws ProductSyncManagerCommandException {
         checkUserRole();
 
         try {
             new ProductSyncManager().addProducts(productIdents);
         }
-        catch (ProductSyncManagerException e) {
+        catch (ProductSyncManagerCommandException e) {
             log.error(e);
-            throw new RhnRuntimeException(e);
+            throw e;
         }
     }
 
