@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<product_list>
+  <product arch="x86_64" ident="res-4-x86_64-1321-rhel-x86_64-as-4" name="RES 4" parent_product="">
+    <mandatory_channels>
+      <channel label="res4-as-x86_64" status="P"/>
+      <channel label="rhel-x86_64-as-4" status="P"/>
+      <channel label="res4-as-suse-manager-tools-x86_64" status="P"/>
+    </mandatory_channels>
+    <optional_channels/>
+  </product>
+  <product arch="i386" ident="res-4-i386-1321-rhel-i386-es-4" name="RES 4" parent_product="">
+    <mandatory_channels>
+      <channel label="rhel-i386-es-4" status="."/>
+      <channel label="res4-es-suse-manager-tools-i386" status="."/>
+      <channel label="res4-es-i386" status="."/>
+    </mandatory_channels>
+    <optional_channels/>
+  </product>
+  <product arch="x86_64" ident="res-6-x86_64-2580-rhel-x86_64-server-6" name="RES 6" parent_product="">
+    <mandatory_channels>
+      <channel label="res6-x86_64" status="P"/>
+      <channel label="rhel-x86_64-server-6" status="P"/>
+      <channel label="res6-suse-manager-tools-x86_64" status="P"/>
+    </mandatory_channels>
+    <optional_channels/>
+  </product>
+  <product arch="x86_64" ident="rhel-6-expanded-support-x86_64-3200-rhel-x86_64-server-6" name="RHEL 6 Expanded Support" parent_product="res-6-x86_64-2580-rhel-x86_64-server-6">
+    <mandatory_channels>
+      <channel label="res6-ha-x86_64" status="."/>
+    </mandatory_channels>
+    <optional_channels/>
+  </product>
+</product_list>

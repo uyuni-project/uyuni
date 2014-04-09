@@ -38,11 +38,11 @@ public class ServiceMock extends Service {
     /**
      * Instantiate a new container mock.
      *
-     * @param responder the responder
+     * @param responderIn the responder
      */
-    public ServiceMock(Responder responder) {
+    public ServiceMock(Responder responderIn) {
         super(new FileContext());
-        this.responder = responder;
+        this.responder = responderIn;
         this.request = null;
     }
 
@@ -56,15 +56,14 @@ public class ServiceMock extends Service {
     }
 
     /**
-     * @param request Request
+     * @param requestIn Request
      * @param response Response
      * @throws Exception
-     * @see simple.http.load.Service#process(simple.http..Request,
-     * simple.http..Response)
+     * @see simple.http.load.Service#process(simple.http.Request, simple.http.Response)
      */
     @Override
-    protected void process(Request request, Response response) throws Exception {
-        this.request = request;
+    protected void process(Request requestIn, Response response) throws Exception {
+        this.request = requestIn;
         responder.respond(response);
     }
 }

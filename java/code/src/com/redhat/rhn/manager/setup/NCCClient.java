@@ -15,9 +15,16 @@
 package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,25 +36,21 @@ import java.net.Proxy;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
 /**
  * Simple client for NCC subscription data
  */
 public class NCCClient {
 
-    // Logger for this class
-    private static final Logger logger = Logger.getLogger(NCCClient.class);
-    private final static String NCC_URL = "https://secure-www.novell.com/center/regsvc/";
-    private final static String NCC_PING_COMMAND = "?command=ping";
-    private final static String NCC_LIST_SUBSCRIPTIONS_COMMAND = "?command=listsubscriptions";
+    /** Logger instance. */
+    private static Logger log = Logger.getLogger(NCCClient.class);
+
+    private static final String NCC_URL = "https://secure-www.novell.com/center/regsvc/";
+    private static final String NCC_PING_COMMAND = "?command=ping";
+    private static final String NCC_LIST_SUBSCRIPTIONS_COMMAND =
+            "?command=listsubscriptions";
+    private static final int MAX_REDIRECTS = 10;
+
     private String nccUrl;
-    // Maximum number of redirects that will be followed
-    private final static int MAX_REDIRECTS = 10;
 
     /**
      * Creates a client for the NCC registration service
@@ -81,7 +84,7 @@ public class NCCClient {
      * @return list of subscriptions available via the given credentials
      * @throws NCCException in case something bad happens with NCC
      */
-    public List<Subscription> downloadSubscriptions(MirrorCredentials creds)
+    public List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds)
         throws NCCException {
         // Setup XML to send it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
@@ -109,14 +112,14 @@ public class NCCClient {
                 // Execute the request
                 connection.connect();
                 result = connection.getResponseCode();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Response status code: " + result);
+                if (log.isDebugEnabled()) {
+                    log.debug("Response status code: " + result);
                 }
 
                 if (result == 302) {
                     // Prepare the redirect
                     location = connection.getHeaderField("Location");
-                    logger.info("Got 302, following redirect to: " + location);
+                    log.info("Got 302, following redirect to: " + location);
                     connection.disconnect();
                     redirects++;
                 }
@@ -127,7 +130,7 @@ public class NCCClient {
                 InputStream stream = connection.getInputStream();
                 SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
                 subscriptions = subsList.getSubscriptions();
-                logger.info("Found " + subscriptions.size() + " subscriptions");
+                log.info("Found " + subscriptions.size() + " subscriptions");
             }
         }
         catch (Exception e) {
@@ -135,7 +138,7 @@ public class NCCClient {
         }
         finally {
             if (connection != null) {
-                logger.debug("Releasing connection");
+                log.debug("Releasing connection");
                 connection.disconnect();
             }
         }

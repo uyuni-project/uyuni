@@ -12,39 +12,102 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.frontend.action.satellite;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.redhat.rhn.frontend.nav.NavCache;
+import com.redhat.rhn.frontend.nav.NavNode;
+import com.redhat.rhn.frontend.nav.NavTree;
+import com.redhat.rhn.frontend.struts.RhnAction;
+import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.frontend.struts.RhnHelper;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This is for now just a generic RhnAction used for all pages of the wizard.
  */
 public class SetupWizardAction extends RhnAction {
+    /** Tab menu XML. */
+    private static final String NAVIGATION_XML_PATH = "/WEB-INF/nav/setup_wizard.xml";
+
+    // page attributes
+    private static final String NEXT_STEP_ATTRIBUTE = "nextStep";
+    private static final String PREVIOUS_STEP_ATTRIBUTE = "previousStep";
+    private static final String TOTAL_STEPS_ATTRIBUTE = "totalSteps";
+    private static final String CURRENT_STEP_ATTRIBUTE = "currentStep";
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
 
-    /** {@inheritDoc} */
-    public ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
+    /**
+      * {@inheritDoc}
+      * @throws Exception if parsing of navigation XML fails
+      */
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+            HttpServletRequest request, HttpServletResponse response)
+        throws Exception {
 
-        // DynaActionForm form = (DynaActionForm) formIn;
-        // RequestContext ctx = new RequestContext(request);
+        setAttributes(mapping, request);
+        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+    }
 
+    /**
+     * Sets common attributes needed by setup-tab-footer.jspf.
+     * @param mapping the Action mapping object
+     * @param request current request object
+     * @throws Exception if parsing of navigation XML fails
+     */
+    @SuppressWarnings("unchecked")
+    private void setAttributes(ActionMapping mapping, HttpServletRequest request)
+        throws Exception {
         String path = mapping.getPath();
         logger.debug("Current path: " + path);
-        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
+        NavTree tree =
+                NavCache.getTree(getServlet().getServletContext().getResource(
+                        NAVIGATION_XML_PATH));
+        List<NavNode> nodes = (List<NavNode>) tree.getNodes();
+        int nodeIndex = getNodeIndex(path, nodes);
+        int totalSteps = nodes.size();
+
+        request.setAttribute(CURRENT_STEP_ATTRIBUTE, nodeIndex + 1);
+
+        request.setAttribute(TOTAL_STEPS_ATTRIBUTE, totalSteps);
+
+        request.setAttribute(PREVIOUS_STEP_ATTRIBUTE,
+                nodeIndex == 0 ? null : nodes.get(nodeIndex - 1).getURLs().get(0));
+
+        request.setAttribute(NEXT_STEP_ATTRIBUTE,
+                nodeIndex == (totalSteps - 1) ? null : nodes.get(nodeIndex + 1).getURLs()
+                        .get(0));
+    }
+
+    /**
+     * Looks for a URL in a list of navigation nodes, returns the index if any.
+     * @param path the path
+     * @param nodes the navigation nodes
+     * @return the index
+     * @throws IllegalArgumentException if path is not found
+     */
+    @SuppressWarnings("unchecked")
+    private int getNodeIndex(String path, List<NavNode> nodes) {
+        for (int i = 0; i < nodes.size(); i++) {
+            NavNode node = nodes.get(i);
+            List<String> urls = (List<String>) node.getURLs();
+            for (String url : urls) {
+                if (url.endsWith(path + ".do")) {
+                    return i;
+                }
+            }
+        }
+        throw new IllegalArgumentException("SetupWizardAction: path " +
+                path + " not found");
     }
 }

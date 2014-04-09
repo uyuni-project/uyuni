@@ -21,12 +21,35 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
-@Root(name="mandatory_channels")
+/**
+ * A collection of Channels that are mandatory for a Product.
+ */
+@Root(name = "mandatory_channels")
 public class MandatoryChannels {
 
-    @ElementList(inline=true, required=false)
+    /** The channel. */
+    @ElementList(inline = true, required = false)
     private List<Channel> channel;
 
+    /**
+     * Default constructor.
+     */
+    public MandatoryChannels() {
+        // required by Simple XML
+    }
+
+    /**
+     * Instantiates a new mandatory channels object.
+     * @param channelsIn the channel
+     */
+    public MandatoryChannels(List<Channel> channelsIn) {
+        channel = channelsIn;
+    }
+
+    /**
+     * Gets the channels.
+     * @return the channels
+     */
     public List<Channel> getChannels() {
         if (channel == null) {
             channel = new ArrayList<Channel>();

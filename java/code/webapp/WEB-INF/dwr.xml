@@ -56,12 +56,20 @@
       <include method="listSubscriptions" />
     </create>
     <convert converter="bean" match="com.redhat.rhn.manager.setup.ProxySettingsDto"/>
-    <create creator="new" javascript="HttpProxyRenderer">
-      <param name="class" value="com.redhat.rhn.frontend.action.renderers.setupwizard.HttpProxyRenderer" />
+    <create creator="new" javascript="ProxySettingsRenderer">
+      <param name="class" value="com.redhat.rhn.frontend.action.renderers.setupwizard.ProxySettingsRenderer" />
       <include method="saveProxySettings" />
       <include method="retrieveProxySettings" />
       <include method="verifyProxySettings" />
     </create>
+    <create creator="new" javascript="ProductSyncAction">
+        <param name="class" value="com.redhat.rhn.frontend.action.setupwizard.ProductSyncAction" />
+        <include method="synchronizeSingle" />
+        <include method="synchronizeMultiple" />
+    </create>
+    <convert match="com.redhat.rhn.manager.setup.InvalidMirrorCredentialException" converter="exception">
+        <param name='include' value='message'/>
+    </convert>
           <create creator="new" javascript="ImagesRenderer">
                 <param name="class" value="com.redhat.rhn.frontend.action.renderers.ImagesRenderer" />
                 <include method="renderAsync" />

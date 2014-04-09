@@ -35,6 +35,8 @@ def main():
                       help="list all the products which are available for you [XML Format]")
     parser.add_option("--add-product", action="store_true", dest="addproduct",
                       help="Add all mandatory channels of a product [interactive]")
+    parser.add_option("--add-product-by-ident", action="store", dest="addproductbyident",
+                      help="Add all mandatory channels of the product identified by the given ident")
     parser.add_option("-c", "--channel", action="store",
                       help="add a new channel and trigger a reposync")
     parser.add_option("--all-childs", action="store_true", dest="allchilds",
@@ -96,8 +98,23 @@ def main():
             print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
             return
         plist = syncer.list_products()
-        cache = product_list(plist, allchilds=options.allchilds, filter=options.filter)
-        add_product(syncer, plist, cache)
+        numcache = product_list(plist, allchilds=options.allchilds, filter=options.filter)
+        print ""
+        num = raw_input("Enter the number of the product you want to add: ")
+        if not numcache.has_key(num):
+            print "Invalid selection"
+            sys.exit(1)
+        add_product(syncer, plist[numcache[num]])
+    elif options.addproductbyident:
+        if syncer.is_iss_slave:
+            print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
+            return
+        ident = options.addproductbyident
+        plist = syncer.list_products()
+        if not plist.has_key(ident):
+            print "Cannot find product with ident", ident
+            sys.exit(1)
+        add_product(syncer, plist[ident])
     elif options.productlistxml:
         if syncer.is_iss_slave:
             print "SUSE Manager is configured as slave server. Please use \"mgr-inter-sync\" command."
@@ -148,13 +165,8 @@ def main():
         syncer.update_upgrade_pathes_by_config()
         syncer.sync_installed_channels()
 
-def add_product(syncer, plist, numcache):
-    print ""
-    num = raw_input("Enter the number of the product you want to add: ")
-    if not numcache.has_key(num):
-        return
+def add_product(syncer, product):
     syncer.update_channels()
-    product = plist[numcache[num]]
     if product.is_base():
         # we need to sync the base channel first
         bc = product.base_channel

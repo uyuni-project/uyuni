@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.setup;
 
 import java.util.Date;
@@ -33,10 +32,10 @@ public class SubscriptionDto {
         return name;
     }
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
     /**
      * @return the startDate
@@ -45,10 +44,10 @@ public class SubscriptionDto {
         return startDate;
     }
     /**
-     * @param startDate the startDate to set
+     * @param startDateIn the startDate to set
      */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date startDateIn) {
+        this.startDate = startDateIn;
     }
     /**
      * @return the endDate
@@ -57,9 +56,64 @@ public class SubscriptionDto {
         return endDate;
     }
     /**
-     * @param endDate the endDate to set
+     * @param endDateIn the endDate to set
      */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date endDateIn) {
+        this.endDate = endDateIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        SubscriptionDto other = (SubscriptionDto) obj;
+        if (endDate == null) {
+            if (other.endDate != null) {
+                return false;
+            }
+        }
+        else if (!endDate.equals(other.endDate)) {
+            return false;
+        }
+        if (name == null) {
+            if (other.name != null) {
+                return false;
+            }
+        }
+        else if (!name.equals(other.name)) {
+            return false;
+        }
+        if (startDate == null) {
+            if (other.startDate != null) {
+                return false;
+            }
+        }
+        else if (!startDate.equals(other.startDate)) {
+            return false;
+        }
+        return true;
     }
 }
