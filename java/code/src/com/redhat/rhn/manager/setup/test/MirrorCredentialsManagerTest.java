@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -144,9 +145,29 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         // Clear credentials from config
-        for (long i = 0; i <= 10; i++) {
-            credsManager.deleteMirrorCredentials(i, user, request);
+        for (int i = 0; i <= 10; i++) {
+            removeTestCredentials(i);
         }
+        // Tear down the manager class instance
         credsManager = null;
+    }
+
+    /**
+     * Clean up credentials from memory by calling remove() directly.
+     *
+     * @param id the index of credentials to remove
+     */
+    private void removeTestCredentials(int id) {
+        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
+        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
+        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
+        if (id >= 1) {
+            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+        }
+        Config.get().remove(keyUser);
+        Config.get().remove(keyPass);
+        Config.get().remove(keyEmail);
     }
 }
