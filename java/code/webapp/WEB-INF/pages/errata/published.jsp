@@ -11,7 +11,7 @@
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
-  <!-- helpUrl="/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management.jsp#channel-mgmt-Manage_Errata-Published_Errata" -->
+  <!-- helpUrl="-!-/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management.jsp#channel-mgmt-Manage_Errata-Published_Errata" -->
   <bean:message key="erratalist.jsp.erratamgmt"/>
 </rhn:toolbar>
 
