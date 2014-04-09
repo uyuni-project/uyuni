@@ -23,7 +23,7 @@
 
         <div class="panel panel-default" id="products-content">
             <div class="panel-body">
-                <div class="alert alert-danger" id="alert-popup">
+                <div class="alert alert-danger" id="alert-popup" hidden>
                     <bean:message key="suse-products.jsp.error" />
                 </div>
                 <div class="row" id="suse-products">
