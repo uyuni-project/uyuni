@@ -126,6 +126,8 @@ public class ProductSyncManager {
         throws ProductSyncManagerException {
         List<Product> result = new LinkedList<Product>();
         Set<Product> products = parsePlainProducts(xml);
+
+        // associates ident codes to parsed product objects
         Map<String, Product> identProductMap = new HashMap<String, Product>();
         for (Product product : products) {
             identProductMap.put(product.getIdent(), product);
