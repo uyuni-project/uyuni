@@ -17,20 +17,53 @@ package com.redhat.rhn.manager.setup;
 /**
  * Represents an error while working with SUSE products.
  */
-public class ProductSyncManagerException extends Exception {
+public class ProductSyncManagerCommandException extends Exception {
+
+    /** The error code. */
+    private int errorCode;
+
+    /** The command output. */
+    private String commandOutput;
+
+    /** The command error message. */
+    private String commandErrorMessage;
+
     /**
      * Message constructor.
-     * @param message exception message
+     * @param messageIn descriptive exception message
+     * @param errorCodeIn the error code in
+     * @param commandOutputIn the command output in
+     * @param commandErrorMessageIn the command error message in
      */
-    public ProductSyncManagerException(String message) {
-        super(message);
+    public ProductSyncManagerCommandException(String messageIn, int errorCodeIn,
+            String commandOutputIn, String commandErrorMessageIn) {
+        super(messageIn);
+        errorCode = errorCodeIn;
+        commandOutput = commandOutputIn;
+        commandErrorMessage = commandErrorMessageIn;
     }
 
     /**
-     * Exception constructor.
-     * @param exception the exception
+     * Gets the error code.
+     * @return the error code
      */
-    public ProductSyncManagerException(Exception exception) {
-        super(exception);
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    /**
+     * Gets the command output.
+     * @return the command output
+     */
+    public String getCommandOutput() {
+        return commandOutput;
+    }
+
+    /**
+     * Gets the command error message.
+     * @return the command error message
+     */
+    public String getCommandErrorMessage() {
+        return commandErrorMessage;
     }
 }
