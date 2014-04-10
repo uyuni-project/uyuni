@@ -1301,6 +1301,18 @@ class NCCSync(object):
                         continue
                 ret[ck].set_parent_product(p.ident)
 
+
+        # Find all the addon products which do not have a parent set and remove
+        # them.
+        orphan_products_to_delete = []
+        for ident in ret:
+            prod = ret[ident]
+            if not prod.is_base() and not prod.parent_product:
+                orphan_products_to_delete.append(ident)
+
+        for ident in orphan_products_to_delete:
+            del ret[ident]
+
         return ret
 
     def list_channels(self):
