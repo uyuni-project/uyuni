@@ -46,7 +46,7 @@ $(function(){
         $("#table-content").append(content);
       },
       errorHandler: function(message, exception) {
-        if (exception.javaClassName.contains("InvalidMirrorCredentialException")) {
+        if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
           $('.table').hide();
           $("#alert-popup").show();
         }
