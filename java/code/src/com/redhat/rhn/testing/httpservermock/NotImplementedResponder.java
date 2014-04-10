@@ -19,11 +19,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.redhat.rhn.testing.httpservermock;
 
 import simple.http.Response;
-
 
 /**
  * Convenience responder that always outputs a 501 "Not Implemented" error.
@@ -31,7 +29,7 @@ import simple.http.Response;
 public class NotImplementedResponder implements Responder {
 
     /**
-     * @see com.suse.studio.client.test.httpservermock.Responder#respond(simple.http.Response)
+     * {@inheritDoc}
      */
     @Override
     public void respond(Response response) {
