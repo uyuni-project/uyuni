@@ -8,7 +8,7 @@ function saveProxySettings() {
   username = $('#http-proxy-input-username').val();
   password = $('#http-proxy-input-password').val();
   ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
-    function(settings) {
+    makeAjaxHandler(function(settings) {
       console.log("Proxy settings saved!");
       $('#http-proxy-save').removeAttr('disabled');
       // TODO make sure it succeeded
@@ -17,7 +17,7 @@ function saveProxySettings() {
 
       // Force refresh of the cache
       verifyProxySettings(true);
-    }
+    })
   );
 }
 
@@ -33,10 +33,11 @@ function setProxySettingsVerified(valid) {
 // verify the proxy settings on the server side, pass true to refresh the cache
 function verifyProxySettings(forceRefresh) {
   showSpinner('http-proxy-verify');
-  ProxySettingsRenderer.verifyProxySettings(forceRefresh, function(valid) {
+  ProxySettingsRenderer.verifyProxySettings(forceRefresh,
+    makeAjaxHandler(function(valid) {
     console.log("verified proxy: " + valid);
     setProxySettingsVerified(valid);
-  });
+  }));
 }
 
 // just sets the given settings in the form
@@ -57,7 +58,7 @@ function setProxySettings(settings) {
 function retrieveProxySettings() {
   showSpinner('http-proxy-verify');
   ProxySettingsRenderer.retrieveProxySettings(
-    function(settings) {
+    makeAjaxHandler(function(settings) {
       setProxySettings(settings);
       console.log(JSON.stringify(settings));
 
@@ -66,7 +67,7 @@ function retrieveProxySettings() {
       } else {
         setProxySettingsEditable(true);
       }
-    }
+    })
   );
 }
 
