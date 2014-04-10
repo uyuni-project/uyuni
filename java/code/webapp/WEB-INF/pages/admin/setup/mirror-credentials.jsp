@@ -114,7 +114,7 @@
                     <div class="row" id="mirror-credentials">
                         <div class="col-sm-9" id="listset-container">
                             <rhn:icon type="spinner"></rhn:icon>
-                            <script>MirrorCredentialsRenderer.renderCredentials(makeAjaxCallback("listset-container", false));</script>
+                            <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
                         </div>
                         <div class="col-sm-3 hidden-xs" id="wizard-faq">
                             <h4>What are Mirror Credentials</h4>
