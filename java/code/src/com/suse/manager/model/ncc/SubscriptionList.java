@@ -23,7 +23,10 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
-@Root(name="subscriptionlist")
+/**
+ * List of subscriptions as parsed from NCC.
+ */
+@Root(name = "subscriptionlist")
 public class SubscriptionList {
 
     @Attribute
@@ -35,7 +38,7 @@ public class SubscriptionList {
     @Element(required = false)
     private String smtguid;
 
-    @ElementList(name="subscription", inline = true, required = false)
+    @ElementList(name = "subscription", inline = true, required = false)
     private List<Subscription> subscriptions;
 
     /**

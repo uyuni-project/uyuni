@@ -21,12 +21,19 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
-@Root(name="product_list")
+/**
+ * Container holding a list of products.
+ */
+@Root(name = "product_list")
 public class ProductList {
 
     @ElementList(inline = true, required = false)
     private List<Product> product;
 
+    /**
+     * Get the contained list of products.
+     * @return list of products
+     */
     public List<Product> getProducts() {
         if (product == null) {
             product = new ArrayList<Product>();

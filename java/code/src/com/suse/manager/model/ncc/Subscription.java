@@ -39,19 +39,19 @@ public class Subscription {
     @Element
     private String substatus;
 
-    @Element(name="start-date")
+    @Element(name = "start-date")
     private long startDate;
 
-    @Element(name="end-date")
+    @Element(name = "end-date")
     private long endDate;
 
     @Element
     private long duration;
 
-    @Element(name="server-class")
+    @Element(name = "server-class")
     private String serverClass;
 
-    @Element(name="product-class")
+    @Element(name = "product-class")
     private String productClass;
 
     @Element
@@ -63,7 +63,7 @@ public class Subscription {
     @Element
     private int consumed;
 
-    @Element(name="consumed-virtual")
+    @Element(name = "consumed-virtual")
     private int consumedVirtual;
 
     /**
