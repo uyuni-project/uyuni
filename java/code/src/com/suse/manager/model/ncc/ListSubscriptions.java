@@ -19,26 +19,29 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
-@Root(name="listsubscriptions")
+/**
+ * Root element of subscriptions list as sent by NCC.
+ */
+@Root(name = "listsubscriptions")
 public class ListSubscriptions {
 
-    @Attribute
-    private static final String xmlns= "http://www.novell.com/xml/center/regsvc-1_0";
+    @Attribute(name = "xmlns")
+    private static final String XMLNS = "http://www.novell.com/xml/center/regsvc-1_0";
 
-    @Attribute(name="lang")
+    @Attribute(name = "lang")
     private static final String LANG = "en";
 
-    @Attribute(name="includeall")
+    @Attribute(name = "includeall")
     private static final String INCLUDEALL = "no";
 
     // TODO: Read as 'username' from /etc/zypp/credentials.d/NCCcredentials
-    @Element
-    private static final String smtguid = "FIXME";
+    @Element(name = "smtguid")
+    private static final String SMTGUID = "FIXME";
 
-    @Element(name="authuser")
+    @Element(name = "authuser")
     private String user;
 
-    @Element(name="authpass")
+    @Element(name = "authpass")
     private String password;
 
     /**
@@ -51,10 +54,10 @@ public class ListSubscriptions {
 
     /**
      * Set the user
-     * @param user the user to set
+     * @param userIn the user to set
      */
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String userIn) {
+        this.user = userIn;
     }
 
     /**
@@ -67,9 +70,9 @@ public class ListSubscriptions {
 
     /**
      * Set the password.
-     * @param pass the password to set
+     * @param passwordIn the password to set
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPassword(String passwordIn) {
+        this.password = passwordIn;
     }
 }
