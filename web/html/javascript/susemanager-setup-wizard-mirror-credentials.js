@@ -45,28 +45,28 @@ function saveCredentials() {
   var password = $('#edit-password').val();
   showSpinner("edit-credentials-spinner");
   MirrorCredentialsRenderer.saveCredentials(editId, email, user, password,
-      makeAjaxCallback("listset-container", false));
+      makeRendererHandler("listset-container", false));
 }
 
 // Delete credentials from modal
 function deleteCredentials() {
   showSpinner("delete-credentials-spinner");
   MirrorCredentialsRenderer.deleteCredentials(deleteId,
-      makeAjaxCallback("listset-container", false));
+      makeRendererHandler("listset-container", false));
 }
 
 // Make primary credentials
 function makePrimaryCredentials(id) {
   showSpinner("primary-" + id);
   MirrorCredentialsRenderer.makePrimaryCredentials(id,
-      makeAjaxCallback("listset-container", false));
+      makeRendererHandler("listset-container", false));
 }
 
 // Verify credentials by downloading subscriptions
 function verifyCredentials(id, refresh) {
   showSpinner("verify-" + id);
   MirrorCredentialsRenderer.verifyCredentials(id, refresh,
-      makeAjaxCallback("verify-" + id, false));
+      makeRendererHandler("verify-" + id, false));
 }
 
 // relevant for the mirror credentials page
@@ -80,6 +80,6 @@ $(document).ready(function() {
   $('#modal-list-subscriptions').on('show.bs.modal', function() {
     showSpinner("modal-list-subscriptions-body");
     MirrorCredentialsRenderer.listSubscriptions(subscriptionsId,
-      makeAjaxCallback("modal-list-subscriptions-body", false));
+      makeRendererHandler("modal-list-subscriptions-body", false));
   });
 });
