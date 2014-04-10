@@ -8,7 +8,7 @@ $(function(){
 
     showSyncStarting(ident);
 
-    ProductSyncAction.synchronizeSingle(ident, withErrorHandling(function() {
+    ProductSyncAction.synchronizeSingle(ident, makeAjaxHandler(function() {
       showSyncStarted(ident);
     }));
   });
@@ -29,7 +29,7 @@ $(function(){
       showSyncStarting(this);
     });
 
-    ProductSyncAction.synchronizeMultiple(idents, withErrorHandling(function() {
+    ProductSyncAction.synchronizeMultiple(idents, makeAjaxHandler(function() {
       $.each(idents, function(){
         showSyncStarted(this);
       });
@@ -40,12 +40,12 @@ $(function(){
   function refreshProducts() {
     $("#loading-placeholder").show();
     $("#table-content tr:not(#loading-placeholder)").remove();
-    ProductsRenderer.renderAsync({
-      callback: function(content) {
+    ProductsRenderer.renderAsync(makeAjaxHandler(
+      function(content) {
         $("#loading-placeholder").hide();
         $("#table-content").append(content);
       },
-      errorHandler: function(message, exception) {
+      function(message, exception) {
         if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
           $('.table').hide();
           $("#alert-popup").show();
@@ -53,8 +53,8 @@ $(function(){
         else {
           showFatalError();
         }
-      }
-    });
+      })
+    );
   }
 
   function getRow(ident) {
@@ -82,18 +82,5 @@ $(function(){
 
     addonStartSyncIcons.show();
     addonCheckboxes.removeAttr("disabled");
-  }
-
-  // returns an object that can be passed to DWR as a callback.
-  // handles fatal errors with an alert
-  function withErrorHandling(callbackFunction) {
-      return {
-        callback: callbackFunction,
-        errorHandler: showFatalError
-      }
-  }
-
-  function showFatalError() {
-    alert("Unexpected error, please reload the page and check server logs.");
   }
 });
