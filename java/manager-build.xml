@@ -137,6 +137,7 @@
         <exclude name="**/el-api*" />
         <exclude name="**/jasper*" />
         <exclude name="**/jspapi*" />
+        <exclude name="**/tomcat6-servlet*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
