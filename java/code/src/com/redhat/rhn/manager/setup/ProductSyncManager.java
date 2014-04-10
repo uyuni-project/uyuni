@@ -113,8 +113,8 @@ public class ProductSyncManager {
         String output = executor.getLastCommandOutput();
         String errorMessage = executor.getLastCommandErrorMessage();
         if (exitCode != 0) {
-            String message = "Error while running product sync command: "
-                + ArrayUtils.toString(commandLine);
+            String message = "Error while running product sync command: " +
+                    ArrayUtils.toString(commandLine);
             throw new ProductSyncManagerCommandException(message, exitCode, output,
                     errorMessage);
         }
