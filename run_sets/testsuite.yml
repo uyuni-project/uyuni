@@ -2,7 +2,6 @@
 - features/init_user_create.feature
 - features/running.feature
 - features/login.feature
-- features/setup_wizard.feature
 - features/mainpage.feature
 - features/channels_add.feature
 - features/push_package.feature
@@ -61,6 +60,7 @@
 - features/xmlrpc_api.feature
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
+- features/setup_wizard.feature
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
