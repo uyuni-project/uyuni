@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Apr 10 17:29:31 CEST 2014 - mc@suse.de
+
+- version 5.10.65.3-1
+- fix uncaught exception in config deploy (bnc#871549)
+
+-------------------------------------------------------------------
+Thu Apr 10 17:29:01 CEST 2014 - mc@suse.de
+
+- fix release in specfile for SLE12 (bnc#872970)
+
+-------------------------------------------------------------------
 Thu Mar 27 10:07:15 CET 2014 - fcastelli@suse.com
 
 - version 5.10.65.2-1
