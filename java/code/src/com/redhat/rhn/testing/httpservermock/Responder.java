@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.redhat.rhn.testing.httpservermock;
 
 import simple.http.Response;
@@ -33,5 +32,5 @@ public interface Responder {
      *
      * @param response a response object
      */
-    public void respond(Response response);
+    void respond(Response response);
 }
