@@ -110,7 +110,7 @@ function makeAjaxHandler(callbackFunction, errorHandlerFunction) {
       callback: callbackFunction,
       errorHandler: function(message, exception) {
         // second, if we get an error during unloading we ignore it
-        if (($.unloading == true) && (exception.name == "dwr.engine.http.0")) {
+        if ($.unloading == true) {
           console.log("Ignoring exception " + exception + " with message " + message + " because it is a DWR error during unload");
         }
         else {
