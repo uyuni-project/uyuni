@@ -38,7 +38,7 @@ When /^I verify the product was added$/ do
 end  
 
 When /^I select the product Webyast 1.3$/ do
-   within(:xpath, "//tr[td[position()=2 and contains(text(), 'SUSE Linux Enterprise Server 11 SP3 VMWare')] and td[position()=3 and contains(text(), 'x86_64')]][1]/following-sibling::tr[1]") do
+   within(:xpath, "//tr[td[position()=2 and contains(text(), 'SUSE Linux Enterprise Server 11 SP3 VMWare')] and td[position()=3 and contains(text(), 'x86_64')]][1]/following-sibling::tr[4]") do
       fail if not find("input#select-single").click
    end
 end
