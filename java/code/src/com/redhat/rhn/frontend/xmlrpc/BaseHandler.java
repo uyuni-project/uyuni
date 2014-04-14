@@ -62,7 +62,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
      * Converts true/false to int output for XML-RPC protocol.
      *
      * @param value
-     * @return
+     * @return 1 for true, 0 for false
      */
     public final int bool(Boolean value) {
         return value ? BaseHandler.VALID : BaseHandler.INVALID;
