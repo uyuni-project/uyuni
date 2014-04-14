@@ -53,7 +53,7 @@
       <c:if test="${documentation == 'true'}">
         <li class="list-group-item">
         <rhn:icon type="nav-bullet" /> <a
-            href="/rhn/help/client-config/en-US/index.jsp"> <bean:message
+            href="/rhn/help/user/en-US/s1-sm-your-rhn.jsp"> <bean:message
                 key="yourrhn.jsp.tasks.registersystem" />
           </a>
         </li>

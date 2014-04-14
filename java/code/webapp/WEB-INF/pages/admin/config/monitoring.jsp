@@ -28,7 +28,7 @@
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-info"
-                     helpUrl="">
+                     helpUrl="/rhn/help/user/en-US/s1-sm-sattools.jsp">
             <bean:message key="generalconfig.jsp.header1"/>
         </rhn:toolbar>
         <p><bean:message key="generalconfig.jsp.summary"/></p>

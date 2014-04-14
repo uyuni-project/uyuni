@@ -14,7 +14,7 @@
              creationUrl="/rhn/admin/ScheduleDetail.do"
              creationType="schedule"
              creationAcl="user_role(satellite_admin)"
-	         helpUrl="">
+	         helpUrl="/rhn/help/user/en-US/ch-rhn-workgroup.jsp#s2-sm-categories-pages">
     <bean:message key="schedule.edit.jsp.satschedules"/>
 </rhn:toolbar>
 
