@@ -8,7 +8,7 @@
 <html>
 <body>
     <rhn:toolbar base="h1" icon="header-chain"
-        helpUrl="/rhn/help/reference/en-US/s1-sm-actions.jsp#s2-sm-action-chains">
+        helpUrl="/rhn/help/user/en-US/s1-sm-actions.jsp#s2-sm-action-chain">
         <bean:message key="actionchains.jsp.title" />
     </rhn:toolbar>
 
