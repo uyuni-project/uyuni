@@ -31,7 +31,7 @@
                         <table class="table table-rounded">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="select-all" autocomplete="off" /></th>
+                                    <th><input type="checkbox" class="select-all" autocomplete="off" /></th>
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
                                     <th>1-click</th>
