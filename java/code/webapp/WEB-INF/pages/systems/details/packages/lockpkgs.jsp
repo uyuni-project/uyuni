@@ -7,10 +7,12 @@
 <html>    
     <body>
         <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
-        <h2>
-            <img src="/img/rhn-icon-package_add.gif" alt="<bean:message key='installpkgs.jsp.installpackages'/>" />
+        
+        <rhn:toolbar base="h2" icon="header-package-add"
+            helpUrl="/rhn/help/user/en-US/s1-sm-systems.jsp#s1-package-lock">
             <bean:message key="pkg.lock.header" />
-        </h2>
+        </rhn:toolbar>
+
         <p><bean:message key="pkg.lock.summary" /></p>
             
         <rl:listset name="packageListSet">
