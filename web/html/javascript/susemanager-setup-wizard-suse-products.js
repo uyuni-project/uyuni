@@ -1,5 +1,5 @@
 $(function(){
-  refreshProducts();
+  showProducts();
 
   // click on an add product icon. Handler is attached to table because rows
   // can be reloaded via AJAX
@@ -37,9 +37,7 @@ $(function(){
   });
 
   // Get the products and show message in case of errors
-  function refreshProducts() {
-    $("#loading-placeholder").show();
-    $("#table-content tr:not(#loading-placeholder)").remove();
+  function showProducts() {
     ProductsRenderer.renderAsync(makeAjaxHandler(
       function(content) {
         $("#loading-placeholder").hide();
