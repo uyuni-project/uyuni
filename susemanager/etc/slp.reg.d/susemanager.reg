@@ -7,7 +7,7 @@
 #############################################################################
 
 # Register the SUSE Manager server, if it is running
-service:susemanager:https://$HOSTNAME/XMLRPC,en,65535
+service:registration.suse:manager://$HOSTNAME/XMLRPC,en,65535
 tcp-port=443
 type=server
 description=SUSE Manager Server registration URL for clients
