@@ -103,8 +103,8 @@
         </div>
 
         <div class="responsive-wizard">
-            <rhn:toolbar base="h1" icon="header-preferences">
-                <bean:message key="Setup Wizard" />
+            <rhn:toolbar base="h1" icon="header-preferences" helpUrl="/rhn/help/user/en-US/s1-sm-sattools.jsp#s2-sattools-wizard">
+                Setup Wizard
             </rhn:toolbar>
             <rhn:dialogmenu mindepth="0" maxdepth="1"
                         definition="/WEB-INF/nav/setup_wizard.xml"
