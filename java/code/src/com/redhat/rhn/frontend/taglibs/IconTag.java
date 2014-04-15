@@ -91,6 +91,7 @@ public class IconTag extends TagSupport {
         icons.put("header-package-del", "fa spacewalk-icon-package-delete");
         icons.put("header-package-extra", "fa spacewalk-icon-package-extra");
         icons.put("header-package-upgrade", "fa spacewalk-icon-package-upgrade");
+        icons.put("header-power", "fa fa-power-off");
         icons.put("header-preferences", "fa fa-cogs");
         icons.put("header-proxy", "fa spacewalk-icon-proxy");
         icons.put("header-refresh", "fa fa-refresh");
@@ -164,7 +165,7 @@ public class IconTag extends TagSupport {
         icons.put("system-virt-guest", "fa fa-1-5x spacewalk-icon-virtual-guest");
         icons.put("system-virt-host", "fa fa-1-5x spacewalk-icon-virtual-host");
         icons.put("system-warn", "fa fa-exclamation-triangle fa-1-5x text-warning");
-        
+
     }
 
     /**
