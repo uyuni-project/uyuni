@@ -7,8 +7,8 @@
 <tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
     <td>
         <input type="checkbox" id="select-single"
-            <c:if test="${not requestScope.product.synchronizable}">
-                disabled
+            <c:if test="${requestScope.product.synchronizing}">
+                checked disabled
             </c:if>
         />
     </td>
