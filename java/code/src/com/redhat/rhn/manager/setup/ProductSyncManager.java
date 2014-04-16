@@ -251,15 +251,31 @@ public class ProductSyncManager {
             }
 
             if (channelId.equals(c.getId())) {
-                // We found the latest run, see if it failed
-                if (run.getStatus().equals(TaskoRun.STATUS_FAILED)) {
-                    channelSyncStatus = SyncStatus.FAILED;
-                    // TODO: Set the log message to the enum as soon as we have it
+                // We found the latest run, get debug information
+                String log = run.getTailOfStdError(1024);
+                if (log.isEmpty()) {
+                    log = run.getTailOfStdOutput(1024);
                 }
-                else {
-                    // In progress
-                    logger.debug("Repo sync run found for channel " + c +
-                            ", status is: " + run.getStatus());
+
+                // Set the correct status and additional info
+                String runStatus = run.getStatus();
+                String prefix = "setupwizard.syncstatus.";
+                if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
+                        runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
+                    // Reposync failed or interrupted
+                    channelSyncStatus = SyncStatus.FAILED;
+                    channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
+                    channelSyncStatus.setDetails(log);
+                }
+                else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
+                        runStatus.equals(TaskoRun.STATUS_RUNNING)) {
+                    // Reposync is in progress
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Repo sync run found for channel " + c +
+                                ", status is: " + run.getStatus());
+                    }
+                    channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
+                    channelSyncStatus.setDetails(log);
                 }
                 break;
             }

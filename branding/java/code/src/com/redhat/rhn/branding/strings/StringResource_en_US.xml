@@ -1934,6 +1934,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="setupwizard.syncstatus.failed">
         <source>Failed</source>
       </trans-unit>
+      <trans-unit id="setupwizard.syncstatus.message.reposync.failed">
+        <source>Repository synchronization failed or was interrupted.</source>
+      </trans-unit>
+      <trans-unit id="setupwizard.syncstatus.message.reposync.progress">
+        <source>Repository synchronization is in progress.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
