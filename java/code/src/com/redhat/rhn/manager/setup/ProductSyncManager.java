@@ -24,6 +24,7 @@ import com.redhat.rhn.taskomatic.TaskoSchedule;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
+import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.manager.model.products.ProductList;
 
 import org.apache.commons.io.IOUtils;
@@ -69,12 +70,6 @@ public class ProductSyncManager {
 
     /** The executor. */
     private Executor executor;
-
-    // Sync status strings
-    private static String SYNC_STATUS_NOT_MIRRORED = "";
-    private static String SYNC_STATUS_FINISHED = "Finished";
-    private static String SYNC_STATUS_FAILED = "Failed";
-    private static String SYNC_STATUS_IN_PROGRESS = "In progress";
 
     /**
      * Default constructor.
@@ -171,7 +166,7 @@ public class ProductSyncManager {
                 product.setSyncStatus(getProductSyncStatus(product));
             }
             else {
-                product.setSyncStatus(SYNC_STATUS_NOT_MIRRORED);
+                product.setSyncStatus(SyncStatus.NOT_MIRRORED);
             }
         }
 
@@ -183,9 +178,9 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    private String getProductSyncStatus(Product product) {
+    private SyncStatus getProductSyncStatus(Product product) {
         // Fall back to in progress (mgr-ncc-sync ".")
-        String productSyncStatus = SYNC_STATUS_IN_PROGRESS;
+        SyncStatus productSyncStatus = SyncStatus.IN_PROGRESS;
 
         // Count failed and finished channels
         int failedCounter = 0;
@@ -193,12 +188,12 @@ public class ProductSyncManager {
 
         // Aggregate status of the single channels
         for (Channel c : product.getMandatoryChannels()) {
-            String channelStatus = getChannelSyncStatus(c);
-            if (channelStatus.equals(SYNC_STATUS_FAILED)) {
+            SyncStatus channelStatus = getChannelSyncStatus(c);
+            if (channelStatus.equals(SyncStatus.FAILED)) {
                 logger.debug("Channel failed: " + c.getLabel());
                 failedCounter++;
             }
-            else if (channelStatus.equals(SYNC_STATUS_FINISHED)) {
+            else if (channelStatus.equals(SyncStatus.FINISHED)) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
@@ -211,11 +206,11 @@ public class ProductSyncManager {
 
         // Failed if at least one channel failed
         if (failedCounter > 0) {
-            productSyncStatus = SYNC_STATUS_FAILED;
+            productSyncStatus = SyncStatus.FAILED;
         }
         // Finished if all mandatory channels have metadata
         else if (finishedCounter == product.getMandatoryChannels().size()) {
-            productSyncStatus = SYNC_STATUS_FINISHED;
+            productSyncStatus = SyncStatus.FINISHED;
         }
 
         return productSyncStatus;
@@ -226,14 +221,14 @@ public class ProductSyncManager {
      * @param channel the channel
      * @return channel sync status as string
      */
-    private String getChannelSyncStatus(Channel channel) {
-        String channelSyncStatus = SYNC_STATUS_IN_PROGRESS;
+    private SyncStatus getChannelSyncStatus(Channel channel) {
+        SyncStatus channelSyncStatus = SyncStatus.IN_PROGRESS;
 
         // Check if there is metadata for this channel
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
         if (ChannelManager.getRepoLastBuild(c) != null) {
-            return SYNC_STATUS_FINISHED;
+            return SyncStatus.FINISHED;
         }
 
         // No metadata, check for failed download jobs in taskomatic
@@ -258,7 +253,7 @@ public class ProductSyncManager {
             if (channelId.equals(c.getId())) {
                 // We found the latest run, see if it failed
                 if (run.getStatus().equals(TaskoRun.STATUS_FAILED)) {
-                    channelSyncStatus = SYNC_STATUS_FAILED;
+                    channelSyncStatus = SyncStatus.FAILED;
                     // TODO: Set the log message to the enum as soon as we have it
                 }
                 else {

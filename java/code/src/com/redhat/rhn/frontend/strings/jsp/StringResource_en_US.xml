@@ -21480,6 +21480,23 @@ given channel.</source>
           <source>@@PRODUCT_NAME@@ Login:</source>
         </trans-unit>
       </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/setup/SUSEProducts.do</context>
+        </context-group>
+        <trans-unit id="setupwizard.syncstatus.not.mirrored">
+          <source>&amp;nbsp;</source>
+        </trans-unit>
+        <trans-unit id="setupwizard.syncstatus.in.progress">
+          <source>In progress</source>
+        </trans-unit>
+        <trans-unit id="setupwizard.syncstatus.finished">
+          <source>Finished</source>
+        </trans-unit>
+        <trans-unit id="setupwizard.syncstatus.failed">
+          <source>Failed</source>
+        </trans-unit>
+      </group>
     </body>
   </file>
 </xliff>
