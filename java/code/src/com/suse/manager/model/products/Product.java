@@ -276,7 +276,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Set the product sync status.
-     * @param status the status
+     * @param syncStatusIn the status
      */
     public void setSyncStatus(String syncStatusIn) {
         this.syncStatus = syncStatusIn;
@@ -284,7 +284,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Get the product sync status.
-     * @return
+     * @return the sync status
      */
     public String getSyncStatus() {
         return this.syncStatus;
