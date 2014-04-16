@@ -201,8 +201,6 @@ public class ProductSyncManager {
                 logger.debug("Channel in progress: " + c.getLabel());
             }
         }
-        logger.debug("No. of failed: " + failedCounter);
-        logger.debug("No. of finished: " + finishedCounter);
 
         // Failed if at least one channel failed
         if (failedCounter > 0) {
@@ -233,6 +231,7 @@ public class ProductSyncManager {
 
         // No metadata, check for failed download jobs in taskomatic
         List<TaskoRun> runningRuns = TaskoFactory.listRunsByBunch("repo-sync-bunch");
+
         // They are sorted so that by start time, recent ones first
         for (TaskoRun run : runningRuns) {
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
@@ -280,10 +279,6 @@ public class ProductSyncManager {
                 break;
             }
         }
-        // TODO: Check other errors:
-        // - If IN_PROGRESS but no tasks running, set to FAILED as well (?)
-        // - Set FAILED if there is a .new file and nothing in the metadata regen queue (?)
-        // - Look at cron jobs to see if mgr-ncc-sync will be called in the future (?)
 
         return channelSyncStatus;
     }
