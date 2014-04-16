@@ -6,6 +6,21 @@ $(function(){
     $("#suse-products input[type='checkbox']:enabled").prop("checked", $(this).is(":checked"));
   });
 
+  // handles expand/collapse buttons
+  $("#table-content").on("click", ".expand-button", function(event) {
+    $(this).hide();
+    $(this).siblings(".collapse-button").show();
+    $("tr[data-baseproductident='" + $(this).closest("tr").data("ident") + "']").show();
+    return false;
+  });
+
+  $("#table-content").on("click", ".collapse-button", function(event) {
+    $(this).hide();
+    $(this).siblings(".expand-button").show();
+    $("tr[data-baseproductident='" + $(this).closest("tr").data("ident") + "']").hide();
+    return false;
+  });
+
   // handles synchronize bottom button
   $("#synchronize").click(function() {
     var checkboxes = $("#table-content input[type='checkbox']:checked:enabled");
