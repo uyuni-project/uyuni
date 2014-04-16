@@ -51,7 +51,7 @@ public class ProductTest extends TestCase {
                 } })
        );
 
-       assertEquals(false, nonSynchronizingProduct.channelsInstalled());
+       assertEquals(false, nonSynchronizingProduct.isChannelsInstalled());
 
        Product synchronizingProduct = new Product(
                "x86_46",
@@ -70,7 +70,7 @@ public class ProductTest extends TestCase {
                } })
       );
 
-      assertEquals(true, synchronizingProduct.channelsInstalled());
+      assertEquals(true, synchronizingProduct.isChannelsInstalled());
     }
 
     public void testSorting() {
