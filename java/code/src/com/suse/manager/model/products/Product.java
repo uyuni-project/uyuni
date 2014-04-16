@@ -151,7 +151,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Check if all mandatory product channels are installed according to mgr-ncc-sync (P).
      * @return true if all channels are installed, otherwise false
      */
-    public boolean channelsInstalled() {
+    public boolean isChannelsInstalled() {
         for (Channel c : getMandatoryChannels()) {
             if (!c.isInstalled()) {
                 return false;
@@ -173,7 +173,7 @@ public class Product implements Selectable, Comparable<Product> {
      * @return true iff synchronizable
      */
     public boolean isSynchronizable() {
-        return !channelsInstalled() && (isBase() || getBaseProduct().channelsInstalled());
+        return !isChannelsInstalled() && (isBase() || getBaseProduct().isChannelsInstalled());
     }
 
     /**

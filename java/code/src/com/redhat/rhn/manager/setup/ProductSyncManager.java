@@ -160,7 +160,7 @@ public class ProductSyncManager {
             }
 
             // If status is "P", get the more detailed status
-            if (product.channelsInstalled()) {
+            if (product.isChannelsInstalled()) {
                 logger.debug("Product has P: " + product.getName());
                 product.setSyncStatus(getProductSyncStatus(product));
             }
