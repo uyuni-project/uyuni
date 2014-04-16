@@ -3,6 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
     <td>
@@ -19,5 +20,17 @@
         <c:out value="${requestScope.product.name}"></c:out>
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
-    <td><c:out value="${requestScope.product.syncStatus}"></c:out></td>
+    <td>
+        <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
+        <c:forEach var="syncStatus" items="${allSyncStatus}">
+            <span
+                data-syncstatus="${syncStatus}"
+                <c:if test="${syncStatus != product.syncStatus}">
+                    hidden
+                </c:if>
+            >
+                <bean:message key="${syncStatus.translationKey}"/>
+            </span>
+        </c:forEach>
+    </td>
 </tr>

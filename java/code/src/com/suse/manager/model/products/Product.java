@@ -33,6 +33,27 @@ import java.util.List;
  */
 @Root(strict = false)
 public class Product implements Selectable, Comparable<Product> {
+    /**
+     * Aggregated product sync status.
+     */
+    public enum SyncStatus {
+        /** Product has never been installed at all. */
+        NOT_MIRRORED,
+        /** Product has been installed, synchronization is in progress. */
+        IN_PROGRESS,
+        /** Product has been installed and synchronized completely. */
+        FINISHED,
+        /** Product installation or sync went bad. */
+        FAILED;
+
+        /**
+         * Returns a translation key for a status
+         * @return the key
+         */
+        public String getTranslationKey() {
+            return "setupwizard.syncstatus." + toString().replace("_", ".").toLowerCase();
+        }
+    };
 
     /** The architecture. */
     @Attribute
@@ -67,8 +88,8 @@ public class Product implements Selectable, Comparable<Product> {
     /** Addon products. */
     private List<Product> addonProducts = new LinkedList<Product>();
 
-    /** Aggregated product sync status */
-    private String syncStatus;
+    /** Aggregated product sync status. */
+    private SyncStatus syncStatus;
 
     /**
      * Default constructor.
@@ -161,7 +182,8 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Returns true iff this is a base product
+     * Returns true iff this is a base product.
+     *
      * @return true for base products
      */
     public boolean isBase() {
@@ -278,7 +300,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Set the product sync status.
      * @param syncStatusIn the status
      */
-    public void setSyncStatus(String syncStatusIn) {
+    public void setSyncStatus(SyncStatus syncStatusIn) {
         this.syncStatus = syncStatusIn;
     }
 
@@ -286,7 +308,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Get the product sync status.
      * @return the sync status
      */
-    public String getSyncStatus() {
+    public SyncStatus getSyncStatus() {
         return this.syncStatus;
     }
 }
