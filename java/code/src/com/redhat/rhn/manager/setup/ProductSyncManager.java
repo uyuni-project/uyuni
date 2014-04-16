@@ -277,6 +277,7 @@ public class ProductSyncManager {
                         logger.debug("Repo sync run found for channel " + c +
                                 ", status is: " + run.getStatus());
                     }
+                    channelSyncStatus = SyncStatus.IN_PROGRESS;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
                     channelSyncStatus.setDetails(log);
                     return channelSyncStatus;
