@@ -17,8 +17,6 @@ package com.suse.manager.model.products;
 
 import com.redhat.rhn.frontend.struts.Selectable;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -147,20 +145,16 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Returns true if this product has already been synchronized or it is
-     * synchronizing at the moment.
-     * @return true or false
+     * Check if all mandatory product channels are installed according to mgr-ncc-sync (P).
+     * @return true if all channels are installed, otherwise false
      */
-    public boolean isSynchronizing() {
-        return CollectionUtils.exists(
-            CollectionUtils.union(getMandatoryChannels(), getOptionalChannels()),
-            new Predicate() {
-                @Override
-                public boolean evaluate(Object channel) {
-                    return ((Channel) channel).isSynchronizing();
-                }
+    public boolean channelsInstalled() {
+        for (Channel c : getMandatoryChannels()) {
+            if (!c.isInstalled()) {
+                return false;
             }
-        );
+        }
+        return true;
     }
 
     /**
@@ -176,7 +170,7 @@ public class Product implements Selectable, Comparable<Product> {
      * @return true iff synchronizable
      */
     public boolean isSynchronizable() {
-        return !isSynchronizing() && (isBase() || getBaseProduct().isSynchronizing());
+        return !channelsInstalled() && (isBase() || getBaseProduct().channelsInstalled());
     }
 
     /**

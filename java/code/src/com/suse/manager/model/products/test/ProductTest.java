@@ -40,18 +40,18 @@ public class ProductTest extends TestCase {
                 "test product",
                 "",
                 new MandatoryChannels(new LinkedList<Channel>() { {
-                    add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
-                    add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
-                    add(new Channel("test channel 3", Channel.STATUS_NOT_SYNCHRONIZING));
+                    add(new Channel("test channel 1", Channel.STATUS_NOT_INSTALLED));
+                    add(new Channel("test channel 2", Channel.STATUS_NOT_INSTALLED));
+                    add(new Channel("test channel 3", Channel.STATUS_NOT_INSTALLED));
                 } }),
                 new OptionalChannels(new LinkedList<Channel>() { {
-                    add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
-                    add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
-                    add(new Channel("test channel 3", Channel.STATUS_NOT_SYNCHRONIZING));
+                    add(new Channel("test channel 1", Channel.STATUS_NOT_INSTALLED));
+                    add(new Channel("test channel 2", Channel.STATUS_NOT_INSTALLED));
+                    add(new Channel("test channel 3", Channel.STATUS_NOT_INSTALLED));
                 } })
        );
 
-       assertEquals(false, nonSynchronizingProduct.isSynchronizing());
+       assertEquals(false, nonSynchronizingProduct.channelsInstalled());
 
        Product synchronizingProduct = new Product(
                "x86_46",
@@ -59,18 +59,18 @@ public class ProductTest extends TestCase {
                "test product",
                "",
                new MandatoryChannels(new LinkedList<Channel>() { {
-                   add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
-                   add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
-                   add(new Channel("test channel 3", Channel.STATUS_NOT_SYNCHRONIZING));
+                   add(new Channel("test channel 1", Channel.STATUS_NOT_INSTALLED));
+                   add(new Channel("test channel 2", Channel.STATUS_NOT_INSTALLED));
+                   add(new Channel("test channel 3", Channel.STATUS_NOT_INSTALLED));
                } }),
                new OptionalChannels(new LinkedList<Channel>() { {
-                   add(new Channel("test channel 1", Channel.STATUS_NOT_SYNCHRONIZING));
-                   add(new Channel("test channel 2", Channel.STATUS_NOT_SYNCHRONIZING));
-                   add(new Channel("test channel 3", Channel.STATUS_SYNCHRONIZING));
+                   add(new Channel("test channel 1", Channel.STATUS_NOT_INSTALLED));
+                   add(new Channel("test channel 2", Channel.STATUS_NOT_INSTALLED));
+                   add(new Channel("test channel 3", Channel.STATUS_INSTALLED));
                } })
       );
 
-      assertEquals(true, synchronizingProduct.isSynchronizing());
+      assertEquals(true, synchronizingProduct.channelsInstalled());
     }
 
     public void testSorting() {
