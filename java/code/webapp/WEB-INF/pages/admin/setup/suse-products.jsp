@@ -34,7 +34,7 @@
                                     <th><input type="checkbox" class="select-all" autocomplete="off" /></th>
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
-                                    <th>1-click</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="table-content">

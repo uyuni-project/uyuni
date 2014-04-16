@@ -67,6 +67,9 @@ public class Product implements Selectable, Comparable<Product> {
     /** Addon products. */
     private List<Product> addonProducts = new LinkedList<Product>();
 
+    /** Aggregated product sync status */
+    private String syncStatus;
+
     /**
      * Default constructor.
      */
@@ -277,5 +280,21 @@ public class Product implements Selectable, Comparable<Product> {
      */
     public List<Product> getAddonProducts() {
         return addonProducts;
+    }
+
+    /**
+     * Set the product sync status.
+     * @param status the status
+     */
+    public void setSyncStatus(String syncStatusIn) {
+        this.syncStatus = syncStatusIn;
+    }
+
+    /**
+     * Get the product sync status.
+     * @return
+     */
+    public String getSyncStatus() {
+        return this.syncStatus;
     }
 }

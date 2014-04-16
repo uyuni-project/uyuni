@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
+import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
 
@@ -63,6 +66,12 @@ public class ProductSyncManager {
 
     /** The executor. */
     private Executor executor;
+
+    // Sync status strings
+    private static String SYNC_STATUS_NOT_MIRRORED = "";
+    private static String SYNC_STATUS_FINISHED = "Finished";
+    private static String SYNC_STATUS_FAILED = "Failed";
+    private static String SYNC_STATUS_IN_PROGRESS = "In progress";
 
     /**
      * Default constructor.
@@ -149,9 +158,78 @@ public class ProductSyncManager {
                 product.setBaseProduct(parent);
                 parent.getAddonProducts().add(product);
             }
+
+            // If status is "P", get the more detailed status
+            if (product.channelsInstalled()) {
+                logger.debug("Product has P: " + product.getName());
+                product.setSyncStatus(getProductSyncStatus(product));
+            }
+            else {
+                product.setSyncStatus(SYNC_STATUS_NOT_MIRRORED);
+            }
         }
 
         return result;
+    }
+
+    /**
+     * Get the synchronization status for a given product.
+     * @param product product
+     * @return sync status as string
+     */
+    private String getProductSyncStatus(Product product) {
+        // Fall back to in progress (mgr-ncc-sync ".")
+        String productSyncStatus = SYNC_STATUS_IN_PROGRESS;
+
+        // Count failed and finished channels
+        int failedCounter = 0;
+        int finishedCounter = 0;
+
+        // Aggregate status of the single channels
+        for (Channel c : product.getMandatoryChannels()) {
+            String channelStatus = getChannelSyncStatus(c);
+            if (channelStatus.equals(SYNC_STATUS_FAILED)) {
+                logger.debug("Channel failed: " + c.getLabel());
+                failedCounter++;
+            }
+            else if (channelStatus.equals(SYNC_STATUS_FINISHED)) {
+                logger.debug("Channel finished: " + c.getLabel());
+                finishedCounter++;
+            }
+            else {
+                logger.debug("Channel in progress: " + c.getLabel());
+            }
+        }
+        logger.debug("No. of failed: " + failedCounter);
+        logger.debug("No. of finished: " + finishedCounter);
+
+        // Failed if at least one channel failed
+        if (failedCounter > 0) {
+            productSyncStatus = SYNC_STATUS_FAILED;
+        }
+        // Finished if all mandatory channels have metadata
+        else if (finishedCounter == product.getMandatoryChannels().size()) {
+            productSyncStatus = SYNC_STATUS_FINISHED;
+        }
+
+        return productSyncStatus;
+    }
+
+    /**
+     * Get sync status for a given Channel.
+     * @param channel the channel
+     * @return channel sync status as string
+     */
+    private String getChannelSyncStatus(Channel channel) {
+        String channelSyncStatus = SYNC_STATUS_IN_PROGRESS;
+        com.redhat.rhn.domain.channel.Channel c =
+                ChannelFactory.lookupByLabel(channel.getLabel());
+        if (ChannelManager.getRepoLastBuild(c) != null) {
+            channelSyncStatus = SYNC_STATUS_FINISHED;
+        }
+        // TODO: 1. Check for errors here and set FAILED
+        // TODO: 2. If IN_PROGRESS but no tasks running, set to FAILED
+        return channelSyncStatus;
     }
 
     /**
