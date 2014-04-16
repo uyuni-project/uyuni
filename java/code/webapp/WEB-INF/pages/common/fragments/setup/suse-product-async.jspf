@@ -24,7 +24,7 @@
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
         <c:forEach var="syncStatus" items="${allSyncStatus}">
             <span
-                data-syncstatus="${syncStatus}"
+                data-syncstatus="${fn:toLowerCase(syncStatus)}"
                 <c:if test="${syncStatus != product.syncStatus}">
                     hidden
                 </c:if>
