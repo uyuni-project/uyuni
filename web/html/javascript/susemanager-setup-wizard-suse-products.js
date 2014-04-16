@@ -43,7 +43,7 @@ $(function(){
     var checked = $(this).prop("checked");
     var row = $(this).closest("tr");
     var baseProductIdent = row.data("baseproductident");
-    var base = baseProductIdent == "";
+    var base = baseProductIdent === "";
 
     if (!checked && base) {
       var productIdent = row.data("ident");
