@@ -18,6 +18,9 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.TaskoSchedule;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
@@ -225,13 +228,52 @@ public class ProductSyncManager {
      */
     private String getChannelSyncStatus(Channel channel) {
         String channelSyncStatus = SYNC_STATUS_IN_PROGRESS;
+
+        // Check if there is metadata for this channel
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
         if (ChannelManager.getRepoLastBuild(c) != null) {
-            channelSyncStatus = SYNC_STATUS_FINISHED;
+            return SYNC_STATUS_FINISHED;
         }
-        // TODO: 1. Check for errors here and set FAILED
-        // TODO: 2. If IN_PROGRESS but no tasks running, set to FAILED
+
+        // No metadata, check for failed download jobs in taskomatic
+        List<TaskoRun> runningRuns = TaskoFactory.listRunsByBunch("repo-sync-bunch");
+        // They are sorted so that by start time, recent ones first
+        for (TaskoRun run : runningRuns) {
+            TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
+            @SuppressWarnings("unchecked")
+            Map<String, Object> dataMap = schedule.getDataMap();
+
+            // Convert channel id to a long
+            String channelIdString = (String) dataMap.get("channel_id");
+            Long channelId;
+            try {
+                channelId = Long.parseLong(channelIdString);
+            } catch (NumberFormatException e) {
+                // If we can't get the id, continue, may be there is an older job
+                // with good metadata
+                continue;
+            }
+
+            if (channelId.equals(c.getId())) {
+                // We found the latest run, see if it failed
+                if (run.getStatus().equals(TaskoRun.STATUS_FAILED)) {
+                    channelSyncStatus = SYNC_STATUS_FAILED;
+                    // TODO: Set the log message to the enum as soon as we have it
+                }
+                else {
+                    // In progress
+                    logger.debug("Repo sync run found for channel " + c +
+                            ", status is: " + run.getStatus());
+                }
+                break;
+            }
+        }
+        // TODO: Check other errors:
+        // - If IN_PROGRESS but no tasks running, set to FAILED as well (?)
+        // - Set FAILED if there is a .new file and nothing in the metadata regen queue (?)
+        // - Look at cron jobs to see if mgr-ncc-sync will be called in the future (?)
+
         return channelSyncStatus;
     }
 
