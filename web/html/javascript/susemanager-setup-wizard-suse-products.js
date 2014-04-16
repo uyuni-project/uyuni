@@ -13,6 +13,11 @@ $(function(){
       return $(this).data("ident");
     }).toArray();
 
+    var button = $(this);
+    var icon = button.find("i");            
+    button.prop("disabled", true);
+    icon.addClass("fa-spin");
+
     ProductSyncAction.synchronize(idents, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
@@ -20,13 +25,16 @@ $(function(){
         
         $.each($(this).closest("tr").find("span"), function () {
           var status = $(this).data("syncstatus");
-          if (status === "IN_PROGRESS") {
+          if (status === "in_progress") {
             $(this).show();
           } else {
             $(this).hide();
           }
         });
       });
+
+      icon.removeClass("fa-spin");      
+      button.prop("disabled", false);
     }));
   });
 
