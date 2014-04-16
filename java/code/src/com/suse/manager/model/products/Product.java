@@ -46,12 +46,50 @@ public class Product implements Selectable, Comparable<Product> {
         /** Product installation or sync went bad. */
         FAILED;
 
+        // Error message key
+        private String messageKey;
+
+        // Store additional debug information here
+        private String details;
+
         /**
          * Returns a translation key for a status
          * @return the key
          */
         public String getTranslationKey() {
             return "setupwizard.syncstatus." + toString().replace("_", ".").toLowerCase();
+        }
+
+        /**
+         * Get the error message key.
+         * @return the message key
+         */
+        public String getMessageKey() {
+            return messageKey;
+        }
+
+        /**
+         * Set the error message key.
+         * @param messageKey key of the message to set
+         */
+        public void setMessageKey(String messageIn) {
+            this.messageKey = messageIn;
+        }
+
+        /**
+         * Get additional debug information (if available).
+         * @return the details
+         */
+        public String getDetails() {
+            return details;
+        }
+
+        /**
+         * Set any additional debug information.
+         * @param details the details to set
+         */
+        public void setDetails(String detailsIn) {
+            this.details = detailsIn;
         }
     };
 
