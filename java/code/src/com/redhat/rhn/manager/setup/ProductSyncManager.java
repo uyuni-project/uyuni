@@ -127,8 +127,11 @@ public class ProductSyncManager {
             throw new ProductSyncManagerCommandException(message, exitCode, output,
                     errorMessage);
         }
-        logger.debug("This the output of product sync command");
-        logger.debug(output);
+        if (logger.isTraceEnabled()) {
+            logger.trace("This the output of product sync command:");
+            logger.trace(output);
+        }
+
         return output;
     }
 
