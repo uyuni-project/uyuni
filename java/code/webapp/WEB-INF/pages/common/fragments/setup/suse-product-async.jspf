@@ -5,7 +5,13 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
+<tr 
+    data-ident="${requestScope.product.ident}"
+    data-baseproductident="${requestScope.product.baseProductIdent}"
+    <c:if test="${not requestScope.product.base}">
+        hidden
+    </c:if>
+ >
     <td>
         <input type="checkbox" id="select-single"
             <c:if test="${requestScope.product.channelsInstalled}">
@@ -14,9 +20,21 @@
         />
     </td>
     <td>
-        <c:if test="${not requestScope.product.base}">
-            <i class="fa fa-ellipsis-h"></i>
-        </c:if>
+        <c:choose>
+            <c:when test="${requestScope.product.base}">
+                <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
+                    <a href="#" class="expand-button">
+                        <i class="fa fa-plus-square-o"></i>
+                    </a>
+                    <a href="#" class="collapse-button" hidden>
+                        <i class="fa fa-minus-square-o"></i>
+                    </a>
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <i class="fa fa-ellipsis-h"></i>
+            </c:otherwise>
+        </c:choose>
         <c:out value="${requestScope.product.name}"></c:out>
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
