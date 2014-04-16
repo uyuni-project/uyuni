@@ -17,6 +17,15 @@ $(function(){
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true);
+        
+        $.each($(this).closest("tr").find("span"), function () {
+          var status = $(this).data("syncstatus");
+          if (status === "IN_PROGRESS") {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
       });
     }));
   });
