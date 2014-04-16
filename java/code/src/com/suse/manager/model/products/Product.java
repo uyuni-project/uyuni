@@ -169,14 +169,6 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Returns true iff this product can be synchronized
-     * @return true iff synchronizable
-     */
-    public boolean isSynchronizable() {
-        return !isChannelsInstalled() && (isBase() || getBaseProduct().isChannelsInstalled());
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
