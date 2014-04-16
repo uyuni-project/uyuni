@@ -209,6 +209,8 @@ class RepoSync(object):
                 sys.exit(1)
             except Errors.RepoMDError, e:
                 if "primary not available" in str(e):
+                    taskomatic.add_to_repodata_queue_for_channel_package_subscription(
+                        [self.channel_label], [], "server.app.yumreposync")
                     self.print_msg("Repository has no packages. (%s)" % e)
                     sys.exit(0)
                 else:
