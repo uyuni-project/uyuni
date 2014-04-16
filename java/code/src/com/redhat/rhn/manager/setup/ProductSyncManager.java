@@ -220,7 +220,8 @@ public class ProductSyncManager {
      * @return channel sync status as string
      */
     private SyncStatus getChannelSyncStatus(Channel channel) {
-        SyncStatus channelSyncStatus = SyncStatus.IN_PROGRESS;
+        // Fall back to FAILED if no progress can be detected
+        SyncStatus channelSyncStatus = SyncStatus.FAILED;
 
         // Check if there is metadata for this channel
         com.redhat.rhn.domain.channel.Channel c =
@@ -265,6 +266,7 @@ public class ProductSyncManager {
                     channelSyncStatus = SyncStatus.FAILED;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
                     channelSyncStatus.setDetails(log);
+                    return channelSyncStatus;
                 }
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
                         runStatus.equals(TaskoRun.STATUS_RUNNING)) {
@@ -275,10 +277,15 @@ public class ProductSyncManager {
                     }
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
                     channelSyncStatus.setDetails(log);
+                    return channelSyncStatus;
                 }
+                // Might have been successful, waiting for metadata generation
                 break;
             }
         }
+
+        // TODO: Check the metadata regeneration queue for progress
+        logger.debug("Continue checking for channel: " + c.getLabel());
 
         return channelSyncStatus;
     }
