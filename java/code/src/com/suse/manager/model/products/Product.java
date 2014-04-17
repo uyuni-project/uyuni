@@ -70,10 +70,10 @@ public class Product implements Selectable, Comparable<Product> {
 
         /**
          * Set the error message key.
-         * @param messageKey key of the message to set
+         * @param messageKeyIn key of the message to set
          */
-        public void setMessageKey(String messageIn) {
-            this.messageKey = messageIn;
+        public void setMessageKey(String messageKeyIn) {
+            this.messageKey = messageKeyIn;
         }
 
         /**
@@ -86,7 +86,7 @@ public class Product implements Selectable, Comparable<Product> {
 
         /**
          * Set any additional debug information.
-         * @param details the details to set
+         * @param detailsIn the details to set
          */
         public void setDetails(String detailsIn) {
             this.details = detailsIn;
