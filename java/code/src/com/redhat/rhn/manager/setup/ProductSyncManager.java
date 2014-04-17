@@ -184,39 +184,38 @@ public class ProductSyncManager {
      * @return sync status as string
      */
     private SyncStatus getProductSyncStatus(Product product) {
-        // Fall back to in progress (mgr-ncc-sync ".")
-        SyncStatus productSyncStatus = SyncStatus.IN_PROGRESS;
-
-        // Count failed and finished channels
-        int failedCounter = 0;
+        // Count finished and failed channels
         int finishedCounter = 0;
+        int failedCounter = 0;
 
-        // Aggregate status of the single channels
+        // Aggregate sync status of all mandatory product channels
         for (Channel c : product.getMandatoryChannels()) {
             SyncStatus channelStatus = getChannelSyncStatus(c);
-            if (channelStatus.equals(SyncStatus.FAILED)) {
-                logger.debug("Channel failed: " + c.getLabel());
-                failedCounter++;
-            }
-            else if (channelStatus.equals(SyncStatus.FINISHED)) {
+            if (channelStatus.equals(SyncStatus.FINISHED)) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
+            }
+            else if (channelStatus.equals(SyncStatus.FAILED)) {
+                logger.debug("Channel failed: " + c.getLabel());
+                failedCounter++;
             }
             else {
                 logger.debug("Channel in progress: " + c.getLabel());
             }
         }
 
-        // Failed if at least one channel failed
-        if (failedCounter > 0) {
-            productSyncStatus = SyncStatus.FAILED;
+        // Set FINISHED if all mandatory channels have metadata
+        if (finishedCounter == product.getMandatoryChannels().size()) {
+            return SyncStatus.FINISHED;
         }
-        // Finished if all mandatory channels have metadata
-        else if (finishedCounter == product.getMandatoryChannels().size()) {
-            productSyncStatus = SyncStatus.FINISHED;
+        // Status is FAILED if at least one channel has failed
+        else if (failedCounter > 0) {
+            return SyncStatus.FAILED;
         }
-
-        return productSyncStatus;
+        // Otherwise return IN_PROGRESS
+        else {
+            return SyncStatus.IN_PROGRESS;
+        }
     }
 
     /**
