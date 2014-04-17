@@ -52,6 +52,9 @@ public class Product implements Selectable, Comparable<Product> {
         // Store additional debug information here
         private String details;
 
+        // This is for showing synchronization progress
+        private int syncProgress;
+
         /**
          * Returns a translation key for a status
          * @return the key
@@ -90,6 +93,22 @@ public class Product implements Selectable, Comparable<Product> {
          */
         public void setDetails(String detailsIn) {
             this.details = detailsIn;
+        }
+
+        /**
+         * Get the product synchronization progress.
+         * @return the progress
+         */
+        public float getSyncProgress() {
+            return syncProgress;
+        }
+
+        /**
+         * Set the product synchronization progress.
+         * @param syncProgressIn the progress to set
+         */
+        public void setSyncProgress(int syncProgressIn) {
+            this.syncProgress = syncProgressIn;
         }
     };
 
