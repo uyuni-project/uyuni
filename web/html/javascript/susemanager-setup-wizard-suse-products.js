@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
   showProducts();
 
   // handles select all top/bottom checkboxes
@@ -80,8 +80,7 @@ $(function(){
         if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
           $('.table').hide();
           $("#alert-popup").show();
-        }
-        else {
+        } else {
           showFatalError();
         }
       })
@@ -100,12 +99,10 @@ $(function(){
       expandButton.hide();
       collapseButton.show();
       addonRows.show();
-    }
-    else {
+    } else {
       expandButton.toggle();
       collapseButton.toggle();
       addonRows.toggle();
     }
   }
-
 });
