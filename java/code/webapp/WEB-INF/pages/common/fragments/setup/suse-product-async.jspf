@@ -74,8 +74,8 @@
                         <div class="progress progress-striped active">
                             <c:choose>
                                 <c:when test="${product.syncStatus == 'IN_PROGRESS'}">
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="${product.syncProgress}" aria-valuemin="0" aria-valuemax="100" style="width: ${product.syncProgress}%;">
-                                        <span class="sr-only">${product.syncProgress}% Complete</span>
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="${product.syncStatus.syncProgress}" aria-valuemin="0" aria-valuemax="100" style="width: ${product.syncStatus.syncProgress}%;">
+                                        <span class="sr-only">${product.syncStatus.syncProgress}% Complete</span>
                                     </div>
                                 </c:when>
                                 <c:otherwise>
