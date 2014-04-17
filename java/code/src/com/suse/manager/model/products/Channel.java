@@ -26,9 +26,9 @@ import org.simpleframework.xml.Attribute;
 public class Channel {
 
     /** Status attributed to channels that are installed. */
-    public static final String STATUS_INSTALLED = "P";
+    public static final String STATUS_PROVIDED = "P";
     /** Status attributed to channels that are not installed. */
-    public static final String STATUS_NOT_INSTALLED = ".";
+    public static final String STATUS_NOT_PROVIDED = ".";
 
     /** The label. */
     @Attribute
@@ -72,11 +72,11 @@ public class Channel {
     }
 
     /**
-     * Check if this channel is installed according to mgr-ncc-sync (P).
-     * @return true if this channel is installed, otherwise false
+     * Check if this channel is provided according to mgr-ncc-sync (P).
+     * @return true if this channel is provided, otherwise false
      */
-    public boolean isInstalled() {
-        return STATUS_INSTALLED.equals(status);
+    public boolean isProvided() {
+        return STATUS_PROVIDED.equals(status);
     }
 
     /**

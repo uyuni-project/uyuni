@@ -14,7 +14,7 @@
  >
     <td>
         <input type="checkbox" id="select-single"
-            <c:if test="${requestScope.product.channelsInstalled}">
+            <c:if test="${requestScope.product.provided}">
                 checked disabled
             </c:if>
         />
