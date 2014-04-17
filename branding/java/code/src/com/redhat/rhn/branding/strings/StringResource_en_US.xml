@@ -1934,6 +1934,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.try-again">
         <source>Try again</source>
       </trans-unit>
+      <trans-unit id="suse-products.jsp.product-scheduled">
+        <source>Scheduled</source>
+      </trans-unit>
       <trans-unit id="setupwizard.syncstatus.not.mirrored">
         <source>&amp;nbsp;</source>
       </trans-unit>

@@ -20,16 +20,18 @@ $(function() {
     }).toArray();
 
     var button = $(this);
-    var icon = button.find("i");            
+    var icon = button.find("i");
     button.prop("disabled", true);
+    icon.removeClass("fa-download");
+    icon.addClass("fa-spinner");
     icon.addClass("fa-spin");
 
     ProductSyncAction.synchronize(idents, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true);
-        
-        $.each($(this).closest("tr").find("span"), function () {
+
+        $.each($(this).closest("tr").find("span.product-status"), function () {
           var status = $(this).data("syncstatus");
           if (status === "in_progress") {
             $(this).show();
@@ -39,7 +41,9 @@ $(function() {
         });
       });
 
-      icon.removeClass("fa-spin");      
+      icon.removeClass("fa-spin");
+      icon.removeClass("fa-spinner");
+      icon.addClass("fa-download");
       button.prop("disabled", false);
     }));
   });
