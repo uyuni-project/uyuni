@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.satellite.Executor;
@@ -21,6 +23,7 @@ import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
@@ -282,14 +285,26 @@ public class ProductSyncManager {
                     channelSyncStatus.setDetails(log);
                     return channelSyncStatus;
                 }
-                // Might have been successful, waiting for metadata generation
+                // Might have been successful and now waiting for metadata generation
                 break;
             }
         }
 
-        // TODO: Check the metadata regeneration queue for progress
-        logger.debug("Continue checking for channel: " + c.getLabel());
+        // Check if the channel is in the metadata generation queue as in-progress
+        if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
+            return SyncStatus.IN_PROGRESS;
+        }
 
+        // Check for queued items, merge this with the above method?
+        SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("channel_label", channel);
+        if (selector.execute(params).size() > 0) {
+            return SyncStatus.IN_PROGRESS;
+        }
+
+        // Otherwise return FAILED
         return channelSyncStatus;
     }
 
