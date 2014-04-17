@@ -9,9 +9,7 @@ $(function(){
   // handles expand/collapse buttons and text
   $(".table-content").on("click", ".collapsible", function() {
     var row = $(this).closest("tr");
-    row.find(".expand-button").toggle();
-    row.find(".collapse-button").toggle();
-    $("tr[data-baseproductident='" + row.data("ident") + "']").toggle();
+    toggleExpansion(false, row);
   });
 
   // handles synchronize bottom button
@@ -64,6 +62,9 @@ $(function(){
         .find("input")
         .prop("checked", true);
     }
+    if (checked && base) {
+      toggleExpansion(true, row);
+    }
   });
 
   // Get the products and show message in case of errors
@@ -85,6 +86,26 @@ $(function(){
         }
       })
     );
+  }
+
+  // expands or collapses a row, expects $(this) to point to an element
+  // that is a descendant of a row.
+  // Use forceExpand to force expansion (never collapse)
+  function toggleExpansion(forceExpand, row) {
+    var expandButton = row.find(".expand-button");
+    var collapseButton = row.find(".collapse-button");
+    var addonRows = $("tr[data-baseproductident='" + row.data("ident") + "']");
+
+    if (forceExpand) {
+      expandButton.hide();
+      collapseButton.show();
+      addonRows.show();
+    }
+    else {
+      expandButton.toggle();
+      collapseButton.toggle();
+      addonRows.toggle();
+    }
   }
 
 });
