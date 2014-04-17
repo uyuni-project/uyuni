@@ -34,12 +34,13 @@
                                     <th><input type="checkbox" class="select-all" autocomplete="off" /></th>
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
+                                    <th>Channels</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="table-content">
                                 <tr id="loading-placeholder">
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <rhn:icon type="spinner"></rhn:icon>
                                         <span>Loading...</span>
                                     </td>
@@ -48,9 +49,9 @@
                             <tfoot>
                                 <tr>
                                     <td><input type="checkbox" class="select-all" autocomplete="off" /></td>
-                                    <td colspan="3">
+                                    <td colspan="5">
                                         <button class="btn btn-success" id="synchronize">
-                                            <i class="fa fa-refresh"></i> Synchronize
+                                            <i class="fa fa-download"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
                                     </td>
                                 </tr>
