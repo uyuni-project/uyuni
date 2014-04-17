@@ -5,7 +5,7 @@
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<tr 
+<tr
     data-ident="${requestScope.product.ident}"
     data-baseproductident="${requestScope.product.baseProductIdent}"
     <c:if test="${not requestScope.product.base}">
@@ -39,12 +39,10 @@
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
-        <button class="product-channels-btn btn btn-default btn-xs"
-                title="<bean:message key='suse-products.jsp.show-channels' />"
-                data-toggle="tooltip"
-        >
-            <i class="fa fa-th-list"></i>
-        </button>
+        <i class="product-channels-btn fa fa-th-list"
+            title="<bean:message key='suse-products.jsp.show-channels' />"
+            data-toggle="tooltip">
+        </i>
     </td>
     <td>
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
@@ -57,7 +55,7 @@
             >
                 <c:choose>
                     <c:when test="${product.syncStatus == 'NOT_MIRRORED'}">
-                        <button class="product-add-btn btn btn-success btn-xs"
+                        <button class="product-add-btn btn btn-default btn-xs"
                                 data-toggle='tooltip'
                                 title="<bean:message key='suse-products.jsp.add-this-product' />"
                         >
