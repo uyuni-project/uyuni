@@ -241,6 +241,9 @@ public class ProductSyncManager {
         // No metadata, check for failed download jobs in taskomatic
         List<TaskoRun> runningRuns = TaskoFactory.listRunsByBunch("repo-sync-bunch");
 
+        // Remember if there was a repo-sync run found for this channel
+        boolean runFound = false;
+
         // They are sorted so that by start time, recent ones first
         for (TaskoRun run : runningRuns) {
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
@@ -260,6 +263,8 @@ public class ProductSyncManager {
             }
 
             if (channelId.equals(c.getId())) {
+                runFound = true;
+
                 // We found the latest run, get debug information
                 String log = run.getTailOfStdError(1024);
                 if (log.isEmpty()) {
@@ -310,6 +315,10 @@ public class ProductSyncManager {
             return channelSyncStatus;
         }
 
+        // No repo-sync run found at all: new product?
+        if (!runFound) {
+            channelSyncStatus = SyncStatus.IN_PROGRESS;
+        }
         // Otherwise return FAILED
         return channelSyncStatus;
     }
