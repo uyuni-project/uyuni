@@ -299,7 +299,7 @@ public class ProductSyncManager {
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("channel_label", channel);
+        params.put("channel_label", channel.getLabel());
         if (selector.execute(params).size() > 0) {
             return SyncStatus.IN_PROGRESS;
         }
