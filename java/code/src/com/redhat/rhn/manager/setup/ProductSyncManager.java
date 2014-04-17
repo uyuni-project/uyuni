@@ -163,10 +163,10 @@ public class ProductSyncManager {
                 parent.getAddonProducts().add(product);
             }
 
-            // If status is "P", get the more detailed status
-            if (product.isChannelsInstalled()) {
+            // If status is "P", get a more detailed status
+            if (product.isProvided()) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Product has status \"P\": " + product.getName());
+                    logger.debug("Product is provided: " + product.getName());
                 }
                 product.setSyncStatus(getProductSyncStatus(product));
             }
