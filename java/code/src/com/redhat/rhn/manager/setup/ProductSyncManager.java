@@ -232,7 +232,8 @@ public class ProductSyncManager {
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
         if (ChannelManager.getRepoLastBuild(c) != null) {
-            return SyncStatus.FINISHED;
+            channelSyncStatus = SyncStatus.FINISHED;
+            return channelSyncStatus;
         }
 
         // No metadata, check for failed download jobs in taskomatic
@@ -292,7 +293,8 @@ public class ProductSyncManager {
 
         // Check if the channel is in the metadata generation queue as in-progress
         if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
-            return SyncStatus.IN_PROGRESS;
+            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            return channelSyncStatus;
         }
 
         // Check for queued items, merge this with the above method?
@@ -301,7 +303,8 @@ public class ProductSyncManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_label", channel.getLabel());
         if (selector.execute(params).size() > 0) {
-            return SyncStatus.IN_PROGRESS;
+            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            return channelSyncStatus;
         }
 
         // Otherwise return FAILED
