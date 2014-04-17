@@ -36,7 +36,11 @@
                 <i class="fa fa-ellipsis-v"></i>
             </c:otherwise>
         </c:choose>
-        <span class="collapsible">
+        <span
+            <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
+                class="collapsible"
+            </c:if>
+        >
             <c:out value="${requestScope.product.name}"></c:out>
         </span>
     </td>
