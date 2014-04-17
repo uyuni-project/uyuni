@@ -249,7 +249,8 @@ public class ProductSyncManager {
             Long channelId;
             try {
                 channelId = Long.parseLong(channelIdString);
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 // If we can't get the id, continue, may be there is an older job
                 // with good metadata
                 continue;
