@@ -79,6 +79,8 @@ $(function(){
       function(content) {
         $("#loading-placeholder").hide();
         $("#table-content").append(content);
+        $('.product-add-btn').tooltip();
+        $('.product-channels-btn').tooltip();
       },
       function(message, exception) {
         if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
@@ -91,4 +93,5 @@ $(function(){
       })
     );
   }
+
 });
