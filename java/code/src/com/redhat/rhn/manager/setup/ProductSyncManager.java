@@ -214,7 +214,10 @@ public class ProductSyncManager {
         }
         // Otherwise return IN_PROGRESS
         else {
-            return SyncStatus.IN_PROGRESS;
+            SyncStatus status = SyncStatus.IN_PROGRESS;
+            int totalChannels = product.getMandatoryChannels().size();
+            status.setSyncProgress((finishedCounter * 100) / totalChannels);
+            return status;
         }
     }
 
