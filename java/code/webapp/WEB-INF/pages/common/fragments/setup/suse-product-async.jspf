@@ -10,6 +10,7 @@
     data-baseproductident="${requestScope.product.baseProductIdent}"
     <c:if test="${not requestScope.product.base}">
         hidden
+        class="addons"
     </c:if>
  >
     <td>
@@ -32,7 +33,7 @@
                 </c:if>
             </c:when>
             <c:otherwise>
-                <i class="fa fa-ellipsis-h"></i>
+                <i class="fa fa-ellipsis-v"></i>
             </c:otherwise>
         </c:choose>
         <c:out value="${requestScope.product.name}"></c:out>
