@@ -38,7 +38,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-content">
+                            <tbody class="table-content">
                                 <tr id="loading-placeholder">
                                     <td colspan="5">
                                         <rhn:icon type="spinner"></rhn:icon>
