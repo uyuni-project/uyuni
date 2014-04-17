@@ -220,12 +220,12 @@ public class ProductSyncManager {
     }
 
     /**
-     * Get sync status for a given Channel.
+     * Get the synchronization status for a given channel.
      * @param channel the channel
      * @return channel sync status as string
      */
     private SyncStatus getChannelSyncStatus(Channel channel) {
-        // Fall back to FAILED if no progress can be detected
+        // Fall back to FAILED if no progress is detected
         SyncStatus channelSyncStatus = SyncStatus.FAILED;
 
         // Check if there is metadata for this channel
