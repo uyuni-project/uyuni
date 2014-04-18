@@ -11,6 +11,7 @@
 #
 
 from spacewalk.server import rhnSQL
+from spacewalk.susemanager import package_helper
 
 def deleteChannelErrata(errata_id, channel_id):
     """ Remove errata from channel """
@@ -49,6 +50,18 @@ def deleteErrata(errata_id):
 
     # delete all packages from errata
     h = rhnSQL.prepare("""
+        SELECT rhnPackage.id FROM rhnPackage
+         LEFT OUTER JOIN rhnErrataPackage ep on ep.package_id = rhnPackage.id
+         WHERE ep.errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    package_ids = map(lambda x: x['id'], h.fetchall_dict() or [])
+    for package_id in package_ids:
+        package_helper.delete_package(package_id)
+
+
+    h = rhnSQL.prepare("""
         DELETE FROM rhnErrataPackage ep
          WHERE ep.errata_id = :errata_id
     """)
@@ -76,4 +89,96 @@ def deleteErrata(errata_id):
          WHERE id = :errata_id
     """)
     h.execute(errata_id=errata_id)
+
+def findErrataByAdvisory(advisory):
+    """
+    Search the errata using the given advisory.
+    Returns None if the errata is not found, otherwise returns the ID of the errata.
+    """
+    h = rhnSQL.prepare("""
+        SELECT id
+          FROM rhnErrata
+         WHERE advisory = :advisory
+    """)
+    h.execute(advisory=advisory)
+    res = h.fetchone_dict() or None
+    if res:
+        return res['id']
+    else:
+        return None
+
+def channelContainsErrata(channel_id, errata_id):
+    """ Returns True if the errata is contained by the specified channel, false otherwise."""
+
+    h = rhnSQL.prepare("""
+        SELECT channel_id
+          FROM rhnChannelErrata
+         WHERE errata_id = :errata_id AND channel_id = :channel_id
+    """)
+    h.execute(channel_id=channel_id, errata_id=errata_id)
+    res = h.fetchone_dict() or None
+
+    return res is not None
+
+def channelsWithErrata(errata_id):
+    """ Return a List containing the IDs of the channels containing the errata."""
+
+    h = rhnSQL.prepare("""
+        SELECT channel_id
+          FROM rhnChannelErrata
+         WHERE errata_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    return map(lambda x: x['channel_id'], h.fetchall_dict() or [])
+
+def findErrataClones(errata_id):
+    """ Find all the clones of this errata.
+        Returns a list containing the IDs of the clones.
+    """
+
+    h = rhnSQL.prepare("""
+        SELECT id from rhnErrataCloned
+         WHERE original_id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+
+    clones = map(lambda x: x['id'], h.fetchall_dict() or [])
+    ret    = clones[:]
+
+    for clone in clones:
+        ret += findErrataClones(clone)
+
+    return ret
+
+def errataParent(errata_id):
+    """
+    When the errata has been cloned from another one this function returns
+    the ID of the original errata.
+    If the errata is **not** a clone, the given errata_id is returned.
+    """
+
+    h = rhnSQL.prepare("""
+        SELECT original_id
+          FROM rhnErrataCloned
+         WHERE id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+    res = h.fetchone_dict()
+
+    if res:
+        return errataParent(res['original_id'])
+    else:
+        return errata_id
+
+def getAdvisory(errata_id):
+    """ Return the advisory of the errata. """
+
+    h = rhnSQL.prepare("""
+        SELECT advisory
+          FROM rhnErrata
+         WHERE id = :errata_id
+    """)
+    h.execute(errata_id=errata_id)
+    return h.fetchone_dict()['advisory']
 
