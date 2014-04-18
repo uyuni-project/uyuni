@@ -16,6 +16,7 @@ from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.server import rhnSQL
+from spacewalk.susemanager import errata_helper
 
 DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 
@@ -79,17 +80,17 @@ class Cleaner:
                     (patch['advisory'], errata_id, c, channel_id))
 
                 # delete channel from errata
-                _deleteChannelErrata(errata_id, channel_id)
+                errata_helper.deleteChannelErrata(errata_id, channel_id)
 
                 # search if the errata still has channels
-                if _errataHasChannels(errata_id):
+                if errata_helper.errataHasChannels(errata_id):
                     # if yes, work on this patch is finished
                     log_debug(2, "Patch exists in other channels too")
                     continue
 
                 # else we can remove the errta completly
                 log_debug(2, "Delete Patch completly")
-                _deleteErrata(errata_id)
+                errata_helper.deleteErrata(errata_id)
 
             # if channel_id is still None, no patches were deleted
             # Then is no need to run update_needed_cache for this channel
@@ -110,55 +111,3 @@ def _printLog(msg):
     log_debug(0, msg)
     print msg
 
-def _deleteChannelErrata(errata_id, channel_id):
-    # delete channel from errata
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnChannelErrata
-         WHERE errata_id = :errata_id
-           AND channel_id = :channel_id
-    """)
-    return h.execute(errata_id=errata_id, channel_id=channel_id)
-
-def _errataHasChannels(errata_id):
-    h = rhnSQL.prepare("""
-        SELECT channel_id
-          FROM rhnChannelErrata
-         WHERE errata_id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
-    res = h.fetchone_dict() or None
-    if res:
-        return True
-    else:
-        return False
-
-def _deleteErrata(errata_id):
-    # delete all packages from errata
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnErrataPackage ep
-         WHERE ep.errata_id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
-
-    # delete files from errata
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnErrataFile
-         WHERE errata_id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
-
-    # delete erratatmp
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnErrataTmp
-         WHERE id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
-
-    # delete errata
-    # removed also references from rhnErrataCloned
-    # and rhnServerNeededCache
-    h = rhnSQL.prepare("""
-        DELETE FROM rhnErrata
-         WHERE id = :errata_id
-    """)
-    h.execute(errata_id=errata_id)
