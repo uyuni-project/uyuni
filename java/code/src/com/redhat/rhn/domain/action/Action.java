@@ -26,6 +26,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import java.util.Map;
 
@@ -402,7 +403,7 @@ public class Action extends BaseDomainHelper implements Serializable {
         // Something to do, when action is deleted.
         // Override this method for specific action.
     }
-    
+
     /**
      * Hook when action is created.
      * @param params A map of params. Each implementation should have its own keys.
@@ -411,4 +412,13 @@ public class Action extends BaseDomainHelper implements Serializable {
         // Something to do, when action is created.
         // Override this method for specific action.
     }
+
+    /**
+     * @param server server to which action is linked
+     * @return string which is used on system history details
+     */
+    public String getHistoryDetails(Server server) {
+        return "";
+    }
+
 }
