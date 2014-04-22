@@ -43,7 +43,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- * Simple command class for interacting (listing/adding) SUSE products.
+ * Manager class for interacting with SUSE products.
  */
 public class ProductSyncManager {
 
