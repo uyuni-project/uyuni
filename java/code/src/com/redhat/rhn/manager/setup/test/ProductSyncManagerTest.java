@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.manager.satellite.test;
+package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
