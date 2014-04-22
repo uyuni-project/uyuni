@@ -12,9 +12,43 @@ $(function() {
     toggleExpansion(false, row);
   });
 
+  // handles clicks on product checkboxes
+  $(".table-content").on("change", "input", function(event) {
+    var checked = $(this).prop("checked");
+    var row = $(this).closest("tr");
+    var baseProductIdent = row.data("baseproductident");
+    var base = baseProductIdent === "";
+
+    if (!checked && base) {
+      var productIdent = row.data("ident");
+      $("tr[data-baseproductident='" + productIdent + "']")
+        .find("input")
+        .prop("checked", false);
+    }
+    if (checked && !base) {
+      $("tr[data-ident='" + baseProductIdent + "']")
+        .find("input")
+        .prop("checked", true);
+    }
+    if (checked && base) {
+      toggleExpansion(true, row);
+    }
+  });
+
   // handles synchronize bottom button
   $("#synchronize").click(function() {
     var checkboxes = $(".table-content input[type='checkbox']:checked:enabled");
+    triggerProductSync(checkboxes);
+  });
+
+  // Handle clicks for "Add this product"
+  function addProductButtonClickHandler() {
+    var checkbox = $(this).closest('tr').find('input:checkbox');
+    triggerProductSync(checkbox);
+  }
+
+  // Trigger product sync for a given array of checkboxes server side
+  function triggerProductSync(checkboxes) {
     var idents = checkboxes.closest("tr").map(function() {
       return $(this).data("ident");
     }).toArray();
@@ -46,30 +80,7 @@ $(function() {
       icon.addClass("fa-download");
       button.prop("disabled", false);
     }));
-  });
-
-  // handles clicks on product checkboxes
-  $(".table-content").on("change", "input", function(event) {
-    var checked = $(this).prop("checked");
-    var row = $(this).closest("tr");
-    var baseProductIdent = row.data("baseproductident");
-    var base = baseProductIdent === "";
-
-    if (!checked && base) {
-      var productIdent = row.data("ident");
-      $("tr[data-baseproductident='" + productIdent + "']")
-        .find("input")
-        .prop("checked", false);
-    }
-    if (checked && !base) {
-      $("tr[data-ident='" + baseProductIdent + "']")
-        .find("input")
-        .prop("checked", true);
-    }
-    if (checked && base) {
-      toggleExpansion(true, row);
-    }
-  });
+  }
 
   // Get the products and show message in case of errors
   function showProducts() {
@@ -78,6 +89,7 @@ $(function() {
         $("#loading-placeholder").hide();
         $(".table-content").append(content);
         $('.product-add-btn').tooltip();
+        $('.product-add-btn').click(addProductButtonClickHandler);
         $('.product-channels-modal').modal({show: false});
       },
       function(message, exception) {
