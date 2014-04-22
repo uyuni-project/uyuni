@@ -298,6 +298,12 @@ public class ProductSyncManager {
             }
         }
 
+        // Assume this is a new product if there was never a repo-sync before
+        if (!repoSyncRunFound) {
+            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            return channelSyncStatus;
+        }
+
         // Check if channel metadata generation is in progress
         if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
             channelSyncStatus = SyncStatus.IN_PROGRESS;
@@ -312,11 +318,6 @@ public class ProductSyncManager {
         if (selector.execute(params).size() > 0) {
             channelSyncStatus = SyncStatus.IN_PROGRESS;
             return channelSyncStatus;
-        }
-
-        // Assume this is a new product if there was never a repo-sync before
-        if (!repoSyncRunFound) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
         }
 
         // Otherwise return FAILED
