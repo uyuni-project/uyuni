@@ -61,11 +61,9 @@
                     <div class="col-sm-3 hidden-xs" id="wizard-faq">
                         <h4>Why aren't all SUSE products displayed in the list?</h4>
                         <p>The products displayed on this list are directly linked to
-                            trigger your Mirror Credentials as well as your SUSE
-                            subscriptions.</p>
+                           your Mirror Credentials as well as your SUSE subscriptions.</p>
                         <p>If you believe there are products missing, make sure you have
-                            added the correct Mirror Credential in the synchronization step
-                            before</p>
+                           added the correct Mirror Credentials in the previous wizard step.</p>
                     </div>
                 </div>
             </div>
