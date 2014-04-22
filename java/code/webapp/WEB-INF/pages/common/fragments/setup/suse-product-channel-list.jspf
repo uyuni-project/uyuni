@@ -12,22 +12,26 @@
                 <h3>${requestScope.product.name}</h3>
             </div>
             <div class="modal-body product-channel-list-modal-body">
-                <h5>
-                    <bean:message key="suse-products.jsp.channels.modal.mandatory.title" />
-                </h5>
-                <ul>
-                <c:forEach var="channel" items="${requestScope.product.mandatoryChannels}">
-                    <li>${channel.label}</li>
-                </c:forEach>
-                </ul>
-                <h5>
-                    <bean:message key="suse-products.jsp.channels.modal.optional.title" />
-                </h5>
-                <ul>
-                <c:forEach var="channel" items="${requestScope.product.optionalChannels}">
-                    <li>${channel.label}</li>
-                </c:forEach>
-                </ul>
+                <c:if test="${not empty requestScope.product.mandatoryChannels}">
+                    <h5>
+                        <bean:message key="suse-products.jsp.channels.modal.mandatory.title" />
+                    </h5>
+                    <ul>
+                    <c:forEach var="channel" items="${requestScope.product.mandatoryChannels}">
+                        <li>${channel.label}</li>
+                    </c:forEach>
+                    </ul>
+                </c:if>
+                <c:if test="${not empty requestScope.product.optionalChannels}">
+                    <h5>
+                        <bean:message key="suse-products.jsp.channels.modal.optional.title" />
+                    </h5>
+                    <ul>
+                    <c:forEach var="channel" items="${requestScope.product.optionalChannels}">
+                        <li>${channel.label}</li>
+                    </c:forEach>
+                    </ul>
+                </c:if>
                 <!-- Content will be rendered here -->
             </div>
             <div class="modal-footer">
