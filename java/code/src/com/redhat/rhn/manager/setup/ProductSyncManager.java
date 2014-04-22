@@ -227,10 +227,10 @@ public class ProductSyncManager {
      * @return channel sync status as string
      */
     private SyncStatus getChannelSyncStatus(Channel channel) {
-        // Fall back to FAILED if no progress is detected
+        // Fall back to FAILED if no progress or success is detected
         SyncStatus channelSyncStatus = SyncStatus.FAILED;
 
-        // Check if there is metadata for this channel
+        // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
         if (ChannelManager.getRepoLastBuild(c) != null) {
@@ -238,37 +238,35 @@ public class ProductSyncManager {
             return channelSyncStatus;
         }
 
-        // No metadata, check for failed download jobs in taskomatic
-        List<TaskoRun> runningRuns = TaskoFactory.listRunsByBunch("repo-sync-bunch");
+        // No success (metadata), check for failed jobs in taskomatic
+        List<TaskoRun> runs = TaskoFactory.listRunsByBunch("repo-sync-bunch");
+        boolean repoSyncRunFound = false;
 
-        // Remember if there was a repo-sync run found for this channel
-        boolean runFound = false;
-
-        // They are sorted so that by start time, recent ones first
-        for (TaskoRun run : runningRuns) {
+        // Runs are sorted by start time, recent ones first
+        for (TaskoRun run : runs) {
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
             @SuppressWarnings("unchecked")
             Map<String, Object> dataMap = schedule.getDataMap();
 
-            // Convert channel id to a long
+            // Convert channel id to Long
             String channelIdString = (String) dataMap.get("channel_id");
             Long channelId;
             try {
                 channelId = Long.parseLong(channelIdString);
             }
             catch (NumberFormatException e) {
-                // If we can't get the id, continue, may be there is an older job
-                // with good metadata
+                // Continue if we can't get the id, maybe there is an older job
                 continue;
             }
 
             if (channelId.equals(c.getId())) {
-                runFound = true;
+                // We found a repo-sync run for this channel
+                repoSyncRunFound = true;
 
-                // We found the latest run, get debug information
-                String log = run.getTailOfStdError(1024);
-                if (log.isEmpty()) {
-                    log = run.getTailOfStdOutput(1024);
+                // Get debug information
+                String debugInfo = run.getTailOfStdError(1024);
+                if (debugInfo.isEmpty()) {
+                    debugInfo = run.getTailOfStdOutput(1024);
                 }
 
                 // Set the correct status and additional info
@@ -276,10 +274,10 @@ public class ProductSyncManager {
                 String prefix = "setupwizard.syncstatus.";
                 if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
                         runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
-                    // Reposync failed or interrupted
+                    // Reposync has failed or has been interrupted
                     channelSyncStatus = SyncStatus.FAILED;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
-                    channelSyncStatus.setDetails(log);
+                    channelSyncStatus.setDetails(debugInfo);
                     return channelSyncStatus;
                 }
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
@@ -291,21 +289,22 @@ public class ProductSyncManager {
                     }
                     channelSyncStatus = SyncStatus.IN_PROGRESS;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
-                    channelSyncStatus.setDetails(log);
+                    channelSyncStatus.setDetails(debugInfo);
                     return channelSyncStatus;
                 }
-                // Might have been successful and now waiting for metadata generation
+
+                // We look only at the latest run
                 break;
             }
         }
 
-        // Check if the channel is in the metadata generation queue as in-progress
+        // Check if channel metadata generation is in progress
         if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
             channelSyncStatus = SyncStatus.IN_PROGRESS;
             return channelSyncStatus;
         }
 
-        // Check for queued items, merge this with the above method?
+        // Check for queued items (merge this with the above method?)
         SelectMode selector = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_CANDIDATES_DETAILS_QUERY);
         Map<String, Object> params = new HashMap<String, Object>();
@@ -315,10 +314,11 @@ public class ProductSyncManager {
             return channelSyncStatus;
         }
 
-        // No repo-sync run found at all: new product?
-        if (!runFound) {
+        // Assume this is a new product if there was never a repo-sync before
+        if (!repoSyncRunFound) {
             channelSyncStatus = SyncStatus.IN_PROGRESS;
         }
+
         // Otherwise return FAILED
         return channelSyncStatus;
     }
