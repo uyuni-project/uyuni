@@ -99,7 +99,7 @@ public class Product implements Selectable, Comparable<Product> {
          * Get the product synchronization progress.
          * @return the progress
          */
-        public float getSyncProgress() {
+        public int getSyncProgress() {
             return syncProgress;
         }
 
