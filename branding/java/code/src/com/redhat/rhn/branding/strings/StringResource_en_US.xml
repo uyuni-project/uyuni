@@ -1931,6 +1931,18 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.show-channels">
         <source>Show channels</source>
       </trans-unit>
+      <trans-unit id="suse-products.jsp.channels.modal.title">
+        <source>Product channels</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.channels.modal.mandatory.title">
+        <source>Mandatory Channels</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.channels.modal.optional.title">
+        <source>Optional Channels</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.channels.modal.close">
+        <source>Close</source>
+      </trans-unit>
       <trans-unit id="suse-products.jsp.try-again">
         <source>Try again</source>
       </trans-unit>

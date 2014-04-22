@@ -46,10 +46,12 @@
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
-        <i class="product-channels-btn fa fa-th-list"
+        <i data-product-ident="${requestScope.product.ident}" class="product-channels-btn fa fa-th-list"
             title="<bean:message key='suse-products.jsp.show-channels' />"
-            data-toggle="tooltip">
+            data-toggle="modal" data-target="#product-${requestScope.product.ident}-channels-modal">
         </i>
+
+        <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
     <td>
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
