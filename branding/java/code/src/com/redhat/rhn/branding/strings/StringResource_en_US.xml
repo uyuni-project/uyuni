@@ -1932,7 +1932,7 @@ tree will not be usable for autoinstalling.
         <source>Show channels</source>
       </trans-unit>
       <trans-unit id="suse-products.jsp.channels.modal.title">
-        <source>Product channels</source>
+        <source>Product Channels</source>
       </trans-unit>
       <trans-unit id="suse-products.jsp.channels.modal.mandatory.title">
         <source>Mandatory Channels</source>
