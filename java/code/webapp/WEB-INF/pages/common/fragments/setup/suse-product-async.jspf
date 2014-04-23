@@ -14,7 +14,7 @@
     </c:if>
  >
     <td>
-        <input type="checkbox" id="select-single"
+        <input type="checkbox" class="select-single"
             <c:if test="${requestScope.product.provided}">
                 checked disabled
             </c:if>
