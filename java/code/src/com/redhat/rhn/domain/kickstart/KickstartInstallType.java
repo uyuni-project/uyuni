@@ -218,7 +218,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler os_version compatible string
      */
     public String getCobblerOsVersion() {
-        if (this.getCobblerBreed().equals(REDHAT)) {
+        if (this.getCobblerBreed().equals(REDHAT) && !this.isFedora()) {
             return this.getLabel().replace("_", "");
         }
         else {
