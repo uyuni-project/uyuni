@@ -97,5 +97,9 @@
             converter="exception">
             <param name='include' value='message' />
         </convert>
+        <convert match="com.redhat.rhn.manager.setup.ConnectionException"
+            converter="exception">
+            <param name='include' value='message' />
+        </convert>
     </allow>
 </dwr>

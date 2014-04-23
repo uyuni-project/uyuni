@@ -62,6 +62,9 @@ public class ProductSyncManager {
     /** String returned by the sync command if there is any invalid mirror credential. */
     private static final String INVALID_MIRROR_CREDENTIAL_ERROR = "HTTP error code 401";
 
+    /** String returned by the sync command if there is any invalid mirror credential. */
+    private static final String COULD_NOT_CONNECT_ERROR = "connection failed.";
+
     /**
      * Product sync command switch to refresh product, channel and subscription
      * information without triggering any reposync.
@@ -377,20 +380,24 @@ public class ProductSyncManager {
      * any reposysnc.
      * @throws ProductSyncManagerCommandException if the refresh failed
      * @throws InvalidMirrorCredentialException if mirror credentials are not valid
+     * @throws ConnectionException if a connection to NCC was not possible
      */
     public void refreshProducts()
-        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException {
+        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
+        ConnectionException {
         try {
             runProductSyncCommand(REFRESH_SWITCH);
         }
         catch (ProductSyncManagerCommandException e) {
-            if (e.getErrorCode() == 1 &&
-                e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
-                throw new InvalidMirrorCredentialException();
+            if (e.getErrorCode() == 1) {
+                if (e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
+                    throw new InvalidMirrorCredentialException();
+                }
+                if (e.getCommandErrorMessage().contains(COULD_NOT_CONNECT_ERROR)) {
+                    throw new ConnectionException();
+                }
             }
-            else {
-                throw e;
-            }
+            throw e;
         }
     }
 }

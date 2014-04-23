@@ -1919,8 +1919,12 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- SUSE Products -->
-      <trans-unit id="suse-products.jsp.error">
+      <trans-unit id="suse-products.jsp.invalid-credentials-alert-message">
         <source>There was an error listing the products for the given credentials, please go &lt;a href='/rhn/admin/setup/MirrorCredentials.do'&gt;back&lt;/a&gt; to make sure that all configured mirror credentials are valid!</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.no-connection-alert-message">
+        <source>There was an error refreshing the products list, connection could not be established. Please check that the &lt;a href='/rhn/admin/setup/ProxySettings.do'&gt;HTTP proxy&lt;/a&gt; details are correct - if they are, NCC might be experiencing a temporary downtime.
+        </source>
       </trans-unit>
       <trans-unit id="suse-products.jsp.add-products">
         <source>Add products</source>

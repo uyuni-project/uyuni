@@ -25,8 +25,11 @@
             <div class="panel-body">
                 <div class="row" id="suse-products">
                     <div class="col-sm-9">
-                        <div class="alert alert-danger" id="alert-popup" hidden>
-                            <bean:message key="suse-products.jsp.error" />
+                        <div class="alert alert-danger" id="invalid-credentials-alert-popup" hidden>
+                            <bean:message key="suse-products.jsp.invalid-credentials-alert-message" />
+                        </div>
+                        <div class="alert alert-danger" id="no-connection-alert-popup" hidden>
+                            <bean:message key="suse-products.jsp.no-connection-alert-message" />
                         </div>
                         <table class="table table-rounded">
                             <thead>
