@@ -233,6 +233,13 @@ public class ProductSyncManager {
         // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
+
+        // the XML data may say P, but if the channel is not in the database
+        // we assume the XML data is wrong
+        if (c == null) {
+            return SyncStatus.NOT_MIRRORED;
+        }
+
         if (ChannelManager.getRepoLastBuild(c) != null) {
             channelSyncStatus = SyncStatus.FINISHED;
             return channelSyncStatus;
