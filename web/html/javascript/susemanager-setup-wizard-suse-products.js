@@ -53,7 +53,7 @@ $(function() {
       return $(this).data("ident");
     }).toArray();
 
-    var button = $(this);
+    var button = $("#synchronize");
     var icon = button.find("i");
     button.prop("disabled", true);
     icon.removeClass("fa-download");
