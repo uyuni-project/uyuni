@@ -125,8 +125,8 @@ public class Product implements Selectable, Comparable<Product> {
     private String name;
 
     /** The ident ID of the base product or an empty string. */
-    @Attribute
-    private String parent_product;
+    @Attribute(name = "parent_product")
+    private String parentProduct;
 
     /** The mandatory channels. */
     @Element(name = "mandatory_channels")
@@ -171,7 +171,7 @@ public class Product implements Selectable, Comparable<Product> {
         arch = archIn;
         ident = identIn;
         name = nameIn;
-        parent_product = baseProductIdent;
+        parentProduct = baseProductIdent;
         mandatoryChannels = mandatoryChannelsIn;
         optionalChannels = optionalChannelsIn;
     }
@@ -206,7 +206,7 @@ public class Product implements Selectable, Comparable<Product> {
      * product
      */
     public String getBaseProductIdent() {
-        return parent_product;
+        return parentProduct;
     }
 
     /**
