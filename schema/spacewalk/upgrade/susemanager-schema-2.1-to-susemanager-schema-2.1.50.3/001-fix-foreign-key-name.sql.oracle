@@ -1,0 +1,10 @@
+DECLARE
+  old_name user_constraints.constraint_name%TYPE;
+BEGIN
+  SELECT constraint_name
+    INTO old_name
+    FROM user_constraints
+    WHERE table_name = 'RHNACTIONCHAIN'
+      AND constraint_type = ' P'; -- primary key
+  EXECUTE IMMEDIATE 'ALTER TABLE rhnActionChain RENAME CONSTRAINT ' || old_name || ' TO rhn_action_chain_id_pk';
+END;
