@@ -40,17 +40,16 @@ $(function() {
     }
   });
 
+  $(".table-content").on("click", ".product-add-btn", function() {
+    var checkbox = $(this).closest('tr').find('input:checkbox');
+    triggerProductSync(checkbox, $(this));
+  });
+
   // Handle the synchronize bottom button
   $("#synchronize").click(function() {
     var checkboxes = $(".table-content input[type='checkbox']:checked:enabled");
     triggerProductSync(checkboxes, $(this));
   });
-
-  // Handle clicks for product sync buttons
-  function addProductButtonClicked(buttonClicked) {
-    var checkbox = buttonClicked.closest('tr').find('input:checkbox');
-    triggerProductSync(checkbox, buttonClicked);
-  }
 
   // Trigger product sync for a given array of checkboxes server side
   function triggerProductSync(checkboxes, buttonClicked) {
@@ -103,9 +102,6 @@ $(function() {
         $("#loading-placeholder").hide();
         $(".table-content").append(content);
         $('.product-add-btn').tooltip();
-        $('.product-add-btn').click(function() {
-          addProductButtonClicked($(this));
-        });
         $('.product-channels-modal').modal({show: false});
         initSyncButtons();
       },
