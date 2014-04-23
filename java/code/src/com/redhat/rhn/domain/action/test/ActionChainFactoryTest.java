@@ -209,9 +209,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         return orders;
     }
 
+    /**
+     * Tests removeActionChainEntrySortGaps().
+     * @throws Exception if something bad happens
+     */
     public void testRemoveActionChainEntrySortGaps() throws Exception {
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain =
+                ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
@@ -241,9 +246,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(result, getOrders(actionChain.getEntries()));
     }
 
+    /**
+     * Tests removeActionChainEntry().
+     * @throws Exception if something bad happens
+     */
     public void testRemoveActionChainEntry() throws Exception {
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain =
+                ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
@@ -256,8 +266,9 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action.setOrg(user.getOrg());
         TestUtils.saveAndFlush(action);
-        ActionChainEntry toRemove = ActionChainFactory.queueActionChainEntry(action, actionChain,
-                    ServerFactoryTest.createTestServer(user), 1);
+        ActionChainEntry toRemove =
+                ActionChainFactory.queueActionChainEntry(action, actionChain,
+                        ServerFactoryTest.createTestServer(user), 1);
 
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
