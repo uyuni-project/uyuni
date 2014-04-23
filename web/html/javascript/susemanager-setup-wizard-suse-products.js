@@ -15,12 +15,17 @@ $(function() {
   // handles clicks on product checkboxes
   $(".table-content").on("change", "input", function(event) {
     var checked = $(this).prop("checked");
+    var disabled = $(this).prop("disabled");
     var row = $(this).closest("tr");
+    var productIdent = row.data("ident");
     var baseProductIdent = row.data("baseproductident");
     var base = baseProductIdent === "";
 
+    if (base) {
+      // Enable/disable sync buttons for addon products
+      toggleAddonSyncButtons(productIdent, !(checked && disabled));
+    }
     if (!checked && base) {
-      var productIdent = row.data("ident");
       $("tr[data-baseproductident='" + productIdent + "']")
         .find("input")
         .prop("checked", false);
@@ -63,7 +68,7 @@ $(function() {
     ProductSyncAction.synchronize(idents, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
-        $(this).prop("disabled", true);
+        $(this).prop("disabled", true).trigger("change");
 
         $.each($(this).closest("tr").find("span.product-status"), function () {
           var status = $(this).data("syncstatus");
@@ -91,6 +96,7 @@ $(function() {
         $('.product-add-btn').tooltip();
         $('.product-add-btn').click(addProductButtonClickHandler);
         $('.product-channels-modal').modal({show: false});
+        initSyncButtons();
       },
       function(message, exception) {
         $('.table').hide();
@@ -103,6 +109,29 @@ $(function() {
         }
       })
     );
+  }
+
+  // Initially enable/disable sync buttons for addon products
+  function initSyncButtons() {
+    $("input[type='checkbox'].select-single").each(function() {
+      var row = $(this).closest("tr");
+      var baseProductIdent = row.data("baseproductident");
+      var base = baseProductIdent === "";
+
+      if (base) {
+        var productIdent = row.data("ident");
+        var checked = $(this).prop("checked");
+        var disabled = $(this).prop("disabled");
+        toggleAddonSyncButtons(productIdent, !(checked && disabled));
+      }
+    });
+  }
+
+  // Toggle sync buttons for addons of a given base product
+  function toggleAddonSyncButtons(baseProductIdent, disabled) {
+    $("tr[data-baseproductident='" + baseProductIdent + "']")
+      .find("button.product-add-btn")
+      .prop("disabled", disabled);
   }
 
   // expands or collapses a row, expects $(this) to point to an element
