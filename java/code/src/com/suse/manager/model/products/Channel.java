@@ -25,10 +25,10 @@ import org.simpleframework.xml.Attribute;
  */
 public class Channel {
 
-    /** Status attributed to channels that have begun synchronization. */
-    public static final String STATUS_SYNCHRONIZING = "P";
-    /** Status attributed to channels that have not begun synchronization. */
-    public static final String STATUS_NOT_SYNCHRONIZING = ".";
+    /** Status attributed to channels that are installed. */
+    public static final String STATUS_PROVIDED = "P";
+    /** Status attributed to channels that are not installed. */
+    public static final String STATUS_NOT_PROVIDED = ".";
 
     /** The label. */
     @Attribute
@@ -72,12 +72,11 @@ public class Channel {
     }
 
     /**
-     * Returns true iff this channel has already been synchronized or it is
-     * synchronizing at the moment.
-     * @return true or false
+     * Check if this channel is provided according to mgr-ncc-sync (P).
+     * @return true if this channel is provided, otherwise false
      */
-    public boolean isSynchronizing() {
-        return STATUS_SYNCHRONIZING.equals(status);
+    public boolean isProvided() {
+        return STATUS_PROVIDED.equals(status);
     }
 
     /**

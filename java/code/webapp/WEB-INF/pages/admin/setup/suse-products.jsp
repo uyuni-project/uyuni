@@ -31,15 +31,16 @@
                         <table class="table table-rounded">
                             <thead>
                                 <tr>
-                                    <th><input type="checkbox" id="select-all" autocomplete="off" /></th>
+                                    <th><input type="checkbox" class="select-all" autocomplete="off" /></th>
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
-                                    <th>1-click</th>
+                                    <th>Channels</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="table-content">
+                            <tbody class="table-content">
                                 <tr id="loading-placeholder">
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <rhn:icon type="spinner"></rhn:icon>
                                         <span>Loading...</span>
                                     </td>
@@ -48,9 +49,9 @@
                             <tfoot>
                                 <tr>
                                     <td><input type="checkbox" class="select-all" autocomplete="off" /></td>
-                                    <td colspan="3">
+                                    <td colspan="5">
                                         <button class="btn btn-success" id="synchronize">
-                                            <i class="fa fa-refresh"></i> Synchronize
+                                            <i class="fa fa-download"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
                                     </td>
                                 </tr>
@@ -60,11 +61,9 @@
                     <div class="col-sm-3 hidden-xs" id="wizard-faq">
                         <h4>Why aren't all SUSE products displayed in the list?</h4>
                         <p>The products displayed on this list are directly linked to
-                            trigger your Mirror Credentials as well as your SUSE
-                            subscriptions.</p>
+                           your Mirror Credentials as well as your SUSE subscriptions.</p>
                         <p>If you believe there are products missing, make sure you have
-                            added the correct Mirror Credential in the synchronization step
-                            before</p>
+                           added the correct Mirror Credentials in the previous wizard step.</p>
                     </div>
                 </div>
             </div>

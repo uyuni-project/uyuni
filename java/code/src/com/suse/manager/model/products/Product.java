@@ -17,8 +17,6 @@ package com.suse.manager.model.products;
 
 import com.redhat.rhn.frontend.struts.Selectable;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -35,6 +33,84 @@ import java.util.List;
  */
 @Root(strict = false)
 public class Product implements Selectable, Comparable<Product> {
+    /**
+     * Aggregated product sync status.
+     */
+    public enum SyncStatus {
+        /** Product has never been installed at all. */
+        NOT_MIRRORED,
+        /** Product has been installed, synchronization is in progress. */
+        IN_PROGRESS,
+        /** Product has been installed and synchronized completely. */
+        FINISHED,
+        /** Product installation or sync went bad. */
+        FAILED;
+
+        // Error message key
+        private String messageKey;
+
+        // Store additional debug information here
+        private String details;
+
+        // This is for showing synchronization progress
+        private int syncProgress;
+
+        /**
+         * Returns a translation key for a status
+         * @return the key
+         */
+        public String getTranslationKey() {
+            return "setupwizard.syncstatus." + toString().replace("_", ".").toLowerCase();
+        }
+
+        /**
+         * Get the error message key.
+         * @return the message key
+         */
+        public String getMessageKey() {
+            return messageKey;
+        }
+
+        /**
+         * Set the error message key.
+         * @param messageKeyIn key of the message to set
+         */
+        public void setMessageKey(String messageKeyIn) {
+            this.messageKey = messageKeyIn;
+        }
+
+        /**
+         * Get additional debug information (if available).
+         * @return the details
+         */
+        public String getDetails() {
+            return details;
+        }
+
+        /**
+         * Set any additional debug information.
+         * @param detailsIn the details to set
+         */
+        public void setDetails(String detailsIn) {
+            this.details = detailsIn;
+        }
+
+        /**
+         * Get the product synchronization progress.
+         * @return the progress
+         */
+        public int getSyncProgress() {
+            return syncProgress;
+        }
+
+        /**
+         * Set the product synchronization progress.
+         * @param syncProgressIn the progress to set
+         */
+        public void setSyncProgress(int syncProgressIn) {
+            this.syncProgress = syncProgressIn;
+        }
+    };
 
     /** The architecture. */
     @Attribute
@@ -49,8 +125,8 @@ public class Product implements Selectable, Comparable<Product> {
     private String name;
 
     /** The ident ID of the base product or an empty string. */
-    @Attribute
-    private String parent_product;
+    @Attribute(name = "parent_product")
+    private String parentProduct;
 
     /** The mandatory channels. */
     @Element(name = "mandatory_channels")
@@ -68,6 +144,9 @@ public class Product implements Selectable, Comparable<Product> {
 
     /** Addon products. */
     private List<Product> addonProducts = new LinkedList<Product>();
+
+    /** Aggregated product sync status. */
+    private SyncStatus syncStatus;
 
     /**
      * Default constructor.
@@ -92,7 +171,7 @@ public class Product implements Selectable, Comparable<Product> {
         arch = archIn;
         ident = identIn;
         name = nameIn;
-        parent_product = baseProductIdent;
+        parentProduct = baseProductIdent;
         mandatoryChannels = mandatoryChannelsIn;
         optionalChannels = optionalChannelsIn;
     }
@@ -127,7 +206,7 @@ public class Product implements Selectable, Comparable<Product> {
      * product
      */
     public String getBaseProductIdent() {
-        return parent_product;
+        return parentProduct;
     }
 
     /**
@@ -147,36 +226,25 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Returns true if this product has already been synchronized or it is
-     * synchronizing at the moment.
-     * @return true or false
+     * Check if all mandatory channels are provided according to mgr-ncc-sync (P).
+     * @return true if this product is provided, otherwise false
      */
-    public boolean isSynchronizing() {
-        return CollectionUtils.exists(
-            CollectionUtils.union(getMandatoryChannels(), getOptionalChannels()),
-            new Predicate() {
-                @Override
-                public boolean evaluate(Object channel) {
-                    return ((Channel) channel).isSynchronizing();
-                }
+    public boolean isProvided() {
+        for (Channel c : getMandatoryChannels()) {
+            if (!c.isProvided()) {
+                return false;
             }
-        );
+        }
+        return true;
     }
 
     /**
-     * Returns true iff this is a base product
+     * Returns true iff this is a base product.
+     *
      * @return true for base products
      */
     public boolean isBase() {
         return getBaseProductIdent().isEmpty();
-    }
-
-    /**
-     * Returns true iff this product can be synchronized
-     * @return true iff synchronizable
-     */
-    public boolean isSynchronizable() {
-        return !isSynchronizing() && (isBase() || getBaseProduct().isSynchronizing());
     }
 
     /**
@@ -283,5 +351,21 @@ public class Product implements Selectable, Comparable<Product> {
      */
     public List<Product> getAddonProducts() {
         return addonProducts;
+    }
+
+    /**
+     * Set the product sync status.
+     * @param syncStatusIn the status
+     */
+    public void setSyncStatus(SyncStatus syncStatusIn) {
+        this.syncStatus = syncStatusIn;
+    }
+
+    /**
+     * Get the product sync status.
+     * @return the sync status
+     */
+    public SyncStatus getSyncStatus() {
+        return this.syncStatus;
     }
 }

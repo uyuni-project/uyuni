@@ -3,39 +3,106 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<tr data-ident="${requestScope.product.ident}" data-baseproductident="${requestScope.product.baseProductIdent}">
+<tr
+    data-ident="${requestScope.product.ident}"
+    data-baseproductident="${requestScope.product.baseProductIdent}"
+    <c:if test="${not requestScope.product.base}">
+        style="display: none;"
+        class="addons"
+    </c:if>
+ >
     <td>
         <input type="checkbox" id="select-single"
-            <c:if test="${not requestScope.product.synchronizable}">
-                disabled
+            <c:if test="${requestScope.product.provided}">
+                checked disabled
             </c:if>
         />
     </td>
     <td>
-        <c:if test="${not requestScope.product.base}">
-            <i class="fa fa-ellipsis-h"></i>
-        </c:if>
-        <c:out value="${requestScope.product.name}"></c:out>
+        <c:choose>
+            <c:when test="${requestScope.product.base}">
+                <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
+                    <span class="expand-button collapsible">
+                        <i class="fa fa-plus-square-o"></i>
+                    </span>
+                    <span class="collapse-button collapsible" hidden>
+                        <i class="fa fa-minus-square-o"></i>
+                    </span>
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <i class="fa fa-ellipsis-v"></i>
+            </c:otherwise>
+        </c:choose>
+        <span
+            <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
+                class="collapsible"
+            </c:if>
+        >
+            <c:out value="${requestScope.product.name}"></c:out>
+        </span>
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
-        <i
-            class="fa fa-refresh btn-synchronize text-success start-sync-icon"
-            <c:if test="${not requestScope.product.synchronizable}">
-              hidden
-            </c:if>
-        ></i>
+        <i data-product-ident="${requestScope.product.ident}" class="product-channels-btn fa fa-th-list"
+            title="<bean:message key='suse-products.jsp.show-channels' />"
+            data-toggle="modal" data-target="#product-${requestScope.product.ident}-channels-modal">
+        </i>
 
-        <span class="text-success starting-sync-icon" hidden>
-          <rhn:icon type="spinner"></rhn:icon>
-        </span>
-
-        <i
-            class="fa fa-check text-success sync-started-icon"
-            <c:if test="${not requestScope.product.synchronizing}">
-                  hidden
-            </c:if>
-        ></i>
+        <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
+    </td>
+    <td>
+        <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
+        <c:forEach var="syncStatus" items="${allSyncStatus}">
+            <span
+                data-syncstatus="${fn:toLowerCase(syncStatus)}"
+                class="product-status"
+                <c:if test="${syncStatus != product.syncStatus}">
+                    hidden
+                </c:if>
+            >
+                <c:choose>
+                    <c:when test="${syncStatus == 'NOT_MIRRORED'}">
+                        <button class="product-add-btn btn btn-default btn-xs"
+                                data-toggle='tooltip'
+                                title="<bean:message key='suse-products.jsp.add-this-product' />"
+                        >
+                            <i class="fa fa-download"></i>
+                        </button>
+                    </c:when>
+                    <c:when test="${syncStatus == 'IN_PROGRESS'}">
+                        <div class="product-sync-progress progress progress-striped active">
+                            <c:choose>
+                                <c:when test="${product.syncStatus == 'IN_PROGRESS'}">
+                                    <span>${product.syncStatus.syncProgress}%</span>
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="${product.syncStatus.syncProgress}" aria-valuemin="0" aria-valuemax="100" style="width: ${product.syncStatus.syncProgress}%;">                                        
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <span><small><bean:message key='suse-products.jsp.product-scheduled' /></small></span>
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:when>
+                    <c:when test="${syncStatus == 'FINISHED'}">
+                        <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                    </c:when>
+                    <c:when test="${syncStatus == 'FAILED'}">
+                        <div class="product-failed-status">
+                          <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
+                          <a href="#">
+                              <small>
+                                  <bean:message key='suse-products.jsp.try-again' />
+                              </small>
+                          </a>
+                        </div>
+                    </c:when>
+                </c:choose>
+            </span>
+        </c:forEach>
     </td>
 </tr>

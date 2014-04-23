@@ -35,48 +35,13 @@ public class ProductSyncAction {
     private static Logger log = Logger.getLogger(ProductSyncAction.class);
 
     /**
-     * Synchronizes a single product.
-     * @param productIdent the product ident
-     * @throws ProductSyncManagerCommandException in case product
-     * synchronization goes wrong
-     */
-    public void synchronizeSingle(String productIdent)
-        throws ProductSyncManagerCommandException {
-        checkUserRole();
-
-        try {
-            new ProductSyncManager().addProduct(productIdent);
-        }
-        catch (ProductSyncManagerCommandException e) {
-            log.error(e);
-            throw e;
-        }
-    }
-
-    /**
-     * Synchronizes a single product.
+     * Synchronizes products.
      * @param productIdents the product ident list
      * @throws ProductSyncManagerCommandException in case product
      * synchronization goes wrong
      */
-    public void synchronizeMultiple(List<String> productIdents)
+    public void synchronize(List<String> productIdents)
         throws ProductSyncManagerCommandException {
-        checkUserRole();
-
-        try {
-            new ProductSyncManager().addProducts(productIdents);
-        }
-        catch (ProductSyncManagerCommandException e) {
-            log.error(e);
-            throw e;
-        }
-    }
-
-    /**
-     * Throws an exception if the currently logged user cannot synchronize
-     * products.
-     */
-    private void checkUserRole() {
         User user = new RequestContext(
                 WebContextFactory.get()
                 .getHttpServletRequest())
@@ -85,6 +50,14 @@ public class ProductSyncAction {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException(
                     "Must be SAT_ADMIN to synchronize the products");
+        }
+
+        try {
+            new ProductSyncManager().addProducts(productIdents);
+        }
+        catch (ProductSyncManagerCommandException e) {
+            log.error(e);
+            throw e;
         }
     }
 }
