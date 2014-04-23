@@ -9,7 +9,7 @@
     data-ident="${requestScope.product.ident}"
     data-baseproductident="${requestScope.product.baseProductIdent}"
     <c:if test="${not requestScope.product.base}">
-        hidden
+        style="display: none;"
         class="addons"
     </c:if>
  >
