@@ -87,7 +87,7 @@ $(function() {
     }));
   }
 
-  // Get the products and show message in case of errors
+  // Get the products or show message in case of errors
   function showProducts() {
     ProductsRenderer.renderAsync(makeAjaxHandler(
       function(content) {
