@@ -93,9 +93,11 @@ $(function() {
         $('.product-channels-modal').modal({show: false});
       },
       function(message, exception) {
+        $('.table').hide();
         if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
-          $('.table').hide();
-          $("#alert-popup").show();
+          $("#invalid-credentials-alert-popup").show();
+        } else if (exception.javaClassName.indexOf("ConnectionException") > 0) {
+          $("#no-connection-alert-popup").show();
         } else {
           showFatalError();
         }
