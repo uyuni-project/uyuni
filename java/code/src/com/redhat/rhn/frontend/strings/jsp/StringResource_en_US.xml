@@ -13498,12 +13498,6 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeployConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="deployconfirm.jsp.success.chain">
-        <source>Action has been successfully added to Action Chain {0}.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/configuration/file/GlobalRevisionDeployConfirm.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="deployconfirm.jsp.successes">
         <source>{0} revision-deploys successfully scheduled.</source>
         <context-group name="ctx">
