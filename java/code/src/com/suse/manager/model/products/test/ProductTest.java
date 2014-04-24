@@ -31,17 +31,17 @@ import junit.framework.TestCase;
 public class ProductTest extends TestCase {
 
     /**
-     * Tests the method isSynchronizing().
+     * Tests the method isProvided().
      */
-    public void testIsSynchronizing() {
+    public void testIsProvided() {
         Product nonSynchronizingProduct = new Product(
                 "x86_46",
                 "test",
                 "test product",
                 "",
                 new MandatoryChannels(new LinkedList<Channel>() { {
-                    add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED));
-                    add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED));
+                    add(new Channel("test channel 1", Channel.STATUS_PROVIDED));
+                    add(new Channel("test channel 2", Channel.STATUS_PROVIDED));
                     add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED));
                 } }),
                 new OptionalChannels(new LinkedList<Channel>() { {
@@ -59,14 +59,14 @@ public class ProductTest extends TestCase {
                "test product",
                "",
                new MandatoryChannels(new LinkedList<Channel>() { {
-                   add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED));
-                   add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED));
-                   add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED));
+                   add(new Channel("test channel 1", Channel.STATUS_PROVIDED));
+                   add(new Channel("test channel 2", Channel.STATUS_PROVIDED));
+                   add(new Channel("test channel 3", Channel.STATUS_PROVIDED));
                } }),
                new OptionalChannels(new LinkedList<Channel>() { {
                    add(new Channel("test channel 1", Channel.STATUS_NOT_PROVIDED));
                    add(new Channel("test channel 2", Channel.STATUS_NOT_PROVIDED));
-                   add(new Channel("test channel 3", Channel.STATUS_PROVIDED));
+                   add(new Channel("test channel 3", Channel.STATUS_NOT_PROVIDED));
                } })
       );
 
