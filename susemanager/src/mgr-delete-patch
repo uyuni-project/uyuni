@@ -19,22 +19,22 @@ import sys
 import textwrap
 from optparse import OptionParser
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.susemanager import mgr_delete_errata
+from spacewalk.susemanager import mgr_delete_patch
 
 def main():
     initCFG("server.susemanager")
 
     description = """\
-Remove errata and its clones from all the channels. All the packages
-referenced by the errata are removed from their channels and from the
-database; rpm files are removed from disk. If ERRATA is a clone of another
-errata the tool will propose the removal of the original errata and all its
+Remove patch and its clones from all the channels. All the packages
+referenced by the patch are removed from their channels and from the
+database; rpm files are removed from disk. If PATCH is a clone of another
+patch the tool will propose the removal of the original patch and all its
 clones.
 """
 
     parser = OptionParser(version="%prog 0.1",
                           description=textwrap.dedent(description),
-                          usage="%prog [options] ERRATA"
+                          usage="%prog [options] PATCH"
                           )
     parser.add_option('-d', '--debug', action="store", type="int", dest='debug',
                       default=CFG.DEBUG, help="enable debugging")
@@ -42,13 +42,13 @@ clones.
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
-        sys.stderr.write("You have to specify at least an errata\n")
+        sys.stderr.write("You have to specify at least a patch\n")
         sys.exit(1)
 
-    cleaner = mgr_delete_errata.Cleaner(debug=options.debug)
+    cleaner = mgr_delete_patch.Cleaner(debug=options.debug)
 
-    for errata in args:
-        cleaner.remove(errata)
+    for patch in args:
+        cleaner.remove(patch)
 
 if __name__ == "__main__":
     try:
