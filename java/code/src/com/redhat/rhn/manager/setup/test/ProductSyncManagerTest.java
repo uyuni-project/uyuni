@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -26,16 +28,21 @@ import com.redhat.rhn.taskomatic.TaskoSchedule;
 import com.redhat.rhn.taskomatic.TaskoTemplate;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -236,7 +243,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
                 prod.getSyncStatus());
     }
 
-    public void testProductStatusCompleted() throws Exception {
+    public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
         productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FINISHED);
         Product prod = getProductWithAllChannelsProvided();
 
@@ -244,6 +251,79 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         // some old downloads
         assertEquals(Product.SyncStatus.FAILED,
                         prod.getSyncStatus());
+    }
+
+    /**
+     * Generate fake metadata for a product
+     * @param prodIdent identifier
+     */
+    private void productGenerateFakeMetadata(String prodIdent) throws IOException {
+        for (Product prod : products.getProducts()) {
+            if (prodIdent.equals(prod.getIdent())) {
+                for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
+                    channelGenerateFakeMetadata(ch);
+                }
+            }
+        }
+    }
+
+    /**
+     * Generate fake metadata for a channel
+     * @param ch channel DTO
+     */
+    private void channelGenerateFakeMetadata(
+            com.suse.manager.model.products.Channel ch) throws IOException {
+        if (ch.isProvided()) {
+            Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
+            if (chObj == null) {
+                throw new IllegalArgumentException("Channel" + ch.getLabel() + " is not P");
+            }
+            if (chObj.getId() == null) {
+                throw new IllegalArgumentException("Channel" + ch.getLabel() + " has null id");
+            }
+            channelGenerateFakeMetadata(chObj);
+        }
+    }
+
+    /**
+     * Generate fake metadata for a channel
+     * @param chObj channel bean
+     */
+    private void channelGenerateFakeMetadata(Channel chObj) throws IOException {
+        String prefix = Config.get().getString(
+                ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String mountPoint = Config.get().getString(
+                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        File repoPath = new File(mountPoint + File.separator + prefix +
+                File.separator + chObj.getLabel());
+        if (!repoPath.mkdirs()) {
+            throw new IOException("Can't create directories for " + repoPath.getAbsolutePath());
+        }
+        File repomd = new File(repoPath, "repomd.xml");
+        repomd.createNewFile();
+    }
+
+    public void testProductStatusDownloadCompletedAndMetadata() throws Exception {
+        String oldMountPoint = Config.get().getString(
+                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        // temporary repodata directory
+        File tempMountPoint = File.createTempFile("folder-name","");
+        tempMountPoint.delete();
+        tempMountPoint.mkdir();
+        // change the default mount point
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
+                tempMountPoint.getAbsolutePath());
+
+        // download finished
+        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FINISHED);
+        productGenerateFakeMetadata(inProgressProductIdent);
+
+        Product prod = getProductWithAllChannelsProvided();
+
+        assertEquals(Product.SyncStatus.FINISHED,
+                        prod.getSyncStatus());
+        // restore old cache path
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
     }
 
     /**
