@@ -63,7 +63,7 @@ Feature: Test action chaining
       And I follow "New Test Channel"
       And I follow "Deploy Files" in the content area
       And I click on "Deploy All Files" 
-      And I check "sumacltt.suse.de" in the list
+      And I check this client
       And I click on "Confirm & Deploy to Selected Systems"
       And I check radio button "schedule-by-action-chain"
       And I click on "Deploy Files to Selected Systems"
