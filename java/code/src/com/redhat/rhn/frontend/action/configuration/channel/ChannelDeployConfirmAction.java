@@ -170,7 +170,8 @@ public class ChannelDeployConfirmAction extends RhnAction {
             }
             else {
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
-                        "deployconfirm.jsp.success.chain", actionChain.getLabel()));
+                        "message.addedtoactionchain", actionChain.getId(),
+                        StringUtil.htmlifyText(actionChain.getLabel())));
             }
         }
         else {
