@@ -8,6 +8,10 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
+LOGFILE="/var/log/susemanager-upgrade.log"
+# set -x
+exec > >(tee -a $LOGFILE) 2>&1
+
 if [ $UID -ne 0 ]; then
     echo "You must run this as root."
     exit
