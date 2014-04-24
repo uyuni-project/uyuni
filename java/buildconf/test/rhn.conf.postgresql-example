@@ -104,7 +104,6 @@ java.l10n_debug_marker = $$$
 java.l10n_missingmessage_exceptions = false
 java.supported_locales = bn_IN,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt_BR,ru,ta,zh_CN,zh_TW
 
-
 # Enable Solaris support
 web.enable_solaris_support = 0
 
@@ -113,6 +112,9 @@ web.product_name = SUSE Manager
 web.vendor_name = SUSE
 web.enterprise_linux_name = SUSE Linux Enterprise
 web.vendor_service_name = Novell Customer Center
+
+# Maximum number of actions displayed on schedule/actions pages
+web.actions_display_limit = 10000
 
 # Disable proxy channel in Spacewalk
 web.subscribe_proxy_channel = 0
