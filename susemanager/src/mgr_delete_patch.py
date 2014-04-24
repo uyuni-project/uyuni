@@ -23,7 +23,7 @@ DEFAULT_LOG_LOCATION = '/var/log/rhn/'
 class Cleaner:
     def __init__(self, debug):
         self.debug = debug
-        rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-delete-errata.log', self.debug)
+        rhnLog.initLOG(DEFAULT_LOG_LOCATION + 'mgr-delete-patch.log', self.debug)
 
         try:
             rhnSQL.initDB()
@@ -39,10 +39,10 @@ class Cleaner:
         errata_id        = errata_helper.findErrataByAdvisory(errata)
 
         if not errata_id:
-            log_error("Cannot find errata with advisory {0}".format(errata))
+            log_error("Cannot find patch with advisory {0}".format(errata))
             return
         else:
-            log_debug(0, "Errata {0} found".format(errata))
+            log_debug(0, "Patch {0} found".format(errata))
 
         parent_errata_id = errata_helper.errataParent(errata_id)
         parent_advisory  = None
@@ -88,7 +88,7 @@ class Cleaner:
         channel_ids = errata_helper.channelsWithErrata(errata_id)
 
         for channel_id in channel_ids:
-            _printLog("Removing '{0}' errata from channel '{1}'".format(advisory, channel_id))
+            _printLog("Removing '{0}' patch from channel '{1}'".format(advisory, channel_id))
 
             # delete errata from channel
             errata_helper.deleteChannelErrata(errata_id, channel_id)

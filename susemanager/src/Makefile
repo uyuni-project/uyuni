@@ -9,9 +9,10 @@ SUBDIR		= susemanager
 
 SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
                           mgr_register mgr_clean_old_patchnames \
+                          mgr_delete_patch.py \
                           simpleproduct errata_helper package_helper
 SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
-	   mgr-create-bootstrap-repo mgr-delete-errata
+	   mgr-create-bootstrap-repo mgr-delete-patch
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 
