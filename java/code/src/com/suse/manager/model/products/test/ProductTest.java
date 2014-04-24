@@ -73,7 +73,10 @@ public class ProductTest extends TestCase {
       assertEquals(true, synchronizingProduct.isProvided());
     }
 
-    public void testSorting() {
+    /**
+     * Test compareTo().
+     */
+    public void testCompareTo() {
         List<Product> products = new LinkedList<Product>();
 
         Product prodAs390 = new Product(
@@ -84,7 +87,7 @@ public class ProductTest extends TestCase {
             new MandatoryChannels(new LinkedList<Channel>()),
             new OptionalChannels(new LinkedList<Channel>())
         );
-        Product prodAx86_64 = new Product(
+        Product prodAx64 = new Product(
             "x86_46",
             "product_a_x86_64",
             "Product A",
@@ -112,12 +115,12 @@ public class ProductTest extends TestCase {
         products.add(prodA2s390);
         products.add(prodA1s390);
         products.add(prodAs390);
-        products.add(prodAx86_64);
+        products.add(prodAx64);
 
         Collections.sort(products);
 
         assertEquals(prodAs390, products.get(0));
-        assertEquals(prodAx86_64, products.get(1));
+        assertEquals(prodAx64, products.get(1));
         assertEquals(prodA1s390, products.get(2));
         assertEquals(prodA2s390, products.get(3));
     }
