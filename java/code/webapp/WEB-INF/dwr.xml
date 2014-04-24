@@ -91,7 +91,7 @@
         </create>
         <create creator="new" javascript="ProductSyncAction">
             <param name="class" value="com.redhat.rhn.frontend.action.setupwizard.ProductSyncAction" />
-            <include method="synchronize" />
+            <include method="syncProducts" />
         </create>
         <convert match="com.redhat.rhn.manager.setup.InvalidMirrorCredentialException"
             converter="exception">
