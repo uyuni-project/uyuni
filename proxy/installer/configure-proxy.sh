@@ -102,6 +102,17 @@ set_value() {
     eval "$(printf "%q=%q" "$VAR" "$ARG")"
 }
 
+yes_no() {
+    case "$1" in
+        Y|y|Y/n|n/Y|1)
+            echo 1
+            ;;
+        *)
+            echo 0
+            ;;
+    esac
+}
+
 INTERACTIVE=1
 CNAME_INDEX=0
 
@@ -216,17 +227,6 @@ default_or_input() {
         INPUT="$DEFAULT"
     fi
     eval "$(printf "%q=%q" "$VARIABLE" "$INPUT")"
-}
-
-yes_no() {
-    case "$1" in
-        Y|y|Y/n|n/Y|1)
-            echo 1
-            ;;
-        *)
-            echo 0
-            ;;
-    esac
 }
 
 config_error() {
