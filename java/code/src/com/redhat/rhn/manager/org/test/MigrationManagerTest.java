@@ -92,10 +92,6 @@ public class MigrationManagerTest extends RhnBaseTestCase {
                 origOrgAdmins.iterator().next(), 2);
         server2 = ServerFactoryTest.createTestServer(origOrgAdmins.iterator().next(), true,
                 ServerConstants.getServerGroupTypeProvisioningEntitled());
-        for (User origOrgAdmin : origOrgAdmins) {
-            origOrgAdmin.addServer(server);
-            origOrgAdmin.addServer(server2);
-        }
 
         ServerFactory.save(server);
         ServerFactory.save(server2);
@@ -180,6 +176,11 @@ public class MigrationManagerTest extends RhnBaseTestCase {
         // verify that the above probes were added to the system
         assertEquals(5, MonitoringManager.getInstance().probesForSystem(origOrgAdmin,
                 server, null).size());
+
+        // reload the server object, since its type is changed from Server to
+        // MonitoredServer when we added the probes. MonitoringManager does not to that by
+        // default, and this can cause Hibernate problems later
+        server = (Server) HibernateFactory.reload(server);
 
         MigrationManager.removeOrgRelationships(origOrgAdmin, server);
 
