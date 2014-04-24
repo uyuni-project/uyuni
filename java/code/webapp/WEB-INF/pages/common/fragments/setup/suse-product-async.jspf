@@ -93,12 +93,12 @@
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
                         <div class="product-failed-status">
-                          <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
-                          <a href="#">
-                              <small>
-                                  <bean:message key='suse-products.jsp.try-again' />
-                              </small>
-                          </a>
+                            <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
+                            <button class="product-retry-btn btn btn-link btn-xs"
+                                    data-toggle="tooltip"
+                                    title="<bean:message key='suse-products.jsp.try-again' />">
+                                <i class="fa"></i><bean:message key='suse-products.jsp.try-again' />
+                            </button>
                         </div>
                     </c:when>
                 </c:choose>

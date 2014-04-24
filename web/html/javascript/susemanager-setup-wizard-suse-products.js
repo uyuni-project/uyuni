@@ -40,18 +40,25 @@ $(function() {
     }
   });
 
-  $(".table-content").on("click", ".product-add-btn", function() {
-    var checkbox = $(this).closest('tr').find('input:checkbox');
-    triggerProductSync(checkbox, $(this));
-  });
-
-  // Handle the synchronize bottom button
+  // Handle the bottom button
   $("#synchronize").click(function() {
     var checkboxes = $(".table-content input[type='checkbox']:checked:enabled");
     triggerProductSync(checkboxes, $(this));
   });
 
-  // Trigger product sync for a given array of checkboxes server side
+  // Handle add product buttons
+  $(".table-content").on("click", ".product-add-btn", function() {
+    var checkbox = $(this).closest('tr').find('input:checkbox');
+    triggerProductSync(checkbox, $(this));
+  });
+
+  // Handle retry buttons
+  $(".table-content").on("click", ".product-retry-btn", function() {
+    var checkbox = $(this).closest('tr').find('input:checkbox');
+    triggerProductSync(checkbox, $(this));
+  });
+
+  // Trigger product addition or sync server side for a given array of checkboxes
   function triggerProductSync(checkboxes, buttonClicked) {
     var idents = checkboxes.closest("tr").map(function() {
       return $(this).data("ident");
@@ -66,9 +73,11 @@ $(function() {
     // Disable all sync buttons until we are back
     $('#synchronize').prop('disabled', true);
     $('button.product-add-btn').prop('disabled', true);
+    $('button.product-retry-btn').prop('disabled', true);
 
     // Trigger product sync server side
-    ProductSyncAction.synchronize(idents, makeAjaxHandler(function() {
+    var add = !buttonClicked.hasClass('product-retry-btn');
+    ProductSyncAction.syncProducts(idents, add, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true).trigger("change");
@@ -91,6 +100,7 @@ $(function() {
       // Re-enable and re-init sync buttons
       $('#synchronize').prop('disabled', false);
       $('button.product-add-btn').prop('disabled', false);
+      $('button.product-retry-btn').prop('disabled', false);
       initSyncButtons();
     }));
   }

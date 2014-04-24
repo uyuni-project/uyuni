@@ -26,8 +26,7 @@ import org.directwebremoting.WebContextFactory;
 import java.util.List;
 
 /**
- * Synchronizes products
- * @author Silvio Moioli <smoioli@suse.de>
+ * Product handling code that is exposed to be called from javascript client side.
  */
 public class ProductSyncAction {
 
@@ -35,25 +34,32 @@ public class ProductSyncAction {
     private static Logger log = Logger.getLogger(ProductSyncAction.class);
 
     /**
-     * Synchronizes products.
-     * @param productIdents the product ident list
-     * @throws ProductSyncManagerCommandException in case product
-     * synchronization goes wrong
+     * Synchronize or add a given list of products.
+     * @param productIdents list of product idents
+     * @param add indicate if this is a new product to be added
+     * @throws ProductSyncManagerCommandException in case of errors
      */
-    public void synchronize(List<String> productIdents)
-        throws ProductSyncManagerCommandException {
-        User user = new RequestContext(
-                WebContextFactory.get()
-                .getHttpServletRequest())
+    public void syncProducts(List<String> productIdents, boolean add)
+            throws ProductSyncManagerCommandException {
+        User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
                 .getCurrentUser();
 
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             throw new IllegalArgumentException(
-                    "Must be SAT_ADMIN to synchronize the products");
+                    "Must be SAT_ADMIN to synchronize products");
+        }
+
+        if (log.isDebugEnabled()) {
+            log.debug((add ? "Add products: " : "Sync products: ") + productIdents);
         }
 
         try {
-            new ProductSyncManager().addProducts(productIdents);
+            if (add) {
+                new ProductSyncManager().addProducts(productIdents);
+            }
+            else {
+                new ProductSyncManager().syncProducts(productIdents);
+            }
         }
         catch (ProductSyncManagerCommandException e) {
             log.error(e);
