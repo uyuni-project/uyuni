@@ -371,33 +371,33 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Set the architecture
-     * @param arch
+     * @param archIn architecture
      */
-    public void setArch(String arch) {
-        this.arch = arch;
+    public void setArch(String archIn) {
+        this.arch = archIn;
     }
 
     /**
      * Set the product identifier
-     * @param ident
+     * @param identIn identifier
      */
-    public void setIdent(String ident) {
-        this.ident = ident;
+    public void setIdent(String identIn) {
+        this.ident = identIn;
     }
 
     /**
      * Set the product name
-     * @param name
+     * @param nameIn name
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
      * Set the base product identification
-     * @param ident
+     * @param identIn identifier of base product
      */
-    public void setBaseProductIdent(String ident) {
-        this.parentProduct = ident;
-    }    
+    public void setBaseProductIdent(String identIn) {
+        this.parentProduct = identIn;
+    }
 }
