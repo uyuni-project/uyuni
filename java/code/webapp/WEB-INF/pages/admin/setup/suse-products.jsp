@@ -54,7 +54,7 @@
                                     <td><input type="checkbox" class="select-all" autocomplete="off" /></td>
                                     <td colspan="5">
                                         <button class="btn btn-success" id="synchronize">
-                                            <i class="fa fa-download"></i> <bean:message key='suse-products.jsp.add-products' />
+                                            <i class="fa fa-plus"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
                                     </td>
                                 </tr>

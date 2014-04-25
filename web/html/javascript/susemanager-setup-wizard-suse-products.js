@@ -66,7 +66,7 @@ $(function() {
 
     // Show spinner for the clicked button
     var icon = buttonClicked.find('i');
-    icon.removeClass("fa-download");
+    icon.removeClass("fa-plus");
     icon.addClass("fa-spinner");
     icon.addClass("fa-spin");
 
@@ -95,7 +95,7 @@ $(function() {
       // Reset spinner to download icon
       icon.removeClass("fa-spin");
       icon.removeClass("fa-spinner");
-      icon.addClass("fa-download");
+      icon.addClass("fa-plus");
 
       // Re-enable and re-init sync buttons
       $('#synchronize').prop('disabled', false);

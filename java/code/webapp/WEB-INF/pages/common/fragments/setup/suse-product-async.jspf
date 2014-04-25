@@ -70,7 +70,7 @@
                                 data-toggle='tooltip'
                                 title="<bean:message key='suse-products.jsp.add-this-product' />"
                         >
-                            <i class="fa fa-download"></i>
+                            <i class="fa fa-plus"></i>
                         </button>
                     </c:when>
                     <c:when test="${syncStatus == 'IN_PROGRESS'}">
