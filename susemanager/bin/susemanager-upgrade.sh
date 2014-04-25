@@ -66,6 +66,10 @@ exists_pltclu() {
 
 upgrade_pg() {
 
+    if ! db_exists ; then
+        echo "Database does not exist or is not running"
+        exit 1
+    fi
     if ! is_embedded_db ; then
         if ! exists_pltclu ; then
             echo "SUSE Manager is not running with an embedded DB and your installation miss the 'pltclu' extension."
@@ -85,19 +89,25 @@ upgrade_pg() {
     if ! exists_pltclu ; then
             su - postgres -c "createlang pltclu '$DBNAME'"
     fi
+}
 
+db_exists() {
+    EXISTS=$(echo "select label from rhnVersionInfo;" | spacewalk-sql --select-mode - | grep "schema")
+    if [ -z "$EXISTS" ]; then
+        return 1
+    else
+        return 0
+    fi
 }
 
 upgrade_oracle() {
 
-    /etc/init.d/oracle start
-    SV=`rhn-schema-version`
-    if [ -z "$SV" ]; then
-        echo "Database does not exist."
+    if ! db_exists ; then
+        echo "Database does not exist or is not running"
         exit 1
     fi
     if ! is_embedded_db ; then
-        return 0
+        return 1
     fi
     echo "
 grant connect to $DBUSER;
@@ -115,7 +125,7 @@ quit
 " > /tmp/dbsetup.sql
 
     su -s /bin/bash - oracle -c "ORACLE_SID=$DBNAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
-    rm /tmp/dbsetup.sql
+    rm -f /tmp/dbsetup.sql
 }
 
 upgrade_schema() {
@@ -179,6 +189,8 @@ if [ "$DBBACKEND" = "oracle" ]; then
     fi
 fi
 
+rcapache2 status && spacewalk-service stop
+
 if [ "$DBBACKEND" = "postgresql" ]; then
     upgrade_pg
 else
@@ -189,3 +201,4 @@ upgrade_schema
 
 upgrade_config
 
+spacewalk-service start
