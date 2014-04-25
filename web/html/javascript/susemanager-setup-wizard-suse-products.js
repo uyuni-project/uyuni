@@ -87,7 +87,7 @@ $(function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true).trigger("change");
 
-        $.each($(this).closest("tr").find("span.product-status"), function () {
+        $.each($(this).closest("tr").find("div.product-status"), function () {
           var status = $(this).data("syncstatus");
           if (status === "in_progress") {
             $(this).show();
