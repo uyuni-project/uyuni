@@ -64,6 +64,11 @@ $(function() {
       return $(this).data("ident");
     }).toArray();
 
+    // Do nothing if no products are selected
+    if (idents.length === 0) {
+      return;
+    }
+
     // Show spinner for the clicked button
     var icon = buttonClicked.find('i');
     icon.removeClass("fa-plus");
