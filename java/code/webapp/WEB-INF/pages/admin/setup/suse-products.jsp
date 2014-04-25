@@ -44,8 +44,10 @@
                             <tbody class="table-content">
                                 <tr id="loading-placeholder">
                                     <td colspan="5">
-                                        <rhn:icon type="spinner"></rhn:icon>
-                                        <span>Loading...</span>
+                                        <div class="spinner-container">
+                                            <rhn:icon type="spinner"></rhn:icon>
+                                            <span>Loading...</span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
