@@ -116,4 +116,19 @@ public class Channel {
         .toString();
     }
 
+    /**
+     * Set the product label
+     * @param labelIn label
+     */
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
+    }
+
+    /**
+     * Set the product status (eg. P or . )
+     * @param statusIn status
+     */
+    public void setStatus(String statusIn) {
+        this.status = statusIn;
+    }
 }

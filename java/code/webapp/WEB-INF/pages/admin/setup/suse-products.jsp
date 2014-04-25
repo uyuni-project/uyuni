@@ -44,8 +44,10 @@
                             <tbody class="table-content">
                                 <tr id="loading-placeholder">
                                     <td colspan="5">
-                                        <rhn:icon type="spinner"></rhn:icon>
-                                        <span>Loading...</span>
+                                        <div class="spinner-container">
+                                            <rhn:icon type="spinner"></rhn:icon>
+                                            <span>Loading...</span>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -54,7 +56,7 @@
                                     <td><input type="checkbox" class="select-all" autocomplete="off" /></td>
                                     <td colspan="5">
                                         <button class="btn btn-success" id="synchronize">
-                                            <i class="fa fa-download"></i> <bean:message key='suse-products.jsp.add-products' />
+                                            <i class="fa fa-plus"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
                                     </td>
                                 </tr>

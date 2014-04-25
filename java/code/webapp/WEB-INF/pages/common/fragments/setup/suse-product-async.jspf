@@ -14,7 +14,7 @@
     </c:if>
  >
     <td>
-        <input type="checkbox" id="select-single"
+        <input type="checkbox" class="select-single"
             <c:if test="${requestScope.product.provided}">
                 checked disabled
             </c:if>
@@ -25,10 +25,10 @@
             <c:when test="${requestScope.product.base}">
                 <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
                     <span class="expand-button collapsible">
-                        <i class="fa fa-plus-square-o"></i>
+                        <i class="fa fa-plus-square"></i>
                     </span>
                     <span class="collapse-button collapsible" hidden>
-                        <i class="fa fa-minus-square-o"></i>
+                        <i class="fa fa-minus-square"></i>
                     </span>
                 </c:if>
             </c:when>
@@ -46,17 +46,18 @@
     </td>
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
-        <i data-product-ident="${requestScope.product.ident}" class="product-channels-btn fa fa-th-list"
-            title="<bean:message key='suse-products.jsp.show-channels' />"
-            data-toggle="modal" data-target="#product-${requestScope.product.ident}-channels-modal">
-        </i>
-
+        <button class="btn product-channels-btn btn-link btn-xs"
+                data-toggle="modal"
+                data-target="#product-${requestScope.product.ident}-channels-modal"
+                title="<bean:message key='suse-products.jsp.show-channels' />">
+            <i data-product-ident="${requestScope.product.ident}" class="fa fa-th-list"></i>
+        </button>
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
     <td>
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
         <c:forEach var="syncStatus" items="${allSyncStatus}">
-            <span
+            <div
                 data-syncstatus="${fn:toLowerCase(syncStatus)}"
                 class="product-status"
                 <c:if test="${syncStatus != product.syncStatus}">
@@ -69,7 +70,7 @@
                                 data-toggle='tooltip'
                                 title="<bean:message key='suse-products.jsp.add-this-product' />"
                         >
-                            <i class="fa fa-download"></i>
+                            <i class="fa fa-plus"></i>
                         </button>
                     </c:when>
                     <c:when test="${syncStatus == 'IN_PROGRESS'}">
@@ -89,20 +90,22 @@
                         </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FINISHED'}">
-                        <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                        <div class="label-container">
+                            <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                        </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
                         <div class="product-failed-status">
-                          <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
-                          <a href="#">
-                              <small>
-                                  <bean:message key='suse-products.jsp.try-again' />
-                              </small>
-                          </a>
+                            <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
+                            <button class="product-retry-btn btn btn-link btn-xs"
+                                    data-toggle="tooltip"
+                                    title="<bean:message key='suse-products.jsp.try-again' />">
+                                <i class="fa"></i><bean:message key='suse-products.jsp.try-again' />
+                            </button>
                         </div>
                     </c:when>
                 </c:choose>
-            </span>
+            </div>
         </c:forEach>
     </td>
 </tr>
