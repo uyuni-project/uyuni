@@ -25,10 +25,10 @@
             <c:when test="${requestScope.product.base}">
                 <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
                     <span class="expand-button collapsible">
-                        <i class="fa fa-plus-square-o"></i>
+                        <i class="fa fa-plus-square"></i>
                     </span>
                     <span class="collapse-button collapsible" hidden>
-                        <i class="fa fa-minus-square-o"></i>
+                        <i class="fa fa-minus-square"></i>
                     </span>
                 </c:if>
             </c:when>
@@ -57,7 +57,7 @@
     <td>
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
         <c:forEach var="syncStatus" items="${allSyncStatus}">
-            <span
+            <div
                 data-syncstatus="${fn:toLowerCase(syncStatus)}"
                 class="product-status"
                 <c:if test="${syncStatus != product.syncStatus}">
@@ -90,7 +90,9 @@
                         </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FINISHED'}">
-                        <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                        <div class="label-container">
+                            <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                        </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
                         <div class="product-failed-status">
@@ -103,7 +105,7 @@
                         </div>
                     </c:when>
                 </c:choose>
-            </span>
+            </div>
         </c:forEach>
     </td>
 </tr>
