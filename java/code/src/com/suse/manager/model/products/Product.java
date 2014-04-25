@@ -368,4 +368,36 @@ public class Product implements Selectable, Comparable<Product> {
     public SyncStatus getSyncStatus() {
         return this.syncStatus;
     }
+
+    /**
+     * Set the architecture
+     * @param archIn architecture
+     */
+    public void setArch(String archIn) {
+        this.arch = archIn;
+    }
+
+    /**
+     * Set the product identifier
+     * @param identIn identifier
+     */
+    public void setIdent(String identIn) {
+        this.ident = identIn;
+    }
+
+    /**
+     * Set the product name
+     * @param nameIn name
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
+     * Set the base product identification
+     * @param identIn identifier of base product
+     */
+    public void setBaseProductIdent(String identIn) {
+        this.parentProduct = identIn;
+    }
 }

@@ -15,12 +15,17 @@ $(function() {
   // handles clicks on product checkboxes
   $(".table-content").on("change", "input", function(event) {
     var checked = $(this).prop("checked");
+    var disabled = $(this).prop("disabled");
     var row = $(this).closest("tr");
+    var productIdent = row.data("ident");
     var baseProductIdent = row.data("baseproductident");
     var base = baseProductIdent === "";
 
+    if (base) {
+      // Enable/disable sync buttons for addon products
+      toggleAddonSyncButtons(productIdent, !(checked && disabled));
+    }
     if (!checked && base) {
-      var productIdent = row.data("ident");
       $("tr[data-baseproductident='" + productIdent + "']")
         .find("input")
         .prop("checked", false);
@@ -35,37 +40,54 @@ $(function() {
     }
   });
 
-  // handles synchronize bottom button
+  // Handle the bottom button
   $("#synchronize").click(function() {
     var checkboxes = $(".table-content input[type='checkbox']:checked:enabled");
-    triggerProductSync(checkboxes);
+    triggerProductSync(checkboxes, $(this));
   });
 
-  // Handle clicks for "Add this product"
-  function addProductButtonClickHandler() {
+  // Handle add product buttons
+  $(".table-content").on("click", ".product-add-btn", function() {
     var checkbox = $(this).closest('tr').find('input:checkbox');
-    triggerProductSync(checkbox);
-  }
+    triggerProductSync(checkbox, $(this));
+  });
 
-  // Trigger product sync for a given array of checkboxes server side
-  function triggerProductSync(checkboxes) {
+  // Handle retry buttons
+  $(".table-content").on("click", ".product-retry-btn", function() {
+    var checkbox = $(this).closest('tr').find('input:checkbox');
+    triggerProductSync(checkbox, $(this));
+  });
+
+  // Trigger product addition or sync server side for a given array of checkboxes
+  function triggerProductSync(checkboxes, buttonClicked) {
     var idents = checkboxes.closest("tr").map(function() {
       return $(this).data("ident");
     }).toArray();
 
-    var button = $("#synchronize");
-    var icon = button.find("i");
-    button.prop("disabled", true);
-    icon.removeClass("fa-download");
+    // Do nothing if no products are selected
+    if (idents.length === 0) {
+      return;
+    }
+
+    // Show spinner for the clicked button
+    var icon = buttonClicked.find('i');
+    icon.removeClass("fa-plus");
     icon.addClass("fa-spinner");
     icon.addClass("fa-spin");
 
-    ProductSyncAction.synchronize(idents, makeAjaxHandler(function() {
+    // Disable all sync buttons until we are back
+    $('#synchronize').prop('disabled', true);
+    $('button.product-add-btn').prop('disabled', true);
+    $('button.product-retry-btn').prop('disabled', true);
+
+    // Trigger product sync server side
+    var add = !buttonClicked.hasClass('product-retry-btn');
+    ProductSyncAction.syncProducts(idents, add, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
-        $(this).prop("disabled", true);
+        $(this).prop("disabled", true).trigger("change");
 
-        $.each($(this).closest("tr").find("span.product-status"), function () {
+        $.each($(this).closest("tr").find("div.product-status"), function () {
           var status = $(this).data("syncstatus");
           if (status === "in_progress") {
             $(this).show();
@@ -75,22 +97,28 @@ $(function() {
         });
       });
 
+      // Reset spinner to download icon
       icon.removeClass("fa-spin");
       icon.removeClass("fa-spinner");
-      icon.addClass("fa-download");
-      button.prop("disabled", false);
+      icon.addClass("fa-plus");
+
+      // Re-enable and re-init sync buttons
+      $('#synchronize').prop('disabled', false);
+      $('button.product-add-btn').prop('disabled', false);
+      $('button.product-retry-btn').prop('disabled', false);
+      initSyncButtons();
     }));
   }
 
-  // Get the products and show message in case of errors
+  // Get the products or show message in case of errors
   function showProducts() {
     ProductsRenderer.renderAsync(makeAjaxHandler(
       function(content) {
         $("#loading-placeholder").hide();
         $(".table-content").append(content);
         $('.product-add-btn').tooltip();
-        $('.product-add-btn').click(addProductButtonClickHandler);
         $('.product-channels-modal').modal({show: false});
+        initSyncButtons();
       },
       function(message, exception) {
         $('.table').hide();
@@ -103,6 +131,29 @@ $(function() {
         }
       })
     );
+  }
+
+  // Initially enable/disable sync buttons for addon products
+  function initSyncButtons() {
+    $("input[type='checkbox'].select-single").each(function() {
+      var row = $(this).closest("tr");
+      var baseProductIdent = row.data("baseproductident");
+      var base = baseProductIdent === "";
+
+      if (base) {
+        var productIdent = row.data("ident");
+        var checked = $(this).prop("checked");
+        var disabled = $(this).prop("disabled");
+        toggleAddonSyncButtons(productIdent, !(checked && disabled));
+      }
+    });
+  }
+
+  // Toggle sync buttons for addons of a given base product
+  function toggleAddonSyncButtons(baseProductIdent, disabled) {
+    $("tr[data-baseproductident='" + baseProductIdent + "']")
+      .find("button.product-add-btn")
+      .prop("disabled", disabled);
   }
 
   // expands or collapses a row, expects $(this) to point to an element
