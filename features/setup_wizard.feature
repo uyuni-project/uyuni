@@ -42,6 +42,7 @@ Feature: I want to verify the Setup Wizard
        And I wait for "30" seconds
        And I should see a "Available Products Below" text
        And I should see a "Architecture" text
+       And I should see a "Channels" text
        And I should see a "Status" text
        And I should not see a "WebYaST 1.3" text
        And I select "SUSE Linux Enterprise Server 11 SP3 VMWare" as a product for the "x86_64" architecture
