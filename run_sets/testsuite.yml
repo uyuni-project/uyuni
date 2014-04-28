@@ -64,3 +64,4 @@
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
+- features/xmlrpc_actionchain.feature
