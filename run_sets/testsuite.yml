@@ -17,6 +17,7 @@
 - features/register_client.feature
 - features/test_config_channel.feature
 - features/action_chain.feature
+- features/xmlrpc_actionchain.feature
 - features/monitoring.feature
 - features/system_configuration.feature
 - features/custom_system_info.feature
@@ -64,4 +65,3 @@
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
-- features/xmlrpc_actionchain.feature
