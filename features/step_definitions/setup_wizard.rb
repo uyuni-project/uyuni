@@ -37,7 +37,7 @@ When /^I click the Add Product button$/ do
 end
 
 When /^I wait until it has finished$/ do
-   find("button#synchronize .fa-download")
+   find("button#synchronize .fa-plus")
 end
 
 When /^I verify the products were added$/ do 
