@@ -46,3 +46,9 @@ When /^I verify the products were added$/ do
    fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3'
    fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
 end
+
+When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
+   within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
+      fail if not find('.product-channels-btn').click
+   end
+end
