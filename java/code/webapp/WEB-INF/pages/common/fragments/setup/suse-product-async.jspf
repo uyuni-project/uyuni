@@ -47,10 +47,8 @@
     <td><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
         <button class="btn product-channels-btn btn-link btn-xs"
-                data-toggle="modal"
-                data-target="#product-${requestScope.product.ident}-channels-modal"
                 title="<bean:message key='suse-products.jsp.show-channels' />">
-            <i data-product-ident="${requestScope.product.ident}" class="fa fa-th-list"></i>
+            <i class="fa fa-th-list"></i>
         </button>
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
