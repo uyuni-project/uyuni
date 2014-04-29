@@ -117,7 +117,10 @@ $(function() {
         $("#loading-placeholder").hide();
         $(".table-content").append(content);
         $('.product-add-btn').tooltip();
-        $('.product-channels-modal').modal({show: false});
+        $(".product-channels-btn").tooltip();
+        $(".product-channels-btn").click(function() {
+            $(this).closest('tr').find('.product-channels-modal').modal('show')
+        });
         initSyncButtons();
       },
       function(message, exception) {
