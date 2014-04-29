@@ -1285,6 +1285,32 @@
 			<product_id name="sle-sdk">3860</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sle11-security-module-i586" name="SLE11-Security-Module for i586" optional="Y" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-Security-Module/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES">3886</product_id>
+			<product_id name="SUSE_SLES">3887</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP3" family="SLES-IA" is_signed="Y" label="sle11-security-module-ia64" name="SLE11-Security-Module for ia64" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-Security-Module/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES">3893</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP3" family="SLES-PPC" is_signed="Y" label="sle11-security-module-ppc64" name="SLE11-Security-Module for ppc64" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-Security-Module/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES">3892</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3" family="SLES-Z" is_signed="Y" label="sle11-security-module-s390x" name="SLE11-Security-Module for s390x" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-Security-Module/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES">3895</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sle11-security-module-x86_64" name="SLE11-Security-Module for x86_64" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-Security-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="secsp3">
+		<products>
+			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" family="SLESMT" is_signed="Y" label="sle11-smt-sp2-pool-i586" name="SLE11-SMT-SP2-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-smt" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise 11 SP2 Subscription Management Tool" update_tag="slesmtsp0">
 		<products>
 			<product_id name="sle-smt">3260</product_id>
