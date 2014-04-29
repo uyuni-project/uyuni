@@ -5,9 +5,9 @@
 
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
 
-<h1><img src="/img/rhn-icon-info.gif" alt="information" /> Copyright Notice</h1>
+<h1><i class="fa fa-info-circle text-primary" title="information"></i> Copyright Notice</h1>
 
-<p>Copyright (c) 2011 Novell, Inc</p>
+<p>Copyright (c) 2011 - 2014 SUSE LLC.</p>
 
 <ul>
   <li><a href="/help/eula.pxt">SUSE MANAGER LICENSE AGREEMENT</a></li>
@@ -15,16 +15,16 @@
 
 <p>This software is a modular operating system comprised of numerous components
 that may be accompanied by separate license terms. The software is a
-collective work of Novell; although Novell does not own the copyright to every
-component of the software, Novell owns the collective work copyright for the
+collective work of SUSE; although SUSE does not own the copyright to every
+component of the software, SUSE owns the collective work copyright for the
 software.</p>
 
-<p>This Novell product includes materials licensed to Novell under the GNU
-General Public License (GPL). The GPL requires that Novell makes available
+<p>This SUSE product includes materials licensed to SUSE under the GNU
+General Public License (GPL). The GPL requires that SUSE makes available
 certain source code that corresponds to the GPL-licensed material. The source
-code is available for download at <a href="http://www.novell.com/linux/source/">http://www.novell.com/linux/source/</a>. Also, for up to three years from Novell's distribution of the Novell product, upon
-request Novell will mail a copy of the source code. Requests should be sent by
-e-mail to <a href="mailto:sle_source_request@novell.com">sle_source_request@novell.com</a> or as otherwise instructed at <a href="http://www.novell.com/linux/source/">http://www.novell.com/linux/source/</a>. Novell may charge a fee to recover its
+code is available for download at <a href="https://www.suse.com/download-linux/source-code.html">https://www.suse.com/download-linux/source-code.html</a>. Also, for up to three years from SUSE's distribution of the SUSE product, upon
+request SUSE will mail a copy of the source code. Requests should be sent by
+e-mail to <a href="mailto:sle_source_request@suse.com">sle_source_request@novell.com</a> or as otherwise instructed at <a href="https://www.suse.com/download-linux/source-code.html/">https://www.suse.com/download-linux/source-code.html</a>. SUSE may charge a fee to recover its
 reasonable costs of distribution</p>
 
   </grail-canvas-template>
