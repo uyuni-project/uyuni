@@ -5,7 +5,7 @@
 
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
 
-<h1><img src="/img/rhn-icon-info.gif" alt="information" /> Copyright Notice</h1>
+<h1><i class="fa fa-info-circle text-primary" title="information"></i> Copyright Notice</h1>
 
 <p>Copyright (c) 2011 - 2014 SUSE LLC.</p>
 
