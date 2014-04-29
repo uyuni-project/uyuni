@@ -7,6 +7,8 @@ PKGLIST10 = [
                 "libnewt0_52",
                 "libzypp",
                 "newt",
+                "openssl",
+                "openssl-32bit",
                 "perl-WWW-Curl",
                 "python-dmidecode",
                 "python-ethtool",
