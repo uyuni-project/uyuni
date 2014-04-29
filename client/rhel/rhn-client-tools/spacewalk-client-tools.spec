@@ -44,6 +44,7 @@ Requires: python-hwdata
 %if 0%{?suse_version} == 1010
 # Preliminary: This the version available on code 10, maybe we need to update....
 Requires: hal >= 0.5.6
+Requires: openssl >= 0.9.8a-18.78.5
 %else
 Requires: hal >= 0.5.8.1-52
 %endif
