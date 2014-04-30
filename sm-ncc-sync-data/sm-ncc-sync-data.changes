@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 30 13:30:51 CEST 2014 - mc@suse.de
+
+- version 1.7.18-1
+- add SLE11-Security-Module channels and LTSS channel for Studio Onsite
+  (bnc#874645)
+
+-------------------------------------------------------------------
 Mon Feb 10 09:52:48 CET 2014 - mc@suse.de
 
 - version 1.7.17-1
