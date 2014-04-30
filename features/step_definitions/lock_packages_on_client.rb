@@ -33,17 +33,14 @@ Then /^Package "(.*?)" is reported as unlocked$/ do |pkg|
 end
 
 Then /^The package scheduled is "(.*?)"$/ do |pkg|
-  match = find(:xpath, "//li[@class='action-summary-package-nvre']")
+  match = find(:xpath, "//li[@class='list-group-item']//li")
 
   fail unless match
   fail unless match.text =~ /^#{pkg}/
 end
 
 Then /^The action status is "(.*?)"$/ do |status|
-  match = find(:xpath, "//td[@class='action-summary-details']")
-
-  fail unless match
-  fail unless match.text.include?("This action's status is: #{status}")
+  step "I should see a \"This action's status is: #{status}\" text"
 end
 
 Then /^Package "(.*?)" is reported as pending to be locked$/ do |pkg|
