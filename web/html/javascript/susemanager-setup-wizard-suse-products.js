@@ -28,15 +28,24 @@ $(function() {
     if (!checked && base) {
       $("tr[data-baseproductident='" + productIdent + "']")
         .find("input")
-        .prop("checked", false);
+        .prop("checked", false).trigger("change");
     }
     if (checked && !base) {
       $("tr[data-ident='" + baseProductIdent + "']")
         .find("input")
-        .prop("checked", true);
+        .prop("checked", true).trigger("change");
     }
     if (checked && base) {
       toggleExpansion(true, row);
+    }
+
+    // highlight selected and provided productsn() {
+    var cssClass = disabled ? "product-provided" : "product-selected";
+    if (checked) {
+      $(this).closest("tr").addClass(cssClass);
+    }
+    else {
+      $(this).closest("tr").removeClass(cssClass);
     }
   });
 
