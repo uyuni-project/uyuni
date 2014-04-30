@@ -70,9 +70,14 @@ body{
         cursor: pointer;
       }
       .col-sm-9 table tbody.table-content tr.addons {
-        background: #eee;
-        .fa-ellipsis-v {
-          padding-left: 20px;
+        .addon-indented-icon {
+          border-left: 2px dotted @gray-dark;
+          border-bottom: 2px dotted @gray-dark;
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          margin-right: 10px;
+          margin-left: 5px;
         }
       }
       .collapsible {
@@ -186,4 +191,12 @@ ul.subscriptions-list {
   .progress-value {
     position: absolute;
   }
+}
+
+#suse-products tr.product-selected {
+    background-color: #ffc;
+}
+
+#suse-products tr.product-provided {
+    background-color: #eee;
 }
