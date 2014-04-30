@@ -96,4 +96,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoSchedule WHERE orgId is null AND jobLabel = :job_label AND activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill)]]>
         </query>
 
+        <query name="TaskoSchedule.listNewerThanByBunch">
+            <![CDATA[FROM com.redhat.rhn.taskomatic.TaskoSchedule WHERE bunch.id = :bunch_id AND activeFrom > :date]]>
+        </query>
 </hibernate-mapping>
