@@ -357,7 +357,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         // now schedule it
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_id", chObj.getId().toString());
         TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
         String jobLabel = chObj.getLabel() + "-job-" + TestUtils.randomString();
