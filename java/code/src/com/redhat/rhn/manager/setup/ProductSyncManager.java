@@ -35,6 +35,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -251,30 +252,22 @@ public class ProductSyncManager {
             return channelSyncStatus;
         }
 
-        // No success (metadata), check for failed jobs in taskomatic
+        // No success (metadata), check for jobs in taskomatic
         List<TaskoRun> runs = TaskoFactory.listRunsByBunch("repo-sync-bunch");
         boolean repoSyncRunFound = false;
+        Date lastRunEndTime = null;
+        Long channelId = c.getId();
 
         // Runs are sorted by start time, recent ones first
         for (TaskoRun run : runs) {
+            // Get the channel id of that run
             TaskoSchedule schedule = TaskoFactory.lookupScheduleById(run.getScheduleId());
-            @SuppressWarnings("unchecked")
-            Map<String, Object> dataMap = schedule.getDataMap();
+            Long scheduleChannelId = getChannelIdForSchedule(schedule);
 
-            // Convert channel id to Long
-            String channelIdString = (String) dataMap.get("channel_id");
-            Long channelId;
-            try {
-                channelId = Long.parseLong(channelIdString);
-            }
-            catch (NumberFormatException e) {
-                // Continue if we can't get the id, maybe there is an older job
-                continue;
-            }
-
-            if (channelId.equals(c.getId())) {
+            if (channelId.equals(scheduleChannelId)) {
                 // We found a repo-sync run for this channel
                 repoSyncRunFound = true;
+                lastRunEndTime = run.getEndTime();
 
                 // Get debug information
                 String debugInfo = run.getTailOfStdError(1024);
@@ -282,8 +275,13 @@ public class ProductSyncManager {
                     debugInfo = run.getTailOfStdOutput(1024);
                 }
 
-                // Set the correct status and additional info
+                // Set the status and debug info
                 String runStatus = run.getStatus();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Repo sync run found for channel " + c +
+                            ", status is: " + runStatus);
+                }
+
                 String prefix = "setupwizard.syncstatus.";
                 if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
                         runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
@@ -291,29 +289,36 @@ public class ProductSyncManager {
                     channelSyncStatus = SyncStatus.FAILED;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
                     channelSyncStatus.setDetails(debugInfo);
-                    return channelSyncStatus;
+                    // Don't return from here, there might be a new schedule already
                 }
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
                         runStatus.equals(TaskoRun.STATUS_RUNNING)) {
                     // Reposync is in progress
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Repo sync run found for channel " + c +
-                                ", status is: " + run.getStatus());
-                    }
                     channelSyncStatus = SyncStatus.IN_PROGRESS;
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
                     channelSyncStatus.setDetails(debugInfo);
                     return channelSyncStatus;
                 }
 
-                // We look only at the latest run
+                // We look at the latest run only
                 break;
             }
         }
 
-        // Assume this is a new product if there was never a repo-sync before
-        if (!repoSyncRunFound) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
+        // Check if there is a schedule that is newer than the last (FAILED) run
+        if (!repoSyncRunFound || channelSyncStatus == SyncStatus.FAILED) {
+            List<TaskoSchedule> schedules =
+                    TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
+            for (TaskoSchedule s : schedules) {
+                Long scheduleChannelId = getChannelIdForSchedule(s);
+                if (channelId.equals(scheduleChannelId)) {
+                    // There is a schedule for this channel
+                    channelSyncStatus = SyncStatus.IN_PROGRESS;
+                    return channelSyncStatus;
+                }
+            }
+
+            // No schedule found, return FAILED
             return channelSyncStatus;
         }
 
@@ -335,6 +340,25 @@ public class ProductSyncManager {
 
         // Otherwise return FAILED
         return channelSyncStatus;
+    }
+
+    /**
+     * For a given {@link TaskoSchedule} return the id of the associated channel.
+     * @param schdule a taskomatic schedule
+     * @return channel ID as {@link Long} or null in case of an error
+     */
+    @SuppressWarnings("unchecked")
+    private Long getChannelIdForSchedule(TaskoSchedule schedule) {
+        Long ret = null;
+        Map<String, Object> dataMap = schedule.getDataMap();
+        String channelIdString = (String) dataMap.get("channel_id");
+        try {
+            ret = Long.parseLong(channelIdString);
+        }
+        catch (NumberFormatException e) {
+            logger.error(e.getMessage());
+        }
+        return ret;
     }
 
     /**
