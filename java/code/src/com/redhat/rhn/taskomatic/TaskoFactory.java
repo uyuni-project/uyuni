@@ -518,4 +518,23 @@ public class TaskoFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery(
                 "TaskoRun.listUnfinished", params);
     }
+
+    /**
+     * List repo-sync-bunch schedules newer than a given date. If the given date is null,
+     * all schedules will be returned with an "activeFrom" date > January 1, 1970.
+     * @param date time of interest
+     * @return list of repo sync schedules
+     */
+    @SuppressWarnings("unchecked")
+    public static List<TaskoSchedule> listRepoSyncSchedulesNewerThan(Date date) {
+        TaskoBunch bunch = lookupBunchByName("repo-sync-bunch");
+        if (date == null) {
+            date = new Date(0);
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("bunch_id", bunch.getId());
+        params.put("date", date);
+        return singleton.listObjectsByNamedQuery(
+                "TaskoSchedule.listNewerThanByBunch", params);
+    }
 }
