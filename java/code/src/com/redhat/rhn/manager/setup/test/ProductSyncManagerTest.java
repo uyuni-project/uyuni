@@ -52,7 +52,7 @@ import org.simpleframework.xml.core.Persister;
 public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     private final ProductList products = new ProductList();
-    private String inProgressProductIdent;
+    private String providedProductIdent;
 
     @Override
     public void setUp() throws Exception {
@@ -61,7 +61,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         products.getProducts();
 
         Product p = createFakeProduct("PPPP");
-        inProgressProductIdent = p.getIdent();
+        providedProductIdent = p.getIdent();
         products.getProducts().add(p);
 
         products.getProducts().add(createFakeProduct("PP.."));
@@ -185,6 +185,23 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         return executor;
     }
 
+    private Product getProductWithAllChannelsProvided() throws Exception {
+        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
+        List<Product> parsedProds = productSyncManager.getBaseProducts();
+
+        Product prod = null;
+        for (Product p : parsedProds) {
+            if (p.getIdent().equals(providedProductIdent)) {
+                prod = p;
+            }
+        }
+        return prod;
+    }
+
+    /**
+     * See if we get NOT_MIRRORED in case product status is not parsed as P.
+     * @throws Exception
+     */
     public void testProductStatusNotMirrored() throws Exception {
         ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
         List<Product> parsedProds = productSyncManager.getBaseProducts();
@@ -197,65 +214,104 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    private Product getProductWithAllChannelsProvided() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
-        List<Product> parsedProds = productSyncManager.getBaseProducts();
-
-        Product prod = null;
-        for (Product p : parsedProds) {
-            if (p.getIdent().equals(inProgressProductIdent)) {
-                prod = p;
-            }
-        }
-        return prod;
-    }
-
     /**
      * A product with all channels on P without previous download runs
-     * is in-progress
+     * is in progress if there is schedules for all those channels.
      * @throws Exception
      */
     public void testNewProductStatusInProgress() throws Exception {
+        productInsertTaskoSchedule(providedProductIdent);
         Product prod = getProductWithAllChannelsProvided();
-
         assertEquals(Product.SyncStatus.IN_PROGRESS,
                         prod.getSyncStatus());
     }
 
-    public void testOldProductStatusInProgress() throws Exception {
-        // in this case the product is not new, it had
-        // some old downloads
-        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FAILED);
-        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_RUNNING);
+    /**
+     * There is no runs and no schedules: FAILED.
+     * @throws Exception
+     */
+    public void testNewProductStatusFailed() throws Exception {
         Product prod = getProductWithAllChannelsProvided();
+        assertEquals(Product.SyncStatus.FAILED,
+                        prod.getSyncStatus());
+    }
 
+    /**
+     * There is a run with status RUNNING (even after FAILED ones), so IN_PROGRESS.
+     * @throws Exception
+     */
+    public void testProductStatusInProgress() throws Exception {
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_RUNNING);
+        Product prod = getProductWithAllChannelsProvided();
         assertEquals(Product.SyncStatus.IN_PROGRESS,
                         prod.getSyncStatus());
     }
 
+    /**
+     * Repo sync run has FAILED and there is no new schedule: FAILED.
+     * @throws Exception
+     */
     public void testProductStatusFailed() throws Exception {
-        // in this case the product is not new, it had
-        // some old downloads
-        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FAILED);
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
         Product prod = getProductWithAllChannelsProvided();
-
         assertEquals(Product.SyncStatus.FAILED,
                 prod.getSyncStatus());
     }
 
-    public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
-        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FINISHED);
+    /**
+     * Repo sync run has FAILED and there is a new schedule (retry): IN_PROGRESS.
+     * @throws Exception
+     */
+    public void testProductStatusAfterRetry() throws Exception {
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
+        productInsertTaskoSchedule(providedProductIdent);
         Product prod = getProductWithAllChannelsProvided();
+        assertEquals(Product.SyncStatus.IN_PROGRESS,
+                prod.getSyncStatus());
+    }
 
-        // in this case the product is not new, it had
-        // some old downloads
+    /**
+     * Repo sync finished, but no metadata: FAILED.
+     * @throws Exception
+     */
+    public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FINISHED);
+        Product prod = getProductWithAllChannelsProvided();
         assertEquals(Product.SyncStatus.FAILED,
                         prod.getSyncStatus());
     }
 
     /**
-     * Generate fake metadata for a product
-     * @param prodIdent identifier
+     * Repo sync finished and metadata is there: FINISHED.
+     * @throws Exception
+     */
+    public void testProductStatusDownloadCompletedAndMetadata() throws Exception {
+        String oldMountPoint = Config.get().getString(
+                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        // temporary repodata directory
+        File tempMountPoint = File.createTempFile("folder-name","");
+        tempMountPoint.delete();
+        tempMountPoint.mkdir();
+        // change the default mount point
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
+                tempMountPoint.getAbsolutePath());
+
+        // download finished
+        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FINISHED);
+        productGenerateFakeMetadata(providedProductIdent);
+
+        Product prod = getProductWithAllChannelsProvided();
+
+        assertEquals(Product.SyncStatus.FINISHED,
+                        prod.getSyncStatus());
+        // restore old cache path
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
+    }
+
+    /**
+     * Generate fake metadata for a given product.
+     * @param prodIdent ident of a product
      */
     private void productGenerateFakeMetadata(String prodIdent) throws IOException {
         for (Product prod : products.getProducts()) {
@@ -268,7 +324,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Generate fake metadata for a channel
+     * Generate fake metadata for a given channel.
      * @param ch channel DTO
      */
     private void channelGenerateFakeMetadata(
@@ -286,7 +342,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Generate fake metadata for a channel
+     * Generate fake metadata for a {@link Channel} object.
      * @param chObj channel bean
      */
     private void channelGenerateFakeMetadata(Channel chObj) throws IOException {
@@ -303,58 +359,29 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         repomd.createNewFile();
     }
 
-    public void testProductStatusDownloadCompletedAndMetadata() throws Exception {
-        String oldMountPoint = Config.get().getString(
-                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
-        // temporary repodata directory
-        File tempMountPoint = File.createTempFile("folder-name","");
-        tempMountPoint.delete();
-        tempMountPoint.mkdir();
-        // change the default mount point
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
-                tempMountPoint.getAbsolutePath());
-
-        // download finished
-        productScheduleFakeDownload(inProgressProductIdent, TaskoRun.STATUS_FINISHED);
-        productGenerateFakeMetadata(inProgressProductIdent);
-
-        Product prod = getProductWithAllChannelsProvided();
-
-        assertEquals(Product.SyncStatus.FINISHED,
-                        prod.getSyncStatus());
-        // restore old cache path
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
-    }
-
     /**
-     * Schedules download to all provided channels
+     * Insert {@link TaskoSchedule} rows for a product given by ident. Will create schedules
+     * for all channels with status P, while those with . will be ignored.
+     * @param prodIdent
      */
-    private void productScheduleFakeDownload(String prodIdent, String status) throws Exception {
+    private void productInsertTaskoSchedule(String prodIdent) {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
                 for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
-                    scheduleFakeDownload(ch, status);
+                    insertTaskoSchedule(ch);
                 }
             }
         }
     }
 
-    private void scheduleFakeDownload(
-            com.suse.manager.model.products.Channel ch, String status) throws Exception {
+    private void insertTaskoSchedule(com.suse.manager.model.products.Channel ch) {
         if (ch.isProvided()) {
             Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
-            if (chObj == null) {
-                throw new RuntimeException("Channel" + ch.getLabel() + " is not P");
-            }
-            if (chObj.getId() == null) {
-                throw new RuntimeException("Channel" + ch.getLabel() + " has null id");
-            }
-            scheduleFakeDownload(chObj, status);
+            insertTaskoSchedule(chObj);
         }
     }
 
-    private void scheduleFakeDownload(Channel chObj, String status) throws Exception {
-        // now schedule it
+    private TaskoSchedule insertTaskoSchedule(Channel chObj) {
         String bunchName = "repo-sync-bunch";
         Integer orgId = user.getOrg().getId().intValue();
         Map<String, Object> params = new HashMap<String, Object>();
@@ -364,10 +391,45 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         TaskoSchedule schedule = new TaskoSchedule(
                 orgId, bunch, jobLabel, params, new Date(), null, null);
         TaskoFactory.save(schedule);
-        TaskoTemplate template = bunch.getTemplates().get(0);
+        return schedule;
+    }
+
+    /**
+     * Insert {@link TaskoRun} rows for a given product and status. This will create runs
+     * and schedules for all channels with status P, while those with . will be ignored.
+     * @param prodIdent ident of a product
+     * @param status status
+     */
+    private void productInsertTaskoRun(String prodIdent, String status) throws Exception {
+        for (Product prod : products.getProducts()) {
+            if (prodIdent.equals(prod.getIdent())) {
+                for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
+                    insertTaskoRun(ch, status);
+                }
+            }
+        }
+    }
+
+    private void insertTaskoRun(
+            com.suse.manager.model.products.Channel ch, String status) throws Exception {
+        if (ch.isProvided()) {
+            Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
+            insertTaskoRun(chObj, status);
+        }
+    }
+
+    private void insertTaskoRun(Channel chObj, String status) throws Exception {
+        TaskoSchedule schedule = insertTaskoSchedule(chObj);
+        TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
         TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, schedule.getId());
         taskRun.setStatus(status);
+        if (status == TaskoRun.STATUS_FAILED ||
+                status == TaskoRun.STATUS_FINISHED ||
+                status == TaskoRun.STATUS_INTERRUPTED ||
+                status == TaskoRun.STATUS_SKIPPED) {
+            taskRun.setEndTime(new Date());
+        }
         TaskoFactory.save(taskRun);
         TaskoFactory.getSession().flush();
     }
