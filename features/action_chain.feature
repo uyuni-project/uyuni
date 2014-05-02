@@ -63,7 +63,7 @@ Feature: Test action chaining
       And I follow "New Test Channel"
       And I follow "Deploy Files" in the content area
       And I click on "Deploy All Files" 
-      And I check "sumacltt.suse.de" in the list
+      And I check this client
       And I click on "Confirm & Deploy to Selected Systems"
       And I check radio button "schedule-by-action-chain"
       And I click on "Deploy Files to Selected Systems"
@@ -88,10 +88,15 @@ Feature: Test action chaining
       And I should see a "5. Verify andromeda-dummy on 1 system" text
       And I should see a "6. Deploy /etc/mgr-test-file.cnf" text
       And I should see a "7. Reboot 1 system" text
-     Then I pick "2016-08-17" as date
-      And I pick "5:30 pm" as time
-      And I click on "Save and Schedule"
-      And I should see a "Action Chain new action chain has been scheduled for execution." text
 
+  
+  Scenario: I delete the action chain
+     Given I am authorized as "admin" with password "admin"
+      Then I follow "Schedule"
+       And I follow "Action Chains"
+       And I follow "new action chain"
+       And I follow "delete action chain" in the content area
+       And I click on "Delete"
+        
     
 

@@ -35,3 +35,10 @@ Then /^On this client the File "([^"]*)" should have the content "([^"]*)"$/ do 
     fail if not File.exists?(filename)
     fail if not File.read(filename).include?(content)
 end
+
+When /^I enable all actions$/ do
+   $out = `rhn-actions-control --enable-all`
+   if ! $?.success?
+     raise "Execute command failed: #{$!}: #{$out}"
+   end
+end

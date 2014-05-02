@@ -103,7 +103,20 @@ When /^I click on First Page$/ do
    first(:xpath, "//button[@class='btn btn-default btn-xs fa fa-fast-backward')]").click
 end
 
+When /^I click the div "([^"]*)"$/ do |arg1|
+   #must give . or # for class or id
+   within("#spacewalk-content") do
+      fail if not find(arg1).click
+   end
+end
 
+When /^I click element by css "([^"]*)"$/ do |arg1| 
+   fail if not find(arg1).click
+end
+
+When /^I want to add a new credential$/ do
+   fail if not find("i.fa-plus-circle").click
+end
 
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
@@ -140,3 +153,5 @@ When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
       step "I follow \"#{arg1}\""
   end
 end
+
+      

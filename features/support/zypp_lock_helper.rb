@@ -16,7 +16,7 @@ def read_zypp_lock_file(lock_file)
     if line.empty?
       if !lock.keys.empty?
         locks << lock
-        locl = {}
+        lock = {}
       end
     else
       key, value = line.split(":", 2)

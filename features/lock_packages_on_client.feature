@@ -45,3 +45,76 @@ Feature: Lock packages on client
      Then I follow "Lock"
      Then Package "hoag-dummy-1.1-2.1" is reported as unlocked
 
+  Scenario: Schedule a package lock
+    Given I am on the Systems overview page of this client
+      And I follow "Software" in the content area
+      And I follow "Lock"
+     When I check "hoag-dummy-1.1-2.1" in the list
+      And I click on "Request Lock"
+     Then I should see a "Packages has been requested for being locked." text
+      And Package "hoag-dummy-1.1-2.1" is reported as pending to be locked
+
+  Scenario: Schedule another package lock
+    Given I am on the Systems overview page of this client
+      And I follow "Software" in the content area
+      And I follow "Lock"
+      And Package "hoag-dummy-1.1-2.1" is reported as pending to be locked
+      And Package "hoag-dummy-1.1-2.1" cannot be selected
+     When I check "milkyway-dummy-2.0-1.1" in the list
+      And I click on "Request Lock"
+     Then I should see a "Packages has been requested for being locked." text
+     When I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as pending to be locked
+      And Package "hoag-dummy-1.1-2.1" cannot be selected
+      And Package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
+      And Package "milkyway-dummy-2.0-1.1" cannot be selected
+     When I run rhn_check on this client
+     Then "hoag-dummy-1.1-2.1" is locked on this client
+      And "milkyway-dummy-2.0-1.1" is locked on this client
+     When I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as locked
+      And Package "milkyway-dummy-2.0-1.1" is reported as locked
+
+  Scenario: Mix package locks and unlock events
+    Given I am on the Systems overview page of this client
+      And I follow "Software" in the content area
+      And I follow "Lock"
+      And Package "hoag-dummy-1.1-2.1" is reported as locked
+      And Package "milkyway-dummy-2.0-1.1" is reported as locked
+     When I check "orion-dummy-1.1-1.1" in the list
+      And I click on "Request Lock"
+     Then I should see a "Packages has been requested for being locked." text
+     When I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as locked
+      And Package "milkyway-dummy-2.0-1.1" is reported as locked
+      And Package "orion-dummy-1.1-1.1" is reported as pending to be locked
+     When I check "milkyway-dummy-2.0-1.1" in the list
+      And I uncheck "hoag-dummy-1.1-2.1" in the list
+      And I click on "Request Unlock"
+     Then I should see a "Packages has been requested for being unlocked." text
+     When I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as locked
+      And Package "milkyway-dummy-2.0-1.1" is reported as pending to be unlocked
+      And Package "orion-dummy-1.1-1.1" is reported as pending to be locked
+     When I run rhn_check on this client
+     Then "hoag-dummy-1.1-2.1" is locked on this client
+      And "milkyway-dummy-2.0-1.1" is unlocked on this client
+      And "orion-dummy-1.1-1.1" is locked on this client
+     When I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as locked
+      And Package "milkyway-dummy-2.0-1.1" is reported as unlocked
+      And Package "orion-dummy-1.1-1.1" is reported as locked
+
+  Scenario: Mix package locks and unlock events
+    Given I am on the Systems overview page of this client
+      And I follow "Software" in the content area
+      And I follow "Lock"
+     When I select all the packages
+      And I click on "Request Unlock"
+     Then I should see a "Packages has been requested for being unlocked." text
+     When I follow "Lock"
+     Then Only packages "hoag-dummy-1.1-2.1, orion-dummy-1.1-1.1" are reported as pending to be unlocked
+     When I run rhn_check on this client
+      And I follow "Lock"
+     Then Package "hoag-dummy-1.1-2.1" is reported as unlocked
+      And Package "orion-dummy-1.1-1.1" is reported as unlocked

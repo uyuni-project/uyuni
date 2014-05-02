@@ -26,7 +26,7 @@ end
 # Test for a text not allowed in the whole page
 #
 Then /^I should not see a "([^"]*)" text$/ do |arg1|
-  fail if page.has_content?(arg1)
+  fail unless page.has_no_content?(arg1)
 end
 
 #
@@ -207,6 +207,20 @@ When /^I check "([^"]*)" in the list$/ do |arg1|
           row = first(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]")
       end
       row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+  end
+end
+
+When /^I uncheck "([^"]*)" in the list$/ do |arg1|
+  within(:xpath, "//section") do
+      # use div/div/div for cve audit which has two tables
+      top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
+      row = first(:xpath, top_level_xpath_query)
+      if row.nil?
+          sleep 1
+          $stderr.puts "ERROR - try again"
+          row = first(:xpath, top_level_xpath_query)
+      end
+      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(false)
   end
 end
 
