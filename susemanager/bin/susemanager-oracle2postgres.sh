@@ -170,7 +170,7 @@ setup_postgres() {
     fi
 
     if ! exists_db ; then
-            su - postgres -c "createdb '$DBNAME'"
+            su - postgres -c "createdb -E UTF8 '$DBNAME'"
     fi
     if ! exists_plpgsql ; then
             su - postgres -c "createlang plpgsql '$DBNAME'"

@@ -269,7 +269,7 @@ setup_db_postgres() {
         insserv postgresql
     fi
     rcpostgresql start
-    su - postgres -c "createdb $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+    su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
     su - postgres -c "createlang pltclu '$MANAGER_DB_NAME'"
     # "createlang plpgsql $MANAGER_DB_NAME" not needed on SUSE. plpgsql is already enabled
 
