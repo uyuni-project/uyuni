@@ -20,7 +20,13 @@ Removes a channel from a SUSE Manager server.
         <command>spacewalk-remove-channel</command>
         <arg>options <replaceable>...</replaceable></arg>
         <arg>-c<replaceable>CHANNEL_LABEL</replaceable></arg>
-        <arg>--mount-point=<replaceable>CHANNEL_LABEL</replaceable></arg>
+        <arg>-a<replaceable>PARENT_LABEL</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+         <arg>-c</arg> <arg>--channel</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+         <arg>-a</arg> <arg>--channel-with-childs</arg>
     </cmdsynopsis>
     <cmdsynopsis>
          <arg>-u</arg> <arg>--unsubscribe</arg>
@@ -37,6 +43,15 @@ Removes a channel from a SUSE Manager server.
     </cmdsynopsis>
     <cmdsynopsis>
         <arg>--force</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>-p</arg> <arg>--skip-packages</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>--skip-kickstart-trees</arg>
+    </cmdsynopsis>
+    <cmdsynopsis>
+        <arg>--skip-channels</arg>
     </cmdsynopsis>
 </Synopsis>
 </RefSynopsisDiv>
@@ -80,10 +95,15 @@ Removes a channel from a SUSE Manager server.
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>-c<replaceable>CHANNEL</replaceable>,
-            --channel=<replaceable>CHANNEL</replaceable></term>
+        <term>-c<replaceable>CHANNEL</replaceable>, --channel=<replaceable>CHANNEL</replaceable></term>
         <listitem>
             <para>Delete the channel with the specified label.  May be used multiple times to specify multiple channels.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-a<replaceable>PARENT</replaceable>, --channel-with-childs=<replaceable>PARENT</replaceable></term>
+        <listitem>
+            <para>Delete the channel with the specified label and its child channels.  May be used multiple times to specify multiple parent channels.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -95,7 +115,7 @@ Removes a channel from a SUSE Manager server.
     <varlistentry>
         <term>-p, --skip-packages</term>
         <listitem>
-            <para>Do not remove the package metadata or the files from the filesystem.</para>
+            <para>Do not remove the package metadata or the files from the filesystem. (Not Recommended)</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -117,6 +137,7 @@ Removes a channel from a SUSE Manager server.
 <simplelist>
         <member><command>spacewalk-remove-channel --list</command></member>
         <member><command>spacewalk-remove-channel --channel=rhel-i386-as-3</command></member>
+        <member><command>spacewalk-remove-channel --channel-with-childs=rhel-i386-as-3</command></member>
 </simplelist>
 </RefSect1>
 
