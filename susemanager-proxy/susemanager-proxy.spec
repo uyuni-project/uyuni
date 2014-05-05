@@ -1,5 +1,5 @@
 Name:           susemanager-proxy
-Version:        1.7.5
+Version:        2.1.0
 Release:        1%{?dist}
 Summary:        SUSE Manager Proxy specific scripts
 Group:          Applications/System
