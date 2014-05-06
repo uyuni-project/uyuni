@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 06 15:23:51 CEST 2014 - mc@suse.de
+
+- version 2.1.2.3-1
+- Add support to ConfigureSatelliteCommand to remove keys
+
+-------------------------------------------------------------------
 Fri Feb 07 14:01:46 CET 2014 - mc@suse.de
 
 - version 2.1.2.2-1
