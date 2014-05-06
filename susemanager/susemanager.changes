@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Tue May 06 15:10:09 CEST 2014 - mc@suse.de
+
+- version 2.1.7-1
+- automatically select utf8 for db character encoding
+- add openssl package to the bootstrap repo
+- fix check for DB exists and add stop/start spacewalk services
+- Created mgr-delete-patch script (bnc#873227)
+- python code refactoring
+- unified SLP service identifiers (FATE#316384)
+- fix susemanager-upgrade
+- mgr-ncc-sync: do not show addon products missing their parent
+- mgr-ncc-sync: add proper parent to Mono for VMWare
+- mgr-ncc-sync: added --add-product-by-ident switch.
+
+-------------------------------------------------------------------
 Thu Mar 27 10:21:49 CET 2014 - fcastelli@suse.com
 
 - version 2.1.6-1
