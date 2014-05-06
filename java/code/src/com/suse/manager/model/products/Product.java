@@ -390,7 +390,7 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Set the architecture
+     * Set the architecture.
      * @param archIn architecture
      */
     public void setArch(String archIn) {
@@ -398,7 +398,7 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Set the product identifier
+     * Set the product identifier.
      * @param identIn identifier
      */
     public void setIdent(String identIn) {
@@ -406,7 +406,7 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Set the product name
+     * Set the product name.
      * @param nameIn name
      */
     public void setName(String nameIn) {
@@ -414,7 +414,7 @@ public class Product implements Selectable, Comparable<Product> {
     }
 
     /**
-     * Set the base product identification
+     * Set the base product identification.
      * @param identIn identifier of base product
      */
     public void setBaseProductIdent(String identIn) {
