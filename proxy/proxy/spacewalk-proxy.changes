@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 06 15:14:05 CEST 2014 - mc@suse.de
+
+- version 2.1.15.3-1
+- Proxy should not make bogus fqdn:port DNS queries
+- unified SLP service identifiers (FATE#316384)
+
+-------------------------------------------------------------------
 Thu Feb 27 15:22:41 CET 2014 - fcastelli@suse.com
 
 - version 2.1.15.2-1
