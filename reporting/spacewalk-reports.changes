@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 06 15:01:41 CEST 2014 - mc@suse.de
+
+- version 2.1.14.2-1
+- Add report for custom-channels
+- Add report on repositories
+- Add org-id to channels
+
+-------------------------------------------------------------------
 Mon Dec 09 16:47:50 CET 2013 - mc@suse.de
 
 - version 2.1.14.1-1
