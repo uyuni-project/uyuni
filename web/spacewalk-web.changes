@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue May 06 15:03:59 CEST 2014 - mc@suse.de
+
+- version 2.1.60.3-1
+- Fix bug converting pm times to am when using locales in 24 hour format
+- style alert messages on perl pages
+- update info icon
+- Outdated copyright message (bnc#872978)
+- Implement Setup Wizard Product sync page
+- rewrite system snapshot to java: removed obsoleted perl page
+- rewrite system event page from perl to java
+- Safer DWR callback method introduced
+- Fix SP migration fails to add child channels (bnc#867601)
+- Rename sp-migration.js to susemanager-sp-migration.js
+- port SP Migration Setup page to bootstrap and jquery
+
+-------------------------------------------------------------------
 Thu Mar 27 10:19:19 CET 2014 - fcastelli@suse.com
 
 - version 2.1.60.2-1
