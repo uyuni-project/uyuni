@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 06 15:16:37 CEST 2014 - mc@suse.de
+
+- version 2.1.27.3-1
+- sw-clone-by-date validation update
+- fix problem where --channels=src_label dst_label threw an error
+
+-------------------------------------------------------------------
 Thu Mar 27 10:18:42 CET 2014 - fcastelli@suse.com
 
 - version 2.1.27.2-1
