@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 06 15:14:55 CEST 2014 - mc@suse.de
+
+- version 2.1.25.2-1
+- set output encoding when stdout is not a tty
+
+-------------------------------------------------------------------
 Thu Feb 27 15:35:56 CET 2014 - fcastelli@suse.com
 
 - version 2.1.25.1-1
