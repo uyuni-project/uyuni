@@ -48,6 +48,11 @@ def auditlog_xmlrpc(method, method_name, args, request):
     if not enabled:
         return
 
+    # If the method around
+    if not method:
+        raise AuditLogException("An attempt to call unknown method at server %s." % server_url)
+
+
     try:
         server = ServerProxy(server_url)
     except IOError, e:
