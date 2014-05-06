@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Tue May 06 15:20:37 CEST 2014 - mc@suse.de
+
+- version 2.1.33.3-1
+- Update default Spacewalk entitlement certificate
+- Show links to the online help for SUSE Manager
+- Implement Setup Wizard Product sync page
+- Add a warning note about doing a Dry Run (bnc#851091)
+- Rename sp-migration.css to susemanager-sp-migration.css
+- Style the SP migration confirmation page.
+
+-------------------------------------------------------------------
 Thu Mar 27 10:13:35 CET 2014 - fcastelli@suse.com
 
 - version 2.1.33.2-1
