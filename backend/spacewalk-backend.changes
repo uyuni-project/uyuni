@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Tue May 06 15:26:31 CEST 2014 - mc@suse.de
+
+- version 2.1.55.3-1
+- remove ; in SQL statement to fix error with oracle DB
+- Raise error if channel cannot be subscribed (bnc#875958)
+- Format oldRoute to match newRoute, so that rhnServerPath isn't
+  updated every time
+- Adding option [-l|--list] to reposync
+- Add --justks to sw-remove-channel
+- sw-remove-channel --justdb has no impact on ks trees.
+- rename channel-with-childs to channel-with-children
+- Add option to spacewalk-remove-channel parent
+- Added spacewalk-data-fsck man page(8)
+- uniquify repo-sync packages in case of bad metadata
+- allow MD5 config file checksums in fips mode
+- commit after adding a job to taskomatic queue
+- generate empty metadata for repos without primary
+- proper failure handle (bnc#822644)
+
+-------------------------------------------------------------------
 Thu Apr 10 17:33:33 CEST 2014 - mc@suse.de
 
 - version 2.1.55.2-1
