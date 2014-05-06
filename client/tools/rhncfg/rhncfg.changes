@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 06 15:23:18 CEST 2014 - mc@suse.de
+
+- version 5.10.65.4-1
+- fix for assigning all groups user belongs to running process
+
+-------------------------------------------------------------------
 Thu Apr 10 17:29:31 CEST 2014 - mc@suse.de
 
 - version 5.10.65.3-1
