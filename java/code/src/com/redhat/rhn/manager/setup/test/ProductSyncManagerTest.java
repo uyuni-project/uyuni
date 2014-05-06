@@ -54,6 +54,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private final ProductList products = new ProductList();
     private String providedProductIdent;
 
+    /**
+     * {@inheritDoc}}
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -99,7 +102,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             ch = new com.suse.manager.model.products.Channel();
             // for the first product have all channels provided
             // for the rest only half of them
-            if (!(descChar == '.' || descChar == 'P' )) {
+            if (!(descChar == '.' || descChar == 'P')) {
                 throw new IllegalArgumentException(
                         "Ilegal channel description char " + descChar);
             }
@@ -118,6 +121,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         return p;
     }
 
+    /**
+     * {@inheritDoc}}
+     */
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
@@ -200,7 +206,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * See if we get NOT_MIRRORED in case product status is not parsed as P.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusNotMirrored() throws Exception {
         ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
@@ -217,7 +223,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     /**
      * A product with all channels on P without previous download runs
      * is in progress if there is schedules for all those channels.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testNewProductStatusInProgress() throws Exception {
         productInsertTaskoSchedule(providedProductIdent);
@@ -228,7 +234,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * There is no runs and no schedules: FAILED.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testNewProductStatusFailed() throws Exception {
         Product prod = getProductWithAllChannelsProvided();
@@ -238,7 +244,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * There is a run with status RUNNING (even after FAILED ones), so IN_PROGRESS.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusInProgress() throws Exception {
         productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
@@ -250,7 +256,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Repo sync run has FAILED and there is no new schedule: FAILED.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusFailed() throws Exception {
         productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
@@ -261,7 +267,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Repo sync run has FAILED and there is a new schedule (retry): IN_PROGRESS.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusAfterRetry() throws Exception {
         productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
@@ -273,7 +279,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Repo sync finished, but no metadata: FAILED.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
         productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FINISHED);
@@ -284,13 +290,13 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Repo sync finished and metadata is there: FINISHED.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testProductStatusDownloadCompletedAndMetadata() throws Exception {
         String oldMountPoint = Config.get().getString(
                 ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
         // temporary repodata directory
-        File tempMountPoint = File.createTempFile("folder-name","");
+        File tempMountPoint = File.createTempFile("folder-name", "");
         tempMountPoint.delete();
         tempMountPoint.mkdir();
         // change the default mount point
@@ -316,7 +322,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private void productGenerateFakeMetadata(String prodIdent) throws IOException {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
+                for (com.suse.manager.model.products.Channel ch : prod
+                        .getMandatoryChannels()) {
                     channelGenerateFakeMetadata(ch);
                 }
             }
@@ -335,7 +342,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
                 throw new IllegalArgumentException("Channel" + ch.getLabel() + " is not P");
             }
             if (chObj.getId() == null) {
-                throw new IllegalArgumentException("Channel" + ch.getLabel() + " has null id");
+                throw new IllegalArgumentException("Channel" + ch.getLabel()
+                        + " has null id");
             }
             channelGenerateFakeMetadata(chObj);
         }
@@ -353,7 +361,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         File repoPath = new File(mountPoint + File.separator + prefix +
                 File.separator + chObj.getLabel());
         if (!repoPath.mkdirs()) {
-            throw new IOException("Can't create directories for " + repoPath.getAbsolutePath());
+            throw new IOException("Can't create directories for "
+                    + repoPath.getAbsolutePath());
         }
         File repomd = new File(repoPath, "repomd.xml");
         repomd.createNewFile();
@@ -367,7 +376,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private void productInsertTaskoSchedule(String prodIdent) {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
+                for (com.suse.manager.model.products.Channel ch : prod
+                        .getMandatoryChannels()) {
                     insertTaskoSchedule(ch);
                 }
             }
@@ -403,7 +413,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     private void productInsertTaskoRun(String prodIdent, String status) throws Exception {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
-                for (com.suse.manager.model.products.Channel ch : prod.getMandatoryChannels()) {
+                for (com.suse.manager.model.products.Channel ch : prod
+                        .getMandatoryChannels()) {
                     insertTaskoRun(ch, status);
                 }
             }
