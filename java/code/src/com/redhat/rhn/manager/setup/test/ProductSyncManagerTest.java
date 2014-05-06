@@ -113,6 +113,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             if (ch.isProvided()) {
                 Channel chObj = ChannelFactoryTest.createTestChannel(user);
                 ch.setLabel(chObj.getLabel());
+                chObj.setLastSynced(new Date());
             }
             else {
                 ch.setLabel(p.getIdent() + "-channel-" + k);
@@ -311,6 +312,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(Product.SyncStatus.FINISHED,
                         prod.getSyncStatus());
+        assertNotNull((prod.getSyncStatus().getLastSyncDate()));
         // restore old cache path
         Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
     }
