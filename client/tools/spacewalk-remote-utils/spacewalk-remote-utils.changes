@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 06 15:13:32 CEST 2014 - mc@suse.de
+
+- version 2.1.3.3-1
+- Fix channel arch on the spacewalk-create-channel man page
+
+-------------------------------------------------------------------
 Thu Apr 10 17:37:50 CEST 2014 - mc@suse.de
 
 - version 2.1.3.2-1
