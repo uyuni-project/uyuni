@@ -118,6 +118,7 @@ class apacheRequest:
 
         # Now we have the reference, call away
         force_rollback = 1
+        func = None
         try:
             rhnSQL.clear_log_id()
             # now get the function reference and call it
@@ -185,7 +186,8 @@ class apacheRequest:
             rhnSQL.rollback()
 
         # we only want to log successful actions at this time, that's
-        # why we do it here
+        # why we do it here. Note: "func" might be None, in this case
+        # it will cause AuditLogException below.
         try:
             auditlog_xmlrpc(func, method, params, self.req)
         except AuditLogException, e:
