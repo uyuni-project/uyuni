@@ -4,6 +4,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <tr
     data-ident="${requestScope.product.ident}"
@@ -108,5 +109,15 @@
                 </c:choose>
             </div>
         </c:forEach>
+    </td>
+    <td>
+      <c:choose>
+        <c:when test="${requestScope.product.syncStatus.lastSyncDate != null}">
+          <fmt:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" type="date" dateStyle="short" />
+        </c:when>
+        <c:otherwise>
+          Never
+        </c:otherwise>
+      </c:choose>
     </td>
 </tr>
