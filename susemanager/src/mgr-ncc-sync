@@ -178,7 +178,15 @@ def add_product(syncer, product):
         status = product.mandatory_channels[channel_label]
         if status == ".":
             syncer.add_channel(channel_label)
-            # schedule reposync even if the channel is already in the database
+        if status == "." or status == "P":
+            # sync already provided channels and the ones which have never
+            # been added
+            syncer.sync_channel(channel_label)
+    for channel_label in product.optional_channels:
+        status = product.optional_channels[channel_label]
+        if status == "P":
+            # Force a refresh of all the optional channels that have previosly
+            # been added
             syncer.sync_channel(channel_label)
 
 def display_channel_list(clist, allchilds=False, filter='', noopt=False):
