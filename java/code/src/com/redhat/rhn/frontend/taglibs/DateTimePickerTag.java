@@ -23,7 +23,6 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
@@ -69,6 +68,7 @@ public class DateTimePickerTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         this.data = null;
         super.release();
@@ -77,6 +77,7 @@ public class DateTimePickerTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
        try {
           writePickerHtml(pageContext.getOut());
@@ -91,6 +92,7 @@ public class DateTimePickerTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
         return super.doStartTag();
     }
@@ -238,9 +240,10 @@ public class DateTimePickerTag extends TagSupport {
         tzAddon.setAttribute("id", data.getName() + "_tz_input_addon");
         tzAddon.setAttribute("data-picker-name", data.getName());
         tzAddon.setAttribute("class", "input-group-addon text tz_input_addon");
-        tzAddon.addBody(
-                data.getCalendar().getTimeZone().getDisplayName(
-                        false, TimeZone.SHORT, data.getLocale()));
+
+        DateFormat tzFmt = new SimpleDateFormat("z", data.getLocale());
+        tzFmt.setTimeZone(data.getCalendar().getTimeZone());
+        tzAddon.addBody(tzFmt.format(data.getDate()));
 
         group.addBody(tzAddon);
         out.append(group.render());
@@ -258,8 +261,10 @@ public class DateTimePickerTag extends TagSupport {
 
         out.append(createHiddenInput("hour", String.valueOf(data.getHour())).render());
         out.append(createHiddenInput("minute", String.valueOf(data.getMinute())).render());
-        out.append(createHiddenInput("am_pm",
-                String.valueOf((data.getHour() > 12) ? 1 : 0)).render());
+        if (data.isLatin()) {
+            out.append(createHiddenInput("am_pm",
+                    String.valueOf((data.getHour() > 12) ? 1 : 0)).render());
+        }
     }
 
     private HtmlTag createHiddenInput(String type, String value) {
