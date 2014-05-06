@@ -65,13 +65,14 @@ function columnHeight() {
     }
   };
 
+  var horizontalMenu = $(".spacewalk-main-nav .collapse");
   //function to hide or show the Collapsable menues.
   if ($(document).width()>465) {
-    $(".collapse").addClass('in').css({
+    horizontalMenu.addClass('in').css({
       "height": 'auto'
     });
   } else {
-    $(".collapse").removeClass('in');
+    horizontalMenu.removeClass('in');
   };
 
 };
