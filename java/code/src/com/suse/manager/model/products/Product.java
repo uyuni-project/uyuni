@@ -25,6 +25,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,8 +56,11 @@ public class Product implements Selectable, Comparable<Product> {
         // This is for showing synchronization progress
         private int syncProgress;
 
+        // If FINISHED, the last reposync date, else null
+        private Date lastSyncDate;
+
         /**
-         * Returns a translation key for a status
+         * Returns a translation key for a status.
          * @return the key
          */
         public String getTranslationKey() {
@@ -109,6 +113,22 @@ public class Product implements Selectable, Comparable<Product> {
          */
         public void setSyncProgress(int syncProgressIn) {
             this.syncProgress = syncProgressIn;
+        }
+
+        /**
+         * Gets the last sync date.
+         * @return the last sync date
+         */
+        public Date getLastSyncDate() {
+            return lastSyncDate;
+        }
+
+        /**
+         * Sets the last sync date.
+         * @param lastSyncDateIn the new last sync date
+         */
+        public void setLastSyncDate(Date lastSyncDateIn) {
+            lastSyncDate = lastSyncDateIn;
         }
     };
 

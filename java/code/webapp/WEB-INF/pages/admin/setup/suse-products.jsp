@@ -39,11 +39,12 @@
                                     <th>Architecture</th>
                                     <th>Channels</th>
                                     <th>Status</th>
+                                    <th>Last Sync</th>
                                 </tr>
                             </thead>
                             <tbody class="table-content">
                                 <tr id="loading-placeholder">
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <div class="spinner-container">
                                             <rhn:icon type="spinner"></rhn:icon>
                                             <span>Loading...</span>
@@ -54,7 +55,7 @@
                             <tfoot>
                                 <tr>
                                     <td><input type="checkbox" class="select-all" autocomplete="off" /></td>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <button class="btn btn-success" id="synchronize">
                                             <i class="fa fa-plus"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
