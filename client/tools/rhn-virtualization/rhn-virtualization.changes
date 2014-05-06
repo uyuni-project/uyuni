@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 06 15:25:12 CEST 2014 - mc@suse.de
+
+- version 5.4.50.3-1
+- some systems to not have /sbin in path
+- service location is not platform independent
+- rhn-virt-host should not spam root if libvirtd is stopped
+
+-------------------------------------------------------------------
 Thu Apr 10 17:28:06 CEST 2014 - mc@suse.de
 
 - version 5.4.50.2-1
