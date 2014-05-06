@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Tue May 06 15:43:49 CEST 2014 - mc@suse.de
+
+- version 2.1.165.1-1
+- Added kickstart syntax rules box to advanced edit page
+- Added warning message about kickstart syntax rules
+- Fix bug converting pm times to am when using locales in 24 hour format.
+- Do not force the timezone name with daylight=false. (eg. showing EST for EDT)
+- Action Chain: for every action, create its own ScriptActionDetails
+  (bnc#870207)
+- Uneditable field is marked as required.
+- filters per repository on WebUI
+- xmlrpc spec includes bool values, any library should be able to handle them
+- Fix link pointing to setup wizard from the popup
+- fix opening of channel list modal
+- KickstartSession: avoid infinite loops
+- Avoid Cobbler error on KVM provisioning (bnc#870893)
+- rewrite system snapshot to java: fixed nav menu hiding
+- rewrite system snapshot to java: Packages.do
+- rewrite system snapshot to java: Index.do
+- rewrite system event page from perl to java
+- Action Chaining API: fail if trying to add multiple chains with the same
+  label
+- Installer Generation "fedora" is breed redhat but do not result in a valid
+  cobbler os_version
+- correctly set cobbler distro os_version
+- Enable DWR exception stack trace logging by default
+- Check for failed repo sync jobs in taskomatic
+- rewrite system snapshot to java: implement nav menu hiding
+- limit actions displayed on schedule/*actions pages
+- Submit buttons are incorrectly labelled.
+- Removing repo filters ISE.
+- rewrite channel compare to java:
+- Implement Setup Wizard Product sync page
+- remote command webui: don't scrub the script body
+- params for sw-repo-sync UI/API.
+- taskomatic heap size of 1G is not sufficient for large channels
+- Setup Wizard: added documentation link
+- Package Locking: added documentation link
+- Power Management: added documentation links
+- updated doc references to actual location
+- fixed helpUrl
+- Fixed Javadoc and XML-RPC doc
+- Removed timeout limitation for the script schedule
+- Added XML-RPC API for scheduling the Action Chain
+- Add a warning note about doing a Dry Run (bnc#851091)
+- Style the SP migration page
+- port SP Migration Setup page to bootstrap and jquery
+- Action Chain: bootstrap form groups fixed
+
+-------------------------------------------------------------------
 Thu Mar 27 14:59:39 CET 2014 - fcastelli@suse.com
 
 - version 2.1.165-1
