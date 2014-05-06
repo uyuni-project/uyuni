@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 06 15:17:23 CEST 2014 - mc@suse.de
+
+- version 2.1.6.4-1
+- move yes_no function before the first usage
+
+-------------------------------------------------------------------
 Thu Feb 27 15:29:55 CET 2014 - fcastelli@suse.com
 
 - version 2.1.6.3-1
