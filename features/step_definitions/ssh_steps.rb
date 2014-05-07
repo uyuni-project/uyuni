@@ -153,3 +153,21 @@ Then /^I clean the search index on the server$/ do
     end
 end
 
+When /^I execute spacewalk\-channel and pass "([^"]*)"$/ do |arg1|
+    # Not actually doing ssh here, but necessary to make other steps succeed
+    $sshout = `spacewalk-channel #{arg1} 2>&1`
+    $status = $?
+end
+
+Then /^it should fail with exit code "([^"]*)"$/ do |arg1|
+    if $status.success? || $status.exitstatus != arg1.to_i
+        raise "Executed command was successful: #{$status}"
+    end
+end
+
+Then /^it should succeed$/ do
+    if ! $status.success?
+        raise "Executed command failed: #{$status}"
+    end
+end
+
