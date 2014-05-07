@@ -211,7 +211,8 @@ public class ProductSyncManager {
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
-            if (maxLastSyncDate == null || lastSyncDate.after(maxLastSyncDate)) {
+            if (maxLastSyncDate == null
+                    || (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
                 maxLastSyncDate = lastSyncDate;
             }
         }
