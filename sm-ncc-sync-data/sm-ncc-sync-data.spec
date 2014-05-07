@@ -27,6 +27,7 @@ install -m 0644 upgrade_paths.xml    %{buildroot}/usr/share/susemanager/upgrade_
 install -m 0644 res.key              %{buildroot}/srv/www/htdocs/pub/
 install -m 0644 suse-307E3D54.key    %{buildroot}/srv/www/htdocs/pub/
 install -m 0644 suse-9C800ACA.key    %{buildroot}/srv/www/htdocs/pub/
+install -m 0644 suse-39DB7C82.key    %{buildroot}/srv/www/htdocs/pub/
 
 %clean
 rm -rf %{buildroot}
