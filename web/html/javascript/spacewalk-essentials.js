@@ -167,7 +167,7 @@ function formFocus(form, name) {
 }
 
 // Humanizes all the time elements with the human class
-$(document).on("ready", function() {
+function humanizeDates() {
   $("time.human-from, time.human-calendar").each(function (index) {
     var datetime = $(this).attr('datetime');
     if (datetime == undefined) {
@@ -202,6 +202,10 @@ $(document).on("ready", function() {
       $(this).wrap('<a href="#" data-toggle="tooltip" title="' + originalContent + '"></a>');
     }
   });
+}
+
+$(document).on("ready", function() {
+  humanizeDates();
 });
 
 // Disables the enter key from submitting the form
