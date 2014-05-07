@@ -113,7 +113,7 @@
     <td class="text-only">
       <c:choose>
         <c:when test="${requestScope.product.syncStatus.lastSyncDate != null}">
-          <fmt:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" type="date" dateStyle="short" />
+          <rhn:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" humanStyle="from" type="date" dateStyle="short" />
         </c:when>
         <c:otherwise>
           Never
