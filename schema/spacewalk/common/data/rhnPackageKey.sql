@@ -126,6 +126,12 @@ insert into rhnPackageKey (id, key_id, key_type_id, provider_id) values
 (sequence_nextval('rhn_pkey_id_seq'), '8055f0400182b964', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LINUX Products GmbH'));
 
 insert into rhnPackageKey (id, key_id, key_type_id, provider_id) values
+(sequence_nextval('rhn_pkey_id_seq'), '70af9e8139db7c82', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LINUX Products GmbH'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) values
+(sequence_nextval('rhn_pkey_id_seq'), '5eaf444450a3dd1c', lookup_package_key_type('gpg'), lookup_package_provider('SUSE LINUX Products GmbH'));
+
+insert into rhnPackageKey (id, key_id, key_type_id, provider_id) values
 (sequence_nextval('rhn_pkey_id_seq'), 'b88b2fd43dbdc284', lookup_package_key_type('gpg'), lookup_package_provider('openSUSE'));
 
 
