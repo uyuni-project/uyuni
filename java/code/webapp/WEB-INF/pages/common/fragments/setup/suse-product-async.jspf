@@ -4,6 +4,7 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <tr
     data-ident="${requestScope.product.ident}"
@@ -16,14 +17,14 @@
         class="product-provided"
     </c:if>
  >
-    <td>
+    <td class="text-only">
         <input type="checkbox" class="select-single"
             <c:if test="${requestScope.product.provided}">
                 checked disabled
             </c:if>
         />
     </td>
-    <td>
+    <td class="text-only">
         <c:choose>
             <c:when test="${requestScope.product.base}">
                 <c:if test="${fn:length(requestScope.product.addonProducts) > 0}">
@@ -47,7 +48,7 @@
             <c:out value="${requestScope.product.name}"></c:out>
         </span>
     </td>
-    <td><c:out value="${requestScope.product.arch}"></c:out></td>
+    <td class="text-only"><c:out value="${requestScope.product.arch}"></c:out></td>
     <td>
         <button class="btn product-channels-btn btn-link btn-xs"
                 title="<bean:message key='suse-products.jsp.show-channels' />">
@@ -55,7 +56,7 @@
         </button>
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
-    <td>
+    <td class="add-button">
         <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
         <c:forEach var="syncStatus" items="${allSyncStatus}">
             <div
@@ -108,5 +109,15 @@
                 </c:choose>
             </div>
         </c:forEach>
+    </td>
+    <td class="text-only">
+      <c:choose>
+        <c:when test="${requestScope.product.syncStatus.lastSyncDate != null}">
+          <rhn:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" humanStyle="from" type="date" dateStyle="short" />
+        </c:when>
+        <c:otherwise>
+          Never
+        </c:otherwise>
+      </c:choose>
     </td>
 </tr>

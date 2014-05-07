@@ -131,6 +131,7 @@ $(function() {
             $(this).closest('tr').find('.product-channels-modal').modal('show')
         });
         initSyncButtons();
+        humanizeDates();
       },
       function(message, exception) {
         $('.table').hide();
