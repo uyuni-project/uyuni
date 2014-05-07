@@ -249,10 +249,10 @@ Thank you for using @@PRODUCT_NAME@@.
           <source>You do not have permission to view this patch.</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.deleteuser">
-          <source>You must be an organization administrator for a SUSE Manager to delete a user.</source>
+          <source>You must be an organization administrator for a @@PRODUCT_NAME@@ to delete a user.</source>
         </trans-unit>
         <trans-unit id="permission.jsp.summary.general">
-          <source>You must be an SUSE Manager administrator to view this page. Contact your SUSE Manager administrator to get information on the organizations in this system.</source>
+          <source>You must be an @@PRODUCT_NAME@@ administrator to view this page. Contact your @@PRODUCT_NAME@@ administrator to get information on the organizations in this system.</source>
         </trans-unit>
       <trans-unit id="login.jsp.satbody2">
         <source>For details on @@PRODUCT_NAME@@, please visit our website &lt;a href=&quot;http://www.suse.com/products/suse-manager/&quot; target=&quot;_new&quot;&gt;&lt;i class=&quot;fa fa-globe&quot;&gt;&lt;/i&gt;&lt;/a&gt;. </source>
@@ -268,6 +268,9 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <trans-unit id="repos.jsp.create.metadataSigned">
         <source>Has Signed Metadata?</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.message.taskomaticdown">
+        <source>The scheduling service appears down. Please contact your @@PRODUCT_NAME@@ administrator.</source>
       </trans-unit>
 
       <!-- footer.jsp -->
@@ -286,7 +289,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Autoinstalling</source>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>If you would like to set up your SUSE Manager to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/install/en-US/s1-maintenance-pam-auth.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>If you would like to set up your @@PRODUCT_NAME@@ to authenticate against LDAP, kerberos, and other network-based authentication systems, please see the &lt;a href="/rhn/help/install/en-US/s1-maintenance-pam-auth.jsp"&gt;documentation&lt;/a&gt; for instructions on how to set up PAM.</source>
       </trans-unit>
       <trans-unit id="upgradable.jsp.errata">
         <source>Related Patches</source>
@@ -536,13 +539,13 @@ Thank you for using @@PRODUCT_NAME@@.
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin.description">
         <source>Are you sure you would like to remove the "@@PRODUCT_NAME@@ Administrator" role from
-your own login? You will need to contact another SUSE Manager administrator to
+your own login? You will need to contact another @@PRODUCT_NAME@@ administrator to
 regain this role if you choose to remove it now.  You will no longer have access to the @@PRODUCT_NAME@@ configuration tools and
 organization management tools if you choose to remove this role from your login.
 </source>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.satadmin_revoke">
-        <source>Confirm removing the SUSE Manager administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
+        <source>Confirm removing the @@PRODUCT_NAME@@ administration role from &lt;strong&gt;{0}&lt;/strong&gt; by clicking the button below.</source>
       </trans-unit>
       <trans-unit id="filter-form.jsp.ksoverviewprofiles">
         <source> Autoinstallation Profiles</source>
@@ -598,7 +601,7 @@ organization.
         <source>Create and manage organizations on your @@PRODUCT_NAME@@. You can not view all of the
 users on the @@PRODUCT_NAME@@ here, but you can look up the users with organization
 administrator privileges in all of the organizations on your @@PRODUCT_NAME@@ and you
-may also assign or take away an organization administrator's SUSE Manager
+may also assign or take away an organization administrator's @@PRODUCT_NAME@@
 administrator privileges.</source>
       </trans-unit>
       <trans-unit id="general.jsp.org.tbl.link4">
@@ -1263,6 +1266,30 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="channel.jsp.errata.sync.complete">
 		<source>Successfully synchronized {0} patches and pushed {1} packages to channel {2}.</source>
       </trans-unit>
+      <trans-unit id="login.jsp.error.message">
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">loginerror.jsp</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
+        <source>A single Management (Base) entitlement is required for all systems registered to SUSE Manager</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
+        <source>Checks whether SUSE Manager certificate has not expired</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="schedule.delete.jsp.introparagraph">
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
+        </context-group>
+      </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml -->
       <trans-unit id="Clone Errata">
@@ -1438,19 +1465,19 @@ available for this kickstart profile to function properly.
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted">
-        <source>Your Satellite Certificate has expired. Your Satellite is on day {0} of {1} day restricted period and will soon stop functioning. Please contact Red Hat for a new certificate.</source>
+        <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
       </trans-unit>
       <trans-unit id="satellite.graceperiod">
         <source>Your @@PRODUCT_NAME@@ certificate has expired.  Please contact @@VENDOR_NAME@@ for a new certificate.  Your SUSE Manager will become inactive in {0} day(s).</source>
       </trans-unit>
       <trans-unit id="restricted.forbidden">
-        <source>You are not allowed to perform this action until your Satellite Certificate is renewed. Your Satellite is on day {0} of the {1} restricted period and will soon stop functioning. Please contact Red Hat for a new certificate.</source>
+        <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact SUSE for a new certificate.</source>
       </trans-unit>
       <trans-unit id="restart.config.error">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
       </trans-unit>
       <trans-unit id="config.storeconfig.error">
-        <source>An error occurred and your SUSE Manager configuration changes could not be stored. Please contact support for more information</source>
+        <source>An error occurred and your @@PRODUCT_NAME@@ configuration changes could not be stored. Please contact support for more information</source>
       </trans-unit>
       <trans-unit id="crypto.key.nokey">
         <source>No file contents found. Please select a proper key file from your local machine to upload.</source>
