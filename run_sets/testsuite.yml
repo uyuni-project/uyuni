@@ -29,6 +29,7 @@
 - features/cve_audit.feature
 - features/xmlrpc_cve_audit.feature
 - features/delete_system_from_conf.feature
+- features/spacewalk-channel.feature
 - features/mgr-bootstrap.feature
 - features/channels.feature
 - features/weak_deps.feature
