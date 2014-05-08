@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu May 08 16:55:05 CEST 2014 - mc@suse.de
+
+- version 2.1.50.4-1
+- move web_contact_log migration to pre Beta3
+- rename schema migration directories to support Beta 3 to Beta4 migration
+- add migration dir for latest 1.7 schema version to 2.1
+- add SLE12 GPG Package Key
+
+-------------------------------------------------------------------
 Tue May 06 15:18:35 CEST 2014 - mc@suse.de
 
 - version 2.1.50.3-1
