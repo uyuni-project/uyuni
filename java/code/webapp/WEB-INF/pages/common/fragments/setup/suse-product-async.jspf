@@ -92,23 +92,33 @@
                         </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FINISHED'}">
-                        <div class="label-container">
-                            <span class="label label-success"><bean:message key="${syncStatus.translationKey}"/></span>
+                        <div class="product-completed-status">
+                            <span class="product-completed-label label label-success">
+                                <button class="btn btn-link"><bean:message key="${syncStatus.translationKey}"/></button>
+                            </span>
+                            <button class="product-retry-btn"
+                                    data-toggle="tooltip"
+                                    title="<bean:message key='suse-products.jsp.refresh' />">
+                                <i class="fa fa-refresh"></i>
+                            </button>
                         </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
                         <div class="product-failed-status">
-                            <span class="product-failed-label label label-danger"><bean:message key="${syncStatus.translationKey}"/></span>
-                            <button class="product-retry-btn btn btn-link btn-xs"
+                            <span class="product-failed-label label label-danger">
+                                <button class="btn btn-link"><bean:message key="${syncStatus.translationKey}"/></button>
+                            </span>
+                            <button class="product-retry-btn"
                                     data-toggle="tooltip"
                                     title="<bean:message key='suse-products.jsp.try-again' />">
-                                <i class="fa"></i><bean:message key='suse-products.jsp.try-again' />
+                                <i class="fa fa-refresh"></i>
                             </button>
                         </div>
                     </c:when>
                 </c:choose>
             </div>
         </c:forEach>
+        <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-sync-log.jspf" />
     </td>
     <td class="text-only">
       <c:choose>
