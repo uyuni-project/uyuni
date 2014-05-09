@@ -20263,6 +20263,9 @@ given channel.</source>
       <trans-unit id="package.jsp.availfrom">
         <source>Available From</source>
       </trans-unit>
+      <trans-unit id="package.jsp.eula">
+        <source>EULA</source>
+      </trans-unit>
       <trans-unit id="package.jsp.vendor">
         <source>Vendor</source>
       </trans-unit>

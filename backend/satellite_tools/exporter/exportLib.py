@@ -918,6 +918,16 @@ class _PackageDumper(BaseRowDumper):
         h.execute(package_id=self._row['id'])
         arr.append(_SuseProductFilesDumper(self._writer, data_iterator=h))
 
+        # SUSE EULAs
+        h = rhnSQL.prepare("""
+            SELECT se.text, se.checksum
+              FROM suseEulas se
+              JOIN susePackageEula spe ON se.id = spe.eula_id
+             WHERE spe.package_id = :package_id
+        """)
+        h.execute(package_id=self._row['id'])
+        arr.append(_SuseEulasDumper(self._writer, data_iterator=h))
+
         return ArrayIterator(arr)
 
 class PackagesDumper(BaseSubelementDumper, BaseQueryDumper):
@@ -1028,6 +1038,24 @@ class _SuseProductEntryDumper(BaseRowDumper):
 class _SuseProductFilesDumper(BaseSubelementDumper):
     tag_name = 'suse-product-file'
     subelement_dumper_class = _SuseProductEntryDumper
+
+##
+class _SuseEulasEntryDumper(BaseRowDumper):
+    tag_name = 'suse-eula-entry'
+
+    def set_iterator(self):
+        arr = []
+        mappings = [
+            ('suse-eula-entry-text', 'text'),
+            ('suse-eula-entry-checksum', 'checksum'),
+        ]
+        for k, v in mappings:
+            arr.append(SimpleDumper(self._writer, k, self._row[v]))
+        return ArrayIterator(arr)
+
+class _SuseEulasDumper(BaseSubelementDumper):
+    tag_name = 'suse-eula'
+    subelement_dumper_class = _SuseEulasEntryDumper
 
 ##
 class _DependencyDumper(BaseDumper):

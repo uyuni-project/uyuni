@@ -1,9 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-
 
 <html:html >
 <body>
@@ -169,6 +169,24 @@
                 </div>
             </div>
         </rhn:require>
+        <!-- EULA stuff -->
+        <c:if test="${fn:length(eulas) > 0}">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3>End-user license agreements (EULAs)</h3></div>
+                <div class="panel-body">
+                    <c:forEach items="${eulas}" var="eula">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">
+                                <bean:message key="package.jsp.eula"/>:
+                            </label>
+                            <div class="col-lg-6">
+                                <pre><c:out value="${eula}"></c:out></pre>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+        </c:if>
         <!-- RPM stuff -->
         <rhn:require acl="package_type_capable(rpm)"
                      mixins="com.redhat.rhn.common.security.acl.PackageAclHandler">
