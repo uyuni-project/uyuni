@@ -54,6 +54,8 @@ Feature: Explore the Channels page
      And I should see a "SHA1sum:" text
      And I should see a "cbd60e37142de1204964269d00fd5cc645ccd056" text
      And I should see a "packages/1/cbd/andromeda-dummy/2.0-1.1/noarch/cbd60e37142de1204964269d00fd5cc645ccd056/andromeda-dummy-2.0-1.1.noarch.rpm" text
+     And I should see a "EULA" text
+     And I should see a "I hereby accept to sell my soul to his Highness The mseidl." text
 
   Scenario: Check Package dependencies page
     When I follow "Channels"
