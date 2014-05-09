@@ -96,7 +96,7 @@ $(function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true).trigger("change");
 
-        $.each($(this).closest("tr").find("div.product-status"), function () {
+        $.each($(this).closest("tr").find("div.product-status, div.product-status-action"), function () {
           var status = $(this).data("syncstatus");
           if (status === "in_progress") {
             $(this).show();
@@ -126,6 +126,7 @@ $(function() {
         $("#loading-placeholder").hide();
         $(".table-content").append(content);
         $('.product-add-btn').tooltip();
+        $('.product-retry-btn').tooltip();
         $(".product-channels-btn").tooltip();
         $(".product-channels-btn").click(function() {
             $(this).closest('tr').find('.product-channels-modal').modal('show')
