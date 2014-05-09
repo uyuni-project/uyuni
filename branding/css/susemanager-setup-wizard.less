@@ -198,11 +198,23 @@ ul.subscriptions-list {
   tr.product-provided {
     background-color: #eee;
   }
+
   .product-status {
     .progress {
       background-color: #fff;
       border: 1px solid #ddd;
     }
+  }
+
+  .product-completed-label, .product-failed-label {
+    .btn-link {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+
+  .product-add-btn, .product-retry-btn {
+    font-size: 0.7em;
   }
 }
 
@@ -223,15 +235,4 @@ ul.subscriptions-list {
   background: linear-gradient(to bottom,  #ffffff 0%,#e7e7e7 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7e7e7',GradientType=0 ); /* IE6-9 */
   .text-glow;
-}
-
-.product-completed-label, .product-failed-label {
-  .btn-link {
-    color: white;
-    text-decoration: underline;
-  }
-}
-
-.product-add-btn, .product-retry-btn {
-  font-size: 0.75em
 }
