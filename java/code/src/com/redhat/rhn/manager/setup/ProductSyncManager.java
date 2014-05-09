@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Manager class for interacting with SUSE products.
@@ -195,9 +196,15 @@ public class ProductSyncManager {
         int finishedCounter = 0;
         int failedCounter = 0;
         Date maxLastSyncDate = null;
+        StringBuilder debugDetails = new StringBuilder();
 
         for (Channel c : product.getMandatoryChannels()) {
             SyncStatus channelStatus = getChannelSyncStatus(c);
+
+            if (StringUtils.isNotBlank(channelStatus.getDetails())) {
+                debugDetails.append(channelStatus.getDetails());
+            }
+
             if (channelStatus.equals(SyncStatus.FINISHED)) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
@@ -225,7 +232,9 @@ public class ProductSyncManager {
         }
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
-            return SyncStatus.FAILED;
+            SyncStatus failedResult = SyncStatus.FAILED;
+            failedResult.setDetails(debugDetails.toString());
+            return failedResult;
         }
         // Otherwise return IN_PROGRESS
         else {

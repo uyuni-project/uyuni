@@ -61,7 +61,7 @@ $(function() {
     triggerProductSync(checkbox, $(this));
   });
 
-  // Handle retry buttons
+  // Handle retry button (hidden by default, except when activated from modal)
   $(".table-content").on("click", ".product-retry-btn", function() {
     var checkbox = $(this).closest('tr').find('input:checkbox');
     triggerProductSync(checkbox, $(this));
@@ -129,6 +129,10 @@ $(function() {
         $(".product-channels-btn").tooltip();
         $(".product-channels-btn").click(function() {
             $(this).closest('tr').find('.product-channels-modal').modal('show')
+        });
+
+        $(".product-completed-label, .product-failed-label").click(function() {
+            $(this).closest('tr').find('.product-sync-log-modal').modal('show');
         });
         initSyncButtons();
         humanizeDates();
