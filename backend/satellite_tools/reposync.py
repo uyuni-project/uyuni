@@ -26,7 +26,7 @@ from optparse import OptionParser
 from yum import Errors
 from yum.i18n import to_unicode
 
-from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload
+from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, rhnPackageUpload, suseEula
 from spacewalk.common import fileutils, rhnMail, rhnLog, suseLib, rhn_pkg
 from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
@@ -697,6 +697,13 @@ class RepoSync(object):
                     kadd = rhnSQL.prepare("""INSERT INTO suseMdData (package_id, channel_id, keyword_id)
                                               VALUES(:package_id, :channel_id, :keyword_id)""")
                     kadd.execute(package_id=pkgid, channel_id=int(self.channel['id']), keyword_id=kwcache[keyword])
+
+            if package.has_key('eula'):
+                eula_id = suseEula.find_or_create_eula(package['eula'])
+                rhnPackage.add_eula_to_package(
+                  package_id=pkgid,
+                  eula_id=eula_id
+                )
 
             # delete all removed keywords
             for label in pkgkws:
@@ -1502,3 +1509,4 @@ def _delete_invalid_errata(errata_id):
     for cid in channels:
         update_needed_cache(cid)
     rhnSQL.commit()
+

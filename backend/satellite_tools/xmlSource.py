@@ -608,6 +608,7 @@ class PackageItem(IncompletePackageItem):
         'rhn-package-enhances'      : 'enhances',
         'rhn-package-changelog'     : 'changelog',
         'suse-product-file'         : 'product_files',
+        'suse-eula'                 : 'eulas',
     }
     tagMap.update(IncompletePackageItem.tagMap)
     def populate(self, attributes, elements):
@@ -670,6 +671,15 @@ class ProductFileItem(BaseItem):
         'suse-product-file-entry-description' : 'description',
     }
 addItem(ProductFileItem)
+
+class EulaItem(BaseItem):
+    item_name = 'suse-eula-entry'
+    item_class = importLib.Eula
+    tagMap = {
+        'suse-eula-entry-text'     : 'text',
+        'suse-eula-entry-checksum' : 'checksum',
+    }
+addItem(EulaItem)
 
 class DependencyItem(BaseItem):
     """virtual class - common settings for dependency items"""
