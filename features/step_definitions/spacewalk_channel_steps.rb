@@ -8,7 +8,7 @@ When /^I use spacewalk\-channel to add a valid child channel$/ do
     if arch != "x86_64"
         arch = "i586"
     end
-    child_channel = "sles11-sp3-#{arch}-child-channel"
+    child_channel = "sles11-sp3-updates-#{arch}-child-channel"
     step "I execute spacewalk\-channel and pass \"--add -c #{child_channel} -u admin -p admin\""
 end
 
@@ -18,7 +18,7 @@ When /^I use spacewalk\-channel to remove a valid child channel$/ do
     if arch != "x86_64"
         arch = "i586"
     end
-    child_channel = "sles11-sp3-#{arch}-child-channel"
+    child_channel = "sles11-sp3-updates-#{arch}-child-channel"
     step "I execute spacewalk\-channel and pass \"--remove -c #{child_channel} -u admin -p admin\""
 end
 
@@ -28,7 +28,7 @@ Then /^I want to see all valid child channels$/ do
     if arch != "x86_64"
         arch = "i586"
     end
-    step "I want to get \"sles11-sp3-#{arch}-child-channel\""
+    step "I want to get \"sles11-sp3-updates-#{arch}-child-channel\""
 end
 
 Then /^I wont see any of the valid child channels$/ do
@@ -37,6 +37,6 @@ Then /^I wont see any of the valid child channels$/ do
     if arch != "x86_64"
         arch = "i586"
     end
-    step "I wont get \"sles11-sp3-#{arch}-child-channel\""
+    step "I wont get \"sles11-sp3-updates-#{arch}-child-channel\""
 end
 
