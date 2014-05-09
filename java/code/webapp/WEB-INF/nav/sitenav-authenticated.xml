@@ -298,12 +298,14 @@
 
     <rhn-tab name="Users" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/Users.do">
         <rhn-tab-url>/rhn/admin/multiorg/SatRoleConfirm.do</rhn-tab-url>
+        <!-- Disabled as SUSE Manager does not currently support FreeIPA integration
         <rhn-tab name="External Authentication" acl="user_role(satellite_admin)">
             <rhn-tab-url>/rhn/admin/multiorg/ExternalAuthentication.do</rhn-tab-url>
             <rhn-tab-url>/rhn/admin/multiorg/ExtAuthRoleMapping.do</rhn-tab-url>
             <rhn-tab-url>/rhn/admin/multiorg/ExtGroupDetails.do</rhn-tab-url>
             <rhn-tab-url>/rhn/admin/multiorg/ExtGroupDelete.do</rhn-tab-url>
         </rhn-tab>
+        -->
     </rhn-tab>
 
     <rhn-tab name="Spacewalk Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/config/GeneralConfig.do">
