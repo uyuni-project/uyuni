@@ -38,7 +38,8 @@
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
                                     <th>Channels</th>
-                                    <th colspan="2">Status</th>
+                                    <th>Status</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody class="table-content">
