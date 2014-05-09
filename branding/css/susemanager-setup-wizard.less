@@ -191,18 +191,47 @@ ul.subscriptions-list {
   }
 }
 
-#suse-products tr.product-selected {
+#suse-products {
+  tr.product-selected {
     background-color: #ffc;
+  }
+  tr.product-provided {
+    background-color: #eee;
+  }
+  .product-status {
+    .progress {
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+  }
 }
 
-#suse-products tr.product-provided {
-    background-color: #eee;
+.text-glow {
+  -webkit-stroke-width: 5.3px;
+  -webkit-stroke-color: #FFFFFF;
+  -webkit-fill-color: #FFFFFF;
+  text-shadow: 1px 0px 1px #fff;
+}
+
+.btn-3d {
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top,  #ffffff 0%, #e7e7e7 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e7e7e7)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #ffffff 0%,#e7e7e7 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #ffffff 0%,#e7e7e7 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e7e7e7',GradientType=0 ); /* IE6-9 */
+  .text-glow;
 }
 
 .product-completed-label, .product-failed-label {
-    .btn-link {
-        color: white;
-        text-decoration: underline;
-    }
+  .btn-link {
+    color: white;
+    text-decoration: underline;
+  }
+}
 
+.product-add-btn, .product-retry-btn {
+  font-size: 0.75em
 }

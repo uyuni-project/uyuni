@@ -38,8 +38,7 @@
                                     <th>Available Products Below</th>
                                     <th>Architecture</th>
                                     <th>Channels</th>
-                                    <th>Status</th>
-                                    <th>Last Sync</th>
+                                    <th colspan="2">Status</th>
                                 </tr>
                             </thead>
                             <tbody class="table-content">
