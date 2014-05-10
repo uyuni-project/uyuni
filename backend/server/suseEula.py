@@ -35,7 +35,7 @@ def find_or_create_eula(eula):
     else:
         h = rhnSQL.prepare("""
             INSERT INTO suseEulas (id, text, checksum)
-            VALUES (nextval('suse_eulas_id_seq'), :text, :checksum)
+            VALUES (sequence_nextval('suse_eulas_id_seq'), :text, :checksum)
         """)
 
         h.execute(text=eula, checksum=checksum)
