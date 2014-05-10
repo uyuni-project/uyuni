@@ -527,6 +527,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/taskomatic.py*
 %{pythonrhnroot}/server/mgrSync.py*
 %{pythonrhnroot}/server/repoindexHandler.py*
+%{pythonrhnroot}/server/suseEula.py*
 %dir %{pythonrhnroot}/server/rhnServer
 %{pythonrhnroot}/server/rhnServer/*
 %dir %{pythonrhnroot}/server/importlib
