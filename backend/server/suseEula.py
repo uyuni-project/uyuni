@@ -12,6 +12,7 @@
 
 import hashlib
 from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 
 def find_or_create_eula(eula):
@@ -33,20 +34,28 @@ def find_or_create_eula(eula):
     if ret:
         return ret['id']
     else:
-        h = rhnSQL.prepare("""
-            INSERT INTO suseEulas (id, text, checksum)
-            VALUES (sequence_nextval('suse_eulas_id_seq'), :text, :checksum)
-        """)
-
-        h.execute(text=eula, checksum=checksum)
-
-        h = rhnSQL.prepare(_query_find)
+        _query_create_eula_id = """
+            SELECT sequence_nextval('suse_eulas_id_seq') AS id
+            FROM dual
+        """
+        h = rhnSQL.prepare(_query_create_eula_id)
         h.execute(checksum=checksum)
         ret = h.fetchone_dict()
+        id = None
         if ret:
-            return ret['id']
+            id = ret['id']
         else:
             raise rhnFault(50, "Unable to add new EULA to the database", explain=0)
+
+        blob_map = { 'text': 'text' }
+        h = rhnSQL.prepare("""
+                INSERT INTO suseEulas (id, text, checksum)
+                VALUES (:id, :text, :checksum)
+            """,
+            blob_map=blob_map)
+        h.execute(id=id, text=to_string(eula), checksum=checksum)
+
+        return id
 
 def get_eula_by_id(id):
     """ Return the text of the EULA, None if the EULA is not found """
