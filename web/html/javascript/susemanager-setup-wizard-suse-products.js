@@ -132,7 +132,7 @@ $(function() {
             $(this).closest('tr').find('.product-channels-modal').modal('show')
         });
 
-        $(".product-completed-label, .product-failed-label").click(function() {
+        $(".product-status-label a, .product-status-label .btn-link").click(function() {
             $(this).closest('tr').find('.product-sync-log-modal').modal('show');
         });
         initSyncButtons();
