@@ -13,7 +13,8 @@
 
 CREATE TABLE suseEulas
 (
-    id          number PRIMARY KEY,
+    id          number NOT NULL
+                    CONSTRAINT suse_eulas_id_pk PRIMARY KEY,
     text        BLOB,
     checksum    VARCHAR(64) NOT NULL
 )
