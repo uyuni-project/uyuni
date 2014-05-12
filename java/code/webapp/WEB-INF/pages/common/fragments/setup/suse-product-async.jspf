@@ -68,18 +68,23 @@
             >
                 <c:choose>
                     <c:when test="${syncStatus == 'IN_PROGRESS'}">
-                        <div class="product-sync-progress progress progress-striped active">
-                            <c:choose>
-                                <c:when test="${product.syncStatus == 'IN_PROGRESS'}">
+                        <c:choose>
+                            <c:when test="${product.syncStatus == 'IN_PROGRESS'}">
+                                <div class="product-sync-progress progress progress-striped active">
                                     <span class="progress-value">${product.syncStatus.syncProgress}%</span>
-                                    <div class="progress-bar" role="progressbar" aria-valuenow="${product.syncStatus.syncProgress}" aria-valuemin="0" aria-valuemax="100" style="width: ${product.syncStatus.syncProgress}%;">                                        
+                                    <div class="progress-bar" role="progressbar"
+                                         aria-valuenow="${product.syncStatus.syncProgress}"
+                                         aria-valuemin="0" aria-valuemax="100"
+                                         style="width: ${product.syncStatus.syncProgress}%;">
                                     </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <i class="fa fa-clock-o"></i><bean:message key='suse-products.jsp.product-scheduled' />
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="product-status-label label label-info">
+                                <i class="fa fa-clock-o"></i><bean:message key='setupwizard.syncstatus.scheduled' />
+                                </span>
+                            </c:otherwise>
+                        </c:choose>
                     </c:when>
                     <c:when test="${syncStatus == 'FINISHED'}">
                         <div class="product-completed-status">
