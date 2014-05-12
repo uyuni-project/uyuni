@@ -1986,7 +1986,7 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.details">
         <source>Details...</source>
       </trans-unit>
-      <trans-unit id="suse-products.jsp.product-scheduled">
+      <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.not.mirrored">
