@@ -1870,6 +1870,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- Setup Wizard -->
+      <trans-unit id="message.firstusercreated">
+        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
+      </trans-unit>
       <trans-unit id="Setup Wizard">
         <source>Setup Wizard</source>
       </trans-unit>

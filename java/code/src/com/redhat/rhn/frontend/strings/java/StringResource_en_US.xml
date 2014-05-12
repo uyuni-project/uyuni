@@ -5251,7 +5251,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="message.firstusercreated">
-        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;</source>
+        <source>You have created your first user for the @@PRODUCT_NAME@@ Service.  Additional configuration should be finalized by &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;clicking here&lt;/strong&gt;&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
