@@ -17,10 +17,10 @@ package com.redhat.rhn.manager;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
+import java.sql.Blob;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,13 +47,7 @@ public class EulaManager {
 
         List<String> result = new LinkedList<String>();
         for (Map<String, Object> row: dataResult) {
-            byte[] eula = (byte[]) row.get("text");
-            try {
-                result.add(new String(eula, "UTF-8"));
-            }
-            catch (UnsupportedEncodingException e) {
-                // this never happens, UTF-8 is a known charset
-            }
+            result.add(HibernateFactory.blobToString((Blob) row.get("text")));
         }
 
         return result;
