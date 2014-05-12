@@ -84,7 +84,9 @@
                     <c:when test="${syncStatus == 'FINISHED'}">
                         <div class="product-completed-status">
                             <span class="product-status-label product-completed-label label label-success">
-                                <button class="btn btn-link">
+                                <c:if test="${!empty requestScope.product.syncStatus.details}">
+                                <button class="btn btn-link product-sync-log-btn">
+                                </c:if>
                                 <c:choose>
                                     <c:when test="${requestScope.product.syncStatus.lastSyncDate != null}">
                                         <rhn:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" humanStyle="from" type="date" dateStyle="short" />
@@ -93,14 +95,23 @@
                                       <bean:message key="${syncStatus.translationKey}"/>
                                     </c:otherwise>
                                 </c:choose>
+                                <c:if test="${!empty requestScope.product.syncStatus.details}">
                                 </button>
+                                </c:if>
                             </span>
                         </div>
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
-                        <div class="product-failed-status">
+                        <div class="product-failed-status
+                             <c:if test="${!empty requestScope.product.syncStatus.details}"> product-sync-log-available</c:if>">
                             <span class="product-status-label product-failed-label label label-danger">
-                                <button class="btn btn-link"><bean:message key="${syncStatus.translationKey}"/></button>
+                                <c:if test="${!empty requestScope.product.syncStatus.details}">
+                                <button class="btn btn-link product-sync-log-btn">
+                                </c:if>
+                                <bean:message key="${syncStatus.translationKey}"/>
+                                <c:if test="${!empty requestScope.product.syncStatus.details}">
+                                </button>
+                                </c:if>
                             </span>
                         </div>
                     </c:when>
