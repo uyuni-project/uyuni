@@ -83,7 +83,7 @@
                     </c:when>
                     <c:when test="${syncStatus == 'FINISHED'}">
                         <div class="product-completed-status">
-                            <span class="product-completed-label label label-success">
+                            <span class="product-status-label product-completed-label label label-success">
                                 <button class="btn btn-link">
                                 <c:choose>
                                     <c:when test="${requestScope.product.syncStatus.lastSyncDate != null}">
@@ -99,7 +99,7 @@
                     </c:when>
                     <c:when test="${syncStatus == 'FAILED'}">
                         <div class="product-failed-status">
-                            <span class="product-failed-label label label-danger">
+                            <span class="product-status-label product-failed-label label label-danger">
                                 <button class="btn btn-link"><bean:message key="${syncStatus.translationKey}"/></button>
                             </span>
                         </div>
