@@ -1980,7 +1980,10 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.try-again">
         <source>Try again</source>
       </trans-unit>
-      <trans-unit id="suse-products.jsp.product-scheduled">
+      <trans-unit id="suse-products.jsp.refresh">
+        <source>Refresh</source>
+      </trans-unit>
+      <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.not.mirrored">

@@ -39,7 +39,7 @@
                                     <th>Architecture</th>
                                     <th>Channels</th>
                                     <th>Status</th>
-                                    <th>Last Sync</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody class="table-content">
