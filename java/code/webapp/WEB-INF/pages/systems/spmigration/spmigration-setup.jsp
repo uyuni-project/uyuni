@@ -19,36 +19,29 @@
 
   <c:choose>
     <c:when test="${not empty migrationScheduled}">
-      <div class="page-summary">
-        <p><bean:message key="spmigration.jsp.error.scheduled" arg0="${system.id}" arg1="${migrationScheduled.id}" /></p>
+      <div class="alert alert-info">
+        <bean:message key="spmigration.jsp.error.scheduled" arg0="${system.id}" arg1="${migrationScheduled.id}" />
       </div>
     </c:when>
     <c:when test="${not empty latestServicePack}">
-      <div class="page-summary">
-        <p><bean:message key="spmigration.jsp.error.up-to-date" /></p>
+      <div class="alert alert-warning">
+        <bean:message key="spmigration.jsp.error.up-to-date" />
       </div>
     </c:when>
     <c:when test="${zyppPluginInstalled and not upgradeSupported}">
-      <div class="page-summary">
-        <p><bean:message key="spmigration.jsp.error.update-zypp-plugin" /></p>
+      <div class="alert alert-warning">
+        <bean:message key="spmigration.jsp.error.update-zypp-plugin" />
       </div>
     </c:when>
     <c:when test="${not zyppPluginInstalled or targetProducts == null}">
-      <div class="page-summary">
-        <p><bean:message key="spmigration.jsp.error.unsupported" /></p>
+      <div class="alert alert-warning">
+        <bean:message key="spmigration.jsp.error.unsupported" />
       </div>
     </c:when>
     <c:otherwise>
       <c:if test="${not empty targetProducts.missingChannels}">
-        <div class="page-summary">
-        <div class="site-alert">
-          <p><bean:message key="spmigration.jsp.error.missing-channels" /></p>
-          <ul class="missing-channels-list">
-            <c:forEach items="${targetProducts.missingChannels}" var="missingChannelLabel" varStatus="loop">
-              <li class="missing-channel"><c:out value="${missingChannelLabel}" /></li>
-            </c:forEach>
-          </ul>
-        </div>
+        <div class="alert alert-warning">
+          <bean:message key="spmigration.jsp.error.missing-channels" />
         </div>
       </c:if>
       <html:form method="post" styleId="migrationForm" action="/systems/details/SPMigration.do?sid=${system.id}">
