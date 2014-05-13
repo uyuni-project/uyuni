@@ -1,5 +1,5 @@
 %if  0%{?suse_version}
-%define version_major 1.2
+%define version_major 2.1
 %define wwwdocroot /srv/www/htdocs
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %define apache_group www
@@ -93,9 +93,9 @@ docs.proxy_guide=/rhn/help/proxy-quick/index.jsp
 docs.reference_guide=/rhn/help/reference/index.jsp
 docs.install_guide=/rhn/help/install/index.jsp
 docs.client_config_guide=/rhn/help/client-config/index.jsp
-docs.channel_mgmt_guide=http://www.novell.com/documentation/suse_manager/
+docs.channel_mgmt_guide=http://www.suse.com/documentation/suse_manager/
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
-docs.proxy_release_notes=http://www.novell.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
+docs.proxy_release_notes=http://www.suse.com/linux/releasenotes/%{_arch}/SUSE-MANAGER/%{version_major}/
 ENDOFCONFIG
 %else
 cp -p conf/rhn_docs.conf %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf

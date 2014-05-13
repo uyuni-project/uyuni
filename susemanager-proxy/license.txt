@@ -289,7 +289,7 @@ U.S. export laws. The parties will not use deliverables for
 prohibited nuclear, missile, or chemical biological weaponry end 
 uses. Please consult the Bureau of Industry and Security web page 
 www.bis.doc.gov before exporting SUSE products from the U.S. Please 
-refer to http://www.novell.com/company/legal/ for more information 
+refer to http://www.suse.com/company/legal/ for more information 
 on exporting SUSE software. Upon request, SUSE will provide You 
 specific information regarding applicable restrictions. However, 
 SUSE assumes no responsibility for Your failure to obtain any 

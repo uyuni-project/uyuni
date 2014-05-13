@@ -1188,7 +1188,7 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>This package is not linked to any patch</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.title">
-            <source>Visit novell.com for more information on @@VENDOR_NAME@@ products and services</source>
+            <source>Visit suse.com for more information on @@VENDOR_NAME@@ products and services</source>
       </trans-unit>
       <trans-unit id="layout.jsp.vendor.website">
             <source>/</source>

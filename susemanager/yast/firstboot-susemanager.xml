@@ -199,7 +199,7 @@ because he may want to do a migration instead -->
         <label>
           &lt;p&gt;The installation of SUSE Manager has completed successfully.&lt;/p&gt;
           &lt;p&gt;Click Finish to log in to the system and start the SUSE Manager setup.&lt;/p&gt;
-          &lt;p&gt;Please visit us at http://www.novell.com/linux/.&lt;/p&gt;
+          &lt;p&gt;Please visit us at http://www.suse.com/.&lt;/p&gt;
         </label>
       </congratulate>
       	<!--

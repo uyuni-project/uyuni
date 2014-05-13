@@ -22,7 +22,7 @@ Release:        1%{?dist}
 Summary:        Tool to get informations from the local system
 License:        GPL-2.0
 Group:          Productivity/Other
-Url:            http://www.novell.com
+Url:            http://www.suse.com
 Source0:        %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 #BuildArch:      noarch
