@@ -220,7 +220,7 @@ function setupTextareaEditor(textarea, mode) {
       width: textarea.width(),
       height: textarea.height(),
       'class': textarea.attr('class')
-  }).insertBefore(textarea);
+  }).attr('id', textarea.attr('id') + '-editor').insertBefore(textarea);
 
   var toolBar = $('<div></div>').insertBefore(editDiv[0]);
   textarea.hide();
