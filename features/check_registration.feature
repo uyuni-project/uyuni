@@ -296,7 +296,6 @@ Feature: Check client registration
     When I follow "Add Files" in the content area
     When I follow "Create File" in the content area
     Then I should see a "Create Local File" text
-     And I uncheck "edit_area_toggle_checkbox_contents"
      And I should see a "file_radio" element in "configFileForm" form
      And I should see a "dir_radio" element in "configFileForm" form
      And I should see a "symlink_radio" element in "configFileForm" form
@@ -308,7 +307,7 @@ Feature: Check client registration
      And I should see a "cffSELinuxCtx" element in "configFileForm" form
      And I should see a "cffMacroStart" element in "configFileForm" form
      And I should see a "cffMacroEnd" element in "configFileForm" form
-     And I should see a "contents" element in "configFileForm" form
+     And I should see a "contents-editor" element in "configFileForm" form
      And I should see a "Create Configuration File" button
 
   Scenario: check tab links "Configuration" => "Deploy Files"

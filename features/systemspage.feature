@@ -431,8 +431,7 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation Snippets" in the left menu
       And I follow "create new snippet"
       And I enter "created_test_snippet" as "name"
-      And I uncheck "edit_area_toggle_checkbox_contents"
-      And I enter "<test_element>a text string</test_element>" as "contents"
+      And I enter "<test_element>a text string</test_element>" in the editor
       And I click on "Create Snippet"
    Then I should see a "created_test_snippet created successfully." text
 

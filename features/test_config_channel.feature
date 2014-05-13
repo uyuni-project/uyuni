@@ -30,8 +30,7 @@ Feature: Create a configuration channel
      And I follow "New Test Channel"
      And I follow "Create new configuration file or directory"
      And I enter "/etc/mgr-test-file.cnf" as "cffPath"
-     And I uncheck "edit_area_toggle_checkbox_contents"
-     And I enter "MGR_PROXY='yes'" as "contents"
+     And I enter "MGR_PROXY=\"yes\"" in the editor
      And I click on "Create Configuration File"
     Then I should see a "Revision 1 of /etc/mgr-test-file.cnf from channel New Test Channel" text
      And I should see a "Update Configuration File" button
