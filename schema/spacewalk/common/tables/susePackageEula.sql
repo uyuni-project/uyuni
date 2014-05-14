@@ -19,7 +19,7 @@ susePackageEula
                       On DELETE CASCADE,
     eula_id           number
                       CONSTRAINT susepackageeula_id_fk
-                      REFERENCES suseEulas (id),
+                      REFERENCES suseEula (id),
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,
     modified  timestamp with local time zone

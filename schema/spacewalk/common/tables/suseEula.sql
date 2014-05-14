@@ -10,19 +10,19 @@
 --
 
 
-CREATE TABLE suseEulas
+CREATE TABLE suseEula
 (
     id          number NOT NULL
-                    CONSTRAINT suse_eulas_id_pk PRIMARY KEY,
+                    CONSTRAINT suse_eula_id_pk PRIMARY KEY,
     text        BLOB,
     checksum    VARCHAR(64) NOT NULL
 )
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_eulas_id_seq;
+CREATE SEQUENCE suse_eula_id_seq;
 
-CREATE UNIQUE INDEX suse_eulas_checksum
-    on suseEulas (checksum)
+CREATE UNIQUE INDEX suse_eula_checksum
+    on suseEula (checksum)
     tablespace [[8m_tbs]];
 
