@@ -9,11 +9,6 @@ ul.products-list {
 li.addon-product {
   list-style-image: url(/img/branch.gif);
 }
-ul.missing-channels-list {
-  list-style-type: none;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
 div.channel-details {
   margin: 20px 3%;
 }
