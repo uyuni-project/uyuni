@@ -137,34 +137,34 @@ def initializeConfig(opt, handle):
     "We don't have any defaults - create some, using CLI if we have them"
     hdr = DEFAULT_CONFIG
 
-    slave_stanza = DEFAULT_CONFIG_FQDN_STANZA
     master_stanza = DEFAULT_CONFIG_FQDN_STANZA
+    slave_stanza = DEFAULT_CONFIG_FQDN_STANZA
 
-    slave = opt.slave and opt.slave or ask("Slave?")
-    hdr = hdr.replace('SLAVE', slave)
-    slave_stanza = slave_stanza.replace('FQDN', slave)
-
-    login = opt.slave_login and opt.slave_login or ask("Login to %s" % slave)
-    slave_stanza = slave_stanza.replace('LOGIN', login)
-
-    password = opt.slave_password and opt.slave_password or ask("Password to %s" % slave, password=True)
-    slave_stanza = slave_stanza.replace('PASSWORD', password)
-
-    if opt.slave_file:
-        slave_stanza = slave_stanza.replace('SLAVE_FILE', opt.slave_file)
-
-    master = opt.master and opt.master or ask("Master?")
+    master = opt.master and opt.master or ask("Fully qualified domain name for master")
     hdr = hdr.replace('MASTER', master)
     master_stanza = master_stanza.replace('FQDN', master)
 
-    login = opt.master_login and opt.master_login or ask("Login to %s" % master)
+    login = opt.master_login and opt.master_login or ask("Admin login for %s" % master)
     master_stanza = master_stanza.replace('LOGIN', login)
 
-    password = opt.master_password and opt.master_password or ask("Password to %s" % master, password=True)
+    password = opt.master_password and opt.master_password or ask("Password for %s" % master, password=True)
     master_stanza = master_stanza.replace('PASSWORD', password)
 
     if opt.master_file:
         master_stanza = master_stanza.replace('MASTER_FILE', opt.master_file)
+
+    slave = opt.slave and opt.slave or ask("Fully qualified domain name for slave")
+    hdr = hdr.replace('SLAVE', slave)
+    slave_stanza = slave_stanza.replace('FQDN', slave)
+
+    login = opt.slave_login and opt.slave_login or ask("Admin login for %s" % slave)
+    slave_stanza = slave_stanza.replace('LOGIN', login)
+
+    password = opt.slave_password and opt.slave_password or ask("Password for %s" % slave, password=True)
+    slave_stanza = slave_stanza.replace('PASSWORD', password)
+
+    if opt.slave_file:
+        slave_stanza = slave_stanza.replace('SLAVE_FILE', opt.slave_file)
 
     logging.debug("Header is now " + hdr)
     logging.debug("Slave-stanza is now " + slave_stanza)
@@ -281,7 +281,7 @@ def validateConnectInfo(info):
     elif "." not in info['fqdn']:
         fail("Machine domain name is not fully qualified!")
     elif not info.get('login'):
-        info['login'] = ask("Spacewalk admin login for " + info['fqdn'])
+        info['login'] = ask("Admin login for " + info['fqdn'])
         if not 'login' in info:
             fail("Can't connect, I don't have a login to use!")
     
@@ -584,7 +584,7 @@ def describe_master_template(master_setup_filename):
     return
 
 def ask(msg, password=False):
-    msg += " : "
+    msg += ": "
     return password and getpass.getpass(msg) or raw_input(msg)
 
 
