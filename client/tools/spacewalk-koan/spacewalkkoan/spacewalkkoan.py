@@ -46,7 +46,10 @@ def find_host_name():
     return execute("hostname")[0]
 
 def find_netmask(device):
-    nm = execute("LANG=C ipcalc -4ms $(ip -4 -o addr show dev %s | awk '{print $4}')|awk -F= '{print $2}'" % device)
+    try:
+        nm = execute("LANG=C ipcalc -4ms $(ip -4 -o addr show dev %s | awk '{print $4}')|awk -F= '{print $2}'" % device)
+    except:
+        nm = execute("LANG=C ifconfig %s | perl -lne '/Mask:([\d.]+)/ and print $1'" % device)
     if nm:
         return nm[0]
     else:
