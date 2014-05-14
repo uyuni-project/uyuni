@@ -25,6 +25,7 @@ from ConfigParser import SafeConfigParser, NoOptionError
 from optparse import OptionParser, OptionGroup
 from os import path, access, R_OK
 from os.path import expanduser
+import getpass
 
 home = expanduser("~")
 DEFAULT_MASTER_SETUP_FILENAME = home + '/.spacewalk-sync-setup/master.txt'
@@ -287,7 +288,7 @@ def validateConnectInfo(info):
             fail("Can't connect, I don't have a login to use!")
 
     if not 'password' in info or len(info['password']) == 0:
-        info['password'] = ask("Password for " + info['login'] + " on machine " + info['fqdn'])
+        info['password'] = ask("Password for " + info['login'] + " on machine " + info['fqdn'], password=True)
         # I would love to check for empty-pwd here - but some people use empty passwords :(
 
     return info
@@ -295,8 +296,8 @@ def validateConnectInfo(info):
 
 def connectTo(info):
     logging.debug("Connect-to info = %s" % info)
-    logging.info("Connecting to " + info['login'] + "@" + info['fqdn'])
     info = validateConnectInfo(info)
+    logging.info("Connecting to " + info['login'] + "@" + info['fqdn'])
     url = "https://%(fqdn)s/rpc/api" % {"fqdn" : info['fqdn']}
     client = xmlrpclib.Server(url, verbose=0)
     key = client.auth.login(info['login'], info['password'])
@@ -585,9 +586,9 @@ def describe_master_template(master_setup_filename):
 
     return
 
-def ask(msg):
-    val = raw_input(msg + " : ")
-    return val
+def ask(msg, password=False):
+    msg += " : "
+    return password and getpass.getpass(msg) or raw_input(msg)
 
 
 def fail(msg):
