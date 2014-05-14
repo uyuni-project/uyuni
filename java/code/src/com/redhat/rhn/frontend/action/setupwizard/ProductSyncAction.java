@@ -39,7 +39,7 @@ public class ProductSyncAction {
      * @param add indicate if this is a new product to be added
      * @throws ProductSyncManagerCommandException in case of errors
      */
-    public void syncProducts(List<String> productIdents, boolean add)
+    public void syncProducts(List<String> productIdents)
             throws ProductSyncManagerCommandException {
         User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
                 .getCurrentUser();
@@ -50,16 +50,11 @@ public class ProductSyncAction {
         }
 
         if (log.isDebugEnabled()) {
-            log.debug((add ? "Add products: " : "Sync products: ") + productIdents);
+            log.debug("Add/Sync products: " + productIdents);
         }
 
         try {
-            if (add) {
-                new ProductSyncManager().addProducts(productIdents);
-            }
-            else {
-                new ProductSyncManager().syncProducts(productIdents);
-            }
+            new ProductSyncManager().addProducts(productIdents);
         }
         catch (ProductSyncManagerCommandException e) {
             log.error(e);
