@@ -73,11 +73,11 @@ Feature: Create a configuration channel
     Given I am root
      When I run rhn_check on this client
      Then On this client the File "/etc/mgr-test-file.cnf" should exists
-      And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY='yes'"
+      And On this client the File "/etc/mgr-test-file.cnf" should have the content "MGR_PROXY=\"yes\""
 
   Scenario: Change local file and compare
     Given I am root
-     When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY='no'"
+     When I change the local file "/etc/mgr-test-file.cnf" to "MGR_PROXY=\"no\""
     Given I am on the Systems overview page of this client
     When I follow "Configuration" in the content area
      And I follow "Compare Files" in the content area
