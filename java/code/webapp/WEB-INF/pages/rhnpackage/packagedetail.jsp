@@ -180,7 +180,7 @@
                                 <bean:message key="package.jsp.eula"/>:
                             </label>
                             <div class="col-lg-6">
-                                <pre><c:out value="${eula}"></c:out></pre>
+                                <pre><c:out value="${eula.textString}"></c:out></pre>
                             </div>
                         </div>
                     </c:forEach>

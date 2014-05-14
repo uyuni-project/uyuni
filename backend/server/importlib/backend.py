@@ -23,6 +23,7 @@ import sys
 from spacewalk.common import rhn_rpm
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from importLib import Diff, Package, IncompletePackage, Erratum, \
         AlreadyUploadedError, InvalidPackageError, TransactionError, \
@@ -52,7 +53,7 @@ sequences = {
     'rhnPackageChangeLogData'   : 'rhn_pkg_cld_id_seq',
     'suseProductFile'           : 'suse_prod_file_id_seq',
     'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
-    'suseEula'                  : 'suse_eulas_id_seq',
+    'suseEula'                  : 'suse_eula_id_seq',
 }
 
 class Backend:
@@ -176,42 +177,32 @@ class Backend:
                       vendor=toinsert[4], summary=toinsert[5], description=toinsert[6])
 
     def processSuseEulas(self, eulaHash):
-        sql = """
+        query_lookup = """
             SELECT id
-              FROM suseEulas
-             WHERE text = :text
-               AND checksum = :checksum
+              FROM suseEula
+             WHERE checksum = :checksum
         """
-        h = self.dbmodule.prepare(sql)
-        toinsert = [[], [], []]
+        h_lookup = self.dbmodule.prepare(query_lookup)
+
+        query_insert = """
+            INSERT INTO suseEula (id, text, checksum)
+            VALUES (:id, :text, :checksum)"""
+        h_insert = self.dbmodule.prepare(query_insert, blob_map={ 'text' : 'text' })
 
         for text, checksum in eulaHash.keys():
             val = {}
             _buildExternalValue(val, { 'text'     : text,
                                        'checksum' : checksum
-                                     }, self.tables['suseEulas'])
-            h.execute(text=val['text'], checksum=val['checksum'])
-            row = h.fetchone_dict()
+                                     }, self.tables['suseEula'])
+            h_lookup.execute(checksum=val['checksum'])
+            row = h_lookup.fetchone_dict()
             if row:
                 eulaHash[(text, checksum)] = row['id']
                 continue
 
             id = self.sequences['suseEula'].next()
             eulaHash[(text, checksum)] = id
-
-            toinsert[0].append(id)
-            toinsert[1].append(val['text'])
-            toinsert[2].append(val['checksum'])
-
-        if not toinsert[0]:
-            # Nothing to do
-            return
-
-        sql = """
-            INSERT INTO suseEulas (id, text, checksum)
-            VALUES (:id, :text, :checksum)"""
-        h = self.dbmodule.prepare(sql)
-        h.executemany(id=toinsert[0], text=toinsert[1], checksum=toinsert[2])
+            h_insert.execute(id=id, text=to_string(val['text']), checksum=val['checksum'])
 
     def processCVEs(self, cveHash):
         # First figure out which CVE's are already inserted

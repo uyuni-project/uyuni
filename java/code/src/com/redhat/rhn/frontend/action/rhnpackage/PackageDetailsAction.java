@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.EulaManager;
 import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
@@ -59,7 +58,6 @@ public class PackageDetailsAction extends RhnAction {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
-        EulaManager eulaFinder = new EulaManager();
 
         //If this is an easy one and we have the pid
         if (request.getParameter("pid") != null) {
@@ -127,7 +125,7 @@ public class PackageDetailsAction extends RhnAction {
             request.setAttribute("pack", pkg);
 
             // find package eulas
-            request.setAttribute("eulas", eulaFinder.getEulasForPackage(pkg.getId()));
+            request.setAttribute("eulas", pkg.getEulas());
 
             // description can be null.
             if (pkg.getDescription() != null) {

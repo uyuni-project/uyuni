@@ -921,7 +921,7 @@ class _PackageDumper(BaseRowDumper):
         # SUSE EULAs
         h = rhnSQL.prepare("""
             SELECT se.text, se.checksum
-              FROM suseEulas se
+              FROM suseEula se
               JOIN susePackageEula spe ON se.id = spe.eula_id
              WHERE spe.package_id = :package_id
         """)

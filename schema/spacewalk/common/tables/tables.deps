@@ -265,6 +265,7 @@ suseOSTarget                   :: rhnChannelArch
 suseServer                     :: rhnServer suseOSTarget
 suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
+susePackageEula                :: rhnPackage suseEula
 susePackageProductFile         :: suseProductFile rhnPackage
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel

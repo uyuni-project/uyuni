@@ -12,16 +12,17 @@
 
 import hashlib
 from spacewalk.common.rhnException import rhnFault
+from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 
 def find_or_create_eula(eula):
-    """Return the id of the eula inside of the suseEulas table.
+    """Return the id of the eula inside of the suseEula table.
 
-       A new entry inside of the suseEulas table is added only when needed.
+       A new entry inside of the suseEula table is added only when needed.
     """
     _query_find = """
         SELECT id
-          FROM suseEulas
+          FROM suseEula
          WHERE checksum = :checksum
     """
     checksum = hashlib.new("sha256", eula).hexdigest()
@@ -33,24 +34,32 @@ def find_or_create_eula(eula):
     if ret:
         return ret['id']
     else:
-        h = rhnSQL.prepare("""
-            INSERT INTO suseEulas (id, text, checksum)
-            VALUES (sequence_nextval('suse_eulas_id_seq'), :text, :checksum)
-        """)
-
-        h.execute(text=eula, checksum=checksum)
-
-        h = rhnSQL.prepare(_query_find)
+        _query_create_eula_id = """
+            SELECT sequence_nextval('suse_eula_id_seq') AS id
+            FROM dual
+        """
+        h = rhnSQL.prepare(_query_create_eula_id)
         h.execute(checksum=checksum)
         ret = h.fetchone_dict()
+        id = None
         if ret:
-            return ret['id']
+            id = ret['id']
         else:
             raise rhnFault(50, "Unable to add new EULA to the database", explain=0)
 
+        blob_map = { 'text': 'text' }
+        h = rhnSQL.prepare("""
+                INSERT INTO suseEula (id, text, checksum)
+                VALUES (:id, :text, :checksum)
+            """,
+            blob_map=blob_map)
+        h.execute(id=id, text=to_string(eula), checksum=checksum)
+
+        return id
+
 def get_eula_by_id(id):
     """ Return the text of the EULA, None if the EULA is not found """
-    h = rhnSQL.prepare("SELECT text from suseEulas WHERE id = :id")
+    h = rhnSQL.prepare("SELECT text from suseEula WHERE id = :id")
     h.execute(id=id)
     match = h.fetchone_dict()
     if match:
@@ -60,7 +69,7 @@ def get_eula_by_id(id):
 
 def get_eula_by_checksum(checksum):
     """ Return the text of the EULA, None if the EULA is not found """
-    h = rhnSQL.prepare("SELECT text from suseEulas WHERE checksum = :checksum")
+    h = rhnSQL.prepare("SELECT text from suseEula WHERE checksum = :checksum")
     h.execute(checksum=checksum)
     match = h.fetchone_dict()
     if match:
