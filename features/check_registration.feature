@@ -307,7 +307,7 @@ Feature: Check client registration
      And I should see a "cffSELinuxCtx" element in "configFileForm" form
      And I should see a "cffMacroStart" element in "configFileForm" form
      And I should see a "cffMacroEnd" element in "configFileForm" form
-     And I should see a "contents-editor" element in "configFileForm" form
+     And I should see a "contents" editor in "configFileForm" form
      And I should see a "Create Configuration File" button
 
   Scenario: check tab links "Configuration" => "Deploy Files"
