@@ -593,7 +593,7 @@ def ask(msg, password=False):
 
 def fail(msg):
     logging.error(msg)
-    sys.exit(msg)
+    sys.exit(1)
 
 
 if __name__ == '__main__':
