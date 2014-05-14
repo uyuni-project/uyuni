@@ -283,12 +283,12 @@ def validateConnectInfo(info):
         fail("Can't connect, I don't know what machine you want to go to!")
     elif "." not in info['fqdn']:
         fail("Machine domain name is not fully qualified!")
-    elif not 'login' in info or len(info['login']) == 0:
+    elif (not 'login' in info) or info['login']:
         info['login'] = ask("Spacewalk admin login for " + info['fqdn'])
         if not 'login' in info:
             fail("Can't connect, I don't have a login to use!")
-
-    if not 'password' in info or len(info['password']) == 0:
+    
+    if (not 'password' in info) or info['password']:
         info['password'] = ask("Password for " + info['login'] + " on machine " + info['fqdn'], password=True)
         # I would love to check for empty-pwd here - but some people use empty passwords :(
 
