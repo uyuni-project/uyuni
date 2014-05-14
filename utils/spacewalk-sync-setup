@@ -594,6 +594,9 @@ def fail(msg):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) == 1 and os.path.exists(USER_CONF_FILE):
+        sys.argv.append("-h")
+
     parser = setupOptions()
     (options, args) = parser.parse_args()
     setupLogging(options)
