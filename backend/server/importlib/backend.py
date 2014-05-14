@@ -52,7 +52,7 @@ sequences = {
     'rhnPackageChangeLogData'   : 'rhn_pkg_cld_id_seq',
     'suseProductFile'           : 'suse_prod_file_id_seq',
     'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
-    'suseEula'                  : 'suse_eulas_id_seq',
+    'suseEula'                  : 'suse_eula_id_seq',
 }
 
 class Backend:
@@ -178,7 +178,7 @@ class Backend:
     def processSuseEulas(self, eulaHash):
         sql = """
             SELECT id
-              FROM suseEulas
+              FROM suseEula
              WHERE text = :text
                AND checksum = :checksum
         """
@@ -189,7 +189,7 @@ class Backend:
             val = {}
             _buildExternalValue(val, { 'text'     : text,
                                        'checksum' : checksum
-                                     }, self.tables['suseEulas'])
+                                     }, self.tables['suseEula'])
             h.execute(text=val['text'], checksum=val['checksum'])
             row = h.fetchone_dict()
             if row:
@@ -208,7 +208,7 @@ class Backend:
             return
 
         sql = """
-            INSERT INTO suseEulas (id, text, checksum)
+            INSERT INTO suseEula (id, text, checksum)
             VALUES (:id, :text, :checksum)"""
         h = self.dbmodule.prepare(sql)
         h.executemany(id=toinsert[0], text=toinsert[1], checksum=toinsert[2])

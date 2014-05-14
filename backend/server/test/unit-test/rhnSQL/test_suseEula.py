@@ -61,7 +61,7 @@ class SUSEEulaTest(unittest.TestCase):
         self.assertEqual(text, suseEula.get_eula_by_checksum(checksum))
 
     def __count_eulas(self):
-        count_eulas_query = "SELECT COUNT(id) AS eulas from suseEulas"
+        count_eulas_query = "SELECT COUNT(id) AS eulas from suseEula"
         h = rhnSQL.prepare(count_eulas_query)
         h.execute()
         return h.fetchone_dict()['eulas']
