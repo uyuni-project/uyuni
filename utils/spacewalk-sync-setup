@@ -279,7 +279,7 @@ def validateConnectInfo(info):
     "Something needs to connect - make sure we have fqdn/login/pwd, and ask for "
     " anything missing"
 
-    if not 'fqdn' in info or len(info['fqdn']) == 0:
+    if not 'fqdn' in info or not info['fqdn'] or "." not in info['fqdn']:
         fail("Can't connect, I don't know what machine you want to go to!")
 
     if not 'login' in info or len(info['login']) == 0:
