@@ -101,12 +101,12 @@ def setupOptions():
     parser.add_option_group(setupGrp)
 
     actionGrp = OptionGroup(parser, "Action", "Should we actually affect the specified spacewalk instances?")
-    actionGrp.add_option('--dry-run', action='store_true', dest='dry_run', default=False,
-        help="Don't actually change anything, but tell us what you would have done")
+    actionGrp.add_option('--dt', '--describe-templates', action='store_true', dest='describe_templates', default=False,
+        help="Describe existing templates for master and slave hosts.")
     actionGrp.add_option('--apply', action='store_true', dest='apply', default=False,
         help="make the changes specified by the setup files to the specified spacewalk instances")
-    actionGrp.add_option('--default-ok', action='store_true', dest='default_ok', default=False,
-        help="Even if I don't explicitly tell you about a master or slave on the command-line, it's ok to try to apply changes to them!")
+    actionGrp.add_option('--ch', '--configured-hosts', action='store_true', dest='configured_hosts', default=False,
+        help="Use all configured hosts from the default configuration if not explicitly specified.")
     parser.add_option_group(actionGrp)
 
     utilGrp = OptionGroup(parser, "Utility")
@@ -605,8 +605,8 @@ if __name__ == '__main__':
     config = setupConfig(options)
     logging.debug("CONFIG = %s" % config)
 
-    if (options.apply or options.dry_run) and \
-            (not options.default_ok and \
+    if (options.apply or options.describe_templates) and \
+            (not options.configured_hosts and \
                  not options.master and \
                  not options.slave):
         logging.info("You should pass --default-ok option or master and/or slave host!")
@@ -630,18 +630,18 @@ if __name__ == '__main__':
         filename = determineTemplateFilename('slave', master_info['fqdn'], options, config)
         gen_slave_template(slave_cnx, master_cnx, master_info['fqdn'], filename, options.master_default)
 
-    if (options.master or options.default_ok):
+    if (options.master or options.configured_hosts):
         filename = determineTemplateFilename('master', slave_info['fqdn'], options, config)
         if options.apply:
             apply_master_template(master_cnx, filename)
-        elif options.dry_run:
+        elif options.describe_templates:
             describe_master_template(filename)
 
-    if (options.slave or options.default_ok):
+    if (options.slave or options.configured_hosts):
         filename = determineTemplateFilename('slave', master_info['fqdn'], options, config)
         if options.apply:
             apply_slave_template(slave_cnx, filename)
-        elif options.dry_run:
+        elif options.describe_templates:
             describe_slave_template(filename)
 
 # vim:ts=4:expandtab:
