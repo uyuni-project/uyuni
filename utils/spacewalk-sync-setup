@@ -27,9 +27,10 @@ from os import path, access, R_OK
 from os.path import expanduser
 import getpass
 
-home = expanduser("~")
-DEFAULT_MASTER_SETUP_FILENAME = home + '/.spacewalk-sync-setup/master.txt'
-DEFAULT_SLAVE_SETUP_FILENAME = home + '/.spacewalk-sync-setup/slave.txt'
+CONF_DIR = os.path.expanduser('~/.spacewalk-sync-setup')
+USER_CONF_FILE = os.path.join(CONF_DIR, 'config')
+DEFAULT_MASTER_SETUP_FILENAME = os.path.join(CONF_DIR, 'master.txt')
+DEFAULT_SLAVE_SETUP_FILENAME = os.path.join(CONF_DIR, 'slave.txt')
 
 DEFAULT_CONFIG = """
 # Default defines the slave and/or master we should connect to by default
@@ -139,28 +140,28 @@ def initializeConfig(opt, handle):
     slave_stanza = DEFAULT_CONFIG_FQDN_STANZA
     master_stanza = DEFAULT_CONFIG_FQDN_STANZA
 
-    if opt.slave:
-        hdr = hdr.replace('SLAVE', opt.slave)
-        slave_stanza = slave_stanza.replace('FQDN', opt.slave)
+    slave = opt.slave and opt.slave or ask("Slave?")
+    hdr = hdr.replace('SLAVE', slave)
+    slave_stanza = slave_stanza.replace('FQDN', slave)
 
-    if opt.slave_login:
-        slave_stanza = slave_stanza.replace('LOGIN', opt.slave_login)
+    login = opt.slave_login and opt.slave_login or ask("Login to %s" % slave)
+    slave_stanza = slave_stanza.replace('LOGIN', login)
 
-    if opt.slave_password:
-        slave_stanza = slave_stanza.replace('PASSWORD', opt.slave_password)
+    password = opt.slave_password and opt.slave_password or ask("Password to %s" % slave, password=True)
+    slave_stanza = slave_stanza.replace('PASSWORD', password)
 
     if opt.slave_file:
         slave_stanza = slave_stanza.replace('SLAVE_FILE', opt.slave_file)
 
-    if opt.master:
-        hdr = hdr.replace('MASTER', opt.master)
-        master_stanza = master_stanza.replace('FQDN', opt.master)
+    master = opt.master and opt.master or ask("Master?")
+    hdr = hdr.replace('MASTER', master)
+    master_stanza = master_stanza.replace('FQDN', master)
 
-    if opt.master_login:
-        master_stanza = master_stanza.replace('LOGIN', opt.master_login)
+    login = opt.master_login and opt.master_login or ask("Login to %s" % master)
+    master_stanza = master_stanza.replace('LOGIN', login)
 
-    if opt.master_password:
-        master_stanza = master_stanza.replace('PASSWORD', opt.master_password)
+    password = opt.master_password and opt.master_password or ask("Password to %s" % master, password=True)
+    master_stanza = master_stanza.replace('PASSWORD', password)
 
     if opt.master_file:
         master_stanza = master_stanza.replace('MASTER_FILE', opt.master_file)
@@ -186,31 +187,27 @@ def setupConfig(opt):
     "    * master-setup-file \n"
     "    * slave-setup-file \n"
 
-    # files are loaded from ~/.spacewalk-sync-setup/
-    conf_dir = os.path.expanduser('~/.spacewalk-sync-setup')
-    user_conf_file = os.path.join(conf_dir, 'config')
-
     # server-specifics will be loaded from the configuration file later
     config = SafeConfigParser()
 
     # create an empty configuration file if one's not present
-    if not os.path.isfile(user_conf_file):
+    if not os.path.isfile(USER_CONF_FILE):
         try:
             # create ~/.spacewalk-sync-setup
-            if not os.path.isdir(conf_dir):
-                logging.debug('Creating %s' % conf_dir)
-                os.mkdir(conf_dir, 0700)
+            if not os.path.isdir(CONF_DIR):
+                logging.debug('Creating %s' % CONF_DIR)
+                os.mkdir(CONF_DIR, 0700)
 
             # create a template configuration file
-            logging.debug('Creating configuration file: %s' % user_conf_file)
-            handle = open(user_conf_file, 'w')
+            logging.debug('Creating configuration file: %s' % USER_CONF_FILE)
+            handle = open(USER_CONF_FILE, 'w')
             initializeConfig(opt, handle)
             handle.close()
         except IOError:
-            logging.error('Could not create %s' % user_conf_file)
+            logging.error('Could not create %s' % USER_CONF_FILE)
 
     # load options from configuration file
-    config.read( [ user_conf_file ] )
+    config.read([USER_CONF_FILE])
 
     return config;
 
@@ -230,7 +227,7 @@ def getMasterConnectionInfo(opt, cfg):
     if opt.master_login:
         info['login'] = opt.master_login
     elif cfg.has_option(info['fqdn'], 'login'):
-        info['login'] = cfg.has_option(info['fqdn'], 'login')
+        info['login'] = cfg.get(info['fqdn'], 'login')
     else:
         return info
 
@@ -238,7 +235,7 @@ def getMasterConnectionInfo(opt, cfg):
     if opt.master_password:
         info['password'] = opt.master_password
     elif cfg.has_option(info['fqdn'], 'password'):
-        info['password'] = cfg.has_option(info['fqdn'], 'password')
+        info['password'] = cfg.get(info['fqdn'], 'password')
     else:
         return info;
 
@@ -260,7 +257,7 @@ def getSlaveConnectionInfo(opt, cfg):
     if opt.slave_login:
         info['login'] = opt.slave_login
     elif cfg.has_option(info['fqdn'], 'login'):
-        info['login'] = cfg.has_option(info['fqdn'], 'login')
+        info['login'] = cfg.get(info['fqdn'], 'login')
     else:
         return info
 
@@ -268,7 +265,7 @@ def getSlaveConnectionInfo(opt, cfg):
     if opt.slave_password:
         info['password'] = opt.slave_password
     elif cfg.has_option(info['fqdn'], 'password'):
-        info['password'] = cfg.has_option(info['fqdn'], 'password')
+        info['password'] = cfg.get(info['fqdn'], 'password')
     else:
         return info;
 
@@ -283,14 +280,13 @@ def validateConnectInfo(info):
         fail("Can't connect, I don't know what machine you want to go to!")
     elif "." not in info['fqdn']:
         fail("Machine domain name is not fully qualified!")
-    elif (not 'login' in info) or info['login']:
+    elif not info.get('login'):
         info['login'] = ask("Spacewalk admin login for " + info['fqdn'])
         if not 'login' in info:
             fail("Can't connect, I don't have a login to use!")
     
-    if (not 'password' in info) or info['password']:
+    if not info.get('login'):
         info['password'] = ask("Password for " + info['login'] + " on machine " + info['fqdn'], password=True)
-        # I would love to check for empty-pwd here - but some people use empty passwords :(
 
     return info
 
