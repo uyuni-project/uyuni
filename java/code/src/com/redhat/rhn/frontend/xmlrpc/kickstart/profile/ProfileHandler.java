@@ -45,7 +45,6 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidScriptTypeException;
 import com.redhat.rhn.frontend.xmlrpc.IpRangeConflictException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
-import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidUpdateTypeAndKickstartTreeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidUpdateTypeAndNoBaseTreeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.InvalidUpdateTypeException;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.NoSuchKickstartTreeException;
@@ -270,7 +269,7 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kslabel", "Label of kickstart
      * profile to be changed.")
      * @xmlrpc.param #param_desc("string", "updateType", "The new update type
-     * to set. Possible values are 'red_hat', 'all', and 'none'.")
+     * to set. Possible values are 'all' and 'none'.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int setUpdateType(String sessionKey, String kslabel,
@@ -292,15 +291,6 @@ public class ProfileHandler extends BaseHandler {
                 throw new InvalidUpdateTypeAndNoBaseTreeException(tree.getLabel());
             }
             realUT = KickstartTreeUpdateType.ALL;
-        }
-        else if (updateType.equals(KickstartTreeUpdateType.RED_HAT.getType())) {
-            if (tree.getOrgId() != null) {
-                throw new InvalidUpdateTypeAndKickstartTreeException(tree.getLabel());
-            }
-            if (tree.getChannel() == null) {
-                throw new InvalidUpdateTypeAndNoBaseTreeException(tree.getLabel());
-            }
-            realUT = KickstartTreeUpdateType.RED_HAT;
         }
         else if (updateType.equals(KickstartTreeUpdateType.NONE.getType())) {
             realUT = KickstartTreeUpdateType.NONE;
