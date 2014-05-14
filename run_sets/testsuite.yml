@@ -37,6 +37,7 @@
 - features/regressions.feature
 - features/check_support_data.feature
 - features/check_registration.feature
+- features/sp_migration.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package.feature
