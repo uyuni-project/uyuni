@@ -613,12 +613,12 @@ if __name__ == '__main__':
         sys.exit(1)
 
     master_info = getMasterConnectionInfo(options, config)
-    if options.master_template or options.slave_template or options.both_template or options.master_file:
+    if options.master_template or options.slave_template or options.both_template or options.apply:
         master_cnx = connectTo(master_info)
         logging.debug("Master cnx = %s" % master_cnx)
 
     slave_info = getSlaveConnectionInfo(options, config)
-    if options.master_template or options.slave_template or options.both_template or options.slave_file:
+    if options.master_template or options.slave_template or options.both_template or options.apply:
         slave_cnx = connectTo(slave_info)
         logging.debug("Slave cnx = %s" % slave_cnx)
 
