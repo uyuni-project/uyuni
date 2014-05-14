@@ -279,10 +279,11 @@ def validateConnectInfo(info):
     "Something needs to connect - make sure we have fqdn/login/pwd, and ask for "
     " anything missing"
 
-    if not 'fqdn' in info or not info['fqdn'] or "." not in info['fqdn']:
+    if not 'fqdn' in info or not info['fqdn']:
         fail("Can't connect, I don't know what machine you want to go to!")
-
-    if not 'login' in info or len(info['login']) == 0:
+    elif "." not in info['fqdn']:
+        fail("Machine domain name is not fully qualified!")
+    elif not 'login' in info or len(info['login']) == 0:
         info['login'] = ask("Satellite-Admin login for " + info['fqdn'])
         if not 'login' in info:
             fail("Can't connect, I don't have a login to use!")
