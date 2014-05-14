@@ -138,30 +138,30 @@ def initializeConfig(opt, handle):
     slave_stanza = DEFAULT_CONFIG_FQDN_STANZA
     master_stanza = DEFAULT_CONFIG_FQDN_STANZA
 
-    if 'slave' in opt.__dict__:
+    if opt.slave:
         hdr = hdr.replace('SLAVE', opt.slave)
         slave_stanza = slave_stanza.replace('FQDN', opt.slave)
 
-    if 'slave_login' in opt.__dict__:
+    if opt.slave_login:
         slave_stanza = slave_stanza.replace('LOGIN', opt.slave_login)
 
-    if 'slave_password' in opt.__dict__:
+    if opt.slave_password:
         slave_stanza = slave_stanza.replace('PASSWORD', opt.slave_password)
 
-    if 'slave_file' in opt.__dict__:
+    if opt.slave_file:
         slave_stanza = slave_stanza.replace('SLAVE_FILE', opt.slave_file)
 
-    if 'master' in opt.__dict__:
+    if opt.master:
         hdr = hdr.replace('MASTER', opt.master)
         master_stanza = master_stanza.replace('FQDN', opt.master)
 
-    if 'master_login' in opt.__dict__:
+    if opt.master_login:
         master_stanza = master_stanza.replace('LOGIN', opt.master_login)
 
-    if 'master_password' in opt.__dict__:
+    if opt.master_password:
         master_stanza = master_stanza.replace('PASSWORD', opt.master_password)
 
-    if 'master_file' in opt.__dict__:
+    if opt.master_file:
         master_stanza = master_stanza.replace('MASTER_FILE', opt.master_file)
 
     logging.debug("Header is now " + hdr)
@@ -218,7 +218,7 @@ def getMasterConnectionInfo(opt, cfg):
     "Make sure we have login, password, and fqdn for MASTER, based on options and config-files"
     info = {}
 
-    if 'master' in opt.__dict__:
+    if opt.master:
         info['fqdn'] = opt.master
     elif cfg.has_option('Default', 'master.default'):
         info['fqdn'] = cfg.get('Default', 'master.default')
@@ -226,7 +226,7 @@ def getMasterConnectionInfo(opt, cfg):
         return info
 
     # Now that we have a master fqdn, we can get login info
-    if 'master_login' in opt.__dict__:
+    if opt.master_login:
         info['login'] = opt.master_login
     elif cfg.has_option(info['fqdn'], 'login'):
         info['login'] = cfg.has_option(info['fqdn'], 'login')
@@ -234,7 +234,7 @@ def getMasterConnectionInfo(opt, cfg):
         return info
 
     # And finally pwd
-    if 'master_password' in opt.__dict__:
+    if opt.master_password:
         info['password'] = opt.master_password
     elif cfg.has_option(info['fqdn'], 'password'):
         info['password'] = cfg.has_option(info['fqdn'], 'password')
@@ -248,7 +248,7 @@ def getSlaveConnectionInfo(opt, cfg):
     "Make sure we have login, password, and fqdn for SLAVE, based on options and config-files"
     info = {}
 
-    if 'slave' in opt.__dict__:
+    if opt.slave:
         info['fqdn'] = opt.slave
     elif cfg.has_option('Default', 'slave.default'):
         info['fqdn'] = cfg.get('Default', 'slave.default')
@@ -256,7 +256,7 @@ def getSlaveConnectionInfo(opt, cfg):
         return info
 
     # Now that we have a slave fqdn, we can get login info
-    if 'slave_login' in opt.__dict__:
+    if opt.slave_login:
         info['login'] = opt.slave_login
     elif cfg.has_option(info['fqdn'], 'login'):
         info['login'] = cfg.has_option(info['fqdn'], 'login')
@@ -264,7 +264,7 @@ def getSlaveConnectionInfo(opt, cfg):
         return info
 
     # And finally pwd
-    if 'slave_password' in opt.__dict__:
+    if opt.slave_password:
         info['password'] = opt.slave_password
     elif cfg.has_option(info['fqdn'], 'password'):
         info['password'] = cfg.has_option(info['fqdn'], 'password')
