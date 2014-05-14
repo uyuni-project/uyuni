@@ -609,7 +609,7 @@ if __name__ == '__main__':
             (not options.configured_hosts and \
                  not options.master and \
                  not options.slave):
-        logging.info("You should pass --default-ok option or master and/or slave host!")
+        logging.info("You should pass \"--configured-hosts\" option or specify master and/or slave hosts!")
         sys.exit(1)
 
     master_info = getMasterConnectionInfo(options, config)
