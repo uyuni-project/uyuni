@@ -182,7 +182,7 @@ public class KickstartHandler extends BaseHandler {
      * url/nfs/cdrom/harddrive commands in the kickstart file itself.
      * @param kickstartFileContents Contents of a kickstart file.
      * @param updateType Set the automatic ks tree update strategy
-     * for the profile. Valid choices are "red_hat", "none", "all".
+     * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Import a kickstart profile into RHN.
@@ -201,9 +201,8 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
      * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
-     * itself to use the newest tree available? Possible values are: none (default),
-     * red_hat (only use Kickstart Trees synced from Red Hat), or all (includes
-     * custom Kickstart Trees).")
+     * itself to use the newest tree available? Possible values are: none (default)
+     * or all (includes custom Kickstart Trees).")
      * @xmlrpc.returntype #return_int_success()
      */
     public int importFile(String sessionKey, String profileLabel,
@@ -250,7 +249,7 @@ public class KickstartHandler extends BaseHandler {
      * construct the default download URL for the new kickstart profile.
      * @param rootPassword Root password.
      * @param updateType Set the automatic ks tree update strategy
-     * for the profile. Valid choices are "red_hat", "none", "all".
+     * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Import a kickstart profile into RHN.
@@ -266,9 +265,8 @@ public class KickstartHandler extends BaseHandler {
      * the new kickstart profile.")
      * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
      * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
-     * itself to use the newest tree available? Possible values are: none (default),
-     * red_hat (only use Kickstart Trees synced from Red Hat), or all (includes
-     * custom Kickstart Trees).")
+     * itself to use the newest tree available? Possible values are: none (default)
+     * or all (includes custom Kickstart Trees).")
      * @xmlrpc.returntype #return_int_success()
      */
     public int createProfile(String sessionKey, String profileLabel,
@@ -383,7 +381,7 @@ public class KickstartHandler extends BaseHandler {
      * default URL.
      * @param rootPassword Root password.
      * @param updateType Set the automatic ks tree update strategy
-     * for the profile. Valid choices are "red_hat", "none", "all".
+     * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Import a kickstart profile into RHN.
@@ -398,9 +396,8 @@ public class KickstartHandler extends BaseHandler {
      * 'default' to use the kickstart tree's default URL.")
      * @xmlrpc.param #param_desc("string", "rootPassword", "Root password.")
      * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
-     * itself to use the newest tree available? Possible values are: none (default),
-     * red_hat (only use Kickstart Trees synced from Red Hat), or all (includes
-     * custom Kickstart Trees).")
+     * itself to use the newest tree available? Possible values are: none (default)
+     * or all (includes custom Kickstart Trees).")
      * @xmlrpc.returntype #return_int_success()
      */
     public int createProfileWithCustomUrl(String sessionKey,
@@ -696,7 +693,7 @@ public class KickstartHandler extends BaseHandler {
      * @param kickstartableTreeLabel Label of a kickstartable tree.
      * @param kickstartFileContents Contents of a kickstart file.
      * @param updateType Set the automatic ks tree update strategy
-     * for the profile. Valid choices are "red_hat", "none", "all".
+     * for the profile. Valid choices are "none" or "all".
      * @return 1 if successful, exception otherwise.
      *
      * @xmlrpc.doc Import a raw kickstart file into satellite.
@@ -710,9 +707,8 @@ public class KickstartHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "kickstartFileContents", "Contents of
      * the kickstart file to import.")
      * @xmlrpc.param #param_desc("string", "updateType", "Should the profile update
-     * itself to use the newest tree available? Possible values are: none (default),
-     * red_hat (only use Kickstart Trees synced from Red Hat), or all (includes
-     * custom Kickstart Trees).")
+     * itself to use the newest tree available? Possible values are: none (default)
+     * or all (includes custom Kickstart Trees).")
      * @xmlrpc.returntype #return_int_success()
      */
     public int importRawFile(String sessionKey, String profileLabel,
@@ -756,15 +752,6 @@ public class KickstartHandler extends BaseHandler {
                 throw new InvalidUpdateTypeAndNoBaseTreeException(tree.getLabel());
             }
             return KickstartTreeUpdateType.ALL;
-        }
-        else if (typeIn.equals(KickstartTreeUpdateType.RED_HAT.getType())) {
-            if (tree.getOrgId() != null) {
-                throw new InvalidUpdateTypeAndKickstartTreeException(tree.getLabel());
-            }
-            if (tree.getChannel() == null) {
-                throw new InvalidUpdateTypeAndNoBaseTreeException(tree.getLabel());
-            }
-            return KickstartTreeUpdateType.RED_HAT;
         }
         else if (typeIn.equals(KickstartTreeUpdateType.NONE.getType())) {
             return KickstartTreeUpdateType.NONE;
