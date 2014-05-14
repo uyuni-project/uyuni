@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.redhat.rhn.domain.rhnpackage.Eula" table="suseEulas">
+        <id name="id" type="long" column="id">
+            <generator class="sequence">
+                <param name="sequence">suse_eulas_id_seq</param>
+            </generator>
+        </id>
+
+        <property name="text" column="text" type="binary"/>
+        <property name="checksum" column="checksum" type="string"/>
+    </class>
+
+</hibernate-mapping>
