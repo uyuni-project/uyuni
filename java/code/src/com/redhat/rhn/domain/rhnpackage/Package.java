@@ -61,6 +61,7 @@ public class Package extends BaseDomainHelper {
     private Set<UnpublishedErrata> unpublishedErrata = new HashSet<UnpublishedErrata>();
     private Set<Channel> channels = new HashSet<Channel>();
     private Set<PackageFile> packageFiles = new HashSet<PackageFile>();
+    private Set<Eula> eulas = new HashSet<Eula>();
 
     private Org org;
     private PackageName packageName;
@@ -595,6 +596,22 @@ public class Package extends BaseDomainHelper {
      */
     public void setPackageFiles(Set<PackageFile> packageFilesIn) {
         this.packageFiles = packageFilesIn;
+    }
+
+    /**
+     * Gets the eulas.
+     * @return the eulas
+     */
+    public Set<Eula> getEulas() {
+        return eulas;
+    }
+
+    /**
+     * Sets the eulas.
+     * @param eulasIn the new eulas
+     */
+    public void setEulas(Set<Eula> eulasIn) {
+        eulas = eulasIn;
     }
 
     /**

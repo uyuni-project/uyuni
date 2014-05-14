@@ -636,7 +636,7 @@ class OracleBackend(Backend):
             pk          = ['package_id', 'prodfile_id'],
             attribute   = 'product_files',
         ),
-        Table('suseEulas',
+        Table('suseEula',
             fields      = {
                 'id'       : DBint(),
                 'text'     : DBblob(),

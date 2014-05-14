@@ -617,16 +617,6 @@ where snc.errata_id = :errata_id
    </query>
 </mode>
 
-<mode name="repomdgenerator_package_eulas">
-   <query params="package_id">
-  SELECT se.text
-    FROM suseEulas se
-    JOIN susePackageEula spe ON se.id = spe.eula_id
-    WHERE
-       spe.package_id = :package_id
-   </query>
-</mode>
-
 <mode name="repomdgenerator_channel_cloned_from">
     <query params="channel_id">
   SELECT original_id FROM rhnChannelCloned WHERE id = :channel_id

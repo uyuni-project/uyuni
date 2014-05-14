@@ -65,6 +65,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 column="errata_id"/>
         </set>
 
+        <set name="eulas" lazy="true" table="susePackageEula">
+            <key column="package_id" />
+            <many-to-many class="com.redhat.rhn.domain.rhnpackage.Eula"
+                column="eula_id"
+            />
+        </set>
 
 
        <set name="packageFiles" lazy="true" table="rhnPackageFile"
