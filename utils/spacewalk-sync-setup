@@ -602,6 +602,13 @@ if __name__ == '__main__':
     config = setupConfig(options)
     logging.debug("CONFIG = %s" % config)
 
+    if (options.apply or options.dry_run) and \
+            (not options.default_ok and \
+                 not options.master and \
+                 not options.slave):
+        logging.info("You should pass --default-ok option or master and/or slave host!")
+        sys.exit(1)
+
     master_info = getMasterConnectionInfo(options, config)
     if options.master_template or options.slave_template or options.both_template or options.master_file:
         master_cnx = connectTo(master_info)
