@@ -61,9 +61,6 @@ public class ProductSyncManager {
     /** Product sync command switch add a product. */
     public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
 
-    /** FIXME: Product sync command switch to sync a product. */
-    public static final String SYNC_PRODUCT_SWITCH = "";
-
     /** String returned by the sync command if there is any invalid mirror credential. */
     private static final String INVALID_MIRROR_CREDENTIAL_ERROR = "HTTP error code 401";
 
@@ -418,17 +415,6 @@ public class ProductSyncManager {
      */
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
-    }
-
-    /**
-     * Schedule synchronization for a given list of products.
-     * @param productIdents list of products to synchronize
-     * @throws ProductSyncManagerCommandException if the product sync failed
-     */
-    public void syncProducts(List<String> productIdents)
-            throws ProductSyncManagerCommandException {
-        // FIXME: This currently just calls 'mgr-ncc-sync' without parameters!
-        runProductSyncCommand(SYNC_PRODUCT_SWITCH);
     }
 
     /**
