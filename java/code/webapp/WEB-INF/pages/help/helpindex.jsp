@@ -15,14 +15,6 @@
     <ul id="help-url-list">
 
         <li>
-            <a style="font-size:12pt" href=/rhn/help/dispatcher/quick_start>
-                <bean:message key="help.jsp.quickstart.title"/>
-            </a>
-            <br />
-            <bean:message key="help.jsp.quickstart.detailed"/>
-        </li>
-
-        <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/proxy_guide>
                 <bean:message key="help.jsp.proxy.title"/>
             </a>
