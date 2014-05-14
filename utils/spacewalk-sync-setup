@@ -101,7 +101,7 @@ def setupOptions():
     parser.add_option_group(setupGrp)
 
     actionGrp = OptionGroup(parser, "Action", "Should we actually affect the specified spacewalk instances?")
-    actionGrp.add_option('--dry-run', action='store_true', dest='dry_run', default=True,
+    actionGrp.add_option('--dry-run', action='store_true', dest='dry_run', default=False,
         help="Don't actually change anything, but tell us what you would have done")
     actionGrp.add_option('--apply', action='store_true', dest='apply', default=False,
         help="make the changes specified by the setup files to the specified spacewalk instances")
