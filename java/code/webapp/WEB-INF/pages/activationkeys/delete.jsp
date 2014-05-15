@@ -6,7 +6,7 @@
     <body>
         <rhn:toolbar base="h1" icon="header-activation-key"
                      imgAlt="activation-keys.common.alt"
-                     helpUrl="/rhn/help/user/en-US/s1-sm-systems.jsp#s2-sm-systems-activation-keys"
+                     helpUrl="/rhn/help/user/en-US/s2-sm-systems-activation-keys.jsp"
                      >
             <bean:message key ="activation-key.jsp.delete.title"/>
         </rhn:toolbar>

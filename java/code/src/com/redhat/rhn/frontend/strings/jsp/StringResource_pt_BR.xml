@@ -10953,11 +10953,11 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <target>Nenhuma chave pública ou certificados ssl definidos.</target>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
+        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target>Você pode referenciar estas chaves e/ou certificados nos seus perfis de kickstart a fim de instalá-los nos sistemas durante um kickstart.  Um sistema precisará das chaves corretas para instalar os pacotes assinados e do certificado correto para poder ter o kickstart por um @@PRODUCT_NAME@@ Proxy Server ou @@PRODUCT_NAME@@ Server.  Para mais informações, consulte o &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</target>
+        <target>Você pode referenciar estas chaves e/ou certificados nos seus perfis de kickstart a fim de instalá-los nos sistemas durante um kickstart.  Um sistema precisará das chaves corretas para instalar os pacotes assinados e do certificado correto para poder ter o kickstart por um @@PRODUCT_NAME@@ Proxy Server ou @@PRODUCT_NAME@@ Server.  Para mais informações, consulte o &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -11114,11 +11114,11 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <target>Preservação de Arquivos</target>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
+        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target>Listas de preservação de arquivos são listas de arquivos que serão restauradas em um sistema durante um kickstart específico. Você pode fazer referência a uma lista de preservação de arquivos em um perfil de kickstart.  Para maiores informações, consulte o &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;. As seguintes listas de preservação de arquivos foram criadas para serem usadas pela sua organização: </target>
+        <target>Listas de preservação de arquivos são listas de arquivos que serão restauradas em um sistema durante um kickstart específico. Você pode fazer referência a uma lista de preservação de arquivos em um perfil de kickstart.  Para maiores informações, consulte o &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;. As seguintes listas de preservação de arquivos foram criadas para serem usadas pela sua organização: </target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -11240,11 +11240,11 @@ Você teria então que usar o $nome dentro do perfil para substituir no valor.</
         <target>Criar Lista de Preservação de Arquivos de Kickstart</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>Quaisquer arquivos ou diretórios listados aqui serão preservados após o kickstart. Liste arquivos ou diretórios, um por linha.&lt;br/&gt;Cada lista é limitada a um tamanho máximo de &lt;strong&gt;1 MB&lt;/strong&gt;.  Para mais informações, consulte o &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  </target>
+        <target>Quaisquer arquivos ou diretórios listados aqui serão preservados após o kickstart. Liste arquivos ou diretórios, um por linha.&lt;br/&gt;Cada lista é limitada a um tamanho máximo de &lt;strong&gt;1 MB&lt;/strong&gt;.  Para mais informações, consulte o &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  </target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>

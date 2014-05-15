@@ -11,7 +11,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-channel"
- helpUrl="/rhn/help/user/en-US/s1-sm-your-rhn.jsp#s2-sm-systems-entitlements"
+ helpUrl="/rhn/help/user/en-US/s2-sm-systems-entitlements.jsp"
  imgAlt="channels.jsp.alt">
   <bean:message key="entitlements.jsp.header"/>
 </rhn:toolbar>

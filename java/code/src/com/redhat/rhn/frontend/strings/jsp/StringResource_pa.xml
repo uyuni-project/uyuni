@@ -9963,11 +9963,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>ਕੋਈ ਪਬਲਿਕ ਕੁੰਜੀਆਂ ਜਾਂ SSL ਸਰਫੀਫਿਕੇਟ ਨਹੀਂ ਹੈ।</target>
       </trans-unit>
       <trans-unit id="keys.jsp.summary">
-        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
+        <source>You can refer to these keys and/or certificates in your kickstart profiles in order to install those keys/certificates on systems during a kickstart.  A system will need the correct keys to install signed packages, and correct certificate to be kickstarted by an @@PRODUCT_NAME@@ Proxy Server or @@PRODUCT_NAME@@ Server.  For more information, see the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysList.do</context>
         </context-group>
-        <target>ਤੁਸੀਂ ਆਪਣੇ ਕਿੱਕਸਟਾਰਟ ਪਰੋਫਾਈਲ ਵਿੱਚ ਇਹਨਾਂ ਕੁੰਜੀਆਂ ਅਤੇ/ਜਾਂ ਸਰਟੀਫਿਕੇਟਾਂ ਨੂੰ ਵੇਖ ਸਕਦੇ ਹੋ ਤਾਂ ਕਿ ਇਹਨਾਂ ਕੁੰਜੀਆਂ/ਸਰਟੀਫਿਕੇਟਾਂ ਨੂੰ ਸਿਸਟਮਾਂ ਨੂੰ ਕਿੱਕਸਟਾਰਟ ਕਰਨ ਦੌਰਾਨ ਇੰਸਟਾਲ ਕੀਤਾ ਜਾ ਸਕੇ। ਇੱਕ ਸਿਸਟਮ ਨੂੰ ਦਸਤਖਤੀ ਪੈਕੇਜ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਠੀਕ ਕੁੰਜੀਆਂ ਅਤੇ ਇੱਕ @@PRODUCT_NAME@@ ਪਰਾਕਸੀ ਸਰਵਰ ਜਾਂ @@PRODUCT_NAME@@ ਸਰਵਰ ਰਾਹੀਂ ਕਿੱਕਸਟਾਰਟ ਹੋਣ ਲਈ ਠੀਕ ਸਰਟੀਫਿਕੇਟ ਲਈ ਲੋੜ ਰਹਿੰਦੀ ਹੈ। ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਵੇਖੋ।</target>
+        <target>ਤੁਸੀਂ ਆਪਣੇ ਕਿੱਕਸਟਾਰਟ ਪਰੋਫਾਈਲ ਵਿੱਚ ਇਹਨਾਂ ਕੁੰਜੀਆਂ ਅਤੇ/ਜਾਂ ਸਰਟੀਫਿਕੇਟਾਂ ਨੂੰ ਵੇਖ ਸਕਦੇ ਹੋ ਤਾਂ ਕਿ ਇਹਨਾਂ ਕੁੰਜੀਆਂ/ਸਰਟੀਫਿਕੇਟਾਂ ਨੂੰ ਸਿਸਟਮਾਂ ਨੂੰ ਕਿੱਕਸਟਾਰਟ ਕਰਨ ਦੌਰਾਨ ਇੰਸਟਾਲ ਕੀਤਾ ਜਾ ਸਕੇ। ਇੱਕ ਸਿਸਟਮ ਨੂੰ ਦਸਤਖਤੀ ਪੈਕੇਜ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਠੀਕ ਕੁੰਜੀਆਂ ਅਤੇ ਇੱਕ @@PRODUCT_NAME@@ ਪਰਾਕਸੀ ਸਰਵਰ ਜਾਂ @@PRODUCT_NAME@@ ਸਰਵਰ ਰਾਹੀਂ ਕਿੱਕਸਟਾਰਟ ਹੋਣ ਲਈ ਠੀਕ ਸਰਟੀਫਿਕੇਟ ਲਈ ਲੋੜ ਰਹਿੰਦੀ ਹੈ। ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-keys" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਵੇਖੋ।</target>
       </trans-unit>
       <trans-unit id="keys.jsp.toolbar">
         <source>GPG Public Keys and SSL Certificates</source>
@@ -10117,11 +10117,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>ਫਾਇਲ ਸੁਰੱਖਿਆ</target>
       </trans-unit>
       <trans-unit id="preservation_list.jsp.summary">
-        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
+        <source>File preservation lists are lists of files that will be restored to a system during a particular kickstart.  You can reference a file preservation list in a kickstart profile.  For more information refer to the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.  The following file preservation lists have been created for use by your organization:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationList.do</context>
         </context-group>
-        <target>ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਉਹਨਾਂ ਫਾਇਲਾਂ ਦੀ ਸੂਚੀ ਹੈ, ਜਿਸ ਨੂੰ ਇੱਕ ਸਿਸਟਮ ਉੱਤੇ ਇੱਕ ਖਾਸ ਕਿੱਕਸਟਾਰਟ ਕਰਨ ਦੌਰਾਨ ਮੁੜ-ਪ੍ਰਾਪਤ ਕੀਤਾ ਜਾਵੇਗਾ। ਤੁਸੀਂ ਇੱਕ ਕਿੱਕਸਟਾਰਟ ਪਰੋਫਾਈਲ ਵਿੱਚ ਇੱਕ ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਨੂੰ ਵੇਖ ਸਕਦੇ ਹੋ। ਹੋਰ ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਨੂੰ ਵੇਖੋ। ਤੁਹਾਡੇ ਸੰਗਠਨ ਵਲੋਂ ਹੇਠ ਦਿੱਤੀਆਂ ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਬਣਾਈਆਂ ਗਈਆਂ ਹਨ।</target>
+        <target>ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਉਹਨਾਂ ਫਾਇਲਾਂ ਦੀ ਸੂਚੀ ਹੈ, ਜਿਸ ਨੂੰ ਇੱਕ ਸਿਸਟਮ ਉੱਤੇ ਇੱਕ ਖਾਸ ਕਿੱਕਸਟਾਰਟ ਕਰਨ ਦੌਰਾਨ ਮੁੜ-ਪ੍ਰਾਪਤ ਕੀਤਾ ਜਾਵੇਗਾ। ਤੁਸੀਂ ਇੱਕ ਕਿੱਕਸਟਾਰਟ ਪਰੋਫਾਈਲ ਵਿੱਚ ਇੱਕ ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਨੂੰ ਵੇਖ ਸਕਦੇ ਹੋ। ਹੋਰ ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਨੂੰ ਵੇਖੋ। ਤੁਹਾਡੇ ਸੰਗਠਨ ਵਲੋਂ ਹੇਠ ਦਿੱਤੀਆਂ ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਬਣਾਈਆਂ ਗਈਆਂ ਹਨ।</target>
       </trans-unit>
       <trans-unit id="preservationlistdeleteconfirm.jsp.summary">
         <source>Are you sure you want to delete the selected File List(s)?  &lt;strong&gt;WARNING: Deleting the selected File List(s) will delete all its associated files.&lt;/strong&gt;</source>
@@ -10243,11 +10243,11 @@ Please note that some manual configuration of these scripts may still be require
         <target>ਕਿੱਕਸਟਾਰਟ ਫਾਇਲ ਸੁਰੱਖਿਆ ਸੂਚੀ ਬਣਾਓ</target>
       </trans-unit>
       <trans-unit id="preservation_edit.jsp.summary">
-        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
+        <source>Any files or directories listed here will be preserved following the kickstart. List files or directories one per line.&lt;br/&gt;Each list is limited to a total size of &lt;strong&gt;1 MB&lt;/strong&gt;.  For more information see the &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN Reference Guide&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListEdit.do</context>
         </context-group>
-        <target>ਇੱਥੇ ਦਿੱਤੀਆਂ ਕੋਈ ਵੀ ਫਾਇਲਾਂ ਜਾਂ ਡਾਇਰੈਕਟਰੀਆਂ ਨੂੰ ਹੇਠ ਦਿਤੇ ਕਿੱਕਸਟਾਰਟ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਰੱਖਿਆ ਜਾਵੇਗਾ। ਪ੍ਰਤੀ ਸਤਰ ਵਿੱਚ ਫਾਇਲਾਂ ਜਾਂ ਡਾਇਰੈਕਟਰੀਆਂ ਦੀ ਸੂਚੀ ਹੈ। &lt;br/&gt;ਹਰੇਕ ਸੂਚੀ ਦਾ ਕੁੱਲ ਅਕਾਰ &lt;strong&gt;1 ਮੈਬਾ&lt;/strong&gt; ਤੱਕ ਸੀਮਤ ਹੈ। ਹੋਰ ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s1-sm-systems.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਵੇਖੋ।</target>
+        <target>ਇੱਥੇ ਦਿੱਤੀਆਂ ਕੋਈ ਵੀ ਫਾਇਲਾਂ ਜਾਂ ਡਾਇਰੈਕਟਰੀਆਂ ਨੂੰ ਹੇਠ ਦਿਤੇ ਕਿੱਕਸਟਾਰਟ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਰੱਖਿਆ ਜਾਵੇਗਾ। ਪ੍ਰਤੀ ਸਤਰ ਵਿੱਚ ਫਾਇਲਾਂ ਜਾਂ ਡਾਇਰੈਕਟਰੀਆਂ ਦੀ ਸੂਚੀ ਹੈ। &lt;br/&gt;ਹਰੇਕ ਸੂਚੀ ਦਾ ਕੁੱਲ ਅਕਾਰ &lt;strong&gt;1 ਮੈਬਾ&lt;/strong&gt; ਤੱਕ ਸੀਮਤ ਹੈ। ਹੋਰ ਵਧੇਰੇ ਜਾਣਕਾਰੀ ਲਈ &lt;a href="/rhn/help/user/en-US/s2-sm-system-kickstart.jsp#s3-sm-system-kick-preserve" target="_blank" &gt;RHN ਹਵਾਲਾ ਗਾਈਡ&lt;/a&gt; ਵੇਖੋ।</target>
       </trans-unit>
       <trans-unit id="softwareedit.jsp.summary1">
         <source>You can modify the software this kickstart profile will deploy below.</source>

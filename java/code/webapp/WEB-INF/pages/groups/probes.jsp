@@ -14,7 +14,7 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/groups/header.jspf" %>
 
-<rhn:toolbar base="h2" icon="header-system" helpUrl="/rhn/help/user/en-US/s1-sm-systems.jsp#s4-sm-system-details-probes">
+<rhn:toolbar base="h2" icon="header-system" helpUrl="/rhn/help/user/en-US/s2-sm-system-list.jsp#s4-sm-system-details-probes">
   <bean:message key="probes.index.jsp.toolbar"/>
 </rhn:toolbar>
 

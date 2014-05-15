@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
- helpUrl="/rhn/help/user/en-US/s1-sm-errata.jsp#s2-sm-all-errata">
+ helpUrl="/rhn/help/user/en-US/s2-sm-all-errata.jsp">
   <bean:message key="erratalist.jsp.allerrata"/>
 </rhn:toolbar>
 

@@ -8,7 +8,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-configuration"
- helpUrl="/rhn/help/user/en-US/s1-sm-configuration.jsp#configuration-files-local">
+ helpUrl="/rhn/help/user/en-US/configuration-files.jsp#configuration-files-local">
   <bean:message key="localfilelist.jsp.toolbar"/>
 </rhn:toolbar>
 
