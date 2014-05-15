@@ -260,9 +260,6 @@
   </rhn-tab>
   <rhn-tab name="Help" url="/rhn/help/index.do" active-image="tab-help-selected.gif" inactive-image="tab-help.gif">
     <rhn-tab-directory>/help</rhn-tab-directory>
-    <rhn-tab name="Quick Start" url="/rhn/help/dispatcher/quick_start">
-        <rhn-tab-directory>/rhn/help/quick/</rhn-tab-directory>
-    </rhn-tab>
     <rhn-tab name="Proxy Quick Start" url="/rhn/help/dispatcher/proxy_guide">
         <rhn-tab-directory>/rhn/help/proxy-quick/</rhn-tab-directory>
     </rhn-tab>

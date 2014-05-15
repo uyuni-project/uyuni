@@ -9,9 +9,6 @@
     <rhn-tab name="About" url="/help/about.pxt" />
     <rhn-tab name="Help Desk" url="/rhn/help/index.do" />
     <rhn-tab name="Lookup Login/Password" url="/rhn/help/ForgotCredentials.do" />
-    <rhn-tab name="Quick Start" url="/rhn/help/dispatcher/quick_start">
-      <rhn-tab-directory>/rhn/help/quick</rhn-tab-directory>
-    </rhn-tab>
     <rhn-tab name="Proxy Quick Start" url="/rhn/help/dispatcher/proxy_guide">
       <rhn-tab-directory>/rhn/help/proxy-quick</rhn-tab-directory>
     </rhn-tab>
