@@ -414,20 +414,38 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[select name from rhnChannel where name = :name]]>
     </sql-query>
 
-    <sql-query name="Channel.kickstartableChannels">
-        <![CDATA[SELECT {c.*}
-				  FROM rhnChannel c LEFT OUTER JOIN
-				  	   rhnChannelCloned c_1_ ON c.id = c_1_.id,
-				      rhnAvailableChannels ACh,
-					  rhnChannelArch CA
+    <sql-query name="Channel.autoinstallableChannels">
+        <![CDATA[
+            SELECT {c.*}
+              FROM rhnChannel c LEFT OUTER JOIN
+                   rhnChannelCloned c_1_ ON c.id = c_1_.id,
+                   rhnAvailableChannels ACh,
+                   rhnChannelArch CA
+             WHERE CA.id = ACh.channel_arch_id
+               AND ACh.org_id = :org_id
+               AND ACH.channel_depth = 1
+               AND c.id = ACh.channel_id
+          ORDER BY rhn_channel.channel_priority(ACh.parent_or_self_id),
+                   UPPER(ACh.channel_name)
+        ]]>
+        <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
+    </sql-query>
 
-  				  WHERE CA.id = ACh.channel_arch_id
-				   AND ACh.org_id = :org_id
-				   AND ACH.channel_depth = 1
-				   AND c.id = ACh.channel_id
-				ORDER BY rhn_channel.channel_priority(ACh.parent_or_self_id),
-				 UPPER(ACh.channel_name)
-               ]]>
+    <sql-query name="Channel.kickstartableChannels">
+        <![CDATA[
+            SELECT DISTINCT {c.*}
+              FROM rhnChannel c,
+                   rhnKickstartableTree kt,
+                   rhnKSInstallType ksit,
+                   rhnAvailableChannels ach
+             WHERE c.id = kt.channel_id
+               AND c.id = ach.channel_id
+               AND kt.org_id = :org_id
+               AND kt.install_type = ksit.id
+               AND (ksit.label LIKE "rhel" OR ksit.label LIKE "fedora")
+          ORDER BY rhn_channel.channel_priority(ach.parent_or_self_id),
+                   UPPER(ach.channel_name)
+        ]]>
         <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
     </sql-query>
 

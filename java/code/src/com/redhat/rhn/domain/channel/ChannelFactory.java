@@ -689,17 +689,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of Channel objects
      */
     public static List<Channel> getKickstartableChannels(Org org) {
-        List<Channel> ret = new ArrayList<Channel>();
-        List<Channel> channels = getAutoinstallableChannels(org);
-        // Only return channels containing the anaconda package
-        for (Channel c : channels) {
-            List packages = ChannelManager.listLatestPackagesEqual(c.getId(),
-                    ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME);
-            if (packages.size() > 0) {
-                ret.add(c);
-            }
-        }
-        return ret;
+        Map params = new HashMap();
+        params.put("org_id", org.getId());
+        return singleton.listObjectsByNamedQuery(
+                "Channel.kickstartableChannels", params, false);
     }
 
     /**
@@ -712,7 +705,7 @@ public class ChannelFactory extends HibernateFactory {
         Map params = new HashMap();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
-                "Channel.kickstartableChannels", params, false);
+                "Channel.autoinstallableChannels", params, false);
     }
 
     /**
