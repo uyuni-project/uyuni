@@ -90,8 +90,7 @@ $(function() {
     $('button.product-retry-btn').prop('disabled', true);
 
     // Trigger product sync server side
-    var add = !buttonClicked.hasClass('product-retry-btn');
-    ProductSyncAction.syncProducts(idents, add, makeAjaxHandler(function() {
+    ProductSyncAction.syncProducts(idents, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true).trigger("change");
