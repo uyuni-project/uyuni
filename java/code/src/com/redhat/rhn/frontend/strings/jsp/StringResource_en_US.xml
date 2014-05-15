@@ -8609,7 +8609,7 @@ Please note that some manual configuration of these scripts may still be require
           <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
         </trans-unit>
         <trans-unit id="bootstrapsystemlist.jsp.header">
-          <source>Bare Metal systems</source>
+          <source>Bare Metal Systems</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
