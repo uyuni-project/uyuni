@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -27,6 +28,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.channel.ChannelManager;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -687,6 +689,26 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of Channel objects
      */
     public static List<Channel> getKickstartableChannels(Org org) {
+        List<Channel> ret = new ArrayList<Channel>();
+        List<Channel> channels = getAutoinstallableChannels(org);
+        // Only return channels containing the anaconda package
+        for (Channel c : channels) {
+            List packages = ChannelManager.listLatestPackagesEqual(c.getId(),
+                    ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME);
+            if (packages.size() > 0) {
+                ret.add(c);
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * Get the List of Channel's that are autoinstallable to the
+     * Org passed in.
+     * @param org who you want to get autoinstallable channels
+     * @return List of Channel objects
+     */
+    public static List<Channel> getAutoinstallableChannels(Org org) {
         Map params = new HashMap();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
