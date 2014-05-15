@@ -145,8 +145,8 @@ public class IconTag extends TagSupport {
         icons.put("repo-schedule-sync", "fa fa-calendar");
         icons.put("setup-wizard-creds-edit", "fa fa-pencil");
         icons.put("setup-wizard-creds-failed", "fa fa-times-circle-o text-danger");
-        icons.put("setup-wizard-creds-make-primary", "fa fa-star-o text-warning");
-        icons.put("setup-wizard-creds-primary", "fa fa-star text-warning");
+        icons.put("setup-wizard-creds-make-primary", "fa fa-star-o text-starred");
+        icons.put("setup-wizard-creds-primary", "fa fa-star text-starred");
         icons.put("setup-wizard-creds-subscriptions", "fa fa-th-list");
         icons.put("setup-wizard-creds-verified", "fa fa-check-square text-success");
         icons.put("sort-down", "fa fa-arrow-circle-down");
