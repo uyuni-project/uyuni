@@ -31,6 +31,7 @@ public class BootstrapSystemListSetupAction extends BaseSystemsAction {
     /**
      * {@inheritDoc}
      */
+    @Override
     protected DataResult<SystemOverview> getDataResult(User user, PageControl pc,
         ActionForm formIn) {
         return SystemManager.bootstrapList(user, null);
