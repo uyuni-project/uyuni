@@ -27,6 +27,23 @@ Feature: Test Bare-metal discovery
           And I should not see a "[Provisioning]" text
           And I should not see a "[Management]" text
 
+    Scenario: see the client in Bare metal specific system list
+        Given I am on the Systems page
+          And I follow "Systems" in the left menu
+          And I follow "Bare Metal Systems" in the left menu
+         Then I should see a "Bare Metal Systems" text
+          And I should see a "Detected on" text
+          And I should see a "Number of CPUs" text
+          And I should see a "1" text
+          And I should see a "Clock frquency" text
+          And I should see a "1 GHz" text
+          And I should see a "RAM" text
+          And I should see a "989 MB" text
+          And I should see a "Number of disks" text
+          And I should see a "1" text
+          And I should see a "MAC Address(es)" text
+          And I should see a "de:ad:be:ff:19:44" text
+
     Scenario: check tab links "Details"
         Given I am on the Systems page
           And I follow "Systems" in the left menu
