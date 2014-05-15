@@ -7,7 +7,7 @@
 <html>
 <body>
 <rhn:toolbar base="h1" icon="header-taskomatic"
-	           helpUrl="/rhn/help/user/en-US/ch-rhn-workgroup.jsp#s2-sm-categories-pages">
+	           helpUrl="/rhn/help/user/en-US/s2-sm-categories-pages.jsp">
     <bean:message key="task.status.title"/>
   </rhn:toolbar>
 

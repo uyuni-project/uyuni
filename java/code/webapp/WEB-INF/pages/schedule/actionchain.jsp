@@ -13,7 +13,7 @@
 </head>
 <body>
     <rhn:toolbar base="h1" icon="header-chain"
-        helpUrl="/rhn/help/user/en-US/s1-sm-actions.jsp#s2-sm-action-chain">
+        helpUrl="/rhn/help/user/en-US/s2-sm-action-chain.jsp">
         <bean:message key="actionchain.jsp.title"/>
         <a id="label-link" href="#">
             <span id="label-link-text"><c:out value="${actionChain.label}"/></span>

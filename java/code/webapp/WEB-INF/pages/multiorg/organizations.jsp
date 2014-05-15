@@ -10,7 +10,7 @@
 <c:set var="pageList" value="${requestScope.pageList}" />
 
 <rhn:toolbar base="h1" icon="header-organisation"
-  helpUrl="/rhn/help/user/en-US/s1-sm-your-rhn.jsp#yourrhn-orgtrusts">
+  helpUrl="/rhn/help/user/en-US/yourrhn-orgtrusts.jsp">
   <bean:message key="organizations.jsp.toolbar"/>
 </rhn:toolbar>
 

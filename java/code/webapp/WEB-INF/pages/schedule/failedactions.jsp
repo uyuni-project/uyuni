@@ -9,7 +9,7 @@
 <body>
 <rhn:toolbar base="h1" icon="header-action"
   			   imgAlt="actions.jsp.imgAlt"
-               helpUrl="/rhn/help/user/en-US/s1-sm-actions.jsp#s2-sm-action-fail">
+               helpUrl="/rhn/help/user/en-US/s2-sm-action-fail.jsp">
     <bean:message key="failedactions.jsp.failed_actions"/>
   </rhn:toolbar>
     <p>

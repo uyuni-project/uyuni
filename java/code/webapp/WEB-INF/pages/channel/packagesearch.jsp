@@ -10,7 +10,7 @@
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-search"
-                     helpUrl="/rhn/help/user/en-US/s1-sm-channels-packages.jsp#s2-sm-software-search">
+                     helpUrl="/rhn/help/user/en-US/s2-sm-software-search.jsp">
             <bean:message key="packagesearch.jsp.toolbar"/>
         </rhn:toolbar>
         <p><bean:message key="packagesearch.jsp.pagesummary"/></p>

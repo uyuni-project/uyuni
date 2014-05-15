@@ -9,7 +9,7 @@
 <rhn:toolbar base="h1" icon="header-system-groups"
   	           creationUrl="ProbeSuiteSystemsEdit.do?suite_id=${probeSuite.id}"
                creationType="probesuitesystem"
-	           helpUrl="/rhn/help/user/en-US/s1-sm-monitor.jsp#s2-sm-monitor-psuites">
+	           helpUrl="/rhn/help/user/en-US/s2-sm-monitor-psuites.jsp">
     <bean:message key="probesuitesystems.jsp.header1" arg0="${probeSuite.suiteName}" />
   </rhn:toolbar>
 

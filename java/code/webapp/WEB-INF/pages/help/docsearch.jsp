@@ -11,7 +11,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-search" imgAlt="docsearch.jsp.imgAlt"
-               helpUrl="/rhn/help/user/en-US/s1-sm-help.jsp#s2-sm-your-rhn-help-docsearch">
+               helpUrl="/rhn/help/user/en-US/s2-sm-your-rhn-help-docsearch.jsp">
     <bean:message key="docsearch.jsp.toolbar"/>
   </rhn:toolbar>
 
