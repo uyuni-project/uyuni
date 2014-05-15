@@ -3055,6 +3055,19 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * @param sid server id
+     * @param pc pageContext
+     * @return Returns pending actions for a system
+     */
+    public static DataResult systemPendingEvents(Long sid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "system_events_pending");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
      * For a {@link ServerArch}, find the compatible {@link ChannelArch}.
      * @param serverArch server arch
      * @return channel arch
