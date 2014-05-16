@@ -1,4 +1,28 @@
 -------------------------------------------------------------------
+Fri May 16 13:02:44 CEST 2014 - mc@suse.de
+
+- version 2.1.27.4-1
+- Assume raw mode if the directory with definition files doesn't exist
+- spacewalk-sync-setup: Refined error message when apply or describe-templates
+  is passed w/o hosts
+- spacewalk-sync-setup: Renamed options,'dry-run' to 'describe-templates' with
+  'dt' and 'default-ok' to 'configured-hosts' with 'ch'
+- spacewalk-sync-setup: Show help, if no options passed but config already
+  exists.
+- spacewalk-sync-setup: Dry run default should be False.
+- spacewalk-sync-setup: Processing master and slave credentials in this order.
+- spacewalk-sync-setup: Require master or slave hostname or --default-ok option
+  on apply or dry run modes.
+- spacewalk-sync-setup: Always initialize config with the real values.
+- spacewalk-sync-setup: Asking for username and password
+- spacewalk-sync-setup: Branding change from Satellite to Spacewalk
+- spacewalk-sync-setup: Fix duplicate error messaging.
+- spacewalk-sync-setup: Fix test FQDN input.
+- spacewalk-sync-setup: Fix crash on accessing required fields before
+  validation. Fix plain text visible password.
+- spacewalk-sync-setup: Fix option parsing
+
+-------------------------------------------------------------------
 Tue May 06 15:16:37 CEST 2014 - mc@suse.de
 
 - version 2.1.27.3-1
