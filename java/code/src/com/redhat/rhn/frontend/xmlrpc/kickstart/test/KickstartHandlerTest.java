@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.kickstart.test;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -33,6 +34,7 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.KickstartHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.NoSuchKickstartTreeException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.kickstart.IpAddress;
+import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
@@ -47,6 +49,8 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
 
     public void testListKickstartableChannels() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
+        PackageManagerTest.addPackageToChannel(
+                ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME, baseChan);
         List <Channel> ksChannels = handler.listKickstartableChannels(adminKey);
         assertTrue(ksChannels.size() > 0);
 
