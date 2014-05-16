@@ -89,6 +89,11 @@ body{
       table tr td.text-only {
         padding-top: 14px;
       }
+      table tr td [data-syncstatus="finished"],
+      table tr td [data-syncstatus="in_progress"],
+      table tr td [data-syncstatus="not_mirrored"] {
+        padding-top: 6px
+      }
       table tr td.add-button {
         i {
           margin-right: 0;
@@ -187,10 +192,8 @@ ul.subscriptions-list {
 .product-sync-progress.progress  {
   text-align: center;
   margin-bottom: 0;
-  margin-top: 5px;
-
   .progress-value {
-    position: absolute;
+    //position: absolute;
   }
 }
 
@@ -214,9 +217,6 @@ ul.subscriptions-list {
       color: white;
       text-decoration: none;
     }
-  }
-
-  .product-status-label {
     .btn-link.product-sync-log-btn {
       text-decoration: underline;
     }
