@@ -394,6 +394,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
        PackageManagerTest.addPackageToChannel(
                KickstartData.LEGACY_KICKSTART_PACKAGE_NAME +
                    KickstartableTreeTest.TEST_BOOT_PATH, c);
+       // Add anaconda since it is currently used to identify kickstartable channels
+       PackageManagerTest.addPackageToChannel(
+               ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME, c);
     }
 
     private static void addPackages(Channel c, String[] names)
