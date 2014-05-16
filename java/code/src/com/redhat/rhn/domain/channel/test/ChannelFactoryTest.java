@@ -244,25 +244,21 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.doesChannelNameExist(c.getName()));
     }
 
-    /**
-     * Skipping this test, because we changed the logic of getKickstartableChannels() to
-     * check for the anaconda package.
-     */
-//    public void testKickstartableChannels() throws Exception {
-//        User user = UserTestUtils.findNewUser("testUser",
-//                "testOrg" + this.getClass().getSimpleName());
-//
-//        List channels = ChannelFactory.getKickstartableChannels(user.getOrg());
-//        assertNotNull(channels);
-//        int originalSize = channels.size();
-//
-//        createTestChannel(user);
-//
-//        channels = ChannelFactory.getKickstartableChannels(user.getOrg());
-//        assertNotNull(channels);
-//        assertTrue(channels.size() > 0);
-//        assertEquals(originalSize + 1, channels.size());
-//    }
+    public void testKickstartableChannels() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+
+        List channels = ChannelFactory.getKickstartableChannels(user.getOrg());
+        assertNotNull(channels);
+        int originalSize = channels.size();
+
+        createTestChannel(user);
+
+        channels = ChannelFactory.getKickstartableChannels(user.getOrg());
+        assertNotNull(channels);
+        assertTrue(channels.size() > 0);
+        assertEquals(originalSize + 1, channels.size());
+    }
 
     public void testPackageCount() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
