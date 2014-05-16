@@ -8650,6 +8650,36 @@ Please note that some manual configuration of these scripts may still be require
             <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
           </context-group>
         </trans-unit>
+        <trans-unit id="cpuCount">
+          <source>Number of CPUs</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
+          </context-group>
+        </trans-unit>
+        <trans-unit id="cpuClockFrequency">
+          <source>Clock frquency</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
+          </context-group>
+        </trans-unit>
+        <trans-unit id="ram">
+          <source>RAM</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
+          </context-group>
+        </trans-unit>
+        <trans-unit id="diskCount">
+          <source>Number of disks</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
+          </context-group>
+        </trans-unit>
+        <trans-unit id="macs">
+          <source>MAC Address(es)</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/BootstrapSystemList.do</context>
+          </context-group>
+        </trans-unit>
       </group>
       <!-- Repo Sync -->
       <trans-unit id="repos.jsp.summary">
