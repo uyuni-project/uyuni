@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 16 12:47:23 CEST 2014 - mc@suse.de
+
+- version 2.1.14.3-1
+- Adding reports for activation-keys
+- add report for schedule/actions
+
+-------------------------------------------------------------------
 Tue May 06 15:01:41 CEST 2014 - mc@suse.de
 
 - version 2.1.14.2-1
