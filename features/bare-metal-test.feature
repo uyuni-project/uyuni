@@ -34,7 +34,7 @@ Feature: Test Bare-metal discovery
          Then I should see a "Bare Metal Systems" text
           And I should see a "Detected on" text
           And I should see a "Number of CPUs" text
-          And I should see a "1" text
+          And I should see a "2" text
           And I should see a "Clock frquency" text
           And I should see a "1 GHz" text
           And I should see a "RAM" text
