@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri May 16 13:14:25 CEST 2014 - mc@suse.de
+
+- version 2.1.50.5-1
+- DB: update tables dep file
+- Rename suseEulas table to suseEula.
+- EULA support: fix constraint name
+- DB: Added tables required by the SUSE EULA
+
+-------------------------------------------------------------------
 Thu May 08 16:55:05 CEST 2014 - mc@suse.de
 
 - version 2.1.50.4-1
