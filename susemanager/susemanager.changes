@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 16 13:02:01 CEST 2014 - mc@suse.de
+
+- version 2.1.8-1
+- mgr-ncc-sync: sync already added products
+- fixed urls pointing to novell.com
+
+-------------------------------------------------------------------
 Tue May 06 15:10:09 CEST 2014 - mc@suse.de
 
 - version 2.1.7-1
