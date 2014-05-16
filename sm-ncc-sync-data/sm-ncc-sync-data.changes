@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri May 16 12:55:49 CEST 2014 - mc@suse.de
+
+- version 2.1.6-1
+- fixed urls pointing to novell.com
+- install new SLE12 GPG key
+- add SLE12 GPG Package Key
+- update SLES11 GPG key
+
+-------------------------------------------------------------------
 Tue May 06 15:15:36 CEST 2014 - mc@suse.de
 
 - version 2.1.5-1
