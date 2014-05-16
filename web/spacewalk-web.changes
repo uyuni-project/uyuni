@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Fri May 16 13:11:58 CEST 2014 - mc@suse.de
+
+- version 2.1.60.4-1
+- rewrite pending events page from perl to java
+- remove old perl pages
+- delete unused code in modules/rhn/RHN/Server.pm related to system events
+- delete unused code in modules/rhn/RHN/DB/Server.pm related to system events
+- Reuse --add-product-by-ident for triggering product re-sync
+- remove Quick Start Guide from side menu
+- Replace editarea with ACE (http://ace.c9.io/) editor.
+- dont show link if there are no details to show
+- fixed urls pointing to novell.com
+- Bugfix: humanize dates after fragment has loaded
+
+-------------------------------------------------------------------
 Tue May 06 15:03:59 CEST 2014 - mc@suse.de
 
 - version 2.1.60.3-1
