@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -252,7 +253,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertNotNull(channels);
         int originalSize = channels.size();
 
-        createTestChannel(user);
+        Channel c = createTestChannel(user);
+        PackageManagerTest.addPackageToChannel(
+                ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME, c);
 
         channels = ChannelFactory.getKickstartableChannels(user.getOrg());
         assertNotNull(channels);
