@@ -1,4 +1,46 @@
 -------------------------------------------------------------------
+Fri May 16 13:05:49 CEST 2014 - mc@suse.de
+
+- version 2.1.165.2-1
+- fix help urls
+- Bare metal system list: CSV export bugfix
+- adapt to the changes in spacewalk css to bring the readable warning alters
+  into the upstream code, that is also affected by this.
+- Bare-metal systems list: add relevant information (bnc#861307)
+- Fix parameter comment (kickstartable -> autoinstallable)
+- Prevent from concurrent modification (refix bnc#808278)
+- Kickstartable channels should contain the anaconda package (bnc#808278)
+- Form names are only available as name attributes now, not ids.
+- set autopart options correctly
+- SSM package upgrades should apply correctly across diverse system sets
+- The "Delete Key" link should not appear if there is no key to delete
+- API package search should not require a provider
+- rewrite pending events page from perl to java
+- add default arch heuristic for kickstart package installs
+- Reuse --add-product-by-ident for triggering product re-sync
+- help: remove dead link to Quick Start guide
+- Rename suseEulas table to suseEula.
+- Java Eula database classes moved to Hibernate, fixes BLOB issue
+- Bugfix: use Oracle BLOBs correctly in Java
+- Remove Red Hat-specific Kickstart Tree functionality
+- Style and rephrase the SP migration message alerts
+- Set milliseconds to 0 before comparing dates (bnc#814292)
+- Trigger repo metadata generation after cloning patches (bnc#814292)
+- Replace editarea with ACE (http://ace.c9.io/) editor.
+- dont show link if there are no details to show
+- UI: show EULAs inside of package details page
+- taskomatic: add SUSE's EULAs to repository metadata
+- Java: added class to handle SUSE's EULAs
+- Disable FreeIPA integration
+- Don't pass version and release to lookup_evr to get the evr_id to join with
+  the evr table to get version and release. Use them in the first place.
+- use the request object and not the pagecontext directly to store whether we
+  already included javascript
+- Last sync date: use human format
+- Bugfix: avoid NPE
+- Documentation fixes
+
+-------------------------------------------------------------------
 Tue May 06 15:43:49 CEST 2014 - mc@suse.de
 
 - version 2.1.165.1-1
