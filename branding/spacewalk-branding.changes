@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Fri May 16 13:16:49 CEST 2014 - mc@suse.de
+
+- version 2.1.33.4-1
+- Updated alert colors
+- Remove obsolete styling for missing-channels-list
+- Style and rephrase the SP migration message alerts
+- Removed unused translation suse-products.jsp.details
+- restyle the scheduled state
+- dont show link if there are no details to show
+- fixed urls pointing to novell.com
+- updated string for autoinstallation page
+- Move branded string to the branding package (first user created)
+- some more branding fixes
+- CSS refactoring: don't rely on column ordering
+
+-------------------------------------------------------------------
 Tue May 06 15:20:37 CEST 2014 - mc@suse.de
 
 - version 2.1.33.3-1
