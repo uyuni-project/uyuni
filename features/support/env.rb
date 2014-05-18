@@ -103,6 +103,11 @@ Capybara.run_server = false
 
 # screenshots
 After do |scenario|
+  if scenario.exception.is_a? Timeout::Error
+    # restart Selenium driver
+    $stderr.puts "Timeout Exception detected - try to delete the session"
+    Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
+  end
 
   if scenario.failed?
     case page.driver
@@ -117,9 +122,5 @@ After do |scenario|
       page.driver.render(path)
       embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
     end
-  end
-  if scenario.exception.is_a? Timeout::Error
-    # restart Selenium driver
-    Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
   end
 end
