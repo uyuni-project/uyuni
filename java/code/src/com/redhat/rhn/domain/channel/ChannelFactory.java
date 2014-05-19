@@ -310,8 +310,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of com.redhat.rhn.domain.Channel objects which have
      * clonable errata.
      */
-    public static List getChannelsWithClonableErrata(Org org) {
-        Map params = new HashMap();
+    public static List<ClonedChannel> getChannelsWithClonableErrata(Org org) {
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("org", org);
         return singleton.listObjectsByNamedQuery(
                 "Channel.channelsWithClonableErrata", params, false);
@@ -323,8 +323,8 @@ public class ChannelFactory extends HibernateFactory {
      * @param cid Base Channel id.
      * @return the list of Channel ids which the given orgid has access to.
      */
-    public static List getUserAcessibleChannels(Long orgid, Long cid) {
-        Map params = new HashMap();
+    public static List<Channel> getUserAcessibleChannels(Long orgid, Long cid) {
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("org_id", orgid);
         params.put("cid", cid);
         return singleton.listObjectsByNamedQuery(
@@ -339,7 +339,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> getAccessibleChildChannels(Channel baseChannel,
                                                                     User user) {
-        Map params = new HashMap();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("userId", user.getId());
         params.put("cid", baseChannel.getId());
         return singleton.listObjectsByNamedQuery(
@@ -352,8 +352,8 @@ public class ChannelFactory extends HibernateFactory {
      * @param orgid The id for the org
      * @return A list of Channel Objects.
      */
-    public static List getAccessibleChannelsByOrg(Long orgid) {
-        Map params = new HashMap();
+    public static List<Channel> getAccessibleChannelsByOrg(Long orgid) {
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("org_id", orgid);
         return singleton.listObjectsByNamedQuery("Org.accessibleChannels", params);
     }
@@ -749,7 +749,8 @@ public class ChannelFactory extends HibernateFactory {
      * @param eids the errata ids
      * @return list of package ids
      */
-    public static List getChannelPackageWithErrata(Channel chan, Collection<Long> eids) {
+    public static List<Long>
+            getChannelPackageWithErrata(Channel chan, Collection<Long> eids) {
         Map params = new HashMap();
         params.put("cid", chan.getId());
         return singleton.listObjectsByNamedQuery(
