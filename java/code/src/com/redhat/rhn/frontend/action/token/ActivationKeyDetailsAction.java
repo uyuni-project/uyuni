@@ -108,7 +108,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
                         getStrutsDelegate().saveMessages(request, errors);
                         return handleFailure(mapping, context);
                 }
-                Map params = new HashMap();
+                Map<String, Object> params = new HashMap<String, Object>();
 
                 if (CREATE_MODE.equals(mapping.getParameter())) {
                     ActivationKey key = create(form, context);
@@ -153,7 +153,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         setupContactMethods(context);
 
         if (EDIT_MODE.equals(mapping.getParameter())) {
-            Map params = new HashMap();
+            Map<String, Object> params = new HashMap<String, Object>();
             params.put(RequestContext.TOKEN_ID,
                         context.getParam(RequestContext.TOKEN_ID, true));
             return getStrutsDelegate().forwardParams(
