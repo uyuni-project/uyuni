@@ -153,14 +153,19 @@ export NO_BRP_CHECK_BYTECODE_VERSION=true
 rm -rf $RPM_BUILD_ROOT
 
 %post
+was_running=0
 %if 0%{?suse_version}
 %{fillup_and_insserv rhn-search}
+if [ -f /etc/init.d/rhn-search ]; then
+   if /sbin/service rhn-search status > /dev/null 2>&1 ; then
+       was_running=1
+   fi
+fi
 %else
 if [ -f /etc/init.d/rhn-search ]; then
    # This adds the proper /etc/rc*.d links for the script
    /sbin/chkconfig --add rhn-search
 
-   was_running=0
    if /sbin/service rhn-search status > /dev/null 2>&1 ; then
        was_running=1
    fi
