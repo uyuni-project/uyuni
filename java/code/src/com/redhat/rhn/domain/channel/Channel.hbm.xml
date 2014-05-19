@@ -433,16 +433,22 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     <sql-query name="Channel.kickstartableChannels">
         <![CDATA[
-            SELECT DISTINCT {c.*}
-              FROM rhnChannel c,
+            SELECT DISTINCT {c.*},
+                   rhn_channel.channel_priority(ach.parent_or_self_id),
+                   UPPER(ach.channel_name)
+              FROM rhnChannel c LEFT OUTER JOIN
+                   rhnChannelCloned c_1_ ON c.id = c_1_.id,
+                   rhnAvailableChannels ach,
+                   rhnChannelArch ca,
                    rhnKickstartableTree kt,
-                   rhnKSInstallType ksit,
-                   rhnAvailableChannels ach
-             WHERE c.id = kt.channel_id
+                   rhnKSInstallType ksit
+             WHERE ca.id = ach.channel_arch_id
+               AND ach.org_id = :org_id
+               AND ach.channel_depth = 1
                AND c.id = ach.channel_id
-               AND kt.org_id = :org_id
+               AND c.id = kt.channel_id
                AND kt.install_type = ksit.id
-               AND (ksit.label LIKE "rhel" OR ksit.label LIKE "fedora")
+               AND (ksit.label LIKE 'rhel%' OR ksit.label LIKE 'fedora%')
           ORDER BY rhn_channel.channel_priority(ach.parent_or_self_id),
                    UPPER(ach.channel_name)
         ]]>
