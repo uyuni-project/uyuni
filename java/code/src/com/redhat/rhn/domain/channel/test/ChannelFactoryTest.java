@@ -262,7 +262,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         KickstartableTreeTest.createTestKickstartableTree(c1,
                 KickstartInstallType.RHEL_7);
         KickstartableTreeTest.createTestKickstartableTree(c1,
-                KickstartInstallType.RHEL_6);
+                KickstartInstallType.RHEL_7);
         // c2 is kickstartable
         Channel c2 = createTestChannel(user);
         KickstartableTreeTest.createTestKickstartableTree(c2,
