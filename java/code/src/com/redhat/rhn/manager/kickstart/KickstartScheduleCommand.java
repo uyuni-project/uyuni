@@ -401,7 +401,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             if (arch != null) {
                 SelectMode mode = getMode();
-                Map params = new HashMap();
+                Map<String, Object> params = new HashMap<String, Object>();
                 params.put("org_id", this.user.getOrg().getId());
                 params.put("prim_arch_id", arch.getId());
                 if (arch.getName().equals("x86_64")) {
