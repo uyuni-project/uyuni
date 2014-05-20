@@ -19,28 +19,126 @@
 # Copyright 2012 Aron Parsons <aronparsons@gmail.com>
 #
 
-import getpass, logging, os, re, sys, time, xmlrpclib
+import os.path
+import getpass
+import logging
+import os
+import re
+import sys
+import time
+import xmlrpclib
 from optparse import Option, OptionParser
+import ConfigParser
 
-SESSION_CACHE = os.path.expanduser("~/.spacewalk-manage-lifecycle-session")
+
+class Config(object):
+    """
+    Configuration parser with defaults handling.
+    """
+    SECTION_GENERAL = "general"
+    OPT_PHASES = "phases"
+    OPT_EXCLUDE_CHNL = "exclude channels"
+
+    def __init__(self, path):
+        self.path = path
+        self.default_section = Config.SECTION_GENERAL
+        self._cfg = ConfigParser.RawConfigParser()
+
+    def get(self, section, option, default=None):
+        if not self._cfg.has_section(section):
+            if not self._cfg.has_section(self.default_section):
+                return default
+            else:
+                if not self._cfg.has_option(self.default_section, option):
+                    return default
+                else:
+                    return self._cfg.get(self.default_section, option)
+        else:
+            if not self._cfg.has_option(section, option):
+                return default
+
+        return self._cfg.get(section, option)
+
+
+    def set(self, section, option, value):
+        if not self._cfg.has_section(section):
+            self._cfg.add_section(section)
+        self._cfg.set(section, option, value)
+
+    def write(self):
+        with open(self.path, "wb") as handle:
+            self._cfg.write(handle)
+
+    def read(self):
+        self._cfg.read(self.path)
+
+    def sections(self):
+        return filter(lambda i:i != self.default_section, self._cfg.sections())
+
+
+CONF_DIR = os.path.expanduser("~/.spacewalk-manage-channel-lifecycle")
+USER_CONF_FILE = os.path.join(CONF_DIR, "settings.conf")
+SESSION_CACHE = os.path.join(CONF_DIR, "session")
 
 ##############################################################################
 
+def setup_config(config):
+    """
+    Setup configuration.
+    """
+    if os.path.isfile(CONF_DIR):
+        os.unlink(CONF_DIR)
+
+    if not os.path.exists(CONF_DIR):
+        logging.debug("Creating directory: %s" % CONF_DIR)
+        try:
+            os.mkdir(CONF_DIR, 0700)
+        except IOError:
+            logging.error("Unable to create %s" % CONF_DIR)
+            sys.exit(1)
+
+    if not os.path.exists(USER_CONF_FILE):
+        logging.debug("Creating configuration file: %s" % USER_CONF_FILE)
+        config.set(Config.SECTION_GENERAL, Config.OPT_PHASES, "dev, test, prod")
+        config.set(Config.SECTION_GENERAL, Config.OPT_EXCLUDE_CHNL, "")
+        config.write()
+    else:
+        config.read()
+
+
+def ask(msg, password=False):
+    """
+    Ask input from the console. Hide the echo, in case of password or sensitive information.
+    """
+    msg += ": "
+    return password and getpass.getpass(msg) or raw_input(msg)
+
+
+def parse_enumerated(data):
+    """
+    Parse comma-separated elements.
+    """
+    items = []
+    if data:
+        items = filter(None, map(lambda i:i.strip(), data.split(",")))
+
+    return items
+
+
 # determine the name of the next phase
 def get_next_phase(current_name):
-    try:
-        current_num = phases.index(current_name)
-    except:
+    if current_name not in phases:
         logging.error('Invalid phase name: %s' % current_name)
         sys.exit(1)
+    else:
+        current_num = phases.index(current_name)
 
     # return the next phase name
-    try:
+    if current_num + 1 < len(phases):
         return phases[current_num + 1]
-    except IndexError:
-        logging.error("Maximum phase exceeded!  You can't move past '%s'." \
-                      % phases[-1])
-        return None
+    else:
+        logging.error("Maximum phase exceeded!  You can't move past '%s'." % phases[-1])
+        sys.exit(1)
 
 
 def print_channel_tree():
@@ -51,25 +149,30 @@ def print_channel_tree():
         if channel.get('parent_label'):
             if not tree.has_key(channel.get('parent_label')):
                 tree[channel.get('parent_label')] = []
-                
+
             tree[channel.get('parent_label')].append(channel.get('label'))
         else:
             if not tree.has_key(channel.get('label')):
                 tree[channel.get('label')] = []
 
     # print the channels in a tree format
+    print "Channel tree:"
+    idx = 1
+    step = len(str(len(tree.keys())))
     for parent in sorted(tree.keys()):
-        print parent
+        if len(tree[parent]):
+            print
+        print " %s. %s" % (str(idx).rjust(step), parent)
+        idx += 1
         if len(tree[parent]):
             for child in sorted(tree[parent]):
-                print '  |- %s' % child   
-
-        print     
-
+                print (' ' * step) + '     \\__ %s' % child
+            print
+    print
 
 def channel_exists(channel, quiet = False):
     try:
-        details = client.channel.software.getDetails(session, channel)
+        client.channel.software.getDetails(session, channel)
         return True
     except xmlrpclib.Fault, e:
         if options.debug: logging.exception(e)
@@ -123,7 +226,7 @@ def merge_channels(source_label, dest_label):
                 errata = client.channel.software.mergeErrata(session,
                                                              source_label,
                                                              dest_label)
-    
+
                 logging.info('Added %i errata' % len(errata))
             except xmlrpclib.Fault, e:
                 if options.debug: logging.exception(e)
@@ -154,7 +257,7 @@ def clone_channel(source_label, details):
         except xmlrpclib.Fault, e:
             if options.debug: logging.exception(e)
             logging.error('Failed to clone channel')
-                
+
             if options.tolerant:
                 return False
             else:
@@ -169,10 +272,10 @@ def clear_channel(label):
         try:
             all_errata = client.channel.software.listErrata(session, label)
             errata_names = [ e.get('advisory_name') for e in all_errata ]
-            client.channel.software.removeErrata(session, 
-                                                 label, 
-                                                 errata_names, 
-                                                 False) 
+            client.channel.software.removeErrata(session,
+                                                 label,
+                                                 errata_names,
+                                                 False)
         except xmlrpclib.Fault, e:
             if options.debug: logging.exception(e)
             logging.warning('Failed to clear errata from %s' % label)
@@ -187,8 +290,8 @@ def clear_channel(label):
 def build_channel_labels(source):
     if options.archive:
         # prefix the existing channel with 'archive-YYYYMMDD-'
-        date_string = time.strftime('%Y%m%d', time.gmtime()) 
-        destination = 'archive-%s-%s' % (date_string, source) 
+        date_string = time.strftime('%Y%m%d', time.gmtime())
+        destination = 'archive-%s-%s' % (date_string, source)
     elif options.init:
         destination = '%s-%s' % (phases[0], source)
 
@@ -202,16 +305,16 @@ def build_channel_labels(source):
 
         if match:
             current_phase = match.group(1)
-            
+
             # Check to see if the source channel is in our phase list
             # if so, select the next label in phase list
             # otherwise, it's a base channel, use the first in list
             if current_phase in phases:
                 next_phase = get_next_phase(current_phase)
- 
+
                 # replace the name of the phase in the destination label
-                destination = re.sub('^%s' % current_phase, 
-                                     '%s' % next_phase, 
+                destination = re.sub('^%s' % current_phase,
+                                     '%s' % next_phase,
                                      source)
             else:
                 destination = '%s-%s' % (phases[0], source)
@@ -221,7 +324,7 @@ def build_channel_labels(source):
     elif options.rollback:
         # strip off the archive prefix when rolling back
         destination = re.sub('archive-\d{8}-', '', source)
- 
+
     return (source, destination)
 
 ##############################################################################
@@ -244,17 +347,20 @@ Rollback the production channel to an archived version:
 spacewalk-manage-channel-lifecycle \\
     -c archive-20110520-prod-rhel-x86_64-server-6 --rollback'''
 
-option_list = [ 
-    Option('-l', '--list-channels', help='list existing channels', 
+option_list = [
+    Option('-l', '--list-channels', help='list existing channels',
            action='store_true'),
-    Option('', '--init', help='initialize a development channel', 
+    Option('', '--init', help='initialize a development channel',
            action='store_true'),
-    Option('', '--promote', help='promote a channel to the next phase', 
+    Option('-w', '--workflow', help='use configured workflow', default=""),
+    Option('-f', '--list-workflows', help='list configured workflows', default=False,
+           action='store_true'),
+    Option('', '--promote', help='promote a channel to the next phase',
            action='store_true'),
     Option('', '--archive', help='archive a channel', action='store_true'),
     Option('', '--rollback', help='rollback', action='store_true'),
     Option('-c', '--channel', help='channel to init/promote/archive/rollback'),
-    Option('-C', '--clear-channel', 
+    Option('-C', '--clear-channel',
            help='clear all packages/errata from the channel before merging',
            action='store_true'),
     Option('-x', '--exclude-channel', help = 'skip these channels',
@@ -263,11 +369,11 @@ option_list = [
            action='store_true'),
     Option('', '--no-children', help="don't operate on child channels",
            action='store_true'),
-    Option('-P', '--phases', default = 'dev,test,prod',
+    Option('-P', '--phases', default = '',
            help='comma-separated list of phases [default: %default]'),
     Option('-u', '--username', help='Spacewalk username'),
     Option('-p', '--password', help='Spacewalk password'),
-    Option('-s', '--server', 
+    Option('-s', '--server',
            help='Spacewalk server [default: %default]', default='localhost'),
     Option('-n', '--dry-run', help="don't perform any operations",
            action='store_true'),
@@ -286,6 +392,28 @@ else:
 
 logging.basicConfig(level = level, format='%(levelname)s: %(message)s')
 
+options.workflow = options.workflow or Config.SECTION_GENERAL
+config = Config(USER_CONF_FILE)
+try:
+    setup_config(config)
+except ConfigParser.ParsingError, ex:
+    logging.error("Unable to process configuration:\n" + str(ex))
+    sys.exit(1)
+
+if options.list_workflows:
+    workflows = config.sections()
+    if not workflows:
+        print "There are no additinal configured workflows except default."
+        sys.exit(0)
+
+    print "Configured additional workflows:"
+    idx = 1
+    for workflow in workflows:
+        print "  %s. %s" % (idx, workflow)
+        idx += 1
+    print
+    sys.exit(0)
+
 # sanity check
 if not (options.init or options.promote or options.archive or options.rollback \
         or options.list_channels):
@@ -297,7 +425,14 @@ elif not options.list_channels and not options.channel:
     sys.exit(1)
 
 # parse the list of phases
-phases = options.phases.split(',')
+phases = parse_enumerated(options.phases or config.get(options.workflow,
+                                                       Config.OPT_PHASES,
+                                                       "dev,test,prod"))
+
+# update exclude channel option
+options.exclude_channel = options.exclude_channel or \
+                          parse_enumerated(config.get(options.workflow,
+                                                      Config.OPT_EXCLUDE_CHNL, ""))
 
 if len(phases) < 2:
     logging.error('You must define at least 2 phases')
@@ -336,11 +471,14 @@ if os.path.exists(SESSION_CACHE):
 if not session:
     # prompt for the username
     if not options.username:
-        options.username = raw_input('Spacewalk Username: ')
+        while not options.username:
+            options.username = ask('Spacewalk Username')
 
     # prompt for the password
     if not options.password:
-        options.password = getpass.getpass('Spacewalk Password: ')
+        options.password = ask('Spacewalk Password', password=True)
+    if not options.password:
+        logging.warning("Empty password is not a good practice!")
 
     # login to the server
     try:
@@ -380,20 +518,20 @@ if not channel_exists(options.channel):
 # determine the channel labels for the parent channel
 (parent_source, parent_dest) = build_channel_labels(options.channel)
 
-# inform the user that no changes will take place    
+# inform the user that no changes will take place
 if options.dry_run:
     logging.info('DRY RUN - No changes are being made to the channels')
     time.sleep(2)
     print
 
-# merge packages/errata if the destination channel label already exists, 
+# merge packages/errata if the destination channel label already exists,
 # otherwise clone it from the source channel
 if parent_dest in all_channel_labels:
     merge_channels(parent_source, parent_dest)
 else:
     # channel doesn't exist, clone it from the original
-    details = { 'label'   : parent_dest, 
-                'name'    : parent_dest, 
+    details = { 'label'   : parent_dest,
+                'name'    : parent_dest,
                 'summary' : parent_dest }
 
     clone_channel(parent_source, details)
@@ -405,21 +543,21 @@ if not options.no_children:
     for channel in all_channels:
         if channel.get('parent_label') == parent_source:
             children.append(channel.get('label'))
-    
+
     for label in children:
         # determine the child channels for the source parent channel
         (child_source, child_dest) = build_channel_labels(label)
-   
+
         # merge packages/errata if the destination channel label already exists,
         # otherwise clone it from the source channel
         if child_dest in all_channel_labels:
             merge_channels(child_source, child_dest)
         else:
-            details = { 'label'        : child_dest, 
-                        'name'         : child_dest, 
+            details = { 'label'        : child_dest,
+                        'name'         : child_dest,
                         'summary'      : child_dest,
                         'parent_label' : parent_dest }
-    
+
             clone_channel(child_source, details)
-    
+
 # vim:ts=4:expandtab:
