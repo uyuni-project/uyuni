@@ -186,12 +186,12 @@ public class ActionChainHandler extends BaseHandler {
      *
      * @param sessionKey Session key (token)
      * @param chainLabel Label of the action chain
-     * @return 1 on success
+     * @return id of the created action chain
      *
      * @xmlrpc.doc Create an Action Chain.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "chainLabel", "Label of the chain")
-     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     * @xmlrpc.returntype int actionId - The ID of the created action chain
      */
     public Integer createActionChain(String sessionKey,
                                      String chainLabel) {
