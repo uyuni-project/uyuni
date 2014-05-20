@@ -171,11 +171,11 @@ sed -i "s/^[[:space:]]*allow from[[:space:]].*$/    allow from $SUMA_IP/" /etc/a
 if [ ! -d "$TFTPBOOT" ]; then
     mkdir "$TFTPBOOT"
 fi
-#############################################################################
-# atftp is running as user nobody, so do not chown to wwwrun.www (bnc#877825)
-#############################################################################
-# chown wwwrun.www "$TFTPBOOT"
-chown nobody:root "$TFTPBOOT"
+################################################################################
+# atftp needs to be able to read this dir, wwwrun needs to write it (bnc#877825)
+################################################################################
+chown wwwrun.nogroup "$TFTPBOOT"
+chmod 750 "$TFTPBOOT"
 sed -i 's/^ATFTPD_DIRECTORY="\(.*\)"[[:space:]]*$/ATFTPD_DIRECTORY=""/' /etc/sysconfig/atftpd
 sysconf_addword /etc/sysconfig/atftpd ATFTPD_DIRECTORY "$TFTPBOOT"
 chkconfig atftpd on
