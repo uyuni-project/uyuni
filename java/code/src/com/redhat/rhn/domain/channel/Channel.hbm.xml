@@ -448,7 +448,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                AND c.id = ach.channel_id
                AND c.id = kt.channel_id
                AND kt.install_type = ksit.id
-               AND (ksit.label LIKE 'rhel%' OR ksit.label LIKE 'fedora%')
+               AND (ksit.label LIKE 'rhel%' OR ksit.label = 'fedora')
           ORDER BY rhn_channel.channel_priority(ach.parent_or_self_id),
                    UPPER(ach.channel_name)
         ]]>
