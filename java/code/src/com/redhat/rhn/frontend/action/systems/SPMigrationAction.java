@@ -298,7 +298,7 @@ public class SPMigrationAction extends RhnAction {
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
                     child.getName(),
                     s.isSubscribed(child),
-                    ChannelManager.isChannelFreeForSubscription(s, child),
+                    ChannelManager.isChannelFreeForSubscription(s.getId(), child),
                     child.isSubscribable(user.getOrg(), s));
 
             childChannel.setAvailableSubscriptions(
