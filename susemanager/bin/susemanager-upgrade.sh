@@ -129,7 +129,7 @@ quit
 }
 
 upgrade_schema() {
-    spacewalk-schema-upgrade -y
+    spacewalk-schema-upgrade -y || exit 1
 }
 
 upgrade_config() {
