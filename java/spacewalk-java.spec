@@ -65,7 +65,7 @@ Requires: javassist
 %else
 Requires: hibernate3 = 0:3.2.4
 %endif
-Requires: java >= 1.6.0
+Requires: java >= 1.7.0
 #Requires: java-devel >= 1.6.0
 Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-codec
