@@ -368,7 +368,7 @@ public class PackageManager extends BaseManager {
         params.put("target_eid", errata.getId());
         params.put("source_cid", cid);
 
-        Map elabParams = new HashMap();
+        Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("org_id", user.getOrg().getId());
         return makeDataResult(params, elabParams, null, m);
     }
