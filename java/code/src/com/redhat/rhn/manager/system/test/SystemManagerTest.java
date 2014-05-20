@@ -1164,7 +1164,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
                 SetCleanup.NOOP);
 
         for (int i = 0; i < 5; i++) {
-            Server mySystem = ServerFactoryTest.createTestServer(usr);
+            Server mySystem = ServerFactoryTest.createTestServer(usr, true);
             newrs.addElement(mySystem.getId());
         }
 
