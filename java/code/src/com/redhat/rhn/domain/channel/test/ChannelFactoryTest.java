@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -24,6 +23,9 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.common.ChecksumType;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
+import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -248,18 +250,47 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
+        // Setup test config since kickstartable trees are required
+        KickstartDataTest.setupTestConfiguration(user);
 
-        List channels = ChannelFactory.getKickstartableChannels(user.getOrg());
+        List<Channel> channels = ChannelFactory.getKickstartableChannels(user.getOrg());
         assertNotNull(channels);
         int originalSize = channels.size();
 
-        Channel c = createTestChannel(user);
-        PackageManagerTest.addPackageToChannel(
-                ConfigDefaults.DEFAULT_ANACONDA_PACKAGE_NAME, c);
+        // c1 is kickstartable
+        Channel c1 = createTestChannel(user);
+        KickstartableTreeTest.createTestKickstartableTree(c1,
+                KickstartInstallType.RHEL_7);
+        KickstartableTreeTest.createTestKickstartableTree(c1,
+                KickstartInstallType.RHEL_7);
+        // c2 is kickstartable
+        Channel c2 = createTestChannel(user);
+        KickstartableTreeTest.createTestKickstartableTree(c2,
+                KickstartInstallType.FEDORA);
+        // c3 is not kickstartable
+        Channel c3 = createTestChannel(user);
+        KickstartableTreeTest.createTestKickstartableTree(c3,
+                KickstartInstallType.SUSE);
+        // c4 is not kickstartable
+        createTestChannel(user);
 
         channels = ChannelFactory.getKickstartableChannels(user.getOrg());
+        assertEquals(originalSize + 2, channels.size());
+        assertTrue(channels.contains(c1));
+        assertTrue(channels.contains(c2));
+    }
+
+    public void testAutoinstallableChannels() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+
+        List<Channel> channels = ChannelFactory.getAutoinstallableChannels(user.getOrg());
         assertNotNull(channels);
-        assertTrue(channels.size() > 0);
+        int originalSize = channels.size();
+
+        createTestChannel(user);
+
+        channels = ChannelFactory.getAutoinstallableChannels(user.getOrg());
         assertEquals(originalSize + 1, channels.size());
     }
 
