@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 21 11:06:34 CEST 2014 - mc@suse.de
+
+- version 2.1.2-1
+- set correct ownership and permissions for /srv/tftpboot (bnc#877825)
+
+-------------------------------------------------------------------
 Mon Dec 09 16:27:09 CET 2013 - mc@suse.de
 
 - version 2.1.1-1
