@@ -16,10 +16,9 @@ Obsoletes: rhns-proxy-docs < 5.3.0
 Provides: rhns-proxy-docs = 5.3.0
 
 %description
-This package includes the installation/configuration guide,
-and whitepaper in support of an Spacewalk Proxy Server. Also included
-are the Client Configuration, Channel Management,
-and Enterprise User Reference guides.
+This package includes the SUSE Manager Proxy Quick Start guide
+Also included are the Client Configuration and Enterprise
+User Reference guides.
 
 %prep
 %setup -q
