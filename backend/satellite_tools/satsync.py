@@ -367,7 +367,7 @@ class Runner:
                 xmlDiskSource.MissingXmlDiskSourceDirError), e:
             # the orgs() method doesn't exist; that's fine we just
             # won't sync the orgs
-            log(1, [_("The upstream Satellite does not support syncing orgs data."), _("Skipping...")])
+            log(1, [_("The SUSE Manager master does not support syncing orgs data."), _("Skipping...")])
 
     def _step_supportinfo(self):
         self.syncer.import_supportinfo()
