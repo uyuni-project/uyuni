@@ -16,7 +16,7 @@
 #
 
 Name:           susemanager-tftpsync-recv
-Version:        2.1.1
+Version:        2.1.2
 Release:        1%{?dist}
 Summary:        Reciever for SUSE Manager tftp sync
 Url:            http://www.suse.com
