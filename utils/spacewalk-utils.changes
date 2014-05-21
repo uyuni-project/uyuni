@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed May 21 11:07:19 CEST 2014 - mc@suse.de
+
+- version 2.1.27.5-1
+- spacewalk-manage-channel-lifecycle: Added better channel tree printing
+- spacewalk-manage-channel-lifecycle: Added multiple workflows
+- spacewalk-manage-channel-lifecycle: Fixing None-channel
+- spacewalk-manage-channel-lifecycle: introduce a configuration file
+
+-------------------------------------------------------------------
 Fri May 16 13:02:44 CEST 2014 - mc@suse.de
 
 - version 2.1.27.4-1
