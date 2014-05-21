@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 21 11:05:18 CEST 2014 - mc@suse.de
+
+- version 2.1.9-1
+- Abort susemanager-upgrade if schema update failed
+
+-------------------------------------------------------------------
 Fri May 16 13:02:01 CEST 2014 - mc@suse.de
 
 - version 2.1.8-1
