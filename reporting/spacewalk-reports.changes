@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 21 11:04:18 CEST 2014 - mc@suse.de
+
+- version 2.1.14.4-1
+- fix issues in spacewalk-report with multival fields
+
+-------------------------------------------------------------------
 Fri May 16 12:47:23 CEST 2014 - mc@suse.de
 
 - version 2.1.14.3-1
