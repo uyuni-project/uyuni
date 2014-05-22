@@ -38,7 +38,8 @@ Feature: Test Bare-metal discovery
           And I should see a "Clock frquency" text
           And I should see a "1 GHz" text
           And I should see a "RAM" text
-          And I should see a "1967 MB" text
+          #And I should see a "1967 MB" text
+          And I check the ram value
           And I should see a "Number of disks" text
           And I should see a "1" text
           And I should see a "MAC Address(es)" text
