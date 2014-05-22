@@ -21,7 +21,7 @@ import sys
 import os
 
 from optparse import Option, OptionParser
-from spacewalk.common.rhnLog import rhnLog, initLOG
+from spacewalk.common.rhnLog import initLOG, log_debug
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common import rhn_rpm
 from spacewalk.server import rhnSQL
@@ -36,11 +36,11 @@ debug = 0
 verbose = 0
 
 options_table = [
-    Option("-v", "--verbose",       action="count",
+    Option("-v", "--verbose",       action="store_true",
         help="Increase verbosity"),
     Option("-d", "--db",            action="store",
         help="DB string to connect to"),
-    Option(   "--debug",            action="store_true",
+    Option(   "--debug",            action="store",
         help="logs the debug information to a log file"),
     Option(    "--clean-possible-wrong", action="store_true",
         help="clean possible wrong calculated keyids"),
@@ -59,16 +59,15 @@ def main():
         sys.exit(-1)
 
     if options.verbose:
-        initLOG("stdout", options.verbose or 0)
+        initLOG(CFG.LOG_FILE, 1)
         verbose = 1
 
     if options.debug:
-        initLOG(CFG.LOG_FILE, options.debug or 0)
+        initLOG(CFG.LOG_FILE, options.debug or 1)
         debug = 1
 
     if not options.db:
-        sys.stderr.write("--db not specified\n")
-        sys.exit(1)
+        options.db = CFG.DEFAULT_DB
 
     print "Connecting to %s" % options.db
     rhnSQL.initDB(options.db)
@@ -81,12 +80,15 @@ def main():
 
 
 _get_needed_pkgs_query = """
-   select P.id, P.path, CV.checksum_type, CV.checksum
-   from rhnPackage P left join
-        rhnPackageKeyAssociation PA on PA.package_id = P.id inner join
-        rhnChecksumView CV on CV.id = P.checksum_id
-   where PA.key_id is null
-     and P.rpm_version is not null
+select P.id, P.path, CV.checksum_type, CV.checksum
+  from rhnPackage P
+       left join rhnPackageKeyAssociation PA on PA.package_id = P.id
+      inner join rhnChecksumView CV on CV.id = P.checksum_id
+      inner join rhnPackageKey pk on pa.key_id = pk.id
+       left join rhnPackageProvider pp on pk.provider_id = pp.id
+ where (PA.key_id is null
+        and P.rpm_version is not null)
+    or (P.org_id is NULL and pp.name is NULL)
 """
 
 _get_possible_wrong_query = """
@@ -106,6 +108,11 @@ _delete_key_association_query = """
    where key_id = :id
 """
 
+_delete_key_association_by_pkgid_query = """
+  delete from rhnpackagekeyassociation
+   where package_id = :id
+"""
+
 _delete_key_query = """
   delete from rhnpackagekey
    where id = :id
@@ -123,18 +130,21 @@ def clean_wrong():
 
     del_keyass_query = rhnSQL.prepare(_delete_key_association_query)
     del_key_query = rhnSQL.prepare(_delete_key_query)
+    if verbose: print "Processing %s possible wrong keyids" % len(keyids)
+    i = 0
     for K in keyids:
         del_keyass_query.execute(id=K['key_id'])
         del_key_query.execute(id=K['key_id'])
+        i = i + 1
+        # we need to break the transaction to smaller pieces
+        if i % 1000 == 0:
+            rhnSQL.commit()
 
     rhnSQL.commit()
     return
 
 def process_package_data():
     global verbose, debug
-
-    if debug:
-        Log = rhnLog.rhnLog('/var/log/rhn/update-packages.log', 5)
 
     _get_path_sql = rhnSQL.prepare(_get_needed_pkgs_query)
 
@@ -164,7 +174,7 @@ def process_package_data():
         if not os.path.exists(full_path):
             skip_list.append(full_path)
             if debug:
-                Log.writeMessage("File not %s found" % (full_path))
+                log_debug(1, "File not %s found" % (full_path))
             continue
 
         try:
@@ -173,9 +183,14 @@ def process_package_data():
             rhnSQL.commit()
             raise
 
+        # delete possible wrong association
+        del_keyass_query = rhnSQL.prepare(_delete_key_association_by_pkgid_query)
+        del_keyass_query.execute(id=pkg['id'])
+
         # Process gpg key ids
         server_packages.processPackageKeyAssociations(hdr, checksum_type, checksum)
-        if debug: Log.writeMessage("gpg key info updated from %s" % full_path )
+        if debug:
+            log_debug(1, "gpg key info updated from %s" % full_path )
         i = i + 1
         # we need to break the transaction to smaller pieces
         if i % 1000 == 0:
@@ -184,7 +199,8 @@ def process_package_data():
     # All done, final commit
     rhnSQL.commit()
     sys.stderr.write("Transaction Committed! \n")
-    if verbose: print " Skipping %s packages, paths not found" % len(skip_list)
+    if verbose:
+        print " Skipping %s packages, paths not found" % len(skip_list)
     return
 
 
