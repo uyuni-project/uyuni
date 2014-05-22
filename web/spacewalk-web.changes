@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 22 14:32:10 CEST 2014 - mc@suse.de
+
+- version 2.1.60.5-1
+- Workaround browser bugs with broken scrolling on anchor pages.
+  (bnc#855168)
+
+-------------------------------------------------------------------
 Fri May 16 13:11:58 CEST 2014 - mc@suse.de
 
 - version 2.1.60.4-1
