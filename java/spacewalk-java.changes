@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Thu May 22 14:34:43 CEST 2014 - mc@suse.de
+
+- version 2.1.165.3-1
+- fix numbering of java libs for taskomatic daemon
+- Hibernate Package definition: fix table name
+- Fix exception in tomcat logs due to missing server object
+- Event history: format script text and output correctly
+- More schedule action unification
+- You can't "Add this address". Change text to "Fill in"
+- Make sure we don't end with java 6 after an upgrade
+- No more checking for anaconda package to detect kickstartable channels
+- New query to find kickstartable channels
+- even if most of it is Javascript, add simple unit test to FormatDateTag HTML
+  output
+- add request scope to the remote command via SSM action
+- apidoc: reflect changes in createChain() return type
+- fix configchannel.createOrUpdatePath API issue that stored new revision
+  contents as null characters
+- ssm child channel subscription page was slow
+- SDC was unnecessarily slow if the system had many guests
+- deduplicate rhn_server.remove_action() calls
+- fix help urls
+- make use of humanize dates for package lists
+- make use of humanize dates for system lists
+- humanize dates for user pages. created in 'calendar' mode and last login in
+  'time ago' mode
+- show the system overview with human dates
+
+-------------------------------------------------------------------
 Fri May 16 13:05:49 CEST 2014 - mc@suse.de
 
 - version 2.1.165.2-1
