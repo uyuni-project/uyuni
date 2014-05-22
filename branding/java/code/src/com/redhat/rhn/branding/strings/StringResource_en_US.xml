@@ -1307,12 +1307,6 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="Proxy Guide">
         <source>Proxy Quick Start</source>
       </trans-unit>
-      <trans-unit id="Quick Start Guide">
-        <source>Quick Start</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="user.satadmin.remove">
         <source>Removed SUSE Manager Administrator role from {0}</source>
       </trans-unit>
