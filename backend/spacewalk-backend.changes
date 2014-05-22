@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu May 22 14:32:50 CEST 2014 - mc@suse.de
+
+- version 2.1.55.6-1
+- spacewalk-update-signatures: fix logging, find more wrong keyids
+     and remove existing associations before updating (bnc#874634)
+- fixed 'empty separator' error
+- Branding fixes
+- fix syntax error in SQL statement
+
+-------------------------------------------------------------------
 Fri May 16 13:15:09 CEST 2014 - mc@suse.de
 
 - version 2.1.55.5-1
