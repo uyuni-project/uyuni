@@ -118,8 +118,4 @@ After do |scenario|
       embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
     end
   end
-  if scenario.exception.is_a? Timeout::Error
-    # restart Selenium driver
-    Capybara.send(:session_pool).delete_if { |key, value| key =~ /selenium/i }
-  end
 end
