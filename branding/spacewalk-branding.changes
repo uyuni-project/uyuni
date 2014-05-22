@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu May 22 14:31:31 CEST 2014 - mc@suse.de
+
+- version 2.1.33.5-1
+- remove unused translation unit
+- alignment of status labels in setup wizard, products section
+
+-------------------------------------------------------------------
 Fri May 16 13:16:49 CEST 2014 - mc@suse.de
 
 - version 2.1.33.4-1
