@@ -8,7 +8,6 @@ PKGLIST10 = [
                 "libzypp",
                 "newt",
                 "openssl",
-                "openssl-32bit",
                 "perl-WWW-Curl",
                 "python-dmidecode",
                 "python-ethtool",
