@@ -25,7 +25,7 @@ def find_or_create_eula(eula):
           FROM suseEula
          WHERE checksum = :checksum
     """
-    checksum = hashlib.new("sha256", eula).hexdigest()
+    checksum = hashlib.new("sha256", eula.encode('utf-8', 'ignore')).hexdigest()
 
     h = rhnSQL.prepare(_query_find)
     h.execute(checksum=checksum)
