@@ -1,11 +1,8 @@
 ﻿SUSE(R) Manager 2.1 Server
 
-
 SUSE Manager 2.1 Proxy
 
-
 SUSE End User License Agreement
-
 
 
 PLEASE READ THIS AGREEMENT CAREFULLY.  BY INSTALLING, DOWNLOADING
@@ -15,8 +12,6 @@ PERMITTED TO DOWNLOAD, INSTALL OR USE THE SOFTWARE AND YOU SHOULD
 NOTIFY THE PARTY FROM WHICH YOU PURCHASED THE SOFTWARE TO OBTAIN A
 REFUND.  THE SOFTWARE MAY NOT BE SOLD, TRANSFERRED, OR FURTHER
 DISTRIBUTED EXCEPT AS AUTHORIZED BY LICENSOR.
-
-
 
 This End User License Agreement ("Agreement") is a legal agreement
 between You (an entity or a person) and SUSE LLC ("Licensor").  The
@@ -38,11 +33,7 @@ updated or supported in order to install or use the update or
 support release.
 
 
-
-
 LICENSED USE
-
-
 
 LICENSES. The Software and each of its components are owned by
 Licensor or other licensors and are protected under copyright laws
@@ -57,7 +48,6 @@ This Agreement does not limit Your rights under such licenses or
 supersede or conflict with the license terms or obligations for use
 of any individual open source component.
 
-
 "Organization" means a legal entity, excluding subsidiaries and
 affiliates with a separate existence for tax purposes or for legal
 personality purposes. An example of an Organization in the private
@@ -66,8 +56,6 @@ subsidiaries or affiliates of the organization with a separate tax
 identification number or company registration number. In the public
 sector, an example of Organization would be a specific government
 body or local government authority.
-
-
 
 SUBSCRIPTION SERVICES.  Licensor sells Subscription Services for
 the Software that entitle You to fee based technical support and
@@ -78,8 +66,6 @@ Services for this Software is based on the total number of units of
 the Software You deploy, install or use ("units" of the Software is
 defined by Licensor in the applicable subscription offering).
 
-
-
 In addition to the Subscription Services for the SUSE Manager
 Server and/or SUSE Manager Proxy, for each unique instance that
 connects to SUSE Manager Server, either directly or via a SUSE
@@ -88,14 +74,10 @@ Manager Lifecycle Management subscriptions. You may also need to
 purchase additional subscriptions for some advanced functionality to
 be supported.
 
-
-
 Furthermore, if you have purchased a subscription that restricts the
 number of managed instances connected to SUSE Manager, then you may
 not register more than that number of managed instances with SUSE
 Manager.
-
-
 
 MARKS. No right or license, express or implied, is granted under
 this Agreement with respect to any trademark, trade name or service
@@ -104,9 +86,8 @@ distribute any open source component of the Software, You must
 remove all Marks except those used to identify Licensor's ownership
 or licensing of the component.
 
-
 PROPRIETARY DATABASE SOFTWARE.  If the Software includes a version
-of Oracle database software (“Database”), for  each unit  of
+of Oracle database software ("Database"), for  each unit  of
 Subscription  Services  You  have  purchased  for  the  Software,
 You  are authorized to use one Instance of the Database solely for
 use with the Software for which You have purchased the Subscription.
@@ -115,8 +96,6 @@ is subject to the Third Party Addendum included with this Agreement.
 
 
 RESTRICTIONS
-
-
 
 License Restrictions.  Licensor reserves all rights not expressly
 granted to You.  The Software is licensed for Your internal use
@@ -134,7 +113,6 @@ performance, functional or other evaluation or benchmarking of the
 Software to any third party without the prior written permission of
 Licensor.
 
-
 Hosting Restrictions.  In the event that You desire to have a third
 party manage, host (either remotely or virtually) or use the
 Software on Your behalf, You shall (1) first enter into a valid and
@@ -147,16 +125,12 @@ benefit of You; and (3) be solely responsible to Licensor for any
 and all breaches of the above terms and conditions by such third
 party.
 
-
-
 Suite Licenses.  If Your license to use the Software is for a suite
 of products, then for each license only one user may use the
 products in the suite.  The suite license does not allow use of
 individual products in the suite by multiple users if licensed on a
 user basis or multiple devices if licensed on a device or server
 basis.
-
-
 
 Upgrade Software.  This section applies to You if You have purchased
 the Software based upon upgrade pricing or otherwise received an
@@ -173,8 +147,6 @@ may not re-allocate Your Software licensed unit count to another
 product or version except under express written permission from
 Licensor.
 
-
-
 Maintenance and Support.  Licensor has no obligation to provide
 support unless You purchase an offering that expressly includes
 support services.  If You make such a purchase and no separate
@@ -184,10 +156,7 @@ services ("Services").  For more information on Licensor's current
 support offerings, see http://www.suse.com/support.
 
 
-
 OWNERSHIP
-
-
 
 No title to or ownership of the Software is transferred to You.
 Licensor and/or its third party licensors retain all right, title
@@ -201,10 +170,7 @@ may be protected by applicable copyright or other law.  This
 Agreement gives You no rights to such content.
 
 
-
 LIMITED WARRANTY
-
-
 
 For ninety (90) days from Your date of purchase, Licensor warrants
 that the Software will substantially conform to its accompanying
@@ -218,8 +184,6 @@ OTHER WARRANTIES, EXPRESS OR IMPLIED.  The foregoing warranty does
 not apply to Software provided free of charge.  SUCH SOFTWARE IS
 PROVIDED "AS IS" WITHOUT ANY WARRANTIES OF ANY KIND.
 
-
-
 Services.  Licensor warrants that any Services purchased will be
 supplied in a professional manner in accordance with generally
 accepted industry standards.  This warranty will be effective for
@@ -230,8 +194,6 @@ its option refund the amount You paid to Licensor for the portion of
 the Services that fail to comply with this warranty.  You agree to
 take appropriate measures to isolate and back up Your systems.
 
-
-
 THE SOFTWARE IS NOT DESIGNED, MANUFACTURED OR INTENDED FOR USE OR
 DISTRIBUTION WITH ON-LINE CONTROL EQUIPMENT IN HAZARDOUS
 ENVIRONMENTS REQUIRING FAIL-SAFE PERFORMANCE, SUCH AS IN THE
@@ -241,8 +203,6 @@ OR OTHER USES IN WHICH FAILURE OF THE SOFTWARE COULD LEAD DIRECTLY
 TO DEATH, PERSONAL INJURY, OR SEVERE PHYSICAL OR ENVIRONMENTAL
 DAMAGE.
 
-
-
 Non-Licensor Products.  The Software may include or be bundled with
 hardware or other software programs or services licensed or sold by
 an entity other than Licensor.  LICENSOR DOES NOT WARRANT
@@ -250,8 +210,6 @@ NON-LICENSOR PRODUCTS OR SERVICES.  ANY SUCH PRODUCTS OR SERVICES
 ARE PROVIDED ON AN "AS IS" BASIS.  WARRANTY SERVICE IF ANY FOR
 NON-LICENSOR PRODUCTS IS PROVIDED BY THE PRODUCT LICENSOR IN
 ACCORDANCE WITH THE APPLICABLE LICENSOR WARRANTY.
-
-
 
 EXCEPT AS OTHERWISE RESTRICTED BY LAW, LICENSOR DISCLAIMS AND
 EXCLUDES ANY AND ALL IMPLIED WARRANTIES INCLUDING ANY WARRANTIES OF
@@ -273,8 +231,6 @@ also have other rights which vary by state or jurisdiction.
 
 LIMITATION OF LIABILITY
 
-
-
 Consequential Losses.  NEITHER LICENSOR NOR ANY OF ITS THIRD PARTY
 LICENSORS, SUBSIDIARIES, OR EMPLOYEES WILL IN ANY CASE BE LIABLE FOR
 ANY SPECIAL, INCIDENTAL, CONSEQUENTIAL, INDIRECT, TORT, ECONOMIC OR
@@ -282,7 +238,6 @@ PUNITIVE DAMAGES, WHETHER BASED ON CONTRACT, NEGLIGENCE, STRICT
 LIABILITY OR OTHER TORT, BREACH OF ANY STATUTORY DUTY, INDEMNITY OR
 CONTRIBUTION, INCLUDING WITHOUT LIMITATION LOSS OF PROFITS, BUSINESS
 OR DATA, EVEN IF ADVISED OF THE POSSIBILITY OF THOSE DAMAGES.
-
 
 Direct Damages.  IN NO EVENT WILL LICENSOR'S AGGREGATE LIABILITY
 FOR DIRECT DAMAGES TO PROPERTY OR PERSON (WHETHER IN ONE INSTANCE OR
@@ -300,10 +255,7 @@ limited or excluded to the maximum extent allowed within those
 jurisdictions.
 
 
-
 GENERAL TERMS
-
-
 
 Term.  This Agreement becomes effective on the date You legally
 acquire the Software and will automatically terminate if You breach
@@ -313,7 +265,6 @@ will terminate at the end of the applicable subscription period.
 Upon termination of this Agreement or any applicable subscription
 period, You must destroy the original and all copies of the Software
 or return them to Licensor and delete the Software from Your systems.
-
 
 Verification. Licensor has the right to verify Your compliance with
 this Agreement. You agree to:  (1)  Implement internal safeguards to
@@ -340,7 +291,6 @@ the duration of the shortfall. If a material license shortfall of 5%
 or more is found, You must reimburse Licensor for the costs incurred
 in the audit.
 
-
 Third Party Software/Open Source.  Nothing in this Agreement shall
 restrict, limit or otherwise affect any rights or obligations You
 may have, or conditions to which You may be subject, under any
@@ -352,7 +302,6 @@ accompanied by a separate license agreement is governed by that
 separate license agreement.  Any third party software that may be
 provided with the Software is included for use at Your option.
 
-
 Transfer.  This Agreement and the associated licenses purchased for
 use of the Software may not be transferred or assigned without the
 prior written approval of Licensor.  Any such attempted transfer or
@@ -361,7 +310,6 @@ CRC@novell.com to request the transfer of licenses and assignment of
 this Agreement.  This Agreement may not be transferred or assigned
 without the prior written approval of Licensor. Any such attempted
 assignment shall be void and of no effect.
-
 
 Law. All matters arising out of or relating to the Agreement will
 be governed by the substantive laws of the United States and the
@@ -380,7 +328,6 @@ of law the laws of that country shall apply.  The application of the
 United Nations Convention of Contracts for the International Sale of
 Goods is expressly excluded.
 
-
 Entire Agreement.  This Agreement, together with any other purchase
 documents or other agreement between You and Licensor, sets forth
 the entire understanding and agreement between You and Licensor and
@@ -391,14 +338,12 @@ IS AUTHORIZED TO MODIFY THIS AGREEMENT OR TO MAKE ANY REPRESENTATION
 OR PROMISE THAT IS DIFFERENT FROM, OR IN ADDITION TO, THE TERMS OF
 THIS AGREEMENT.
 
-
 Waiver.  No waiver of any right under this Agreement will be
 effective unless in writing, signed by a duly authorized
 representative of the party to be bound.  No waiver of any past or
 present right arising from any breach or failure to perform will be
 deemed to be a waiver of any future right arising under this
 Agreement.
-
 
 Severability.  If any provision in this Agreement is invalid or
 unenforceable, that provision will be construed, limited, modified
@@ -434,22 +379,20 @@ regarding applicable export restrictions for Licensor products.
 Licensor assumes no responsibility for Your failure to obtain any
 necessary export approvals.
 
-
 U.S. Government Restricted Rights.  Use, duplication, or disclosure
 of any Deliverables by the U.S. Government is subject to the
 restrictions in FAR 52.227-14 (Dec 2007) Alternate III (Dec 2007),
 FAR 52.227-19 (Dec 2007), or DFARS 252.227-7013(b)(3) (Nov 1995), or
 applicable successor clauses.
 
-
-
 (052114)
+
 
 THIRD PARTY ADDENDUM
 
 The Software contains database software licensed by SUSE or its
-affiliates from Oracle America, Inc. (“Oracle”). For pur-poses of
-this addendum, the term “program” refers to the Oracle database
+affiliates from Oracle America, Inc. ("Oracle"). For pur-poses of
+this addendum, the term "program" refers to the Oracle database
 software. Oracle requires that You agree to the following terms
 regarding use of the program. You may only use the Oracle program in
 conjunction with the SUSE Man-ager Server with Database Software and
@@ -461,17 +404,17 @@ the SUSE Manager with Database Software License Agreement.
 package with which You received it and to Your internal business
 operations. You may permit agents or contractors (including, without
 limitation, outsourcers) to use the applica-tion package on Your
-behalf. You are responsible for Your agent’s, contractor’s,
-outsourcer’s, customer’s and supplier's use of the application
+behalf. You are responsible for Your agent's, contractor's,
+outsourcer's, customer's and supplier's use of the application
 package and compliance with the end user license agreement.
 3) Oracle or its licensor retains all ownership and intellectual
 property rights to the program.
 4) The following are prohibited: (a) use of the program for rental,
 timesharing, subscription service, hosting, or outsourc-ing; (b) the
 removal or modification of any program markings or any notice of
-Oracle’s or its licensors’ proprietary rights; (c) making the
+Oracle's or its licensors' proprietary rights; (c) making the
 programs available in any manner to any third party for use in the
-third party’s business operations (un-less such access is expressly
+third party's business operations (un-less such access is expressly
 permitted for the specific program license); (d) reverse engineering
 (unless required by law for interoperability), disassembly or
 decompilation of the programs (the foregoing prohibition includes

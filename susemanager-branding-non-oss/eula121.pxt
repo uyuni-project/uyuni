@@ -93,7 +93,7 @@ remove all Marks except those used to identify Licensor's ownership
 or licensing of the component.
 </p><p>
 PROPRIETARY DATABASE SOFTWARE.  If the Software includes a version
-of Oracle database software (“Database”), for  each unit  of
+of Oracle database software ("Database"), for  each unit  of
 Subscription  Services  You  have  purchased  for  the  Software,
 You  are authorized to use one Instance of the Database solely for
 use with the Software for which You have purchased the Subscription.
@@ -391,36 +391,38 @@ applicable successor clauses.
 THIRD PARTY ADDENDUM
 </p><p>
 The Software contains database software licensed by SUSE or its
-affiliates from Oracle America, Inc. (“Oracle”). For pur-poses of
-this addendum, the term “program” refers to the Oracle database
+affiliates from Oracle America, Inc. ("Oracle"). For pur-poses of
+this addendum, the term "program" refers to the Oracle database
 software. Oracle requires that You agree to the following terms
 regarding use of the program. You may only use the Oracle program in
 conjunction with the SUSE Man-ager Server with Database Software and
 not as a general purpose database in support of other applications.
 You agree to comply with the following:
+</p><p>
 1) Use of the program is limited to the legal entity that executed
 the SUSE Manager with Database Software License Agreement.
 2) Use of the program is restricted to the scope of the application
 package with which You received it and to Your internal business
 operations. You may permit agents or contractors (including, without
 limitation, outsourcers) to use the applica-tion package on Your
-behalf. You are responsible for Your agent’s, contractor’s,
-outsourcer’s, customer’s and supplier's use of the application
+behalf. You are responsible for Your agent's, contractor's,
+outsourcer's, customer's and supplier's use of the application
 package and compliance with the end user license agreement.
 3) Oracle or its licensor retains all ownership and intellectual
 property rights to the program.
 4) The following are prohibited: (a) use of the program for rental,
 timesharing, subscription service, hosting, or outsourc-ing; (b) the
 removal or modification of any program markings or any notice of
-Oracle’s or its licensors’ proprietary rights; (c) making the
+Oracle's or its licensors' proprietary rights; (c) making the
 programs available in any manner to any third party for use in the
-third party’s business operations (un-less such access is expressly
+third party's business operations (un-less such access is expressly
 permitted for the specific program license); (d) reverse engineering
 (unless required by law for interoperability), disassembly or
 decompilation of the programs (the foregoing prohibition includes
 but is not limited to review of data structures or similar materials
 produced by programs); and (e) publication of any results of
 benchmark tests run on the programs.
+</p><p>
 To the extent permitted by applicable law, Oracle disclaims
 liability for (a) any damages, whether direct, indirect,
 inci-dental, special, punitive or consequential, and (b) any loss of
