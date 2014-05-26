@@ -332,20 +332,20 @@ def build_channel_labels(source):
 usage='''usage: %prog [options]
 
 Create a 'dev' channel based on the latest packages:
-spacewalk-manage-channel-lifecycle -c rhel-x86_64-server-6 --init
+spacewalk-manage-channel-lifecycle -c sles11-sp3-pool-x86_64 --init
 
 Promote the packages from 'dev' to 'test':
-spacewalk-manage-channel-lifecycle -c dev-rhel-x86_64-server-6 --promote
+spacewalk-manage-channel-lifecycle -c dev-sles11-sp3-pool-x86_64 --promote
 
 Promote the packages from 'test' to 'prod':
-spacewalk-manage-channel-lifecycle -c test-rhel-x86_64-server-6 --promote
+spacewalk-manage-channel-lifecycle -c test-sles11-sp3-pool-x86_64 --promote
 
 Archive a production channel:
-spacewalk-manage-channel-lifecycle -c prod-rhel-x86_64-server-6 --archive
+spacewalk-manage-channel-lifecycle -c prod-sles11-sp3-pool-x86_64 --archive
 
 Rollback the production channel to an archived version:
 spacewalk-manage-channel-lifecycle \\
-    -c archive-20110520-prod-rhel-x86_64-server-6 --rollback'''
+    -c archive-20110520-prod-sles11-sp3-pool-x86_64 --rollback'''
 
 option_list = [
     Option('-l', '--list-channels', help='list existing channels',
