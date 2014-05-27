@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 27 17:14:01 CEST 2014 - mc@suse.de
+
+- version 2.1.33.6-1
+- Fix Non Compliant strings - they are used both in package and
+  system contexts
+
+-------------------------------------------------------------------
 Thu May 22 14:31:31 CEST 2014 - mc@suse.de
 
 - version 2.1.33.5-1
