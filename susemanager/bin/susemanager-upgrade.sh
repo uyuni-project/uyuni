@@ -109,6 +109,14 @@ upgrade_oracle() {
     if ! is_embedded_db ; then
         return 1
     fi
+
+    # oracle DB has: //localhost:1521/susemanager
+    if echo "$DBNAME" | grep '/' >/dev/null; then
+        DBSID=`echo "$DBNAME" | cut -d "/" -f4`
+    else
+        DBSID="$DBNAME"
+    fi
+
     echo "
 grant connect to $DBUSER;
 grant create table to $DBUSER;
@@ -124,7 +132,7 @@ grant alter session to $DBUSER;
 quit
 " > /tmp/dbsetup.sql
 
-    su -s /bin/bash - oracle -c "ORACLE_SID=$DBNAME sqlplus / as sysdba @/tmp/dbsetup.sql;"
+    su -s /bin/bash - oracle -c "ORACLE_SID=$DBSID sqlplus / as sysdba @/tmp/dbsetup.sql;"
     rm -f /tmp/dbsetup.sql
 }
 
