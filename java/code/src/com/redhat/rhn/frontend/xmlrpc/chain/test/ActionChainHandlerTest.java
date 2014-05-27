@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.chain.test;
 
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -708,15 +709,25 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcRenameActionChainFailureOnUnauthorized() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
+        String failureMessage =
+                "Expected an exception of type "
+                        + InvalidSessionIdException.class.getCanonicalName() + " or "
+                        + LookupException.class.getCanonicalName();
         try {
-            assertEquals(new Integer(1),
-                         this.ach.renameChain(TestUtils.randomString(),
-                                              CHAIN_LABEL, CHAIN_LABEL));
-            fail("Expected exception: " +
-                 InvalidSessionIdException.class.getCanonicalName());
-        } catch (InvalidSessionIdException ex) {
-            assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
+            assertEquals(new Integer(1), this.ach.renameChain(TestUtils.randomString(),
+                    CHAIN_LABEL, CHAIN_LABEL));
+            fail(failureMessage);
         }
+        catch (InvalidSessionIdException ex) {
+            // expected
+        }
+        catch (LookupException ex) {
+            // expected
+        }
+        catch (Exception ex) {
+            fail(failureMessage);
+        }
+        assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
     }
 
     /**
