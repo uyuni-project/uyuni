@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 27 17:08:18 CEST 2014 - mc@suse.de
+
+- version 2.1.14.3-1
+- Use maxDoc() to actually iterate over all documents
+- Do not skip in case the last record has been deleted (bnc#854956)
+- De-duplicate handleDeletedRecords() implementations
+
+-------------------------------------------------------------------
 Wed May 21 11:03:39 CEST 2014 - mc@suse.de
 
 - version 2.1.14.2-1
