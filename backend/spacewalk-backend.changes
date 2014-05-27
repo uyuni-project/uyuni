@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 27 17:14:40 CEST 2014 - mc@suse.de
+
+- version 2.1.55.7-1
+- Fix crash when EULA comes with broken encoding and unexpected
+  symbols from the susedata.xml file
+
+-------------------------------------------------------------------
 Thu May 22 14:32:50 CEST 2014 - mc@suse.de
 
 - version 2.1.55.6-1
