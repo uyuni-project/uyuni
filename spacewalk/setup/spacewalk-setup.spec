@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.14.3
+Version:        2.1.14.4
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 

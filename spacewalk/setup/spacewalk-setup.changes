@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue May 27 17:09:55 CEST 2014 - mc@suse.de
+
+- version 2.1.14.4-1
+- fix regex for a more lazy match to remove JAVA_OPTS
+  from tomcat6.conf
+
+-------------------------------------------------------------------
 Fri May 16 12:46:39 CEST 2014 - mc@suse.de
 
 - version 2.1.14.3-1
