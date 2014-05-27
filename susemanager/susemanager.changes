@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue May 27 17:10:44 CEST 2014 - mc@suse.de
+
+- version 2.1.10-1
+- get oracle SID from the DBNAME
+- Call spacewalk-setup-tomcat to update tomcat configuration (bnc#880059)
+- remove openssl-32bit as required package for the bootstrap repo (bnc#879616)
+
+-------------------------------------------------------------------
 Wed May 21 11:05:18 CEST 2014 - mc@suse.de
 
 - version 2.1.9-1
