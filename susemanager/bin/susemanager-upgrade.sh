@@ -112,7 +112,7 @@ upgrade_oracle() {
 
     # oracle DB has: //localhost:1521/susemanager
     if echo "$DBNAME" | grep '/' >/dev/null; then
-        DBSID=`echo "$DBNAME" | cut -d "/" -f4`
+        DBSID=`echo "$DBNAME" | sed 's/.*\///'`
     else
         DBSID="$DBNAME"
     fi
