@@ -71,10 +71,10 @@ Feature: Explore the main landing page
      And The table should have a column named "Entitlement" 
 
  
-  Scenario: Completeness of the Non-Compliant System table
+  Scenario: Completeness of the Non Compliant System table
     Given I am on the Systems page
     When I follow "Systems" in the left menu
-    When I follow "Non-compliant Systems" in the left menu
+    When I follow "Non Compliant" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Packages"
      And The table should have a column named "Base Channel"
@@ -164,11 +164,11 @@ Feature: Explore the main landing page
      And The table should have a column named "Enhancements"
      And The table should have a column named "Score"
 
-  Scenario: Check Non-compliant Systems page
+  Scenario: Check Non Compliant Systems page
      Given I am on the Systems overview page of this client
       When I follow "Software"
-       And I follow "Non-compliant Systems" in the content area
-      Then I should see a "Non Compliant Systems" text
+       And I follow "Non Compliant" in the content area
+      Then I should see a "Non Compliant" text
        And I should see a "The following packages are installed on this system and are not present in any of its channels." text
        And I should see a "Remove Packages" button
 
