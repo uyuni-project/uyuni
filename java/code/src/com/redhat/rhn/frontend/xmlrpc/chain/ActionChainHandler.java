@@ -203,11 +203,9 @@ public class ActionChainHandler extends BaseHandler {
                     "Another Action Chain with the same label already exists");
         }
 
-        ActionChainFactory.createActionChain(
+        return ActionChainFactory.createActionChain(
                 chainLabel, BaseHandler.getLoggedInUser(sessionKey)
-        );
-
-        return BaseHandler.VALID;
+        ).getId().intValue();
     }
 
     /**
