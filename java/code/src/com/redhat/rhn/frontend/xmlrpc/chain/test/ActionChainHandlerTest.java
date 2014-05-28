@@ -16,7 +16,6 @@
 package com.redhat.rhn.frontend.xmlrpc.chain.test;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -68,6 +67,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     private Package pkg;
     private Package channelPackage;
     private ActionChain actionChain;
+    private static final String UNAUTHORIZED_EXCEPTION_EXPECTED =
+            "Expected an exception of type "
+                    + InvalidSessionIdException.class.getCanonicalName();
+    protected String invalidKey;
 
     /**
      * {@inheritDoc}
@@ -116,6 +119,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         this.server = (Server) ActionChainHandlerTest.reload(this.server);
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);
+        invalidKey = adminKey + "deadbeef";
     }
 
     /**
@@ -144,9 +148,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcCreateActionChainFailureOnInvalidAuth() throws Exception {
         String chainName = TestUtils.randomString();
         try {
-            this.ach.createActionChain("", chainName);
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            this.ach.createActionChain(invalidKey, chainName);
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
             // expected
@@ -315,13 +318,13 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRemoveChainsFailureOnWrongUser() {
         int previousChainCount = this.ach.listChains(this.adminKey).size();
         try {
-            this.ach.removeActionChain("", actionChain.getLabel());
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            this.ach.removeActionChain(invalidKey, actionChain.getLabel());
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
-            assertEquals(0, previousChainCount - this.ach.listChains(this.adminKey).size());
+            // expected
         }
+        assertEquals(0, previousChainCount - this.ach.listChains(this.adminKey).size());
     }
 
     /**
@@ -391,14 +394,14 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
                 .intValue(), CHAIN_LABEL) > 0);
         try {
-            this.ach.removeAction("", CHAIN_LABEL, 0);
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            this.ach.removeAction(invalidKey, CHAIN_LABEL, 0);
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
-            assertEquals(false, this.ach.listChainActions(this.adminKey, CHAIN_LABEL)
-                    .isEmpty());
+            // expected
         }
+        assertEquals(false, this.ach.listChainActions(this.adminKey, CHAIN_LABEL)
+                .isEmpty());
     }
 
     /**
@@ -566,9 +569,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcScheduleOnTimeFailureNoAuth() {
         try {
-            this.ach.schedule("", CHAIN_LABEL, new Date());
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            this.ach.schedule(invalidKey, CHAIN_LABEL, new Date());
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
             // expected
@@ -610,10 +612,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 .intValue());
 
         try {
-            this.ach.addConfigurationDeployment(TestUtils.randomString(), CHAIN_LABEL,
+            this.ach.addConfigurationDeployment(invalidKey, CHAIN_LABEL,
                     this.server.getId().intValue(), revisions);
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
             // expected
@@ -663,10 +664,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
                 .intValue());
 
         try {
-            this.ach.addConfigurationDeployment(TestUtils.randomString(), CHAIN_LABEL, -1,
+            this.ach.addConfigurationDeployment(invalidKey, CHAIN_LABEL, -1,
                     revisions);
-            fail("Expected exception: "
-                    + InvalidSessionIdException.class.getCanonicalName());
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
             // expected
@@ -688,23 +688,13 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcRenameActionChainFailureOnUnauthorized() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
-        String failureMessage =
-                "Expected an exception of type "
-                        + InvalidSessionIdException.class.getCanonicalName() + " or "
-                        + LookupException.class.getCanonicalName();
         try {
-            assertEquals(new Integer(1), this.ach.renameChain(TestUtils.randomString(),
+            assertEquals(new Integer(1), this.ach.renameChain(invalidKey,
                     CHAIN_LABEL, CHAIN_LABEL));
-            fail(failureMessage);
+            fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
             // expected
-        }
-        catch (LookupException ex) {
-            // expected
-        }
-        catch (Exception ex) {
-            fail(failureMessage);
         }
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
     }
