@@ -25,19 +25,19 @@
                             <div class="form-group">
                                 <label for="modal-email" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="email" class="form-control" id="edit-email" placeholder="Email">
+                                    <input type="email" class="form-control" autocomplete="off" id="edit-email" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="edit-user" placeholder="Username">
+                                    <input type="text" class="form-control" autocomplete="off" id="edit-user" placeholder="Username">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" id="edit-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
+                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
                                 </div>
                             </div>
                         </form>
