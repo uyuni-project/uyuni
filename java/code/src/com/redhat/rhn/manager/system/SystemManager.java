@@ -3232,6 +3232,25 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * @param orgId organization ID
+     * @param sid server id
+     * @param ssId snapshot ID
+     * @param pc pageControl
+     * @return Returns unservable packages for a system
+     */
+    public static DataResult systemSnapshotUnservablePackages(Long orgId, Long sid,
+            Long ssId, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries",
+                "snapshot_unservable_package_list");
+        Map params = new HashMap();
+        params.put("org_id", orgId);
+        params.put("sid", sid);
+        params.put("ss_id", ssId);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
      * For a {@link ServerArch}, find the compatible {@link ChannelArch}.
      * @param serverArch server arch
      * @return channel arch
