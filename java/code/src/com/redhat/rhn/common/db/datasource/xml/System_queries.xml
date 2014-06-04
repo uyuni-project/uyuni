@@ -2264,6 +2264,7 @@ select a.id
    and sa.status = 0
    and a.prerequisite is null
  order by a.id
+  </query>
 </mode>
 
 <mode name="system_installed_product_ids">
