@@ -182,19 +182,16 @@ setup_postgres() {
             su - postgres -c "yes '$DBPASS' | createuser -P -sDR '$DBUSER'" # 2>/dev/null
     fi
 
-    mv /var/lib/pgsql/data/pg_hba.conf "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP"
-
-    if ! grep "local $DBNAME $DBUSER md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
-        echo "local $DBNAME $DBUSER md5" > /var/lib/pgsql/data/pg_hba.conf
-    fi
-    if ! grep "host $DBNAME $DBUSER 127.0.0.1/8 md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
-        echo "host $DBNAME $DBUSER 127.0.0.1/8 md5" > /var/lib/pgsql/data/pg_hba.conf
-    fi
-    if  ! grep "host $DBNAME $DBUSER ::1/128 md5" "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" ; then
-        echo "host $DBNAME $DBUSER ::1/128 md5" > /var/lib/pgsql/data/pg_hba.conf
-    fi
-
-    cat "/var/lib/pgsql/data/pg_hba.conf.$TIMESTAMP" >> /var/lib/pgsql/data/pg_hba.conf
+    echo "
+host	$DBNAME	$DBUSER	0.0.0.0/0	md5
+local	$DBNAME	$DBUSER	md5
+host	$DBNAME	$DBUSER	127.0.0.1/8	md5
+host	$DBNAME	$DBUSER	::1/128	md5
+local	all	all	peer
+host	all	all	127.0.0.1/32	ident
+host	all	all	::1/128	ident
+local	replication	postgres	peer
+" > /var/lib/pgsql/data/pg_hba.conf
 
     change_value db_backend postgresql
 
@@ -212,7 +209,7 @@ db-host=$DBHOST
 db-port=5432
 " > "/root/answer.txt.$TIMESTAMP"
 
-   cp /etc/rhn/rhn.conf "/etc/rhn/rhn.conf.$TIMESTAMP"
+    cp /etc/rhn/rhn.conf "/etc/rhn/rhn.conf.$TIMESTAMP"
 
     spacewalk-setup --db-only --external-postgresql --answer-file="/root/answer.txt.$TIMESTAMP"
     if [ "$?" != "0" ]; then
@@ -223,16 +220,24 @@ db-port=5432
 
     cp "/etc/rhn/rhn.conf.$TIMESTAMP" /etc/rhn/rhn.conf
     change_value db_backend postgresql
+    change_value db_name $DBNAME
+    change_value db_port 5432
     change_value hibernate.dialect org.hibernate.dialect.PostgreSQLDialect
     change_value hibernate.connection.driver_class org.postgresql.Driver
     change_value hibernate.connection.driver_proto jdbc:postgresql
 }
 
 DBBACKEND=`read_value db_backend`
-DBNAME=`read_value db_name`
 DBHOST=`read_value db_host`
 DBUSER=`read_value db_user`
 DBPASS=`read_value db_password`
+# oracle DB has: //localhost:1521/susemanager
+DBSID=`read_value db_name`
+if echo "$DBSID" | grep '/' >/dev/null; then
+    DBNAME=`echo "$DBSID" | sed 's/.*\///'`
+else
+    DBNAME="$DBSID"
+fi
 
 if [ "$DBBACKEND" != "oracle" ]; then
     echo "Database backend must be oracle."
