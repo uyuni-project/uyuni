@@ -81,9 +81,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         super.setUp();
 
         // Provisioning included
-        this.server =
-                ServerFactoryTest.createTestServer(this.admin, true,
-                        ServerConstants.getServerGroupTypeProvisioningEntitled());
+        this.server = ServerFactoryTest.createTestServer(
+                this.admin, true, ServerConstants.getServerGroupTypeProvisioningEntitled());
 
         // Network
         Network net = new Network();
@@ -94,7 +93,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         // Add capabilities
         SystemManagerTest.giveCapability(this.server.getId(), "script.run", new Long(1));
         SystemManagerTest.giveCapability(this.server.getId(),
-                SystemManager.CAP_CONFIGFILES_DEPLOY, new Long(2));
+                                         SystemManager.CAP_CONFIGFILES_DEPLOY, new Long(2));
 
         // Channels
         this.pkg = PackageTest.createTestPackage(this.admin.getOrg());
@@ -137,8 +136,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcCreateActionChain() throws Exception {
         String chainName = TestUtils.randomString();
-        assertEquals(true, this.ach.createActionChain(this.adminKey, chainName) > 0);
-        assertFalse(ActionChainFactory.getActionChain(chainName) == null);
+        Integer chainId = this.ach.createChain(this.adminKey, chainName);
+        ActionChain newActionChain = ActionChainFactory.getActionChain(chainName);
+        assertNotNull(newActionChain);
+        assertEquals(newActionChain.getId().longValue(), chainId.longValue());
     }
 
     /**
@@ -148,7 +149,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcCreateActionChainFailureOnInvalidAuth() throws Exception {
         String chainName = TestUtils.randomString();
         try {
-            this.ach.createActionChain(invalidKey, chainName);
+            this.ach.createChain(invalidKey, chainName);
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
@@ -162,9 +163,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcCreateActionChainFailureOnEmptyName() throws Exception {
         try {
-            this.ach.createActionChain(this.adminKey, "");
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+            this.ach.createChain(this.adminKey, "");
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             // expected
@@ -176,12 +177,14 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * @throws Exception if something bad happens
      */
     public void testAcAddSystemReboot() throws Exception {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
 
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_REBOOT, actionChain.getEntries().iterator().next()
-                .getAction().getActionType());
+        assertEquals(ActionFactory.TYPE_REBOOT,
+                     actionChain.getEntries().iterator().next()
+                             .getAction().getActionType());
     }
 
     /**
@@ -191,11 +194,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcPackageInstallation() throws Exception {
         List<Integer> packages = new ArrayList<Integer>();
         packages.add(this.channelPackage.getId().intValue());
-        assertEquals(true, this.ach.addPackageInstall(this.adminKey, this.server.getId()
-                .intValue(), packages, CHAIN_LABEL) > 0);
+        assertEquals(true,
+                     this.ach.addPackageInstall(this.adminKey,
+                                                this.server.getId().intValue(),
+                                                packages,
+                                                CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE, actionChain.getEntries()
-                .iterator().next().getAction().getActionType());
+        assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE,
+                     actionChain.getEntries().iterator().next()
+                             .getAction().getActionType());
     }
 
     /**
@@ -206,8 +213,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         List<Integer> packages = new ArrayList<Integer>();
         packages.add(0);
         try {
-            this.ach.addPackageInstall(this.adminKey, this.server.getId().intValue(),
-                    packages, CHAIN_LABEL);
+            this.ach.addPackageInstall(this.adminKey,
+                                       this.server.getId().intValue(),
+                                       packages,
+                                       CHAIN_LABEL);
             fail("Expected exception: " + InvalidPackageException.class.getCanonicalName());
         }
         catch (InvalidPackageException ex) {
@@ -222,11 +231,14 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcPackageRemoval() throws Exception {
         List<Integer> packagesToRemove = new ArrayList<Integer>();
         packagesToRemove.add(this.pkg.getId().intValue());
-        assertEquals(true, this.ach.addPackageRemoval(this.adminKey, this.server.getId()
-                .intValue(), packagesToRemove, CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addPackageRemoval(this.adminKey,
+                                                      this.server.getId().intValue(),
+                                                      packagesToRemove,
+                                                      CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_PACKAGES_REMOVE, actionChain.getEntries()
-                .iterator().next().getAction().getActionType());
+        assertEquals(ActionFactory.TYPE_PACKAGES_REMOVE,
+                     actionChain.getEntries().iterator().next()
+                             .getAction().getActionType());
     }
 
     /**
@@ -235,10 +247,11 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcPackageRemovalFailureOnEmpty() throws Exception {
         try {
-            assertEquals(true, this.ach.addPackageRemoval(this.adminKey, this.server
-                    .getId().intValue(), new ArrayList<Integer>(), CHAIN_LABEL) > 0);
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+            assertEquals(true, this.ach.addPackageRemoval(
+                    this.adminKey, this.server.getId().intValue(),
+                    new ArrayList<Integer>(), CHAIN_LABEL) > 0);
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(0, actionChain.getEntries().size());
@@ -254,8 +267,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         packagesToRemove.add(0);
 
         try {
-            assertEquals(true, this.ach.addPackageRemoval(this.adminKey, this.server
-                    .getId().intValue(), packagesToRemove, CHAIN_LABEL) > 0);
+            assertEquals(true, this.ach.addPackageRemoval(this.adminKey,
+                                                          this.server.getId().intValue(),
+                                                          packagesToRemove,
+                                                          CHAIN_LABEL) > 0);
             fail("Expected exception: " + InvalidPackageException.class.getCanonicalName());
         }
         catch (InvalidPackageException ex) {
@@ -267,9 +282,11 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test list chains.
      */
     public void testAcListChains() {
-        String[] labels =
-                new String[] {TestUtils.randomString(), TestUtils.randomString(),
-                        TestUtils.randomString()};
+        String[] labels = new String[]{
+            TestUtils.randomString(),
+            TestUtils.randomString(),
+            TestUtils.randomString()
+        };
 
         int previousChains = ActionChainFactory.getActionChains().size();
         for (String label : labels) {
@@ -289,17 +306,20 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test chain actions content.
      */
     public void testAcChainActionsContent() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
 
         for (Map<String, Object> action : this.ach.listChainActions(this.adminKey,
-                CHAIN_LABEL)) {
+                                                                    CHAIN_LABEL)) {
             assertEquals("System reboot", action.get("label"));
             assertEquals("System reboot", action.get("type"));
-            assertEquals(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-                    .format((Date) action.get("created")),
-                    DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-                            .format((Date) action.get("earliest")));
+            assertEquals(DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                                                        DateFormat.SHORT)
+                                 .format((Date) action.get("created")),
+                         DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                                                        DateFormat.SHORT)
+                                 .format((Date) action.get("earliest")));
         }
     }
 
@@ -308,7 +328,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcRemoveChain() {
         int previousChainCount = this.ach.listChains(this.adminKey).size();
-        this.ach.removeActionChain(this.adminKey, actionChain.getLabel());
+        this.ach.deleteChain(this.adminKey, actionChain.getLabel());
         assertEquals(1, previousChainCount - this.ach.listChains(this.adminKey).size());
     }
 
@@ -318,7 +338,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRemoveChainsFailureOnWrongUser() {
         int previousChainCount = this.ach.listChains(this.adminKey).size();
         try {
-            this.ach.removeActionChain(invalidKey, actionChain.getLabel());
+            this.ach.deleteChain(invalidKey, actionChain.getLabel());
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
@@ -333,9 +353,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRemoveChainsFailureOnEmpty() {
         int previousChainCount = this.ach.listChains(this.adminKey).size();
         try {
-            this.ach.removeActionChain(this.adminKey, "");
-            fail("Expected exception: "
-                    + NoSuchActionChainException.class.getCanonicalName());
+            this.ach.deleteChain(this.adminKey, "");
+            fail("Expected exception: " +
+                 NoSuchActionChainException.class.getCanonicalName());
         }
         catch (NoSuchActionChainException ex) {
             assertEquals(0, previousChainCount - this.ach.listChains(this.adminKey).size());
@@ -348,9 +368,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRemoveChainsFailureOnUnknown() {
         int previousChainCount = this.ach.listChains(this.adminKey).size();
         try {
-            this.ach.removeActionChain(this.adminKey, TestUtils.randomString());
-            fail("Expected exception: "
-                    + NoSuchActionChainException.class.getCanonicalName());
+            this.ach.deleteChain(this.adminKey, TestUtils.randomString());
+            fail("Expected exception: " +
+                 NoSuchActionChainException.class.getCanonicalName());
         }
         catch (NoSuchActionChainException ex) {
             assertEquals(0, previousChainCount - this.ach.listChains(this.adminKey).size());
@@ -361,13 +381,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test actions removal.
      */
     public void testAcRemoveActions() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
-        assertEquals(false,
-                this.ach.listChainActions(this.adminKey, CHAIN_LABEL).isEmpty());
-        int id = ((Long) ((Map<String, Object>) this.ach.listChainActions(this.adminKey,
-                CHAIN_LABEL).get(0)).get("id")).intValue();
-        assertEquals(true, this.ach.removeAction(this.adminKey, CHAIN_LABEL, id) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
+        assertEquals(false, this.ach.listChainActions(
+                this.adminKey, CHAIN_LABEL).isEmpty());
+        assertEquals(true, this.ach.removeAction(
+                this.adminKey, CHAIN_LABEL,
+                ((Long) ((Map) this.ach.listChainActions(this.adminKey, CHAIN_LABEL).get(0))
+                .get("id")).intValue()) > 0);
         assertEquals(true, this.ach.listChainActions(this.adminKey, CHAIN_LABEL).isEmpty());
     }
 
@@ -375,15 +397,18 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test empty list does not remove any actions, schedule does not happening.
      */
     public void testAcRemoveActionsEmpty() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true,
+                     this.ach.addSystemReboot(this.adminKey,
+                                              this.server.getId().intValue(),
+                                              CHAIN_LABEL) > 0);
         try {
             this.ach.removeAction(this.adminKey, CHAIN_LABEL, 0);
-            fail("Expected exception: " + NoSuchActionException.class.getCanonicalName());
+            fail("Expected exception: " +
+                 NoSuchActionException.class.getCanonicalName());
         }
         catch (NoSuchActionException ex) {
-            assertEquals(false, this.ach.listChainActions(this.adminKey, CHAIN_LABEL)
-                    .isEmpty());
+            assertEquals(false,
+                         this.ach.listChainActions(this.adminKey, CHAIN_LABEL).isEmpty());
         }
     }
 
@@ -391,8 +416,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test removing action with unauthorized access.
      */
     public void testAcRemoveActionsUnauthorizedEmptyToken() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
         try {
             this.ach.removeAction(invalidKey, CHAIN_LABEL, 0);
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
@@ -408,16 +434,17 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test removal of the actions on the unknown chain.
      */
     public void testAcRemoveActionsUnknownChain() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
         try {
             this.ach.removeAction(this.adminKey, "", 0);
-            fail("Expected exception: "
-                    + NoSuchActionChainException.class.getCanonicalName());
+            fail("Expected exception: " +
+                 NoSuchActionChainException.class.getCanonicalName());
         }
         catch (NoSuchActionChainException ex) {
-            assertEquals(false, this.ach.listChainActions(this.adminKey, CHAIN_LABEL)
-                    .isEmpty());
+            assertEquals(false, this.ach.listChainActions(
+                    this.adminKey, CHAIN_LABEL).isEmpty());
         }
     }
 
@@ -426,15 +453,16 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * and schedule should not happen.
      */
     public void testAcRemoveActionsUnknownChainActions() {
-        assertEquals(true, this.ach.addSystemReboot(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addSystemReboot(this.adminKey,
+                                                    this.server.getId().intValue(),
+                                                    CHAIN_LABEL) > 0);
         try {
             this.ach.removeAction(this.adminKey, CHAIN_LABEL, 0);
             fail("Expected exception: " + NoSuchActionException.class.getCanonicalName());
         }
         catch (NoSuchActionException ex) {
-            assertEquals(false, this.ach.listChainActions(this.adminKey, CHAIN_LABEL)
-                    .isEmpty());
+            assertEquals(false, this.ach.listChainActions(
+                    this.adminKey, CHAIN_LABEL).isEmpty());
         }
     }
 
@@ -451,11 +479,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         Server system = (Server) info.get("server");
         upgradePackages.add(this.pkg.getId().intValue());
 
-        assertEquals(true, this.ach.addPackageUpgrade(this.adminKey, system.getId()
-                .intValue(), upgradePackages, CHAIN_LABEL) > 0);
-        assertEquals(false, this.ach.listChains(this.adminKey).isEmpty());
+        assertEquals(true,
+                     this.ach.addPackageUpgrade(this.adminKey,
+                                                system.getId().intValue(),
+                                                upgradePackages,
+                                                CHAIN_LABEL) > 0);
         assertEquals(false,
-                this.ach.listChainActions(this.adminKey, CHAIN_LABEL).isEmpty());
+                     this.ach.listChains(this.adminKey).isEmpty());
+        assertEquals(false,
+                     this.ach.listChainActions(this.adminKey, CHAIN_LABEL).isEmpty());
 
         assertEquals(1, actionChain.getEntries().size());
         assertEquals(ActionFactory.TYPE_PACKAGES_UPDATE, actionChain.getEntries()
@@ -468,10 +500,12 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcPackageUpgradeOnEmpty() {
         List<Integer> upgradePackages = new ArrayList<Integer>();
         try {
-            this.ach.addPackageUpgrade(this.adminKey, this.server.getId().intValue(),
-                    upgradePackages, CHAIN_LABEL);
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+            this.ach.addPackageUpgrade(this.adminKey,
+                                       this.server.getId().intValue(),
+                                       upgradePackages,
+                                       CHAIN_LABEL);
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(0, actionChain.getEntries().size());
@@ -485,8 +519,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         List<Integer> upgradePackages = new ArrayList<Integer>();
         upgradePackages.add(0);
         try {
-            this.ach.addPackageUpgrade(this.adminKey, this.server.getId().intValue(),
-                    upgradePackages, CHAIN_LABEL);
+            this.ach.addPackageUpgrade(this.adminKey,
+                                       this.server.getId().intValue(),
+                                       upgradePackages,
+                                       CHAIN_LABEL);
             fail("Expected exception: " + InvalidPackageException.class.getCanonicalName());
         }
         catch (InvalidPackageException ex) {
@@ -506,8 +542,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
             packages.add(packageListItem.getPackageId().intValue());
         }
 
-        assertEquals(true, this.ach.addPackageVerify(this.adminKey, this.server.getId()
-                .intValue(), packages, CHAIN_LABEL) > 0);
+        assertEquals(true, this.ach.addPackageVerify(this.adminKey,
+                                                     this.server.getId().intValue(),
+                                                     packages,
+                                                     CHAIN_LABEL) > 0);
         assertEquals(1, actionChain.getEntries().size());
         assertEquals(ActionFactory.TYPE_PACKAGES_VERIFY, actionChain.getEntries()
                 .iterator().next().getAction().getActionType());
@@ -518,10 +556,12 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcPackageVerifyFailureOnEmpty() {
         try {
-            this.ach.addPackageVerify(this.adminKey, this.server.getId().intValue(),
-                    new ArrayList<Integer>(), CHAIN_LABEL);
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+            this.ach.addPackageVerify(this.adminKey,
+                                      this.server.getId().intValue(),
+                                      new ArrayList<Integer>(),
+                                      CHAIN_LABEL);
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(0, actionChain.getEntries().size());
@@ -535,8 +575,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         List<Integer> packages = new ArrayList<Integer>();
         packages.add(0);
         try {
-            this.ach.addPackageVerify(this.adminKey, this.server.getId().intValue(),
-                    packages, CHAIN_LABEL);
+            this.ach.addPackageVerify(this.adminKey,
+                                      this.server.getId().intValue(),
+                                      packages,
+                                      CHAIN_LABEL);
             fail("Expected exception: " + InvalidPackageException.class.getCanonicalName());
         }
         catch (InvalidPackageException ex) {
@@ -548,12 +590,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * Test schedule remote command.
      */
     public void testAcRemoteCommand() {
-        assertEquals(true, this.ach.addScriptRun(this.adminKey, this.server.getId()
-                .intValue(), CHAIN_LABEL, "root", "root", 300,
-                ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
+        assertEquals(true,
+                     this.ach.addScriptRun(this.adminKey,
+                                           this.server.getId().intValue(),
+                                           CHAIN_LABEL,
+                                           "root", "root", 300,
+                                           ActionChainHandlerTest.SCRIPT_SAMPLE) > 0);
         assertEquals(1, actionChain.getEntries().size());
-        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, actionChain.getEntries().iterator()
-                .next().getAction().getActionType());
+        assertEquals(ActionFactory.TYPE_SCRIPT_RUN, actionChain.getEntries()
+                .iterator().next().getAction().getActionType());
     }
 
     /**
@@ -561,7 +606,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcScheduleOnTime() {
         assertEquals(new Integer(1),
-                this.ach.schedule(this.adminKey, CHAIN_LABEL, new Date()));
+                     this.ach.scheduleChain(this.adminKey, CHAIN_LABEL, new Date()));
     }
 
     /**
@@ -569,7 +614,7 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcScheduleOnTimeFailureNoAuth() {
         try {
-            this.ach.schedule(invalidKey, CHAIN_LABEL, new Date());
+            this.ach.scheduleChain(invalidKey, CHAIN_LABEL, new Date());
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
@@ -582,12 +627,12 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcScheduleOnTimeFailureNoChain() {
         try {
-            this.ach.schedule(this.adminKey, "", new Date());
-            fail("Expected exception: "
-                    + NoSuchActionChainException.class.getCanonicalName());
+            this.ach.scheduleChain(this.adminKey, "", new Date());
+            fail("Expected exception: " +
+                 NoSuchActionChainException.class.getCanonicalName());
         }
         catch (NoSuchActionChainException ex) {
-            // expected
+            //expected
         }
     }
 
@@ -596,11 +641,14 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcDeployConfiguration() {
         List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(this.admin.getOrg()).getId()
-                .intValue());
+        revisions.add(ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg()).getId().intValue());
 
-        assertEquals(new Integer(BaseHandler.VALID), this.ach.addConfigurationDeployment(
-                this.adminKey, CHAIN_LABEL, this.server.getId().intValue(), revisions));
+        assertEquals(new Integer(BaseHandler.VALID),
+                     this.ach.addConfigurationDeployment(this.adminKey,
+                                                         CHAIN_LABEL,
+                                                         this.server.getId().intValue(),
+                                                         revisions));
     }
 
     /**
@@ -608,12 +656,14 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcDeployConfigurationFailureUnauthorized() {
         List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(this.admin.getOrg()).getId()
-                .intValue());
+        revisions.add(ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg()).getId().intValue());
 
         try {
-            this.ach.addConfigurationDeployment(invalidKey, CHAIN_LABEL,
-                    this.server.getId().intValue(), revisions);
+            this.ach.addConfigurationDeployment(invalidKey,
+                                                CHAIN_LABEL,
+                                                this.server.getId().intValue(),
+                                                revisions);
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
@@ -626,17 +676,18 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcDeployConfigurationFailureNoChain() {
         List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(this.admin.getOrg()).getId()
-                .intValue());
+        revisions.add(ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg()).getId().intValue());
 
         try {
-            this.ach.addConfigurationDeployment(this.adminKey, "", this.server.getId()
-                    .intValue(), revisions);
-            fail("Expected exception: "
-                    + NoSuchActionChainException.class.getCanonicalName());
+            this.ach.addConfigurationDeployment(this.adminKey, "",
+                                                this.server.getId().intValue(),
+                                                revisions);
+            fail("Expected exception: " +
+                 NoSuchActionChainException.class.getCanonicalName());
         }
         catch (NoSuchActionChainException ex) {
-            // expected
+            //expected
         }
     }
 
@@ -645,13 +696,15 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcDeployConfigurationFailureNoRevisions() {
         try {
-            this.ach.addConfigurationDeployment(TestUtils.randomString(), CHAIN_LABEL,
-                    this.server.getId().intValue(), new ArrayList<Integer>());
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+            this.ach.addConfigurationDeployment(TestUtils.randomString(),
+                                                CHAIN_LABEL,
+                                                this.server.getId().intValue(),
+                                                new ArrayList<Integer>());
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
-            // expected
+            //expected
         }
     }
 
@@ -660,8 +713,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      */
     public void testAcDeployConfigurationFailureNoServers() {
         List<Integer> revisions = new ArrayList<Integer>();
-        revisions.add(ConfigTestUtils.createConfigRevision(this.admin.getOrg()).getId()
-                .intValue());
+        revisions.add(ConfigTestUtils.createConfigRevision(
+                this.admin.getOrg()).getId().intValue());
 
         try {
             this.ach.addConfigurationDeployment(invalidKey, CHAIN_LABEL, -1,
@@ -679,7 +732,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRenameActionChain() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         assertEquals(new Integer(1),
-                this.ach.renameChain(this.adminKey, CHAIN_LABEL, TestUtils.randomString()));
+                     this.ach.renameChain(
+                             this.adminKey, CHAIN_LABEL, TestUtils.randomString()));
         assertEquals(false, actionChain.getLabel().equals(CHAIN_LABEL));
     }
 
@@ -689,8 +743,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
     public void testAcRenameActionChainFailureOnUnauthorized() {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
-            assertEquals(new Integer(1), this.ach.renameChain(invalidKey,
-                    CHAIN_LABEL, CHAIN_LABEL));
+            assertEquals(new Integer(1),
+                         this.ach.renameChain(invalidKey,
+                                              CHAIN_LABEL, CHAIN_LABEL));
             fail(UNAUTHORIZED_EXCEPTION_EXPECTED);
         }
         catch (InvalidSessionIdException ex) {
@@ -706,9 +761,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
             assertEquals(new Integer(1),
-                    this.ach.renameChain(this.adminKey, CHAIN_LABEL, CHAIN_LABEL));
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+                         this.ach.renameChain(this.adminKey, CHAIN_LABEL, CHAIN_LABEL));
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
@@ -722,9 +777,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
             assertEquals(new Integer(1),
-                    this.ach.renameChain(this.adminKey, "", CHAIN_LABEL));
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+                         this.ach.renameChain(this.adminKey, "", CHAIN_LABEL));
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
@@ -738,9 +793,9 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
         try {
             assertEquals(new Integer(1),
-                    this.ach.renameChain(this.adminKey, CHAIN_LABEL, ""));
-            fail("Expected exception: "
-                    + InvalidParameterException.class.getCanonicalName());
+                         this.ach.renameChain(this.adminKey, CHAIN_LABEL, ""));
+            fail("Expected exception: " +
+                 InvalidParameterException.class.getCanonicalName());
         }
         catch (InvalidParameterException ex) {
             assertEquals(true, actionChain.getLabel().equals(CHAIN_LABEL));
