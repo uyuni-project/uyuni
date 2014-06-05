@@ -324,7 +324,7 @@ public class Org extends BaseDomainHelper {
      * Get the list of channels accessible for this org.
      * @return List of channels public or owned by this org.
      */
-    public List getAccessibleChannels() {
+    public List<Channel> getAccessibleChannels() {
         return ChannelManager.getChannelsAccessibleByOrg(this.id);
     }
 
@@ -352,7 +352,7 @@ public class Org extends BaseDomainHelper {
     private void manipulateChannelPerms(String modeName, Long uid, Long cid,
             String roleLabel) {
         WriteMode mode = ModeFactory.getWriteMode("Org_queries", modeName);
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put(USER_ID_KEY, uid);
         params.put("cid", cid);
         params.put("role_label", roleLabel);
@@ -406,7 +406,7 @@ public class Org extends BaseDomainHelper {
      */
     public List<User> getActiveOrgAdmins() {
         SelectMode m = ModeFactory.getMode("User_queries", "active_org_admins");
-        Map params = new HashMap();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put(ORG_ID_KEY, this.getId());
         DataResult dr = m.execute(params);
         if (dr == null) {
