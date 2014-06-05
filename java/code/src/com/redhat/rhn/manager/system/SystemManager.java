@@ -1606,14 +1606,14 @@ public class SystemManager extends BaseManager {
         // Unsubscribe only if we are configured to automatically re-subscribe again,
         // see the activateProxy() method
         if (Config.get().getBoolean(ConfigDefaults.WEB_SUBSCRIBE_PROXY_CHANNEL)) {
-          Set<Channel> channels = server.getChannels();
-          for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
-              Channel c = itr.next();
-              ChannelFamily cf = c.getChannelFamily();
-              if (cf.getLabel().equals("SMP")) {
-                  SystemManager.unsubscribeServerFromChannel(server, c);
-              }
-          }
+            Set<Channel> channels = server.getChannels();
+            for (Iterator<Channel> itr = channels.iterator(); itr.hasNext();) {
+                Channel c = itr.next();
+                ChannelFamily cf = c.getChannelFamily();
+                if (cf.getLabel().equals("SMP")) {
+                    SystemManager.unsubscribeServerFromChannel(server, c);
+                }
+            }
         }
 
         return server;
