@@ -2320,4 +2320,34 @@ public class ConfigurationManager extends BaseManager {
         return !dr.isEmpty();
     }
 
+    /**
+     * @param sid server ID
+     * @param ssid snapshot ID
+     * @param pc page control
+     * @return Difference of config channel subscription between current state and snapshot
+     */
+    public static DataResult systemSnapshotConfigChannels(Long sid, Long ssid,
+            PageControl pc) {
+        SelectMode m = ModeFactory.getMode("config_queries",
+                "snapshot_configchannel_diff");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("ss_id", ssid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param ssid snapshot ID
+     * @param pc page control
+     * @return List of config files whcih will be redeployed during rollback
+     */
+    public static DataResult systemSnapshotConfigFiles(Long ssid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("config_queries", "configfiles_for_snapshot");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("ss_id", ssid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
 }

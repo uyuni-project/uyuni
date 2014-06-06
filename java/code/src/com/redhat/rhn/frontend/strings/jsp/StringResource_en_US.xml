@@ -59,6 +59,18 @@
             <context context-type="sourcefile">/rhn/systems/details/history/snapshots/Packages.do</context>
           </context-group>
         </trans-unit>
+        <trans-unit id="column.tag-name">
+          <source>Tag Name</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
+          </context-group>
+        </trans-unit>
+        <trans-unit id="column.reason">
+          <source>Reason</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
+          </context-group>
+        </trans-unit>
       </group>
       <!-- Generic row labels. The intent is that these can be reused across multiple pages.-->
       <group>
@@ -4538,6 +4550,30 @@ value for this entitlement, excluding the default organization's consumption.</s
           <context context-type="sourcefile">/rhn/channels/Entitlements</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="entitledsystems.jsp.header">
+        <source>Subscribed Systems</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/EntitledSystems</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="entitledsystems.summary.regular">
+        <source>The systems listed below consume regular software channel entitlements from &lt;b&gt;{0}&lt;/b&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/EntitledSystems</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="entitledsystems.summary.flex">
+        <source>The systems listed below consume flex guest software channel entitlements from &lt;b&gt;{0}&lt;/b&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/EntitledSystems</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="entitledsystems.summary.all">
+        <source>The systems listed below consume both regular and flex guest software channel entitlements from &lt;b&gt;{0}&lt;/b&gt;.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/EntitledSystems</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="packagesearch.jsp.toolbar">
         <source>Package Search</source>
         <context-group name="ctx">
@@ -5411,6 +5447,24 @@ value for this entitlement, excluding the default organization's consumption.</s
         <source>External Group Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="grouplist.jsp.groupmembership">
+        <source>Membership</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="grouplist.jsp.groupmembership.current">
+        <source>Current Profile Only</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="grouplist.jsp.groupmembership.snapshot">
+        <source>Snapshot Profile Only</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.status">
@@ -8941,6 +8995,30 @@ Please note that some manual configuration of these scripts may still be require
           <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after kickstart. You may wish to review these kickstarts (click on the profile name to do so) to confirm whether or not the selected systems will reappear in the @@PRODUCT_NAME@@ system list after kickstart.</source>
         </trans-unit>
       </group>
+      <!-- SSM Rollback to tag -->
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/ssm/provisioning/RollbackToTag.do</context>
+        </context-group>
+        <trans-unit id="ssm.provisioning.rollbacktotag.header">
+          <source>Rollback to Snapshot Tag: {0}</source>
+        </trans-unit>
+        <trans-unit id="ssm.provisioning.rollbacktotag.summary1">
+          <source>The systems below may be rolled back to their system snapshot associated with the tag: {0}.</source>
+        </trans-unit>
+        <trans-unit id="ssm.provisioning.rollbacktotag.summary2">
+          <source>For details on the system snapshot tied to this tag for a particular system, click on the 'Reason for Snapshot' link for the desired system.</source>
+        </trans-unit>
+        <trans-unit id="ssm.provisioning.rollbacktotag.note">
+          <source>Note: this operation will take some time to complete.</source>
+        </trans-unit>
+        <trans-unit id="ssm.provisioning.rollbacktotag.datetagapplied">
+          <source>Date Tag Applied</source>
+        </trans-unit>
+        <trans-unit id="ssm.provisioning.rollbacktotag.rollback-button">
+          <source>Rollback Systems</source>
+        </trans-unit>
+      </group>
       <!-- Kickstart -->
       <trans-unit id="kickstarts.jsp.diskwarning">
         <source>&lt;strong&gt;Warning:&lt;/strong&gt; The Kickstart Profile selected is set to destroy all
@@ -12327,8 +12405,20 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="system.history.snapshot.header-packages">
           <source>Snapshot - RPM Packages</source>
         </trans-unit>
+        <trans-unit id="system.history.snapshot.header-groups">
+          <source>Snapshot - System Groups</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.header-channels">
+          <source>Snapshot - Software Channels</source>
+        </trans-unit>
         <trans-unit id="system.history.snapshot.summary-packages">
           <source>Below is a comparison of the current package profile and the snapshot package profile.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.summary-groups">
+          <source>Below is a comparison of the current system group membership and the recorded snapshot group list.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.summary-channels">
+          <source>Below is a comparison of the current system channel subscriptions and the recorded snapshot channel subscriptions.</source>
         </trans-unit>
         <trans-unit id="system.history.snapshot.profileonly">
           <source>Current profile only</source>
@@ -12344,6 +12434,189 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </trans-unit>
         <trans-unit id="system.history.snapshot.nopackagediff">
           <source>No package profile differences.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.nogroupdiff">
+          <source>No system group differences.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.nochanneldiff">
+          <source>No channel subscription differences.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channel.list">
+          <source>Channel</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channel.subscription">
+          <source>Subscription</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagCreateHeader">
+          <source>Tag System</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagCreateSummary">
+          <source>You may tag the most recent snapshot for this system.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagName">
+          <source>Tag name</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagCreate">
+          <source>Tag Current Snapshot</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagCreateSuccess">
+          <source>Tag added to system</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagCreateFailure">
+          <source>That tag already exists for this system. Please choose another tag name.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.snapshotTags">
+          <source>Snapshot Tags</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagsSummary">
+          <source>The following list of tags mark moments in time when the latest system snapshot was noted. Clicking the links below will allow you to rollback to the snapshot that was most recent at the time of the tag creation.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.noTags">
+          <source>No tags apply to this system</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagRemove">
+          <source>Remove Tags</source>
+        </trans-unit>
+        <trans-unit id="toolbar.create.snapshot">
+          <source>create new system tag</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagDeleteHeader">
+          <source>Confirm Snapshot Tag Removal</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagDeleteSummary">
+          <source>Please confirm that you want to remove the listed snapshot tags.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagDeleteSuccess">
+          <source>{0} Snapshot Tag(s) removed.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagSingleHeader">
+          <source>Snapshot - Snapshot Tags</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagSingleSummary">
+          <source>These are the tags associated with this particular snapshot.&lt;br/&gt;Rollbacks based upon these tags will result in using this {0} snapshot.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.tagAppliedToSnapshot">
+          <source>Applied to this snapshot</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.header-rollback">
+          <source>Rollback to {0} Snapshot</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.summary-rollback">
+          <source>To see what changes will occur during rollback, you may visit the {0} tabs.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.groups-link">
+          <source>Groups</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channels-link">
+          <source>Channels</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.packages-link">
+          <source>Packages</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.config-channel-link">
+          <source>Config Channels</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.config-files-link">
+          <source>Config Files</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.summary-rollback2">
+          <source>Are you certain you wish to rollback to the selected system snapshot?
+          Doing so will cancel all pending scheduled actions for the system,
+          and the following items will be changed to match the pre-snapshot values:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.sg_removed">
+          <source>One or more of the system groups from the snapshot has been deleted.{0}
+          This may have some effect upon who may manage the system upon rollback.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channel_removed">
+          <source>One or more of the channels from the snapshot has been deleted.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channel_modified">
+          <source>One or more of the channels from the snapshot has been modified.{0}
+          This might affect the ability of the system to rollback to the snapshot package set.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.ns_removed">
+          <source>One or more of the namespaces from the snapshot has been deleted.{0}
+          This may have an effect upon the configuration files that will be deployed upon rollback.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.unservable_packages">
+          <source>The snapshot package list has {0}unservable packages{1}; do not attempt to rollback.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.group-membership">
+          <source>System Group Membership:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.diff-count">
+          <source>{0} change(s)</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.channel-subscription">
+          <source>Channel Subscriptions:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.package-manifest">
+          <source>Package Manifest:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.config-channel-membership">
+          <source>Config Channel Membership:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.config-files">
+          <source>Configuration Files:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.config-files-msg">
+          <source>All snapshotted configuration files will be redeployed.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.rollback-return-to-list">
+          <source>Return to snapshot list</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.rollback-button">
+          <source>Rollback to Snapshot</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgChannelHeader">
+          <source>Snapshot - Configuration Channels</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgChannelSummary">
+          <source>Here are the differences between the current and snapshot configuration channel subscriptions:</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgChannelEmpty">
+          <source>No config channel differences</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgChannel">
+          <source>Config Channel</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgSnapshotOnly">
+          <source>Snapshot Profile Only</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgProfileOnly">
+          <source>Current Profile Only</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgFilesHeader">
+          <source>Snapshot - Configuration Channels</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgFilesSummary">
+          <source>These are the configuration files that will be pushed to the system after the package list is changed.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgFilesEmpty">
+          <source>No files</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.cfgFilesChecksum">
+          <source>Checksum</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.no_subscriptions">
+          <source>Insufficient channel subscriptions to complete rollback; aborted.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.groups_changed">
+          <source>Channels and groups changed.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.packages_changed">
+          <source>Package delta scheduled.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.configs_changed">
+          <source>Config files scheduled for deployment.</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.unservableHeader">
+          <source>Snapshot - Unservable Packages</source>
+        </trans-unit>
+        <trans-unit id="system.history.snapshot.unservableSummary">
+          <source>The snapshot packages below cannot be served due to channel management changes.</source>
         </trans-unit>
       </group>
       <!-- Configuration Common -->

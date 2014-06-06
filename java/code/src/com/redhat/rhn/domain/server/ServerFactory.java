@@ -190,14 +190,10 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Removes a Server from a group
-     * @param serverIn The server to remove
-     * @param serverGroupIn The group to remove the server from
+     * @param sid The server id to remove
+     * @param sgid The group id to remove the server from
      */
-    public static void removeServerFromGroup(Server serverIn,
-            ServerGroup serverGroupIn) {
-        Long sid = serverIn.getId();
-        Long sgid = serverGroupIn.getId();
-
+    public static void removeServerFromGroup(Long sid, Long sgid) {
         CallableMode m = ModeFactory.getCallableMode("System_queries",
                 "delete_from_servergroup");
         Map inParams = new HashMap();
@@ -680,6 +676,18 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up a latest snapshot for a sever
+     * @param server server
+     * @return the server snapshot
+     */
+    public static ServerSnapshot lookupLatestForServer(Server server) {
+        Map params = new HashMap();
+        params.put("sid", server);
+        return (ServerSnapshot) singleton.lookupObjectByNamedQuery(
+                "ServerSnapshot.findLatestForServer", params);
+    }
+
+    /**
      * Save a server snapshot
      * @param snapshotIn snapshot to save
      */
@@ -855,6 +863,20 @@ public class ServerFactory extends HibernateFactory {
         SnapshotTag retval = (SnapshotTag) HibernateFactory
                 .getSession().getNamedQuery("SnapshotTag.lookupByTagName")
                 .setString("tag_name", tagName)
+                // Do not use setCacheable(true), as tag deletion will
+                // usually end up making this query's output out of date
+                .uniqueResult();
+        return retval;
+    }
+
+    /**
+     * @param tagId snapshot tag ID
+     * @return snapshot Tag
+     */
+    public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
+        SnapshotTag retval = (SnapshotTag) HibernateFactory
+                .getSession().getNamedQuery("SnapshotTag.lookupById")
+                .setLong("id", tagId)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
