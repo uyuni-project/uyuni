@@ -297,8 +297,8 @@ public class ActionManager extends BaseManager {
             ServerAction sa = (ServerAction)serverActionsIter.next();
             servers.add(sa.getServer());
         }
-
         KickstartFactory.failKickstartSessions(actionsToDelete, servers);
+
         ActionFactory.deleteServerActionsByParent(actionsToDelete);
 
         Iterator iter = actionsToDelete.iterator();

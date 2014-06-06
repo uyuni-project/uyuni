@@ -757,7 +757,7 @@ public class PackageManager extends BaseManager {
         }
         Session session = HibernateFactory.getSession();
         cleanupFileEntries(pkg.getId());
-        StringBuffer packageFileName = new StringBuffer();
+        StringBuilder packageFileName = new StringBuilder();
         if (pkg.getPath() != null) {
             packageFileName.append(pkg.getPath().trim());
         }
@@ -1613,7 +1613,7 @@ public class PackageManager extends BaseManager {
         missing.removeAll(found);
         orgNoAccess.addAll(missing);
         if (!orgNoAccess.isEmpty()) {
-            StringBuffer msg = new StringBuffer("User: ");
+            StringBuilder msg = new StringBuilder("User: ");
             msg.append(user.getLogin());
             msg.append(" does not have access to packages: ");
             msg.append(orgNoAccess);
