@@ -25,13 +25,13 @@
     <rl:decorator name="ElaborationDecorator" />
 
     <rl:column headerkey="system.history.snapshot.reason">
-      <a href="/network/systems/details/history/snapshots/rollback.pxt?sid=${param.sid}&amp;ss_id=${current.id}">${current.reason}</a>
+      <a href="/rhn/systems/details/history/snapshots/Rollback.do?sid=${param.sid}&amp;ss_id=${current.id}">${current.reason}</a>
     </rl:column>
     <rl:column headerkey="system.history.snapshot.timetaken">
       ${current.created}
     </rl:column>
     <rl:column headerkey="system.history.snapshot.tags">
-      <a href="/network/systems/details/history/snapshots/snapshot_tags.pxt?sid=${param.sid}&amp;ss_id=${current.id}">${current.tag_count}</a>
+      <a href="/rhn/systems/details/history/snapshots/SnapshotTags.do?sid=${param.sid}&amp;ss_id=${current.id}">${current.tag_count}</a>
     </rl:column>
   </rl:list>
 </rl:listset>

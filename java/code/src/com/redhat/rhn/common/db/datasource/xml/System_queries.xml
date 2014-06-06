@@ -2036,6 +2036,33 @@ select s.id as id,
   <elaborator name="is_virtual_host" />
 </mode>
 
+<mode name="systems_in_channel_family"
+      class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="cfamid, userid, orgid, isfve">
+    select distinct s.id as id,
+                    s.name as name,
+                    1 as selectable
+      from rhnServer s,
+            rhnServerChannel sc,
+            rhnChannelFamilyMembers cfm
+      where s.org_id = :orgid
+        and s.id = sc.server_id
+        and sc.channel_id = cfm.channel_id
+        and (sc.is_fve = :isfve or :isfve = 'All')
+        and cfm.channel_family_id = :cfamid
+        and exists (
+            select 1
+              from rhnUserServerPerms usp
+             where usp.user_id = :userid
+               and usp.server_id = s.id)
+ order by s.name, s.id
+  </query>
+  <elaborator name="system_overview" />
+  <elaborator name="entitlements" />
+  <elaborator name="is_virtual_guest" />
+  <elaborator name="is_virtual_host" />
+</mode>
+
 <mode name="system_events_history"
   class="com.redhat.rhn.frontend.dto.SystemEventDto">
   <query params="sid">
@@ -2163,6 +2190,83 @@ select sgt.label
   </query>
 </mode>
 
+<mode name="tags_for_system"
+  class="com.redhat.rhn.frontend.dto.SnapshotTagDto">
+  <query params="sid">
+SELECT ST.tag_id AS ID,
+       TN.name,
+       SS.id AS SS_ID,
+       TO_CHAR(ST.created, 'YYYY-MM-DD HH24:MI:SS') AS CREATED,
+       1 AS SELECTABLE
+  FROM rhnTagName TN,
+       rhnTag T,
+       rhnSnapshotTag ST,
+       rhnSnapshot SS
+ WHERE SS.server_id = :sid
+   AND SS.id = ST.snapshot_id
+   AND ST.tag_id = T.id
+   AND T.name_id = TN.id
+ORDER BY UPPER(TN.name)
+  </query>
+</mode>
+
+<mode name="tags_for_system_and_snapshot"
+  class="com.redhat.rhn.frontend.dto.SnapshotTagDto">
+  <query params="sid, ss_id">
+SELECT ST.tag_id AS ID,
+       TN.name,
+       SS.id AS SS_ID,
+       TO_CHAR(ST.created, 'YYYY-MM-DD HH24:MI:SS') AS CREATED,
+       1 AS SELECTABLE
+  FROM rhnTagName TN,
+       rhnTag T,
+       rhnSnapshotTag ST,
+       rhnSnapshot SS
+ WHERE SS.server_id = :sid
+   AND SS.id = ST.snapshot_id
+   AND ST.tag_id = T.id
+   AND T.name_id = TN.id
+   AND SS.id = :ss_id
+ORDER BY UPPER(TN.name)
+  </query>
+</mode>
+
+<mode name="snapshot_tags_in_set"
+  class="com.redhat.rhn.frontend.dto.SnapshotTagDto">
+  <query params="sid, user_id, set_label">
+SELECT ST.tag_id AS ID,
+       TN.name,
+       SS.id AS SS_ID,
+       TO_CHAR(ST.created, 'YYYY-MM-DD HH24:MI:SS') AS CREATED
+  FROM rhnTagName TN,
+       rhnTag T,
+       rhnSnapshotTag ST,
+       rhnSnapshot SS,
+       rhnSet S
+ WHERE SS.server_id = :sid
+   AND SS.id = ST.snapshot_id
+   AND ST.tag_id = T.id
+   AND T.name_id = TN.id
+   AND T.id = S.element
+   AND S.user_id = :user_id
+   AND S.label = :set_label
+ORDER BY UPPER(TN.name)
+  </query>
+</mode>
+
+<mode name="system_pending_actions">
+  <query params="sid">
+select a.id
+  from rhnAction a
+  join rhnServerAction sa
+    on sa.action_id = a.id
+ where sa.server_id = :sid
+   and sa.status = 0
+   and a.prerequisite is null
+ order by a.id
+  </query>
+</mode>
+
 <mode name="system_installed_product_ids">
   <query params="sid">
   SELECT sp.id
@@ -2276,4 +2380,37 @@ SELECT channel_arch_id
       ORDER BY UPPER(COALESCE(rhnServer.name, '(none)')), rhnServer.id
   </query>
 </mode>
+
+<mode name="provisioning_systems_in_set_with_tag">
+  <query params="user_id, tag_id">
+SELECT * FROM (
+SELECT DISTINCT S.id,
+       S.name AS SERVER_NAME,
+       SS.id AS SNAPSHOT_ID,
+       SS.reason AS SNAPSHOT_REASON,
+       TO_CHAR(STag.created, 'YYYY-MM-DD HH24:MI:SS') AS DATE_TAG_APPLIED
+  FROM rhnServer S,
+       rhnSnapshotTag STag,
+       rhnSnapshot SS,
+       rhnClientCapabilityName CCN,
+       rhnClientCapability CC,
+       rhnSet ST,
+       rhnUserServerPerms USP
+ WHERE USP.user_id = :user_id
+   AND ST.user_id = :user_id
+   AND ST.label = 'system_list'
+   AND USP.server_id = ST.element
+   AND rhn_server.system_service_level(USP.server_id, 'provisioning') &gt; 0
+   AND USP.server_id = CC.server_id
+   AND CC.capability_name_id = CCN.id
+   AND CCN.name = 'packages.runTransaction'
+   AND USP.server_id = SS.server_id
+   AND SS.id = STag.snapshot_id
+   AND STag.tag_id = :tag_id
+   AND USP.server_id = S.id) X
+ORDER BY UPPER(COALESCE(X.SERVER_NAME, '(none)')), X.ID
+  </query>
+  <elaborator name="system_overview" />
+</mode>
+
 </datasource_modes>

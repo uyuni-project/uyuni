@@ -61,6 +61,7 @@ import com.redhat.rhn.frontend.dto.HardwareDeviceDto;
 import com.redhat.rhn.frontend.dto.NetworkDto;
 import com.redhat.rhn.frontend.dto.OrgProxyServer;
 import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.SnapshotTagDto;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
@@ -271,6 +272,34 @@ public class SystemManager extends BaseManager {
     }
 
     /**
+     * Returns a list of systems consuming given channel family entitlement
+     *
+     * @param cfId Channel family ID to list the entitled systems for
+     * @param user User to list the entitled systems for
+     * @param entitlementType regular, flex or all
+     * @param pc Page control
+     * @return list of SystemOverviews.
+     */
+    public static DataResult getEntitledSystems(Long cfId, User user,
+                                                String entitlementType, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "systems_in_channel_family");
+        Map params = new HashMap();
+        params.put("cfamid", cfId);
+        params.put("userid", user.getId());
+        params.put("orgid", user.getOrg().getId());
+        params.put("isfve", "All");
+
+        if (entitlementType.equals("regular")) {
+            params.put("isfve", "N");
+        }
+        else if (entitlementType.equals("flex")) {
+            params.put("isfve", "Y");
+        }
+
+        return makeDataResult(params, new HashMap<String, Object>(), pc, m);
+    }
+
+    /**
      * Gets the latest upgradable packages for a system
      * @param sid The id for the system we want packages for
      * @return Returns a list of the latest upgradable packages for a system
@@ -401,7 +430,7 @@ public class SystemManager extends BaseManager {
      * @param serverGroup The group to remove the server from
      */
     public static void removeServerFromServerGroup(Server server, ServerGroup serverGroup) {
-        ServerFactory.removeServerFromGroup(server, serverGroup);
+        ServerFactory.removeServerFromGroup(server.getId(), serverGroup.getId());
         snapshotServer(server, "Group membership alteration");
     }
 
@@ -418,6 +447,19 @@ public class SystemManager extends BaseManager {
         params.put("sid", server.getId());
         params.put("org_id", user.getOrg().getId());
         params.put("user_id", user.getId());
+        return m.execute(params);
+    }
+
+    /**
+     * Returns a list of server groups for a given server
+     * @param sid The server id in question
+     * @return Returns a list of system groups for this server
+     */
+    public static DataResult listSystemGroups(Long sid) {
+        SelectMode m = ModeFactory.getMode("SystemGroup_queries",
+                                           "groups_a_system_is_in_unsafe", Map.class);
+        Map params = new HashMap();
+        params.put("sid", sid);
         return m.execute(params);
     }
 
@@ -3076,7 +3118,39 @@ public class SystemManager extends BaseManager {
                                            "compare_packages_to_snapshot");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
-        params.put("ssid", ssid);
+        params.put("ss_id", ssid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param sid server id
+     * @param ssid snapshot id
+     * @param pc pageContext
+     * @return Returns system vs. snapshot groups comparision list
+     */
+    public static DataResult systemSnapshotGroups(Long sid, Long ssid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("SystemGroup_queries",
+                                           "snapshot_group_diff");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("ss_id", ssid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param sid server id
+     * @param ssid snapshot id
+     * @param pc pageContext
+     * @return Returns system vs. snapshot channels comparision list
+     */
+    public static DataResult systemSnapshotChannels(Long sid, Long ssid, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Channel_queries",
+                                           "snapshot_channel_diff");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        params.put("ss_id", ssid);
         Map elabParams = new HashMap();
         return makeDataResult(params, elabParams, pc, m);
     }
@@ -3105,6 +3179,89 @@ public class SystemManager extends BaseManager {
         params.put("sid", sid);
         Map elabParams = new HashMap();
         return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param sid server id
+     * @param pc pageControl
+     * @return Returns snapshot tags for a system
+     */
+    public static DataResult <SnapshotTagDto> snapshotTagsForSystem(Long sid,
+            PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries", "tags_for_system");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param sid server id
+     * @param ssId snapshot ID
+     * @param pc pageControl
+     * @return Returns snapshot tags for a system
+     */
+    public static DataResult <SnapshotTagDto> snapshotTagsForSystemAndSnapshot(Long sid,
+            Long ssId, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "tags_for_system_and_snapshot");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("ss_id", ssId);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param user user
+     * @param pc PageControl
+     * @param setLabel Set Label
+     * @param sid Server ID
+     * @return SnapshotTags in RHNSet
+     */
+    public static DataResult <SnapshotTagDto> snapshotTagsInSet(User user, PageControl pc,
+            String setLabel, Long sid) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "snapshot_tags_in_set");
+        Map params = new HashMap();
+        params.put("sid", sid);
+        params.put("user_id", user.getId());
+        params.put("set_label", setLabel);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param orgId organization ID
+     * @param sid server id
+     * @param ssId snapshot ID
+     * @param pc pageControl
+     * @return Returns unservable packages for a system
+     */
+    public static DataResult systemSnapshotUnservablePackages(Long orgId, Long sid,
+            Long ssId, PageControl pc) {
+        SelectMode m = ModeFactory.getMode("Package_queries",
+                "snapshot_unservable_package_list");
+        Map params = new HashMap();
+        params.put("org_id", orgId);
+        params.put("sid", sid);
+        params.put("ss_id", ssId);
+        Map elabParams = new HashMap();
+        return makeDataResult(params, elabParams, pc, m);
+    }
+
+    /**
+     * @param uid user id
+     * @param tid tag id
+     * @return ssm systems with tag
+     */
+    public static DataResult provisioningSystemsInSetWithTag(Long uid, Long tid) {
+        SelectMode m = ModeFactory.getMode("System_queries",
+                "provisioning_systems_in_set_with_tag");
+        Map params = new HashMap();
+        params.put("user_id", uid);
+        params.put("tag_id",  tid);
+        return m.execute(params);
     }
 
     /**

@@ -1286,6 +1286,18 @@
         <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
 
+    <form-bean name="snapshotTagCreateForm"
+                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+        <form-property name="tagName" type="java.lang.String" />
+    </form-bean>
+
+    <form-bean name="snapshotsRollback"
+                    type="org.apache.struts.action.DynaActionForm">
+        <form-property name="ss_id" type="java.lang.String" />
+        <form-property name="sid" type="java.lang.String" />
+        <form-property name="submitted" type="java.lang.Boolean" />
+    </form-bean>
+
     <form-bean name="powerManagementForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="systemId" type="java.lang.Long" />
@@ -1295,6 +1307,7 @@
       <form-property name="powerPassword" type="java.lang.String" />
       <form-property name="powerId" type="java.lang.String" />
     </form-bean>
+
   </form-beans>
 
   <global-exceptions>
@@ -2695,6 +2708,17 @@
                  path="/WEB-INF/pages/channel/entitlements.jsp"/>
     </action>
 
+    <action path="/channels/software/EntitledSystems"
+        scope="request"
+        input="/WEB-INF/pages/channel/entitled-systems.jsp"
+        type="com.redhat.rhn.frontend.action.channel.EntitledSystemsSetupAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <set-property property="acls" value="user_role(org_admin)"/>
+        <forward name="default"
+                 path="/WEB-INF/pages/channel/entitled-systems.jsp"/>
+    </action>
+
      <action path="/channels/software/EntitlementsSubmit"
          scope="request"
          input="/WEB-INF/pages/channel/entitlements.jsp"
@@ -3588,12 +3612,115 @@
                  path="/WEB-INF/pages/systems/sdc/history/snapshots/index.jsp"/>
     </action>
 
+    <action path="/systems/details/history/snapshots/Groups"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotGroupsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/groups.jsp"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/Channels"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotChannelsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/channels.jsp"/>
+    </action>
+
+
+    <action path="/systems/details/history/snapshots/Rollback"
+        name="snapshotsRollback"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotRollbackAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/rollback.jsp"/>
+        <forward name="history"
+                 path="/systems/details/history/Pending.do"
+                 redirect="true" />
+    </action>
+
     <action path="/systems/details/history/snapshots/Packages"
         scope="request"
         type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotPackagesAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <forward name="default"
                  path="/WEB-INF/pages/systems/sdc/history/snapshots/packages.jsp"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/TagCreate"
+        name="snapshotTagCreateForm"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotTagCreateAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/tag_create.jsp"/>
+        <forward name="confirm"
+                 path="/systems/details/history/snapshots/Tags.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/SnapshotTagCreate"
+        name="snapshotTagCreateForm"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SingleSnapshotTagCreateAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/snapshot_tag_create.jsp"/>
+        <forward name="confirm"
+                 path="/systems/details/history/snapshots/SnapshotTags.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/Tags"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotTagsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/tags.jsp"/>
+        <forward name="confirm"
+                 path="/systems/details/history/snapshots/TagsDelete.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/SnapshotTags"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SingleSnapshotTagsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/snapshot_tags.jsp"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/TagsDelete"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotTagsDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/tags_delete.jsp"/>
+        <forward name="confirm"
+               path="/systems/details/history/snapshots/Tags.do" redirect="true"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/ConfigChannels"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotConfigChannelsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/config_channels.jsp"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/ConfigFiles"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotConfigFilesAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/config_files.jsp"/>
+    </action>
+
+    <action path="/systems/details/history/snapshots/UnservablePackages"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.systems.sdc.SnapshotUnservablePackagesAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <forward name="default"
+                 path="/WEB-INF/pages/systems/sdc/history/snapshots/unservable_packages.jsp"/>
     </action>
 
     <!--System Details SSM Configuration -->
@@ -3698,6 +3825,15 @@
                <forward name="confirm"
                  path="/systems/Overview.do" redirect="true"/>
      </action>
+
+    <action path="/systems/ssm/provisioning/RollbackToTag"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.ssm.RollbackToTagAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/systems/provisioning/rollbacktotag.jsp"/>
+    </action>
 
     <!--System Details Configuration -->
      <action path="/systems/details/configuration/Overview"

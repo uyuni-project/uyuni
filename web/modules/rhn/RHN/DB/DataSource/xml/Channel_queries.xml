@@ -1,14 +1,5 @@
 <datasource_modes>
 
-
-<mode name="comparison_to_snapshot">
-  <query params="">
-SELECT 1 FROM DUAL
-<!-- dummy -->
-  </query>
-</mode>
-
-
 <mode name="system_channels">
   <query params="sid">
 SELECT C.id,
@@ -23,23 +14,6 @@ ORDER BY C.parent_channel NULLS LAST, UPPER(C.name)
   </query>
 </mode>
 
-
-<mode name="system_snapshot_channel_list">
-  <query params="sid, ss_id">
-SELECT  C.id,
-        C.label,
-        C.name,
-        C.parent_channel
-  FROM  rhnChannel C,
-        rhnSnapshotChannel SNC,
-        rhnSnapshot SN
- WHERE  SN.id = :ss_id
-   AND  SN.server_id = :sid
-   AND  SN.id = SNC.snapshot_id
-   AND  SNC.channel_id = C.id
-ORDER BY C.parent_channel NULLS FIRST, UPPER(C.name)
-  </query>
-</mode>
 
 <mode name="user_subscribe_perms">
   <query params="u_id, org_id">

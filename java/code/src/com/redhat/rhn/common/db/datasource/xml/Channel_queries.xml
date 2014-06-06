@@ -161,7 +161,7 @@ SELECT DISTINCT P1.name_id
 
 <mode name="system_channels">
   <query params="sid">
-SELECT
+SELECT C.id,
        C.label as label,
        C.name as name
   FROM rhnChannel C,
@@ -1037,6 +1037,54 @@ GROUP BY C.id, C.name
 <mode name="dist_channel_map_for_org" class="com.redhat.rhn.domain.channel.DistChannelMap">
   <query params="org_id">
   SELECT * FROM rhnOrgDistChannelMap WHERE org_id = :org_id
+  </query>
+</mode>
+
+<mode name="snapshot_channel_diff">
+  <query params="ss_id, sid">
+select server_channel.id as current_channel_id,
+       server_channel.label as current_channel_label,
+       snapshot_channel.id as snapshot_channel_id,
+       snapshot_channel.label as snapshot_channel_label
+  from (
+        select sc.channel_id as id,
+               c.label as label
+          from rhnServerChannel SC
+          join rhnChannel c
+            on c.id = sc.channel_id
+         where sc.server_id = :sid
+       ) server_channel
+  full outer join (
+        select snc.channel_id as id,
+               c.label as label
+          from rhnSnapshotChannel snc
+          join rhnSnapshot sn
+            on sn.id = snc.snapshot_id
+          join rhnChannel c
+            on snc.channel_id = c.id
+         where sn.id = :ss_id
+           and sn.server_id = :sid
+       ) snapshot_channel
+    on server_channel.id = snapshot_channel.id
+ where server_channel.id is null
+    or snapshot_channel.id is null
+  </query>
+</mode>
+
+<mode name="system_snapshot_channel_list">
+  <query params="sid, ss_id">
+select c.id,
+       c.label,
+       c.name,
+       c.parent_channel
+  from rhnChannel c,
+       rhnSnapshotChannel snc,
+       rhnSnapshot sn
+ where sn.id = :ss_id
+   and sn.server_id = :sid
+   and sn.id = snc.snapshot_id
+   and snc.channel_id = c.id
+ order by c.parent_channel nulls first, upper(c.name)
   </query>
 </mode>
 
