@@ -223,7 +223,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                 for (Channel c : preservations.keySet()) {
                     Channel match = preservations.get(c);
-                    List<Map> serversAffected = SystemManager.
+                    List<Map<String, Object>> serversAffected =
+                            SystemManager.
                         getSsmSystemsSubscribedToChannel(user, c.getId());
                     log.debug("found " + serversAffected.size() +
                             " servers in set with channel: " + c.getId());
@@ -235,7 +236,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
                 for (Channel c : oldBase.getAccessibleChildrenFor(user)) {
                     if (!preservations.containsKey(c)) {
-                        List<Map> serversAffected =
+                        List<Map<String, Object>> serversAffected =
                             SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
                         log.debug("found " + serversAffected.size() +
                                 " servers in set with channel: " + c.getId());
@@ -413,7 +414,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         SystemsPerChannelDto rslt = null;
 
         // How many systems don't currently have a base channeL?
-        DataResult noBase = SystemManager.systemsWithoutBaseChannelsInSet(user);
+        DataResult<EssentialServerDto> noBase =
+                SystemManager.systemsWithoutBaseChannelsInSet(user);
 
         // If there are any...
         if (noBase != null && noBase.size() > 0) {
@@ -438,8 +440,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
     // List all the servers in the current System Set with the specified Base Channel
     protected List<Long> serversInSSMWithBase(User u, Long cid) {
-        List<Long> servers = new ArrayList();
-        DataResult dr = null;
+        List<Long> servers = new ArrayList<Long>();
+        DataResult<EssentialServerDto> dr = null;
         if (cid == -1L) {
             dr = SystemManager.systemsWithoutBaseChannelsInSet(u);
         }
@@ -448,9 +450,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     RhnSetDecl.SYSTEMS.getLabel());
         }
 
-        Iterator itr = dr.iterator();
+        Iterator<EssentialServerDto> itr = dr.iterator();
         while (itr.hasNext()) {
-            EssentialServerDto esd = (EssentialServerDto)itr.next();
+            EssentialServerDto esd = itr.next();
             servers.add(esd.getId().longValue());
         }
 
@@ -496,9 +498,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         skipped.clear();
 
         for (Long toId : chgs.keySet()) {
-            successes.put(toId, new ArrayList());
-            failures.put(toId, new ArrayList());
-            skipped.put(toId, new ArrayList());
+            successes.put(toId, new ArrayList<Long>());
+            failures.put(toId, new ArrayList<Long>());
+            skipped.put(toId, new ArrayList<Long>());
 
             for (Long srvId : chgs.get(toId)) {
                 Server s = SystemManager.lookupByIdAndUser(srvId, u);
