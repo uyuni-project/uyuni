@@ -173,6 +173,7 @@ upgrade_config() {
         sed -i 's/^allowed_iss_slaves.*//' $rhnconf
     fi
     /usr/bin/spacewalk-setup-tomcat
+    /usr/bin/spacewalk-setup-sudoers
 }
 
 DBBACKEND=`read_value db_backend`
