@@ -1110,7 +1110,6 @@ class RepoSync(object):
                 url = url + '/'
             self.error_msg("ERROR: kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
             return
-        channel_id = int(self.channel['id'])
 
         if rhnSQL.fetchone_dict("""
             select id
@@ -1402,7 +1401,7 @@ class ContentPackage:
         rel_package_path = rhnPackageUpload.relative_path_from_header(
                 self.a_pkg.header, channel['org_id'],
                 self.a_pkg.checksum_type, self.a_pkg.checksum)
-        package_dict, diff_level = rhnPackageUpload.push_package(self.a_pkg,
+        _unused = rhnPackageUpload.push_package(self.a_pkg,
                 force=False,
                 relative_path=rel_package_path,
                 org_id=channel['org_id'])
