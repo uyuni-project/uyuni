@@ -103,6 +103,8 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
+/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
+
 
 %post
 if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
@@ -163,6 +165,7 @@ rm -rf %{buildroot}
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
 %{_bindir}/spacewalk-setup-tomcat
+%{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %{_datadir}/spacewalk
