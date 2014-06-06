@@ -322,7 +322,9 @@ class AuthWireSource(XMLRPCWireSource):
         if authYN:
             log(2, '   +++ Entitled SUSE Manager Server validated.', stream=sys.stderr)
         elif authYN == None:
-            log(-1, '   --- An error occurred upon authentication of this SUSE Manager Server -- review the pertinent log file (%s) and/or submit a service request.' % CFG.LOG_FILE, stream=sys.stderr)
+            log(-1, '   --- An error occurred upon authentication of this SUSE Manager -- '
+                    'review the pertinent log file (%s) and/or open a service request.' % CFG.LOG_FILE,
+                    stream=sys.stderr)
             sys.exit(-1)
         elif authYN == 0:
             log(-1, '   --- This server is not entitled.', stream=sys.stderr)
