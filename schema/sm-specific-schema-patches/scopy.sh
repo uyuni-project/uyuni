@@ -11,7 +11,7 @@ function incr () {
 
 function new_path () {
 
-    dest="$basepath/susemanager-schema-1.7.57-to-susemanager-schema-2.1//$nextnum$fname"
+    dest="$basepath/susemanager-schema-2.1.51-to-susemanager-schema-3.0/$nextnum$fname"
 
 }
 
@@ -59,7 +59,7 @@ basepath="$basepath/upgrade/"
 echo "P: $basepath"
 echo "T: $templatedir"
 
-dirs=(spacewalk-schema-1.7-to-spacewalk-schema-1.8 spacewalk-schema-1.8-to-spacewalk-schema-1.9 spacewalk-schema-1.9-to-spacewalk-schema-1.10 spacewalk-schema-1.10-to-spacewalk-schema-2.0 spacewalk-schema-2.0-to-spacewalk-schema-2.1)
+dirs=(spacewalk-schema-2.1-to-spacewalk-schema-2.2)
 
 for d in ${dirs[*]}; do
     for i in $basepath/$d/*; do
@@ -67,12 +67,12 @@ for d in ${dirs[*]}; do
 	if [ "$fname" == "README" ]; then
             continue
         fi
-        if [ "$d" == "spacewalk-schema-1.7-to-spacewalk-schema-1.8" ]; then
-            num=`echo "$fname" | sed 's/^\([0-9]\+\)\-.*$/\1/'`
-	    if [ $num -lt 114 ]; then
-                continue
-            fi
-	fi
+        #if [ "$d" == "spacewalk-schema-2.1-to-spacewalk-schema-2.2" ]; then
+        #    num=`echo "$fname" | sed 's/^\([0-9]\+\)\-.*$/\1/'`
+	#    if [ $num -lt 23 ]; then
+        #        continue
+        #    fi
+	#fi
 	new_path
     	if [ -z "$dest" ]; then
 	    continue
