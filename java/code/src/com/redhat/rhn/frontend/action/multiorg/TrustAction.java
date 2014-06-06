@@ -196,7 +196,6 @@ public class TrustAction extends FormDispatcher {
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     protected ActionForward confirmAction(
             ActionMapping mapping,
             ActionForm form,
@@ -212,13 +211,13 @@ public class TrustAction extends FormDispatcher {
         helper.updateSet(set, LIST_NAME);
         List<OrgTrust> removed = new ArrayList<OrgTrust>();
         for (Org org : getRemoved(theOrg, set)) {
-            DataResult<Map> dr =
+            DataResult<Map<String, Object>> dr =
                 SystemManager.subscribedInOrgTrust(theOrg.getId(), org.getId());
             if (dr.size() == 0) {
                 continue;
             }
             OrgTrust trust = new OrgTrust(org);
-            for (Map m : dr) {
+            for (Map<String, Object> m : dr) {
                 Long sid = (Long)m.get("id");
                 trust.getSubscribed().add(sid);
             }
@@ -256,11 +255,11 @@ public class TrustAction extends FormDispatcher {
 
         User orgUser = UserFactory.findRandomOrgAdmin(theOrg);
         for (Org removed : getRemoved(theOrg, set)) {
-            User orgAdmin = UserFactory.findRandomOrgAdmin(removed);
-            DataResult<Map> dr =
+            UserFactory.findRandomOrgAdmin(removed);
+            DataResult<Map<String, Object>> dr =
                 SystemManager.subscribedInOrgTrust(theOrg.getId(), removed.getId());
 
-              for (Map item : dr) {
+            for (Map<String, Object> item : dr) {
                 Long sid = (Long)item.get("id");
                 Server s = ServerFactory.lookupById(sid);
                 Long cid = (Long)item.get("cid");
@@ -291,13 +290,12 @@ public class TrustAction extends FormDispatcher {
         createSuccessMessage(request, "org.trust.updated", theOrg.getName());
         StrutsDelegate strutsDelegate = getStrutsDelegate();
         makeParamMap(request);
-        Map params = makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put("oid", theOrg.getId());
         ActionForward success = mapping.findForward("success");
         return strutsDelegate.forwardParams(success, params);
     }
 
-    @SuppressWarnings("unchecked")
     protected ActionForward affectedSystemsAction(
             ActionMapping mapping,
             ActionForm form,
@@ -313,10 +311,11 @@ public class TrustAction extends FormDispatcher {
         Org orgB = OrgFactory.lookupById(Long.valueOf(oid[1]));
         request.setAttribute("orgA", orgA);
         request.setAttribute("orgB", orgB);
-        DataResult<Map> dr = SystemManager.subscribedInOrgTrust(oid[0], oid[1]);
-        List<Map> sysA = new ArrayList<Map>();
-        List<Map> sysB = new ArrayList<Map>();
-        for (Map m : dr) {
+        DataResult<Map<String, Object>> dr =
+                SystemManager.subscribedInOrgTrust(oid[0], oid[1]);
+        List<Map<String, Object>> sysA = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> sysB = new ArrayList<Map<String, Object>>();
+        for (Map<String, Object> m : dr) {
             long orgId = (Long)m.get("org_id");
             if (orgId == oid[0]) {
                 sysA.add(m);
