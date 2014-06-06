@@ -92,11 +92,11 @@ def do_softwarechannel_list(self, args, doreturn = False):
             if (options.verbose):
                 for l in sorted(labels):
                     details = self.client.channel.software.getDetails(self.session, l)
-                    print "%s : %s" % (l,details['summary'])
+                    print "%s : %s" % (l, details['summary'])
                     if (options.tree):
                         for c in self.list_child_channels(parent=l):
                             cdetails = self.client.channel.software.getDetails(self.session, c)
-                            print " |-%s : %s" % (c,cdetails['summary'])
+                            print " |-%s : %s" % (c, cdetails['summary'])
             else:
                 for l in sorted(labels):
                     print "%s" % l
@@ -123,7 +123,7 @@ def do_softwarechannel_listbasechannels(self, args):
             for c in sorted(channels):
                 details = \
                     self.client.channel.software.getDetails(self.session, c)
-                print "%s : %s" % (c,details['summary'])
+                print "%s : %s" % (c, details['summary'])
         else:
             print '\n'.join(sorted(channels))
 
@@ -151,7 +151,7 @@ def do_softwarechannel_listchildchannels(self, args):
             for c in sorted(channels):
                 details = \
                     self.client.channel.software.getDetails(self.session, c)
-                print "%s : %s" % (c,details['summary'])
+                print "%s : %s" % (c, details['summary'])
         else:
             print '\n'.join(sorted(channels))
 
@@ -262,7 +262,7 @@ def filter_latest_packages(pkglist):
     # First we generate a dict, indexed by a compound (tuple) key based on
     # arch and name, so we can store the latest version of each package
     # for each arch.  This approach avoids nested loops :)
-    latest={}
+    latest = {}
     for p in pkglist:
         tuplekey = p['name'], p['arch_label']
         if not latest.has_key(tuplekey):
@@ -608,7 +608,7 @@ def do_softwarechannel_clone(self, args):
                                               noblank = True)
 
         options.name = prompt_user('Channel Name:', noblank = True)
-        options.label= prompt_user('Channel Label:', noblank = True)
+        options.label = prompt_user('Channel Label:', noblank = True)
 
         print 'Base Channels:'
         print '\n'.join(sorted(self.list_base_channels()))
@@ -657,12 +657,12 @@ def do_softwarechannel_clone(self, args):
 
             # If no name is passed we try to regex the source channel name
             if not options.name:
-                srcdetails = self.client.channel.software.getDetails(\
+                srcdetails = self.client.channel.software.getDetails( \
                     self.session, options.source_channel)
                 options.name = re.sub(findstr, replacestr, srcdetails['name'])
 
             options.label = re.sub(findstr, replacestr, options.source_channel)
-            logging.debug("regex mode : %s %s %s" % (options.source_channel,\
+            logging.debug("regex mode : %s %s %s" % (options.source_channel, \
                 options.name, options.label))
 
     # Catch label or name which already exists
@@ -677,7 +677,7 @@ def do_softwarechannel_clone(self, args):
         details['parent_label'] = options.parent_channel
 
     if options.gpg_copy:
-        srcdetails = self.client.channel.software.getDetails(self.session,\
+        srcdetails = self.client.channel.software.getDetails(self.session, \
             options.source_channel)
         if srcdetails['gpg_key_url']:
             details['gpg_url'] = srcdetails['gpg_key_url']
@@ -796,8 +796,8 @@ def do_softwarechannel_clonetree(self, args):
         # the name, label and description. from the source channel to create
         # the name, label and description for the clone channel.
         # This makes it easier to clone based on a known naming convention
-        label=None
-        name=None
+        label = None
+        name = None
         if options.regex:
             # Expect option to be formatted like a sed-replacement, s/foo/bar
             findstr = options.regex.split("/")[1]
@@ -806,15 +806,15 @@ def do_softwarechannel_clonetree(self, args):
                 (options.regex, findstr, replacestr))
 
             # regex the source channel name
-            srcdetails = self.client.channel.software.getDetails(\
+            srcdetails = self.client.channel.software.getDetails( \
                 self.session, ch)
             name = re.sub(findstr, replacestr, srcdetails['name'])
 
             label = re.sub(findstr, replacestr, ch)
-            logging.debug("regex mode : %s %s %s" % (ch,\
+            logging.debug("regex mode : %s %s %s" % (ch, \
                 name, label))
         elif options.prefix:
-            srcdetails = self.client.channel.software.getDetails(\
+            srcdetails = self.client.channel.software.getDetails( \
                 self.session, ch)
             label = options.prefix + srcdetails['label']
             name = options.prefix + srcdetails['name']
@@ -1316,7 +1316,7 @@ def do_softwarechannel_adderrata(self, args):
             # This call is poorly documented, but it stops errata.clone
             # pushing EL6 packages into EL5 channels when the errata
             # package list contains both versions, ref bz678721
-            self.client.errata.cloneAsOriginal(self.session, dest_channel,\
+            self.client.errata.cloneAsOriginal(self.session, dest_channel, \
                 [erratum])
         else:
             logging.warning("Using the old errata.clone function")
@@ -1491,7 +1491,7 @@ def do_softwarechannel_diff(self, args):
         target_channel = args[1]
     elif hasattr( self, "do_softwarechannel_getcorresponding" ):
         # can a corresponding channel name be found automatically?
-        target_channel=self.do_softwarechannel_getcorresponding( source_channel)
+        target_channel = self.do_softwarechannel_getcorresponding(source_channel)
     if not self.check_softwarechannel( target_channel ):
         return
 
@@ -1540,7 +1540,7 @@ def do_softwarechannel_sync(self, args):
         target_channel = args[1]
     elif hasattr( self, "do_softwarechannel_getcorresponding" ):
         # can a corresponding channel name be found automatically?
-        target_channel=self.do_softwarechannel_getcorresponding( source_channel)
+        target_channel = self.do_softwarechannel_getcorresponding(source_channel)
     if not self.check_softwarechannel( target_channel ):
         return
 
@@ -1586,7 +1586,7 @@ def do_softwarechannel_sync(self, args):
 
 
     # check for packages only in the target channel
-    target_only=target_package_ids.difference( source_package_ids )
+    target_only = target_package_ids.difference(source_package_ids)
     if target_only:
         print 'packages to remove from channel "' + target_channel + '":'
         for i in target_only:
