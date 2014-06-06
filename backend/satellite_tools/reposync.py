@@ -39,7 +39,6 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
-from urlgrabber.grabber import URLGrabError
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
