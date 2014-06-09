@@ -2355,7 +2355,7 @@ select  pn.name as package_name,
  where server_pkgs.max_evr is null
     or snapshot_pkgs.max_evr is null
     or (rpm.vercmp((server_pkgs.max_evr).epoch, (server_pkgs.max_evr).version, (server_pkgs.max_evr).release,
-                   (snapshot_pkgs.max_evr).epoch, (snapshot_pkgs.max_evr).version, (snapshot_pkgs.max_evr).release) <> 0)
+                   (snapshot_pkgs.max_evr).epoch, (snapshot_pkgs.max_evr).version, (snapshot_pkgs.max_evr).release) &lt;&gt; 0)
  order by pn.name
   </query>
 </mode>
