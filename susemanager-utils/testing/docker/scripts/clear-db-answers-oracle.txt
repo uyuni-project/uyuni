@@ -3,5 +3,5 @@ db-backend=oracle
 db-user=SPACEWALK
 db-password=spacewalk
 db-name=susemanager
-db-host=sumaoracletest.suse.de
+db-host=localhost
 db-port=1521
