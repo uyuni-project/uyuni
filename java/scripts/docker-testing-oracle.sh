@@ -1,5 +1,7 @@
 #!/bin/bash
 
+/etc/init.d/oracle start
+
 # Database schema creation
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_oracle_database.sh
@@ -8,7 +10,12 @@ cd /manager/susemanager-utils/testing/docker/scripts/
 cd /manager/java
 ant resolve-ivy
 
-ssh root@sumaoracletest.suse.de rhn-satellite-activate --rhn-cert /usr/share/spacewalk/setup/spacewalk-public.cert --disconnected
+cp /manager/susemanager-utils/testing/docker/base_containers/sles11_sp3_base_oracle/rhn.conf /etc/rhn/rhn.conf
+
+rhn-satellite-activate --rhn-cert /usr/share/spacewalk/setup/spacewalk-public.cert --disconnected
 
 cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
 ant -f manager-build.xml test
+
+
+/etc/init.d/oracle stop

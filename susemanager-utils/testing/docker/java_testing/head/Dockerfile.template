@@ -11,11 +11,6 @@ RUN zypper --non-interactive --gpg-auto-import-keys ref
 RUN zypper in -y ant \
                  ant-junit \
                  apache-ivy \
-                 java-1_6_0-ibm-devel \
-                 python \
-                 spacewalk-backend-sql-oracle \
-                 spacewalk-backend-sql-postgresql \
-                 spacewalk-setup \
+                 java-1_7_0-ibm-devel \
                  sudo \
-                 susemanager-tools \
                  tar
