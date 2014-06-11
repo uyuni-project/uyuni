@@ -154,4 +154,6 @@ When /^I follow "([^"]*)" in class "([^"]*)"$/ do |arg1, arg2|
   end
 end
 
-      
+When(/^I enter "(.*?)" in the editor$/) do |arg1|
+  page.execute_script("ace.edit('contents-editor').setValue('#{arg1}')")
+end

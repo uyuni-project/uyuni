@@ -50,7 +50,7 @@ Feature: Explore the main landing page
      And I should see a "Virtual Systems" link in the left menu
      And I should see a "Out of Date" link in the left menu
      And I should see a "Requiring Reboot" link in the left menu
-     And I should see a "Non-compliant Systems" link in the left menu
+     And I should see a "Non Compliant" link in the left menu
      And I should see a "Unentitled" link in the left menu
      And I should see a "Ungrouped" link in the left menu
      And I should see a "Inactive" link in the left menu
@@ -92,10 +92,10 @@ Feature: Explore the main landing page
      And I should see a "No systems." text
      And the current path is "/rhn/systems/RequiringReboot.do"
 
-  Scenario: Check sidebar link destination for Systems => Non-compliant Systems
+  Scenario: Check sidebar link destination for Systems => Non Compliant
     Given I am on the Systems page
       And I follow "Systems" in the left menu
-      And I follow "Non-compliant Systems" in the left menu
+      And I follow "Non Compliant" in the left menu
     Then I should see a "Non Compliant Systems" text
      And I should see a "No systems." text
      And the current path is "/rhn/systems/ExtraPackagesSystems.do"
@@ -431,8 +431,7 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation Snippets" in the left menu
       And I follow "create new snippet"
       And I enter "created_test_snippet" as "name"
-      And I uncheck "edit_area_toggle_checkbox_contents"
-      And I enter "<test_element>a text string</test_element>" as "contents"
+      And I enter "<test_element>a text string</test_element>" in the editor
       And I click on "Create Snippet"
    Then I should see a "created_test_snippet created successfully." text
 

@@ -23,6 +23,19 @@ Feature: Adding channels
      And I click on "Create Channel"
     Then I should see a "Channel Test Base Channel created." text
 
+  Scenario: Adding a child channel
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "create new channel"
+    When I enter "Test Child Channel" as "Channel Name"
+     And I enter "test_child_channel" as "Channel Label"
+     And I select "Test Base Channel" from "Parent Channel"
+     And I select "x86_64" from "Architecture:"
+     And I enter "Child channel for testing" as "Channel Summary"
+     And I enter "Description for Test Child Channel." as "Channel Description"
+     And I click on "Create Channel"
+    Then I should see a "Channel Test Child Channel created." text
+
   Scenario: Adding SLES11-SP3-Updates i586 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -36,6 +49,19 @@ Feature: Adding channels
      And I click on "Create Channel"
     Then I should see a "Channel SLES11-SP3-Updates i586 Channel created." text
 
+  Scenario: Adding a child channel to SLES11-SP3-Updates i586
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "create new channel"
+    When I enter "SLES11-SP3-Updates i586 Child Channel" as "Channel Name"
+     And I enter "sles11-sp3-updates-i586-child-channel" as "Channel Label"
+     And I select "SLES11-SP3-Updates i586 Channel" from "Parent Channel"
+     And I select "IA-32" from "Architecture:"
+     And I enter "SLES11-SP3-Updates i586 child channel for testing" as "Channel Summary"
+     And I enter "Description for SLES11-SP3-Updates i586 Child Channel." as "Channel Description"
+     And I click on "Create Channel"
+    Then I should see a "Channel SLES11-SP3-Updates i586 Child Channel created." text
+
   Scenario: Adding SLES11-SP3-Updates x86_64 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
@@ -48,6 +74,19 @@ Feature: Adding channels
      And I enter "No more desdcription for base channel." as "Channel Description"
      And I click on "Create Channel"
      Then I should see a "Channel SLES11-SP3-Updates x86_64 Channel created." text
+
+  Scenario: Adding a child channel to SLES11-SP3-Updates x86_64
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "create new channel"
+    When I enter "SLES11-SP3-Updates x86_64 Child Channel" as "Channel Name"
+     And I enter "sles11-sp3-updates-x86_64-child-channel" as "Channel Label"
+     And I select "SLES11-SP3-Updates x86_64 Channel" from "Parent Channel"
+     And I select "x86_64" from "Architecture:"
+     And I enter "SLES11-SP3-Updates x86_64 child channel for testing" as "Channel Summary"
+     And I enter "Description for SLES11-SP3-Updates x86_64 Child Channel." as "Channel Description"
+     And I click on "Create Channel"
+    Then I should see a "Channel SLES11-SP3-Updates x86_64 Child Channel created." text
 
   Scenario: Adding Fedora x86_64 base channel
      And I follow "Channels"

@@ -33,13 +33,13 @@ Given(/^I am logged in via XML\-RPC\/actionchain as user "(.*?)" and password "(
 
   # Flush all chains
   for chain in rpc.listChains() do
-    rpc.removeActionChain(chain["name"])
+    rpc.deleteChain(chain["name"])
   end
 end
 
 # Listing chains
-When(/^I call XML\-RPC\/createActionChain with chainLabel "(.*?)"$/) do |label|
-  actionId = rpc.createActionChain(label)
+When(/^I call XML\-RPC\/createChain with chainLabel "(.*?)"$/) do |label|
+  actionId = rpc.createChain(label)
   fail if actionId < 1
   $chainLabel = label
 end
@@ -51,17 +51,17 @@ end
 # Deleting chain
 Then(/^I delete the action chain$/) do
   begin
-    rpc.removeActionChain($chainLabel)
+    rpc.deleteChain($chainLabel)
   rescue XMLRPC::FaultException => e
-    fail "removeActionChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    fail "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
 Then(/^I delete an action chain, labeled "(.*?)"$/) do |label|
   begin
-    rpc.removeActionChain(label)
+    rpc.deleteChain(label)
   rescue XMLRPC::FaultException => e
-    fail "removeActionChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
+    fail "deleteChain: XML-RPC failure, code %s: %s" % [e.faultCode, e.faultString]
   end
 end
 
@@ -160,7 +160,7 @@ end
 
 # Scheduling the action chain
 When(/^I schedule the action chain$/) do
-  fail if rpc.schedule($chainLabel, DateTime.now) < 0
+  fail if rpc.scheduleChain($chainLabel, DateTime.now) < 0
 end
 
 Then(/^there should be no more my action chain$/) do

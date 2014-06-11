@@ -186,6 +186,13 @@ Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
   end
 end
 
+Then /^I should see a "([^"]*)" editor in "([^"]*)" form$/ do |arg1, arg2|
+  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
+    fail if not page.find("textarea##{arg1}", :visible => false)
+    fail if not page.has_css?("##{arg1}-editor")
+  end
+end
+
 Then /^"([^"]*)" is installed$/ do |package|
    output = `rpm -q #{package} 2>&1`
    if ! $?.success?

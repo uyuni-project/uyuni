@@ -10,7 +10,7 @@ Feature: Test the XML-RPC CVE Audit feature.
       And I follow "cve-server-channels-bunch"
       And I click on "Single Run Schedule"
     Then I should see a "bunch was scheduled" text
-      And I wait for "5" seconds
+      And I wait for "10" seconds
 
   @xmlrpc
   Scenario: before applying patches 

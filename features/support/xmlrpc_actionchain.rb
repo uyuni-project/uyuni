@@ -15,13 +15,13 @@ class XMLRPCActionChain < XMLRPCBaseTest
   end
 
 
-  def createActionChain(label)
-    return @connection.call("actionchain.createActionChain", @sid, label)
+  def createChain(label)
+    return @connection.call("actionchain.createChain", @sid, label)
   end
 
 
-  def removeActionChain(label)
-    return @connection.call("actionchain.removeActionChain", @sid, label)
+  def deleteChain(label)
+    return @connection.call("actionchain.deleteChain", @sid, label)
   end
 
 
@@ -72,7 +72,7 @@ class XMLRPCActionChain < XMLRPCBaseTest
   end
 
 
-  def schedule(label, iso8601)
-    return @connection.call("actionchain.schedule", @sid, label, iso8601)
+  def scheduleChain(label, iso8601)
+    return @connection.call("actionchain.scheduleChain", @sid, label, iso8601)
   end
 end
