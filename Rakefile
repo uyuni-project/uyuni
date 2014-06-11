@@ -25,6 +25,7 @@ end
 
 task :cucumber do |t|
   Rake::Task['cucumber:testsuite'].invoke
+  Rake::Task['security:test'].invoke
 end
 
 namespace :cucumber do
