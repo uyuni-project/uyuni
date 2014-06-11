@@ -38,7 +38,16 @@ def build():
     use_template_file = True,
     use_remote_parent = use_remote_parent,
   )
-  print '{0} container successfully built'.format(CONTAINER_NAME)
+  print 'Automated build done, now you have to execute the following steps:'
+  print '1) Run the following command:'
+  print '     docker run --privileged -t -i --rm -v <dir containing git checkout>:/manager {0} /bin/bash'.format(CONTAINER_NAME)
+  print '2) From inside of the container run the following command:'
+  print '     /manager/susemanager-utils/testing/docker/base_containers/sles11_sp3_base_oracle/setup-db-oracle.sh'
+  print '3) Once the Oracle setup is done open a new terminal and run the following command:'
+  print '     docker commit <id of the container> {0}'.format(CONTAINER_NAME)
+  print '   The id of the container is the hostname of the running container. Otherwise you can obtain it by doing:'
+  print '     docker ps'
+  print "\nThese painful steps are going to disappear once docker's build system supports prileged containers."
 
 @task
 def publish(options):
