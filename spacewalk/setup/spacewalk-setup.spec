@@ -31,7 +31,6 @@ Requires:       perl
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
 %if 0%{?suse_version}
-Requires:       curl
 Requires:       policycoreutils
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-XML-LibXML perl-XML-SAX perl-DateTime
