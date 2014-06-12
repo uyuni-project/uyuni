@@ -14,4 +14,4 @@ else
     gem "ruby-oci8", "~> 2.0.4" 
 end
 
-gem 'owasp_zap',:git=>'https://github.com/vpereira/owasp_zap.git',:require=>'zap'
+gem 'owasp_zap'

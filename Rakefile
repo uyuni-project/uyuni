@@ -4,7 +4,6 @@ require 'cucumber/rake/task'
 require 'rdoc/task'
 require 'rake/testtask'
 require 'rake/clean'
-Bundler.setup
 require 'owasp_zap'
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
