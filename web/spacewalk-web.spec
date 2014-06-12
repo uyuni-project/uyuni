@@ -54,7 +54,6 @@ Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 Requires: sudo
 %if 0%{?suse_version}
-Requires: perl-RPM2
 Requires: perl-Digest-HMAC
 Requires: perl-Digest-SHA
 Requires: perl-Text-Diff
