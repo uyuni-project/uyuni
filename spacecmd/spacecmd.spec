@@ -17,7 +17,14 @@ BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
 %endif
 
+BuildRequires: spacewalk-pylint
 BuildRequires: python-devel
+BuildRequires: python-simplejson
+BuildRequires: rpm-python
+%if 0%{?rhel} == 5
+BuildRequires: python-json
+%endif
+
 %if 0%{?rhel} == 5
 Requires:    python-simplejson
 %endif
@@ -55,6 +62,10 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 
 %clean
 %{__rm} -rf %{buildroot}
+
+%check
+PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
+	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
 
 %files
 %defattr(-,root,root,-)

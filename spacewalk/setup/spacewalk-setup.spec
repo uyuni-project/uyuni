@@ -31,7 +31,6 @@ Requires:       perl
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
 %if 0%{?suse_version}
-Requires:       curl
 Requires:       policycoreutils
 Requires:       perl-Mail-RFC822-Address
 Requires:       perl-XML-LibXML perl-XML-SAX perl-DateTime
@@ -51,6 +50,7 @@ Requires:       cobbler >= 2.0.0
 Requires:       PyYAML
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
+Requires:       curl
 
 %description
 A collection of post-installation scripts for managing Spacewalk's initial

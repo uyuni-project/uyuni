@@ -83,6 +83,16 @@ import java.util.TreeSet;
  */
 public class ProfileHandler extends BaseHandler {
 
+    private static final String[] VALIDOPTIONNAMES = {"autostep", "interactive", "install",
+            "upgrade", "text", "network", "cdrom", "harddrive", "nfs", "url",
+            "lang", "langsupport", "keyboard", "mouse", "device", "deviceprobe",
+            "zerombr", "clearpart", "bootloader", "timezone", "auth", "rootpw",
+            "selinux", "reboot", "firewall", "xconfig", "skipx", "key",
+            "ignoredisk", "autopart", "cmdline", "firstboot", "graphical", "iscsi",
+            "iscsiname", "logging", "monitor", "multipath", "poweroff", "halt",
+            "services", "shutdown", "user", "vnc", "zfcp", "driverdisk",
+            "md5_crypt_rootpw"};
+
     /**
      * Get the kickstart tree for a kickstart profile.
      * @param sessionKey User's session key.
@@ -815,17 +825,7 @@ public class ProfileHandler extends BaseHandler {
             "No Kickstart Profile found with label: " + ksLabel);
         }
 
-        String[] validOptionNames = new String[] {"autostep", "interactive", "install",
-                "upgrade", "text", "network", "cdrom", "harddrive", "nfs", "url",
-                "lang", "langsupport", "keyboard", "mouse", "device", "deviceprobe",
-                "zerombr", "clearpart", "bootloader", "timezone", "auth", "rootpw",
-                "selinux", "reboot", "firewall", "xconfig", "skipx", "key",
-                "ignoredisk", "autopart", "cmdline", "firstboot", "graphical", "iscsi",
-                "iscsiname", "logging", "monitor", "multipath", "poweroff", "halt",
-                "services", "shutdown", "user", "vnc", "zfcp", "driverdisk",
-                "md5_crypt_rootpw"};
-
-        List<String> validOptions = Arrays.asList(validOptionNames);
+        List<String> validOptions = Arrays.asList(VALIDOPTIONNAMES);
 
         Set<String> givenOptions = new HashSet<String>();
         for (Map option : options) {
@@ -1364,12 +1364,10 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.returntype
-     *          #array()
-     *              #struct("kickstart variable")
-     *                  #prop("string", "key")
-     *                  #prop("string or int", "value")
-     *              #struct_end()
-     *          #array_end()
+     *     #struct("kickstart variable")
+     *         #prop("string", "key")
+     *         #prop("string or int", "value")
+     *     #struct_end()
      */
     public Map<String, Object> getVariables(String sessionKey, String ksLabel) {
 
@@ -1396,12 +1394,10 @@ public class ProfileHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("string", "ksLabel")
      * @xmlrpc.param
-     *      #array()
-     *          #struct("kickstart variable")
-     *              #prop("string", "key")
-     *              #prop("string or int", "value")
-     *          #struct_end()
-     *      #array_end()
+     *     #struct("kickstart variable")
+     *         #prop("string", "key")
+     *         #prop("string or int", "value")
+     *     #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
     public int setVariables

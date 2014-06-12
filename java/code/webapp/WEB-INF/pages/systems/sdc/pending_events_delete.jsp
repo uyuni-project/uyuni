@@ -40,7 +40,7 @@
       </c:choose>
     </rl:column>
     <rl:column headerkey="system.event.history.summary">
-      <a href="/network/systems/details/history/event.pxt?sid=${param.sid}&amp;hid=${current.id}">${current.summary}</a>
+      <a href="/rhn/systems/details/history/Event.do?sid=${param.sid}&amp;aid=${current.id}">${current.summary}</a>
     </rl:column>
     <rl:column headerkey="system.event.pending.earliest">
       ${current.scheduledFor}
@@ -51,7 +51,7 @@
     <hr/>
     <input type="hidden" name="sid" value="${sid}" />
     <input type="submit" name="dispatch" class="btn btn-default"
-      value='<bean:message key="system.event.pending.cancel"/>'/>
+      value='<bean:message key="system.event.pending.confirm"/>'/>
   </div>
   <rhn:submitted />
 </rl:listset>

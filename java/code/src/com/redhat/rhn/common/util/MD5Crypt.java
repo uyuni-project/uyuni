@@ -97,7 +97,7 @@ public class MD5Crypt {
      */
     private static String generateEncodedKey(byte[] digest, String salt) {
 
-        StringBuffer out = new StringBuffer(prefix);
+        StringBuilder out = new StringBuilder(prefix);
         out.append(salt);
         out.append("$");
 

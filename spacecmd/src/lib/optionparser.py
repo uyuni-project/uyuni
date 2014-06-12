@@ -19,6 +19,15 @@
 # Copyright (c) 2011--2013 Red Hat, Inc.
 #
 
+# wildcard import
+# pylint: disable=W0401,W0614
+
+# unused argument
+# pylint: disable=W0613
+
+# invalid function name
+# pylint: disable=C0103
+
 from optparse import OptionParser
 
 # optparse by default will exit when there is an error.  when spacecmd

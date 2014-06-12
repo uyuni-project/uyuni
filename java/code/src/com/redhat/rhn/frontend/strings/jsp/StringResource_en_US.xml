@@ -8847,6 +8847,15 @@ Please note that some manual configuration of these scripts may still be require
       <trans-unit id="repos.jsp.filters.error">
         <source>Filter syntax is incorrect!</source>
       </trans-unit>
+      <trans-unit id="repos.jsp.channelHeader">
+        <source>Channels using {0} repository</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.channelSummary">
+        <source>Bellow are channels with {0} repository attached to them.</source>
+      </trans-unit>
+      <trans-unit id="repos.jsp.noChannels">
+        <source>This repository is not linked to any channel.</source>
+      </trans-unit>
       <trans-unit id="os">
         <source>Operating System</source>
       </trans-unit>
@@ -10159,7 +10168,7 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="keycreate.jsp.summary">
-        <source>Please enter the information for your key in the form provided below.  Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique.</source>
+        <source>Please enter the information for your key in the form provided below.  Entries marked with an (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt; and must be unique. The actual key content can be provided by uploading a file or by filling out the dedicated text area. In case both ways were used, the file selected for upload takes precedence.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -10190,12 +10199,6 @@ Please note that some manual configuration of these scripts may still be require
       </trans-unit>
       <trans-unit id="keycreate.jsp.selectfile">
         <source>Select file to upload: </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="keycreate.jsp.nokey">
-        <source>&lt;span class="required-form-field"&gt;Neither a GPG or SSL Certificate is currently attached to this cryptokey.  Please attach a GPG key or SSL Certificate to this crypto key using the form above.&lt;/span&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -12337,7 +12340,7 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>The following pending events for this system will be canceled:</source>
         </trans-unit>
         <trans-unit id="system.event.pending.confirm">
-          <souce>Cancel Events</souce>
+          <source>Cancel Events</source>
         </trans-unit>
         <trans-unit id="system.event.pending.canceled">
           <source>{0} system event(s) canceled.</source>
