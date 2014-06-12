@@ -24,6 +24,10 @@ BuildRequires: rpm-python
 %if 0%{?rhel} == 5
 BuildRequires: python-json
 %endif
+%if 0%{?suse_version}
+BuildRequires: python-xml
+Requires: python-xml
+%endif
 
 %if 0%{?rhel} == 5
 Requires:    python-simplejson
