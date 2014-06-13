@@ -200,9 +200,9 @@ class ContentSource:
         if not filters:
             # if there's no include/exclude filter on command line or in database
             for filter_conf in self.repo.includepkgs:
-                filters.append(('+',[filter_conf]))
+                filters.append(('+', [filter_conf]))
             for filter_conf in self.repo.exclude:
-                filters.append(('-',[filter_conf]))
+                filters.append(('-', [filter_conf]))
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
