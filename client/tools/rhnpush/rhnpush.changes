@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jun 13 16:19:07 CEST 2014 - jrenner@suse.de
+
+- version 5.5.71.5-1
+- Add default path structure to proxy lookaside that avoids collisions
+- Make rhnpush backwards-compatible with old spacewalk-proxy
+
+-------------------------------------------------------------------
 Thu Apr 10 17:32:20 CEST 2014 - mc@suse.de
 
 - version 5.5.71.4-1
