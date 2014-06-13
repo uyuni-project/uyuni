@@ -6,6 +6,8 @@ require 'rake/testtask'
 require 'rake/clean'
 require 'owasp_zap'
 
+include OwaspZap
+
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"
 
@@ -76,17 +78,28 @@ namespace :security do
        if target.nil?
            raise "Target not set"
        end
-       zap = Zap::ZapV2.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
+       zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
        unless zap.running?
         zap.start
         until zap.running?
             sleep 5
         end
        end
-       zap.spider
-       zap.ascan
-       # TODO check if both tasks ended
-       zap.alerts.view
+       spider = zap.spider
+       active_scanner = zap.ascan
+       spider.start # non-blocking
+       active_scanner.start # non-blocking
+       # TODO
+       # refactor it
+       while true do
+           ret_spider = JSON.parse spider.status 
+           ret_ascan  = JSON.parse active_scanner
+
+           # if both are ready
+           break if ret_spider["status"].to_i == 100 and ret_ascan["status"].to_i == 100
+           sleep 10
+       end
+       puts zap.alerts.view
     end
 end
 Rake::TestTask.new do |t|
