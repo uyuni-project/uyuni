@@ -85,19 +85,12 @@ namespace :security do
             sleep 5
         end
        end
-       spider = zap.spider
        active_scanner = zap.ascan
-       spider.start # non-blocking
        active_scanner.start # non-blocking
-       # TODO
-       # refactor it
-       while true do
-           ret_spider = JSON.parse spider.status 
-           ret_ascan  = JSON.parse active_scanner
-
-           # if both are ready
-           break if ret_spider["status"].to_i == 100 and ret_ascan["status"].to_i == 100
+       ret_ascan  = active_scanner.status
+       while ret_ascan["status"].to_i < 100 do
            sleep 10
+           ret_ascan  = active_scanner.status
        end
        puts zap.alerts.view
     end
