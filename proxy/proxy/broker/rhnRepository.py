@@ -256,6 +256,7 @@ def listPackages(server, channel, version):
         return server.listAllPackagesChecksum(channel, version)
     # pylint: disable=W0702
     except:
+        # pylint: disable=W0702
         try:
             return server.listAllPackages(channel, version)
         except xmlrpclib.ProtocolError, e:
