@@ -87,10 +87,9 @@ namespace :security do
        end
        active_scanner = zap.ascan
        active_scanner.start # non-blocking
-       ret_ascan  = active_scanner.status
-       while ret_ascan["status"].to_i < 100 do
+       # active waiting
+       while active_scanner.running? do
            sleep 10
-           ret_ascan  = active_scanner.status
        end
        puts zap.alerts.view
     end
