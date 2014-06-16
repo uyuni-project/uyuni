@@ -4,6 +4,8 @@
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_pgsql_database.sh
 
+cp /manager/java/scripts/rhn.conf.pgsql /etc/rhn/rhn.conf
+
 # SUSE Manager initialization
 sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
