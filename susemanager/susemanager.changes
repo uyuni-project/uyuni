@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:08:08 CEST 2014 - jrenner@suse.de
+
+- version 2.1.11-1
+- Update the sudoers file after SUSE Manager upgrade (bnc#881711)
+- Fix oracle2postgres.sh (database configuration)
+
+-------------------------------------------------------------------
 Tue May 27 17:10:44 CEST 2014 - mc@suse.de
 
 - version 2.1.10-1
