@@ -15,7 +15,7 @@ Tue Jun 17 10:47:03 CEST 2014 - jrenner@suse.de
 - Disable form autocompletion in some places (bnc#879998)
 - System Snapshots pages ported from perl to java
 - Add errata type selection to SSM page
-- Fix datepicker time at xx:xx PM pre-filled with xx:xx AM (bnc#880936)
+- Fix datepicker time at xx:xx PM pre-filled with xx:xx AM (bnc#881522)
 
 -------------------------------------------------------------------
 Tue May 27 17:15:17 CEST 2014 - mc@suse.de
