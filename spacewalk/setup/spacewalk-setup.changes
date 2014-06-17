@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:12:51 CEST 2014 - jrenner@suse.de
+
+- version 2.1.14.5-1
+- Use curl instead of libwww-perl
+- Setup /etc/sudoers in SUSE Manager upgrade scripts (bnc#881711)
+
+-------------------------------------------------------------------
 Tue May 27 17:09:55 CEST 2014 - mc@suse.de
 
 - version 2.1.14.4-1
