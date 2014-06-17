@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:06:46 CEST 2014 - jrenner@suse.de
+
+- version 2.1.50.6-1
+- Index for user_id on wupi table speeds up errata mailer
+- Copy upstream schema migration to SUSE Manager schema upgrade
+
+-------------------------------------------------------------------
 Fri May 16 13:14:25 CEST 2014 - mc@suse.de
 
 - version 2.1.50.5-1
