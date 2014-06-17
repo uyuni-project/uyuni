@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 11:04:37 CEST 2014 - jrenner@suse.de
+
+- version 2.1.55.8-1
+- Additional spacewalk backend methods and capability needed
+- Spacewalk changes needed to support collisionless proxy lookaside
+
+-------------------------------------------------------------------
 Tue May 27 17:14:40 CEST 2014 - mc@suse.de
 
 - version 2.1.55.7-1
