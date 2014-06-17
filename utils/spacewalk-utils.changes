@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:17:09 CEST 2014 - jrenner@suse.de
+
+- version 2.1.27.7-1
+- Fixed spacewalk-hostname-rename to work with postgresql backend
+- Added limitation of spacewalk-clone-by-date for RHEL4 and earlier
+
+-------------------------------------------------------------------
 Tue May 27 17:13:27 CEST 2014 - mc@suse.de
 
 - version 2.1.27.6-1
