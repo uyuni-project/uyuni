@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:47:03 CEST 2014 - jrenner@suse.de
+
+- version 2.1.165.5-1
+- New page added for viewing channels a repo is associated to
+- Allow pasting of keys into textarea
+- Provide a faster systemgroup.listSystemsMinimal API method
+- Disable caching of Locale between page loads
+- Add spacewalk-report for systems with extra packages
+- Improve performance of Systems with Extra Packages query
+- System Event History page: fix link to pending events on Oracle databases
+- Fix human dates now() staying unmodified (bnc#880081)
+- Escape package name to prevent from script injection
+- Allow for null evr and archs on event history detail (bnc#880327)
+- Disable form autocompletion in some places (bnc#879998)
+- System Snapshots pages ported from perl to java
+- Add errata type selection to SSM page
+- Fix datepicker time at xx:xx PM pre-filled with xx:xx AM (bnc#880936)
+
+-------------------------------------------------------------------
 Tue May 27 17:15:17 CEST 2014 - mc@suse.de
 
 - version 2.1.165.4-1
