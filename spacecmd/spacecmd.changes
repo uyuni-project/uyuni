@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Jun 17 10:29:00 CEST 2014 - jrenner@suse.de
+
+- version 2.1.25.3-1
+- Added option to force deployment of a config channel to all subscribed systems
+- Added last boot message in system_details command
+- Updated kickstart_import documentation
+- Added kickstart_import_raw command
+
+-------------------------------------------------------------------
 Tue May 06 15:14:55 CEST 2014 - mc@suse.de
 
 - version 2.1.25.2-1
