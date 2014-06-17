@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jun 17 09:59:36 CEST 2014 - jrenner@suse.de
+
+- version 2.1.60.7-1
+- Remove unused perl code after pages have been ported to java
+- Add development_environment to rhn_web.conf
+
+-------------------------------------------------------------------
 Tue May 27 17:12:58 CEST 2014 - mc@suse.de
 
 - version 2.1.60.6-1
