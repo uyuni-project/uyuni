@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jun 17 11:06:01 CEST 2014 - jrenner@suse.de
+
+- version 2.1.15.4-1
+- Add default path structure to proxy lookaside that avoids collisions
+- Make rhnpush backwards-compatible with old spacewalk-proxy
+- rhn_package_manager should not force md5; use package hearders
+
+-------------------------------------------------------------------
 Tue May 06 15:14:05 CEST 2014 - mc@suse.de
 
 - version 2.1.15.3-1
