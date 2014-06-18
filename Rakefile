@@ -93,6 +93,17 @@ namespace :security do
        end
        puts zap.alerts.view
     end
+    task :report do
+       target = ENV['TARGET']
+       format = ENV['FORMAT'] || "JSON"
+       if target.nil?
+           raise "Target not set"
+       end
+       zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
+       puts zap.alerts.view(format=format)
+    end
+    task :baseline do
+    end
 end
 Rake::TestTask.new do |t|
   t.libs << File.expand_path('../test', __FILE__)
