@@ -100,8 +100,8 @@ namespace :security do
            raise "Target not set"
        end
        zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
-       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline_#{target}.#{format.downcase}")) do |f|
-            f.write(zap.alerts.view(format=format)
+       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline_#{target}.#{format.downcase}"),"w+") do |f|
+            f.write(zap.alerts.view(format=format))
        end
     end
     task :baseline do
@@ -111,7 +111,7 @@ namespace :security do
        end
        zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
        alerts = zap.alerts.view
-       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline.json")) do |f|
+       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline.json"),"w+") do |f|
             f.write(alerts)
        end
     end
