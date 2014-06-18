@@ -100,9 +100,20 @@ namespace :security do
            raise "Target not set"
        end
        zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
-       puts zap.alerts.view(format=format)
+       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline_#{target}.#{format.downcase}")) do |f|
+            f.write(zap.alerts.view(format=format)
+       end
     end
     task :baseline do
+       target = ENV['TARGET']
+       if target.nil?
+           raise "Target not set"
+       end
+       zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
+       alerts = zap.alerts.view
+       File.open(File.join(File.dirname(__FILE__),"security_reports","baseline.json")) do |f|
+            f.write(alerts)
+       end
     end
 end
 Rake::TestTask.new do |t|
