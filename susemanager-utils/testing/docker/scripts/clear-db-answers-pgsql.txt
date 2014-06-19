@@ -3,4 +3,5 @@ db-backend=postgresql
 db-user=spacewalk
 db-password=spacewalk
 db-name=susemanager
-db-host=
+db-host=localhost
+db-port=5432
