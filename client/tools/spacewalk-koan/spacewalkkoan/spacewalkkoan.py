@@ -145,6 +145,7 @@ def initiate(kickstart_host, base, extra_append, static_device=None, system_reco
         k.is_replace          = 1
         k.is_display          = 0
         k.profile             = None
+        k.static_interface    = static_device
 
         if system_record != "":
            k.system          = system_record
