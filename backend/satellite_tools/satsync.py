@@ -690,7 +690,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
         h = sync_handlers.get_channel_handler()
 
         # get channel XML stream
-        stream = self.xmlDataServer.getChannelXmlStream([])
+        stream = self.xmlDataServer.getChannelXmlStream()
         if self.mountpoint:
             for substream in stream:
                 h.process(substream)
@@ -967,7 +967,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
             self._process_package(pid, package, l_timestamp, row,
                 self._missing_channel_packages[channel_label],
                 self._missing_fs_packages[channel_label],
-                source=0, check_rpms=self.check_rpms)
+                check_rpms=self.check_rpms)
 
     # XXX the "is null" condition will have to change in multiorg satellites
     def _diff_packages(self):
@@ -1042,7 +1042,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
         return 0
 
     def _process_package(self, package_id, package, l_timestamp, row,
-            m_channel_packages, m_fs_packages, source=0, check_rpms=1):
+            m_channel_packages, m_fs_packages, check_rpms=1):
         path = None
         channel_package = None
         fs_package      = None
@@ -1251,8 +1251,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
             row = h.fetchone_dict()
             self._process_package(pid, package, None, row,
                 self._missing_channel_src_packages[channel_label],
-                self._missing_fs_source_packages[channel_label],
-                source=1)
+                self._missing_fs_source_packages[channel_label])
 
     # XXX the "is null" condition will have to change in multiorg satellites
     def _diff_source_packages(self):
