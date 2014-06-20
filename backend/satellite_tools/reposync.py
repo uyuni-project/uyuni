@@ -161,6 +161,7 @@ class RepoSync(object):
             if data['metadata_signed'] == 'N':
                 insecure = True
             plugin = None
+            # pylint: disable=W0703
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
@@ -980,7 +981,7 @@ class RepoSync(object):
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             localpath = None
-
+            # pylint: disable=W0703
             try:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:

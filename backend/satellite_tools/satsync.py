@@ -661,6 +661,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
 
     def processChannelFamilies(self):
         self._process_simple("getChannelFamilyXmlStream", "channel-families")
+        # pylint: disable=W0703
         try:
             self._process_simple("getProductNamesXmlStream", "product names")
         except Exception:
@@ -2013,7 +2014,7 @@ class ThreadDownload(threading.Thread):
                 assert(rpmFile is not None)
                 try:
                     os.unlink(rpmFile)
-                except:
+                except (OSError, IOError):
                     pass
 
             #signals to queue job is done
