@@ -34,6 +34,8 @@ Conflicts: rhn-kickstart-virtualization
 
 Requires: %{rhn_check}
 
+Requires:       bncfix(880936)
+
 %description
 Support package for spacewalk koan interaction.
 
