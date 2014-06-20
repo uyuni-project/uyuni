@@ -1,4 +1,4 @@
-#
+gitk#
 # Copyright (c) 2008--2012 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
@@ -39,6 +39,7 @@ from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
+from urlgrabber.grabber import URLGrabError
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
@@ -131,6 +132,7 @@ class RepoSync(object):
 
         self.arches = get_compatible_arches(int(self.channel['id']))
 
+    @staticmethod
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
 
@@ -1003,6 +1005,7 @@ class RepoSync(object):
                 continue
             pack.clear_header()
 
+    @staticmethod
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
 
@@ -1084,6 +1087,7 @@ class RepoSync(object):
         if not self.quiet:
             sys.stderr.write(str(message) + "\n")
 
+    @staticmethod
     def log_msg(self, message):
         rhnLog.log_clean(0, message)
 
@@ -1110,6 +1114,7 @@ class RepoSync(object):
                 url = url + '/'
             self.error_msg("ERROR: kickstartable tree not detected (no %s%s)" % (url, pxeboot_path))
             return
+        channel_id = int(self.channel['id'])
 
         if rhnSQL.fetchone_dict("""
             select id
@@ -1151,8 +1156,7 @@ class RepoSync(object):
                 continue
 
             for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', v)):
-                if (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s)
-                    or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s)):
+                if re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s):
                     continue
                 if re.search(r'/$', s):
                     dirs.append(d + s)
@@ -1164,12 +1168,11 @@ class RepoSync(object):
                     print "Retrieving %s" % d + s
                     plug.get_file(d + s, os.path.join(CFG.MOUNT_POINT, ks_path))
                 st = os.stat(local_path)
-                insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path),
-                                 st_size = st.st_size, st_time = st.st_mtime)
+                insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path), st_size = st.st_size, st_time = st.st_mtime)
 
         rhnSQL.commit()
 
-
+@staticmethod
 def get_errata(update_id):
     """ Return an Errata dict
 
@@ -1401,7 +1404,7 @@ class ContentPackage:
         rel_package_path = rhnPackageUpload.relative_path_from_header(
                 self.a_pkg.header, channel['org_id'],
                 self.a_pkg.checksum_type, self.a_pkg.checksum)
-        _unused = rhnPackageUpload.push_package(self.a_pkg,
+        package_dict, diff_level = rhnPackageUpload.push_package(self.a_pkg,
                 force=False,
                 relative_path=rel_package_path,
                 org_id=channel['org_id'])
