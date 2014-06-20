@@ -46,7 +46,7 @@ except ImportError:
         # pylint: disable=F0401
         import cElementTree
     iterparse = cElementTree.iterparse
-from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
+from ..reposync import ChannelException, ChannelTimeoutException, ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common import rhnLog
