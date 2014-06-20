@@ -1587,7 +1587,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
                                 process_function,
                                 prompt=_('Downloading:'),
                                 nevermorethan=None,
-                                process_function_args=[]):
+                                process_function_args=()):
         pb = ProgressBar(prompt=prompt, endTag=_(' - complete'),
                 finalSize=size, finalBarLength=40, stream=sys.stdout)
         if CFG.DEBUG > 2:
@@ -1607,7 +1607,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
     def _proces_batch(self, channel, batch, log_msg,
                       process_function,
                       prompt=_('Downloading:'),
-                      process_function_args=[],
+                      process_function_args=(),
                       nevermorethan=None,
                       is_slow=False):
         count = len(batch)
