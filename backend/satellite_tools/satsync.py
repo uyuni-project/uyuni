@@ -613,6 +613,7 @@ class Syncer:
             # XXX figure out what to do
             raise RhnSyncException(_("Error parsing the entitlement cert")), None, sys.exc_info()[2]
 
+        # pylint: disable=E1101
         # Compare certificate generation - should match the stream's
         generation = rhnFlags.get('stream-generation')
         if sat_cert.generation != generation:
