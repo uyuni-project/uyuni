@@ -19,10 +19,9 @@ import subprocess
 import sys
 import os
 import re
-import gzip
 import xml.etree.ElementTree as etree
 import urlparse
-from os import mkdir, makedirs
+from os import mkdir
 import gpgme
 import time
 
