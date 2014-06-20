@@ -978,6 +978,7 @@ class ContainerHandler:
         pass
 
 def _normalizeSubelements(objtype, subelements):
+    # pylint: disable=R0911
     # Deal with simple cases first
     if objtype is None:
         # Don't know how to handle it
