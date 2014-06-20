@@ -1151,8 +1151,8 @@ class RepoSync(object):
                 continue
 
             for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', v)):
-                if re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s)
-                    or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s):
+                if (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s)
+                    or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s)):
                     continue
                 if re.search(r'/$', s):
                     dirs.append(d + s)
