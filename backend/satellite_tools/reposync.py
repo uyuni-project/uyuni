@@ -1098,6 +1098,7 @@ class RepoSync(object):
         if isinstance(to, type([])):
             fr = to[0].strip()
             to = ', '.join([s.strip() for s in to])
+        # pylint: disable=W0212
 
         headers = {
             "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
