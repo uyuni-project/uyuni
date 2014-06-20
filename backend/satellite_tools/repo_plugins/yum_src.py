@@ -228,7 +228,8 @@ class ContentSource:
             to_return.append(new_pack)
         return to_return
 
-    def _filter_packages(self, packages, filters, exclude_only = False):
+    @staticmethod
+    def _filter_packages(packages, filters, exclude_only = False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -283,9 +284,11 @@ class ContentSource:
         check = (self.verify_pkg, (package.unique_id, 1), {})
         return self.repo.getPackage(package.unique_id, checkfunc=check)
 
-    def verify_pkg(self, fo, pkg, fail):
+    @staticmethod
+    def verify_pkg(fo, pkg, fail):
         return pkg.verifyLocalPkg()
 
+    @staticmethod
     def _clean_cache(self, directory):
         shutil.rmtree(directory, True)
 
