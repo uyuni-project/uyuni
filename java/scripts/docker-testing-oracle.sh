@@ -10,7 +10,7 @@ cd /manager/susemanager-utils/testing/docker/scripts/
 cd /manager/java
 ant resolve-ivy
 
-cp /manager/susemanager-utils/testing/docker/base_containers/sles11_sp3_base_oracle/rhn.conf /etc/rhn/rhn.conf
+cp /root/rhn.conf /etc/rhn/rhn.conf
 
 rhn-satellite-activate --rhn-cert /usr/share/spacewalk/setup/spacewalk-public.cert --disconnected
 

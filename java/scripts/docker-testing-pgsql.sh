@@ -1,13 +1,11 @@
 #!/bin/bash
 
-# Enable hostname resolving (eg. Java InetAddress.getLocalHost())
-echo 127.0.0.1 `hostname`>>/etc/hosts
-
 # Database schema creation
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_pgsql_database.sh
 
 # SUSE Manager initialization
+cp /root/rhn.conf /etc/rhn/rhn.conf
 sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
