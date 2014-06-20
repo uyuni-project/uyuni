@@ -1797,7 +1797,7 @@ Please contact your administrator""") % (generation, sat_cert.generation))
         real_total_size = total_size
         start_time = round(time.time())
 
-        all_threads=[]
+        all_threads = []
         for _thread in range(4):
             t = ThreadDownload(lock, queue, out_queue, short_package_collection, package_collection,
                                self, self._failed_fs_packages, self._extinct_packages, sources, channel)

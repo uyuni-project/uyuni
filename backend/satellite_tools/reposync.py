@@ -969,7 +969,7 @@ class RepoSync(object):
                                                   (num_passed - num_to_process))
             self.print_msg("Packages to sync:             %5d" % num_to_process)
 
-        self.regen=True
+        self.regen = True
         is_non_local_repo = (url.find("file://") < 0)
 
         def finally_remove(path):
