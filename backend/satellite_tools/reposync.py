@@ -71,13 +71,13 @@ class ChannelTimeoutException(ChannelException):
 
 class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, noninteractive=False, filters=[],
+                 quiet=False, noninteractive=False, filters=None,
                  deep_verify=False, no_errata=False, sync_kickstart = False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
-        self.filters = filters
+        self.filters = filters or []
         self.deep_verify = deep_verify
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
