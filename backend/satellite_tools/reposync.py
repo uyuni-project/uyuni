@@ -297,7 +297,7 @@ class RepoSync(object):
                     relativepath = relativepath.rstrip(suffix)
             src = fileutils.decompress_open(groupsfile)
             dst = open(abspath, "w")
-            shutil.copyfileobj(src,dst)
+            shutil.copyfileobj(src, dst)
             dst.close()
             src.close()
             # update or insert
