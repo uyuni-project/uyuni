@@ -14,12 +14,18 @@
  */
 package com.suse.scc;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.suse.scc.model.Product;
+
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -48,8 +54,8 @@ public class SCCClient {
      *
      * @return list of products available for organization
      */
-    public String listProducts() throws SCCClientException {
-        String products = null;
+    public Collection<Product> listProducts() throws SCCClientException {
+        Collection<Product> products = null;
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         GZIPInputStream gzipStream = null;
@@ -72,12 +78,17 @@ public class SCCClient {
             connection.connect();
             int responseCode = connection.getResponseCode();
 
-            // TODO: Parse the response body in case of success
+            // Parse the response body in case of success
             if (responseCode == 200) {
-                inputStream = connection.getInputStream();
                 // Decompress the gzip stream
+                inputStream = connection.getInputStream();
                 gzipStream = new GZIPInputStream(inputStream);
-                products = SCCClientUtils.streamToString(gzipStream);
+                String productsJSON = SCCClientUtils.streamToString(gzipStream);
+
+                // Parse from JSON
+                Gson gson = new Gson();
+                Type collectionType = new TypeToken<Collection<Product>>(){}.getType();
+                products = gson.fromJson(productsJSON, collectionType);
             }
         }
         catch (MalformedURLException e) {
