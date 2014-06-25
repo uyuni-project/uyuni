@@ -48,7 +48,7 @@ public class SCCClient {
      *
      * @return list of products available for organization
      */
-    public String listProducts() {
+    public String listProducts() throws SCCClientException {
         String products = null;
         HttpURLConnection connection = null;
 
@@ -79,12 +79,10 @@ public class SCCClient {
             }
         }
         catch (MalformedURLException e) {
-            // TODO: throw exception
-            e.printStackTrace();
+            throw new SCCClientException(e);
         }
         catch (IOException e) {
-            // TODO: throw exception
-            e.printStackTrace();
+            throw new SCCClientException(e);
         }
         finally {
             if (connection != null) {
