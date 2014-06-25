@@ -1,0 +1,312 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2014 SUSE
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# Red Hat trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate Red Hat trademarks that are incorporated
+# in this software or its documentation.
+
+import sys
+import socket
+import os
+import optparse
+import getpass
+import xmlrpclib
+
+
+class Config:
+    """
+    Config constants
+    """
+
+    # Configuration location
+    PATH = "/etc/rhn"
+    HOME = os.path.expanduser("~")
+    DOTFILE = os.path.join(HOME, ".mgr-sync")
+    FILE = os.path.join(PATH, "rhn.conf")
+
+    # Keys of the configuration
+    USER = "mgrsync.user"
+    PASSWORD = "mgrsync.password"
+    HOST = "mgrsync.host"
+    PORT = "mgrsync.port"
+    URI = "mgrsync.uri"
+    TOKEN = "mgrsync.session.token"
+
+    # Default configuration, if not specified otherwise
+    DEFAULTS = {
+        USER : None,
+        PASSWORD : None,
+        HOST : "localhost",
+        PORT : 8080,
+        URI : "/rpc/api",
+        TOKEN : None,
+        }
+
+
+    @staticmethod
+    def get_config():
+        """
+        Get the configuration or place defaults.
+        """
+        conf = {}
+        path = Config.HOME
+        filename = Config.DOTFILE
+        if not os.path.exists(filename):
+            filename = Config.FILE
+            path = Config.PATH
+
+        if os.path.exists(path) and os.access(filename, os.R_OK):
+            conf = dict(map(lambda elm : tuple(map(lambda opt : opt.strip(),
+                                                   elm.split("=", 1))),
+                            filter(None, [line.strip() for line in open(filename).readlines()
+                                          if not line.startswith("#")])))
+        else:
+            cli_msg("Warning: cannot read %s configuration file." % filename)
+
+        for k, v in Config.DEFAULTS.items():
+            conf[k] = conf.get(k, v)
+
+        return conf
+
+    @staticmethod
+    def save_local_config(data):
+        """
+        Save local config to a dot file.
+        """
+        f = open(Config.DOTFILE, "w")
+        for item in sorted(data.items()):
+            f.write("%s = %s\n" % tuple(map(lambda e:e is not None and e or "", item)))
+        f.close()
+
+
+
+class Authenticator(object):
+    """
+    Cache authentication, implements password-less connect.
+    """
+
+    def __init__(self, conn, config):
+        self.conn = conn
+        self.config = config
+        self.persist = None
+
+        self.token = self.config[Config.TOKEN]
+        self.uid = self.config[Config.USER]
+        self.password = self.config[Config.PASSWORD]
+
+
+    def __call__(self):
+        """
+        Authenticate user.
+        """
+        if not self.token:
+            if not self.uid or not self.password:
+                self._get_credentials_interactive()
+            self.token = self.conn.auth.login(self.uid, self.password)
+            self.config[Config.TOKEN] = self.token
+
+            if self.persist:
+                self.config[Config.USER] = self.uid
+                self.config[Config.PASSWORD] = self.password
+
+            Config.save_local_config(self.config)
+
+            if self.persist:
+                cli_msg("Credentials has been saved to the %s file.\n" % Config.DOTFILE)
+
+        return self.token
+
+
+    def _get_credentials_interactive(self):
+        """
+        Get credentials from CLI interactively.
+        """
+
+        print "SUSE Manager needs you to login as an administrator."
+        self.uid = self._ask_cli("    User")
+        self.password = self._ask_cli("Password", password=True)
+
+
+    def _ask_cli(self, msg, password=False):
+        """                                                                                                                                                                          
+        Ask input from the console. Hide the echo, in case of password or sensitive information.                                                                                     
+        """
+        msg += ": "
+        value = None
+        while not value:
+            value = (password and getpass.getpass(msg) or raw_input(msg))
+        return value
+
+
+
+class App(object):
+    """
+    App that utilizing the XML-RPC API.
+    """
+
+    def __init__(self, config):
+        url = "http://%s:%s%s" % (config[Config.HOST], config[Config.PORT], config[Config.URI])
+        self.conn = xmlrpclib.ServerProxy(url)
+        self.auth = Authenticator(self.conn, config)
+
+
+    def _addProduct(self):
+        """
+        Add product.
+        """
+        return self.conn.sync.content.addProduct(self.auth(), "xxx")
+
+
+    def _addChannel(self):
+        """
+        Add channel.
+        """
+        return self.conn.sync.content.addChannel(self.auth(), "xxx")
+
+
+    def _listChannels(self):
+        """
+        List channels.
+        """
+        return self.conn.sync.content.listChannels(self.auth())
+
+
+    def _listProducts(self):
+        """
+        List products on the channel.
+        """
+        return self.conn.sync.content.listProducts(self.auth())
+
+
+    def run(self, options):
+        """
+        Run the app.
+        """
+        self.auth.persist = options.saveconfig
+        if options.listchannels:
+            self.format(self._listChannels(), xml=options.xml)
+        elif options.listproducts:
+            self.format(self._listProducts(), xml=options.xml)
+        elif options.addproduct:
+            self._addProduct()
+        elif options.addchannel:
+            self._addChannel()
+
+
+    def format(self, data, xml=False):
+        """
+        Format the output.
+        """
+        print data
+        #print (xml and self._xml_format(data) or self._text_format(data))
+
+
+    def _text_format(self, data):
+        """
+        Format for the plain text.
+        """
+        out = []
+
+        # Sort it all out
+        index = []
+        for item in data:
+            index.append((item["name"], item))
+        index = sorted(index)
+
+        # Print
+        print "No. Arch\tProduct\n=== ====\t======="
+        idx = 1
+        for name, item in index:
+            out.append("%s  %s\t%s" % (str(idx).zfill(2), item["arch"] + "  ", name))
+            idx += 1
+
+        return "\n".join(out)
+
+
+    def _xml_format(self, data):
+        """
+        Format for the XML.
+        """
+        return "XML format is not yet implemented, sorry."
+
+
+def cli_msg(message, stderr=True):
+    """
+    Print the message to the STDERR or STDOUT.
+    """
+    print >> (stderr and sys.stderr or sys.stdout), message
+
+
+
+def get_options():
+    """
+    Create CLI option parser.
+    """
+    parser = optparse.OptionParser(
+        version="%prog 0.1",
+        description="Synchronize SUSE Manager repositories")
+
+    parser.add_option("-l", "--list-channels", action="store_true", dest="listchannels",
+                      help="list all the channels which are available for you")
+    parser.add_option("-p", "--list-products", action="store_true", dest="listproducts",
+                      help="list all the products which are available for you")
+    parser.add_option("--xml", action="store_true", dest="xml",
+                      help="Format the output in XML")
+    parser.add_option("-a", "--add-product", action="store_true", dest="addproduct",
+                      help="Add all mandatory channels of a product [interactive]")
+    parser.add_option("--add-product-by-ident", action="store", dest="addproductbyident",
+                      help="Add all mandatory channels of the product identified by the given ident")
+    parser.add_option("-c", "--add-channel", action="store", dest="addchannel",
+                      help="Add a new channel and trigger a reposync")
+    parser.add_option("--all-childs", action="store_true", dest="allchilds",
+                      help="Show also children, if the parent is not synced yet")
+    parser.add_option("--no-optional", action="store_true", dest="noopt",
+                      help="Do not list optional channels")
+    parser.add_option("--filter", action="store", dest="filter",
+                      help="Show only labels, which contains the filter word (case-insensitive)")
+    parser.add_option("-r", "--refresh", action="store_true",
+                      help="refresh product, channel and subscription"
+                      "information without triggering any reposyncs")
+    parser.add_option("-s", "--save-config", action="store_true", dest="saveconfig",
+                      help="Save the configuration to the local dot file.")
+    parser.add_option("-m", "--migrate_res", action="store_true",
+                      help="migrate to RES subscriptions")
+    parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
+                      help="Print no output, still logs output")
+    parser.add_option('-v', '--verbose', action="store_true",  dest='verbose',
+                      help="Verbose")
+
+    return parser
+
+
+
+def main():
+    """
+    Main routine.
+    """
+    options = get_options().parse_args()[0]
+    try:
+        App(Config.get_config()).run(options)
+    except socket.error, ex:
+        cli_msg("Network error: %s" % ex, stderr=True)
+        if options.verbose:
+            raise
+    except KeyboardInterrupt, ex:
+        cli_msg("\n")
+    except Exception, ex:
+        cli_msg("General error: %s" % ex, stderr=True)
+        if options.verbose:
+            raise
+
+
+if __name__ == '__main__':
+    main()
