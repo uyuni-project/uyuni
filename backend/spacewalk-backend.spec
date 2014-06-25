@@ -22,7 +22,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.55.7
+Version: 2.2.36
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -157,10 +157,7 @@ receivers and get them enabled automatically.
 Summary: Handler for /XMLRPC
 Group: Applications/Internet
 Requires: %{name}-server = %{version}-%{release}
-%if 0%{?fedora} >= 20
-# temporary workaround for bug BZ#1067443
-Requires: rpm-python < 4.11.2
-%endif
+Requires: rpm-python
 Obsoletes: rhns-server-xmlrpc < 5.3.0
 Obsoletes: rhns-xmlrpc < 5.3.0
 Provides: rhns-server-xmlrpc = 1:%{version}-%{release}
@@ -732,6 +729,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %attr(755,root,root) %{_bindir}/rhn-entitlement-report
 %attr(755,root,root) %{_bindir}/spacewalk-update-signatures
 %attr(755,root,root) %{_bindir}/spacewalk-data-fsck
+%attr(755,root,root) %{_bindir}/spacewalk-fips-tool
 %{pythonrhnroot}/satellite_tools/SequenceServer.py*
 %{pythonrhnroot}/satellite_tools/messages.py*
 %{pythonrhnroot}/satellite_tools/progress_bar.py*
@@ -760,6 +758,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/__init__.py*
 %{pythonrhnroot}/satellite_tools/repo_plugins/yum_src.py*
 %config %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server_iss.conf
+%{pythonrhnroot}/satellite_tools/repo_plugins/uln_src.py*
 %{_mandir}/man8/rhn-satellite-exporter.8*
 %{_mandir}/man8/rhn-charsets.8*
 %{_mandir}/man8/rhn-satellite-activate.8*
@@ -771,6 +770,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{_mandir}/man8/spacewalk-debug.8*
 %{_mandir}/man8/satpasswd.8*
 %{_mandir}/man8/satwho.8*
+%{_mandir}/man8/spacewalk-fips-tool.8*
 %{_mandir}/man8/spacewalk-remove-channel.8*
 %{_mandir}/man8/spacewalk-repo-sync.8*
 %{_mandir}/man8/spacewalk-data-fsck.8*
@@ -796,7 +796,134 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
-* Fri Feb 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.55-1
+* Fri Jun 20 2014 Stephen Herr <sherr@redhat.com> 2.2.36-1
+- 1108370 - enable proxy to serve files from its cache for kickstarts
+
+* Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.35-1
+- disable read-only users access of the backend api
+
+* Fri Jun 06 2014 Stephen Herr <sherr@redhat.com> 2.2.34-1
+- 1105282 - additional spacewalk backend methods and capability needed
+
+* Thu Jun 05 2014 Stephen Herr <sherr@redhat.com> 2.2.33-1
+- 1105282 - Spacewalk changes needed to support collisionless proxy lookaside
+
+* Mon Jun 02 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.32-1
+- rpm initialization bug has been resloved
+
+* Fri May 30 2014 Stephen Herr <sherr@redhat.com> 2.2.31-1
+- 517468 - Adding option [-p|--parent]
+
+* Fri May 23 2014 Stephen Herr <sherr@redhat.com> 2.2.30-1
+- 517468 - make format backwards compatible for python 2.4
+- 517468 - Correct the unindents to fix the logic.
+- 517468 - Adding option [-d|--dry-run]
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.29-1
+- spec file polish
+- fixed 'empty separator' error
+
+* Fri May 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.28-1
+- rewrite uln_src plugin as yum_src plugin subclass
+- Added Oracle Unbreakable Linux Network integration to spacewalk-repo-sync
+- 1094526 - remove trailing semi-colon from SQL query as this breaks Oracle
+- Raise error if channel cannot be subscribed
+- python tests: made easier to toggle db backend
+
+* Tue May 13 2014 Tomas Lestach <tlestach@redhat.com> 2.2.27-1
+- let reposync ContentPackage return regular nevra
+
+* Mon May 12 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.26-1
+- query channels only in --list mode
+
+* Tue Apr 29 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.25-1
+- spacewalk-fips-tool: add manual page
+
+* Mon Apr 28 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.24-1
+- spacewalk-fips-tool: tool to help with client certificate conversion
+
+* Fri Apr 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.23-1
+- fix variable name
+
+* Thu Apr 24 2014 Stephen Herr <sherr@redhat.com> 2.2.22-1
+- 1089678 - Format oldRoute to match newRoute, so that rhnServerPath isn't
+  updated every time
+- 517468 - Adding option [-l|--list]
+
+* Wed Apr 23 2014 Stephen Herr <sherr@redhat.com> 2.2.21-1
+- 578835 - [RFE] Add --justks to sw-remove-channel
+- 1088813 - sw-remove-channel --justdb has no impact on ks trees.
+- 1086348 - rename channel-with-childs to channel-with-children
+- 1086348 - [RFE] Add option to spacewalk-remove-channel parent
+
+* Tue Apr 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.20-1
+- updated (conflicting) rpm package has been pushed to Fedora 19 updates
+
+* Mon Apr 14 2014 Jan Dobes <jdobes@redhat.com> 2.2.19-1
+- fixing syntax error
+
+* Thu Apr 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.18-1
+- add server side code for handling clientcert.update_client_cert
+- update_systemid: routine to update server secret and client certificate
+- Added spacewalk-data-fsck man page(8)
+
+* Tue Apr 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.17-1
+- fixed client registration
+
+* Fri Apr 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.16-1
+- 903068 - fixed debian repo generation
+- make spacewalk-repo-sync work with null org channels
+
+* Tue Apr 01 2014 Stephen Herr <sherr@redhat.com> 2.2.15-1
+- 1083226 - uniquify repo-sync packages in case of bad metadata
+
+* Tue Apr 01 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.14-1
+- 1025781 - allow MD5 config file checksums in fips mode
+
+* Tue Apr 01 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.13-1
+- use getHashlibInstance() wrapper to access hashlib object instance
+- 1020895 - allow to compute md5 package checksum in fips mode
+
+* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 2.2.12-1
+- set reboot action status to sucess after the reboot
+- 1025750 - getFileChecksum: add used_for_security boolean parameter
+
+* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.11-1
+- server certificates to use a sha256 hash by default
+
+* Tue Mar 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.10-1
+- we need to be catching one more error message from gpg
+- delete non-existing directory on interrupted downloads
+
+* Mon Mar 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.9-1
+- satpasswd man page: mention -s / --stdin options
+- satpasswd supports SHA-256 encrypted user passwords
+
+* Mon Mar 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.8-1
+- RPC session hash: md5 -> sha256
+- Support SHA-256 encrypted user passwords
+
+* Fri Mar 14 2014 Stephen Herr <sherr@redhat.com> 2.2.7-1
+- reposync: remove interrupted downloads
+- More appropriate data structure
+
+* Fri Mar 07 2014 Stephen Herr <sherr@redhat.com> 2.2.6-1
+- 1045083 - not all machines provide manufacturer, was not None safe
+
+* Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- remove usage of web_contact.old_password from code
+
+* Wed Mar 05 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
+- 1072872 - fixed loop variable name
+
+* Tue Mar 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.3-1
+- 1041346 - spacewalk-remove-channel man page update
+
+* Fri Feb 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
+- python: consolidate backen/server tests
+- python tests: fixed rhnsql-tests
+
+* Tue Feb 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
 - 1067443 - specify package only with version
 
 * Mon Feb 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.54-1

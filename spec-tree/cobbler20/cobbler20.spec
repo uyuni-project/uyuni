@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 21%{?dist}
+Release: 24%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -16,6 +16,8 @@ Patch2: koan_no_selinux_set.patch
 Patch3: buildiso.patch
 Patch4: koan-rhel7-virtinst.patch
 Patch5: koan-extra-options.patch
+Patch6: cobbler-interface-type.patch
+Patch7: cobblerd-python-s.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -35,13 +37,9 @@ Requires: mod_wsgi
 
 Requires: createrepo
 %if 0%{?fedora}
-%if 0%{?fedora} >= 19
 Requires: fence-agents-all
-%else
-Requires: fence-agents
 %endif
-%endif
-%if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6
 Requires: genisoimage
 %else
 Requires: mkisofs
@@ -51,7 +49,7 @@ Requires: python-cheetah
 Requires: python-devel
 Requires: python-netaddr
 Requires: python-simplejson
-%if 0%{?fedora} >= 8
+%if 0%{?fedora}
 BuildRequires: python-setuptools-devel
 %else
 BuildRequires: python-setuptools
@@ -62,24 +60,19 @@ Requires: PyYAML
 BuildRequires: redhat-rpm-config
 %endif
 Requires: rsync
-%if 0%{?fedora} >= 6 || 0%{?rhel} >= 5
+%if 0%{?fedora} || 0%{?rhel} >= 5
 Requires: yum-utils
 %endif
 
 %if 0%{?fedora}
-%if 0%{?fedora} > 18
 BuildRequires: systemd
-%else
-Requires(post):  /bin/systemctl
-Requires(preun): /bin/systemctl
-%endif
 %else
 Requires(post):  /sbin/chkconfig
 Requires(preun): /sbin/chkconfig
 Requires(preun): /sbin/service
 %endif
 
-%if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6
 %{!?pyver: %define pyver %(%{__python} -c "import sys ; print sys.version[:3]" || echo 0)}
 Requires: python(abi) >= %{pyver}
 %endif
@@ -111,6 +104,10 @@ a XMLRPC API for integration with other applications.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
+%patch7 -p1
+%endif
 
 %build
 %{__python} setup.py build 
@@ -266,7 +263,7 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/cobbler/*.py*
 #%{python_sitelib}/cobbler/server/*.py*
 %{python_sitelib}/cobbler/modules/*.py*
-%if 0%{?fedora} >= 9 || 0%{?rhel} >= 5
+%if 0%{?fedora} || 0%{?rhel} >= 5
 %exclude %{python_sitelib}/cobbler/sub_process.py*
 %endif
 %{_mandir}/man1/cobbler.1.gz
@@ -347,7 +344,7 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /var/lib/cobbler/cobbler_hosts
 
 %defattr(-,root,root)
-%if 0%{?fedora} > 8 || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6
 %{python_sitelib}/cobbler*.egg-info
 %endif
 %doc AUTHORS CHANGELOG README COPYING
@@ -358,11 +355,11 @@ Summary: Helper tool that performs cobbler orders on remote machines.
 Group: Applications/System
 Requires: python >= 1.5
 BuildRequires: python-devel
-%if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6
 %{!?pyver: %define pyver %(%{__python} -c "import sys ; print sys.version[:3]")}
 Requires: python(abi) >= %{pyver}
 %endif
-%if 0%{?fedora} >= 8
+%if 0%{?fedora}
 BuildRequires: python-setuptools-devel
 %endif
 %if 0%{?rhel} >= 4
@@ -382,15 +379,12 @@ of an existing system.  For use with a boot-server configured with Cobbler
 %files -n koan
 %defattr(-,root,root)
 # FIXME: need to generate in setup.py
-#%if 0%{?fedora} > 8
-#%{python_sitelib}/koan*.egg-info
-#%endif
 %dir /var/spool/koan
 %{_bindir}/koan
 %{_bindir}/cobbler-register
 %dir %{python_sitelib}/koan
 %{python_sitelib}/koan/*.py*
-%if 0%{?fedora} >= 9 || 0%{?rhel} >= 5
+%if 0%{?fedora} || 0%{?rhel} >= 5
 %exclude %{python_sitelib}/koan/sub_process.py*
 %exclude %{python_sitelib}/koan/opt_parse.py*
 %exclude %{python_sitelib}/koan/text_wrap.py*
@@ -434,11 +428,11 @@ Requires: apache2-mod_python
 %else
 Requires: mod_python
 %endif
-%if 0%{?fedora} >= 11 || 0%{?rhel} >= 6
+%if 0%{?fedora} || 0%{?rhel} >= 6
 %{!?pyver: %define pyver %(%{__python} -c "import sys ; print sys.version[:3]")}
 Requires: python(abi) >= %{pyver}
 %endif
-%if 0%{?fedora} >= 8
+%if 0%{?fedora}
 BuildRequires: python-setuptools-devel
 %else
 BuildRequires: python-setuptools
@@ -464,6 +458,15 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Tue Jun 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.0.11-24
+- cobblerd: don't search user's ~/.local on Fedora and RHEL-6
+
+* Fri Jun 13 2014 Stephen Herr <sherr@redhat.com> 2.0.11-23
+- 1109276 - make cobbler20 guest kickstart work with new koan
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.0.11-22
+- spec polishing
+
 * Thu Dec 12 2013 Stephen Herr <sherr@redhat.com> 2.0.11-21
 - 1042381 - Add extra options to koan for virt-install
 - 1042363 - make koan virt guest installs work on newer operating systems

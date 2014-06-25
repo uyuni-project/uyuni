@@ -1,7 +1,7 @@
 Summary:      Spacewalk monitoring
 Name:         spacewalk-monitoring
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      2.1.0.1
+Version:      2.2.1
 Release:      1%{?dist}
 URL:          https://fedorahosted.org/spacewalk
 License:      GPLv2
@@ -57,13 +57,7 @@ Requires(preun): aaa_base
 %else
 Requires: spacewalk-monitoring-selinux
 %if 0%{?fedora}
-%if 0%{?fedora} > 18
 BuildRequires: systemd
-%else
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
-%endif
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
@@ -176,6 +170,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
+- spec file polish
+
 * Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
 - Bumping package versions for 2.0.
 

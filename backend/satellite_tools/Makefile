@@ -13,11 +13,11 @@ SPACEWALK_FILES	= __init__ connection constants diskImportLib messages \
             xmlSource xmlWireSource rhn_satellite_activate rhn_ssl_dbstore \
             satComputePkgHeaders updatePackages reposync \
 	    geniso
-SCRIPTS = spacewalk-debug rhn-entitlement-report \
+SCRIPTS = satellite-sync spacewalk-debug rhn-entitlement-report \
 	  rhn-schema-version rhn-satellite-activate rhn-charsets \
 	  rhn-ssl-dbstore update-packages rhn-db-stats rhn-schema-stats \
           spacewalk-repo-sync spacewalk-remove-channel \
-	  spacewalk-update-signatures spacewalk-data-fsck satellite-sync
+	  spacewalk-update-signatures spacewalk-data-fsck spacewalk-fips-tool
 
 # check if we can build man pages
 DOCBOOK = $(wildcard /usr/bin/docbook2man)

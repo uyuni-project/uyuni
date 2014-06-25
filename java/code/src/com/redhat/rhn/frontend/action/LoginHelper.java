@@ -19,9 +19,11 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
@@ -30,6 +32,7 @@ import com.redhat.rhn.manager.user.CreateUserCommand;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.manager.user.UserManager;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionErrors;
@@ -44,7 +47,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 
 /**
@@ -83,7 +85,8 @@ public class LoginHelper {
             String email = decodeFromIso88591(
                     (String) request.getAttribute("REMOTE_USER_EMAIL"), null);
 
-            Set<Role> roles = getRolesFromExtGroups(request);
+            Set<String> extGroups = getExtGroups(request);
+            Set<Role> roles = getRolesFromExtGroups(extGroups);
 
             log.warn("REMOTE_USER_GROUPS: " +
                     request.getAttribute("REMOTE_USER_GROUPS"));
@@ -99,10 +102,16 @@ public class LoginHelper {
                 }
                 if (remoteUser != null) {
                     UpdateUserCommand updateCmd = new UpdateUserCommand(remoteUser);
-                    updateCmd.setFirstNames(firstname);
-                    updateCmd.setLastName(lastname);
-                    updateCmd.setEmail(email);
-                    updateCmd.setRoles(roles);
+                    if (!StringUtils.isEmpty(firstname)) {
+                        updateCmd.setFirstNames(firstname);
+                    }
+                    if (!StringUtils.isEmpty(lastname)) {
+                        updateCmd.setLastName(lastname);
+                    }
+                    if (!StringUtils.isEmpty(email)) {
+                        updateCmd.setEmail(email);
+                    }
+                    updateCmd.setTemporaryRoles(roles);
                     updateCmd.updateUser();
                     log.warn("Externally authenticated login " + remoteUserString +
                                  " (" + firstname + " " + lastname + ")");
@@ -131,6 +140,7 @@ public class LoginHelper {
                     }
                 }
                 if (newUserOrg != null) {
+                    Set<ServerGroup> sgs = getSgsFromExtGroups(extGroups, newUserOrg);
                     CreateUserCommand createCmd = new CreateUserCommand();
                     createCmd.setLogin(remoteUserString);
                     // set a password, that cannot really be used
@@ -139,7 +149,8 @@ public class LoginHelper {
                     createCmd.setLastName(lastname);
                     createCmd.setEmail(email);
                     createCmd.setOrg(newUserOrg);
-                    createCmd.setRoles(roles);
+                    createCmd.setTemporaryRoles(roles);
+                    createCmd.setServerGroups(sgs);
                     createCmd.validate();
                     createCmd.storeNewUser();
                     remoteUser = createCmd.getUser();
@@ -170,8 +181,37 @@ public class LoginHelper {
         return defaultString;
     }
 
-    private static Set<Role> getRolesFromExtGroups(HttpServletRequest requestIn) {
+    private static Set<Role> getRolesFromExtGroups(Set<String> groupNames) {
         Set<Role> roles = new HashSet<Role>();
+        for (String extGroupName : groupNames) {
+            UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
+            if (extGroup == null) {
+                log.info("No role mapping defined for external group '" + extGroupName +
+                        "'.");
+                continue;
+            }
+            roles.addAll(extGroup.getRoles());
+        }
+        return roles;
+    }
+
+    private static Set<ServerGroup> getSgsFromExtGroups(Set<String> groupNames, Org org) {
+        Set<ServerGroup> sgs = new HashSet<ServerGroup>();
+        for (String extGroupName : groupNames) {
+            OrgUserExtGroup extGroup =
+                    UserGroupFactory.lookupOrgExtGroupByLabelAndOrg(extGroupName, org);
+            if (extGroup == null) {
+                log.info("No sg mapping defined for external group '" + extGroupName +
+                        "'.");
+                continue;
+            }
+            sgs.addAll(extGroup.getServerGroups());
+        }
+        return sgs;
+    }
+
+    private static Set<String> getExtGroups(HttpServletRequest requestIn) {
+        Set<String> extGroups = new HashSet<String>();
         Long nGroups = null;
         String nGroupsStr = (String) requestIn.getAttribute("REMOTE_USER_GROUP_N");
         if (nGroupsStr != null) {
@@ -184,7 +224,7 @@ public class LoginHelper {
         }
         if (nGroups == null) {
             log.warn("REMOTE_USER_GROUP_N not set!");
-            return roles;
+            return extGroups;
         }
         for (int i = 1; i <= nGroups; i++) {
             String extGroupName = (String) requestIn.getAttribute("REMOTE_USER_GROUP_" + i);
@@ -192,14 +232,10 @@ public class LoginHelper {
                 log.warn("REMOTE_USER_GROUP_" + i + " not set!");
                 continue;
             }
-            UserExtGroup extGroup = UserGroupFactory.lookupExtGroupByLabel(extGroupName);
-            if (extGroup == null) {
-                log.warn("No mapping defined for external group '" + extGroupName + "'.");
-                continue;
-            }
-            roles.addAll(extGroup.getRoles());
+            extGroups.add(extGroupName);
+
         }
-        return roles;
+        return extGroups;
     }
 
     /** static method shared by LoginAction and LoginSetupAction
@@ -219,21 +255,19 @@ public class LoginHelper {
 
         LoginHelper.publishUpdateErrataCacheEvent(user.getOrg());
         // redirect, if url_bounce set
-        HttpSession ws = request.getSession(false);
-        if (ws != null) {
-            String urlBounce = LoginAction.updateUrlBounce(
-                    (String) ws.getAttribute("url_bounce"),
-                    (String) ws.getAttribute("request_method"));
-            try {
-                if (urlBounce != null) {
-                    log.info("redirect: " + urlBounce);
-                    response.sendRedirect(urlBounce);
-                    return true;
-                }
+        String urlBounce = request.getParameter("url_bounce");
+        String reqMethod = request.getParameter("request_method");
+
+        urlBounce = LoginAction.updateUrlBounce(urlBounce, reqMethod);
+        try {
+            if (urlBounce != null) {
+                log.info("redirect: " + urlBounce);
+                response.sendRedirect(urlBounce);
+                return true;
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
         return false;
     }

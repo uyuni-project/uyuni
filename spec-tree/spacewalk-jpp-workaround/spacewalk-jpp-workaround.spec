@@ -1,5 +1,5 @@
 Name:		spacewalk-jpp-workaround
-Version:	2.1.2
+Version:	2.2.1
 Release:	1%{?dist}
 Summary:	Workaround package to fulfill jpackage broken dependencies
 
@@ -16,7 +16,7 @@ Obsoletes:      msv-workaround
 Obsoletes:      msv
 %endif
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 Provides:   hivemind-lib = 1.1.1.0
 Obsoletes:  hivemind-lib < 1.1.1.0
 Provides:   hivemind = 1.1.1.0
@@ -27,15 +27,12 @@ Provides:   spring-all = 1.2.9.0
 Obsoletes:  spring-all < 1.2.9.0
 Provides:   spring = 1:1.2.9.0
 Obsoletes:  spring < 1:1.2.9.0
-%endif
-
-%if 0%{?fedora} && 0%{?fedora} >= 17
 Provides:   struts-taglib = 1.3.10
 Provides:   struts-tiles = 1.3.10
 Requires:   struts >= 1.3.10
 %endif
 
-%if 0%{?fedora} >= 20
+%if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
 Provides:   jakarta-commons-logging = 1.1.3
 Requires:   apache-commons-logging
 Obsoletes:  jpackage-utils >= 5.0.0
@@ -65,6 +62,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- updated for RHEL7
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.1.3-1
+- spec file polish
+
 * Fri Jan 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
 - obsoleted package should be also provided
 

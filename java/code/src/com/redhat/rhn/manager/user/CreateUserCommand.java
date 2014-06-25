@@ -23,6 +23,9 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -31,6 +34,8 @@ import com.redhat.rhn.frontend.events.NewUserEvent;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -50,7 +55,8 @@ public class CreateUserCommand {
     private Address addr;
     private boolean makeOrgAdmin;
     private boolean makeSatAdmin;
-    private Set<Role> roles;
+    private Set<Role> temporaryRoles = new HashSet<Role>();
+    private Set<ServerGroup> serverGroups = new HashSet<ServerGroup>();
 
     private List<ValidatorError> errors;
     private List<ValidatorError> passwordErrors;
@@ -133,16 +139,27 @@ public class CreateUserCommand {
         boolean usePam = user.getUsePamAuthentication(); //save what we got from the form
         user = UserManager.createUser(user, org, addr);
         if (this.makeOrgAdmin) {
-            user.addRole(RoleFactory.ORG_ADMIN);
+            user.addPermanentRole(RoleFactory.ORG_ADMIN);
         }
         if (this.makeSatAdmin) {
-            user.addRole(RoleFactory.SAT_ADMIN);
+            user.addPermanentRole(RoleFactory.SAT_ADMIN);
         }
         user.setUsePamAuthentication(usePam); //set it back
-        if (roles != null) {
-            for (Role role : roles) {
-                user.addRole(role);
+        UserManager.resetTemporaryRoles(user, temporaryRoles);
+        if (org.getOrgConfig().isCreateDefaultSg()) {
+            ManagedServerGroup sg = ServerGroupFactory.lookupByNameAndOrg(
+                    user.getLogin(), user.getOrg());
+            if (sg == null) {
+                // create default system group for the user
+                sg = ServerGroupFactory.create(user.getLogin(),
+                        user.getLogin() + " default system group", user.getOrg());
             }
+            UserManager.grantServerGroupPermission(user, sg.getId());
+            user.setDefaultSystemGroupIds(new HashSet<Long>(Arrays.asList(sg.getId())));
+        }
+        // assign server groups permissions
+        for (ServerGroup sg : serverGroups) {
+            UserManager.grantServerGroupPermission(user, sg.getId());
         }
         UserManager.storeUser(user); //save the user via hibernate
     }
@@ -393,15 +410,29 @@ public class CreateUserCommand {
     /**
      * @return Returns the roles.
      */
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<Role> getTemporaryRoles() {
+        return temporaryRoles;
     }
 
 
     /**
      * @param rolesIn The roles to set.
      */
-    public void setRoles(Set<Role> rolesIn) {
-        roles = rolesIn;
+    public void setTemporaryRoles(Set<Role> rolesIn) {
+        temporaryRoles = rolesIn;
+    }
+
+    /**
+     * @return Returns the Server Groups.
+     */
+    public Set<ServerGroup> getServerGroups() {
+        return serverGroups;
+    }
+
+    /**
+     * @param sgsIn The Server Groups to set.
+     */
+    public void setServerGroups(Set<ServerGroup> sgsIn) {
+        serverGroups = sgsIn;
     }
 }

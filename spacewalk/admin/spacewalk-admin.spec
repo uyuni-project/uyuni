@@ -7,7 +7,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.1.2.3
+Version: 2.2.4
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -17,7 +17,7 @@ Requires: spacewalk-base
 Requires: perl-URI, perl(MIME::Base64)
 Requires: lsof
 BuildRequires: /usr/bin/pod2man
-%if 0%{?fedora} > 18
+%if 0%{?fedora}
 BuildRequires: systemd
 %endif
 Obsoletes: satellite-utils < 5.3.0
@@ -97,6 +97,18 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Jun 18 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
+- Set correct SELinux context on the target file
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.3-1
+- Do not look at processes in containers.
+
+* Thu May 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
+- 1064287 - Use systemctl to get the pid since /var/run/tomcat.pid is empty.
+
+* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- Add support to ConfigureSatelliteCommand to remove keys
+
 * Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.2-1
 - cleaning up old svn Ids
 

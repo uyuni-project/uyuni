@@ -6,7 +6,7 @@
 <html:html >
 <body>
   <rhn:toolbar base="h1" icon="header-channel-mapping" iconAlt="info.alt.img">
-    <bean:message key="extgroup.jsp.delete" arg0="${group.label}"/>
+    <bean:message key="extgroup.jsp.delete.name" arg0="${group.label}"/>
   </rhn:toolbar>
 
   <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/admin_user.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

@@ -78,7 +78,7 @@ public class PackageListItem extends IdComboDto {
     }
 
     /**
-     * Set locked status. Either value of PackageManager.PKG_PENDING_LOCK for "to be locked" 
+     * Set locked status. Either value of PackageManager.PKG_PENDING_LOCK for "to be locked"
      * or value of PackageManager.PKG_PENDING_UNLOCK for "to be unlocked".
      *
      * @param lockedStatus "L" or "U" for pending status direction.
@@ -88,8 +88,8 @@ public class PackageListItem extends IdComboDto {
         if (lockedStatus != null && lockedStatus.isEmpty()) {
             lockedStatus = null;
         }
-        
-        if (lockedStatus != null && 
+
+        if (lockedStatus != null &&
             (!lockedStatus.equals(PackageManager.PKG_PENDING_LOCK) &&
              (!lockedStatus.equals(PackageManager.PKG_PENDING_UNLOCK)))) {
             throw new Exception(String.format("Unknown lock status: %s", lockedStatus));

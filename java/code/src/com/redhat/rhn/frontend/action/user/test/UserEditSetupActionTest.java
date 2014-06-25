@@ -47,11 +47,11 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         user.setTitle("Test title");
         // Lets add some roles
         Iterator it = UserFactory.IMPLIEDROLES.iterator();
-        user.addRole(RoleFactory.ORG_ADMIN);
+        user.addPermanentRole(RoleFactory.ORG_ADMIN);
         while (it.hasNext()) {
             Role cr = (Role) it.next();
             user.getOrg().addRole(cr);
-            user.addRole(cr);
+            user.addPermanentRole(cr);
         }
 
         setupExpectations(sah.getForm(), sah.getUser());
@@ -65,7 +65,8 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
             // verify the dyna form got the right values we expected.
             sah.getForm().verify();
 
-            assertEquals(sah.getUser().getLastLoggedIn(), sah.getRequest().getAttribute("lastLoggedIn"));
+            assertEquals(sah.getUser().getLastLoggedIn(),
+                    sah.getRequest().getAttribute("lastLoggedIn"));
             // Verify some more intensive stuff
             assertNotNull(sah.getRequest().getAttribute("adminRoles"));
             assertNotNull(sah.getRequest().getAttribute("regularRoles"));

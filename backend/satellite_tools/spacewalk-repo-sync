@@ -66,13 +66,22 @@ def main():
                       "spacewalk-repo-sync Exiting.")
 
     parser = OptionParser()
-    parser.add_option('-u', '--url', action='store', dest='url',
-                      help='The url to sync')
+    parser.add_option('-l', '--list', action='store_true', dest='list',
+                      help='List the custom channels with the assosiated repositories.')
+    parser.add_option('-u', '--url', action='append', dest='url',
+                      default=[], help='The url to sync')
     parser.add_option('-c', '--channel', action='store',
                       dest='channel_label',
                       help='The label of the channel to sync packages to')
+    parser.add_option('-p', '--parent-channel', action='append',
+                      dest='parent_label', default=[],
+                      help='The label of the channel to sync packages to')
+
+    parser.add_option('-d', '--dry-run', action='store_true',
+                      dest='dry_run',
+                      help='Test run. No sync takes place.')
     parser.add_option('-t', '--type', action='store', dest='repo_type',
-                      help='The type of repo, currently only "yum" is supported',
+                      help='The type of repo, currently only "yum" and "uln" are supported',
                       default='yum')
     parser.add_option('-f', '--fail', action='store_true', dest='fail',
                       default=False,
@@ -100,8 +109,24 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    if not options.channel_label:
-        systemExit(1, "--channel must be specified")
+    l_params=["no_errata", "sync_kickstart", "quiet", "fail"]
+    d_chan_repo=reposync.getChannelRepo()
+    l_ch_custom=reposync.getCustomChannels()
+    d_parent_child=reposync.getParentsChilds()
+    d_ch_repo_sync={}
+
+    if options.list:
+        print "======================================"
+        print "|   Channel Label   |   Repository   |"
+        print "======================================"
+        d_chan_repo=reposync.getChannelRepo()
+        l_ch_custom=reposync.getCustomChannels()
+        for ch in d_chan_repo:
+            for repo in d_chan_repo[ch]:
+                print "%s | %s" %(ch,repo)
+        for ch in list(set(l_ch_custom)-set(d_chan_repo)):
+            print "%s | No repository set" % ch
+        return 0
 
     # Automatically remove all the remains inside of /var/spacewalk/packages/1/stage
     # Yum does not seem to handle download resumes properly. This can lead to
@@ -111,9 +136,49 @@ def main():
     # > afd8c60d7908b2b0e2d95ad0b333920aea9892eb', 'Invalid information uploaded to the server')
     clear_interrupted_downloads()
 
-    sync = reposync.RepoSync(channel_label=options.channel_label,
+    if not options.channel_label and not options.parent_label:
+        systemExit(1, "--channel or --parent-channel  must be specifed.")
+
+    if options.channel_label:
+        d_ch_repo_sync[options.channel_label]=options.url
+
+    if options.parent_label:
+        for pch in options.parent_label:
+            if pch in d_parent_child:
+               for ch in [pch]+d_parent_child[pch]:
+                    d_ch_repo_sync[ch]=[]
+            else:
+                systemExit(1, "Channel %s is not custom base channel." % pch)
+
+    for ch in d_ch_repo_sync:
+        if ch not in l_ch_custom:
+            systemExit(1, "Channel %s is not custom or does not exist." % ch)
+        if not d_ch_repo_sync[ch] and not ch in d_chan_repo:
+            systemExit(1, "Channel %s Channel has no URL associated" % ch)
+
+    if options.dry_run:
+         print "======================================"
+         print "|   Channel Label   |   Repository   |"
+         print "======================================"
+
+         for ch,repo in d_ch_repo_sync.items():
+             if repo:
+                print " %s : %s" % (ch,", ".join(repo))
+             else:
+                print " %s : %s" % (ch,", ".join(d_chan_repo[ch]))
+
+         print "======================================"
+         print "|             Parameters             |"
+         print "======================================"
+         for key in  l_params:
+             print " %s: %s" % (key,str(getattr(options, key)))
+         return 0
+
+    for ch,repo in d_ch_repo_sync.items():
+        print "#### Channel label: %s ####" % ch
+        sync = reposync.RepoSync(channel_label=ch,
                       repo_type=options.repo_type,
-                      url=options.url,
+                      url=repo,
                       fail=options.fail,
                       quiet=options.quiet,
                       noninteractive=options.noninteractive,
@@ -121,7 +186,7 @@ def main():
                       deep_verify=options.deep_verify,
                       no_errata=options.no_errata,
                       sync_kickstart=options.sync_kickstart)
-    sync.sync()
+        sync.sync()
     releaseLOCK()
     return 0
 

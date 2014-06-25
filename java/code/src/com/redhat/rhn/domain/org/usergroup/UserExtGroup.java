@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.domain.org.usergroup;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.manager.user.UserManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,47 +25,9 @@ import java.util.Set;
  * UserExtGroup
  * @version $Rev$
  */
-public class UserExtGroup extends BaseDomainHelper implements Comparable {
-
-    private Long id;
-    private String label;
+public class UserExtGroup extends ExtGroup {
 
     private Set<Role> roles;
-
-    /**
-     *
-     */
-    public UserExtGroup() {
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn The id to set.
-     */
-    public void setId(Long idIn) {
-        id = idIn;
-    }
-
-    /**
-     * @return Returns the label.
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * @param labelIn The label to set.
-     */
-    public void setLabel(String labelIn) {
-        label = labelIn;
-    }
 
     /**
      * @return Returns the roles.
@@ -90,24 +52,6 @@ public class UserExtGroup extends BaseDomainHelper implements Comparable {
      * @return roleNames string
      */
     public String getRoleNames() {
-        String roleNames = null;
-        for (Role role : roles) {
-            roleNames = (roleNames == null) ? role.getName() :
-                roleNames + ", " + role.getName();
-        }
-        if (roleNames == null) {
-            return "(normal user)";
-        }
-        return roleNames;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(Object objectIn) {
-        if (objectIn == null || objectIn instanceof UserExtGroup) {
-            return 0;
-        }
-        return id.compareTo(((UserExtGroup) objectIn).getId());
+        return UserManager.roleNames(roles);
     }
 }

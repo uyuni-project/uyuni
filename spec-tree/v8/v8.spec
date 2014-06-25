@@ -25,7 +25,7 @@
 
 Name:		v8
 Version:	%{somajor}.%{sominor}.%{sobuild}.%{sotiny}
-Release:	2.1%{?dist}
+Release:	2.2%{?dist}
 Epoch:		1
 Summary:	JavaScript Engine
 Group:		System Environment/Libraries
@@ -91,7 +91,7 @@ visibility=default \
 env=CCFLAGS:"-fPIC" \
 I_know_I_should_build_with_GYP=yes
 
-%if 0%{?fedora} >= 16
+%if 0%{?fedora}
 export ICU_LINK_FLAGS=`pkg-config --libs-only-l icu-i18n`
 %else
 export ICU_LINK_FLAGS=`pkg-config --libs-only-l icu`
@@ -216,6 +216,9 @@ rm -rf %{buildroot}
 %{python_sitelib}/j*.py*
 
 %changelog
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 3.14.5.10-2.2
+- spec file polish
+
 * Fri Aug 02 2013 T.C. Hollingsworth <tchollingsworth@gmail.com> - 1:3.14.5.10-2
 - backport fix for remote DoS or unspecified other impact via type confusion
   (RHBZ#991116; CVE-2013-2882)

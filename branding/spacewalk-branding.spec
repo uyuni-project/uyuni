@@ -25,7 +25,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.1.33.6
+Version:    2.2.5
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -42,6 +42,10 @@ BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
 Requires:      susemanager-frontend-libs >= 2.1
+Requires:      momentjs
+Requires:      jquery-ui
+Requires:      select2
+Requires:      select2-bootstrap-css
 
 %description
 Spacewalk specific branding, CSS, and images.
@@ -130,6 +134,25 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri May 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- require jquery-ui, select2 and select2-bootstrap-css
+
+* Fri May 23 2014 Stephen Herr <sherr@redhat.com> 2.2.4-1
+- build an rpm for momentjs and require it
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.3-1
+- make the warning alters readable
+
+* Wed Apr 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
+- Update default Spacewalk entitlement certificate
+
+* Wed Mar 05 2014 Jan Dobes 2.2.1-1
+- hide search form together with other UI changes
+- fix gap under menu
+- show roll menu button only on small screens
+- control menu type switching completely with css instead of javascript
+- Bumping package versions for 2.2.
+
 * Tue Feb 18 2014 Matej Kollar <mkollar@redhat.com> 2.1.33-1
 - The fix should have been the other way round...
 

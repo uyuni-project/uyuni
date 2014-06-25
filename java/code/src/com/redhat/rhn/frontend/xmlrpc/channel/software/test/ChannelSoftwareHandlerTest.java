@@ -80,14 +80,14 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         packages2add.add(pkg2.getId());
 
         assertEquals(0, channel.getPackages().size());
-        handler.addPackages(adminKey, channel.getLabel(), packages2add);
+        handler.addPackages(admin, channel.getLabel(), packages2add);
         assertEquals(2, channel.getPackages().size());
 
         Long bogusId = new Long(System.currentTimeMillis());
         packages2add.add(bogusId);
 
         try {
-            handler.addPackages(adminKey, channel.getLabel(), packages2add);
+            handler.addPackages(admin, channel.getLabel(), packages2add);
             fail("should have gotten a permission check failure since admin wouldn't " +
                  "have access to a package that doesn't exist.");
         }
@@ -98,7 +98,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         //Test remove packages
         assertEquals(2, channel.getPackages().size());
         try {
-            handler.removePackages(adminKey, channel.getLabel(), packages2add);
+            handler.removePackages(admin, channel.getLabel(), packages2add);
             fail("should have gotten a permission check failure.");
         }
         catch (PermissionCheckFailureException e) {
@@ -109,7 +109,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         packages2add.remove(pkg2.getId());
         packages2add.add(pkg1.getId());
         assertEquals(2, packages2add.size()); // should have 2 entries for pkg1
-        handler.removePackages(adminKey, channel.getLabel(), packages2add);
+        handler.removePackages(admin, channel.getLabel(), packages2add);
         assertEquals(1, channel.getPackages().size());
 
 
@@ -124,7 +124,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         packages2add.add(pkg1.getId());
 
         try {
-            handler.addPackages(adminKey, channel.getLabel(), packages2add);
+            handler.addPackages(admin, channel.getLabel(), packages2add);
             fail("incompatible package was added to channel");
         }
         catch (FaultException e) {
@@ -135,14 +135,14 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testSetGloballySubscribable() throws Exception {
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
-        handler.setGloballySubscribable(adminKey, channel.getLabel(), false);
+        handler.setGloballySubscribable(admin, channel.getLabel(), false);
         assertFalse(channel.isGloballySubscribable(admin.getOrg()));
-        handler.setGloballySubscribable(adminKey, channel.getLabel(), true);
+        handler.setGloballySubscribable(admin, channel.getLabel(), true);
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
 
         assertFalse(regular.hasRole(RoleFactory.CHANNEL_ADMIN));
         try {
-            handler.setGloballySubscribable(regularKey, channel.getLabel(), false);
+            handler.setGloballySubscribable(regular, channel.getLabel(), false);
             fail();
         }
         catch (PermissionCheckFailureException e) {
@@ -151,7 +151,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
 
         try {
-            handler.setGloballySubscribable(adminKey, TestUtils.randomString(),
+            handler.setGloballySubscribable(admin, TestUtils.randomString(),
                                             false);
             fail();
         }
@@ -167,15 +167,15 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         User user = UserTestUtils.createUser("foouser", admin.getOrg().getId());
 
         assertFalse(ChannelManager.verifyChannelSubscribe(user, c1.getId()));
-        handler.setUserSubscribable(adminKey, c1.getLabel(), user.getLogin(), true);
+        handler.setUserSubscribable(admin, c1.getLabel(), user.getLogin(), true);
         assertTrue(ChannelManager.verifyChannelSubscribe(user, c1.getId()));
 
-        handler.setUserSubscribable(adminKey, c1.getLabel(), user.getLogin(), false);
+        handler.setUserSubscribable(admin, c1.getLabel(), user.getLogin(), false);
         assertFalse(ChannelManager.verifyChannelSubscribe(user, c1.getId()));
 
         try {
             handler.setUserSubscribable(
-                    regularKey, c1.getLabel(), user.getLogin(), true);
+                    regular, c1.getLabel(), user.getLogin(), true);
             fail("should have gotten a permission exception.");
         }
         catch (PermissionCheckFailureException e) {
@@ -183,7 +183,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
 
         try {
-            handler.setUserSubscribable(adminKey, c1.getLabel(),
+            handler.setUserSubscribable(admin, c1.getLabel(),
                         "asfd" + TestUtils.randomString(), true);
             fail("should have gotten a permission exception.");
         }
@@ -198,16 +198,16 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         User user = UserTestUtils.createUser("foouser", admin.getOrg().getId());
 
         assertEquals(0, handler.isUserSubscribable(
-                adminKey, c1.getLabel(), user.getLogin()));
+                admin, c1.getLabel(), user.getLogin()));
         handler.setUserSubscribable(
-                adminKey, c1.getLabel(), user.getLogin(), true);
+                admin, c1.getLabel(), user.getLogin(), true);
         assertEquals(1, handler.isUserSubscribable(
-                adminKey, c1.getLabel(), user.getLogin()));
+                admin, c1.getLabel(), user.getLogin()));
 
         handler.setUserSubscribable(
-                adminKey, c1.getLabel(), user.getLogin(), false);
+                admin, c1.getLabel(), user.getLogin(), false);
         assertEquals(0, handler.isUserSubscribable(
-                adminKey, c1.getLabel(), user.getLogin()));
+                admin, c1.getLabel(), user.getLogin()));
     }
 
     public void testSetSystemChannelsBaseChannel() throws Exception {
@@ -233,7 +233,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         labels.add(base.getLabel());
 
         Integer sid = new Integer(server.getId().intValue());
-        int rc = csh.setSystemChannels(adminKey, sid, labels);
+        int rc = csh.setSystemChannels(admin, sid, labels);
 
         server = (Server) reload(server);
 
@@ -249,7 +249,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         nobase.add(child2.getLabel());
 
         try {
-            rc = csh.setSystemChannels(adminKey, sid, nobase);
+            rc = csh.setSystemChannels(admin, sid, nobase);
             fail("setSystemChannels didn't complain when given no base channel");
         }
         catch (InvalidChannelException ice) {
@@ -268,7 +268,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelsToSubscribe.add(c1.getLabel());
 
         assertEquals(0, server.getChannels().size());
-        int result = csh.setSystemChannels(adminKey,
+        int result = csh.setSystemChannels(admin,
                              new Integer(server.getId().intValue()), channelsToSubscribe);
 
         server = (Server) reload(server);
@@ -281,7 +281,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelsToSubscribe = new ArrayList();
         channelsToSubscribe.add(c2.getLabel());
         assertEquals(1, channelsToSubscribe.size());
-        result = csh.setSystemChannels(adminKey,
+        result = csh.setSystemChannels(admin,
                          new Integer(server.getId().intValue()), channelsToSubscribe);
 
         server = (Server) reload(server);
@@ -294,7 +294,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         channelsToSubscribe = new ArrayList();
         channelsToSubscribe.add(TestUtils.randomString());
         try {
-            csh.setSystemChannels(adminKey,
+            csh.setSystemChannels(admin,
                          new Integer(server.getId().intValue()), channelsToSubscribe);
             fail("subscribed system to invalid channel.");
         }
@@ -322,7 +322,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                     ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
             ServerFactory.save(server);
 
-            int rc = csh.setSystemChannels(adminKey,
+            int rc = csh.setSystemChannels(admin,
                     new Integer(server.getId().intValue()), channels);
 
             fail("allowed incompatible channel arch to be set, returned: " + rc);
@@ -339,20 +339,20 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Server s = ServerFactoryTest.createTestServer(admin, true);
 
         //Server shouldn't have any channels yet
-        Object[] result = csh.listSystemChannels(adminKey,
+        Object[] result = csh.listSystemChannels(admin,
                                   new Integer(s.getId().intValue()));
         assertEquals(0, result.length);
 
         SystemManager.subscribeServerToChannel(admin, s, c);
 
         //should be subscribed to 1 channel
-        result = csh.listSystemChannels(adminKey,
+        result = csh.listSystemChannels(admin,
                          new Integer(s.getId().intValue()));
         assertEquals(1, result.length);
 
         //try no_such_system fault exception
         try {
-            csh.listSystemChannels(adminKey, new Integer(-2390));
+            csh.listSystemChannels(admin, new Integer(-2390));
             fail("ChannelSoftwareHandler.listSystemChannels didn't throw an exception " +
                  "for invalid system id");
         }
@@ -371,12 +371,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         flushAndEvict(s);
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
 
-        Object[] result = csh.listSubscribedSystems(adminKey, c.getLabel());
+        Object[] result = csh.listSubscribedSystems(admin, c.getLabel());
         assertTrue(result.length > 0);
 
         //NoSuchChannel
         try {
-            result = csh.listSubscribedSystems(adminKey, TestUtils.randomString());
+            result = csh.listSubscribedSystems(admin, TestUtils.randomString());
             fail("ChannelSoftwareHandler.listSubscribedSystemd didn't throw " +
                  "NoSuchChannelException.");
         }
@@ -386,7 +386,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         //Permission
         try {
-            result = csh.listSubscribedSystems(regularKey, c.getLabel());
+            result = csh.listSubscribedSystems(regular, c.getLabel());
             fail("Regular user allowed access to channel system list.");
         }
         catch (PermissionCheckFailureException e) {
@@ -397,7 +397,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testListArches() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
-        Object[] arches = csh.listArches(adminKey);
+        Object[] arches = csh.listArches(admin);
         assertNotNull(arches);
         assertTrue(arches.length > 0);
         for (int i = 0; i < arches.length; i++) {
@@ -408,7 +408,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testListArchesPermissionError() {
         try {
             ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
-            Object[] arches = csh.listArches(adminKey);
+            Object[] arches = csh.listArches(admin);
             assertNotNull(arches);
             assertTrue(arches.length > 0);
             for (int i = 0; i < arches.length; i++) {
@@ -428,7 +428,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         c = (Channel) reload(c);
 
         try {
-            assertEquals(1, csh.delete(adminKey, label));
+            assertEquals(1, csh.delete(admin, label));
         }
         catch (ValidatorException e) {
             // taskomatic is down
@@ -444,7 +444,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
-        assertEquals(1, csh.isGloballySubscribable(adminKey, c.getLabel()));
+        assertEquals(1, csh.isGloballySubscribable(admin, c.getLabel()));
         // should be assertTrue
     }
 
@@ -452,7 +452,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         try {
-            csh.isGloballySubscribable(adminKey, "notareallabel");
+            csh.isGloballySubscribable(admin, "notareallabel");
             fail();
         }
         catch (NoSuchChannelException e) {
@@ -467,10 +467,10 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNotNull(c);
         assertNull(c.getParentChannel());
 
-        Channel  result = csh.getDetails(adminKey, c.getLabel());
+        Channel  result = csh.getDetails(admin, c.getLabel());
         channelDetailsEquality(c, result);
 
-        result = csh.getDetails(adminKey, c.getId().intValue());
+        result = csh.getDetails(admin, c.getId().intValue());
         channelDetailsEquality(c, result);
     }
 
@@ -479,7 +479,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
        addRole(admin, RoleFactory.CHANNEL_ADMIN);
        Channel c = ChannelFactoryTest.createTestChannel(admin);
        assertNotNull(c);
-       String lastRepoBuild = csh.getChannelLastBuildById(adminKey, c.getId().intValue());
+       String lastRepoBuild = csh.getChannelLastBuildById(admin, c.getId().intValue());
        assertEquals(lastRepoBuild, "");
     }
 
@@ -516,7 +516,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCreate() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
-        int i = csh.create(adminKey, "api-test-chan-label",
+        int i = csh.create(admin, "api-test-chan-label",
                 "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), "api-test-chan-label");
@@ -533,7 +533,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCreateWithChecksum() throws Exception {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
-        int i = csh.create(adminKey, "api-test-checksum-chan-label",
+        int i = csh.create(admin, "api-test-checksum-chan-label",
                 "apiTestCSChanName", "apiTestSummary", "channel-ia32", null, "sha256");
         assertEquals(1, i);
         Channel c = ChannelFactory.lookupByLabel(admin.getOrg(),
@@ -551,7 +551,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void testCreateUnauthUser() {
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler();
         try {
-            csh.create(regularKey, "api-test-chan-label",
+            csh.create(regular, "api-test-chan-label",
                    "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
             fail("create did NOT throw an exception");
 
@@ -575,7 +575,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         // null label
         try {
-            csh.create(adminKey, null, "api-test-nonnull", "api test summary",
+            csh.create(admin, null, "api-test-nonnull", "api test summary",
                     "channel-x86_64", null);
             fail("create did not throw exception when given a null label");
         }
@@ -596,7 +596,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
 
         try {
-            csh.create(adminKey, "api-test-nonnull", null, "api test summary",
+            csh.create(admin, "api-test-nonnull", null, "api test summary",
                     "channel-x86_64", null);
             fail("create did not throw exception when given a null label");
         }
@@ -622,7 +622,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addRole(admin, RoleFactory.CHANNEL_ADMIN);
         int i;
         try {
-            i = csh.create(adminKey, "api-test-chan-label",
+            i = csh.create(admin, "api-test-chan-label",
                     "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
             assertEquals(1, i);
         }
@@ -633,7 +633,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         // ok now for the real test.
 
         try {
-            csh.create(adminKey, "api-test-chan-label",
+            csh.create(admin, "api-test-chan-label",
                     "apiTestChanName", "apiTestSummary", "channel-x86_64", null);
         }
         catch (PermissionCheckFailureException e) {
@@ -650,7 +650,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         }
 
         try {
-            csh.create(adminKey, "api-test-chan-label",
+            csh.create(admin, "api-test-chan-label",
                     "apiTestChanName1010101", "apiTestSummary", "channel-x86_64", null);
         }
         catch (PermissionCheckFailureException e) {
@@ -682,7 +682,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertNull(channel.getSupportPolicy());
 
         // execute
-        int result = handler.setContactDetails(adminKey, channel.getLabel(),
+        int result = handler.setContactDetails(admin, channel.getLabel(),
                 "John Doe", "jdoe@somewhere.com", "9765551212", "No Policy");
 
         // verify
@@ -699,14 +699,14 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     public void xxxtestListPackagesWithoutChannel() throws Exception {
         // Disable this test till we find out why listPackagesWithoutChannel takes
         // *forever*, but only running under this test!
-        Object[] iniailList = handler.listPackagesWithoutChannel(adminKey);
+        Object[] iniailList = handler.listPackagesWithoutChannel(admin);
 
         PackageTest.createTestPackage(admin.getOrg());
         Package nonOrphan = PackageTest.createTestPackage(admin.getOrg());
         Channel testChan = ChannelFactoryTest.createTestChannel(admin);
         testChan.addPackage(nonOrphan);
 
-        Object[] secondList = handler.listPackagesWithoutChannel(adminKey);
+        Object[] secondList = handler.listPackagesWithoutChannel(admin);
 
         assertEquals(1, secondList.length - iniailList.length);
     }
@@ -722,7 +722,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         labels.add(baseChan.getLabel());
         labels.add(childChan.getLabel());
 
-        int returned = handler.subscribeSystem(adminKey,
+        int returned = handler.subscribeSystem(admin,
                 new Integer(server.getId().intValue()), labels);
 
         assertEquals(1, returned);
@@ -732,7 +732,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertTrue(server.getChannels().contains(childChan));
 
         labels.clear();
-        returned = handler.subscribeSystem(adminKey,
+        returned = handler.subscribeSystem(admin,
                 new Integer(server.getId().intValue()), labels);
         assertEquals(1, returned);
         server = (Server)HibernateFactory.reload(server);
@@ -754,7 +754,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("summary", "summary");
         details.put("label", label);
 
-        int id = handler.clone(adminKey, original.getLabel(), details, false);
+        int id = handler.clone(admin, original.getLabel(), details, false);
         Channel chan = ChannelFactory.lookupById(new Long(id));
         chan = (Channel) TestUtils.reload(chan);
         assertNotNull(chan);
@@ -786,7 +786,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         details.put("summary", "summary2");
         details.put("label", label);
 
-        int id = handler.clone(adminKey, original.getLabel(), details, true);
+        int id = handler.clone(admin, original.getLabel(), details, true);
         Channel chan = ChannelFactory.lookupById(new Long(id));
         chan = (Channel) TestUtils.reload(chan);
 
@@ -816,7 +816,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         mergeFrom = (Channel) TestUtils.saveAndReload(mergeFrom);
         mergeTo = (Channel) TestUtils.saveAndReload(mergeTo);
 
-        Object[] list =  handler.mergePackages(adminKey, mergeFrom.getLabel(),
+        Object[] list =  handler.mergePackages(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel());
 
         assertEquals(1, list.length);
@@ -827,9 +827,9 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
 
-        List fromList = handler.listErrata(adminKey, mergeFrom.getLabel());
+        List fromList = handler.listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 0);
-        List toList = handler.listErrata(adminKey, mergeTo.getLabel());
+        List toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
         Map errataInfo = new HashMap();
@@ -851,18 +851,18 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ArrayList channels = new ArrayList();
         channels.add(mergeFrom.getLabel());
 
-        Errata errata = errataHandler.create(adminKey, errataInfo,
+        Errata errata = errataHandler.create(admin, errataInfo,
                 bugs, keywords, packages, true, channels);
         TestUtils.flushAndEvict(errata);
 
-        fromList = handler.listErrata(adminKey, mergeFrom.getLabel());
+        fromList = handler.listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 1);
 
-        Object[] mergeResult = handler.mergeErrata(adminKey, mergeFrom.getLabel(),
+        Object[] mergeResult = handler.mergeErrata(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
 
-        toList = handler.listErrata(adminKey, mergeTo.getLabel());
+        toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
     }
 
@@ -870,9 +870,9 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel mergeFrom = ChannelFactoryTest.createTestChannel(admin);
         Channel mergeTo = ChannelFactoryTest.createTestChannel(admin);
 
-        List fromList = handler.listErrata(adminKey, mergeFrom.getLabel());
+        List fromList = handler.listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 0);
-        List toList = handler.listErrata(adminKey, mergeTo.getLabel());
+        List toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(toList.size(), 0);
 
         Map errataInfo = new HashMap();
@@ -894,23 +894,23 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         ArrayList channels = new ArrayList();
         channels.add(mergeFrom.getLabel());
 
-        Errata errata = errataHandler.create(adminKey, errataInfo,
+        Errata errata = errataHandler.create(admin, errataInfo,
                 bugs, keywords, packages, true, channels);
         TestUtils.flushAndEvict(errata);
 
-        fromList = handler.listErrata(adminKey, mergeFrom.getLabel());
+        fromList = handler.listErrata(admin, mergeFrom.getLabel());
         assertEquals(fromList.size(), 1);
 
-        Object[] mergeResult = handler.mergeErrata(adminKey, mergeFrom.getLabel(),
+        Object[] mergeResult = handler.mergeErrata(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel(), "2008-09-30", "2030-09-30");
         assertEquals(mergeResult.length, fromList.size());
 
-        toList = handler.listErrata(adminKey, mergeTo.getLabel());
+        toList = handler.listErrata(admin, mergeTo.getLabel());
         assertEquals(mergeResult.length, fromList.size());
 
         // perform a second merge on an interval where we know we don't have any
         // errata and verify the result
-        mergeResult = handler.mergeErrata(adminKey, mergeFrom.getLabel(),
+        mergeResult = handler.mergeErrata(admin, mergeFrom.getLabel(),
                 mergeTo.getLabel(), "2006-09-30", "2007-10-30");
         assertEquals(mergeResult.length, 0);
     }
@@ -927,25 +927,25 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         String startDateStr = "2004-08-20 08:00:00";
         String endDateStr = "3004-08-20 08:00:00";
 
-        Object[] list = handler.listAllPackages(adminKey, chan.getLabel(),
+        Object[] list = handler.listAllPackages(admin, chan.getLabel(),
                 startDateStr);
         assertTrue(list.length == 1);
 
-        list = handler.listAllPackages(adminKey, chan.getLabel(), startDateStr,
+        list = handler.listAllPackages(admin, chan.getLabel(), startDateStr,
                 endDateStr);
         assertTrue(list.length == 1);
 
-        list = handler.listAllPackages(adminKey, chan.getLabel());
+        list = handler.listAllPackages(admin, chan.getLabel());
         assertTrue(list.length == 1);
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startDate = sdf.parse(startDateStr);
         Date endDate = sdf.parse(endDateStr);
 
-        list = handler.listAllPackages(adminKey, chan.getLabel(), startDate);
+        list = handler.listAllPackages(admin, chan.getLabel(), startDate);
         assertTrue(list.length == 1);
 
-        list = handler.listAllPackages(adminKey, chan.getLabel(), startDate,
+        list = handler.listAllPackages(admin, chan.getLabel(), startDate,
                 endDate);
         assertTrue(list.length == 1);
     }

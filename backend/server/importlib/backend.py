@@ -818,6 +818,8 @@ class Backend:
             'rhnPackageSuggests':   'package_id',
             'rhnPackageSupplements':'package_id',
             'rhnPackageEnhances'   :'package_id',
+            'rhnPackageBreaks':     'package_id',
+            'rhnPackagePredepends': 'package_id',
             'rhnPackageFile':       'package_id',
             'rhnPackageChangeLogRec':  'package_id',
             'susePackageProductFile':  'package_id',

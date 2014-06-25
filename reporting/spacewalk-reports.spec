@@ -2,7 +2,7 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.14.4
+Version: 2.2.11
 Release: 1%{?dist}
 URL: https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -46,6 +46,47 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Fri Jun 20 2014 Tomas Lestach <tlestach@redhat.com> 2.2.11-1
+- intorduce kickstart-scripts reports
+
+* Thu Jun 19 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.10-1
+- 1054342 - added hostname and IP address to scap-scan
+- 1053876 - added system_id to scap-scan-results
+
+* Tue Jun 03 2014 Tomas Lestach <tlestach@redhat.com> 2.2.9-1
+- we need base_channel_id and child_channel_id instead of channel_id in
+  activation_key report
+
+* Tue May 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.8-1
+- Add channel- and server-group-ids to activation-keys
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
+- fix activation-key info
+
+* Wed May 21 2014 Stephen Herr <sherr@redhat.com> 2.2.6-1
+- 1099938 - add spacewalk-report for systems with extra packages
+
+* Fri May 16 2014 Tomas Lestach <tlestach@redhat.com> 2.2.5-1
+- fix spacewalk-report multival issue
+- Add activation-keys-config report
+- Adding reports for activation-keys
+
+* Mon May 12 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
+- remove semicolon at the end of the query
+- Add ids to labels (handy)
+- Add report for custom-channels
+- Add report on repositories
+- Add org-id to channels
+
+* Tue Apr 15 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.3-1
+- system-md5-certificate: list of systems with MD5 client certificate
+
+* Thu Apr 10 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.2-1
+- add report for schedule/actions
+
+* Tue Apr 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
+- users-md5: a report showing users with MD5 encrypted password
+
 * Mon Oct 14 2013 Michael Mraka <michael.mraka@redhat.com> 2.1.14-1
 - fixing indentation - expandtabs vs noexpandtab
 

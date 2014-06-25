@@ -6,7 +6,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:            oracle-xe-selinux
-Version:         10.2.0.34
+Version:         10.2.0.35
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle XE
 Group:           System Environment/Base
@@ -40,7 +40,7 @@ SELinux policy module supporting Oracle XE server.
 %build
 # Build SELinux policy modules
 perl -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' %{modulename}.te
-%if 0%{?fedora} >= 17
+%if 0%{?fedora}
 cat %{modulename}.te.fedora17 >> %{modulename}.te
 %endif
 for selinuxvariant in %{selinux_variants}
@@ -81,7 +81,7 @@ rm -rf %{buildroot}
 
 %pre
 
-%if 0%{?fedora} >= 16
+%if 0%{?fedora}
 %define min_uid 1000
 %else
 %define min_uid 500
@@ -138,6 +138,9 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 10.2.0.35-1
+- spec file polish
+
 * Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 10.2.0.34-1
 - 919468 - fixed path in file based Requires
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.

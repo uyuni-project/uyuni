@@ -1176,6 +1176,12 @@
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="error.user_readonly">
+        <source>This user has read only API access. WebUI login is denied.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/Login</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="error.org_already_taken">
         <source>That organization name is already taken; please choose another.</source>
         <context-group name="ctx">
@@ -1265,6 +1271,18 @@
         <source>Invalid prefix [{0}]. Must be one of {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.readonly_org_admin">
+        <source>At least one Organization Administrator with regular access must remain in {0} organization.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.readonly_sat_admin">
+        <source>At least one @@PRODUCT_NAME@@ Administrator must remain with regular access.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserDetailsSubmit</context>
         </context-group>
       </trans-unit>
       <trans-unit id="login">
@@ -1715,6 +1733,12 @@
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="clientcert.update_client_cert">
+        <source>Update of system certificate</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="rollback.config">
         <source>Enable or Disable RPM Transaction Rollback</source>
         <context-group name="ctx">
@@ -1893,7 +1917,7 @@ available for this kickstart profile to function properly.
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.options.rootpw.note">
-        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set any password hash into this field. Make sure the hash algorithm is correctly set in the &lt;strong&gt;auth&lt;/strong&gt; option. However you may enter a plaintext password, that will be md5 encrypted when selecting the &lt;strong&gt;MD5 Encrypt&lt;/strong&gt; checkbox.</source>
+        <source>&lt;strong&gt;NOTE:&lt;/strong&gt; You may set a password hashed with any algorithm (that this operating system supports) in this field. The hash algorithm in the &lt;strong&gt;auth&lt;/strong&gt; option will affect future passwords created, you may want it to be the same as the agorithm used here. If you enter a plaintext password you must select &lt;strong&gt;Encrypt&lt;/strong&gt; above to encrypt it, if you don't you will be unable to login when the kickstart is finished.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartOptionsEdit</context>
         </context-group>
@@ -2363,6 +2387,12 @@ available for this kickstart profile to function properly.
       </trans-unit>
       <trans-unit id="toolbar.create.extgroup">
         <source>create new external group</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="toolbar.delete.extgroup">
+        <source>delete external group</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
@@ -5505,7 +5535,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="crypto.key.nokey">
-        <source>No file contents found. Please select a proper key file from your local machine to upload.</source>
+        <source>No GPL/SSL key content was provided.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/keys/CryptoKeysCreate.do</context>
         </context-group>
@@ -5642,6 +5672,12 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="kickstart.software.notree">
         <source>The specified base channel and kickstart tree was not found.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.software.changeencryption">
+        <source>This kickstart profile uses a different type of encryption by default than the root password is currently using. You must reset the root password to encrypt it with the new method.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
@@ -7158,7 +7194,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
       </trans-unit>
       <trans-unit id="message.ext_auth_disable">
-        <source>Disable external authentication</source>
+        <source>No default organization</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails</context>
         </context-group>
@@ -7174,6 +7210,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="message.extgroup.deleted">
         <source>External Authentication Group '{0}' was successfully deleted.</source>
+      </trans-unit>
+      <trans-unit id="message.sg.configupdated">
+        <source>System Group Configuration was successfully updated.</source>
       </trans-unit>
       <trans-unit id="extgrouplabel.already.exists">
         <source>External Authentication Group name '{0}' is already used. Please choose another one.</source>
@@ -7356,6 +7395,18 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.errata.invaliderrata">
         <source>Invalid errata: {0}</source>
       </trans-unit>
+      <trans-unit id="api.externalgroup.invalidrole">
+        <source>Invalid role: {0}</source>
+      </trans-unit>
+      <trans-unit id="api.externalgroup.nosuchgroup">
+        <source>No external group to role map exists for group: {0}</source>
+      </trans-unit>
+      <trans-unit id="api.externalgroup.nosuchservergroup">
+        <source>No such server group exists: {0}</source>
+      </trans-unit>
+      <trans-unit id="api.externalgroup.nosuchgrouptoservergroup">
+        <source>No external group to server group map exists for group: {0}</source>
+      </trans-unit>
       <trans-unit id="api.package.invalidpackage">
         <source>Invalid package: {0}</source>
       </trans-unit>
@@ -7445,6 +7496,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="api.provisioning.snapshot.nosuchtag">
         <source>No such server snapshot tag: {0}</source>
+      </trans-unit>
+      <trans-unit id="api.provisioning.snapshot.nosuchsnapshot">
+        <source>No such server snapshot: {0}</source>
       </trans-unit>
       <trans-unit id="api.package.provider.invalidKeyType">
         <source>The package key type specified ({0}) is invalid.</source>

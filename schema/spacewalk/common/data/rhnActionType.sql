@@ -70,6 +70,7 @@ insert into rhnActionType values (48, 'virt.setVCPUs', 'Sets the Vcpu usage for 
 commit;
 insert into rhnActionType values (49, 'proxy.deactivate', 'Deactivate Proxy', 'N', 'N');
 insert into rhnActionType values (50, 'scap.xccdf_eval', 'OpenSCAP xccdf scanning', 'N', 'Y');
+insert into rhnActionType values (51, 'clientcert.update_client_cert', 'Update Client Certificate', 'N', 'Y');
 insert into rhnActionType values (500, 'image.deploy', 'Deploy an image to a virtual host.', 'N', 'N');
 insert into rhnActionType values (501, 'distupgrade.upgrade', 'Service Pack Migration', 'N', 'N');
 insert into rhnActionType values (502, 'packages.setLocks', 'Lock packages', 'N', 'N');

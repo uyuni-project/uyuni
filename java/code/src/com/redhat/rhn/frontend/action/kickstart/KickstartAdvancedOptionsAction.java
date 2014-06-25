@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.kickstart;
 
-import com.redhat.rhn.common.util.MD5Crypt;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -119,13 +118,14 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
                             if (cn.getName().equals("rootpw")) {
                                 String pwarg = request.getParameter(argsName);
                                 // password already encrypted
-                                String md5Crypt = request.getParameter("md5_crypt_rootpw");
-                                if (StringUtils.isEmpty(md5Crypt)) {
+                                String encrypt = request.getParameter("encrypt_rootpw");
+                                if (StringUtils.isEmpty(encrypt)) {
                                     kc.setArguments(pwarg);
                                 }
                                 // password changed, encrypt it
                                 else {
-                                    kc.setArguments(MD5Crypt.crypt(pwarg));
+                                    kc.setArguments(kc.getKickstartData().encryptPassword(
+                                            pwarg));
                                 }
                             }
                             else {

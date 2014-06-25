@@ -771,3 +771,19 @@ div:not([class~="alert"]) i.fa {
         color: @spacewalk-red;
     }
 }
+
+// make icons lighter than standard alert texts
+div:not([class~="alert"]) i.fa {
+    &.text-warning {
+        color: @spacewalk-gold-yellow;
+    }
+    &.text-success {
+        color: @spacewalk-green;
+    }
+    &.text-info {
+        color: @spacewalk-blue;
+    }
+    &.text-danger {
+        color: @spacewalk-red;
+    }
+}

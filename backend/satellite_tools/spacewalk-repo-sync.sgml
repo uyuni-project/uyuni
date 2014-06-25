@@ -28,6 +28,16 @@ Syncs the content from yum repos into SUSE Manager channels.
         </group>
         <sbr>
         <group>
+        <arg>-p<replaceable>CHANNEL_LABEL</replaceable></arg>
+        <arg>--parent-channel=<replaceable>CHANNEL_LABEL</replaceable></arg>
+        </group>
+        <sbr>
+        <group>
+        <arg>-l</arg>
+        <arg>--list</arg>
+        </group>
+        <sbr>
+        <group>
         <arg>-u<replaceable>URL</replaceable></arg>
         <arg>--url=<replaceable>URL</replaceable></arg>
         </group>
@@ -68,6 +78,10 @@ Syncs the content from yum repos into SUSE Manager channels.
         <group>
         <arg>-Y</arg>
         <arg>--deep-verify</arg>
+        </group>
+        <sbr>
+        <group>
+        <arg>--dry-run</arg>
         </group>
         <sbr>
         <group>
@@ -113,15 +127,27 @@ Syncs the content from yum repos into SUSE Manager channels.
         </listitem>
     </varlistentry>
     <varlistentry>
+        <term>-p<replaceable>CHANNEL</replaceable>, --parent-channel=<replaceable>CHANNEL</replaceable></term>
+        <listitem>
+            <para>Synchronize the parent channel and all its child channels. All must have repositories already assigned via WebUI.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
         <term>-u<replaceable>URL</replaceable>, --url=<replaceable>URL</replaceable></term>
         <listitem>
-            <para>The repository URL.  Any protocol supported by yum is supported including http://, nfs://, file://. (Optional)</para>
+            <para>The repository URL.  Any protocol supported by yum is supported including http://, nfs://, file://. Can be used multiple times in order more than one repository to be assigned to a channel.(Optional)</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-l, --list</term>
+        <listitem>
+            <para>List the custom channels with the assosiated repositories.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>-t<replaceable>TYPE</replaceable>, --type=<replaceable>TYPE</replaceable></term>
         <listitem>
-            <para>The type of repository to sync.  Currently only yum is supported and is the default. (Optional)</para>
+            <para>The type of repository to sync.  Currently only yum and uln are supported and yum is the default. The uln type is used to sync with the Oracle Unbreakable Linux Network. (Optional)</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -167,6 +193,12 @@ Syncs the content from yum repos into SUSE Manager channels.
         </listitem>
     </varlistentry>
     <varlistentry>
+        <term>--dry-run</term>
+        <listitem>
+            <para>Test run. No sync takes place.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
         <term>-n, --non-interactive</term>
         <listitem>
             <para>Do not ask anything, use default answers.</para>
@@ -181,6 +213,7 @@ Syncs the content from yum repos into SUSE Manager channels.
         <member><command>spacewalk-repo-sync -crepo1 --url=http://example.com/yum-repo/</command></member>
         <member><command>spacewalk-repo-sync -crepo2 --url=file:///var/share/localrepo/</command></member>
         <member><command>spacewalk-repo-sync -crepom --url=http://example.com/mirrorlist.xml/</command></member>
+        <member><command>spacewalk-repo-sync --type uln --channel=orcl-channel --url=uln:///ol6_x86_64_latest</command></member>
 </simplelist>
 </refsect1>
 

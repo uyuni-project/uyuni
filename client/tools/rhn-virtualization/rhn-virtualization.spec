@@ -16,7 +16,7 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 
-Version:        5.4.50.3
+Version:        5.4.53
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -187,6 +187,15 @@ fi
 
 
 %changelog
+* Wed Apr 23 2014 Stephen Herr <sherr@redhat.com> 5.4.53-1
+- 1089715 - some systems to not have /sbin in path
+
+* Tue Apr 22 2014 Stephen Herr <sherr@redhat.com> 5.4.52-1
+- 1089715 - service location is not platform independent
+
+* Mon Apr 21 2014 Stephen Herr <sherr@redhat.com> 5.4.51-1
+- 1089715 - rhn-virt-host should not spam root if libvirtd is stopped
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 5.4.50-1
 - removed trailing whitespaces
 

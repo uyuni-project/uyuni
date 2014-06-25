@@ -26,6 +26,7 @@ from spacewalk.common.rhnTranslate import _, cat
 from spacewalk.common.rhnLib import checkValue
 from spacewalk.server.rhnLib import normalize_server_arch
 from spacewalk.server.rhnServer import server_route, server_lib
+from spacewalk.server.rhnServer.server_certificate import Certificate
 from spacewalk.server.rhnHandler import rhnHandler
 from spacewalk.server import rhnUser, rhnServer, rhnSQL, rhnCapability, \
         rhnChannel, rhnVirtualization
@@ -120,6 +121,7 @@ class Registration(rhnHandler):
         self.functions.append("upgrade_version")
         self.functions.append("update_contact_info")    # obsoleted
         self.functions.append("update_packages")
+        self.functions.append("update_systemid")
         self.functions.append("update_transactions")
         self.functions.append("virt_notify")
         self.functions.append("welcome_message")
@@ -1258,6 +1260,26 @@ class Registration(rhnHandler):
         """
         return 1
 
+    def update_systemid(self, system_id):
+        """ update_systemid: update client server and certificate
+            In case the calling system is not using a certificate with a SHA-256
+            checksum, update its secret and issue it a new client certificate.
+        """
+        server = self.auth_system(system_id)
+        cert = Certificate()
+        cert.reload(system_id)
+
+        # System already uses certificate with a SHA-256 checksum,
+        # we'll just return current systemid back
+        if len(server.server['secret']) == 64:
+            return cert.certificate()
+        else: # MD5 checksum
+            server.set_arch(cert['architecture'])
+            server.user = rhnUser.User("", "")
+            server.user.reload(server.server['creator_id'])
+            server.gen_secret() # create new SHA-256 server secret
+            server.save()
+            return server.system_id()
 
     def suse_update_products(self, system_id, guid, secret, target, products):
         log_debug(5, system_id, guid, target, products)

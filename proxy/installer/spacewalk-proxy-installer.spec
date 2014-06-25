@@ -2,7 +2,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.1.6.4
+Version: 2.2.1
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -27,7 +27,7 @@ Requires: chkconfig
 Requires: libxslt
 Requires: spacewalk-certs-tools >= 1.6.4
 BuildRequires: /usr/bin/docbook2man
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1110
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1110
 # pylint check
 BuildRequires: spacewalk-pylint
 BuildRequires: rhnlib
@@ -88,7 +88,7 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1110
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1110
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
@@ -115,6 +115,9 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
+- spec file polish
+
 * Wed Oct 09 2013 Matej Kollar <mkollar@redhat.com> 2.1.6-1
 - Honour behavior described in help
 - Revert "Removed set_value as getopt made it redundant"

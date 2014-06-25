@@ -4,7 +4,7 @@ Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.1.15.3
+Version: 2.2.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -17,10 +17,10 @@ BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # pylint check
 BuildRequires: spacewalk-pylint
-BuildRequires: rhnpush >= 5.5.52
+BuildRequires: rhnpush >= 5.5.74
 BuildRequires: spacewalk-backend-libs >= 1.7.24
 BuildRequires: spacewalk-backend >= 1.7.24
 %endif
@@ -163,7 +163,7 @@ Group:   Applications/Internet
 Requires: spacewalk-backend >= 1.7.24
 Requires: rhnlib >= 2.5.56
 Requires: python
-Requires: rhnpush
+Requires: rhnpush >= 5.5.74
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: python-devel
 Obsoletes: rhn_package_manager < 5.3.0
@@ -202,7 +202,7 @@ ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
@@ -400,6 +400,37 @@ fi
 
 
 %changelog
+* Mon Jun 23 2014 Stephen Herr <sherr@redhat.com> 2.2.9-1
+- 1108370 - checkstyle fix
+
+* Mon Jun 23 2014 Stephen Herr <sherr@redhat.com> 2.2.8-1
+- 1108370 - add more user-friendly caching option to package_manager
+
+* Fri Jun 20 2014 Stephen Herr <sherr@redhat.com> 2.2.7-1
+- 1108370 - checkstyle fix and error handling
+
+* Fri Jun 20 2014 Stephen Herr <sherr@redhat.com> 2.2.6-1
+- 1108370 - enable proxy to serve files from its cache for kickstarts
+- 1108370 - enable proxy to correctly respond to partial http requests
+
+* Wed Jun 11 2014 Stephen Herr <sherr@redhat.com> 2.2.5-1
+- 1108370 - add --from-export option to rhn_package_manager
+- make rhnpush backwards-compatible with old spacewalk-proxy
+
+* Sat Jun 07 2014 Stephen Herr <sherr@redhat.com> 2.2.4-1
+- 1104375 - checkstyle fixes
+
+* Fri Jun 06 2014 Stephen Herr <sherr@redhat.com> 2.2.3-1
+- 1104375 - add default path structure to proxy lookaside that avoids
+  collisions
+- 1105273 - rhn_package_manager should not force md5; use package hearders
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
+- spec file polish
+
+* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- Proxy should not make bogus fqdn:port DNS queries
+
 * Tue Jan 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.15-1
 - Updating the copyright years info
 

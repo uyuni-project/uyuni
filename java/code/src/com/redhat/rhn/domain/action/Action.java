@@ -38,6 +38,7 @@ public class Action extends BaseDomainHelper implements Serializable {
 
     public static final Integer NAME_LENGTH_LIMIT = 128;
 
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String name;
     // private Long scheduler;
@@ -379,7 +380,7 @@ public class Action extends BaseDomainHelper implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         result.append(id);
         result.append(" : ");
         result.append(name);

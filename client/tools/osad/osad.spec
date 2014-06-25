@@ -17,7 +17,7 @@ Group:   System Environment/Daemons
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 5.11.33.2
+Version: 5.11.38
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -143,13 +143,17 @@ SELinux policy module supporting osa-dispatcher.
 %if 0%{?suse_version}
 cp prog.init.SUSE prog.init
 %endif
+%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
+sed -i 's@^#!/usr/bin/python$@#!/usr/bin/python -s@' invocation.py
+%endif
+
 
 %build
 make -f Makefile.osad all
 
 %if 0%{?include_selinux_package}
 %{__perl} -i -pe 'BEGIN { $VER = join ".", grep /^\d+$/, split /\./, "%{version}.%{release}"; } s!\@\@VERSION\@\@!$VER!g;' osa-dispatcher-selinux/%{modulename}.te
-%if 0%{?fedora} >= 17
+%if 0%{?fedora}
 cat osa-dispatcher-selinux/%{modulename}.te.fedora17 >> osa-dispatcher-selinux/%{modulename}.te
 %endif
 for selinuxvariant in %{selinux_variants}
@@ -443,6 +447,22 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.38-1
+- start osad after package installation on sysvinit systems
+
+* Tue Jun 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.37-1
+- RHEL-5 python doesn't support -s option
+
+* Mon Jun 09 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.36-1
+- don't add user site dir to sys.path
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.35-1
+- spec file polish
+
+* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 5.11.34-1
+- make reboot_in_progress a public function
+- do not notify osad of a server which reboot is in progress
+
 * Thu Feb 06 2014 Jan Dobes 5.11.33-1
 - 1056515 - adapting to different logrotate version in fedora and rhel
 

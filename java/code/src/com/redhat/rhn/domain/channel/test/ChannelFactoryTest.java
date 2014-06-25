@@ -234,6 +234,20 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(ChannelFactory.doesChannelNameExist(c.getName()));
     }
 
+    public void testKickstartableTreeChannels() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
+
+        List<Channel> channels = ChannelFactory.getKickstartableTreeChannels(user.getOrg());
+        assertNotNull(channels);
+        int originalSize = channels.size();
+
+        createTestChannel(user);
+
+        channels = ChannelFactory.getKickstartableTreeChannels(user.getOrg());
+        assertEquals(originalSize + 1, channels.size());
+    }
+
     public void testKickstartableChannels() throws Exception {
         User user = UserTestUtils.findNewUser("testUser",
                 "testOrg" + this.getClass().getSimpleName());
@@ -265,20 +279,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertEquals(originalSize + 2, channels.size());
         assertTrue(channels.contains(c1));
         assertTrue(channels.contains(c2));
-    }
-
-    public void testAutoinstallableChannels() throws Exception {
-        User user = UserTestUtils.findNewUser("testUser",
-                "testOrg" + this.getClass().getSimpleName());
-
-        List<Channel> channels = ChannelFactory.getAutoinstallableChannels(user.getOrg());
-        assertNotNull(channels);
-        int originalSize = channels.size();
-
-        createTestChannel(user);
-
-        channels = ChannelFactory.getAutoinstallableChannels(user.getOrg());
-        assertEquals(originalSize + 1, channels.size());
     }
 
     public void testPackageCount() throws Exception {

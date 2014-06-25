@@ -520,8 +520,7 @@ sub clear_db {
 
     print loc("** Database: Shutting down spacewalk services that may be using DB.\n");
 
-    # The --exclude=oracle is needed for embedded database Satellites.
-    system_debug('/usr/sbin/spacewalk-service', '--exclude=oracle', 'stop');
+    system_debug('/usr/sbin/spacewalk-service', 'stop');
 
     print loc("** Database: Services stopped.  Clearing DB.\n");
 
@@ -1904,7 +1903,7 @@ Install the satellite in disconnected mode.
 
 Clear any pre-existing database schema before installing.
 This will destroy any data in the Satellite database and re-create
-empty Satellite schema.
+empty Satellite schema. This option implies B<--skip-db-install>.
 
 =item B<--skip-system-version-test>
 
