@@ -95,4 +95,19 @@ public class SCCClientUtils {
         scanner.close();
         return ret;
     }
+
+    /**
+     * Quietly close a given stream, suppressing exceptions.
+     *
+     * @param stream
+     */
+    public static void closeQuietly(InputStream stream) {
+        if (stream == null) {
+            return;
+        }
+        try {
+            stream.close();
+        } catch (IOException e) {
+        }
+    }
 }

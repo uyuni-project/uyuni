@@ -51,6 +51,8 @@ public class SCCClient {
     public String listProducts() throws SCCClientException {
         String products = null;
         HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        GZIPInputStream gzipStream = null;
 
         try {
             // Setup connection
@@ -72,9 +74,9 @@ public class SCCClient {
 
             // TODO: Parse the response body in case of success
             if (responseCode == 200) {
-                InputStream stream = connection.getInputStream();
+                inputStream = connection.getInputStream();
                 // Decompress the gzip stream
-                GZIPInputStream gzipStream = new GZIPInputStream(stream);
+                gzipStream = new GZIPInputStream(inputStream);
                 products = SCCClientUtils.streamToString(gzipStream);
             }
         }
@@ -85,9 +87,13 @@ public class SCCClient {
             throw new SCCClientException(e);
         }
         finally {
+            // Disconnect
             if (connection != null) {
                 connection.disconnect();
             }
+            // Close streams
+            SCCClientUtils.closeQuietly(inputStream);
+            SCCClientUtils.closeQuietly(gzipStream);
         }
         return products;
     }
