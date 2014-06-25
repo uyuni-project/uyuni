@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.60.6
+Version: 2.2.29
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -56,6 +56,7 @@ Requires: sudo
 %if 0%{?suse_version}
 Requires: perl-RPM2
 Requires: perl-Digest-HMAC
+Requires: perl-Digest-SHA
 Requires: perl-Text-Diff
 Requires: perl-DateTime
 Requires: susemanager-frontend-libs
@@ -175,6 +176,9 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
+%if 0%{?rhel}
+rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/PXT/Apache24Config.pm
+%endif
 
 %post -n spacewalk-pxt
 %if 0%{?suse_version}
@@ -309,9 +313,140 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
-* Wed Feb 26 2014 Matej Kollar <mkollar@redhat.com> 2.1.60-1
-- Release of 2.1
+* Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.29-1
+- 249743 - add robots.txt
 
+* Mon Jun 02 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.28-1
+- removed unused code (snapshot pxt pages related)
+
+* Fri May 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.27-1
+- select2-bootstrap-css packaged
+- select2 packaged
+- jQuery UI packaged
+- rewrite unservable_packages.pxt page to java
+
+* Thu May 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.26-1
+- removed unused code
+
+* Thu May 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.25-1
+- removed unused code
+- removed snapshot pxt pages which were rewritten to java
+- Fix refreshing of Autoinstallable Tree forms (bnc#874144)
+
+* Tue May 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.24-1
+- rewrite system snapshot to java: Rollback.do
+
+* Mon May 26 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.23-1
+- removed unused code
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.22-1
+- moved system snapshots pages to java
+
+* Thu May 22 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.21-1
+- Removed groups.pxt and related code / db queries
+- system groups & snapshots page: converted from pxt to java
+- Add development_environment to rhn_web.conf
+
+* Tue May 20 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.20-1
+- links to Snapshot Tags pages
+- removed pxt pages and related code which had been converted to java
+- navigation links to new pages (Tags.do)
+- The old picker in isLatin mode transmitted 1-12 not 0-11 In 24 hour format is
+  0-23 even if DatePicker.getHourRange() and getHour javadoc is wrong
+  (1-11!!!).
+- Fix bug converting pm times to am when using locales in 24 hour format. See:
+  https://www.redhat.com/archives/spacewalk-list/2014-April/msg00011.html
+
+* Mon May 12 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.19-1
+- Extract function to humanize dates so that it can be used after DOM changes
+
+* Tue May 06 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.18-1
+- remove old perl pages
+- delete unused code in modules/rhn/RHN/Server.pm related to system events
+- delete unused code in modules/rhn/RHN/DB/Server.pm related to system events
+- rewrite pending events page from perl to java
+
+* Wed Apr 30 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.17-1
+- 1091365 - style alert messages on perl pages
+
+* Fri Apr 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.16-1
+- Replace editarea with ACE (http://ace.c9.io/) editor.
+
+* Tue Apr 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.15-1
+- removed obsolered code
+- rewrite system snapshot to java: removed obsoleted perl page
+- rewrite system snapshot to java: Packages.do
+- rewrite system event page from perl to java
+
+* Wed Apr 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.14-1
+- rewrite system snapshot to java: removed old perl page
+- rewrite system snapshot to java: Index.do
+
+* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.13-1
+- removed unused perl code
+- limit actions displayed on schedule/*actions pages
+
+* Fri Apr 11 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.12-1
+- Safer DWR callback method introduced
+- Refactoring: utility method makeAjaxCallback renamed
+- removed unused system_profile_comparison
+- removed unused packages_for_sync_provider()
+
+* Fri Apr 11 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.11-1
+- removed unused sync_packages_to_channel_cb()
+- removed unused managed_channel_merge_preview_provider()
+- removed unused sync_confirm_packages_in_set_provider()
+- removed unused compare_managed_channel_packages_provider()
+- rewrite channel compare to java: removed obsoleted perl pages
+- 903068 - fixed debian repo generation
+
+* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 2.2.10-1
+- fixed bug unable to delete action chain
+- fixed typo in action chain jsp and js
+- Action Chain Edit page added
+- Front-end code for action chain creation/selection added
+- Javascript library jQuery UI added
+- Javascript library select2 added
+
+* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.9-1
+- Fail if rhnPackage.path is NULL
+- Avoid trimming filename to 128 chars
+
+* Fri Mar 21 2014 Stephen Herr <sherr@redhat.com> 2.2.8-1
+- Update edit_notification_method.pxi
+- Rewrite code for bootstrap usage
+
+* Tue Mar 18 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
+- spacewalk-web: use SHA-256 for session keys
+- RHN::Session - update documentation
+
+* Fri Mar 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
+- update navigation link: Install -> Create First User
+
+* Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- remove usage of web_contact.old_password from code
+
+* Thu Mar 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
+- moved duplicated code to function
+- system_upgradable_package_list is not referenced anymore
+- on-click and node-id attributes are relevant only to pxt pages
+- removed unused up2date_version_at_least()
+- removed unused rhn-up2date-at-least tag
+
+* Wed Mar 05 2014 Jan Dobes 2.2.3-1
+- control menu type switching completely with css instead of javascript
+
+* Mon Mar 03 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.2-1
+- make the setup of the date picker more declarative using data- attributes in
+  order to be able to share this setup with other parts of the code that will
+  need a slightly different picker like the recurrent selector. It also saves
+  us from outputing one <script> tag in the jsp tag implementation.
+
+* Mon Feb 24 2014 Matej Kollar <mkollar@redhat.com> 2.2.1-1
+- Bumping web version for 2.2.
+
+* Mon Feb 24 2014 Matej Kollar <mkollar@redhat.com> 2.2.0-1
+- Bumping package versions for 2.2.
 * Thu Feb 20 2014 Tomas Kasparek <tkasparek@redhat.com> 2.1.59-1
 - give generated buttons appropriate class
 - Styling unstyled submit buttons.

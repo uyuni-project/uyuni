@@ -153,8 +153,13 @@ public class ClientCertificate {
         }
 
         try {
-
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            MessageDigest md = null;
+            if (secret.length() == 32) {
+                md = MessageDigest.getInstance("MD5");
+            }
+            else if (secret.length() == 64) {
+                md = MessageDigest.getInstance("SHA-256");
+            }
 
             // I'm not one to loop through things more than once
             // but this seems to be the algorithm found in Server.pm
@@ -200,7 +205,7 @@ public class ClientCertificate {
      * @return Xml document
      */
     public String asXml() {
-        StringBuffer buf = new StringBuffer(XmlTag.XML_HDR);
+        StringBuilder buf = new StringBuilder(XmlTag.XML_HDR);
         XmlTag params = new XmlTag("params");
         XmlTag param = new XmlTag("param");
         XmlTag value = new XmlTag("value");

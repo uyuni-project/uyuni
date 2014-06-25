@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.1.7.1
+Version: 2.2.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,13 @@ fi
 
 
 %changelog
+* Wed Jun 18 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
+- err variable needs to be initialized before assignment
+
+* Thu Jun 12 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- 1051972 - report unavailable packages
+- 1051972 - don't fail if package is already installed
+
 * Fri Feb 14 2014 Matej Kollar <mkollar@redhat.com> 2.1.7-1
 - 1043850 - avoid insecure use of /var/tmp
 

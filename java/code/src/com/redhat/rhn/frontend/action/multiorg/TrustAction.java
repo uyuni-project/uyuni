@@ -62,6 +62,7 @@ abstract class FormDispatcher extends RhnAction {
     /**
      * ${@inheritDoc}
      */
+    @Override
     public ActionForward execute(
             ActionMapping mapping,
             ActionForm form,
@@ -120,6 +121,7 @@ public class TrustAction extends FormDispatcher {
     /**
      * ${@inheritDoc}
      */
+    @Override
     protected ActionForward setupAction(
         ActionMapping mapping,
         ActionForm form,
@@ -165,7 +167,7 @@ public class TrustAction extends FormDispatcher {
     private List<OrgTrust> getOrgs(Org theOrg) {
         List<OrgTrust> list = new ArrayList<OrgTrust>();
         for (Org org : OrgFactory.lookupAllOrgs()) {
-            if (theOrg != org) {
+            if (!org.equals(theOrg)) {
                 list.add(new OrgTrust(org));
             }
         }
@@ -196,6 +198,7 @@ public class TrustAction extends FormDispatcher {
         return list;
     }
 
+    @Override
     protected ActionForward confirmAction(
             ActionMapping mapping,
             ActionForm form,
@@ -234,6 +237,7 @@ public class TrustAction extends FormDispatcher {
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     protected ActionForward commitAction(
             ActionMapping mapping,
@@ -296,6 +300,7 @@ public class TrustAction extends FormDispatcher {
         return strutsDelegate.forwardParams(success, params);
     }
 
+    @Override
     protected ActionForward affectedSystemsAction(
             ActionMapping mapping,
             ActionForm form,

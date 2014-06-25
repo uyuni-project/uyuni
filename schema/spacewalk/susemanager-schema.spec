@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.50.5
+Version:        2.2.27
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 
@@ -35,7 +35,7 @@ Oracle tablespace name conversions have NOT been applied.
 %setup -q
 
 %build
-%if 0%{?fedora} >= 16 || 0%{?suse_version} >= 1110
+%if 0%{?fedora} || 0%{?suse_version} >= 1110
 find . -name '*.91' | while read i ; do mv $i ${i%%.91} ; done
 %endif
 make -f Makefile.schema SCHEMA=%{name} VERSION=%{version} RELEASE=%{release}
@@ -75,6 +75,86 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu May 29 2014 Stephen Herr <sherr@redhat.com> 2.2.27-1
+- 1077365 - index for user_id on wupi table speeds up errata mailer
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.26-1
+- spec file polish
+
+* Wed Apr 23 2014 Stephen Herr <sherr@redhat.com> 2.2.25-1
+- Schema typo fixed
+
+* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.24-1
+- schema: new action type, clientcert.update_client_cert
+
+* Fri Apr 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.23-1
+- 903068 - update scripts for schema
+- 903068 - fixed debian repo generation
+
+* Thu Apr 03 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.22-1
+- rhnActionChain.id: explicitly name the primary index constraint
+
+* Tue Apr 01 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.21-1
+- triggers to be recreated consistently with a new schema
+
+* Tue Apr 01 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.20-1
+- Drop rhn_actchainent_cid_sid_so_uq constraint from rhnActionChainEntry
+
+* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 2.2.19-1
+- renaming upgrade scripts to put them in the proper place in the order
+- New tables and upgrade scripts added
+- add reboot action cleanup task
+
+* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.18-1
+- rhnServer.secret extend length to 64: schema upgrade
+- extend rhnServer.secret to 64
+
+* Tue Mar 25 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.17-1
+- reset package to avoid ORA-0406* errors
+
+* Fri Mar 21 2014 Tomas Lestach <tlestach@redhat.com> 2.2.16-1
+- create rhnOrgExtGroupMapping triggers
+- change rhnUserExtGroup unique index
+
+* Thu Mar 20 2014 Tomas Lestach <tlestach@redhat.com> 2.2.15-1
+- upgrade scripts shall end with semicolon
+
+* Wed Mar 19 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.14-1
+- fixing web_contact schema upgrade script
+
+* Wed Mar 19 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.13-1
+- schema upgrade for web_contact_log
+
+* Tue Mar 18 2014 Tomas Lestach <tlestach@redhat.com> 2.2.12-1
+- add rhnUserExtGroup table dependency
+
+* Fri Mar 14 2014 Tomas Lestach <tlestach@redhat.com> 2.2.11-1
+- add table dependency
+
+* Fri Mar 14 2014 Tomas Lestach <tlestach@redhat.com> 2.2.10-1
+- add table dependency
+
+* Thu Mar 13 2014 Tomas Lestach <tlestach@redhat.com> 2.2.9-1
+- introduce create_default_sg column within the rhnOrgConfiguration table
+- create rhnOrgExtGroupMapping table
+- add org_id column to rhnUserExtGroup table
+
+* Tue Mar 11 2014 Tomas Lestach <tlestach@redhat.com> 2.2.8-1
+- 1070917 - extending cron_expr length to 120
+
+* Mon Mar 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
+- Extend length of web_contact.password to 110
+
+* Mon Mar 10 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
+- 1055969 - missing aarch64 in rhnServerArch
+
+* Fri Mar 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.5-1
+- 1055969 - support for ARM aarch64 architecture
+
+* Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
+- drop web_contact.old_password column from schema
+- insert new gpg key only if not exists
+
 * Mon Feb 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.50-1
 - replacing view must have the same number of columns (in postgresql)
 

@@ -400,6 +400,8 @@ class Package(IncompletePackage):
         'supplements'       : [Dependency],
         'enhances'          : [Dependency],
         'suggests'          : [Dependency],
+        'breaks'            : [Dependency],
+        'predepends'        : [Dependency],
         'changelog'         : [ChangeLog],
         'channels'          : [StringType],
         'checksum_list'     : [Checksum],

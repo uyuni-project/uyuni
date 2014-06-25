@@ -414,7 +414,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[select name from rhnChannel where name = :name]]>
     </sql-query>
 
-    <sql-query name="Channel.autoinstallableChannels">
+    <sql-query name="Channel.kickstartableTreeChannels">
         <![CDATA[
             SELECT {c.*}
             FROM rhnChannel c

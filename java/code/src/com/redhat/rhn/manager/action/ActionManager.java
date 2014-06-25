@@ -1916,6 +1916,29 @@ public class ActionManager extends BaseManager {
     }
 
     /**
+     * scheduleCertificateUpdate
+     * @param scheduler Logged in user
+     * @param server Server, to update the certificate for
+     * @param earliestAction Earliest date. If null, use current date
+     * @return scheduled certificate update action
+     */
+    public static Action scheduleCertificateUpdate(User scheduler,
+                                                   Server server,
+                                                   Date earliestAction) {
+        if (!SystemManager.clientCapable(server.getId(), "clientcert.update_client_cert")) {
+            throw new MissingCapabilityException("spacewalk-client-cert", server);
+        }
+
+        Action action = ActionManager.scheduleAction(scheduler,
+                        server,
+                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT,
+                        ActionFactory.TYPE_CLIENTCERT_UPDATE_CLIENT_CERT.getName(),
+                        (earliestAction == null ? new Date() : earliestAction));
+        ActionFactory.save(action);
+        return action;
+    }
+
+    /**
      * Schedule a distribution upgrade.
      *
      * @param scheduler user who scheduled this action
@@ -1941,6 +1964,4 @@ public class ActionManager extends BaseManager {
         ActionFactory.save(action);
         return action;
     }
-
-
 }

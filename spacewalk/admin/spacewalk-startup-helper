@@ -33,11 +33,11 @@ wait_for_jabberd() {
 
 wait_for_tomcat() {
 if [ -x /etc/init.d/tomcat5 ]; then
-   TOMCAT="tomcat5"
+   TOMCAT_PID=$(cat /var/run/tomcat5.pid 2>/dev/null)
 elif [ -x /etc/init.d/tomcat6 ]; then
-   TOMCAT="tomcat6"
+   TOMCAT_PID=$(cat /var/run/tomcat6.pid 2>/dev/null)
 elif [ -e /lib/systemd/system/tomcat.service ]; then
-   TOMCAT="tomcat"
+   TOMCAT_PID=$(systemctl show --property=MainPID tomcat.service | sed 's/^MainPID=0*//')
 else
    echo "No tomcat service found."
    exit 0;
@@ -46,7 +46,6 @@ fi
 if [ -x $LSOF ]; then
     echo "Waiting for tomcat to be ready ..."
     RETRIES=30
-    TOMCAT_PID=$(cat /var/run/$TOMCAT.pid 2>/dev/null)
     while [ -n "$TOMCAT_PID" ] ; do
         $LSOF -t -i TCP:8005 | grep "^$TOMCAT_PID$" > /dev/null \
         && $LSOF -t -i TCP:8009 | grep "^$TOMCAT_PID$" > /dev/null \
@@ -64,7 +63,7 @@ ensure_httpd_down() {
     COUNT=0
     LIMIT=10
 
-    while [ "$(pidof httpd | wc -w)" -gt 0 ] && [ "$COUNT" -lt "$LIMIT" ]
+    while [ "$(pidof -c httpd | wc -w)" -gt 0 ] && [ "$COUNT" -lt "$LIMIT" ]
     do
        sleep 1
        ((COUNT++))

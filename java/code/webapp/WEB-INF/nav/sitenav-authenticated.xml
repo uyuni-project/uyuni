@@ -236,10 +236,16 @@
   </rhn-tab>
   <rhn-tab name="Users" url="/rhn/users/ActiveList.do" acl="user_role(org_admin)" active-image="tab-users-selected.gif" inactive-image="tab-users.gif">
     <rhn-tab name="User List" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do">
-      <rhn-tab-directory>/rhn/users</rhn-tab-directory>
       <rhn-tab name="users.nav.active" acl="user_role(org_admin)" url="/rhn/users/ActiveList.do"/>
       <rhn-tab name="users.nav.disabled" acl="user_role(org_admin)" url="/rhn/users/DisabledList.do"/>
       <rhn-tab name="users.nav.all" acl="user_role(org_admin)" url="/rhn/users/UserList.do"/>
+    </rhn-tab>
+    <rhn-tab name="System Group Configuration" url="/rhn/users/SystemGroupConfig.do" acl="user_role(org_admin)">
+      <rhn-tab name="External Authentication" acl="user_role(org_admin)">
+        <rhn-tab-url>/rhn/users/ExtAuthSgMapping.do</rhn-tab-url>
+        <rhn-tab-url>/rhn/users/ExtAuthSgDetails.do</rhn-tab-url>
+        <rhn-tab-url>/rhn/users/ExtAuthSgDelete.do</rhn-tab-url>
+      </rhn-tab>
     </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Monitoring" url="/rhn/monitoring/ProbeList.do" active-image="tab-monitoring-selected.gif" inactive-image="tab-monitoring.gif" acl="show_monitoring()">
@@ -384,9 +390,6 @@
 -->
     <rhn-tab name="Release Notes" url="/rhn/help/dispatcher/release_notes">
       <rhn-tab-directory>/rhn/help/release-notes/manager</rhn-tab-directory>
-    </rhn-tab>
-    <rhn-tab name="Unix Release Notes" url="/help/release-notes/unix/index.pxt" acl="org_entitlement(rhn_nonlinux)">
-      <rhn-tab name="3.2.0" url="/help/release-notes/unix/unix-release-notes-3.2.0.html"/>
     </rhn-tab>
     <rhn-tab name="API" url="/rhn/apidoc/index.jsp">
     <rhn-tab name="Overview" url="/rhn/apidoc/index.jsp">

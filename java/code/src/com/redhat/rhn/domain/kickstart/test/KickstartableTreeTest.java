@@ -202,14 +202,16 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
         createKickstartTreeItems(k);
 
-        Distro d = Distro.create(CobblerXMLRPCHelper.getConnection("test"),
-                k.getLabel(), k.getDefaultKernelPath(), k.getDefaultInitrdPath()[0],
-                new HashMap(), k.getInstallType().getCobblerBreed(),
-                k.getInstallType().getCobblerOsVersion());
+        Distro d = Distro.create(CobblerXMLRPCHelper.getConnection("test"), k.getLabel(),
+                k.getDefaultKernelPath(), k.getDefaultInitrdPath()[0], new HashMap(),
+                k.getInstallType().getCobblerBreed(),
+                k.getInstallType().getCobblerOsVersion(),
+                k.getChannel().getChannelArch().cobblerArch());
         Distro xend = Distro.create(CobblerXMLRPCHelper.getConnection("test"),
                 k.getLabel(), k.getDefaultKernelPath(), k.getDefaultInitrdPath()[0],
                 new HashMap(), k.getInstallType().getCobblerBreed(),
-                k.getInstallType().getCobblerOsVersion());
+                k.getInstallType().getCobblerOsVersion(),
+                k.getChannel().getChannelArch().cobblerArch());
 
         k.setCobblerId(d.getUid());
         k.setCobblerXenId(xend.getUid());
@@ -222,7 +224,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
 
     /**
      * Create a KickstartableTree for testing purposes using the given install type.
-     * @param treeChannel Channel this Tree uses.
+     * @param treeChannel channel to use for this tree.
      * @param installTypeLabel install type to use
      * @return the kickstartable tree
      * @throws Exception

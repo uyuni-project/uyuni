@@ -548,7 +548,7 @@ def list_channels(pattern=None):
 # makes sure there are no None values in dictionaries, etc.
 def __stringify(object):
     if object is None:
-        return ""
+        return ''
     if type(object) == type([]):
         return map(__stringify, object)
     # We need to know __stringify converts immutable types into immutable
@@ -1021,6 +1021,132 @@ def list_packages_source(channel_id):
 
     return ret
 
+# the latest packages from the specified channel
+_query_all_packages_from_channel_checksum = """
+    select
+        p.id,
+        pn.name,
+        pevr.version,
+        pevr.release,
+        pevr.epoch,
+        pa.label arch,
+        p.package_size,
+        ct.label as checksum_type,
+        c.checksum
+    from
+        rhnChannelPackage cp,
+        rhnPackage p,
+        rhnPackageName pn,
+        rhnPackageEVR pevr,
+        rhnPackageArch pa,
+        rhnChecksumType ct,
+        rhnChecksum c
+    where
+        cp.channel_id = :channel_id
+    and cp.package_id = p.id
+    and p.name_id = pn.id
+    and p.evr_id = pevr.id
+    and p.package_arch_id = pa.id
+    and p.checksum_id = c.id
+    and c.checksum_type_id = ct.id
+    order by pn.name, pevr.evr desc, pa.label
+    """
+
+# This function executes the SQL call for listing packages with checksum info
+def list_all_packages_checksum_sql(channel_id):
+    log_debug(3, channel_id)
+    h = rhnSQL.prepare(_query_all_packages_from_channel_checksum)
+    h.execute(channel_id = str(channel_id))
+    ret = h.fetchall_dict()
+    if not ret:
+        return []
+    # process the results
+    ret = map(lambda a: (a["name"], a["version"], a["release"], a["epoch"],
+                         a["arch"], a["package_size"], a['checksum_type'],
+                         a['checksum']),
+              __stringify(ret))
+    return ret
+
+# This function executes the SQL call for listing latest packages with
+# checksum info
+def list_packages_checksum_sql(channel_id):
+    log_debug(3, channel_id)
+    # return the latest packages from the specified channel
+    query = """
+    select
+        pn.name,
+        pevr.version,
+        pevr.release,
+        pevr.epoch,
+        pa.label arch,
+        full_channel.package_size,
+        full_channel.checksum_type,
+        full_channel.checksum
+    from
+        rhnPackageArch pa,
+        ( select
+            p.name_id,
+            max(pe.evr) evr
+          from
+            rhnChannelPackage cp,
+            rhnPackage p,
+            rhnPackageEVR pe
+          where
+              cp.channel_id = :channel_id
+          and cp.package_id = p.id
+          and p.evr_id = pe.id
+          group by p.name_id
+        ) listall,
+        ( select distinct
+            p.package_size,
+            p.name_id,
+            p.evr_id,
+            p.package_arch_id,
+            ct.label as checksum_type,
+            c.checksum
+          from
+            rhnChannelPackage cp,
+            rhnPackage p,
+            rhnChecksumType ct,
+            rhnChecksum c
+          where
+              cp.channel_id = :channel_id
+          and cp.package_id = p.id
+          and p.checksum_id = c.id
+          and c.checksum_type_id = ct.id
+        ) full_channel,
+        -- Rank the package's arch
+        ( select
+            package_arch_id,
+            count(*) rank
+          from
+            rhnServerPackageArchCompat
+          group by package_arch_id
+        ) arch_rank,
+        rhnPackageName pn,
+        rhnPackageEVR pevr
+    where
+        pn.id = listall.name_id
+        -- link back to the specific package
+    and full_channel.name_id = listall.name_id
+    and full_channel.evr_id = pevr.id
+    and pevr.evr = listall.evr
+    and pa.id = full_channel.package_arch_id
+    and pa.id = arch_rank.package_arch_id
+    order by pn.name, arch_rank.rank desc
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(channel_id = str(channel_id))
+    ret = h.fetchall_dict()
+    if not ret:
+        return []
+    # process the results
+    ret = map(lambda a: (a["name"], a["version"], a["release"], a["epoch"],
+                         a["arch"], a["package_size"], a['checksum_type'],
+                         a['checksum']),
+              __stringify(ret))
+    return ret
+
 # This function executes the SQL call for listing packages
 def _list_packages_sql(query, channel_id):
     h = rhnSQL.prepare(query)
@@ -1243,6 +1369,34 @@ def list_all_packages_complete_sql(channel_id):
     where
        po.package_id = :package_id
        and po.capability_id = pc.id
+    union all
+    select
+       brks.package_id,
+       'breaks' as capability_type,
+       brks.capability_id,
+       brks.sense,
+       pc.name,
+       pc.version
+    from
+       rhnPackageBreaks brks,
+       rhnPackageCapability pc
+    where
+       brks.package_id = :package_id
+       and brks.capability_id = pc.id
+    union all
+    select
+       pdep.package_id,
+       'predepends' as capability_type,
+       pdep.capability_id,
+       pdep.sense,
+       pc.name,
+       pc.version
+    from
+       rhnPackagePredepends pdep,
+       rhnPackageCapability pc
+    where
+       pdep.package_id = :package_id
+       and pdep.capability_id = pc.id
     """)
 
     h.execute(channel_id = str(channel_id))
@@ -1262,6 +1416,8 @@ def list_all_packages_complete_sql(channel_id):
         pkgi['suggests'] = []
         pkgi['supplements'] = []
         pkgi['enhances'] = []
+        pkgi['breaks'] = []
+        pkgi['predepends'] = []
         g.execute(package_id = pkgi["id"])
         deps = g.fetchall_dict() or []
         for item in deps:
@@ -1279,7 +1435,7 @@ def list_all_packages_complete_sql(channel_id):
     # process the results
     ret = map(lambda a: (a["name"], a["version"], a["release"], a["epoch"],
                          a["arch"], a["package_size"], a['provides'],
-                         a['requires'], a['conflicts'], a['obsoletes'], a['recommends'], a['suggests'], a['supplements'], a['enhances']),
+                         a['requires'], a['conflicts'], a['obsoletes'], a['recommends'], a['suggests'], a['supplements'], a['enhances'], a['breaks'], a['predepends']),
               __stringify(ret))
     return ret
 
@@ -1315,6 +1471,11 @@ def list_packages(channel):
 def list_all_packages(channel):
     return _list_packages(channel, cache_prefix="list_all_packages",
         function=list_all_packages_sql)
+
+# list _all_ the packages for a channel, including checksum info
+def list_all_packages_checksum(channel):
+    return _list_packages(channel, cache_prefix="list_all_packages_checksum",
+        function=list_all_packages_checksum_sql)
 
 # list _all_ the packages for a channel
 def list_all_packages_complete(channel):
@@ -1356,7 +1517,81 @@ def _list_packages(channel, cache_prefix, function):
     return ret
 
 
+def getChannelInfoForKickstart(kickstart):
+    query = """
+    select c.label,
+           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+      from rhnChannel c,
+           rhnKickstartableTree kt
+     where c.id = kt.channel_id
+       and kt.label = :kickstart_label
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(kickstart_label = str(kickstart))
+    return h.fetchone_dict()
 
+def getChannelInfoForKickstartOrg(kickstart, org_id):
+    query = """
+    select c.label,
+           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+      from rhnChannel c,
+           rhnKickstartableTree kt
+     where c.id = kt.channel_id
+       and kt.label = :kickstart_label
+       and kt.org_id = :org_id
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(kickstart_label = str(kickstart), org_id = int(org_id))
+    return h.fetchone_dict()
+
+def getChannelInfoForKickstartSession(session):
+    # decode the session string
+    try:
+        session_id = int(session.split('x')[0].split(':')[0])
+    except Exception:
+        return None, None
+
+    query = """
+    select c.label,
+           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+      from rhnChannel c,
+           rhnKickstartableTree kt,
+           rhnKickstartSession ks
+     where c.id = kt.channel_id
+       and kt.id = ks.kstree_id
+       and ks.id = :session_id
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(session_id = session_id)
+    return h.fetchone_dict()
+
+def getChildChannelInfoForKickstart(kickstart, child):
+    query = """
+    select c.label,
+           to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
+      from rhnChannel c,
+           rhnKickstartableTree kt,
+           rhnKickstartSession ks,
+           rhnChannel c2
+     where c2.id = kt.channel_id
+       and kt.label = :kickstart_label
+       and c.label = :child_label
+       and c.parent_channel = c2.id
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(kickstart_label = str(kickstart), child_label = str(child))
+    return h.fetchone_dict()
+
+def getChannelInfoForTinyUrl(tinyurl):
+    query = """
+    select tu.url
+      from rhnTinyUrl tu
+     where tu.enabled = 'Y'
+       and tu.token = :tinyurl
+    """
+    h = rhnSQL.prepare(query)
+    h.execute(tinyurl = str(tinyurl))
+    return h.fetchone_dict()
 
 # list the obsoletes for a channel
 def list_obsoletes(channel):
@@ -1517,6 +1752,14 @@ def subscribe_channel(server_id, channel, username, password):
         raise rhnFault(40, "Channel %s does not exist?" % channel)
 
     channel_id = ret['id']
+
+    # check if server is subscribed to the parent of the given channel
+    h = rhnSQL.prepare(_query_parent_channel_subscribed)
+    h.execute(sid=server_id, channel=str(channel))
+    ret = h.fetchone_dict()
+    if not ret:
+        log_error("Parent of channel %s is not subscribed to server" % channel)
+        raise rhnFault(32, "Parent of channel %s is not subscribed to server" % channel)
 
     # check if server is subscribed to the parent of the given channel
     h = rhnSQL.prepare(_query_parent_channel_subscribed)

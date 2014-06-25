@@ -1,6 +1,6 @@
 Name:         ssl_bridge
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version:      2.1.0.1
+Version:      2.2.0
 Release:      1%{?dist}
 Summary:      SSL bridge
 URL:          https://fedorahosted.org/spacewalk

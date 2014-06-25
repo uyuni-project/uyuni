@@ -123,7 +123,7 @@ class ScenarioRunner(SMConnect):
 
     def example_04(self):
         self.client.actionchains.addPackageInstall(self.token, 1000010000, [581,], "Test Chain")
-        
+
 
 if __name__ == "__main__":
     host = "pig.suse.de"

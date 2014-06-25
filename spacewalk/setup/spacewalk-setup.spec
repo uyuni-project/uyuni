@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.1.14.4
+Version:        2.2.12
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -51,6 +51,7 @@ Requires:       cobbler >= 2.0.0
 Requires:       PyYAML
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
+Requires:       curl
 
 %description
 A collection of post-installation scripts for managing Spacewalk's initial
@@ -82,7 +83,7 @@ chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0755 share/embedded_diskspace_check.py %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/sudoers.* %{buildroot}/%{_datadir}/spacewalk/setup/
-install -m 0644 share/ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/mod_ssl.conf.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
@@ -103,6 +104,8 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=8 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-make-mount-points | gzip > $RPM_BUILD_ROOT%{_mandir}/man8/spacewalk-make-mount-points.8.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-cobbler | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-cobbler.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-tomcat | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-tomcat.1.gz
+/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
+/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 
 
@@ -162,6 +165,7 @@ rm -rf %{buildroot}
 %doc Changes README answers.txt
 %{perl_vendorlib}/*
 %{_bindir}/spacewalk-setup
+%{_bindir}/spacewalk-setup-httpd
 %{_bindir}/spacewalk-make-mount-points
 %{_bindir}/spacewalk-setup-cobbler
 %{_bindir}/spacewalk-setup-tomcat
@@ -175,6 +179,43 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.12-1
+- extract the sudo setup into a separate script/tool
+
+* Tue May 27 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.11-1
+- spacewalk-setup: require curl
+
+* Tue May 27 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.10-1
+- use curl instead of libwww-perl
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.9-1
+- Fix SELinux capitalization.
+
+* Fri Apr 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.8-1
+- editarea has been replaced with ace-editor
+
+* Wed Apr 02 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
+- use SHA-256 for session secrets
+
+* Mon Mar 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
+- 1072784 - jpam.so is in /usr/lib even on x86_64
+
+* Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- manual page for spacewalk-setup-httpd
+
+* Thu Mar 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.4-1
+- spacewalk-setup-httpd: utility to configure httpd for Spacewalk
+
+* Tue Mar 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.3-1
+- clear-db needs to be present in answers for it to be used
+- Clean up - embedded Oracle related code
+
+* Mon Mar 03 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
+- 484950 - clear-db flag does not do what in --help
+
+* Mon Mar 03 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- 460556 - option clear-db missing in answer file
+
 * Thu Feb 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.14-1
 - removed embedded oracle code
 

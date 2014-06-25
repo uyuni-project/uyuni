@@ -18,18 +18,15 @@
             <c:forEach items="${options}" var="option">
                 <div class="form-group">
                     <c:choose>
-                        <c:when test="${option.hasArgs}">
-                            <label class="col-lg-3 control-label">
-                                <c:if test="${option.required}">
-                                    <rhn:required-field>${option.name}</rhn:required-field>:
-                                </c:if>
-                                <c:if test="${not option.required}">
-                                    ${option.name}:
-                                </c:if>
-                            </label>
-                        </c:when>
-                        <c:otherwise>
-                        </c:otherwise>
+                      <c:when test="${option.name == 'rootpw'}">
+                        <input type="text" name="<c:out value="${option.name}" />_txt" value="${option.arg}" size="52"/>
+                        <input type="checkbox" name='encrypt_rootpw' value='encrypt_rootpw' id="encrypt_rootpw"/>
+                        <label for="encrypt_rootpw"><bean:message key="kickstartoptions.jsp.encrypt_rootpw"/></label>
+                        <br/>
+                      </c:when>
+                      <c:otherwise>
+                        <input type="text" name="<c:out value="${option.name}" />_txt" value="${option.arg}" size="64"/><br/>
+                      </c:otherwise>
                     </c:choose>
                     <c:choose>
                         <c:when test="${option.enabled}">

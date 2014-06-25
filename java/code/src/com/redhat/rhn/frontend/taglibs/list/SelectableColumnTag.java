@@ -123,6 +123,7 @@ public class SelectableColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doStartTag() throws JspException {
 
         ListCommand command = ListTagUtil.getCurrentCommand(this, pageContext);
@@ -148,6 +149,7 @@ public class SelectableColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public int doEndTag() throws JspException {
         ListCommand command = ListTagUtil.
                                             getCurrentCommand(this, pageContext);
@@ -161,6 +163,7 @@ public class SelectableColumnTag extends TagSupport {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void release() {
         if (listName != null) {
             ListTagUtil.clearPersistentCounter(pageContext, listName);
@@ -341,7 +344,7 @@ public class SelectableColumnTag extends TagSupport {
 
 
     private String getParentId(Object current, Object parent) {
-        if (parent != null && parent !=  current) {
+        if (parent != null && !parent.equals(current)) {
             return makeCheckboxId(listName, ListTagHelper.getObjectId(parent));
         }
         return "";
@@ -369,7 +372,7 @@ public class SelectableColumnTag extends TagSupport {
     }
 
     private String getMemberIds(Object current, Object parent) {
-        if (parent != null && parent != current) {
+        if (parent != null && !parent.equals(current)) {
             return getChildIds(parent);
         }
         return "[]";

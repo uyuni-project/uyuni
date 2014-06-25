@@ -62,11 +62,11 @@ public class UserGroupFactory extends HibernateFactory {
         LocalizationService ls = LocalizationService.getInstance();
         // Concat the Role name with the letter s to form the UserGroup name
         // such as: "Organization Applicants"
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
         key.append(role.getName());
         key.append("s");
         retval.setName(ls.getMessage(key.toString()));
-        StringBuffer desc = new StringBuffer();
+        StringBuilder desc = new StringBuilder();
         desc.append(retval.getName());
         desc.append(ls.getMessage("for Org"));
         desc.append(org.getName());
@@ -94,6 +94,22 @@ public class UserGroupFactory extends HibernateFactory {
     }
 
     /**
+     * Returns the complete list of OrgUserExtGroup
+     * @param user needs to be org admin
+     * @return OrgUserExtGroup list
+     */
+    public static List<OrgUserExtGroup> listExtAuthOrgGroups(User user) {
+        if (!user.getRoles().contains(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException("Organization admin role required " +
+                    "to access extauth organization groups");
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("org_id", user.getOrg().getId());
+        return singleton.listObjectsByNamedQuery(
+                "OrgUserExtGroup.listAll", map);
+    }
+
+    /**
      * lookup function to search for external groups
      * @param gidIn external group id
      * @return external group object
@@ -106,6 +122,20 @@ public class UserGroupFactory extends HibernateFactory {
     }
 
     /**
+     * lookup function to search for external groups
+     * @param gidIn external group id
+     * @param orgIn organization
+     * @return external group object
+     */
+    public static OrgUserExtGroup lookupOrgExtGroupByIdAndOrg(Long gidIn, Org orgIn) {
+        Map<String, Long> params = new HashMap();
+        params.put("gid", gidIn);
+        params.put("org_id", orgIn.getId());
+        return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(
+                "OrgUserExtGroup.lookupByIdAndOrg", params);
+    }
+
+    /**
      * save UserExtGroup object
      * @param extGroup external group
      */
@@ -114,10 +144,18 @@ public class UserGroupFactory extends HibernateFactory {
     }
 
     /**
+     * save OrgUserGroup object
+     * @param extGroup org user group
+     */
+    public static void save(OrgUserExtGroup extGroup) {
+        singleton.saveObject(extGroup);
+    }
+
+    /**
      * delete UserExtGroup object
      * @param extGroup external group
      */
-    public static void delete(UserExtGroup extGroup) {
+    public static void delete(ExtGroup extGroup) {
         singleton.removeObject(extGroup);
     }
 
@@ -131,6 +169,48 @@ public class UserGroupFactory extends HibernateFactory {
         params.put("label", labelIn);
         return (UserExtGroup) singleton.lookupObjectByNamedQuery(
                 "UserExtGroup.lookupByLabel", params);
+    }
+
+    /**
+     * lookup function to search for organization external groups
+     * @param labelIn external group label
+     * @param orgIn organization
+     * @return external group object
+     */
+    public static OrgUserExtGroup lookupOrgExtGroupByLabelAndOrg(String labelIn,
+            Org orgIn) {
+        Map<String, Object> params = new HashMap();
+        params.put("label", labelIn);
+        params.put("org_id", orgIn.getId());
+        return (OrgUserExtGroup) singleton.lookupObjectByNamedQuery(
+                "OrgUserExtGroup.lookupByLabelAndOrg", params);
+    }
+
+    /**
+     * deletes all temporary roles across the whole satellite
+     * (users across all the orgs)
+     * @return number of removed roles
+     */
+    public static int deleteTemporaryRoles() {
+        return HibernateFactory.getSession()
+        .getNamedQuery("UserGroupMembers.deleteTemporary")
+        .executeUpdate();
+    }
+
+    /**
+     * save UserGroupMembers object
+     * @param ugmIn user group member
+     */
+    public static void save(UserGroupMembers ugmIn) {
+        singleton.saveObject(ugmIn);
+    }
+
+    /**
+     * delete UserGroupMembers object
+     * @param ugmIn group members entry
+     */
+    public static void delete(UserGroupMembers ugmIn) {
+        singleton.removeObject(ugmIn);
     }
 }
 

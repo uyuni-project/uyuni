@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	0.12.2
+Version:	2.2.6
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
@@ -10,10 +10,14 @@ Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
 
-%if 0%{?fedora} >= 19
+%if 0%{?fedora}
+Requires:	pylint > 1.1
+%else
+%if 0%{?rhel} > 6
 Requires:	pylint > 1.0
 %else
 Requires:	pylint < 1.0
+%endif
 %endif
 %if 0%{?suse_version} != 1010
 BuildRequires:	asciidoc
@@ -42,8 +46,13 @@ install -d -m 755 %{buildroot}/%{_bindir}
 install -p -m 755 spacewalk-pylint %{buildroot}/%{_bindir}/
 install -d -m 755 %{buildroot}/%{_sysconfdir}
 install -p -m 644 spacewalk-pylint.rc %{buildroot}/%{_sysconfdir}/
-%if 0%{?fedora} < 19
-# old pylint don't understand new checks
+%if 0%{?rhel}
+# new checks in pylint 1.1
+sed -i '/disable=/ s/,bad-whitespace,unpacking-non-sequence,superfluous-parens//g;' \
+        %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
+%endif
+%if 0%{?rhel} < 7
+# new checks in pylint 1.0
 sed -i '/disable=/ s/\(,C1001\|,W0121\)//g;' \
         %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
 %endif
@@ -66,6 +75,24 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Jun 23 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
+- fixed pylint version for RHEL7
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- spec file polish
+
+* Wed Apr 02 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
+- pylint in Fedora 19 has been updated to 1.1
+
+* Thu Mar 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.3-1
+- don't report optional parens as error
+
+* Mon Mar 24 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
+- pylint 1.1 landed in Fedora 20 updates
+
+* Wed Mar 05 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
+- disable pylint 1.1 checks we don't enforce
+
 * Mon Sep 30 2013 Michael Mraka <michael.mraka@redhat.com> 0.12-1
 - ignore old-style-* pylint warnings for pylint-1.0
 

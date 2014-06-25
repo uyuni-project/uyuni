@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.OrgDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -25,6 +26,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.org.OrgManager;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -65,6 +67,18 @@ public class ExtAuthenticationAction extends RhnAction {
             SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID,
                     toOrgString);
 
+            Boolean keepRoles = (Boolean) daForm.get("keep_roles");
+            if (SatConfigFactory.getSatConfigBooleanValue(
+                    SatConfigFactory.EXT_AUTH_KEEP_ROLES) &&
+                    !BooleanUtils.toBoolean(keepRoles)) {
+                // if the option was turned off, delete temporary roles
+                // across the whole satellite
+                UserGroupFactory.deleteTemporaryRoles();
+            }
+            // store the value
+            SatConfigFactory.setSatConfigBooleanValue(
+                    SatConfigFactory.EXT_AUTH_KEEP_ROLES, keepRoles);
+
             createSuccessMessage(request, "message.ext_auth_updated", null);
             return mapping.findForward("success");
         }
@@ -101,5 +115,9 @@ public class ExtAuthenticationAction extends RhnAction {
         else {
             form.set("to_org", null);
         }
+
+        Boolean keepRoles = SatConfigFactory.getSatConfigBooleanValue(
+                SatConfigFactory.EXT_AUTH_KEEP_ROLES);
+        form.set("keep_roles", keepRoles);
     }
 }

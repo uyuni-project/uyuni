@@ -1,7 +1,11 @@
-%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
+%if 0%{?fedora} || 0%{?rhel} > 6
+%global sbinpath %{_sbindir}
+%else
+%global sbinpath /sbin
+%endif
 
 Name:         nocpulse-common
-Version:      2.2.7.2
+Version:      2.2.9
 Release:      1%{?dist}
 Summary:      NOCpulse common
 License:      GPLv2
@@ -69,7 +73,7 @@ mkdir -p %{buildroot}%{_var}/lib/%{package_name}/.ssh
 
 # install log rotation stuff
 mkdir -p $RPM_BUILD_ROOT/etc/logrotate.d
-%if 0%{?fedora} && 0%{?fedora} >= 16
+%if 0%{?fedora}
 install -m644 nocpulse.logrotate.new \
    $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 %else
@@ -168,6 +172,12 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
+* Mon Jun 23 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.9-1
+- fixed runuser path on RHEL7
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.8-1
+- spec file polish
+
 * Fri Mar 22 2013 Michael Mraka <michael.mraka@redhat.com> 2.2.7-1
 - 919468 - fixed path in file based Requires
 

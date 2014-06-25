@@ -13,6 +13,7 @@ java/*.log.*
 java/buildconf/builder/config/local
 java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
+java/.checkstyle
 java/.classpath
 java/.externalToolBuilders
 java/.pmd

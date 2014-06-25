@@ -19,7 +19,6 @@
 <%@ include file="/WEB-INF/pages/ssm/systems/errata-list-fragment.jspf" %>
 
     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-
     <div class="text-right">
         <hr />
         <html:submit styleClass="btn btn-success" property="dispatch">

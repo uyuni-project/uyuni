@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.1.27.6
+Version:	2.2.24
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -16,7 +16,7 @@ BuildRequires:  /usr/bin/docbook2man
 BuildRequires:  docbook-utils
 BuildRequires:  python
 BuildRequires: /usr/bin/pod2man
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # pylint check
 BuildRequires:  spacewalk-pylint
 BuildRequires:  yum
@@ -53,7 +53,7 @@ Requires:       spacewalk-config
 Requires:       spacewalk-setup
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-libs
-Requires:       spacewalk-backend-tools
+Requires:       spacewalk-backend-tools >= 2.2.27
 Requires:       yum-utils
 
 Requires:       python-yaml
@@ -87,7 +87,7 @@ make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
 # check coding style
 spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %endif
@@ -109,6 +109,96 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Mon Jun 23 2014 Tomas Lestach <tlestach@redhat.com> 2.2.24-1
+- let spacewalk-utils require a specific version of spacewalk-backend-tools
+
+* Fri Jun 20 2014 Tomas Lestach <tlestach@redhat.com> 2.2.23-1
+- minor fixes to spacewalk-export-channels man page
+
+* Thu Jun 19 2014 Grant Gainey 2.2.22-1
+- Added man-pg for spacewalk-export-channels Minor cleanup of spacewalk-export
+  man-pg
+- manpage for spacewalk-export
+- Some PEP8 suggestions
+- Restored spacewalk-report channels to export
+
+* Thu Jun 12 2014 Grant Gainey 2.2.21-1
+- Add spacewalk-export-channels to Makefile too
+- Calling sudo inside may be problematic
+
+* Wed Jun 11 2014 Tomas Lestach <tlestach@redhat.com> 2.2.20-1
+- 1108138 - detect repositories with inaccessible metadata
+
+* Mon Jun 09 2014 Tomas Lestach <tlestach@redhat.com> 2.2.19-1
+- 1105904 - do not check size of missing files
+
+* Fri Jun 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.18-1
+- fixed spacewalk-hostname-rename to work with postgresql backend
+
+* Fri May 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.17-1
+- 1101545 - Added limitation of spacewlak-clone-by-date for RHEL4 and earlier
+- new report: spacewalk-export-channels
+
+* Fri May 23 2014 Stephen Herr <sherr@redhat.com> 2.2.16-1
+- Adding spacewalk-manage-channel-lifecycle to spacewalk-utils
+- spacewalk-manage-channel-lifecycle: Removed the whitespace
+- spacewalk-manage-channel-lifecycle: Added better channel tree printing.
+- spacewalk-manage-channel-lifecycle: Added multiple workflows.
+- spacewalk-manage-channel-lifecycle: Removed dead variable.
+- spacewalk-manage-channel-lifecycle: Fixing None-channel. Added real checks
+  instead of blind try/except.
+- spacewalk-manage-channel-lifecycle: Organizing imports
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.15-1
+- spec file polish
+
+* Tue May 06 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.14-1
+- Assume raw mode if the directory with definition files doesn't exist
+
+* Thu May 01 2014 Stephen Herr <sherr@redhat.com> 2.2.13-1
+- Fixes from PR discussion
+- Add spacewalk-export to utils
+
+* Mon Apr 14 2014 Stephen Herr <sherr@redhat.com> 2.2.12-1
+- 1073543 - checkstyle fix
+
+* Mon Apr 14 2014 Stephen Herr <sherr@redhat.com> 2.2.11-1
+- 1073543 - sw-clone-by-date validation update
+
+* Thu Apr 03 2014 Stephen Herr <sherr@redhat.com> 2.2.10-1
+- 1073543 - fix problem where --channels=src_label dst_label threw an error
+
+* Fri Mar 21 2014 Stephen Herr <sherr@redhat.com> 2.2.9-1
+- 1073543 - make it possible to specify description from clone-be-date
+
+* Tue Mar 11 2014 Stephen Herr <sherr@redhat.com> 2.2.8-1
+- 1073632 - fixing possible nonetype error
+
+* Tue Mar 11 2014 Tomas Lestach <tlestach@redhat.com> 2.2.7-1
+- 1058154 - let spacewalk-api send username and password as strings
+
+* Fri Mar 07 2014 Stephen Herr <sherr@redhat.com> 2.2.6-1
+- 1073632 - another pylint error
+
+* Fri Mar 07 2014 Stephen Herr <sherr@redhat.com> 2.2.5-1
+- 1015963 - fixing long lines in clone-by-date
+
+* Thu Mar 06 2014 Stephen Herr <sherr@redhat.com> 2.2.4-1
+- 1073632 - add option to clone-by-date to only clone specified errata
+- 1073543 - Allow user to specify channel name through clone-by-date
+
+* Fri Feb 28 2014 Tomas Lestach <tlestach@redhat.com> 2.2.3-1
+- 1028933 - allow spacewalk-api to force integer and string values
+- 1028933 - allow spacewalk-api to use boolean values
+
+* Tue Feb 25 2014 Stephen Herr <sherr@redhat.com> 2.2.2-1
+- 1069879 - spacwalk-repo-sync prints the same message for every channel.
+
+* Tue Feb 25 2014 Tomas Lestach <tlestach@redhat.com> 2.2.1-1
+- removing spacewalk18 and spacewalk19 channel repo configurations
+- remove fc18 channel repo configurations
+- Bumping package versions for 2.2.
+
 * Thu Jan 30 2014 Stephen Herr <sherr@redhat.com> 2.1.27-1
 - 1059910 - create api for channel errata syncing, have clone-by-date call it
 

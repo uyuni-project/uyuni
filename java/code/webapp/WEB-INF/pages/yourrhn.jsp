@@ -65,7 +65,7 @@
   	    <c:if test="${requestScope.criticalSystems == 'y'}">
   		        <div id="critical-systems-pane" class="row">
   		            <script type="text/javascript">
-  		                CriticalSystemsRenderer.renderAsync(makeRendererHandler("critical-systems-pane", false));
+		                CriticalSystemsRenderer.renderAsync(makeRendererHandler("critical-systems-pane", false));
   		            </script>
   		        </div>
         </c:if>
@@ -88,14 +88,14 @@
         <c:if test="${requestScope.pendingActions =='y'}">
             <div id="pending-actions-pane" class="row">
                 <script type="text/javascript">
-  	                PendingActionsRenderer.renderAsync(makeRendererHandler("pending-actions-pane", false));
+	                PendingActionsRenderer.renderAsync(makeRendererHandler("pending-actions-pane", false));
                 </script>
             </div>
         </c:if>
         <c:if test="${requestScope.latestErrata == 'y'}">
 	        <div id="latest-errata-pane" class="row">
 	            <script type="text/javascript">
-	  	            LatestErrataRenderer.renderAsync(makeRendererHandler("latest-errata-pane", false));
+		            LatestErrataRenderer.renderAsync(makeRendererHandler("latest-errata-pane", false));
 	            </script>
 	        </div>
         </c:if>

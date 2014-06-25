@@ -111,6 +111,7 @@ rhnServerNetAddress6           :: rhnServerNetInterface
 rhnOrgChannelSettings          :: web_customer rhnChannel rhnOrgChannelSettingsType
 rhnOrgEntitlements             :: rhnOrgEntitlementType
 rhnOrgErrataCacheQueue         :: web_customer
+rhnOrgExtGroupMapping          :: rhnUserExtGroup rhnServerGroup
 rhnPackage                     :: rhnPackageName rhnPackageEVR rhnPackageArch \
                                   rhnPackageGroup rhnSourceRPM web_customer \
                                   rhnChecksum
@@ -130,6 +131,8 @@ rhnPackageSuggests             :: rhnPackage rhnPackageCapability
 rhnPackageSupplements          :: rhnPackage rhnPackageCapability
 rhnPackageEnhances             :: rhnPackage rhnPackageCapability
 rhnPackageRecommends           :: rhnPackage rhnPackageCapability
+rhnPackageBreaks               :: rhnPackage rhnPackageCapability
+rhnPackagePredepends           :: rhnPackage rhnPackageCapability
 rhnPackageSource               :: web_customer rhnSourceRPM rhnFile rhnPackageGroup \
                                   rhnChecksum
 rhnPackageSyncBlacklist        :: rhnPackageName web_customer
@@ -198,6 +201,7 @@ rhnTaskoSchedule               :: rhnTaskoBunch
 rhnTaskoTemplate               :: rhnTaskoBunch rhnTaskoTask
 rhnTransactionPackage          :: rhnTransactionOperation rhnPackageArch \
                                   rhnPackageEVR rhnPackageName
+rhnUserExtGroup                :: web_customer
 rhnUserExtGroupMapping         :: rhnUserExtGroup rhnUserGroupType
 rhnUserGroupMembers            :: web_contact rhnUserGroup
 rhnUserGroup                   :: web_customer rhnUserGroupType

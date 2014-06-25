@@ -24,12 +24,14 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
@@ -327,13 +329,13 @@ public class UserManager extends BaseManager {
         for (String removeLabel : rolesToRemove) {
             Role removeMe = RoleFactory.lookupByLabel(removeLabel);
             log.debug("Removing role: " + removeMe.getName());
-            usr.removeRole(removeMe);
+            usr.removePermanentRole(removeMe);
         }
 
         for (String addLabel : rolesToAdd) {
             Role r = RoleFactory.lookupByLabel(addLabel);
             log.debug("Adding role: " + r.getName());
-            usr.addRole(r);
+            usr.addPermanentRole(r);
         }
     }
 
@@ -425,6 +427,18 @@ public class UserManager extends BaseManager {
         }
     }
 
+    private static User performLoginActions(User user) {
+        user.setLastLoggedIn(new Date());
+        if (!SatConfigFactory.getSatConfigBooleanValue(
+                SatConfigFactory.EXT_AUTH_KEEP_ROLES)) {
+            // delete all temporary roles
+            UserManager.resetTemporaryRoles(user, new HashSet<Role>());
+        }
+        // need to disable OAI_SYNC during login
+        storeUser(user);
+        return user;
+    }
+
 
     /**
      * Login the user with the given username and password.
@@ -443,11 +457,11 @@ public class UserManager extends BaseManager {
             else if (user.isDisabled()) {
                 exceptionType = "account.disabled";
             }
+            else if (user.getReadOnlyBool()) { // KEEP LAST!!
+                exceptionType = "error.user_readonly";
+            }
             else {
-                user.setLastLoggedIn(new Date());
-                // need to disable OAI_SYNC during login
-                storeUser(user);
-                return user;
+                return performLoginActions(user);
             }
         }
         catch (LookupException le) {
@@ -462,6 +476,32 @@ public class UserManager extends BaseManager {
             log.warn("Failed to set timeout: " + ie.getMessage());
         }
         throw new LoginException(exceptionType);
+    }
+
+    /**
+     * This method should be ONLY called when we need to authenticate read-only user
+     * e.g. for purpose of the API calls
+     * Login the user with the given username and password.
+     * @param username User's login name
+     * @param password User's unencrypted password.
+     * @return Returns the user if login is successful, or null othewise.
+     * @throws LoginException if login fails.  The message is a string resource key.
+     */
+    public static User loginReadOnlyUser(String username,
+            String password) throws LoginException {
+        try {
+            loginUser(username, password);
+        }
+        catch (LoginException e) {
+            // if exception type is error.user_readonly everything else went well
+            // and we can safely log the read-only user
+            if (!e.getMessage().equals("error.user_readonly")) {
+                throw e;
+            }
+        }
+        User user = UserFactory.lookupByLogin(username);
+        user.authenticate(password);
+        return performLoginActions(user);
     }
 
     /**
@@ -992,5 +1032,57 @@ public class UserManager extends BaseManager {
                                                     boolean value) {
         UserFactory.getInstance().
                 setUserServerPreferenceValue(user, server, preferenceName, value);
+    }
+
+    /**
+     * set temporary roles to the current set
+     * @param userIn affected user
+     * @param temporaryRolesIn temporary roles set
+     */
+    public static void resetTemporaryRoles(User userIn, Set<Role> temporaryRolesIn) {
+
+        Set<Role> currentRoles = userIn.getRoles();
+        for (Role role : userIn.getOrg().getRoles()) {
+            if (temporaryRolesIn.contains(role) && !currentRoles.contains(role)) {
+                userIn.addTemporaryRole(role);
+            }
+            else if (!temporaryRolesIn.contains(role) && currentRoles.contains(role)) {
+                userIn.removeTemporaryRole(role);
+            }
+        }
+    }
+
+    /**
+     * serialize role names
+     * @param rolesIn roles to put into string
+     * @return roles string
+     */
+    public static String roleNames(Set<Role> rolesIn) {
+        String roleNames = null;
+        for (Role role : rolesIn) {
+            roleNames = (roleNames == null) ? role.getName() :
+                roleNames + ", " + role.getName();
+        }
+        if (roleNames == null) {
+            return "(normal user)";
+        }
+        return roleNames;
+    }
+
+    /**
+     * serialize role names
+     * @param serverGroupsIn roles to put into string
+     * @return roles string
+     */
+    public static String serverGroupsName(Set<ServerGroup> serverGroupsIn) {
+        String serverGroupsName = null;
+        for (ServerGroup sg : serverGroupsIn) {
+            serverGroupsName = (serverGroupsName == null) ? sg.getName() :
+                serverGroupsName + ", " + sg.getName();
+        }
+        if (serverGroupsName == null) {
+            return "(none)";
+        }
+        return serverGroupsName;
     }
 }

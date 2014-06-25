@@ -95,7 +95,8 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
                         tree.getCobblerDistroName(), tree.getKernelPath(),
                         tree.getInitrdPath(), ksmeta,
                         tree.getInstallType().getCobblerBreed(),
-                        tree.getInstallType().getCobblerOsVersion());
+                        tree.getInstallType().getCobblerOsVersion(),
+                        tree.getChannel().getChannelArch().cobblerArch());
         // Setup the kickstart metadata so the URLs and activation key are setup
 
         // set architecture (fix 32bit vm's on a 64bit system)
@@ -117,7 +118,8 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
                             tree.getCobblerXenDistroName(),
                             tree.getKernelXenPath(), tree.getInitrdXenPath(),
                             ksmeta, tree.getInstallType().getCobblerBreed(),
-                            tree.getInstallType().getCobblerOsVersion());
+                            tree.getInstallType().getCobblerOsVersion(),
+                            tree.getChannel().getChannelArch().cobblerArch());
             tree.setCobblerXenId(distroXen.getUid());
             distroXen.setArch(archName);
             distroXen.save();

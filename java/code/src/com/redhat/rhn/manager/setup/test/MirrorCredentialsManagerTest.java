@@ -118,7 +118,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         // User needs to be SAT_ADMIN
-        user.addRole(RoleFactory.SAT_ADMIN);
+        user.addPermanentRole(RoleFactory.SAT_ADMIN);
         // Setup manager object
         credsManager = new MirrorCredentialsManager(NoopConfigureSatelliteCommand.class);
     }

@@ -105,7 +105,7 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    def __init__(self, url, name, insecure=False, quiet=False, interactive=True):
+    def __init__(self, url, name, insecure=False, quiet=False, interactive=True, yumsrc_conf=YUMSRC_CONF):, 
         # pylint can't see inside the SplitResult class
         # pylint: disable=E1103
         if urlparse.urlsplit(url).scheme:
@@ -117,15 +117,15 @@ class ContentSource:
         self.quiet = quiet
         self.interactive = interactive
         self.yumbase = yum.YumBase()
-        self.yumbase.preconf.fn = YUMSRC_CONF
-        if not os.path.exists(YUMSRC_CONF):
+        self.yumbase.preconf.fn = yumsrc_conf
+        if not os.path.exists(yumsrc_conf):
             self.yumbase.preconf.fn = '/dev/null'
         self.configparser = ConfigParser()
         self._clean_cache(CACHE_DIR + name)
 
         initCFG('server.satellite')
         self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
-
+        self._authenticate(url)
         repo = yum.yumRepo.YumRepository(name)
         repo.populate(self.configparser, name, self.yumbase.conf)
         self.repo = repo
@@ -135,6 +135,9 @@ class ContentSource:
         self.num_packages = 0
         self.num_excluded = 0
         self.gpgkey_autotrust = None
+
+    def _authenticate(self, url):
+        pass
 
     def setup_repo(self, repo):
         """Fetch repository metadata"""
@@ -200,9 +203,9 @@ class ContentSource:
         if not filters:
             # if there's no include/exclude filter on command line or in database
             for filter_conf in self.repo.includepkgs:
-                filters.append(('+',[filter_conf]))
+                filters.append(('+',[p]))
             for filter_conf in self.repo.exclude:
-                filters.append(('-',[filter_conf]))
+                filters.append(('-',[p]))
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)

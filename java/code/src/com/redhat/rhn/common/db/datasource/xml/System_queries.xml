@@ -149,7 +149,7 @@ SELECT  S.id AS ID,
    AND  SET2.element_three = P.package_arch_id
    AND  SNPC.package_id = P.id
    AND  SNPC.server_id = S.id
-GROUP BY s.id
+GROUP BY s.id, s.name
 ORDER BY UPPER(S.name)
 </query>
 
@@ -180,7 +180,7 @@ SELECT  S.id AS ID,
    AND  P.name_id = PN.id
    AND  P.evr_id = PE.id
    AND  P.package_arch_id = PA.id
-GROUP BY s.id, pn.id, pa.id
+GROUP BY s.id, pn.id, pa.id, s.name, pn.name, pa.label
 ORDER BY UPPER(S.name), S.id, UPPER(PN.name), UPPER(PA.label)
   </elaborator>
 </mode>
@@ -340,6 +340,23 @@ ORDER BY UPPER(COALESCE(S.NAME, '(none)')), S.ID
   <elaborator name="system_config_files_with_diffs" />
 </mode>
 
+<mode name="xmlrpc_systems_in_group" class="com.redhat.rhn.frontend.dto.SystemOverview">
+  <query params="sgid">
+select * from (
+  SELECT  DISTINCT S.id AS ID,
+          S.name AS NAME,
+          INFO.checkin AS LAST_CHECKIN
+    FROM  rhnServer S,
+          rhnServerInfo INFO,
+          rhnServerGroupMembers SGM
+   WHERE  SGM.server_group_id = :sgid
+     AND  S.id = SGM.server_id
+     AND  S.id = INFO.server_id
+) X
+ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
+  </query>
+</mode>
+
 <mode name="target_systems_for_group" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="sgid, user_id">
 SELECT S.id, S.name,
@@ -408,7 +425,7 @@ SELECT ES.id, S.name, 1 as selectable
     <elaborator name="entitlements"/>
 </mode>
 
-<mode name="xmlrpc_visible_to_user">
+<mode name="xmlrpc_visible_to_user" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="user_id">
 select * from (
   SELECT  DISTINCT S.id AS ID,
@@ -423,7 +440,7 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   </query>
 </mode>
 
-<mode name="xmlrpc_visible_to_user_inactive">
+<mode name="xmlrpc_visible_to_user_inactive" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="user_id, checkin_threshold">
 select * from (
   SELECT  DISTINCT S.id AS ID,
@@ -439,7 +456,7 @@ ORDER BY  UPPER(COALESCE(X.name, '(none)')), X.id
   </query>
 </mode>
 
-<mode name="xmlrpc_visible_to_user_active">
+<mode name="xmlrpc_visible_to_user_active" class="com.redhat.rhn.frontend.dto.SystemOverview">
   <query params="user_id, checkin_threshold">
 select * from (
   SELECT  DISTINCT S.id AS ID,
@@ -2018,9 +2035,18 @@ select s.id as id,
                                p.evr_id,
                                p.package_arch_id
                           from rhnPackage p,
-                               rhnServerChannel sc
-                          join rhnChannelPackage cp on (sc.channel_id = cp.channel_id)
+                               rhnServerChannel sc,
+                               rhnServerPackage sp2,
+                               rhnChannelPackage cp,
+                               rhnUserServerPerms usp2
                          where cp.package_id = p.id
+                           and cp.channel_id = sc.channel_id
+                           and sc.server_id = usp2.server_id
+                           and usp2.user_id = :userid
+                           and sc.server_id = sp2.server_id
+                           and sp2.name_id = p.name_id
+                           and sp2.evr_id = p.evr_id
+                           and sp2.package_arch_id = p.package_arch_id
                        ) scp on (scp.server_id = sp.server_id and
                                  sp.name_id = scp.name_id and
                                  sp.evr_id = scp.evr_id and

@@ -18,10 +18,14 @@ package com.redhat.rhn.domain.user.legacy;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.MD5Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
+import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -63,7 +67,8 @@ public class UserImpl extends BaseDomainHelper implements User {
     private String login;
     private String loginUc;
     private String password;
-    private Set usergroups;
+    private String readOnly;
+    private Set<UserGroupMembers> groupMembers;
     private Org org;
     private Set<StateChange> stateChanges;
     private Set<Address> addresses;
@@ -85,7 +90,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Create a new empty user
      */
     public UserImpl() {
-        usergroups = new HashSet();
+        groupMembers = new HashSet<UserGroupMembers>();
         personalInfo = new PersonalInfo();
         personalInfo.setUser(this);
         userInfo = new UserInfo();
@@ -172,7 +177,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * set it.
          */
         if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            this.password = MD5Crypt.crypt(passwordIn);
+            this.password = SHA256Crypt.crypt(passwordIn);
         }
         else {
             this.password = passwordIn;
@@ -180,27 +185,77 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /**
-     * Set the usergroup set
-     * @param ugIn The new Set of UserGroups to set
+     * Set the user group members set
+     * @param ugIn The new Set of UserGroupMembers to set
      */
-    protected void setUsergroups(Set ugIn) {
-        usergroups = ugIn;
+    protected void setGroupMembers(Set<UserGroupMembers> ugIn) {
+        groupMembers = ugIn;
     }
 
     /** get the set of usergroups
      * @return Set of UserGroups
      */
-    protected Set getUsergroups() {
-        return usergroups;
+    protected Set<UserGroup> getUserGroups() {
+        Set<UserGroup> ugmSet = new HashSet<UserGroup>();
+        for (UserGroupMembers ugm : groupMembers) {
+            ugmSet.add(ugm.getUserGroup());
+        }
+        return ugmSet;
+    }
+
+    /** get the set of user group members
+     * @return Set of UserGroupMembers
+     */
+    protected Set<UserGroupMembers> getGroupMembers() {
+        return groupMembers;
     }
 
     /** {@inheritDoc} */
     public Set<Role> getRoles() {
         Set<Role> userRoles = new HashSet<Role>();
-        for (Iterator i = usergroups.iterator(); i.hasNext();) {
-            UserGroup ug = (UserGroup)i.next();
-            userRoles.add(ug.getRole());
+        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
+            UserGroupMembers ugm = i.next();
+            userRoles.add(ugm.getUserGroup().getRole());
+        }
 
+        if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
+            Set<Role> orgRoles = org.getRoles();
+            Set<Role> localImplied = new HashSet<Role>();
+            localImplied.addAll(UserFactory.IMPLIEDROLES);
+            localImplied.retainAll(orgRoles);
+            userRoles.addAll(localImplied);
+        }
+        return Collections.unmodifiableSet(userRoles);
+    }
+
+    /** {@inheritDoc} */
+    public Set<Role> getTemporaryRoles() {
+        Set<Role> userRoles = new HashSet<Role>();
+        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
+            UserGroupMembers ugm = (UserGroupMembers) i.next();
+            if (ugm.getTemporary()) {
+                userRoles.add(ugm.getUserGroup().getRole());
+            }
+        }
+
+        if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
+            Set<Role> orgRoles = org.getRoles();
+            Set<Role> localImplied = new HashSet<Role>();
+            localImplied.addAll(UserFactory.IMPLIEDROLES);
+            localImplied.retainAll(orgRoles);
+            userRoles.addAll(localImplied);
+        }
+        return Collections.unmodifiableSet(userRoles);
+    }
+
+    /** {@inheritDoc} */
+    public Set<Role> getPermanentRoles() {
+        Set<Role> userRoles = new HashSet<Role>();
+        for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
+            UserGroupMembers ugm = (UserGroupMembers) i.next();
+            if (!ugm.getTemporary()) {
+                userRoles.add(ugm.getUserGroup().getRole());
+            }
         }
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
@@ -221,24 +276,70 @@ public class UserImpl extends BaseDomainHelper implements User {
     }
 
     /** {@inheritDoc} */
-    public void addRole(Role label) {
-        checkOrgAdmin();
-        UserGroup ug = org.getUserGroup(label);
-        if (ug != null) {
-            usergroups.add(ug);
+    public boolean hasTemporaryRole(Role label) {
+        return getTemporaryRoles().contains(label);
+    }
+
+    /** {@inheritDoc} */
+    public boolean hasPermanentRole(Role label) {
+        return getPermanentRoles().contains(label);
+    }
+
+    /** {@inheritDoc} */
+    public void addTemporaryRole(Role label) {
+        addRole(label, true);
+    }
+
+    /** {@inheritDoc} */
+    public void addPermanentRole(Role label) {
+        addRole(label, false);
+    }
+
+    /** {@inheritDoc} */
+    private void addRole(Role label, boolean temporary) {
+        checkPermanentOrgAdmin();
+        Set<Role> roles = new HashSet<Role>();
+        if (temporary) {
+            roles = this.getTemporaryRoles();
         }
         else {
-            throw new IllegalArgumentException("Org doesn't have role: " + label);
+            roles = this.getPermanentRoles();
+        }
+        if (!roles.contains(label)) {
+            UserGroup ug = org.getUserGroup(label);
+            if (ug != null) {
+                UserGroupMembers ugm = new UserGroupMembers(this, ug, temporary);
+                groupMembers.add(ugm);
+                UserGroupFactory.save(ugm);
+            }
+            else {
+                throw new IllegalArgumentException("Org doesn't have role: " + label);
+            }
         }
     }
 
+    /** {@inheritDoc} */
+    public void removeTemporaryRole(Role label) {
+        removeRole(label, true);
+    }
 
     /** {@inheritDoc} */
-    public void removeRole(Role label) {
-        checkOrgAdmin();
+    public void removePermanentRole(Role label) {
+        removeRole(label, false);
+    }
+
+    /** {@inheritDoc} */
+    private void removeRole(Role label, boolean temporary) {
+        checkPermanentOrgAdmin();
         UserGroup ug = org.getUserGroup(label);
         if (ug != null) {
-            usergroups.remove(ug);
+            for (Iterator<UserGroupMembers> ugmIter = groupMembers.iterator();
+                    ugmIter.hasNext();) {
+                UserGroupMembers ugm = ugmIter.next();
+                if (ugm.getUserGroup().equals(ug) && ugm.getTemporary() == temporary) {
+                    UserGroupFactory.delete(ugm);
+                }
+            }
         }
     }
 
@@ -257,9 +358,9 @@ public class UserImpl extends BaseDomainHelper implements User {
         wasOrgAdmin = null;
     }
 
-    private void checkOrgAdmin() {
+    private void checkPermanentOrgAdmin() {
         if (wasOrgAdmin == null) {
-            wasOrgAdmin = Boolean.valueOf(hasRole(RoleFactory.ORG_ADMIN));
+            wasOrgAdmin = Boolean.valueOf(hasPermanentRole(RoleFactory.ORG_ADMIN));
         }
     }
 
@@ -289,7 +390,21 @@ public class UserImpl extends BaseDomainHelper implements User {
             boolean useEncrPasswds =
                 Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
             if (useEncrPasswds) {
-                result = MD5Crypt.crypt(thePassword, password).equals(password);
+                // user uses SHA-256 encrypted password
+                if (password.startsWith(CryptHelper.getSHA256Prefix())) {
+                    result = SHA256Crypt.crypt(thePassword, password).equals(password);
+                }
+                // user still uses MD5 encrypted password
+                else if (password.startsWith(CryptHelper.getMD5Prefix())) {
+                    if (MD5Crypt.crypt(thePassword, password).equals(password)) {
+                        // if authenticated with md5 pass, convert it to sha-256
+                        setPassword(thePassword);
+                        result = true;
+                    }
+                    else {
+                        result = false;
+                    }
+                }
             }
             else {
                 result = password.equals(thePassword);
@@ -619,7 +734,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     * @return String output of the User
     */
     public String toString() {
-        StringBuffer retval = new StringBuffer();
+        StringBuilder retval = new StringBuilder();
         retval.append(LocalizationService.getInstance().
                                    getDebugMessage("user"));
         retval.append(" ");
@@ -945,7 +1060,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             * set it.
             */
             if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-                password = MD5Crypt.crypt(passwordIn);
+                password = SHA256Crypt.crypt(passwordIn);
             }
             else {
                 password = passwordIn;
@@ -1200,6 +1315,34 @@ public class UserImpl extends BaseDomainHelper implements User {
     public void removeServer(Server server) {
         servers.remove(server);
     }
-}
 
+    /**
+     * @return Returns whether user is readonly
+     */
+    public String getReadOnly() {
+        return readOnly;
+    }
+
+    /**
+     * @param readOnlyIn readOnly to set
+     */
+    public void setReadOnly(String readOnlyIn) {
+        this.readOnly = readOnlyIn;
+    }
+
+    /**
+     * @return Returns whether user is readonly
+     */
+    public boolean getReadOnlyBool() {
+        return this.readOnly.equals("Y");
+    }
+
+    /**
+     * @param readOnlyIn readOnly to set
+     */
+    public void setReadOnly(boolean readOnlyIn) {
+        this.readOnly = readOnlyIn ? "Y" : "N";
+    }
+
+}
 

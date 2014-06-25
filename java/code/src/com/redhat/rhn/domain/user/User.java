@@ -118,6 +118,12 @@ public interface User {
     Set<Role> getRoles();
 
     /**
+     * Gets the permanent roles assigned to this user.
+     * @return Set of permanent Roles that this user has
+     */
+    Set<Role> getPermanentRoles();
+
+    /**
     * Check to see if this user has the passed in label
     * in the Collection of Roles assigned to this user
     * @param label the label used to lookup
@@ -129,13 +135,25 @@ public interface User {
     * Add a role to this User's Role Set.
     * @param label The label of the Role you want to add.
     */
-    void addRole(Role label);
+    void addPermanentRole(Role label);
 
     /**
-    * Remove a role to this User's Role Set.
+    * Add a temporaty role to this User's Role Set.
+    * @param label The label of the temporary Role you want to add.
+    */
+    void addTemporaryRole(Role label);
+
+    /**
+    * Remove a role from the User's Role Set.
     * @param label The label of the Role you want to remove.
     */
-    void removeRole(Role label);
+    void removePermanentRole(Role label);
+
+    /**
+    * Remove a temporary role from the User's Role Set.
+    * @param label The label of the temporary Role you want to remove.
+    */
+    void removeTemporaryRole(Role label);
 
     /**
      * Authenticate the user
@@ -561,4 +579,40 @@ public interface User {
      * @param server Server to remove permission for.
      */
     void removeServer(Server server);
+
+    /**
+    * Check to see if this user has the passed in label
+    * in the Collection of permanent Roles assigned to this user
+    * @param label the label used to lookup
+    * @return if the user has the perm. role assigned or not.
+    */
+    boolean hasPermanentRole(Role label);
+
+
+    /**
+     * Gets the temporary roles assigned to this user.
+     * @return Set of temporary Roles that this user has
+     */
+    Set<Role> getTemporaryRoles();
+
+    /**
+     * @return Returns whether user is readonly
+     */
+    String getReadOnly();
+
+    /**
+     * @param readOnlyIn readOnly to set
+     */
+    void setReadOnly(String readOnlyIn);
+
+    /**
+     * @return Returns whether user is readonly
+     */
+    boolean getReadOnlyBool();
+
+    /**
+     * @param readOnlyIn readOnly to set
+     */
+    void setReadOnly(boolean readOnlyIn);
+
 }

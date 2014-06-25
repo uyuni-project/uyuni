@@ -25,7 +25,7 @@ use Mail::RFC822::Address ();
 use File::Spec ();
 use File::Copy;
 use DBI ();
-use Digest::MD5 qw/md5_hex/;
+use Digest::SHA qw/sha256_hex/;
 use DateTime ();
 use Sys::Hostname ();
 use Spacewalk::Setup ();
@@ -57,6 +57,13 @@ chomp($hn);
 $hn = Sys::Hostname::hostname if(!defined $hn || $hn eq ""); 
 $answers{hostname} ||= "$hn";
 
+if (not defined $opts{"clear-db"} and defined $answers{"clear-db"} and
+    $answers{"clear-db"} =~ /Y/i){
+    $opts{'clear-db'} = 1;
+}
+
+$opts{"skip-db-install"} = 1 if $opts{"clear-db"};
+
 # Skip the logfile init, normally just used when called from install.pl,
 # which already did this.
 if (not $opts{"skip-logfile-init"}) {
@@ -64,7 +71,7 @@ if (not $opts{"skip-logfile-init"}) {
 }
 
 if (Spacewalk::Setup::have_selinux()) {
-    print Spacewalk::Setup::loc("* Setting up Selinux..\n");
+    print Spacewalk::Setup::loc("* Setting up SELinux..\n");
     Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-selinux-enable', ''], 42,
 	       'Could not enable selinux policy.');
 }
@@ -131,7 +138,7 @@ Spacewalk::Setup::update_monitoring_scout(\%opts, \%answers);
 Spacewalk::Setup::update_monitoring_ack_enqueuer(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
-setup_ssl_vhost(\%opts, \%answers);
+setup_mod_ssl(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Configuring tomcat.\n");
 setup_tomcat(\%opts, \%answers);
@@ -332,7 +339,6 @@ sub setup_admin_email {
 sub setup_default_proxy {
     my $answers = shift;
     my %proxyOptions = ();
-
     if(! -e Spacewalk::Setup::DEFAULT_PROXY_CONF_LOCATION)
     {
         return;
@@ -372,11 +378,9 @@ sub setup_default_proxy {
         }
     };
 }
-
 sub setup_ncc {
   my $opts = shift;
   my $answers = shift;
-
   if (! $opts{"ncc"})
   {
     # no ncc connection wanted
@@ -385,14 +389,12 @@ sub setup_ncc {
   }
   $opts{disconnected} = 1;
   $answers{'setup-ncc'} = 'Y';
-
   Spacewalk::Setup::ask(
         -noninteractive => $opts{"non-interactive"},
         -question => "NCC Mirror Credential Username",
         -test => sub { my $text = shift;
                        return $text =~ /\S+/ && length($text) <= 128 },
         -answer => \$answers{'ncc-user'});
-
   Spacewalk::Setup::ask(
         -noninteractive => $opts{"non-interactive"},
         -question => "NCC Mirror Credential Password",
@@ -408,7 +410,6 @@ sub setup_ncc {
                        valid_multiple_email($text) && length($text) <= 128 },
         -answer => \$answers{'ncc-email'});
 }
-
 sub setup_sudoers {
   Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-sudoers', ''], 1,
     'Could not setup sudo for Spacewalk commands.');
@@ -485,7 +486,7 @@ sub default_cert_expiration {
 }
 
 
-sub setup_ssl_vhost {
+sub setup_mod_ssl {
   my $opts = shift;
   my $answers = shift;
 
@@ -505,59 +506,8 @@ sub setup_ssl_vhost {
     return;
   }
 
-  my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
-  my $sslconf_dir = '/etc/httpd/conf.d';
-  $sslconf_dir = '/etc/apache2/vhosts.d/' if(-e '/etc/SuSE-release');
-  my $sslconf     = 'ssl.conf';
-  my $sslconf_path = "$sslconf_dir/$sslconf";
-  local *FILE;
-  if( ! -f $sslconf_path && -f "$sslconf_dir/vhost-ssl.template")
-  {
-    copy("$sslconf_dir/vhost-ssl.template", $sslconf_path) or die "Copy failed: $!";
-  }
-  die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
+  system('/usr/bin/spacewalk-setup-httpd');
 
-  {
-    open FILE, $sslconf_path or die "Error opening [$sslconf_path]: $!\n";
-    local $/ = undef;
-    $sslconf_content = <FILE>;
-    $original_sslconf_content = $sslconf_content;
-    close FILE;
-  }
-
-  if ($sslconf_content =~ /(.*<VirtualHost _default_:443>)(.*)(<\/VirtualHost>.*)/s) {
-    $pre = $1; $vhost = $2; $post = $3;
-  } else {
-    print Spacewalk::Setup::loc("Setup was unable to locate VirtualHost section in existing ssl configuration.\n");
-    exit;
-  }
-
-  for my $file (glob Spacewalk::Setup::SHARED_DIR . '/ssl.conf.[0-9]') {
-    open FILE, $file or die "Error reading [$file]: $!\n";
-    my $regexp = <FILE>;
-    chomp $regexp;
-
-    my $content;
-    {
-	  local $/ = undef;
-	  $content = <FILE>;
-	}
-	close FILE;
-    $vhost =~ s!$regexp!$content!gm or $vhost .= $content;
-  }
-
-  $sslconf_content = $pre . $vhost . $post;
-
-  if ($sslconf_content ne $original_sslconf_content) {
-    Spacewalk::Setup::backup_file($sslconf_dir, $sslconf);
-
-    open FILE, ">$sslconf_path" or die "Error opening [$sslconf_path]: $!\n";
-    chmod 0644, $sslconf_path;
-    print FILE $pre . $vhost . $post;
-    close FILE;
-  }
-
-  return;
 }
 
 sub setup_tomcat {
@@ -1254,7 +1204,7 @@ EOQ
 }
 
 sub generate_secret {
-  return md5_hex(random_bits(4096));
+  return sha256_hex(random_bits(4096));
 }
 
 sub random_bits {
@@ -1415,7 +1365,7 @@ sub wait_for_tomcat {
     }
 
     for (my $i = 0; $i < 20; $i++) {
-        my $retval = system("/usr/bin/curl -L -k http://$hostname/ > /dev/null 2>&1");
+        my $retval = system("/usr/bin/curl -fkIL http://$hostname/ > /dev/null 2>&1");
         if ($retval) {
             sleep 5;
         }

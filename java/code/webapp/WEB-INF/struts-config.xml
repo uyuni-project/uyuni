@@ -9,6 +9,8 @@
             type="org.apache.struts.action.DynaActionForm">
             <form-property name="username" type="java.lang.String"/>
             <form-property name="password" type="java.lang.String"/>
+            <form-property name="url_bounce" type="java.lang.String"/>
+            <form-property name="request_method" type="java.lang.String"/>
         </form-bean>
       <form-bean name="activationKeyForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -69,6 +71,7 @@
                              initial="desiredpassword, desiredpasswordConfirm"/>
             <form-property name="preferredLocale" type="java.lang.String" />
             <form-property name="timezone" type="java.lang.Integer"/>
+            <form-property name="readonly" type="java.lang.Boolean"/>
         </form-bean>
         <form-bean name="userCreateForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -112,6 +115,7 @@
                            type="org.apache.struts.util.LabelValueBean[]"/>
             <form-property name="selectedRoles" type="java.lang.String[]"/>
             <form-property name="usersRoles" type="java.lang.String[]"/>
+            <form-property name="readonly" type="java.lang.Boolean"/>
             <form-property name="usepam" type="java.lang.Boolean"/>
             <form-property name="no_scrub" type="java.lang.String" initial="desiredpassword, desiredpasswordConfirm"/>
         </form-bean>
@@ -307,6 +311,7 @@
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="to_org" type="java.lang.String"/>
             <form-property name="use_ou" type="java.lang.Boolean"/>
+            <form-property name="keep_roles" type="java.lang.Boolean"/>
         </form-bean>
         <form-bean name="extGroupForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -314,6 +319,12 @@
             <form-property name="role_satellite_admin" type="java.lang.Boolean"/>
             <form-property name="role_org_admin" type="java.lang.Boolean"/>
             <form-property name="selected_regular_roles" type="java.lang.String"/>
+        </form-bean>
+        <form-bean name="extOrgGroupForm"
+                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+            <form-property name="extGroupLabel" type="java.lang.String"/>
+            <form-property name="sgs" type="org.apache.struts.util.LabelValueBean[]"/>
+            <form-property name="selected_sgs" type="java.lang.String[]"/>
         </form-bean>
         <form-bean name="extGroupDeleteForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -532,14 +543,17 @@
             <form-property name="description"  type="java.lang.String"/>
             <form-property name="type"  type="java.lang.String"/>
             <form-property name="contents"  type="org.apache.struts.upload.FormFile"/>
+            <form-property name="contents_edit" type="java.lang.String"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
-            <form-property name="no_scrub" type="java.lang.String" initial="contents"/>
+            <form-property name="no_scrub" type="java.lang.String"
+                                    initial="contents, contents_edit"/>
         </form-bean>
 
         <form-bean name="cryptoKeyDeleteForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="description"  type="java.lang.String"/>
             <form-property name="type"  type="java.lang.String"/>
+            <form-property name="contents_edit" type="java.lang.String"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
         </form-bean>
 
@@ -1051,6 +1065,11 @@
       <form-property name="submitted" type="java.lang.Boolean"/>
     </form-bean>
 
+    <form-bean name="systemGroupConfigForm"
+               type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+        <form-property name="create_default" type="java.lang.Boolean"/>
+    </form-bean>
+
     <form-bean name="systemMigrateForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm" >
       <form-property name="sid" type="java.lang.Long"/>
@@ -1267,6 +1286,7 @@
         <form-property name="date_am_pm" type="java.lang.Integer"/>
         <form-property name="action_chain"   type="java.lang.String" />
     </form-bean>
+
     <form-bean name="cveAuditForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="cveIdentifierYear" type="java.lang.String" />
@@ -1298,7 +1318,7 @@
         <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
 
-    <form-bean name="powerManagementForm"
+   <form-bean name="powerManagementForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="systemId" type="java.lang.Long" />
       <form-property name="powerType" type="java.lang.String" />
@@ -1307,7 +1327,6 @@
       <form-property name="powerPassword" type="java.lang.String" />
       <form-property name="powerId" type="java.lang.String" />
     </form-bean>
-
   </form-beans>
 
   <global-exceptions>
@@ -1375,6 +1394,16 @@
             scope="request"
             input="/WEB-INF/pages/common/login.jsp"
             type="com.redhat.rhn.frontend.action.LoginSetupAction"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+          <forward name="default" path="/WEB-INF/pages/common/login.jsp" />
+          <forward name="needuser" path="/newlogin/CreateFirstUser.do" redirect="true"/>
+          <forward name="loggedin" path="/YourRhn.do" redirect="true"/>
+    </action>
+
+    <action path="/Login401"
+            scope="request"
+            input="/WEB-INF/pages/common/login.jsp"
+            type="com.redhat.rhn.frontend.action.Login401SetupAction"
             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
           <forward name="default" path="/WEB-INF/pages/common/login.jsp" />
           <forward name="needuser" path="/newlogin/CreateFirstUser.do" redirect="true"/>
@@ -1742,6 +1771,19 @@
                     value="user_role(org_admin)"/>
       <forward name="default" path="/WEB-INF/pages/admin/users/disabledlist.jsp" />
       <forward name="enable" path="/users/EnableConfirm.do" redirect="true" />
+    </action>
+
+    <action path="/users/SystemGroupConfig"
+        scope="request"
+        name="systemGroupConfigForm"
+        input="/WEB-INF/pages/admin/users/systemgroups.jsp"
+        type="com.redhat.rhn.frontend.action.user.SystemGroupConfigAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(org_admin)"/>
+      <forward name="default" path="/WEB-INF/pages/admin/users/systemgroups.jsp" />
+      <forward name="success"
+               path="/users/SystemGroupConfig.do" redirect="true" />
     </action>
 
     <action path="/users/EnableConfirm"
@@ -5912,6 +5954,44 @@
                path="/admin/multiorg/ExtAuthRoleMapping.do" redirect="true" />
     </action>
 
+    <action path="/users/ExtAuthSgMapping"
+        scope="request"
+        input="/WEB-INF/pages/admin/users/extauth_systemgroups.jsp"
+        type="com.redhat.rhn.frontend.action.user.ExtAuthSgMappingAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(org_admin)"/>
+      <forward name="default" path="/WEB-INF/pages/admin/users/extauth_systemgroups.jsp" />
+      <forward name="success"
+               path="/users/ExtAuthSgMapping.do" redirect="true" />
+    </action>
+
+    <action path="/users/ExtAuthSgDetails"
+        scope="request"
+        name="extOrgGroupForm"
+        input="/WEB-INF/pages/admin/users/extorggroup_detail.jsp"
+        type="com.redhat.rhn.frontend.action.user.ExtAuthSgDetailAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(org_admin)"/>
+      <forward name="default" path="/WEB-INF/pages/admin/users/extorggroup_detail.jsp" />
+      <forward name="success"
+               path="/users/ExtAuthSgMapping.do" redirect="true" />
+    </action>
+
+    <action path="/users/ExtAuthSgDelete"
+        scope="request"
+        name="extOrgGroupForm"
+        input="/WEB-INF/pages/admin/users/extorggroup_delete.jsp"
+        type="com.redhat.rhn.frontend.action.user.ExtAuthSgDeleteAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+      <set-property property="postRequiredIfSubmitted" value="true" />
+      <set-property property="acls" value="user_role(org_admin)"/>
+      <forward name="default" path="/WEB-INF/pages/admin/users/extorggroup_delete.jsp" />
+      <forward name="success"
+               path="/users/ExtAuthSgMapping.do" redirect="true" />
+    </action>
+
     <action path="/multiorg/channels/OrgList"
         scope="request"
         input="/WEB-INF/pages/multiorg/channels/orglist.jsp"
@@ -8435,6 +8515,17 @@
                  path="/WEB-INF/pages/channel/manage/repo/deleteconfirm.jsp"/>
         <forward name="success"
                  path="/channels/manage/repos/RepoList.do" redirect = "true"/>
+    </action>
+
+    <action path="/channels/manage/repos/AssociatedChannels"
+        scope="request"
+        parameter="all"
+        input="/WEB-INF/pages/channel/manage/repo/repos.jsp"
+        type="com.redhat.rhn.frontend.action.channel.manage.repo.RepoChannelsAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/channel/manage/repo/repochannels.jsp"/>
     </action>
 
 <!-- end repo -->

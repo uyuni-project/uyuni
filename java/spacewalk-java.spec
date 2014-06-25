@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.1.165.4
+Version: 2.2.104
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -67,8 +67,6 @@ Requires: hibernate3 = 0:3.2.4
 %endif
 Requires: java >= 1.7.0
 #Requires: java-devel >= 1.6.0
-Requires: jakarta-commons-lang >= 0:2.1
-Requires: jakarta-commons-codec
 Requires: jakarta-commons-discovery
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
@@ -120,7 +118,7 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-lib
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-branding
-%if 0%{?fedora} >= 20
+%if 0%{?fedora} >= 20 || 0%{?rhel} >=7
 BuildRequires: apache-commons-validator
 BuildRequires: mvn(ant-contrib:ant-contrib)
 BuildRequires: javapackages-tools
@@ -134,12 +132,16 @@ Requires:      jpackage-utils
 %endif
 Requires: cobbler >= 2.0.0
 Requires: dojo
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >=7
+Requires:       apache-commons-codec
 Requires:       apache-commons-io
+Requires:       apache-commons-lang
 BuildRequires:  apache-commons-logging
 Requires:       apache-commons-logging
 %else
+Requires:       jakarta-commons-codec
 Requires:       jakarta-commons-io
+Requires:       jakarta-commons-lang >= 0:2.1
 BuildRequires:  jakarta-commons-logging
 Requires:       jakarta-commons-logging
 %endif
@@ -228,7 +230,7 @@ BuildRequires: tomcat6-lib
 %endif
 BuildRequires: sitemesh
 BuildRequires: postgresql-jdbc
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >=7
 # spelling checker is only for Fedoras (no aspell in RHEL6)
 BuildRequires: aspell aspell-en libxslt
 Requires:      apache-commons-cli
@@ -246,7 +248,7 @@ Provides: rhn-java = %{version}-%{release}
 Provides: rhn-java-sat = %{version}-%{release}
 Provides: rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
 
-%if 0%{?fedora} && 0%{?fedora} >= 15
+%if 0%{?fedora}
 Requires: classpathx-jaf
 %endif
 
@@ -286,7 +288,7 @@ BuildRequires: ojdbc14
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7
 %else
 Requires: tomcat6
@@ -304,7 +306,7 @@ Requires: postgresql-jdbc
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >=7
 Requires: tomcat >= 7
 %else
 Requires: tomcat6
@@ -425,7 +427,7 @@ if test -d /usr/share/tomcat6; then
     fi
 fi
 
-%if 0%{?fedora} && 0%{?fedora} >= 19
+%if 0%{?fedora}
 %define skip_xliff  1
 %endif
 
@@ -498,15 +500,9 @@ xargs checkstyle -c buildconf/checkstyle.xml ||:
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%if 0%{?fedora} && 0%{?fedora} < 18
-mkdir -p $RPM_BUILD_ROOT%{_javadir}/hibernate3
-ln -s -f %{_javadir}/hibernate3/hibernate-core.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-core-3.jar
-ln -s -f %{_javadir}/hibernate3/hibernate-c3p0.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-c3p0-3.jar
-ln -s -f %{_javadir}/hibernate3/hibernate-ehcache.jar $RPM_BUILD_ROOT%{_javadir}/hibernate3/hibernate-ehcache-3.jar
-%endif
 
 # on Fedora 19 some jars are named differently
-%if 0%{?fedora} && 0%{?fedora} > 18
+%if 0%{?fedora}
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
 %if 0%{?fedora} < 20
 ln -s -f %{_javadir}/apache-commons-validator.jar $RPM_BUILD_ROOT%{_javadir}/commons-validator.jar
@@ -583,6 +579,10 @@ install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
+# LOGROTATE >= 3.8 requires extra permission config
+%if 0%{?fedora} || 0%{?rhel} > 6
+sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
+%endif
 %if 0%{?fedora}
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
 install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
@@ -644,7 +644,7 @@ fi
 %endif
 
 # 732350 - On Fedora 15, mchange's log stuff is no longer in c3p0.
-%if 0%{?fedora} >= 15
+%if 0%{?fedora}
 ln -s -f %{_javadir}/mchange-commons.jar $RPM_BUILD_ROOT%{jardir}/mchange-commons.jar
 %endif
 
@@ -887,7 +887,7 @@ fi
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files lib
-%defattr(-,root,root)
+%defattr(644,root,root,775)
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
@@ -904,8 +904,708 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
-* Fri Feb 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.1.164-1
+* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.104-1
+- fixed apache vs. jakarta  -commons-{codec,lang} conflict
+
+* Tue Jun 24 2014 Stephen Herr <sherr@redhat.com> 2.2.103-1
+- 1109276 - checkstyle fix
+
+* Tue Jun 24 2014 Stephen Herr <sherr@redhat.com> 2.2.102-1
+- 1112633 - Prevent CobblerSync from failing from removed ks trees
+- 1109276 - Correctly set cobbler arch
+
+* Tue Jun 24 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.101-1
+- correctly retrieve user name for logging purposes
+- fix channel link
+- check for read_only flag when checking for active (Sat|Org)Admins
+- better logging of post process exceptions
+- ErrataHandlerTest: avoid accidental end-of-string chars in test strings
+
+* Mon Jun 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.100-1
+- don't render a link for non-existent base channel
+
+* Mon Jun 23 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.99-1
+- use javapackages-tools instead of jpackage-utils on RHEL7
+
+* Mon Jun 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.98-1
+- removed unused import
+
+* Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.97-1
+- ensure an Iterator<String> is passed instead of an Iterator<Object>
+
+* Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.96-1
+- syntax fix
+
+* Thu Jun 19 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.95-1
+- explicitly convert errata keywords to String
+- allow filtering of events based on event type for listSystemEvents api
+- specify 'None' repository checksum type usage
+- style add/remove system to system group buttons
+- add white space after 'in'
+- style publish button
+
+* Tue Jun 17 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.94-1
+- 1012643 - display count of errata in channel not packages with errata
+- disable last org/sat admin become read-only
+- add csv report to errata pages
+- fix dead links
+- 803040 - API for snapshot rollback
+- hibernate mapping for snapshots associated to a snapshot tag
+- don't execute sessionKey -> User translation for AuthHandler
+- simplify expression a bit
+- fix typo in class name
+
+* Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.93-1
+- checkstyle fix
+
+* Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.92-1
+- We are testing CryptoKeyDeleteAction here
+- CryptoKeyDelete needs the "contents_edit" parameter now
+
+* Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.91-1
+- compare_packages_to_snapshot: performance fix
+- compare_packages_to_snapshot: avoid failure on NULL evr on Oracle
+- start using User as parameter instead of sessionKey in ScheduleHandler
+- OrgHandler: unused private methods removed
+- 1011935 - add missing localization string
+- 1012643 - display errata count in channels/All.do
+- 1063342 - create error message if passwords doesn't match
+
+* Wed Jun 11 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.90-1
+- 1086256 - style submit buttons
+- page for viewing channels repo is associated to
+- API for setting read-only user flag
+- allow read-only user flag to be set in webUI
+- remove unused class
+- using User as parameter in API instead of sessionKey
+- authenticate user before invoking API methods
+- check method name in order to distinguish read only api calls
+- disable read-only users to log in
+- allow user to be created as read only
+- hibernate mapping for read only user
+- checkstyle fix
+- Fix datepicker time at xx:xx PM pre-filled with xx:xx AM inducing user to
+  enter the wrong time. (bnc#880936)
+- SystemRemoteCommandAction: avoid exception swallowing[1]
+- 574974 - RFE: Add option of pasting key into textarea
+- remove dead variable
+- make array initialized from constants static final
+- remove redundant .LongValue() call on Long object
+- finalize variables which should be final
+- use serialVersionUID
+- remove unused method
+- use StringBuilder instead of StringBuffer for local variables
+- remove link to the dead page
+- Fix human dates now() staying unmodified (bnc#880081)
+
+* Thu Jun 05 2014 Stephen Herr <sherr@redhat.com> 2.2.89-1
+- 594455 - group by db fix for elaborator
+- apidoc fix: remove extraneous #array from function prototypes
+
+* Thu Jun 05 2014 Stephen Herr <sherr@redhat.com> 2.2.88-1
+- 594455 - Fix db grouping error
+
+* Wed Jun 04 2014 Stephen Herr <sherr@redhat.com> 2.2.87-1
+- Hibernate does not like overloaded setters
+
+* Tue Jun 03 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.86-1
+- lookupByIds(): fix handling of a minimal case
+- System Event History page: fix link to pending events on Oracle databases
+
+* Mon Jun 02 2014 Stephen Herr <sherr@redhat.com> 2.2.85-1
+- 1103822 - Provide faster systemgroup.listSystemsMinimal
+- Escape package name to prevent from script injection
+- Allow for null evr and archs on event history detail
+
+* Mon Jun 02 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.84-1
+- rewrite rollback_by_tag_conf.pxt to java RollbackToTag.do
+
+* Fri May 30 2014 Stephen Herr <sherr@redhat.com> 2.2.83-1
+- A few hundred more warning fixes
+
+* Fri May 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.82-1
+- Remove assert statements from setUp() method
+- Fix and improve unit tests involving kickstartable channels
+- New query to determine kickstartable channels
+- create named query for snapshotTag lookup by name
+- CloneErrataAction: spacing fix
+- provide information about unservable packages to Rollback.do page
+- rewrite unservable_packages.pxt page to java
+
+* Thu May 29 2014 Stephen Herr <sherr@redhat.com> 2.2.81-1
+- 1102831 - make BaseEvent null-safe
+- 1102831 - fix 'can't read the_log_id' errors in async events
+
+* Thu May 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.80-1
+- checkstyle fixes
+
+* Thu May 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.79-1
+- add_snapshot_tag.pxt has been replaced by SnapshotTagCreate.do
+- fixed links to new java pages
+- ChannelManager.ownedChannelsTree test added
+- ActionChainHandlerTest fixes
+- Fix refreshing of Autoinstallable Tree forms (bnc#874144)
+- BaseTreeEditOperation: avoid NPE in unexpected exception handling
+- Delete system: button styled
+- System/Software/Packages/Non Compliant: button styled
+- System/Software/Packages/Profiles: button styled
+- System/Software/Packages/Upgrade: button styled
+- System/Software/Packages/List: button styled
+- System/Software/Packages/Install: button styled
+- Missing translation string added (bnc#877547)
+
+* Tue May 27 2014 Stephen Herr <sherr@redhat.com> 2.2.78-1
+- Can't infer class is Long because there's no zero argument constructor
+
+* Tue May 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.77-1
+- rewrite system snapshot to java: Rollback.do
+- call removeServerFromGroup() with ids not objects
+
+* Fri May 23 2014 Stephen Herr <sherr@redhat.com> 2.2.76-1
+- Checkstyle fixes
+- Disable caching of Locale between page loads; might have changed
+- fix test: we ow pass the Date object to the JSP so it can be null   - test
+  that is the same as the user attribute
+- userdetails.jsp also uses EditUserSetupAction, so handle also the null case
+- even if most of it is Javascript, add simple unit test to FormatDateTag HTML
+  output
+- lastLoggedIn is a String, not a Date, and can be null
+- make use of humanize dates for package lists
+- make use of humanize dates for system lists
+- humanize dates for user pages. created in 'calendar' mode and last login in
+  'time ago' mode
+- show the system overview with human dates
+
+* Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.75-1
+- format the date in ISO format using javax.xml.bind.DatatypeConverter
+- 1044527 - EL7 Vhost warning about missing VT chann
+- use proxy host for kickstarting virtual guest if available
+- new system snapshot pages in java
+
+* Thu May 22 2014 Stephen Herr <sherr@redhat.com> 2.2.74-1
+- fix JSP variable names
+- SQL query fix
+- refactor snapshot details code a bit
+- rewrite Snapshots - Config Channels page to Java
+
+* Thu May 22 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.73-1
+- system groups & snapshots page: converted from pxt to java
+- fix the date format (month vs minutes)
+
+* Wed May 21 2014 Stephen Herr <sherr@redhat.com> 2.2.72-1
+- A couple of mode queries didn't quite fit into ChannelTreeNode objects.
+- 1099938 - add spacewalk-report for systems with extra packages
+- 1099938 - improve performance of Systems with Extra Packages query
+- remove redundant formvars
+- queries to compare snapshot to system packages / config channels
+- move code for snapshot name generation to more appropriate place
+
+* Wed May 21 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.71-1
+- insert ss_id parameter into navigation links if needed
+- checkstyle fix
+- queries to compare snapshot to system groups/channels
+- Event history: format script text and output correctly
+- Fix indentation
+- Fix exception in tomcat logs due to missing server object
+- SystemHandlerTest: check edit date correctly
+- Hibernate Package definition: fix table name
+
+* Wed May 21 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.70-1
+- More schedule action unification
+- 1098800 - link to event to be cancelled is broken
+- KickstartSession.markFailed: use correct parameter order
+
+* Tue May 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.69-1
+- Systems in a channel family: converted from pxt to java
+- 1098805 - event cancel confirm botton label.
+
+* Tue May 20 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.68-1
+- navigation links to new pages (Tags.do)
+- rewrite snapshots/rollback.pxt?sid=${sid}&ss_id=${ss_id} page to java
+- rewrite snapshot tag deletion to java
+- rewrite system_tags.pxt?sid=${sid} page to java
+- introduce snapshot tag filter
+- rewrite add_system_tag.pxt?sid=${sid} page to java
+- rewrite add_system_tag.pxt?sid=${sid} page to java
+- strings for snapshot tags pages rewrite
+
+* Mon May 19 2014 Stephen Herr <sherr@redhat.com> 2.2.67-1
+- Squashing a thousand more type warnings by doing param maps correctly
+- Squash a few hundred type safety warnings
+- 1098316 - don't let code diverge; everyone should use new method
+- add request scope to the remote command via SSM action
+- 1098313 - cleanup unused method
+- changed autoinstallation -> kickstart
+- testListPackagesFromChannel: update after changes to
+  SystemManager.packagesFromChannel
+- apidoc: reflect changes in createChain() return type
+- Action Chaining API: remove superfluous annotation
+- Action Chaining API: fail if trying to add multiple chains with the same
+  label
+- Fix: Action Chain XML-RPC API doc
+- Bugfix: API crashes, if label is null.
+- checkstyle: line length should be <= 92 characters
+- fix configchannel.createOrUpdatePath API issue that stored new revision
+  contents as null characters
+- autoinstallation -> kickstart
+- Added kickstart syntax rules box to advanced edit page
+- Added warning message about kickstart syntax rules
+
+* Fri May 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.66-1
+- Fix javadoc. 1-11 makes no sense, and the old picker did 1-12 for am/pm time.
+- Fix bug converting pm times to am when using locales in 24 hour format.
+- If value parameter expression is null, evaluate the page. Fixes a crash when
+  using the tag inside rhn:list and ${current} is not yet set.
+- Do not force the timezone name with daylight=false. (eg. showing EST for EDT)
+- Set milliseconds to 0 before comparing dates (bnc#814292)
+- Added a test for CloneErrataAction
+- Trigger repo metadata generation after cloning patches (bnc#814292)
+
+* Thu May 15 2014 Stephen Herr <sherr@redhat.com> 2.2.65-1
+- 1098316 - ssm child channel subscription page was slow
+- 1098313 - SDC was unnecessarily slow if the system had many guests
+
+* Thu May 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.64-1
+- deduplicate rhn_server.remove_action() calls
+- typo fix
+
+* Wed May 14 2014 Stephen Herr <sherr@redhat.com> 2.2.63-1
+- 1075127 - continue to use md5 for rhel 5 and lower kickstarts
+- Form names are only available as name attributes now, not ids.
+- 1075161 - set autopart options correctly
+- Typo fix
+
+* Mon May 12 2014 Stephen Herr <sherr@redhat.com> 2.2.62-1
+- 1075127 - Kickstart profiles use sha-256 everywhere you can set root pw
+
+* Fri May 09 2014 Stephen Herr <sherr@redhat.com> 2.2.61-1
+- Checkstyle Fix
+- 594455 - checkstyle fix
+
+* Fri May 09 2014 Stephen Herr <sherr@redhat.com> 2.2.60-1
+- 594455 - SSM package upgrades should apply correctly across diverse system
+  sets
+- remove semicolon in query
+- use the request object and not the pagecontext directly to store whether we
+  already included javascript
+- 1082694 - The "Delete Key" link should not appear if there is no key to
+  delete
+
+* Tue May 06 2014 Stephen Herr <sherr@redhat.com> 2.2.59-1
+- 1074083 - API package search should not require a provider
+
+* Tue May 06 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.58-1
+- rewrite pending events page from perl to java
+
+* Mon May 05 2014 Stephen Herr <sherr@redhat.com> 2.2.57-1
+- 1094364 - add default arch heuristic for kickstart package installs
+
+* Mon May 05 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.56-1
+- use getInt instead of getInteger so we can read default value
+- Action Chain: for every action, create its own ScriptActionDetails
+  (bnc#870207)
+- fixed broken links introduced by 178ee339
+- CryptoKeyCreateActionTest: fix after 35b0296
+- MigrationManagerTest: Oracle could still fail in some cases, fix in more
+  comprehensive way
+- add localization string
+- add localization string
+- RebootActionClenup: documentation fix
+
+* Mon Apr 28 2014 Tomas Lestach <tlestach@redhat.com> 2.2.55-1
+- MigrationManagerTest: add explicit flushing before assertions (needed by
+  Oracle, not needed in production code)
+- scheduleCertificateUpdate: update api doc
+
+* Fri Apr 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.54-1
+- correctly display certificate update action in webui
+- Replace editarea with ACE (http://ace.c9.io/) editor.
+
+* Thu Apr 24 2014 Stephen Herr <sherr@redhat.com> 2.2.53-1
+- 973848 - ISE in case no file specified when crating key.
+- 973848 - Check if the key is not empty file when editing.
+- 1090989 - Uneditable field is marked as required.
+- fix typo
+- MigrationManagerTest: fix Hibernate problem that prevented the test to run
+  correctly
+- MigrationManagerTest: remove unnecessary set up code
+- SystemManager refactoring: move query in it's own method and remove
+  duplication
+- Enable DWR exception stack trace logging by default
+
+* Wed Apr 23 2014 Stephen Herr <sherr@redhat.com> 2.2.52-1
+- 1084522 - [RFE] filters per repository on WebUI
+- checkstyle fixes, documentation updates, making method names consistant
+- xmlrpc spec includes bool values, any library should be able to handle them
+- fix unclosed javadoc tags
+- Fixed typo
+- - split method that fix the order gaps - implement a helper method to remove
+  and fix the ordering of an entry   from a chain - use that method in the
+  handler - tests
+- Fixed Javadoc and XML-RPC doc
+- Adjusting tests for the refactoring of the XML-RPC API
+- Refactoring of XML-RPC API handler
+- Added translations for the Action Chain XML-RPC API exception
+- Added exception type for Action Chain XML-RPC API
+- Fixes during review
+- Removed timeout limitation for the script schedule
+- Removed unused code, made for 'convenience' methods
+- Checkstyle, missing javadoc tags, unused imports.
+- Added tests for Action Chain rename XML-RPC API, adjusted tests for config
+  deployment API call
+- Added Action Chain rename XML-RPC API, unified config deployment API call
+- Added missing javadoc
+- Renamed 'name' to 'label'
+- Added tests for configuration deployment XML-RPC API of the Action Chain
+- Added configuration deployment XML-RPC API for the Action Chain call
+- Change tests for referring to the Action Chain entries by ID
+- Referring to the Action Chain entries by ID
+- Added more tests for XML-RPC API calls
+- Added exceptions, minor refactoring
+- Added XML-RPC API for scheduling the Action Chain for exec
+- Added missing method javadoc
+- Added tests for chain removal XML-RPC API calls with the authorization
+- Added security for chain removal XML-RPC API calls
+- Adjusted tests for Action Chain handler throwin exceptions
+- Change Action Chain handler to throw exceptions on failures
+- Reviewed test assertions and added more tests to the XML-RPC API Action
+  Chains
+- Removed 'convenient' methods
+- Removed unused imports
+- Throw an exception if server is not found
+- Rename action chain 'name' to 'label' in tests
+- Added a test for creating Action Chain method XML-RPC API call.
+- Checkstyle fixes
+- Added XML-RPC API call to explicitly create an Action Chain
+- Removed previously introduced cleanup paradigm as Action Chain explicitly
+  created. Removed validation check in favor of exceptions.
+- Rename action chain 'name' to 'label'
+- Various unit test fixes
+- Added more tests for the Action Chain XML-RPC API
+- Refactored cleanup for Action Chain XML-RPC handler
+- Add resolve packages by ID to ActionChain XML-RPC handler
+- Added more tests
+- Minor bugfixes to the Action Chain XML-RPC handler
+- Added tests for the standard XML-RPC API for the Action Chaining.
+- Adding missing cleanup action on failed input
+- Added XML-RPC API unit tests: chain list, chain actions
+- Removed accidentally added external files
+- Added package installation and removal tests for the XML-RPC ActionChain API
+- Query should return same column names
+- Bugfix: pkg keys missing underscore
+- Added two tests of XML-RPC API for Action Chaining
+- Code refactoring, improved documentation
+- Changed namespace name for ActionChain RPC API
+- Added Remote command script API to Action Chaining XML-RPC API
+- Documentation fixes
+- Checkstyle fixes
+- Added more APIs taking IDs
+- Adapt to changed APIs in ActionChainManager
+- Added System reboot, added more API by ID
+- Added package install by ID
+- API is now accepts real server attributes - IP and name
+- XML-RPC API: Action Chain initial implementation
+- Added Action Chain listing and Action details API
+- Added single system update/install/remove/verify pkg by name
+- ActionChainHandler: XML-RPC API for Action Chaining
+
+* Tue Apr 22 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.51-1
+- rewrite system snapshot to java: fixed nav menu hiding
+- rewrite system snapshot to java: Packages.do
+- rewrite system event page from perl to java
+
+* Thu Apr 17 2014 Stephen Herr <sherr@redhat.com> 2.2.50-1
+- More API methods for IPA integration
+
+* Wed Apr 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.49-1
+- rewrite system snapshot to java: implement nav menu hiding
+- rewrite system snapshot to java: Index.do
+- Fixing junit tests for external user management APIs
+
+* Mon Apr 14 2014 Stephen Herr <sherr@redhat.com> 2.2.48-1
+- Adding new API methods for external user management
+
+* Mon Apr 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.47-1
+- limit actions displayed on schedule/*actions pages
+- 1086256 - Submit buttons are incorrectly labelled.
+- 1084703 - Removing repo filters ISE.
+
+* Fri Apr 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.46-1
+- 1086161 - PM page incorrectly labelled buttons.
+
+* Fri Apr 11 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.45-1
+- dwr.xml file reformatted
+- Refactoring: utility method makeAjaxCallback renamed
+- DWR rendering infrastructure: allow throwing custom exceptions
+
+* Fri Apr 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.44-1
+- Add support to ConfigureSatelliteCommand to remove keys
+
+* Fri Apr 11 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.43-1
+- rewrite channel compare pages to java
+
+* Thu Apr 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.42-1
+- New API: system.scheduleCertificateUpdate()
+
+* Wed Apr 09 2014 Stephen Herr <sherr@redhat.com> 2.2.41-1
+- 1051160 - correctly set cobbler distro os_version
+
+* Tue Apr 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.40-1
+- remote command webui: don't scrub the script body
+
+* Mon Apr 07 2014 Stephen Herr <sherr@redhat.com> 2.2.39-1
+- fixes 2 action chain strings for consistency
+- SSM Action Chain configuration Deploy: missing strings added
+- Action Chain: bootstrap form groups fixed
+
+* Fri Apr 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.38-1
+- converted tabs to spaces
+- rewrite listPackagesFromChannel logic into database select
+
+* Fri Apr 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.37-1
+- 903068 - checkstyle fixes
+
+* Fri Apr 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.36-1
+- 903068 - fixed debian repo generation
+
+* Thu Apr 03 2014 Jan Dobes 2.2.35-1
+- 1083975 - fix logrotate insecure permission
+- Eclipse Checkstyle settings updated
+- Eclipse cleanup preferences file added
+- Eclipse code templates: remove old version tag
+- Eclipse code templates: move file header to comments
+- Eclipse code templates: update to current version
+- Eclipse formatter: allow assignment line wrapping
+- Eclipse formatter: update maximum line length
+- Eclipse RHN formatter settings: update to current version
+- 1076864 - [RFE] params for sw-repo-sync UI/API.
+
+* Wed Apr 02 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.34-1
+- explicitly initialize MessageDigest object instance
+
+* Wed Apr 02 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.33-1
+- add missing bracket
+
+* Wed Apr 02 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.32-1
+- Ability to validate SHA-256 client certificate
+
+* Mon Mar 31 2014 Stephen Herr <sherr@redhat.com> 2.2.31-1
+- checkstyle fixes
+- checkstyle fixes
+- fixed typo in action chain jsp and js
+- Action Chaining: list page columns changed as suggested
+- ActionChainManager: refactorings and Javadoc cleanup
+- SSM remote command: use proper user messages
+- SSM remote command: allow queuing to Action Chains
+- SSM reboot: allow queuing to Action Chains
+- SSM configuration file deploy: allow queuing to Action Chains
+- SSM errata apply: use proper user message
+- SSM errata apply: allow queuing to Action Chains
+- SSM package verify: allow queuing to Action Chains
+- SSM package actions: allow queuing to Action Chains
+- Remove functionality to add remote command before a package action in SSM, it
+  is superseded by Action Chains
+- Action Chain Edit page tests
+- Action Chain Edit page added
+- Action Chain List page added
+- Reboot: use proper user messages
+- Reboot: allow queuing to Action Chains
+- Deploy Configuration: use proper user message
+- Deploy Configuration: allow queuing to Action Chains
+- Remote Command: use proper user message
+- Remote Command: allow queuing to Action Chains
+- Errata actions: use proper user message
+- Errata actions: allow queuing to Action Chains
+- Remove functionality to add remote command before a package action, it is
+  superseded by Action Chains
+- Single system package actions: use proper user message
+- Single system package actions: allow queuing to Action Chains
+- Controller helper tests added
+- Controller helper class added
+- ORM class tests added
+- ORM classes for new tables added
+- Front-end code for action chain creation/selection added
+- ActionFormatter: utility methods tests
+- ActionFormatter: add utility methods
+- Refactoring: use a fragment for scheduling options on supported operations
+- Implement task to invalidate reboot actions
+- SSM Configuration Deploy: missing strings added
+
+* Fri Mar 28 2014 Stephen Herr <sherr@redhat.com> 2.2.30-1
+- 1082020 - taskomatic heap size of 1G is not sufficient for large channels
+- Redirect instead of forwarding to overview page after a reboot
+
+* Fri Mar 28 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.29-1
+- Fail if rhnPackage.path is NULL
+- Use rhnPackage.path as rhnErrataFile.filename like Perl does
+- Base channel update: no-op if new channel equals old one
+- ChannelManager.findCompatibleChildren: propose cloned children as compatible
+- ChannelManager.findCompatibleChildren: propose children correctly if old and
+  new are equal
+- length of rhnServer.secret has been extended to 64
+- Check the SHA-256 password first, MD-5 second.
+
+* Tue Mar 25 2014 Stephen Herr <sherr@redhat.com> 2.2.28-1
+- 1075127 - another checkstyle fix
+
+* Tue Mar 25 2014 Stephen Herr <sherr@redhat.com> 2.2.27-1
+- 1075127 - checkstyle fix
+
+* Tue Mar 25 2014 Stephen Herr <sherr@redhat.com> 2.2.26-1
+- 1075127 - use sha256 for kickstart password instead of md5. Also for fips.
+- 1075161 - use default lvm partitioning for RHEL 7 kickstarts
+
+* Tue Mar 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.25-1
+- fixing broken tomcat detection in build-webapp.xml
+
+* Fri Mar 21 2014 Stephen Herr <sherr@redhat.com> 2.2.24-1
+- Rewrite code for bootstrap usage
+- Rewrite code for bootstrap usage
+- 1074083 - small performance improvement
+- 1074083 - package.search API returns only one match per package name
+
+* Fri Mar 21 2014 Tomas Lestach <tlestach@redhat.com> 2.2.23-1
+- allow deleting temporary org admins
+- delete all the temporary roles across the whole satellite
+- assign the server group permissions acroding to the mappings
+- add form validation
+- rename UserExtGroup.hbm.xml to ExtGroup.hbm.xml
+-  introduce /rhn/users/ExtAuthSgDelete.do page
+- introduce /rhn/users/ExtAuthSgDetails.do page
+- introduce the External Group to Roles Mapping page
+
+* Thu Mar 20 2014 Stephen Herr <sherr@redhat.com> 2.2.22-1
+- Updating ant task definitions to work better on new OS's:
+- fix finding of the right API method to call
+
+* Tue Mar 18 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.21-1
+- SHA-256 to be used for creating session key
+
+* Mon Mar 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.20-1
+- User passwords will be encrypted with SHA-256
+
+* Fri Mar 14 2014 Stephen Herr <sherr@redhat.com> 2.2.19-1
+- Merge pull request #9 from dyordano/1071657
+- 1071657 - Adding Custom Errata offers RH Erratas.
+
+* Fri Mar 14 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.18-1
+- make the task list responsive and do not use the image bullet
+- FileDetails.do style and responsiveness.
+- fix menu highlight
+
+* Thu Mar 13 2014 Tomas Lestach <tlestach@redhat.com> 2.2.17-1
+- create user default system group for the user
+- introduce new /users/SystemGroupConfig.do page
+- adapt class and mapping for createDefaultSg attribute
+- introduce abstract class ExtGroup
+- introduce OrgUserExtGroup and hibernate mapping
+
+* Wed Mar 12 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.16-1
+- new utility class to create SHA-256 encrypted user passwords
+- one defaultsort per list must be enough for everybody
+
+* Tue Mar 11 2014 Tomas Lestach <tlestach@redhat.com> 2.2.15-1
+- 1064403 - fix filtering on the /rhn/channels/Managers.do page
+- tidy (re-format) the hardware.jsp
+- 1074540 - put the </div>s on the right place
+- fix javadoc: remove extraneous function parameter description
+- comment polish & removal
+
+* Mon Mar 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.14-1
+- java: extend length of web_contact.password to 110
+
+* Fri Mar 07 2014 Stephen Herr <sherr@redhat.com> 2.2.13-1
+- 1073652 - channel.software.syncErrata clones too many packages
+
+* Fri Mar 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.12-1
+- 1021558 - if buildTime is null don't parse it
+- fix element nesting
+- add Create First User page title to string resources
+- update title of create first user page
+
+* Thu Mar 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.11-1
+- moved duplicated code to function
+- removed old / simplified fedora requirements
+- include both jboss-logging.jar and jboss-loggingjboss-logging.jar
+- java pages do not use on-click and node-id attributes
+
+* Wed Mar 05 2014 Jan Dobes 2.2.10-1
+- hide search form together with other UI changes
+- RecurringDatePicker sets HOUR_OF_DAY, however DatePicker design is kind of
+  broken and it internally uses HOUR or HOUR_OF_DAY depending of the isLatin()
+  flag. This does not make much sense as in Calendar itself HOUR, HOUR_OF_DAY
+  and AM_PM are all interconnected.
+
+* Tue Mar 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.9-1
+- make taskomatic and rhn-search configuration overrideable via rhn.conf
+
+* Mon Mar 03 2014 Stephen Herr <sherr@redhat.com> 2.2.8-1
+- 1072073 - ChannelSerializer should display arch label too
+- Compare objects using equals
+- Add overrides
+- Compare objects with equals
+- Add overrides
+- Make code more strightforward
+
+* Mon Mar 03 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.7-1
+- cryptokeydeleteconfirm.jsp port
+- kickstartablesystems.jsp, fix layout
+- unneeded offset and button alignment with columns
+- typo in class, unneeded offset, button was aligned with columns (use text-
+  right)
+- fixing checkstyle
+- Use String.equals instead of ==, this works only because we are lucky to get
+  the constants as input.
+- Revamp the recurring picker fragment to use the datepicker time component.
+  For this the RecurringDatePicker bean now is composed of DatePicker beans to
+  reuse functionality. With some Javascript, the repeat-task-picker disables
+  the cron frequencies that are not being used.
+- - if the datepicker date is disabled, disable the date part of the widget. -
+  always generate the hidden fields. StrutsDelegate::readDatePicker will
+  reset _all_ your date to now() if any field is missing.
+- allow to disable date selection in addition to time
+- syncrepos: format the page
+- use buttons instead of inputs
+- syncrepos: remove line break
+- make the setup of the date picker more declarative using data- attributes in
+  order to be able to share this setup with other parts of the code that will
+  need a slightly different picker like the recurrent selector. It also saves
+  us from outputing one <script> tag in the jsp tag implementation.
+
+* Sat Mar 01 2014 Tomas Lestach <tlestach@redhat.com> 2.2.6-1
+- replace tabs with spaces
+
+* Fri Feb 28 2014 Stephen Herr <sherr@redhat.com> 2.2.5-1
+- 1071482 - Add errata type selection to ssm page
+- Check for deprecation annotation vs. javadoc consistency
+- Removing trailing whitespace
+- Added @Deprecation annotations
+
+* Fri Feb 28 2014 Tomas Lestach <tlestach@redhat.com> 2.2.4-1
+- delete outdated repo-sync schedules
 - filter out channels that are not assigned to a server
+
+* Wed Feb 26 2014 Jan Dobes 2.2.3-1
+- 1068815 - update API documentation
+- 1068815 - deal with deleted users
+- Commit  04d9dccaedf8aa2998125e93969262ab73e58126 makes the form look broken.
+
+* Tue Feb 25 2014 Tomas Lestach <tlestach@redhat.com> 2.2.2-1
+- initialize temporaryRoles within CreateUserCommand
+- remove unnecessarily nested else statement
+
+* Tue Feb 25 2014 Tomas Lestach <tlestach@redhat.com> 2.2.1-1
+- store the bounce_url back in the login page form
+- rename label
+- introduce Login401
+- introduce keep_roles option
+- list temporary roles on WebUI
+- rework checkOrgAdmin to checkPermanentOrgAdmin
+- rename addRole and removeRole to addPermanentRole and removePermanentRole
+- start using temporary roles
+- introduce UserGroupMembers class and mapping
+- do not update user details if empty
+- Bumping package versions for 2.2.
 
 * Sat Feb 22 2014 Grant Gainey 2.1.163-1
 - Remove unused import

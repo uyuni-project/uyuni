@@ -80,6 +80,7 @@ public class UserEditSetupAction extends RhnAction {
         request.setAttribute("user", targetUser);
         request.setAttribute("mailableAddress", targetUser.getEmail());
 
+        request.setAttribute("readonly", targetUser.getReadOnlyBool());
         request.setAttribute("created", targetUser.getCreated());
         request.setAttribute("lastLoggedIn", targetUser.getLastLoggedIn());
 
@@ -120,7 +121,7 @@ public class UserEditSetupAction extends RhnAction {
         // the simple checkbox interface. Thus we hack around the problem by storing a list
         // of the disabled roles, bar separated. This allows us to add the extra info we
         // need when processing the form.
-        StringBuffer disabledRoles = new StringBuffer();
+        StringBuilder disabledRoles = new StringBuilder();
 
         for (Role currRole : orgRoles) {
             log.debug("currRole = " + currRole.getLabel());
@@ -132,7 +133,7 @@ public class UserEditSetupAction extends RhnAction {
                 LocalizationService.getInstance().getMessage(currRole.getLabel());
             String uivalue = currRole.getLabel();
 
-            if (targetUser.hasRole(currRole)) {
+            if (targetUser.hasPermanentRole(currRole)) {
                 selected = true;
                 log.debug("1");
             }
@@ -141,8 +142,8 @@ public class UserEditSetupAction extends RhnAction {
             // then tack on an extra string at the end
             // and disable the item in the UI.
             if (UserFactory.IMPLIEDROLES.contains(currRole) &&
-                    targetUser.hasRole(RoleFactory.ORG_ADMIN)) {
-                StringBuffer sb = new StringBuffer();
+                    targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
+                StringBuilder sb = new StringBuilder();
                 sb.append(uilabel);
                 sb.append(" - [ ");
                 sb.append(LocalizationService.getInstance().getMessage("Admin Access"));
@@ -180,13 +181,17 @@ public class UserEditSetupAction extends RhnAction {
         }
 
         boolean hasOrgAdmin = false;
-        if (targetUser.hasRole(RoleFactory.ORG_ADMIN)) {
+        if (targetUser.hasPermanentRole(RoleFactory.ORG_ADMIN)) {
             hasOrgAdmin = true;
         }
 
         request.setAttribute("adminRoles", adminRoles);
         request.setAttribute("regularRoles", regularRoles);
         request.setAttribute("disabledRoles", disabledRoles);
+        Set<Role> tempRoles = targetUser.getTemporaryRoles();
+        if (!tempRoles.isEmpty()) {
+            request.setAttribute("temporaryRoles", UserManager.roleNames(tempRoles));
+        }
 
         request.setAttribute("orgAdmin", hasOrgAdmin);
     }
