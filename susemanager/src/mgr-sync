@@ -200,11 +200,9 @@ class Authenticator(object):
             if self.persist:
                 self.config[Config.USER] = self.uid
                 self.config[Config.PASSWORD] = self.password
-
-            Config.save_local_config(self.config)
-
-            if self.persist:
                 cli_msg("Credentials has been saved to the %s file.\n" % Config.DOTFILE)
+
+        Config.save_local_config(self.config)
 
         return self.token
 
