@@ -124,31 +124,41 @@ class Config:
         TOKEN : None,
         }
 
+    @staticmethod
+    def _parse(filename):
+        """
+        Parse key=value structures into a dict, ignoring commented lines by # and empty lines.
+        """
+        return dict(map(lambda elm : tuple(map(lambda opt : opt.strip(), elm.split("=", 1))),
+                        filter(None, [line.strip() for line in open(filename).readlines()
+                                      if not line.strip().startswith("#")])))
+
 
     @staticmethod
     def get_config():
         """
         Get the configuration or place defaults.
         """
+
+        # Create default config
         conf = {}
-        path = Config.HOME
-        filename = Config.DOTFILE
-        if not os.path.exists(filename):
-            filename = Config.FILE
-            path = Config.PATH
-
-        if os.path.exists(path) and os.access(filename, os.R_OK):
-            conf = dict(map(lambda elm : tuple(map(lambda opt : opt.strip(),
-                                                   elm.split("=", 1))),
-                            filter(None, [line.strip() for line in open(filename).readlines()
-                                          if not line.startswith("#")])))
-        else:
-            cli_msg("Warning: cannot read %s configuration file." % filename)
-
         for k, v in Config.DEFAULTS.items():
             conf[k] = conf.get(k, v)
 
+        # Read /etc/rhn/rhn.conf if any
+        if os.path.exists(Config.RHN) and os.access(Config.RHNFILE, os.R_OK):
+            for k, v in Config._parse(Config.RHNFILE).items():
+                if v:
+                    conf[k] = v
+
+        # Read ~/.mgr-sync if any and override
+        if os.path.exists(Config.DOTFILE) and os.access(Config.DOTFILE, os.R_OK):
+            for k, v in Config._parse(Config.DOTFILE).items():
+                if v:
+                    conf[k] = v
+
         return conf
+
 
     @staticmethod
     def save_local_config(data):
