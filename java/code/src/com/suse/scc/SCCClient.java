@@ -20,8 +20,11 @@ import com.suse.scc.model.Product;
 
 import org.apache.commons.codec.binary.Base64;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -92,12 +95,12 @@ public class SCCClient {
                 // Decompress the gzip stream
                 inputStream = connection.getInputStream();
                 gzipStream = new GZIPInputStream(inputStream);
-                String productsJSON = SCCClientUtils.streamToString(gzipStream);
+                Reader streamReader = new BufferedReader(new InputStreamReader(gzipStream));
 
                 // Parse from JSON
                 Gson gson = new Gson();
                 Type collectionType = new TypeToken<List<Product>>(){}.getType();
-                products = gson.fromJson(productsJSON, collectionType);
+                products = gson.fromJson(streamReader, collectionType);
             }
         }
         catch (MalformedURLException e) {

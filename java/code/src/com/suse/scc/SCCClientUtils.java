@@ -27,7 +27,6 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
-import java.util.Scanner;
 
 /**
  * Utilities for {@link SCCClient}.
@@ -81,19 +80,6 @@ public class SCCClientUtils {
         }
         connection.setRequestMethod(method);
         return connection;
-    }
-
-    /**
-     * Convert a given {@link InputStream} to a {@link String}.
-     *
-     * @param is an input stream
-     * @return the string in the input stream
-     */
-    public static String streamToString(InputStream is) {
-        Scanner scanner = new Scanner(is);
-        String ret = scanner.useDelimiter("\\A").next();
-        scanner.close();
-        return ret;
     }
 
     /**
