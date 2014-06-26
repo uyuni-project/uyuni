@@ -16,8 +16,12 @@
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.suse.scc.model.Product;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +67,22 @@ public class ContentSyncHandler extends BaseHandler {
         return BaseHandler.VALID;
     }
 
+    private Object checkNull(Object value) {
+        return value == null ? "" : value;
+    }
+
+    private Map<String, Object> serializeProduct(Product product) {
+        Map<String, Object> p = new HashMap<String, Object>();
+        p.put("name", this.checkNull(product.getName()));
+        p.put("label", this.checkNull(product.getIdentifier()));
+        p.put("version", this.checkNull(product.getVersion()));
+        p.put("release", this.checkNull(product.getReleaseType()));
+        p.put("arch", this.checkNull(product.getArch()));
+        p.put("title", this.checkNull(product.getFriendlyName()));
+        p.put("description", this.checkNull(product.getDescription()));
+        p.put("status", "available"); // XXX: Status should be somehow determined.
+        return p;
+    }
 
     /**
      * List all products that are accessible to the organization.
@@ -98,35 +118,21 @@ public class ContentSyncHandler extends BaseHandler {
      *                    #array_end()
      */
     public List<Map<String, Object>> listProducts(String sessionKey) {
-        List<Map<String, Object>> products = new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> serializedProducts = new ArrayList<Map<String, Object>>();
+        Collection<Product> items = new ContentSyncManager().getProducts();
+        Iterator<Product> baseItemsIter = items.iterator();
+        while (baseItemsIter.hasNext()) {
+            Product product = baseItemsIter.next();
+            Map<String, Object> serializedProduct = this.serializeProduct(product);
+            List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
+            for (Product ext : product.getExtensions()) {
+                extensions.add(this.serializeProduct(ext));
+            }
+            serializedProduct.put("extensions", extensions);
+            serializedProducts.add(serializedProduct);
+        }
 
-        // Some bogus data that looks like real.
-        Map<String, Object> product = new HashMap<String, Object>();
-        product.put("name", "SUSE Linux Enterprise Server");
-        product.put("label", "SUSE_SLES");
-        product.put("version", "12");
-        product.put("release", "GA");
-        product.put("arch", "x86_64");
-        product.put("title", "SUSE Linux Enterprise Server 11 x86_64");
-        product.put("description", "An ultimate service pack for your Windows OS!");
-        product.put("status", "available");
-
-        List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
-        Map<String, Object> ext = new HashMap<String, Object>();
-        ext.put("name", "SUSE Linux Enterprise Server");
-        ext.put("label", "sle-sdk");
-        ext.put("version", "12");
-        ext.put("release", "GA");
-        ext.put("arch", "ppc64le");
-        ext.put("title", "SUSE Linux Enterprise Software Development Cat 12 ppc64le");
-        ext.put("description", "Something to entertain you for long.");
-        ext.put("status", "available");
-        extensions.add(ext);
-
-        product.put("extensions", extensions);
-        products.add(product);
-
-        return products;
+        return serializedProducts;
     }
 
 
@@ -151,12 +157,14 @@ public class ContentSyncHandler extends BaseHandler {
         List<Map<String, Object>> channels = new ArrayList<Map<String, Object>>();
 
         // Some bogus data that looks like real.
-        Map<String, Object> channel = new HashMap<String, Object>();
-        channel.put("name", "SLE10-SDK-SP4-Online");
-        channel.put("target", "sles-10-i586");
-        channel.put("description", "SLE10-SDK-SP4-Online for sles-10-i586");
-        channel.put("url", "https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586");
-        channels.add(channel);
+        for (int i = 0; i < 10; i++) {
+            Map<String, Object> channel = new HashMap<String, Object>();
+            channel.put("name", "SLE10-SDK-SP4-Online");
+            channel.put("target", "sles-10-i586");
+            channel.put("description", "SLE10-SDK-SP4-Online for sles-10-i586");
+            channel.put("url", "https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586");
+            channels.add(channel);
+        }
 
         return channels;
     }
@@ -188,16 +196,18 @@ public class ContentSyncHandler extends BaseHandler {
         List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
 
         // Some bogus data that looks like real.
-        Map<String, Object> ext = new HashMap<String, Object>();
-        ext.put("name", "SUSE Linux Enterprise Server");
-        ext.put("label", "sle-sdk");
-        ext.put("version", "12");
-        ext.put("release", "GA");
-        ext.put("arch", "ppc64le");
-        ext.put("title", "SUSE Linux Enterprise Software Development Cat 12 ppc64le");
-        ext.put("description", "Something to entertain you for long.");
-        ext.put("status", "available");
-        extensions.add(ext);
+        for (int i = 0; i < 10; i++) {
+            Map<String, Object> ext = new HashMap<String, Object>();
+            ext.put("name", "SUSE Linux Enterprise Server");
+            ext.put("label", "sle-sdk");
+            ext.put("version", "12");
+            ext.put("release", "GA");
+            ext.put("arch", "ppc64le");
+            ext.put("title", "SUSE Linux Enterprise Software Development Cat 12 ppc64le");
+            ext.put("description", "Something to entertain you for long.");
+            ext.put("status", "available");
+            extensions.add(ext);
+        }
 
         return extensions;
     }
