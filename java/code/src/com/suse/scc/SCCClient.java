@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.util.Collection;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -54,8 +54,8 @@ public class SCCClient {
      *
      * @return list of products available for organization
      */
-    public Collection<Product> listProducts() throws SCCClientException {
-        Collection<Product> products = null;
+    public List<Product> listProducts() throws SCCClientException {
+        List<Product> products = null;
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         GZIPInputStream gzipStream = null;
@@ -87,7 +87,7 @@ public class SCCClient {
 
                 // Parse from JSON
                 Gson gson = new Gson();
-                Type collectionType = new TypeToken<Collection<Product>>(){}.getType();
+                Type collectionType = new TypeToken<List<Product>>(){}.getType();
                 products = gson.fromJson(productsJSON, collectionType);
             }
         }
