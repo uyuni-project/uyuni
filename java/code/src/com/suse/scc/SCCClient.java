@@ -34,6 +34,8 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCClient {
 
+    public static final String DEFAULT_HOSTNAME = "scc.suse.com";
+
     private final String hostname;
     private final String username;
     private final String password;
@@ -45,6 +47,13 @@ public class SCCClient {
         this.hostname = hostname;
         this.username = username;
         this.password = password;
+    }
+
+    /**
+     * Constructor for connecting to scc.suse.com.
+     */
+    public SCCClient(String username, String password) {
+        this(DEFAULT_HOSTNAME, username, password);
     }
 
     /**
