@@ -34,9 +34,9 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCClient {
 
-    private String hostname;
-    private String username;
-    private String password;
+    private final String hostname;
+    private final String username;
+    private final String password;
 
     /**
      * Constructor
