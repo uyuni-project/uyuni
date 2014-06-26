@@ -301,12 +301,12 @@ class App(object):
         """
         Format the tree output within the table.
         """
-        header = ("Status", "Name", "Title", "Label", "Version", "Arch")
+        header = ("Status", "Title", "Label", "Version", "Arch")
         table = []
         for p in data:
-            table.append((p["status"], p["name"], p["title"], p["label"], p["version"], p["arch"],))
+            table.append((p["status"], p["title"], p["label"], p["version"], p["arch"],))
             for c in p.get("extensions", []):
-                table.append((p["status"], "  \\_" + p["name"], p["title"], p["label"], p["version"], p["arch"],))
+                table.append((p["status"], "  \\_" + p["title"], p["label"], p["version"], p["arch"] or "N/A",))
         table.insert(0, header)
         print TablePrint(table)
 
