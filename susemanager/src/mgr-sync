@@ -291,7 +291,7 @@ class App(object):
             cli_msg("No products found.")
             sys.exit(1)
 
-        if data[0].get('extensions'):
+        if data[0].has_key('extensions'):
             self._format_tree(data)
         else:
             self._format_flat(data, title="Available products")
