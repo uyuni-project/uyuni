@@ -17,8 +17,8 @@ package com.redhat.rhn.manager.content;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
-import com.suse.scc.SCCClient;
-import com.suse.scc.SCCClientException;
+import com.suse.scc.client.SCCClient;
+import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.Product;
 import com.suse.scc.model.Repository;
 
