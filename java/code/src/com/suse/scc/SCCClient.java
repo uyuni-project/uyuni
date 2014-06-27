@@ -14,50 +14,41 @@
  */
 package com.suse.scc;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.suse.scc.model.Product;
 import com.suse.scc.model.Repository;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 
 /**
- * Methods for talking to SCC.
- * TODO: Support proxies.
+ * SCC API Client.
+ * TODO: Support proxied connections.
  */
 public class SCCClient {
 
-    public static final String DEFAULT_HOSTNAME = "scc.suse.com";
-
-    private final String hostname;
-    private final String username;
-    private final String password;
-
     /**
-     * Constructor
+     * Constructor expecting a hostname and credentials.
      */
     public SCCClient(String hostname, String username, String password) {
-        this.hostname = hostname;
-        this.username = username;
-        this.password = password;
+        // Put a given hostname to config
+        if (hostname != null) {
+            SCCConfig.getInstance().put(SCCConfig.HOSTNAME, hostname);
+        }
+
+        // Encode the given credentials
+        byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
+        String credsString = new String(credsBytes);
+        SCCConfig.getInstance().put(SCCConfig.ENCODED_CREDS, credsString);
     }
 
     /**
      * Constructor for connecting to scc.suse.com.
      */
     public SCCClient(String username, String password) {
-        this(DEFAULT_HOSTNAME, username, password);
+        this(null, username, password);
     }
 
     /**
@@ -68,58 +59,9 @@ public class SCCClient {
      * @return list of products available to organization
      */
     public List<Product> listProducts() throws SCCClientException {
-        List<Product> products = null;
-        HttpURLConnection connection = null;
-        InputStream inputStream = null;
-        GZIPInputStream gzipStream = null;
-
-        try {
-            // Setup connection
-            String location = "https://" + hostname + "/connect/organizations/products";
-            connection = SCCClientUtils.getConnection("GET", location);
-
-            // Request content to be compressed
-            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
-
-            // Basic authentication
-            byte[] encodedBytes = Base64.encodeBase64(
-                    (username + ':' + password).getBytes("iso-8859-1"));
-            final String encodedCreds = new String(encodedBytes, "iso-8859-1");
-            connection.setRequestProperty("Authorization", "Basic " + encodedCreds);
-
-            // Execute the request
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-
-            // Parse the response body in case of success
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Decompress the gzip stream
-                inputStream = connection.getInputStream();
-                gzipStream = new GZIPInputStream(inputStream);
-                Reader streamReader = new BufferedReader(new InputStreamReader(gzipStream));
-
-                // Parse from JSON
-                Gson gson = new Gson();
-                Type collectionType = new TypeToken<List<Product>>(){}.getType();
-                products = gson.fromJson(streamReader, collectionType);
-            }
-        }
-        catch (MalformedURLException e) {
-            throw new SCCClientException(e);
-        }
-        catch (IOException e) {
-            throw new SCCClientException(e);
-        }
-        finally {
-            // Disconnect
-            if (connection != null) {
-                connection.disconnect();
-            }
-            // Close streams
-            SCCClientUtils.closeQuietly(inputStream);
-            SCCClientUtils.closeQuietly(gzipStream);
-        }
-        return products;
+        SCCConnection scc = new SCCConnection("/connect/organizations/products");
+        Type returnType = new TypeToken<List<Product>>(){}.getType();
+        return scc.get(returnType);
     }
 
     /**
@@ -130,57 +72,8 @@ public class SCCClient {
      * @return list of repositories available to organization
      */
     public List<Repository> listRepositories() throws SCCClientException {
-        List<Repository> repositories = null;
-        HttpURLConnection connection = null;
-        InputStream inputStream = null;
-        GZIPInputStream gzipStream = null;
-
-        try {
-            // Setup connection
-            String location = "https://" + hostname + "/connect/organizations/repositories";
-            connection = SCCClientUtils.getConnection("GET", location);
-
-            // Request content to be compressed
-            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
-
-            // Basic authentication
-            byte[] encodedBytes = Base64.encodeBase64(
-                    (username + ':' + password).getBytes("iso-8859-1"));
-            final String encodedCreds = new String(encodedBytes, "iso-8859-1");
-            connection.setRequestProperty("Authorization", "Basic " + encodedCreds);
-
-            // Execute the request
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-
-            // Parse the response body in case of success
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Decompress the gzip stream
-                inputStream = connection.getInputStream();
-                gzipStream = new GZIPInputStream(inputStream);
-                Reader streamReader = new BufferedReader(new InputStreamReader(gzipStream));
-
-                // Parse from JSON
-                Gson gson = new Gson();
-                Type collectionType = new TypeToken<List<Repository>>(){}.getType();
-                repositories = gson.fromJson(streamReader, collectionType);
-            }
-        }
-        catch (MalformedURLException e) {
-            throw new SCCClientException(e);
-        }
-        catch (IOException e) {
-            throw new SCCClientException(e);
-        }
-        finally {
-            // Disconnect
-            if (connection != null) {
-                connection.disconnect();
-            }
-            // Close streams
-            SCCClientUtils.closeQuietly(inputStream);
-            SCCClientUtils.closeQuietly(gzipStream);
-        }
-        return repositories;
+        SCCConnection scc = new SCCConnection("/connect/organizations/repositories");
+        Type returnType = new TypeToken<List<Repository>>(){}.getType();
+        return scc.get(returnType);
     }
 }
