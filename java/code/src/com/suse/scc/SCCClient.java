@@ -92,7 +92,7 @@ public class SCCClient {
             int responseCode = connection.getResponseCode();
 
             // Parse the response body in case of success
-            if (responseCode == 200) {
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Decompress the gzip stream
                 inputStream = connection.getInputStream();
                 gzipStream = new GZIPInputStream(inputStream);
