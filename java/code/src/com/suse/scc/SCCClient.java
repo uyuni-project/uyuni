@@ -17,6 +17,7 @@ package com.suse.scc;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.suse.scc.model.Product;
+import com.suse.scc.model.Repository;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -60,11 +61,11 @@ public class SCCClient {
     }
 
     /**
-     * Gets and returns the list of products available for an organization.
+     * Gets and returns the list of products available to an organization.
      *
      * GET /connect/organizations/products
      *
-     * @return list of products available for organization
+     * @return list of products available to organization
      */
     public List<Product> listProducts() throws SCCClientException {
         List<Product> products = null;
@@ -119,5 +120,67 @@ public class SCCClient {
             SCCClientUtils.closeQuietly(gzipStream);
         }
         return products;
+    }
+
+    /**
+     * Gets and returns the list of available repositories to an organization.
+     *
+     * GET /connect/organizations/repositories
+     *
+     * @return list of repositories available to organization
+     */
+    public List<Repository> listRepositories() throws SCCClientException {
+        List<Repository> repositories = null;
+        HttpURLConnection connection = null;
+        InputStream inputStream = null;
+        GZIPInputStream gzipStream = null;
+
+        try {
+            // Setup connection
+            String location = "https://" + hostname + "/connect/organizations/repositories";
+            connection = SCCClientUtils.getConnection("GET", location);
+
+            // Request content to be compressed
+            connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+
+            // Basic authentication
+            byte[] encodedBytes = Base64.encodeBase64(
+                    (username + ':' + password).getBytes("iso-8859-1"));
+            final String encodedCreds = new String(encodedBytes, "iso-8859-1");
+            connection.setRequestProperty("Authorization", "Basic " + encodedCreds);
+
+            // Execute the request
+            connection.connect();
+            int responseCode = connection.getResponseCode();
+
+            // Parse the response body in case of success
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Decompress the gzip stream
+                inputStream = connection.getInputStream();
+                gzipStream = new GZIPInputStream(inputStream);
+                Reader streamReader = new BufferedReader(new InputStreamReader(gzipStream));
+
+                // Parse from JSON
+                Gson gson = new Gson();
+                Type collectionType = new TypeToken<List<Repository>>(){}.getType();
+                repositories = gson.fromJson(streamReader, collectionType);
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new SCCClientException(e);
+        }
+        catch (IOException e) {
+            throw new SCCClientException(e);
+        }
+        finally {
+            // Disconnect
+            if (connection != null) {
+                connection.disconnect();
+            }
+            // Close streams
+            SCCClientUtils.closeQuietly(inputStream);
+            SCCClientUtils.closeQuietly(gzipStream);
+        }
+        return repositories;
     }
 }
