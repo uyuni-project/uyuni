@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
  */
-public class Repository {
+public class SCCRepository {
 
     private int id;
     private String name;
@@ -88,7 +88,7 @@ public class Repository {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Repository other = (Repository) obj;
+        SCCRepository other = (SCCRepository) obj;
         if (id != other.id) {
             return false;
         }

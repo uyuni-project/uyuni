@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * This is a SUSE product as parsed from JSON coming in from SCC.
  */
-public class Product {
+public class SCCProduct {
 
     private int id;
     private String name;
@@ -41,8 +41,8 @@ public class Product {
     private String description;
     @SerializedName("eula_url")
     private String eulaUrl;
-    private List<Product> extensions;
-    private List<Repository> repositories;
+    private List<SCCProduct> extensions;
+    private List<SCCRepository> repositories;
 
     /**
      * @return the id
@@ -138,14 +138,14 @@ public class Product {
     /**
      * @return the extensions
      */
-    public List<Product> getExtensions() {
+    public List<SCCProduct> getExtensions() {
         return extensions;
     }
 
     /**
      * @return the repositories
      */
-    public List<Repository> getRepositories() {
+    public List<SCCRepository> getRepositories() {
         return repositories;
     }
 
@@ -174,7 +174,7 @@ public class Product {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        Product other = (Product) obj;
+        SCCProduct other = (SCCProduct) obj;
         if (id != other.id) {
             return false;
         }
