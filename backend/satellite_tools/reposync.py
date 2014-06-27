@@ -913,7 +913,7 @@ class RepoSync(object):
                      order by sort_order """)
             h.execute(source_id = source_id)
             filter_data = h.fetchall_dict() or []
-            filters = [(row['flag'], re.split('[,\s]+', row['filter']))
+            filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
                                                          for row in filter_data]
         else:
             filters = self.filters
