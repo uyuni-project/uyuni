@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	2.2.6
+Version:	2.2.7
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
@@ -51,7 +51,7 @@ install -p -m 644 spacewalk-pylint.rc %{buildroot}/%{_sysconfdir}/
 sed -i '/disable=/ s/,bad-whitespace,unpacking-non-sequence,superfluous-parens//g;' \
         %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
 %endif
-%if 0%{?rhel} < 7
+%if 0%{?rhel} && 0%{?rhel} < 7
 # new checks in pylint 1.0
 sed -i '/disable=/ s/\(,C1001\|,W0121\)//g;' \
         %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Jun 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.7-1
+- fix condition for Fedora
+
 * Mon Jun 23 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.6-1
 - fixed pylint version for RHEL7
 

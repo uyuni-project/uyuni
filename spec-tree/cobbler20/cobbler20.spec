@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 24%{?dist}
+Release: 26%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -18,6 +18,7 @@ Patch4: koan-rhel7-virtinst.patch
 Patch5: koan-extra-options.patch
 Patch6: cobbler-interface-type.patch
 Patch7: cobblerd-python-s.patch
+Patch8: cobbler-power-status.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -108,6 +109,7 @@ a XMLRPC API for integration with other applications.
 %if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} > 5)
 %patch7 -p1
 %endif
+%patch8 -p1
 
 %build
 %{__python} setup.py build 
@@ -458,6 +460,12 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.0.11-26
+- vim helpfully auto-stripped ending whitespace and broke my patch :(
+
+* Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.0.11-25
+- adding status power command to cobbler
+
 * Tue Jun 17 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.0.11-24
 - cobblerd: don't search user's ~/.local on Fedora and RHEL-6
 

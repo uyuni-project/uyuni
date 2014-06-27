@@ -554,6 +554,14 @@ public class ConfigDefaults {
     }
 
     /**
+     * Returns power management types supported by Cobbler
+     * @return the types
+     */
+    public String getCobblerPowerTypes() {
+        return Config.get().getString(POWER_MANAGEMENT_TYPES);
+    }
+
+    /**
      * Returns the bootstrap kernel path
      * @return the path
      */
@@ -591,14 +599,6 @@ public class ConfigDefaults {
      */
     public String getCobblerBootstrapExtraKernelOptions() {
         return Config.get().getString(COBBLER_BOOTSTRAP_EXTRA_KERNEL_OPTIONS);
-    }
-
-    /**
-     * Returns power management types supported by Cobbler
-     * @return the types
-     */
-    public String getCobblerPowerTypes() {
-        return Config.get().getString(POWER_MANAGEMENT_TYPES);
     }
 
     /**

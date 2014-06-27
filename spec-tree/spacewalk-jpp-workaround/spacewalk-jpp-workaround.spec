@@ -1,5 +1,5 @@
 Name:		spacewalk-jpp-workaround
-Version:	2.2.1
+Version:	2.2.2
 Release:	1%{?dist}
 Summary:	Workaround package to fulfill jpackage broken dependencies
 
@@ -30,9 +30,14 @@ Obsoletes:  spring < 1:1.2.9.0
 Provides:   struts-taglib = 1.3.10
 Provides:   struts-tiles = 1.3.10
 Requires:   struts >= 1.3.10
+Provides:   oro
+Obsoletes:  spacewalk-oro-compat
+Requires:   jakarta-oro
 %endif
 
 %if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
+Requires:   apache-commons-digester
+Provides:   jakarta-commons-digester = 1.8.1
 Provides:   jakarta-commons-logging = 1.1.3
 Requires:   apache-commons-logging
 Obsoletes:  jpackage-utils >= 5.0.0
@@ -62,6 +67,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.2-1
+- megred spacewalk-oro-compat into spacewalk-jpp-workaround
+- force use of apache-commons-digester on Fedora/RHEL7+
+
 * Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.1-1
 - updated for RHEL7
 

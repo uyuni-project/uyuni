@@ -275,8 +275,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         // Else, lets make a new system
         if (rec == null) {
             rec = SystemRecord.create(getCobblerConnection(),
-                    getCobblerSystemRecordName(),
-                    profile);
+                    getCobblerSystemRecordName(), profile);
         }
         try {
             processNetworkInterfaces(rec, server);
@@ -376,18 +375,19 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         }
         return null;
     }
+
     /**
-     * Get the cobbler system record name for a system.
-     * @return String name of cobbler system record.
+     * Get the cobbler system record name for a system
+     * @return String name of cobbler system record
      */
     public String getCobblerSystemRecordName() {
-        return getCobblerSystemRecordName(server);
+        return CobblerSystemCreateCommand.getCobblerSystemRecordName(this.server);
     }
 
     /**
-     * Get the cobbler system record name for this system.
-     * @param serverIn the server to get a Cobbler name for
-     * @return String name of Cobbler system record
+     * Get the cobbler system record name for a system
+     * @param serverIn the server to get the name from
+     * @return String name of cobbler system record
      */
     public static String getCobblerSystemRecordName(Server serverIn) {
         String sep = ConfigDefaults.get().getCobblerNameSeparator();
