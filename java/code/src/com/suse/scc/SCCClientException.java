@@ -18,11 +18,20 @@ package com.suse.scc;
  * Exception to be thrown in case of problems with SCC.
  */
 public class SCCClientException extends Exception {
+
     /**
-     * Standard constructor with custom cause
+     * Constructor expecting a custom cause.
      * @param cause the cause
      */
     public SCCClientException(Throwable cause) {
         super(cause);
+    }
+
+    /**
+     * Constructor expecting a custom message.
+     * @param cause the cause
+     */
+    public SCCClientException(String message) {
+        super(message);
     }
 }
