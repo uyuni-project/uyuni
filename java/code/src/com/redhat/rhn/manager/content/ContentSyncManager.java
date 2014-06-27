@@ -19,8 +19,8 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.model.Product;
-import com.suse.scc.model.Repository;
+import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCRepository;
 
 import org.apache.log4j.Logger;
 
@@ -47,15 +47,15 @@ public class ContentSyncManager {
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
-    public Collection<Product> getProducts() {
-        Set<Product> productList = new HashSet<Product>();
+    public Collection<SCCProduct> getProducts() {
+        Set<SCCProduct> productList = new HashSet<SCCProduct>();
         List<MirrorCredentialsDto> credentials =
                 new MirrorCredentialsManager().findMirrorCredentials();
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
             try {
-                List<Product> products = scc.listProducts();
+                List<SCCProduct> products = scc.listProducts();
                 productList.addAll(products);
             } catch (SCCClientException e) {
                 log.error(e.getMessage(), e);
@@ -71,15 +71,15 @@ public class ContentSyncManager {
      * Returns all repositories available to all configured credentials.
      * @return list of all available repositories
      */
-    public Collection<Repository> getRepositories() {
-        Set<Repository> reposList = new HashSet<Repository>();
+    public Collection<SCCRepository> getRepositories() {
+        Set<SCCRepository> reposList = new HashSet<SCCRepository>();
         List<MirrorCredentialsDto> credentials =
                 new MirrorCredentialsManager().findMirrorCredentials();
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
             try {
-                List<Repository> repos = scc.listRepositories();
+                List<SCCRepository> repos = scc.listRepositories();
                 reposList.addAll(repos);
             } catch (SCCClientException e) {
                 log.error(e.getMessage(), e);
