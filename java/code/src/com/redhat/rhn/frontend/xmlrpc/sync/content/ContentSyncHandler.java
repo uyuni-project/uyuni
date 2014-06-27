@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.suse.scc.model.Product;
+import com.suse.scc.model.SCCProduct;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,7 +71,7 @@ public class ContentSyncHandler extends BaseHandler {
         return value == null ? "" : value;
     }
 
-    private Map<String, Object> serializeProduct(Product product) {
+    private Map<String, Object> serializeProduct(SCCProduct product) {
         Map<String, Object> p = new HashMap<String, Object>();
         p.put("name", this.checkNull(product.getName()));
         p.put("label", this.checkNull(product.getIdentifier()));
@@ -119,13 +119,13 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listProducts(String sessionKey) {
         List<Map<String, Object>> serializedProducts = new ArrayList<Map<String, Object>>();
-        Collection<Product> items = new ContentSyncManager().getProducts();
-        Iterator<Product> baseItemsIter = items.iterator();
+        Collection<SCCProduct> items = new ContentSyncManager().getProducts();
+        Iterator<SCCProduct> baseItemsIter = items.iterator();
         while (baseItemsIter.hasNext()) {
-            Product product = baseItemsIter.next();
+            SCCProduct product = baseItemsIter.next();
             Map<String, Object> serializedProduct = this.serializeProduct(product);
             List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
-            for (Product ext : product.getExtensions()) {
+            for (SCCProduct ext : product.getExtensions()) {
                 extensions.add(this.serializeProduct(ext));
             }
             serializedProduct.put("extensions", extensions);
