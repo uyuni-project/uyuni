@@ -903,6 +903,7 @@ class RepoSync(object):
         package['package_id'] = cs['id']
         return package
 
+
     def import_packages(self, plug, source_id, url):
         if (not self.filters) and source_id:
             h = rhnSQL.prepare("""
