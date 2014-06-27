@@ -19,7 +19,10 @@
        <packagereq type="default">rhn-client-tools</packagereq>
        <packagereq type="default">yum-rhn-plugin</packagereq>
 
+       <packagereq type="default">ace-editor</packagereq>
        <packagereq type="default">bootstrap</packagereq>
+       <packagereq type="default">bootstrap-datepicker</packagereq>
+       <packagereq type="optional">bootstrap-less</packagereq>
        <packagereq type="default">cobbler2</packagereq>
        <packagereq type="default">cobbler20</packagereq>
        <packagereq type="default">cobbler-epel</packagereq>
@@ -31,7 +34,10 @@
        <packagereq type="optional">font-awesome-devel</packagereq>
        <packagereq type="optional">heirloom-pkgtools</packagereq>
        <packagereq type="default">jpam</packagereq>
+       <packagereq type="default">jquery-ui</packagereq>
+       <packagereq type="default">jquery-timepicker</packagereq>
        <packagereq type="default">MessageQueue</packagereq>
+       <packagereq type="default">momentjs</packagereq>
        <packagereq type="default">nocpulse-common</packagereq>
        <packagereq type="default">nocpulse-db-perl</packagereq>
        <packagereq type="default">NOCpulsePlugins</packagereq>
@@ -47,7 +53,6 @@
        <packagereq type="default">osa-dispatcher</packagereq>
        <packagereq type="default">osa-dispatcher-selinux</packagereq>
        <packagereq type="default">perl-DBD-Oracle</packagereq>
-       <packagereq type="default">perl-Net-INET6Glue</packagereq>
        <packagereq type="default">perl-NOCpulse-CLAC</packagereq>
        <packagereq type="default">perl-NOCpulse-Debug</packagereq>
        <packagereq type="default">perl-NOCpulse-Gritch</packagereq>
@@ -78,6 +83,8 @@
        <packagereq type="default">SatConfig-installer</packagereq>
        <packagereq type="default">SatConfig-spread</packagereq>
        <packagereq type="default">scdb</packagereq>
+       <packagereq type="default">select2</packagereq>
+       <packagereq type="default">select2-bootstrap-css</packagereq>
        <packagereq type="default">simple-core</packagereq>
        <packagereq type="default">simple-xml</packagereq>
        <packagereq type="default">SNMPAlerts</packagereq>
@@ -121,7 +128,6 @@
        <packagereq type="default">spacewalk-jpp-workaround</packagereq>
        <packagereq type="default">spacewalk-monitoring</packagereq>
        <packagereq type="default">spacewalk-monitoring-selinux</packagereq>
-       <packagereq type="default">spacewalk-oro-compat</packagereq>
        <packagereq type="default">spacewalk-oracle</packagereq>
        <packagereq type="default">spacewalk-postgresql</packagereq>
        <packagereq type="default">spacewalk-proxy-broker</packagereq>
@@ -177,6 +183,9 @@
     <packagelist>
        <packagereq type="optional">cobbler-web</packagereq>
        <packagereq type="optional">koan</packagereq>
+       <packagereq type="optional">nodejs-less</packagereq>
+       <packagereq type="optional">tito</packagereq>
+       <packagereq type="optional">ycssmin</packagereq>
     </packagelist>
   </group>
 </comps>

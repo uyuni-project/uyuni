@@ -10,7 +10,7 @@
 %define appdir          %{_localstatedir}/lib/tomcat5/webapps
 %define jardir          %{_localstatedir}/lib/tomcat5/webapps/rhn/WEB-INF/lib
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %else
@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.2.104
+Version: 2.2.108
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -43,57 +43,74 @@ BuildArch: noarch
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 
-# for RHEL6 we need to filter out several package versions
-%if  0%{?rhel} && 0%{?rhel} >= 6
-# cglib is not compatible with hibernate and asm from RHEL6
-Requires: cglib < 2.2
-# we dont want jfreechart from EPEL because it has different symlinks
-Requires: jfreechart < 1.0.13
-%else
-Requires: cglib
-Requires: jfreechart >= 1.0.9
-%endif
-
 Requires: bcel
 Requires: c3p0 >= 0.9.1
+Requires: classpathx-mail
+Requires: cobbler >= 2.0.0
+Requires: dojo
 Requires: dwr >= 3
-%if 0%{?fedora}
-Requires: hibernate3 >= 3.6.10
-Requires: hibernate3-c3p0 >= 3.6.10
-Requires: hibernate3-ehcache >= 3.6.10
-Requires: javassist
-%else
-Requires: hibernate3 = 0:3.2.4
-%endif
-Requires: java >= 1.7.0
-#Requires: java-devel >= 1.6.0
-Requires: jakarta-commons-discovery
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
 Requires: jakarta-taglibs-standard
+Requires: java >= 1.7.0
 Requires: jcommon
 Requires: jdom
 Requires: jta
 Requires: log4j
-Requires: redstone-xmlrpc
 Requires: oscache
 Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
+Requires: redstone-xmlrpc
+Requires: simple-core
+Requires: simple-xml
+Requires: sitemesh
+Requires: spacewalk-branding
+Requires: spacewalk-java-config
+Requires: spacewalk-java-jdbc
+Requires: spacewalk-java-lib
+Requires: stringtree-json
+Requires: susestudio-java-client
+Requires: xalan-j2 >= 0:2.6.0
+Requires: xerces-j2
+%if 0%{?fedora}
+Requires: classpathx-jaf
+Requires: hibernate3 >= 3.6.10
+Requires: hibernate3-c3p0 >= 3.6.10
+Requires: hibernate3-ehcache >= 3.6.10
+Requires: javassist
+BuildRequires: ehcache-core
+BuildRequires: hibernate3 >= 0:3.6.10
+BuildRequires: hibernate3-c3p0 >= 3.6.10
+BuildRequires: hibernate3-ehcache >= 3.6.10
+BuildRequires: javassist
+%else
+Requires: hibernate3 = 0:3.2.4
+BuildRequires: hibernate3 = 0:3.2.4
+%endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
-Requires: tomcat5
 Requires: jasper5
-Requires: tomcat5-servlet-2.4-api
 Requires: struts >= 1.2.9
+Requires: tomcat5
+Requires: tomcat5-servlet-2.4-api
+BuildRequires: jasper5
+BuildRequires: jsp
+BuildRequires: struts >= 0:1.2.9
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
+Requires: struts >= 0:1.3.0
+Requires: struts-taglib >= 0:1.3.0
 Requires: tomcat >= 7
 Requires: tomcat-lib >= 7
 Requires: tomcat-servlet-3.0-api >= 7
+BuildRequires: struts >= 0:1.3.0
+BuildRequires: struts-taglib >= 0:1.3.0
+BuildRequires: tomcat >= 7
+BuildRequires: tomcat-lib >= 7
+%else
 Requires: struts >= 0:1.3.0
 Requires: struts-taglib >= 0:1.3.0
-%else
 Requires: tomcat6
 Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
@@ -108,96 +125,93 @@ Requires: struts-taglib >= 1.3.0
 %endif
 %endif
 Requires: xalan-j2 >= 2.6.0
-Requires: xerces-j2
-Requires: simple-core
-Requires: simple-xml
-Requires: sitemesh
-Requires: stringtree-json
-Requires: susestudio-java-client
-Requires: spacewalk-java-config
-Requires: spacewalk-java-lib
-Requires: spacewalk-java-jdbc
-Requires: spacewalk-branding
-%if 0%{?fedora} >= 20 || 0%{?rhel} >=7
-BuildRequires: apache-commons-validator
-BuildRequires: mvn(ant-contrib:ant-contrib)
-BuildRequires: javapackages-tools
+%if 0%{?fedora} || 0%{?rhel} >=7
+Requires:      apache-commons-cli
+Requires:      apache-commons-codec
+Requires:      apache-commons-discovery
+Requires:      apache-commons-io
+Requires:      apache-commons-lang
+Requires:      apache-commons-logging
 Requires:      javapackages-tools
+BuildRequires: apache-commons-cli
+BuildRequires: apache-commons-codec
+BuildRequires: apache-commons-collections
+BuildRequires: apache-commons-discovery
+BuildRequires: apache-commons-io
+BuildRequires: apache-commons-logging
+BuildRequires: apache-commons-validator
+# spelling checker is only for Fedoras (no aspell in RHEL6)
+BuildRequires: aspell aspell-en libxslt
+BuildRequires: javapackages-tools
+BuildRequires: mvn(ant-contrib:ant-contrib)
 %else
-BuildRequires: jakarta-commons-validator
+Requires:      jakarta-commons-cli
+Requires:      jakarta-commons-codec
+Requires:      jakarta-commons-discovery
+Requires:      jakarta-commons-io
+Requires:      jakarta-commons-lang >= 0:2.1
+Requires:      jakarta-commons-logging
+Requires:      jpackage-utils
 BuildRequires: ant-contrib
 BuildRequires: ant-nodeps
-BuildRequires: jpackage-utils
-Requires:      jpackage-utils
-%endif
-Requires: cobbler >= 2.0.0
-Requires: dojo
-%if 0%{?fedora} || 0%{?rhel} >=7
-Requires:       apache-commons-codec
-Requires:       apache-commons-io
-Requires:       apache-commons-lang
-BuildRequires:  apache-commons-logging
-Requires:       apache-commons-logging
-%else
-Requires:       jakarta-commons-codec
-Requires:       jakarta-commons-io
-Requires:       jakarta-commons-lang >= 0:2.1
-BuildRequires:  jakarta-commons-logging
-Requires:       jakarta-commons-logging
-%endif
-BuildRequires: ant
-BuildRequires: ant-apache-regexp
-BuildRequires: java-devel >= 1.6.0
-BuildRequires: ant-junit
-BuildRequires: antlr >= 2.7.6
-BuildRequires: tanukiwrapper
-Requires: classpathx-mail
-BuildRequires: classpathx-mail
-BuildRequires: libxml2
-BuildRequires: /usr/bin/perl
-%if 0%{?run_checkstyle}
-BuildRequires: checkstyle
-%endif
-%if ! 0%{?omit_tests} > 0
-BuildRequires: translate-toolkit
-%endif
-
-# Sadly I need these to symlink the jars properly.
-BuildRequires: bcel
-BuildRequires: c3p0 >= 0.9.1
-BuildRequires: concurrent
-BuildRequires: cglib
-BuildRequires: dom4j
-BuildRequires: dwr >= 3
-%if 0%{?fedora}
-BuildRequires: hibernate3 >= 0:3.6.10
-BuildRequires: hibernate3-c3p0 >= 3.6.10
-BuildRequires: hibernate3-ehcache >= 3.6.10
-BuildRequires: ehcache-core
-BuildRequires: javassist
-%else
-BuildRequires: hibernate3 = 0:3.2.4
-%endif
-BuildRequires: jaf
+BuildRequires: jakarta-commons-cli
 BuildRequires: jakarta-commons-codec
 BuildRequires: jakarta-commons-collections
 BuildRequires: jakarta-commons-discovery
+BuildRequires: jakarta-commons-io
+BuildRequires: jakarta-commons-logging
+BuildRequires: jakarta-commons-validator
+BuildRequires: jpackage-utils
+%endif
+# for RHEL6 we need to filter out several package versions
+%if  0%{?rhel} && 0%{?rhel} >= 6
+# cglib is not compatible with hibernate and asm from RHEL6
+Requires: cglib < 0:2.2
+# we dont want jfreechart from EPEL because it has different symlinks
+Requires: jfreechart < 1.0.13
+%else
+Requires: cglib
+Requires: jfreechart >= 1.0.9
+%endif
+
+BuildRequires: /usr/bin/perl
+BuildRequires: /usr/bin/xmllint
+BuildRequires: ant
+BuildRequires: ant-apache-regexp
+BuildRequires: ant-junit
+BuildRequires: antlr >= 2.7.6
+BuildRequires: libxml2
+BuildRequires: bcel
+BuildRequires: c3p0 >= 0.9.1
+BuildRequires: cglib
+BuildRequires: classpathx-mail
+BuildRequires: concurrent
+BuildRequires: dom4j
+BuildRequires: dwr >= 3
+BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-taglibs-standard
+BuildRequires: java-devel >= 1:1.6.0
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 1.0.9
+BuildRequires: jpam
 BuildRequires: jta
 BuildRequires: jsch
-BuildRequires: redstone-xmlrpc
 BuildRequires: oscache
+BuildRequires: postgresql-jdbc
 BuildRequires: quartz
+BuildRequires: redstone-xmlrpc
 BuildRequires: simple-core
 BuildRequires: simple-xml
 BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 BuildRequires: susestudio-java-client
+BuildRequires: tanukiwrapper
+%if 0%{?run_checkstyle}
+BuildRequires: checkstyle
+%endif
 # SUSE additional build requirements
 %if 0%{?suse_version}
 %ifarch x86_64
@@ -205,18 +219,6 @@ BuildRequires: oracle-instantclient11.2-basic
 %endif
 BuildRequires: log4j
 %endif
-# EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
-%if 0%{?rhel} && 0%{?rhel} < 6
-BuildRequires: struts >= 0:1.2.9
-BuildRequires: jsp
-BuildRequires: jasper5
-%else
-%if 0%{?fedora}
-BuildRequires: struts >= 0:1.3.0
-BuildRequires: struts-taglib >= 0:1.3.0
-BuildRequires: tomcat >= 7
-BuildRequires: tomcat-lib >= 7
-%else
 # SUSE = Struts 1.2 and Tomcat 6
 %if 0%{?suse_version}
 BuildRequires: struts >= 1.2.9
@@ -224,22 +226,8 @@ BuildRequires: struts >= 1.2.9
 BuildRequires: struts >= 1.3.0
 BuildRequires: struts-taglib >= 1.3.0
 %endif
-BuildRequires: tomcat6
-BuildRequires: tomcat6-lib
-%endif
-%endif
-BuildRequires: sitemesh
-BuildRequires: postgresql-jdbc
-%if 0%{?fedora} || 0%{?rhel} >=7
-# spelling checker is only for Fedoras (no aspell in RHEL6)
-BuildRequires: aspell aspell-en libxslt
-Requires:      apache-commons-cli
-BuildRequires: apache-commons-cli
-BuildRequires: apache-commons-io
-%else
-Requires:      jakarta-commons-cli
-BuildRequires: jakarta-commons-cli
-BuildRequires: jakarta-commons-io
+%if ! 0%{?omit_tests} > 0
+BuildRequires: translate-toolkit
 %endif
 Obsoletes: rhn-java < 5.3.0
 Obsoletes: rhn-java-sat < 5.3.0
@@ -247,10 +235,6 @@ Obsoletes: rhn-oracle-jdbc-tomcat5 <= 1.0
 Provides: rhn-java = %{version}-%{release}
 Provides: rhn-java-sat = %{version}-%{release}
 Provides: rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
-
-%if 0%{?fedora}
-Requires: classpathx-jaf
-%endif
 
 %description
 This package contains the code for the Java version of the Spacewalk Web Site.
@@ -357,6 +341,23 @@ Requires: jfreechart >= 1.0.9
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
+Requires: cobbler >= 2.0.0
+Requires: concurrent
+Requires: jakarta-taglibs-standard
+Requires: java >= 0:1.6.0
+Requires: java-devel >= 0:1.6.0
+Requires: jcommon
+Requires: jpam
+Requires: log4j
+Requires: oscache
+Requires: quartz < 2.0
+Requires: simple-core
+Requires: spacewalk-java-config
+Requires: spacewalk-java-jdbc
+Requires: spacewalk-java-lib
+Requires: tanukiwrapper
+Requires: xalan-j2 >= 0:2.6.0
+Requires: xerces-j2
 %if 0%{?fedora}
 Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
@@ -365,34 +366,23 @@ Requires: javassist
 %else
 Requires: hibernate3 >= 3.2.4
 %endif
-Requires: java >= 1.6.0
-Requires: jakarta-commons-lang >= 2.1
-Requires: jakarta-commons-codec
-Requires: jakarta-commons-dbcp
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: apache-commons-cli
+Requires: apache-commons-codec
+Requires: apache-commons-dbcp
+Requires: apache-commons-lang
 Requires: apache-commons-logging
 %else
 Requires: jakarta-commons-cli
+Requires: jakarta-commons-codec
+Requires: jakarta-commons-dbcp
+Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-logging
 %endif
-Requires: jakarta-taglibs-standard
-Requires: jcommon
 Requires: jsch
-Requires: log4j
-Requires: oscache
 Requires: pam-modules
 Requires: xalan-j2 >= 2.6.0
-Requires: xerces-j2
-Requires: tanukiwrapper
-Requires: simple-core
-Requires: spacewalk-java-config
-Requires: spacewalk-java-lib
-Requires: spacewalk-java-jdbc
-Requires: concurrent
-Requires: quartz < 2.0
 Conflicts: quartz >= 2.0
-Requires: cobbler >= 2.0.0
 Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
 Provides: taskomatic = %{version}-%{release}
@@ -904,6 +894,48 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.2.108-1
+- Fixing missing headers
+
+* Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.2.107-1
+- Fixing merge problem and checkstyle for power management merge
+
+* Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.2.106-1
+- Guest Provisioning was broken because of refactoring
+- Update to build on newer source
+- $ tags removed as suggested by mkollar
+- SSM power management operation page test
+- SSM power management operation page added
+- SSM power management configuration page test
+- SSM power management configuration page added
+- rhnSsmOperationServer: note column tests
+- rhnSsmOperationServer: note column added
+- ServerTestUtils: add a server group parameter to createTestSystem
+- Single-system power management page tests
+- Single-system power management page added
+- Configuration options added
+- SystemRecord: power status support tests
+- SystemRecord: power status support added
+- CobblerPowerCommand tests
+- CobblerPowerCommand added
+- CobblerPowerSettingsUpdateCommand tests
+- CobblerPowerSettingsUpdateCommand added
+- Refactoring: make getCobblerSystemRecordName() callable from other classes
+- Do not assume a Cobbler system record always has a profile attached
+- Cobbler image support tests
+- Cobbler image support added
+- SystemRecord: power management support tests
+- SystemRecord: power management support added
+- make requires sorted
+- moved common requires before conditional ones
+- reduced number of if-else-endif blocks
+- return also org_name in user.getDetails api
+
+* Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.105-1
+- fixed apache-commons-* vs. jakarta-commons-* conflicts
+- return whether staging content is enabled for org in org.getDetails api
+- add csv report for relevant erratas in system groups
+
 * Wed Jun 25 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.104-1
 - fixed apache vs. jakarta  -commons-{codec,lang} conflict
 

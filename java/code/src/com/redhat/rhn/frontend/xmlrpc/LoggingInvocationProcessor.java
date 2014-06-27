@@ -62,7 +62,7 @@ public class LoggingInvocationProcessor implements XmlRpcInvocationInterceptor {
         // logout.  So we do it here.
         if ((arguments != null) && (arguments.size() > 0)) {
             if (arguments.get(0) instanceof User) {
-                setCaller(((User)arguments.get(0)).getLogin());
+                setCaller((User)arguments.get(0));
             }
             else {
                 String arg = (String) Translator.convert(

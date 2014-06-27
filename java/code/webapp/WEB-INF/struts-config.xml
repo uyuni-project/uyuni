@@ -1318,7 +1318,7 @@
         <form-property name="submitted" type="java.lang.Boolean" />
     </form-bean>
 
-   <form-bean name="powerManagementForm"
+    <form-bean name="powerManagementForm"
                type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
       <form-property name="systemId" type="java.lang.Long" />
       <form-property name="powerType" type="java.lang.String" />
@@ -8660,6 +8660,26 @@
         <set-property property="postRequiredIfSubmitted" value="true" />
         <forward name="default"
                  path="/WEB-INF/pages/ssm/provisioning-remote-command.jsp"/>
+    </action>
+
+    <action path="/systems/ssm/provisioning/PowerManagementConfiguration"
+            name="powerManagementForm"
+            type="com.redhat.rhn.frontend.action.ssm.PowerManagementConfigurationAction"
+            scope="request"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/powermanagement-configuration.jsp"/>
+    </action>
+
+    <action path="/systems/ssm/provisioning/PowerManagementOperations"
+            name="powerManagementForm"
+            type="com.redhat.rhn.frontend.action.ssm.PowerManagementOperationsAction"
+            scope="request"
+            className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <forward name="default"
+                 path="/WEB-INF/pages/ssm/powermanagement-operations.jsp"/>
     </action>
 
     <action path="/systems/ssm/provisioning/PowerManagementConfiguration"
