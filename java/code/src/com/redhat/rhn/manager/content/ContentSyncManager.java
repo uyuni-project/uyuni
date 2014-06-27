@@ -20,6 +20,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.suse.scc.SCCClient;
 import com.suse.scc.SCCClientException;
 import com.suse.scc.model.Product;
+import com.suse.scc.model.Repository;
 
 import org.apache.log4j.Logger;
 
@@ -43,7 +44,7 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns all products available with all the configured credentials.
+     * Returns all products available to all configured credentials.
      * @return list of all available products
      */
     public Collection<Product> getProducts() {
@@ -64,5 +65,29 @@ public class ContentSyncManager {
             log.debug("Found " + productList.size() + " available products.");
         }
         return productList;
+    }
+
+    /**
+     * Returns all repositories available to all configured credentials.
+     * @return list of all available repositories
+     */
+    public Collection<Repository> getRepositories() {
+        Set<Repository> reposList = new HashSet<Repository>();
+        List<MirrorCredentialsDto> credentials =
+                new MirrorCredentialsManager().findMirrorCredentials();
+        // Query repos for all mirror credentials
+        for (MirrorCredentialsDto c : credentials) {
+            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            try {
+                List<Repository> repos = scc.listRepositories();
+                reposList.addAll(repos);
+            } catch (SCCClientException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + reposList.size() + " available repositories.");
+        }
+        return reposList;
     }
 }
