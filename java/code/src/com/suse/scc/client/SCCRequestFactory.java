@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.scc;
+package com.suse.scc.client;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

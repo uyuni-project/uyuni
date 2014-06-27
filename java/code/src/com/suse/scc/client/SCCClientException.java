@@ -12,29 +12,26 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.scc;
-
-import java.io.IOException;
-import java.io.InputStream;
+package com.suse.scc.client;
 
 /**
- * Utilities for {@link SCCClient}.
+ * Exception to be thrown in case of problems with SCC.
  */
-public class SCCClientUtils {
+public class SCCClientException extends Exception {
 
     /**
-     * Quietly close a given stream, suppressing exceptions.
-     *
-     * @param stream
+     * Constructor expecting a custom cause.
+     * @param cause the cause
      */
-    public static void closeQuietly(InputStream stream) {
-        if (stream == null) {
-            return;
-        }
-        try {
-            stream.close();
-        }
-        catch (IOException e) {
-        }
+    public SCCClientException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * Constructor expecting a custom message.
+     * @param cause the cause
+     */
+    public SCCClientException(String message) {
+        super(message);
     }
 }
