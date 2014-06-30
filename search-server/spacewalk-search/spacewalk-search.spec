@@ -96,7 +96,6 @@ Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 %endif
-%endif
 %if 0%{?fedora} || 0%{?rhel} >=7
 BuildRequires: systemd
 %endif
