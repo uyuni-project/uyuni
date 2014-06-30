@@ -175,7 +175,11 @@ Requires: jfreechart >= 1.0.9
 %endif
 
 BuildRequires: /usr/bin/perl
+%if 0%{?suse_version}
+BuildRequires: libxml2-tools
+%else
 BuildRequires: /usr/bin/xmllint
+%endif
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
 BuildRequires: ant-junit
