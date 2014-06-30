@@ -17,6 +17,7 @@ package com.suse.scc.client;
 import com.google.gson.reflect.TypeToken;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
+import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -65,7 +66,7 @@ public class SCCClient {
     }
 
     /**
-     * Gets and returns the list of available repositories to an organization.
+     * Gets and returns the list of repositories available to an organization.
      *
      * GET /connect/organizations/repositories
      *
@@ -74,6 +75,19 @@ public class SCCClient {
     public List<SCCRepository> listRepositories() throws SCCClientException {
         SCCConnection scc = new SCCConnection("/connect/organizations/repositories");
         Type returnType = new TypeToken<List<SCCRepository>>(){}.getType();
+        return scc.get(returnType);
+    }
+
+    /**
+     * Gets and returns the list of subscriptions available to an organization.
+     *
+     * GET /connect/organizations/subscriptions
+     *
+     * @return list of subscriptions available to organization
+     */
+    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+        SCCConnection scc = new SCCConnection("/connect/organizations/subscriptions");
+        Type returnType = new TypeToken<List<SCCSubscription>>(){}.getType();
         return scc.get(returnType);
     }
 }
