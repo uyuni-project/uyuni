@@ -31,6 +31,7 @@ import java.util.zip.GZIPInputStream;
 public class SCCConnection {
 
     private final String uri;
+    private final String GZIP_ENCODING = "gzip";
 
     /**
      * Init a connection to a given SCC endpoint.
@@ -70,14 +71,21 @@ public class SCCConnection {
             connection = SCCRequestFactory.getInstance().initConnection(
                     method, uri, SCCConfig.getInstance().getEncodedCredentials());
 
-            // Connect and check response code
+            // Connect and parse the response on success
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Parse the response on success
                 inputStream = connection.getInputStream();
-                gzipStream = new GZIPInputStream(inputStream);
-                Reader inputStreamReader = new InputStreamReader(gzipStream);
+
+                // Unzip stream if in gzip format
+                Reader inputStreamReader;
+                if (GZIP_ENCODING.equals(connection.getContentEncoding())) {
+                    gzipStream = new GZIPInputStream(inputStream);
+                    inputStreamReader = new InputStreamReader(gzipStream);
+                }
+                else {
+                    inputStreamReader = new InputStreamReader(inputStream);
+                }
                 Reader streamReader = new BufferedReader(inputStreamReader);
 
                 // Parse result type from JSON
