@@ -25,6 +25,7 @@ public class SCCRepository {
     private String name;
     @SerializedName("distro_target")
     private String distroTarget;
+    private String description;
     private String url;
     private boolean autorefresh;
 
@@ -47,6 +48,13 @@ public class SCCRepository {
      */
     public String getDistroTarget() {
         return distroTarget;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
