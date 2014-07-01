@@ -33,14 +33,14 @@ public class SCCSubscription {
     @SerializedName("expires_at")
     private String expiresAt;
     @SerializedName("system_limit")
-    int systemLimit;
+    private Integer systemLimit;
     @SerializedName("systems_count")
-    int systemsCount;
+    private Integer systemsCount;
     @SerializedName("virtual_count")
-    int virtualCount;
+    private Integer virtualCount;
     @SerializedName("product_classes")
-    List<String> productClasses;
-    // TODO: List<SCCSystem> systems;
+    private List<String> productClasses;
+    private List<SCCSystem> systems;
 
     /**
      * @return the id
@@ -94,21 +94,21 @@ public class SCCSubscription {
     /**
      * @return the systemLimit
      */
-    public int getSystemLimit() {
+    public Integer getSystemLimit() {
         return systemLimit;
     }
 
     /**
      * @return the systemsCount
      */
-    public int getSystemsCount() {
+    public Integer getSystemsCount() {
         return systemsCount;
     }
 
     /**
      * @return the virtualCount
      */
-    public int getVirtualCount() {
+    public Integer getVirtualCount() {
         return virtualCount;
     }
 
@@ -117,5 +117,12 @@ public class SCCSubscription {
      */
     public List<String> getProductClasses() {
         return productClasses;
+    }
+
+    /**
+     * @return the systems
+     */
+    public List<SCCSystem> getSystems() {
+        return systems;
     }
 }
