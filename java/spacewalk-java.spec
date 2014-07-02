@@ -57,7 +57,6 @@ Requires: jcommon
 Requires: jdom
 Requires: jta
 Requires: log4j
-Requires: oscache
 Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
@@ -196,14 +195,13 @@ BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: java-devel >= 1:1.6.0
+BuildRequires: java-devel >= 1.6.0
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 1.0.9
 BuildRequires: jpam
 BuildRequires: jta
 BuildRequires: jsch
-BuildRequires: oscache
 BuildRequires: postgresql-jdbc
 BuildRequires: quartz
 BuildRequires: redstone-xmlrpc
@@ -353,7 +351,6 @@ Requires: java-devel >= 0:1.6.0
 Requires: jcommon
 Requires: jpam
 Requires: log4j
-Requires: oscache
 Requires: quartz < 2.0
 Requires: simple-core
 Requires: spacewalk-java-config
@@ -782,7 +779,6 @@ fi
 %endif
 
 %{jardir}/oro.jar
-%{jardir}/oscache.jar
 %{jardir}/quartz.jar
 %{jardir}/redstone-xmlrpc-client.jar
 %{jardir}/redstone-xmlrpc.jar
