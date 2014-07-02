@@ -883,6 +883,7 @@ fi
 %files config
 %defattr(644,root,root,775)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
+%attr(770,root,www) %dir %{_var}/log/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
