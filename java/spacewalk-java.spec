@@ -682,6 +682,11 @@ rm -rf $RPM_BUILD_ROOT
 %{insserv_cleanup}
 
 %post config
+if [ ! -d /var/log/rhn ]; then
+    mkdir /var/log/rhn
+    chown root:www /var/log/rhn
+    chmod 770 /var/log/rhn
+fi
 if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
     touch /var/log/rhn/rhn_web_api.log
 fi
@@ -883,7 +888,6 @@ fi
 %files config
 %defattr(644,root,root,775)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
-%attr(770,root,www) %dir %{_var}/log/rhn
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
