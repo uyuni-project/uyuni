@@ -1,4 +1,4 @@
-# logrotation file for Red Hat Network Server
+# logrotation file for Spacewalk Server
 #
 # $Id$
 
@@ -10,5 +10,5 @@
     notifempty
     missingok
     size=10M
-    su wwwrun www
+    su tomcat www
 }
