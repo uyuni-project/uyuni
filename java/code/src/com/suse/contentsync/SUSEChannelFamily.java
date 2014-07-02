@@ -22,7 +22,7 @@ import org.simpleframework.xml.Root;
  * Channel family class.
  */
 @Root(name = "family")
-public class SUSEFamily {
+public class SUSEChannelFamily {
     @Attribute(name = "default_nodecount")
     private Integer defaultNodeCount;
 
