@@ -49,7 +49,7 @@ public class ContentSyncManager {
 
     // Static files we parse
     public static final String CHANNELS_XML = "/usr/share/susemanager/channels.xml";
-    public static final String CHANNELS_FAMILIES_XML = "/usr/share/susemanager/channel_families.xml";
+    public static final String CHANNEL_FAMILIES_XML = "/usr/share/susemanager/channel_families.xml";
     public static final String UPGRADE_PATHS_XML = "/usr/share/susemanager/upgrade_paths.xml";
 
     /**
@@ -85,7 +85,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannelFamilies.class,
-                    new File(CHANNELS_FAMILIES_XML)).getFamilies();
+                    new File(CHANNEL_FAMILIES_XML)).getFamilies();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
