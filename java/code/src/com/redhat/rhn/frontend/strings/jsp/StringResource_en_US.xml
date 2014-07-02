@@ -16639,66 +16639,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.heading">
-        <source>Power Management Settings</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.powertype">
-        <source>Type</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.on">
-        <source>On</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.off">
-        <source>Off</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.unknown">
-        <source>Unknown</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.power_status_failed">
-        <source>An error prevented retrieving the system's power status. Please check parameters and Cobbler log.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.power_address">
-        <source>Network address</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.power_username">
-        <source>Username</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.power_password">
-        <source>Password</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.powermanagement.jsp.power_id">
-        <source>System identifier</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.powermanagement.jsp.power_status">
         <source>Current power status</source>
         <context-group name="ctx">
