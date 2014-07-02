@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Sat Jun 28 07:24:28 UTC 2014 - smoioli@suse.com
+
+- java version fixed, oscache removed from dependencies
+
+-------------------------------------------------------------------
 Wed Jul  2 15:24:34 CEST 2014 - mantel@suse.de
 
 - fix logrotate for /var/log/rhn/rhn_web_api.log (bnc#884081)
