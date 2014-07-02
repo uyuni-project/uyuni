@@ -14,9 +14,11 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
@@ -27,15 +29,15 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
-
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
-
 import java.io.File;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
 
 /**
  * Content synchronization logic.
@@ -157,8 +159,9 @@ public class ContentSyncManager {
 
     /**
      * Refresh functionality doing the same thing as --refresh in mgr-ncc-sync.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public void refresh() {
+    public void refresh() throws ContentSyncException {
         updateChannels();
         updateChannelFamilies();
     }
@@ -171,9 +174,51 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update channel families in the database.
+     * Create new or update an existing channel family.
+     * @return {@link ChannelFamily}
      */
-    public void updateChannelFamilies() {
-        // TODO: Implement this as in "update_channel_family_table_by_config()"
+    private ChannelFamily configureChannelFamilyByLabel(SUSEChannelFamily channel) {
+        ChannelFamily family = ChannelFamilyFactory.lookupByLabel(channel.getLabel(), null);
+        if (family == null) {
+            family = new ChannelFamily();
+            family.setLabel(channel.getLabel());
+            family.setOrg(null);
+            family.setName(channel.getName());
+            ChannelFamilyFactory.save(family);
+        }
+
+        return family;
+    }
+
+    private PrivateChannelFamily newPrivateChannelFamily(ChannelFamily family) {
+        PrivateChannelFamily pf = new PrivateChannelFamily();
+        pf.setCreated(new Date());
+        pf.setCurrentMembers(0L);
+        pf.setMaxMembers(0L);
+        pf.setOrg(null);
+        pf.setChannelFamily(family);
+
+        return pf;
+    }
+
+    /**
+     * Update channel families in the database.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     */
+    public void updateChannelFamilies() throws ContentSyncException {
+        for (SUSEChannelFamily scf : this.readChannelFamilies()) {
+            ChannelFamily family = this.configureChannelFamilyByLabel(scf);
+            if (family.getPrivateChannelFamilies().isEmpty()) {
+                PrivateChannelFamily pf = this.newPrivateChannelFamily(family);
+                if (scf.getDefaultNodeCount() < 0) {
+                    // The "limitless or endless in space" at SUSE is 200000. Of type Long.
+                    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
+                    pf.setMaxMembers(200000L);
+                }
+
+                family.addPrivateChannelFamily(pf);
+                ChannelFamilyFactory.save(family);
+            }
+        }
     }
 }
