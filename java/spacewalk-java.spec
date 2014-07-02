@@ -675,6 +675,17 @@ rm -rf $RPM_BUILD_ROOT
 %restart_on_update taskomatic
 %{insserv_cleanup}
 
+%post config
+if [ ! -d /var/log/rhn ]; then
+    mkdir /var/log/rhn
+    chown root:www /var/log/rhn
+    chmod 770 /var/log/rhn
+fi
+if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
+    touch /var/log/rhn/rhn_web_api.log
+fi
+chown tomcat:www /var/log/rhn/rhn_web_api.log
+
 %else
 %post -n spacewalk-taskomatic
 if [ -f /etc/init.d/taskomatic ]; then
