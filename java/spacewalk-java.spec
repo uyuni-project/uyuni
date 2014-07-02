@@ -108,18 +108,21 @@ BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
 %else
+%if 0%{?suse_version}
+Requires: struts >= 1.2.9
+Requires: pxe-default-image
+Requires: tomcat >= 7
+Requires: tomcat-lib >= 7
+Requires: tomcat-servlet-3.0-api >= 7
+BuildRequires: struts >= 1.2.9
+BuildRequires: tomcat >= 7
+BuildRequires: tomcat-lib >= 7
+%else
 Requires: struts >= 0:1.3.0
 Requires: struts-taglib >= 0:1.3.0
 Requires: tomcat6
 Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
-# SUSE = 1.2 and Tomcat 6
-%if 0%{?suse_version}
-Requires: pxe-default-image
-Requires: struts >= 1.2.9
-%else
-Requires: struts >= 1.3.0
-Requires: struts-taglib >= 1.3.0
 %endif
 %endif
 %endif
