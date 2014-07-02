@@ -19,8 +19,8 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
+import com.suse.contentsync.SUSEChannelFamily;
 import com.suse.contentsync.SUSEChannels;
-import com.suse.contentsync.SUSEFamily;
 import com.suse.contentsync.SUSEUpgradePath;
 import com.suse.contentsync.SUSEUpgradePaths;
 import com.suse.scc.client.SCCClient;
@@ -28,16 +28,14 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 
-import java.io.File;
-
 import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Content synchronization logic.
@@ -81,7 +79,7 @@ public class ContentSyncManager {
      * @return List of parsed channel families
      * @throws ContentSyncException in case of an error
      */
-    public List<SUSEFamily> readFamilies() throws ContentSyncException {
+    public List<SUSEChannelFamily> readChannelFamilies() throws ContentSyncException {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannelFamilies.class,
