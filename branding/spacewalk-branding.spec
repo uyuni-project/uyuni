@@ -38,9 +38,9 @@ BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: java-devel >= 1.5.0
 BuildRequires: %{lesspkg}
 BuildRequires: %{bootstrappkg}
-BuildRequires: httpd
-Requires:      httpd
-Requires(pre): tomcat6
+BuildRequires: apache2
+Requires:      apache2
+Requires(pre): tomcat
 Requires:      susemanager-frontend-libs >= 2.1
 Requires:      momentjs
 Requires:      jquery-ui
@@ -54,12 +54,7 @@ Spacewalk specific branding, CSS, and images.
 %setup -q
 
 %build
-%if  0%{?suse_version}
-%define javac javac -target 1.5
-%else
-%define javac javac
-%endif
-%javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
+javac java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 rm -f java/code/src/com/redhat/rhn/branding/strings/StringPackage.java
 jar -cf java-branding.jar -C java/code/src com
 
