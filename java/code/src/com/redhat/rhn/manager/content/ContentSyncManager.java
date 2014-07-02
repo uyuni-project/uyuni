@@ -154,4 +154,26 @@ public class ContentSyncManager {
         }
         return reposList;
     }
+
+    /**
+     * Refresh functionality doing the same thing as --refresh in mgr-ncc-sync.
+     */
+    public void refresh() {
+        updateChannels();
+        updateChannelFamilies();
+    }
+
+    /**
+     * Update channel information in the database.
+     */
+    public void updateChannels() {
+        // TODO: Implement this as in "update_channels()"
+    }
+
+    /**
+     * Update channel families in the database.
+     */
+    public void updateChannelFamilies() {
+        // TODO: Implement this as in "update_channel_family_table_by_config()"
+    }
 }
