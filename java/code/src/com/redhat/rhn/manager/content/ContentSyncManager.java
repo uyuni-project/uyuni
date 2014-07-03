@@ -55,14 +55,25 @@ public class ContentSyncManager {
     private static Logger log = Logger.getLogger(ContentSyncManager.class);
 
     // Static files we parse
-    public static final String CHANNELS_XML = "/usr/share/susemanager/channels.xml";
-    public static final String CHANNEL_FAMILIES_XML = "/usr/share/susemanager/channel_families.xml";
-    public static final String UPGRADE_PATHS_XML = "/usr/share/susemanager/upgrade_paths.xml";
+    private static final String CHANNELS_XML = "channels.xml";
+    private static final String CHANNEL_FAMILIES_XML = "channel_families.xml";
+    private static final String UPGRADE_PATHS_XML = "upgrade_paths.xml";
+
+    // The default path where to find those
+    private String pathPrefix = "/usr/share/susemanager/";
 
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
+    }
+
+    /**
+     * Set a directory where to find channels.xml etc.
+     * @param path the path prefix to set
+     */
+    public void setPathPrefix(String path) {
+        this.pathPrefix = path;
     }
 
     /**
@@ -75,7 +86,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannels.class,
-                    new File(CHANNELS_XML)).getChannels();
+                    new File(pathPrefix + CHANNELS_XML)).getChannels();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -92,7 +103,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannelFamilies.class,
-                    new File(CHANNEL_FAMILIES_XML)).getFamilies();
+                    new File(pathPrefix + CHANNEL_FAMILIES_XML)).getFamilies();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -109,7 +120,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEUpgradePaths.class,
-                    new File(UPGRADE_PATHS_XML)).getPaths();
+                    new File(pathPrefix + UPGRADE_PATHS_XML)).getPaths();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
