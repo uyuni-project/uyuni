@@ -20,6 +20,10 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
@@ -310,7 +314,40 @@ public class ContentSyncManager {
     /**
      * Creates/updates entries in the SUSE Products DB table.
      */
-    private void updateSUSEProducts() throws ContentSyncException {
-        // TODO: Implement this!
+    public void updateSUSEProducts() throws ContentSyncException {
+        // Get all available products from SCC
+        Collection<SCCProduct> products = getProducts();
+        for (SCCProduct p : products) {
+            // Get channel family if it is available, otherwise create it
+            ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
+                    p.getProductClass(), null);
+            if (channelFamily == null) {
+                channelFamily = getChannelFamily(p.getProductClass(), null);
+            }
+
+            // Update this product in the database if it is there
+            SUSEProduct product = SUSEProductFactory.findSUSEProduct(
+                    p.getName(), p.getVersion(), p.getReleaseType(), p.getArch());
+            if (product != null) {
+                product.setFriendlyName(p.getFriendlyName());
+                product.setChannelFamilyId(channelFamily.getId().toString());
+                // TODO: product.setProductList(p.get???);
+            }
+            else {
+                // Otherwise create a new product and save it
+                product = new SUSEProduct();
+                product.setName(p.getName());
+                product.setVersion(p.getVersion());
+                product.setRelease(p.getReleaseType());
+                product.setFriendlyName(p.getFriendlyName());
+                product.setProductId(p.getId());
+                product.setChannelFamilyId(channelFamily.getId().toString());
+                PackageArch arch = PackageFactory.lookupPackageArchByLabel(p.getArch());
+                product.setArch(arch);
+                // product.setProductList(p.get???);
+                SUSEProductFactory.save(product);
+            }
+        }
+        // Remove products that are no longer available?
     }
 }
