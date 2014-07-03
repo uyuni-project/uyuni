@@ -14,11 +14,15 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
@@ -29,14 +33,18 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
+
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
+
 import java.io.File;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Content synchronization logic.
@@ -169,7 +177,51 @@ public class ContentSyncManager {
      * Update channel information in the database.
      */
     public void updateChannels() {
-        // TODO: Implement this as in "update_channels()"
+        // TODO if ISS slave then do nothing
+        try {
+            // Read contents of channels.xml into a map
+            Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
+            for (SUSEChannel c : readChannels()) {
+                channelsXML.put(c.getLabel(), c);
+            }
+
+            // Get all vendor channels from the database
+            List<Channel> channelsDB = ChannelFactory.listVendorChannels();
+            for (Channel c : channelsDB) {
+                if (channelsXML.containsKey(c.getLabel())) {
+                    SUSEChannel channel = channelsXML.get(c.getLabel());
+                    if (!channel.getDescription().equals(c.getDescription()) ||
+                            !channel.getName().equals(c.getName()) ||
+                            !channel.getSummary().equals(c.getSummary()) ||
+                            !channel.getUpdateTag().equals(c.getUpdateTag())) {
+                        // There is a difference, copy channel attributes and save
+                        c.setDescription(channel.getDescription());
+                        c.setName(channel.getName());
+                        c.setSummary(channel.getSummary());
+                        c.setUpdateTag(channel.getUpdateTag());
+                        ChannelFactory.save(c);
+                    }
+                }
+                else {
+                    // Channel no longer mirrorable
+                }
+            }
+
+            // Update content source URLs
+            List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
+            for (ContentSource cs : contentSources) {
+                if (channelsXML.containsKey(cs.getLabel())) {
+                    // TODO: Check if self._alternativeMirrorUrl(channel) is needed
+                    SUSEChannel channel = channelsXML.get(cs.getLabel());
+                    if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
+                        cs.setSourceUrl(channel.getSourceUrl());
+                        ChannelFactory.save(cs);
+                    }
+                }
+            }
+        } catch (ContentSyncException e) {
+            log.error("Error updating channels: " + e.getMessage(), e);
+        }
     }
 
     /**

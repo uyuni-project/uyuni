@@ -1222,4 +1222,26 @@ public class ChannelFactory extends HibernateFactory {
     public static void lock(Channel c) {
         singleton.lockObject(Channel.class, c.getId());
     }
+
+    /**
+     * List all vendor channels (org is null)
+     * @return list of vendor channels
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Channel> listVendorChannels() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findVendorChannels", params);
+    }
+
+    /**
+     * List all vendor content sources (org is null)
+     * @return list of vendor content sources
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ContentSource> listVendorContentSources() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        return singleton.listObjectsByNamedQuery(
+                "ContentSource.findVendorContentSources", params);
+    }
 }
