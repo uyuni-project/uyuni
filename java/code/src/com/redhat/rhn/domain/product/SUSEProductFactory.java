@@ -35,9 +35,18 @@ import com.redhat.rhn.domain.server.Server;
 public class SUSEProductFactory extends HibernateFactory {
 
     private static Logger log = Logger.getLogger(SUSEProductFactory.class);
+    private static SUSEProductFactory singleton = new SUSEProductFactory();
 
     private SUSEProductFactory() {
         super();
+    }
+
+    /**
+     * Insert or update a SUSEProduct.
+     * @param product SUSE product to be inserted into the database.
+     */
+    public static void save(SUSEProduct product) {
+        singleton.saveObject(product);
     }
 
     /**
