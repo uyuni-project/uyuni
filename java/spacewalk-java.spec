@@ -87,6 +87,9 @@ BuildRequires: javassist
 Requires: hibernate3 = 0:3.2.4
 BuildRequires: hibernate3 = 0:3.2.4
 %endif
+%if 0%{?suse_version}
+BuildRequires: sitemesh
+%endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: jasper5
@@ -117,7 +120,6 @@ Requires: tomcat-servlet-3.0-api >= 7
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
-BuildRequires: sitemesh
 %else
 Requires: struts >= 0:1.3.0
 Requires: struts-taglib >= 0:1.3.0
@@ -166,6 +168,10 @@ BuildRequires: jakarta-commons-logging
 BuildRequires: jakarta-commons-validator
 BuildRequires: jpackage-utils
 %endif
+%if 0%{?suse_version}
+BuildRequires: apache-commons-lang
+%endif
+
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
