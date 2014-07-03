@@ -1,0 +1,8 @@
+<upgradepathes>
+  <upgrade from_pdid="690" from_product="SUSE_SLES-11.2-None.x86_64" to_pdid="814"
+           to_product="SUSE_SLES-11.3-None.x86_64"/>
+  <upgrade from_pdid="1001" from_product="SUSE-Manager-Server-1.7-None.x86_64"
+           to_pdid="1119" to_product="SUSE-Manager-Server-2.1-None.x86_64"/>
+  <upgrade from_pdid="1193" from_product="sle-smt-11.2-None.None"
+           to_pdid="1198" to_product="sle-smt-11.3-None.None"/>
+</upgradepathes>

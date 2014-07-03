@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<channelfamilies>
+  <family default_nodecount="0" label="SMS" name="SUSE Manager Server"/>
+  <family default_nodecount="-1" label="SLESMT" name="SUSE Linux Enterprise Subscription Management Tool"/>
+  <family default_nodecount="0" label="7261" name="SUSE Linux Enterprise Server"/>
+</channelfamilies>
