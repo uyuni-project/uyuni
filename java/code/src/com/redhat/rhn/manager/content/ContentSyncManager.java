@@ -184,6 +184,7 @@ public class ContentSyncManager {
     public void refresh() throws ContentSyncException {
         updateChannels();
         updateChannelFamilies();
+        updateSUSEProducts();
     }
 
     /**
@@ -280,5 +281,12 @@ public class ContentSyncManager {
                 ChannelFamilyFactory.save(family);
             }
         }
+    }
+
+    /**
+     * Creates/updates entries in the SUSE Products DB table.
+     */
+    private void updateSUSEProducts() throws ContentSyncException {
+        // TODO: Implement this!
     }
 }
