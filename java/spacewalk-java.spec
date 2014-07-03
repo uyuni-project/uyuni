@@ -78,7 +78,6 @@ Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
 Requires: hibernate3-ehcache >= 3.6.10
 Requires: javassist
-BuildRequires: sitemesh
 BuildRequires: ehcache-core
 BuildRequires: hibernate3 >= 0:3.6.10
 BuildRequires: hibernate3-c3p0 >= 3.6.10
@@ -118,6 +117,7 @@ Requires: tomcat-servlet-3.0-api >= 7
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
+BuildRequires: sitemesh
 %else
 Requires: struts >= 0:1.3.0
 Requires: struts-taglib >= 0:1.3.0
