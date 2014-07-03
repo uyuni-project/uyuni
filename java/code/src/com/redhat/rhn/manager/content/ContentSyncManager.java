@@ -178,51 +178,47 @@ public class ContentSyncManager {
     /**
      * Update channel information in the database.
      */
-    public void updateChannels() {
+    public void updateChannels() throws ContentSyncException {
         // TODO if ISS slave then do nothing
-        try {
-            // Read contents of channels.xml into a map
-            Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
-            for (SUSEChannel c : readChannels()) {
-                channelsXML.put(c.getLabel(), c);
-            }
+        // Read contents of channels.xml into a map
+        Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
+        for (SUSEChannel c : readChannels()) {
+            channelsXML.put(c.getLabel(), c);
+        }
 
-            // Get all vendor channels from the database
-            List<Channel> channelsDB = ChannelFactory.listVendorChannels();
-            for (Channel c : channelsDB) {
-                if (channelsXML.containsKey(c.getLabel())) {
-                    SUSEChannel channel = channelsXML.get(c.getLabel());
-                    if (!channel.getDescription().equals(c.getDescription()) ||
-                            !channel.getName().equals(c.getName()) ||
-                            !channel.getSummary().equals(c.getSummary()) ||
-                            !channel.getUpdateTag().equals(c.getUpdateTag())) {
-                        // There is a difference, copy channel attributes and save
-                        c.setDescription(channel.getDescription());
-                        c.setName(channel.getName());
-                        c.setSummary(channel.getSummary());
-                        c.setUpdateTag(channel.getUpdateTag());
-                        ChannelFactory.save(c);
-                    }
-                }
-                else {
-                    // Channel no longer mirrorable
+        // Get all vendor channels from the database
+        List<Channel> channelsDB = ChannelFactory.listVendorChannels();
+        for (Channel c : channelsDB) {
+            if (channelsXML.containsKey(c.getLabel())) {
+                SUSEChannel channel = channelsXML.get(c.getLabel());
+                if (!channel.getDescription().equals(c.getDescription()) ||
+                        !channel.getName().equals(c.getName()) ||
+                        !channel.getSummary().equals(c.getSummary()) ||
+                        !channel.getUpdateTag().equals(c.getUpdateTag())) {
+                    // There is a difference, copy channel attributes and save
+                    c.setDescription(channel.getDescription());
+                    c.setName(channel.getName());
+                    c.setSummary(channel.getSummary());
+                    c.setUpdateTag(channel.getUpdateTag());
+                    ChannelFactory.save(c);
                 }
             }
+            else {
+                // Channel no longer mirrorable
+            }
+        }
 
-            // Update content source URLs
-            List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
-            for (ContentSource cs : contentSources) {
-                if (channelsXML.containsKey(cs.getLabel())) {
-                    // TODO: Check if self._alternativeMirrorUrl(channel) is needed
-                    SUSEChannel channel = channelsXML.get(cs.getLabel());
-                    if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
-                        cs.setSourceUrl(channel.getSourceUrl());
-                        ChannelFactory.save(cs);
-                    }
+        // Update content source URLs
+        List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
+        for (ContentSource cs : contentSources) {
+            if (channelsXML.containsKey(cs.getLabel())) {
+                // TODO: Check if self._alternativeMirrorUrl(channel) is needed
+                SUSEChannel channel = channelsXML.get(cs.getLabel());
+                if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
+                    cs.setSourceUrl(channel.getSourceUrl());
+                    ChannelFactory.save(cs);
                 }
             }
-        } catch (ContentSyncException e) {
-            log.error("Error updating channels: " + e.getMessage(), e);
         }
     }
 
