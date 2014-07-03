@@ -33,6 +33,7 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
+import com.suse.scc.model.SCCSubscription;
 
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -175,6 +176,23 @@ public class ContentSyncManager {
             log.debug("Found " + reposList.size() + " available repositories.");
         }
         return reposList;
+    }
+
+    /**
+     * Returns all subscriptions, available to all configured credentials.
+     * @return list of all available subscriptions.
+     */
+    public Collection<SCCSubscription> getSubscriptions() {
+        Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
+        for (MirrorCredentialsDto c : new MirrorCredentialsManager().findMirrorCredentials()) {
+            try {
+                subscriptions.addAll(new SCCClient(c.getUser(),
+                                                   c.getPassword()).listSubscriptions());
+            } catch (SCCClientException ex) {
+                log.error(ex.getMessage(), ex);
+            }
+        }
+        return subscriptions;
     }
 
     /**
