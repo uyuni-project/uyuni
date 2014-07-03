@@ -130,7 +130,8 @@ public class ContentSyncManager {
             try {
                 List<SCCProduct> products = scc.listProducts();
                 productList.addAll(products);
-            } catch (SCCClientException e) {
+            }
+            catch (SCCClientException e) {
                 log.error(e.getMessage(), e);
             }
         }
@@ -154,7 +155,8 @@ public class ContentSyncManager {
             try {
                 List<SCCRepository> repos = scc.listRepositories();
                 reposList.addAll(repos);
-            } catch (SCCClientException e) {
+            }
+            catch (SCCClientException e) {
                 log.error(e.getMessage(), e);
             }
         }
