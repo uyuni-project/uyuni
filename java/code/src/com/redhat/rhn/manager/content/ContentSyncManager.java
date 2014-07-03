@@ -60,6 +60,14 @@ public class ContentSyncManager {
     private static final String CHANNEL_FAMILIES_XML = "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = "upgrade_paths.xml";
 
+    // This was a guesswork and we so far *have* to stay on this value.
+    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L69
+    private static final Integer RESET_ENTITLEMENT = 10;
+
+    // The "limitless or endless in space" at SUSE is 200000. Of type Long.
+    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
+    private static final Long INFINITE = 200000L;
+
     // The default path where to find those
     private String pathPrefix = "/usr/share/susemanager/";
 
@@ -256,13 +264,13 @@ public class ContentSyncManager {
      * Create new or update an existing channel family.
      * @return {@link ChannelFamily}
      */
-    private ChannelFamily configureChannelFamilyByLabel(SUSEChannelFamily channel) {
-        ChannelFamily family = ChannelFamilyFactory.lookupByLabel(channel.getLabel(), null);
+    private ChannelFamily getChannelFamily(String label, String name) {
+        ChannelFamily family = ChannelFamilyFactory.lookupByLabel(label, null);
         if (family == null) {
             family = new ChannelFamily();
-            family.setLabel(channel.getLabel());
+            family.setLabel(label);
             family.setOrg(null);
-            family.setName(channel.getName());
+            family.setName(name);
             ChannelFamilyFactory.save(family);
         }
 
@@ -286,13 +294,11 @@ public class ContentSyncManager {
      */
     public void updateChannelFamilies() throws ContentSyncException {
         for (SUSEChannelFamily scf : this.readChannelFamilies()) {
-            ChannelFamily family = this.configureChannelFamilyByLabel(scf);
+            ChannelFamily family = this.getChannelFamily(scf.getLabel(), scf.getName());
             if (family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pf = this.newPrivateChannelFamily(family);
                 if (scf.getDefaultNodeCount() < 0) {
-                    // The "limitless or endless in space" at SUSE is 200000. Of type Long.
-                    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
-                    pf.setMaxMembers(200000L);
+                    pf.setMaxMembers(ContentSyncManager.INFINITE);
                 }
 
                 family.addPrivateChannelFamily(pf);
