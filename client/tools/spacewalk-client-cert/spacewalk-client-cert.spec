@@ -32,11 +32,13 @@ make -f Makefile.spacewalk-client-cert install PREFIX=$RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-
 %files
+%dir /etc/sysconfig/rhn
+%dir /etc/sysconfig/rhn/clientCaps.d
 %config  /etc/sysconfig/rhn/clientCaps.d/client-cert
+%dir /usr/share/rhn
+%dir /usr/share/rhn/actions
 %{_datadir}/rhn/actions/clientcert.*
-
 
 %changelog
 * Mon Apr 28 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
