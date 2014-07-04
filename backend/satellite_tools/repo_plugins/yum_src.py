@@ -105,7 +105,7 @@ class YumUpdateMetadata(UpdateMetadata):
                             no.add(un)
 
 class ContentSource:
-    def __init__(self, url, name, insecure=False, quiet=False, interactive=True, yumsrc_conf=YUMSRC_CONF):, 
+    def __init__(self, url, name, insecure=False, quiet=False, interactive=True, yumsrc_conf=YUMSRC_CONF): 
         # pylint can't see inside the SplitResult class
         # pylint: disable=E1103
         if urlparse.urlsplit(url).scheme:
