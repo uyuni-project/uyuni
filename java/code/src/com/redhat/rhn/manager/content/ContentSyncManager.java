@@ -332,6 +332,7 @@ public class ContentSyncManager {
             String productClass = p.getProductClass();
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
                     productClass, null);
+            // TODO: Implement ncc_rhn_ent_mapping and check it here
             if (channelFamily == null) {
                 channelFamily = getChannelFamily(productClass, productClass);
             }
