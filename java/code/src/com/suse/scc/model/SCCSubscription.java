@@ -15,8 +15,9 @@
 package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
-
+import java.util.Date;
 import java.util.List;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * This is a subscription as parsed from JSON coming in from SCC.
@@ -80,15 +81,21 @@ public class SCCSubscription {
     /**
      * @return the startsAt
      */
-    public String getStartsAt() {
-        return startsAt;
+    public Date getStartsAt() {
+        // The date-time supposed to be strictly ISO-8601.
+        // Note that SimpleDateFormat is not ISO-8601 compliant on up to Java 6 inclusive.
+        return this.startsAt == null ? null :
+               DatatypeConverter.parseDateTime(this.startsAt).getTime();
     }
 
     /**
      * @return the expiresAt
      */
-    public String getExpiresAt() {
-        return expiresAt;
+    public Date getExpiresAt() {
+        // The date-time supposed to be strictly ISO-8601.
+        // Note that SimpleDateFormat is not ISO-8601 compliant on up to Java 6 inclusive.
+        return this.expiresAt == null ? null :
+               DatatypeConverter.parseDateTime(this.expiresAt).getTime();
     }
 
     /**
