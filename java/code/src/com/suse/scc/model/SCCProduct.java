@@ -180,4 +180,27 @@ public class SCCProduct {
         }
         return true;
     }
+
+    /* These setters are needed for unit testing */
+    public void setId(int idIn) {
+        this.id = idIn;
+    }
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+    public void setFriendlyName(String friendlyNameIn) {
+        this.friendlyName = friendlyNameIn;
+    }
+    public void setVersion(String versionIn) {
+        this.version = versionIn;
+    }
+    public void setReleaseType(String releaseTypeIn) {
+        this.releaseType = releaseTypeIn;
+    }
+    public void setArch(String archIn) {
+        this.arch = archIn;
+    }
+    public void setProductClass(String productClassIn) {
+        this.productClass = productClassIn;
+    }
 }

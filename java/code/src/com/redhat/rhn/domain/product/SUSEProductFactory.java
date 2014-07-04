@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -121,6 +123,17 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         SUSEProduct p = (SUSEProduct) session.get(SUSEProduct.class, id);
         return p;
+    }
+
+    /**
+     * Lookup a {@link SUSEProduct} object for given productId.
+     * @return SUSE product for given productId
+     */
+    public static SUSEProduct lookupByProductId(int productId) {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProduct.class);
+        c.add(Restrictions.eq("productId", productId));
+        return (SUSEProduct) c.uniqueResult();
     }
 
     /**
