@@ -348,17 +348,18 @@ public class ContentSyncManager {
             else {
                 // Otherwise create a new SUSE product and save it
                 product = new SUSEProduct();
-                product.setName(p.getName());
-                product.setVersion(p.getVersion());
-                product.setRelease(p.getReleaseType());
-                product.setFriendlyName(p.getFriendlyName());
                 product.setProductId(p.getId());
+                // TODO: It really needs to be converted to lower case, mc?
+                product.setName(p.getName().toLowerCase());
+                product.setVersion(p.getVersion().toLowerCase());
+                product.setRelease(p.getReleaseType().toLowerCase());
+                product.setFriendlyName(p.getFriendlyName());
                 product.setChannelFamilyId(channelFamily.getId().toString());
                 PackageArch arch = PackageFactory.lookupPackageArchByLabel(p.getArch());
                 product.setArch(arch);
                 product.setProductList('Y');
-                SUSEProductFactory.save(product);
             }
+            SUSEProductFactory.save(product);
         }
         // TODO: Remove products that are no longer available?
     }
