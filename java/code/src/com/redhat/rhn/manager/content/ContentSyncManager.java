@@ -329,10 +329,11 @@ public class ContentSyncManager {
     public void updateSUSEProducts(Collection<SCCProduct> products) {
         for (SCCProduct p : products) {
             // Get channel family if it is available, otherwise create it
+            String productClass = p.getProductClass();
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
-                    p.getProductClass(), null);
+                    productClass, null);
             if (channelFamily == null) {
-                channelFamily = getChannelFamily(p.getProductClass(), null);
+                channelFamily = getChannelFamily(productClass, productClass);
             }
 
             // Update this product in the database if it is there
@@ -341,10 +342,11 @@ public class ContentSyncManager {
             if (product != null) {
                 product.setFriendlyName(p.getFriendlyName());
                 product.setChannelFamilyId(channelFamily.getId().toString());
-                // TODO: product.setProductList(p.get???);
+                // TODO: Check with mc what to put here (and below)
+                product.setProductList('Y');
             }
             else {
-                // Otherwise create a new product and save it
+                // Otherwise create a new SUSE product and save it
                 product = new SUSEProduct();
                 product.setName(p.getName());
                 product.setVersion(p.getVersion());
@@ -354,10 +356,10 @@ public class ContentSyncManager {
                 product.setChannelFamilyId(channelFamily.getId().toString());
                 PackageArch arch = PackageFactory.lookupPackageArchByLabel(p.getArch());
                 product.setArch(arch);
-                // product.setProductList(p.get???);
+                product.setProductList('Y');
                 SUSEProductFactory.save(product);
             }
         }
-        // Remove products that are no longer available?
+        // TODO: Remove products that are no longer available?
     }
 }
