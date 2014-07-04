@@ -2439,4 +2439,15 @@ ORDER BY UPPER(COALESCE(X.SERVER_NAME, '(none)')), X.ID
   <elaborator name="system_overview" />
 </mode>
 
+<write-mode name="delete_scc_subscriptions">
+  <query params="">
+      UPDATE rhnprivatechannelfamily p SET max_members = 0
+       WHERE p.channel_family_id IN
+            (SELECT p.channel_family_id
+               FROM rhnprivatechannelfamily p
+               JOIN rhnchannelfamily f ON p.channel_family_id = f.id
+              WHERE p.max_members > 0 AND f.label NOT IN (%s))
+  </query>
+</write-mode>
+
 </datasource_modes>
