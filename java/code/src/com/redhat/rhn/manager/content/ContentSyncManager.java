@@ -214,7 +214,7 @@ public class ContentSyncManager {
     public void refresh() throws ContentSyncException {
         updateChannels();
         updateChannelFamilies();
-        updateSUSEProducts();
+        updateSUSEProducts(getProducts());
     }
 
     /**
@@ -312,11 +312,12 @@ public class ContentSyncManager {
     }
 
     /**
-     * Creates/updates entries in the SUSE Products DB table.
+     * Creates or updates entries in the SUSEProducts database table with a given list of
+     * {@link SCCProduct} objects.
+     *
+     * @param products list of products
      */
-    public void updateSUSEProducts() throws ContentSyncException {
-        // Get all available products from SCC
-        Collection<SCCProduct> products = getProducts();
+    public void updateSUSEProducts(Collection<SCCProduct> products) {
         for (SCCProduct p : products) {
             // Get channel family if it is available, otherwise create it
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
