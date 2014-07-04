@@ -14,18 +14,26 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
+import com.suse.scc.model.SCCProduct;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -74,6 +82,51 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             assertEquals("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/",
                     s.getSourceUrl());
         }
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateSUSEProducts()} inserting a new product.
+     * @throws Exception
+     */
+    public void testUpdateSUSEProducts() throws Exception {
+        // Create test product attributes
+        int productId = 12345;
+        assertNull(SUSEProductFactory.lookupByProductId(productId));
+        String name = TestUtils.randomString();
+        String version = TestUtils.randomString();
+        String releaseType = TestUtils.randomString();
+        String friendlyName = TestUtils.randomString();
+        String productClass = TestUtils.randomString();
+
+        // Setup a product as it comes from SCC
+        SCCProduct p = new SCCProduct();
+        p.setId(productId);
+        p.setName(name);
+        p.setVersion(version);
+        p.setReleaseType(releaseType);
+        p.setFriendlyName(friendlyName);
+        p.setProductClass(productClass);
+        p.setArch("i686");
+        List<SCCProduct> products = new ArrayList<SCCProduct>();
+        products.add(p);
+
+        // Call updateSUSEProducts()
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(products);
+
+        // Verify that a new product has been created correctly
+        SUSEProduct suseProduct = SUSEProductFactory.lookupByProductId(productId);
+        assertEquals(name, suseProduct.getName());
+        assertEquals(version, suseProduct.getVersion());
+        assertEquals(releaseType, suseProduct.getRelease());
+        assertEquals(friendlyName, suseProduct.getFriendlyName());
+        assertEquals(PackageFactory.lookupPackageArchByLabel("i686"),
+                suseProduct.getArch());
+
+        // Verify that a new channel family has been created correctly
+        ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(productClass, null);
+        assertNotNull(cf);
+        assertEquals(cf.getId().toString(), suseProduct.getChannelFamilyId());
     }
 
     /**
