@@ -283,6 +283,7 @@ public class ContentSyncManager {
             family.setLabel(label);
             family.setOrg(null);
             family.setName(name);
+            family.setProductUrl("some url");
             ChannelFamilyFactory.save(family);
         }
 
