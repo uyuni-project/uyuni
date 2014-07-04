@@ -25,6 +25,7 @@ import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
 
 import java.util.List;
+import javax.xml.bind.DatatypeConverter;
 
 import junit.framework.TestCase;
 
@@ -158,7 +159,7 @@ public class SCCClientTest extends TestCase {
         assertEquals("FULL", s.getType());
         assertEquals("EXPIRED", s.getStatus());
         assertEquals(null, s.getStartsAt());
-        assertEquals("2014-03-14T13:10:21.164Z", s.getExpiresAt());
+        assertEquals(DatatypeConverter.parseDateTime("2014-03-14T13:10:21.164Z").getTime(), s.getExpiresAt());
         assertEquals(new Integer(6), s.getSystemLimit());
         assertEquals(new Integer(1), s.getSystemsCount());
         assertEquals(null, s.getVirtualCount());
