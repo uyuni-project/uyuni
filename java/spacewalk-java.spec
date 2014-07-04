@@ -287,7 +287,7 @@ Requires: tomcat5
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7
 %else
-Requires: tomcat6
+Requires: tomcat >= 7
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
@@ -305,7 +305,7 @@ Requires: tomcat5
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: tomcat >= 7
 %else
-Requires: tomcat6
+Requires: tomcat >= 7
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
