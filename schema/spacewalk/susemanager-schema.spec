@@ -15,6 +15,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  python
+BuildRequires:  fdupes
 BuildRequires:  /usr/bin/pod2man
 Requires:       %{sbinpath}/restorecon
 
@@ -59,6 +60,7 @@ install -m 0755 -d $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-schema-upgrade.1 $RPM_BUILD_ROOT%{_mandir}/man1
 cp -p spacewalk-sql.1 $RPM_BUILD_ROOT%{_mandir}/man1
+%fdupes -s $RPM_BUILD_ROOT%{rhnroot}/schema-upgrade
 
 %clean
 rm -rf $RPM_BUILD_ROOT
