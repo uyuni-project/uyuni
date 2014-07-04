@@ -14,8 +14,8 @@
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %else
-%define appdir          %{_localstatedir}/lib/tomcat6/webapps
-%define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%define appdir          %{_localstatedir}/lib/tomcat/webapps
+%define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %endif
 %endif
 
@@ -522,9 +522,9 @@ ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
-ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
-install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcati7
+install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
+install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
 %endif
 
@@ -714,11 +714,11 @@ fi
 %if 0%{?suse_version}
 %dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
-%dir %{_localstatedir}/lib/tomcat6
+%dir %{_localstatedir}/lib/tomcat
 # /etc/tomcat6/Catalina on suse is a link to /var/cache/tomcat6/Catalina
 # and we need write permissions for tomcat there. So give this dir
 # special owner and permissions.
-%dir %attr(755, tomcat, tomcat) /etc/tomcat6/Catalina/localhost
+%dir %attr(755, tomcat, tomcat) /etc/tomcat/Catalina/localhost
 %endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, root, tomcat) %dir %{appdir}
@@ -856,7 +856,7 @@ fi
 %if 0%{?fedora}
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
-%config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %endif
 %endif
 %attr(755,root,root) %dir %{cobblerdir}
