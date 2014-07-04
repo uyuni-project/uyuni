@@ -191,18 +191,26 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns all subscriptions, available to all configured credentials.
-     * @return list of all available subscriptions.
+     * Returns all subscriptions available to all configured credentials.
+     * @return list of all available subscriptions
      */
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        for (MirrorCredentialsDto c : new MirrorCredentialsManager().findMirrorCredentials()) {
+        List<MirrorCredentialsDto> credentials =
+                new MirrorCredentialsManager().findMirrorCredentials();
+        // Query subscriptions for all mirror credentials
+        for (MirrorCredentialsDto c : credentials) {
+            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
             try {
-                subscriptions.addAll(new SCCClient(c.getUser(),
-                                                   c.getPassword()).listSubscriptions());
-            } catch (SCCClientException ex) {
-                log.error(ex.getMessage(), ex);
+                List<SCCSubscription> subs = scc.listSubscriptions();
+                subscriptions.addAll(subs);
             }
+            catch (SCCClientException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + subscriptions.size() + " available subscriptions.");
         }
         return subscriptions;
     }
