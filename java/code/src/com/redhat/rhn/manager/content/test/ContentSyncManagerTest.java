@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -88,7 +89,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * Test for {@link ContentSyncManager#updateSUSEProducts()} inserting a new product.
      * @throws Exception
      */
-    public void testUpdateSUSEProducts() throws Exception {
+    public void testUpdateSUSEProductsNew() throws Exception {
         // Create test product attributes
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
@@ -116,12 +117,67 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Verify that a new product has been created correctly
         SUSEProduct suseProduct = SUSEProductFactory.lookupByProductId(productId);
-        assertEquals(name, suseProduct.getName());
-        assertEquals(version, suseProduct.getVersion());
-        assertEquals(releaseType, suseProduct.getRelease());
+        assertEquals(name.toLowerCase(), suseProduct.getName());
+        assertEquals(version.toLowerCase(), suseProduct.getVersion());
+        assertEquals(releaseType.toLowerCase(), suseProduct.getRelease());
         assertEquals(friendlyName, suseProduct.getFriendlyName());
         assertEquals(PackageFactory.lookupPackageArchByLabel("i686"),
                 suseProduct.getArch());
+
+        // Verify that a new channel family has been created correctly
+        ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(productClass, null);
+        assertNotNull(cf);
+        assertEquals(cf.getId().toString(), suseProduct.getChannelFamilyId());
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateSUSEProducts()} update a product.
+     * @throws Exception
+     */
+    public void testUpdateSUSEProductsUpdate() throws Exception {
+        // Create test product attributes
+        int productId = 12345;
+        assertNull(SUSEProductFactory.lookupByProductId(productId));
+        String name = TestUtils.randomString().toLowerCase();
+        String version = TestUtils.randomString().toLowerCase();
+        String releaseType = TestUtils.randomString().toLowerCase();
+        String friendlyName = TestUtils.randomString();
+
+        // Store a SUSE product with those attributes
+        SUSEProduct suseProduct = new SUSEProduct();
+        suseProduct.setName(name);
+        suseProduct.setVersion(version);
+        suseProduct.setRelease(releaseType);
+        suseProduct.setFriendlyName(friendlyName);
+        suseProduct.setProductId(productId);
+        PackageArch arch = PackageFactory.lookupPackageArchByLabel("i686");
+        suseProduct.setArch(arch);
+        suseProduct.setProductList('Y');
+        SUSEProductFactory.save(suseProduct);
+
+        // Setup SCC product accordingly
+        SCCProduct p = new SCCProduct();
+        p.setId(productId);
+        p.setName(name);
+        p.setVersion(version);
+        p.setReleaseType(releaseType);
+        p.setArch("i686");
+        String productClass = TestUtils.randomString();
+        p.setProductClass(productClass);
+
+        // Set a new friendly name that should be updated
+        String friendlyNameNew = TestUtils.randomString();
+        p.setFriendlyName(friendlyNameNew);
+        List<SCCProduct> products = new ArrayList<SCCProduct>();
+        products.add(p);
+
+        // Call updateSUSEProducts()
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(products);
+
+        // Verify that the product has been updated correctly
+        suseProduct = SUSEProductFactory.lookupByProductId(productId);
+        assertEquals(friendlyNameNew, suseProduct.getFriendlyName());
 
         // Verify that a new channel family has been created correctly
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(productClass, null);
