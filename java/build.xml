@@ -275,7 +275,7 @@
     <mkdir dir="${report.dir}/apidocs" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/" />
     <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/" />
-    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src" additionalparam="-quiet" destdir="dummy_to_work_around_ant_bug_55949">
+    <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath" classpathref="buildjars" sourcepath="code/src" additionalparam="-quiet">
       <fileset dir="code" >
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java" />
         <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java" />
