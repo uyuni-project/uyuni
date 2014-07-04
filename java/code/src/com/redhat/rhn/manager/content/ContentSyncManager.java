@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -26,7 +27,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
@@ -38,18 +38,18 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
-
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
-
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
 
 /**
  * Content synchronization logic.
@@ -57,7 +57,7 @@ import java.util.Set;
 public class ContentSyncManager {
 
     // Logger instance
-    private static Logger log = Logger.getLogger(ContentSyncManager.class);
+    private static final Logger log = Logger.getLogger(ContentSyncManager.class);
 
     // Static files we parse
     private static final String CHANNELS_XML = "channels.xml";
@@ -71,6 +71,8 @@ public class ContentSyncManager {
     // The "limitless or endless in space" at SUSE is 200000. Of type Long.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
     private static final Long INFINITE = 200000L;
+    private static final String FULL_TYPE = "FULL";
+    private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
     // The default path where to find those
     private String pathPrefix = "/usr/share/susemanager/";
@@ -317,6 +319,88 @@ public class ContentSyncManager {
                 family.addPrivateChannelFamily(pf);
                 ChannelFamilyFactory.save(family);
             }
+        }
+    }
+
+    /**
+     * Subscription meta struct.
+     */
+    private static class SubscriptionMeta {
+        private final String productClass;
+        private final Integer consumed;
+        private final Long nodeCount = ContentSyncManager.INFINITE;
+        private final Date starts;
+        private final Date ends;
+
+        public SubscriptionMeta(String productClass, Integer consumed, Date starts, Date ends) {
+            this.productClass = productClass;
+            this.consumed = consumed;
+            this.starts = starts;
+            this.ends = ends;
+        }
+    }
+
+    /**
+     * Returns a mapping of the subscriptions quantity for each channel family.
+     * If there are families which have subscriptions in the database,
+     * but are not in the subscription list from SCC, node count is set to zero.
+     *
+     * @param subscriptions
+     * @return
+     * @throws ContentSyncException
+     */
+    private List<SubscriptionMeta> consolidateSubscriptions(Collection<SCCSubscription> subscriptions)
+            throws ContentSyncException {
+        Map<String, SubscriptionMeta> sc = new HashMap<String, SubscriptionMeta>();
+        Date now = new Date();
+        for (SCCSubscription subscription : subscriptions) {
+            Date start = subscription.getStartsAt() == null ?
+                         new Date() : subscription.getStartsAt();
+            Date end = subscription.getExpiresAt();
+            for (String productClass : subscription.getProductClasses()) {
+                if ((now.compareTo(start) >= 0 &&
+                     (end == null || now.compareTo(end) <= 0)) &&
+                    !subscription.getType().equals(ContentSyncManager.PROVISIONAL_TYPE)) {
+                    sc.put(productClass, new SubscriptionMeta(productClass, subscription.getSystemsCount(), start, end));
+                }
+            }
+        }
+
+        for (SUSEChannelFamily family : this.readChannelFamilies()) {
+            if (family.getDefaultNodeCount() < 0) {
+                sc.put(family.getLabel(), new SubscriptionMeta(family.getLabel(), 0, null, null));
+            }
+        }
+
+        ModeFactory.getWriteMode("System_queries", "delete_scc_subscriptions")
+                .executeUpdate(new HashMap<String, Object>(),
+                               new ArrayList<String>(sc.keySet()));
+
+        return new ArrayList<SubscriptionMeta>(sc.values());
+    }
+
+    /**
+     * The value of "10" comes from the part, where testers needed about this amount of
+     * subscriptions. It turns out that the customers are also have this number and dealing
+     * with it on their installations.
+     */
+    private void resetEntitlementsToDefault() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        ModeFactory.getWriteMode("SystemGroup_queries",
+                                 "reset_entitlements_bc").executeUpdate(params);
+        params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
+        ModeFactory.getWriteMode("SystemGroup_queries",
+                                 "reset_entitlements").executeUpdate(params);
+    }
+
+    /**
+     * Sync subscriptions from the SCC to the database.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     */
+    public void updateSubscriptions() throws ContentSyncException {
+        this.resetEntitlementsToDefault();
+        for (SubscriptionMeta meta : this.consolidateSubscriptions(this.getSubscriptions())) {
+            // Mapping for entitlements
         }
     }
 
