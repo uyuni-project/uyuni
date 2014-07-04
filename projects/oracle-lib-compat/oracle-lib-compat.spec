@@ -1,6 +1,6 @@
 Name:           oracle-lib-compat
 Version:        11.2.0.9.1
-Release:        1%{?dist}
+Release:        0.<RELEASE7>
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -14,15 +14,15 @@ Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
 
 %ifarch s390 s390x
-%define icversion 10.2.0.2
-%define icdir %{icversion}
+%define icversion 11.2.0.4.0
+%define icdir 11.2
 Requires(pre):       oracle-instantclient-basic = %{icversion}
 Requires(pre):       oracle-instantclient-sqlplus = %{icversion}
 BuildRequires:       oracle-instantclient-basic = %{icversion}
 BuildRequires:       oracle-instantclient-sqlplus = %{icversion}
-%define soversion 10
+%define soversion 11
 %else
-%define icversion 11.2.0.3.0
+%define icversion 11.2.0.4.0
 %define icdir 11.2
 Requires(pre):       oracle-instantclient11.2-basic = %{icversion}
 Requires(pre):       oracle-instantclient11.2-sqlplus = %{icversion}
@@ -55,7 +55,7 @@ Requires:       libaio.so.1%{lib64}
 #Provides:       libociei.so%{?lib64}       = %{icversion}
 Provides:       ojdbc14                    = %{icversion}
 Obsoletes:      rhn-oracle-jdbc           <= 1.0
-Requires:       libstdc++.so.5%{?lib64}
+Requires:       libstdc++.so.6%{?lib64}
 
 %description
 Compatibility package so that perl-DBD-Oracle will install.

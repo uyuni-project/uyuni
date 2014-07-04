@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Thu Jul  3 08:26:42 UTC 2014 - dmacvicar@suse.de
+
+- fixed paths
+
+-------------------------------------------------------------------
+Thu Jul  3 08:04:37 UTC 2014 - dmacvicar@suse.de
+
+- updated instant client to 11.2.0.4.0 
+
+-------------------------------------------------------------------
+Sat Jun 28 06:59:35 UTC 2014 - smoioli@suse.com
+
+- libstdc++ version requirement changed. Presently this needs to be tested 
+
+-------------------------------------------------------------------
 Fri Feb 07 13:52:33 CET 2014 - mc@suse.de
 
 - version 11.2.0.9.1-1
