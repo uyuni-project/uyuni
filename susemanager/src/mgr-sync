@@ -20,6 +20,7 @@ import os
 import optparse
 import getpass
 import xmlrpclib
+import socket
 
 
 # This class has been taken as is from the SMDBA.
@@ -107,19 +108,20 @@ class Config:
     RHNFILE = os.path.join(RHN, "rhn.conf")
 
     # Keys of the configuration
-    USER = "mgrsync.user"
-    PASSWORD = "mgrsync.password"
-    HOST = "mgrsync.host"
-    PORT = "mgrsync.port"
-    URI = "mgrsync.uri"
-    TOKEN = "mgrsync.session.token"
+    K_PREF = "mgrsync"
+    USER = K_PREF + ".user"
+    PASSWORD = K_PREF + ".password"
+    HOST = K_PREF + ".host"
+    PORT = K_PREF + ".port"
+    URI = K_PREF + ".uri"
+    TOKEN = K_PREF + ".session.token"
 
     # Default configuration, if not specified otherwise
     DEFAULTS = {
         USER : None,
         PASSWORD : None,
-        HOST : "localhost",
-        PORT : 8080,
+        HOST : socket.getfqdn(),
+        PORT : 80,
         URI : "/rpc/api",
         TOKEN : None,
         }
@@ -131,7 +133,7 @@ class Config:
         """
         return dict(map(lambda elm : tuple(map(lambda opt : opt.strip(), elm.split("=", 1))),
                         filter(None, [line.strip() for line in open(filename).readlines()
-                                      if not line.strip().startswith("#")])))
+                                      if not line.strip().startswith("#") and line.strip().startswith(Config.K_PREF)])))
 
 
     @staticmethod
