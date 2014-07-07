@@ -220,8 +220,8 @@ class Authenticator(object):
 
 
     def _ask_cli(self, msg, password=False):
-        """                                                                                                                                                                          
-        Ask input from the console. Hide the echo, in case of password or sensitive information.                                                                                     
+        """
+        Ask input from the console. Hide the echo, in case of password or sensitive information.
         """
         msg += ": "
         value = None
@@ -233,7 +233,7 @@ class Authenticator(object):
 
 class App(object):
     """
-    App that utilizing the XML-RPC API.
+    App, which utilizes the XML-RPC API.
     """
 
     def __init__(self, config):
@@ -330,7 +330,7 @@ class App(object):
 
     def _format_flat(self, data, title=""):
         """
-        Format the tabular outout.
+        Format the tabular output.
         """
         table = []
         idx = 1
