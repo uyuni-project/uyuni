@@ -232,7 +232,7 @@ public class ContentSyncManager {
      * Update channel information in the database.
      */
     public void updateChannels() throws ContentSyncException {
-        // TODO if ISS slave then do nothing
+        // TODO: If this is an ISS slave then do nothing
         // Read contents of channels.xml into a map
         Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
         for (SUSEChannel c : readChannels()) {
@@ -257,7 +257,7 @@ public class ContentSyncManager {
                 }
             }
             else {
-                // Channel no longer mirrorable
+                // Channel is no longer mirrorable, we can return those and warn about it
             }
         }
 
@@ -265,7 +265,7 @@ public class ContentSyncManager {
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
-                // TODO: Check if self._alternativeMirrorUrl(channel) is needed
+                // TODO: Check if alternative mirror URL is set and consider it here
                 SUSEChannel channel = channelsXML.get(cs.getLabel());
                 if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
                     cs.setSourceUrl(channel.getSourceUrl());
@@ -412,14 +412,14 @@ public class ContentSyncManager {
             if (product != null) {
                 product.setFriendlyName(p.getFriendlyName());
                 product.setChannelFamilyId(channelFamily.getId().toString());
-                // TODO: Check with mc what to put here (and below)
+                // TODO: Remove this attribute from database if it is not used anywhere
                 product.setProductList('Y');
             }
             else {
                 // Otherwise create a new SUSE product and save it
                 product = new SUSEProduct();
                 product.setProductId(p.getId());
-                // TODO: It really needs to be converted to lower case, mc?
+                // Convert those to lower case for case insensitive operating
                 product.setName(p.getName().toLowerCase());
                 product.setVersion(p.getVersion().toLowerCase());
                 product.setRelease(p.getReleaseType().toLowerCase());
@@ -431,6 +431,5 @@ public class ContentSyncManager {
             }
             SUSEProductFactory.save(product);
         }
-        // TODO: Remove products that are no longer available?
     }
 }
