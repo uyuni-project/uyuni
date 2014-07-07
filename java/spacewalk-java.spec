@@ -684,13 +684,13 @@ rm -rf $RPM_BUILD_ROOT
 %post config
 if [ ! -d /var/log/rhn ]; then
     mkdir /var/log/rhn
-    chown -f root:www /var/log/rhn
+    chown root:www /var/log/rhn
     chmod 770 /var/log/rhn
 fi
 if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
     touch /var/log/rhn/rhn_web_api.log
 fi
-chown -f tomcat:www /var/log/rhn/rhn_web_api.log
+chown tomcat:www /var/log/rhn/rhn_web_api.log
 
 %else
 %post -n spacewalk-taskomatic
