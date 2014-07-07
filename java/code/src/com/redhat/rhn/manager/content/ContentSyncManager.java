@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.SubscriptionDto;
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
@@ -44,7 +45,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +70,7 @@ public class ContentSyncManager {
 
     // The "limitless or endless in space" at SUSE is 200000. Of type Long.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
-    private static final Long INFINITE = 200000L;
+    public static final Long INFINITE = 200000L;
     private static final String FULL_TYPE = "FULL";
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
@@ -323,24 +323,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * Subscription meta struct.
-     */
-    private static class SubscriptionMeta {
-        private final String productClass;
-        private final Integer consumed;
-        private final Long nodeCount = ContentSyncManager.INFINITE;
-        private final Date starts;
-        private final Date ends;
-
-        public SubscriptionMeta(String productClass, Integer consumed, Date starts, Date ends) {
-            this.productClass = productClass;
-            this.consumed = consumed;
-            this.starts = starts;
-            this.ends = ends;
-        }
-    }
-
-    /**
      * Returns a mapping of the subscriptions quantity for each channel family.
      * If there are families which have subscriptions in the database,
      * but are not in the subscription list from SCC, node count is set to zero.
@@ -349,9 +331,9 @@ public class ContentSyncManager {
      * @return
      * @throws ContentSyncException
      */
-    private List<SubscriptionMeta> consolidateSubscriptions(Collection<SCCSubscription> subscriptions)
+    private List<SubscriptionDto> consolidateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
-        Map<String, SubscriptionMeta> sc = new HashMap<String, SubscriptionMeta>();
+        Map<String, SubscriptionDto> sc = new HashMap<String, SubscriptionDto>();
         Date now = new Date();
         for (SCCSubscription subscription : subscriptions) {
             Date start = subscription.getStartsAt() == null ?
@@ -361,14 +343,16 @@ public class ContentSyncManager {
                 if ((now.compareTo(start) >= 0 &&
                      (end == null || now.compareTo(end) <= 0)) &&
                     !subscription.getType().equals(ContentSyncManager.PROVISIONAL_TYPE)) {
-                    sc.put(productClass, new SubscriptionMeta(productClass, subscription.getSystemsCount(), start, end));
+                    sc.put(productClass, new SubscriptionDto(subscription.getName(), productClass,
+                            subscription.getSystemsCount(), start, end));
                 }
             }
         }
 
         for (SUSEChannelFamily family : this.readChannelFamilies()) {
             if (family.getDefaultNodeCount() < 0) {
-                sc.put(family.getLabel(), new SubscriptionMeta(family.getLabel(), 0, null, null));
+                sc.put(family.getLabel(), new SubscriptionDto(family.getName(),
+                        family.getLabel(), 0, null, null));
             }
         }
 
@@ -376,7 +360,7 @@ public class ContentSyncManager {
                 .executeUpdate(new HashMap<String, Object>(),
                                new ArrayList<String>(sc.keySet()));
 
-        return new ArrayList<SubscriptionMeta>(sc.values());
+        return new ArrayList<SubscriptionDto>(sc.values());
     }
 
     /**
@@ -399,7 +383,7 @@ public class ContentSyncManager {
      */
     public void updateSubscriptions() throws ContentSyncException {
         this.resetEntitlementsToDefault();
-        for (SubscriptionMeta meta : this.consolidateSubscriptions(this.getSubscriptions())) {
+        for (SubscriptionDto meta : this.consolidateSubscriptions(this.getSubscriptions())) {
             // Mapping for entitlements
         }
     }
