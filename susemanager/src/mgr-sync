@@ -270,20 +270,35 @@ class App(object):
         return self.conn.sync.content.listProducts(self.auth())
 
 
-    def run(self, options):
+    def run(self, options, attempted=False):
         """
         Run the app.
         """
-        self.auth.persist = options.saveconfig
-        if options.listchannels:
-            self.format(self._listChannels())
-        elif options.listproducts:
-            self.format(self._listProducts())
-        elif options.addproduct:
-            self._addProduct()
-        elif options.addchannel:
-            self._addChannel()
-
+        try:
+            self.auth.persist = options.saveconfig
+            if options.listchannels:
+                self.format(self._listChannels())
+            elif options.listproducts:
+                self.format(self._listProducts())
+            elif options.addproduct:
+                self._addProduct()
+            elif options.addchannel:
+                self._addChannel()
+        except xmlrpclib.Fault, ex:
+            # Try to figure out it is an outdated session
+            fault = ex.faultString.lower()
+            if 'session' in fault and 'is not valid.' in fault:
+                if not attempted:
+                    if options.verbose:
+                        print "Cached session is outdated. Trying to connect..."
+                    self.auth.token = None
+                    self.run(options, attempted=True)
+                else:
+                    raise ex
+            else:
+                # The error does not seems like a failed session
+                raise ex
+            
 
     def format(self, data):
         """
