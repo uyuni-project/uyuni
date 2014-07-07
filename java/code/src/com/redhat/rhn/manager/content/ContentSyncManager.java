@@ -225,6 +225,7 @@ public class ContentSyncManager {
         updateChannels();
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
+        updateSubscriptions();
     }
 
     /**
