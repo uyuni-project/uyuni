@@ -14,16 +14,87 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import java.util.Date;
 
 /**
  * DTO to be used for listing subscriptions in the UI.
  */
 public class SubscriptionDto {
-
+    private String productClass;
+    private Integer consumed;
+    private Long nodeCount = ContentSyncManager.INFINITE;
     private String name;
     private Date startDate;
     private Date endDate;
+
+    /**
+     * Constructor.
+     *
+     * @param productClass
+     * @param consumed
+     * @param name
+     * @param startDate
+     * @param endDate
+     */
+    public SubscriptionDto(String name, String productClass, Integer consumed,
+            Date startDate, Date endDate) {
+        this.productClass = productClass;
+        this.consumed = consumed;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public SubscriptionDto() {}
+
+    /**
+     * Set consumed.
+     * @param consumed
+     */
+    public void setConsumed(Integer consumed) {
+        this.consumed = consumed;
+    }
+
+    /**
+     * Get consumed.
+     * @return
+     */
+    public Integer getConsumed() {
+        return consumed;
+    }
+
+    /**
+     * Set node count.
+     * @param nodeCount
+     */
+    public void setNodeCount(Long nodeCount) {
+        this.nodeCount = nodeCount;
+    }
+
+    /**
+     * Get node count.
+     * @return
+     */
+    public Long getNodeCount() {
+        return nodeCount;
+    }
+
+    /**
+     * Set product class.
+     * @param productClass
+     */
+    public void setProductClass(String productClass) {
+        this.productClass = productClass;
+    }
+
+    /**
+     * Get product class.
+     * @return
+     */
+    public String getProductClass() {
+        return productClass;
+    }
 
     /**
      * @return the name
