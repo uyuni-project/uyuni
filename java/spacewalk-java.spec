@@ -252,6 +252,13 @@ Provides: rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
 This package contains the code for the Java version of the Spacewalk Web Site.
 
 %package config
+%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1315
+Requires(Pre): tomcat
+%else
+Requires(Pre): tomcat6
+%endif
+%endif
 Summary: Configuration files for Spacewalk Java
 Group: Applications/Internet
 Obsoletes: rhn-java-config < 5.3.0
