@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -34,6 +35,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+import com.suse.contentsync.SUSEChannelFamily;
 import com.suse.scc.model.SCCProduct;
 
 /**
@@ -183,6 +185,41 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(productClass, null);
         assertNotNull(cf);
         assertEquals(cf.getId().toString(), suseProduct.getChannelFamilyId());
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateChannelFamilies() method.
+     * @throws Exception
+     */
+    public void testUpdateChannelFamilies() throws Exception {
+        File cf = new File(getPathToFile("channel_families.xml"));
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setChannelFamiliesXML(cf.getAbsolutePath());
+
+        try {
+            // Prepare private families data (i.e. no private families)
+            for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
+                assertNotNull(family);
+                if (!family.getPrivateChannelFamilies().isEmpty()) {
+                    family.getPrivateChannelFamilies().clear();
+                }
+                assertTrue(family.getPrivateChannelFamilies().isEmpty());
+                ChannelFamilyFactory.save(family);
+            }
+
+            csm.updateChannelFamilies();
+
+            for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
+                assertNotNull(family);
+                assertFalse(family.getPrivateChannelFamilies().isEmpty());
+                assertEquals((long) (scf.getDefaultNodeCount() < 0 ? 200000L : 0L),
+                         (long) family.getPrivateChannelFamilies().iterator().next().getMaxMembers());
+            }
+        } finally {
+            cf.delete();
+        }
     }
 
     /**
