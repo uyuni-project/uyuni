@@ -7,6 +7,7 @@ Summary:        Oracle SQL schema for Spacewalk server
 Version:        2.2.28
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
 
 License:        GPLv2
 Url:            http://fedorahosted.org/spacewalk/
