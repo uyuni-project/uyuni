@@ -15,6 +15,7 @@ Group:          System Environment/Base
 License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source1:        %{name}-rpmlintrc
 
 Version:        5.4.53
 Release:        1%{?dist}
