@@ -82,7 +82,7 @@ public class ContentSyncManager {
 
     /**
      * Set the path where to find channels.xml.
-     * @param path the path where to find channels.xml
+     * @param pathToChannelsXML the path where to find channels.xml
      */
     public void setChannelsXML(String pathToChannelsXML) {
         channelsXML = pathToChannelsXML;
@@ -90,7 +90,7 @@ public class ContentSyncManager {
 
     /**
      * Set the path where to find channels_families.xml.
-     * @param path the path where to find channel_families.xml
+     * @param pathToChannelsXML the path where to find channel_families.xml
      */
     public void setChannelFamiliesXML(String pathToChannelsXML) {
         channelFamiliesXML = pathToChannelsXML;
@@ -98,7 +98,7 @@ public class ContentSyncManager {
 
     /**
      * Set the path where to find upgrade_paths.xml.
-     * @param path the path where to find upgrade_paths.xml
+     * @param pathToXMLFile the path where to find upgrade_paths.xml
      */
     public void setUpgradePathsXML(String pathToXMLFile) {
         upgradePathsXML = pathToXMLFile;
