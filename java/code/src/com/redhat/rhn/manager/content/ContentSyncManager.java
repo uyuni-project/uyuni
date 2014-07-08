@@ -428,8 +428,14 @@ public class ContentSyncManager {
             String productClass = p.getProductClass();
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
                     productClass, null);
-            if (channelFamily == null && SystemEntitlement.valueOf(productClass) == null) {
-                channelFamily = getChannelFamily(productClass, productClass);
+            if (channelFamily == null) {
+                try {
+                    SystemEntitlement.valueOf(productClass);
+                }
+                catch (IllegalArgumentException e) {
+                    // Do not create channel family for system entitlement
+                    channelFamily = getChannelFamily(productClass, productClass);
+                }
             }
 
             // Update this product in the database if it is there
