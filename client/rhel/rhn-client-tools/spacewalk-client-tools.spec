@@ -46,10 +46,6 @@ Requires: python-hwdata
 Requires: python-gudev
 Requires: python-hwdata
 %else
-%if 0%{?suse_version} == 1010
-# Preliminary: This the version available on code 10, maybe we need to update....
-Requires: hal >= 0.5.6
-%else
 Requires: hal >= 0.5.8.1-52
 %endif
 %endif
