@@ -10,14 +10,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
 %if 0%{?suse_version}
 BuildRequires: apache2
-
-# only required for pylint in %check
-BuildRequires: pylint
-BuildRequires: spacewalk-backend
 %endif
 BuildArch: noarch
 Requires: httpd
-%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} > 1100
+%if 0%{?fedora} || 0%{?rhel} > 5
 # pylint check
 BuildRequires: spacewalk-pylint
 BuildRequires: rhnpush >= 5.5.74
@@ -202,7 +198,7 @@ ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+%if 0%{?fedora} || 0%{?rhel} > 5
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
