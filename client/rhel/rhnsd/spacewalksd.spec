@@ -8,6 +8,7 @@ Summary: Spacewalk query daemon
 License: GPL-2.0
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
+Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
 Version: 5.0.14.4
