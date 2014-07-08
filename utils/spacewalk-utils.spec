@@ -81,6 +81,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/%{rhnroot}
 make install PREFIX=$RPM_BUILD_ROOT ROOT=%{rhnroot} \
     MANDIR=%{_mandir} %{?pod2man}
+pushd %{buildroot}
+find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+popd
 
 
 %clean
