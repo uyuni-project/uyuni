@@ -209,7 +209,11 @@ BuildRequires: java-devel >= 1.6.0
 BuildRequires: jcommon
 BuildRequires: jdom
 BuildRequires: jfreechart >= 1.0.9
+%if 0%{?suse_version}
+BuildRequires: pam-modules
+%else
 BuildRequires: jpam
+%endif
 BuildRequires: jta
 BuildRequires: jsch
 BuildRequires: postgresql-jdbc
@@ -366,7 +370,11 @@ Requires: jakarta-taglibs-standard
 Requires: java >= 0:1.6.0
 Requires: java-devel >= 0:1.6.0
 Requires: jcommon
+%if 0%{?suse_version}
+Requires: pam-modules
+%else
 Requires: jpam
+%endif
 Requires: log4j
 Requires: quartz < 2.0
 Requires: simple-core
