@@ -129,6 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 # NOTE: If if you change these, you need to make a corresponding change in
 # spacewalk/install/Spacewalk-Setup/bin/spacewalk-setup
 %if 0%{?suse_version}
+%dir %{_sysconfdir}/rhn/spacewalk-repo-sync
 %dir %{_sysconfdir}/ssl/servercerts
 %config(noreplace) %{_sysconfdir}/ssl/private/spacewalk.key
 %config(noreplace) %{_sysconfdir}/ssl/servercerts/spacewalk.crt
