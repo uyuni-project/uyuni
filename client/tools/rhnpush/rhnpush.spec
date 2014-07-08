@@ -9,6 +9,7 @@ URL:           http://fedorahosted.org/spacewalk
 Version:       5.5.80
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source1:       %{name}-rpmlintrc
 BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:     noarch
 Requires:      rpm-python
