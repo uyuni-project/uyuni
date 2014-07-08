@@ -9,6 +9,7 @@ Name: spacewalk-koan
 Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
+Source1: %{name}-rpmlintrc
 Version: 2.2.3
 Release: 1%{?dist}
 BuildArch : noarch
