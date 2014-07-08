@@ -262,7 +262,7 @@ fi
 
 %post redirect
 %if 0%{?suse_version}
-/sbin/service apache2 try-restart > /dev/null 2>&1
+/sbin/service apache2 try-restart > /dev/null 2>&1 ||:
 %else
 /sbin/service httpd condrestart > /dev/null 2>&1
 %endif
