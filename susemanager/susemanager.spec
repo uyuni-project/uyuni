@@ -11,8 +11,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  python-devel
 
 # check section
-BuildRequires:  pylint
-BuildRequires:  python-unittest2
 BuildRequires:  python-mock
 BuildRequires:  python-curl
 BuildRequires:  spacewalk-backend >= 1.7.38.20
@@ -90,7 +88,6 @@ cp -a %{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
 cp -a %{buildroot}%{python_sitelib}/spacewalk/* /var/tmp/fakepython/spacewalk/
 export PYTHONPATH=/var/tmp/fakepython/:%{_datadir}/rhn
 make -f Makefile.susemanager unittest
-make -f Makefile.susemanager pylint
 unset PYTHONPATH
 rm -rf /var/tmp/fakepython
 pushd %{buildroot}
