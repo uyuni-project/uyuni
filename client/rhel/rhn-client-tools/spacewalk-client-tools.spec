@@ -13,6 +13,7 @@ Summary: Support programs and libraries for Spacewalk
 License: GPL-2.0
 Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
+Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
 Version: 2.2.4
 Release: 1%{?dist}
