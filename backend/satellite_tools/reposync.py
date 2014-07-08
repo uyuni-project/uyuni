@@ -222,7 +222,7 @@ class RepoSync(object):
             plugin = None
 
             # If the repository uses a uln:// URL, switch to the ULN plugin, overriding the command-line
-            if url.startswith("uln://"):
+            if data['source_url'].startswith("uln://"):
                 self.repo_plugin = self.load_plugin("uln")
 
             try:
