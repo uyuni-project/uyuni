@@ -230,6 +230,7 @@ public class ContentSyncManager {
 
     /**
      * Update channel information in the database.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void updateChannels() throws ContentSyncException {
         // TODO: If this is an ISS slave then do nothing
