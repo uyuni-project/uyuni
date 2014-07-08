@@ -21,6 +21,7 @@ import os
 import io
 import re
 import xml.etree.ElementTree as etree
+from xml.etree.ElementTree import ParseError
 from datetime import date
 from urlparse import urlparse, urljoin
 from xml.parsers.expat import ExpatError
@@ -251,7 +252,7 @@ class NCCSync(object):
         """Parse an NCC XML document returning the root xml.ElementTree object"""
         try:
             tree = etree.parse(xml)
-        except ExpatError:
+        except (ExpatError, ParseError):
             self.error_msg("Could not parse XML. The remote document "
                            "does not appear to be a valid XML document. "
                            "This document was written to the logfile: %s." %
