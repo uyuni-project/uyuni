@@ -15,20 +15,18 @@
 
 package com.suse.contentsync.test;
 
-import com.redhat.rhn.manager.content.test.ContentSyncManagerTest;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
+
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
 import com.suse.contentsync.SUSEChannels;
 import com.suse.contentsync.SUSEUpgradePath;
 import com.suse.contentsync.SUSEUpgradePaths;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.simpleframework.xml.core.Persister;
 
 /**
