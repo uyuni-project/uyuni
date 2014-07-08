@@ -211,7 +211,7 @@ if [ -f %{_sysconfdir}/sysconfig/rhn/systemid ]; then
     chmod 0640 %{_sysconfdir}/sysconfig/rhn/systemid
 fi
 %if 0%{?suse_version}
-/sbin/service apache2 try-restart > /dev/null 2>&1
+/sbin/service apache2 try-restart > /dev/null 2>&1 ||:
 %else
 /sbin/service httpd condrestart > /dev/null 2>&1
 %endif
