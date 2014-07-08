@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
+import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -28,6 +29,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
+
 import com.suse.contentsync.SUSEChannel;
 import com.suse.contentsync.SUSEChannelFamilies;
 import com.suse.contentsync.SUSEChannelFamily;
@@ -39,6 +41,7 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,6 +51,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
@@ -259,7 +263,11 @@ public class ContentSyncManager {
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void updateChannels() throws ContentSyncException {
-        // TODO: If this is an ISS slave then do nothing
+        // If this is an ISS slave then do nothing
+        if (IssFactory.getCurrentMaster() != null) {
+            return;
+        }
+
         // Read contents of channels.xml into a map
         Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
         for (SUSEChannel c : readChannels()) {
