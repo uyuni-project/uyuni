@@ -59,11 +59,6 @@ public class ContentSyncManager {
     // Logger instance
     private static final Logger log = Logger.getLogger(ContentSyncManager.class);
 
-    // Static files we parse
-    private static final String CHANNELS_XML = "channels.xml";
-    private static final String CHANNEL_FAMILIES_XML = "channel_families.xml";
-    private static final String UPGRADE_PATHS_XML = "upgrade_paths.xml";
-
     // This was a guesswork and we so far *have* to stay on this value.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L69
     private static final Integer RESET_ENTITLEMENT = 10;
@@ -74,8 +69,10 @@ public class ContentSyncManager {
     private static final String FULL_TYPE = "FULL";
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
-    // The default path where to find those
-    private String pathPrefix = "/usr/share/susemanager/";
+    // Static XML files we parse
+    private static String channelsXML = "/usr/share/susemanager/channels.xml";
+    private static String channelFamiliesXML = "/usr/share/susemanager/channel_families.xml";
+    private static String upgradePathsXML = "/usr/share/susemanager/upgrade_paths.xml";
 
     /**
      * Default constructor.
@@ -84,11 +81,27 @@ public class ContentSyncManager {
     }
 
     /**
-     * Set a directory where to find channels.xml etc.
-     * @param path the path prefix to set
+     * Set the path where to find channels.xml.
+     * @param path the path where to find channels.xml
      */
-    public void setPathPrefix(String path) {
-        this.pathPrefix = path;
+    public void setChannelsXML(String pathToChannelsXML) {
+        channelsXML = pathToChannelsXML;
+    }
+
+    /**
+     * Set the path where to find channels_families.xml.
+     * @param path the path where to find channel_families.xml
+     */
+    public void setChannelFamiliesXML(String pathToChannelsXML) {
+        channelFamiliesXML = pathToChannelsXML;
+    }
+
+    /**
+     * Set the path where to find upgrade_paths.xml.
+     * @param path the path where to find upgrade_paths.xml
+     */
+    public void setUpgradePathsXML(String pathToXMLFile) {
+        upgradePathsXML = pathToXMLFile;
     }
 
     /**
@@ -101,7 +114,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannels.class,
-                    new File(pathPrefix + CHANNELS_XML)).getChannels();
+                    new File(channelsXML)).getChannels();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -118,7 +131,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannelFamilies.class,
-                    new File(pathPrefix + CHANNEL_FAMILIES_XML)).getFamilies();
+                    new File(channelFamiliesXML)).getFamilies();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -135,7 +148,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEUpgradePaths.class,
-                    new File(pathPrefix + UPGRADE_PATHS_XML)).getPaths();
+                    new File(upgradePathsXML)).getPaths();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);

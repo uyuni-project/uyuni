@@ -67,7 +67,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Update the channel information
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setPathPrefix(getPathPrefix("channels.xml"));
+        csm.setChannelsXML(getPathToFile("channels.xml"));
         csm.updateChannels();
 
         // Verify channel attributes
@@ -198,15 +198,15 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Finds a given testfile and returns the path prefix.
+     * Finds a given testfile by name and returns the filesystem path.
      * @param filename name of the testfile
-     * @return path prefix of testifile
+     * @return path to the testfile
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private String getPathPrefix(String filename) 
+    private String getPathToFile(String filename)
             throws ClassNotFoundException, IOException {
         File file = new File(TestUtils.findTestData(filename).getPath());
-        return file.getParent() + File.separator;
+        return file.getPath();
     }
 }
