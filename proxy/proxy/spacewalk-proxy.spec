@@ -141,7 +141,7 @@ Requires: mod_ssl
 Requires: mod_wsgi
 Requires: %{name}-broker >= %{version}
 Requires: spacewalk-backend >= 1.7.24
-Requires: policycoreutils
+Requires(pre): policycoreutils
 Obsoletes: rhns-proxy-common < 5.3.0
 
 %description common
