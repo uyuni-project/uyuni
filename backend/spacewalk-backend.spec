@@ -65,10 +65,10 @@ BuildRequires: /usr/bin/msgfmt
 %endif
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
-%if 0%{?suse_version} != 1315
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5
 BuildRequires: spacewalk-pylint
 %endif
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
 BuildRequires: rhnlib >= 2.5.57
 BuildRequires: rpm-python
 #BuildRequires: python-crypto
@@ -369,19 +369,17 @@ rm -rf $RPM_BUILD_ROOT
 %check
 export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 # only run our unittests on versions where we have all the right BuildRequires
-%if 0%{?suse_version} >= 1100
+%if 0%{?suse_version}
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
-%if 0%{?suse_version} != 1315
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
-%endif
 %endif
 
 pushd %{buildroot}
