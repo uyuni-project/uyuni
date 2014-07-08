@@ -74,6 +74,19 @@ public class ContentSyncManager {
     private static String channelFamiliesXML = "/usr/share/susemanager/channel_families.xml";
     private static String upgradePathsXML = "/usr/share/susemanager/upgrade_paths.xml";
 
+    // SUSE Manager system entitlements
+    public enum SystemEntitlement {
+        SM_ENT_MON_S,
+        SM_ENT_PROV_S,
+        SM_ENT_MGM_S,
+        SM_ENT_MGM_V,
+        SM_ENT_MON_V,
+        SM_ENT_PROV_V,
+        SM_ENT_MON_Z,
+        SM_ENT_PROV_Z,
+        SM_ENT_MGM_Z;
+    }
+
     /**
      * Default constructor.
      */
@@ -415,8 +428,7 @@ public class ContentSyncManager {
             String productClass = p.getProductClass();
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
                     productClass, null);
-            // TODO: Implement ncc_rhn_ent_mapping and check it here
-            if (channelFamily == null) {
+            if (channelFamily == null && SystemEntitlement.valueOf(productClass) == null) {
                 channelFamily = getChannelFamily(productClass, productClass);
             }
 
@@ -438,7 +450,9 @@ public class ContentSyncManager {
                 product.setVersion(p.getVersion().toLowerCase());
                 product.setRelease(p.getReleaseType().toLowerCase());
                 product.setFriendlyName(p.getFriendlyName());
-                product.setChannelFamilyId(channelFamily.getId().toString());
+                if (channelFamily != null) {
+                    product.setChannelFamilyId(channelFamily.getId().toString());
+                }
                 PackageArch arch = PackageFactory.lookupPackageArchByLabel(p.getArch());
                 product.setArch(arch);
                 product.setProductList('Y');
