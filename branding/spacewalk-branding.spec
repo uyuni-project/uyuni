@@ -41,11 +41,16 @@ BuildRequires: %{bootstrappkg}
 BuildRequires: apache2
 Requires:      apache2
 Requires(pre): tomcat
-Requires:      susemanager-frontend-libs >= 2.1
-Requires:      momentjs
-Requires:      jquery-ui
-Requires:      select2
-Requires:      select2-bootstrap-css
+Requires:      susemanager(twitter-bootstrap-js)
+Requires:      susemanager(bootstrap-datepicker)
+Requires:      susemanager(font-awesome) = 4.0.0
+Requires:      susemanager(jquery-timepicker) = 1.3.2
+Requires:      susemanager(roboto) = 1.2
+Requires:      susemanager(pwstrength-bootstrap)
+Requires:      susemanager(momentjs)
+Requires:      susemanager(jquery-ui)
+Requires:      susemanager(select2)
+Requires:      susemanager(select2-bootstrap-css)
 
 %description
 Spacewalk specific branding, CSS, and images.
