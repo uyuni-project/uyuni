@@ -437,14 +437,9 @@ public class ContentSyncManager {
             String productClass = p.getProductClass();
             ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
                     productClass, null);
-            if (channelFamily == null) {
-                try {
-                    SystemEntitlement.valueOf(productClass);
-                }
-                catch (IllegalArgumentException e) {
-                    // Do not create channel family for system entitlement
-                    channelFamily = getChannelFamily(productClass, productClass);
-                }
+            // Do not create channel family for system entitlement
+            if (channelFamily == null && !isEntitlement(productClass)) {
+                channelFamily = getChannelFamily(productClass, productClass);
             }
 
             // Update this product in the database if it is there
@@ -481,5 +476,20 @@ public class ContentSyncManager {
      */
     private void syncSUSEProductChannel() {
         // TODO: Implement as in mgr_ncc_sync_lib.py
+    }
+
+    /**
+     * Check if a given string is a SUSE Manager entitlement.
+     * @param s
+     * @return true if s is a SUSE Manager entitlement, else false.
+     */
+    private boolean isEntitlement(String s) {
+        try {
+            SystemEntitlement.valueOf(s);
+            return true;
+        }
+        catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }
