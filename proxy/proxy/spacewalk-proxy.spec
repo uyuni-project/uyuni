@@ -319,8 +319,8 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-broker
 # config files
-%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
-%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
+%attr(755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_broker.conf
 %dir /usr/share/rhn
 %dir /usr/share/rhn/proxy/broker
 
@@ -332,8 +332,8 @@ fi
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %config(noreplace) %{_sysconfdir}/logrotate.d/rhn-proxy-redirect
 # config files
-%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
-%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
+%attr(755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_redirect.conf
 %dir /usr/share/rhn
 %dir /usr/share/rhn/proxy/redirect
 
