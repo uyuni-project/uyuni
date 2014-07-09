@@ -244,7 +244,6 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      */
     private String getPathToFile(String filename)
             throws ClassNotFoundException, IOException {
-        File file = new File(TestUtils.findTestData(filename).getPath());
-        return file.getPath();
+        return new File(TestUtils.findTestData(filename).getPath()).getAbsolutePath();
     }
 }
