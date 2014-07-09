@@ -176,7 +176,7 @@ function exit_in_case_of_error() {
 
 # Remove existing host key entries from known_hosts
 echo "* Removing existing host key entries from known_hosts"
-if [ -f "~/.ssh/known_hosts" ];then
+if [ -f ~/.ssh/known_hosts ];then
   ssh-keygen -R ${CLIENT}
 fi
 
