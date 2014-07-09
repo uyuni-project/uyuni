@@ -484,12 +484,12 @@ public class ContentSyncManager {
      * @return true if s is a SUSE Manager entitlement, else false.
      */
     private boolean isEntitlement(String s) {
-        try {
-            SystemEntitlement.valueOf(s);
-            return true;
+        for (SystemEntitlement ent : SystemEntitlement.values()) {
+            if (ent.name().equals(s)) {
+                return true;
+            }
         }
-        catch (IllegalArgumentException e) {
-            return false;
-        }
+
+        return false;
     }
 }
