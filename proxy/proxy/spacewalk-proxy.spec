@@ -356,7 +356,7 @@ fi
 # config files
 %attr(750,root,%{apache_group}) %dir %{rhnconf}
 %attr(640,root,%{apache_group}) %config %{rhnconf}/rhn.conf
-%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
+%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy.conf
 %attr(640,root,%{apache_group}) %config %{httpdconf}/spacewalk-proxy.conf
 # this file is created by either cli or webui installer
 %ghost %config %{httpdconf}/cobbler-proxy.conf
@@ -372,8 +372,8 @@ fi
 %files package-manager
 %defattr(-,root,root)
 # config files
-%attr(750,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
-%attr(640,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_package_manager.conf
+%attr(755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
+%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_proxy_package_manager.conf
 %{_bindir}/rhn_package_manager
 %{rhnroot}/PackageManager/rhn_package_manager.py*
 %{rhnroot}/PackageManager/__init__.py*
