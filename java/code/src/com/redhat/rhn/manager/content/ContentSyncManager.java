@@ -256,6 +256,7 @@ public class ContentSyncManager {
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
         updateSubscriptions();
+        syncSUSEProductChannel();
     }
 
     /**
@@ -473,5 +474,12 @@ public class ContentSyncManager {
             }
             SUSEProductFactory.save(product);
         }
+    }
+
+    /**
+     * Synchronizes the SUSE product to channel relationships.
+     */
+    private void syncSUSEProductChannel() {
+        // TODO: Implement as in mgr_ncc_sync_lib.py
     }
 }
