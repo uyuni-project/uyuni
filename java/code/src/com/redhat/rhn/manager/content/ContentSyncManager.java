@@ -44,7 +44,9 @@ import com.suse.scc.model.SCCSubscription;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -78,17 +80,38 @@ public class ContentSyncManager {
     private static String channelFamiliesXML = "/usr/share/susemanager/channel_families.xml";
     private static String upgradePathsXML = "/usr/share/susemanager/upgrade_paths.xml";
 
-    // SUSE Manager system entitlements
+    /**
+     * SUSE Manager system entitlements
+     */
     public enum SystemEntitlement {
-        SM_ENT_MON_S,
-        SM_ENT_PROV_S,
-        SM_ENT_MGM_S,
-        SM_ENT_MGM_V,
-        SM_ENT_MON_V,
-        SM_ENT_PROV_V,
-        SM_ENT_MON_Z,
-        SM_ENT_PROV_Z,
-        SM_ENT_MGM_Z;
+        SM_ENT_MON_S("monitoring_entitled"),
+        SM_ENT_PROV_S("provisioning_entitled"),
+        SM_ENT_MGM_S("enterprise_entitled",
+                     "bootstrap_entitled"),
+        SM_ENT_MGM_V("virtualization_host_platform",
+                     "enterprise_entitled",
+                     "bootstrap_entitled"),
+        SM_ENT_MON_V("monitoring_entitled" ),
+        SM_ENT_PROV_V("provisioning_entitled"),
+        SM_ENT_MON_Z("monitoring_entitled"),
+        SM_ENT_PROV_Z("provisioning_entitled"),
+        SM_ENT_MGM_Z("enterprise_entitled",
+                     "bootstrap_entitled");
+
+        private final List<String> entitlements;
+
+        SystemEntitlement(String ... entitlements) {
+            this.entitlements = Collections.unmodifiableList(
+                    new ArrayList<String>(Arrays.asList(entitlements)));
+        }
+
+        /**
+         * Get entitlements assigned to the product class.
+         * @return List of entitlement flags.
+         */
+        public List<String> getEntitlements() {
+            return this.entitlements;
+        }
     }
 
     /**
