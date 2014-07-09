@@ -1,3 +1,6 @@
+
+#!BuildIgnore:  udev-mini libudev-mini1
+
 Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
