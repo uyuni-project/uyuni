@@ -194,6 +194,10 @@ touch $RPM_BUILD_ROOT/%{httpdconf}/cobbler-proxy.conf
 
 ln -sf rhn-proxy $RPM_BUILD_ROOT%{_sbindir}/spacewalk-proxy
 
+pushd %{buildroot}
+find -name '*.py' -print0 | xargs -0 python %py_libdir/py_compile.py
+popd
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
