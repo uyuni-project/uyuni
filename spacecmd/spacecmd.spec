@@ -16,8 +16,9 @@ BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
 BuildArch: noarch
 %endif
-
+%if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: spacewalk-pylint
+%endif
 BuildRequires: python-devel
 BuildRequires: python-simplejson
 BuildRequires: rpm-python
@@ -64,8 +65,10 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %{__rm} -rf %{buildroot}
 
 %check
+%if 0%{?fedora} || 0%{?rhel} > 5
 PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
+%endif
 
 %files
 %defattr(-,root,root,-)
