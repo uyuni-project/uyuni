@@ -199,25 +199,26 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         try {
             // Prepare private families data (i.e. no private families)
             for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
-                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
-                assertNotNull(family);
-                if (!family.getPrivateChannelFamilies().isEmpty()) {
-                    family.getPrivateChannelFamilies().clear();
+                ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
+                assertNotNull(f);
+                if (!f.getPrivateChannelFamilies().isEmpty()) {
+                    f.getPrivateChannelFamilies().clear();
                 }
-                assertTrue(family.getPrivateChannelFamilies().isEmpty());
-                ChannelFamilyFactory.save(family);
+                assertTrue(f.getPrivateChannelFamilies().isEmpty());
+                ChannelFamilyFactory.save(f);
             }
 
             csm.updateChannelFamilies();
 
             for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
-                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
-                assertNotNull(family);
-                assertFalse(family.getPrivateChannelFamilies().isEmpty());
+                ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
+                assertNotNull(f);
+                assertFalse(f.getPrivateChannelFamilies().isEmpty());
                 assertEquals((long) (scf.getDefaultNodeCount() < 0 ? 200000L : 0L),
-                         (long) family.getPrivateChannelFamilies().iterator().next().getMaxMembers());
+                     (long) f.getPrivateChannelFamilies().iterator().next().getMaxMembers());
             }
-        } finally {
+        }
+        finally {
             cf.delete();
         }
     }
