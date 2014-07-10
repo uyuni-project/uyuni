@@ -729,7 +729,7 @@ fi
 %if 0%{?suse_version}
 %dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
-%dir %{_localstatedir}/lib/tomcat
+%dir /srv/tomcat
 %endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, root, tomcat) %dir %{appdir}
