@@ -125,7 +125,8 @@ rm -rf %{buildroot}
 %attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
-%attr(0755,root,root) %dir /srv/tomcat
+
+%attr(0755,root,tomcat) %dir /srv/tomcat
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF
