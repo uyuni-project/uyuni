@@ -28,7 +28,7 @@ documentation/help searches
 %setup -q
 
 %build
-./crawl_jsp.sh %{_localstatedir}/lib/tomcat6/webapps/rhn/help
+./crawl_jsp.sh /srv/tomcat/webapps/rhn/help
 
 %install
 LANGS="en-US"

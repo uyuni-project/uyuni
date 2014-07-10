@@ -3,7 +3,7 @@
 %define wwwdocroot /srv/www/htdocs
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %define apache_group www
-%global tomcat tomcat6
+%global tomcat tomcat
 %define lesspkg lesscss-engine
 %define lesscmd lesscss-engine
 %define bootstrappkg susemanager-frontend-libs-devel
@@ -76,7 +76,7 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web/nav
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
-install -d -m 755 %{buildroot}%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/
+install -d -m 755 %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
 cp -p css/spacewalk.css %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
@@ -88,7 +88,7 @@ cp -pR templates %{buildroot}%{_datadir}/spacewalk/web/
 cp -pR styles %{buildroot}%{_datadir}/spacewalk/web/nav/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
-ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/java-branding.jar
+ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
 
 %if  0%{?suse_version}
 cat > %{buildroot}/%{_prefix}/share/rhn/config-defaults/rhn_docs.conf <<-ENDOFCONFIG
@@ -120,16 +120,16 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/favicon.ico
 %{_datadir}/spacewalk/
 %{_datadir}/rhn/lib/java-branding.jar
-%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/java-branding.jar
+/srv/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
 %{_prefix}/share/rhn/config-defaults/rhn_docs.conf
 %attr(0755,root,%{apache_group}) %dir %{_prefix}/share/rhn/config-defaults
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
-%attr(0755,root,root) %dir /var/lib/tomcat6
-%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps
-%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn
-%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF
-%attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%attr(0755,root,root) %dir /srv/tomcat
+%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps
+%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn
+%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF
+%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF/lib
 
 %doc LICENSE
 
