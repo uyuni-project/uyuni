@@ -468,9 +468,11 @@ public class ContentSyncManager {
                     p.getName(), p.getVersion(), p.getReleaseType(), p.getArch());
             if (product != null) {
                 product.setFriendlyName(p.getFriendlyName());
-                product.setChannelFamilyId(channelFamily.getId().toString());
                 // TODO: Remove this attribute from database if it is not used anywhere
                 product.setProductList('Y');
+                if (channelFamily != null) {
+                    product.setChannelFamilyId(channelFamily.getId().toString());
+                }
             }
             else {
                 // Otherwise create a new SUSE product and save it
@@ -481,12 +483,11 @@ public class ContentSyncManager {
                 product.setVersion(p.getVersion().toLowerCase());
                 product.setRelease(p.getReleaseType().toLowerCase());
                 product.setFriendlyName(p.getFriendlyName());
+                product.setArch(PackageFactory.lookupPackageArchByLabel(p.getArch()));
+                product.setProductList('Y');
                 if (channelFamily != null) {
                     product.setChannelFamilyId(channelFamily.getId().toString());
                 }
-                PackageArch arch = PackageFactory.lookupPackageArchByLabel(p.getArch());
-                product.setArch(arch);
-                product.setProductList('Y');
             }
             SUSEProductFactory.save(product);
         }
