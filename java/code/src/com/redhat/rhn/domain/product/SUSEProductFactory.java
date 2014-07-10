@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.product;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -49,6 +50,22 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static void save(SUSEProduct product) {
         singleton.saveObject(product);
+    }
+
+    /**
+     * Insert or update a {@link SUSEProductChannel}.
+     * @param productChannel SUSE product channel relationship to be inserted.
+     */
+    public static void save(SUSEProductChannel productChannel) {
+        singleton.saveObject(productChannel);
+    }
+
+    /**
+     * Delete a {@link SUSEProductChannel} from the database.
+     * @param productChannel SUSE product channel relationship to be deleted.
+     */
+    public static void remove(SUSEProductChannel productChannel) {
+        singleton.removeObject(productChannel);
     }
 
     /**
@@ -134,6 +151,17 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
         return (SUSEProduct) c.uniqueResult();
+    }
+
+    /**
+     * Find all {@link SUSEProductChannel} relationships.
+     * @return list of SUSE product channel relationships
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProductChannel> findAllSUSEProductChannels() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductChannel.class);
+        return c.list();
     }
 
     /**

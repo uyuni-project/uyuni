@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -279,7 +280,7 @@ public class ContentSyncManager {
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
         updateSubscriptions();
-        syncSUSEProductChannel();
+        syncSUSEProductChannels();
     }
 
     /**
@@ -495,10 +496,63 @@ public class ContentSyncManager {
     }
 
     /**
-     * Synchronizes the SUSE product to channel relationships.
+     * Synchronization of the {@link SUSEProductChannel} relationships.
      */
-    private void syncSUSEProductChannel() {
-        // TODO: Implement as in mgr_ncc_sync_lib.py
+    public void syncSUSEProductChannels() throws ContentSyncException {
+        // Get all currently existing product channel relations
+        List<SUSEProductChannel> existingProductChannels =
+                SUSEProductFactory.findAllSUSEProductChannels();
+
+        // Get all available channels (channels.xml) and iterate
+        // TODO: Filter this list as in get_available_channels()
+        List<SUSEChannel> availableChannels = readChannels();
+        for (SUSEChannel availableChannel : availableChannels) {
+            // We store only non-optional channels
+            if (availableChannel.isOptional()) {
+                continue;
+            }
+
+            // Set parent channel to null for base channels
+            String parentChannelLabel = availableChannel.getParent();
+            if (parentChannelLabel.equals("BASE")) {
+                parentChannelLabel = null;
+            }
+
+            // Create a map containing all installed vendor channels
+            Map<String, Channel> installedChannels = new HashMap<String, Channel>();
+            for (Channel channel : ChannelFactory.listVendorChannels()) {
+                installedChannels.put(channel.getLabel(), channel);
+            }
+
+            // Lookup every product and insert/update relationships accordingly
+            for (com.suse.contentsync.SUSEProduct p : availableChannel.getProducts()) {
+                SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
+
+                // Get the channel in case it is installed
+                Channel channel = null;
+                if (installedChannels.containsKey(availableChannel.getLabel())) {
+                    channel = installedChannels.get(availableChannel.getLabel());
+                }
+
+                // Update or insert the product/channel relationship
+                SUSEProductChannel spc = new SUSEProductChannel();
+                spc.setProduct(product);
+                spc.setChannelLabel(availableChannel.getLabel());
+                spc.setParentChannelLabel(parentChannelLabel);
+                spc.setChannel(channel);
+                SUSEProductFactory.save(spc);
+
+                // Remove from the list of existing relations
+                if (existingProductChannels.contains(spc)) {
+                    existingProductChannels.remove(spc);
+                }
+            }
+
+            // Drop the remaining ones (existing but not updated)
+            for (SUSEProductChannel spc : existingProductChannels) {
+                SUSEProductFactory.remove(spc);
+            }
+        }
     }
 
     /**
