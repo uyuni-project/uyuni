@@ -14,8 +14,8 @@
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %else
-%define appdir          %{_localstatedir}/lib/tomcat/webapps
-%define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
+%define appdir          /srv/tomcat/webapps
+%define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
 %endif
 %endif
 
