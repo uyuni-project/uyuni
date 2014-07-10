@@ -730,10 +730,6 @@ fi
 %dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
 %dir %{_localstatedir}/lib/tomcat
-# /etc/tomcat6/Catalina on suse is a link to /var/cache/tomcat6/Catalina
-# and we need write permissions for tomcat there. So give this dir
-# special owner and permissions.
-%dir %attr(755, tomcat, tomcat) /etc/tomcat/Catalina/localhost
 %endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, root, tomcat) %dir %{appdir}
