@@ -17,7 +17,7 @@
 
   <!-- Other properties -->
   <property name="deploy.host" value="deployhost" />
-  <property name="deploy.dir" value="/var/lib/tomcat6/webapps/rhn" />
+  <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />  
   
   <property name="tests.includes" value="buildconf/manager-test-includes" />
@@ -200,7 +200,7 @@
   <target name="restart-tomcat" description="Restart the tomcat process">
     <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
         echo "Launching Tomcat restart...";
-        nohup rctomcat6 restart > /dev/null 2>&amp;1 &amp;
+        nohup systemctl restart tomcat.service > /dev/null 2>&amp;1 &amp;
       '
     />
   </target>
