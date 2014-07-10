@@ -548,11 +548,11 @@ public class ContentSyncManager {
                     existingProductChannels.remove(spc);
                 }
             }
+        }
 
-            // Drop the remaining ones (existing but not updated)
-            for (SUSEProductChannel spc : existingProductChannels) {
-                SUSEProductFactory.remove(spc);
-            }
+        // Drop the remaining ones (existing but not updated)
+        for (SUSEProductChannel spc : existingProductChannels) {
+            SUSEProductFactory.remove(spc);
         }
     }
 
