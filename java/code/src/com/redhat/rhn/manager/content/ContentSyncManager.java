@@ -504,6 +504,12 @@ public class ContentSyncManager {
         List<SUSEProductChannel> existingProductChannels =
                 SUSEProductFactory.findAllSUSEProductChannels();
 
+        // Create a map containing all installed vendor channels
+        Map<String, Channel> installedChannels = new HashMap<String, Channel>();
+        for (Channel channel : ChannelFactory.listVendorChannels()) {
+            installedChannels.put(channel.getLabel(), channel);
+        }
+
         // Get all available channels (channels.xml) and iterate
         // TODO: Filter this list as in get_available_channels()
         List<SUSEChannel> availableChannels = readChannels();
@@ -517,12 +523,6 @@ public class ContentSyncManager {
             String parentChannelLabel = availableChannel.getParent();
             if (parentChannelLabel.equals("BASE")) {
                 parentChannelLabel = null;
-            }
-
-            // Create a map containing all installed vendor channels
-            Map<String, Channel> installedChannels = new HashMap<String, Channel>();
-            for (Channel channel : ChannelFactory.listVendorChannels()) {
-                installedChannels.put(channel.getLabel(), channel);
             }
 
             // Lookup every product and insert/update relationships accordingly
