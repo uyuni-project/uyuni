@@ -12,11 +12,14 @@
 
 import os
 import tempfile
-import uuid
 import time
 import xml.dom.minidom
 from xml.dom import Node
 from subprocess import Popen, PIPE
+try:
+    import uuid
+except ImportError:
+    uuid = None
 
 def getInstalledProducts():
     ret = []
@@ -148,6 +151,13 @@ def getSystemID():
         secret = f.readline()
         secret = secret.strip()
         f.close()
+    elif uuid is None:
+        guid = Popen(['uuidgen'], stdout=PIPE).communicate()[0]
+        guid = guid.replace('-', '').strip()
+
+        time.sleep(1)
+        secret = Popen(['uuidgen'], stdout=PIPE).communicate()[0]
+        secret = guid.replace('-', '').strip()
     else:
         guid = str(uuid.uuid4())
         guid = guid.replace('-', '').strip()

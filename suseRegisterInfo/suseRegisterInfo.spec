@@ -30,6 +30,9 @@ BuildRequires:  python-devel
 
 Requires:       perl
 Requires:       python
+%if  0%{?rhel} && 0%{?rhel} < 6
+Requires:       e2fsprogs
+%endif
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %description
