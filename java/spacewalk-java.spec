@@ -889,7 +889,7 @@ fi
 %endif
 
 %files -n spacewalk-taskomatic
-%defattr(644,root,root,775)
+%defattr(-,root,root)
 %if 0%{?fedora}
 %attr(755, root, root) %{_sbindir}/taskomatic
 %attr(755, root, root) %{_unitdir}/taskomatic.service
@@ -901,7 +901,7 @@ fi
 %{_sbindir}/rctaskomatic
 
 %files config
-%defattr(644,root,root,775)
+%defattr(-,root,root)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
@@ -913,11 +913,10 @@ fi
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files lib
-%defattr(644,root,root,775)
+%defattr(-,root,root)
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
-%defattr(644,root,root,775)
 %{_datadir}/rhn/classes/log4j.properties
 %{_datadir}/rhn/lib/rhn.jar
 
