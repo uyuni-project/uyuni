@@ -121,8 +121,8 @@ public class SUSEChannel {
     /**
      * @return the optional
      */
-    public String getOptional() {
-        return optional;
+    public Boolean isOptional() {
+        return (this.optional + "").toUpperCase().equals("Y");
     }
 
     /**
