@@ -566,7 +566,6 @@ public class ContentSyncManager {
                 return true;
             }
         }
-
         return false;
     }
 }
