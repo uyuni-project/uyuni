@@ -342,7 +342,7 @@ public class ContentSyncManager {
      */
     private ChannelFamily getChannelFamily(String label, String name) {
         ChannelFamily family = ChannelFamilyFactory.lookupByLabel(label, null);
-        if (family == null) {
+        if (family == null && !isEntitlement(label)) {
             family = new ChannelFamily();
             family.setLabel(label);
             family.setOrg(null);
@@ -460,12 +460,8 @@ public class ContentSyncManager {
         for (SCCProduct p : products) {
             // Get channel family if it is available, otherwise create it
             String productClass = p.getProductClass();
-            ChannelFamily channelFamily = ChannelFamilyFactory.lookupByLabel(
-                    productClass, null);
-            // Do not create channel family for system entitlement
-            if (channelFamily == null && !isEntitlement(productClass)) {
-                channelFamily = getChannelFamily(productClass, productClass);
-            }
+            // TODO: Rename that method
+            ChannelFamily channelFamily = getChannelFamily(productClass, productClass);
 
             // Update this product in the database if it is there
             SUSEProduct product = SUSEProductFactory.findSUSEProduct(
