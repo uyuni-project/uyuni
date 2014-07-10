@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Jul 10 16:57:20 CEST 2014 - mc@suse.de
+
+- version 2.1.7-1
+- Fix suseRegisterInfo for RHEL5 systems
+  (use external uuidgen, as python does not yet have uuid support)
+  (bnc#885997)
+
+-------------------------------------------------------------------
 Fri May 16 12:52:57 CEST 2014 - mc@suse.de
 
 - version 2.1.6-1
