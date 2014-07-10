@@ -30,47 +30,54 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     private String parentChannelLabel;
 
     /**
-     * @return the productId
+     * @return the product
      */
     public SUSEProduct getProduct() {
         return product;
     }
+
     /**
-     * @param productId the productId to set
+     * @param product the product to set
      */
     public void setProduct(SUSEProduct product) {
         this.product = product;
     }
+
     /**
-     * @return the channelId
+     * @return the channel
      */
     public Channel getChannel() {
         return channel;
     }
+
     /**
-     * @param channelId the channelId to set
+     * @param channel the channel to set
      */
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
+
     /**
      * @return the channelLabel
      */
     public String getChannelLabel() {
         return channelLabel;
     }
+
     /**
      * @param channelLabel the channelLabel to set
      */
     public void setChannelLabel(String channelLabel) {
         this.channelLabel = channelLabel;
     }
+
     /**
      * @return the parentChannelLabel
      */
     public String getParentChannelLabel() {
         return parentChannelLabel;
     }
+
     /**
      * @param parentChannelLabel the parentChannelLabel to set
      */
@@ -91,6 +98,7 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /* (non-Javadoc)
+     * This implements equality based on channel label and product.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
