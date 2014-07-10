@@ -281,6 +281,7 @@ public class ContentSyncManager {
         updateSUSEProducts(getProducts());
         updateSubscriptions();
         syncSUSEProductChannels();
+        updateUpgradePaths();
     }
 
     /**
@@ -553,6 +554,13 @@ public class ContentSyncManager {
                 SUSEProductFactory.remove(spc);
             }
         }
+    }
+
+    /**
+     * Update the suseUpgradePaths table with values read from upgrade_paths.xml
+     */
+    public void updateUpgradePaths() {
+        // TODO: Implement this as in update_upgrade_pathes_by_config()
     }
 
     /**
