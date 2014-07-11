@@ -422,7 +422,7 @@ public class ContentSyncManager {
             }
         }
 
-        ModeFactory.getWriteMode("System_queries", "delete_scc_subscriptions")
+        ModeFactory.getWriteMode("SCC_queries", "delete_scc_subscriptions")
                 .executeUpdate(new HashMap<String, Object>(),
                                new ArrayList<String>(sc.keySet()));
 
@@ -436,11 +436,10 @@ public class ContentSyncManager {
      */
     private void resetEntitlementsToDefault() {
         Map<String, Object> params = new HashMap<String, Object>();
-        // XXX: Move the SQL query away separately!!
-        ModeFactory.getWriteMode("SystemGroup_queries",
+        ModeFactory.getWriteMode("SCC_queries",
                                  "reset_entitlements_bc").executeUpdate(params);
         params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
-        ModeFactory.getWriteMode("SystemGroup_queries",
+        ModeFactory.getWriteMode("SCC_queries",
                                  "reset_entitlements").executeUpdate(params);
     }
 
@@ -575,8 +574,8 @@ public class ContentSyncManager {
                 p.put("members", item.getValue().getMaxMembers());
                 p.put("cfid", family.getId());
                 p.put("orgid", item.getKey());
-                ModeFactory.getWriteMode("SystemGroup_queries",
-                                         "set_subscr_max_members").executeUpdate(p);
+                ModeFactory.getWriteMode("SCC_queries",
+                                         "set_subscription_max_members").executeUpdate(p);
             }
         }
     }
@@ -589,12 +588,12 @@ public class ContentSyncManager {
         for (final String ent : SystemEntitlement.valueOf(
                 subscription.getProductClass()).getEntitlements()) {
             for (Iterator<Map<String, Object>> iter = ModeFactory.getMode(
-                    "System_queries", "entitlement_id", Map.class)
+                    "SCC_queries", "entitlement_id", Map.class)
                     .execute(new HashMap<String, Object>(){{put("label", ent);}})
                     .iterator(); iter.hasNext();) {
                 final Long entId = (Long) (iter.next()).get("id");
                 if (now.compareTo(subscription.getEndDate()) <= 0) {
-                    ModeFactory.getWriteMode("SystemGroup_queries",
+                    ModeFactory.getWriteMode("SCC_queries",
                                              "set_entitlement_max_members")
                             .executeUpdate(new HashMap<String, Object>(){
                                 {put("members", INFINITE);put("group", entId);}});

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasource_modes>
+<write-mode name="reset_entitlements">
+  <query params="max_members">
+      UPDATE RHNSERVERGROUP
+         SET max_members = :max_members
+       WHERE GROUP_TYPE IS NOT NULL
+  </query>
+</write-mode>
+
+<write-mode name="reset_entitlements_bc">
+  <query params="">
+      UPDATE RHNSERVERGROUP
+         SET max_members = NULL
+       WHERE GROUP_TYPE IS NULL
+  </query>
+</write-mode>
+
+<write-mode name="delete_scc_subscriptions">
+  <query params="">
+      UPDATE rhnprivatechannelfamily p SET max_members = 0
+       WHERE p.channel_family_id IN
+            (SELECT p.channel_family_id
+               FROM rhnprivatechannelfamily p
+               JOIN rhnchannelfamily f ON p.channel_family_id = f.id
+              WHERE p.max_members > 0 AND f.label NOT IN (%s))
+  </query>
+</write-mode>
+
+<mode name="entitlement_id">
+  <query params="label">
+      SELECT id
+        FROM RHNSERVERGROUPTYPE
+       WHERE LABEL = :label
+  </query>
+</mode>
+
+<write-mode name="set_entitlement_max_members">
+  <query params="members, group">
+       UPDATE RHNSERVERGROUP
+          SET max_members = :members
+        WHERE GROUP_TYPE = :group
+  </query>
+</write-mode>
+
+<write-mode name="set_subscription_max_members">
+  <query params="members, cfid, orgid">
+       UPDATE RHNPRIVATECHANNELFAMILY
+          SET max_members = :members
+        WHERE channel_family_id = :cfid
+          AND org_id = :orgid
+  </query>
+</write-mode>
+</datasource_modes>
