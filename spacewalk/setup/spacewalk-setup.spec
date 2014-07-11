@@ -48,7 +48,11 @@ Requires:       spacewalk-certs-tools
 Requires:       perl-Satcon
 Requires:       spacewalk-backend-tools
 Requires:       cobbler >= 2.0.0
+%if 0%{?suse_version}
+Requires:       python-PyYAML
+%else
 Requires:       PyYAML
+%endif
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
 Requires:       curl
