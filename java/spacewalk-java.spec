@@ -231,9 +231,7 @@ BuildRequires: checkstyle
 %endif
 # SUSE additional build requirements
 %if 0%{?suse_version}
-%ifarch x86_64
 BuildRequires: oracle-instantclient11.2-basic
-%endif
 BuildRequires: log4j
 %endif
 # SUSE = Struts 1.2 and Tomcat 6
