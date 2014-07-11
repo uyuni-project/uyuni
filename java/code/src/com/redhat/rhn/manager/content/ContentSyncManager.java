@@ -395,20 +395,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * The value of "10" comes from the part, where testers needed about this amount of
-     * subscriptions. It turns out that the customers are also have this number and dealing
-     * with it on their installations.
-     */
-    private void resetEntitlementsToDefault() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        ModeFactory.getWriteMode("SCC_queries",
-                                 "reset_entitlements_bc").executeUpdate(params);
-        params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
-        ModeFactory.getWriteMode("SCC_queries",
-                                 "reset_entitlements").executeUpdate(params);
-    }
-
-    /**
      * Subscription members counter.
      */
     private static class MembersCounter {
@@ -574,7 +560,19 @@ public class ContentSyncManager {
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
-        this.resetEntitlementsToDefault();
+        /**
+         * Reset entitlements.
+         * The value of "10" comes from the part, where testers needed about this amount of
+         * subscriptions. It turns out that the customers are also have this number and dealing
+         * with it on their installations.
+         */
+        Map<String, Object> params = new HashMap<String, Object>();
+        ModeFactory.getWriteMode("SCC_queries",
+                                 "reset_entitlements_bc").executeUpdate(params);
+        params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
+        ModeFactory.getWriteMode("SCC_queries",
+                                 "reset_entitlements").executeUpdate(params);
+
         for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
             if (this.isEntitlement(meta.getProductClass())) {
                 this.updateEntitlement(meta);
