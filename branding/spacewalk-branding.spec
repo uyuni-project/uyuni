@@ -126,8 +126,6 @@ rm -rf %{buildroot}
 %dir /usr/share/rhn
 %dir /usr/share/rhn/lib
 
-%attr(0755,root,tomcat) %dir /srv/tomcat
-%attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF
 %attr(0775,tomcat,tomcat) %dir /srv/tomcat/webapps/rhn/WEB-INF/lib
