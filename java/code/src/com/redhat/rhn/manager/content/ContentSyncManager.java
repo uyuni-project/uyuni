@@ -588,11 +588,11 @@ public class ContentSyncManager {
         Date now = new Date();
         for (final String ent : SystemEntitlement.valueOf(
                 subscription.getProductClass()).getEntitlements()) {
-            for (Iterator iter = ModeFactory.getMode(
+            for (Iterator<Map<String, Object>> iter = ModeFactory.getMode(
                     "System_queries", "entitlement_id", Map.class)
                     .execute(new HashMap<String, Object>(){{put("label", ent);}})
                     .iterator(); iter.hasNext();) {
-                final Long entId = (Long) ((Map<String, Object>) iter.next()).get("id");
+                final Long entId = (Long) (iter.next()).get("id");
                 if (now.compareTo(subscription.getEndDate()) <= 0) {
                     ModeFactory.getWriteMode("SystemGroup_queries",
                                              "set_entitlement_max_members")
