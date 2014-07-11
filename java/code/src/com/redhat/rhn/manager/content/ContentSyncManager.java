@@ -528,7 +528,6 @@ public class ContentSyncManager {
                 Long free = cnt.getMaxMembers();
                 if (free > 0 && needed <= free) {
                     cnt.decMaxMembers(needed);
-                    needed = 0L;
                     break;
                 }
                 else if (free > 0 && needed > free) {
