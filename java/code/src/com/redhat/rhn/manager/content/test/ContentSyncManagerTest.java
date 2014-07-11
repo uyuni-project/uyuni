@@ -245,7 +245,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
                 ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
                 assertNotNull(f);
                 assertFalse(f.getPrivateChannelFamilies().isEmpty());
-                assertEquals((long) (scf.getDefaultNodeCount() < 0 ? 200000L : 0L),
+                assertEquals(scf.getDefaultNodeCount() < 0 ? 200000L : 0L,
                      (long) f.getPrivateChannelFamilies().iterator().next().getMaxMembers());
             }
         }
