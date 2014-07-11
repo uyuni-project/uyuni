@@ -627,7 +627,6 @@ public class ContentSyncManager {
         for (SCCProduct p : products) {
             // Get channel family if it is available, otherwise create it
             String productClass = p.getProductClass();
-            // TODO: Rename that method
             ChannelFamily channelFamily = createOrUpdateChannelFamily(
                     productClass, productClass);
 
