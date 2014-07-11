@@ -2450,4 +2450,19 @@ ORDER BY UPPER(COALESCE(X.SERVER_NAME, '(none)')), X.ID
   </query>
 </write-mode>
 
+<mode name="entitlement_id">
+  <query params="label">
+      SELECT id
+        FROM RHNSERVERGROUPTYPE
+       WHERE LABEL = :label
+  </query>
+</mode>
+
+<write-mode name="set_entitlement_max_members">
+  <query params="members, group">
+       UPDATE RHNSERVERGROUP
+          SET max_members = :members
+        WHERE GROUP_TYPE = :group
+  </query>
+</write-mode>
 </datasource_modes>
