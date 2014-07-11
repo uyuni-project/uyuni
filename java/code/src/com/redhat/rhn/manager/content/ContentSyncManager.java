@@ -340,7 +340,7 @@ public class ContentSyncManager {
      * Create new or update an existing channel family.
      * @return {@link ChannelFamily}
      */
-    private ChannelFamily getChannelFamily(String label, String name) {
+    private ChannelFamily createOrUpdateChannelFamily(String label, String name) {
         ChannelFamily family = ChannelFamilyFactory.lookupByLabel(label, null);
         if (family == null && !isEntitlement(label)) {
             family = new ChannelFamily();
@@ -371,7 +371,8 @@ public class ContentSyncManager {
      */
     public void updateChannelFamilies() throws ContentSyncException {
         for (SUSEChannelFamily scf : this.readChannelFamilies()) {
-            ChannelFamily family = this.getChannelFamily(scf.getLabel(), scf.getName());
+            ChannelFamily family = this.createOrUpdateChannelFamily(
+                    scf.getLabel(), scf.getName());
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pf = this.newPrivateChannelFamily(family);
                 if (scf.getDefaultNodeCount() < 0) {
@@ -544,9 +545,9 @@ public class ContentSyncManager {
     /**
      * Update subscription.
      */
-    private void updateSubscription(SubscriptionDto subscription) {
-        final ChannelFamily family = this.getChannelFamily(subscription.getProductClass(),
-                                                     subscription.getName());
+    private void updateSubscription(SubscriptionDto sub) {
+        final ChannelFamily family = this.createOrUpdateChannelFamily(sub.getProductClass(),
+                                                                      sub.getName());
         if (family == null) {
             return;
         }
@@ -565,7 +566,7 @@ public class ContentSyncManager {
 
         for(final Map.Entry<Long, SubscrCounter> item :
                 this.calculateSubscriptions(allSubs, total,
-                                            subscription, family.getId()).entrySet()) {
+                                            sub, family.getId()).entrySet()) {
             if (item.getValue().isDirty()) {
                 HashMap<String, Object> p = new HashMap<String, Object>();
                 p.put("members", item.getValue().getMaxMembers());
@@ -627,7 +628,8 @@ public class ContentSyncManager {
             // Get channel family if it is available, otherwise create it
             String productClass = p.getProductClass();
             // TODO: Rename that method
-            ChannelFamily channelFamily = getChannelFamily(productClass, productClass);
+            ChannelFamily channelFamily = createOrUpdateChannelFamily(
+                    productClass, productClass);
 
             // Update this product in the database if it is there
             SUSEProduct product = SUSEProductFactory.findSUSEProduct(
