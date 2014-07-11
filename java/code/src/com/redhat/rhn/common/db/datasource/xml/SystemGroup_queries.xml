@@ -182,21 +182,4 @@ select sgm.group_id as id,
  order by upper(sg.name)
   </query>
 </mode>
-
-<write-mode name="reset_entitlements">
-  <query params="max_members">
-      UPDATE RHNSERVERGROUP
-         SET max_members = :max_members
-       WHERE GROUP_TYPE IS NOT NULL
-  </query>
-</write-mode>
-
-<write-mode name="reset_entitlements_bc">
-  <query params="">
-      UPDATE RHNSERVERGROUP
-         SET max_members = NULL
-       WHERE GROUP_TYPE IS NULL
-  </query>
-</write-mode>
-
 </datasource_modes>
