@@ -12,14 +12,15 @@ License:        GPLv2
 URL:            https://fedorahosted.org/spacewalk
 Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-root-%(%{__id_u} -n)
+ExclusiveArch:  %ix86 x86_64 s390x
 
 %ifarch s390 s390x
 %define icversion 11.2.0.4.0
 %define icdir 11.2
-Requires(pre):       oracle-instantclient-basic = %{icversion}
-Requires(pre):       oracle-instantclient-sqlplus = %{icversion}
-BuildRequires:       oracle-instantclient-basic = %{icversion}
-BuildRequires:       oracle-instantclient-sqlplus = %{icversion}
+Requires(pre):       oracle-instantclient11.2-basic = %{icversion}
+Requires(pre):       oracle-instantclient11.2-sqlplus = %{icversion}
+BuildRequires:       oracle-instantclient11.2-basic = %{icversion}
+BuildRequires:       oracle-instantclient11.2-sqlplus = %{icversion}
 %define soversion 11
 %else
 %define icversion 11.2.0.4.0
@@ -53,7 +54,7 @@ Requires:       libaio.so.1%{lib64}
 #Provides:       libocijdbc%{soversion}.so%{?lib64}   = %{icversion}
 #Provides:       libclntsh.so.%{soversion}.1%{?lib64} = %{icversion}
 #Provides:       libociei.so%{?lib64}       = %{icversion}
-Provides:       ojdbc14                    = %{icversion}
+Provides:       ojdbc5                    = %{icversion}
 Obsoletes:      rhn-oracle-jdbc           <= 1.0
 Requires:       libstdc++.so.6%{?lib64}
 
@@ -88,19 +89,6 @@ mkdir -p $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client/lib/network/admin
 echo 'diag_adr_enabled = off' > $RPM_BUILD_ROOT/usr/lib/oracle/%{icdir}/client/lib/network/admin/sqlnet.ora
 %endif
 
-%ifnarch s390x
-mkdir -p $RPM_BUILD_ROOT/%{_javadir}
-%if 0%{?suse_version}
-%ifarch x86_64
-ln -sf ../../lib/oracle/%{icdir}/client64/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
-%else
-ln -sf ../../lib/oracle/%{icdir}/client/lib/ojdbc5.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
-%endif
-%else
-ln -sf ../../%{_lib}/oracle/%{icdir}/client/lib/ojdbc6.jar $RPM_BUILD_ROOT/%{_javadir}/ojdbc14.jar
-%endif
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -115,11 +103,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /usr/lib/oracle/%{icdir}/client/lib/network
 %dir /usr/lib/oracle/%{icdir}/client/lib/network/admin
 /usr/lib/oracle/%{icdir}/client/lib/network/admin/sqlnet.ora
-%endif
-#%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-instantclient-%{icdir}.conf
-#%config(noreplace) %{_sysconfdir}/ld.so.conf.d/oracle-xe.conf
-%ifnarch s390x
-%{_javadir}/ojdbc14.jar
 %endif
 
 %post
