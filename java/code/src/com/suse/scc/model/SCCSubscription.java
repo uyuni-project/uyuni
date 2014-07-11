@@ -132,4 +132,90 @@ public class SCCSubscription {
     public List<SCCSystem> getSystems() {
         return systems;
     }
+
+    // Setters are only for JUnit tests
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * @param regcode the regcode to set
+     */
+    public void setRegcode(String regcode) {
+        this.regcode = regcode;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @param startsAt the startsAt to set
+     */
+    public void setStartsAt(String startsAt) {
+        this.startsAt = startsAt;
+    }
+
+    /**
+     * @param expiresAt the expiresAt to set
+     */
+    public void setExpiresAt(String expiresAt) {
+        this.expiresAt = expiresAt;
+    }
+
+    /**
+     * @param systemLimit the systemLimit to set
+     */
+    public void setSystemLimit(Integer systemLimit) {
+        this.systemLimit = systemLimit;
+    }
+
+    /**
+     * @param systemsCount the systemsCount to set
+     */
+    public void setSystemsCount(Integer systemsCount) {
+        this.systemsCount = systemsCount;
+    }
+
+    /**
+     * @param virtualCount the virtualCount to set
+     */
+    public void setVirtualCount(Integer virtualCount) {
+        this.virtualCount = virtualCount;
+    }
+
+    /**
+     * @param productClasses the productClasses to set
+     */
+    public void setProductClasses(List<String> productClasses) {
+        this.productClasses = productClasses;
+    }
+
+    /**
+     * @param systems the systems to set
+     */
+    public void setSystems(List<SCCSystem> systems) {
+        this.systems = systems;
+    }
 }
