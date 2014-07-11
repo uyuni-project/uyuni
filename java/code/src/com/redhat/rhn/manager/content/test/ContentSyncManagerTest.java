@@ -31,6 +31,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.contentsync.SUSEChannelFamily;
 import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCSubscription;
 
 import java.io.File;
 import java.io.IOException;
@@ -185,6 +186,36 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(productClass, null);
         assertNotNull(cf);
         assertEquals(cf.getId().toString(), suseProduct.getChannelFamilyId());
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateSubscriptions()
+     * @throws Exception
+     */
+    public void testUpdateSubscriptions() throws Exception {
+        SCCSubscription subscription = new SCCSubscription();
+        subscription.setName("SUSE Manager Management Unlimited Virtual Machines License");
+        subscription.setSystemsCount(0);
+        subscription.setSystemLimit(1);
+        subscription.setProductClasses(new ArrayList<String>(){
+            {add("SM_ENT_MGM_V");add("SMS");}});
+        subscription.setType("full");
+        subscription.setStartsAt("2013-12-12T00:00:00.000Z");
+        subscription.setExpiresAt("2016-12-12T00:00:00.000Z");
+        subscription.setId(652);
+        List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
+        subscriptions.add(subscription);
+
+        File cf = new File(getPathToFile("channel_families.xml"));
+        File c = new File(getPathToFile("channels.xml"));
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setChannelFamiliesXML(cf.getAbsolutePath());
+        csm.setChannelsXML(c.getAbsolutePath());
+
+        csm.updateSubscriptions(subscriptions);
+
+        cf.delete();
+        c.delete();
     }
 
     /**
