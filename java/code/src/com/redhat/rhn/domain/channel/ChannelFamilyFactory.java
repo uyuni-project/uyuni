@@ -216,4 +216,14 @@ public class ChannelFamilyFactory extends HibernateFactory {
                 "ChannelFamily.getNameByLabel", params, false);
         return (String) o;
     }
+
+    /**
+     * Get the list of available channel families.
+     * @return List of {@link ChannelFamily} objects
+     */
+    @SuppressWarnings("unchecked")
+    public static List<String> getAvailableChannelFamilyLabels() {
+        return singleton.listObjectsByNamedQuery(
+                "ChannelFamily.getAvailableChannelFamilyLabels", null);
+    }
 }

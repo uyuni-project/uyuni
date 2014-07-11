@@ -661,6 +661,54 @@ public class ContentSyncManager {
     }
 
     /**
+     * Get a list of all actually available channels based on available channel families
+     * as well as some other criteria.
+     * @return list of available channels
+     * @throws ContentSyncException
+     */
+    public List<SUSEChannel> getAvailableChannels() throws ContentSyncException {
+        // Get all channels from channels.xml and filter
+        List<SUSEChannel> availableChannels = new ArrayList<SUSEChannel>();
+        List<SUSEChannel> allChannels = readChannels();
+
+        // Filter in all channels where channel families are available
+        List<String> availableChannelFamilies =
+                ChannelFamilyFactory.getAvailableChannelFamilyLabels();
+        for (SUSEChannel c : allChannels) {
+            if (availableChannelFamilies.contains(c.getFamily())) {
+                availableChannels.add(c);
+            }
+        }
+
+        // Reassign lists to variables to continue the filtering
+        allChannels = availableChannels;
+        availableChannels = new ArrayList<SUSEChannel>();
+
+        // Remember channel labels in a list for convenient lookup
+        List<String> availableChannelLabels = new ArrayList<String>();
+        for (SUSEChannel c : allChannels) {
+            availableChannelLabels.add(c.getLabel());
+        }
+
+        // Filter in channels with available parents only (or base channels)
+        for (SUSEChannel c : allChannels) {
+            String parent = c.getParent();
+            if (parent.equals("BASE") || availableChannelLabels.contains(parent)) {
+                availableChannels.add(c);
+
+                // Update tag can be empty string which is not allowed in the DB
+                if (c.getUpdateTag().isEmpty()) {
+                    c.setUpdateTag(null);
+                }
+
+                // TODO: support "fromdir" and "mirror" to set sourceUrl correctly
+            }
+        }
+
+        return availableChannels;
+    }
+
+    /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
      */
     public void syncSUSEProductChannels() throws ContentSyncException {
@@ -674,10 +722,8 @@ public class ContentSyncManager {
             installedChannels.put(channel.getLabel(), channel);
         }
 
-        // Get all available channels (channels.xml) and iterate
-        // TODO: Filter this list as in get_available_channels()
-        List<SUSEChannel> availableChannels = readChannels();
-        for (SUSEChannel availableChannel : availableChannels) {
+        // Get all available channels and iterate
+        for (SUSEChannel availableChannel : getAvailableChannels()) {
             // We store only non-optional channels
             if (availableChannel.isOptional()) {
                 continue;
