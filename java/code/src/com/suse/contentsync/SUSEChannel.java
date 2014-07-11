@@ -166,4 +166,12 @@ public class SUSEChannel {
     public String getUpdateTag() {
         return updateTag;
     }
+
+    /**
+     * Setter for updateTag
+     * @param updateTagIn the update tag to set
+     */
+    public void setUpdateTag(String updateTagIn) {
+        this.updateTag = updateTagIn;
+    }
 }
