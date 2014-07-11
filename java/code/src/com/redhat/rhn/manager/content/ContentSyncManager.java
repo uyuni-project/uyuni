@@ -393,8 +393,8 @@ public class ContentSyncManager {
      * @return
      * @throws ContentSyncException
      */
-    private List<SubscriptionDto> consolidateSubscriptions(Collection<SCCSubscription> subscriptions)
-            throws ContentSyncException {
+    private List<SubscriptionDto> consolidateSubscriptions(
+            Collection<SCCSubscription> subscriptions) throws ContentSyncException {
         Map<String, SubscriptionDto> sc = new HashMap<String, SubscriptionDto>();
         Date now = new Date();
         for (SCCSubscription subscription : subscriptions) {
@@ -405,8 +405,8 @@ public class ContentSyncManager {
                 if ((now.compareTo(start) >= 0 &&
                      (end == null || now.compareTo(end) <= 0)) &&
                     !subscription.getType().equals(ContentSyncManager.PROVISIONAL_TYPE)) {
-                    sc.put(productClass, new SubscriptionDto(subscription.getName(), productClass,
-                            subscription.getSystemsCount(), start, end));
+                    sc.put(productClass, new SubscriptionDto(subscription.getName(),
+                            productClass, subscription.getSystemsCount(), start, end));
                 }
             }
         }
@@ -494,10 +494,14 @@ public class ContentSyncManager {
 
         2. NCC allows less subscriptions than in the DB
            - Reduce the max_members of some org's
-           - Substract the max_members of org_id=1 until needed_subscriptions=0 or max_members=current_members
-           - Substract the max_members of org_id++ until needed_subscriptions=0 or max_members=current_members
-           - Reduce the max_members of org_id=1 until needed_subscriptions=0 or max_members=0 (!!!)
-           - Reduce the max_members of org_id++ until needed_subscriptions=0 or max_members=0 (!!!)
+           - Substract the max_members of org_id=1
+             until needed_subscriptions=0 or max_members=current_members
+           - Substract the max_members of org_id++ until
+             needed_subscriptions=0 or max_members=current_members
+           - Reduce the max_members of org_id=1 until
+             needed_subscriptions=0 or max_members=0 (!!!)
+           - Reduce the max_members of org_id++ until
+             needed_subscriptions=0 or max_members=0 (!!!)
         */
         Long needed = total - subscr.getNodeCount();
         Map<Long, SubscrCounter> calculated = new HashMap<Long, SubscrCounter>();
@@ -604,7 +608,6 @@ public class ContentSyncManager {
             throws ContentSyncException {
         //this.resetEntitlementsToDefault();
         for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
-            System.err.println("Product Class: " + meta.getProductClass());
             if (this.isEntitlement(meta.getProductClass())) {
                 this.updateEntitlement(meta);
             } else {
