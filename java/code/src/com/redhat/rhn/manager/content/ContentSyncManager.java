@@ -444,12 +444,12 @@ public class ContentSyncManager {
     /**
      * Subscription members counter.
      */
-    private static class SubscrCounter {
+    private static class MembersCounter {
         private Long maxMembers;
         private final Long currentMembers;
         private Boolean dirty;
 
-        public SubscrCounter(PrivateChannelFamily pcf) {
+        public MembersCounter(PrivateChannelFamily pcf) {
             this.dirty = Boolean.FALSE;
             this.maxMembers = pcf.getMaxMembers();
             this.currentMembers = pcf.getCurrentMembers();
@@ -486,8 +486,9 @@ public class ContentSyncManager {
      * @param oid
      * @return Calculated subscriptions.
      */
-    private Map<Long, SubscrCounter> calculateSubscriptions(
-            Map<Long, SubscrCounter> allSubs, Long total, SubscriptionDto subscr, Long oid) {
+    private Map<Long, MembersCounter> calculateSubscriptions(
+            Map<Long, MembersCounter> allSubs, Long total,
+            SubscriptionDto subscr, Long oid) {
         /*
         Two things can happen:
         1. There are more subscriptions in NCC than in DB
@@ -505,9 +506,9 @@ public class ContentSyncManager {
              needed_subscriptions=0 or max_members=0 (!!!)
         */
         Long needed = total - subscr.getNodeCount();
-        Map<Long, SubscrCounter> calculated = new HashMap<Long, SubscrCounter>();
-        for (Map.Entry<Long, SubscrCounter> item : allSubs.entrySet()) {
-            SubscrCounter cnt = item.getValue();
+        Map<Long, MembersCounter> calculated = new HashMap<Long, MembersCounter>();
+        for (Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
+            MembersCounter cnt = item.getValue();
             Long free = cnt.getMaxMembers() - cnt.getCurrentMembers();
             if ((free >= 0 && needed <= free) || (free < 0 && needed < 0)) {
                 cnt.decMaxMembers(needed);
@@ -523,8 +524,8 @@ public class ContentSyncManager {
 
         // If not reduced all max_members are not enough, there are still leftovers in DB.
         if (needed > 0) {
-            for (Map.Entry<Long, SubscrCounter> item : allSubs.entrySet()) {
-                SubscrCounter cnt = item.getValue();
+            for (Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
+                MembersCounter cnt = item.getValue();
                 Long free = cnt.getMaxMembers();
                 if (free > 0 && needed <= free) {
                     cnt.decMaxMembers(needed);
@@ -551,19 +552,19 @@ public class ContentSyncManager {
             return;
         }
 
-        Map<Long, SubscrCounter> allSubs = new HashMap();
+        Map<Long, MembersCounter> allSubs = new HashMap<Long, MembersCounter>();
         Long total = 0L;
         for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
             Long orgId = pcf.getOrg().getId();
             if (!allSubs.containsKey(orgId)) {
-                allSubs.put(orgId, new SubscrCounter(pcf));
+                allSubs.put(orgId, new MembersCounter(pcf));
             } else {
                 allSubs.get(orgId).incMaxMembers(pcf.getMaxMembers());
             }
             total += pcf.getMaxMembers();
         }
 
-        for(final Map.Entry<Long, SubscrCounter> item :
+        for(final Map.Entry<Long, MembersCounter> item :
                 this.calculateSubscriptions(allSubs, total,
                                             sub, family.getId()).entrySet()) {
             if (item.getValue().isDirty()) {
