@@ -231,11 +231,7 @@ BuildRequires: checkstyle
 %endif
 # SUSE additional build requirements
 %if 0%{?suse_version}
-BuildRequires: oracle-instantclient11.2-basic
 BuildRequires: log4j
-%endif
-# SUSE = Struts 1.2 and Tomcat 6
-%if 0%{?suse_version}
 BuildRequires: struts >= 1.2.9
 %else
 BuildRequires: struts >= 1.3.0
@@ -289,8 +285,8 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
-Requires: ojdbc14
-BuildRequires: ojdbc14
+Requires: ojdbc5
+BuildRequires: ojdbc5
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
@@ -630,7 +626,7 @@ install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdi
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
-ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
+ln -s -f %{_javadir}/ojdbc5.jar $RPM_BUILD_ROOT%{jardir}/ojdbc5.jar
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
@@ -916,7 +912,7 @@ fi
 
 %files oracle
 %defattr(644, tomcat, tomcat)
-%{jardir}/ojdbc14.jar
+%{jardir}/ojdbc5.jar
 
 %files postgresql
 %defattr(644, tomcat, tomcat)
