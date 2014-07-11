@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 # feature/init_user_create.feature
-@javascript @init_once @sec_test
+@javascript @init_once
 Feature: Create initial users
   In Order to run the tests
   As a testing users
