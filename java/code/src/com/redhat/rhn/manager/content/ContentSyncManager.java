@@ -606,7 +606,7 @@ public class ContentSyncManager {
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
-        //this.resetEntitlementsToDefault();
+        this.resetEntitlementsToDefault();
         for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
             if (this.isEntitlement(meta.getProductClass())) {
                 this.updateEntitlement(meta);
