@@ -730,10 +730,8 @@ fi
 %dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
 %defattr(0664,root,tomcat,0775)
-%dir /srv/tomcat
 %endif
 %defattr(644,tomcat,tomcat,775)
-%attr(775, root, tomcat) %dir %{appdir}
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
