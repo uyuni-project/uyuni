@@ -76,6 +76,9 @@ public class ContentSyncManager {
     private static final String FULL_TYPE = "FULL";
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
+    // Base channels have "BASE" as their parent in channels.xml
+    private static final String BASE = "BASE";
+
     // Static XML files we parse
     private static String channelsXML = "/usr/share/susemanager/channels.xml";
     private static String channelFamiliesXML = "/usr/share/susemanager/channel_families.xml";
@@ -693,7 +696,7 @@ public class ContentSyncManager {
         // Filter in channels with available parents only (or base channels)
         for (SUSEChannel c : allChannels) {
             String parent = c.getParent();
-            if (parent.equals("BASE") || availableChannelLabels.contains(parent)) {
+            if (parent.equals(BASE) || availableChannelLabels.contains(parent)) {
                 availableChannels.add(c);
 
                 // Update tag can be empty string which is not allowed in the DB
@@ -731,7 +734,7 @@ public class ContentSyncManager {
 
             // Set parent channel to null for base channels
             String parentChannelLabel = availableChannel.getParent();
-            if (parentChannelLabel.equals("BASE")) {
+            if (parentChannelLabel.equals(BASE)) {
                 parentChannelLabel = null;
             }
 
