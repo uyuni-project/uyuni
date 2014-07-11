@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -51,6 +50,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -279,7 +279,7 @@ public class ContentSyncManager {
         updateChannels();
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
-        updateSubscriptions();
+        updateSubscriptions(this.getSubscriptions());
         syncSUSEProductChannels();
         updateUpgradePaths();
     }
@@ -372,7 +372,7 @@ public class ContentSyncManager {
     public void updateChannelFamilies() throws ContentSyncException {
         for (SUSEChannelFamily scf : this.readChannelFamilies()) {
             ChannelFamily family = this.getChannelFamily(scf.getLabel(), scf.getName());
-            if (family.getPrivateChannelFamilies().isEmpty()) {
+            if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pf = this.newPrivateChannelFamily(family);
                 if (scf.getDefaultNodeCount() < 0) {
                     pf.setMaxMembers(ContentSyncManager.INFINITE);
@@ -432,6 +432,7 @@ public class ContentSyncManager {
      */
     private void resetEntitlementsToDefault() {
         Map<String, Object> params = new HashMap<String, Object>();
+        // XXX: Move the SQL query away separately!!
         ModeFactory.getWriteMode("SystemGroup_queries",
                                  "reset_entitlements_bc").executeUpdate(params);
         params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
@@ -440,13 +441,175 @@ public class ContentSyncManager {
     }
 
     /**
+     * Subscription members counter.
+     */
+    private static class SubscrCounter {
+        private Long maxMembers;
+        private final Long currentMembers;
+        private Boolean dirty;
+
+        public SubscrCounter(PrivateChannelFamily pcf) {
+            this.dirty = Boolean.FALSE;
+            this.maxMembers = pcf.getMaxMembers();
+            this.currentMembers = pcf.getCurrentMembers();
+        }
+
+        public Boolean isDirty() {
+            return dirty;
+        }
+
+        public Long getCurrentMembers() {
+            return currentMembers;
+        }
+
+        public Long getMaxMembers() {
+            return maxMembers;
+        }
+
+        public void incMaxMembers(Long value) {
+            this.maxMembers += value;
+        }
+
+        public void decMaxMembers(Long value) {
+            this.maxMembers -= value;
+            this.dirty = Boolean.TRUE;
+        }
+    }
+
+    /**
+     * Calculate subscriptions.
+     *
+     * @param allSubs
+     * @param total
+     * @param subscs
+     * @param oid
+     * @return Calculated subscriptions.
+     */
+    private Map<Long, SubscrCounter> calculateSubscriptions(
+            Map<Long, SubscrCounter> allSubs, Long total, SubscriptionDto subscr, Long oid) {
+        /*
+        Two things can happen:
+        1. There are more subscriptions in NCC than in DB
+           Then add (substract a negative value) from org_id=1 max_members
+
+        2. NCC allows less subscriptions than in the DB
+           - Reduce the max_members of some org's
+           - Substract the max_members of org_id=1 until needed_subscriptions=0 or max_members=current_members
+           - Substract the max_members of org_id++ until needed_subscriptions=0 or max_members=current_members
+           - Reduce the max_members of org_id=1 until needed_subscriptions=0 or max_members=0 (!!!)
+           - Reduce the max_members of org_id++ until needed_subscriptions=0 or max_members=0 (!!!)
+        */
+        Long needed = total - subscr.getNodeCount();
+        Map<Long, SubscrCounter> calculated = new HashMap<Long, SubscrCounter>();
+        for (Map.Entry<Long, SubscrCounter> item : allSubs.entrySet()) {
+            SubscrCounter cnt = item.getValue();
+            Long free = cnt.getMaxMembers() - cnt.getCurrentMembers();
+            if ((free >= 0 && needed <= free) || (free < 0 && needed < 0)) {
+                cnt.decMaxMembers(needed);
+                needed = 0L;
+                break;
+            }
+            else if (free > 0 && needed > free) {
+                cnt.decMaxMembers(free);
+                needed -= free;
+            }
+            calculated.put(item.getKey(), cnt);
+        }
+
+        // If not reduced all max_members are not enough, there are still leftovers in DB.
+        if (needed > 0) {
+            for (Map.Entry<Long, SubscrCounter> item : allSubs.entrySet()) {
+                SubscrCounter cnt = item.getValue();
+                Long free = cnt.getMaxMembers();
+                if (free > 0 && needed <= free) {
+                    cnt.decMaxMembers(needed);
+                    needed = 0L;
+                    break;
+                }
+                else if (free > 0 && needed > free) {
+                    cnt.decMaxMembers(free);
+                    needed -= free;
+                }
+                calculated.put(item.getKey(), cnt);
+            }
+        }
+
+        return calculated;
+    }
+
+    /**
+     * Update subscription.
+     */
+    private void updateSubscription(SubscriptionDto subscription) {
+        final ChannelFamily family = this.getChannelFamily(subscription.getProductClass(),
+                                                     subscription.getName());
+        if (family == null) {
+            return;
+        }
+
+        Map<Long, SubscrCounter> allSubs = new HashMap();
+        Long total = 0L;
+        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
+            Long orgId = pcf.getOrg().getId();
+            if (!allSubs.containsKey(orgId)) {
+                allSubs.put(orgId, new SubscrCounter(pcf));
+            } else {
+                allSubs.get(orgId).incMaxMembers(pcf.getMaxMembers());
+            }
+            total += pcf.getMaxMembers();
+        }
+
+        for(final Map.Entry<Long, SubscrCounter> item :
+                this.calculateSubscriptions(allSubs, total,
+                                            subscription, family.getId()).entrySet()) {
+            if (item.getValue().isDirty()) {
+                HashMap<String, Object> p = new HashMap<String, Object>();
+                p.put("members", item.getValue().getMaxMembers());
+                p.put("cfid", family.getId());
+                p.put("orgid", item.getKey());
+                ModeFactory.getWriteMode("SystemGroup_queries",
+                                         "set_subscr_max_members").executeUpdate(p);
+            }
+        }
+    }
+
+    /**
+     * Update entitlement.
+     */
+    private void updateEntitlement(SubscriptionDto subscription) {
+        Date now = new Date();
+        for (final String ent : SystemEntitlement.valueOf(
+                subscription.getProductClass()).getEntitlements()) {
+            for (Iterator iter = ModeFactory.getMode(
+                    "System_queries", "entitlement_id", Map.class)
+                    .execute(new HashMap<String, Object>(){{put("label", ent);}})
+                    .iterator(); iter.hasNext();) {
+                final Long entId = (Long) ((Map<String, Object>) iter.next()).get("id");
+                if (now.compareTo(subscription.getEndDate()) <= 0) {
+                    ModeFactory.getWriteMode("SystemGroup_queries",
+                                             "set_entitlement_max_members")
+                            .executeUpdate(new HashMap<String, Object>(){
+                                {put("members", INFINITE);put("group", entId);}});
+                }
+            }
+        }
+    }
+
+    /**
      * Sync subscriptions from the SCC to the database.
+     * @param subscriptions
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public void updateSubscriptions() throws ContentSyncException {
-        this.resetEntitlementsToDefault();
-        for (SubscriptionDto meta : this.consolidateSubscriptions(this.getSubscriptions())) {
-            // Mapping for entitlements
+    public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
+            throws ContentSyncException {
+        //this.resetEntitlementsToDefault();
+        for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
+            System.err.println("Product Class: " + meta.getProductClass());
+            if (this.isEntitlement(meta.getProductClass())) {
+                this.updateEntitlement(meta);
+            } else {
+                this.updateSubscription(meta);
+            }
         }
     }
 
