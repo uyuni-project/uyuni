@@ -21,6 +21,7 @@ class ContentPackage:
 
     def __init__(self):
         # map of checksums
+        self.checksums = {}
         self.checksum_type = None
         self.checksum = None
 
@@ -36,6 +37,10 @@ class ContentPackage:
         self.path = None
         self.file = None
 
+        self.a_pkg = None
+
+    def clear_header(self):
+        """a_pkg hold the header data. Remove it to not waste memory"""
         self.a_pkg = None
 
     def setNVREA(self, name, version, release, epoch, arch):
@@ -62,14 +67,26 @@ class ContentPackage:
         self.file = open(self.path, 'rb')
         self.a_pkg = rhn_pkg.package_from_stream(self.file, packaging='rpm')
         self.a_pkg.read_header()
-        self.a_pkg.payload_checksum()
+        if self.checksum_type:
+            self.a_pkg.set_checksum_type(self.checksum_type)
+        if not self.a_pkg.checksum:
+            self.a_pkg.payload_checksum()
         self.file.close()
+        if self.checksum != self.a_pkg.checksum:
+            raise rhnFault(50, "checksums did not match %s vs %s" % (self.checksum, self.a_pkg.checksum), explain=0)
 
     def upload_package(self, channel):
         rel_package_path = rhnPackageUpload.relative_path_from_header(
                 self.a_pkg.header, channel['org_id'],
                 self.a_pkg.checksum_type, self.a_pkg.checksum)
-        _unused = rhnPackageUpload.push_package(self.a_pkg,
+        package_dict, diff_level = rhnPackageUpload.push_package(self.a_pkg,
                 force=False,
                 relative_path=rel_package_path,
                 org_id=channel['org_id'])
+
+    def set_checksum(self, checksum_type_in=None, checksum_in=None):
+        if checksum_type_in and checksum_in:
+            self.checksum_type = checksum_type_in
+            self.checksum = checksum_in
+            if not((checksum_type_in in self.checksums) and (self.checksums[checksum_type_in] == checksum_in)):
+                self.checksums[checksum_type_in] = checksum_in
