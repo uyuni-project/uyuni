@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.2.28
+Version:        2.2.33
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,22 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.33-1
+- add CentOS 7 GPG key
+- fix copyright years
+
+* Tue Jul 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.32-1
+- 1103813 - fixed order of tables in upgrade script
+
+* Fri Jul 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.31-1
+- 1103813 - armhf support for "arm Debian" channel
+
+* Tue Jul 01 2014 Stephen Herr <sherr@redhat.com> 2.2.30-1
+- 1109276 - Fix Distro syncing in CobblerSyncTask, force one sync to fix arch
+
+* Fri Jun 27 2014 Stephen Herr <sherr@redhat.com> 2.2.29-1
+- Fix rhnKickstartableTree trigger, 'null = null' is not true in sql
+
 * Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.2.28-1
 - Moving schema upgrade to appropriate dir
 - rhnSsmOperationServer: note column added

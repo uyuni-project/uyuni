@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright (c) 2008--2012 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -44,7 +44,7 @@ class BaseChannelDeniedError(Exception):
 
 class ChannelException(Exception):
     def __init__(self, channel_id=None, *args, **kwargs):
-        apply(Exception.__init__, (self, ) + args, kwargs)
+        Exception.__init__(self, *args, **kwargs)
         self.channel_id = channel_id
         self.channel = None
 

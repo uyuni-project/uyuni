@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2012 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -439,7 +439,7 @@ def __new_user_db(username, password, email, org_id, org_password):
     if not data:
         # the username is not there, check the reserved user table
         h = rhnSQL.prepare("""
-        select login, password, password from rhnUserReserved
+        select login, password from rhnUserReserved
         where login_uc = upper(:username)
         """)
         h.execute(username=username)

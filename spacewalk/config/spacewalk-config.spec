@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.2.1
+Version: 2.2.2
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -181,6 +181,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Tue Jul 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.2-1
+- make JSESSIONID cookie httpOnly
+
 * Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
 - spec file polish
 

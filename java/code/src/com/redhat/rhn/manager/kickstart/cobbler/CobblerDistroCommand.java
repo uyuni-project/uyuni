@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -62,7 +62,7 @@ public class CobblerDistroCommand extends CobblerCommand {
      * Copy cobbler fields that shouldn't change in cobbler
      */
     protected void updateCobblerFields() {
-        CobblerConnection con = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        CobblerConnection con = getCobblerConnection();
         Distro nonXen = Distro.lookupById(con, tree.getCobblerId());
         Distro xen = Distro.lookupById(con, tree.getCobblerXenId());
 

@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.38
+Version: 5.11.40
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -448,6 +448,12 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.40-1
+- fix copyright years
+
+* Tue Jul 08 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.39-1
+- 1117343 - osad: support communication over proxy
+
 * Fri Jun 20 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.11.38-1
 - start osad after package installation on sysvinit systems
 

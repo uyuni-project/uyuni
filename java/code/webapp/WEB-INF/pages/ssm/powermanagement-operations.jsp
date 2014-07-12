@@ -19,13 +19,15 @@
         </p>
     </div>
 
-    <%@ include file="/WEB-INF/pages/common/fragments/ssm/system_list.jspf"%>
+    <c:if test="${fn:length(types) >= 1}">
+        <%@ include file="/WEB-INF/pages/common/fragments/ssm/system_list.jspf"%>
 
-    <html:form action="/systems/ssm/provisioning/PowerManagementOperations.do">
-        <rhn:csrf />
-        <rhn:submitted />
+        <html:form action="/systems/ssm/provisioning/PowerManagementOperations.do">
+            <rhn:csrf />
+            <rhn:submitted />
 
-        <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-operations.jspf"%>
-    </html:form>
+            <%@ include file="/WEB-INF/pages/common/fragments/kickstart/powermanagement-operations.jspf"%>
+        </html:form>
+    </c:if>
 </body>
 </html>

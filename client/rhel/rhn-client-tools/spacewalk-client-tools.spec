@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.2.4
+Version: 2.2.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -460,6 +460,15 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.7-1
+- fix copyright years
+
+* Thu Jul 10 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.6-1
+- Update .po and .pot files for rhn-client-tools.
+
+* Wed Jul 09 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.5-1
+- allow unicode characters in proxy username / password
+
 * Fri Jun 13 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.4-1
 - replace python-gudev by gudev introspection
 

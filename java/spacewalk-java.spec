@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.2.108
+Version: 2.2.120
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -515,9 +515,6 @@ rm -rf $RPM_BUILD_ROOT
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora}
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
-%if 0%{?fedora} < 20
-ln -s -f %{_javadir}/apache-commons-validator.jar $RPM_BUILD_ROOT%{_javadir}/commons-validator.jar
-%endif
 ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
 %endif
@@ -761,7 +758,7 @@ fi
 %{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
-%{jardir}/commons-validator.jar
+%{jardir}/*commons-validator.jar
 %{jardir}/concurrent.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
@@ -775,9 +772,6 @@ fi
 %{jardir}/slf4j_log4j12.jar
 %endif
 %if 0%{?fedora}
-%if 0%{?fedora} < 20
-%{_javadir}/commons-validator.jar
-%endif
 %{_javadir}/mchange-commons.jar
 %{_javadir}/jboss-logging.jar
 %{jardir}/*jboss-logging.jar
@@ -919,6 +913,56 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.120-1
+- bump api version
+- fix copyright years
+- Fix ISE when tag name is left empty
+
+* Thu Jul 10 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.119-1
+- make channel family consumtion columns sortable
+- add schedulePackageInstall api for array of servers
+
+* Thu Jul 10 2014 Tomas Kasparek <tkasparek@redhat.com> 2.2.118-1
+- add api for setting kickstart/software properties
+- fix api call paramater in api documentation
+
+* Mon Jul 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.117-1
+- call rhn-config-satellite.pl only if anything has changed
+
+* Fri Jul 04 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.116-1
+- SET is a Oracle reserved word
+- TokenPackageFactoryTest: avoid NPE on incomplete existing packages
+
+* Tue Jul 01 2014 Stephen Herr <sherr@redhat.com> 2.2.115-1
+- 1109276 - checkstyle fix
+
+* Tue Jul 01 2014 Stephen Herr <sherr@redhat.com> 2.2.114-1
+- 1109276 - Fix Distro syncing in CobblerSyncTask, force one sync to fix arch
+- don't show packages tab if activation key hasn't provisioning entitlement
+- fix column header for package profile difference
+- add csv export for package profile comparison
+- handle NestedNullException while creating csv
+- allow users to set size of config files to be editable in webUI
+
+* Mon Jun 30 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.113-1
+- add missing string resource
+- don't use obsolete hibernate namespace
+
+* Fri Jun 27 2014 Stephen Herr <sherr@redhat.com> 2.2.112-1
+- Some final polish on power management feature.
+- Power Management: indentation corrected
+- Power Management: use rhn:toolbar
+
+* Fri Jun 27 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.111-1
+- checkstyle fix
+
+* Fri Jun 27 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.110-1
+- don't offer read-only flag in the initial user creation page
+
+* Fri Jun 27 2014 Tomas Lestach <tlestach@redhat.com> 2.2.109-1
+- package (apache-)commons-validator.jar
+- on fc19 we shall link apache-commons-validator instead of commons-validator
+
 * Thu Jun 26 2014 Stephen Herr <sherr@redhat.com> 2.2.108-1
 - Fixing missing headers
 
