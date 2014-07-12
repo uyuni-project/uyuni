@@ -22,8 +22,7 @@ from collections import namedtuple
 import mock
 from mock import Mock
 
-from spacewalk.satellite_tools.reposync import ContentPackage
-from spacewalk.satellite_tools.repo_plugins import yum_src
+from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 
 class YumSrcTest(unittest.TestCase):
 
