@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2013 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -408,9 +408,9 @@ class Database(sql_base.Database):
                 err_args.extend(list(ret[2:]))
                 raise sql_base.SQLConnectError(*err_args), None, sys.exc_info()[2]
             # else, this is a reconnect attempt
-            raise apply(sql_base.SQLConnectError,
+            raise sql_base.SQLConnectError(*(
                 [self.dbtxt, errno, errmsg,
-                "Attempting Re-Connect to the database failed", ] + ret[2:]), None, sys.exc_info()[2]
+                "Attempting Re-Connect to the database failed", ] + ret[2:])), None, sys.exc_info()[2]
         dbh_id = id(self.dbh)
         # Reset the statement cache for this database connection
         self._cursor_class._cursor_cache[dbh_id] = {}
@@ -494,7 +494,7 @@ class Database(sql_base.Database):
     # why would anybody need this?!
     def execute(self, sql, *args, **kwargs):
         cursor = self.prepare(sql)
-        apply(cursor.execute, args, kwargs)
+        cursor.execute(*args, **kwargs)
         return cursor
 
     # transaction support

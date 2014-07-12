@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2012 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
 # This software is licensed to you under the GNU General Public License,
@@ -32,14 +32,12 @@ from spacewalk.common.rhnTB import fetchTraceback
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.checksum import getFileChecksum
 from spacewalk.common.rhnConfig import CFG, initCFG
-from spacewalk.common.rhnException import rhnFault
 from spacewalk.server.importlib.importLib import IncompletePackage, Erratum, Bug, Keyword
 from spacewalk.server.importlib.packageImport import ChannelPackageSubscription
 from spacewalk.server.importlib.backendOracle import SQLBackend
 from spacewalk.server.importlib.errataImport import ErrataImport
 from spacewalk.server import taskomatic
 
-from urlgrabber.grabber import URLGrabError
 hostname = socket.gethostname()
 if '.' not in hostname:
     hostname = socket.getfqdn()
@@ -73,7 +71,7 @@ def getChannelRepo():
 
     initCFG('server')
     rhnSQL.initDB()
-    items={}
+    items = {}
     sql = """
            select s.source_url, c.label
                        from rhnContentSource s,
@@ -91,7 +89,7 @@ def getChannelRepo():
             items[row['label']] = []
         items[row['label']] += [row['source_url']]
 
-    return items;
+    return items
 
 def getParentsChilds():
 
@@ -121,8 +119,8 @@ def getParentsChilds():
 
 def getCustomChannels():
 
-    d_parents=getParentsChilds()
-    l_custom_ch=[]
+    d_parents = getParentsChilds()
+    l_custom_ch = []
 
     for ch in d_parents:
         l_custom_ch += [ch] + d_parents[ch]
@@ -137,7 +135,7 @@ class RepoSync(object):
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
-        self.filters = filters
+        self.filters = filters or []
         self.deep_verify = deep_verify
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
@@ -225,6 +223,7 @@ class RepoSync(object):
             if data['source_url'].startswith("uln://"):
                 self.repo_plugin = self.load_plugin("uln")
 
+            # pylint: disable=W0703
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
@@ -360,7 +359,7 @@ class RepoSync(object):
                     relativepath = relativepath.rstrip(suffix)
             src = fileutils.decompress_open(groupsfile)
             dst = open(abspath, "w")
-            shutil.copyfileobj(src,dst)
+            shutil.copyfileobj(src, dst)
             dst.close()
             src.close()
             # update or insert
@@ -975,7 +974,7 @@ class RepoSync(object):
                      order by sort_order """)
             h.execute(source_id = source_id)
             filter_data = h.fetchall_dict() or []
-            filters = [(row['flag'], re.split('[,\s]+', row['filter']))
+            filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
                                                          for row in filter_data]
         else:
             filters = self.filters
@@ -1037,7 +1036,7 @@ class RepoSync(object):
                                                   (num_passed - num_to_process))
             self.print_msg("Packages to sync:             %5d" % num_to_process)
 
-        self.regen=True
+        self.regen = True
         is_non_local_repo = (url.find("file://") < 0)
 
         def finally_remove(path):
@@ -1048,7 +1047,7 @@ class RepoSync(object):
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             localpath = None
-
+            # pylint: disable=W0703
             try:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
@@ -1154,7 +1153,8 @@ class RepoSync(object):
         if not self.quiet:
             sys.stderr.write(str(message) + "\n")
 
-    def log_msg(self, message):
+    @staticmethod
+    def log_msg(message):
         rhnLog.log_clean(0, message)
 
     def sendErrorMail(self, body):
@@ -1222,7 +1222,8 @@ class RepoSync(object):
                 continue
 
             for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', v)):
-                if re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s) or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s):
+                if (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s)
+                    or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s)):
                     continue
                 if re.search(r'/$', s):
                     dirs.append(d + s)
@@ -1234,7 +1235,8 @@ class RepoSync(object):
                     print "Retrieving %s" % d + s
                     plug.get_file(d + s, os.path.join(CFG.MOUNT_POINT, ks_path))
                 st = os.stat(local_path)
-                insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path), st_size = st.st_size, st_time = st.st_mtime)
+                insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path),
+                                 st_size = st.st_size, st_time = st.st_mtime)
 
         rhnSQL.commit()
 

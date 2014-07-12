@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,7 +28,9 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -145,7 +147,7 @@ public class SoftwareHandler extends BaseHandler {
      * @throws FaultException
      * @xmlrpc.doc Append the list of software packages to a kickstart profile.
      * Duplicate packages will be ignored.
-     * @xmlrpc.param #So_key()
+     * @xmlrpc.param #session_key()
      * @xmlrpc.param #param_desc("string", "ksLabel", "The label of a kickstart
      * profile.")
      * @xmlrpc.param #param_desc("string[]", "packageList", "A list of package
@@ -180,5 +182,54 @@ public class SoftwareHandler extends BaseHandler {
 
     private KickstartData lookupKsData(String label, Org org) {
         return XmlRpcKickstartHelper.getInstance().lookupKsData(label, org);
+    }
+
+    /**
+     * @param loggedInUser The current user
+     * @param ksLabel Kickstart profile label
+     * @param params Map containing software parameters
+     * @return 1 if successful, exception otherwise.
+     * @xmlrpc.doc Sets kickstart profile software details.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
+     * @xmlrpc.param
+     *          #struct("Kickstart packages info")
+     *              #prop_desc("string", "noBase", "Install @Base package group")
+     *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
+     *          #struct_end()
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setSoftwareDetails(User loggedInUser, String ksLabel, Map params) {
+        KickstartData ksData = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
+                ksLabel, loggedInUser.getOrg().getId());
+        if (params.containsKey("noBase")) {
+            ksData.setNoBase((Boolean)params.get("noBase"));
+        }
+        if (params.containsKey("ignoreMissing")) {
+            ksData.setIgnoreMissing((Boolean)params.get("ignoreMissing"));
+        }
+        return 1;
+    }
+
+    /**
+     * @param loggedInUser The current user
+     * @param ksLabel Kickstart profile label
+     * @return Map of KS profile software parameters noBase, ignoreMissingPackages
+     * @xmlrpc.doc Gets kickstart profile software details.
+     * @xmlrpc.param #session_key()
+     * @xmlrpc.param #param_desc("string", "ksLabel", "Label of the kickstart profile")
+     * @xmlrpc.returntype
+     *          #struct("Kickstart packages info")
+     *              #prop_desc("string", "noBase", "Install @Base package group")
+     *              #prop_desc("string", "ignoreMissing", "Ignore missing packages")
+     *          #struct_end()
+     */
+    public Map<String, Boolean> getSoftwareDetails(User loggedInUser, String ksLabel) {
+        KickstartData ksData = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
+                ksLabel, loggedInUser.getOrg().getId());
+        Map<String, Boolean> returnValues = new HashMap<String, Boolean>();
+        returnValues.put("noBase", ksData.getNoBase());
+        returnValues.put("ignoreMissing", ksData.getIgnoreMissing());
+        return returnValues;
     }
 }

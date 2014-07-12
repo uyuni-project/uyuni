@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2013 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -61,16 +61,15 @@ class SQLSchemaError(SQLError):
         self.errno = errno
         (self.errmsg, errmsg) = string.split(errmsg, '\n', 1)
         SQLError.__init__(self, self.errno, self.errmsg, errmsg, *args)
+
+
 # SQL connect error
 class SQLConnectError(SQLError):
     def __init__(self, db, errno, errmsg, *args):
         self.db = db
         self.errno = errno
         self.errmsg = errmsg
-        if len(args):
-            apply(SQLError.__init__, (self, errno, errmsg, db) + args)
-        else:
-            SQLError.__init__(self, errno, errmsg, db)
+        SQLError.__init__(self, errno, errmsg, db, *args)
 
 
 # Cannot prepare statement
@@ -78,7 +77,7 @@ class SQLStatementPrepareError(SQLError):
     def __init__(self, db, errmsg, *args):
         self.db = db
         self.errmsg = errmsg
-        apply(SQLError.__init__, (self, errmsg, db) + args)
+        SQLError.__init__(self, errmsg, db, *args)
 
 
 class ModifiedRowError(SQLError):
@@ -155,7 +154,6 @@ class Cursor:
         i.e. cursor.executemany(id=[1, 2], name=["Bill", "Mary"])
         """
         return self._execute_wrapper(self._executemany, *p, **kw)
-    
 
     def execute_bulk(self, dict, chunk_size=100):
         """

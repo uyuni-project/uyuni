@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2012 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE LINUX Products GmbH, Nuernberg, Germany.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -14,15 +14,15 @@
 # in this software or its documentation.
 #
 
-import shutil
 import subprocess
 import sys
 import os
+from shutil import rmtree
 import re
 import gzip
 import xml.etree.ElementTree as etree
 import urlparse
-from os import mkdir, makedirs
+from os import mkdir
 import gpgme
 import time
 
@@ -46,7 +46,8 @@ except ImportError:
         # pylint: disable=F0401
         import cElementTree
     iterparse = cElementTree.iterparse
-from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException, ContentPackage
+from spacewalk.satellite_tools.reposync import ChannelException, ChannelTimeoutException
+from spacewalk.satellite_tools.repo_plugins import ContentPackage
 from spacewalk.common.rhnConfig import CFG, initCFG
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common import rhnLog
@@ -61,6 +62,7 @@ YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
 class YumWarnings:
     def __init__(self):
         self.saved_stdout = None
+        self.errors = None
     def write(self, s):
         pass
     def disable(self):
@@ -72,7 +74,8 @@ class YumWarnings:
 class YumUpdateMetadata(UpdateMetadata):
     """The root update metadata object supports getting all updates"""
 
-    def add(self, obj, mdtype='updateinfo', all=False):
+# pylint: disable=W0221
+    def add(self, obj, mdtype='updateinfo', all_versions=False):
         """ Parse a metadata from a given YumRepository, file, or filename. """
         if not obj:
             raise UpdateNoticeException
@@ -92,7 +95,7 @@ class YumUpdateMetadata(UpdateMetadata):
             if elem.tag == 'update':
                 un = UpdateNotice(elem)
                 key = un['update_id']
-                if all:
+                if all_versions:
                     key = "%s-%s" % (un['update_id'], un['version'])
                 if not self._notices.has_key(key):
                     self._notices[key] = un
@@ -203,9 +206,9 @@ class ContentSource:
         if not filters:
             # if there's no include/exclude filter on command line or in database
             for filter_conf in self.repo.includepkgs:
-                filters.append(('+',[p]))
+                filters.append(('+', [p]))
             for filter_conf in self.repo.exclude:
-                filters.append(('-',[p]))
+                filters.append(('-', [p]))
 
         if filters:
             pkglist = self._filter_packages(pkglist, filters)
@@ -231,7 +234,8 @@ class ContentSource:
             to_return.append(new_pack)
         return to_return
 
-    def _filter_packages(self, packages, filters, exclude_only = False):
+    @staticmethod
+    def _filter_packages(packages, filters, exclude_only = False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -286,10 +290,12 @@ class ContentSource:
         check = (self.verify_pkg, (package.unique_id, 1), {})
         return self.repo.getPackage(package.unique_id, checkfunc=check)
 
-    def verify_pkg(self, fo, pkg, fail):
+    @staticmethod
+    def verify_pkg(_fo, pkg, _fail):
         return pkg.verifyLocalPkg()
 
-    def _clean_cache(self, directory):
+    @staticmethod
+    def _clean_cache(directory):
         shutil.rmtree(directory, True)
 
     def get_products(self):
@@ -559,29 +565,29 @@ class ContentSource:
 
     def set_ssl_options(self, ca_cert, client_cert, client_key):
         repo = self.repo
-        dir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
-        mkdir(dir, 0750)
-        repo.sslcacert = os.path.join(dir, 'ca.pem')
+        ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
+        mkdir(ssldir, 0750)
+        repo.sslcacert = os.path.join(ssldir, 'ca.pem')
         f = open(repo.sslcacert, "w")
         f.write(str(ca_cert))
-        f.close
+        f.close()
         if client_cert is not None:
-            repo.sslclientcert = os.path.join(dir, 'cert.pem')
+            repo.sslclientcert = os.path.join(ssldir, 'cert.pem')
             f = open(repo.sslclientcert, "w")
             f.write(str(client_cert))
-            f.close
+            f.close()
         if client_key is not None:
-            repo.sslclientkey = os.path.join(dir, 'key.pem')
+            repo.sslclientkey = os.path.join(ssldir, 'key.pem')
             f = open(repo.sslclientkey, "w")
             f.write(str(client_key))
-            f.close
+            f.close()
 
     def clear_ssl_cache(self):
         repo = self.repo
-        dir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
+        ssldir = os.path.join(repo.basecachedir, self.name, '.ssl-certs')
         try:
-            self._clean_cache(dir)
-        except:
+            self._clean_cache(ssldir)
+        except (OSError, IOError):
             pass
 
     def get_file(self, path, local_base=None):

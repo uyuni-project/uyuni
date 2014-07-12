@@ -69,6 +69,10 @@
     <available file="/usr/share/java/hibernate/hibernate-commons-annotations.jar" />
   </condition>
 
+  <condition property="commons-validator" value="apache-commons-validator" else="commons-validator">
+    <available file="/usr/share/java/apache-commons-validator.jar" />
+  </condition>
+
   <property name="hibernate3.2deps" value="hibernate3"/>
 
   <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ehcache-core hibernate-jpa-2.0-api"/>
@@ -90,7 +94,7 @@
   <property name="common.jar.dependencies"
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io commons-lang commons-logging commons-validator ${hibernate}
+             commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
              mailapi smtp jdom ${jmock-jars}
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg jcommon stringtree-json postgresql-jdbc
@@ -141,7 +145,7 @@
   <property name="install.common.jar.dependencies"
       value="bcel cglib commons-beanutils commons-cli commons-codec 
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-io commons-lang commons-logging commons-validator ${hibernate}
+             commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} javamail jdom jsch dwr
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
@@ -153,7 +157,7 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              commons-lang commons-logging
-             commons-validator concurrent dom4j ${hibernate} jta
+             ${commons-validator} concurrent dom4j ${hibernate} jta
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
              ${jfreechart} ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core

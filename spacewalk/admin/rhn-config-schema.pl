@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2008--2012 Red Hat, Inc.
+# Copyright (c) 2008--2014 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -136,7 +136,11 @@ for (sort keys %exception_files) {
 
 system('/usr/sbin/selinuxenabled');
 if ($? >> 8 == 0) {
-        system('/usr/sbin/restorecon', '-F', $target);
+        if (-x '/usr/sbin/restorecon') {
+		system('/usr/sbin/restorecon', '-F', $target);
+	} elsif (-x '/sbin/restorecon') {
+		system('/sbin/restorecon', '-F', $target);
+	}
 }
 
 exit $error;

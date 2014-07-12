@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	2.2.7
+Version:	2.2.10
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
@@ -53,7 +53,7 @@ sed -i '/disable=/ s/,bad-whitespace,unpacking-non-sequence,superfluous-parens//
 %endif
 %if 0%{?rhel} && 0%{?rhel} < 7
 # new checks in pylint 1.0
-sed -i '/disable=/ s/\(,C1001\|,W0121\)//g;' \
+sed -i '/disable=/ s/,C1001,W0121,useless-else-on-loop//g;' \
         %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
 %endif
 %if 0%{?suse_version} != 1010
@@ -75,6 +75,17 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Jun 30 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.10-1
+- disable useless-else-on-loop also in pylint 1.0
+
+* Fri Jun 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.9-1
+- fixed  Invalid class attribute name
+- fixed Else clause on loop without a break statement
+
+* Fri Jun 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.8-1
+- silenced Abstract class is only referenced 1 times
+- fixed Invalid name
+
 * Thu Jun 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.7-1
 - fix condition for Fedora
 

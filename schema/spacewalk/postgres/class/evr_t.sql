@@ -1,7 +1,7 @@
 -- oracle equivalent source sha1 ef6f79cb46cf4fcfd19a0b7bd52728e45b32d1eb
 -- retrieved from ./1241057068/d2f16725f65bddae85cd4782cd82e0c84c0a776d/schema/spacewalk/oracle/class/evr_t.sql
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008--2013 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or

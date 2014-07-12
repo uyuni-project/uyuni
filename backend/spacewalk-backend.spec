@@ -18,11 +18,15 @@
 %endif
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
+%if 0%{?fedora} || 0%{?rhel} > 5
+%{!?pylint_check: %global pylint_check 1}
+%endif
+
 Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.2.37
+Version: 2.2.43
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -65,14 +69,17 @@ BuildRequires: /usr/bin/msgfmt
 %endif
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5
+%if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
 BuildRequires: rhnlib >= 2.5.57
+BuildRequires: rhn-client-tools
 BuildRequires: rpm-python
 #BuildRequires: python-crypto
 BuildRequires: python-debian
+BuildRequires: python-gzipstream
+BuildRequires: yum
 %endif
 # we don't really want to require this redhat-release, so we protect
 # against installations on other releases using conflicts...
@@ -373,11 +380,12 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5
+%if 0%{?pylint_check}
 # check coding style
-export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn
+export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_exporter \
+                 $RPM_BUILD_ROOT%{pythonrhnroot}/satellite_tools \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/upload_server \
                  $RPM_BUILD_ROOT%{pythonrhnroot}/wsgi
 %endif
@@ -794,6 +802,30 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.43-1
+- 1005729 - man rhn-satellite-exporter org
+- fix copyright years
+- 1009961 - rhn-satellite-exporter man page update
+- 1009430 - rhn-satellite-exporter/spacewalk-remove-channel as non-root
+
+* Tue Jul 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.42-1
+- fixed name collision
+- old python needs maketrans()
+
+* Tue Jul 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.41-1
+- moved ContentPackage to repo_plugins to avoid relative imports
+- selecting password once shall be enough
+
+* Mon Jun 30 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.40-1
+- max_bytes is unused
+- fixed ProductNamesContainer instance has no attribute 'tagStack'
+
+* Fri Jun 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.39-1
+- pylint fixes
+
+* Fri Jun 27 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.38-1
+- fixed pylint errors in satellite_tools
+
 * Thu Jun 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.2.37-1
 - 1043005 - fixed rhnLog namespace
 
