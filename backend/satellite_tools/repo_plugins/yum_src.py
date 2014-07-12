@@ -296,7 +296,7 @@ class ContentSource:
 
     @staticmethod
     def _clean_cache(directory):
-        shutil.rmtree(directory, True)
+        rmtree(directory, True)
 
     def get_products(self):
         products = []
