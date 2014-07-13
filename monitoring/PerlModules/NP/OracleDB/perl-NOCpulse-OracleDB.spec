@@ -5,18 +5,17 @@ Summary:      Perl modules for NOCpulse Oracle database access
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-BuildRequires: perl(Config::IniFiles)
-BuildRequires: perl-FreezeThaw
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 BuildRequires: perl(NOCpulse::Debug) perl(NOCpulse::Config) perl(NOCpulse::Utils::XML) perl(NOCpulse::Object)
 BuildRequires: perl(RHN::DBI)
 BuildRequires: perl(DBI) perl(ExtUtils::MakeMaker)
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?suse_version}
+Requires: perl(NOCpulse::Debug) perl(NOCpulse::Config) perl(NOCpulse::Utils::XML) perl(NOCpulse::Object)
+Requires: perl(RHN::DBI) perl(DBI)
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -49,7 +48,6 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %{perl_vendorlib}/NOCpulse/*
 
 %changelog
