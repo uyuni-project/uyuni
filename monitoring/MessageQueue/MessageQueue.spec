@@ -13,12 +13,9 @@ Summary:      Message buffer/relay system
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-BuildRequires: nocpulse-common
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-Requires:     ProgAGoGo nocpulse-common
+Requires:     ProgAGoGo
+Requires(pre): nocpulse-common
 Group:        Applications/Communications
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -64,7 +61,6 @@ if [ $1 -eq 2 ]; then
 fi
 
 %files
-%defattr(-,root,root)
 %attr(755,nocpulse,nocpulse) %dir %queue_dir
 %attr(755,nocpulse,nocpulse) %dir %states_qdir
 %attr(755,nocpulse,nocpulse) %dir %notif_qdir
