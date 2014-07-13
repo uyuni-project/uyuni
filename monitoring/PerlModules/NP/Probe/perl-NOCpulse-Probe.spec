@@ -6,18 +6,15 @@ Version:      2.2.0
 Release:      1%{?dist}
 BuildArch:    noarch
 Group:        Development/Libraries
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-Requires:     perl-Net-SNMP
-Requires:     perl-Net-SSLeay
-Requires:     perl-BerkeleyDB
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(pre): nocpulse-common
 BuildRequires: /usr/bin/pod2man
+%if 0%{?suse_version}
+Requires:     perl(Net::SNMP)
+Requires:     perl(Net::SSLeay)
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -84,15 +81,12 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3
 rm -rf $RPM_BUILD_ROOT
 
 %files 
-%defattr(-,root,root,-)
 %{_bindir}/rhn-runprobe
 %{_bindir}/monitoring-data-cleanup
 %dir %{perl_vendorlib}/NOCpulse
 %dir %{perl_vendorlib}/NOCpulse/Probe
 %dir %{perl_vendorlib}/NOCpulse/Probe/DataSource
-%if 0%{?suse_version}
 %dir %{perl_vendorlib}/NOCpulse/Probe/DataSource/test
-%endif
 %{perl_vendorlib}/NOCpulse/Probe/Config*
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/AbstractDataSource.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/AbstractDatabase.pm
@@ -150,7 +144,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %files Oracle
-%defattr(-,root,root,-)
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/CannedOracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/Oracle.pm
 %{perl_vendorlib}/NOCpulse/Probe/DataSource/test/TestOracle.pm
