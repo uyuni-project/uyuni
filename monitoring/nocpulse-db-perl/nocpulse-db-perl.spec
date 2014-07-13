@@ -5,11 +5,7 @@ Release:      1%{?dist}
 Summary:      NOCpulse bindings for database to insert and fetch data
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -38,9 +34,10 @@ install -m644 Database.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
-%defattr(-,root,root,-)
-%dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
+%if 0%{?suse_version}
+%dir %{perl_vendorlib}/NOCpulse
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
