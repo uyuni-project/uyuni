@@ -11,7 +11,7 @@ Source0:    https://fedorahosted.org/releases/s/p/spacewalk/python-gzipstream-%{
 License: GPLv2
 Group: Development/Libraries
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-%if !0%{?suse_version}
+%if ! (0%{?suse_version} && 0%{?suse_version} <= 1110)
 BuildArch: noarch
 %endif
 BuildRequires: python-devel
