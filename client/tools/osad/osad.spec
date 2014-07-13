@@ -35,14 +35,11 @@ Requires: rhn-client-tools >= 1.0.0-44
 Requires: rhn-client-tools >= 1.3.7
 %endif
 %endif
-%if 0%{?suse_version} && 0%{?suse_version} < 1110 || 0%{?rhel} && 0%{?rhel} <= 5
+%if 0%{?rhel} && 0%{?rhel} <= 5
 Requires: python-hashlib
 %endif
 %if 0%{?suse_version} >= 1110
 Requires: python-xml
-%else
-# This should have been required by rhnlib
-Requires: PyXML
 %endif
 Conflicts: osa-dispatcher < %{version}-%{release}
 Conflicts: osa-dispatcher > %{version}-%{release}
@@ -56,6 +53,9 @@ Requires(post): aaa_base
 Requires(preun): aaa_base
 # to make chkconfig test work during build
 BuildRequires: sysconfig syslog
+%if 0%{?suse_version} < 1210
+Requires: %fillup_prereq %insserv_prereq
+%endif
 %else
 %if 0%{?fedora}
 Requires(post): chkconfig
@@ -72,10 +72,6 @@ Requires(preun): chkconfig
 Requires(preun): initscripts
 %endif
 %endif
-%if 0%{?suse_version} && 0%{?suse_version} < 1210
-Requires(preun): %fillup_prereq %insserv_prereq
-%endif
-
 %description
 OSAD agent receives commands over jabber protocol from Spacewalk Server and
 commands are instantly executed.
@@ -286,7 +282,7 @@ fi
 %endif
 if [ $ARG -eq 1 ] ; then
   # executed only in case of install
-  /etc/init.d/osad start ||:
+  %{_sbindir}/service osad start ||:
 fi
 
 %preun
