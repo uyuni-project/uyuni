@@ -5,17 +5,12 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 Summary:      Provides scout info for boostrap
 URL:          https://fedorahosted.org/spacewalk
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 %if 0%{?suse_version}
-BuildRequires: nocpulse-common
-Requires:      perl-NOCpulse-OracleDB
+Requires:      perl(NOCpulse::NPRecords)
 %endif
 
 %description
@@ -42,8 +37,10 @@ install -m 644 TranslateKey.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/SatConf
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
-%defattr(-,root,root)
 %{perl_vendorlib}/NOCpulse/*
+%if 0%{?suse_version}
+%dir %{perl_vendorlib}/NOCpulse
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
