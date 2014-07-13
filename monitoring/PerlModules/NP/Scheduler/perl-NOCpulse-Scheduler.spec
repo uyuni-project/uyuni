@@ -4,18 +4,12 @@ Version:      2.2.0
 Release:      1%{?dist}
 Summary:      NOCpulse Event Scheduler
 URL:          https://fedorahosted.org/spacewalk
-Requires:     nocpulse-common, ProgAGoGo
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
-Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
+Requires(pre): nocpulse-common
+Requires:      ProgAGoGo
+Requires:      perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires: perl(ExtUtils::MakeMaker)
-%if 0%{?suse_version}
-BuildRequires:  nocpulse-common
-%endif
 BuildArch:    noarch
-Group:        Development/Libraries/Perl
+Group:        Development/Libraries 
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -50,14 +44,14 @@ install -m 644 Statistics.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Scheduler
 install -m 755 kernel.pl $RPM_BUILD_ROOT%{_bindir}
 
 # was only needed for the update case, because of a moved home
-#%post
-#if [ $1 -eq 2 ]; then
-#  ls /home/nocpulse/var/rw/NPkernel.out/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/NPkernel.out
-#fi
+%if ! 0%{?suse_version}
+%post
+if [ $1 -eq 2 ]; then
+  ls /home/nocpulse/var/rw/NPkernel.out/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/NPkernel.out
+fi
+%endif
 
 %files 
-%defattr(-,root,root,-)
-%dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
 %{_bindir}/kernel.pl
 %attr(755,nocpulse,nocpulse) %{_var}/lib/nocpulse
