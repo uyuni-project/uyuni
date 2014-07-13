@@ -5,15 +5,8 @@ Summary:      Provides api for correctly changing user identity
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 BuildRequires: perl(ExtUtils::MakeMaker)
-%if 0%{?suse_version}
-BuildRequires:  nocpulse-common
-%endif
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -50,10 +43,12 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 rm -rf $RPM_BUILD_ROOT
  
 %files 
-%defattr(-,root,root,-)
 %{perl_vendorlib}/NOCpulse/*
 %{_mandir}/man3/*
 %doc LICENSE
+%if 0%{?suse_version}
+%dir %{perl_vendorlib}/NOCpulse
+%endif
 
 %changelog
 * Mon Sep 02 2013 Tomas Lestach <tlestach@redhat.com> 1.7.2-1
