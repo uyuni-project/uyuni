@@ -9,15 +9,11 @@ Group:          Applications/System
 URL:            https://fedorahosted.org/spacewalk
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
-%if 0%{?suse_version}
-Requires:      perl = %{perl_version}
-%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}
-Requires: policycoreutils
+Requires:       policycoreutils
 %else
 Requires:       %{sbinpath}/restorecon
 %endif
@@ -50,7 +46,6 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %doc README LICENSE 
 %{perl_vendorlib}/*
 %{_bindir}/*
