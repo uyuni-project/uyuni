@@ -1,7 +1,20 @@
 %if 0%{?fedora} || 0%{?rhel} > 6
 %global sbinpath %{_sbindir}
+%global useradd /usr/sbin/useradd
+%global httpd_pkg httpd
+%global webgrp apache
 %else
+%if 0%{?rhel} && 0%{?rhel} <= 5
 %global sbinpath /sbin
+%global useradd /usr/sbin/useradd
+%global httpd_pkg httpd
+%global webgrp apache
+%else # suse_version
+%global sbinpath %{_sbindir}
+%global useradd shadow
+%global httpd_pkg apache2
+%global webgrp www
+%endif
 %endif
 
 Name:         nocpulse-common
@@ -14,21 +27,19 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 BuildArch:    noarch
 Group:        Applications/System
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires(pre):  %{httpd_pkg}
+Requires(pre):  %{useradd}
+Requires(post): openssh
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %if 0%{?suse_version}
-Requires(pre):  apache2, /usr/sbin/useradd
-Requires(post): coreutils, openssh
 #
 # because of a secfix in perl-libwww-perl we must use IO-Socket-SSL
 # instead of perl-Crypt-SSLeay. Con: SSL via proxy will not work anymore
 #
-#Requires:       perl-Crypt-SSLeay
 Requires:       perl-IO-Socket-SSL
 Requires:       perl-DBI
 %else
-Requires(pre):  httpd, /usr/sbin/useradd
-Requires(post): openssh
 Requires(post): %{sbinpath}/runuser
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 # merging this two packages together
 # not backward compatible => no Provides:
@@ -40,14 +51,8 @@ Provides:      nslogs = 2.3.0
 Obsoletes:     ConfigPusher-general < 1.3.0
 Provides:      ConfigPusher-general = 1.3.0
 
-%if 0%{?suse_version}
-BuildRequires: apache2
-%define webgrp www
-%else
-%define webgrp apache
-%endif
-
 %define package_name nocpulse
+%define identity %{_var}/lib/%{package_name}/.ssh/nocpulse-identity
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring, 
@@ -152,8 +157,15 @@ if [ `getent passwd nocpulse|awk -F ':' '{ print $6 }'` = "/home/nocpulse" ]; th
 fi
 %endif
 
+%if ! 0%{?suse_version}
+# not on SUSE - SUSE generates appliances where such a key would be equal on all appliances
+if [ ! -f %{identity} ]
+then
+    %{sbinpath}/runuser -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f %{identity}" - %{package_name}
+fi
+%endif
+
 %files
-%defattr(-,root,root)
 %dir %{_sysconfdir}/nocpulse
 %config(missingok,noreplace) %{_sysconfdir}/NOCpulse.ini
 %{_sysconfdir}/%{package_name}/NOCpulse
