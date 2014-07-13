@@ -4,15 +4,8 @@ Release:      1%{?dist}
 Summary:      NOCpulse Command Line Application framework for Perl
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 BuildRequires: perl(ExtUtils::MakeMaker)
-%if 0%{?suse_version}
-BuildRequires:  nocpulse-common
-%endif
 BuildArch:    noarch
 Group:        Development/Libraries
 License:      GPLv2
@@ -47,10 +40,12 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %{perl_vendorlib}/NOCpulse/*
 %{_mandir}/man3/*
 %doc LICENSE
+%if 0%{?suse_version}
+%dir %{perl_vendorlib}/NOCpulse
+%endif
 
 %changelog
 * Mon Mar 18 2013 Michael Mraka <michael.mraka@redhat.com> 1.9.9-1
