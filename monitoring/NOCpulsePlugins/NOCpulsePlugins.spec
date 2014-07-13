@@ -5,11 +5,7 @@ Summary:      NOCpulse authored Plug-ins
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Requires:     nocpulse-common
 Group:        Development/Libraries
 License:      GPLv2
@@ -62,13 +58,14 @@ do
 done
 
 # was only needed for the update case because of a moved home
-#%post
-#if [ $1 -eq 2 ]; then
-#  ls /home/nocpulse/var/ProbeState/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/ProbeState
-#fi
+%if ! 0%{?suse_version}
+%post
+if [ $1 -eq 2 ]; then
+  ls /home/nocpulse/var/ProbeState/* 2>/dev/null | xargs -I file mv file %{_var}/lib/nocpulse/ProbeState
+fi
+%endif
 
 %files
-%defattr(-,root,root,-)
 %dir %{_sysconfdir}/nocpulse
 %dir %attr(-, nocpulse,nocpulse) %{_var}/lib/nocpulse
 %attr(-,nocpulse,nocpulse) %dir %{_var}/lib/nocpulse/ProbeState
@@ -86,7 +83,6 @@ done
 %{_bindir}/*
 
 %files Oracle
-%defattr(-,root,root,-)
 %{_var}/lib/nocpulse/libexec/Oracle*
 
 %clean
