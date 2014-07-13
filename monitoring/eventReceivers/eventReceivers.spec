@@ -8,12 +8,7 @@ BuildArch:    noarch
 Group:        Applications/Internet
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-
 # smtpdaemon or mailx. I picked up smtpdaemon
 %if 0%{?suse_version}
 Requires:     smtp_daemon
@@ -43,7 +38,6 @@ install -m644 *.pm $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
-%defattr(-,root,root)
 %{perl_vendorlib}/*
 %doc LICENSE
 
