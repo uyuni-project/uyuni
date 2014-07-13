@@ -5,12 +5,7 @@ Summary:      Perl throttled email notification for Spacewalk
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-BuildRequires: perl-libwww-perl
-Requires:      perl-MailTools
-%else
-Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))a
-%endif
+Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 BuildRequires: perl(NOCpulse::Config)
 BuildRequires: perl(NOCpulse::Debug) perl(ExtUtils::MakeMaker)
 BuildRequires: perl(Mail::Send)
@@ -18,6 +13,10 @@ BuildRequires: perl-libwww-perl
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+%if 0%{?suse_version}
+Requires:      perl(Mail::Send)
+Requires:      perl(Mail::Mailer)
+%endif
 
 %description
 NOCpulse provides application, network, systems and transaction monitoring,
@@ -50,7 +49,6 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files 
-%defattr(-,root,root,-)
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 %doc LICENSE
