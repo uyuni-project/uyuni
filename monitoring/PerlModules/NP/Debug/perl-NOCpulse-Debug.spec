@@ -7,11 +7,7 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 BuildArch:    noarch
 Requires:     nocpulse-common
 BuildRequires: nocpulse-common perl(Error) perl(Class::MethodMaker) perl(ExtUtils::MakeMaker)
-%if 0%{?suse_version}
-BuildRequires: nocpulse-common
-%else
 Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Requires(pre):     perl(Class::MethodMaker)
 Group:        Development/Libraries
 License:      GPLv2
@@ -53,7 +49,6 @@ make test
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %config(noreplace) %{_sysconfdir}/nocpulse/logging.ini
 %dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
