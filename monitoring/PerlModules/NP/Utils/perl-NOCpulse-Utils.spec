@@ -8,11 +8,7 @@ BuildArch:    noarch
 Group:        Development/Libraries
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-%if 0%{?suse_version}
-BuildRequires: nocpulse-common
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 BuildRequires: /usr/bin/pod2man
 
 %description
@@ -40,8 +36,7 @@ install -m 444 XML.pm          $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Utils/X
 mkdir -p $RPM_BUILD_ROOT%{_mandir}/man3/
 /usr/bin/pod2man $RPM_BUILD_ROOT%{perl_vendorlib}/NOCpulse/Module.pm |gzip > $RPM_BUILD_ROOT%{_mandir}/man3/NOCpulse::Module.3pm.gz
 
-%files
-%defattr(-,root,root)
+%files 
 %dir %{perl_vendorlib}/NOCpulse
 %{perl_vendorlib}/NOCpulse/*
 %{_mandir}/man3/*
