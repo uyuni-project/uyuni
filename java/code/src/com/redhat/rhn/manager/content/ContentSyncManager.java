@@ -388,7 +388,7 @@ public class ContentSyncManager {
             }
         }
 
-        ModeFactory.getWriteMode("SCC_queries", "delete_scc_subscriptions")
+        ModeFactory.getWriteMode("mgr_sync_queries", "delete_scc_subscriptions")
                 .executeUpdate(new HashMap<String, Object>(),
                                new ArrayList<String>(sc.keySet()));
 
@@ -526,7 +526,7 @@ public class ContentSyncManager {
                 p.put("members", item.getValue().getMaxMembers());
                 p.put("cfid", family.getId());
                 p.put("orgid", item.getKey());
-                ModeFactory.getWriteMode("SCC_queries",
+                ModeFactory.getWriteMode("mgr_sync_queries",
                                          "set_subscription_max_members").executeUpdate(p);
             }
         }
@@ -540,12 +540,12 @@ public class ContentSyncManager {
         for (final String ent : SystemEntitlement.valueOf(
                 subscription.getProductClass()).getEntitlements()) {
             for (Iterator<Map<String, Object>> iter = ModeFactory.getMode(
-                    "SCC_queries", "entitlement_id", Map.class)
+                    "mgr_sync_queries", "entitlement_id", Map.class)
                     .execute(new HashMap<String, Object>(){{put("label", ent);}})
                     .iterator(); iter.hasNext();) {
                 final Long entId = (Long) (iter.next()).get("id");
                 if (now.compareTo(subscription.getEndDate()) <= 0) {
-                    ModeFactory.getWriteMode("SCC_queries",
+                    ModeFactory.getWriteMode("mgr_sync_queries",
                                              "set_entitlement_max_members")
                             .executeUpdate(new HashMap<String, Object>(){
                                 {put("members", INFINITE);put("group", entId);}});
@@ -568,10 +568,10 @@ public class ContentSyncManager {
          * with it on their installations.
          */
         Map<String, Object> params = new HashMap<String, Object>();
-        ModeFactory.getWriteMode("SCC_queries",
+        ModeFactory.getWriteMode("mgr_sync_queries",
                                  "reset_entitlements_bc").executeUpdate(params);
         params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
-        ModeFactory.getWriteMode("SCC_queries",
+        ModeFactory.getWriteMode("mgr_sync_queries",
                                  "reset_entitlements").executeUpdate(params);
 
         for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
