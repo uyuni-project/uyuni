@@ -32,7 +32,7 @@ public class SUSEUpgradePaths {
     private List<SUSEUpgradePath> paths;
 
     /**
-     * Return the list of {@link SUSEChannelFamily} objects.
+     * Return the list of {@link MgrSyncChannelFamily} objects.
      * @return subscriptions
      */
     public List<SUSEUpgradePath> getPaths() {

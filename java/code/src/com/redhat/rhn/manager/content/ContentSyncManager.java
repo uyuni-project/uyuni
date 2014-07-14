@@ -32,7 +32,7 @@ import com.redhat.rhn.manager.setup.SubscriptionDto;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
-import com.suse.mgrsync.SUSEChannelFamily;
+import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.SUSEUpgradePath;
 import com.suse.mgrsync.SUSEUpgradePaths;
@@ -136,7 +136,7 @@ public class ContentSyncManager {
      * @return List of parsed channel families
      * @throws ContentSyncException in case of an error
      */
-    public List<SUSEChannelFamily> readChannelFamilies() throws ContentSyncException {
+    public List<MgrSyncChannelFamily> readChannelFamilies() throws ContentSyncException {
         try {
             Persister persister = new Persister();
             return persister.read(MgrSyncChannelFamilies.class,
@@ -338,7 +338,7 @@ public class ContentSyncManager {
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void updateChannelFamilies() throws ContentSyncException {
-        for (SUSEChannelFamily scf : this.readChannelFamilies()) {
+        for (MgrSyncChannelFamily scf : this.readChannelFamilies()) {
             ChannelFamily family = this.createOrUpdateChannelFamily(
                     scf.getLabel(), scf.getName());
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
@@ -380,7 +380,7 @@ public class ContentSyncManager {
             }
         }
 
-        for (SUSEChannelFamily family : this.readChannelFamilies()) {
+        for (MgrSyncChannelFamily family : this.readChannelFamilies()) {
             if (family.getDefaultNodeCount() < 0) {
                 sc.put(family.getLabel(), new SubscriptionDto(family.getName(),
                         family.getLabel(), 0, null, null));
