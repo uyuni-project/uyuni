@@ -1,4 +1,13 @@
 %define release_name Smile
+%if 0%{?suse_version}
+%global with_selinux 0
+%global cobbler cobbler >= 2
+%global postgresql postgresql >= 8.4
+%else
+%global with_selinux 1
+%global cobbler cobbler2
+%global postgresql /usr/bin/psql
+%endif
 
 Name:           spacewalk
 Version:        2.2.2
@@ -20,10 +29,6 @@ Summary: Spacewalk Systems Management Application with Oracle database backend
 Group:   Applications/Internet
 License: GPLv2
 Obsoletes: spacewalk < 0.7.0
-
-%if 0%{?suse_version}
-Provides: spacewalk = %{version}-%{release}
-%endif
 
 BuildRequires:  python
 Requires:       python >= 2.3
@@ -76,27 +81,32 @@ Requires:       spacewalk-monitoring
 # Requires:       rhn_solaris_bootstrap_5_1_0_3
 
 # SELinux
-%if 0%{?suse_version}
-# don't use selinux
-Requires:       osa-dispatcher
-Requires:       susemanager-jsp_en
-Requires:       cobbler >= 2.0
-%else
+%if 0%{?with_selinux}
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-monitoring-selinux
 Requires:       spacewalk-selinux
-Requires:       cobbler2
+%else
+Requires:       osa-dispatcher
 %endif
 
+%if 0%{?with_selinux}
 %if 0%{?rhel} == 5
 Requires:       jabberd-selinux
 %endif
 %if 0%{?rhel} == 6
 Requires:       selinux-policy-base >= 3.7.19-93
 %endif
-
+%endif
 
 Requires:       ace-editor >= 1.1.1
+
+Requires:       %{cobbler}
+
+# SUSE Manager
+%if 0%{?suse_version}
+Provides:       spacewalk = %{version}-%{release}
+Requires:       susemanager-jsp_en
+%endif
 
 
 %description common
@@ -124,8 +134,7 @@ Requires: spacewalk-backend-sql-oracle
 Requires: NOCpulsePlugins-Oracle
 Requires: perl-NOCpulse-Probe-Oracle
 Requires: quartz-oracle
-# no SELinux
-%if !0%{?suse_version}
+%if 0%{?with_selinux}
 Requires: oracle-instantclient-selinux
 Requires: oracle-instantclient-sqlplus-selinux
 %endif
@@ -147,14 +156,15 @@ Provides:  spacewalk-db-virtual = %{version}-%{release}
 Requires: spacewalk-java-postgresql
 Requires: perl(DBD::Pg)
 Requires: spacewalk-backend-sql-postgresql
+Requires: %{postgresql}
 %if 0%{?rhel} == 5
 Requires: postgresql84-contrib
+Requires: postgresql84-pltcl
 %else
-Requires: postgresql-contrib >= 9.1
-Requires: postgresql-pltcl >= 9.1
+Requires: postgresql-contrib >= 8.4
+Requires: postgresql-pltcl >= 8.4
 %endif
-Requires: postgresql >= 9.1
-Requires: pgtune
+Requires: postgresql >= 8.4
 
 %description postgresql
 Spacewalk is a systems management application that will 
@@ -184,18 +194,17 @@ done
 rm -rf %{buildroot}
 
 %files common
-%defattr(-,root,root)
+%{_sysconfdir}/spacewalk-release
+%if 0%{?suse_version}
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/setup
 %dir %{_datadir}/spacewalk/setup/defaults.d
-%{_sysconfdir}/spacewalk-release
+%endif
 
 %files oracle
-%defattr(-,root,root)
 %{_datadir}/spacewalk/setup/defaults.d/oracle-backend.conf
 
 %files postgresql
-%defattr(-,root,root)
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
