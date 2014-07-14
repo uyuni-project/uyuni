@@ -81,7 +81,8 @@ public class ContentSyncManager {
 
     // Static XML files we parse
     private static String channelsXML = "/usr/share/susemanager/channels.xml";
-    private static String channelFamiliesXML = "/usr/share/susemanager/channel_families.xml";
+    private static File channelFamiliesXML = new File(
+            "/usr/share/susemanager/channel_families.xml");
     private static File upgradePathsXML = new File(
             "/usr/share/susemanager/upgrade_paths.xml");
 
@@ -104,7 +105,7 @@ public class ContentSyncManager {
      * Set the path where to find channels_families.xml.
      * @param pathToChannelsXML the path where to find channel_families.xml
      */
-    public void setChannelFamiliesXML(String pathToChannelsXML) {
+    public void setChannelFamiliesXML(File pathToChannelsXML) {
         channelFamiliesXML = pathToChannelsXML;
     }
 
@@ -143,7 +144,7 @@ public class ContentSyncManager {
         try {
             Persister persister = new Persister();
             return persister.read(MgrSyncChannelFamilies.class,
-                    new File(channelFamiliesXML)).getFamilies();
+                                  channelFamiliesXML).getFamilies();
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
