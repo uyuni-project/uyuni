@@ -206,11 +206,11 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
         subscriptions.add(subscription);
 
-        File cf = new File(getPathToFile("channel_families.xml"));
-        File c = new File(getPathToFile("channels.xml"));
+        File cf = this.getPathToFile("channel_families.xml");
+        File c = this.getPathToFile("channels.xml");
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelFamiliesXML(cf.getAbsolutePath());
-        csm.setChannelsXML(c.getAbsolutePath());
+        csm.setChannelFamiliesXML(cf);
+        csm.setChannelsXML(c);
 
         csm.updateSubscriptions(subscriptions);
 
@@ -223,9 +223,9 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateChannelFamilies() throws Exception {
-        File cf = new File(getPathToFile("channel_families.xml"));
+        File cf = this.getPathToFile("channel_families.xml");
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelFamiliesXML(cf.getAbsolutePath());
+        csm.setChannelFamiliesXML(cf);
 
         try {
             // Prepare private families data (i.e. no private families)
@@ -255,6 +255,19 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Update the upgrade paths test.
+     * @throws Exception
+     */
+    public void testUpdateUpgradePaths() throws Exception {
+        File upth = this.getPathToFile("upgrade_paths.xml");
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsXML(upth);
+        csm.updateUpgradePaths();
+
+        upth.delete();
+    }
+
+    /**
      * Create a vendor channel (org is null) for testing.
      * @return vendor channel for testing
      * @throws Exception (FIXME)
@@ -273,8 +286,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private String getPathToFile(String filename)
+    private File getPathToFile(String filename)
             throws ClassNotFoundException, IOException {
-        return new File(TestUtils.findTestData(filename).getPath()).getAbsolutePath();
+        return new File(TestUtils.findTestData(filename).getPath());
     }
 }
