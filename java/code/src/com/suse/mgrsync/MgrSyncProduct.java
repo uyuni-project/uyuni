@@ -24,7 +24,7 @@ import org.simpleframework.xml.Text;
  * @author bo
  */
 @Root(name = "product_id")
-public class SUSEProduct {
+public class MgrSyncProduct {
     @Attribute
     private String name;
     private Integer id;

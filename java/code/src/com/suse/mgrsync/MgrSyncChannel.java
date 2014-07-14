@@ -64,15 +64,15 @@ public class MgrSyncChannel {
     @Attribute(name = "update_tag")
     private String updateTag;
 
-    private Collection<SUSEProduct> products;
+    private Collection<MgrSyncProduct> products;
 
     @ElementList(name = "products")
-    public Collection<SUSEProduct> getProducts() {
+    public Collection<MgrSyncProduct> getProducts() {
         return products;
     }
 
     @ElementList(name = "products")
-    public void setProducts(Collection<SUSEProduct> products) {
+    public void setProducts(Collection<MgrSyncProduct> products) {
         this.products = products;
     }
 

@@ -34,6 +34,7 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.SUSEUpgradePath;
 import com.suse.mgrsync.SUSEUpgradePaths;
 import com.suse.scc.client.SCCClient;
@@ -701,7 +702,7 @@ public class ContentSyncManager {
             }
 
             // Lookup every product and insert/update relationships accordingly
-            for (com.suse.mgrsync.SUSEProduct p : availableChannel.getProducts()) {
+            for (MgrSyncProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
 
                 // Get the channel in case it is installed
