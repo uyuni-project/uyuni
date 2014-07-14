@@ -29,15 +29,15 @@ public class SUSEUpgradePaths {
                         //          |
                         //          +-- Can we change "pathEs" to "paths"?
 
-    private List<SUSEUpgradePath> paths;
+    private List<MgrSyncUpgradePath> paths;
 
     /**
      * Return the list of {@link MgrSyncChannelFamily} objects.
      * @return subscriptions
      */
-    public List<SUSEUpgradePath> getPaths() {
+    public List<MgrSyncUpgradePath> getPaths() {
         if (this.paths == null) {
-            this.paths = new ArrayList<SUSEUpgradePath>();
+            this.paths = new ArrayList<MgrSyncUpgradePath>();
         }
         return this.paths;
     }

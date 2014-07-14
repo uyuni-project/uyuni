@@ -35,7 +35,7 @@ import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.MgrSyncProduct;
-import com.suse.mgrsync.SUSEUpgradePath;
+import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.SUSEUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
@@ -154,7 +154,7 @@ public class ContentSyncManager {
      * @return List of upgrade paths
      * @throws ContentSyncException in case of an error
      */
-    public List<SUSEUpgradePath> readUpgradePaths() throws ContentSyncException {
+    public List<MgrSyncUpgradePath> readUpgradePaths() throws ContentSyncException {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEUpgradePaths.class,
