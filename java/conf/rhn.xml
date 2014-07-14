@@ -18,5 +18,6 @@
 -->
 
 <Context path="/rhn" docBase="/var/lib/tomcat6/webapps/rhn/"
-         debug="0" reloadable="false" allowLinking="true">
+         debug="0" reloadable="false" allowLinking="true"
+         disableURLRewriting="true" cookies="true">
 </Context>
