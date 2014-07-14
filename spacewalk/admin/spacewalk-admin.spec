@@ -1,9 +1,4 @@
 %global rhnroot /%{_datadir}/rhn
-%if 0%{?suse_version}
-%define apache_group www
-%else
-%define apache_group apache
-%endif
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
@@ -63,10 +58,8 @@ ln -s spacewalk-service $RPM_BUILD_ROOT%{_sbindir}/rhn-satellite
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root)
 %doc LICENSE
 %dir %{rhnroot}
-%attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
 %{_sbindir}/spacewalk-startup-helper
 %{_sbindir}/spacewalk-service
 %{_sbindir}/rhn-satellite
@@ -94,6 +87,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
 %{_unitdir}/spacewalk-wait-for-jabberd.service
+%endif
+%if 0%{?suse_version}
+%attr(0750,root,www) %dir %{_sysconfdir}/rhn
 %endif
 
 %changelog
