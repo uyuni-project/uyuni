@@ -25,15 +25,15 @@ import org.simpleframework.xml.ElementList;
  */
 public class MgrSyncChannelFamilies {
     @ElementList(name = "channelfamilies", inline = true, required = false)
-    private List<SUSEChannelFamily> families;
+    private List<MgrSyncChannelFamily> families;
 
     /**
-     * Return the list of {@link SUSEChannelFamily} objects.
+     * Return the list of {@link MgrSyncChannelFamily} objects.
      * @return subscriptions
      */
-    public List<SUSEChannelFamily> getFamilies() {
+    public List<MgrSyncChannelFamily> getFamilies() {
         if (this.families == null) {
-            this.families = new ArrayList<SUSEChannelFamily>();
+            this.families = new ArrayList<MgrSyncChannelFamily>();
         }
         return this.families;
     }

@@ -29,7 +29,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.mgrsync.SUSEChannelFamily;
+import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -229,7 +229,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         try {
             // Prepare private families data (i.e. no private families)
-            for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
+            for (MgrSyncChannelFamily scf : csm.readChannelFamilies()) {
                 ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
                 assertNotNull(f);
                 if (!f.getPrivateChannelFamilies().isEmpty()) {
@@ -241,7 +241,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
             csm.updateChannelFamilies();
 
-            for (SUSEChannelFamily scf : csm.readChannelFamilies()) {
+            for (MgrSyncChannelFamily scf : csm.readChannelFamilies()) {
                 ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
                 assertNotNull(f);
                 assertFalse(f.getPrivateChannelFamilies().isEmpty());
