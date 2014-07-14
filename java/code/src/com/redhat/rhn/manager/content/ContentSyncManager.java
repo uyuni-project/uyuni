@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -735,8 +736,33 @@ public class ContentSyncManager {
     /**
      * Update the suseUpgradePaths table with values read from upgrade_paths.xml
      */
-    public void updateUpgradePaths() {
-        // TODO: Implement this as in update_upgrade_pathes_by_config()
+    public void updateUpgradePaths() throws ContentSyncException {
+        Map<String, SUSEUpgradePath> paths = new HashMap<String, SUSEUpgradePath>();
+        for (SUSEUpgradePath sup : SUSEProductFactory.findAllSUSEUpgradePaths()) {
+            paths.put(String.format("%s-%s",
+                                    sup.getFromProduct().getProductId(),
+                                    sup.getToProduct().getProductId()), sup);
+        }
+
+        for (MgrSyncUpgradePath mup : this.readUpgradePaths()) {
+            if (mup.getFromProductId() != null &&
+                mup.getToProductId() != null &&
+                paths.remove(String.format("%s-%s",
+                                           mup.getFromProductId(),
+                                           mup.getToProductId())) != null) {
+                SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
+                        mup.getFromProductId());
+                SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
+                        mup.getToProductId());
+                if (fromProduct != null && toProduct != null) {
+                    SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+                }
+            }
+        }
+
+        for (Map.Entry<String, SUSEUpgradePath> entry : paths.entrySet()) {
+            SUSEProductFactory.remove(entry.getValue());
+        }
     }
 
     /**
