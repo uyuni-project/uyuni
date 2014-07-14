@@ -8,15 +8,8 @@ Summary:      Satellite Configuration System - Server
 URL:          https://fedorahosted.org/spacewalk
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-Requires:     nocpulse-common
-%if 0%{?suse_version}
-BuildRequires: nocpulse-common
-%endif
+Requires(pre): nocpulse-common
 Group:        Applications/Internet
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -51,7 +44,6 @@ install -m 644 GenerateConfig.pm $RPM_BUILD_ROOT%{install_prefix}
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %files
-%defattr(-,root,root)
 %dir %{install_prefix}
 %dir %attr(-,nocpulse,nocpulse) %{db_dir}
 %{install_prefix}/ConfigDocument.pm
