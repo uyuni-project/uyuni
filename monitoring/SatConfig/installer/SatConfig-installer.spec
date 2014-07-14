@@ -6,18 +6,13 @@ Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}
 Version:      3.24.7.1
 Release:      1%{?dist}
 BuildArch:    noarch
-%if 0%{?suse_version}
-Requires:     perl = %{perl_version}
-%else
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Group:        Applications/System
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:     nocpulse-common
+Requires(pre): nocpulse-common
 %if 0%{?suse_version}
-BuildRequires: nocpulse-common
-Requires:      perl-MIME-tools
+Requires:      perl(MIME::Parser)
 %endif
 
 %description
@@ -40,15 +35,14 @@ install -m 755 scheduleEvents $RPM_BUILD_ROOT%{_bindir}
 install -m 755 validateCurrentStateFiles.pl $RPM_BUILD_ROOT%{_bindir}
 
 # only for update because of a moved home
-%post
 %if ! 0%{?suse_version}
+%post
 if [ $1 -eq 2 ]; then
   ls /home/nocpulse/var/trapReceiver/* 2>/dev/null | xargs -I file mv file %config_dir
 fi
 %endif
 
 %files
-%defattr(-,root,root)
 %attr(755,nocpulse,nocpulse) %dir %config_dir
 %{_bindir}/scheduleEvents
 %{_bindir}/validateCurrentStateFiles.pl
