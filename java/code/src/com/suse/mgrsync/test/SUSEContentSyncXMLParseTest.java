@@ -23,7 +23,7 @@ import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.MgrSyncUpgradePath;
-import com.suse.mgrsync.SUSEUpgradePaths;
+import com.suse.mgrsync.MgrSyncUpgradePaths;
 
 import java.io.File;
 import java.util.List;
@@ -84,7 +84,7 @@ public class SUSEContentSyncXMLParseTest extends RhnBaseTestCase {
      */
     private List<MgrSyncUpgradePath> readUpgradePaths() throws Exception {
         File source = new File(TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
-        List<MgrSyncUpgradePath> data = this.persister.read(SUSEUpgradePaths.class,
+        List<MgrSyncUpgradePath> data = this.persister.read(MgrSyncUpgradePaths.class,
                                                          source).getPaths();
         source.delete();
         return data;
