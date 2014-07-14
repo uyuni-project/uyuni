@@ -23,15 +23,15 @@ import org.simpleframework.xml.Root;
 @Root(name = "channels")
 public class SUSEChannels {
     @ElementList(name = "channel", inline = true, required = false)
-    private List<SUSEChannel> channels;
+    private List<MgrSyncChannel> channels;
 
     /**
      * Return the list of {@link Subscription} objects.
      * @return subscriptions
      */
-    public List<SUSEChannel> getChannels() {
+    public List<MgrSyncChannel> getChannels() {
         if (this.channels == null) {
-            this.channels = new ArrayList<SUSEChannel>();
+            this.channels = new ArrayList<MgrSyncChannel>();
         }
 
         return this.channels;
