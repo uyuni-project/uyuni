@@ -23,7 +23,7 @@ import org.simpleframework.xml.ElementList;
  *
  * @author bo
  */
-public class SUSEChannelFamilies {
+public class MgrSyncChannelFamilies {
     @ElementList(name = "channelfamilies", inline = true, required = false)
     private List<SUSEChannelFamily> families;
 
