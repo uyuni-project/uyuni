@@ -13,10 +13,9 @@ License:     GPLv3+
 URL:         https://fedorahosted.org/spacewalk/wiki/spacecmd
 Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-%if ((!0%{?suse_version}) || (0%{?suse_version} >= 1120))
-BuildArch: noarch
-%endif
-%if 0%{?fedora} || 0%{?rhel} > 5
+BuildArch:   noarch
+
+%if ! 0%{?suse_version}
 BuildRequires: spacewalk-pylint
 %endif
 BuildRequires: python-devel
@@ -65,13 +64,12 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %{__rm} -rf %{buildroot}
 
 %check
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if ! 0%{?suse_version}
 PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
 %endif
 
 %files
-%defattr(-,root,root,-)
 %{_bindir}/spacecmd
 %{python_sitelib}/spacecmd/
 %ghost %config %{_sysconfdir}/spacecmd.conf
