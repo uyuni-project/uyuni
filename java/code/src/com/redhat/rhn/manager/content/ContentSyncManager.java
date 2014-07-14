@@ -30,7 +30,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
-import com.suse.mgrsync.SUSEChannel;
+import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.SUSEChannelFamilies;
 import com.suse.mgrsync.SUSEChannelFamily;
 import com.suse.mgrsync.SUSEChannels;
@@ -119,7 +119,7 @@ public class ContentSyncManager {
      * @return List of parsed channels
      * @throws ContentSyncException in case of an error
      */
-    public List<SUSEChannel> readChannels() throws ContentSyncException {
+    public List<MgrSyncChannel> readChannels() throws ContentSyncException {
         try {
             Persister persister = new Persister();
             return persister.read(SUSEChannels.class,
@@ -263,8 +263,8 @@ public class ContentSyncManager {
         }
 
         // Read contents of channels.xml into a map
-        Map<String, SUSEChannel> channelsXML = new HashMap<String, SUSEChannel>();
-        for (SUSEChannel c : readChannels()) {
+        Map<String, MgrSyncChannel> channelsXML = new HashMap<String, MgrSyncChannel>();
+        for (MgrSyncChannel c : readChannels()) {
             channelsXML.put(c.getLabel(), c);
         }
 
@@ -272,7 +272,7 @@ public class ContentSyncManager {
         List<Channel> channelsDB = ChannelFactory.listVendorChannels();
         for (Channel c : channelsDB) {
             if (channelsXML.containsKey(c.getLabel())) {
-                SUSEChannel channel = channelsXML.get(c.getLabel());
+                MgrSyncChannel channel = channelsXML.get(c.getLabel());
                 if (!channel.getDescription().equals(c.getDescription()) ||
                         !channel.getName().equals(c.getName()) ||
                         !channel.getSummary().equals(c.getSummary()) ||
@@ -295,7 +295,7 @@ public class ContentSyncManager {
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
                 // TODO: Check if alternative mirror URL is set and consider it here
-                SUSEChannel channel = channelsXML.get(cs.getLabel());
+                MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
                     cs.setSourceUrl(channel.getSourceUrl());
                     ChannelFactory.save(cs);
@@ -631,15 +631,15 @@ public class ContentSyncManager {
      * @return list of available channels
      * @throws ContentSyncException
      */
-    public List<SUSEChannel> getAvailableChannels() throws ContentSyncException {
+    public List<MgrSyncChannel> getAvailableChannels() throws ContentSyncException {
         // Get all channels from channels.xml and filter
-        List<SUSEChannel> availableChannels = new ArrayList<SUSEChannel>();
-        List<SUSEChannel> allChannels = readChannels();
+        List<MgrSyncChannel> availableChannels = new ArrayList<MgrSyncChannel>();
+        List<MgrSyncChannel> allChannels = readChannels();
 
         // Filter in all channels where channel families are available
         List<String> availableChannelFamilies =
                 ChannelFamilyFactory.getAvailableChannelFamilyLabels();
-        for (SUSEChannel c : allChannels) {
+        for (MgrSyncChannel c : allChannels) {
             if (availableChannelFamilies.contains(c.getFamily())) {
                 availableChannels.add(c);
             }
@@ -647,16 +647,16 @@ public class ContentSyncManager {
 
         // Reassign lists to variables to continue the filtering
         allChannels = availableChannels;
-        availableChannels = new ArrayList<SUSEChannel>();
+        availableChannels = new ArrayList<MgrSyncChannel>();
 
         // Remember channel labels in a list for convenient lookup
         List<String> availableChannelLabels = new ArrayList<String>();
-        for (SUSEChannel c : allChannels) {
+        for (MgrSyncChannel c : allChannels) {
             availableChannelLabels.add(c.getLabel());
         }
 
         // Filter in channels with available parents only (or base channels)
-        for (SUSEChannel c : allChannels) {
+        for (MgrSyncChannel c : allChannels) {
             String parent = c.getParent();
             if (parent.equals(BASE) || availableChannelLabels.contains(parent)) {
                 availableChannels.add(c);
@@ -688,7 +688,7 @@ public class ContentSyncManager {
         }
 
         // Get all available channels and iterate
-        for (SUSEChannel availableChannel : getAvailableChannels()) {
+        for (MgrSyncChannel availableChannel : getAvailableChannels()) {
             // We store only non-optional channels
             if (availableChannel.isOptional()) {
                 continue;

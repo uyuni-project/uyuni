@@ -18,7 +18,7 @@ package com.suse.mgrsync.test;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.mgrsync.SUSEChannel;
+import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.SUSEChannelFamilies;
 import com.suse.mgrsync.SUSEChannelFamily;
 import com.suse.mgrsync.SUSEChannels;
@@ -54,9 +54,9 @@ public class SUSEContentSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<SUSEChannel> readChannels() throws Exception {
+    private List<MgrSyncChannel> readChannels() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        List<SUSEChannel> data = this.persister.read(SUSEChannels.class,
+        List<MgrSyncChannel> data = this.persister.read(SUSEChannels.class,
                                                      source).getChannels();
         source.delete();
         return data;
@@ -95,7 +95,7 @@ public class SUSEContentSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadChannels() throws Exception {
-        List<SUSEChannel> channels = this.readChannels();
+        List<MgrSyncChannel> channels = this.readChannels();
         assertNotNull(channels);
         assertNotEmpty(channels);
         assertEquals(60, channels.size());
