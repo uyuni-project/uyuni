@@ -745,9 +745,7 @@ public class ContentSyncManager {
         }
 
         for (MgrSyncUpgradePath mup : this.readUpgradePaths()) {
-            if (mup.getFromProductId() != null &&
-                mup.getToProductId() != null &&
-                paths.remove(String.format("%s-%s",
+            if (paths.remove(String.format("%s-%s",
                                            mup.getFromProductId(),
                                            mup.getToProductId())) != null) {
                 SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
