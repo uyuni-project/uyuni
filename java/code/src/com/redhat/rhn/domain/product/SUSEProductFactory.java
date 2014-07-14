@@ -61,11 +61,27 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Insert or update a {@link SUSEUpgradePath}.
+     * @param upgradePath upgrade path to be inserted.
+     */
+    public static void save(SUSEUpgradePath upgradePath) {
+        singleton.saveObject(upgradePath);
+    }
+
+    /**
      * Delete a {@link SUSEProductChannel} from the database.
      * @param productChannel SUSE product channel relationship to be deleted.
      */
     public static void remove(SUSEProductChannel productChannel) {
         singleton.removeObject(productChannel);
+    }
+
+    /**
+     * Delete a {@link SUSEUpgradePath} from the database.
+     * @param upgradePath upgrade path to be deleted.
+     */
+    public static void remove(SUSEUpgradePath upgradePath) {
+        singleton.removeObject(upgradePath);
     }
 
     /**
@@ -161,6 +177,17 @@ public class SUSEProductFactory extends HibernateFactory {
     public static List<SUSEProductChannel> findAllSUSEProductChannels() {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProductChannel.class);
+        return c.list();
+    }
+
+    /**
+     * Find all {@link SUSEUpgradePath}.
+     * @return list of upgrade paths
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEUpgradePath> findAllSUSEUpgradePaths() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEUpgradePath.class);
         return c.list();
     }
 
