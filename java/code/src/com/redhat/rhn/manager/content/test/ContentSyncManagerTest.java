@@ -70,7 +70,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Update the channel information
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(getPathToFile("channels.xml"));
+        csm.setChannelsXML(getTestFile("channels.xml"));
         csm.updateChannels();
 
         // Verify channel attributes
@@ -206,16 +206,16 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
         subscriptions.add(subscription);
 
-        File cf = this.getPathToFile("channel_families.xml");
-        File c = this.getPathToFile("channels.xml");
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelFamiliesXML(cf);
-        csm.setChannelsXML(c);
+        File channelsXML = getTestFile("channels.xml");
+        File channelFamiliesXML = getTestFile("channel_families.xml");
 
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setChannelsXML(channelsXML);
+        csm.setChannelFamiliesXML(channelFamiliesXML);
         csm.updateSubscriptions(subscriptions);
 
-        cf.delete();
-        c.delete();
+        deleteIfTempFile(channelsXML);
+        deleteIfTempFile(channelFamiliesXML);
     }
 
     /**
@@ -223,9 +223,9 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateChannelFamilies() throws Exception {
-        File cf = this.getPathToFile("channel_families.xml");
+        File channelFamiliesXML = getTestFile("channel_families.xml");
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelFamiliesXML(cf);
+        csm.setChannelFamiliesXML(channelFamiliesXML);
 
         try {
             // Prepare private families data (i.e. no private families)
@@ -250,7 +250,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             }
         }
         finally {
-            cf.delete();
+            deleteIfTempFile(channelFamiliesXML);
         }
     }
 
@@ -259,12 +259,12 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateUpgradePaths() throws Exception {
-        File upth = this.getPathToFile("upgrade_paths.xml");
+        File upgradePathsXML = getTestFile("upgrade_paths.xml");
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setUpgradePathsXML(upth);
+        csm.setUpgradePathsXML(upgradePathsXML);
         csm.updateUpgradePaths();
 
-        upth.delete();
+        deleteIfTempFile(upgradePathsXML);
     }
 
     /**
@@ -280,14 +280,25 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Finds a given testfile by name and returns the filesystem path.
+     * Finds a given testfile by name and returns it.
      * @param filename name of the testfile
-     * @return path to the testfile
+     * @return the file
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private File getPathToFile(String filename)
+    private File getTestFile(String filename)
             throws ClassNotFoundException, IOException {
         return new File(TestUtils.findTestData(filename).getPath());
+    }
+
+    /**
+     * For a given file, delete it in case it is a temp file.
+     * @param file test file to delete
+     */
+    private void deleteIfTempFile(File file) {
+        if (file.exists() && file.getAbsolutePath().startsWith(
+                System.getProperty("java.io.tmpdir") + File.separatorChar)) {
+            file.delete();
+        }
     }
 }
