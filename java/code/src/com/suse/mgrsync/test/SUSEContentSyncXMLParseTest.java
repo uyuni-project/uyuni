@@ -21,7 +21,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.SUSEChannelFamilies;
 import com.suse.mgrsync.SUSEChannelFamily;
-import com.suse.mgrsync.SUSEChannels;
+import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.SUSEUpgradePath;
 import com.suse.mgrsync.SUSEUpgradePaths;
 
@@ -56,7 +56,7 @@ public class SUSEContentSyncXMLParseTest extends RhnBaseTestCase {
      */
     private List<MgrSyncChannel> readChannels() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        List<MgrSyncChannel> data = this.persister.read(SUSEChannels.class,
+        List<MgrSyncChannel> data = this.persister.read(MgrSyncChannels.class,
                                                      source).getChannels();
         source.delete();
         return data;
