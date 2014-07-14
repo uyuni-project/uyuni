@@ -80,12 +80,12 @@ public class ContentSyncManager {
     private static final String BASE = "BASE";
 
     // Static XML files we parse
-    private static File channelsXML = new File("/usr/share/susemanager/channels.xml");
+    private static File channelsXML = new File(
+            "/usr/share/susemanager/channels.xml");
     private static File channelFamiliesXML = new File(
             "/usr/share/susemanager/channel_families.xml");
     private static File upgradePathsXML = new File(
             "/usr/share/susemanager/upgrade_paths.xml");
-
 
     /**
      * Default constructor.
