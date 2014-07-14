@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.contentsync;
+package com.suse.mgrsync;
 
 import java.util.Collection;
 import org.simpleframework.xml.Attribute;

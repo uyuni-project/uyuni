@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.suse.contentsync;
+package com.suse.mgrsync;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,22 +23,18 @@ import org.simpleframework.xml.ElementList;
  *
  * @author bo
  */
-public class SUSEUpgradePaths {
-    @ElementList(name = "upgradepathes", inline = true, required = false)
-                        //          ^
-                        //          |
-                        //          +-- Can we change "pathEs" to "paths"?
-
-    private List<SUSEUpgradePath> paths;
+public class SUSEChannelFamilies {
+    @ElementList(name = "channelfamilies", inline = true, required = false)
+    private List<SUSEChannelFamily> families;
 
     /**
      * Return the list of {@link SUSEChannelFamily} objects.
      * @return subscriptions
      */
-    public List<SUSEUpgradePath> getPaths() {
-        if (this.paths == null) {
-            this.paths = new ArrayList<SUSEUpgradePath>();
+    public List<SUSEChannelFamily> getFamilies() {
+        if (this.families == null) {
+            this.families = new ArrayList<SUSEChannelFamily>();
         }
-        return this.paths;
+        return this.families;
     }
 }
