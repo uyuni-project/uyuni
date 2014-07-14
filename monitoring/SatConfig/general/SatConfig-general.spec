@@ -11,16 +11,12 @@ Group:        Development/Libraries
 License:      GPLv2
 BuildArch:    noarch
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-%if 0%{?suse_version}
-BuildRequires: nocpulse-common
-Requires:      perl = %{perl_version}
-Requires:      spacewalk-base-minimal
-%else
-Requires:      perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
-Requires:       nocpulse-common
+Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires(pre): nocpulse-common
 BuildRequires: /usr/bin/pod2man
+%if 0%{?suse_version}
+Requires:      perl(PXT::Config)
+%endif
 
 %description
 SatConfig-general sets up directories and other items shared by many packages 
@@ -33,11 +29,7 @@ to make a monitoring work.
 %if  0%{?rhel} && 0%{?rhel} < 6
 %define pod2man pod2man
 %else
-%if  0%{?suse_version} && 0%{?suse_version} < 1200
-%define pod2man pod2man
-%else
 %define pod2man pod2man --utf8
-%endif
 %endif
 %{pod2man} --section=8 NOCpulse-ini NOCpulse-ini.8
 
@@ -61,11 +53,8 @@ install -D -m 644 NOCpulse-ini.8 $RPM_BUILD_ROOT%{_mandir}/man8/NOCpulse-ini.8
 install -D -p -m 755 NOCpulse-ini $RPM_BUILD_ROOT%{_sbindir}/NOCpulse-ini
 
 %files
-%defattr(-,root,root)
 %dir %sysv_dir
 %dir %installed_dir
-%dir %{_sysconfdir}/ha.d
-%dir %{_sysconfdir}/ha.d/resource.d
 %sysv_dir/*.pm
 %sysv_dir/hbResource
 %sysv_dir/installSysVSteps
@@ -79,6 +68,10 @@ install -D -p -m 755 NOCpulse-ini $RPM_BUILD_ROOT%{_sbindir}/NOCpulse-ini
 %{_sbindir}/NOCpulse-ini
 %doc 1-STARTUP_SEQUENCE 2-COMMANDS_OVERVIEW 3-CONFIGURATION 4-DEVELOPMENT 5-STEPS_LEGEND
 %{_mandir}/man8/NOCpulse-ini.8.*
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/ha.d
+%dir %{_sysconfdir}/ha.d/resource.d
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
