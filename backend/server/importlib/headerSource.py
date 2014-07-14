@@ -137,6 +137,8 @@ class rpmBinaryPackage(Package, rpmPackage):
         'sigpgp'        : None,
         'siggpg'        : None,
         'package_id'    : None,
+	'product_files' : None,
+	'eulas'         : None,
     })
 
     def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
