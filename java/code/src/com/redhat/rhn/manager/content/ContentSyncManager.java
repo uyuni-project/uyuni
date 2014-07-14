@@ -94,27 +94,27 @@ public class ContentSyncManager {
     }
 
     /**
-     * Set the path where to find channels.xml.
-     * @param pathToChannelsXML the path where to find channels.xml
+     * Set the channels.xml {@link File} to read from.
+     * @param channelsXML the channels.xml file
      */
-    public void setChannelsXML(File pathToChannelsXML) {
-        channelsXML = pathToChannelsXML;
+    public void setChannelsXML(File file) {
+        channelsXML = file;
     }
 
     /**
-     * Set the path where to find channels_families.xml.
-     * @param pathToChannelsXML the path where to find channel_families.xml
+     * Set the channels_families.xml {@link File} to read from.
+     * @param file the channel_families.xml file
      */
-    public void setChannelFamiliesXML(File pathToChannelsXML) {
-        channelFamiliesXML = pathToChannelsXML;
+    public void setChannelFamiliesXML(File file) {
+        channelFamiliesXML = file;
     }
 
     /**
-     * Set the path where to find upgrade_paths.xml.
-     * @param pathToXMLFile the path where to find upgrade_paths.xml
+     * Set the upgrade_paths.xml {@link File} to read from.
+     * @param file the upgrade_paths.xml file
      */
-    public void setUpgradePathsXML(File pathToXMLFile) {
-        upgradePathsXML = pathToXMLFile;
+    public void setUpgradePathsXML(File file) {
+        upgradePathsXML = file;
     }
 
     /**
