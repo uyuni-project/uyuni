@@ -33,7 +33,7 @@ import com.redhat.rhn.manager.setup.SubscriptionDto;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.SUSEChannelFamilies;
 import com.suse.mgrsync.SUSEChannelFamily;
-import com.suse.mgrsync.SUSEChannels;
+import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.SUSEUpgradePath;
 import com.suse.mgrsync.SUSEUpgradePaths;
 import com.suse.scc.client.SCCClient;
@@ -122,7 +122,7 @@ public class ContentSyncManager {
     public List<MgrSyncChannel> readChannels() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            return persister.read(SUSEChannels.class,
+            return persister.read(MgrSyncChannels.class,
                     new File(channelsXML)).getChannels();
         }
         catch (Exception e) {
