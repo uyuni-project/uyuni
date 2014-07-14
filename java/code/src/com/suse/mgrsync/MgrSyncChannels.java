@@ -21,7 +21,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name = "channels")
-public class SUSEChannels {
+public class MgrSyncChannels {
     @ElementList(name = "channel", inline = true, required = false)
     private List<MgrSyncChannel> channels;
 
