@@ -13,20 +13,21 @@
  * in this software or its documentation.
  */
 
-package com.suse.contentsync.test;
+package com.suse.mgrsync.test;
 
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.contentsync.SUSEChannel;
-import com.suse.contentsync.SUSEChannelFamilies;
-import com.suse.contentsync.SUSEChannelFamily;
-import com.suse.contentsync.SUSEChannels;
-import com.suse.contentsync.SUSEUpgradePath;
-import com.suse.contentsync.SUSEUpgradePaths;
+import com.suse.mgrsync.SUSEChannel;
+import com.suse.mgrsync.SUSEChannelFamilies;
+import com.suse.mgrsync.SUSEChannelFamily;
+import com.suse.mgrsync.SUSEChannels;
+import com.suse.mgrsync.SUSEUpgradePath;
+import com.suse.mgrsync.SUSEUpgradePaths;
 
 import java.io.File;
 import java.util.List;
+
 import org.simpleframework.xml.core.Persister;
 
 /**

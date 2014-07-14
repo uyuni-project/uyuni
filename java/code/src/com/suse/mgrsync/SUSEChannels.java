@@ -13,28 +13,27 @@
  * in this software or its documentation.
  */
 
-package com.suse.contentsync;
+package com.suse.mgrsync;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
 
-/**
- *
- * @author bo
- */
-public class SUSEChannelFamilies {
-    @ElementList(name = "channelfamilies", inline = true, required = false)
-    private List<SUSEChannelFamily> families;
+@Root(name = "channels")
+public class SUSEChannels {
+    @ElementList(name = "channel", inline = true, required = false)
+    private List<SUSEChannel> channels;
 
     /**
-     * Return the list of {@link SUSEChannelFamily} objects.
+     * Return the list of {@link Subscription} objects.
      * @return subscriptions
      */
-    public List<SUSEChannelFamily> getFamilies() {
-        if (this.families == null) {
-            this.families = new ArrayList<SUSEChannelFamily>();
+    public List<SUSEChannel> getChannels() {
+        if (this.channels == null) {
+            this.channels = new ArrayList<SUSEChannel>();
         }
-        return this.families;
+
+        return this.channels;
     }
 }
