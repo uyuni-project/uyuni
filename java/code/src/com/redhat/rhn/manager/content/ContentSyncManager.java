@@ -30,12 +30,12 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
-import com.suse.contentsync.SUSEChannel;
-import com.suse.contentsync.SUSEChannelFamilies;
-import com.suse.contentsync.SUSEChannelFamily;
-import com.suse.contentsync.SUSEChannels;
-import com.suse.contentsync.SUSEUpgradePath;
-import com.suse.contentsync.SUSEUpgradePaths;
+import com.suse.mgrsync.SUSEChannel;
+import com.suse.mgrsync.SUSEChannelFamilies;
+import com.suse.mgrsync.SUSEChannelFamily;
+import com.suse.mgrsync.SUSEChannels;
+import com.suse.mgrsync.SUSEUpgradePath;
+import com.suse.mgrsync.SUSEUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
@@ -701,7 +701,7 @@ public class ContentSyncManager {
             }
 
             // Lookup every product and insert/update relationships accordingly
-            for (com.suse.contentsync.SUSEProduct p : availableChannel.getProducts()) {
+            for (com.suse.mgrsync.SUSEProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
 
                 // Get the channel in case it is installed
