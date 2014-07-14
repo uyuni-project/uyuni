@@ -23,7 +23,7 @@ import org.simpleframework.xml.ElementList;
  *
  * @author bo
  */
-public class SUSEUpgradePaths {
+public class MgrSyncUpgradePaths {
     @ElementList(name = "upgradepathes", inline = true, required = false)
                         //          ^
                         //          |
