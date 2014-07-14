@@ -34,7 +34,7 @@ import org.simpleframework.xml.core.Persister;
  *
  * @author bo
  */
-public class SUSEContentSyncXMLParseTest extends RhnBaseTestCase {
+public class MgrSyncXMLParseTest extends RhnBaseTestCase {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
