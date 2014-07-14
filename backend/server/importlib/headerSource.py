@@ -121,6 +121,8 @@ class rpmBinaryPackage(Package, rpmPackage):
         'supplements'   : None,
         'enhances'      : None,
         'recommends'    : None,
+        'breaks'        : None,
+        'predepends'    : None,
         'files'         : None,
         'changelog'     : None,
         'channels'      : None,
@@ -135,8 +137,6 @@ class rpmBinaryPackage(Package, rpmPackage):
         'sigpgp'        : None,
         'siggpg'        : None,
         'package_id'    : None,
-        'product_files' : None,
-        'eulas'         : None,
     })
 
     def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
@@ -165,12 +165,29 @@ class rpmBinaryPackage(Package, rpmPackage):
             'requires'  : rpmRequires,
             'conflicts' : rpmConflicts,
             'obsoletes' : rpmObsoletes,
+            'breaks'    : rpmBreaks,
+            'predepends': rpmPredepends,
+        }
+
+        old_weak_deps_mapping = {
+            'supplements' : rpmOldSupplements,
+            'enhances'  : rpmOldEnhances,
+            'suggests'  : rpmOldSuggests,
+            'recommends'  : rpmOldRecommends,
+        }
+
+        new_weak_deps_mapping = {
             'supplements' : rpmSupplements,
             'enhances'  : rpmEnhances,
             'suggests'  : rpmSuggests,
-            'recommends'  : rpmRecommends,
+            'recommends': rpmRecommends,
         }
+
         for k, v in mapping.items():
+            self._populateTag(header, k, v)
+        for k, v in old_weak_deps_mapping.items():
+            self._populateTag(header, k, v)
+        for k, v in new_weak_deps_mapping.items():
             self._populateTag(header, k, v)
 
     def _populateChangeLog(self, header):
@@ -203,7 +220,9 @@ class rpmBinaryPackage(Package, rpmPackage):
             fix[f] = v
 
         # Now create the array of objects
-        self[tag] = []
+        if self[tag] is None:
+	  self[tag] = []
+
         unique_deps = []
         for i in range(itemcount):
             hash = {}
@@ -217,16 +236,18 @@ class rpmBinaryPackage(Package, rpmPackage):
                 else:
                     hash[k] = v[i]
 
+            # for the old weak dependency tags
             # RPMSENSE_STRONG(1<<27) indicate recommends; if not set it is suggests only
-            if tag in ['recommends', 'supplements'] and not(hash['flags'] & (1 << 27)):
-                continue
-            if tag in ['suggests', 'enhances'] and (hash['flags'] & (1 << 27)):
-                continue
+	    if Class in [rpmOldRecommends, rpmOldSupplements, rpmOldSuggests, rpmOldEnhances]:
+                if tag in ['recommends', 'supplements'] and not(hash['flags'] & (1 << 27)):
+                    continue
+                if tag in ['suggests', 'enhances'] and (hash['flags'] & (1 << 27)):
+                    continue
             # Create a file
             obj = Class()
             # Fedora 10+ rpms have duplicate provides deps,
             # Lets clean em up before db inserts.
-            if tag in ['requires', 'provides', 'obsoletes', 'conflicts', 'recommends', 'suggests', 'supplements', 'enhances']:
+            if tag in ['requires', 'provides', 'obsoletes', 'conflicts', 'recommends', 'suggests', 'supplements', 'enhances', 'breaks', 'predepends']:
                 if not len(hash['name']):
                     continue
                 dep_nv = (hash['name'], hash['version'], hash['flags'])
@@ -240,7 +261,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                     continue
             else:
                 if tag == 'files':
-                    hash['checksum_type'] = header.checksum_type()
+                    hash['checksum_type'] = self['checksum_type']
                 obj.populate(hash)
                 self[tag].append(obj)
 
@@ -333,23 +354,55 @@ class rpmRequires(Dependency):
         'flags'     : 'requireflags',
     }
 
-class rpmSuggests(Dependency):
+class rpmOldSuggests(Dependency):
     # More mappings
     tagMap = {
         'name'      : 1156, #'suggestsname',
         'version'   : 1157, #'suggestsversion',
         'flags'     : 1158, #'suggestsflags',
+    }
+
+class rpmSuggests(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      : 5049, #'suggestsname',
+        'version'   : 5050, #'suggestsversion',
+        'flags'     : 5051, #'suggestsflags',
+    }
+
+class rpmOldRecommends(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      : 1156, #'recommendsname',
+        'version'   : 1157, #'recommendsversion',
+        'flags'     : 1158, #'recommendsflags',
     }
 
 class rpmRecommends(Dependency):
     # More mappings
     tagMap = {
-        'name'      : 1156, #'suggestsname',
-        'version'   : 1157, #'suggestsversion',
-        'flags'     : 1158, #'suggestsflags',
+        'name'      : 5046, #'recommendsname',
+        'version'   : 5047, #'recommendsversion',
+        'flags'     : 5048, #'recommendsflags',
+    }
+
+class rpmOldSupplements(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      : 1159, #'supplementsname',
+        'version'   : 1160, #'supplementsversion',
+        'flags'     : 1161, #'supplementsflags',
     }
 
 class rpmSupplements(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      : 5052, #'supplementsname',
+        'version'   : 5053, #'supplementsversion',
+        'flags'     : 5054, #'supplementsflags',
+    }
+
+class rpmOldEnhances(Dependency):
     # More mappings
     tagMap = {
         'name'      : 1159, #'enhancesname',
@@ -360,9 +413,9 @@ class rpmSupplements(Dependency):
 class rpmEnhances(Dependency):
     # More mappings
     tagMap = {
-        'name'      : 1159, #'enhancesname',
-        'version'   : 1160, #'enhancesversion',
-        'flags'     : 1161, #'enhancesflags',
+        'name'      : 5055, #'enhancesname',
+        'version'   : 5056, #'enhancesversion',
+        'flags'     : 5057, #'enhancesflags',
     }
 
 class rpmConflicts(Dependency):
@@ -380,6 +433,23 @@ class rpmObsoletes(Dependency):
         'version'   : 'obsoleteversion',
         'flags'     : 'obsoleteflags',
     }
+
+class rpmBreaks(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      :  1159, #'enhancesname'
+        'version'   :  1160, #'enhancesversion'
+        'flags'     :  1161, #'enhancesflags'
+    }
+
+class rpmPredepends(Dependency):
+    # More mappings
+    tagMap = {
+        'name'      :  1159, #'enhancesname'
+        'version'   :  1160, #'enhancesversion'
+        'flags'     :  1161, #'enhancesflags'
+    }
+
 
 class rpmChangeLog(ChangeLog):
     tagMap = {
