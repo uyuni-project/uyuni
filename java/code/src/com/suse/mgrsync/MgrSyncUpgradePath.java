@@ -22,7 +22,7 @@ import org.simpleframework.xml.Root;
  * Upgrade path element.
  */
 @Root(name = "upgrade")
-public class SUSEUpgradePath {
+public class MgrSyncUpgradePath {
     @Attribute(name = "from_pdid")
     private Integer fromProductId;
 
