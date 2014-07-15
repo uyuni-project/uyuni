@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
@@ -664,7 +665,7 @@ public class ContentSyncManager {
                 availableChannels.add(c);
 
                 // Update tag can be empty string which is not allowed in the DB
-                if (c.getUpdateTag().isEmpty()) {
+                if (StringUtils.isBlank(c.getUpdateTag())) {
                     c.setUpdateTag(null);
                 }
 
