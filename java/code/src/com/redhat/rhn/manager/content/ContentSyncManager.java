@@ -390,7 +390,7 @@ public class ContentSyncManager {
             }
         }
 
-        ModeFactory.getWriteMode("mgr_sync_queries", "delete_scc_subscriptions")
+        ModeFactory.getWriteMode("mgr_sync_queries", "invalidate_scc_subscriptions")
                 .executeUpdate(new HashMap<String, Object>(),
                                new ArrayList<String>(sc.keySet()));
 
