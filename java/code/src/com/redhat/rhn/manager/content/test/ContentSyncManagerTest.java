@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -29,6 +30,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -216,6 +218,63 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         deleteIfTempFile(channelsXML);
         deleteIfTempFile(channelFamiliesXML);
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#getAvailableChannels()}.
+     * @throws Exception
+     */
+    public void testGetAvailableChannels() throws Exception {
+        // Create channel family with availability
+        ChannelFamily channelFamily1 = ChannelFamilyFactoryTest.createTestChannelFamily();
+        channelFamily1.setOrg(null);
+        TestUtils.saveAndFlush(channelFamily1);
+
+        // Create channel family with no availability
+        ChannelFamily channelFamily2 = ChannelFamilyFactoryTest.createTestChannelFamily();
+        channelFamily2.setOrg(null);
+        for (PrivateChannelFamily pcf : channelFamily2.getPrivateChannelFamilies()) {
+            pcf.setMaxMembers(0L);
+            pcf.setMaxFlex(0L);
+            TestUtils.saveAndFlush(pcf);
+        }
+        TestUtils.saveAndFlush(channelFamily2);
+
+        // Create c1 as a base channel and c2 as a child of it
+        MgrSyncChannel c1 = new MgrSyncChannel();
+        c1.setFamily(channelFamily1.getLabel());
+        String baseChannelLabel = TestUtils.randomString();
+        c1.setLabel(baseChannelLabel);
+        c1.setParent("BASE");
+        MgrSyncChannel c2 = new MgrSyncChannel();
+        c2.setFamily(channelFamily1.getLabel());
+        c2.setLabel(TestUtils.randomString());
+        c2.setParent(baseChannelLabel);
+
+        // Create c3 to test no availability
+        MgrSyncChannel c3 = new MgrSyncChannel();
+        c3.setFamily(channelFamily2.getLabel());
+        c3.setLabel(TestUtils.randomString());
+
+        // Create c4 with unknown channel family
+        MgrSyncChannel c4 = new MgrSyncChannel();
+        c4.setFamily(TestUtils.randomString());
+        c4.setLabel(TestUtils.randomString());
+
+        // Put all channels together to a list
+        List<MgrSyncChannel> allChannels = new ArrayList<MgrSyncChannel>();
+        allChannels.add(c1);
+        allChannels.add(c2);
+        allChannels.add(c3);
+        allChannels.add(c4);
+
+        // Available: c1 and c2. Not available: c3 and c4.
+        ContentSyncManager csm = new ContentSyncManager();
+        List<MgrSyncChannel> availableChannels = csm.getAvailableChannels(allChannels);
+        assertTrue(availableChannels.contains(c1));
+        assertTrue(availableChannels.contains(c2));
+        assertFalse(availableChannels.contains(c3));
+        assertFalse(availableChannels.contains(c4));
     }
 
     /**
