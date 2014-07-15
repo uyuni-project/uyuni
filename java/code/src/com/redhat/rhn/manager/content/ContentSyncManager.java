@@ -516,7 +516,6 @@ public class ContentSyncManager {
         }
 
         Map<Long, MembersCounter> allSubs = new HashMap<Long, MembersCounter>();
-        Long total = 0L;
         for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
             Long orgId = pcf.getOrg().getId();
             if (!allSubs.containsKey(orgId)) {
@@ -524,15 +523,13 @@ public class ContentSyncManager {
             } else {
                 allSubs.get(orgId).incMaxMembers(pcf.getMaxMembers());
             }
-            total += pcf.getMaxMembers();
         }
 
-        for(final Map.Entry<Long, MembersCounter> item :
-                this.calculateSubscriptions(allSubs, total,
-                                            sub, family.getId()).entrySet()) {
-            if (item.getValue().isDirty()) {
+        Date now = new Date();
+        for(final Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
+            if (sub.getEndDate() == null || now.compareTo(sub.getEndDate()) < 0) {
                 HashMap<String, Object> p = new HashMap<String, Object>();
-                p.put("members", item.getValue().getMaxMembers());
+                p.put("members", INFINITE);
                 p.put("cfid", family.getId());
                 p.put("orgid", item.getKey());
                 ModeFactory.getWriteMode("mgr_sync_queries",
