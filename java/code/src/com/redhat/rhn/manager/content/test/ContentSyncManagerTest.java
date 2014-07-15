@@ -391,7 +391,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception (FIXME)
      */
     public static Channel createTestVendorChannel() throws Exception {
-        Channel c =  ChannelFactoryTest.createTestChannel(null,
+        Channel c = ChannelFactoryTest.createTestChannel(null,
                 ChannelFamilyFactoryTest.createTestChannelFamily());
         ChannelFactory.save(c);
         return c;
