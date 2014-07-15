@@ -218,7 +218,8 @@ public class ChannelFamilyFactory extends HibernateFactory {
     }
 
     /**
-     * Get the list of available channel families.
+     * Get the labels of channel families that are "available" in terms of either
+     * max_members is > 0 or fve_max_members is > 0.
      * @return List of {@link ChannelFamily} objects
      */
     @SuppressWarnings("unchecked")
