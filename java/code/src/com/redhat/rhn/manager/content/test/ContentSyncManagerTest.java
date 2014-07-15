@@ -72,7 +72,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Update the channel information
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(getTestFile("channels.xml"));
+        File channelsXML = getTestFile("channels.xml");
+        csm.setChannelsXML(channelsXML);
         csm.updateChannels();
 
         // Verify channel attributes
@@ -88,6 +89,9 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             assertEquals("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/",
                     s.getSourceUrl());
         }
+
+        // Delete test file from /tmp
+        deleteIfTempFile(channelsXML);
     }
 
     /**
