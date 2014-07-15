@@ -633,10 +633,10 @@ public class ContentSyncManager {
      * @return list of available channels
      * @throws ContentSyncException
      */
-    public List<MgrSyncChannel> getAvailableChannels() throws ContentSyncException {
+    public List<MgrSyncChannel> getAvailableChannels(List<MgrSyncChannel> allChannels)
+            throws ContentSyncException {
         // Get all channels from channels.xml and filter
         List<MgrSyncChannel> availableChannels = new ArrayList<MgrSyncChannel>();
-        List<MgrSyncChannel> allChannels = readChannels();
 
         // Filter in all channels where channel families are available
         List<String> availableChannelFamilies =
@@ -690,7 +690,7 @@ public class ContentSyncManager {
         }
 
         // Get all available channels and iterate
-        for (MgrSyncChannel availableChannel : getAvailableChannels()) {
+        for (MgrSyncChannel availableChannel : getAvailableChannels(readChannels())) {
             // We store only non-optional channels
             if (availableChannel.isOptional()) {
                 continue;
