@@ -251,7 +251,7 @@ public class ContentSyncManager {
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
         updateSubscriptions(this.getSubscriptions());
-        syncSUSEProductChannels();
+        syncSUSEProductChannels(getAvailableChannels(readChannels()));
         updateUpgradePaths();
     }
 
@@ -679,7 +679,8 @@ public class ContentSyncManager {
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
      */
-    public void syncSUSEProductChannels() throws ContentSyncException {
+    public void syncSUSEProductChannels(List<MgrSyncChannel> availableChannels)
+            throws ContentSyncException {
         // Get all currently existing product channel relations
         List<SUSEProductChannel> existingProductChannels =
                 SUSEProductFactory.findAllSUSEProductChannels();
@@ -691,7 +692,7 @@ public class ContentSyncManager {
         }
 
         // Get all available channels and iterate
-        for (MgrSyncChannel availableChannel : getAvailableChannels(readChannels())) {
+        for (MgrSyncChannel availableChannel : availableChannels) {
             // We store only non-optional channels
             if (availableChannel.isOptional()) {
                 continue;
