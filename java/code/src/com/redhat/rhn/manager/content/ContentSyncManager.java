@@ -431,6 +431,13 @@ public class ContentSyncManager {
             this.maxMembers -= value;
             this.dirty = Boolean.TRUE;
         }
+
+        @Override
+        public String toString() {
+            return "(D:" + (this.isDirty() ? "!" : "-") +
+                   ", CM:" + this.getCurrentMembers() +
+                   ", MM:" + this.getMaxMembers() + ")";
+        }
     }
 
     /**
