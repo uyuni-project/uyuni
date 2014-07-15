@@ -23,7 +23,9 @@ import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -32,6 +34,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
+import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -279,6 +282,58 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         assertTrue(availableChannels.contains(c2));
         assertFalse(availableChannels.contains(c3));
         assertFalse(availableChannels.contains(c4));
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#syncSUSEProductChannels()}.
+     * @throws Exception
+     */
+    public void testSyncSUSEProductChannels() throws Exception {
+        // Setup a product in the database
+        Channel channel = createTestVendorChannel();
+        ChannelFamily family = channel.getChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
+        MgrSyncProduct mgrSyncProduct = new MgrSyncProduct();
+        mgrSyncProduct.setId(product.getProductId());
+
+        // Create a channel belonging to that product and assume it's available
+        MgrSyncChannel c1 = new MgrSyncChannel();
+        c1.setFamily(family.getLabel());
+        c1.setLabel(channel.getLabel());
+        List<MgrSyncProduct> productList = new ArrayList<MgrSyncProduct>();
+        productList.add(mgrSyncProduct);
+        c1.setProducts(productList);
+
+        // Create a product channel that we can verify
+        SUSEProductChannel spc1 = new SUSEProductChannel();
+        spc1.setChannel(channel);
+        spc1.setChannelLabel(channel.getLabel());
+        spc1.setProduct(product);
+
+        // Create a product channel that should be removed after sync
+        SUSEProductChannel spc2 = new SUSEProductChannel();
+        spc2.setChannelLabel(TestUtils.randomString());
+        spc2.setProduct(product);
+        TestUtils.saveAndFlush(spc2);
+
+        // Setup available channels list
+        List<MgrSyncChannel> availableChannels = new ArrayList<MgrSyncChannel>();
+        availableChannels.add(c1);
+        new ContentSyncManager().syncSUSEProductChannels(availableChannels);
+
+        // Get all product channel relationships and verify
+        List<SUSEProductChannel> productChannels = SUSEProductFactory.
+                findAllSUSEProductChannels();
+        assertEquals(availableChannels.size(), productChannels.size());
+        assertTrue(productChannels.contains(spc1));
+        assertFalse(productChannels.contains(spc2));
+
+        // Verify the single attributes
+        SUSEProductChannel actual = productChannels.get(productChannels.indexOf(spc1));
+        assertEquals(channel, actual.getChannel());
+        assertEquals(spc1.getChannelLabel(), actual.getChannelLabel());
+        assertNull(actual.getParentChannelLabel());
+        assertEquals(product, actual.getProduct());
     }
 
     /**
