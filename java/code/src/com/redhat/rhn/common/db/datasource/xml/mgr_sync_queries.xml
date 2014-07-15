@@ -16,7 +16,7 @@
   </query>
 </write-mode>
 
-<write-mode name="delete_scc_subscriptions">
+<write-mode name="invalidate_scc_subscriptions">
   <query params="">
       UPDATE rhnprivatechannelfamily p SET max_members = 0
        WHERE p.channel_family_id IN
