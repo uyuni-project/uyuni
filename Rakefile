@@ -27,7 +27,7 @@ end
 namespace :security do
   task :start_proxy do
     if ['127.0.0.1', 'localhost'].include? ENV['SECURITY_PROXY']
-      zap = Zap.new(:target=> ENV['TESTHOST'], :zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
+      zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
       unless zap.running?
         zap.start(:daemon => true)
         until zap.running?
@@ -37,51 +37,10 @@ namespace :security do
       end
     end
   end
-
-  task :active_test => ['security:start_proxy'] do
-    target = ENV['TESTHOST']
-    if target.nil?
-      raise "Target not set"
-    end
-
-    zap = Zap.new(:target=> target, :zap=>"/usr/share/owasp-zap/zap.sh")  
-    active_scanner = zap.ascan
-    active_scanner.start # non-blocking
-    # active waiting
-    while active_scanner.running? do
-      sleep 10
-    end
-    puts zap.alerts.view
-  end
-
-  task :report do
-    target = ENV['TESTHOST']
-    format = ENV['FORMAT'] || "JSON"
-    if target.nil?
-      raise "Target not set"
-    end
-    zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
-    File.open(File.join(File.dirname(__FILE__),"security_reports","baseline_#{target}.#{format.downcase}"),"w+") do |f|
-      f.write(zap.alerts.view(format=format))
-     end
-  end
-
-  task :baseline do
-    target = ENV['TESTHOST']
-    if target.nil?
-      raise "Target not set"
-    end
-    zap = Zap.new(:target=>target,:zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
-    alerts = zap.alerts.view
-    File.open(File.join(File.dirname(__FILE__),"security_reports","baseline.json"),"w+") do |f|
-      f.write(alerts)
-    end
-  end
 end
 
 task :cucumber => ['security:start_proxy'] do |t|
   Rake::Task['cucumber:testsuite'].invoke
-  Rake::Task['security:active_test'].invoke
 end
 
 namespace :cucumber do
