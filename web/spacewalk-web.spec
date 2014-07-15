@@ -55,7 +55,6 @@ Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 Requires: sudo
 %if 0%{?suse_version}
 Requires: perl-Digest-HMAC
-Requires: perl-Digest-SHA
 Requires: perl-Text-Diff
 Requires: perl-DateTime
 Requires: susemanager-frontend-libs
