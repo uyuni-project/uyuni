@@ -700,7 +700,7 @@ public class ContentSyncManager {
 
             // Set parent channel to null for base channels
             String parentChannelLabel = availableChannel.getParent();
-            if (parentChannelLabel.equals(BASE)) {
+            if (BASE.equals(parentChannelLabel)) {
                 parentChannelLabel = null;
             }
 
