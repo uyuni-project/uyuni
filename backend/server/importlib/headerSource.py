@@ -121,8 +121,6 @@ class rpmBinaryPackage(Package, rpmPackage):
         'supplements'   : None,
         'enhances'      : None,
         'recommends'    : None,
-        'breaks'        : None,
-        'predepends'    : None,
         'files'         : None,
         'changelog'     : None,
         'channels'      : None,
@@ -137,8 +135,8 @@ class rpmBinaryPackage(Package, rpmPackage):
         'sigpgp'        : None,
         'siggpg'        : None,
         'package_id'    : None,
-	'product_files' : None,
-	'eulas'         : None,
+        'product_files' : None,
+        'eulas'         : None,
     })
 
     def populate(self, header, size, checksum_type, checksum, path=None, org_id=None,
@@ -167,8 +165,6 @@ class rpmBinaryPackage(Package, rpmPackage):
             'requires'  : rpmRequires,
             'conflicts' : rpmConflicts,
             'obsoletes' : rpmObsoletes,
-            'breaks'    : rpmBreaks,
-            'predepends': rpmPredepends,
         }
 
         old_weak_deps_mapping = {
@@ -249,7 +245,7 @@ class rpmBinaryPackage(Package, rpmPackage):
             obj = Class()
             # Fedora 10+ rpms have duplicate provides deps,
             # Lets clean em up before db inserts.
-            if tag in ['requires', 'provides', 'obsoletes', 'conflicts', 'recommends', 'suggests', 'supplements', 'enhances', 'breaks', 'predepends']:
+            if tag in ['requires', 'provides', 'obsoletes', 'conflicts', 'recommends', 'suggests', 'supplements', 'enhances']:
                 if not len(hash['name']):
                     continue
                 dep_nv = (hash['name'], hash['version'], hash['flags'])
@@ -435,23 +431,6 @@ class rpmObsoletes(Dependency):
         'version'   : 'obsoleteversion',
         'flags'     : 'obsoleteflags',
     }
-
-class rpmBreaks(Dependency):
-    # More mappings
-    tagMap = {
-        'name'      :  1159, #'enhancesname'
-        'version'   :  1160, #'enhancesversion'
-        'flags'     :  1161, #'enhancesflags'
-    }
-
-class rpmPredepends(Dependency):
-    # More mappings
-    tagMap = {
-        'name'      :  1159, #'enhancesname'
-        'version'   :  1160, #'enhancesversion'
-        'flags'     :  1161, #'enhancesflags'
-    }
-
 
 class rpmChangeLog(ChangeLog):
     tagMap = {
