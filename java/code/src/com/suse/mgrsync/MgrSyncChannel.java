@@ -98,6 +98,14 @@ public class MgrSyncChannel {
     }
 
     /**
+     * Set the channel family.
+     * @param familyIn the channel family label to set
+     */
+    public void setFamily(String familyIn) {
+        this.family = familyIn;
+    }
+
+    /**
      * @return the isSigned
      */
     public Boolean isSigned() {
@@ -109,6 +117,14 @@ public class MgrSyncChannel {
      */
     public String getLabel() {
         return label;
+    }
+
+    /**
+     * Set the label
+     * @param the label to set
+     */
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
     }
 
     /**
@@ -130,6 +146,14 @@ public class MgrSyncChannel {
      */
     public String getParent() {
         return parent;
+    }
+
+    /**
+     * Set the parent channel label.
+     * @param parentIn the parent channel label
+     */
+    public void setParent(String parentIn) {
+        this.parent = parentIn;
     }
 
     /**
