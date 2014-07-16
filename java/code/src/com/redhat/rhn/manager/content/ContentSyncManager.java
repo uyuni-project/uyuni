@@ -253,7 +253,7 @@ public class ContentSyncManager {
 
     /**
      * Refresh functionality doing the same thing as --refresh in mgr-ncc-sync.
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * @throws ContentSyncException
      */
     public void refresh() throws ContentSyncException {
         updateChannels();
@@ -564,6 +564,7 @@ public class ContentSyncManager {
 
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
+     * @throws ContentSyncException
      */
     public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
             throws ContentSyncException {
@@ -662,7 +663,7 @@ public class ContentSyncManager {
     }
 
     /**
-     * Check if a given string is a SUSE Manager entitlement.
+     * Checks if a given string is one of the existing SUSE Manager entitlement.
      * @param s
      * @return true if s is a SUSE Manager entitlement, else false.
      */
