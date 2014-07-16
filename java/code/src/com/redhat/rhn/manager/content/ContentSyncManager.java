@@ -131,7 +131,9 @@ public class ContentSyncManager {
     public List<MgrSyncChannel> readChannels() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            return persister.read(MgrSyncChannels.class, channelsXML).getChannels();
+            List<MgrSyncChannel> channels = persister.read(
+                    MgrSyncChannels.class, channelsXML).getChannels();
+            return channels;
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -147,8 +149,9 @@ public class ContentSyncManager {
     public List<MgrSyncChannelFamily> readChannelFamilies() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            return persister.read(MgrSyncChannelFamilies.class,
-                                  channelFamiliesXML).getFamilies();
+            List<MgrSyncChannelFamily> channelFamilies = persister.read(
+                    MgrSyncChannelFamilies.class, channelFamiliesXML).getFamilies();
+            return channelFamilies;
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
@@ -164,7 +167,9 @@ public class ContentSyncManager {
     public List<MgrSyncUpgradePath> readUpgradePaths() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            return persister.read(MgrSyncUpgradePaths.class, upgradePathsXML).getPaths();
+            List<MgrSyncUpgradePath> upgradePaths = persister.read(
+                    MgrSyncUpgradePaths.class, upgradePathsXML).getPaths();
+            return upgradePaths;
         }
         catch (Exception e) {
             throw new ContentSyncException(e);
