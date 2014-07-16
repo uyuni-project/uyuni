@@ -24,22 +24,7 @@ Dir.glob(File.join(Dir.pwd, 'run_sets', '*.yml')).each do |entry|
   end
 end
 
-namespace :security do
-  task :start_proxy do
-    if ['127.0.0.1', 'localhost'].include? ENV['SECURITY_PROXY']
-      zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh") #path for zap from rpm
-      unless zap.running?
-        zap.start(:daemon => true)
-        until zap.running?
-          STDERR.puts 'waiting for security proxy...'
-          sleep 1
-        end
-      end
-    end
-  end
-end
-
-task :cucumber => ['security:start_proxy'] do |t|
+task :cucumber do |t|
   Rake::Task['cucumber:testsuite'].invoke
 end
 
