@@ -13,7 +13,7 @@ When(/^the testsuite was run through ZAP as proxy$/) do
 end
 
 And(/^an active attack was performed$/) do
-  if ENV['SECURITY_ATTACK']
+  if ENV['ZAP_ACTIVE_ATTACK']
     active_scanner = $zap.ascan
     while active_scanner.running? do
       sleep 10
@@ -28,7 +28,7 @@ Then(/^there are not security issues$/) do
   unique_alerts = Set.new
   ignored_alerts = Set.new
 
-  if File.exist?('security_ignored.txt')
+  if File.exist?('zap_ignored.txt')
     File.open('security_ignored.txt') do |f|
       f.each_line do |line|
         ignored_alerts.add line.strip
@@ -69,7 +69,7 @@ Then(/^there are not security issues$/) do
     end
   end
 
-  File.open('security_all.txt', 'w') do |f|
+  File.open('zap_all.txt', 'w') do |f|
     unique_alerts.each do |id|
       f.puts id
     end

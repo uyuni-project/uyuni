@@ -20,7 +20,7 @@ include OwaspZap
 
 browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
-proxy = ENV['SECURITY_PROXY'].to_s || nil
+proxy = ENV['ZAP_PROXY'].to_s || nil
 
 
 # basic support for rebranding of strings in the UI
@@ -134,7 +134,7 @@ end
 
 # make sure proxy is started if we will use ut
 Before do
-  sec_proxy = ENV['SECURITY_PROXY']
+  sec_proxy = ENV['ZAP_PROXY']
   if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
     $zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh")
     unless $zap.running?
