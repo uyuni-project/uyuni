@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -311,49 +312,28 @@ public class ContentSyncManager {
     }
 
     /**
-     * Create new or update an existing channel family.
-     * @return {@link ChannelFamily}
-     */
-    private ChannelFamily createOrUpdateChannelFamily(String label, String name) {
-        ChannelFamily family = ChannelFamilyFactory.lookupByLabel(label, null);
-        if (family == null && !isEntitlement(label)) {
-            family = new ChannelFamily();
-            family.setLabel(label);
-            family.setOrg(null);
-            family.setName(name);
-            family.setProductUrl("some url");
-            ChannelFamilyFactory.save(family);
-        }
-
-        return family;
-    }
-
-    private PrivateChannelFamily newPrivateChannelFamily(ChannelFamily family) {
-        PrivateChannelFamily pf = new PrivateChannelFamily();
-        pf.setCreated(new Date());
-        pf.setCurrentMembers(0L);
-        pf.setMaxMembers(0L);
-        pf.setOrg(null);
-        pf.setChannelFamily(family);
-
-        return pf;
-    }
-
-    /**
-     * Update channel families in the database.
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * Update channel families in DB with data from the channel_families.xml file.
+     * @throws ContentSyncException
      */
     public void updateChannelFamilies() throws ContentSyncException {
-        for (MgrSyncChannelFamily scf : this.readChannelFamilies()) {
-            ChannelFamily family = this.createOrUpdateChannelFamily(
-                    scf.getLabel(), scf.getName());
+        List<MgrSyncChannelFamily> channelFamilies = readChannelFamilies();
+        for (MgrSyncChannelFamily channelFamily : channelFamilies) {
+            ChannelFamily family = createOrUpdateChannelFamily(
+                    channelFamily.getLabel(), channelFamily.getName());
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
-                PrivateChannelFamily pf = this.newPrivateChannelFamily(family);
-                if (scf.getDefaultNodeCount() < 0) {
-                    pf.setMaxMembers(ContentSyncManager.INFINITE);
+                // No entry in rhnPrivateChannelFamily, create it
+                PrivateChannelFamily pcf = new PrivateChannelFamily();
+                pcf.setCreated(new Date());
+                pcf.setCurrentMembers(0L);
+                pcf.setMaxMembers(0L);
+                // Set the default organization (id = 1)
+                pcf.setOrg(OrgFactory.lookupById(1L));
+                // Set INFINITE max_members if default_nodecount = -1
+                if (channelFamily.getDefaultNodeCount() < 0) {
+                    pcf.setMaxMembers(ContentSyncManager.INFINITE);
                 }
-
-                family.addPrivateChannelFamily(pf);
+                pcf.setChannelFamily(family);
+                family.addPrivateChannelFamily(pcf);
                 ChannelFamilyFactory.save(family);
             }
         }
@@ -688,5 +668,23 @@ public class ContentSyncManager {
             }
         }
         return false;
+    }
+
+    /**
+     * Updates an existing channel family or creates and returns a new one if no channel
+     * family exists with the given label.
+     * @return {@link ChannelFamily}
+     */
+    private ChannelFamily createOrUpdateChannelFamily(String label, String name) {
+        ChannelFamily family = ChannelFamilyFactory.lookupByLabel(label, null);
+        if (family == null && !isEntitlement(label)) {
+            family = new ChannelFamily();
+            family.setLabel(label);
+            family.setOrg(null);
+            family.setName(name);
+            family.setProductUrl("some url");
+            ChannelFamilyFactory.save(family);
+        }
+        return family;
     }
 }
