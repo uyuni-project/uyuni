@@ -54,47 +54,49 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateChannels() throws Exception {
-        // Create a test channel and set a specific label
-        String channelLabel = "sles11-sp3-pool-x86_64";
-        Channel c = SUSEProductTestUtils.createTestVendorChannel();
-        c.setLabel(channelLabel);
-        c.setDescription("UPDATE ME!");
-        c.setName("UPDATE ME!");
-        c.setSummary("UPDATE ME!");
-        c.setUpdateTag("UPDATE ME!");
-
-        // Setup content source
-        ContentSource cs = new ContentSource();
-        cs.setLabel(c.getLabel());
-        cs.setSourceUrl("UPDATE ME!");
-        cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
-        cs.setOrg(null);
-        cs = (ContentSource) TestUtils.saveAndReload(cs);
-        c.getSources().add(cs);
-        TestUtils.saveAndFlush(c);
-
-        // Update the channel information
-        ContentSyncManager csm = new ContentSyncManager();
         File channelsXML = getTestFile("channels.xml");
-        csm.setChannelsXML(channelsXML);
-        csm.updateChannels();
+        try {
+            // Create a test channel and set a specific label
+            String channelLabel = "sles11-sp3-pool-x86_64";
+            Channel c = SUSEProductTestUtils.createTestVendorChannel();
+            c.setLabel(channelLabel);
+            c.setDescription("UPDATE ME!");
+            c.setName("UPDATE ME!");
+            c.setSummary("UPDATE ME!");
+            c.setUpdateTag("UPDATE ME!");
 
-        // Verify channel attributes
-        c = ChannelFactory.lookupByLabel(channelLabel);
-        assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getDescription());
-        assertEquals("SLES11-SP3-Pool for x86_64", c.getName());
-        assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getSummary());
-        assertEquals("slessp3", c.getUpdateTag());
+            // Setup content source
+            ContentSource cs = new ContentSource();
+            cs.setLabel(c.getLabel());
+            cs.setSourceUrl("UPDATE ME!");
+            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+            cs.setOrg(null);
+            cs = (ContentSource) TestUtils.saveAndReload(cs);
+            c.getSources().add(cs);
+            TestUtils.saveAndFlush(c);
 
-        // Verify content sources (there is only one)
-        Set<ContentSource> sources = c.getSources();
-        for (ContentSource s : sources) {
-            assertEquals("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/",
-                    s.getSourceUrl());
+            // Update the channel information
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setChannelsXML(channelsXML);
+            csm.updateChannels();
+
+            // Verify channel attributes
+            c = ChannelFactory.lookupByLabel(channelLabel);
+            assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getDescription());
+            assertEquals("SLES11-SP3-Pool for x86_64", c.getName());
+            assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getSummary());
+            assertEquals("slessp3", c.getUpdateTag());
+
+            // Verify content sources (there is only one)
+            Set<ContentSource> sources = c.getSources();
+            for (ContentSource s : sources) {
+                assertEquals("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/",
+                        s.getSourceUrl());
+            }
         }
-
-        // Delete test file from /tmp
-        deleteIfTempFile(channelsXML);
+        finally {
+            deleteIfTempFile(channelsXML);
+        }
     }
 
     /**
