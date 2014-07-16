@@ -252,6 +252,7 @@ public class ContentSyncManager {
     }
 
     /**
+     * XXX: This will go away as XMLRPC handler will call the single methods.
      * Refresh functionality doing the same thing as --refresh in mgr-ncc-sync.
      * @throws ContentSyncException
      */
@@ -259,7 +260,7 @@ public class ContentSyncManager {
         updateChannels();
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
-        updateSubscriptions(this.getSubscriptions());
+        updateSubscriptions(getSubscriptions());
         updateSUSEProductChannels(getAvailableChannels(readChannels()));
         updateUpgradePaths();
     }
