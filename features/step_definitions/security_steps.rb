@@ -29,7 +29,7 @@ Then(/^there are not security issues$/) do
   ignored_alerts = Set.new
 
   if File.exist?('zap_ignored.txt')
-    File.open('security_ignored.txt') do |f|
+    File.open('zap_ignored.txt') do |f|
       f.each_line do |line|
         ignored_alerts.add line.strip
       end
