@@ -20,11 +20,11 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
-import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -378,13 +378,63 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      */
     public void testUpdateUpgradePaths() throws Exception {
         File upgradePathsXML = getTestFile("upgrade_paths.xml");
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setUpgradePathsXML(upgradePathsXML);
-        csm.updateUpgradePaths();
+        try {
+            // Prepare products since they will be looked up
+            ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
+            SUSEProduct p;
+            if (SUSEProductFactory.lookupByProductId(690) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(690);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(814) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(814);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(1001) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(1001);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(1119) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(1119);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(1193) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(1193);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(1198) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(1198);
+                TestUtils.saveAndFlush(p);
+            }
 
-        deleteIfTempFile(upgradePathsXML);
-    }
+            // Update the upgrade paths
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setUpgradePathsXML(upgradePathsXML);
+            csm.updateUpgradePaths();
 
+            // Check the results
+            List<SUSEUpgradePath> upgradePaths = SUSEProductFactory.findAllSUSEUpgradePaths();
+            List<String> paths = new ArrayList<String>();
+            for (SUSEUpgradePath path : upgradePaths) {
+                String identifier = String.format("%s-%s",
+                        path.getFromProduct().getProductId(),
+                        path.getToProduct().getProductId());
+                paths.add(identifier);
+            }
+            assertEquals(3, upgradePaths.size());
+            assertTrue(paths.contains("690-814"));
+            assertTrue(paths.contains("1001-1119"));
+            assertTrue(paths.contains("1193-1198"));
+        }
+        finally {
+            deleteIfTempFile(upgradePathsXML);
+        }
     }
 
     /**
