@@ -263,7 +263,7 @@ class rpmBinaryPackage(Package, rpmPackage):
                     continue
             else:
                 if tag == 'files':
-                    hash['checksum_type'] = self['checksum_type']
+                    hash['checksum_type'] = header.checksum_type()
                 obj.populate(hash)
                 self[tag].append(obj)
 
