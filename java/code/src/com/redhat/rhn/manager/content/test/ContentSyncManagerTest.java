@@ -339,34 +339,86 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateChannelFamilies() method.
+     * Test for {@link ContentSyncManager#updateChannelFamilies() method, insert case.
      * @throws Exception
      */
-    public void testUpdateChannelFamilies() throws Exception {
+    public void testUpdateChannelFamiliesInsert() throws Exception {
         File channelFamiliesXML = getTestFile("channel_families.xml");
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelFamiliesXML(channelFamiliesXML);
-
         try {
-            // Prepare private families data (i.e. no private families)
-            for (MgrSyncChannelFamily scf : csm.readChannelFamilies()) {
-                ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
-                assertNotNull(f);
-                if (!f.getPrivateChannelFamilies().isEmpty()) {
-                    f.getPrivateChannelFamilies().clear();
+            // Remove channel families for testing the insertion
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setChannelFamiliesXML(channelFamiliesXML);
+            for (MgrSyncChannelFamily cf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(
+                        cf.getLabel(), null);
+                if (family != null) {
+                    TestUtils.removeObject(family);
                 }
-                assertTrue(f.getPrivateChannelFamilies().isEmpty());
-                ChannelFamilyFactory.save(f);
             }
-
             csm.updateChannelFamilies();
 
-            for (MgrSyncChannelFamily scf : csm.readChannelFamilies()) {
-                ChannelFamily f = ChannelFamilyFactory.lookupByLabel(scf.getLabel(), null);
-                assertNotNull(f);
-                assertFalse(f.getPrivateChannelFamilies().isEmpty());
-                assertEquals(scf.getDefaultNodeCount() < 0 ? 200000L : 0L,
-                     (long) f.getPrivateChannelFamilies().iterator().next().getMaxMembers());
+            // Assert everything is as expected
+            for (MgrSyncChannelFamily cf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(
+                        cf.getLabel(), null);
+                assertNotNull(family);
+                assertEquals(cf.getLabel(), family.getLabel());
+                assertEquals(cf.getName(), family.getName());
+                assertEquals(1, family.getPrivateChannelFamilies().size());
+                for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
+                    assertEquals(new Long(1), pcf.getOrg().getId());
+                    assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
+                            (long) pcf.getMaxMembers());
+                }
+            }
+        }
+        finally {
+            deleteIfTempFile(channelFamiliesXML);
+        }
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateChannelFamilies() method, update case.
+     * @throws Exception
+     */
+    public void testUpdateChannelFamiliesUpdate() throws Exception {
+        File channelFamiliesXML = getTestFile("channel_families.xml");
+        try {
+            // Insert channel families with different data for testing update
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setChannelFamiliesXML(channelFamiliesXML);
+            for (MgrSyncChannelFamily cf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(
+                        cf.getLabel(), null);
+                if (family != null) {
+                    family.setLabel(TestUtils.randomString());
+                    family.setName(TestUtils.randomString());
+                }
+                else {
+                    family = ChannelFamilyFactoryTest.createTestChannelFamily();
+                }
+
+                // Remove all private channel families
+                if (!family.getPrivateChannelFamilies().isEmpty()) {
+                    family.getPrivateChannelFamilies().clear();
+                }
+                TestUtils.saveAndFlush(family);
+            }
+            csm.updateChannelFamilies();
+
+            // Assert everything is as expected
+            for (MgrSyncChannelFamily cf : csm.readChannelFamilies()) {
+                ChannelFamily family = ChannelFamilyFactory.lookupByLabel(
+                        cf.getLabel(), null);
+                assertNotNull(family);
+                assertEquals(cf.getLabel(), family.getLabel());
+                assertEquals(cf.getName(), family.getName());
+                assertEquals(1, family.getPrivateChannelFamilies().size());
+                for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
+                    assertEquals(new Long(1), pcf.getOrg().getId());
+                    assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
+                            (long) pcf.getMaxMembers());
+                }
             }
         }
         finally {
