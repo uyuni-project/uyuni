@@ -240,6 +240,7 @@ class App(object):
         url = "http://%s:%s%s" % (config[Config.HOST], config[Config.PORT], config[Config.URI])
         self.conn = xmlrpclib.ServerProxy(url)
         self.auth = Authenticator(self.conn, config)
+        self.quiet = False
 
 
     def _addProduct(self):
@@ -270,10 +271,50 @@ class App(object):
         return self.conn.sync.content.listProducts(self.auth())
 
 
+    def _refresh(self):
+        """
+        Refresh the SCC data in the SUSE Manager database.
+        """
+        self.cli_call("Synchronizing channels", "synchronizeChannels")
+        self.cli_call("Synchronizing channel families", "synchronizeChannelFamilies")
+        self.cli_call("Synchronizing SUSE products", "synchronizeProducts")
+        self.cli_call("Synchronizing SUSE product channels", "synchronizeProductChannels")
+        self.cli_call("Synchronizing subscriptions", "synchronizeSubscriptions")
+        self.cli_call("Synchronizing upgrade paths", "synchronizeUpgradePaths")
+
+
+    def cli_call(self, message, method):
+        """
+        Do nothing if the quiet flag is active.
+        """
+        failure = None
+        if not self.quiet:
+            sys.stdout.write(message + "...\t")
+            sys.stdout.flush()
+
+        result = None
+        try:
+            result = getattr(self.conn.sync.content, method)(self.auth())
+        except Exception, ex:
+            message = "Failed"
+            failure = ex
+
+        if not self.quiet:
+            sys.stdout.write(message + "\n")
+
+        sys.stdout.flush()
+
+        if failure:
+            sys.stderr.write("Error: %s\n" % failure.faultString)
+
+        return result
+
+
     def run(self, options, attempted=False):
         """
         Run the app.
         """
+        self.quiet = options.quiet
         try:
             self.auth.persist = options.saveconfig
             if options.listchannels:
@@ -284,6 +325,8 @@ class App(object):
                 self._addProduct()
             elif options.addchannel:
                 self._addChannel()
+            elif options.refresh:
+                self._refresh()
         except xmlrpclib.Fault, ex:
             # Try to figure out it is an outdated session
             fault = ex.faultString.lower()
@@ -298,7 +341,7 @@ class App(object):
             else:
                 # The error does not seems like a failed session
                 raise ex
-            
+
 
     def format(self, data):
         """
