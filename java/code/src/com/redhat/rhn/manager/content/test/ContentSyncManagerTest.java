@@ -56,7 +56,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     public void testUpdateChannels() throws Exception {
         // Create a test channel and set a specific label
         String channelLabel = "sles11-sp3-pool-x86_64";
-        Channel c = createTestVendorChannel();
+        Channel c = SUSEProductTestUtils.createTestVendorChannel();
         c.setLabel(channelLabel);
         c.setDescription("UPDATE ME!");
         c.setName("UPDATE ME!");
@@ -290,7 +290,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      */
     public void testUpdateSUSEProductChannels() throws Exception {
         // Setup a product in the database
-        Channel channel = createTestVendorChannel();
+        Channel channel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily family = channel.getChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
         MgrSyncProduct mgrSyncProduct = new MgrSyncProduct();
@@ -385,16 +385,6 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         deleteIfTempFile(upgradePathsXML);
     }
 
-    /**
-     * Create a vendor channel (org is null) for testing.
-     * @return vendor channel for testing
-     * @throws Exception (FIXME)
-     */
-    public static Channel createTestVendorChannel() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(null,
-                ChannelFamilyFactoryTest.createTestChannelFamily());
-        ChannelFactory.save(c);
-        return c;
     }
 
     /**

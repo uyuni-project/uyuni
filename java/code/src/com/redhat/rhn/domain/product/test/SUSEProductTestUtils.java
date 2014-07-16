@@ -14,7 +14,11 @@
  */
 package com.redhat.rhn.domain.product.test;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.testing.TestUtils;
@@ -51,5 +55,17 @@ public class SUSEProductTestUtils {
         product.setProductId(new Random().nextInt(999999));
         TestUtils.saveAndFlush(product);
         return product;
+    }
+
+    /**
+     * Create a vendor channel (org is null) for testing.
+     * @return vendor channel for testing
+     * @throws Exception
+     */
+    public static Channel createTestVendorChannel() throws Exception {
+        Channel c = ChannelFactoryTest.createTestChannel(null,
+                ChannelFamilyFactoryTest.createTestChannelFamily());
+        ChannelFactory.save(c);
+        return c;
     }
 }
