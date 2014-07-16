@@ -285,10 +285,10 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Test for {@link ContentSyncManager#syncSUSEProductChannels()}.
+     * Test for {@link ContentSyncManager#updateSUSEProductChannels()}.
      * @throws Exception
      */
-    public void testSyncSUSEProductChannels() throws Exception {
+    public void testUpdateSUSEProductChannels() throws Exception {
         // Setup a product in the database
         Channel channel = createTestVendorChannel();
         ChannelFamily family = channel.getChannelFamily();
@@ -319,7 +319,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         // Setup available channels list
         List<MgrSyncChannel> availableChannels = new ArrayList<MgrSyncChannel>();
         availableChannels.add(c1);
-        new ContentSyncManager().syncSUSEProductChannels(availableChannels);
+        new ContentSyncManager().updateSUSEProductChannels(availableChannels);
 
         // Get all product channel relationships and verify
         List<SUSEProductChannel> productChannels = SUSEProductFactory.

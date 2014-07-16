@@ -251,7 +251,7 @@ public class ContentSyncManager {
         updateChannelFamilies();
         updateSUSEProducts(getProducts());
         updateSubscriptions(this.getSubscriptions());
-        syncSUSEProductChannels(getAvailableChannels(readChannels()));
+        updateSUSEProductChannels(getAvailableChannels(readChannels()));
         updateUpgradePaths();
     }
 
@@ -683,7 +683,7 @@ public class ContentSyncManager {
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
      */
-    public void syncSUSEProductChannels(List<MgrSyncChannel> availableChannels)
+    public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
             throws ContentSyncException {
         // Get all currently existing product channel relations
         List<SUSEProductChannel> existingProductChannels =
