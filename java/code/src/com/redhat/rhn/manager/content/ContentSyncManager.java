@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -44,20 +45,19 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.simpleframework.xml.core.Persister;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Content synchronization logic.
@@ -74,11 +74,14 @@ public class ContentSyncManager {
     // The "limitless or endless in space" at SUSE is 200000. Of type Long.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
     public static final Long INFINITE = 200000L;
-    private static final String FULL_TYPE = "FULL";
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
+    // Not yet used
+    @SuppressWarnings("unused")
+    private static final String FULL_TYPE = "FULL";
+
     // Base channels have "BASE" as their parent in channels.xml
-    private static final String BASE = "BASE";
+    private static final String BASE_CHANNEL = "BASE";
 
     // Static XML files we parse
     private static File channelsXML = new File(
@@ -357,12 +360,12 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns a mapping of the subscriptions quantity for each channel family.
-     * If there are families which have subscriptions in the database,
-     * but are not in the subscription list from SCC, node count is set to zero.
+     * Returns a list of available {@link SubscriptionDto}s. If there are families which
+     * have subscriptions in the database, but are not in the subscription list from SCC,
+     * node count is set to zero.
      *
-     * @param subscriptions
-     * @return
+     * @param subscriptions subscriptions as we get them from SCC
+     * @return list of {@link SubscriptionDto}
      * @throws ContentSyncException
      */
     private List<SubscriptionDto> consolidateSubscriptions(
@@ -398,172 +401,66 @@ public class ContentSyncManager {
     }
 
     /**
-     * Subscription members counter.
-     */
-    private static class MembersCounter {
-        private Long maxMembers;
-        private final Long currentMembers;
-        private Boolean dirty;
-
-        public MembersCounter(PrivateChannelFamily pcf) {
-            this.dirty = Boolean.FALSE;
-            this.maxMembers = pcf.getMaxMembers();
-            this.currentMembers = pcf.getCurrentMembers();
-        }
-
-        public Boolean isDirty() {
-            return dirty;
-        }
-
-        public Long getCurrentMembers() {
-            return currentMembers;
-        }
-
-        public Long getMaxMembers() {
-            return maxMembers;
-        }
-
-        public void incMaxMembers(Long value) {
-            this.maxMembers += value;
-        }
-
-        public void decMaxMembers(Long value) {
-            this.maxMembers -= value;
-            this.dirty = Boolean.TRUE;
-        }
-
-        @Override
-        public String toString() {
-            return "(D:" + (this.isDirty() ? "!" : "-") +
-                   ", CM:" + this.getCurrentMembers() +
-                   ", MM:" + this.getMaxMembers() + ")";
-        }
-    }
-
-    /**
-     * Calculate subscriptions.
-     *
-     * @param allSubs
-     * @param total
-     * @param subscs
-     * @param oid
-     * @return Calculated subscriptions.
-     */
-    private Map<Long, MembersCounter> calculateSubscriptions(
-            Map<Long, MembersCounter> allSubs, Long total,
-            SubscriptionDto subscr, Long oid) {
-        /*
-        Two things can happen:
-        1. There are more subscriptions in NCC than in DB
-           Then add (substract a negative value) from org_id=1 max_members
-
-        2. NCC allows less subscriptions than in the DB
-           - Reduce the max_members of some org's
-           - Substract the max_members of org_id=1
-             until needed_subscriptions=0 or max_members=current_members
-           - Substract the max_members of org_id++ until
-             needed_subscriptions=0 or max_members=current_members
-           - Reduce the max_members of org_id=1 until
-             needed_subscriptions=0 or max_members=0 (!!!)
-           - Reduce the max_members of org_id++ until
-             needed_subscriptions=0 or max_members=0 (!!!)
-        */
-        Long needed = total - subscr.getNodeCount();
-        Map<Long, MembersCounter> calculated = new HashMap<Long, MembersCounter>();
-        for (Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
-            MembersCounter cnt = item.getValue();
-            Long free = cnt.getMaxMembers() - cnt.getCurrentMembers();
-            if ((free >= 0 && needed <= free) || (free < 0 && needed < 0)) {
-                cnt.decMaxMembers(needed);
-                needed = 0L;
-                break;
-            }
-            else if (free > 0 && needed > free) {
-                cnt.decMaxMembers(free);
-                needed -= free;
-            }
-            calculated.put(item.getKey(), cnt);
-        }
-
-        // If not reduced all max_members are not enough, there are still leftovers in DB.
-        if (needed > 0) {
-            for (Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
-                MembersCounter cnt = item.getValue();
-                Long free = cnt.getMaxMembers();
-                if (free > 0 && needed <= free) {
-                    cnt.decMaxMembers(needed);
-                    break;
-                }
-                else if (free > 0 && needed > free) {
-                    cnt.decMaxMembers(free);
-                    needed -= free;
-                }
-                calculated.put(item.getKey(), cnt);
-            }
-        }
-
-        return calculated;
-    }
-
-    /**
-     * Update subscription.
+     * Updates max_members based on a given {@link SubscriptionDto}.
+     * @param subscription
      */
     private void updateSubscription(SubscriptionDto sub) {
-        final ChannelFamily family = this.createOrUpdateChannelFamily(sub.getProductClass(),
-                                                                      sub.getName());
-        if (family == null) {
-            return;
-        }
+        final ChannelFamily family = createOrUpdateChannelFamily(
+                sub.getProductClass(), sub.getName());
 
-        Map<Long, MembersCounter> allSubs = new HashMap<Long, MembersCounter>();
+        // Remember all orgs bound to this channel family
+        Set<Long> orgIds = new HashSet<Long>();
         for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-            Long orgId = pcf.getOrg().getId();
-            if (!allSubs.containsKey(orgId)) {
-                allSubs.put(orgId, new MembersCounter(pcf));
-            } else {
-                allSubs.get(orgId).incMaxMembers(pcf.getMaxMembers());
-            }
+            orgIds.add(pcf.getOrg().getId());
         }
 
+        // Set max_members to INFINITE for all those channel families and orgs
         Date now = new Date();
-        for(final Map.Entry<Long, MembersCounter> item : allSubs.entrySet()) {
+        for(Long orgId : orgIds) {
             if (sub.getEndDate() == null || now.compareTo(sub.getEndDate()) < 0) {
-                HashMap<String, Object> p = new HashMap<String, Object>();
-                p.put("members", INFINITE);
-                p.put("cfid", family.getId());
-                p.put("orgid", item.getKey());
-                ModeFactory.getWriteMode("mgr_sync_queries",
-                                         "set_subscription_max_members").executeUpdate(p);
+                HashMap<String, Object> params = new HashMap<String, Object>();
+                params.put("max_members", INFINITE);
+                params.put("cfid", family.getId());
+                params.put("orgid", orgId);
+                ModeFactory.getWriteMode("mgr_sync_queries", "set_subscription_max_members")
+                        .executeUpdate(params);
             }
         }
     }
 
     /**
-     * Update entitlement.
+     * Updates max_members based on a given {@link SubscriptionDto}.
+     * @param subscription
      */
     private void updateEntitlement(SubscriptionDto subscription) {
         Date now = new Date();
-        for (final String ent : SystemEntitlement.valueOf(
+
+        // Loop over assigned entitlements
+        for (final String entitlement : SystemEntitlement.valueOf(
                 subscription.getProductClass()).getEntitlements()) {
-            for (Iterator<Map<String, Object>> iter = ModeFactory.getMode(
-                    "mgr_sync_queries", "entitlement_id", Map.class)
-                    .execute(new HashMap<String, Object>(){{put("label", ent);}})
-                    .iterator(); iter.hasNext();) {
-                final Long entId = (Long) (iter.next()).get("id");
-                if (now.compareTo(subscription.getEndDate()) <= 0) {
-                    ModeFactory.getWriteMode("mgr_sync_queries",
-                                             "set_entitlement_max_members")
-                            .executeUpdate(new HashMap<String, Object>(){
-                                {put("members", INFINITE);put("group", entId);}});
-                }
+            // Get this entitlement's ID from rhnServerGroupType
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("label", entitlement);
+            @SuppressWarnings("unchecked")
+            DataResult<Map<String, Object>> result = ModeFactory.getMode(
+                    "mgr_sync_queries", "entitlement_id", Map.class).execute(params);
+            Long entitlementId = (Long) result.get(0).get("id");
+
+            // Set max_members to our interpretation of INFINITE
+            if (now.compareTo(subscription.getEndDate()) <= 0) {
+                params.clear();
+                params.put("max_members", INFINITE);
+                params.put("group_type", entitlementId);
+                ModeFactory.getWriteMode("mgr_sync_queries", "set_entitlement_max_members")
+                        .executeUpdate(params);
             }
         }
     }
 
     /**
-     * Sync subscriptions from the SCC to the database.
+     * Sync subscriptions from SCC to the database.
      * @param subscriptions
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * @throws ContentSyncException
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
@@ -575,16 +472,16 @@ public class ContentSyncManager {
          */
         Map<String, Object> params = new HashMap<String, Object>();
         ModeFactory.getWriteMode("mgr_sync_queries",
-                                 "reset_entitlements_bc").executeUpdate(params);
+                                 "reset_entitlements_bnc740813").executeUpdate(params);
         params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
         ModeFactory.getWriteMode("mgr_sync_queries",
                                  "reset_entitlements").executeUpdate(params);
 
-        for (SubscriptionDto meta : this.consolidateSubscriptions(subscriptions)) {
-            if (this.isEntitlement(meta.getProductClass())) {
-                this.updateEntitlement(meta);
+        for (SubscriptionDto subscription : consolidateSubscriptions(subscriptions)) {
+            if (isEntitlement(subscription.getProductClass())) {
+                updateEntitlement(subscription);
             } else {
-                this.updateSubscription(meta);
+                updateSubscription(subscription);
             }
         }
     }
@@ -665,7 +562,7 @@ public class ContentSyncManager {
         // Filter in channels with available parents only (or base channels)
         for (MgrSyncChannel c : allChannels) {
             String parent = c.getParent();
-            if (parent.equals(BASE) || availableChannelLabels.contains(parent)) {
+            if (parent.equals(BASE_CHANNEL) || availableChannelLabels.contains(parent)) {
                 availableChannels.add(c);
 
                 // Update tag can be empty string which is not allowed in the DB
@@ -704,7 +601,7 @@ public class ContentSyncManager {
 
             // Set parent channel to null for base channels
             String parentChannelLabel = availableChannel.getParent();
-            if (BASE.equals(parentChannelLabel)) {
+            if (BASE_CHANNEL.equals(parentChannelLabel)) {
                 parentChannelLabel = null;
             }
 
@@ -744,20 +641,22 @@ public class ContentSyncManager {
      */
     public void updateUpgradePaths() throws ContentSyncException {
         Map<String, SUSEUpgradePath> paths = new HashMap<String, SUSEUpgradePath>();
-        for (SUSEUpgradePath sup : SUSEProductFactory.findAllSUSEUpgradePaths()) {
+        List<SUSEUpgradePath> upgradePathsDB = SUSEProductFactory.findAllSUSEUpgradePaths();
+        for (SUSEUpgradePath path : upgradePathsDB) {
             paths.put(String.format("%s-%s",
-                                    sup.getFromProduct().getProductId(),
-                                    sup.getToProduct().getProductId()), sup);
+                                    path.getFromProduct().getProductId(),
+                                    path.getToProduct().getProductId()), path);
         }
 
-        for (MgrSyncUpgradePath mup : this.readUpgradePaths()) {
+        List<MgrSyncUpgradePath> upgradePaths = readUpgradePaths();
+        for (MgrSyncUpgradePath path : upgradePaths) {
             if (paths.remove(String.format("%s-%s",
-                                           mup.getFromProductId(),
-                                           mup.getToProductId())) != null) {
+                                           path.getFromProductId(),
+                                           path.getToProductId())) != null) {
                 SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
-                        mup.getFromProductId());
+                        path.getFromProductId());
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
-                        mup.getToProductId());
+                        path.getToProductId());
                 if (fromProduct != null && toProduct != null) {
                     SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
                 }

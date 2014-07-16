@@ -8,7 +8,7 @@
   </query>
 </write-mode>
 
-<write-mode name="reset_entitlements_bc">
+<write-mode name="reset_entitlements_bnc740813">
   <query params="">
       UPDATE RHNSERVERGROUP
          SET max_members = NULL
@@ -36,17 +36,17 @@
 </mode>
 
 <write-mode name="set_entitlement_max_members">
-  <query params="members, group">
+  <query params="max_members, group_type">
        UPDATE RHNSERVERGROUP
-          SET max_members = :members
-        WHERE GROUP_TYPE = :group
+          SET max_members = :max_members
+        WHERE GROUP_TYPE = :group_type
   </query>
 </write-mode>
 
 <write-mode name="set_subscription_max_members">
-  <query params="members, cfid, orgid">
+  <query params="max_members, cfid, orgid">
        UPDATE RHNPRIVATECHANNELFAMILY
-          SET max_members = :members
+          SET max_members = :max_members
         WHERE channel_family_id = :cfid
           AND org_id = :orgid
   </query>
