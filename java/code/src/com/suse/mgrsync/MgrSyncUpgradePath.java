@@ -21,7 +21,7 @@ import org.simpleframework.xml.Root;
 /**
  * Upgrade path element.
  */
-@Root(name = "upgrade")
+@Root(name = "upgrade", strict = false)
 public class MgrSyncUpgradePath {
     @Attribute(name = "from_pdid")
     private Integer fromProductId;

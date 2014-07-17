@@ -21,7 +21,7 @@ import org.simpleframework.xml.Root;
 /**
  * Channel family class.
  */
-@Root(name = "family")
+@Root(name = "family", strict = false)
 public class MgrSyncChannelFamily {
     @Attribute(name = "default_nodecount")
     private Integer defaultNodeCount;
