@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -29,6 +28,10 @@ import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
@@ -415,30 +418,25 @@ public class ContentSyncManager {
     }
 
     /**
-     * Updates max_members based on a given {@link SubscriptionDto}.
+     * Updates max_members of a system entitlement based on a given {@link SubscriptionDto}.
      * @param subscription
      */
     private void updateEntitlement(SubscriptionDto subscription) {
         Date now = new Date();
 
-        // Loop over assigned entitlements
-        for (final String entitlement : SystemEntitlement.valueOf(
+        // Get each entitlement bound to the subscription (from rhnServerGroupType)
+        for (String entitlement : SystemEntitlement.valueOf(
                 subscription.getProductClass()).getEntitlements()) {
-            // Get this entitlement's ID from rhnServerGroupType
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("label", entitlement);
-            @SuppressWarnings("unchecked")
-            DataResult<Map<String, Object>> result = ModeFactory.getMode(
-                    "mgr_sync_queries", "entitlement_id", Map.class).execute(params);
-            Long entitlementId = (Long) result.get(0).get("id");
+            ServerGroupType serverGroupType =
+                    ServerFactory.lookupServerGroupTypeByLabel(entitlement);
 
-            // Set max_members to our interpretation of INFINITE
+            // Set max_members to INFINITE only for org one
+            // TODO: count over all orgs first and check if sum < INFINITE
             if (now.compareTo(subscription.getEndDate()) <= 0) {
-                params.clear();
-                params.put("max_members", INFINITE);
-                params.put("group_type", entitlementId);
-                ModeFactory.getWriteMode("mgr_sync_queries", "set_entitlement_max_members")
-                        .executeUpdate(params);
+                EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
+                        OrgFactory.getSatelliteOrg(), serverGroupType);
+                serverGroup.setMaxMembers(INFINITE);
+                ServerGroupFactory.save(serverGroup);
             }
         }
     }
