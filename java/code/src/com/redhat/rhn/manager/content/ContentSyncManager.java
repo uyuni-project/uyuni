@@ -180,6 +180,36 @@ public class ContentSyncManager {
     }
 
     /**
+     * Method for verification of the data consistency and report what is missing.
+     * Verify if SCCProduct has correct data that meets database constraints.
+     * @param product {@link SCCProduct}
+     */
+    private String verifySCCProduct(SCCProduct product) {
+        StringBuilder out = new StringBuilder();
+        // Missing family name
+        if (product.getProductClass() == null) {
+            out.append("Product Class, ");
+        }
+
+        // Missing name (identifier)
+        if (product.getName() == null) {
+            out.append("Name, ");
+        }
+
+        // Missing version
+        if (product.getVersion() == null) {
+            out.append("Version, ");
+        }
+
+        // Missing Product ID
+        if (product.getVersion() == null) {
+            out.append("PdID");
+        }
+
+        return out.toString().isEmpty() ? null : out.toString();
+    }
+
+    /**
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
@@ -192,7 +222,19 @@ public class ContentSyncManager {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
             try {
                 List<SCCProduct> products = scc.listProducts();
-                productList.addAll(products);
+                for (SCCProduct product : products) {
+                    String missing = this.verifySCCProduct(product);
+                    if (missing == null) {
+                        productList.add(product);
+                    }
+                    else {
+                        ContentSyncManager.log.error("Broken product: \"" +
+                                                     product.getName() + "\"" +
+                                                     ", ID: " + product.getIdentifier() +
+                                                     ", Version: " + product.getVersion() +
+                                                     ", ### Missing: " + missing);
+                    }
+                }
             }
             catch (SCCClientException e) {
                 log.error(e.getMessage(), e);
@@ -500,8 +542,12 @@ public class ContentSyncManager {
                 product.setProductId(p.getId());
                 // Convert those to lower case for case insensitive operating
                 product.setName(p.getName().toLowerCase());
-                product.setVersion(p.getVersion().toLowerCase());
-                product.setRelease(p.getReleaseType().toLowerCase());
+                // Version rarely can be null.
+                product.setVersion(p.getVersion() != null ?
+                                   p.getVersion().toLowerCase() : null);
+                // Release Type often can be null.
+                product.setRelease(p.getReleaseType() != null ?
+                                   p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
                 product.setArch(PackageFactory.lookupPackageArchByLabel(p.getArch()));
                 product.setProductList('Y');
