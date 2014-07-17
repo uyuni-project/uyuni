@@ -23,11 +23,13 @@ import org.simpleframework.xml.Text;
  *
  * @author bo
  */
-@Root(name = "product_id")
+@Root(name = "product_id", strict = false)
 public class MgrSyncProduct {
     @Attribute
     private String name;
     private Integer id;
+    @Attribute
+    private String version;
 
     @Text
     public Integer getId() {
