@@ -326,8 +326,8 @@ public class ContentSyncManager {
         for (MgrSyncChannelFamily channelFamily : channelFamilies) {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
+            // Create rhnPrivateChannelFamily entry if it doesn't exist
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
-                // No entry in rhnPrivateChannelFamily, create it
                 PrivateChannelFamily pcf = new PrivateChannelFamily();
                 pcf.setCreated(new Date());
                 pcf.setCurrentMembers(0L);
