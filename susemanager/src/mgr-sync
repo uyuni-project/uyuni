@@ -330,7 +330,7 @@ class App(object):
         except xmlrpclib.Fault, ex:
             # Try to figure out it is an outdated session
             fault = ex.faultString.lower()
-            if 'session' in fault and 'is not valid.' in fault:
+            if 'session' in fault and ('is not valid.' in fault or 'could not find' in fault):
                 if not attempted:
                     if options.verbose:
                         print "Cached session is outdated. Trying to connect..."
