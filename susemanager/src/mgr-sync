@@ -275,12 +275,12 @@ class App(object):
         """
         Refresh the SCC data in the SUSE Manager database.
         """
-        self.cli_call("Synchronizing channels", "synchronizeChannels")
-        self.cli_call("Synchronizing channel families", "synchronizeChannelFamilies")
-        self.cli_call("Synchronizing SUSE products", "synchronizeProducts")
-        self.cli_call("Synchronizing SUSE product channels", "synchronizeProductChannels")
-        self.cli_call("Synchronizing subscriptions", "synchronizeSubscriptions")
-        self.cli_call("Synchronizing upgrade paths", "synchronizeUpgradePaths")
+        self.cli_call("Channels             ", "synchronizeChannels")
+        self.cli_call("Channel families     ", "synchronizeChannelFamilies")
+        self.cli_call("SUSE products        ", "synchronizeProducts")
+        self.cli_call("SUSE Product channels", "synchronizeProductChannels")
+        self.cli_call("Subscriptions        ", "synchronizeSubscriptions")
+        self.cli_call("Upgrade paths        ", "synchronizeUpgradePaths")
 
 
     def cli_call(self, message, method):
@@ -289,12 +289,13 @@ class App(object):
         """
         failure = None
         if not self.quiet:
-            sys.stdout.write(message + "...\t")
+            sys.stdout.write(message + "\t")
             sys.stdout.flush()
 
         result = None
         try:
             result = getattr(self.conn.sync.content, method)(self.auth())
+            message = "Done"
         except Exception, ex:
             message = "Failed"
             failure = ex
@@ -305,7 +306,7 @@ class App(object):
         sys.stdout.flush()
 
         if failure:
-            sys.stderr.write("Error: %s\n" % failure.faultString)
+            sys.stderr.write("\tError: %s\n\n" % failure)
 
         return result
 
