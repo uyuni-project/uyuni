@@ -1,9 +1,12 @@
 require 'rubygems'
 require 'yaml'
 require 'cucumber/rake/task'
-require "rdoc/task"
-require "rake/testtask"
-require "rake/clean"
+require 'rdoc/task'
+require 'rake/testtask'
+require 'rake/clean'
+require 'owasp_zap'
+
+include OwaspZap
 
 $LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
 require "spacewalk_testsuite_base/version"

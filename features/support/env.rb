@@ -12,11 +12,16 @@ require 'tmpdir'
 require 'base64'
 require 'capybara'
 require 'capybara/cucumber'
+require 'selenium-webdriver' # necessary for Profile
 require File.join(File.dirname(__FILE__), 'cobbler_test')
 require File.join(File.dirname(__FILE__), 'zypp_lock_helper')
+require 'owasp_zap'
+include OwaspZap
 
 browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
+proxy = ENV['ZAP_PROXY'].to_s || nil
+
 
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
@@ -75,9 +80,16 @@ when :chrome
       Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
     end
 when :firefox
-    # require 'selenium-webdriver'
     Capybara.register_driver :selenium do |app|
-      driver = Capybara::Selenium::Driver.new(app, :browser => :firefox)
+      profile = Selenium::WebDriver::Firefox::Profile.new
+      if proxy
+          profile["network.proxy.type"] = 1
+          profile["network.proxy.http"] = proxy
+          profile["network.proxy.http_port"] = 8080
+          profile["network.proxy.ssl"] = proxy
+          profile["network.proxy.ssl_port"] = 8080
+      end
+      driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile=> profile)
       driver.browser.manage.window.resize_to(1280, 1024)
       driver
     end
@@ -118,4 +130,24 @@ After do |scenario|
       embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
     end
   end
+end
+
+# make sure proxy is started if we will use ut
+Before do
+  sec_proxy = ENV['ZAP_PROXY']
+  if sec_proxy && ['localhost', '127.0.0.1'].include?(sec_proxy)
+    $zap = Zap.new(:target=> "https://#{ENV['TESTHOST']}", :zap=>"/usr/share/owasp-zap/zap.sh")
+    unless $zap.running?
+      $zap.start(:daemon => true)
+      until $zap.running?
+        STDERR.puts 'waiting for security proxy...'
+        sleep 1
+      end
+    end
+  end
+end
+
+# kill owasp zap before exiting
+at_exit do
+  $zap.shutdown if $zap
 end
