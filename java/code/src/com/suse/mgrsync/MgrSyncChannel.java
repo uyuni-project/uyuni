@@ -23,7 +23,7 @@ import org.simpleframework.xml.Root;
 /**
  * SUSE Channels are available from NCC and SCC.
  */
-@Root(name = "channel")
+@Root(name = "channel", strict = false)
 public class MgrSyncChannel {
     @Attribute
     private String arch;
