@@ -17,6 +17,7 @@ package com.suse.mgrsync;
 
 import java.util.Collection;
 import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
@@ -66,6 +67,9 @@ public class MgrSyncChannel {
 
     private Collection<MgrSyncProduct> products;
 
+    @Element(name = "dist", required = false)
+    private MgrSyncDistribution distribution;
+
     @ElementList(name = "products")
     public Collection<MgrSyncProduct> getProducts() {
         return products;
@@ -74,6 +78,13 @@ public class MgrSyncChannel {
     @ElementList(name = "products")
     public void setProducts(Collection<MgrSyncProduct> products) {
         this.products = products;
+    }
+
+    /**
+     * @return the distribution
+     */
+    public MgrSyncDistribution getDistribution() {
+        return distribution;
     }
 
     /**
