@@ -17,7 +17,10 @@ package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.scc.model.SCCProduct;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -216,5 +219,134 @@ public class ContentSyncHandler extends BaseHandler {
         }
 
         return extensions;
+    }
+
+
+    /**
+     * Synchronize channels between the Customer Center and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize channels between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeChannels(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        new ContentSyncManager().updateChannels();
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Synchronize channel families between the Customer Center
+     * and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize channel families between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeChannelFamilies(String sessionKey)
+            throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        new ContentSyncManager().updateChannelFamilies();
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Synchronize SUSE products between the Customer Center and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize SUSE products between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeProducts(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(csm.getProducts());
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Synchronize SUSE product channels between the Customer Center
+     * and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize SUSE product channels between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeProductChannels(String sessionKey)
+            throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Synchronize upgrade paths between the Customer Center
+     * and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize upgrade paths between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        new ContentSyncManager().updateUpgradePaths();
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Synchronize subscriptions between the Customer Center
+     * and the SUSE Manager database.
+     * This method is one step of the whole refresh cycle.
+     *
+     * @param sessionKey User session token.
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Synchronize subscriptions between the Customer Center
+     *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer synchronizeSubscriptions(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSubscriptions(csm.getSubscriptions());
+
+        return BaseHandler.VALID;
     }
 }
