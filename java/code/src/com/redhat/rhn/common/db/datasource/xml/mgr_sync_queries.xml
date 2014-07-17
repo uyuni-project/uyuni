@@ -27,22 +27,6 @@
   </query>
 </write-mode>
 
-<mode name="entitlement_id">
-  <query params="label">
-      SELECT id
-        FROM RHNSERVERGROUPTYPE
-       WHERE LABEL = :label
-  </query>
-</mode>
-
-<write-mode name="set_entitlement_max_members">
-  <query params="max_members, group_type">
-       UPDATE RHNSERVERGROUP
-          SET max_members = :max_members
-        WHERE GROUP_TYPE = :group_type
-  </query>
-</write-mode>
-
 <write-mode name="set_subscription_max_members">
   <query params="max_members, cfid, orgid">
        UPDATE RHNPRIVATECHANNELFAMILY
