@@ -20,7 +20,7 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
-@Root(name = "channels")
+@Root(name = "channels", strict = false)
 public class MgrSyncChannels {
     @ElementList(name = "channel", inline = true, required = false)
     private List<MgrSyncChannel> channels;
