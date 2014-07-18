@@ -22,7 +22,7 @@ bundle install
 * ZAP_PROXY to use OWASP ZAP to test for security vulnerabilities
   (https://code.google.com/p/zaproxy)
 
-To run all tests:
+To run all standard tests call:
 
 rake
 
@@ -44,6 +44,11 @@ server and added to the results.
 If a file zap_ignored.txt exists, those vulnerabilities will produce no failures.
 A zap_all.txt file is generated after each run so that the initial zap_ignored.txt
 can be fed in and maintained.
+
+To run the tests with the security feature use the rake command below in addition 
+to setting the appropriate environment variables:
+
+rake cucumber:security_test
 
 ## Conventions when adding more tests
 
