@@ -692,6 +692,7 @@ public class ContentSyncManager {
         }
 
         // Read upgrade paths from the file
+        List<SUSEUpgradePath> existingPaths = SUSEProductFactory.findAllSUSEUpgradePaths();
         List<MgrSyncUpgradePath> upgradePaths = readUpgradePaths();
         for (MgrSyncUpgradePath path : upgradePaths) {
             // Remove from all paths so we end up with the ones to remove
@@ -707,7 +708,18 @@ public class ContentSyncManager {
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
             if (fromProduct != null && toProduct != null) {
-                SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+                SUSEUpgradePath pth = null;
+                for (SUSEUpgradePath p : existingPaths) {
+                    if (p.getFromProduct().getId() == fromProduct.getId() &&
+                        p.getToProduct().getId() == toProduct.getId()) {
+                        pth = p;
+                        break;
+                    }
+                }
+
+                if (pth == null) {
+                    SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+                }
             }
         }
 
