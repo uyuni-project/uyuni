@@ -639,6 +639,11 @@ public class ContentSyncManager {
             // Lookup every product and insert/update relationships accordingly
             for (MgrSyncProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
+                // Product can be null, because previously it was skipped due to broken
+                // data in the SCC. In this case we skip them all.
+                if (product == null) {
+                    continue;
+                }
 
                 // Get the channel in case it is installed
                 Channel channel = null;
