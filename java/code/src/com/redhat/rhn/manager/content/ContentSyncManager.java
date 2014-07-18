@@ -652,9 +652,14 @@ public class ContentSyncManager {
                 }
 
                 // Update or insert the product/channel relationship
-                SUSEProductChannel spc = new SUSEProductChannel();
+                SUSEProductChannel spc = SUSEProductFactory.lookupSUSEProductChannel(
+                        availableChannel.getLabel(), product.getProductId());
+                if (spc == null) {
+                    spc = new SUSEProductChannel();
+                    spc.setChannelLabel(availableChannel.getLabel());
+                }
+
                 spc.setProduct(product);
-                spc.setChannelLabel(availableChannel.getLabel());
                 spc.setParentChannelLabel(parentChannelLabel);
                 spc.setChannel(channel);
                 SUSEProductFactory.save(spc);
