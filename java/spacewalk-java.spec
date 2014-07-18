@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.2.120
+Version: 2.3.4
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -913,6 +913,23 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Jul 17 2014 Stephen Herr <sherr@redhat.com> 2.3.4-1
+- 1120814 - fix broken links to old perl events page
+- api for setting/getting kickstart virtualization profiles
+
+* Tue Jul 15 2014 Stephen Herr <sherr@redhat.com> 2.3.3-1
+- 1114044 - checkstyle fix
+
+* Tue Jul 15 2014 Stephen Herr <sherr@redhat.com> 2.3.2-1
+- 1114044 - fix to support custom kickstart distributions
+
+* Tue Jul 15 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.1-1
+- API for deployment of certain config file to all system from its config
+  channel
+- add api for setting OS repositories in kickstart profiles
+- allow setting errata mailer preferences via API
+- Bumping package versions for 2.3.
+
 * Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.120-1
 - bump api version
 - fix copyright years

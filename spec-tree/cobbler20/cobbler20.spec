@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 28%{?dist}
+Release: 31%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -19,6 +19,8 @@ Patch5: koan-extra-options.patch
 Patch6: cobbler-interface-type.patch
 Patch7: cobblerd-python-s.patch
 Patch8: cobbler-power-status.patch
+Patch9: cobbler-rhel7-variant.patch
+Patch10: cobbler-findks.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -110,6 +112,8 @@ a XMLRPC API for integration with other applications.
 %patch7 -p1
 %endif
 %patch8 -p1
+%patch9 -p1
+%patch10 -p1
 
 %build
 %{__python} setup.py build 
@@ -460,6 +464,13 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Tue Jul 15 2014 Stephen Herr <sherr@redhat.com> 2.0.11-31
+- 1119758 - Make cobbler findks work and be compatible with Proxy
+
+* Mon Jul 14 2014 Stephen Herr <sherr@redhat.com> 2.0.11-30
+- bump cobbler version to avoid conflict with 2.2 branch
+- Cobbler needs to know about newer OSs
+
 * Mon Jul 07 2014 Stephen Herr <sherr@redhat.com> 2.0.11-28
 - Fixes for cobbler power status command
 
