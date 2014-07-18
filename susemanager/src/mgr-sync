@@ -283,22 +283,29 @@ class App(object):
         self.cli_call("Upgrade paths        ", "synchronizeUpgradePaths")
 
 
-    def cli_call(self, message, method):
+    def cli_call(self, message, method, retry=False):
         """
         Do nothing if the quiet flag is active.
         """
         failure = None
+        token = self.auth()
         if not self.quiet:
             sys.stdout.write(message + "\t")
             sys.stdout.flush()
 
         result = None
         try:
-            result = getattr(self.conn.sync.content, method)(self.auth())
+            result = getattr(self.conn.sync.content, method)(token)
             message = "Done"
         except Exception, ex:
-            message = "Failed"
             failure = ex
+            if self._check_session_fail(ex):
+                if not retry:
+                    if not self.quiet:
+                        sys.stdout.write("Retrying\n")
+                    self.auth.token = None
+                    self.cli_call(message, method, retry=True)
+            message = "Failed"
 
         if not self.quiet:
             sys.stdout.write(message + "\n")
@@ -330,18 +337,25 @@ class App(object):
                 self._refresh()
         except xmlrpclib.Fault, ex:
             # Try to figure out it is an outdated session
-            fault = ex.faultString.lower()
-            if 'session' in fault and ('is not valid.' in fault or 'could not find' in fault):
+            if self._check_session_fail(ex):
                 if not attempted:
                     if options.verbose:
                         print "Cached session is outdated. Trying to connect..."
                     self.auth.token = None
                     self.run(options, attempted=True)
                 else:
-                    raise ex
+                    raise exception
             else:
                 # The error does not seems like a failed session
-                raise ex
+                raise exception
+
+
+    def _check_session_fail(self, exception):
+        """
+        Check session failure.
+        """
+        fault = str(exception).lower()
+        return 'session' in fault and ('is not valid.' in fault or 'could not find' in fault)
 
 
     def format(self, data):
