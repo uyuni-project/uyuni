@@ -184,7 +184,7 @@ Requires: cglib
 Requires: jfreechart >= 1.0.9
 %endif
 
-BuildRequires: /usr/bin/perl
+BuildRequires: perl
 %if 0%{?suse_version}
 BuildRequires: libxml2-tools
 %else
