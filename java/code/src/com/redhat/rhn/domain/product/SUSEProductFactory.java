@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -27,6 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -178,6 +180,27 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProductChannel.class);
         return c.list();
+    }
+
+    /**
+     * Find SUSE Product Channel by label and product_id from the product table.
+     * @param channelLabel the label of the channel.
+     * @param productId product id.
+     * @return SUSE Product Channel if it is there.
+     */
+    public static SUSEProductChannel lookupSUSEProductChannel(
+            String channelLabel, int productId) {
+        Criteria c = HibernateFactory.getSession().createCriteria(SUSEProductChannel.class);
+        c.add(Restrictions.eq("channelLabel", channelLabel));
+        @SuppressWarnings("unchecked")
+        List<SUSEProductChannel> channels = c.list();
+        for (SUSEProductChannel channel : channels) {
+            if (channel.getProduct().getProductId() == productId) {
+                return channel;
+            }
+        }
+
+        return null;
     }
 
     /**
