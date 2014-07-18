@@ -28,7 +28,7 @@ public class MgrSyncProduct {
     @Attribute
     private String name;
     private Integer id;
-    @Attribute
+    @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
 
     @Text
