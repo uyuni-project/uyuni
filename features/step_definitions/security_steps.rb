@@ -24,6 +24,8 @@ end
 Then(/^there are not security issues$/) do
   json = $zap.alerts.view
   xml = $zap.alerts.view("XML")
+  html_res = $zap.alerts.view("HTML")
+  File.open("/root/sec_results.html", "w") { |file| file.write(html_res) }
   alerts = []
   unique_alerts = Set.new
   ignored_alerts = Set.new
