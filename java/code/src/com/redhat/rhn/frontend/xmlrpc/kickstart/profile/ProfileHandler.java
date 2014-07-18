@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.kickstart.KickstartIpRange;
 import com.redhat.rhn.domain.kickstart.KickstartPackage;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
+import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -37,6 +38,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.kickstart.KickstartIpRangeFilter;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTreeUpdateType;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
+import com.redhat.rhn.frontend.struts.LabelValueEnabledBean;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidKickstartScriptException;
@@ -52,10 +54,12 @@ import com.redhat.rhn.frontend.xmlrpc.kickstart.XmlRpcKickstartHelper;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.profile.keys.KeysHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.IpAddress;
+import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
 import com.redhat.rhn.manager.kickstart.KickstartIpCommand;
 import com.redhat.rhn.manager.kickstart.KickstartManager;
 import com.redhat.rhn.manager.kickstart.KickstartOptionsCommand;
+import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
 
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -68,6 +72,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1372,6 +1377,115 @@ public class ProfileHandler extends BaseHandler {
         profile.setKsMeta(variables);
         profile.save();
 
+        return 1;
+    }
+
+    /**
+     * @param loggedInUser The current user
+     * @param ksLabel identifies the kickstart profile
+     * @return Array of available OS repositories
+     * @xmlrpc.doc Lists all available OS repositories for a given kickstart profile.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "ksLabel")
+     * @xmlrpc.returntype #array_single("string", "repositoryLabel")
+     */
+    public String[] getAvailableRepositories(User loggedInUser, String ksLabel) {
+        KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
+        KickstartableTree ksTree = ksData.getKickstartDefaults().getKstree();
+
+        if (ksTree != null && !ksTree.getInstallType().isRhel2() &&
+                !ksTree.getInstallType().isRhel3() &&
+                !ksTree.getInstallType().isRhel4()) {
+            List <LabelValueEnabledBean> repos = new LinkedList<LabelValueEnabledBean>();
+            for (RepoInfo repo : RepoInfo.getStandardRepos(ksTree)) {
+                repos.add(new LabelValueEnabledBean(repo.getName(), repo.getName(),
+                        !repo.isAvailable()));
+            }
+            Set<RepoInfo> selected = ksData.getRepoInfos();
+            String [] items = new String[selected.size()];
+            int i = 0;
+            for (RepoInfo repo : selected) {
+                items[i] = repo.getName();
+                i++;
+            }
+            return items;
+        }
+        return null;
+    }
+
+    /**
+     * @param loggedInUser The current user
+     * @param ksLabel ksLabel identifies the kickstart profile
+     * @param reposIn OS repositories to set
+     * @return int - 1 on success, exception thrown otherwise
+     * @xmrpc.doc Associates OS repository to a kickstart profile.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "ksLabel")
+     * @xmlrpc.param #array_single("string", "repositoryLabel")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setRepositories(User loggedInUser, String ksLabel, List<String> reposIn) {
+        KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
+
+        if (ksData.isRhel5OrGreater()) {
+            List<RepoInfo> repoList = RepoInfo.getStandardRepos(
+                    ksData.getKickstartDefaults().getKstree());
+            Map<String, RepoInfo> repoSet = new HashMap<String, RepoInfo>();
+            for (Iterator<RepoInfo> ri = repoList.iterator(); ri.hasNext();) {
+                RepoInfo rInfo = ri.next();
+                repoSet.put(rInfo.getName(), rInfo);
+            }
+            Set<RepoInfo> selected = new HashSet <RepoInfo>();
+            for (int i = 0; i < reposIn.size(); i++) {
+                RepoInfo repoInfo = repoSet.get(reposIn.get(i));
+                if (repoInfo != null) {
+                    selected.add(repoInfo);
+                }
+            }
+            ksData.setRepoInfos(selected);
+            KickstartWizardHelper ksHelper = new KickstartWizardHelper(loggedInUser);
+            ksHelper.processSkipKey(ksData);
+        }
+        return 1;
+    }
+
+    /**
+     * @param loggedInUser The Current user
+     * @param ksLabel Kickstart profile label
+     * @return Label of virtualization type for given profile
+     * @xmlrpc.doc For given kickstart profile label returns label of
+     * virtualization type it's using
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "ksLabel")
+     * @xmlrpc.returntype #param_desc("string", "virtLabel",
+     * "Label of virtualization type.")
+     */
+    public String getVirtualizationType(User loggedInUser, String ksLabel) {
+        KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
+        KickstartEditCommand cmd = new KickstartEditCommand(ksData.getId(), loggedInUser);
+
+        return cmd.getVirtualizationType().getLabel();
+    }
+
+    /**
+     * @param loggedInUser The Current user
+     * @param ksLabel Kickstart profile label
+     * @param typeLabel virtualization type label
+     * @return int - 1 on success, exception thrown otherwise
+     * @xmlrpc.doc For given kickstart profile label sets its virtualization type.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("string", "ksLabel")
+     * @xmlrpc.param #param_desc("string", "typeLabel", "One of the following: 'none',
+     * 'qemu', 'para_host', 'xenpv', 'xenfv'")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public int setVirtualizationType(User loggedInUser, String ksLabel, String typeLabel) {
+        KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
+        KickstartEditCommand cmd = new KickstartEditCommand(ksData.getId(), loggedInUser);
+
+        cmd.setVirtualizationType(KickstartFactory.
+                lookupKickstartVirtualizationTypeByLabel(typeLabel));
+        cmd.store();
         return 1;
     }
 }

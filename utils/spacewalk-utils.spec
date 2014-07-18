@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.2.26
+Version:	2.3.2
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -112,6 +112,18 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Jul 15 2014 Stephen Herr <sherr@redhat.com> 2.3.2-1
+- 1119405 - Check if dest parent is cloned
+- 1119405 - sw-clone-by-date man page update
+
+* Mon Jul 14 2014 Stephen Herr <sherr@redhat.com> 2.3.1-1
+- 1119411 - add dry-run to config file
+- 1119411 - [RFE] sw-clone-by-date --dry-run
+- 1119406 - make clone-by-date able to specify --parents from config file
+- 1119405 - you should not have to specify both parent channels for clone-by-
+  date
+- Bumping package versions for 2.3.
+
 * Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.26-1
 - Spacewalk 2.2 repos for spacewalk-common-channels
 - fix copyright years
