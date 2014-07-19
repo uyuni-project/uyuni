@@ -104,9 +104,9 @@ if [ -z "$REALHOSTNAME" ]; then
         done
 fi
 if [ -n "$REALHOSTNAME" ]; then
-        echo "$REALHOSTNAME" > /etc/HOSTNAME
+        echo "$REALHOSTNAME" > /etc/hostname
 fi
-/usr/sbin/SuSEconfig.postfix 2>&1
+systemctl try-restart postfix
 }
 
 setup_hostname() {
@@ -282,6 +282,7 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     mv /tmp/pg_hba.conf /var/lib/pgsql/data/pg_hba.conf
     if [ -x "/usr/bin/pgtune" ]; then
       mv /var/lib/pgsql/data/postgresql.conf /var/lib/pgsql/data/postgresql.conf.orig
+      echo "max_locks_per_transaction = 100" >> /var/lib/pgsql/data/postgresql.conf
       /usr/bin/pgtune -T Mixed -i /var/lib/pgsql/data/postgresql.conf.orig -o /var/lib/pgsql/data/postgresql.conf
     fi
     rcpostgresql restart
