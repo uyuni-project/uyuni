@@ -82,6 +82,10 @@ cat share/tomcat.java_opts.rhel5 >>share/tomcat.java_opts
 cat share/tomcat.java_opts.rhel6 >>share/tomcat.java_opts
 %endif
 rm -f share/tomcat.java_opts.*
+%if 0%{?suse_version}
+# SLES12 tomcat has only tomcat.conf
+cat share/tomcat.1 >share/tomcat.conf.1
+%endif
 
 chmod -R u+w %{buildroot}/*
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/
