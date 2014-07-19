@@ -1291,7 +1291,7 @@ sub setup_users_and_groups {
         print Spacewalk::Setup::loc("The group 'www' should exist.\n");
     }
     if (not grep { $_ eq 'tomcat' } split /\s+/, $apache_group_members) {
-        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-a', 'www', 'tomcat'], 9,
+        Spacewalk::Setup::system_or_exit(['/usr/sbin/usermod', '-G', 'www', '-a', 'tomcat'], 9,
             'Could not add tomcat to the www group.');
         # If you have for example NIS before passwd in nsswitch.conf, the usermod
         # will not modify what the system uses. Let's check.
