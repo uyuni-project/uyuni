@@ -17,13 +17,7 @@ URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
-%if 0%{?suse_version}
-Requires: openssl rpm
-# put our new bootstrap rpm on the appliance
-BuildRequires: sm-client-tools
-%else
 Requires: openssl rpm-build
-%endif
 %if 0%{?suse_version} || 0%{?rhel} >= 5
 Requires: %{rhn_client_tools}
 %endif
@@ -33,6 +27,7 @@ Requires: sudo
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
+BuildRequires: sm-client-tools
 %endif
 BuildRequires: python
 Obsoletes: rhns-certs < 5.3.0
