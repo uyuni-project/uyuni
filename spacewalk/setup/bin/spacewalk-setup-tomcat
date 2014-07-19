@@ -77,7 +77,8 @@ sub setup_tomcat {
     my ($tomcatconf_content_orig, $tomcatconf_content);
     my @tomcat_confs = grep { -f $_ } glob($conf_glob);
     if (@tomcat_confs < 1) {
-      die "Couldn't find tomcat config file ($conf_glob).\n";
+      next;
+      #die "Couldn't find tomcat config file ($conf_glob).\n";
     } elsif (@tomcat_confs > 1) {
       die "Multiple tomcat config files found:\n  @tomcat_confs\nNot sure which tomcat to use.\n";
     }
