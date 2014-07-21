@@ -602,10 +602,6 @@ install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 # add rc link
 ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 
-%if 0%{?suse_version}
-sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
-%endif
-
 install -m 755 scripts/unittest.xml $RPM_BUILD_ROOT/%{_datadir}/rhn/
 install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn.jar $RPM_BUILD_ROOT%{_datadir}/rhn/lib
 %if ! 0%{?omit_tests} > 0
