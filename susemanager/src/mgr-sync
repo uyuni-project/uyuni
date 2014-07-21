@@ -344,10 +344,10 @@ class App(object):
                     self.auth.token = None
                     self.run(options, attempted=True)
                 else:
-                    raise exception
+                    raise ex
             else:
                 # The error does not seems like a failed session
-                raise exception
+                raise ex
 
 
     def _check_session_fail(self, exception):
