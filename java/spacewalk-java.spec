@@ -591,15 +591,14 @@ install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotat
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 %endif
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version}
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
 install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_initrddir}
 %endif
 # add rc link
-mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
-ln -sf ../../etc/init.d/taskomatic $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
+ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rctaskomatic
 
 %if 0%{?suse_version}
 sed -i -e 's/# Default-Start:/# Default-Start: 3 5/g' $RPM_BUILD_ROOT/%{_initrddir}/taskomatic
@@ -874,7 +873,7 @@ fi
 
 %files -n spacewalk-taskomatic
 %defattr(-,root,root)
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version}
 %attr(755, root, root) %{_sbindir}/taskomatic
 %attr(755, root, root) %{_unitdir}/taskomatic.service
 %else
