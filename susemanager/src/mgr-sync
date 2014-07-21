@@ -326,9 +326,9 @@ class App(object):
         try:
             self.auth.persist = options.saveconfig
             if options.listchannels:
-                self.format(self._listChannels())
+                self.format(self._listChannels(), title="Available channels")
             elif options.listproducts:
-                self.format(self._listProducts())
+                self.format(self._listProducts(), title="Available products")
             elif options.addproduct:
                 self._addProduct()
             elif options.addchannel:
@@ -358,7 +358,7 @@ class App(object):
         return 'session' in fault and ('is not valid.' in fault or 'could not find' in fault)
 
 
-    def format(self, data):
+    def format(self, data, title=""):
         """
         Format the output.
         """
@@ -369,7 +369,7 @@ class App(object):
         if data[0].has_key('extensions'):
             self._format_tree(data)
         else:
-            self._format_flat(data, title="Available products")
+            self._format_flat(data, title=title)
 
 
     def _format_tree(self, data):
