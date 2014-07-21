@@ -409,8 +409,8 @@ Obsoletes: taskomatic-sat < 5.3.0
 Provides: taskomatic = %{version}-%{release}
 Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
-Requires(post): %fillup_prereq %insserv_prereq
-Requires(preun): %fillup_prereq %insserv_prereq
+BuildRequires: systemd
+%{?systemd_requires}
 Requires: satsolver-tools
 Requires: susemanager-frontend-libs
 %else
@@ -678,15 +678,17 @@ echo "#### SYMLINKS END ####"
 rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
+%pre taskomatic
+%service_add_pre taskomatic.service
+
 %post -n spacewalk-taskomatic
-%{fillup_and_insserv taskomatic}
+%service_add_post taskomatic.service
 
 %preun
-%stop_on_removal taskomatic
+%service_del_preun taskomatic.service
 
 %postun
-%restart_on_update taskomatic
-%{insserv_cleanup}
+%service_del_postun taskomatic.service
 
 %post config
 if [ ! -d /var/log/rhn ]; then
