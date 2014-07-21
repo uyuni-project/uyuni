@@ -454,6 +454,8 @@ def main():
     """
     Main routine.
     """
+    if not sys.argv[1:]:
+        sys.argv.append("--help")
     options = get_options().parse_args()[0]
     try:
         App(Config.get_config()).run(options)
