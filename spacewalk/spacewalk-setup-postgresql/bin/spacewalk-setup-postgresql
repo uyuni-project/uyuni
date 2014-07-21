@@ -203,7 +203,7 @@ EOF
     if /usr/bin/lsof /proc > /dev/null ; then
         while [ -f "$PG_PIDFILE" ] ; do
             # wait for postmaster to be ready
-            /usr/bin/lsof -t -p $(cat "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
+            /usr/bin/lsof -t -p $(head -1 "$PG_PIDFILE" 2>/dev/null) -a "$PG_SOCKET" > /dev/null  \
                 && break
             sleep 1
         done
@@ -297,7 +297,7 @@ exists_plpgsql() {
 }
 
 exists_pltclu() {
-    EXISTS=$(runuser - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'pltclu'"';"'" $PGNAME")
+    EXISTS=$(su - postgres -c 'psql -At -c "select lanname from pg_catalog.pg_language where lanname='"'pltclu'"';"'" $PGNAME")
     if [ "x$EXISTS" == "xpltclu" ] ; then
         return 0
     else
