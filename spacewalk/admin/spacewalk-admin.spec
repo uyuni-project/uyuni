@@ -32,6 +32,10 @@ Various utility scripts and data files for Spacewalk installations.
 %install
 rm -rf $RPM_BUILD_ROOT
 
+%if 0%{?suse_version}
+sed -i 's/httpd/apache2/' spacewalk.target
+%endif
+
 %if 0%{?fedora} || 0%{?suse_version}
 mv -f spacewalk-service.systemd spacewalk-service
 make -f Makefile.admin install_systemd PREFIX=$RPM_BUILD_ROOT
