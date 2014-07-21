@@ -457,6 +457,12 @@ def main():
     if not sys.argv[1:]:
         sys.argv.append("--help")
     options = get_options().parse_args()[0]
+
+    # XXX: Temporary flags while real options are not yet implemented
+    options.addproduct = False
+    options.addchannel = False
+    options.allchilds = False
+
     try:
         App(Config.get_config()).run(options)
     except socket.error, ex:
