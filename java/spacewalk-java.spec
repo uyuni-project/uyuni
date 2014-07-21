@@ -115,7 +115,7 @@ BuildRequires: tomcat-lib >= 7
 %if 0%{?suse_version}
 Requires: struts >= 1.2.9
 Requires: pxe-default-image
-Requires: tomcat >= 7
+Requires(pre): tomcat >= 7
 Requires: tomcat-lib >= 7
 Requires: tomcat-servlet-3.0-api >= 7
 BuildRequires: struts >= 1.2.9
