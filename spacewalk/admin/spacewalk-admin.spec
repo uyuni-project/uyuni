@@ -34,6 +34,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
 sed -i 's/httpd/apache2/' spacewalk.target
+sed -i 's/httpd/apache2/' spacewalk-wait-for-tomcat.service
 %endif
 
 %if 0%{?fedora} || 0%{?suse_version}
