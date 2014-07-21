@@ -54,6 +54,8 @@ Requires:       tsdb
 %if 0%{?suse_version}
 Requires(post): aaa_base
 Requires(preun): aaa_base
+BuildRequires: systemd
+%{?systemd_requires}
 %else
 Requires: spacewalk-monitoring-selinux
 %if 0%{?fedora}
@@ -89,7 +91,7 @@ Backend and Scout functionality. And will install SysV init scripts.
 rm -Rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/%{_sbindir}
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version}
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install Monitoring.service $RPM_BUILD_ROOT%{_unitdir}
 install MonitoringScout.service $RPM_BUILD_ROOT%{_unitdir}
@@ -103,14 +105,20 @@ ln -s /etc/rc.d/np.d/sysvStep $RPM_BUILD_ROOT/%{_sbindir}/MonitoringScout
 
 
 # add rc links
-ln -sf ../../etc/init.d/Monitoring $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
-ln -sf ../../etc/init.d/MonitoringScout $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoringScout
+ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoring
+ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcMonitoringScout
 
-%post
 
 %if 0%{?suse_version}
-%{fillup_and_insserv Monitoring}
-%{fillup_and_insserv MonitoringScout}
+%pre
+%service_add_pre Monitoring.service
+%service_add_pre MonitoringScout.service
+%endif
+
+%post
+%if 0%{?suse_version}
+%service_add_post Monitoring.service
+%service_add_post MonitoringScout.service
 %else
 if [ -x /etc/init.d/Monitoring ] ; then
     /sbin/chkconfig --add Monitoring
@@ -127,9 +135,9 @@ fi
 %endif
 
 %preun
-%if 0%{?suse_version}  
-%stop_on_removal Monitoring
-%stop_on_removal MonitoringScout
+%if 0%{?suse_version}
+%service_del_preun Monitoring.service
+%service_del_preun MonitoringScout.service
 %else
 if [ $1 = 0 ] ; then
     if [ -x /etc/init.d/MonitoringScout ] ; then
@@ -153,7 +161,8 @@ fi
 
 %postun  
 %if 0%{?suse_version}  
-%{insserv_cleanup}  
+%service_del_postun Monitoring.service
+%service_del_postun MonitoringScout.service
 %endif
 
 %clean
@@ -161,7 +170,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root,root,-)
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version}
 %{_unitdir}/*
 %else
 %{_initrddir}/*
