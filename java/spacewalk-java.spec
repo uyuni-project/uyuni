@@ -678,16 +678,16 @@ echo "#### SYMLINKS END ####"
 rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?suse_version}
-%pre taskomatic
+%pre -n spacewalk-taskomatic
 %service_add_pre taskomatic.service
 
 %post -n spacewalk-taskomatic
 %service_add_post taskomatic.service
 
-%preun
+%preun -n spacewalk-taskomatic
 %service_del_preun taskomatic.service
 
-%postun
+%postun -n spacewalk-taskomatic
 %service_del_postun taskomatic.service
 
 %post config
