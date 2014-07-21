@@ -15,6 +15,7 @@ end
 And(/^an active attack was performed$/) do
   if ENV['ZAP_ACTIVE_ATTACK']
     active_scanner = $zap.ascan
+    active_scanner.start
     while active_scanner.running? do
       sleep 10
     end
