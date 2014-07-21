@@ -592,6 +592,8 @@ install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotat
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
 %endif
 %if 0%{?fedora} || 0%{?suse_version}
+mkdir -p $RPM_BUILD_ROOT%{_sbindir}
+mkdir -p $RPM_BUILD_ROOT%{_unitdir}
 install -m 755 scripts/taskomatic $RPM_BUILD_ROOT%{_sbindir}
 install -m 755 scripts/taskomatic.service $RPM_BUILD_ROOT%{_unitdir}
 %else
