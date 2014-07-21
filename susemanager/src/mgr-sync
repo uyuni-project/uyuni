@@ -422,25 +422,25 @@ def get_options():
                       help="list all the channels which are available for you")
     parser.add_option("-p", "--list-products", action="store_true", dest="listproducts",
                       help="list all the products which are available for you")
-    parser.add_option("-a", "--add-product", action="store_true", dest="addproduct",
-                      help="Add all mandatory channels of a product [interactive]")
-    parser.add_option("--add-product-by-ident", action="store", dest="addproductbyident",
-                      help="Add all mandatory channels of the product identified by the given ident")
-    parser.add_option("-c", "--add-channel", action="store", dest="addchannel",
-                      help="Add a new channel and trigger a reposync")
-    parser.add_option("--all-childs", action="store_true", dest="allchilds",
-                      help="Show also children, if the parent is not synced yet")
-    parser.add_option("--no-optional", action="store_true", dest="noopt",
-                      help="Do not list optional channels")
-    parser.add_option("--filter", action="store", dest="filter",
-                      help="Show only labels, which contains the filter word (case-insensitive)")
+    #parser.add_option("-a", "--add-product", action="store_true", dest="addproduct",
+    #                  help="Add all mandatory channels of a product [interactive]")
+    #parser.add_option("--add-product-by-ident", action="store", dest="addproductbyident",
+    #                  help="Add all mandatory channels of the product identified by the given ident")
+    #parser.add_option("-c", "--add-channel", action="store", dest="addchannel",
+    #                  help="Add a new channel and trigger a reposync")
+    #parser.add_option("--all-childs", action="store_true", dest="allchilds",
+    #                  help="Show also children, if the parent is not synced yet")
+    #parser.add_option("--no-optional", action="store_true", dest="noopt",
+    #                  help="Do not list optional channels")
+    #parser.add_option("--filter", action="store", dest="filter",
+    #                  help="Show only labels, which contains the filter word (case-insensitive)")
     parser.add_option("-r", "--refresh", action="store_true",
                       help="refresh product, channel and subscription"
                       "information without triggering any reposyncs")
     parser.add_option("-s", "--save-config", action="store_true", dest="saveconfig",
                       help="Save the configuration to the local dot file.")
-    parser.add_option("-m", "--migrate_res", action="store_true",
-                      help="migrate to RES subscriptions")
+    #parser.add_option("-m", "--migrate_res", action="store_true",
+    #                  help="migrate to RES subscriptions")
     parser.add_option('-q', '--quiet', action='store_true', dest='quiet',
                       help="Print no output, still logs output")
     parser.add_option('-v', '--verbose', action="store_true",  dest='verbose',
