@@ -55,6 +55,7 @@ public class SCCRequestFactory {
         }
 
         // Set additional request headers here
+        connection.setRequestProperty("Accept", "application/vnd.scc.suse.com.v2+json");
         connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
         return connection;
     }
