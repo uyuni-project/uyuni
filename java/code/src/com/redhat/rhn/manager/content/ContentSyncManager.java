@@ -277,20 +277,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * XXX: This will go away as XMLRPC handler will call the single methods.
-     * Refresh functionality doing the same thing as --refresh in mgr-ncc-sync.
-     * @throws ContentSyncException
-     */
-    public void refresh() throws ContentSyncException {
-        updateChannels();
-        updateChannelFamilies();
-        updateSUSEProducts(getProducts());
-        updateSubscriptions(getSubscriptions());
-        updateSUSEProductChannels(getAvailableChannels(readChannels()));
-        updateUpgradePaths();
-    }
-
-    /**
      * Update channel information in the database.
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
