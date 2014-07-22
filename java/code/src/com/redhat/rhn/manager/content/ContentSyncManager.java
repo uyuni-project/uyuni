@@ -711,9 +711,9 @@ public class ContentSyncManager {
     }
 
     /**
-     * Checks if a given string is one of the existing SUSE Manager entitlement.
-     * @param s
-     * @return true if s is a SUSE Manager entitlement, else false.
+     * Check if a given string is a product class representing a system entitlement.
+     * @param s string to check if it represents a system entitlement
+     * @return true if s is a system entitlement, else false.
      */
     private boolean isEntitlement(String s) {
         for (SystemEntitlement ent : SystemEntitlement.values()) {
