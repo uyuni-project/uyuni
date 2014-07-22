@@ -52,7 +52,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -94,6 +98,10 @@ public class ContentSyncManager {
             "/usr/share/susemanager/channel_families.xml");
     private static File upgradePathsXML = new File(
             "/usr/share/susemanager/upgrade_paths.xml");
+
+    // File to parse this system's UUID from
+    private static File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
+    private static String uuid;
 
     /**
      * Default constructor.
@@ -190,6 +198,7 @@ public class ContentSyncManager {
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setUUID(getUUID());
             try {
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
@@ -226,6 +235,7 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setUUID(getUUID());
             try {
                 List<SCCRepository> repos = scc.listRepositories();
                 reposList.addAll(repos);
@@ -251,6 +261,7 @@ public class ContentSyncManager {
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setUUID(getUUID());
             try {
                 List<SCCSubscription> subs = scc.listSubscriptions();
                 subscriptions.addAll(subs);
@@ -784,5 +795,39 @@ public class ContentSyncManager {
             missingAttributes.add("Product ID");
         }
         return StringUtils.join(missingAttributes, ", ");
+    }
+
+    /**
+     * Try to read this system's UUID from file or return a cached value. The UUID will
+     * be sent to SCC for debugging purposes.
+     * @return this system's UUID
+     */
+    private String getUUID() {
+        if (uuid == null) {
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(uuidFile));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("username")) {
+                        uuid = line.substring(line.lastIndexOf('=') + 1);
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                log.warn("Error reading UUID: " + e.getMessage());
+            } catch (IOException e) {
+                log.warn("Error reading UUID: " + e.getMessage());
+            }
+            finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        log.warn("Error reading UUID: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        return uuid;
     }
 }

@@ -25,6 +25,7 @@ public class SCCConfig {
     public static final String SCHEMA = "schema";
     public static final String HOSTNAME = "hostname";
     public static final String ENCODED_CREDS = "encoded-creds";
+    public static final String UUID = "uuid";
 
     // Default values
     private static final String DEFAULT_SCHEMA = "https://";
@@ -90,5 +91,14 @@ public class SCCConfig {
      */
     public String getEncodedCredentials() {
         return properties.getProperty(ENCODED_CREDS, null);
+    }
+
+    /**
+     * Returns the UUID or null.
+     *
+     * @return UUID
+     */
+    public String getUUID() {
+        return properties.getProperty(UUID, null);
     }
 }
