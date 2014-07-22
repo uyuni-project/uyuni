@@ -53,6 +53,16 @@ public class SCCClient {
     }
 
     /**
+     * Configure this client's UUID that will be sent to SCC for debugging purposes.
+     * @param uuid the UUID to send for debugging
+     */
+    public void setUUID (String uuid) {
+        if (uuid != null) {
+            SCCConfig.getInstance().put(SCCConfig.UUID, uuid);
+        }
+    }
+
+    /**
      * Gets and returns the list of products available to an organization.
      *
      * GET /connect/organizations/products

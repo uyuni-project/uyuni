@@ -57,6 +57,11 @@ public class SCCRequestFactory {
         // Set additional request headers here
         connection.setRequestProperty("Accept", "application/vnd.scc.suse.com.v2+json");
         connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+
+        // Send the UUID for debugging if available
+        String uuid = SCCConfig.getInstance().getUUID();
+        connection.setRequestProperty("SMS", uuid != null ? uuid : "undefined");
+
         return connection;
     }
 }
