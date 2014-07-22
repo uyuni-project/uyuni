@@ -144,6 +144,7 @@ chown root.root /etc/sysconfig
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
+%attr(0755,root,root) %{_sbindir}/mgr-sync
 %{pythonsmroot}/susemanager/__init__.py*
 %{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
@@ -152,6 +153,7 @@ chown root.root /etc/sysconfig
 %{pythonsmroot}/susemanager/errata_helper.py*
 %{pythonsmroot}/susemanager/package_helper.py*
 %{pythonsmroot}/susemanager/simpleproduct.py*
+%{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
 
 %changelog

@@ -48,6 +48,7 @@ DIRS		+= $(addprefix $(PREFIX), \
 all :: $(INSTALL_FILES)
 
 install :: all $(DIRS) $(INSTALL_FILES) $(SPACEWALK_INSTALL_FILES)
+	$(INSTALL_DIR) $(PREFIX)$(SPACEWALK_DEST)/mgr_sync
 	@$(foreach f,$(INSTALL_FILES), \
 		$(INSTALL_DATA) $(f) $(PREFIX)$(INSTALL_DEST)/$(f) ; )
 	@$(foreach f,$(SPACEWALK_INSTALL_FILES), \
