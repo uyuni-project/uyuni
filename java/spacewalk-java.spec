@@ -363,11 +363,11 @@ Requires: cobbler >= 2.0.0
 Requires: concurrent
 Requires: jakarta-taglibs-standard
 Requires: java >= 0:1.6.0
-Requires: java-devel >= 0:1.6.0
 Requires: jcommon
 %if 0%{?suse_version}
 Requires: pam-modules
 %else
+Requires: java-devel >= 0:1.6.0
 Requires: jpam
 %endif
 Requires: log4j
