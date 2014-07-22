@@ -180,36 +180,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * Method for verification of the data consistency and report what is missing.
-     * Verify if SCCProduct has correct data that meets database constraints.
-     * @param product {@link SCCProduct}
-     */
-    private String verifySCCProduct(SCCProduct product) {
-        StringBuilder out = new StringBuilder();
-        // Missing family name
-        if (product.getProductClass() == null) {
-            out.append("Product Class, ");
-        }
-
-        // Missing name (identifier)
-        if (product.getName() == null) {
-            out.append("Name, ");
-        }
-
-        // Missing version
-        if (product.getVersion() == null) {
-            out.append("Version, ");
-        }
-
-        // Missing Product ID
-        if (product.getVersion() == null) {
-            out.append("PdID");
-        }
-
-        return out.toString().isEmpty() ? null : out.toString();
-    }
-
-    /**
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
@@ -223,16 +193,15 @@ public class ContentSyncManager {
             try {
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
-                    String missing = this.verifySCCProduct(product);
-                    if (missing == null) {
+                    String missing = verifySCCProduct(product);
+                    if (StringUtils.isBlank(missing)) {
                         productList.add(product);
                     }
                     else {
-                        ContentSyncManager.log.error("Broken product: \"" +
-                                                     product.getName() + "\"" +
-                                                     ", ID: " + product.getIdentifier() +
-                                                     ", Version: " + product.getVersion() +
-                                                     ", ### Missing: " + missing);
+                        log.warn("Broken product: " + product.getName() +
+                                ", Version: " + product.getVersion() +
+                                ", Identifier: " + product.getIdentifier() +
+                                " ### Missing attributes: " + missing);
                     }
                 }
             }
@@ -792,5 +761,28 @@ public class ContentSyncManager {
             }
         }
         return sum;
+    }
+
+    /**
+     * Method for verification of the data consistency and report what is missing.
+     * Verify if SCCProduct has correct data that meets database constraints.
+     * @param product {@link SCCProduct}
+     * @return comma separated list of missing attribute names
+     */
+    private String verifySCCProduct(SCCProduct product) {
+        List<String> missingAttributes = new ArrayList<String>();
+        if (product.getProductClass() == null) {
+            missingAttributes.add("Product Class");
+        }
+        if (product.getName() == null) {
+            missingAttributes.add("Name");
+        }
+        if (product.getVersion() == null) {
+            missingAttributes.add("Version");
+        }
+        if (product.getVersion() == null) {
+            missingAttributes.add("Product ID");
+        }
+        return StringUtils.join(missingAttributes, ", ");
     }
 }
