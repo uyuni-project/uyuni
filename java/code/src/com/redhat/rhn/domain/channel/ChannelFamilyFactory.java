@@ -218,6 +218,17 @@ public class ChannelFamilyFactory extends HibernateFactory {
     }
 
     /**
+     * Return all channel families from the database.
+     * @return list of all channel families
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ChannelFamily> getAllChannelFamilies() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(ChannelFamily.class);
+        return c.list();
+    }
+
+    /**
      * Get the labels of channel families that are "available" in terms of either
      * max_members is > 0 or fve_max_members is > 0.
      * @return List of {@link ChannelFamily} objects

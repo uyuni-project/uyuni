@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -22,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -34,7 +34,6 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-import com.redhat.rhn.manager.setup.SubscriptionDto;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
@@ -56,6 +55,7 @@ import org.simpleframework.xml.core.Persister;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,7 +73,7 @@ public class ContentSyncManager {
 
     // This was a guesswork and we so far *have* to stay on this value.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L69
-    private static final Integer RESET_ENTITLEMENT = 10;
+    private static final Long RESET_ENTITLEMENT = 10L;
 
     // The "limitless or endless in space" at SUSE is 200000. Of type Long.
     // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
@@ -391,125 +391,137 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns a list of available {@link SubscriptionDto}s. If there are families which
-     * have subscriptions in the database, but are not in the subscription list from SCC,
-     * node count is set to zero.
+     * Returns two lists of product classes that we have a subscription for, representing
+     * entitlements and channel subscriptions separately.
      *
      * @param subscriptions subscriptions as we get them from SCC
-     * @return list of {@link SubscriptionDto}
+     * @return consolidated subscriptions
      * @throws ContentSyncException
      */
-    private List<SubscriptionDto> consolidateSubscriptions(
+    public ConsolidatedSubscriptions consolidateSubscriptions(
             Collection<SCCSubscription> subscriptions) throws ContentSyncException {
-        Map<String, SubscriptionDto> sc = new HashMap<String, SubscriptionDto>();
+        ConsolidatedSubscriptions consolidated = new ConsolidatedSubscriptions();
         Date now = new Date();
         for (SCCSubscription subscription : subscriptions) {
             Date start = subscription.getStartsAt() == null ?
-                         new Date() : subscription.getStartsAt();
+                    new Date() : subscription.getStartsAt();
             Date end = subscription.getExpiresAt();
             for (String productClass : subscription.getProductClasses()) {
-                if ((now.compareTo(start) >= 0 &&
-                     (end == null || now.compareTo(end) <= 0)) &&
-                    !subscription.getType().equals(ContentSyncManager.PROVISIONAL_TYPE)) {
-                    sc.put(productClass, new SubscriptionDto(subscription.getName(),
-                            productClass, subscription.getSystemsCount(), start, end));
+                if ((now.compareTo(start) >= 0
+                        && (end == null || now.compareTo(end) <= 0))
+                        && !subscription.getType().equals(PROVISIONAL_TYPE)) {
+                    // Distinguish between subscriptions and entitlements here
+                    if (isEntitlement(productClass)) {
+                        consolidated.addSystemEntitlement(productClass);
+                    }
+                    else {
+                        consolidated.addChannelSubscription(productClass);
+                    }
                 }
             }
         }
 
-        for (MgrSyncChannelFamily family : this.readChannelFamilies()) {
+        // Add free product classes (default_node_count = -1) as subscriptions
+        for (MgrSyncChannelFamily family : readChannelFamilies()) {
             if (family.getDefaultNodeCount() < 0) {
-                sc.put(family.getLabel(), new SubscriptionDto(family.getName(),
-                        family.getLabel(), 0, null, null));
+                consolidated.addChannelSubscription(family.getLabel());
             }
         }
 
-        ModeFactory.getWriteMode("mgr_sync_queries", "invalidate_scc_subscriptions")
-                .executeUpdate(new HashMap<String, Object>(),
-                               new ArrayList<String>(sc.keySet()));
-
-        return new ArrayList<SubscriptionDto>(sc.values());
+        return consolidated;
     }
 
     /**
-     * Updates max_members based on a given {@link SubscriptionDto}.
-     * @param subscription
+     * Updates max_members for channel subscriptions given a list of product classes.
+     * @param productClasses list of product classes we have a subscription for.
      */
-    private void updateSubscription(SubscriptionDto sub) {
-        final ChannelFamily family = createOrUpdateChannelFamily(
-                sub.getProductClass(), sub.getName());
+    public void updateChannelSubscriptions(List<String> productClasses) {
+        // These are product classes we have a subscription for
+        List<ChannelFamily> allChannelFamilies =
+                ChannelFamilyFactory.getAllChannelFamilies();
+        for (ChannelFamily channelFamily : allChannelFamilies) {
+            Set<PrivateChannelFamily> privateFamilies =
+                    channelFamily.getPrivateChannelFamilies();
 
-        // Remember all orgs bound to this channel family
-        Set<Long> orgIds = new HashSet<Long>();
-        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-            orgIds.add(pcf.getOrg().getId());
-        }
-
-        // Set max_members to INFINITE for all those channel families and orgs
-        Date now = new Date();
-        for(Long orgId : orgIds) {
-            if (sub.getEndDate() == null || now.compareTo(sub.getEndDate()) < 0) {
-                HashMap<String, Object> params = new HashMap<String, Object>();
-                params.put("max_members", INFINITE);
-                params.put("cfid", family.getId());
-                params.put("orgid", orgId);
-                ModeFactory.getWriteMode("mgr_sync_queries", "set_subscription_max_members")
-                        .executeUpdate(params);
+            // Match with subscribed product classes
+            if (productClasses.contains(channelFamily.getLabel())) {
+                // We have a subscription
+                int sumMaxMembers = 0;
+                PrivateChannelFamily satelliteOrgPrivateChannelFamily = null;
+                for (PrivateChannelFamily pcf : privateFamilies) {
+                    if (pcf.getOrg().getId() == 1) {
+                        satelliteOrgPrivateChannelFamily = pcf;
+                    }
+                    else if (pcf.getOrg().getId() > 1) {
+                        sumMaxMembers += pcf.getMaxMembers();
+                    }
+                }
+                satelliteOrgPrivateChannelFamily.setMaxMembers(INFINITE - sumMaxMembers);
             }
+            else {
+                // No subscription, reset to 0
+                for (PrivateChannelFamily pcf : privateFamilies) {
+                    pcf.setMaxMembers(0L);
+                }
+            }
+
+            ChannelFamilyFactory.save(channelFamily);
         }
     }
 
     /**
-     * Updates max_members of a system entitlement based on a given {@link SubscriptionDto}.
-     * @param subscription
+     * Updates max_members for all relevant system entitlements.
+     * @param productClasses list of product classes we have a subscription for.
      */
-    private void updateEntitlement(SubscriptionDto subscription) {
-        Date now = new Date();
+    public void updateSystemEntitlements(List<String> productClasses) {
+        // For all relevant system entitlements
+        for (String systemEntitlement : SystemEntitlement.getAllEntitlements()) {
+            ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
+                    systemEntitlement);
 
-        // Get each entitlement bound to the subscription (from rhnServerGroupType)
-        for (String entitlement : SystemEntitlement.valueOf(
-                subscription.getProductClass()).getEntitlements()) {
-            ServerGroupType serverGroupType =
-                    ServerFactory.lookupServerGroupTypeByLabel(entitlement);
-
-            // Set max_members to INFINITE only for org one
-            // TODO: count over all orgs first and check if sum < INFINITE
-            if (now.compareTo(subscription.getEndDate()) <= 0) {
+            // Get the product classes for a given entitlement
+            List<String> productClassesEnt = SystemEntitlement.getProductClasses(
+                    systemEntitlement);
+            if (!Collections.disjoint(productClasses, productClassesEnt)) {
+                // There is a subscription: set (INFINITE - maxMembers) to org one
+                int maxMembers = sumMaxMembersAllNonSatelliteOrgs(sgt);
                 EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
-                        OrgFactory.getSatelliteOrg(), serverGroupType);
-                serverGroup.setMaxMembers(INFINITE);
+                        OrgFactory.getSatelliteOrg(), sgt);
+                serverGroup.setMaxMembers(INFINITE - maxMembers);
                 ServerGroupFactory.save(serverGroup);
             }
+            else {
+                // Set to RESET_ENTITLEMENT in org one
+                EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
+                        OrgFactory.getSatelliteOrg(), sgt);
+                serverGroup.setMaxMembers(RESET_ENTITLEMENT);
+                ServerGroupFactory.save(serverGroup);
+
+                // Reset max_members to null for all other orgs
+                List<Org> allOrgs = OrgFactory.lookupAllOrgs();
+                for (Org org : allOrgs) {
+                    if (org.getId() != 1) {
+                        serverGroup = ServerGroupFactory.lookupEntitled(org, sgt);
+                        if (serverGroup != null) {
+                            serverGroup.setMaxMembers(null);
+                            ServerGroupFactory.save(serverGroup);
+                        }
+                    }
+                }
+            }
         }
     }
 
     /**
-     * Sync subscriptions from SCC to the database.
-     * @param subscriptions
+     * Sync subscriptions from SCC to the database after consolidation.
+     * @param subscriptions list of subscriptions as we get them from SCC
      * @throws ContentSyncException
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
-        /**
-         * Reset entitlements.
-         * The value of "10" comes from the part, where testers needed about this amount of
-         * subscriptions. It turns out that the customers are also have this number and dealing
-         * with it on their installations.
-         */
-        Map<String, Object> params = new HashMap<String, Object>();
-        ModeFactory.getWriteMode("mgr_sync_queries",
-                                 "reset_entitlements_bnc740813").executeUpdate(params);
-        params.put("max_members", ContentSyncManager.RESET_ENTITLEMENT);
-        ModeFactory.getWriteMode("mgr_sync_queries",
-                                 "reset_entitlements").executeUpdate(params);
-
-        for (SubscriptionDto subscription : consolidateSubscriptions(subscriptions)) {
-            if (isEntitlement(subscription.getProductClass())) {
-                updateEntitlement(subscription);
-            } else {
-                updateSubscription(subscription);
-            }
-        }
+        ConsolidatedSubscriptions consolidated = consolidateSubscriptions(subscriptions);
+        updateSystemEntitlements(consolidated.getSystemEntitlements());
+        updateChannelSubscriptions(consolidated.getChannelSubscriptions());
     }
 
     /**
@@ -759,5 +771,26 @@ public class ContentSyncManager {
             ChannelFamilyFactory.save(family);
         }
         return family;
+    }
+
+    /**
+     * Sum up the max_members over all orgs for any given {@link ServerGroupType}.
+     * @param serverGroupType
+     * @return sum of max_members for all orgs but org one
+     */
+    private static int sumMaxMembersAllNonSatelliteOrgs(ServerGroupType serverGroupType) {
+        int sum = 0;
+        List<Org> allOrgs = OrgFactory.lookupAllOrgs();
+        for (Org org : allOrgs) {
+            if (org.getId() != 1) {
+                EntitlementServerGroup serverGroup = ServerGroupFactory
+                        .lookupEntitled(org, serverGroupType);
+                if (serverGroup != null) {
+                    Long maxMembers = serverGroup.getMaxMembers();
+                    sum += maxMembers == null ? 0 : maxMembers;
+                }
+            }
+        }
+        return sum;
     }
 }
