@@ -18,7 +18,9 @@ package com.redhat.rhn.manager.content;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * SUSE Manager system entitlements
@@ -51,5 +53,32 @@ public enum SystemEntitlement {
      */
     public List<String> getEntitlements() {
         return this.entitlements;
+    }
+
+    /**
+     * Return all entitlements in a consolidated list.
+     * @return list of all entitlements
+     */
+    public static List<String> getAllEntitlements() {
+       Set<String> entitlements = new HashSet<String>();
+       for (SystemEntitlement value : SystemEntitlement.values()) {
+          entitlements.addAll(value.getEntitlements());
+       }
+       return Collections.unmodifiableList(new ArrayList<String>(entitlements));
+    }
+
+    /**
+     * Return all product classes that are bound to a given entitlement.
+     * @param entitlement
+     * @return list of product classes
+     */
+    public static List<String> getProductClasses(String entitlement) {
+        List<String> productClasses = new ArrayList<String>();
+        for (SystemEntitlement value : SystemEntitlement.values()) {
+            if (value.getEntitlements().contains(entitlement)) {
+                productClasses.add(value.name());
+            }
+        }
+        return productClasses;
     }
 }
