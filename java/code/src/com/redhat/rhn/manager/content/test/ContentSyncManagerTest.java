@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -28,6 +29,11 @@ import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -200,33 +206,95 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateSubscriptions()
+     * Test for {@link ContentSyncManager#consolidateSubscriptions(java.util.Collection)}.
      * @throws Exception
      */
-    public void testUpdateSubscriptions() throws Exception {
+    public void testConsolidateSubscriptions() throws Exception {
         SCCSubscription subscription = new SCCSubscription();
-        subscription.setName("SUSE Manager Management Unlimited Virtual Machines License");
-        subscription.setSystemsCount(0);
-        subscription.setSystemLimit(1);
-        subscription.setProductClasses(new ArrayList<String>(){
-            {add("SM_ENT_MGM_V");add("SMS");}});
+        List<String> productClasses = new ArrayList<String>();
+        productClasses.add("SMS");
+        productClasses.add("SM_ENT_MGM_V");
+        subscription.setProductClasses(productClasses);
         subscription.setType("full");
         subscription.setStartsAt("2013-12-12T00:00:00.000Z");
         subscription.setExpiresAt("2016-12-12T00:00:00.000Z");
-        subscription.setId(652);
         List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
         subscriptions.add(subscription);
 
-        File channelsXML = getTestFile("channels.xml");
-        File channelFamiliesXML = getTestFile("channel_families.xml");
-
+        // Check the consolidated product classes
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(channelsXML);
+        File channelFamiliesXML = getTestFile("channel_families.xml");
         csm.setChannelFamiliesXML(channelFamiliesXML);
-        csm.updateSubscriptions(subscriptions);
+        ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
+        List<String> entitlements = result.getSystemEntitlements();
+        assertEquals(1, entitlements.size());
+        assertTrue(entitlements.contains("SM_ENT_MGM_V"));
+        List<String> channelSubscriptions = result.getChannelSubscriptions();
+        assertEquals(2, channelSubscriptions.size());
+        assertTrue(channelSubscriptions.contains("SMS"));
+        // SLESMT is a free product class
+        assertTrue(channelSubscriptions.contains("SLESMT"));
 
-        deleteIfTempFile(channelsXML);
+        // Delete temp file
         deleteIfTempFile(channelFamiliesXML);
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
+     * @throws Exception
+     */
+    public void testUpdateSystemEntitlements() throws Exception {
+        // Start with no subscribed product classes
+        List<String> productClasses = new ArrayList<String>();
+
+        // Update system entitlements
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSystemEntitlements(productClasses);
+
+        // Check reset to 10
+        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
+                "bootstrap_entitled");
+        EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
+                OrgFactory.getSatelliteOrg(), sgt);
+        assertEquals(new Long(10), serverGroup.getMaxMembers());
+
+        // Add subscription for product class
+        productClasses.add("SM_ENT_MGM_V");
+
+        // Update system entitlements and check max_members = 200000
+        csm.updateSystemEntitlements(productClasses);
+        serverGroup = ServerGroupFactory.lookupEntitled(
+                OrgFactory.getSatelliteOrg(), sgt);
+        assertEquals(new Long(200000), serverGroup.getMaxMembers());
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateChannelSubscriptions(List)}.
+     * @throws Exception
+     */
+    public void testUpdateChannelSubscriptions() throws Exception {
+        // Start with no subscribed product classes
+        List<String> productClasses = new ArrayList<String>();
+
+        // Update channel subscriptions
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateChannelSubscriptions(productClasses);
+
+        // Check reset to 0
+        ChannelFamily family = ChannelFamilyFactory.lookupByLabel("SMS", null);
+        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
+            assertEquals(new Long(0), pcf.getMaxMembers());
+        }
+
+        // Add subscription for a product class
+        productClasses.add("SMS");
+
+        // Update subscriptions and check max_members = 200000
+        csm.updateChannelSubscriptions(productClasses);
+        family = ChannelFamilyFactory.lookupByLabel("SMS", null);
+        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
+            assertEquals(new Long(200000), pcf.getMaxMembers());
+        }
     }
 
     /**
