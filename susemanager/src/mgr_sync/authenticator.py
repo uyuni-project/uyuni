@@ -47,7 +47,7 @@ class Authenticator(object):
                 self.config[Config.PASSWORD] = self.password
                 cli_msg("Credentials has been saved to the %s file.\n" % Config.DOTFILE)
 
-        Config.save_local_config(self.config)
+        self.config.write()
 
         return self.token
 
