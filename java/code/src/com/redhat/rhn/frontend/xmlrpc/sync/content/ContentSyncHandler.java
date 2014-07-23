@@ -258,7 +258,8 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannelFamilies(String sessionKey)
             throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
-        new ContentSyncManager().updateChannelFamilies();
+        ContentSyncManager contentSyncManager = new ContentSyncManager();
+        contentSyncManager.updateChannelFamilies(contentSyncManager.readChannelFamilies());
 
         return BaseHandler.VALID;
     }
