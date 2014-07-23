@@ -46,6 +46,8 @@ Requires:       spacewalk-backend >= 1.7.38.20
 Requires:       spacewalk-backend-sql
 Requires:       python
 Requires:       createrepo
+Requires:       python-tabulate
+BuildRequires:  python-tabulate
 
 %description tools
 This package contains SUSE Manager tools
