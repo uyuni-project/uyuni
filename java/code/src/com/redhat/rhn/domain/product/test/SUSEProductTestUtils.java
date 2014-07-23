@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -67,5 +69,28 @@ public class SUSEProductTestUtils {
                 ChannelFamilyFactoryTest.createTestChannelFamily());
         ChannelFactory.save(c);
         return c;
+    }
+
+    /**
+     * Finds a given testfile by name and returns it.
+     * @param filename name of the testfile
+     * @return the file
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public static File getTestFile(String filename)
+            throws ClassNotFoundException, IOException {
+        return new File(TestUtils.findTestData(filename).getPath());
+    }
+
+    /**
+     * For a given file, delete it in case it is a temp file.
+     * @param file test file to delete
+     */
+    public static void deleteIfTempFile(File file) {
+        if (file.exists() && file.getAbsolutePath().startsWith(
+                System.getProperty("java.io.tmpdir") + File.separatorChar)) {
+            file.delete();
+        }
     }
 }
