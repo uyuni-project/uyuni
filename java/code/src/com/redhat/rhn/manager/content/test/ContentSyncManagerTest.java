@@ -62,7 +62,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     public void testUpdateChannels() throws Exception {
         File channelsXML = getTestFile("channels.xml");
         try {
-            // Create a test channel and set a specific label
+            // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
             Channel c = SUSEProductTestUtils.createTestVendorChannel();
             c.setLabel(channelLabel);
@@ -81,16 +81,16 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             c.getSources().add(cs);
             TestUtils.saveAndFlush(c);
 
-            // Update the channel information
+            // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
             csm.updateChannels();
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
-            assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getDescription());
+            assertEquals("SUSE Linux Enterprise Server 11 SP3 x86_64", c.getDescription());
             assertEquals("SLES11-SP3-Pool for x86_64", c.getName());
-            assertEquals("SUSE Linux Enterprise Server 11 SP3", c.getSummary());
+            assertEquals("SUSE Linux Enterprise Server 11 SP3 x86_64", c.getSummary());
             assertEquals("slessp3", c.getUpdateTag());
 
             // Verify content sources (there is only one)
@@ -230,10 +230,14 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         assertEquals(1, entitlements.size());
         assertTrue(entitlements.contains("SM_ENT_MGM_V"));
         List<String> channelSubscriptions = result.getChannelSubscriptions();
-        assertEquals(2, channelSubscriptions.size());
+        assertEquals(6, channelSubscriptions.size());
         assertTrue(channelSubscriptions.contains("SMS"));
-        // SLESMT is a free product class
+        // Check the free product classes
         assertTrue(channelSubscriptions.contains("SLESMT"));
+        assertTrue(channelSubscriptions.contains("WEBYAST"));
+        assertTrue(channelSubscriptions.contains("SLE-SDK"));
+        assertTrue(channelSubscriptions.contains("SUSE"));
+        assertTrue(channelSubscriptions.contains("nVidia"));
 
         // Delete temp file
         deleteIfTempFile(channelFamiliesXML);
@@ -524,7 +528,6 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
                         path.getToProduct().getProductId());
                 paths.add(identifier);
             }
-            assertEquals(3, upgradePaths.size());
             assertTrue(paths.contains("690-814"));
             assertTrue(paths.contains("1001-1119"));
             assertTrue(paths.contains("1193-1198"));
