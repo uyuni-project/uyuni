@@ -19,9 +19,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannelFamily;
+
 import com.suse.scc.model.SCCProduct;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
