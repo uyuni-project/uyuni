@@ -15,6 +15,9 @@
 
 import os
 import socket
+from configobj import ConfigObj
+
+_CONFIG = None
 
 class Config:
     """
@@ -36,58 +39,44 @@ class Config:
     URI = K_PREF + ".uri"
     TOKEN = K_PREF + ".session.token"
 
-    # Default configuration, if not specified otherwise
-    DEFAULTS = {
-        USER: None,
-        PASSWORD: None,
-        HOST: socket.getfqdn(),
-        PORT: 80,
-        URI: "/rpc/api",
-        TOKEN: None,
-        }
+    def __init__(self):
+        # Default configuration, if not specified otherwise
+        self.config = ConfigObj()
+        self.config[Config.USER] = None
+        self.config[Config.PASSWORD] = None,
+        self.config[Config.HOST] = socket.getfqdn()
+        self.config[Config.PORT] = 80
+        self.config[Config.URI] = "/rpc/api"
+        self.config[Config.TOKEN] = None
 
-    @staticmethod
-    def _parse(filename):
-        """
-        Parse key=value structures into a dict, ignoring commented lines
-        by # and empty lines.
-        """
-        return dict(map(lambda elm: tuple(map(lambda opt: opt.strip(), elm.split("=", 1))),
-                        filter(None, [line.strip() for line in open(filename).readlines()
-                                      if not line.strip().startswith("#") and line.strip().startswith(Config.K_PREF)])))
 
     @staticmethod
     def get_config():
         """
         Get the configuration or place defaults.
         """
+        global _CONFIG
+        if _CONFIG:
+            return _CONFIG
 
-        # Create default config
-        conf = {}
-        for k, v in Config.DEFAULTS.items():
-            conf[k] = conf.get(k, v)
+        cfg = Config()
 
         # Read /etc/rhn/rhn.conf if any
         if os.path.exists(Config.RHN) and os.access(Config.RHNFILE, os.R_OK):
-            for k, v in Config._parse(Config.RHNFILE).items():
-                if v:
-                    conf[k] = v
+            cfg.config.merge(ConfigObj(Config.RHNFILE))
 
         # Read ~/.mgr-sync if any and override
         if os.path.exists(Config.DOTFILE) and os.access(Config.DOTFILE, os.R_OK):
-            for k, v in Config._parse(Config.DOTFILE).items():
-                if v:
-                    conf[k] = v
+            cfg.config.merge(ConfigObj(Config.DOTFILE))
 
-        return conf
+        # Remove unnesessary items
+        for key in cfg.config.keys():
+            if not key.startswith(Config.K_PREF):
+                del cfg.config[key]
 
-    @staticmethod
-    def save_local_config(data):
-        """
-        Save local config to a dot file.
-        """
-        f = open(Config.DOTFILE, "w")
-        for item in sorted(data.items()):
-            f.write("%s = %s\n" % tuple(map(lambda e: e is not None and e or "", item)))
-        f.close()
+        # Write to local
+        cfg.config.filename = Config.DOTFILE
 
+        # Do it all once per runtime
+        _CONFIG = cfg.config
+        return _CONFIG
