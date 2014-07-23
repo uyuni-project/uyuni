@@ -15,15 +15,18 @@
 
 package com.suse.mgrsync;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
+import java.util.List;
 
 /**
  * Container for list of upgrade paths.
  */
+@Root(strict = false)
 public class MgrSyncUpgradePaths {
-    @ElementList(name = "upgradepaths", inline = true, required = false)
+
+    @ElementList(inline = true, required = false, empty = false)
     private List<MgrSyncUpgradePath> paths;
 
     /**
@@ -31,9 +34,6 @@ public class MgrSyncUpgradePaths {
      * @return subscriptions
      */
     public List<MgrSyncUpgradePath> getPaths() {
-        if (this.paths == null) {
-            this.paths = new ArrayList<MgrSyncUpgradePath>();
-        }
         return this.paths;
     }
 }
