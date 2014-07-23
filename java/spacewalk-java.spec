@@ -89,8 +89,9 @@ Requires: hibernate3 = 0:3.2.4
 BuildRequires: hibernate3 = 0:3.2.4
 %endif
 %if 0%{?suse_version}
-BuildRequires: sitemesh
 Requires: ehcache
+BuildRequires: ehcache
+BuildRequires: sitemesh
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
@@ -770,6 +771,9 @@ fi
 %{jardir}/javassist.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12.jar
+%endif
+%if 0%{?suse_version}
+%{jardir}/ehcache.jar
 %endif
 %if 0%{?fedora}
 %{_javadir}/mchange-commons.jar
