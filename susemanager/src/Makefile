@@ -15,8 +15,7 @@ SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
 										mgr_sync/authenticator \
 										mgr_sync/config \
 										mgr_sync/helpers \
-										mgr_sync/mgr_sync \
-										mgr_sync/table_print
+										mgr_sync/mgr_sync
 SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
 	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
 
