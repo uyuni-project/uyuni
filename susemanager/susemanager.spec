@@ -48,6 +48,8 @@ Requires:       python
 Requires:       createrepo
 Requires:       python-tabulate
 BuildRequires:  python-tabulate
+Requires:       python-configobj
+BuildRequires:  python-configobj
 
 %description tools
 This package contains SUSE Manager tools
