@@ -332,8 +332,8 @@ public class ContentSyncManager {
      * Update channel families in DB with data from the channel_families.xml file.
      * @throws ContentSyncException
      */
-    public void updateChannelFamilies() throws ContentSyncException {
-        List<MgrSyncChannelFamily> channelFamilies = readChannelFamilies();
+    public void updateChannelFamilies(Collection<MgrSyncChannelFamily> channelFamilies)
+            throws ContentSyncException {
         for (MgrSyncChannelFamily channelFamily : channelFamilies) {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
