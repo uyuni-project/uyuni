@@ -20,15 +20,10 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 
 /**
- *
- * @author bo
+ * Container for list of upgrade paths.
  */
 public class MgrSyncUpgradePaths {
-    @ElementList(name = "upgradepathes", inline = true, required = false)
-                        //          ^
-                        //          |
-                        //          +-- Can we change "pathEs" to "paths"?
-
+    @ElementList(name = "upgradepaths", inline = true, required = false)
     private List<MgrSyncUpgradePath> paths;
 
     /**
