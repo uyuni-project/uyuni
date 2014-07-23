@@ -23,6 +23,8 @@ use warnings;
 use Getopt::Long;
 use Spacewalk::Setup;
 
+my $isSUSE = 0;
+
 sub os_fips_mode_on {
 	my $sysctl = (-x '/usr/sbin/sysctl') ? '/usr/sbin/sysctl' : '/sbin/sysctl';
 	my $ret = `$sysctl -n crypto.fips_enabled`;
@@ -32,6 +34,9 @@ sub os_fips_mode_on {
 }
 
 sub mod_ssl_fipsmode_option {
+	# FIXME: have a look if we can support fips mode
+	return 0 if($isSUSE);
+
 	my $mod_ssl_version = `rpm -q --qf='%{VERSION}' mod_ssl`;
 	my $mod_ssl_release = `rpm -q --qf='%{RELEASE}' mod_ssl`;
 
@@ -81,10 +86,16 @@ sub setup_mod_ssl {
 
 	my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
 	my $sslconf_dir = '/etc/httpd/conf.d';
+	$sslconf_dir = '/etc/apache2/vhosts.d' if($isSUSE);
 	my $sslconf     = 'ssl.conf';
+	$sslconf = 'vhost-ssl.conf' if($isSUSE);
+
 	my $sslconf_path = "$sslconf_dir/$sslconf";
 	local *FILE;
-
+        if($isSUSE && ! -f $sslconf_path)
+	{
+		`cp "$sslconf_dir/vhost-ssl.template" "$sslconf_path"`;
+	}
 	die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
 
 	{
@@ -147,6 +158,10 @@ GetOptions(
 if ($help) {
 	print $usage;
 	exit 0;
+}
+
+if(-e '/etc/SuSE-release') {
+    $isSUSE = 1;
 }
 
 setup_mod_ssl($fips_mode_on);
