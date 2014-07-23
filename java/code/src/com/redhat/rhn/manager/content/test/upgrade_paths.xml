@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<upgradepathes>
+<upgradepaths>
 	<upgrade from_pdid="677" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.i686" to_pdid="751" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i686"/>
 	<upgrade from_pdid="678" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.ppc" to_pdid="711" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.ppc"/>
 	<upgrade from_pdid="681" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.i686" to_pdid="751" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i686"/>
@@ -87,4 +87,4 @@
 	<upgrade from_pdid="1196" from_product="sle-smt-11-None.None" to_pdid="1193" to_product="sle-smt-11.2-None.None"/>
 	<upgrade from_pdid="1232" from_product="Open_Enterprise_Server-11-None.None" to_pdid="1241" to_product="Open_Enterprise_Server-11.1-None.None"/>
 	<upgrade from_pdid="1241" from_product="Open_Enterprise_Server-11.1-None.None" to_pdid="1242" to_product="Open_Enterprise_Server-11.2-None.x86_64"/>
-</upgradepathes>
+</upgradepaths>
