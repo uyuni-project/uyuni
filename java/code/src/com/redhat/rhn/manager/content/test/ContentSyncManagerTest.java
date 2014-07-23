@@ -45,7 +45,6 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -60,7 +59,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateChannels() throws Exception {
-        File channelsXML = getTestFile("channels.xml");
+        File channelsXML = SUSEProductTestUtils.getTestFile("channels.xml");
         try {
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
@@ -101,7 +100,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             }
         }
         finally {
-            deleteIfTempFile(channelsXML);
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
     }
 
@@ -223,7 +222,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Check the consolidated product classes
         ContentSyncManager csm = new ContentSyncManager();
-        File channelFamiliesXML = getTestFile("channel_families.xml");
+        File channelFamiliesXML = SUSEProductTestUtils.getTestFile("channel_families.xml");
         csm.setChannelFamiliesXML(channelFamiliesXML);
         ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
         List<String> entitlements = result.getSystemEntitlements();
@@ -240,7 +239,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         assertTrue(channelSubscriptions.contains("nVidia"));
 
         // Delete temp file
-        deleteIfTempFile(channelFamiliesXML);
+        SUSEProductTestUtils.deleteIfTempFile(channelFamiliesXML);
     }
 
     /**
@@ -478,7 +477,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateUpgradePaths() throws Exception {
-        File upgradePathsXML = getTestFile("upgrade_paths.xml");
+        File upgradePathsXML = SUSEProductTestUtils.getTestFile("upgrade_paths.xml");
         try {
             // Prepare products since they will be looked up
             ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
@@ -533,30 +532,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             assertTrue(paths.contains("1193-1198"));
         }
         finally {
-            deleteIfTempFile(upgradePathsXML);
-        }
-    }
-
-    /**
-     * Finds a given testfile by name and returns it.
-     * @param filename name of the testfile
-     * @return the file
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    private File getTestFile(String filename)
-            throws ClassNotFoundException, IOException {
-        return new File(TestUtils.findTestData(filename).getPath());
-    }
-
-    /**
-     * For a given file, delete it in case it is a temp file.
-     * @param file test file to delete
-     */
-    private void deleteIfTempFile(File file) {
-        if (file.exists() && file.getAbsolutePath().startsWith(
-                System.getProperty("java.io.tmpdir") + File.separatorChar)) {
-            file.delete();
+            SUSEProductTestUtils.deleteIfTempFile(upgradePathsXML);
         }
     }
 
