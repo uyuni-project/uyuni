@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -28,7 +27,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
