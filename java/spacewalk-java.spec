@@ -90,6 +90,7 @@ BuildRequires: hibernate3 = 0:3.2.4
 %endif
 %if 0%{?suse_version}
 BuildRequires: sitemesh
+Requires: ehcache
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
