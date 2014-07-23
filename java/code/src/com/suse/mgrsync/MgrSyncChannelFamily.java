@@ -32,15 +32,51 @@ public class MgrSyncChannelFamily {
     @Attribute
     private String name;
 
+    /**
+     * Get the default node count.
+     * @return default node count
+     */
     public Integer getDefaultNodeCount() {
         return defaultNodeCount;
     }
 
+    /**
+     * Set the default node count.
+     * @param defaultNodeCount the defaultNodeCount to set
+     */
+    public void setDefaultNodeCount(Integer defaultNodeCount) {
+        this.defaultNodeCount = defaultNodeCount;
+    }
+
+    /**
+     * Get the label.
+     * @return label
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Set the label.
+     * @param label the label to set
+     */
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    /**
+     * Get the name.
+     * @return name
+     */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Set the name.
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }
