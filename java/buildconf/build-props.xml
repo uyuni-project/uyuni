@@ -162,7 +162,7 @@
              ${jfreechart} ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core
              taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
-             xalan-j2 xerces-j2 xml-commons-apis simple-core" />
+             xalan-j2 xerces-j2 xml-commons-apis simple-core ehcache" />
 
   <path id="bootjars">
     <fileset dir="${boot.lib.dir}" includes="*.jar" />
