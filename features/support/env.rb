@@ -108,6 +108,16 @@ when :webkit
   Capybara.default_driver = :webkit
   Capybara.javascript_driver = :webkit
   Capybara.app_host = host
+when :phantomjs
+  require 'capybara/poltergeist'
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app,
+                                      :phantomjs_options => ['--debug=no', '--load-images=no', '--ignore-ssl-errors=yes', '--ssl-protocol=TLSv1'],
+                                      :debug => false)
+  end
+  Capybara.default_driver = :poltergeist
+  Capybara.javascript_driver = :poltergeist
+  Capybara.app_host = host
 else
   Capybara.default_driver = :selenium
   Capybara.app_host = host
@@ -120,12 +130,10 @@ Capybara.run_server = false
 After do |scenario|
   if scenario.failed?
     case page.driver
-    when Capybara::Selenium::Driver
+    when Capybara::Poltergeist::Driver || Capybara::Selenium::Driver
       # chromiumdriver does not support screenshots yet
-      if page.driver.options[:browser] == :firefox
-        encoded_img = page.driver.browser.screenshot_as(:base64)
-        embed("data:image/png;base64,#{encoded_img}", 'image/png')
-      end
+      encoded_img = page.driver.render_base64(:png)
+      embed("data:image/png;base64,#{encoded_img}", 'image/png')
     when Capybara::Driver::Webkit
       path = File.join(Dir.tmpdir, "testsuite.png")
       page.driver.render(path)
