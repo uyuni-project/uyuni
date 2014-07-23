@@ -15,10 +15,11 @@
 
 import sys
 import xmlrpclib
+from tabulate import tabulate
+
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
 from spacewalk.susemanager.mgr_sync.helpers import cli_msg
-from spacewalk.susemanager.mgr_sync.table_print import TablePrint
 
 
 class MgrSync(object):
@@ -158,14 +159,12 @@ class MgrSync(object):
         """
         Format the tree output within the table.
         """
-        header = ("Status", "Title", "Label", "Version", "Arch")
         table = []
         for p in data:
             table.append((p["status"], p["title"], p["label"], p["version"], p["arch"],))
             for c in p.get("extensions", []):
                 table.append((p["status"], "  \\_" + p["title"], p["label"], p["version"], p["arch"] or "N/A",))
-        table.insert(0, header)
-        print TablePrint(table)
+        print tabulate(table, headers=("Status", "Title", "Label", "Version", "Arch"))
 
     def _format_flat(self, data, title=""):
         """
@@ -178,6 +177,4 @@ class MgrSync(object):
             table.append((str(idx).zfill(2), p["name"], p["target"], descr),)
             idx += 1
         table = sorted(table)
-        table.insert(0, ("No.", "Name", "OS", "Description"))
-        print (title and (title + ":\n") or "") + str(TablePrint(table)) + "\n"
-
+        print (title and (title + ":\n") or "") + tabulate(table, headers=("No.", "Name", "OS", "Description"))
