@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
+import com.suse.mgrsync.MgrSyncChannelStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -705,6 +706,36 @@ public class ContentSyncManager {
         for (Map.Entry<String, SUSEUpgradePath> entry : paths.entrySet()) {
             SUSEProductFactory.remove(entry.getValue());
         }
+    }
+
+    /**
+     * Return the list of available channels with their status.
+     * @return list of channels
+     */
+    public List<MgrSyncChannel> listChannels() throws ContentSyncException {
+        // This list will be returned
+        List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
+
+        // Collect labels of installed channels
+        List<Channel> installedChannels = ChannelFactory.listVendorChannels();
+        List<String> installedChannelLabels = new ArrayList<String>();
+        for (Channel c : installedChannels) {
+            installedChannelLabels.add(c.getLabel());
+        }
+
+        // Determine the channel status
+        for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
+            // TODO: UNAVAILABLE, see is_mirrorable()
+            if (installedChannelLabels.contains(c.getLabel())) {
+                c.setStatus(MgrSyncChannelStatus.INSTALLED);
+            }
+            else {
+                c.setStatus(MgrSyncChannelStatus.AVAILABLE);
+            }
+            channels.add(c);
+        }
+
+        return channels;
     }
 
     /**
