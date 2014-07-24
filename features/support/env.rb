@@ -81,7 +81,10 @@ when :phantomjs
   require 'capybara/poltergeist'
   Capybara.register_driver :poltergeist do |app|
     Capybara::Poltergeist::Driver.new(app,
-                                      :phantomjs_options => ['--debug=no', '--load-images=no', '--ignore-ssl-errors=yes', '--ssl-protocol=TLSv1'],
+                                      :phantomjs_options => ['--debug=no',
+                                                             '--ignore-ssl-errors=yes',
+                                                             '--ssl-protocol=TLSv1',
+                                                             '--web-security=false'],
                                       :debug => false)
   end
   Capybara.default_driver = :poltergeist
