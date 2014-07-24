@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -55,9 +57,9 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
      * Test listing products.
      */
     public void testListProducts() {
-        List<Map<String, Object>> products = this.csh.listProducts(this.adminKey);
+        Object[] products = this.csh.listProducts(this.adminKey);
         BaseHandlerTestCase.assertNotNull(products);
-        BaseHandlerTestCase.assertNotEmpty(products);
+        BaseHandlerTestCase.assertNotEmpty(Arrays.asList(products));
     }
 
     /**
