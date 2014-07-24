@@ -1,5 +1,5 @@
 pylint ::
-	pylint -e --enable-msg-cat=imports src/ || pylint --errors-only --enable=imports --disable=W src/
+	pylint --errors-only --disable=W src/
 
 unittest ::
 	if test -x /usr/bin/unit2 ; then \
