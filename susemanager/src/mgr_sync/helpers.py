@@ -14,6 +14,7 @@
 # in this software or its documentation.
 
 import sys
+import getpass
 
 
 def cli_msg(message, stderr=True):
@@ -22,3 +23,15 @@ def cli_msg(message, stderr=True):
     """
     print >> (stderr and sys.stderr or sys.stdout), message + "\n"
 
+
+def cli_ask(msg, password=False):
+    """
+    Ask input from the console. Hide the echo, in case of password or
+    sensitive information.
+    """
+
+    msg += ": "
+    value = None
+    while not value:
+        value = (password and getpass.getpass(msg) or raw_input(msg))
+    return value
