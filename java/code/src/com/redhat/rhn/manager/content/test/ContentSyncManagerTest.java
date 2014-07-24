@@ -54,12 +54,18 @@ import java.util.Set;
  */
 public class ContentSyncManagerTest extends RhnBaseTestCase {
 
+    // Files we read
+    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
+    private static final String CHANNELS_XML = JARPATH + "channels.xml";
+    private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
+    private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+
     /**
      * Test for {@link ContentSyncManager#updateChannels()}.
      * @throws Exception
      */
     public void testUpdateChannels() throws Exception {
-        File channelsXML = SUSEProductTestUtils.getTestFile("channels.xml");
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         try {
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
@@ -222,7 +228,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Check the consolidated product classes
         ContentSyncManager csm = new ContentSyncManager();
-        File channelFamiliesXML = SUSEProductTestUtils.getTestFile("channel_families.xml");
+        File channelFamiliesXML = new File(
+                TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
         csm.setChannelFamiliesXML(channelFamiliesXML);
         ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
         List<String> entitlements = result.getSystemEntitlements();
@@ -477,7 +484,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testUpdateUpgradePaths() throws Exception {
-        File upgradePathsXML = SUSEProductTestUtils.getTestFile("upgrade_paths.xml");
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // Prepare products since they will be looked up
             ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
@@ -519,7 +527,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             csm.updateUpgradePaths();
 
             // Check the results
-            List<SUSEUpgradePath> upgradePaths = SUSEProductFactory.findAllSUSEUpgradePaths();
+            List<SUSEUpgradePath> upgradePaths =
+                    SUSEProductFactory.findAllSUSEUpgradePaths();
             List<String> paths = new ArrayList<String>();
             for (SUSEUpgradePath path : upgradePaths) {
                 String identifier = String.format("%s-%s",
