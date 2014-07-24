@@ -14,7 +14,6 @@
 # in this software or its documentation.
 
 import getpass
-from config import Config
 from helpers import cli_msg
 
 
@@ -28,9 +27,9 @@ class Authenticator(object):
         self.config = config
         self.persist = None
 
-        self.token = self.config[Config.TOKEN]
-        self.uid = self.config[Config.USER]
-        self.password = self.config[Config.PASSWORD]
+        self.token = self.config.token
+        self.uid = self.config.user
+        self.password = self.config.password
 
     def __call__(self):
         """
@@ -40,12 +39,12 @@ class Authenticator(object):
             if not self.uid or not self.password:
                 self._get_credentials_interactive()
             self.token = self.conn.auth.login(self.uid, self.password)
-            self.config[Config.TOKEN] = self.token
+            self.config.token = self.token
 
             if self.persist:
-                self.config[Config.USER] = self.uid
-                self.config[Config.PASSWORD] = self.password
-                cli_msg("Credentials has been saved to the %s file.\n" % Config.DOTFILE)
+                self.config.user = self.uid
+                self.config.password = self.password
+                cli_msg("Credentials has been saved to the %s file.\n" % self.config.dotfile)
 
         self.config.write()
 
