@@ -13,6 +13,7 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
+import re
 import sys
 import xmlrpclib
 from tabulate import tabulate
@@ -40,25 +41,31 @@ class MgrSync(object):
         """
         Add product.
         """
-        return self.conn.sync.content.addProduct(self.auth.token, "xxx")
+
+        return self._execute_xmlrpc_method("addProduct",
+                                           self.auth.token, "xxx")
 
     def _addChannel(self):
         """
         Add channel.
         """
-        return self.conn.sync.content.addChannel(self.auth.token, "xxx")
+
+        return self._execute_xmlrpc_method("addChannel",
+                                           self.auth.token, "xxx")
 
     def _listChannels(self):
         """
         List channels.
         """
-        return self.conn.sync.content.listChannels(self.auth.token)
+
+        return self._execute_xmlrpc_method("listChannels", self.auth.token)
 
     def _listProducts(self):
         """
         List products on the channel.
         """
-        return self.conn.sync.content.listProducts(self.auth.token)
+
+        return self._execute_xmlrpc_method("listProducts", self.auth.token)
 
     def _refresh(self):
         """
@@ -74,13 +81,11 @@ class MgrSync(object):
             ("Upgrade paths        ", "synchronizeUpgradePaths")
         )
 
-        for action in actions:
-            operation = action[0]
-            method = action[1]
+        for operation, method in actions:
             sys.stdout.write("Refreshing %s\t" % operation)
             sys.stdout.flush()
             try:
-                self._execute_xmlrpc_method(method=method)
+                self._execute_xmlrpc_method(method, self.auth.token)
                 sys.stdout.write("[DONE]\n")
                 sys.stdout.flush()
             except Exception, ex:
@@ -89,7 +94,7 @@ class MgrSync(object):
                 sys.stderr.write("\tError: %s\n\n" % ex)
                 sys.exit(1)
 
-    def _execute_xmlrpc_method(self, method, retry_on_session_failure=True):
+    def _execute_xmlrpc_method(self, method, auth_token, *params, **opts):
         """
         Invokes the remote method specified by the user. Repeats the operation
         once if there's a failure caused by the expiration of the sessions
@@ -98,52 +103,53 @@ class MgrSync(object):
         Retry on token expiration happens only when the
         'retry_on_session_failure' parameter is set to True.
         """
+
+        retry_on_session_failure = opts.get("retry_on_session_failure", True)
+
         try:
-            getattr(self.conn.sync.content, method)(self.auth.token)
-        except Exception, ex:
-            if self._check_session_fail(ex) and retry_on_session_failure:
+            return getattr(self.conn.sync.content, method)(auth_token, *params)
+        except xmlrpclib.Fault, ex:
+            if retry_on_session_failure and self._check_session_fail(ex):
                 self.auth.discard_token()
-                self._execute_xmlrpc_method(method, retry_on_session_failure=False)
+                auth_token = self.auth.token
+                return self._execute_xmlrpc_method(method, auth_token, *params,
+                                                   retry_on_session_failure=False)
             else:
                 raise ex
 
-    def run(self, options, attempted=False):
+    def run(self, options):
         """
         Run the app.
         """
         self.quiet = options.quiet
-        try:
-            self.auth.persist = options.saveconfig
-            if options.listchannels:
-                self.format(self._listChannels(), title="Available channels")
-            elif options.listproducts:
-                self.format(self._listProducts(), title="Available products")
-            elif options.addproduct:
-                self._addProduct()
-            elif options.addchannel:
-                self._addChannel()
-            elif options.refresh:
-                self._refresh()
-        except xmlrpclib.Fault, ex:
-            # Try to figure out it is an outdated session
-            if self._check_session_fail(ex):
-                if not attempted:
-                    if options.verbose:
-                        print "Cached session is outdated. Trying to connect..."
-                    self.auth.discard_token()
-                    self.run(options, attempted=True)
-                else:
-                    raise ex
-            else:
-                # The error does not seems like a failed session
-                raise ex
+        self.auth.persist = options.saveconfig
+        if options.listchannels:
+            self.format(self._listChannels(), title="Available channels")
+        elif options.listproducts:
+            self.format(self._listProducts(), title="Available products")
+        elif options.addproduct:
+            self._addProduct()
+        elif options.addchannel:
+            self._addChannel()
+        elif options.refresh:
+            self._refresh()
 
     def _check_session_fail(self, exception):
         """
         Check session failure.
         """
+
         fault = str(exception).lower()
-        return 'session' in fault and ('is not valid.' in fault or 'could not find' in fault)
+        relevant_errors = (
+            'could not find session',
+            'session id.*is not valid'
+        )
+
+        for error_string in relevant_errors:
+            if re.search(error_string, fault):
+                return True
+
+        return False
 
     def format(self, data, title=""):
         """
