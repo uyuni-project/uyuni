@@ -40,25 +40,25 @@ class MgrSync(object):
         """
         Add product.
         """
-        return self.conn.sync.content.addProduct(self.auth(), "xxx")
+        return self.conn.sync.content.addProduct(self.auth.token, "xxx")
 
     def _addChannel(self):
         """
         Add channel.
         """
-        return self.conn.sync.content.addChannel(self.auth(), "xxx")
+        return self.conn.sync.content.addChannel(self.auth.token, "xxx")
 
     def _listChannels(self):
         """
         List channels.
         """
-        return self.conn.sync.content.listChannels(self.auth())
+        return self.conn.sync.content.listChannels(self.auth.token)
 
     def _listProducts(self):
         """
         List products on the channel.
         """
-        return self.conn.sync.content.listProducts(self.auth())
+        return self.conn.sync.content.listProducts(self.auth.token)
 
     def _refresh(self):
         """
@@ -76,7 +76,7 @@ class MgrSync(object):
         Do nothing if the quiet flag is active.
         """
         failure = None
-        token = self.auth()
+        token = self.auth.token
         if not self.quiet:
             sys.stdout.write(message + "\t")
             sys.stdout.flush()
@@ -91,7 +91,7 @@ class MgrSync(object):
                 if not retry:
                     if not self.quiet:
                         sys.stdout.write("Retrying\n")
-                    self.auth.token = None
+                    self.auth.discard_token()
                     self.cli_call(message, method, retry=True)
             message = "Failed"
 
@@ -128,7 +128,7 @@ class MgrSync(object):
                 if not attempted:
                     if options.verbose:
                         print "Cached session is outdated. Trying to connect..."
-                    self.auth.token = None
+                    self.auth.discard_token()
                     self.run(options, attempted=True)
                 else:
                     raise ex

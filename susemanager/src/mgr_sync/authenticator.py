@@ -27,19 +27,20 @@ class Authenticator(object):
         self.config = config
         self.persist = None
 
-        self.token = self.config.token
+        self._token = self.config.token
         self.uid = self.config.user
         self.password = self.config.password
 
-    def __call__(self):
+    @property
+    def token(self):
         """
         Authenticate user.
         """
-        if not self.token:
+        if not self._token:
             if not self.uid or not self.password:
                 self._get_credentials_interactive()
-            self.token = self.conn.auth.login(self.uid, self.password)
-            self.config.token = self.token
+            self._token = self.conn.auth.login(self.uid, self.password)
+            self.config.token = self._token
 
             if self.persist:
                 self.config.user = self.uid
@@ -48,7 +49,15 @@ class Authenticator(object):
 
         self.config.write()
 
-        return self.token
+        return self._token
+
+    def discard_token(self):
+        """
+        Discard the cached token.
+        """
+
+        self._token = None
+        self.config.write()
 
     def _get_credentials_interactive(self):
         """
