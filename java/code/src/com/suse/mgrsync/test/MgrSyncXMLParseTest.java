@@ -17,6 +17,7 @@ package com.suse.mgrsync.test;
 
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
@@ -53,7 +54,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     private List<MgrSyncChannel> readChannels() throws Exception {
-        File source = SUSEProductTestUtils.getTestFile(CHANNELS_XML);
+        File source = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         List<MgrSyncChannel> data = persister.read(
                 MgrSyncChannels.class, source).getChannels();
         SUSEProductTestUtils.deleteIfTempFile(source);
@@ -67,7 +68,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     private List<MgrSyncChannelFamily> readFamilies() throws Exception {
-        File source = SUSEProductTestUtils.getTestFile(CHANNEL_FAMILIES_XML);
+        File source = new File(TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
         List<MgrSyncChannelFamily> data = persister.read(
                 MgrSyncChannelFamilies.class, source).getFamilies();
         SUSEProductTestUtils.deleteIfTempFile(source);
@@ -81,7 +82,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     private List<MgrSyncUpgradePath> readUpgradePaths() throws Exception {
-        File source = SUSEProductTestUtils.getTestFile(UPGRADE_PATHS_XML);
+        File source = new File(TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         List<MgrSyncUpgradePath> data = persister.read(
                 MgrSyncUpgradePaths.class, source).getPaths();
         SUSEProductTestUtils.deleteIfTempFile(source);
