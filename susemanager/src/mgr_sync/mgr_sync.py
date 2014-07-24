@@ -64,46 +64,48 @@ class MgrSync(object):
         """
         Refresh the SCC data in the SUSE Manager database.
         """
-        self.cli_call("Channels             ", "synchronizeChannels")
-        self.cli_call("Channel families     ", "synchronizeChannelFamilies")
-        self.cli_call("SUSE products        ", "synchronizeProducts")
-        self.cli_call("SUSE Product channels", "synchronizeProductChannels")
-        self.cli_call("Subscriptions        ", "synchronizeSubscriptions")
-        self.cli_call("Upgrade paths        ", "synchronizeUpgradePaths")
 
-    def cli_call(self, message, method, retry=False):
-        """
-        Do nothing if the quiet flag is active.
-        """
-        failure = None
-        token = self.auth.token
-        if not self.quiet:
-            sys.stdout.write(message + "\t")
+        actions = (
+            ("Channels             ", "synchronizeChannels"),
+            ("Channel families     ", "synchronizeChannelFamilies"),
+            ("SUSE products        ", "synchronizeProducts"),
+            ("SUSE Product channels", "synchronizeProductChannels"),
+            ("Subscriptions        ", "synchronizeSubscriptions"),
+            ("Upgrade paths        ", "synchronizeUpgradePaths")
+        )
+
+        for action in actions:
+            operation = action[0]
+            method = action[1]
+            sys.stdout.write("Refreshing %s\t" % operation)
             sys.stdout.flush()
+            try:
+                self._execute_xmlrpc_method(method=method)
+                sys.stdout.write("[DONE]\n")
+                sys.stdout.flush()
+            except Exception, ex:
+                sys.stdout.write("[FAIL]\n")
+                sys.stdout.flush()
+                sys.stderr.write("\tError: %s\n\n" % ex)
+                sys.exit(1)
 
-        result = None
+    def _execute_xmlrpc_method(self, method, retry_on_session_failure=True):
+        """
+        Invokes the remote method specified by the user. Repeats the operation
+        once if there's a failure caused by the expiration of the sessions
+        token.
+
+        Retry on token expiration happens only when the
+        'retry_on_session_failure' parameter is set to True.
+        """
         try:
-            result = getattr(self.conn.sync.content, method)(token)
-            message = "Done"
+            getattr(self.conn.sync.content, method)(self.auth.token)
         except Exception, ex:
-            failure = ex
-            if self._check_session_fail(ex):
-                if not retry:
-                    if not self.quiet:
-                        sys.stdout.write("Retrying\n")
-                    self.auth.discard_token()
-                    self.cli_call(message, method, retry=True)
-            message = "Failed"
-
-        if not self.quiet:
-            sys.stdout.write(message + "\n")
-
-        sys.stdout.flush()
-
-        if failure:
-            sys.stderr.write("\tError: %s\n\n" % failure)
-
-        return result
+            if self._check_session_fail(ex) and retry_on_session_failure:
+                self.auth.discard_token()
+                self._execute_xmlrpc_method(method, retry_on_session_failure=False)
+            else:
+                raise ex
 
     def run(self, options, attempted=False):
         """
