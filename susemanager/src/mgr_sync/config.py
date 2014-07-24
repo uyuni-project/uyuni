@@ -17,11 +17,10 @@ import os
 import socket
 from configobj import ConfigObj
 
-_CONFIG = None
 
-class Config:
+class Config(object):
     """
-    Config constants and processing.
+    Handle mgr-sync settings.
     """
 
     # Configuration location
@@ -41,42 +40,80 @@ class Config:
 
     def __init__(self):
         # Default configuration, if not specified otherwise
-        self.config = ConfigObj()
-        self.config[Config.USER] = None
-        self.config[Config.PASSWORD] = None,
-        self.config[Config.HOST] = socket.getfqdn()
-        self.config[Config.PORT] = 80
-        self.config[Config.URI] = "/rpc/api"
-        self.config[Config.TOKEN] = None
+        self._config = ConfigObj()
+        self._config[Config.USER] = None
+        self._config[Config.PASSWORD] = None,
+        self._config[Config.HOST] = socket.getfqdn()
+        self._config[Config.PORT] = 80
+        self._config[Config.URI] = "/rpc/api"
+        self._config[Config.TOKEN] = None
+        self._parse_config()
 
+    def write(self):
+        """
+        Write the configuration to the local file defined by Config.DOTFILE
+        """
 
-    @staticmethod
-    def get_config():
+        self._config.write()
+
+    def _parse_config(self):
         """
         Get the configuration or place defaults.
         """
-        global _CONFIG
-        if _CONFIG:
-            return _CONFIG
-
-        cfg = Config()
 
         # Read /etc/rhn/rhn.conf if any
-        if os.path.exists(Config.RHN) and os.access(Config.RHNFILE, os.R_OK):
-            cfg.config.merge(ConfigObj(Config.RHNFILE))
+        if os.access(Config.RHNFILE, os.R_OK):
+            self._config.merge(ConfigObj(Config.RHNFILE))
 
         # Read ~/.mgr-sync if any and override
-        if os.path.exists(Config.DOTFILE) and os.access(Config.DOTFILE, os.R_OK):
-            cfg.config.merge(ConfigObj(Config.DOTFILE))
+        if os.access(Config.DOTFILE, os.R_OK):
+            self._config.merge(ConfigObj(Config.DOTFILE))
 
         # Remove unnesessary items
-        for key in cfg.config.keys():
+        for key in self._config.keys():
             if not key.startswith(Config.K_PREF):
-                del cfg.config[key]
+                del self._config[key]
 
         # Write to local
-        cfg.config.filename = Config.DOTFILE
+        self._config.filename = Config.DOTFILE
 
-        # Do it all once per runtime
-        _CONFIG = cfg.config
-        return _CONFIG
+    @property
+    def user(self):
+        return self._config[Config.USER]
+
+    @user.setter  # pylint: disable=E1101
+    def user(self, value):  # pylint: disable=E0102
+        self._config[Config.USER] = value
+
+    @property
+    def password(self):
+        return self._config[Config.PASSWORD]
+
+    @password.setter  # pylint: disable=E1101
+    def password(self, value):  # pylint: disable=E0102
+        self._config[Config.PASSWORD] = value
+
+    @property
+    def host(self):
+        return self._config[Config.HOST]
+
+    @property
+    def port(self):
+        return self._config[Config.PORT]
+
+    @property
+    def uri(self):
+        return self._config[Config.URI]
+
+    @property
+    def token(self):
+        return self._config[Config.TOKEN]
+
+    @token.setter  # pylint: disable=E1101
+    def token(self, value):  # pylint: disable=E0102
+        self._config[Config.TOKEN] = value
+
+    @property
+    def dotfile(self):
+        return Config.DOTFILE
+

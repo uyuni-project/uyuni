@@ -27,12 +27,13 @@ class MgrSync(object):
     App, which utilizes the XML-RPC API.
     """
 
-    def __init__(self, config):
-        url = "http://%s:%s%s" % (config[Config.HOST],
-                                  config[Config.PORT],
-                                  config[Config.URI])
+    def __init__(self):
+        self.config = Config()
+        url = "http://%s:%s%s" % (self.config.host,
+                                  self.config.port,
+                                  self.config.uri)
         self.conn = xmlrpclib.ServerProxy(url)
-        self.auth = Authenticator(self.conn, config)
+        self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
     def _addProduct(self):

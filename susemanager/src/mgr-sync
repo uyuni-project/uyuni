@@ -20,7 +20,6 @@ import optparse
 
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync.helpers import cli_msg
-from spacewalk.susemanager.mgr_sync.config import Config
 
 
 def get_options():
@@ -77,7 +76,7 @@ options.addchannel = False
 options.allchilds = False
 
 try:
-    MgrSync(Config.get_config()).run(options)
+    MgrSync().run(options)
 except socket.error, ex:
     cli_msg("Network error: %s" % ex, stderr=True)
     if options.verbose:
