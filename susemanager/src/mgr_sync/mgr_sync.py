@@ -124,9 +124,17 @@ class MgrSync(object):
         self.quiet = options.quiet
         self.auth.persist = options.saveconfig
         if options.listchannels:
-            self.format(self._listChannels(), title="Available channels")
+            channels = self._listChannels()
+            if channels:
+                self._format(channels, title="Available channels")
+            else:
+                cli_msg("No channels found.")
         elif options.listproducts:
-            self.format(self._listProducts(), title="Available products")
+            products = self._listProducts()
+            if products:
+                self._format(products, title="Available products")
+            else:
+                cli_msg("No products found.")
         elif options.addproduct:
             self._addProduct()
         elif options.addchannel:
@@ -151,13 +159,10 @@ class MgrSync(object):
 
         return False
 
-    def format(self, data, title=""):
+    def _format(self, data, title=""):
         """
         Format the output.
         """
-        if not data:
-            cli_msg("No products found.")
-            sys.exit(1)
 
         if data[0].has_key('extensions'):
             self._format_tree(data)
