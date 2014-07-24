@@ -577,11 +577,13 @@ wrapper.java.classpath.67=/usr/share/java/javassist.jar
 wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar
 wrapper.java.classpath.69=/usr/share/java/hibernate-jpa-2.0-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
-echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %if 0%{suse_version}
+echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.62=/usr/share/java/slf4j/api.jar
 wrapper.java.classpath.63=/usr/share/java/slf4j/jcl.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%else
+echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 %endif
 %endif
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
