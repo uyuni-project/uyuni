@@ -8,8 +8,8 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
+ * SUSE trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate SUSE trademarks that are incorporated
  * in this software or its documentation.
  */
 
@@ -73,22 +73,6 @@ public class ContentSyncHandler extends BaseHandler {
         return BaseHandler.VALID;
     }
 
-    private Object checkNull(Object value) {
-        return value == null ? "" : value;
-    }
-
-    private Map<String, Object> serializeProduct(SCCProduct product) {
-        Map<String, Object> p = new HashMap<String, Object>();
-        p.put("name", this.checkNull(product.getName()));
-        p.put("label", this.checkNull(product.getIdentifier()));
-        p.put("version", this.checkNull(product.getVersion()));
-        p.put("release", this.checkNull(product.getReleaseType()));
-        p.put("arch", this.checkNull(product.getArch()));
-        p.put("title", this.checkNull(product.getFriendlyName()));
-        p.put("description", this.checkNull(product.getDescription()));
-        p.put("status", "available"); // XXX: Status should be somehow determined.
-        return p;
-    }
 
     /**
      * List all products that are accessible to the organization.
@@ -99,47 +83,12 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all products that are accessible to the organization.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                      #struct("entry")
-     *                        #prop_desc("string", "name", "Name of the product")
-     *                        #prop_desc("string", "label", "Label of the product (identifier)")
-     *                        #prop_desc("string", "version", "Version")
-     *                        #prop_desc("string", "release", "Release type")
-     *                        #prop_desc("string", "arch", "Architecture")
-     *                        #prop_desc("string", "title", "Title (friendly name)")
-     *                        #prop_desc("string", "description", "Description")
-     *                        #prop_desc("string", "status", "Available, unavailable or installed")
-     *                      #struct_end()
-     *                      #array()
-     *                        #struct("extensions")
-     *                          #prop_desc("string", "name", "Extension name")
-     *                          #prop_desc("string", "label", "Extension label")
-     *                          #prop_desc("string", "version", "Version")
-     *                          #prop_desc("string", "release", "Type of the release.")
-     *                          #prop_desc("string", "arch", "Architecture")
-     *                          #prop_desc("string", "title", "Title (friendly name)")
-     *                          #prop_desc("string", "description", "Description")
-     *                          #prop_desc("string", "status", "Available, unavailable or installed")
-     *                        #struct_end()
-     *                      #array_end()
+     *                       $SCCProductSerializer
      *                    #array_end()
      */
-    public List<Map<String, Object>> listProducts(String sessionKey) {
+    public Object[] listProducts(String sessionKey) {
         User user = BaseHandler.getLoggedInUser(sessionKey);
-        List<Map<String, Object>> serializedProducts = new ArrayList<Map<String, Object>>();
-        Collection<SCCProduct> items = new ContentSyncManager().getProducts();
-        Iterator<SCCProduct> baseItemsIter = items.iterator();
-        while (baseItemsIter.hasNext()) {
-            SCCProduct product = baseItemsIter.next();
-            Map<String, Object> serializedProduct = this.serializeProduct(product);
-            List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
-            for (SCCProduct ext : product.getExtensions()) {
-                extensions.add(this.serializeProduct(ext));
-            }
-            serializedProduct.put("extensions", extensions);
-            serializedProducts.add(serializedProduct);
-        }
-
-        return serializedProducts;
+        return new ContentSyncManager().getProducts().toArray();
     }
 
 
