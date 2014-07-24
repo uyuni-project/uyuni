@@ -13,8 +13,7 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-import getpass
-from helpers import cli_msg
+from helpers import cli_msg, cli_ask
 
 
 class Authenticator(object):
@@ -65,18 +64,7 @@ class Authenticator(object):
         """
 
         print "SUSE Manager needs you to login as an administrator."
-        self.uid = self._ask_cli("    User")
-        self.password = self._ask_cli("Password", password=True)
+        self.uid = cli_ask("    User")
+        self.password = cli_ask("Password", password=True)
 
-    def _ask_cli(self, msg, password=False):
-        """
-        Ask input from the console. Hide the echo, in case of password or
-        sensitive information.
-        """
-
-        msg += ": "
-        value = None
-        while not value:
-            value = (password and getpass.getpass(msg) or raw_input(msg))
-        return value
 
