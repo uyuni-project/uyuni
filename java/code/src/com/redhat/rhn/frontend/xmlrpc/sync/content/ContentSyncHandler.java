@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -43,7 +42,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer addProduct(String sessionKey, String name) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        BaseHandler.getLoggedInUser(sessionKey);
         System.err.println("Added product: " + name);
 
         return BaseHandler.VALID;
@@ -63,7 +62,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer addChannel(String sessionKey, String label) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        BaseHandler.getLoggedInUser(sessionKey);
         System.err.println("Added channel: " + label);
 
         return BaseHandler.VALID;
@@ -83,7 +82,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                    #array_end()
      */
     public Object[] listProducts(String sessionKey) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        BaseHandler.getLoggedInUser(sessionKey);
         return new ContentSyncManager().getProducts().toArray();
     }
 
@@ -129,7 +128,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                    #array_end()
      */
     public List<Map<String, Object>> listChannelExtensions(String sessionKey, String label) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        BaseHandler.getLoggedInUser(sessionKey);
         List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
 
         // Some bogus data that looks like real.
