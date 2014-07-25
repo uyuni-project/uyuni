@@ -20,12 +20,8 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
-import com.suse.scc.model.SCCProduct;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -101,29 +97,12 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all channels that are accessible to the organization.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                      #struct("entry")
-     *                        #prop_desc("string", "name", "The name of the channel")
-     *                        #prop_desc("string", "target", "Distribution target")
-     *                        #prop_desc("string", "description", "Description of the channel")
-     *                        #prop_desc("string", "url", "URL of the repository")
-     *                      #struct_end()
+     *                       $MgrSyncChannelSerializer
      *                    #array_end()
      */
-    public List<Map<String, Object>> listChannels(String sessionKey) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
-        List<Map<String, Object>> channels = new ArrayList<Map<String, Object>>();
-
-        // Some bogus data that looks like real.
-        for (int i = 0; i < 10; i++) {
-            Map<String, Object> channel = new HashMap<String, Object>();
-            channel.put("name", "SLE10-SDK-SP4-Online");
-            channel.put("target", "sles-10-i586");
-            channel.put("description", "SLE10-SDK-SP4-Online for sles-10-i586");
-            channel.put("url", "https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586");
-            channels.add(channel);
-        }
-
-        return channels;
+    public Object[] listChannels(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        return new ContentSyncManager().listChannels().toArray();
     }
 
 
