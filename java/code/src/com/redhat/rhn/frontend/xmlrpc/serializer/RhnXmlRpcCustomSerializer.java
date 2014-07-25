@@ -14,9 +14,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import java.io.IOException;
 import java.io.Writer;
-
+import java.util.Map;
 import redstone.xmlrpc.XmlRpcCustomSerializer;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
@@ -44,6 +45,21 @@ public abstract class RhnXmlRpcCustomSerializer implements XmlRpcCustomSerialize
             throw new XmlRpcException(
                             "ERROR IN SERIALIZER FOR " + getSupportedClass().getName(), e);
         }
+    }
+
+    /**
+     * Turn {@link Map} into {@link XmlRpcSerializer}.
+     * @param data Map with data.
+     * @param serializer Current serializer.
+     * @return {@link XmlRpcSerializer}
+     */
+    public SerializerHelper serializeMap(Map<String, Object> data,
+                                         XmlRpcSerializer serializer) {
+        SerializerHelper helper = new SerializerHelper(serializer);
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            helper.add(entry.getKey(), entry.getValue());
+        }
+        return helper;
     }
 
     /**
