@@ -229,10 +229,19 @@ public class KickstartUrlHelper {
      * /ks/dist/ks-rhel-i386-as-4-u2
      */
     public String getKickstartMediaPath() {
-        // /kickstart/dist/ks-rhel-i386-as-4-u2
+        // /ks/dist/ks-rhel-i386-as-4-u2
+        // or /ks/dist/org/1/my-ks-tree-label
         StringBuilder file = new StringBuilder();
         file.append(KS_DIST);
         file.append("/");
+
+        // check for custom distros
+        if (this.ksTree.getOrgId() != null) {
+           file.append("org/");
+           file.append(this.ksTree.getOrgId());
+           file.append("/");
+        }
+
         file.append(this.ksTree.getLabel());
         return file.toString();
     }

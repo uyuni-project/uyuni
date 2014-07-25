@@ -67,10 +67,7 @@ class SQLConnectError(SQLError):
         self.db = db
         self.errno = errno
         self.errmsg = errmsg
-        if len(args):
-            apply(SQLError.__init__, (self, errno, errmsg, db) + args)
-        else:
-            SQLError.__init__(self, errno, errmsg, db)
+        SQLError.__init__(self, errno, errmsg, db, *args)
 
 
 # Cannot prepare statement
@@ -78,7 +75,7 @@ class SQLStatementPrepareError(SQLError):
     def __init__(self, db, errmsg, *args):
         self.db = db
         self.errmsg = errmsg
-        apply(SQLError.__init__, (self, errmsg, db) + args)
+        SQLError.__init__(self, errmsg, db, *args)
 
 
 class ModifiedRowError(SQLError):

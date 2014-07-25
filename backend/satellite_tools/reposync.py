@@ -1,4 +1,4 @@
-#
+gitk#
 # Copyright (c) 2008--2012 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
@@ -71,13 +71,13 @@ class ChannelTimeoutException(ChannelException):
 
 class RepoSync(object):
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, noninteractive=False, filters=[],
+                 quiet=False, noninteractive=False, filters=None,
                  deep_verify=False, no_errata=False, sync_kickstart = False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
         self.interactive = not noninteractive
-        self.filters = filters
+        self.filters = filters or []
         self.deep_verify = deep_verify
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
@@ -132,6 +132,7 @@ class RepoSync(object):
 
         self.arches = get_compatible_arches(int(self.channel['id']))
 
+    @staticmethod
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
 
@@ -160,6 +161,7 @@ class RepoSync(object):
             if data['metadata_signed'] == 'N':
                 insecure = True
             plugin = None
+            # pylint: disable=W0703
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
@@ -295,7 +297,7 @@ class RepoSync(object):
                     relativepath = relativepath.rstrip(suffix)
             src = fileutils.decompress_open(groupsfile)
             dst = open(abspath, "w")
-            shutil.copyfileobj(src,dst)
+            shutil.copyfileobj(src, dst)
             dst.close()
             src.close()
             # update or insert
@@ -901,6 +903,7 @@ class RepoSync(object):
         package['package_id'] = cs['id']
         return package
 
+
     def import_packages(self, plug, source_id, url):
         if (not self.filters) and source_id:
             h = rhnSQL.prepare("""
@@ -910,7 +913,7 @@ class RepoSync(object):
                      order by sort_order """)
             h.execute(source_id = source_id)
             filter_data = h.fetchall_dict() or []
-            filters = [(row['flag'], re.split('[,\s]+', row['filter']))
+            filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
                                                          for row in filter_data]
         else:
             filters = self.filters
@@ -968,7 +971,7 @@ class RepoSync(object):
                                                   (num_passed - num_to_process))
             self.print_msg("Packages to sync:             %5d" % num_to_process)
 
-        self.regen=True
+        self.regen = True
         is_non_local_repo = (url.find("file://") < 0)
 
         def finally_remove(path):
@@ -979,7 +982,7 @@ class RepoSync(object):
         for (index, what) in enumerate(to_process):
             pack, to_download, to_link = what
             localpath = None
-
+            # pylint: disable=W0703
             try:
                 self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
                 if to_download:
@@ -1004,6 +1007,7 @@ class RepoSync(object):
                 continue
             pack.clear_header()
 
+    @staticmethod
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
 
@@ -1085,6 +1089,7 @@ class RepoSync(object):
         if not self.quiet:
             sys.stderr.write(str(message) + "\n")
 
+    @staticmethod
     def log_msg(self, message):
         rhnLog.log_clean(0, message)
 
@@ -1094,6 +1099,7 @@ class RepoSync(object):
         if isinstance(to, type([])):
             fr = to[0].strip()
             to = ', '.join([s.strip() for s in to])
+        # pylint: disable=W0212
 
         headers = {
             "Subject" : "SUSE Manager repository sync failed (%s)" % hostname,
@@ -1169,7 +1175,7 @@ class RepoSync(object):
 
         rhnSQL.commit()
 
-
+@staticmethod
 def get_errata(update_id):
     """ Return an Errata dict
 
