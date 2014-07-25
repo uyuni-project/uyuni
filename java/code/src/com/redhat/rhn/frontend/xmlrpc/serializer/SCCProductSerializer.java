@@ -15,14 +15,16 @@
 
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
+import com.redhat.rhn.frontend.xmlrpc.serializer.util.NoNullHashMap;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.suse.scc.model.SCCProduct;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -60,29 +62,16 @@ public class SCCProductSerializer extends RhnXmlRpcCustomSerializer {
         return SCCProduct.class;
     }
 
-    private Object checkNull(Object value) {
-        return value == null ? "" : value;
-    }
-
     private Map<String, Object> serializeProduct(SCCProduct product) {
-        Map<String, Object> p = new HashMap<String, Object>();
-        p.put("name", this.checkNull(product.getName()));
-        p.put("label", this.checkNull(product.getIdentifier()));
-        p.put("version", this.checkNull(product.getVersion()));
-        p.put("release", this.checkNull(product.getReleaseType()));
-        p.put("arch", this.checkNull(product.getArch()));
-        p.put("title", this.checkNull(product.getFriendlyName()));
-        p.put("description", this.checkNull(product.getDescription()));
+        Map<String, Object> p = new NoNullHashMap<String, Object>();
+        p.put("name", product.getName());
+        p.put("label", product.getIdentifier());
+        p.put("version", product.getVersion());
+        p.put("release", product.getReleaseType());
+        p.put("arch", product.getArch());
+        p.put("title", product.getFriendlyName());
+        p.put("description", product.getDescription());
         p.put("status", "available"); // XXX: Status should be somehow determined.
-        return p;
-    }
-
-    private SerializerHelper toSerializer(Map<String, Object> data,
-                                          XmlRpcSerializer serializer) {
-        SerializerHelper p = new SerializerHelper(serializer);
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            p.add(entry.getKey(), entry.getValue());
-        }
 
         return p;
     }
@@ -91,14 +80,13 @@ public class SCCProductSerializer extends RhnXmlRpcCustomSerializer {
     protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
         SCCProduct product = (SCCProduct) obj;
-        SerializerHelper helper = this.toSerializer(this.serializeProduct(product),
-                                                    serializer);
+        SerializerHelper hlp = this.serializeMap(this.serializeProduct(product), serializer);
         List<Map<String, Object>> extensions = new ArrayList<Map<String, Object>>();
         for (SCCProduct ext : product.getExtensions()) {
             extensions.add(this.serializeProduct(ext));
         }
 
-        helper.add("extensions", extensions);
-        helper.writeTo(writer);
+        hlp.add("extensions", extensions);
+        hlp.writeTo(writer);
     }
 }
