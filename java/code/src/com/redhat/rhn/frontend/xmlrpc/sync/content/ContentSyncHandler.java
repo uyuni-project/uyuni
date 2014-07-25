@@ -90,8 +90,9 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * List all channels that are accessible to the organization.
      *
-     * @param sessionKey Session token.
+     * @param sessionKey Session Key
      * @return List of channels.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      *
      * @xmlrpc.doc List all channels that are accessible to the organization.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
@@ -118,7 +119,8 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #array()
      *                      #struct("addon")
      *                        #prop_desc("string", "name", "Name of the product")
-     *                        #prop_desc("string", "label", "Label of the product (identifier)")
+     *                        #prop_desc("string", "label",
+     *                                             "Label of the product (identifier)")
      *                        #prop_desc("string", "version", "Version")
      *                        #prop_desc("string", "release", "Release type")
      *                        #prop_desc("string", "arch", "Architecture")
@@ -154,6 +156,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize channels between the Customer Center
@@ -175,6 +178,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize channel families between the Customer Center
@@ -197,6 +201,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize SUSE products between the Customer Center
@@ -219,6 +224,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize SUSE product channels between the Customer Center
@@ -242,6 +248,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize upgrade paths between the Customer Center
@@ -263,6 +270,7 @@ public class ContentSyncHandler extends BaseHandler {
      * This method is one step of the whole refresh cycle.
      *
      * @param sessionKey User session token.
+     * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Synchronize subscriptions between the Customer Center
