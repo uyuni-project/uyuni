@@ -710,9 +710,11 @@ public class ContentSyncManager {
 
     /**
      * Return the list of available channels with their status.
+     * @param repos list of repos from SCC to match against
      * @return list of channels
      */
-    public List<MgrSyncChannel> listChannels() throws ContentSyncException {
+    public List<MgrSyncChannel> listChannels(Collection<SCCRepository> repositories)
+            throws ContentSyncException {
         // This list will be returned
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
 
@@ -725,17 +727,44 @@ public class ContentSyncManager {
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
-            // TODO: UNAVAILABLE, see is_mirrorable()
             if (installedChannelLabels.contains(c.getLabel())) {
                 c.setStatus(MgrSyncChannelStatus.INSTALLED);
             }
-            else {
+            else if (isMirrorable(c, repositories)) {
                 c.setStatus(MgrSyncChannelStatus.AVAILABLE);
+            }
+            else {
+                c.setStatus(MgrSyncChannelStatus.UNAVAILABLE);
             }
             channels.add(c);
         }
 
         return channels;
+    }
+
+    /**
+     * For a given channel, check if it is mirrorable.
+     * @param repos list of repos from SCC to match against
+     * @return true if channel is mirrorable, false otherwise
+     */
+    public boolean isMirrorable(MgrSyncChannel channel, Collection<SCCRepository> repos) {
+        // No source URL means it's mirrorable
+        String sourceUrl = channel.getSourceUrl();
+        if (StringUtils.isBlank(sourceUrl)) {
+            return true;
+        }
+
+        // Match the repo source URLs against URLs we got from SCC
+        boolean mirrorable = false;
+        for (SCCRepository repo : repos) {
+            if (sourceUrl.equals(repo.getUrl())) {
+                mirrorable = true;
+                break;
+            }
+        }
+
+        // TODO: Is it necessary to verify external URLs by sending HEAD requests?
+        return mirrorable;
     }
 
     /**
