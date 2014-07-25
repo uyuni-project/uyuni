@@ -1,4 +1,4 @@
-gitk#
+#
 # Copyright (c) 2008--2012 Red Hat, Inc.
 # Copyright (c) 2010--2011 SUSE Linux Products GmbH
 #
