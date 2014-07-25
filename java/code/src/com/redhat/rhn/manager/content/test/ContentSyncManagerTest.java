@@ -40,9 +40,13 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
+import com.suse.mgrsync.MgrSyncChannelStatus;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -542,6 +546,47 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(upgradePathsXML);
+        }
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#listChannels()}
+     * TODO: Check also for a channel that is INSTALLED
+     */
+    public void testListChannels() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
+        try {
+            // Match against a manually created list of SCC repositories
+            SCCRepository repo = new SCCRepository();
+            String sourceUrl = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/";
+            repo.setUrl(sourceUrl);
+            List<SCCRepository> repos = new ArrayList<SCCRepository>();
+            repos.add(repo);
+
+            // Temporarily clear all installed vendor channels labels (if any)
+            for (Channel c : ChannelFactory.listVendorChannels()) {
+                c.setLabel(TestUtils.randomString());
+                TestUtils.saveAndFlush(c);
+            }
+
+            // List those channels and verify status
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setChannelsXML(channelsXML);
+            List<MgrSyncChannel> channels = csm.listChannels(repos);
+            for (MgrSyncChannel c : channels) {
+                if (StringUtils.isBlank(c.getSourceUrl())) {
+                    assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
+                }
+                else if (sourceUrl.equals(c.getSourceUrl())) {
+                    assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
+                }
+                else {
+                    assertEquals(MgrSyncChannelStatus.UNAVAILABLE, c.getStatus());
+                }
+            }
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
     }
 
