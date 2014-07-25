@@ -18,10 +18,9 @@ import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import java.util.ArrayList;
+import com.redhat.rhn.manager.content.ContentSyncException;
+
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Test case for the ContentSyncHandler XML-RPC API.
@@ -65,10 +64,11 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
     /**
      * Test listing channels.
      */
-    public void testListChannels() {
-        List<Map<String, Object>> channels = this.csh.listChannels(this.adminKey);
+    public void testListChannels() throws ContentSyncException {
+        Object[] channels = this.csh.listChannels(this.adminKey);
+
         BaseHandlerTestCase.assertNotNull(channels);
-        BaseHandlerTestCase.assertNotEmpty(channels);
+        BaseHandlerTestCase.assertNotEmpty(Arrays.asList(channels));
     }
 
     /**
@@ -100,7 +100,7 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
     /**
      * Test to capture wrong authentication token on channel listing.
      */
-    public void testListChannelsAuth() {
+    public void testListChannelsAuth() throws ContentSyncException {
         try {
             this.csh.listChannels(this.invalidAuthKey);
             ContentSyncHandlerTest.fail("Expected an exception of type " +
