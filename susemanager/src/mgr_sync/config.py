@@ -41,12 +41,12 @@ class Config(object):
     def __init__(self):
         # Default configuration, if not specified otherwise
         self._config = ConfigObj()
-        self._config[Config.USER] = None
-        self._config[Config.PASSWORD] = None,
+        self._config[Config.USER] = ''
+        self._config[Config.PASSWORD] = ''
         self._config[Config.HOST] = socket.getfqdn()
         self._config[Config.PORT] = 80
         self._config[Config.URI] = "/rpc/api"
-        self._config[Config.TOKEN] = None
+        self._config[Config.TOKEN] = ''
         self._parse_config()
 
     def write(self):
