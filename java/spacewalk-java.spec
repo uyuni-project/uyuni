@@ -581,7 +581,8 @@ echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/
 %if 0%{suse_version}
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.62=/usr/share/java/slf4j/api.jar
-wrapper.java.classpath.63=/usr/share/java/slf4j/jcl.jar" >> conf/default/rhn_taskomatic_daemon.conf
+wrapper.java.classpath.63=/usr/share/java/slf4j/jcl.jar
+wrapper.java.classpath.64=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 %endif
