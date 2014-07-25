@@ -48,6 +48,8 @@ sed -i '/disable=/ s/\(,C1001\|,W0121\)//g;' \
         %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
 %endif
 %if 0%{?suse_version} != 1010
+sed -i '/disable=/ s/\(,bad-whitespace\|,unpacking-non-sequence\|,superfluous-parens\|,C1001\|,W0121\)//g;' \
+        %{buildroot}%{_sysconfdir}/spacewalk-pylint.rc
 mkdir -p %{buildroot}/%{_mandir}/man8
 install -m 644 spacewalk-pylint.8 %{buildroot}/%{_mandir}/man8
 %endif
