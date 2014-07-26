@@ -1173,7 +1173,6 @@ class RepoSync(object):
 
         rhnSQL.commit()
 
-@staticmethod
 def get_errata(update_id):
     """ Return an Errata dict
 
