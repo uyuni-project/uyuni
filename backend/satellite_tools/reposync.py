@@ -132,7 +132,6 @@ class RepoSync(object):
 
         self.arches = get_compatible_arches(int(self.channel['id']))
 
-    @staticmethod
     def load_plugin(self, repo_type):
         """Try to import the repository plugin required to sync the repository
 
@@ -1007,7 +1006,6 @@ class RepoSync(object):
                 continue
             pack.clear_header()
 
-    @staticmethod
     def match_package_checksum(self, md_pack, db_pack):
         """compare package checksum"""
 
@@ -1090,7 +1088,7 @@ class RepoSync(object):
             sys.stderr.write(str(message) + "\n")
 
     @staticmethod
-    def log_msg(self, message):
+    def log_msg(message):
         rhnLog.log_clean(0, message)
 
     def sendErrorMail(self, body):
