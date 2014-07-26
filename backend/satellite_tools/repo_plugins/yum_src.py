@@ -290,7 +290,7 @@ class ContentSource:
         return pkg.verifyLocalPkg()
 
     @staticmethod
-    def _clean_cache(self, directory):
+    def _clean_cache(directory):
         shutil.rmtree(directory, True)
 
     def get_products(self):
