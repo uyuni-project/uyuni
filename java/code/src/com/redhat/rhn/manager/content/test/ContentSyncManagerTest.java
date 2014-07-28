@@ -51,6 +51,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -604,22 +605,68 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
      * Tests getProducts().
      * @throws Exception if anything goes wrong
      */
-    public void testGetProducts() throws Exception {
-        ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
-        SUSEProduct testProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-        TestUtils.saveAndFlush(testProduct);
+    public void testGetAvailableProducts() throws Exception {
+        // create one available product in the DB
+        Channel availableDBChannel = SUSEProductTestUtils.createTestVendorChannel();
+        ChannelFamily availableChannelFamily = availableDBChannel.getChannelFamily();
+        availableChannelFamily.setOrg(null);
+        final SUSEProduct availableDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(availableChannelFamily);
+
+        // create one available product in channel.xml format
+        final MgrSyncChannel availableChannel = new MgrSyncChannel();
+        availableChannel.setFamily(availableChannelFamily.getLabel());
+        availableChannel.setLabel(TestUtils.randomString());
+        availableChannel.setParent("BASE");
+        final MgrSyncProduct availableProduct =
+                new MgrSyncProduct(availableDBProduct.getName(),
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
+        availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+                { { add(availableProduct); } });
+
+        // create one unavailable product in the DB
+        Channel unavailableDBChannel = SUSEProductTestUtils.createTestVendorChannel();
+        ChannelFamily unavailableChannelFamily = unavailableDBChannel.getChannelFamily();
+        unavailableChannelFamily.setOrg(null);
+        for (PrivateChannelFamily pcf : unavailableChannelFamily
+                .getPrivateChannelFamilies()) {
+            pcf.setMaxFlex(0L);
+            pcf.setMaxMembers(0L);
+        }
+        final SUSEProduct unavailableDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(unavailableChannelFamily);
+
+        // create one unavailable product in channel.xml format
+        final MgrSyncChannel unavailableChannel = new MgrSyncChannel();
+        unavailableChannel.setFamily(unavailableChannelFamily.getLabel());
+        unavailableChannel.setLabel(TestUtils.randomString());
+        unavailableChannel.setParent(TestUtils.randomString());
+        final MgrSyncProduct unavailableProduct =
+                new MgrSyncProduct(unavailableDBProduct.getName(),
+                        unavailableDBProduct.getProductId(),
+                        unavailableDBProduct.getVersion());
+        unavailableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+                { { add(unavailableProduct); } });
+
+
+        List<MgrSyncChannel> allChannels = new LinkedList<MgrSyncChannel>()
+            { { add(availableChannel); add(unavailableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<SUSEProduct> products = csm.getProducts();
+        Collection<MgrSyncProduct> products = csm.getAvailableProducts(allChannels);
 
         boolean found = false;
-        for (SUSEProduct product : products) {
-            if (product.getName().equals(testProduct.getName())) {
+        for (MgrSyncProduct product : products) {
+            if (product.getName().equals(availableDBProduct.getName())) {
                 found = true;
+            }
+            if (product.getName().equals(unavailableDBProduct.getName())) {
+                fail("Unavailable product returned.");
             }
         }
 
         assertTrue(found);
+
     }
 
     /**
