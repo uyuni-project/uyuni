@@ -487,15 +487,43 @@ if [ $USING_SSL -eq 1 ] ; then
         mv ${ORG_CA_CERT} /usr/share/rhn/
     fi
     if [ "$INSTALLER" == zypper ] ; then
-	if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-	  # get name from config
-	  ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
-	fi
-	test -e "/etc/ssl/certs/${ORG_CA_CERT}.pem" || {
-	  test -d "/etc/ssl/certs" || mkdir -p "/etc/ssl/certs"
-	  ln -s "/usr/share/rhn/${ORG_CA_CERT}" "/etc/ssl/certs/${ORG_CA_CERT}.pem"
-	}
-	test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
+      function suseVersion() {
+        rpm --eval "%{suse_version}"
+      }
+
+      function sslCertDir() {
+        if [[ $(suseVersion) -ge 1315 ]]; then
+          echo "/etc/pki/trust/anchors"
+        else
+          echo "/etc/ssl/certs"
+        fi
+      }
+
+      function targetCertPath() {
+        echo "$(sslCertDir)/${ORG_CA_CERT}.pem"
+      }
+
+      function updateCertificates() {
+        if [[ $(suseVersion) -ge 1315 ]]; then
+          test -x /usr/sbin/update-ca-certificates && /usr/sbin/update-ca-certificates
+        else
+          test -x /usr/bin/c_rehash && /usr/bin/c_rehash /etc/ssl/certs/ | grep "${ORG_CA_CERT}"
+        fi
+      }
+
+      function symlinkCertificate() {
+        if [  $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
+          # get name from config
+          ORG_CA_CERT=$(basename $(sed -n 's/^sslCACert *= *//p' "${CLIENT_OVERRIDES}"))
+        fi
+        test -e "$(targetCertPath)" || {
+          test -d $(sslCertDir) || mkdir -p $(sslCertDir)
+          ln -s "/usr/share/rhn/${ORG_CA_CERT}" "$(targetCertPath)"
+        }
+      }
+
+      symlinkCertificate
+      updateCertificates
     fi
 else
     echo "* configured not to use SSL: don't install corporate public CA cert"
