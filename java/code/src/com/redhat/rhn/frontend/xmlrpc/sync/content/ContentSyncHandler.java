@@ -213,7 +213,7 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeProducts(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSUSEProducts(csm.getProductsFromSCC());
+        csm.updateSUSEProducts(csm.getProducts());
 
         return BaseHandler.VALID;
     }

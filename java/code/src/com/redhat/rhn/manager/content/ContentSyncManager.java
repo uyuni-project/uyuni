@@ -194,7 +194,7 @@ public class ContentSyncManager {
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
-    public Collection<SCCProduct> getProductsFromSCC() {
+    public Collection<SCCProduct> getProducts() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
         List<MirrorCredentialsDto> credentials =
                 new MirrorCredentialsManager().findMirrorCredentials();
