@@ -190,6 +190,9 @@ else
         else
             FETCH="/usr/bin/curl -sSOf"
         fi
+    else
+        echo "To be able to download files, please install either 'wget' or 'curl'"
+        exit 1
     fi
 fi
 HTTP_PUB_DIRECTORY=http://${HOSTNAME}/%s
