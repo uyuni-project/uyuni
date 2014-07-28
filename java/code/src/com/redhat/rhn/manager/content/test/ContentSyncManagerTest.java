@@ -50,6 +50,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -597,6 +598,28 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
+    }
+
+    /**
+     * Tests getProducts().
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetProducts() throws Exception {
+        ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
+        SUSEProduct testProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        TestUtils.saveAndFlush(testProduct);
+
+        ContentSyncManager csm = new ContentSyncManager();
+        Collection<SUSEProduct> products = csm.getProducts();
+
+        boolean found = false;
+        for (SUSEProduct product : products) {
+            if (product.getName().equals(testProduct.getName())) {
+                found = true;
+            }
+        }
+
+        assertTrue(found);
     }
 
     /**
