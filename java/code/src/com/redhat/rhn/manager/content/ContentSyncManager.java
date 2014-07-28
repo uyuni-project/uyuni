@@ -859,16 +859,19 @@ public class ContentSyncManager {
                         uuid = line.substring(line.lastIndexOf('=') + 1);
                     }
                 }
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 log.warn("Error reading UUID: " + e.getMessage());
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 log.warn("Error reading UUID: " + e.getMessage());
             }
             finally {
                 if (reader != null) {
                     try {
                         reader.close();
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) {
                         log.warn("Error reading UUID: " + e.getMessage());
                     }
                 }
