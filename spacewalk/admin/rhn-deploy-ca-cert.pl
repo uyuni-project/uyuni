@@ -85,17 +85,17 @@ if ($ret) {
   die "Could not copy $rpm to $target_dir";
 }
 
-# on SUSE create a link to /etc/ssl/certs/ and call c_rehash
+# on SUSE create a link to /etc/pki/trust/anchors/ and call /usr/sbin/update-ca-certificates
 if ( -e '/etc/SuSE-release' )
 {
-    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/ssl/certs/OWN-SUSE-MANAGER-TRUSTED-SSL-CERT.pem");
+    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/pki/trust/anchors/OWN-SUSE-MANAGER-TRUSTED-SSL-CERT.pem");
     if ($ret) 
     {
-      print "WARNING: Could not link $target_dir/RHN-ORG-TRUSTED-SSL-CERT to /etc/ssl/certs/";
+      print "WARNING: Could not link $target_dir/RHN-ORG-TRUSTED-SSL-CERT to /etc/pki/trust/anchors/";
     }
     else
     {
-      `/usr/bin/c_rehash /etc/ssl/certs >/dev/null`;
+      `/usr/sbin/update-ca-certificates >/dev/null`;
     }
 }
 exit 0;
