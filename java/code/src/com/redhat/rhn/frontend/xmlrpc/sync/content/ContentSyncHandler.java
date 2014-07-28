@@ -102,7 +102,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Object[] listChannels(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
-        return new ContentSyncManager().listChannels().toArray();
+        ContentSyncManager csm = new ContentSyncManager();
+        return csm.listChannels(csm.getRepositories()).toArray();
     }
 
 
