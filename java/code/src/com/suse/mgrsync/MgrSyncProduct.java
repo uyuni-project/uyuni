@@ -15,6 +15,8 @@
 
 package com.suse.mgrsync;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
@@ -30,6 +32,25 @@ public class MgrSyncProduct {
     private Integer id;
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
+
+    /**
+     * Default constructor for bean compatibility.
+     */
+    public MgrSyncProduct() {
+    }
+
+    /**
+     * Standard constructor.
+     *
+     * @param nameIn the name
+     * @param idIn the id
+     * @param versionIn the version
+     */
+    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn) {
+        name = nameIn;
+        id = idIn;
+        version = versionIn;
+    }
 
     @Text
     public Integer getId() {
@@ -47,5 +68,33 @@ public class MgrSyncProduct {
 
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MgrSyncProduct)) {
+            return false;
+        }
+        MgrSyncProduct other = (MgrSyncProduct) obj;
+        return new EqualsBuilder().append(id, other.id).isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return "MgrSyncProduct [name=" + name + ", id=" + id + ", version=" + version + "]";
     }
 }

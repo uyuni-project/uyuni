@@ -49,6 +49,7 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -64,8 +65,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -226,10 +229,28 @@ public class ContentSyncManager {
 
     /**
      * Returns all products available to all configured credentials.
+     * @param allChannels list of all channels
      * @return list of all available products
+     * @throws ContentSyncException in case of an error
      */
-    public Collection<SUSEProduct> getProducts() {
-        return SUSEProductFactory.findAllSUSEProducts();
+    @SuppressWarnings("unchecked")
+    public Collection<MgrSyncProduct> getAvailableProducts(List<MgrSyncChannel> allChannels)
+        throws ContentSyncException {
+        Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
+
+        for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
+            allProducts.add(new MgrSyncProduct(product.getName(), product.getProductId(),
+                    product.getVersion()));
+        }
+
+        List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
+
+        Collection<MgrSyncProduct> availableProducts = new LinkedList<MgrSyncProduct>();
+        for (MgrSyncChannel channel : availableChannels) {
+            availableProducts.addAll(channel.getProducts());
+        }
+
+        return CollectionUtils.intersection(availableProducts, allProducts);
     }
 
     /**
