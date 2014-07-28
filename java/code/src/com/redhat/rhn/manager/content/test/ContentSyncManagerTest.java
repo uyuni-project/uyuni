@@ -550,8 +550,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Test for {@link ContentSyncManager#listChannels()}
-     * TODO: Check also for a channel that is INSTALLED
+     * Test for {@link ContentSyncManager#listChannels()}.
      */
     public void testListChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
@@ -569,7 +568,13 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
                 TestUtils.saveAndFlush(c);
             }
 
-            // List those channels and verify status
+            // Create a channel that is INSTALLED
+            Channel channel = SUSEProductTestUtils.createTestVendorChannel();
+            String label = "sles11-sp3-pool-x86_64";
+            channel.setLabel(label);
+            TestUtils.saveAndFlush(channel);
+
+            // List channels and verify status
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
             List<MgrSyncChannel> channels = csm.listChannels(repos);
@@ -577,7 +582,11 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
                     assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
                 }
+                else if (label.equals(c.getLabel())) {
+                    assertEquals(MgrSyncChannelStatus.INSTALLED, c.getStatus());
+                }
                 else if (sourceUrl.equals(c.getSourceUrl())) {
+                    // Copies of this repo (same URL!) are AVAILABLE
                     assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
                 }
                 else {
