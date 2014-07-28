@@ -482,13 +482,16 @@ echo
 if [ $USING_SSL -eq 1 ] ; then
     echo "* attempting to install corporate public CA cert"
     test -d /usr/share/rhn || mkdir -p /usr/share/rhn
+    rm -f ${ORG_CA_CERT}
+    $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
+
     if [ $ORG_CA_CERT_IS_RPM_YN -eq 1 ] ; then
-        rpm -Uvh --force --replacefiles --replacepkgs ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
-    else
+        rpm -Uvh --force --replacefiles --replacepkgs ${ORG_CA_CERT}
         rm -f ${ORG_CA_CERT}
-        $FETCH ${HTTP_PUB_DIRECTORY}/${ORG_CA_CERT}
+    else
         mv ${ORG_CA_CERT} /usr/share/rhn/
     fi
+
     if [ "$INSTALLER" == zypper ] ; then
       function suseVersion() {
         rpm --eval "%{suse_version}"
