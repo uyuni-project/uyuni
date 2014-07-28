@@ -1,3 +1,10 @@
+# Docker tests variables
+DOCKER_CONTAINER_BASE = suma-2.1
+DOCKER_REGISTRY       = suma-docker-registry.cloud.suse.de
+DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../:/manager"
+
+
 pylint ::
 	pylint --errors-only --disable=W src/
 
@@ -7,3 +14,6 @@ unittest ::
         else \
                 python -munittest discover -s src; \
         fi
+
+docker_tests ::
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql nosetests --with-xunit --xunit-file /manager/susemanager/src/reports/tests.xml -s /manager/susemanager/src
