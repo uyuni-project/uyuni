@@ -92,6 +92,9 @@ public class ContentSyncManager {
     // Base channels have "BASE" as their parent in channels.xml
     private static final String BASE_CHANNEL = "BASE";
 
+    // Make exceptions for the OES channel family that is still hosted with NCC
+    private static final String OES_CHANNEL_FAMILY = "OES2";
+
     // Static XML files we parse
     private static File channelsXML = new File(
             "/usr/share/susemanager/channels.xml");
@@ -393,6 +396,11 @@ public class ContentSyncManager {
             if (family.getDefaultNodeCount() < 0) {
                 consolidated.addChannelSubscription(family.getLabel());
             }
+        }
+
+        // Add OES if one of the OES repos is available via HEAD request
+        if (verifyOESRepo()) {
+            consolidated.addChannelSubscription(OES_CHANNEL_FAMILY);
         }
 
         return consolidated;
@@ -754,6 +762,11 @@ public class ContentSyncManager {
             return true;
         }
 
+        // Check OES availability via sending an HTTP HEAD request
+        if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
+            return verifyOESRepo();
+        }
+
         // Match the repo source URLs against URLs we got from SCC
         boolean mirrorable = false;
         for (SCCRepository repo : repos) {
@@ -841,6 +854,18 @@ public class ContentSyncManager {
             missingAttributes.add("Product ID");
         }
         return StringUtils.join(missingAttributes, ", ");
+    }
+
+    /**
+     * Check if OES repos are available by sending a HEAD request to one of them. Once
+     * we have access with at least one of the available credentials, it means that the
+     * customer has bought the product.
+     *
+     * @return true if there is access to an OES repository, false otherwise
+     */
+    private boolean verifyOESRepo() {
+        // TODO: Implement this
+        return false;
     }
 
     /**
