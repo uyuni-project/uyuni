@@ -93,11 +93,11 @@ public class ContentSyncManager {
 
     // Static XML files we parse
     private static File channelsXML = new File(
-            "/usr/share/susemanager/channels.xml");
+            "/usr/share/susemanager/scc/channels.xml");
     private static File channelFamiliesXML = new File(
-            "/usr/share/susemanager/channel_families.xml");
+            "/usr/share/susemanager/scc/channel_families.xml");
     private static File upgradePathsXML = new File(
-            "/usr/share/susemanager/upgrade_paths.xml");
+            "/usr/share/susemanager/scc/upgrade_paths.xml");
 
     // File to parse this system's UUID from
     private static File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
