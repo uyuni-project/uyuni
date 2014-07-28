@@ -213,6 +213,15 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Find all {@link SUSEProduct}.
+     * @return list of all known products
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllSUSEProducts() {
+        return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

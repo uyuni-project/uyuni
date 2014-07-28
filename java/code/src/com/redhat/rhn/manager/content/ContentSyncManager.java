@@ -191,7 +191,7 @@ public class ContentSyncManager {
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
-    public Collection<SCCProduct> getProducts() {
+    public Collection<SCCProduct> getProductsFromSCC() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
         List<MirrorCredentialsDto> credentials =
                 new MirrorCredentialsManager().findMirrorCredentials();
@@ -222,6 +222,14 @@ public class ContentSyncManager {
             log.debug("Found " + productList.size() + " available products.");
         }
         return productList;
+    }
+
+    /**
+     * Returns all products available to all configured credentials.
+     * @return list of all available products
+     */
+    public Collection<SUSEProduct> getProducts() {
+        return SUSEProductFactory.findAllSUSEProducts();
     }
 
     /**
