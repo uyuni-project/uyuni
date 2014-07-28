@@ -146,7 +146,7 @@
       value="bcel cglib commons-beanutils commons-cli commons-codec 
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
-             ${tomcat-jars} javamail jdom jsch dwr
+             ${tomcat-jars} javamail jdom jsch dwr google-gson
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              ${jfreechart} taglibs-core quartz
@@ -157,7 +157,7 @@
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              commons-lang commons-logging
-             ${commons-validator} concurrent dom4j ${hibernate} jta
+             ${commons-validator} concurrent dom4j google-gson ${hibernate} jta
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}
              ${jfreechart} ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core

@@ -47,6 +47,7 @@ Requires: classpathx-mail
 Requires: cobbler >= 2.0.0
 Requires: dojo
 Requires: dwr >= 3
+Requires: google-gson >= 2.2.4
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
 Requires: jakarta-taglibs-standard
@@ -201,6 +202,7 @@ BuildRequires: classpathx-mail
 BuildRequires: concurrent
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
+BuildRequires: google-gson >= 2.2.4
 BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
@@ -763,6 +765,7 @@ fi
 %{jardir}/concurrent.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
+%{jardir}/google-gson.jar
 %{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
