@@ -54,6 +54,7 @@ Requires: jfreechart >= 1.0.9
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: dwr >= 3
+Requires: google-gson >= 2.2.4
 %if 0%{?fedora}
 Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
@@ -164,6 +165,7 @@ BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
+BuildRequires: google-gson >= 2.2.4
 %if 0%{?fedora}
 BuildRequires: hibernate3 >= 0:3.6.10
 BuildRequires: hibernate3-c3p0 >= 3.6.10
@@ -759,6 +761,7 @@ fi
 %{jardir}/concurrent.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
+%{jardir}/google-gson.jar
 %{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
