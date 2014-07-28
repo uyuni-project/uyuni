@@ -85,10 +85,6 @@ public class ContentSyncManager {
     public static final Long INFINITE = 200000L;
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
-    // Not yet used
-    @SuppressWarnings("unused")
-    private static final String FULL_TYPE = "FULL";
-
     // Base channels have "BASE" as their parent in channels.xml
     private static final String BASE_CHANNEL = "BASE";
 
