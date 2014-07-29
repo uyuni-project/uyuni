@@ -180,21 +180,19 @@ if [ -x /usr/bin/wget ] ; then
     else
         FETCH="/usr/bin/wget -nv -r -nd"
     fi
-
-else
-    if [ -x /usr/bin/curl ] ; then
-        output=`LANG=en_US /usr/bin/curl -k 2>&1`
-        error=`echo $output | grep "is unknown"`
-        if [ -z "$error" ] ; then
-            FETCH="/usr/bin/curl -ksSOf"
-        else
-            FETCH="/usr/bin/curl -sSOf"
-        fi
+elif [ -x /usr/bin/curl ] ; then
+    output=`LANG=en_US /usr/bin/curl -k 2>&1`
+    error=`echo $output | grep "is unknown"`
+    if [ -z "$error" ] ; then
+        FETCH="/usr/bin/curl -ksSOf"
     else
-        echo "To be able to download files, please install either 'wget' or 'curl'"
-        exit 1
+        FETCH="/usr/bin/curl -sSOf"
     fi
+else
+    echo "To be able to download files, please install either 'wget' or 'curl'"
+    exit 1
 fi
+
 HTTP_PUB_DIRECTORY=http://${HOSTNAME}/%s
 HTTPS_PUB_DIRECTORY=https://${HOSTNAME}/%s
 if [ $USING_SSL -eq 0 ] ; then
