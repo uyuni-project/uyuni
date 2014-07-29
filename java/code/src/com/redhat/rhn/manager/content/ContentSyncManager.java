@@ -35,7 +35,7 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
-import com.suse.mgrsync.MgrSyncChannelStatus;
+import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -760,13 +760,13 @@ public class ContentSyncManager {
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
             if (installedChannelLabels.contains(c.getLabel())) {
-                c.setStatus(MgrSyncChannelStatus.INSTALLED);
+                c.setStatus(MgrSyncStatus.INSTALLED);
             }
             else if (isMirrorable(c, repositories)) {
-                c.setStatus(MgrSyncChannelStatus.AVAILABLE);
+                c.setStatus(MgrSyncStatus.AVAILABLE);
             }
             else {
-                c.setStatus(MgrSyncChannelStatus.UNAVAILABLE);
+                c.setStatus(MgrSyncStatus.UNAVAILABLE);
             }
             channels.add(c);
         }
