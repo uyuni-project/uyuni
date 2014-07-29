@@ -37,21 +37,6 @@ class MgrSync(object):
         self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
-    def _addProduct(self):
-        """
-        Add product.
-        """
-
-        return self._execute_xmlrpc_method("addProduct",
-                                           self.auth.token, "xxx")
-
-    def _addChannel(self):
-        """
-        Add channel.
-        """
-
-        return self._execute_xmlrpc_method("addChannel",
-                                           self.auth.token, "xxx")
 
     def _listChannels(self):
         """
@@ -135,10 +120,6 @@ class MgrSync(object):
                 self._format(products, title="Available products")
             else:
                 cli_msg("No products found.")
-        elif options.addproduct:
-            self._addProduct()
-        elif options.addchannel:
-            self._addChannel()
         elif options.refresh:
             self._refresh()
 
