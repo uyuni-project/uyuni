@@ -112,7 +112,7 @@ public class ContentSyncManager {
 
     /**
      * Set the channels.xml {@link File} to read from.
-     * @param channelsXML the channels.xml file
+     * @param file the channels.xml file
      */
     public void setChannelsXML(File file) {
         channelsXML = file;
@@ -413,6 +413,7 @@ public class ContentSyncManager {
 
     /**
      * Update channel families in DB with data from the channel_families.xml file.
+     * @param channelFamilies List of families.
      * @throws ContentSyncException
      */
     public void updateChannelFamilies(Collection<MgrSyncChannelFamily> channelFamilies)
@@ -628,6 +629,7 @@ public class ContentSyncManager {
     /**
      * Get a list of all actually available channels based on available channel families
      * as well as some other criteria.
+     * @param allChannels List of {@link MgrSyncChannel}
      * @return list of available channels
      * @throws ContentSyncException
      */
@@ -675,6 +677,7 @@ public class ContentSyncManager {
 
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
+     * @param availableChannels List of {@link MgrSyncChannel}
      * @throws ContentSyncException
      */
     public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
@@ -745,6 +748,7 @@ public class ContentSyncManager {
 
     /**
      * Update contents of the suseUpgradePaths table with values read from upgrade_paths.xml.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void updateUpgradePaths() throws ContentSyncException {
         // Get all paths from DB and create map that eventually will hold the ones to remove
@@ -793,8 +797,9 @@ public class ContentSyncManager {
 
     /**
      * Return the list of available channels with their status.
-     * @param repos list of repos from SCC to match against
+     * @param repositories list of repos {@link SCCRepository} from SCC to match against
      * @return list of channels
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public List<MgrSyncChannel> listChannels(Collection<SCCRepository> repositories)
             throws ContentSyncException {
@@ -822,6 +827,7 @@ public class ContentSyncManager {
 
     /**
      * For a given channel, check if it is mirrorable.
+     * @param channel Channel
      * @param repos list of repos from SCC to match against
      * @return true if channel is mirrorable, false otherwise
      */
