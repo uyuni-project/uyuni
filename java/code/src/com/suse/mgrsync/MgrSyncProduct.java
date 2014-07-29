@@ -33,6 +33,9 @@ public class MgrSyncProduct {
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
 
+    // Product status (not an attribute of the xml file)
+    private MgrSyncStatus status;
+
     /**
      * Default constructor for bean compatibility.
      */
@@ -68,6 +71,14 @@ public class MgrSyncProduct {
 
     public String getVersion() {
         return version;
+    }
+
+    public MgrSyncStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MgrSyncStatus statusIn) {
+        status = statusIn;
     }
 
     /**

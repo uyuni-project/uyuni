@@ -127,6 +127,31 @@ public class MgrSyncChannel {
         return (this.isSigned + "").toUpperCase().equals("Y");
     }
 
+
+    /**
+     * True if this channel is optional (non-mandatory), false otherwise.
+     *
+     * @return optional
+     */
+    public Boolean getOptional() {
+        return (this.optional + "").toUpperCase().equals("Y");
+    }
+
+
+    /**
+     * Sets if this channel is mandatory or optional.
+     *
+     * @param optionalIn true if optional
+     */
+    public void setOptional(boolean optionalIn) {
+        if (optionalIn) {
+            this.optional = "Y";
+        }
+        else {
+            this.optional = "N";
+        }
+    }
+
     /**
      * @return the label
      */
