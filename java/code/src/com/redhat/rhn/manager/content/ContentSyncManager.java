@@ -243,13 +243,57 @@ public class ContentSyncManager {
         }
 
         List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
+        Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap =
+                getProductToChannelMap(availableChannels);
 
-        Collection<MgrSyncProduct> availableProducts = new LinkedList<MgrSyncProduct>();
-        for (MgrSyncChannel channel : availableChannels) {
-            availableProducts.addAll(channel.getProducts());
+        // at least one channel available -> corresponding product available
+        Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
+
+        // TODO: is this really needed? is availableProducts sufficient?
+        Collection<MgrSyncProduct> results =
+                CollectionUtils.intersection(availableProducts, allProducts);
+
+        List<String> installedChannelLabels = getInstalledChannelLabels();
+
+        for (MgrSyncProduct result : results) {
+            Set<MgrSyncChannel> channels = productToChannelMap.get(result);
+
+            result.setStatus(MgrSyncStatus.INSTALLED);
+            for (MgrSyncChannel channel : channels) {
+                if (!channel.isOptional() &&
+                        !installedChannelLabels.contains(channel.getLabel())) {
+                    result.setStatus(MgrSyncStatus.AVAILABLE);
+                    break;
+                }
+            }
         }
 
-        return CollectionUtils.intersection(availableProducts, allProducts);
+        return results;
+    }
+
+    /**
+     * Gets the product to channel map.
+     *
+     * @param channels the channels
+     * @return the product to channel map
+     */
+    private Map<MgrSyncProduct, Set<MgrSyncChannel>> getProductToChannelMap(
+            Collection<MgrSyncChannel> channels) {
+        Map<MgrSyncProduct, Set<MgrSyncChannel>> result =
+                new HashMap<MgrSyncProduct, Set<MgrSyncChannel>>();
+
+        for (final MgrSyncChannel channel : channels) {
+            for (MgrSyncProduct product : channel.getProducts()) {
+                if (result.containsKey(product)) {
+                    result.get(product).add(channel);
+                }
+                else {
+                    result.put(product,
+                            new HashSet<MgrSyncChannel>() { { add(channel); } });
+                }
+            }
+        }
+        return result;
     }
 
     /**

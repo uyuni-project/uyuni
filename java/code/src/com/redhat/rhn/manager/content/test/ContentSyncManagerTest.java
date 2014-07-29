@@ -666,7 +666,65 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         }
 
         assertTrue(found);
+    }
 
+    /**
+     * Tests getProducts().
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetAvailableProductsStatus() throws Exception {
+        // create one installed product in the DB
+        Channel installedDBChannel = SUSEProductTestUtils.createTestVendorChannel();
+        ChannelFamily installedChannelFamily = installedDBChannel.getChannelFamily();
+        installedChannelFamily.setOrg(null);
+        final SUSEProduct installedDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(installedChannelFamily);
+
+        // create one installed product in channel.xml format
+        final MgrSyncChannel installedChannel = new MgrSyncChannel();
+        installedChannel.setFamily(installedChannelFamily.getLabel());
+        installedChannel.setLabel(installedDBChannel.getLabel());
+        installedChannel.setParent("BASE");
+        installedChannel.setOptional(false);
+        final MgrSyncProduct installedProduct =
+                new MgrSyncProduct(installedDBProduct.getName(),
+                        installedDBProduct.getProductId(), installedDBProduct.getVersion());
+        installedChannel.setProducts(new LinkedList<MgrSyncProduct>()
+                { { add(installedProduct); } });
+
+        // create one available product in the DB
+        ChannelFamily availableChannelFamily =
+                ChannelFamilyFactoryTest.createTestChannelFamily();
+        availableChannelFamily.setOrg(null);
+        final SUSEProduct availableDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(availableChannelFamily);
+
+        // create one installed product in channel.xml format
+        final MgrSyncChannel availableChannel = new MgrSyncChannel();
+        availableChannel.setFamily(installedChannelFamily.getLabel());
+        availableChannel.setLabel(installedDBChannel.getLabel());
+        availableChannel.setParent("BASE");
+        availableChannel.setOptional(false);
+        final MgrSyncProduct availableProduct =
+                new MgrSyncProduct(installedDBProduct.getName(),
+                        installedDBProduct.getProductId(), installedDBProduct.getVersion());
+        availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+                { { add(availableProduct); } });
+
+        List<MgrSyncChannel> allChannels = new LinkedList<MgrSyncChannel>()
+            { { add(installedChannel); add(availableChannel); } };
+
+        ContentSyncManager csm = new ContentSyncManager();
+        Collection<MgrSyncProduct> products = csm.getAvailableProducts(allChannels);
+
+        for (MgrSyncProduct product : products) {
+            if (product.getId().equals(installedDBProduct.getProductId())) {
+                assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
+            }
+            if (product.getId().equals(availableDBProduct.getProductId())) {
+                assertEquals(MgrSyncStatus.AVAILABLE, product.getStatus());
+            }
+        }
     }
 
     /**
