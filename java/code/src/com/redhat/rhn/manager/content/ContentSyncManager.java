@@ -748,50 +748,46 @@ public class ContentSyncManager {
      * Update contents of the suseUpgradePaths table with values read from upgrade_paths.xml.
      */
     public void updateUpgradePaths() throws ContentSyncException {
-        // Get all DB content and create a map that eventually will hold the ones to remove
+        // Get all paths from DB and create map that eventually will hold the ones to remove
         List<SUSEUpgradePath> upgradePathsDB = SUSEProductFactory.findAllSUSEUpgradePaths();
-        Map<String, SUSEUpgradePath> paths = new HashMap<String, SUSEUpgradePath>();
+        Map<String, SUSEUpgradePath> pathsToRemove = new HashMap<String, SUSEUpgradePath>();
         for (SUSEUpgradePath path : upgradePathsDB) {
             String identifier = String.format("%s-%s",
                     path.getFromProduct().getProductId(),
                     path.getToProduct().getProductId());
-            paths.put(identifier, path);
+            pathsToRemove.put(identifier, path);
         }
 
-        // Read upgrade paths from the file
-        List<SUSEUpgradePath> existingPaths = SUSEProductFactory.findAllSUSEUpgradePaths();
-        List<MgrSyncUpgradePath> upgradePaths = readUpgradePaths();
-        for (MgrSyncUpgradePath path : upgradePaths) {
-            // Remove from all paths so we end up with the ones to remove
-            String identifier = String.format("%s-%s",
-                    path.getFromProductId(), path.getToProductId());
-            if (paths.keySet().contains(identifier)) {
-                paths.remove(identifier);
-            }
-
-            // Insert or update after looking up the products
+        // Iterate through all paths in the XML file and lookup both products first
+        for (MgrSyncUpgradePath path : readUpgradePaths()) {
             SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
             if (fromProduct != null && toProduct != null) {
-                SUSEUpgradePath pth = null;
-                for (SUSEUpgradePath p : existingPaths) {
-                    if (p.getFromProduct().getId() == fromProduct.getId() &&
-                        p.getToProduct().getId() == toProduct.getId()) {
-                        pth = p;
-                        break;
-                    }
+                // Products found, get the existing path object from map by removing
+                String identifier = String.format("%s-%s",
+                        path.getFromProductId(), path.getToProductId());
+                SUSEUpgradePath existingPath = null;
+                if (pathsToRemove.keySet().contains(identifier)) {
+                    existingPath = pathsToRemove.remove(identifier);
                 }
 
-                if (pth == null) {
+                // Insert or update the existing path
+                if (existingPath == null) {
                     SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+                }
+                else {
+                    SUSEProductFactory.save(existingPath);
                 }
             }
         }
 
-        // Remove all the ones that were not inserted or updated
-        for (Map.Entry<String, SUSEUpgradePath> entry : paths.entrySet()) {
+        // Remove all those paths that were not inserted or updated
+        if (log.isDebugEnabled()) {
+            log.debug("Removing " + pathsToRemove.size() + " upgrade paths.");
+        }
+        for (Map.Entry<String, SUSEUpgradePath> entry : pathsToRemove.entrySet()) {
             SUSEProductFactory.remove(entry.getValue());
         }
     }
