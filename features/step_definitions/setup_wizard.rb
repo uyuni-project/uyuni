@@ -41,10 +41,10 @@ When /^I wait until it has finished$/ do
 end
 
 When /^I verify the products were added$/ do 
-   $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST mgr-ncc-sync -l` 
-   fail if not $sshout.include? '[P] sles11-sp3-vmware-pool-x86_64'
-   fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3'
-   fail if not $sshout.include? '[P] sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
+  output = sshcmd('mgr-ncc-sync -l', ignore_err: true)
+   fail if not output[:stdout].include? '[P] sles11-sp3-vmware-pool-x86_64'
+   fail if not output[:stdout].include? '[P] sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3'
+   fail if not output[:stdout].include? '[P] sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
