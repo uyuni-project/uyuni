@@ -15,8 +15,9 @@
 
 package com.suse.mgrsync;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -66,7 +67,8 @@ public class MgrSyncChannel {
     @Attribute(name = "update_tag")
     private String updateTag;
 
-    private Collection<MgrSyncProduct> products;
+    @ElementList(empty= false)
+    private List<MgrSyncProduct> products;
 
     @Element(name = "dist", required = false)
     private MgrSyncDistribution distribution;
@@ -74,13 +76,19 @@ public class MgrSyncChannel {
     // Channel status (not an attribute of the xml file)
     private MgrSyncStatus status;
 
-    @ElementList(name = "products")
-    public Collection<MgrSyncProduct> getProducts() {
-        return Collections.unmodifiableCollection(products);
+    /**
+     * Get the list of products.
+     * @return list of products
+     */
+    public List<MgrSyncProduct> getProducts() {
+        return Collections.unmodifiableList(products);
     }
 
-    @ElementList(name = "products")
-    public void setProducts(Collection<MgrSyncProduct> products) {
+    /**
+     * Set the list of products.
+     * @param the list of products
+     */
+    public void setProducts(List<MgrSyncProduct> products) {
         this.products = products;
     }
 
