@@ -602,10 +602,10 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Tests getProducts().
+     * Tests listProducts(), in particular the filtering of unavailable products.
      * @throws Exception if anything goes wrong
      */
-    public void testGetAvailableProducts() throws Exception {
+    public void testListProductsAvailability() throws Exception {
         // create one available product in the DB
         Channel availableDBChannel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily availableChannelFamily = availableDBChannel.getChannelFamily();
@@ -653,7 +653,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             { { add(availableChannel); add(unavailableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<MgrSyncProduct> products = csm.getAvailableProducts(allChannels);
+        Collection<MgrSyncProduct> products = csm.listProducts(allChannels);
 
         boolean found = false;
         for (MgrSyncProduct product : products) {
@@ -669,10 +669,10 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     }
 
     /**
-     * Tests getProducts().
+     * Tests listProducts(), in particular the computing of product status.
      * @throws Exception if anything goes wrong
      */
-    public void testGetAvailableProductsStatus() throws Exception {
+    public void testListProductsStatus() throws Exception {
         // create one installed product in the DB
         Channel installedDBChannel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily installedChannelFamily = installedDBChannel.getChannelFamily();
@@ -715,7 +715,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             { { add(installedChannel); add(availableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<MgrSyncProduct> products = csm.getAvailableProducts(allChannels);
+        Collection<MgrSyncProduct> products = csm.listProducts(allChannels);
 
         for (MgrSyncProduct product : products) {
             if (product.getId().equals(installedDBProduct.getProductId())) {
