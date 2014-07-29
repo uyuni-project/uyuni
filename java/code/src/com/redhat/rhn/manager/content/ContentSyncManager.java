@@ -750,12 +750,7 @@ public class ContentSyncManager {
         // This list will be returned
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
 
-        // Collect labels of installed channels
-        List<Channel> installedChannels = ChannelFactory.listVendorChannels();
-        List<String> installedChannelLabels = new ArrayList<String>();
-        for (Channel c : installedChannels) {
-            installedChannelLabels.add(c.getLabel());
-        }
+        List<String> installedChannelLabels = getInstalledChannelLabels();
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
@@ -927,5 +922,19 @@ public class ContentSyncManager {
             }
         }
         return uuid;
+    }
+
+    /**
+     * Gets the installed channel labels.
+     *
+     * @return the installed channel labels
+     */
+    private List<String> getInstalledChannelLabels() {
+        List<Channel> installedChannels = ChannelFactory.listVendorChannels();
+        List<String> installedChannelLabels = new ArrayList<String>();
+        for (Channel c : installedChannels) {
+            installedChannelLabels.add(c.getLabel());
+        }
+        return installedChannelLabels;
     }
 }
