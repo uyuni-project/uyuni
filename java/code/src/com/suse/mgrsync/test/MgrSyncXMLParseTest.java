@@ -23,6 +23,7 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 
@@ -96,6 +97,34 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
     public void testReadChannels() throws Exception {
         List<MgrSyncChannel> channels = readChannels();
         assertEquals(740, channels.size());
+
+        // Verify the first channel
+        MgrSyncChannel c = channels.get(0);
+        assertEquals("ati-driver-sle11-sp2-i586", c.getLabel());
+        assertEquals("i586", c.getArch());
+        assertEquals("7260", c.getFamily());
+        assertEquals("http://www2.ati.com/suse/sle11sp2", c.getSourceUrl());
+        assertFalse(c.isOptional());
+
+        // Verify the products inside
+        List<MgrSyncProduct> products = c.getProducts();
+        assertEquals(4, products.size());
+        MgrSyncProduct p0 = products.get(0);
+        assertEquals(new Integer(923), p0.getId());
+        assertEquals("SUSE_SLED", p0.getName());
+        assertEquals("11.2", p0.getVersion());
+        MgrSyncProduct p1 = products.get(1);
+        assertEquals(new Integer(839), p1.getId());
+        assertEquals("SUSE_SLED", p1.getName());
+        assertEquals("11.2", p1.getVersion());
+        MgrSyncProduct p2 = products.get(2);
+        assertEquals(new Integer(922), p2.getId());
+        assertEquals("SUSE_SLED", p2.getName());
+        assertEquals("11.2", p2.getVersion());
+        MgrSyncProduct p3 = products.get(3);
+        assertEquals(new Integer(921), p3.getId());
+        assertEquals("SUSE_SLED", p3.getName());
+        assertEquals("11.2", p3.getVersion());
     }
 
     /**
