@@ -616,7 +616,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         // create one available product in channel.xml format
         final MgrSyncChannel availableChannel = new MgrSyncChannel();
         availableChannel.setFamily(availableChannelFamily.getLabel());
-        availableChannel.setLabel(TestUtils.randomString());
+        availableChannel.setLabel(availableDBChannel.getLabel());
         availableChannel.setParent("BASE");
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
@@ -639,7 +639,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         // create one unavailable product in channel.xml format
         final MgrSyncChannel unavailableChannel = new MgrSyncChannel();
         unavailableChannel.setFamily(unavailableChannelFamily.getLabel());
-        unavailableChannel.setLabel(TestUtils.randomString());
+        unavailableChannel.setLabel(unavailableDBChannel.getLabel());
         unavailableChannel.setParent(TestUtils.randomString());
         final MgrSyncProduct unavailableProduct =
                 new MgrSyncProduct(unavailableDBProduct.getName(),
