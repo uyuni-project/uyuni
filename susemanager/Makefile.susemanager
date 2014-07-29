@@ -17,7 +17,7 @@ unittest ::
 
 unittest_inside_docker ::
 	ln -fs /manager/susemanager/src /manager/backend/susemanager
-	nosetests --with-xunit --xunit-file src/reports/tests.xml -s src
+	nosetests --with-xunit --xunit-file src/reports/tests.xml -s src/test
 	rm /manager/backend/susemanager
 
 pylint_inside_docker ::
