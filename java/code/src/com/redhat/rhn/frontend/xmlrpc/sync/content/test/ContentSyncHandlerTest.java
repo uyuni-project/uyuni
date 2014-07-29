@@ -15,7 +15,6 @@
 package com.redhat.rhn.frontend.xmlrpc.sync.content.test;
 
 import com.redhat.rhn.domain.session.InvalidSessionIdException;
-import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -37,22 +36,6 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
     }
 
     /**
-     * Test adding a new product.
-     */
-    public void testAddProduct() {
-        BaseHandlerTestCase.assertEquals(this.csh.addProduct(this.adminKey, "foo").intValue(),
-                                         BaseHandler.VALID);
-    }
-
-    /**
-     * Test adding new channel.
-     */
-    public void testAddChannel() {
-        BaseHandlerTestCase.assertEquals(this.csh.addChannel(this.adminKey, "foo").intValue(),
-                                         BaseHandler.VALID);
-    }
-
-    /**
      * Test listing products.
      */
     public void testListProducts() {
@@ -69,32 +52,6 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
 
         BaseHandlerTestCase.assertNotNull(channels);
         BaseHandlerTestCase.assertNotEmpty(Arrays.asList(channels));
-    }
-
-    /**
-     * Test to capture wrong authentication token on channel adding.
-     */
-    public void testAddChannelAuth() {
-        try {
-            this.csh.addChannel(this.invalidAuthKey, "bogus");
-            ContentSyncHandlerTest.fail("Expected an exception of type " +
-                                        this.getClass().getCanonicalName());
-        } catch (InvalidSessionIdException ex) {
-            // Expected
-        }
-    }
-
-    /**
-     * Test to capture wrong authentication token on product adding.
-     */
-    public void testAddProductAuth() {
-        try {
-            this.csh.addProduct(this.invalidAuthKey, "bogus");
-            ContentSyncHandlerTest.fail("Expected an exception of type " +
-                                        this.getClass().getCanonicalName());
-        } catch (InvalidSessionIdException ex) {
-            // Expected
-        }
     }
 
     /**
