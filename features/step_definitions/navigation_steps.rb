@@ -54,29 +54,18 @@ end
 #
 # Click on a link
 #
-When /^I follow "([^"]*)"$/ do |arg1|
-  link = find_link(debrand_string(arg1))
-  if link.nil?
-    sleep 1
-    $stderr.puts "ERROR - try again"
-    link = find_link(debrand_string(arg1))
-  end
-  link.click
+When /^I follow "([^"]*)"$/ do |text|
+  click_link(debrand_string(text))
 end
 
 #
 # Click on the first link
 #
-When /^I follow first "([^"]*)"$/ do |arg1|
-  link = find_link(debrand_string(arg1), :match => :first)
-  if link.nil?
-    sleep 1
-    $stderr.puts "ERROR - try again"
-    link = find_link(debrand_string(arg1))
-  end
-  link.click
+When /^I follow first "([^"]*)"$/ do |text|
+  click_link(debrand_string(text), :match => :first)
 end
 
+#
 # Click on a link which appears inside of <div> with
 # the given "id"
 When /^I follow "([^"]*)" in element "([^"]*)"$/ do |arg1, arg2|
