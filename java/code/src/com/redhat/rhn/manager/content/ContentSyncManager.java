@@ -233,7 +233,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     @SuppressWarnings("unchecked")
-    public Collection<MgrSyncProduct> getAvailableProducts(List<MgrSyncChannel> allChannels)
+    public Collection<MgrSyncProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
 
