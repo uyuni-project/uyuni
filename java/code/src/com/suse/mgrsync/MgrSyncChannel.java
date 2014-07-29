@@ -16,6 +16,7 @@
 package com.suse.mgrsync;
 
 import java.util.Collection;
+import java.util.Collections;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -75,7 +76,7 @@ public class MgrSyncChannel {
 
     @ElementList(name = "products")
     public Collection<MgrSyncProduct> getProducts() {
-        return products;
+        return Collections.unmodifiableCollection(products);
     }
 
     @ElementList(name = "products")
