@@ -146,6 +146,10 @@ public class ContentSyncManager {
             Persister persister = new Persister();
             List<MgrSyncChannel> channels = persister.read(
                     MgrSyncChannels.class, channelsXML).getChannels();
+            if (log.isDebugEnabled()) {
+                log.debug("Read " + channels.size() + " channels from " +
+                        channelsXML.getAbsolutePath());
+            }
             return channels;
         }
         catch (Exception e) {
@@ -164,6 +168,10 @@ public class ContentSyncManager {
             Persister persister = new Persister();
             List<MgrSyncChannelFamily> channelFamilies = persister.read(
                     MgrSyncChannelFamilies.class, channelFamiliesXML).getFamilies();
+            if (log.isDebugEnabled()) {
+                log.debug("Read " + channelFamilies.size() + " channel families from " +
+                        channelFamiliesXML.getAbsolutePath());
+            }
             return channelFamilies;
         }
         catch (Exception e) {
@@ -182,6 +190,10 @@ public class ContentSyncManager {
             Persister persister = new Persister();
             List<MgrSyncUpgradePath> upgradePaths = persister.read(
                     MgrSyncUpgradePaths.class, upgradePathsXML).getPaths();
+            if (log.isDebugEnabled()) {
+                log.debug("Read " + upgradePaths.size() + " upgrade paths from " +
+                        upgradePathsXML.getAbsolutePath());
+            }
             return upgradePaths;
         }
         catch (Exception e) {
