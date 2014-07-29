@@ -72,7 +72,7 @@ public class MgrSyncChannel {
     private MgrSyncDistribution distribution;
 
     // Channel status (not an attribute of the xml file)
-    private MgrSyncChannelStatus status;
+    private MgrSyncStatus status;
 
     @ElementList(name = "products")
     public Collection<MgrSyncProduct> getProducts() {
@@ -218,7 +218,7 @@ public class MgrSyncChannel {
      * Get the status.
      * @return the status
      */
-    public MgrSyncChannelStatus getStatus() {
+    public MgrSyncStatus getStatus() {
         return status;
     }
 
@@ -226,7 +226,7 @@ public class MgrSyncChannel {
      * Set the status.
      * @param statusIn the status to set
      */
-    public void setStatus(MgrSyncChannelStatus statusIn) {
+    public void setStatus(MgrSyncStatus statusIn) {
         this.status = statusIn;
     }
 }
