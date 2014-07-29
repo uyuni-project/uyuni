@@ -56,6 +56,7 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
 
     /**
      * Test to capture wrong authentication token on channel listing.
+     * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void testListChannelsAuth() throws ContentSyncException {
         try {
