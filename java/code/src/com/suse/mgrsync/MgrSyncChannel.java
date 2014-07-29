@@ -135,7 +135,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the label
-     * @param the label to set
+     * @param labelIn label to set
      */
     public void setLabel(String labelIn) {
         this.label = labelIn;
@@ -223,7 +223,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the status.
-     * @param status the status to set
+     * @param statusIn the status to set
      */
     public void setStatus(MgrSyncChannelStatus statusIn) {
         this.status = statusIn;
