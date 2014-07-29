@@ -15,9 +15,9 @@
 package com.suse.mgrsync;
 
 /**
- * Enum type representing the channel status to be used for mgr-sync.
+ * Enum type representing the channel or product status to be used for mgr-sync.
  */
-public enum MgrSyncChannelStatus {
+public enum MgrSyncStatus {
     AVAILABLE,
     INSTALLED,
     UNAVAILABLE;

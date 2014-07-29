@@ -40,7 +40,7 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncChannelStatus;
+import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
@@ -582,17 +582,17 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             List<MgrSyncChannel> channels = csm.listChannels(repos);
             for (MgrSyncChannel c : channels) {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
-                    assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
+                    assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
                 }
                 else if (label.equals(c.getLabel())) {
-                    assertEquals(MgrSyncChannelStatus.INSTALLED, c.getStatus());
+                    assertEquals(MgrSyncStatus.INSTALLED, c.getStatus());
                 }
                 else if (sourceUrl.equals(c.getSourceUrl())) {
                     // Copies of this repo (same URL!) are AVAILABLE
-                    assertEquals(MgrSyncChannelStatus.AVAILABLE, c.getStatus());
+                    assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
                 }
                 else {
-                    assertEquals(MgrSyncChannelStatus.UNAVAILABLE, c.getStatus());
+                    assertEquals(MgrSyncStatus.UNAVAILABLE, c.getStatus());
                 }
             }
         }
