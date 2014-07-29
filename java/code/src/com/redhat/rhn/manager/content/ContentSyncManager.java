@@ -101,7 +101,7 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/upgrade_paths.xml");
 
     // File to parse this system's UUID from
-    private static File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
+    private static final File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
     private static String uuid;
 
     /**
