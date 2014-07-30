@@ -48,6 +48,8 @@ Requires:       python-tabulate
 BuildRequires:  python-tabulate
 Requires:       python-configobj
 BuildRequires:  python-configobj
+Requires:       python-enum34
+BuildRequires:  python-enum34
 
 %description tools
 This package contains SUSE Manager tools
