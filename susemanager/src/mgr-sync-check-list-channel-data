@@ -118,12 +118,18 @@ else:
 
 print("\nComparing channel statuses and children")
 
+status = {
+    "Available" : ".", 
+    "Installed" : "P",
+    "Unavailable" : "X"
+}
+
 for _, bc in new_channels.items():
     if not old_channels.has_key(bc.label):
         print("\nIgnoring further analysis of {0} give it's not reported by mgr-sync".format(bc.label))
         continue
 
-    if bc.short_status != old_channels[bc.label]:
+    if status[bc.status_label] != old_channels[bc.label]:
         print("\nStatus mismatch for channel {0}:".format(bc.label))
         print("  * mgr-sync: %s" % old_channels[bc.label])
         print("  * mgr-ncc-sync: %s" % bc.short_status)
