@@ -1,0 +1,147 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2014 SUSE
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# SUSE trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate SUSE trademarks that are incorporated
+# in this software or its documentation.
+
+
+import pprint
+import re
+from subprocess import Popen, PIPE
+
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync.channel import parse_channels
+from spacewalk.susemanager.mgr_sync.channel import Channel
+
+def mgr_ncc_sync_data():
+    """
+    Parse the output of mgr-ncc-sync and returns a tuple with
+    two dictionaries.
+
+    The first one contains all the channels and has the following
+    structure:
+        * key: channel label
+        * value: status
+
+    The second one contains only the base channels and has the following
+    structure:
+        * key: base channel labels
+        * value: list of children labels
+    """
+    output = Popen(["mgr-ncc-sync", "-l"], stdout=PIPE).communicate()[0]
+
+    channels = {}
+    channels_hierarcy = {}
+
+    latest_base_product = None
+    regexp = re.compile("\s?\[")
+    log_file = "mgr_ncc_sync.output"
+    with open(log_file, "w") as file:
+        for line in output.splitlines():
+            if not regexp.match(line):
+                continue
+
+            file.write(line+"\n")
+            base_product = line.startswith("[")
+            status, label = filter(None, line.strip().split(" "))
+
+            # status is something like [X]
+            status = status[1]
+
+            if base_product:
+                latest_base_product = label
+                channels_hierarcy[label] = []
+            else:
+                channels_hierarcy[latest_base_product].append(label)
+
+            channels[label] = status
+
+    print("mgr-ncc-sync -l output logged to %s" % log_file)
+    return (channels, channels_hierarcy)
+
+
+def mgr_sync_data():
+    core = MgrSync()
+    data = core._execute_xmlrpc_method("listChannels", core.auth.token)
+    new_channels = parse_channels(data)
+
+    log_file = "mgr_sync.output"
+    with open(log_file, "w") as file:
+        pprint.pprint(data, file)
+
+    print("mgr-sync -l data logged to %s" % log_file)
+    return new_channels
+
+
+def compare_lists(old, new):
+    old_set = set(old)
+    new_set = set(new)
+    common = old_set & new_set
+    only_in_old = old_set - common
+    only_in_new = new_set - common
+
+    print("  - mgr-ncc-sync: {0}".format(len(old_set)))
+    print("  - mgr-sync: {0}".format(len(new_set)))
+    if only_in_old:
+        print("Entries reported only by mgr-ncc-sync:")
+        for entry in only_in_old:
+            print("  - %s" % entry)
+    if only_in_new:
+        print("Entries reported only by mgr-sync:")
+        for entry in only_in_new:
+            print("  - %s" % entry)
+
+
+print("Listing channels like mgr-sync does...")
+new_channels = mgr_sync_data()
+
+print("Listing channels using mgr-ncc-sync...")
+old_channels, old_hierarchy = mgr_ncc_sync_data()
+
+print("\nComparing base channels...")
+
+if sorted(old_hierarchy.keys()) == sorted(new_channels.keys()):
+    print("The same base channels have been returned")
+else:
+    print("ERROR: different data")
+    compare_lists(old_hierarchy.keys(), new_channels.keys())
+
+print("\nComparing channel statuses and children")
+
+for _, bc in new_channels.items():
+    if not old_channels.has_key(bc.label):
+        print("\nIgnoring further analysis of {0} give it's not reported by mgr-sync".format(bc.label))
+        continue
+
+    if bc.short_status != old_channels[bc.label]:
+        print("\nStatus mismatch for channel {0}:".format(bc.label))
+        print("  * mgr-sync: %s" % old_channels[bc.label])
+        print("  * mgr-ncc-sync: %s" % bc.short_status)
+
+    if bc.children:
+        if bc.status in (Channel.Status.INSTALLED, Channel.Status.AVAILABLE):
+            new_children = sorted([c.label for c in bc.children])
+            old_children = sorted(old_hierarchy[bc.label])
+            if new_children != old_children:
+                print("\nChildren mismatch for channel {0}:".format(bc.label))
+                compare_lists(new_children, old_children)
+        else:
+            # mgr-ncc-sync does not expand UNAVAILABLE nodes
+            pass
+    elif old_hierarchy[bc.label]:
+        print("\nChildren mismatch for channel {0}:".format(bc.label))
+        print("Children ignored by mgr-sync:")
+        for entry in sorted(old_hierarchy[bc.label]):
+            print("  - %s" % entry)
+
+
