@@ -54,8 +54,8 @@ class Channel(object):
     def to_table_row(self):
         name = self.name
         if not self.base_channel:
-            name = "  `- " + name
-        return [str(self.status).capitalize(),
+            name = "  \\_ " + name
+        return [self.status_label,
                 name,
                 self.description_or_url()]
 
