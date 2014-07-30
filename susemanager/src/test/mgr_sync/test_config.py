@@ -21,7 +21,7 @@ import unittest2 as unittest
 from spacewalk.susemanager.mgr_sync.config import Config
 
 
-class SyncTest(unittest.TestCase):
+class ConfigTest(unittest.TestCase):
 
     def setUp(self):
         self.fake_rhn_file = os.path.join(os.getcwd(), "fake_rhn_file")
