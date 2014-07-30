@@ -64,7 +64,7 @@ class MgrSync(object):
         print("- P - channel is installed (provided)")
         print("- . - channel is not installed, but is available")
         print("- X - channel is not available\n")
-        print(tabulate(table, headers=("Status", "Name", "OS", "Description")))
+        print(tabulate(table, headers=("Status", "Name", "Description")))
 
     def _listProducts(self):
         """

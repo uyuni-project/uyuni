@@ -57,7 +57,6 @@ class Channel(object):
             name = "  `- " + name
         return [self.short_status,
                 name,
-                self.target,
                 self.description_or_url()]
 
 
