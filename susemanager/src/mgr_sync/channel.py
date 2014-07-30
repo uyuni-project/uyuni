@@ -55,7 +55,7 @@ class Channel(object):
         name = self.name
         if not self.base_channel:
             name = "  `- " + name
-        return [self.short_status,
+        return [str(self.status).capitalize(),
                 name,
                 self.description_or_url()]
 
