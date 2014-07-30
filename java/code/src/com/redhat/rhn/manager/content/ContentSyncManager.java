@@ -91,6 +91,8 @@ public class ContentSyncManager {
 
     // Make exceptions for the OES channel family that is still hosted with NCC
     private static final String OES_CHANNEL_FAMILY = "OES2";
+    private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
+            "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
 
     // Static XML files we parse
     private static File channelsXML = new File(
@@ -838,7 +840,8 @@ public class ContentSyncManager {
             return true;
         }
 
-        // Check OES availability via sending an HTTP HEAD request
+        // Check OES availability via sending an HTTP HEAD request,
+        // we might want to do the same for other external repo URLs.
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
             return verifyOESRepo();
         }
@@ -852,7 +855,6 @@ public class ContentSyncManager {
             }
         }
 
-        // TODO: Is it necessary to verify external URLs by sending HEAD requests?
         return mirrorable;
     }
 
@@ -940,7 +942,24 @@ public class ContentSyncManager {
      * @return true if there is access to an OES repository, false otherwise
      */
     private boolean verifyOESRepo() {
-        // TODO: Implement this
+        List<MirrorCredentialsDto> credentials =
+                new MirrorCredentialsManager().findMirrorCredentials();
+        // Query OES repo for all mirror credentials until success
+        for (MirrorCredentialsDto creds : credentials) {
+            int responseCode;
+            try {
+                responseCode = MgrSyncUtils.sendHeadRequest(
+                        OES_URL, creds.getUser(), creds.getPassword());
+                if (log.isDebugEnabled()) {
+                    log.debug("OES repo response code: " + responseCode);
+                }
+                if (responseCode == 200) {
+                    return true;
+                }
+            } catch (SCCClientException e) {
+                log.error(e.getMessage());
+            }
+        }
         return false;
     }
 
