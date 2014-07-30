@@ -59,12 +59,8 @@ class MgrSync(object):
                 for child in base_channel.children:
                     table.append(child.to_table_row())
 
-        print("Available Channels:\n")
-        print("Status:")
-        print("- P - channel is installed (provided)")
-        print("- . - channel is not installed, but is available")
-        print("- X - channel is not available\n")
-        print(tabulate(table, headers=("Status", "Name", "Description")))
+        print "Available Channels:\n"
+        print tabulate(table, headers=("Status", "Name", "Description"))
 
     def _listProducts(self):
         """
