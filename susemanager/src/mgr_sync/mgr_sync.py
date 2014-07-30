@@ -18,6 +18,8 @@ import sys
 import xmlrpclib
 from tabulate import tabulate
 
+from spacewalk.susemanager.mgr_sync.channel import parse_channels
+from spacewalk.susemanager.mgr_sync.channel import Channel
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
 from spacewalk.susemanager.mgr_sync.helpers import cli_msg
@@ -37,13 +39,32 @@ class MgrSync(object):
         self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
-
     def _listChannels(self):
         """
         List channels.
         """
 
-        return self._execute_xmlrpc_method("listChannels", self.auth.token)
+        data = self._execute_xmlrpc_method("listChannels", self.auth.token)
+        if not data:
+            cli_msg("No channels found.")
+            return
+
+        base_channels = parse_channels(data)
+
+        table = []
+        for _, base_channel in base_channels.items():
+            table.append(base_channel.to_table_row())
+            if base_channel.status in (Channel.Status.INSTALLED,
+                                       Channel.Status.AVAILABLE):
+                for child in base_channel.children:
+                    table.append(child.to_table_row())
+
+        print("Available Channels:\n")
+        print("Status:")
+        print("- P - channel is installed (provided)")
+        print("- . - channel is not installed, but is available")
+        print("- X - channel is not available\n")
+        print(tabulate(table, headers=("Status", "Name", "OS", "Description")))
 
     def _listProducts(self):
         """
@@ -109,11 +130,7 @@ class MgrSync(object):
         self.quiet = options.quiet
         self.auth.persist = options.saveconfig
         if options.listchannels:
-            channels = self._listChannels()
-            if channels:
-                self._format(channels, title="Available channels")
-            else:
-                cli_msg("No channels found.")
+            self._listChannels()
         elif options.listproducts:
             products = self._listProducts()
             if products:
