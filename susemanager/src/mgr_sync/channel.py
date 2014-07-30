@@ -35,13 +35,13 @@ class Channel(object):
         self.children = []
 
     @property
-    def short_status(self):
+    def status_label(self):
         if self.status == Channel.Status.INSTALLED:
-            return "P"
+            return "Installed"
         elif self.status == Channel.Status.AVAILABLE:
-            return "."
+            return "Available"
         elif self.status == Channel.Status.UNAVAILABLE:
-            return "X"
+            return "Unavailable"
         else:
             raise Exception("Unknown status: %s" % self.status)
 
