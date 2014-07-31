@@ -15,22 +15,32 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCProxySettings;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.Proxy;
+import java.net.URL;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
  */
 public class MgrSyncUtils {
 
+    // Logger instance
+    private static final Logger log = Logger.getLogger(MgrSyncUtils.class);
+
     /**
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
-     * TODO: Support proxied requests with authentication.
      *
      * @param url the URL to verify
      * @param username username for authentication
@@ -39,18 +49,54 @@ public class MgrSyncUtils {
      */
     public static int sendHeadRequest(String url, String username, String password)
             throws SCCClientException {
+        if (log.isDebugEnabled()) {
+            log.debug("Sending HEAD request to: " + url);
+        }
         HttpURLConnection connection = null;
         int responseCode = -1;
         try {
-            // Encode the given credentials
-            connection = (HttpURLConnection) new URL(url).openConnection();
+            // Setup proxy support
+            ConfigDefaults configDefaults = ConfigDefaults.get();
+            String proxyHost = configDefaults.getProxyHost();
+            if (!StringUtils.isBlank(proxyHost)) {
+                int proxyPort = configDefaults.getProxyPort();
+                Proxy proxy = new Proxy(Proxy.Type.HTTP,
+                        new InetSocketAddress(proxyHost, proxyPort));
+                connection = (HttpURLConnection) new URL(url).openConnection(proxy);
+                if (log.isDebugEnabled()) {
+                    log.debug("Sending HEAD request via proxy: " + proxyHost);
+                }
+                String proxyUsername = configDefaults.getProxyUsername();
+                String proxyPassword = configDefaults.getProxyPassword();
+                if (!StringUtils.isBlank(proxyUsername) &&
+                        !StringUtils.isBlank(proxyPassword)) {
+                    try {
+                        String creds = proxyUsername + ':' + proxyPassword;
+                        byte[] encoded = Base64.encodeBase64(creds.getBytes("iso-8859-1"));
+                        final String proxyAuth = new String(encoded, "iso-8859-1");
+                        connection.addRequestProperty("Proxy-Authorization", proxyAuth);
+                    }
+                    catch (UnsupportedEncodingException e) {
+                        // Can't happen
+                    }
+                }
+            }
+            else {
+                // No proxy is used
+                if (log.isDebugEnabled()) {
+                    log.debug("Sending HEAD request without proxy: " + proxyHost);
+                }
+                connection = (HttpURLConnection) new URL(url).openConnection();
+            }
+
+            // Configure the request
             connection.setRequestMethod("HEAD");
 
             // Basic authentication
             byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
             String credsString = new String(credsBytes);
             if (credsString != null) {
-                connection.setRequestProperty("Authorization", "BASIC " + credsString);
+                connection.setRequestProperty("Authorization", "Basic " + credsString);
             }
 
             // Get the response code

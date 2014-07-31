@@ -59,6 +59,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -954,9 +955,10 @@ public class ContentSyncManager {
                 responseCode = MgrSyncUtils.sendHeadRequest(
                         OES_URL, creds.getUser(), creds.getPassword());
                 if (log.isDebugEnabled()) {
-                    log.debug("OES repo response code: " + responseCode);
+                    log.debug("OES repo response code for " +
+                            creds.getUser() + ": " + responseCode);
                 }
-                if (responseCode == 200) {
+                if (responseCode == HttpURLConnection.HTTP_OK) {
                     return true;
                 }
             } catch (SCCClientException e) {
