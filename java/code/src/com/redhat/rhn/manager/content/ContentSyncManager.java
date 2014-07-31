@@ -213,6 +213,7 @@ public class ContentSyncManager {
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
             try {
                 List<SCCProduct> products = scc.listProducts();
@@ -320,6 +321,7 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
             try {
                 List<SCCRepository> repos = scc.listRepositories();
@@ -346,6 +348,7 @@ public class ContentSyncManager {
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
+            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
             try {
                 List<SCCSubscription> subs = scc.listSubscriptions();
