@@ -34,6 +34,8 @@ import junit.framework.TestCase;
  */
 public class SCCClientTest extends TestCase {
 
+    private String oldSchema = null;
+
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
@@ -41,7 +43,14 @@ public class SCCClientTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         // Use HTTP when running those tests
+        oldSchema = SCCConfig.getInstance().getSchema();
         SCCConfig.getInstance().put(SCCConfig.SCHEMA, "http://");
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        SCCConfig.getInstance().put(SCCConfig.SCHEMA, oldSchema);
+        super.tearDown();
     }
 
     /**

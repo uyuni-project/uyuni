@@ -15,8 +15,13 @@
 package com.suse.scc.client;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Helper class for setting up {@link HttpURLConnection} objects.
@@ -46,7 +51,35 @@ public class SCCRequestFactory {
             String method, String uri, String encodedCredentials) throws IOException {
         // Init the connection
         URL url = new URL(uri);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection;
+
+        String proxyHost = SCCConfig.getInstance().getProxyHostname();
+        if (!StringUtils.isEmpty(proxyHost)) {
+            int proxyPort = Integer.parseInt(SCCConfig.getInstance().getProxyPort());
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
+                proxyPort));
+            connection = (HttpURLConnection) url.openConnection(proxy);
+
+            String proxyUsername = SCCConfig.getInstance().getProxyUsername();
+            String proxyPassword = SCCConfig.getInstance().getProxyPassword();
+            if (!StringUtils.isEmpty(proxyUsername) &&
+                !StringUtils.isEmpty(proxyPassword)) {
+                try {
+                    byte[] encodedBytes = Base64
+                        .encodeBase64((proxyUsername + ':' + proxyPassword)
+                            .getBytes("iso-8859-1"));
+                    final String encoded = new String(encodedBytes, "iso-8859-1");
+                    connection.addRequestProperty("Proxy-Authorization", encoded);
+                }
+                catch (UnsupportedEncodingException e) {
+                    // can't happen
+                }
+            }
+        }
+        else {
+            connection = (HttpURLConnection) url.openConnection();
+        }
+
         connection.setRequestMethod(method);
 
         // Basic authentication
