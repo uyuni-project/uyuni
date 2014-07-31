@@ -36,6 +36,8 @@ def get_options():
     parser.add_option("-p", "--list-products", action="store_true",
                       dest="listproducts",
                       help="list all the products which are available for you")
+    parser.add_option("-e", "--expand", action="store_true", dest="expandtree",
+                      help="Expand the whole tree of channels or products")
     #parser.add_option("-a", "--add-product", action="store_true",
     #                  dest="addproduct",
     #                  help="Add all mandatory channels of a product [interactive]")
@@ -44,8 +46,6 @@ def get_options():
     #                  help="Add all mandatory channels of the product identified by the given ident")
     #parser.add_option("-c", "--add-channel", action="store", dest="addchannel",
     #                  help="Add a new channel and trigger a reposync")
-    #parser.add_option("--all-childs", action="store_true", dest="allchilds",
-    #                  help="Show also children, if the parent is not synced yet")
     #parser.add_option("--no-optional", action="store_true", dest="noopt",
     #                  help="Do not list optional channels")
     #parser.add_option("--filter", action="store", dest="filter",
