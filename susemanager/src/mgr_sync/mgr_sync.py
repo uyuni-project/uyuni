@@ -39,7 +39,7 @@ class MgrSync(object):
         self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
-    def _listChannels(self):
+    def _listChannels(self, expand=False):
         """
         List channels.
         """
@@ -57,9 +57,10 @@ class MgrSync(object):
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
                 for child in base_channel.children:
-                    table.append(child.to_table_row())
+                    if child.status == Channel.Status.INSTALLED or expand:
+                        table.append(child.to_table_row())
 
-        print "Available Channels:\n"
+        print "Available Channels%s:\n" % (expand and " (full)" or "")
         print tabulate(table, headers=("Status", "Name", "Description"))
 
     def _listProducts(self):
@@ -126,7 +127,7 @@ class MgrSync(object):
         self.quiet = options.quiet
         self.auth.persist = options.saveconfig
         if options.listchannels:
-            self._listChannels()
+            self._listChannels(expand=options.expandtree)
         elif options.listproducts:
             products = self._listProducts()
             if products:
