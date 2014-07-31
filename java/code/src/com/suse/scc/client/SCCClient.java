@@ -30,19 +30,20 @@ import java.util.List;
  */
 public class SCCClient {
 
+    private SCCConfig config = new SCCConfig();
     /**
      * Constructor expecting a hostname and credentials.
      */
     public SCCClient(String hostname, String username, String password) {
         // Put a given hostname to config
         if (hostname != null) {
-            SCCConfig.getInstance().put(SCCConfig.HOSTNAME, hostname);
+            config.put(SCCConfig.HOSTNAME, hostname);
         }
 
         // Encode the given credentials
         byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
         String credsString = new String(credsBytes);
-        SCCConfig.getInstance().put(SCCConfig.ENCODED_CREDS, credsString);
+        config.put(SCCConfig.ENCODED_CREDS, credsString);
     }
 
     /**
@@ -52,19 +53,27 @@ public class SCCClient {
         this(null, username, password);
     }
 
+     /**
+      * Directly access the configuration
+      * @return the configuration
+      */
+    public SCCConfig getConfig() {
+        return config;
+    }
+
     /**
      * Set the proxy for this client
      * @param settings Proxy settings
      */
     public void setProxySettings(SCCProxySettings settings) {
         if (settings.getHostname() != null) {
-            SCCConfig.getInstance().put(SCCConfig.PROXY_HOSTNAME, settings.getHostname());
-            SCCConfig.getInstance().put(SCCConfig.PROXY_PORT, String.valueOf(settings.getPort()));
+            config.put(SCCConfig.PROXY_HOSTNAME, settings.getHostname());
+            config.put(SCCConfig.PROXY_PORT, String.valueOf(settings.getPort()));
         }
         if (settings.getUsername() != null) {
-            SCCConfig.getInstance().put(SCCConfig.PROXY_USERNAME, settings.getUsername());
+            config.put(SCCConfig.PROXY_USERNAME, settings.getUsername());
                 if (settings.getPassword() != null) {
-            SCCConfig.getInstance().put(SCCConfig.PROXY_PASSWORD, settings.getPassword());
+            config.put(SCCConfig.PROXY_PASSWORD, settings.getPassword());
             }
         }
     }
@@ -75,7 +84,7 @@ public class SCCClient {
      */
     public void setUUID (String uuid) {
         if (uuid != null) {
-            SCCConfig.getInstance().put(SCCConfig.UUID, uuid);
+            config.put(SCCConfig.UUID, uuid);
         }
     }
 
@@ -87,7 +96,7 @@ public class SCCClient {
      * @return list of products available to organization
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
-        SCCConnection scc = new SCCConnection("/connect/organizations/products");
+        SCCConnection scc = new SCCConnection("/connect/organizations/products", config);
         Type returnType = new TypeToken<List<SCCProduct>>(){}.getType();
         return scc.get(returnType);
     }
@@ -100,7 +109,7 @@ public class SCCClient {
      * @return list of repositories available to organization
      */
     public List<SCCRepository> listRepositories() throws SCCClientException {
-        SCCConnection scc = new SCCConnection("/connect/organizations/repositories");
+        SCCConnection scc = new SCCConnection("/connect/organizations/repositories", config);
         Type returnType = new TypeToken<List<SCCRepository>>(){}.getType();
         return scc.get(returnType);
     }
@@ -113,7 +122,7 @@ public class SCCClient {
      * @return list of subscriptions available to organization
      */
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
-        SCCConnection scc = new SCCConnection("/connect/organizations/subscriptions");
+        SCCConnection scc = new SCCConnection("/connect/organizations/subscriptions", config);
         Type returnType = new TypeToken<List<SCCSubscription>>(){}.getType();
         return scc.get(returnType);
     }
