@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.suse.scc.client.SCCClientException;
-
-import org.apache.commons.codec.binary.Base64;
-
+import com.suse.scc.client.SCCProxySettings;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
@@ -68,5 +68,17 @@ public class MgrSyncUtils {
             }
         }
         return responseCode;
+    }
+
+    /**
+     * @return the proxy settings configured in /etc/rhn/rhn.conf
+     */
+    public static SCCProxySettings getRhnProxySettings() {
+        ConfigDefaults configDefaults = ConfigDefaults.get();
+        SCCProxySettings settings = new SCCProxySettings(
+                configDefaults.getProxyHost(), configDefaults.getProxyPort());
+        settings.setUsername(configDefaults.getProxyUsername());
+        settings.setPassword(configDefaults.getProxyPassword());
+        return settings;
     }
 }
