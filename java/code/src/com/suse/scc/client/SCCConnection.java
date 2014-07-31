@@ -30,17 +30,19 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCConnection {
 
-    private final String uri;
+    private final String endpoint;
     private final String GZIP_ENCODING = "gzip";
+    private final SCCConfig config;
 
     /**
      * Init a connection to a given SCC endpoint.
      *
      * @param endpoint
-     */
-    public SCCConnection(String endpoint) {
-        SCCConfig config = SCCConfig.getInstance();
-        this.uri = config.getSchema() + config.getHostname() + endpoint;
+     * @param config
+    */
+    public SCCConnection(String endpoint, SCCConfig config) {
+        this.config = config;
+        this.endpoint = endpoint;
     }
 
     /**
@@ -69,7 +71,7 @@ public class SCCConnection {
         try {
             // Setup the connection
             connection = SCCRequestFactory.getInstance().initConnection(
-                    method, uri, SCCConfig.getInstance().getEncodedCredentials());
+                    method, endpoint, config);
 
             // Connect and parse the response on success
             connection.connect();
