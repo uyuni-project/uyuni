@@ -48,20 +48,22 @@ public class SCCRequestFactory {
      * @throws IOException
      */
     public HttpURLConnection initConnection(
-            String method, String uri, String encodedCredentials) throws IOException {
+            String method, String endpoint, SCCConfig config) throws IOException {
         // Init the connection
+        String uri = config.getSchema() + config.getHostname() + endpoint;
+        String encodedCredentials = config.getEncodedCredentials();
         URL url = new URL(uri);
         HttpURLConnection connection;
 
-        String proxyHost = SCCConfig.getInstance().getProxyHostname();
+        String proxyHost = config.getProxyHostname();
         if (!StringUtils.isEmpty(proxyHost)) {
-            int proxyPort = Integer.parseInt(SCCConfig.getInstance().getProxyPort());
+            int proxyPort = Integer.parseInt(config.getProxyPort());
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
                 proxyPort));
             connection = (HttpURLConnection) url.openConnection(proxy);
 
-            String proxyUsername = SCCConfig.getInstance().getProxyUsername();
-            String proxyPassword = SCCConfig.getInstance().getProxyPassword();
+            String proxyUsername = config.getProxyUsername();
+            String proxyPassword = config.getProxyPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
                 !StringUtils.isEmpty(proxyPassword)) {
                 try {
@@ -92,7 +94,7 @@ public class SCCRequestFactory {
         connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
 
         // Send the UUID for debugging if available
-        String uuid = SCCConfig.getInstance().getUUID();
+        String uuid = config.getUUID();
         connection.setRequestProperty("SMS", uuid != null ? uuid : "undefined");
 
         return connection;

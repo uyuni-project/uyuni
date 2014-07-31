@@ -40,26 +40,11 @@ public class SCCConfig {
     // The properties object
     private Properties properties;
 
-    // Singleton instance
-    private static SCCConfig instance;
-
     /**
      * Default constructor.
      */
-    private SCCConfig() {
+    public SCCConfig() {
         this.properties = new Properties();
-    }
-
-    /**
-     * Returns the singleton instance.
-     *
-     * @return instance
-     */
-    public static SCCConfig getInstance() {
-        if (instance == null) {
-            instance = new SCCConfig();
-        }
-        return instance;
     }
 
     /**
@@ -123,7 +108,8 @@ public class SCCConfig {
      * @return proxy port
      */
     public String getProxyPort() {
-        return properties.getProperty(PROXY_PORT, "443");
+        return properties.getProperty(PROXY_PORT,
+                getSchema().equals("https://") ? "443": "80");
     }
 
     /**
