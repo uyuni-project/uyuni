@@ -699,15 +699,14 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         final SUSEProduct availableDBProduct =
                 SUSEProductTestUtils.createTestSUSEProduct(availableChannelFamily);
 
-        // create one installed product in channel.xml format
+        // create one available product in channel.xml format
         final MgrSyncChannel availableChannel = new MgrSyncChannel();
-        availableChannel.setFamily(installedChannelFamily.getLabel());
-        availableChannel.setLabel(installedDBChannel.getLabel());
+        availableChannel.setFamily(availableChannelFamily.getLabel());
         availableChannel.setParent("BASE");
         availableChannel.setOptional(false);
         final MgrSyncProduct availableProduct =
-                new MgrSyncProduct(installedDBProduct.getName(),
-                        installedDBProduct.getProductId(), installedDBProduct.getVersion());
+                new MgrSyncProduct(availableDBProduct.getName(),
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
         availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(availableProduct); } });
 
