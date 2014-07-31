@@ -27,6 +27,12 @@ public class SCCConfig {
     public static final String ENCODED_CREDS = "encoded-creds";
     public static final String UUID = "uuid";
 
+    // Proxy settings
+    public static final String PROXY_HOSTNAME = "proxy-hostname";
+    public static final String PROXY_PORT = "proxy-port";
+    public static final String PROXY_USERNAME = "proxy-username";
+    public static final String PROXY_PASSWORD = "proxy-password";
+
     // Default values
     private static final String DEFAULT_SCHEMA = "https://";
     private static final String DEFAULT_HOSTNAME = "scc.suse.com";
@@ -100,5 +106,41 @@ public class SCCConfig {
      */
     public String getUUID() {
         return properties.getProperty(UUID, null);
+    }
+
+    /**
+     * Returns the proxy hostname or null.
+     *
+     * @return proxy hostname
+     */
+    public String getProxyHostname() {
+        return properties.getProperty(PROXY_HOSTNAME, null);
+    }
+
+     /**
+     * Returns the configured proxy port or default
+     *
+     * @return proxy port
+     */
+    public String getProxyPort() {
+        return properties.getProperty(PROXY_PORT, "443");
+    }
+
+    /**
+     * Returns the proxy username or null.
+     *
+     * @return proxy username
+     */
+    public String getProxyUsername() {
+        return properties.getProperty(PROXY_USERNAME, null);
+    }
+
+    /**
+     * Returns the proxy password or null.
+     *
+     * @return proxy password
+     */
+    public String getProxyPassword() {
+       return properties.getProperty(PROXY_PASSWORD, null);
     }
 }
