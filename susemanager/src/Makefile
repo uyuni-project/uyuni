@@ -13,6 +13,7 @@ SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
                     simpleproduct errata_helper package_helper\
 										mgr_sync/__init__ \
 										mgr_sync/authenticator \
+										mgr_sync/channel \
 										mgr_sync/config \
 										mgr_sync/helpers \
 										mgr_sync/mgr_sync
