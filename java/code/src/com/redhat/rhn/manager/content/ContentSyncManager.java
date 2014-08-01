@@ -811,7 +811,6 @@ public class ContentSyncManager {
             throws ContentSyncException {
         // This list will be returned
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
-
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
         // Determine the channel status
@@ -863,7 +862,6 @@ public class ContentSyncManager {
                 break;
             }
         }
-
         return mirrorable;
     }
 
