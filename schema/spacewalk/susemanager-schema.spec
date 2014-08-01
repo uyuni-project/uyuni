@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.3.2
+Version:        2.3.5
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jul 31 2014 Stephen Herr <sherr@redhat.com> 2.3.5-1
+- 1125428 - make config file deletion faster if there are lots of snapshots
+
+* Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.4-1
+- Add support to the ppc64le architecture
+
+* Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.3-1
+- 1066432 - make future installs run ErrataCache task more often
+
 * Tue Jul 22 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.2-1
 - 1023557 - Speed up satellite-sync by avoiding commonly-called dblink_exec
 

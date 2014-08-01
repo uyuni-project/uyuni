@@ -26,7 +26,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.3
+Version: 2.3.4
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -70,7 +70,7 @@ BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint
+BuildRequires: spacewalk-pylint >= 2.2
 %endif
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
 BuildRequires: rhnlib >= 2.5.57
@@ -802,6 +802,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.4-1
+- Update spacewalk-backend.spec
+
 * Mon Jul 21 2014 Stephen Herr <sherr@redhat.com> 2.3.3-1
 - 1023557 - Speed up satellite-sync by avoiding commonly-called dblink_exec
 
