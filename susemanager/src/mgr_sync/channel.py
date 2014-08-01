@@ -32,7 +32,7 @@ class Channel(object):
         self.status = data["status"]["value"]
         self.target = data["target"]
         self.url = data["url"]
-        self.children = []
+        self._children = []
 
     @property
     def status_label(self):
@@ -49,7 +49,11 @@ class Channel(object):
         return (self.description + "").strip() or self.url or "N/A"
 
     def add_child(self, channel):
-        self.children.append(channel)
+        self._children.append(channel)
+
+    @property
+    def children(self):
+        return sorted(self._children, key=lambda child: child.label)
 
     def to_table_row(self):
         name = self.name

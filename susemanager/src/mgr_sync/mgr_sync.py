@@ -52,7 +52,8 @@ class MgrSync(object):
         base_channels = parse_channels(data)
 
         table = []
-        for base_channel in base_channels.values():
+        for bc_label in sorted(base_channels.keys()):
+            base_channel = base_channels[bc_label]
             table.append(base_channel.to_table_row())
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
