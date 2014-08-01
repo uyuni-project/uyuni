@@ -82,11 +82,13 @@ public class PackageManager extends BaseManager {
 
     // Valid dependency types
     public static final String[]
-        DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides"};
+        DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
+            "recommends", "suggests", "supplements", "enhances"};
 
 
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
+            "recommends", "suggests", "supplements", "enhances",
             "channels", "files", "caps", "changelogs"};
 
     /**
@@ -149,6 +151,65 @@ public class PackageManager extends BaseManager {
         return dr;
     }
 
+    /**
+     * Runs Package_queries.package_recommends query, which returns dependencies of the
+     * recommends type.
+     * @param pid The package in question
+     * @return Returns dependencies of type recommends.
+     */
+    public static DataResult packageRecommends(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_recommends",
+                                           Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        DataResult dr = m.execute(params);
+        return dr;
+    }
+
+    /**
+     * Runs Package_queries.package_suggests query, which returns dependencies of the
+     * suggests type.
+     * @param pid The package in question
+     * @return Returns dependencies of type suggests.
+     */
+    public static DataResult packageSuggests(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_suggests",
+                                           Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        DataResult dr = m.execute(params);
+        return dr;
+    }
+
+    /**
+     * Runs Package_queries.package_supplements query, which returns dependencies of the
+     * supplements type.
+     * @param pid The package in question
+     * @return Returns dependencies of type supplements.
+     */
+    public static DataResult packageSupplements(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_supplements",
+                                           Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        DataResult dr = m.execute(params);
+        return dr;
+    }
+
+    /**
+     * Runs Package_queries.package_enhances query, which returns dependencies of the
+     * enhances type.
+     * @param pid The package in question
+     * @return Returns dependencies of type enhances.
+     */
+    public static DataResult packageEnhances(Long pid) {
+        SelectMode m = ModeFactory.getMode("Package_queries", "package_enhances",
+                                           Map.class);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("pid", pid);
+        DataResult dr = m.execute(params);
+        return dr;
+    }
 
     /**
      * List the package in a channel (for the web UI lists)
@@ -1561,10 +1622,13 @@ public class PackageManager extends BaseManager {
      */
     public static String getPackageChangeLog(Package pkg) {
 
-        File f = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
-                            pkg.getPath());
+        String path = pkg.getPath();
+        if (path == null) {
+            return null;
+        }
+        File f = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT), path);
         if (!f.canRead()) {
-                return null;
+            return null;
         }
 
         List<String> cmd = new ArrayList<String>();
@@ -1657,5 +1721,43 @@ public class PackageManager extends BaseManager {
             }
         }
         return nevra;
+    }
+
+    /**
+     * Helper method to figure out the dependency modifier. I honestly have no clue
+     * why the bitwise ANDs work or what the sense field in the db really means. This was
+     * pretty much a line for line port of the perl code.
+     * @param sense A number whose number can tell us what kind of modifier is needed
+     * @param version The version of the dependency we're investigating
+     * @return Returns a string in the form of something like '>= 4.1-3'
+     */
+    public static String getDependencyModifier(Long sense, String version) {
+        StringBuilder depmod = new StringBuilder();
+
+        if (sense != null) { //how ironic ;)
+            int senseIntVal = sense.intValue();
+            //Bitwise AND with 4 --> '>'
+            if ((senseIntVal & 4) > 0) {
+              depmod.append(">");
+            }
+            //Bitwise AND with 2 --> '<'
+            else if ((senseIntVal & 2) > 0) {
+                depmod.append("<");
+            }
+            //Bitwise AND with 8 tells us whether or not this should have an '=' on it
+            if ((senseIntVal & 8) > 0) {
+                depmod.append("=");
+            }
+            //Add the version so we get something like '<= 4.0-1'
+            depmod.append(" ");
+            depmod.append(version);
+        }
+        else {
+            //Robin thinks that this represents a "anything but this version" scenario.
+            depmod.append("-");
+            depmod.append(version);
+        }
+
+        return depmod.toString();
     }
 }
