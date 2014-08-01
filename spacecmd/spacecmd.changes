@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Aug 01 10:14:56 CEST 2014 - mc@suse.de
+
+- version 2.1.25.4-1
+- make print_result a static method of SpacewalkShell (bnc#889605)
+
+-------------------------------------------------------------------
 Tue Jun 17 10:29:00 CEST 2014 - jrenner@suse.de
 
 - version 2.1.25.3-1
