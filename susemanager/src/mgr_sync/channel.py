@@ -35,15 +35,8 @@ class Channel(object):
         self._children = []
 
     @property
-    def status_label(self):
-        if self.status == Channel.Status.INSTALLED:
-            return "Installed"
-        elif self.status == Channel.Status.AVAILABLE:
-            return "Available"
-        elif self.status == Channel.Status.UNAVAILABLE:
-            return "Unavailable"
-        else:
-            raise Exception("Unknown status: %s" % self.status)
+    def short_status(self):
+        return "[%s]" % str(self.status)[0]
 
     def description_or_url(self):
         return (self.description + "").strip() or self.url or "N/A"
@@ -59,7 +52,7 @@ class Channel(object):
         name = self.name
         if not self.base_channel:
             name = "  \\_ " + name
-        return [self.status_label,
+        return [self.short_status,
                 name,
                 self.description_or_url()]
 
