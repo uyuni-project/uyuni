@@ -56,6 +56,11 @@ class Channel(object):
                 name,
                 self.description_or_url()]
 
+    def to_ascii_row(self):
+        return "{0} {1} {2}".format(self.short_status,
+                                         self.name,
+                                         self.description_or_url())
+
 
 def parse_channels(data):
     """
