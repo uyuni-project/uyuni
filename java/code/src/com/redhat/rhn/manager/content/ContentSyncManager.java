@@ -844,6 +844,11 @@ public class ContentSyncManager {
             return true;
         }
 
+        // Remove trailing slashes since URLs coming from SCC don't have those
+        if (sourceUrl.endsWith("/")) {
+            sourceUrl = sourceUrl.substring(0, sourceUrl.length() - 1);
+        }
+
         // Check OES availability via sending an HTTP HEAD request,
         // we might want to do the same for other external repo URLs.
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
