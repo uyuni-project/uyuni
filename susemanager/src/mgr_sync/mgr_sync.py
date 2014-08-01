@@ -51,19 +51,21 @@ class MgrSync(object):
 
         base_channels = parse_channels(data)
 
-        table = []
+        print "Available Channels%s:\n" % (expand and " (full)" or "")
+        print("\nStatus:")
+        print("  - I - channel is installed")
+        print("  - A - channel is not installed, but is available")
+        print("  - U - channel is unavailable\n")
+
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
 
-            table.append(base_channel.to_table_row())
+            print base_channel.to_ascii_row()
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
                 for child in base_channel.children:
                     if base_channel.status == Channel.Status.INSTALLED or expand:
-                        table.append(child.to_table_row())
-
-        print "Available Channels%s:\n" % (expand and " (full)" or "")
-        print tabulate(table, headers=("Status", "Name", "Description"))
+                        print("    " + child.to_ascii_row())
 
     def _listProducts(self):
         """
