@@ -102,6 +102,17 @@ def compare_lists(old, new):
             print("  - %s" % entry)
 
 
+def old_status_to_channel_status(old):
+    if old == "P":
+        return Channel.Status.INSTALLED
+    elif old == ".":
+        return Channel.Status.AVAILABLE
+    elif old == "X":
+        return Channel.Status.UNAVAILABLE
+    else:
+        raise Exception("Unknown status %s" % old)
+
+
 print("Listing channels like mgr-sync does...")
 new_channels = mgr_sync_data()
 
@@ -118,21 +129,15 @@ else:
 
 print("\nComparing channel statuses and children")
 
-status = {
-    "Available" : ".", 
-    "Installed" : "P",
-    "Unavailable" : "X"
-}
-
 for _, bc in new_channels.items():
     if not old_channels.has_key(bc.label):
         print("\nIgnoring further analysis of {0} give it's not reported by mgr-sync".format(bc.label))
         continue
 
-    if status[bc.status_label] != old_channels[bc.label]:
+    if status[bc.status] != old_status_to_channel_status(old_channels[bc.label]):
         print("\nStatus mismatch for channel {0}:".format(bc.label))
-        print("  * mgr-sync: %s" % old_channels[bc.label])
-        print("  * mgr-ncc-sync: %s" % bc.short_status)
+        print("  * mgr-sync: %s" % old_status_to_channel_status(old_channels[bc.label]))
+        print("  * mgr-ncc-sync: %s" % bc.status)
 
     if bc.children:
         if bc.status in (Channel.Status.INSTALLED, Channel.Status.AVAILABLE):
