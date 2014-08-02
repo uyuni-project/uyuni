@@ -964,9 +964,8 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
    values (lookup_server_arch('i386-i86pc-solaris'), 
            lookup_sg_type('bootstrap_entitled'));
 
-            lookup_sg_type('bootstrap_entitled'));
-
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
     values (lookup_server_arch('ppc64le-redhat-linux'),
+            lookup_sg_type('bootstrap_entitled'));
 commit;
 
