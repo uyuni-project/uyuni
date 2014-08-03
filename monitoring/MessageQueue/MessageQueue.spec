@@ -16,6 +16,7 @@ BuildArch:    noarch
 Requires:     perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires:     ProgAGoGo
 Requires(pre): nocpulse-common
+Requires:     perl(BerkeleyDB)
 Group:        Applications/Communications
 License:      GPLv2
 Buildroot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
