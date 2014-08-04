@@ -200,7 +200,6 @@ public class UserImpl extends BaseDomainHelper implements User {
         for (Iterator i = usergroups.iterator(); i.hasNext();) {
             UserGroup ug = (UserGroup)i.next();
             userRoles.add(ug.getRole());
-
         }
 
         if (userRoles.contains(RoleFactory.ORG_ADMIN)) {
@@ -798,7 +797,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     protected Address getAddress() {
         Address baddr = null;
         Address addr = null;
-        Address[] addrA = (Address[]) addresses.toArray(new Address[addresses.size()]);
+        Address[] addrA = addresses.toArray(new Address[addresses.size()]);
         if (addresses.size() > 0) {
             for (int i = 0; i < addrA.length; i++) {
                 if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
@@ -1107,7 +1106,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         public Address getAddress() {
             Address baddr = null;
             Address addr = null;
-            Address[] addrA = (Address[]) addresses.toArray(new Address[addresses.size()]);
+            Address[] addrA = addresses.toArray(new Address[addresses.size()]);
             if (addresses.size() > 0) {
                 for (int i = 0; i < addrA.length; i++) {
                     if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
