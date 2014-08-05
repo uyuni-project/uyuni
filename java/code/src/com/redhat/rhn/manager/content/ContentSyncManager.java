@@ -866,6 +866,22 @@ public class ContentSyncManager {
     }
 
     /**
+     * Add a new channel to the database.
+     * @param label the label of the channel to be added.
+     */
+    public void addChannel(String label) throws ContentSyncException {
+        log.info("NOT IMPLEMENTED: Add channel: " + label);
+    }
+
+    /**
+     * Schedule a repo sync for the channel specified by the given label.
+     * @param label the label of the channel to be synced.
+     */
+    public void syncChannel(String label) throws ContentSyncException {
+        log.info("NOT IMPLEMENTED: Sync channel: " + label);
+    }
+
+    /**
      * Check if a given string is a product class representing a system entitlement.
      * @param s string to check if it represents a system entitlement
      * @return true if s is a system entitlement, else false.
