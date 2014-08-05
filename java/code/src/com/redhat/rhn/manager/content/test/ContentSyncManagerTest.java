@@ -564,7 +564,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         try {
             // Match against a manually created list of SCC repositories
             SCCRepository repo = new SCCRepository();
-            String sourceUrl = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/";
+            String sourceUrl = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(sourceUrl);
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
@@ -589,7 +589,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
                 else if (label.equals(c.getLabel())) {
                     assertEquals(MgrSyncStatus.INSTALLED, c.getStatus());
                 }
-                else if (sourceUrl.equals(c.getSourceUrl())) {
+                // URLs in channels.xml end with a slash, but not in SCC!
+                else if ((sourceUrl + "/").equals(c.getSourceUrl())) {
                     // Copies of this repo (same URL!) are AVAILABLE
                     assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
                 }
