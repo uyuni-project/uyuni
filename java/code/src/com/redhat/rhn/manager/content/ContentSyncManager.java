@@ -605,6 +605,9 @@ public class ContentSyncManager {
             SUSEProduct product = SUSEProductFactory.findSUSEProduct(
                     p.getName(), p.getVersion(), p.getReleaseType(), p.getArch());
             if (product != null) {
+                // it is not guaranteed for this ID to be stable in time, as it
+                // depends on IBS
+                product.setProductId(p.getId());
                 product.setFriendlyName(p.getFriendlyName());
                 // TODO: Remove this attribute from database if it is not used anywhere
                 product.setProductList('Y');
@@ -616,8 +619,8 @@ public class ContentSyncManager {
                 // Otherwise create a new SUSE product and save it
                 product = new SUSEProduct();
                 product.setProductId(p.getId());
-                // Convert those to lower case for case insensitive operating
-                product.setName(p.getName().toLowerCase());
+                // Convert those to lower case to match channels.xml format
+                product.setName(p.getIdentifier().toLowerCase());
                 // Version rarely can be null.
                 product.setVersion(p.getVersion() != null ?
                                    p.getVersion().toLowerCase() : null);
