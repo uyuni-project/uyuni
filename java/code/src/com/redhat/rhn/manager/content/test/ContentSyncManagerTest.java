@@ -191,7 +191,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         // Setup SCC product accordingly
         SCCProduct p = new SCCProduct();
         p.setId(productId);
-        p.setName(name);
+        p.setIdentifier(name);
         p.setVersion(version);
         p.setReleaseType(releaseType);
         p.setArch("i686");
