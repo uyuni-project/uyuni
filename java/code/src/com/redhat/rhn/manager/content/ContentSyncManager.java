@@ -603,7 +603,7 @@ public class ContentSyncManager {
 
             // Update this product in the database if it is there
             SUSEProduct product = SUSEProductFactory.findSUSEProduct(
-                    p.getName(), p.getVersion(), p.getReleaseType(), p.getArch());
+                    p.getIdentifier(), p.getVersion(), p.getReleaseType(), p.getArch());
             if (product != null) {
                 // it is not guaranteed for this ID to be stable in time, as it
                 // depends on IBS
