@@ -73,6 +73,9 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
     public void testUpdateChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         try {
+            // Temporarily rename all installed vendor channels
+            renameVendorChannels();
+
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
             Channel c = SUSEProductTestUtils.createTestVendorChannel();
@@ -566,11 +569,8 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
 
-            // Temporarily clear all installed vendor channels labels (if any)
-            for (Channel c : ChannelFactory.listVendorChannels()) {
-                c.setLabel(TestUtils.randomString());
-                TestUtils.saveAndFlush(c);
-            }
+            // Temporarily rename all installed vendor channels
+            renameVendorChannels();
 
             // Create a channel that is INSTALLED
             Channel channel = SUSEProductTestUtils.createTestVendorChannel();
@@ -746,5 +746,17 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         family2.setDefaultNodeCount(-1);
         channelFamilies.add(family2);
         return channelFamilies;
+    }
+
+    /**
+     * Temporarily rename all installed vendor channels in order to avoid conflicts
+     * whenever we use real channel labels in tests.
+     */
+    private void renameVendorChannels() {
+        for (Channel c : ChannelFactory.listVendorChannels()) {
+            c.setLabel(TestUtils.randomString());
+            c.setName(TestUtils.randomString());
+            TestUtils.saveAndFlush(c);
+        }
     }
 }
