@@ -125,6 +125,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
         String name = TestUtils.randomString();
+        String identifier = TestUtils.randomString();
         String version = TestUtils.randomString();
         String releaseType = TestUtils.randomString();
         String friendlyName = TestUtils.randomString();
@@ -134,6 +135,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
         SCCProduct p = new SCCProduct();
         p.setId(productId);
         p.setName(name);
+        p.setIdentifier(identifier);
         p.setVersion(version);
         p.setReleaseType(releaseType);
         p.setFriendlyName(friendlyName);
@@ -148,7 +150,7 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
 
         // Verify that a new product has been created correctly
         SUSEProduct suseProduct = SUSEProductFactory.lookupByProductId(productId);
-        assertEquals(name.toLowerCase(), suseProduct.getName());
+        assertEquals(identifier.toLowerCase(), suseProduct.getName());
         assertEquals(version.toLowerCase(), suseProduct.getVersion());
         assertEquals(releaseType.toLowerCase(), suseProduct.getRelease());
         assertEquals(friendlyName, suseProduct.getFriendlyName());

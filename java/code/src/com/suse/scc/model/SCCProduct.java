@@ -203,4 +203,7 @@ public class SCCProduct {
     public void setProductClass(String productClassIn) {
         this.productClass = productClassIn;
     }
+    public void setIdentifier(String identifierIn) {
+        this.identifier = identifierIn;
+    }
 }
