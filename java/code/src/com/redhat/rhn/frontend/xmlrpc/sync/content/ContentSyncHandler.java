@@ -197,4 +197,48 @@ public class ContentSyncHandler extends BaseHandler {
 
         return BaseHandler.VALID;
     }
+
+
+    /**
+     * Add a new channel to the SUSE Manager database.
+     *
+     * @param sessionKey user session token
+     * @param channelLabel label of the channel to add
+     * @return Integer
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Add a new channel to the SUSE Manager database
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer addChannel(String sessionKey, String channelLabel)
+            throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        new ContentSyncManager().addChannel(channelLabel);
+
+        return BaseHandler.VALID;
+    }
+
+
+    /**
+     * Schedule a repo sync for the channel specified by the given label.
+     *
+     * @param sessionKey user session token
+     * @param channelLabel label of the channel to be synced
+     * @return Integer
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Schedule a repo sync for the channel specified by the given label.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "channelLabel", "Label of channel to be synced")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer syncChannel(String sessionKey, String channelLabel)
+            throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        new ContentSyncManager().syncChannel(channelLabel);
+
+        return BaseHandler.VALID;
+    }
 }
