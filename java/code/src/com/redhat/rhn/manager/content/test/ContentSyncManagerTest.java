@@ -629,7 +629,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setParent("BASE");
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
-                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion(), "x86_64");
         availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(availableProduct); } });
 
@@ -653,7 +653,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         final MgrSyncProduct unavailableProduct =
                 new MgrSyncProduct(unavailableDBProduct.getName(),
                         unavailableDBProduct.getProductId(),
-                        unavailableDBProduct.getVersion());
+                        unavailableDBProduct.getVersion(), "x86_64");
         unavailableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(unavailableProduct); } });
 
@@ -697,7 +697,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         installedChannel.setOptional(false);
         final MgrSyncProduct installedProduct =
                 new MgrSyncProduct(installedDBProduct.getName(),
-                        installedDBProduct.getProductId(), installedDBProduct.getVersion());
+                        installedDBProduct.getProductId(), installedDBProduct.getVersion(),
+                        "x86_64");
         installedChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(installedProduct); } });
 
@@ -715,7 +716,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setOptional(false);
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
-                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion(),
+                        "x86_64");
         availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(availableProduct); } });
 
