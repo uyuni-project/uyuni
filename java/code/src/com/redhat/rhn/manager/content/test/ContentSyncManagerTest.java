@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -57,9 +58,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -629,7 +632,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setParent("BASE");
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
-                        availableDBProduct.getProductId(), availableDBProduct.getVersion(), "x86_64");
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
         availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(availableProduct); } });
 
@@ -653,7 +656,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         final MgrSyncProduct unavailableProduct =
                 new MgrSyncProduct(unavailableDBProduct.getName(),
                         unavailableDBProduct.getProductId(),
-                        unavailableDBProduct.getVersion(), "x86_64");
+                        unavailableDBProduct.getVersion());
         unavailableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(unavailableProduct); } });
 
@@ -662,10 +665,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             { { add(availableChannel); add(unavailableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<MgrSyncProduct> products = csm.listProducts(allChannels);
+        Collection<ListedProduct> products = csm.listProducts(allChannels);
 
         boolean found = false;
-        for (MgrSyncProduct product : products) {
+        for (ListedProduct product : products) {
             if (product.getName().equals(availableDBProduct.getName())) {
                 found = true;
             }
@@ -697,8 +700,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         installedChannel.setOptional(false);
         final MgrSyncProduct installedProduct =
                 new MgrSyncProduct(installedDBProduct.getName(),
-                        installedDBProduct.getProductId(), installedDBProduct.getVersion(),
-                        "x86_64");
+                        installedDBProduct.getProductId(), installedDBProduct.getVersion());
         installedChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(installedProduct); } });
 
@@ -716,8 +718,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setOptional(false);
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
-                        availableDBProduct.getProductId(), availableDBProduct.getVersion(),
-                        "x86_64");
+                        availableDBProduct.getProductId(), availableDBProduct.getVersion());
         availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
                 { { add(availableProduct); } });
 
@@ -725,9 +726,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             { { add(installedChannel); add(availableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<MgrSyncProduct> products = csm.listProducts(allChannels);
+        Collection<ListedProduct> products = csm.listProducts(allChannels);
 
-        for (MgrSyncProduct product : products) {
+        for (ListedProduct product : products) {
             if (product.getId().equals(installedDBProduct.getProductId())) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
             }
@@ -776,24 +777,24 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
 
-            Set<MgrSyncProduct> productsWithoutFamily = new HashSet<MgrSyncProduct>();
-            for (MgrSyncChannel mgrSyncChannel : channels) {
-                String channelFamilyLabel = mgrSyncChannel.getFamily();
-                if (channelFamilyLabel == null || channelFamilyLabel.equals("")) {
-                    productsWithoutFamily.addAll(mgrSyncChannel.getProducts());
-                }
-            }
-
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
                             new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(sccProducts);
-            List<MgrSyncProduct> products = csm.listProducts(channels);
+            SortedSet<ListedProduct> products = csm.listProducts(channels);
 
-            assertEquals("RES", products.get(0).getName());
-            assertEquals("i386", products.get(0).getArch());
+            Iterator<ListedProduct> i = products.iterator();
+            ListedProduct product = i.next();
+            assertEquals("RES", product.getName());
+            assertEquals("4", product.getVersion());
+            assertEquals("i386", product.getArch());
+
+            product = i.next();
+            assertEquals("RES", product.getName());
+            assertEquals("4", product.getVersion());
+            assertEquals("x86_64", product.getArch());
 
             assertEquals(154, products.size());
         }
