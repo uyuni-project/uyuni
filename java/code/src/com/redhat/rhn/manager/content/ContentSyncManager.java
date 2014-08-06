@@ -868,24 +868,24 @@ public class ContentSyncManager {
             return true;
         }
 
-        // Remove trailing slashes since URLs coming from SCC don't have those
-        if (sourceUrl.endsWith("/")) {
-            sourceUrl = sourceUrl.substring(0, sourceUrl.length() - 1);
-        }
-
-        // Check OES availability via sending an HTTP HEAD request,
-        // we might want to do the same for other external repo URLs.
+        // Check OES availability via sending an HTTP HEAD request
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
             return verifyOESRepo();
         }
 
-        // Match the repo source URLs against URLs we got from SCC
-        boolean mirrorable = false;
+        // Remove trailing slashes before matching URLs
+        sourceUrl = removeTrailingSlashes(sourceUrl);
+
+        // Setup a list holding the URLs of all accessible repos
+        List<String> sourceURLs = new ArrayList<String>();
         for (SCCRepository repo : repos) {
-            if (sourceUrl.equals(repo.getUrl())) {
-                mirrorable = true;
-                break;
-            }
+            sourceURLs.add(removeTrailingSlashes(repo.getUrl()));
+        }
+
+        // Match the channel source URL against URLs we got from SCC
+        boolean mirrorable = false;
+        if (sourceURLs.contains(sourceUrl)) {
+            mirrorable = true;
         }
         return mirrorable;
     }
@@ -1061,5 +1061,17 @@ public class ContentSyncManager {
             installedChannelLabels.add(c.getLabel());
         }
         return installedChannelLabels;
+    }
+
+    /**
+     * Strip off trailing slashes from a given string.
+     * @param url the string to remove trailing slashes from
+     * @return string without trailing slashes
+     */
+    private String removeTrailingSlashes(String url) {
+        while (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
     }
 }
