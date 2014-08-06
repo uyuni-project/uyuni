@@ -39,14 +39,6 @@ public class MgrSyncProduct {
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
 
-    // Additional data (not attributes in XML)
-
-    /** The status. */
-    private MgrSyncStatus status;
-
-    /** The arch. */
-    private String arch;
-
     /**
      * Default constructor for bean compatibility.
      */
@@ -59,13 +51,11 @@ public class MgrSyncProduct {
      * @param nameIn the name
      * @param idIn the id
      * @param versionIn the version
-     * @param archIn the arch
      */
-    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn, String archIn) {
+    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn) {
         name = nameIn;
         id = idIn;
         version = versionIn;
-        arch = archIn;
     }
 
     /**
@@ -100,38 +90,6 @@ public class MgrSyncProduct {
      */
     public String getVersion() {
         return version;
-    }
-
-    /**
-     * Gets the status.
-     * @return the status
-     */
-    public MgrSyncStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets the status.
-     * @param statusIn the new status
-     */
-    public void setStatus(MgrSyncStatus statusIn) {
-        status = statusIn;
-    }
-
-    /**
-     * Gets the arch.
-     * @return the arch
-     */
-    public String getArch() {
-        return arch;
-    }
-
-    /**
-     * Sets the arch.
-     * @param archIn the new arch
-     */
-    public void setArch(String archIn) {
-        arch = archIn;
     }
 
     /**
