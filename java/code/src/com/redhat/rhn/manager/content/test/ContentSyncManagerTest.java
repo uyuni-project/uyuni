@@ -818,7 +818,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(sccProducts);
-            Collection<MgrSyncProduct> products = csm.listProducts(channels);
+            List<MgrSyncProduct> products = csm.listProducts(channels);
+
+            assertEquals("RES", products.get(0).getName());
+            assertEquals("i386", products.get(0).getArch());
 
             assertEquals(154, products.size());
         }

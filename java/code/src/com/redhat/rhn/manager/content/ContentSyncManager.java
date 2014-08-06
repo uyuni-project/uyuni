@@ -52,6 +52,7 @@ import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
@@ -64,9 +65,11 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -249,7 +252,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     @SuppressWarnings("unchecked")
-    public Collection<MgrSyncProduct> listProducts(List<MgrSyncChannel> allChannels)
+    public List<MgrSyncProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
 
@@ -285,7 +288,20 @@ public class ContentSyncManager {
             }
         }
 
-        return results;
+        List<MgrSyncProduct> sortedResults = new LinkedList<MgrSyncProduct>();
+        sortedResults.addAll(results);
+        Collections.sort(sortedResults, new Comparator<MgrSyncProduct>() {
+            @Override
+            public int compare(MgrSyncProduct p1, MgrSyncProduct p2) {
+                return new CompareToBuilder()
+                    .append(p1.getName(), p2.getName())
+                    .append(p1.getArch(), p2.getArch())
+                    .append(p1.getId(), p2.getId())
+                    .toComparison();
+            }
+        });
+
+        return sortedResults;
     }
 
     /**
