@@ -18,6 +18,8 @@ package com.suse.mgrsync;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -266,5 +268,15 @@ public class MgrSyncChannel {
      */
     public void setStatus(MgrSyncStatus statusIn) {
         this.status = statusIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+            .append("label", label)
+            .toString();
     }
 }
