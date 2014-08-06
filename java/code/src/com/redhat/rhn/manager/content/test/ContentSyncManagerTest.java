@@ -770,7 +770,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
                 if (cf == null) {
                     cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                        20000L, 0L, true, "hioafhioshio");
+                        20000L, 0L, true, TestUtils.randomString());
                     cf.setName(label);
                     ChannelFamilyFactory.save(cf);
                 }
@@ -787,34 +787,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
                             new TypeToken<List<SCCProduct>>() { } .getType());
-
-            // HACK: add products currently not in SCC
-            SCCProduct missingProduct1 = new SCCProduct();
-            missingProduct1.setIdentifier("Open_Enterprise_Server");
-            missingProduct1.setVersion("11.1");
-            missingProduct1.setProductClass("OES2");
-            missingProduct1.setName("Open Enterprise Server 11.1");
-            missingProduct1.setId(1241);
-
-            SCCProduct missingProduct2 = new SCCProduct();
-            missingProduct2.setIdentifier("Open_Enterprise_Server");
-            missingProduct2.setVersion("11.2");
-            missingProduct2.setProductClass("OES2");
-            missingProduct2.setArch("x86_64");
-            missingProduct2.setName("Open Enterprise Server 11.2");
-            missingProduct2.setId(1242);
-
-            SCCProduct missingProduct3 = new SCCProduct();
-            missingProduct3.setIdentifier("Open_Enterprise_Server");
-            missingProduct3.setVersion("11");
-            missingProduct3.setProductClass("OES2");
-            missingProduct3.setArch("x86_64");
-            missingProduct3.setName("Open Enterprise Server 11");
-            missingProduct3.setId(1232);
-
-            sccProducts.add(missingProduct1);
-            sccProducts.add(missingProduct2);
-            sccProducts.add(missingProduct3);
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(sccProducts);
