@@ -15,7 +15,11 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 
+import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCProxySettings;
 
@@ -126,5 +130,47 @@ public class MgrSyncUtils {
         settings.setUsername(configDefaults.getProxyUsername());
         settings.setPassword(configDefaults.getProxyPassword());
         return settings;
+    }
+
+    /**
+     * Handle special cases where SUSE arch names differ from the RedHat ones.
+     *
+     * @param channel channel that we want to get the arch from
+     * @return channel arch object
+     */
+    public static ChannelArch getChannelArch(MgrSyncChannel channel) {
+        String arch = channel.getArch();
+        if (arch.equals("i686") || arch.equals("i586")
+                || arch.equals("i486") || arch.equals("i386")) {
+            arch = "ia32";
+        }
+        else if (arch.equals("ppc64")) {
+            arch = "ppc";
+        }
+        return ChannelFactory.findArchByLabel("channel-" + arch);
+    }
+
+    /**
+     * Get the parent channel of a given {@link MgrSyncChannel} by looking it up
+     * via the given label. Return null if the given channel is a base channel.
+     *
+     * @param channel to look up its parent
+     * @return the parent channel
+     * @throws ContentSyncException if the parent channel is not installed
+     */
+    public static Channel getParentChannel(MgrSyncChannel channel)
+            throws ContentSyncException {
+        String parent = channel.getParent();
+        if (ContentSyncManager.BASE_CHANNEL.equals(parent)) {
+            return null;
+        }
+        else {
+            Channel parentChannel = ChannelFactory.lookupByLabel(parent);
+            if (parentChannel == null) {
+                throw new ContentSyncException("The parent channel of " +
+                        channel.getLabel() + " is not currently installed.");
+            }
+            return parentChannel;
+        }
     }
 }

@@ -94,7 +94,7 @@ public class ContentSyncManager {
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
     // Base channels have "BASE" as their parent in channels.xml
-    private static final String BASE_CHANNEL = "BASE";
+    public static final String BASE_CHANNEL = "BASE";
 
     // Make exceptions for the OES channel family that is still hosted with NCC
     private static final String OES_CHANNEL_FAMILY = "OES2";
@@ -944,9 +944,52 @@ public class ContentSyncManager {
     /**
      * Add a new channel to the database.
      * @param label the label of the channel to be added.
+     * @param repositories list of repos to use for the availability check
+     * @throws ContentSyncException in case of problems
      */
-    public void addChannel(String label) throws ContentSyncException {
-        log.info("NOT IMPLEMENTED: Add channel: " + label);
+    public void addChannel(String label, Collection<SCCRepository> repositories)
+            throws ContentSyncException {
+        // Return immediately if the channel is already there
+        if (ChannelFactory.doesChannelLabelExist(label)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Channel exists: " + label);
+            }
+            return;
+        }
+
+        // Lookup the channel in available channels
+        MgrSyncChannel channel = null;
+        List<MgrSyncChannel> channels = getAvailableChannels(readChannels());
+        for (MgrSyncChannel c : channels) {
+            if (c.getLabel().equals(label)) {
+                // Found it
+                channel = c;
+                break;
+            }
+        }
+        if (channel == null) {
+            throw new ContentSyncException("Channel is not available: " + label);
+        }
+        else if (!isMirrorable(channel, repositories)) {
+            throw new ContentSyncException("Channel is not mirrorable: " + label);
+        }
+
+        // Create channel and save it in the database
+        Channel dbChannel = ChannelFactory.createChannel();
+        dbChannel.setBaseDir("/dev/null");
+        dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(channel));
+        dbChannel.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
+                channel.getFamily(), null));
+        dbChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
+        dbChannel.setDescription(channel.getDescription());
+        dbChannel.setLabel(label);
+        dbChannel.setName(channel.getName());
+        dbChannel.setParentChannel(MgrSyncUtils.getParentChannel(channel));
+        // TODO: dbChannel.setProduct(productIn);
+        // TODO: dbChannel.setProductName(productNameIn);
+        dbChannel.setSummary(channel.getSummary());
+        dbChannel.setUpdateTag(channel.getUpdateTag());
+        ChannelFactory.save(dbChannel);
     }
 
     /**
