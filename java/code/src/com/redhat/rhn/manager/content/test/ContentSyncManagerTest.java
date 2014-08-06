@@ -35,22 +35,28 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.MgrSyncProduct;
+import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +64,7 @@ import java.util.Set;
 /**
  * Tests for {@link ContentSyncManager}.
  */
-public class ContentSyncManagerTest extends RhnBaseTestCase {
+public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     // Files we read
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
@@ -726,6 +732,97 @@ public class ContentSyncManagerTest extends RhnBaseTestCase {
             if (product.getId().equals(availableDBProduct.getProductId())) {
                 assertEquals(MgrSyncStatus.AVAILABLE, product.getStatus());
             }
+        }
+    }
+
+    /**
+     * Tests listProducts(), in particular it compares output with known output from
+     * mgr-ncc-sync, ensuring we have no regressions in behavior.
+     * @throws Exception if anything goes wrong
+     */
+    public void testListProductsNonRegression() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
+        File productsJSON = new File(TestUtils.findTestData("products.json").getPath());
+        try {
+            List<MgrSyncChannel> channels =
+                    new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
+
+            List<String> authorizedLabels = new LinkedList<String>() { {
+                add("SLE-HAE-PPC"); add("RES"); add("SMS");
+                add("SMP"); add("SUSE_CLOUD"); add("DSMP");
+                add("MONO"); add("7261"); add("7260");
+                add("VMDP"); add("SLE-SDK"); add("OES2");
+                add("Moblin-2.1-MSI"); add("SLES-EC2"); add("JBEAP");
+                add("SUSE"); add("20082"); add("MEEGO-1"); add("ZLM7");
+                add("SLE-HAS"); add("SLES-X86-VMWARE"); add("13319");
+                add("18962"); add("AiO"); add("SLES-PPC");
+                add("10040"); add("SLESMT"); add("NAM-AGA");
+                add("STUDIOONSITE"); add("SLMS"); add("SLES-Z");
+                add("RES-HA"); add("SLE-HAE-IA"); add("WEBYAST");
+                add("jeos"); add("SLM"); add("Moblin-2-Samsung");
+                add("nVidia"); add("STUDIOONSITERUNNER"); add("SLE-HAE-Z");
+                add("SLE-HAE-X86"); add("SLES-IA");
+            } };
+
+            for (String label : authorizedLabels) {
+                ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
+                if (cf == null) {
+                    cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                        20000L, 0L, true, "hioafhioshio");
+                    cf.setName(label);
+                    ChannelFamilyFactory.save(cf);
+                }
+            }
+
+            Set<MgrSyncProduct> productsWithoutFamily = new HashSet<MgrSyncProduct>();
+            for (MgrSyncChannel mgrSyncChannel : channels) {
+                String channelFamilyLabel = mgrSyncChannel.getFamily();
+                if (channelFamilyLabel == null || channelFamilyLabel.equals("")) {
+                    productsWithoutFamily.addAll(mgrSyncChannel.getProducts());
+                }
+            }
+
+            List<SCCProduct> sccProducts =
+                    new Gson().fromJson(FileUtils.readFileToString(productsJSON),
+                            new TypeToken<List<SCCProduct>>() { } .getType());
+
+            // HACK: add products currently not in SCC
+            SCCProduct missingProduct1 = new SCCProduct();
+            missingProduct1.setIdentifier("Open_Enterprise_Server");
+            missingProduct1.setVersion("11.1");
+            missingProduct1.setProductClass("OES2");
+            missingProduct1.setName("Open Enterprise Server 11.1");
+            missingProduct1.setId(1241);
+
+            SCCProduct missingProduct2 = new SCCProduct();
+            missingProduct2.setIdentifier("Open_Enterprise_Server");
+            missingProduct2.setVersion("11.2");
+            missingProduct2.setProductClass("OES2");
+            missingProduct2.setArch("x86_64");
+            missingProduct2.setName("Open Enterprise Server 11.2");
+            missingProduct2.setId(1242);
+
+            SCCProduct missingProduct3 = new SCCProduct();
+            missingProduct3.setIdentifier("Open_Enterprise_Server");
+            missingProduct3.setVersion("11");
+            missingProduct3.setProductClass("OES2");
+            missingProduct3.setArch("x86_64");
+            missingProduct3.setName("Open Enterprise Server 11");
+            missingProduct3.setId(1232);
+
+            sccProducts.add(missingProduct1);
+            sccProducts.add(missingProduct2);
+            sccProducts.add(missingProduct3);
+
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProducts(sccProducts);
+            Collection<MgrSyncProduct> products = csm.listProducts(channels);
+
+            assertEquals(154, products.size());
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(productsJSON);
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
     }
 
