@@ -22,19 +22,29 @@ import org.simpleframework.xml.Root;
 import org.simpleframework.xml.Text;
 
 /**
- *
+ * Represents a product in channels.xml format (element product_id).
  * @author bo
  */
 @Root(name = "product_id", strict = false)
 public class MgrSyncProduct {
+
+    /** The name. */
     @Attribute
     private String name;
+
+    /** The id. */
     private Integer id;
+
+    /** The version. */
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
     private String version;
 
     // Additional data (not attributes in XML)
+
+    /** The status. */
     private MgrSyncStatus status;
+
+    /** The arch. */
     private String arch;
 
     /**
@@ -56,36 +66,68 @@ public class MgrSyncProduct {
         version = versionIn;
     }
 
+    /**
+     * Gets the id.
+     * @return the id
+     */
     @Text
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     * @param idIn the new id
+     */
     @Text
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer idIn) {
+        this.id = idIn;
     }
 
+    /**
+     * Gets the name.
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the version.
+     * @return the version
+     */
     public String getVersion() {
         return version;
     }
 
+    /**
+     * Gets the status.
+     * @return the status
+     */
     public MgrSyncStatus getStatus() {
         return status;
     }
 
+    /**
+     * Sets the status.
+     * @param statusIn the new status
+     */
     public void setStatus(MgrSyncStatus statusIn) {
         status = statusIn;
     }
 
+    /**
+     * Gets the arch.
+     * @return the arch
+     */
     public String getArch() {
         return arch;
     }
 
+    /**
+     * Sets the arch.
+     * @param archIn the new arch
+     */
     public void setArch(String archIn) {
         arch = archIn;
     }
