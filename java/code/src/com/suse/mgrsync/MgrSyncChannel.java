@@ -114,10 +114,26 @@ public class MgrSyncChannel {
     }
 
     /**
+     * Set the architecture.
+     * @param archIn
+     */
+    public void setArch(String archIn) {
+        this.arch = archIn;
+    }
+
+    /**
      * @return the description
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Set the description.
+     * @param descriptionIn
+     */
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
     }
 
     /**
@@ -190,6 +206,14 @@ public class MgrSyncChannel {
     }
 
     /**
+     * Set the name.
+     * @param nameIn
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
      * @return the optional
      */
     public Boolean isOptional() {
@@ -237,6 +261,14 @@ public class MgrSyncChannel {
      */
     public String getSummary() {
         return summary;
+    }
+
+    /**
+     * Set the summary.
+     * @param summary
+     */
+    public void setSummary(String summaryIn) {
+        this.summary = summaryIn;
     }
 
     /**
