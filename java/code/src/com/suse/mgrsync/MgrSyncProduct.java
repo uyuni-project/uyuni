@@ -59,11 +59,13 @@ public class MgrSyncProduct {
      * @param nameIn the name
      * @param idIn the id
      * @param versionIn the version
+     * @param archIn the arch
      */
-    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn) {
+    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn, String archIn) {
         name = nameIn;
         id = idIn;
         version = versionIn;
+        arch = archIn;
     }
 
     /**

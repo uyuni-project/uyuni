@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -253,8 +254,9 @@ public class ContentSyncManager {
         Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
 
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
+            PackageArch arch = product.getArch();
             allProducts.add(new MgrSyncProduct(product.getName(), product.getProductId(),
-                    product.getVersion()));
+                    product.getVersion(), arch == null ? null : arch.getLabel()));
         }
 
         List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
@@ -303,6 +305,7 @@ public class ContentSyncManager {
                     result.get(product).add(channel);
                 }
                 else {
+                    product.setArch(channel.getArch());
                     result.put(product,
                             new HashSet<MgrSyncChannel>() { { add(channel); } });
                 }
