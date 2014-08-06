@@ -73,6 +73,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Content synchronization logic.
@@ -252,14 +254,13 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     @SuppressWarnings("unchecked")
-    public List<MgrSyncProduct> listProducts(List<MgrSyncChannel> allChannels)
+    public SortedSet<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
 
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            PackageArch arch = product.getArch();
             allProducts.add(new MgrSyncProduct(product.getName(), product.getProductId(),
-                    product.getVersion(), arch == null ? null : arch.getLabel()));
+                    product.getVersion()));
         }
 
         List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
@@ -269,39 +270,90 @@ public class ContentSyncManager {
         // at least one channel available -> corresponding product available
         Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
 
-        // TODO: is this really needed? is availableProducts sufficient?
+        // for a product to be installable it must be available and present in our DB
         Collection<MgrSyncProduct> results =
                 CollectionUtils.intersection(availableProducts, allProducts);
 
+        return toListedProductList(results, productToChannelMap);
+    }
+
+    /**
+     * Converts a list of MgrSyncProduct to a list of ListedProduct objects.
+     *
+     * @param products the products
+     * @param productToChannelMap the product to channel map
+     * @return the sorted set
+     */
+    private SortedSet<ListedProduct> toListedProductList(
+            Collection<MgrSyncProduct> products,
+            Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
+
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
-        for (MgrSyncProduct result : results) {
-            Set<MgrSyncChannel> channels = productToChannelMap.get(result);
+        SortedSet<ListedProduct> result = new TreeSet<ListedProduct>();
+        for (MgrSyncProduct product : products) {
+            Set<MgrSyncChannel> allChannels = productToChannelMap.get(product);
 
-            result.setStatus(MgrSyncStatus.INSTALLED);
-            for (MgrSyncChannel channel : channels) {
-                if (!channel.isOptional() &&
-                        !installedChannelLabels.contains(channel.getLabel())) {
-                    result.setStatus(MgrSyncStatus.AVAILABLE);
-                    break;
+            Set<MgrSyncChannel> baseChannels = new HashSet<MgrSyncChannel>();
+            for (MgrSyncChannel channel : allChannels) {
+                if (channel.getParent().equals(BASE_CHANNEL)) {
+                    baseChannels.add(channel);
                 }
             }
-        }
 
-        List<MgrSyncProduct> sortedResults = new LinkedList<MgrSyncProduct>();
-        sortedResults.addAll(results);
-        Collections.sort(sortedResults, new Comparator<MgrSyncProduct>() {
-            @Override
-            public int compare(MgrSyncProduct p1, MgrSyncProduct p2) {
-                return new CompareToBuilder()
-                    .append(p1.getName(), p2.getName())
-                    .append(p1.getArch(), p2.getArch())
-                    .append(p1.getId(), p2.getId())
-                    .toComparison();
+            for (MgrSyncChannel baseChannel : baseChannels) {
+                boolean installed =
+                        isInstalled(baseChannel,
+                                getChildChannels(baseChannel, allChannels),
+                                installedChannelLabels);
+
+                result.add(new ListedProduct(product.getName(), product.getId(), product
+                        .getVersion(), installed ? MgrSyncStatus.INSTALLED :
+                         MgrSyncStatus.AVAILABLE, baseChannel.getArch()));
             }
-        });
+        }
+        return result;
+    }
 
-        return sortedResults;
+    /**
+     * Gets the child channels of a base channel.
+     *
+     * @param baseChannel the base channel
+     * @param allChannels all the channels
+     * @return the subset of allChannels which are baseChannel's child channels
+     */
+    private Collection<MgrSyncChannel> getChildChannels(MgrSyncChannel baseChannel,
+            Collection<MgrSyncChannel> allChannels) {
+        Collection<MgrSyncChannel> result = new HashSet<MgrSyncChannel>();
+        for (MgrSyncChannel channel : allChannels) {
+            if (channel.getParent().equals(baseChannel.getLabel())) {
+                result.add(channel);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Checks if a product is installed.
+     *
+     * @param baseChannel the product's base channel
+     * @param childChannels the product's child channels
+     * @param installedChannelLabels the installed channel labels
+     * @return true, if the product is installed
+     */
+    private boolean isInstalled(MgrSyncChannel baseChannel,
+            Collection<MgrSyncChannel> childChannels,
+            Collection<String> installedChannelLabels) {
+        if (!installedChannelLabels.contains(baseChannel.getLabel())) {
+            return false;
+        }
+        for (MgrSyncChannel channel : childChannels) {
+            if (!channel.isOptional() &&
+                !installedChannelLabels.contains(channel.getLabel())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -321,7 +373,6 @@ public class ContentSyncManager {
                     result.get(product).add(channel);
                 }
                 else {
-                    product.setArch(channel.getArch());
                     result.put(product,
                             new HashSet<MgrSyncChannel>() { { add(channel); } });
                 }
