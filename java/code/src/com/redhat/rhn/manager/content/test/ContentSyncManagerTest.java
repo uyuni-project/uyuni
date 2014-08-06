@@ -787,16 +787,26 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct product = i.next();
-            assertEquals("RES", product.getName());
-            assertEquals("4", product.getVersion());
-            assertEquals("i386", product.getArch());
+
+            for (int version = 4; version <= 5; version++) {
+                for (String arch : new String[] {"i386", "x86_64"}) {
+                    assertEquals("RES", product.getName());
+                    assertEquals(version + "", product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    product = i.next();
+                }
+            }
 
             product = i.next();
             assertEquals("RES", product.getName());
-            assertEquals("4", product.getVersion());
+            assertEquals("6", product.getVersion());
             assertEquals("x86_64", product.getArch());
 
-            assertEquals(154, products.size());
+            //product = product.getExtensions().get(0);
+            assertEquals("RHEL 6 Expanded Support", product.getName());
+            assertEquals("6", product.getVersion());
+            assertEquals("i386", product.getArch());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
