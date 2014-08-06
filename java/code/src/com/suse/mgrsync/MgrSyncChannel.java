@@ -81,7 +81,12 @@ public class MgrSyncChannel {
      * @return list of products
      */
     public List<MgrSyncProduct> getProducts() {
-        return Collections.unmodifiableList(products);
+        if (products != null) {
+            return Collections.unmodifiableList(products);
+        }
+        else {
+            return null;
+        }
     }
 
     /**
