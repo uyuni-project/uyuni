@@ -671,10 +671,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         boolean found = false;
         for (ListedProduct product : products) {
-            if (product.getName().equals(availableDBProduct.getName())) {
+            if (product.getFriendlyName().equals(availableDBProduct.getFriendlyName())) {
                 found = true;
             }
-            if (product.getName().equals(unavailableDBProduct.getName())) {
+            if (product.getFriendlyName().equals(unavailableDBProduct.getFriendlyName())) {
                 fail("Unavailable product returned.");
             }
         }
@@ -788,27 +788,26 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SortedSet<ListedProduct> products = csm.listProducts(channels);
 
             Iterator<ListedProduct> i = products.iterator();
-            ListedProduct product = i.next();
+            ListedProduct product = null;
 
             for (int version = 4; version <= 5; version++) {
                 for (String arch : new String[] {"i386", "x86_64"}) {
-                    assertEquals("RES", product.getName());
+                    product = i.next();
+                    assertEquals("RES " + version, product.getFriendlyName());
                     assertEquals(version + "", product.getVersion());
                     assertEquals(arch, product.getArch());
-
-                    product = i.next();
                 }
             }
 
             product = i.next();
-            assertEquals("RES", product.getName());
-            assertEquals("6", product.getVersion());
-            assertEquals("x86_64", product.getArch());
-
-            //product = product.getExtensions().get(0);
-            assertEquals("RHEL 6 Expanded Support", product.getName());
+            assertEquals("RES 6", product.getFriendlyName());
             assertEquals("6", product.getVersion());
             assertEquals("i386", product.getArch());
+
+//            product = product.getExtensions().get(0);
+//            assertEquals("RHEL 6 Expanded Support", product.getFriendlyName());
+//            assertEquals("6", product.getVersion());
+//            assertEquals("i386", product.getArch());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
