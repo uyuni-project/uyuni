@@ -1004,6 +1004,38 @@ public class ContentSyncManager {
 
         // Save the channel
         ChannelFactory.save(dbChannel);
+
+        // Create product to channel relationships (for mandatory channels only)
+        if (!channel.getOptional()) {
+            // Set parent channel to null for base channels
+            String parentChannelLabel = channel.getParent();
+            if (BASE_CHANNEL.equals(parentChannelLabel)) {
+                parentChannelLabel = null;
+            }
+
+            // Lookup products and create the relations
+            for (MgrSyncProduct p : channel.getProducts()) {
+                SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
+                if (product == null) {
+                    throw new ContentSyncException(
+                            "Product not found (" + p.getId() + ") please refresh!");
+                }
+
+                // Update or insert the product/channel relationship
+                SUSEProductChannel spc = SUSEProductFactory.lookupSUSEProductChannel(
+                        channel.getLabel(), product.getProductId());
+                if (spc == null) {
+                    spc = new SUSEProductChannel();
+                    spc.setChannelLabel(channel.getLabel());
+                }
+                spc.setProduct(product);
+                spc.setParentChannelLabel(parentChannelLabel);
+                spc.setChannel(dbChannel);
+                SUSEProductFactory.save(spc);
+            }
+        }
+
+        // TODO: Setup DistChannelMap correctly here
     }
 
     /**
