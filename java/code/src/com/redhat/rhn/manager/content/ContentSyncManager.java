@@ -985,6 +985,24 @@ public class ContentSyncManager {
         // TODO: dbChannel.setProductName(productNameIn);
         dbChannel.setSummary(channel.getSummary());
         dbChannel.setUpdateTag(channel.getUpdateTag());
+
+        // Create or link the content source
+        String url = channel.getSourceUrl();
+        if (!StringUtils.isBlank(url)) {
+            ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+            if (source == null) {
+                source = ChannelFactory.createRepo();
+                source.setLabel(channel.getLabel());
+                source.setMetadataSigned(channel.isSigned());
+                source.setOrg(null);
+                source.setSourceUrl(url);
+                source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+                ChannelFactory.save(source);
+            }
+            dbChannel.getSources().add(source);
+        }
+
+        // Save the channel
         ChannelFactory.save(dbChannel);
     }
 
