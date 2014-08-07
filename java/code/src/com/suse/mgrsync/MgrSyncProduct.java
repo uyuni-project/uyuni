@@ -85,11 +85,27 @@ public class MgrSyncProduct {
     }
 
     /**
+     * Set the name.
+     * @param nameIn
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
      * Gets the version.
      * @return the version
      */
     public String getVersion() {
         return version;
+    }
+
+    /**
+     * Set the version.
+     * @param versionIn
+     */
+    public void setVersion(String versionIn) {
+        this.version = versionIn;
     }
 
     /**
