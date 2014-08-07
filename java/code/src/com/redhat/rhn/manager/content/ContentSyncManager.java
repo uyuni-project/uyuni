@@ -805,7 +805,6 @@ public class ContentSyncManager {
                     spc = new SUSEProductChannel();
                     spc.setChannelLabel(availableChannel.getLabel());
                 }
-
                 spc.setProduct(product);
                 spc.setParentChannelLabel(parentChannelLabel);
                 spc.setChannel(channel);
