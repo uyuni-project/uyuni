@@ -22,6 +22,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.util.SortedSet;
+
 /**
  * A product, as listed by mgr-sync. This is conceptually different from
  * SCCProduct, which is a deserialized version of how SCC represents a product,
@@ -31,8 +33,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
  */
 public class ListedProduct implements Comparable<ListedProduct> {
 
-    /** The name. */
-    private String name;
+    /** The friendly name. */
+    private String friendlyName;
 
     /** The id. */
     private Integer id;
@@ -46,18 +48,21 @@ public class ListedProduct implements Comparable<ListedProduct> {
     /** The arch. */
     private String arch;
 
+    /** The extensions products of this product. */
+    private SortedSet<ListedProduct> extensions;
+
     /**
      * Instantiates a new listed product.
      *
-     * @param nameIn the name in
+     * @param friendlyNameIn the name in
      * @param idIn the id in
      * @param versionIn the version in
      * @param statusIn the status in
      * @param archIn the arch in
      */
-    public ListedProduct(String nameIn, Integer idIn, String versionIn,
+    public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
             MgrSyncStatus statusIn, String archIn) {
-        name = nameIn;
+        friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
         status = statusIn;
@@ -65,17 +70,15 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
-     * Gets the name.
-     *
-     * @return the name
+     * Gets the friendly name.
+     * @return the friendly name
      */
-    public String getName() {
-        return name;
+    public String getFriendlyName() {
+        return friendlyName;
     }
 
     /**
      * Gets the id.
-     *
      * @return the id
      */
     public Integer getId() {
@@ -84,7 +87,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
 
     /**
      * Gets the version.
-     *
      * @return the version
      */
     public String getVersion() {
@@ -93,7 +95,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
 
     /**
      * Gets the status.
-     *
      * @return the status
      */
     public MgrSyncStatus getStatus() {
@@ -102,11 +103,26 @@ public class ListedProduct implements Comparable<ListedProduct> {
 
     /**
      * Gets the arch.
-     *
      * @return the arch
      */
     public String getArch() {
         return arch;
+    }
+
+    /**
+     * Gets the extensions.
+     * @return the extensions
+     */
+    public SortedSet<ListedProduct> getExtensions() {
+        return extensions;
+    }
+
+    /**
+     * Sets the extensions.
+     * @param extensionsIn the new extensions
+     */
+    public void setExtensions(SortedSet<ListedProduct> extensionsIn) {
+        extensions = extensionsIn;
     }
 
     /**
@@ -115,11 +131,20 @@ public class ListedProduct implements Comparable<ListedProduct> {
     @Override
     public int compareTo(ListedProduct other) {
         return new CompareToBuilder()
-        .append(getName(), other.getName())
-        .append(getVersion(), other.getVersion())
+        .append(getNormalizedName(), other.getNormalizedName())
         .append(getArch(), other.getArch())
         .append(getId(), other.getId())
+        .append(getVersion(), other.getVersion())
         .toComparison();
+    }
+
+    /**
+     * Gets the normalized name for sorting.
+     *
+     * @return the normalized name
+     */
+    private String getNormalizedName() {
+        return getFriendlyName().replace(' ', '-');
     }
 
     /**
@@ -131,8 +156,12 @@ public class ListedProduct implements Comparable<ListedProduct> {
             return false;
         }
         ListedProduct otherListedProduct = (ListedProduct) other;
-        return new EqualsBuilder().append(getId(), otherListedProduct.getId())
-                .append(getArch(), otherListedProduct.getArch()).isEquals();
+        return new EqualsBuilder()
+                .append(getNormalizedName(), otherListedProduct.getNormalizedName())
+                .append(getArch(), otherListedProduct.getArch())
+                .append(getId(), otherListedProduct.getId())
+                .append(getVersion(), otherListedProduct.getVersion())
+                .isEquals();
     }
 
     /**
@@ -140,7 +169,10 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId()).append(getArch()).hashCode();
+        return new HashCodeBuilder()
+            .append(getId())
+            .append(getArch())
+            .hashCode();
     }
 
     /**
@@ -149,7 +181,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-            .append("name", name)
+            .append("name", friendlyName)
             .append("id", id)
             .append("version", version)
             .append("arch", arch)
