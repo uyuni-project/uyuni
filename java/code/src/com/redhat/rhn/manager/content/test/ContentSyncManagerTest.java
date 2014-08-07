@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -810,6 +811,44 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+    }
+    /**
+     * Test for addChannel() checking failure because of missing subscriptions.
+     * @throws Exception if anything goes wrong
+     */
+    public void testAddChannelNoSubscriptions() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setChannelsXML(channelsXML);
+        try {
+            // Reset all channel subscriptions
+            List<String> productClasses = new ArrayList<String>();
+            csm.updateChannelSubscriptions(productClasses);
+
+            // Manually create SCC repository to match against
+            SCCRepository repo = new SCCRepository();
+            String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
+            repo.setUrl(url);
+            List<SCCRepository> repos = new ArrayList<SCCRepository>();
+            repos.add(repo);
+
+            // Temporarily rename all installed vendor channels
+            renameVendorChannels();
+
+            // Add the channel by label and check the exception message
+            String label = "sles11-sp3-pool-x86_64";
+            try {
+                csm.addChannel(label, repos);
+                fail("Missing subscriptions should make addChannel() fail!");
+            }
+            catch (ContentSyncException e) {
+                String message = "Channel is not available: " + label;
+                assertEquals(message, e.getMessage());
+            }
+        }
+        finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
     }
