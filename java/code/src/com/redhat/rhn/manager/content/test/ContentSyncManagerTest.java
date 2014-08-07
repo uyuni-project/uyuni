@@ -878,6 +878,24 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             xmlChannel.setSummary("SUSE Linux Enterprise Server 11 SP3 x86_64");
             xmlChannel.setUpdateTag("slessp3");
 
+            // Setup product
+            MgrSyncProduct product = new MgrSyncProduct();
+            product.setId(814);
+            product.setName("SUSE_SLES");
+            product.setVersion("11.3");
+            List<MgrSyncProduct> products = new ArrayList<MgrSyncProduct>();
+            products.add(product);
+            xmlChannel.setProducts(products);
+            // Make sure that this product exists in the database
+            SUSEProduct suseProduct = SUSEProductFactory.lookupByProductId(814);
+            if (suseProduct == null) {
+                suseProduct = new SUSEProduct();
+                suseProduct.setName(TestUtils.randomString().toLowerCase());
+                suseProduct.setProductId(814);
+                suseProduct.setProductList('Y');
+                SUSEProductFactory.save(suseProduct);
+            }
+
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
             repo.setUrl(xmlChannel.getSourceUrl());
@@ -910,6 +928,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertEquals(xmlChannel.getSourceUrl(), cs.getSourceUrl());
                 assertEquals(ChannelFactory.CONTENT_SOURCE_TYPE_YUM, cs.getType());
             }
+
+            // Verify product to channel relationship
+            SUSEProductChannel spc = new SUSEProductChannel();
+            spc.setChannel(c);
+            spc.setChannelLabel(c.getLabel());
+            spc.setProduct(suseProduct);
+            List<SUSEProductChannel> productChannels = SUSEProductFactory.
+                    findAllSUSEProductChannels();
+            assertTrue(productChannels.contains(spc));
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
