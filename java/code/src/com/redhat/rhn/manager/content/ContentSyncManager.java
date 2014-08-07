@@ -772,7 +772,7 @@ public class ContentSyncManager {
 
         // Get all available channels and iterate
         for (MgrSyncChannel availableChannel : availableChannels) {
-            // We store only non-optional channels
+            // We store relationships only for mandatory channels
             if (availableChannel.isOptional()) {
                 continue;
             }
@@ -958,7 +958,6 @@ public class ContentSyncManager {
         List<MgrSyncChannel> channels = getAvailableChannels(readChannels());
         for (MgrSyncChannel c : channels) {
             if (c.getLabel().equals(label)) {
-                // Found it
                 channel = c;
                 break;
             }
