@@ -987,6 +987,8 @@ public class ContentSyncManager {
         dbChannel.setUpdateTag(channel.getUpdateTag());
 
         // Create or link the content source
+        // TODO: Handle the alternative mirror URL feature (see _alternativeMirrorUrl())
+        // TODO: Add the mirrorcred query string to the URL?
         String url = channel.getSourceUrl();
         if (!StringUtils.isBlank(url)) {
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
