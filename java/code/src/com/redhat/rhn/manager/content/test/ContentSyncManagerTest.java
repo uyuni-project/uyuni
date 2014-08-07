@@ -859,12 +859,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      */
     public void testAddChannel() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.setChannelsXML(channelsXML);
         try {
+            // Make sure there is availability for channel family 7261
+            List<String> productClasses = new ArrayList<String>();
+            productClasses.add("7261");
+            csm.updateChannelSubscriptions(productClasses);
+
             // Manually create channel object as parsed from channels.xml
             MgrSyncChannel xmlChannel = new MgrSyncChannel();
             xmlChannel.setArch("x86_64");
             xmlChannel.setDescription("SUSE Linux Enterprise Server 11 SP3 x86_64");
-            // TODO: Make sure there is availability for channel family 7261
             xmlChannel.setFamily("7261");
             xmlChannel.setName("SLES11-SP3-Pool for x86_64");
             xmlChannel.setSummary("SUSE Linux Enterprise Server 11 SP3 x86_64");
@@ -872,8 +878,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
-            String sourceUrl = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
-            repo.setUrl(sourceUrl);
+            String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
+            repo.setUrl(url);
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
 
@@ -881,13 +887,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             renameVendorChannels();
 
             // Add the channel by label
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.setChannelsXML(channelsXML);
             String label = "sles11-sp3-pool-x86_64";
             csm.addChannel(label, repos);
 
             // Check if channel has been added correctly
-            Channel c = ChannelFactory.lookupByLabel(null, "sles11-sp3-pool-x86_64");
+            Channel c = ChannelFactory.lookupByLabel(null, label);
             assertNotNull(c);
             assertEquals(MgrSyncUtils.getChannelArch(xmlChannel), c.getChannelArch());
             assertEquals("/dev/null", c.getBaseDir());
