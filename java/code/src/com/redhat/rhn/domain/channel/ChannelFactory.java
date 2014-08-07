@@ -1240,9 +1240,10 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
-        Map<String, Object> params = new HashMap<String, Object>();
-        return singleton.listObjectsByNamedQuery(
-                "ContentSource.findVendorContentSources", params);
+        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        criteria.add(Restrictions.isNull("org"));
+        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
+        return criteria.list();
     }
 
     /**
