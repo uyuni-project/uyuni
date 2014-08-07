@@ -1244,4 +1244,17 @@ public class ChannelFactory extends HibernateFactory {
         return singleton.listObjectsByNamedQuery(
                 "ContentSource.findVendorContentSources", params);
     }
+
+    /**
+     * Find a vendor content source (org is null) for a given repo URL.
+     * @param repoUrl url to match against
+     * @return vendor content source if it exists
+     */
+    public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
+        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        criteria.add(Restrictions.isNull("org"));
+        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
+        criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+        return (ContentSource) criteria.uniqueResult();
+    }
 }
