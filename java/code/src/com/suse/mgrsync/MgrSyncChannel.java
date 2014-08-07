@@ -257,6 +257,14 @@ public class MgrSyncChannel {
     }
 
     /**
+     * Set the source URL.
+     * @param sourceUrlIn the URL to set
+     */
+    public void setSourceUrl(String sourceUrlIn) {
+        this.sourceUrl = sourceUrlIn;
+    }
+
+    /**
      * @return the summary
      */
     public String getSummary() {
