@@ -872,14 +872,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             xmlChannel.setArch("x86_64");
             xmlChannel.setDescription("SUSE Linux Enterprise Server 11 SP3 x86_64");
             xmlChannel.setFamily("7261");
+            xmlChannel.setLabel("sles11-sp3-pool-x86_64");
             xmlChannel.setName("SLES11-SP3-Pool for x86_64");
+            xmlChannel.setSourceUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/");
             xmlChannel.setSummary("SUSE Linux Enterprise Server 11 SP3 x86_64");
             xmlChannel.setUpdateTag("slessp3");
 
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
-            String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
-            repo.setUrl(url);
+            repo.setUrl(xmlChannel.getSourceUrl());
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
 
@@ -887,11 +888,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             renameVendorChannels();
 
             // Add the channel by label
-            String label = "sles11-sp3-pool-x86_64";
-            csm.addChannel(label, repos);
+            csm.addChannel(xmlChannel.getLabel(), repos);
 
             // Check if channel has been added correctly
-            Channel c = ChannelFactory.lookupByLabel(null, label);
+            Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
             assertNotNull(c);
             assertEquals(MgrSyncUtils.getChannelArch(xmlChannel), c.getChannelArch());
             assertEquals("/dev/null", c.getBaseDir());
@@ -902,6 +902,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(xmlChannel.getName(), c.getName());
             assertEquals(xmlChannel.getSummary(), c.getSummary());
             assertEquals(xmlChannel.getUpdateTag(), c.getUpdateTag());
+
+            // Verify the content source
+            assertEquals(1, c.getSources().size());
+            for (ContentSource cs : c.getSources()) {
+                assertEquals(xmlChannel.getLabel(), cs.getLabel());
+                assertEquals(xmlChannel.getSourceUrl(), cs.getSourceUrl());
+                assertEquals(ChannelFactory.CONTENT_SOURCE_TYPE_YUM, cs.getType());
+            }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
@@ -937,6 +945,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             c.setLabel(TestUtils.randomString());
             c.setName(TestUtils.randomString());
             TestUtils.saveAndFlush(c);
+        }
+        for (ContentSource cs : ChannelFactory.listVendorContentSources()) {
+            cs.setLabel(TestUtils.randomString());
+            cs.setSourceUrl(TestUtils.randomString());
+            TestUtils.saveAndFlush(cs);
         }
     }
 }
