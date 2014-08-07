@@ -51,7 +51,6 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -260,25 +259,26 @@ public class ContentSyncManager {
     @SuppressWarnings("unchecked")
     public SortedSet<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
-        Collection<MgrSyncProduct> allProducts = new HashSet<MgrSyncProduct>();
-
+        // get all products in the DB
+        Collection<MgrSyncProduct> result = new HashSet<MgrSyncProduct>();
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            allProducts.add(new MgrSyncProduct(product.getName(), product.getProductId(),
+            result.add(new MgrSyncProduct(product.getFriendlyName(), product.getProductId(),
                     product.getVersion()));
         }
 
+        // get all the channels we have an entitlement for
         List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
         Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap =
                 getProductToChannelMap(availableChannels);
 
-        // at least one channel available -> corresponding product available
+        // get all the products we have an entitlement for based on the assumption:
+        // at least one channel is entitled -> corresponding product is entitled
         Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
 
-        // for a product to be installable it must be available and present in our DB
-        Collection<MgrSyncProduct> results =
-                CollectionUtils.intersection(availableProducts, allProducts);
+        // filter result with only available products
+        result.retainAll(availableProducts);
 
-        return toListedProductList(results, productToChannelMap);
+        return toListedProductList(result, productToChannelMap);
     }
 
     /**
