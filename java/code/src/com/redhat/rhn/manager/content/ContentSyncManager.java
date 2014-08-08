@@ -476,6 +476,7 @@ public class ContentSyncManager {
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
                 // TODO: Check if alternative mirror URL is set and consider it here
+                // TODO: Add the mirror creds query string to the URL?
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
                     cs.setSourceUrl(channel.getSourceUrl());
@@ -987,8 +988,8 @@ public class ContentSyncManager {
         dbChannel.setUpdateTag(channel.getUpdateTag());
 
         // Create or link the content source
-        // TODO: Handle the alternative mirror URL feature (see _alternativeMirrorUrl())
-        // TODO: Add the mirrorcred query string to the URL?
+        // TODO: Check if alternative mirror URL is set and consider it here
+        // TODO: Add the mirror creds query string to the URL?
         String url = channel.getSourceUrl();
         if (!StringUtils.isBlank(url)) {
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
