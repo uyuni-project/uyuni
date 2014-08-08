@@ -1258,4 +1258,33 @@ public class ChannelFactory extends HibernateFactory {
         criteria.add(Restrictions.eq("sourceUrl", repoUrl));
         return (ContentSource) criteria.uniqueResult();
     }
+
+    /**
+     * Find a {@link ChannelProduct} for given name and version.
+     * @param name name
+     * @param version
+     * @return channel product
+     */
+    public static ChannelProduct findChannelProduct(String product, String version) {
+        Criteria criteria = getSession().createCriteria(ChannelProduct.class);
+        criteria.add(Restrictions.eq("product", product));
+        criteria.add(Restrictions.eq("version", version));
+        return (ChannelProduct) criteria.uniqueResult();
+    }
+
+    /**
+     * Insert or update a {@link ChannelProduct}.
+     * @param channelProduct ChannelProduct to be stored in database.
+     */
+    public static void save(ChannelProduct channelProduct) {
+        singleton.saveObject(channelProduct);
+    }
+
+    /**
+     * Insert or update a {@link ProductName}.
+     * @param productName ProductName to be stored in database.
+     */
+    public static void save(ProductName productName) {
+        singleton.saveObject(productName);
+    }
 }
