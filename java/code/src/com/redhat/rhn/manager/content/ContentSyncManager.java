@@ -982,8 +982,8 @@ public class ContentSyncManager {
         dbChannel.setLabel(label);
         dbChannel.setName(channel.getName());
         dbChannel.setParentChannel(MgrSyncUtils.getParentChannel(channel));
-        // TODO: dbChannel.setProduct(productIn);
-        // TODO: dbChannel.setProductName(productNameIn);
+        dbChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(channel));
+        dbChannel.setProductName(MgrSyncUtils.findOrCreateProductName(channel));
         dbChannel.setSummary(channel.getSummary());
         dbChannel.setUpdateTag(channel.getUpdateTag());
 
