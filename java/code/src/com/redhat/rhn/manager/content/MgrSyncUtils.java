@@ -18,6 +18,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.scc.client.SCCClientException;
@@ -172,5 +174,39 @@ public class MgrSyncUtils {
             }
             return parentChannel;
         }
+    }
+
+    /**
+     * Find a {@link ChannelProduct} or create it if necessary and return it.
+     * @param channel
+     * @return channel product
+     */
+    public static ChannelProduct findOrCreateChannelProduct(MgrSyncChannel channel) {
+        ChannelProduct product = ChannelFactory.findChannelProduct(
+                channel.getProductName(), channel.getProductVersion());
+        if (product == null) {
+            product = new ChannelProduct();
+            product.setProduct(channel.getProductName());
+            product.setVersion(channel.getProductVersion());
+            product.setBeta("N");
+            ChannelFactory.save(product);
+        }
+        return product;
+    }
+
+    /**
+     * Find a {@link ProductName} or create it if necessary and return it.
+     * @param channel
+     * @return product name
+     */
+    public static ProductName findOrCreateProductName(MgrSyncChannel channel) {
+        ProductName productName = ChannelFactory.lookupProductNameByLabel(
+                channel.getProductName());
+        if (productName == null) {
+            productName = new ProductName();
+            productName.setLabel(channel.getProductName());
+            productName.setLabel(channel.getProductName());
+        }
+        return productName;
     }
 }
