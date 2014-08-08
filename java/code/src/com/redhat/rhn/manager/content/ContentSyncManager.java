@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
+import com.redhat.rhn.domain.channel.DistChannelMap;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -39,6 +40,7 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.MgrSyncDistribution;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncUpgradePath;
@@ -1035,7 +1037,13 @@ public class ContentSyncManager {
             }
         }
 
-        // TODO: Setup DistChannelMap correctly here
+        // Create DistChannelMap if channels.xml contains a distribution
+        MgrSyncDistribution dist = channel.getDistribution();
+        if (dist != null) {
+            DistChannelMap dcm = new DistChannelMap(null, dist.getOs(), dist.getRelease(),
+                    dbChannel.getChannelArch(), dbChannel);
+            ChannelFactory.save(dcm);
+        }
     }
 
     /**
