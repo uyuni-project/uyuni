@@ -476,10 +476,10 @@ public class ContentSyncManager {
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
                 // TODO: Check if alternative mirror URL is set and consider it here
-                // TODO: Add the mirror creds query string to the URL?
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
+                // TODO: Handle multiple mirror credentials
                 if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
-                    cs.setSourceUrl(channel.getSourceUrl());
+                    cs.setSourceUrl(channel.getSourceUrl() + "?credentials=mirrcred");
                     ChannelFactory.save(cs);
                 }
             }
@@ -989,7 +989,6 @@ public class ContentSyncManager {
 
         // Create or link the content source
         // TODO: Check if alternative mirror URL is set and consider it here
-        // TODO: Add the mirror creds query string to the URL?
         String url = channel.getSourceUrl();
         if (!StringUtils.isBlank(url)) {
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
@@ -998,7 +997,8 @@ public class ContentSyncManager {
                 source.setLabel(channel.getLabel());
                 source.setMetadataSigned(channel.isSigned());
                 source.setOrg(null);
-                source.setSourceUrl(url);
+                // TODO: Handle multiple mirror credentials
+                source.setSourceUrl(url + "?credentials=mirrcred");
                 source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
                 ChannelFactory.save(source);
             }
