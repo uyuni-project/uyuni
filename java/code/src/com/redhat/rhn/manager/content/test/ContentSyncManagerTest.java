@@ -120,8 +120,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Verify content sources (there is only one)
             Set<ContentSource> sources = c.getSources();
             for (ContentSource s : sources) {
-                assertEquals("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/",
-                        s.getSourceUrl());
+                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/"
+                        + "sle-11-x86_64/?credentials=mirrcred";
+                assertEquals(url, s.getSourceUrl());
             }
         }
         finally {
@@ -925,7 +926,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, c.getSources().size());
             for (ContentSource cs : c.getSources()) {
                 assertEquals(xmlChannel.getLabel(), cs.getLabel());
-                assertEquals(xmlChannel.getSourceUrl(), cs.getSourceUrl());
+                assertEquals(xmlChannel.getSourceUrl() + "?credentials=mirrcred",
+                        cs.getSourceUrl());
                 assertEquals(ChannelFactory.CONTENT_SOURCE_TYPE_YUM, cs.getType());
             }
 
