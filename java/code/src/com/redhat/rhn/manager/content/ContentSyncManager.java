@@ -62,6 +62,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -98,6 +100,10 @@ public class ContentSyncManager {
     private static final String OES_CHANNEL_FAMILY = "OES2";
     private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
             "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
+
+    // Source URL handling
+    private static final String OFFICIAL_REPO_HOST = "nu.novell.com";
+    private static final String MIRRCRED_QUERY = "credentials=mirrcred";
 
     // Static XML files we parse
     private static File channelsXML = new File(
@@ -475,11 +481,10 @@ public class ContentSyncManager {
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
-                // TODO: Check if alternative mirror URL is set and consider it here
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
-                // TODO: Handle multiple mirror credentials
-                if (!channel.getSourceUrl().equals(cs.getSourceUrl())) {
-                    cs.setSourceUrl(channel.getSourceUrl() + "?credentials=mirrcred");
+                String sourceURL = setupSourceURL(channel.getSourceUrl());
+                if (!cs.getSourceUrl().equals(sourceURL)) {
+                    cs.setSourceUrl(sourceURL);
                     ChannelFactory.save(cs);
                 }
             }
@@ -749,7 +754,8 @@ public class ContentSyncManager {
                     c.setUpdateTag(null);
                 }
 
-                // TODO: support "fromdir" and "mirror" to set sourceUrl correctly
+                // TODO: make the repo source URL point to local path in 'fromdir',
+                // but only in case no 'mirror' is given.
             }
         }
 
@@ -988,17 +994,16 @@ public class ContentSyncManager {
         dbChannel.setUpdateTag(channel.getUpdateTag());
 
         // Create or link the content source
-        // TODO: Check if alternative mirror URL is set and consider it here
         String url = channel.getSourceUrl();
         if (!StringUtils.isBlank(url)) {
+            url = setupSourceURL(url);
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
             if (source == null) {
                 source = ChannelFactory.createRepo();
                 source.setLabel(channel.getLabel());
                 source.setMetadataSigned(channel.isSigned());
                 source.setOrg(null);
-                // TODO: Handle multiple mirror credentials
-                source.setSourceUrl(url + "?credentials=mirrcred");
+                source.setSourceUrl(url);
                 source.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
                 ChannelFactory.save(source);
             }
@@ -1214,5 +1219,33 @@ public class ContentSyncManager {
             url = url.substring(0, url.length() - 1);
         }
         return url;
+    }
+
+    /**
+     * Setup the source URL of a repository correctly before saving it, particularly
+     * add the mirror credentials query string to the end of the URL.
+     *
+     * TODO: Check if alternative mirror URL is set and consider it here!
+     * TODO: Handle multiple mirror credentials correctly!
+     *
+     * @param url the original source URL
+     * @return the URL with query string etc.
+     */
+    private String setupSourceURL(String url) {
+        if (StringUtils.isBlank(url)) {
+            return url;
+        }
+        String ret = url;
+        try {
+            URI uri = new URI(url);
+            // Official repos need the mirror credentials query string
+            if (uri.getHost().equals(OFFICIAL_REPO_HOST)) {
+                String separator = uri.getQuery() == null ? "?" : "&";
+                ret = url + separator + MIRRCRED_QUERY;
+            }
+        } catch (URISyntaxException e) {
+            log.warn(e.getMessage());
+        }
+        return ret;
     }
 }
