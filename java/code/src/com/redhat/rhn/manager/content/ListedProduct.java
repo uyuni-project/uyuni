@@ -135,9 +135,9 @@ public class ListedProduct implements Comparable<ListedProduct> {
     public int compareTo(ListedProduct other) {
         return new CompareToBuilder()
         .append(getNormalizedName(), other.getNormalizedName())
+        .append(getVersion(), other.getVersion())
         .append(getArch(), other.getArch())
         .append(getId(), other.getId())
-        .append(getVersion(), other.getVersion())
         .toComparison();
     }
 
@@ -147,7 +147,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @return the normalized name
      */
     private String getNormalizedName() {
-        return getFriendlyName().replace(' ', '-');
+        return getFriendlyName().toLowerCase().replace(' ', '-');
     }
 
     /**
@@ -161,9 +161,9 @@ public class ListedProduct implements Comparable<ListedProduct> {
         ListedProduct otherListedProduct = (ListedProduct) other;
         return new EqualsBuilder()
                 .append(getNormalizedName(), otherListedProduct.getNormalizedName())
+                .append(getVersion(), otherListedProduct.getVersion())
                 .append(getArch(), otherListedProduct.getArch())
                 .append(getId(), otherListedProduct.getId())
-                .append(getVersion(), otherListedProduct.getVersion())
                 .isEquals();
     }
 
