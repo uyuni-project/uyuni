@@ -48,17 +48,20 @@ public class ListedProduct implements Comparable<ListedProduct> {
     /** The arch. */
     private String arch;
 
+    /** The channels that make up this product. */
+    private Set<MgrSyncChannel> channels;
+
     /** The extensions products of this product. */
     private SortedSet<ListedProduct> extensions;
 
     /**
      * Instantiates a new listed product.
      *
-     * @param friendlyNameIn the name in
-     * @param idIn the id in
-     * @param versionIn the version in
-     * @param statusIn the status in
-     * @param archIn the arch in
+     * @param friendlyNameIn the friendly name
+     * @param idIn the id
+     * @param versionIn the version
+     * @param statusIn the status
+     * @param archIn the arch
      */
     public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
             MgrSyncStatus statusIn, String archIn) {
