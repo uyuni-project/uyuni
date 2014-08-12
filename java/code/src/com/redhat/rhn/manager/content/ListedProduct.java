@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -22,7 +23,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * A product, as listed by mgr-sync. This is conceptually different from
@@ -42,11 +46,11 @@ public class ListedProduct implements Comparable<ListedProduct> {
     /** The version. */
     private String version;
 
-    /** The status. */
-    private MgrSyncStatus status;
-
     /** The arch. */
     private String arch;
+
+    /** The status. */
+    private MgrSyncStatus status;
 
     /** The channels that make up this product. */
     private Set<MgrSyncChannel> channels;
@@ -60,16 +64,17 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @param friendlyNameIn the friendly name
      * @param idIn the id
      * @param versionIn the version
-     * @param statusIn the status
      * @param archIn the arch
      */
     public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
-            MgrSyncStatus statusIn, String archIn) {
+            String archIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
-        status = statusIn;
         arch = archIn;
+        status = MgrSyncStatus.AVAILABLE;
+        channels = new HashSet<MgrSyncChannel>();
+        extensions = new TreeSet<ListedProduct>();
     }
 
     /**
@@ -97,6 +102,14 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
+     * Gets the arch.
+     * @return the arch
+     */
+    public String getArch() {
+        return arch;
+    }
+
+    /**
      * Gets the status.
      * @return the status
      */
@@ -105,11 +118,30 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
-     * Gets the arch.
-     * @return the arch
+     * Sets the status
+     *
+     * @param statusIn the new status
      */
-    public String getArch() {
-        return arch;
+    public void setStatus(MgrSyncStatus statusIn) {
+       status = statusIn;
+    }
+
+    /**
+     * Gets the channels that make up this product.
+     *
+     * @return the channels
+     */
+    public Set<MgrSyncChannel> getChannels() {
+        return channels;
+    }
+
+    /**
+     * Adds a channel.
+     *
+     * @param channel the channel
+     */
+    public void addChannel(MgrSyncChannel channel) {
+        channels.add(channel);
     }
 
     /**
@@ -121,11 +153,12 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
-     * Sets the extensions.
-     * @param extensionsIn the new extensions
+     * Adds an extension to this product.
+     *
+     * @param extension the extension product
      */
-    public void setExtensions(SortedSet<ListedProduct> extensionsIn) {
-        extensions = extensionsIn;
+    public void addExtension(ListedProduct extension) {
+        extensions.add(extension);
     }
 
     /**
