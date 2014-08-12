@@ -817,10 +817,31 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
 
-            product = i.next();
-            assertEquals("SUSE Linux Enterprise Server 10 SP3", product.getFriendlyName());
-            assertEquals("10.3", product.getVersion());
-            assertEquals("i586", product.getArch());
+            for (String servicePack : new String[] {"1", "2", "3"}) {
+                product = i.next();
+                assertEquals("SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP"
+                        + servicePack, product.getFriendlyName());
+                assertEquals("11." + servicePack, product.getVersion());
+                assertEquals("x86_64", product.getArch());
+
+                Iterator<ListedProduct> j = product.getExtensions().iterator();
+                product = j.next();
+                assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP"
+                        + servicePack, product.getFriendlyName());
+                assertEquals("11." + servicePack, product.getVersion());
+                assertEquals("x86_64", product.getArch());
+
+                if (servicePack.equals("3")) {
+                    product = j.next();
+                    assertEquals(
+                            "SUSE Linux Enterprise Subscription Management Tool 11 SP3",
+                            product.getFriendlyName());
+                    assertEquals("11.3", product.getVersion());
+                    assertEquals("x86_64", product.getArch());
+                }
+
+                assertFalse(j.hasNext());
+            }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
