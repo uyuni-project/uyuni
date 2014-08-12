@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -69,6 +70,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -256,7 +258,6 @@ public class ContentSyncManager {
      * @return list of all available products
      * @throws ContentSyncException in case of an error
      */
-    @SuppressWarnings("unchecked")
     public Collection<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         // get all products in the DB
@@ -278,11 +279,12 @@ public class ContentSyncManager {
         // filter result with only available products
         result.retainAll(availableProducts);
 
+        // convert to Collection<ListedProduct> and return
         return toListedProductList(result, productToChannelMap);
     }
 
     /**
-     * Converts a list of MgrSyncProduct to a list of ListedProduct objects.
+     * Converts a list of MgrSyncProduct to a collection of ListedProduct objects.
      *
      * @param products the products
      * @param productToChannelMap the product to channel map
@@ -292,66 +294,128 @@ public class ContentSyncManager {
             Collection<MgrSyncProduct> products,
             Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
 
-        List<String> installedChannelLabels = getInstalledChannelLabels();
-
-        SortedSet<ListedProduct> result = new TreeSet<ListedProduct>();
+        // convert every MgrSyncProduct to ListedProducts objects (one per arch)
+        SortedSet<ListedProduct> all = new TreeSet<ListedProduct>();
         for (MgrSyncProduct product : products) {
-            Set<MgrSyncChannel> allChannels = productToChannelMap.get(product);
+            Set<MgrSyncChannel> channels = productToChannelMap.get(product);
+            Map<String, ListedProduct> archMap = new HashMap<String, ListedProduct>();
+            for (MgrSyncChannel channel : channels) {
+                String arch = channel.getArch();
 
-            Set<MgrSyncChannel> baseChannels = new HashSet<MgrSyncChannel>();
-            for (MgrSyncChannel channel : allChannels) {
+                ListedProduct listedProduct = archMap.get(arch);
+                if (listedProduct == null) {
+                    listedProduct =  new ListedProduct(
+                            product.getName(), product.getId(), product.getVersion(), arch
+                    );
+                    archMap.put(arch, listedProduct);
+                }
+                listedProduct.addChannel(channel);
+            }
+            all.addAll(archMap.values());
+        }
+
+        // divide base from extension products
+        Collection<ListedProduct> bases = new LinkedList<ListedProduct>();
+        Collection<ListedProduct> extensions = new LinkedList<ListedProduct>();
+        for (ListedProduct product : all) {
+            boolean isBase = false;
+            for (MgrSyncChannel channel : product.getChannels()) {
                 if (channel.getParent().equals(BASE_CHANNEL)) {
-                    baseChannels.add(channel);
+                    isBase = true;
                 }
             }
-
-            for (MgrSyncChannel baseChannel : baseChannels) {
-                boolean installed =
-                        isInstalled(baseChannel,
-                                getChildChannels(baseChannel, allChannels),
-                                installedChannelLabels);
-
-                result.add(new ListedProduct(product.getName(), product.getId(), product
-                        .getVersion(), installed ? MgrSyncStatus.INSTALLED :
-                         MgrSyncStatus.AVAILABLE, baseChannel.getArch()));
+            if (isBase) {
+                bases.add(product);
+            }
+            else {
+                extensions.add(product);
             }
         }
-        return result;
+
+        // add base-extension relationships
+        for (ListedProduct base : bases) {
+            for (ListedProduct extension : extensions) {
+                for (MgrSyncChannel baseChannel : base.getChannels()) {
+                    for (MgrSyncChannel extensionChannel : extension.getChannels()) {
+                        if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
+                            base.addExtension(extension);
+                        }
+                    }
+                }
+            }
+        }
+
+        // figure out installed products
+        List<String> installedChannelLabels = getInstalledChannelLabels();
+        for (ListedProduct product : all) {
+            if (isInstalled(product.getChannels(), installedChannelLabels)) {
+                product.setStatus(MgrSyncStatus.INSTALLED);
+            }
+        }
+
+        // HACK: add dirty fixes
+        addDirtyFixes(all, bases);
+
+        return bases;
     }
 
     /**
-     * Gets the child channels of a base channel.
+     * HACK: fixes the data set. This code should really not be here, rather on
+     * the SCC side.
      *
-     * @param baseChannel the base channel
-     * @param allChannels all the channels
-     * @return the subset of allChannels which are baseChannel's child channels
+     * @param all all the products
+     * @param bases base products
      */
-    private Collection<MgrSyncChannel> getChildChannels(MgrSyncChannel baseChannel,
-            Collection<MgrSyncChannel> allChannels) {
-        Collection<MgrSyncChannel> result = new HashSet<MgrSyncChannel>();
-        for (MgrSyncChannel channel : allChannels) {
-            if (channel.getParent().equals(baseChannel.getLabel())) {
-                result.add(channel);
+    private void addDirtyFixes(Collection<ListedProduct> all,
+            Collection<ListedProduct> bases) {
+
+        // remove HP products
+        Collection<ListedProduct> blacklisted = new LinkedList<ListedProduct>();
+        for (ListedProduct product : bases) {
+            if (product.getFriendlyName().matches(".*HP-[BC]NB.*")) {
+                blacklisted.add(product);
             }
         }
-        return result;
+        bases.removeAll(blacklisted);
+
+        // remove SP1 extensions from SP2 base products
+        for (ListedProduct product : bases) {
+            if (product.getVersion().equals("11.2")) {
+                Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
+                for (ListedProduct extension : product.getExtensions()) {
+                    if (extension.getVersion().equals("11.1")) {
+                        wrongSP.add(extension);
+                    }
+                }
+                product.getExtensions().removeAll(wrongSP);
+            }
+        }
+
+        // remove products with arch not matching the channel
+        Collection<ListedProduct> wrongArch = new LinkedList<ListedProduct>();
+        for (ListedProduct product : all) {
+            SUSEProduct dbProduct = SUSEProductFactory.lookupByProductId(product.getId());
+            PackageArch arch = dbProduct.getArch();
+            if (arch != null && !arch.getName().equals(product.getArch())) {
+                wrongArch.add(product);
+            }
+        }
+        bases.removeAll(wrongArch);
+        for (ListedProduct product : bases) {
+            product.getExtensions().removeAll(wrongArch);
+        }
     }
 
     /**
      * Checks if a product is installed.
      *
-     * @param baseChannel the product's base channel
-     * @param childChannels the product's child channels
+     * @param channels the product's channels
      * @param installedChannelLabels the installed channel labels
      * @return true, if the product is installed
      */
-    private boolean isInstalled(MgrSyncChannel baseChannel,
-            Collection<MgrSyncChannel> childChannels,
+    private boolean isInstalled(Collection<MgrSyncChannel> channels,
             Collection<String> installedChannelLabels) {
-        if (!installedChannelLabels.contains(baseChannel.getLabel())) {
-            return false;
-        }
-        for (MgrSyncChannel channel : childChannels) {
+        for (MgrSyncChannel channel : channels) {
             if (!channel.isOptional() &&
                 !installedChannelLabels.contains(channel.getLabel())) {
                 return false;
