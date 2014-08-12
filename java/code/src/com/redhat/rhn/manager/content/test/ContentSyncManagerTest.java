@@ -799,17 +799,28 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
 
-            product = i.next();
-            assertEquals("SUSE Linux Enterprise Desktop 11 SP2 i586", product.getFriendlyName());
-            assertEquals("11.2", product.getVersion());
-            assertEquals("i586", product.getArch());
+            for (String servicePack : new String[] {"2", "3"}) {
+                for (String arch : new String[] {"i586", "x86_64"}) {
+                    product = i.next();
+                    assertEquals("SUSE Linux Enterprise Desktop 11 SP" + servicePack + " "
+                            + arch, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
 
-            Iterator<ListedProduct> j = product.getExtensions().iterator();
-            product = j.next();
-            assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP2", product.getFriendlyName());
-            assertEquals("11.2", product.getVersion());
+                    Iterator<ListedProduct> j = product.getExtensions().iterator();
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP"
+                            + servicePack, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+                    assertFalse(j.hasNext());
+                }
+            }
+
+            product = i.next();
+            assertEquals("SUSE Linux Enterprise Server 10 SP3", product.getFriendlyName());
+            assertEquals("10.3", product.getVersion());
             assertEquals("i586", product.getArch());
-            assertFalse(j.hasNext());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
