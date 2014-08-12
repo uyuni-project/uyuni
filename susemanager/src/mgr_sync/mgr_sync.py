@@ -39,10 +39,13 @@ class MgrSync(object):
         self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
-    def _listChannels(self, expand=False):
+    def _list_channels(self, expand, filter, no_optionals):
         """
         List channels.
         """
+
+        if filter:
+            filter = filter.lower()
 
         data = self._execute_xmlrpc_method("listChannels", self.auth.token)
         if not data:
@@ -60,12 +63,20 @@ class MgrSync(object):
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
 
-            print base_channel.to_ascii_row()
+            output = base_channel.to_ascii_row()
+
+            if not filter or filter in output.lower():
+                print(output)
+            else:
+                continue
+
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
                 for child in base_channel.children:
                     if base_channel.status == Channel.Status.INSTALLED or expand:
-                        print("    " + child.to_ascii_row())
+                        output = child.to_ascii_row()
+                        if not filter or filter in output.lower():
+                            print("    " + output)
 
     def _listProducts(self):
         """
@@ -132,7 +143,9 @@ class MgrSync(object):
         self.auth.persist = options.saveconfig
         if vars(options).has_key('list_target'):
             if options.list_target == 'channel':
-                self._listChannels(expand=options.expand)
+                self._list_channels(expand=options.expand,
+                                    filter=options.filter,
+                                    no_optionals=options.no_optionals)
             elif options.list_target == 'product':
                 products = self._listProducts()
                 if products:
