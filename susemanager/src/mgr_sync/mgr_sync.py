@@ -39,10 +39,14 @@ class MgrSync(object):
         self.auth = Authenticator(self.conn, self.config)
         self.quiet = False
 
-    def _list_channels(self, expand, filter, no_optionals):
+    def _list_channels(self, expand, filter, no_optionals,
+                       show_interactive_numbers=False):
         """
         List channels.
         """
+
+        interactive_number = 0
+        available_channels = []
 
         if filter:
             filter = filter.lower()
@@ -63,20 +67,42 @@ class MgrSync(object):
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
 
+            prefix = ""
             output = base_channel.to_ascii_row()
 
             if not filter or filter in output.lower():
-                print(output)
+                if base_channel.status == Channel.Status.AVAILABLE:
+                    interactive_number += 1
+                    prefix = "%.2d) " % interactive_number
+                    available_channels.append(base_channel.label)
+                print(prefix + output)
             else:
                 continue
 
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
                 for child in base_channel.children:
+                    prefix = ""
                     if base_channel.status == Channel.Status.INSTALLED or expand:
                         output = child.to_ascii_row()
                         if not filter or filter in output.lower():
-                            print("    " + output)
+                            if child.status == Channel.Status.AVAILABLE:
+                                interactive_number += 1
+                                prefix = "%.2d) " % interactive_number
+                                available_channels.append(child.label)
+
+                            print("    " + prefix + output)
+
+        return available_channels
+
+    def _add_channels(self, channels):
+        if not channels:
+            self._add_channels_interactive_mode()
+        else:
+            pass
+
+    def _add_channels_interactive_mode(self):
+        self._list_channels(show_interactive_numbers=True)
 
     def _listProducts(self):
         """
@@ -152,6 +178,12 @@ class MgrSync(object):
                     self._format(products, title="Available products")
                 else:
                     cli_msg("No products found.")
+            else:
+                sys.stderr.write('List target not recognized\n')
+                sys.exit(1)
+        elif vars(options).has_key('add_target'):
+            if options.add_target == 'channel':
+                self._add_channels(options.target)
             else:
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)

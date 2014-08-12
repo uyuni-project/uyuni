@@ -51,7 +51,9 @@ def _create_add_subparser(subparsers):
     add_parser = subparsers.add_parser('add',
                                        help='add channels or products')
     add_parser.add_argument('add_target', choices=['channel', 'product'])
-    add_parser.add_argument('target', help='element to add, could be either a channel or a product')
+    add_parser.add_argument('target',
+                            nargs='*',
+                            help='element to add, could be either a channel or a product')
     add_parser.add_argument('--from-mirror', action='store', dest='mirror',
                             help='URL of a local mirror like SMT. Only to download the RPMs.')
 
