@@ -790,7 +790,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct product = null;
 
-            for (int version = 4; version <= 5; version++) {
+            for (int version = 4; version <= 6; version++) {
                 for (String arch : new String[] {"i386", "x86_64"}) {
                     product = i.next();
                     assertEquals("RES " + version, product.getFriendlyName());
@@ -800,14 +800,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             }
 
             product = i.next();
-            assertEquals("RES 6", product.getFriendlyName());
-            assertEquals("6", product.getVersion());
-            assertEquals("i386", product.getArch());
+            assertEquals("SUSE Linux Enterprise Desktop 11 SP2 i586", product.getFriendlyName());
+            assertEquals("11.2", product.getVersion());
+            assertEquals("i586", product.getArch());
 
-//            product = product.getExtensions().get(0);
-//            assertEquals("RHEL 6 Expanded Support", product.getFriendlyName());
-//            assertEquals("6", product.getVersion());
-//            assertEquals("i386", product.getArch());
+            Iterator<ListedProduct> j = product.getExtensions().iterator();
+            product = j.next();
+            assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP2", product.getFriendlyName());
+            assertEquals("11.2", product.getVersion());
+            assertEquals("i586", product.getArch());
+            assertFalse(j.hasNext());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
