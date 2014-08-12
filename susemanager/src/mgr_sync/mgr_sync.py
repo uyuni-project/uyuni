@@ -128,17 +128,21 @@ class MgrSync(object):
         """
         Run the app.
         """
-        self.quiet = options.quiet
+        self.quiet = not options.verbose
         self.auth.persist = options.saveconfig
-        if options.listchannels:
-            self._listChannels(expand=options.expandtree)
-        elif options.listproducts:
-            products = self._listProducts()
-            if products:
-                self._format(products, title="Available products")
+        if vars(options).has_key('list_target'):
+            if options.list_target == 'channel':
+                self._listChannels(expand=options.expand)
+            elif options.list_target == 'product':
+                products = self._listProducts()
+                if products:
+                    self._format(products, title="Available products")
+                else:
+                    cli_msg("No products found.")
             else:
-                cli_msg("No products found.")
-        elif options.refresh:
+                sys.stderr.write('List target not recognized\n')
+                sys.exit(1)
+        elif vars(options).has_key('refresh'):
             self._refresh()
 
     def _check_session_fail(self, exception):
