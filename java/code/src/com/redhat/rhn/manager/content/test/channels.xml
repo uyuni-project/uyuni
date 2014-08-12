@@ -2,28 +2,28 @@
 <channels>
 	<channel arch="i586" description="ATI Driver for SLE11-SP2" family="7260" is_signed="Y" label="ati-driver-sle11-sp2-i586" name="ATI-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://www2.ati.com/suse/sle11sp2" summary="ATI Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLED" version="11.2">923</product_id>
-			<product_id name="SUSE_SLED" version="11.2">839</product_id>
-			<product_id name="SUSE_SLED" version="11.2">922</product_id>
-			<product_id name="SUSE_SLED" version="11.2">921</product_id>
+			<product_id name="SUSE_SLED" version="11.2">879</product_id>
+			<product_id name="SUSE_SLED" version="11.2">844</product_id>
+			<product_id name="SUSE_SLED" version="11.2">843</product_id>
+			<product_id name="SUSE_SLED" version="11.2">868</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="ATI Driver for SLE11-SP2" family="7260" is_signed="Y" label="ati-driver-sle11-sp2-x86_64" name="ATI-Driver-SLE11-SP2 x86_64" optional="N" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="http://www2.ati.com/suse/sle11sp2" summary="ATI Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLED" version="11.2">924</product_id>
+			<product_id name="SUSE_SLED" version="11.2">901</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLED" version="11.2">923</product_id>
-			<product_id name="SUSE_SLED" version="11.2">839</product_id>
-			<product_id name="SUSE_SLED" version="11.2">922</product_id>
-			<product_id name="SUSE_SLED" version="11.2">921</product_id>
+			<product_id name="SUSE_SLED" version="11.2">879</product_id>
+			<product_id name="SUSE_SLED" version="11.2">844</product_id>
+			<product_id name="SUSE_SLED" version="11.2">843</product_id>
+			<product_id name="SUSE_SLED" version="11.2">868</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-x86_64" name="nVidia-Driver-SLE11-SP2 x86_64" optional="N" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
 		<products>
-			<product_id name="SUSE_SLED" version="11.2">924</product_id>
+			<product_id name="SUSE_SLED" version="11.2">901</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11" family="OES2" is_signed="Y" label="oes11-pool-x86_64" name="OES11-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11" update_tag="oes11">
