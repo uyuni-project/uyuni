@@ -257,7 +257,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     @SuppressWarnings("unchecked")
-    public SortedSet<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
+    public Collection<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         // get all products in the DB
         Collection<MgrSyncProduct> result = new HashSet<MgrSyncProduct>();
@@ -288,7 +288,7 @@ public class ContentSyncManager {
      * @param productToChannelMap the product to channel map
      * @return the sorted set
      */
-    private SortedSet<ListedProduct> toListedProductList(
+    private Collection<ListedProduct> toListedProductList(
             Collection<MgrSyncProduct> products,
             Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
 

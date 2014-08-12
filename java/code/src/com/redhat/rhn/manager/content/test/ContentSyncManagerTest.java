@@ -785,7 +785,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
             csm.updateSUSEProducts(sccProducts);
-            SortedSet<ListedProduct> products = csm.listProducts(channels);
+            Collection<ListedProduct> products = csm.listProducts(channels);
 
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct product = null;
