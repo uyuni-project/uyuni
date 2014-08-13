@@ -869,6 +869,51 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertFalse(j.hasNext());
                 }
             }
+
+            for (String servicePack : new String[] {"1"}) {
+                for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x"}) {
+                    product = i.next();
+                    assertEquals("SUSE Linux Enterprise Server 11 SP" + servicePack + " "
+                            + arch, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    Iterator<ListedProduct> j = product.getExtensions().iterator();
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise High Availability Extension 11 SP"
+                            + servicePack + " " + arch, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    if (arch.equals("i586") || arch.equals("x86_64")) {
+                        product = j.next();
+                        assertEquals("SUSE Linux Enterprise Point of Service 11 SP"
+                                + servicePack, product.getFriendlyName());
+                        assertEquals("11." + servicePack, product.getVersion());
+                        assertEquals(arch, product.getArch());
+                    }
+
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP"
+                            + servicePack, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    // HACK: SMT data on SCC has disappeared completely due to a bug
+                    // This has to be re-enabled once data is fixed on SCC
+                    //product = j.next();
+                    //assertEquals(
+                    //       "SUSE Linux Enterprise Subscription Management Tool 11 SP"
+                    //        + servicePack, product.getFriendlyName()
+                    //);
+                    //assertEquals("11." + servicePack, product.getVersion());
+                    //assertEquals(arch, product.getArch());
+
+                    // note: mono extensions were dropped
+
+                    assertFalse(j.hasNext());
+                }
+            }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
