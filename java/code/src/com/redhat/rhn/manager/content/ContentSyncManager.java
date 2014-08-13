@@ -394,12 +394,15 @@ public class ContentSyncManager {
     private void addDirtyFixes(Collection<ListedProduct> all,
             Collection<ListedProduct> bases) {
 
-        // remove SP1 extensions from SP2 base products
+        // remove SP1 extensions from SP2 base products and vice versa
         for (ListedProduct product : bases) {
-            if (product.getVersion().equals("11.2")) {
+            String productVersion = product.getVersion();
+            if (productVersion.startsWith("11.")) {
                 Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
-                    if (extension.getVersion().equals("11.1")) {
+                    String extensionVersion = extension.getVersion();
+                    if (extensionVersion.startsWith("11.") &&
+                            !extensionVersion.equals(productVersion)) {
                         wrongSP.add(extension);
                     }
                 }
