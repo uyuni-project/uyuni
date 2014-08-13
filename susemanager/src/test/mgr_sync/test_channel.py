@@ -16,16 +16,20 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import os
+import sys
 import unittest2 as unittest
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from helper import read_data_from_fixture, path_to_fixture
 
 
 class ChannelTest(unittest.TestCase):
 
     def test_parse_channels(self):
         expected_channels, expected_hierarchy = self._parse_mgr_ncc_output()
-        channels = parse_channels(self._read_data_from_fixture("list_channels.data"))
+        channels = parse_channels(read_data_from_fixture("list_channels.data"))
 
         self.assertEqual(sorted(channels.keys()),
                          sorted(expected_hierarchy.keys()))
@@ -43,16 +47,6 @@ class ChannelTest(unittest.TestCase):
                     pass
             else:
                 self.assertEqual(0, len(expected_hierarchy[bc.label]))
-
-    def _read_data_from_fixture(self, filename):
-        with open(self._path_to_fixture(filename), 'r') as file:
-            data = eval(file.read())
-            return data
-
-    def _path_to_fixture(self, filename):
-        return os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                            "..", "fixtures",
-                            filename)
 
     def _parse_mgr_ncc_output(self):
         """
@@ -73,7 +67,7 @@ class ChannelTest(unittest.TestCase):
         channels = {}
         channels_hierarcy = {}
 
-        with open(self._path_to_fixture("mgr-ncc-sync.output"), "r") as file:
+        with open(path_to_fixture("mgr-ncc-sync.output"), "r") as file:
             latest_base_product = None
             for line in file.readlines():
                 base_product = line.startswith("[")
