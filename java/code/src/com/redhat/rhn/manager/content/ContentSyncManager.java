@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -234,9 +235,9 @@ public class ContentSyncManager {
                 for (SCCProduct product : products) {
                     String missing = verifySCCProduct(product);
 
-                    // HACK: some SCC products do not have correct versions
+                    // HACK: some SCC products do not have correct data
                     // to be removed when SCC team fixes this
-                    fixVersion(product);
+                    addDirtyFixes(product);
 
                     if (StringUtils.isBlank(missing)) {
                         productList.add(product);
@@ -260,11 +261,13 @@ public class ContentSyncManager {
     }
 
     /**
-     * HACK: fixes versions in SCC products that do not have it correct
+     * HACK: fixes data in SCC products that do not have it correct
      * To be removed when SCC team fixes this
      * @param product the product in
      */
-    public void fixVersion(SCCProduct product) {
+    @SuppressWarnings("unchecked")
+    public void addDirtyFixes(SCCProduct product) {
+        // make version numbering consistent
         String version = product.getVersion();
         if (version != null) {
             Matcher spMatcher =
@@ -275,6 +278,27 @@ public class ContentSyncManager {
                 product.setVersion(versionMatcher.group(1) + "." + spMatcher.group(1));
             }
         }
+
+        // make naming consistent: strip arch or VMWARE suffix
+        String friendlyName = product.getFriendlyName();
+        List<PackageArch> archs =
+                HibernateFactory.getSession().createCriteria(PackageArch.class).list();
+        for (PackageArch arch:archs) {
+            if (friendlyName.endsWith(" " + arch.getLabel())) {
+                friendlyName = friendlyName.substring(0, friendlyName.length() -
+                    arch.getLabel().length() - 1);
+            }
+        }
+        if (friendlyName.endsWith(" VMWARE")) {
+            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+        }
+
+        // make naming consistent: add VMWare suffix where appropriate
+        String productClass = product.getProductClass();
+        if (productClass != null && productClass.toLowerCase().contains("vmware")) {
+            friendlyName += " VMWare";
+        }
+        product.setFriendlyName(friendlyName);
     }
 
     /**
@@ -407,6 +431,33 @@ public class ContentSyncManager {
                     }
                 }
                 product.getExtensions().removeAll(wrongSP);
+            }
+        }
+
+        // remove Cloud 1 from SP1, as it is SP2 only
+        for (ListedProduct product : bases) {
+            if (product.getVersion().equals("11.1")) {
+                Collection<ListedProduct> cloud1 = new LinkedList<ListedProduct>();
+                for (ListedProduct extension : product.getExtensions()) {
+                    if (extension.getFriendlyName().contains("SUSE Cloud 1.0")) {
+                        cloud1.add(extension);
+                    }
+                }
+                product.getExtensions().removeAll(cloud1);
+            }
+        }
+
+        // remove SLMS 1.3 from SP1, as it is SP2 only
+        for (ListedProduct product : bases) {
+            if (product.getVersion().equals("11.1")) {
+                Collection<ListedProduct> cloud1 = new LinkedList<ListedProduct>();
+                for (ListedProduct extension : product.getExtensions()) {
+                    if (extension.getFriendlyName().contains(
+                            "SUSE Lifecycle Management Server 1.3")) {
+                        cloud1.add(extension);
+                    }
+                }
+                product.getExtensions().removeAll(cloud1);
             }
         }
 
