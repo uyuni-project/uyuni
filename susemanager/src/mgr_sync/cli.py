@@ -87,6 +87,6 @@ def _create_refresh_subparser(subparsers):
                                            help='Refresh product, channel and subscription')
     refresh_parser.set_defaults(refresh=True)
 
-def get_options():
+def get_options(args=None):
     """ Parsers the command line options and returns them. """
-    return _create_parser().parse_args()
+    return _create_parser().parse_args(args)
