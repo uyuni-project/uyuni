@@ -784,10 +784,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
 
-            // HACK: some SCC products do not have correct versions
+            // HACK: some SCC products do not have correct data
             // to be removed when SCC team fixes this
             for (SCCProduct product : sccProducts) {
-                csm.fixVersion(product);
+                csm.addDirtyFixes(product);
             }
 
             csm.updateSUSEProducts(sccProducts);
@@ -808,8 +808,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             for (String servicePack : new String[] {"2", "3"}) {
                 for (String arch : new String[] {"i586", "x86_64"}) {
                     product = i.next();
-                    assertEquals("SUSE Linux Enterprise Desktop 11 SP" + servicePack + " "
-                            + arch, product.getFriendlyName());
+                    assertEquals("SUSE Linux Enterprise Desktop 11 SP" + servicePack,
+                            product.getFriendlyName());
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
@@ -855,8 +855,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 for (String arch : new String[] {"i586", "ia64", "ppc",
                         "s390x", "x86_64"}) {
                     product = i.next();
-                    assertEquals("SUSE Linux Enterprise Server 10 SP" + servicePack + " "
-                            + arch, product.getFriendlyName());
+                    assertEquals("SUSE Linux Enterprise Server 10 SP" + servicePack,
+                            product.getFriendlyName());
                     assertEquals("10." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
@@ -871,26 +871,36 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             }
 
             for (String servicePack : new String[] {"1"}) {
-                for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x"}) {
+                for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x",
+                        "x86_64"}) {
                     product = i.next();
-                    assertEquals("SUSE Linux Enterprise Server 11 SP" + servicePack + " "
-                            + arch, product.getFriendlyName());
+                    assertEquals("SUSE Linux Enterprise Server 11 SP" + servicePack,
+                            product.getFriendlyName());
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
                     Iterator<ListedProduct> j = product.getExtensions().iterator();
                     product = j.next();
                     assertEquals("SUSE Linux Enterprise High Availability Extension 11 SP"
-                            + servicePack + " " + arch, product.getFriendlyName());
+                            + servicePack, product.getFriendlyName());
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
-                    if (arch.equals("i586") || arch.equals("x86_64")) {
+                    if (servicePack.equals("1") &&
+                            (arch.equals("i586") || arch.equals("x86_64"))) {
                         product = j.next();
                         assertEquals("SUSE Linux Enterprise Point of Service 11 SP"
                                 + servicePack, product.getFriendlyName());
                         assertEquals("11." + servicePack, product.getVersion());
                         assertEquals(arch, product.getArch());
+                    }
+
+                    if (arch.equals("x86_64")) {
+                        product = j.next();
+                        assertEquals("SUSE Linux Enterprise Real Time 11",
+                                product.getFriendlyName());
+                        assertEquals("11." + servicePack, product.getVersion());
+                        assertEquals("x86_64", product.getArch());
                     }
 
                     product = j.next();
@@ -913,6 +923,31 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
                     assertFalse(j.hasNext());
                 }
+
+                for (String arch : new String[] {"i586", "x86_64"}) {
+                    product = i.next();
+                    assertEquals("SUSE Linux Enterprise Server 11 SP" + servicePack
+                            + " VMWare", product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    Iterator<ListedProduct> j = product.getExtensions().iterator();
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise High Availability Extension 11 SP"
+                            + servicePack, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise Software Development Kit 11 SP"
+                            + servicePack, product.getFriendlyName());
+                    assertEquals("11." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    assertFalse(j.hasNext());
+                }
+
+
             }
         }
         finally {
