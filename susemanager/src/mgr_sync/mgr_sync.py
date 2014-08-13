@@ -53,7 +53,7 @@ class MgrSync(object):
 
         data = self._execute_xmlrpc_method("listChannels", self.auth.token)
         if not data:
-            cli_msg("No channels found.")
+            print("No channels found.")
             return
 
         base_channels = parse_channels(data)
@@ -73,7 +73,8 @@ class MgrSync(object):
             if not filter or filter in output.lower():
                 if base_channel.status == Channel.Status.AVAILABLE:
                     interactive_number += 1
-                    prefix = "%.2d) " % interactive_number
+                    if show_interactive_numbers:
+                        prefix = "%.2d) " % interactive_number
                     available_channels.append(base_channel.label)
                 print(prefix + output)
             else:
@@ -88,7 +89,8 @@ class MgrSync(object):
                         if not filter or filter in output.lower():
                             if child.status == Channel.Status.AVAILABLE:
                                 interactive_number += 1
-                                prefix = "%.2d) " % interactive_number
+                                if show_interactive_numbers:
+                                    prefix = "%.2d) " % interactive_number
                                 available_channels.append(child.label)
 
                             print("    " + prefix + output)
