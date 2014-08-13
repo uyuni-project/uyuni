@@ -63,7 +63,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -784,6 +783,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                             new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
+
+            // HACK: some SCC products do not have correct versions
+            // to be removed when SCC team fixes this
+            for (SCCProduct product : sccProducts) {
+                csm.fixVersion(product);
+            }
+
             csm.updateSUSEProducts(sccProducts);
             Collection<ListedProduct> products = csm.listProducts(channels);
 
