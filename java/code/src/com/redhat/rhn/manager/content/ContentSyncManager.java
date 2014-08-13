@@ -369,15 +369,6 @@ public class ContentSyncManager {
     private void addDirtyFixes(Collection<ListedProduct> all,
             Collection<ListedProduct> bases) {
 
-        // remove HP products
-        Collection<ListedProduct> blacklisted = new LinkedList<ListedProduct>();
-        for (ListedProduct product : bases) {
-            if (product.getFriendlyName().matches(".*HP-[BC]NB.*")) {
-                blacklisted.add(product);
-            }
-        }
-        bases.removeAll(blacklisted);
-
         // remove SP1 extensions from SP2 base products
         for (ListedProduct product : bases) {
             if (product.getVersion().equals("11.2")) {
