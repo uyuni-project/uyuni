@@ -2328,19 +2328,6 @@ select a.id
   </query>
 </mode>
 
-<mode name="find_suse_product_id">
-  <query params="name, version, release, arch">
-    SELECT sp.id, sp.name, sp.version, sp.release, pat.label arch
-     FROM suseProducts sp
-LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
-    WHERE sp.name = :name
-      AND (sp.version IS NULL or sp.version = :version)
-      AND (sp.release IS NULL or sp.release = :release)
-      AND (sp.arch_type_id IS NULL or pat.label = :arch)
- ORDER BY name, version, release, arch
-  </query>
-</mode>
-
 <mode name="system_installed_products">
   <query params="serverid">
 SELECT sip.name, sip.version, at.label as arch, sip.release
