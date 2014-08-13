@@ -76,6 +76,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Content synchronization logic.
@@ -231,6 +233,11 @@ public class ContentSyncManager {
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     String missing = verifySCCProduct(product);
+
+                    // HACK: some SCC products do not have correct versions
+                    // to be removed when SCC team fixes this
+                    fixVersion(product);
+
                     if (StringUtils.isBlank(missing)) {
                         productList.add(product);
                     }
@@ -250,6 +257,24 @@ public class ContentSyncManager {
             log.debug("Found " + productList.size() + " available products.");
         }
         return productList;
+    }
+
+    /**
+     * HACK: fixes versions in SCC products that do not have it correct
+     * To be removed when SCC team fixes this
+     * @param product the product in
+     */
+    public void fixVersion(SCCProduct product) {
+        String version = product.getVersion();
+        if (version != null) {
+            Matcher spMatcher =
+                    Pattern.compile(".*SP([0-9]).*").matcher(product.getFriendlyName());
+            Matcher versionMatcher =
+                    Pattern.compile("([0-9]+)").matcher(product.getVersion());
+            if (spMatcher.matches() && versionMatcher.matches()) {
+                product.setVersion(versionMatcher.group(1) + "." + spMatcher.group(1));
+            }
+        }
     }
 
     /**
