@@ -19,6 +19,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
@@ -124,27 +125,36 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Find a {@link SUSEProduct} given by name, version, release and arch.
      * @param name name
-     * @param version version
-     * @param release release
-     * @param arch arch
-     * @return product
+     * @param version version or null
+     * @param release release or null
+     * @param arch arch or null
+     * @return product or null if it is not found
      */
-    @SuppressWarnings("unchecked")
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch) {
-        SUSEProduct product = null;
-        SelectMode mode = ModeFactory.getMode("System_queries", "find_suse_product_id");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name", name.toLowerCase());
-        params.put("version", version != null ? version.toLowerCase() : "");
-        params.put("release", release != null ? release.toLowerCase() : "");
-        params.put("arch", arch != null ? arch.toLowerCase() : "");
-        DataResult<Map<String, Object>> result = mode.execute(params);
-        if (!result.isEmpty()) {
-            Map<String, Object> firstrow = result.get(0);
-            product = getProductById((Long) firstrow.get("id"));
+
+        Criteria c = getSession().createCriteria(SUSEProduct.class);
+        c.add(Restrictions.eq("name", name.toLowerCase()));
+        if (version == null) {
+            c.add(Restrictions.isNull("version"));
         }
-        return product;
+        else {
+            c.add(Restrictions.eq("version", version));
+        }
+        if (release == null) {
+            c.add(Restrictions.isNull("release"));
+        }
+        else {
+            c.add(Restrictions.eq("release", release));
+        }
+        if (arch == null) {
+            c.add(Restrictions.isNull("arch"));
+        }
+        else {
+            c.add(Restrictions.eq("arch", PackageFactory.lookupPackageArchByLabel(arch)));
+        }
+
+        return (SUSEProduct) c.uniqueResult();
     }
 
     /**
