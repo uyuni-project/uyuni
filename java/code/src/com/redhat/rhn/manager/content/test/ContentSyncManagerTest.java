@@ -842,6 +842,25 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
                 assertFalse(j.hasNext());
             }
+
+            for (String servicePack : new String[] {"3", "4"}) {
+                for (String arch : new String[] {"i586", "ia64", "ppc",
+                        "s390x", "x86_64"}) {
+                    product = i.next();
+                    assertEquals("SUSE Linux Enterprise Server 10 SP" + servicePack + " "
+                            + arch, product.getFriendlyName());
+                    assertEquals("10." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+
+                    Iterator<ListedProduct> j = product.getExtensions().iterator();
+                    product = j.next();
+                    assertEquals("SUSE Linux Enterprise Software Development Kit 10 SP"
+                            + servicePack, product.getFriendlyName());
+                    assertEquals("10." + servicePack, product.getVersion());
+                    assertEquals(arch, product.getArch());
+                    assertFalse(j.hasNext());
+                }
+            }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
