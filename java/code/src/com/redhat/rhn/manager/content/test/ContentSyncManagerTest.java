@@ -967,6 +967,27 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertFalse(j.hasNext());
                 }
             }
+
+            for (String version : new String[]{"1.2", "1.7", "2.1"}) {
+                product = i.next();
+                assertEquals("SUSE Manager Proxy " + version, product.getFriendlyName());
+                assertEquals(version, product.getVersion());
+                assertEquals("x86_64", product.getArch());
+            }
+
+            for (String arch : new String[]{"s390x", "x86_64"}) {
+                product = i.next();
+                assertEquals("SUSE Manager Server 2.1", product.getFriendlyName());
+                assertEquals("2.1", product.getVersion());
+                assertEquals(arch, product.getArch());
+            }
+
+            product = i.next();
+            assertEquals("SUSE Studio OnSite 1.3", product.getFriendlyName());
+            assertEquals("1.3", product.getVersion());
+            assertEquals("x86_64", product.getArch());
+
+            assertFalse(i.hasNext());
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
