@@ -33,7 +33,7 @@ class CaptureStdout(list):
 
 def read_data_from_fixture(filename):
     with open(path_to_fixture(filename), 'r') as file:
-        data = eval(file.read())
+        data = eval(file.read().replace("\r\n", ""))
         return data
 
 
