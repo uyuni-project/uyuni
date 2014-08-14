@@ -19,7 +19,7 @@ import unittest2 as unittest
 import os.path
 import sys
 
-from mock import MagicMock, PropertyMock, patch
+from mock import MagicMock, PropertyMock, call
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import CaptureStdout, read_data_from_fixture
@@ -46,6 +46,33 @@ class MgrSyncTest(unittest.TestCase):
         stubbed_xmlrpm_call.assert_called_once_with("listChannels",
                                                     self.fake_auth_token)
 
+    def test_refresh(self):
+        """ Test the refresh action """
+
+        options = get_options("refresh".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=True)
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+
+        expected_output = """Refreshing Channels                            [DONE]
+Refreshing Channel families                    [DONE]
+Refreshing SUSE products                       [DONE]
+Refreshing SUSE Product channels               [DONE]
+Refreshing Subscriptions                       [DONE]
+Refreshing Upgrade paths                       [DONE]"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        expected_calls = [
+            call._execute_xmlrpc_method("synchronizeChannels", self.fake_auth_token),
+            call._execute_xmlrpc_method("synchronizeChannelFamilies", self.fake_auth_token),
+            call._execute_xmlrpc_method("synchronizeProducts", self.fake_auth_token),
+            call._execute_xmlrpc_method("synchronizeProductChannels", self.fake_auth_token),
+            call._execute_xmlrpc_method("synchronizeSubscriptions", self.fake_auth_token),
+            call._execute_xmlrpc_method("synchronizeUpgradePaths", self.fake_auth_token)
+        ]
+        stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
     def test_list_channels(self):
         """ Testing list channel output """

@@ -130,16 +130,18 @@ class MgrSync(object):
             ("Subscriptions        ", "synchronizeSubscriptions"),
             ("Upgrade paths        ", "synchronizeUpgradePaths")
         )
+        text_width = len("Refreshing ") + 8 + \
+                     len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
 
         for operation, method in actions:
-            sys.stdout.write("Refreshing %s\t" % operation)
+            sys.stdout.write("Refreshing %s" % operation)
             sys.stdout.flush()
             try:
                 self._execute_xmlrpc_method(method, self.auth.token)
-                sys.stdout.write("[DONE]\n")
+                sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
-                sys.stdout.write("[FAIL]\n")
+                sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
                 sys.stderr.write("\tError: %s\n\n" % ex)
                 sys.exit(1)
