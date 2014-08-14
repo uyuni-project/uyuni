@@ -310,10 +310,10 @@ public class ContentSyncManager {
     public Collection<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
         throws ContentSyncException {
         // get all products in the DB
-        Collection<MgrSyncProduct> result = new HashSet<MgrSyncProduct>();
+        Collection<MgrSyncProduct> dbProducts = new HashSet<MgrSyncProduct>();
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            result.add(new MgrSyncProduct(product.getFriendlyName(), product.getProductId(),
-                    product.getVersion()));
+            dbProducts.add(new MgrSyncProduct(product.getFriendlyName(), product
+                    .getProductId(), product.getVersion()));
         }
 
         // get all the channels we have an entitlement for
@@ -326,10 +326,10 @@ public class ContentSyncManager {
         Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
 
         // filter result with only available products
-        result.retainAll(availableProducts);
+        dbProducts.retainAll(availableProducts);
 
         // convert to Collection<ListedProduct> and return
-        return toListedProductList(result, productToChannelMap);
+        return toListedProductList(dbProducts, productToChannelMap);
     }
 
     /**
