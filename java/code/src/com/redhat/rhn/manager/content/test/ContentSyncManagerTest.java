@@ -748,7 +748,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
         File productsJSON = new File(TestUtils.findTestData("products.json").getPath());
         try {
-            List<MgrSyncChannel> channels =
+            List<MgrSyncChannel> allChannels =
                     new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
 
             List<String> authorizedLabels = new LinkedList<String>() { {
@@ -791,7 +791,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             }
 
             csm.updateSUSEProducts(sccProducts);
-            Collection<ListedProduct> products = csm.listProducts(channels);
+            Collection<ListedProduct> products = csm.listProducts(csm.getAvailableChannels(allChannels));
 
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct product = null;
