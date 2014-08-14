@@ -108,7 +108,8 @@ class MgrSync(object):
             pass
 
     def _add_channels_interactive_mode(self):
-        self._list_channels(show_interactive_numbers=True)
+        self._list_channels(expand=False, filter=None, no_optionals=True,
+                            show_interactive_numbers=True)
 
     def _listProducts(self):
         """
