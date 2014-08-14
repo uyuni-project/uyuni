@@ -27,7 +27,7 @@
   'products': [{'id': 1181,
                 'name': 'SUSE-Linux-Enterprise-SDK-SP4',
                 'version': '10'}],
-  'status': {'value': 'AVAILABLE'},
+  'status': {'value': 'INSTALLED'},
   'summary': 'SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit',
   'target': 'SLE-SDK',
   'update_tag': 'sdkp4',

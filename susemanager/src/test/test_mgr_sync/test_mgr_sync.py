@@ -48,6 +48,7 @@ class MgrSyncTest(unittest.TestCase):
 
 
     def test_list_channels(self):
+        """ Testing list channel output """
         options = get_options("list channel".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -64,7 +65,7 @@ Status:
 [A] RHEL i386 AS 4 RES 4
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
     [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
-    [A] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -73,6 +74,7 @@ Status:
 
 
     def test_list_channels_expand_enabled(self):
+        """ Testing list channel output when expand option is toggled """
         options = get_options("list channel -e".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -90,7 +92,7 @@ Status:
     [A] RES4 AS for i386 RES 4
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
     [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
-    [A] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -99,6 +101,7 @@ Status:
 
 
     def test_list_channels_filter_set(self):
+        """ Testing list channel output when a filter is set """
         options = get_options("list channel --filter rhel".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -118,3 +121,37 @@ Status:
 
         stubbed_xmlrpm_call.assert_called_once_with("listChannels",
                                                     self.fake_auth_token)
+
+
+
+    def test_list_channels_interactive(self):
+        """ Test listing channels when interactive more is set """
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        available_channels = []
+        with CaptureStdout() as output:
+            available_channels = self.mgr_sync._list_channels(expand=False,
+                                                              filter=None,
+                                                              no_optionals=True,
+                                                              show_interactive_numbers=True)
+        expected_output = """Available Channels:
+
+
+Status:
+  - I - channel is installed
+  - A - channel is not installed, but is available
+  - U - channel is unavailable
+
+01) [A] RHEL i386 AS 4 RES 4
+    [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
+    02) [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
+        [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
+                                                    self.fake_auth_token)
+
+        self.assertEqual(['rhel-i386-as-4', 'sle10-sdk-sp4-pool-x86_64'],
+                         available_channels)
+
