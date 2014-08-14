@@ -73,9 +73,6 @@ class ChannelTest(unittest.TestCase):
                 base_product = line.startswith("[")
                 status, label = filter(None, line.strip().split(" "))
 
-                # status is something like [X]
-                status = status[1]
-
                 if base_product:
                     latest_base_product = label
                     channels_hierarcy[label] = []
