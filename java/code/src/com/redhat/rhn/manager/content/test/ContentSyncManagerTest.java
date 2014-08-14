@@ -870,7 +870,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
 
-            for (String servicePack : new String[] {"1"}) {
+            for (String servicePack : new String[] {"1", "2"}) {
                 for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x",
                         "x86_64"}) {
                     product = i.next();
@@ -880,6 +880,20 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertEquals(arch, product.getArch());
 
                     Iterator<ListedProduct> j = product.getExtensions().iterator();
+
+                    if (servicePack.equals("2") && arch.equals("x86_64")) {
+                        product = j.next();
+                        assertEquals("SUSE Cloud 1.0", product.getFriendlyName());
+                        assertEquals("1.0", product.getVersion());
+                        assertEquals(arch, product.getArch());
+
+                        product = j.next();
+                        assertEquals("SUSE Lifecycle Management Server 1.3",
+                                product.getFriendlyName());
+                        assertEquals("1.3", product.getVersion());
+                        assertEquals(arch, product.getArch());
+                    }
+
                     product = j.next();
                     assertEquals("SUSE Linux Enterprise High Availability Extension 11 SP"
                             + servicePack, product.getFriendlyName());
