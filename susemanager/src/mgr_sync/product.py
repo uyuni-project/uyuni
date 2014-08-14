@@ -31,6 +31,7 @@ class Product(object):
 
     @property
     def short_status(self):
+        # pylint: disable=E1101
         return "[%s]" % str(self.status.value)[0]
 
     def to_ascii_row(self):

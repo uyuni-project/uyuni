@@ -16,10 +16,9 @@
 import re
 import sys
 import xmlrpclib
-from tabulate import tabulate
 
-from spacewalk.susemanager.mgr_sync.channel import parse_channels
-from spacewalk.susemanager.mgr_sync.channel import Channel
+from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
+from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
 from spacewalk.susemanager.mgr_sync.helpers import cli_msg
@@ -111,12 +110,25 @@ class MgrSync(object):
         self._list_channels(expand=False, filter=None, no_optionals=True,
                             show_interactive_numbers=True)
 
-    def _listProducts(self):
+    def _list_products(self):
         """
         List products on the channel.
         """
 
-        return self._execute_xmlrpc_method("listProducts", self.auth.token)
+        print("Available Products:\n")
+        print("\nStatus:")
+        print("  - I - channel is installed")
+        print("  - A - channel is not installed, but is available")
+
+        data = self._execute_xmlrpc_method("listProducts", self.auth.token)
+        if not data:
+            print("No products found.")
+            return
+
+        products = parse_products(data)
+
+        for product in products:
+            product.to_stdout()
 
     def _refresh(self):
         """
@@ -182,11 +194,7 @@ class MgrSync(object):
                                     filter=options.filter,
                                     no_optionals=options.no_optionals)
             elif options.list_target == 'product':
-                products = self._listProducts()
-                if products:
-                    self._format(products, title="Available products")
-                else:
-                    cli_msg("No products found.")
+                self._list_products()
             else:
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
@@ -216,36 +224,3 @@ class MgrSync(object):
 
         return False
 
-    def _format(self, data, title=""):
-        """
-        Format the output.
-        """
-
-        if data[0].has_key('extensions'):
-            self._format_tree(data)
-        else:
-            self._format_flat(data, title=title)
-
-    def _format_tree(self, data):
-        """
-        Format the tree output within the table.
-        """
-        table = []
-        for p in data:
-            table.append((p["status"], p["title"], p["label"], p["version"], p["arch"],))
-            for c in p.get("extensions", []):
-                table.append((p["status"], "  \\_" + p["title"], p["label"], p["version"], p["arch"] or "N/A",))
-        print tabulate(table, headers=("Status", "Title", "Label", "Version", "Arch"))
-
-    def _format_flat(self, data, title=""):
-        """
-        Format the tabular output.
-        """
-        table = []
-        idx = 1
-        for p in data:
-            descr = (p["description"] + "").strip() or p["url"] or "N/A"
-            table.append((str(idx).zfill(2), p["name"], p["target"], descr),)
-            idx += 1
-        table = sorted(table)
-        print (title and (title + ":\n") or "") + tabulate(table, headers=("No.", "Name", "OS", "Description"))
