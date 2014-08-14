@@ -1882,7 +1882,6 @@
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-core-ia64" name="SLE11-SP2-Debuginfo-Core for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">1034</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-sp2-debuginfo-core-ia64-sles-sp3" name="SLE11-SP2-Debuginfo-Core for ia64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
@@ -1894,7 +1893,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">946</product_id>
 			<product_id name="SUSE_SLES" version="11.2">952</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2 ppc64" family="SLES-PPC" is_signed="Y" label="sle11-sp2-debuginfo-core-ppc64-sles-sp3" name="SLE11-SP2-Debuginfo-Core for ppc64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2 ppc64" update_tag="dbgsp2">
@@ -1907,7 +1905,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">754</product_id>
 			<product_id name="SUSE_SLES" version="11.2">755</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3 s390x" family="SLES-Z" is_signed="Y" label="sle11-sp2-debuginfo-core-s390x-sles-sp3" name="SLE11-SP2-Debuginfo-Core for s390x SLES-SP3" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Core/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3 s390x" update_tag="dbgsp2">
@@ -2011,7 +2008,6 @@
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-updates-ia64" name="SLE11-SP2-Debuginfo-Updates for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">1034</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sle11-sp2-debuginfo-updates-ia64-sles-sp3" name="SLE11-SP2-Debuginfo-Updates for ia64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
@@ -2023,7 +2019,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">946</product_id>
 			<product_id name="SUSE_SLES" version="11.2">952</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2 ppc64" family="SLES-PPC" is_signed="Y" label="sle11-sp2-debuginfo-updates-ppc64-sles-sp3" name="SLE11-SP2-Debuginfo-Updates for ppc64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2 ppc64" update_tag="dbgsp2">
@@ -2036,7 +2031,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">754</product_id>
 			<product_id name="SUSE_SLES" version="11.2">755</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3 s390x" family="SLES-Z" is_signed="Y" label="sle11-sp2-debuginfo-updates-s390x-sles-sp3" name="SLE11-SP2-Debuginfo-Updates for s390x SLES-SP3" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3 s390x" update_tag="dbgsp2">
@@ -3466,7 +3460,6 @@
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-extension-store-ia64" name="SLES11-SP2-Extension-Store for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">1034</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-IA" is_signed="Y" label="sles11-sp2-extension-store-ia64-sles-sp3" name="SLES11-SP2-Extension-Store for ia64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
@@ -3478,7 +3471,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">946</product_id>
 			<product_id name="SUSE_SLES" version="11.2">952</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2 ppc64" family="SLES-PPC" is_signed="Y" label="sles11-sp2-extension-store-ppc64-sles-sp3" name="SLES11-SP2-Extension-Store for ppc64 SLES-SP3" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2 ppc64" update_tag="slessp2">
@@ -3491,7 +3483,6 @@
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">754</product_id>
 			<product_id name="SUSE_SLES" version="11.2">755</product_id>
-			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3 s390x" family="SLES-Z" is_signed="Y" label="sles11-sp2-extension-store-s390x-sles-sp3" name="SLES11-SP2-Extension-Store for s390x SLES-SP3" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3 s390x" update_tag="slessp2">
