@@ -38,7 +38,7 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
     /**
      * Test listing products.
      */
-    public void testListProducts() {
+    public void testListProducts() throws ContentSyncException {
         Object[] products = this.csh.listProducts(this.adminKey);
         BaseHandlerTestCase.assertNotNull(products);
         BaseHandlerTestCase.assertNotEmpty(Arrays.asList(products));
@@ -71,7 +71,7 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
     /**
      * Test to capture wrong authentication token on product listing.
      */
-    public void testListProductsAuth() {
+    public void testListProductsAuth() throws ContentSyncException {
         try {
             this.csh.listProducts(this.invalidAuthKey);
             ContentSyncHandlerTest.fail("Expected an exception of type " +

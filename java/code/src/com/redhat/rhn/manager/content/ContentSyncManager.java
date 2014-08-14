@@ -302,12 +302,12 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns all products available to all configured credentials.
-     * @param allChannels list of all channels
+     * Returns all available products in user-friendly format.
+     * @param availableChannels list of available channels
      * @return list of all available products
      * @throws ContentSyncException in case of an error
      */
-    public Collection<ListedProduct> listProducts(List<MgrSyncChannel> allChannels)
+    public Collection<ListedProduct> listProducts(List<MgrSyncChannel> availableChannels)
         throws ContentSyncException {
         // get all products in the DB
         Collection<MgrSyncProduct> dbProducts = new HashSet<MgrSyncProduct>();
@@ -317,7 +317,6 @@ public class ContentSyncManager {
         }
 
         // get all the channels we have an entitlement for
-        List<MgrSyncChannel> availableChannels = getAvailableChannels(allChannels);
         Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap =
                 getProductToChannelMap(availableChannels);
 

@@ -30,6 +30,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @param sessionKey Session token.
      * @return List of products with their extensions (add-ons).
+     * @throws ContentSyncException if content cannot be synchronized
      *
      * @xmlrpc.doc List all products that are accessible to the organization.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
@@ -37,9 +38,10 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $SCCProductSerializer
      *                    #array_end()
      */
-    public Object[] listProducts(String sessionKey) {
+    public Object[] listProducts(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
-        return new ContentSyncManager().getProducts().toArray();
+        ContentSyncManager csm = new ContentSyncManager();
+        return csm.listProducts(csm.getAvailableChannels(csm.readChannels())).toArray();
     }
 
 
