@@ -76,6 +76,8 @@ class MgrSync(object):
                     if show_interactive_numbers:
                         prefix = "%.2d) " % interactive_number
                     available_channels.append(base_channel.label)
+                elif show_interactive_numbers:
+                    prefix = "    "
                 print(prefix + output)
             else:
                 continue
@@ -92,6 +94,8 @@ class MgrSync(object):
                                 if show_interactive_numbers:
                                     prefix = "%.2d) " % interactive_number
                                 available_channels.append(child.label)
+                            elif show_interactive_numbers:
+                                prefix = "    "
 
                             print("    " + prefix + output)
 
