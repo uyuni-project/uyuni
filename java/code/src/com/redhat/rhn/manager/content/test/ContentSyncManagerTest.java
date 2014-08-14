@@ -837,16 +837,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 assertEquals("11." + servicePack, product.getVersion());
                 assertEquals("x86_64", product.getArch());
 
-                // HACK: SMT data on SCC has disappeared completely due to a bug
-                // This has to be re-enabled once data is fixed on SCC
-                //if (servicePack.equals("3")) {
-                //    product = j.next();
-                //    assertEquals(
-                //            "SUSE Linux Enterprise Subscription Management Tool 11 SP3",
-                //            product.getFriendlyName());
-                //    assertEquals("11.3", product.getVersion());
-                //    assertEquals("x86_64", product.getArch());
-                //}
+                // TODO: SMT data on SCC has disappeared completely due to a bug
+                // assertions should be added here
 
                 assertFalse(j.hasNext());
             }
@@ -870,7 +862,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 }
             }
 
-            for (String servicePack : new String[] {"1", "2"}) {
+            for (String servicePack : new String[] {"1", "2", "3"}) {
                 for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x",
                         "x86_64"}) {
                     product = i.next();
@@ -894,13 +886,25 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                         assertEquals(arch, product.getArch());
                     }
 
+                    if (servicePack.equals("3") && arch.equals("x86_64")) {
+                        product = j.next();
+                        assertEquals("SUSE Cloud 2.0", product.getFriendlyName());
+                        assertEquals("2.0", product.getVersion());
+                        assertEquals(arch, product.getArch());
+
+                        product = j.next();
+                        assertEquals("SUSE Cloud 3", product.getFriendlyName());
+                        assertEquals("3", product.getVersion());
+                        assertEquals(arch, product.getArch());
+                    }
+
                     product = j.next();
                     assertEquals("SUSE Linux Enterprise High Availability Extension 11 SP"
                             + servicePack, product.getFriendlyName());
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
-                    if (servicePack.equals("1") &&
+                    if ((servicePack.equals("1") || servicePack.equals("3")) &&
                             (arch.equals("i586") || arch.equals("x86_64"))) {
                         product = j.next();
                         assertEquals("SUSE Linux Enterprise Point of Service 11 SP"
@@ -923,15 +927,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
-                    // HACK: SMT data on SCC has disappeared completely due to a bug
-                    // This has to be re-enabled once data is fixed on SCC
-                    //product = j.next();
-                    //assertEquals(
-                    //       "SUSE Linux Enterprise Subscription Management Tool 11 SP"
-                    //        + servicePack, product.getFriendlyName()
-                    //);
-                    //assertEquals("11." + servicePack, product.getVersion());
-                    //assertEquals(arch, product.getArch());
+                    // TODO: SMT data on SCC has disappeared completely due to a bug
+                    // assertions should be added here
+
+                    // TODO: WebYaST 1.3 data on SCC is missing
+                    // assertions should be added here
 
                     // note: mono extensions were dropped
 
@@ -958,10 +958,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                     assertEquals("11." + servicePack, product.getVersion());
                     assertEquals(arch, product.getArch());
 
+                    // TODO: SMT data on SCC has disappeared completely due to a bug
+                    // assertions should be added here
+
+                    // TODO: WebYaST 1.3 data on SCC is missing
+                    // assertions should be added here
+
                     assertFalse(j.hasNext());
                 }
-
-
             }
         }
         finally {
