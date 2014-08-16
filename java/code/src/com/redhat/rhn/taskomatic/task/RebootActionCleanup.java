@@ -44,7 +44,6 @@ public class RebootActionCleanup extends RhnJavaJob {
     /**
      * {@inheritDoc}
      */
-    @Override
     public void execute(JobExecutionContext arg0In)
         throws JobExecutionException {
         List<Map<String, Long>> failedRebootActions = lookupRebootActionCleanup();
@@ -86,14 +85,14 @@ public class RebootActionCleanup extends RhnJavaJob {
         Map<String, Integer> params = new HashMap<String, Integer>();
         // 6 hours
         params.put("threshold", new Integer(6));
-        return (List<Map<String, Long>>)m.execute(params);
+        return m.execute(params);
     }
 
     private List<Long> invalidateActionRecursive(Long serverId, Long actionId) {
         List<Long> childIds = lookupChildAction(serverId, actionId);
         List<Long> aIds = new ArrayList<Long>();
         for (Iterator<Long> itr = childIds.iterator(); itr.hasNext();) {
-            Long childAction = (Long) itr.next();
+            Long childAction = itr.next();
             List<Long> cIds = invalidateActionRecursive(serverId, childAction);
             aIds.addAll(cIds);
         }

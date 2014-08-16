@@ -232,7 +232,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     public Set<Role> getTemporaryRoles() {
         Set<Role> userRoles = new HashSet<Role>();
         for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = (UserGroupMembers) i.next();
+            UserGroupMembers ugm = i.next();
             if (ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -252,7 +252,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     public Set<Role> getPermanentRoles() {
         Set<Role> userRoles = new HashSet<Role>();
         for (Iterator<UserGroupMembers> i = groupMembers.iterator(); i.hasNext();) {
-            UserGroupMembers ugm = (UserGroupMembers) i.next();
+            UserGroupMembers ugm = i.next();
             if (!ugm.getTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
@@ -913,7 +913,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     protected Address getAddress() {
         Address baddr = null;
         Address addr = null;
-        Address[] addrA = (Address[]) addresses.toArray(new Address[addresses.size()]);
+        Address[] addrA = addresses.toArray(new Address[addresses.size()]);
         if (addresses.size() > 0) {
             for (int i = 0; i < addrA.length; i++) {
                 if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {
@@ -1222,7 +1222,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         public Address getAddress() {
             Address baddr = null;
             Address addr = null;
-            Address[] addrA = (Address[]) addresses.toArray(new Address[addresses.size()]);
+            Address[] addrA = addresses.toArray(new Address[addresses.size()]);
             if (addresses.size() > 0) {
                 for (int i = 0; i < addrA.length; i++) {
                     if (addrA[i].getType().equals(Address.TYPE_MARKETING)) {

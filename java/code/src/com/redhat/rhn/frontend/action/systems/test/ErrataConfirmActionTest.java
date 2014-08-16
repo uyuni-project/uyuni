@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -73,7 +72,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
             ErrataManager.storeErrata(e);
             errata.addElement(e.getId());
             ErrataFactoryTest.updateNeedsErrataCache(
-                    ((Package)e.getPackages().iterator().next()).getId(),
+                    e.getPackages().iterator().next().getId(),
                     server.getId(), e.getId());
             UserFactory.save(user);
         }
