@@ -91,7 +91,7 @@ def getChannelRepo():
 
     return items
 
-def getParentsChilds():
+def getParentsChilds(b_only_custom=False):
 
     initCFG('server')
     rhnSQL.initDB()
@@ -108,18 +108,23 @@ def getParentsChilds():
         row = h.fetchone_dict()
         if not row:
             break
-        if rhnChannel.isCustomChannel(row['id']):
+        if not b_only_custom or rhnChannel.isCustomChannel(row['id']):
             parent_channel = row['parent_channel']
             if not parent_channel:
                 d_parents[row['label']] = []
             else:
-                d_parents[parent_channel].append(row['label'])
+                # If the parent is not a custom channel treat the child like
+                # it's a parent for our purposes
+                if parent_channel not in d_parents:
+                    d_parents[row['label']] = []
+                else:
+                    d_parents[parent_channel].append(row['label'])
 
     return d_parents
 
 def getCustomChannels():
 
-    d_parents = getParentsChilds()
+    d_parents = getParentsChilds(True)
     l_custom_ch = []
 
     for ch in d_parents:

@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.3.5
+Version:	2.3.8
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -54,6 +54,7 @@ Requires:       spacewalk-setup
 Requires:       spacewalk-backend
 Requires:       spacewalk-backend-libs
 Requires:       spacewalk-backend-tools >= 2.2.27
+Requires:       spacewalk-reports
 Requires:       yum-utils
 
 Requires:       python-yaml
@@ -112,6 +113,17 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Aug 12 2014 Stephen Herr <sherr@redhat.com> 2.3.8-1
+- 1079263 - man page update: clone-by-date doesn't support 3rd party repos
+
+* Mon Aug 11 2014 Tomas Lestach <tlestach@redhat.com> 2.3.7-1
+- 1128680 - add spacewalk-reports dependency for spacewalk-utils
+
+* Thu Aug 07 2014 Grant Gainey 2.3.6-1
+- 1126928 - add sys-prof and kickstart-scripts to spacewalk-export
+- 1114602 - Teach spacewalk-export that files in final tar should be owned by
+  apache
+
 * Thu Jul 31 2014 Grant Gainey 2.3.5-1
 - Fix spacewalk-export to use config-files-latest not config-files
 - 1123437 - Replace .format with %% to run on python2.4

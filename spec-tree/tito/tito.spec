@@ -2,7 +2,7 @@
 
 Name: tito
 Version: 0.4.18
-Release: 1.4%{?dist}
+Release: 1.6%{?dist}
 Summary: A tool for managing rpm based git projects
 
 Group: Development/Tools
@@ -11,6 +11,8 @@ URL: http://rm-rf.ca/tito
 Source0: http://rm-rf.ca/files/tito/tito-%{version}.tar.gz
 Patch0:  0001-support-local-releasers.conf-overwrite.patch
 Patch1:  0001-fixed-building-third-party-packages.patch
+Patch2:  0001-fixed-changelog-formating.patch
+Patch3:  0002-fixed-no-source-spec-issue.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch: noarch
@@ -38,6 +40,8 @@ git.
 %setup -q -n tito-%{version}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__python} setup.py build
@@ -82,6 +86,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Aug 06 2014 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.6
+- actually it's good to apply patches as well
+
+* Wed Aug 06 2014 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.5
+- applied empty spec issue fix
+
 * Mon Dec 16 2013 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.4
 - fixed building third party packages
 

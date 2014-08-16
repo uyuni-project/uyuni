@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.13
+Version: 2.3.18
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,37 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Aug 08 2014 Jan Dobes 2.3.18-1
+- 1127750 - ISE when activation key has no description.
+
+* Wed Aug 06 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.17-1
+- remove wrong @Override annotations
+- remove unused import
+- remove unused import
+- remove unused import
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- move unnecessarily nested else clause
+- remove unnecessary casts
+- introduce system.unentile API call
+- unify and move validation of client certificate to BaseHandler
+
+* Fri Aug 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.16-1
+- make lineIterator() prototype unambiguous
+
+* Fri Aug 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.15-1
+- add Korea to the list of timezones
+
+* Fri Aug 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.14-1
+- Use text mode and set editor to read only
+- Add test for getTailOfFile()
+- Read and display only a limited number of logfile lines
+
 * Wed Jul 30 2014 Stephen Herr <sherr@redhat.com> 2.3.13-1
 - 1066432 - auto errata updates have to wait for errataCache to finish
 

@@ -71,7 +71,7 @@ public class SnapshotRollbackAction extends RhnAction {
         context.lookupAndBindServer();
         ServerSnapshot snapshot = ServerFactory.lookupSnapshotById(ssid.intValue());
 
-        Map<String, Object> params = (Map<String, Object>) makeParamMap(request);
+        Map<String, Object> params = makeParamMap(request);
         params.put(RequestContext.SID, sid);
         params.put(SNAPSHOT_ID, ssid);
 
@@ -114,9 +114,7 @@ public class SnapshotRollbackAction extends RhnAction {
                 createErrorMessage(request, NO_SUBSCRIPTION_MSG, null);
                 return RhnHelper.DEFAULT_FORWARD;
             }
-            else {
-                throw e;
-            }
+            throw e;
         }
 
         createSuccessMessage(request, GROUPS_CHANGED_MSG, null);
