@@ -1012,13 +1012,13 @@ class RepoSync(object):
 
             db_pack = rhnPackage.get_info_for_package(
                    [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
-                   channel_id)
+                   channel_id, self.channel['org_id'])
 
             to_download = True
             to_link     = True
             if db_pack['path']:
                 # if the package exists, but under a different org_id we have to download it again
-                if db_pack['org_id'] == self.channel['org_id'] and self.match_package_checksum(pack, db_pack):
+                if self.match_package_checksum(pack, db_pack):
                     # package is already on disk
                     to_download = False
                     pack.set_checksum(db_pack['checksum_type'], db_pack['checksum'])
