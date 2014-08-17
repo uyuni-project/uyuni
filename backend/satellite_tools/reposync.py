@@ -1082,11 +1082,11 @@ class RepoSync(object):
 
         md_pack.path = abspath = os.path.join(CFG.MOUNT_POINT, db_pack['path'])
         if (self.deep_verify or
-            md_pack.predef_checksum_type != db_pack['checksum_type'] or
-            md_pack.predef_checksum != db_pack['checksum']):
+            md_pack.checksum_type != db_pack['checksum_type'] or
+            md_pack.checksum != db_pack['checksum']):
 
             if (os.path.exists(abspath) and
-                getFileChecksum(md_pack.predef_checksum_type, filename=abspath) == md_pack.predef_checksum):
+                getFileChecksum(md_pack.checksum_type, filename=abspath) == md_pack.checksum):
 
                 return True
             else:
