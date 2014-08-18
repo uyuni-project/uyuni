@@ -3417,6 +3417,11 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="SLMS" is_signed="Y" label="sles11-sp2-ltss-updates-x86_64-slms13" name="SLES11-SP2-LTSS-Updates for x86_64 SLMS13" optional="Y" parent="sle11-sp2-slms-1.3-pool-x86_64" product_name="sle-slms" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-LTSS-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
+		<products>
+			<product_id name="sle-slms">3822</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2" family="STUDIOONSITE" is_signed="Y" label="sles11-sp2-ltss-updates-x86_64-studio13" name="SLES11-SP2-LTSS-Updates for x86_64 Studio13" optional="Y" parent="sle11-sp2-studioonsite-1.3-pool-x86_64" product_name="sle-studioonsite" product_version="1.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-LTSS-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="slessp2">
 		<products>
 			<product_id name="sle-studioonsite">3762</product_id>
@@ -3430,7 +3435,7 @@
 			<product_id name="SUSE_SLES">3008</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-sled-sp3" name="SLES11-SP2-SUSE-Manager-Tools i586 SLED-SP3" optional="N" parent="sled11-sp3-pool-i586" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="i586" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-sled-sp3" name="SLES11-SP2-SUSE-Manager-Tools i586 SLED-SP3" optional="Y" parent="sled11-sp3-pool-i586" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLED">3881</product_id>
 			<product_id name="SUSE_SLED">3882</product_id>
@@ -3438,7 +3443,7 @@
 			<product_id name="SUSE_SLED">3884</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-sp3" name="SLES11-SP2-SUSE-Manager-Tools i586 SP3" optional="N" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-i586-sp3" name="SLES11-SP2-SUSE-Manager-Tools i586 SP3" optional="Y" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3886</product_id>
 			<product_id name="SUSE_SLES">3887</product_id>
@@ -3456,12 +3461,12 @@
 			<product_id name="SLES-for-VMware">4004</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp2-suse-manager-tools-ia64" name="SLES11-SP2-SUSE-Manager-Tools ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp21">
+	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp2-suse-manager-tools-ia64" name="SLES11-SP2-SUSE-Manager-Tools ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3012</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp2-suse-manager-tools-ia64-sp3" name="SLES11-SP2-SUSE-Manager-Tools ia64 SP3" optional="N" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp21">
+	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp2-suse-manager-tools-ia64-sp3" name="SLES11-SP2-SUSE-Manager-Tools ia64 SP3" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3893</product_id>
 		</products>
@@ -3472,7 +3477,7 @@
 			<product_id name="SUSE_SLES">3011</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Manager Tools" family="SLES-PPC" is_signed="Y" label="sles11-sp2-suse-manager-tools-ppc64-sp3" name="SLES11-SP2-SUSE-Manager-Tools ppc64 SP3" optional="N" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="ppc64" description="SUSE Manager Tools" family="SLES-PPC" is_signed="Y" label="sles11-sp2-suse-manager-tools-ppc64-sp3" name="SLES11-SP2-SUSE-Manager-Tools ppc64 SP3" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3891</product_id>
 			<product_id name="SUSE_SLES">3892</product_id>
@@ -3484,7 +3489,7 @@
 			<product_id name="SUSE_SLES">3014</product_id>
 		</products>
 	</channel>
-	<channel arch="s390x" description="SUSE Manager Tools" family="SLES-Z" is_signed="Y" label="sles11-sp2-suse-manager-tools-s390x-sp3" name="SLES11-SP2-SUSE-Manager-Tools s390x SP3" optional="N" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-s390x/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="s390x" description="SUSE Manager Tools" family="SLES-Z" is_signed="Y" label="sles11-sp2-suse-manager-tools-s390x-sp3" name="SLES11-SP2-SUSE-Manager-Tools s390x SP3" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-s390x/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3894</product_id>
 			<product_id name="SUSE_SLES">3895</product_id>
@@ -3505,17 +3510,17 @@
 			<product_id name="SUSE_SLES_SAP">3520</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sap-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sled-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SLED-SP3" optional="N" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sled-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SLED-SP3" optional="Y" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLED">3885</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SP3" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
+	<channel arch="x86_64" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp2-suse-manager-tools-x86_64-sp3" name="SLES11-SP2-SUSE-Manager-Tools x86_64 SP3" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP2-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp2">
 		<products>
 			<product_id name="SUSE_SLES">3890</product_id>
 		</products>
@@ -3725,6 +3730,64 @@
 			<product_id name="SUSE_SLES_SAP">4160</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp3-suse-manager-tools-i586" name="SLES11-SP3-SUSE-Manager-Tools i586" optional="N" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES">3889</product_id>
+			<product_id name="SUSE_SLES">3888</product_id>
+			<product_id name="SUSE_SLES">3887</product_id>
+			<product_id name="SUSE_SLES">3886</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp3-suse-manager-tools-i586-sled-sp3" name="SLES11-SP3-SUSE-Manager-Tools i586 SLED-SP3" optional="N" parent="sled11-sp3-pool-i586" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLED">3881</product_id>
+			<product_id name="SUSE_SLED">3882</product_id>
+			<product_id name="SUSE_SLED">3883</product_id>
+			<product_id name="SUSE_SLED">3884</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp3-suse-manager-tools-i586-vmware-sp3" name="SLES11-SP3-SUSE-Manager-Tools i586 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SLES-for-VMware">4004</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="SUSE Manager Tools" family="SLES-IA" is_signed="Y" label="sles11-sp3-suse-manager-tools-ia64" name="SLES11-SP3-SUSE-Manager-Tools ia64" optional="N" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-ia64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES">3893</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="SUSE Manager Tools" family="SLES-PPC" is_signed="Y" label="sles11-sp3-suse-manager-tools-ppc64" name="SLES11-SP3-SUSE-Manager-Tools ppc64" optional="N" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-ppc64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES">3891</product_id>
+			<product_id name="SUSE_SLES">3892</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager Tools" family="SLES-Z" is_signed="Y" label="sles11-sp3-suse-manager-tools-s390x" name="SLES11-SP3-SUSE-Manager-Tools s390x" optional="N" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-s390x/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES">3894</product_id>
+			<product_id name="SUSE_SLES">3895</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="7261" is_signed="Y" label="sles11-sp3-suse-manager-tools-x86_64" name="SLES11-SP3-SUSE-Manager-Tools x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES">3890</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="AiO" is_signed="Y" label="sles11-sp3-suse-manager-tools-x86_64-sap-sp3" name="SLES11-SP3-SUSE-Manager-Tools x86_64 SAP-SP3" optional="N" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP">4160</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sles11-sp3-suse-manager-tools-x86_64-sled-sp3" name="SLES11-SP3-SUSE-Manager-Tools x86_64 SLED-SP3" optional="N" parent="sled11-sp3-pool-x86_64" product_name="SUSE_SLED" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SUSE_SLED">3885</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp3-suse-manager-tools-x86_64-vmware-sp3" name="SLES11-SP3-SUSE-Manager-Tools x86_64 VMWare-SP3" optional="N" parent="sles11-sp3-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp3">
+		<products>
+			<product_id name="SLES-for-VMware">4004</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3" family="7261" is_signed="Y" label="sles11-sp3-updates-i586" name="SLES11-SP3-Updates for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3" update_tag="slessp3">
 		<products>
 			<product_id name="SUSE_SLES">3886</product_id>
@@ -3800,12 +3863,12 @@
 			<product_id name="SUSE-Cloud">4120</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-pool-x86_64" name="SUSE-Cloud-3.0-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Pool/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
+	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-pool-x86_64" name="SUSE-Cloud-3.0-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Pool/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
 		<products>
 			<product_id name="SUSE-Cloud">4360</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-updates-x86_64" name="SUSE-Cloud-3.0-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3.0" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
+	<channel arch="x86_64" description="SUSE Cloud version 3" family="SUSE_CLOUD" is_signed="Y" label="suse-cloud-3.0-updates-x86_64" name="SUSE-Cloud-3.0-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="SUSE-Cloud" product_version="3" source_url="https://nu.novell.com/repo/$RCE/SUSE-Cloud-3.0-Updates/sle-11-x86_64/" summary="SUSE Cloud version 3" update_tag="sleclo30sp3">
 		<products>
 			<product_id name="SUSE-Cloud">4360</product_id>
 		</products>
