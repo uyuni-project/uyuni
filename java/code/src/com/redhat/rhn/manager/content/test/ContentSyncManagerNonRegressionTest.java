@@ -99,9 +99,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             // HACK: some SCC products do not have correct data
             // to be removed when SCC team fixes this
-            for (SCCProduct product : sccProducts) {
-                csm.addDirtyFixes(product);
-            }
+            csm.addDirtyFixes(sccProducts);
 
             csm.updateSUSEProducts(sccProducts);
             Collection<ListedProduct> products =
@@ -173,7 +171,17 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                     Iterator<ListedProduct> j = product.getExtensions().iterator();
 
+                    if (sp.equals("1") && arch.equals("x86_64")) {
+                        product = j.next();
+                        assertMatches("Novell Open Enterprise Server 2 11", "11", arch,
+                                product);
+                    }
+
                     if (sp.equals("2") && arch.equals("x86_64")) {
+                        product = j.next();
+                        assertMatches("Novell Open Enterprise Server 2 11.1", "11.1",
+                                arch, product);
+
                         product = j.next();
                         assertMatches("SUSE Cloud 1.0", "1.0", arch, product);
 
@@ -183,6 +191,10 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     }
 
                     if (sp.equals("3") && arch.equals("x86_64")) {
+                        product = j.next();
+                        assertMatches("Novell Open Enterprise Server 2 11.2", "11.2",
+                                arch, product);
+
                         product = j.next();
                         assertMatches("SUSE Cloud 2.0", "2.0", arch, product);
 
