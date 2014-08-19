@@ -13,8 +13,9 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-import sys
 import getpass
+import re
+import sys
 
 
 def cli_msg(message, stderr=True):
@@ -24,14 +25,31 @@ def cli_msg(message, stderr=True):
     print >> (stderr and sys.stderr or sys.stdout), message + "\n"
 
 
-def cli_ask(msg, password=False):
+def cli_ask(msg, password=False, validator=None):
     """
     Ask input from the console. Hide the echo, in case of password or
     sensitive information.
+
+    :param msg: message shown to the user
+    :param password: boolean value, when True hides user input while typing
+    :param validator: can be list or tuple containing the accepted values or
+                      a custom function to use to validate user's input
     """
 
     msg += ": "
     value = None
-    while not value:
+    while True:
         value = (password and getpass.getpass(msg) or raw_input(msg))
+        if not validator and value:
+            break
+        elif validator:
+            if hasattr(validator, '__call__'):
+                if validator(value):
+                    break
+            elif type(validator) in (tuple, list):
+                if value in validator:
+                    break
+            elif re.search(validator, value):
+                break
+
     return value
