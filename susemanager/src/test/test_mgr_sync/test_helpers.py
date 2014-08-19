@@ -16,11 +16,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import mock
+import os
 import re
 import unittest2 as unittest
+import sys
 
 from spacewalk.susemanager.mgr_sync.helpers import cli_ask
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from helper import FakeStdin
 
 def fake_user_input(*args):
     for ret_value in args:
@@ -33,8 +37,7 @@ class HelpersTest(unittest.TestCase):
         message = "how are you"
         response = "I'm fine"
 
-        with mock.patch('__builtin__.raw_input') as mocked_input:
-            mocked_input.side_effect = fake_user_input(None, response)
+        with FakeStdin(None, response) as mocked_input:
             value = cli_ask(message)
 
         self.assertEqual(response, value)
@@ -45,8 +48,7 @@ class HelpersTest(unittest.TestCase):
         response = "happy"
         validator = ("happy", "blue")
 
-        with mock.patch('__builtin__.raw_input') as mocked_input:
-            mocked_input.side_effect = fake_user_input("angry", response)
+        with FakeStdin("angry", response) as mocked_input:
             value = cli_ask(message, validator=validator)
 
         self.assertEqual(response, value)
@@ -57,8 +59,7 @@ class HelpersTest(unittest.TestCase):
         response = "happy"
         validator = ["happy", "blue"]
 
-        with mock.patch('__builtin__.raw_input') as mocked_input:
-            mocked_input.side_effect = fake_user_input("angry", response)
+        with FakeStdin("angry", response) as mocked_input:
             value = cli_ask(message, validator=validator)
 
         self.assertEqual(response, value)
@@ -69,8 +70,7 @@ class HelpersTest(unittest.TestCase):
         response = "18"
         validator = "\d+"
 
-        with mock.patch('__builtin__.raw_input') as mocked_input:
-            mocked_input.side_effect = fake_user_input("young", response)
+        with FakeStdin("young", response) as mocked_input:
             value = cli_ask(message, validator=validator)
 
         self.assertEqual(response, value)
@@ -81,8 +81,7 @@ class HelpersTest(unittest.TestCase):
         response = "10"
         validator = lambda i: re.search("\d+", i) and int(i) in range(1, 19)
 
-        with mock.patch('__builtin__.raw_input') as mocked_input:
-            mocked_input.side_effect = fake_user_input("hi", "0", "40", "10")
+        with FakeStdin("young", "0", "40", "10") as mocked_input:
             value = cli_ask(message, validator=validator)
 
         self.assertEqual(response, value)
