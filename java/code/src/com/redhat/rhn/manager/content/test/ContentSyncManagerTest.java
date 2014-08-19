@@ -625,6 +625,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setFamily(availableChannelFamily.getLabel());
         availableChannel.setLabel(availableDBChannel.getLabel());
         availableChannel.setParent("BASE");
+        availableChannel.setArch("x86_64");
         final MgrSyncProduct availableProduct =
                 new MgrSyncProduct(availableDBProduct.getName(),
                         availableDBProduct.getProductId(), availableDBProduct.getVersion());
@@ -648,6 +649,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         unavailableChannel.setFamily(unavailableChannelFamily.getLabel());
         unavailableChannel.setLabel(unavailableDBChannel.getLabel());
         unavailableChannel.setParent(TestUtils.randomString());
+        unavailableChannel.setArch("x86_64");
         final MgrSyncProduct unavailableProduct =
                 new MgrSyncProduct(unavailableDBProduct.getName(),
                         unavailableDBProduct.getProductId(),
@@ -660,7 +662,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             { { add(availableChannel); add(unavailableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<ListedProduct> products = csm.listProducts(allChannels);
+        Collection<ListedProduct> products =
+                csm.listProducts(csm.getAvailableChannels(allChannels));
 
         boolean found = false;
         for (ListedProduct product : products) {
