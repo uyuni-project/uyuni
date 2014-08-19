@@ -14,4 +14,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="created" column="created" type="timestamp" insert="false" update="false" />
     <property name="modified" column="modified" type="timestamp" insert="false" update="false" />
   </class>
+
+  <query name="SUSEUpgradePath.clear">
+    <![CDATA[delete from com.redhat.rhn.domain.product.SUSEUpgradePath]]>
+  </query>
 </hibernate-mapping>
