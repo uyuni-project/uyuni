@@ -118,17 +118,17 @@ class MgrSync(object):
         if filter:
             filter = filter.lower()
 
-        print("Available Products:\n")
-        print("\nStatus:")
-        print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available\n")
-
         data = self._execute_xmlrpc_method("listProducts", self.auth.token)
         if not data:
             print("No products found.")
             return
 
         products = parse_products(data)
+
+        print("Available Products:\n")
+        print("\nStatus:")
+        print("  - I - channel is installed")
+        print("  - A - channel is not installed, but is available\n")
 
         for product in products:
             if not filter or filter in product.friendly_name.lower():
@@ -193,11 +193,11 @@ class MgrSync(object):
         self.quiet = not options.verbose
         self.auth.persist = options.saveconfig
         if vars(options).has_key('list_target'):
-            if options.list_target == 'channel':
+            if 'channel' in options.list_target:
                 self._list_channels(expand=options.expand,
                                     filter=options.filter,
                                     no_optionals=options.no_optionals)
-            elif options.list_target == 'product':
+            elif 'product' in options.list_target:
                 self._list_products(filter=options.filter)
             else:
                 sys.stderr.write('List target not recognized\n')
