@@ -555,6 +555,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 
 %if 0%{?suse_version}
+install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs
 %else
 install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
@@ -867,6 +868,7 @@ fi
 %{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
+%attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %dir %{appdir}/rhn/WEB-INF
