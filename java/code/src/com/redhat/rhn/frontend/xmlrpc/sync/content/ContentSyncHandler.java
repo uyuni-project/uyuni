@@ -15,9 +15,15 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -220,6 +226,29 @@ public class ContentSyncHandler extends BaseHandler {
         ContentSyncManager csm = new ContentSyncManager();
         csm.addChannel(channelLabel, csm.getRepositories());
 
+        return BaseHandler.VALID;
+    }
+
+    /**
+     * Migrate this SUSE Manager server to work with SCC.
+     *
+     * @param sessionKey user session token
+     * @return Integer
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Migrate this SUSE Manager server to work with SCC.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer performMigration(String sessionKey) throws ContentSyncException {
+        BaseHandler.getLoggedInUser(sessionKey);
+        SUSEProductFactory.clearAllProducts();
+        try {
+            FileUtils.touch(new File(ContentSyncManager.SCC_MIGRATED));
+        }
+        catch (IOException e) {
+            throw new ContentSyncException(e);
+        }
         return BaseHandler.VALID;
     }
 }
