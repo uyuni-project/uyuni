@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -229,6 +230,17 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SUSEProduct> findAllSUSEProducts() {
         return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+
+    /**
+     * Resets all product data.
+     */
+    public static void clearAllProducts() {
+        Session session = getSession();
+        session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
+        session.getNamedQuery("SUSEProduct.clear").executeUpdate();
+        session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
     }
 
     /**
