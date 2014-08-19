@@ -110,15 +110,18 @@ class MgrSync(object):
         self._list_channels(expand=False, filter=None, no_optionals=True,
                             show_interactive_numbers=True)
 
-    def _list_products(self):
+    def _list_products(self, filter):
         """
         List products on the channel.
         """
 
+        if filter:
+            filter = filter.lower()
+
         print("Available Products:\n")
         print("\nStatus:")
         print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available")
+        print("  - A - channel is not installed, but is available\n")
 
         data = self._execute_xmlrpc_method("listProducts", self.auth.token)
         if not data:
@@ -128,7 +131,8 @@ class MgrSync(object):
         products = parse_products(data)
 
         for product in products:
-            product.to_stdout()
+            if not filter or filter in product.friendly_name.lower():
+                product.to_stdout()
 
     def _refresh(self):
         """
@@ -194,7 +198,7 @@ class MgrSync(object):
                                     filter=options.filter,
                                     no_optionals=options.no_optionals)
             elif options.list_target == 'product':
-                self._list_products()
+                self._list_products(filter=options.filter)
             else:
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
