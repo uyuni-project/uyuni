@@ -45,6 +45,35 @@ public class SCCProduct {
     private List<SCCRepository> repositories;
 
     /**
+     * Default constructor.
+     */
+    public SCCProduct() {
+    }
+
+    /**
+     * Standard constructor.
+     *
+     * @param idIn the id
+     * @param identifierIn the identifier
+     * @param versionIn the version
+     * @param releaseTypeIn the release type
+     * @param archIn the arch
+     * @param friendlyNameIn the friendly name
+     * @param productClassIn the product class
+     */
+    public SCCProduct(int idIn, String identifierIn, String versionIn,
+            String releaseTypeIn, String archIn, String friendlyNameIn,
+            String productClassIn) {
+        id = idIn;
+        identifier = identifierIn;
+        version = versionIn;
+        releaseType = releaseTypeIn;
+        arch = archIn;
+        friendlyName = friendlyNameIn;
+        productClass = productClassIn;
+    }
+
+    /**
      * @return the id
      */
     public int getId() {

@@ -238,10 +238,6 @@ public class ContentSyncManager {
                 for (SCCProduct product : products) {
                     String missing = verifySCCProduct(product);
 
-                    // HACK: some SCC products do not have correct data
-                    // to be removed when SCC team fixes this
-                    addDirtyFixes(product);
-
                     if (StringUtils.isBlank(missing)) {
                         productList.add(product);
                     }
@@ -260,48 +256,63 @@ public class ContentSyncManager {
         if (log.isDebugEnabled()) {
             log.debug("Found " + productList.size() + " available products.");
         }
+
+        // HACK: some SCC products do not have correct data
+        // to be removed when SCC team fixes this
+        addDirtyFixes(productList);
+
         return productList;
     }
 
     /**
      * HACK: fixes data in SCC products that do not have it correct
      * To be removed when SCC team fixes this
-     * @param product the product in
+     * @param products the products
      */
     @SuppressWarnings("unchecked")
-    public void addDirtyFixes(SCCProduct product) {
-        // make version numbering consistent
-        String version = product.getVersion();
-        if (version != null) {
-            Matcher spMatcher =
-                    Pattern.compile(".*SP([0-9]).*").matcher(product.getFriendlyName());
-            Matcher versionMatcher =
-                    Pattern.compile("([0-9]+)").matcher(product.getVersion());
-            if (spMatcher.matches() && versionMatcher.matches()) {
-                product.setVersion(versionMatcher.group(1) + "." + spMatcher.group(1));
+    public void addDirtyFixes(Collection<SCCProduct> products) {
+        for (SCCProduct product : products) {
+            // make version numbering consistent
+            String version = product.getVersion();
+            if (version != null) {
+                Matcher spMatcher =
+                        Pattern.compile(".*SP([0-9]).*").matcher(product.getFriendlyName());
+                Matcher versionMatcher =
+                        Pattern.compile("([0-9]+)").matcher(product.getVersion());
+                if (spMatcher.matches() && versionMatcher.matches()) {
+                    product.setVersion(versionMatcher.group(1) + "." + spMatcher.group(1));
+                }
             }
+
+            // make naming consistent: strip arch or VMWARE suffix
+            String friendlyName = product.getFriendlyName();
+            List<PackageArch> archs =
+                    HibernateFactory.getSession().createCriteria(PackageArch.class).list();
+            for (PackageArch arch:archs) {
+                if (friendlyName.endsWith(" " + arch.getLabel())) {
+                    friendlyName = friendlyName.substring(0, friendlyName.length() -
+                        arch.getLabel().length() - 1);
+                }
+            }
+            if (friendlyName.endsWith(" VMWARE")) {
+                friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
+            }
+
+            // make naming consistent: add VMWare suffix where appropriate
+            String productClass = product.getProductClass();
+            if (productClass != null && productClass.toLowerCase().contains("vmware")) {
+                friendlyName += " VMWare";
+            }
+            product.setFriendlyName(friendlyName);
         }
 
-        // make naming consistent: strip arch or VMWARE suffix
-        String friendlyName = product.getFriendlyName();
-        List<PackageArch> archs =
-                HibernateFactory.getSession().createCriteria(PackageArch.class).list();
-        for (PackageArch arch:archs) {
-            if (friendlyName.endsWith(" " + arch.getLabel())) {
-                friendlyName = friendlyName.substring(0, friendlyName.length() -
-                    arch.getLabel().length() - 1);
-            }
-        }
-        if (friendlyName.endsWith(" VMWARE")) {
-            friendlyName = friendlyName.substring(0, friendlyName.length() - 7);
-        }
-
-        // make naming consistent: add VMWare suffix where appropriate
-        String productClass = product.getProductClass();
-        if (productClass != null && productClass.toLowerCase().contains("vmware")) {
-            friendlyName += " VMWare";
-        }
-        product.setFriendlyName(friendlyName);
+        // add OES
+        products.add(new SCCProduct(1232, "Open_Enterprise_Server", "11", null, null,
+                "Novell Open Enterprise Server 2 11", "OES2"));
+        products.add(new SCCProduct(1241, "Open_Enterprise_Server", "11.1", null, null,
+                "Novell Open Enterprise Server 2 11.1", "OES2"));
+        products.add(new SCCProduct(1242, "Open_Enterprise_Server", "11.2", null, null,
+                "Novell Open Enterprise Server 2 11.2", "OES2"));
     }
 
     /**
@@ -427,8 +438,9 @@ public class ContentSyncManager {
                 Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
-                    if (extensionVersion.startsWith("11.") &&
-                            !extensionVersion.equals(productVersion)) {
+                    if (extension.getFriendlyName().matches("SUSE.*") &&
+                        extensionVersion.startsWith("11.") &&
+                        !extensionVersion.equals(productVersion)) {
                         wrongSP.add(extension);
                     }
                 }
@@ -436,30 +448,35 @@ public class ContentSyncManager {
             }
         }
 
-        // remove Cloud 1 from SP1, as it is SP2 only
+        // remove Cloud 1, SLMS 1.3, OES 11.1 from SP1, as they are SP2 only
         for (ListedProduct product : bases) {
             if (product.getVersion().equals("11.1")) {
-                Collection<ListedProduct> cloud1 = new LinkedList<ListedProduct>();
+                Collection<ListedProduct> sp2ProductsInSp1 =
+                        new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
-                    if (extension.getFriendlyName().contains("SUSE Cloud 1.0")) {
-                        cloud1.add(extension);
+                    String friendlyName = extension.getFriendlyName();
+                    if (friendlyName.equals("SUSE Cloud 1.0") ||
+                        friendlyName.equals("SUSE Lifecycle Management Server 1.3") ||
+                        friendlyName.equals("Novell Open Enterprise Server 2 11.1")) {
+                        sp2ProductsInSp1.add(extension);
                     }
                 }
-                product.getExtensions().removeAll(cloud1);
+                product.getExtensions().removeAll(sp2ProductsInSp1);
             }
         }
 
-        // remove SLMS 1.3 from SP1, as it is SP2 only
+        // remove OES 11 from SP2, as it is SP1 only
         for (ListedProduct product : bases) {
-            if (product.getVersion().equals("11.1")) {
-                Collection<ListedProduct> cloud1 = new LinkedList<ListedProduct>();
+            if (product.getVersion().equals("11.2")) {
+                Collection<ListedProduct> sp1ProductsInSp2 =
+                        new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
-                    if (extension.getFriendlyName().contains(
-                            "SUSE Lifecycle Management Server 1.3")) {
-                        cloud1.add(extension);
+                    String friendlyName = extension.getFriendlyName();
+                    if (friendlyName.equals("Novell Open Enterprise Server 2 11")) {
+                        sp1ProductsInSp2.add(extension);
                     }
                 }
-                product.getExtensions().removeAll(cloud1);
+                product.getExtensions().removeAll(sp1ProductsInSp2);
             }
         }
 
