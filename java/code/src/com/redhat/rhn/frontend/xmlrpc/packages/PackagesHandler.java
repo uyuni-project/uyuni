@@ -283,6 +283,10 @@ public class PackagesHandler extends BaseHandler {
      *           #item("conflicts")
      *           #item("obsoletes")
      *           #item("provides")
+     *           #item("recommends")
+     *           #item("suggests")
+     *           #item("supplements")
+     *           #item("enhances")
      *         #options_end()
      *       #prop("string", "dependency_modifier")
      *     #struct_end()
@@ -328,7 +332,7 @@ public class PackagesHandler extends BaseHandler {
                 String depmod = " ";
                 if (version != null) {
                     depmod = StringUtils.defaultString(
-                                            getDependencyModifier(sense, version));
+                            PackageManager.getDependencyModifier(sense, version));
                 }
                 row.put("dependency_modifier", depmod);
                 returnList.add(row);
@@ -401,47 +405,20 @@ public class PackagesHandler extends BaseHandler {
         else if (type.equals("conflicts")) {
             return PackageManager.packageConflicts(pkg.getId());
         }
+        else if (type.equals("recommends")) {
+            return PackageManager.packageRecommends(pkg.getId());
+        }
+        else if (type.equals("suggests")) {
+            return PackageManager.packageSuggests(pkg.getId());
+        }
+        else if (type.equals("supplements")) {
+            return PackageManager.packageSupplements(pkg.getId());
+        }
+        else if (type.equals("enhances")) {
+            return PackageManager.packageEnhances(pkg.getId());
+        }
         return null;
     }
-
-    /**
-     * Private helper method to figure out the dependency modifier. I honestly have no clue
-     * why the bitwise ANDs work or what the sense field in the db really means. This was
-     * pretty much a line for line port of the perl code.
-     * @param sense A number whose number can tell us what kind of modifier is needed
-     * @param version The version of the dependency we're investigating
-     * @return Returns a string in the form of something like '>= 4.1-3'
-     */
-    private String getDependencyModifier(Long sense, String version) {
-        StringBuilder depmod = new StringBuilder();
-
-        if (sense != null) { //how ironic ;)
-            int senseIntVal = sense.intValue();
-            //Bitwise AND with 4 --> '>'
-            if ((senseIntVal & 4) > 0) {
-              depmod.append(">");
-            }
-            //Bitwise AND with 2 --> '<'
-            else if ((senseIntVal & 2) > 0) {
-                depmod.append("<");
-            }
-            //Bitwise AND with 8 tells us whether or not this should have an '=' on it
-            if ((senseIntVal & 8) > 0) {
-                depmod.append("=");
-            }
-            //Add the version so we get something like '<= 4.0-1'
-            depmod.append(" ");
-            depmod.append(version);
-        }
-        else {
-            //Robin thinks that this represents a "anything but this version" scenario.
-            depmod.append("-");
-            depmod.append(version);
-        }
-
-        return depmod.toString();
-    }
-
 
     /**
      * @param user The logged in user
