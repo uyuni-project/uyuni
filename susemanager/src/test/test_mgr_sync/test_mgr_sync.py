@@ -45,6 +45,16 @@ class MgrSyncTest(unittest.TestCase):
 
         stubbed_xmlrpm_call.assert_called_once_with("listChannels",
                                                     self.fake_auth_token)
+    def test_list_channels(self):
+        options = get_options("list channels".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        self.assertEqual(output, ["No channels found."])
+
+        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
+                                                    self.fake_auth_token)
 
     def test_refresh(self):
         """ Test the refresh action """
@@ -181,6 +191,27 @@ Status:
 
         self.assertEqual(['rhel-i386-as-4', 'sle10-sdk-sp4-pool-x86_64'],
                          available_channels)
+
+    def test_list_emtpy_product(self):
+        options = get_options("list product".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        self.assertEqual(output, ["No products found."])
+
+        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
+                                                    self.fake_auth_token)
+    def test_list_products(self):
+        options = get_options("list products".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        self.assertEqual(output, ["No products found."])
+
+        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
+                                                    self.fake_auth_token)
 
     def test_list_products(self):
         """ Test listing products """
