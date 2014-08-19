@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.content.test;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
@@ -87,6 +88,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     ChannelFamilyFactory.save(cf);
                 }
             }
+
+            SUSEProductFactory.clearAllProducts();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
