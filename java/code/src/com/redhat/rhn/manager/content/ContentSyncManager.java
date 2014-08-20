@@ -448,7 +448,7 @@ public class ContentSyncManager {
             }
         }
 
-        // remove Cloud 1, SLMS 1.3, OES 11.1 from SP1, as they are SP2 only
+        // remove SP2 only extensions from SP1 base products
         for (ListedProduct product : bases) {
             if (product.getVersion().equals("11.1")) {
                 Collection<ListedProduct> sp2ProductsInSp1 =
@@ -457,6 +457,7 @@ public class ContentSyncManager {
                     String friendlyName = extension.getFriendlyName();
                     if (friendlyName.equals("SUSE Cloud 1.0") ||
                         friendlyName.equals("SUSE Lifecycle Management Server 1.3") ||
+                        friendlyName.equals("SUSE WebYaST 1.3") ||
                         friendlyName.equals("Novell Open Enterprise Server 2 11.1")) {
                         sp2ProductsInSp1.add(extension);
                     }
@@ -465,14 +466,16 @@ public class ContentSyncManager {
             }
         }
 
-        // remove OES 11 from SP2, as it is SP1 only
+        // remove SP2 only extensions from SP1 base products
         for (ListedProduct product : bases) {
             if (product.getVersion().equals("11.2")) {
                 Collection<ListedProduct> sp1ProductsInSp2 =
                         new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
                     String friendlyName = extension.getFriendlyName();
-                    if (friendlyName.equals("Novell Open Enterprise Server 2 11")) {
+                    if (friendlyName.equals("Novell Open Enterprise Server 2 11") ||
+                        friendlyName.equals(
+                                "SUSE Linux Enterprise Subscription Management Tool 11")) {
                         sp1ProductsInSp2.add(extension);
                     }
                 }

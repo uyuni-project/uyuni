@@ -139,8 +139,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP" + sp,
                         "11." + sp, "x86_64", product);
 
-                // TODO: SMT data on SCC has disappeared completely due to a bug
-                // assertions should be added here
+                if (sp.equals("3")) {
+                    product = j.next();
+                    assertMatches(
+                            "SUSE Linux Enterprise Subscription Management Tool 11 SP" + sp,
+                            "11." + sp, "x86_64", product);
+                }
 
                 assertFalse(j.hasNext());
             }
@@ -223,11 +227,27 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP"
                             + sp, "11." + sp, arch, product);
 
-                    // TODO: SMT data on SCC has disappeared completely due to a bug
-                    // assertions should be added here
+                    if ((arch.equals("i586") || arch.equals("x86_64") ||
+                            arch.equals("s390x"))) {
 
-                    // TODO: WebYaST 1.3 data on SCC is missing
-                    // assertions should be added here
+                        if (sp.equals("1")) {
+                            product = j.next();
+                            assertMatches(
+                                "SUSE Linux Enterprise Subscription Management Tool 11",
+                                "11", arch, product);
+                        }
+                        if (sp.equals("2") || sp.equals("3")) {
+                            product = j.next();
+                            assertMatches(
+                                "SUSE Linux Enterprise Subscription Management Tool 11" +
+                                " SP" + sp, "11." + sp, arch, product);
+                        }
+                    }
+
+                    if (sp.equals("2")) {
+                        product = j.next();
+                        assertMatches("SUSE WebYaST 1.3", "1.3", arch, product);
+                    }
 
                     // note: mono extensions were dropped
 
@@ -248,11 +268,23 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP"
                             + sp, "11." + sp, arch, product);
 
-                    // TODO: SMT data on SCC has disappeared completely due to a bug
-                    // assertions should be added here
+                    if (sp.equals("1")) {
+                        product = j.next();
+                        assertMatches(
+                                "SUSE Linux Enterprise Subscription Management Tool 11",
+                                "11", arch, product);
+                    }
+                    if (sp.equals("2") || sp.equals("3")) {
+                        product = j.next();
+                        assertMatches(
+                                "SUSE Linux Enterprise Subscription Management Tool 11" +
+                                " SP" + sp, "11." + sp, arch, product);
+                    }
 
-                    // TODO: WebYaST 1.3 data on SCC is missing
-                    // assertions should be added here
+                    if (sp.equals("3")) {
+                        product = j.next();
+                        assertMatches("SUSE WebYaST 1.3", "1.3", arch, product);
+                    }
 
                     assertFalse(j.hasNext());
                 }
