@@ -95,7 +95,7 @@ public class SCCRequestFactory {
 
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
-        connection.setRequestProperty("SMS", uuid != null ? uuid : "undefined");
+        connection.setRequestProperty("SMT", uuid != null ? uuid : "undefined");
 
         return connection;
     }
