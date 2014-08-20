@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 20 15:21:31 CEST 2014 - mc@suse.de
+
+- version 1.7.54.32-1
+- pre-require tomcat package for spacewalk-java-config
+- fix logrotate for /var/log/rhn/rhn_web_api.log (bnc#884081)
+
+-------------------------------------------------------------------
 Wed Jul  2 15:24:34 CEST 2014 - mantel@suse.de
 
 - fix logrotate for /var/log/rhn/rhn_web_api.log (bnc#884081)
