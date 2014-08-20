@@ -108,6 +108,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct product = null;
 
+            // RES
             for (int version = 4; version <= 6; version++) {
                 for (String arch : new String[] {"i386", "x86_64"}) {
                     product = i.next();
@@ -115,6 +116,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
 
+            // SLED 11
             for (String sp : new String[] {"2", "3"}) {
                 for (String arch : new String[] {"i586", "x86_64"}) {
                     product = i.next();
@@ -129,6 +131,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
 
+            // SLES 11 for SAP
             for (String sp : new String[] {"1", "2", "3"}) {
                 product = i.next();
                 assertMatches("SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP" + sp,
@@ -149,6 +152,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 assertFalse(j.hasNext());
             }
 
+            // SLES 10
             for (String sp : new String[] {"3", "4"}) {
                 for (String arch : new String[] {"i586", "ia64", "ppc",
                         "s390x", "x86_64"}) {
@@ -164,6 +168,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
 
+            // SLES 11
             for (String sp : new String[] {"1", "2", "3"}) {
                 for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x",
                         "x86_64"}) {
@@ -250,10 +255,10 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     }
 
                     // note: mono extensions were dropped
-
                     assertFalse(j.hasNext());
                 }
 
+                // SLES 11 for VMWare
                 for (String arch : new String[] {"i586", "x86_64"}) {
                     product = i.next();
                     assertMatches("SUSE Linux Enterprise Server 11 SP" + sp + " VMWare",
@@ -290,16 +295,17 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
 
+            // SUSE Manager
             for (String version : new String[]{"1.2", "1.7", "2.1"}) {
                 product = i.next();
                 assertMatches("SUSE Manager Proxy " + version, version, "x86_64", product);
             }
-
             for (String arch : new String[]{"s390x", "x86_64"}) {
                 product = i.next();
                 assertMatches("SUSE Manager Server 2.1", "2.1", arch, product);
             }
 
+            // SUSE Studio
             product = i.next();
             assertMatches("SUSE Studio OnSite 1.3", "1.3", "x86_64", product);
 
