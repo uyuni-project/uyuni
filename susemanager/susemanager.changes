@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 20 14:52:25 CEST 2014 - mc@suse.de
+
+- version 1.7.29-1
+- add openssl package to the bootstrap repo
+- Created mgr-delete-patch script [bnc#873227]
+
+-------------------------------------------------------------------
 Wed Apr 02 13:26:07 CEST 2014 - mc@suse.de
 
 - version 1.7.28-1
