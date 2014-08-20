@@ -25,12 +25,12 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
-
 /**
  * @xmlrpc.namespace sync.content
  * @xmlrpc.doc Provides the namespace for the Content synchronization methods.
  */
 public class ContentSyncHandler extends BaseHandler {
+
     /**
      * List all products that are accessible to the organization.
      *
@@ -49,7 +49,6 @@ public class ContentSyncHandler extends BaseHandler {
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listProducts(csm.getAvailableChannels(csm.readChannels())).toArray();
     }
-
 
     /**
      * List all channels that are accessible to the organization.
@@ -70,7 +69,6 @@ public class ContentSyncHandler extends BaseHandler {
         return csm.listChannels(csm.getRepositories()).toArray();
     }
 
-
     /**
      * Synchronize channels between the Customer Center and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
@@ -87,10 +85,8 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannels(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         new ContentSyncManager().updateChannels();
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Synchronize channel families between the Customer Center
@@ -111,10 +107,8 @@ public class ContentSyncHandler extends BaseHandler {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannelFamilies(csm.readChannelFamilies());
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Synchronize SUSE products between the Customer Center and the SUSE Manager database.
@@ -133,10 +127,8 @@ public class ContentSyncHandler extends BaseHandler {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(csm.getProducts());
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Synchronize SUSE product channels between the Customer Center
@@ -157,10 +149,8 @@ public class ContentSyncHandler extends BaseHandler {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Synchronize upgrade paths between the Customer Center
@@ -179,10 +169,8 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         new ContentSyncManager().updateUpgradePaths();
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Synchronize subscriptions between the Customer Center
@@ -202,10 +190,8 @@ public class ContentSyncHandler extends BaseHandler {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSubscriptions(csm.getSubscriptions());
-
         return BaseHandler.VALID;
     }
-
 
     /**
      * Add a new channel to the SUSE Manager database.
@@ -225,7 +211,6 @@ public class ContentSyncHandler extends BaseHandler {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.addChannel(channelLabel, csm.getRepositories());
-
         return BaseHandler.VALID;
     }
 
