@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.content.test;
 
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -65,8 +66,11 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("RES-HA"); add("SLE-HAE-IA"); add("WEBYAST");
         add("jeos"); add("SLM"); add("Moblin-2-Samsung");
         add("nVidia"); add("STUDIOONSITERUNNER"); add("SLE-HAE-Z");
-        add("SLE-HAE-X86"); add("SLES-IA");
+        add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
     } };
+
+    // channel family members
+    private static final long MANY_MEMBERS = 20000L;
 
     /**
      * Tests listProducts() against known correct output (originally from mgr-ncc-sync).
@@ -76,20 +80,15 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
         try {
+            // clear existing products
+            SUSEProductFactory.clearAllProducts();
+
+            // ensure all needed channel families have enough entitlements, so that channels
+            // are available later
+            ensureChannelFamiliesAreEntitled();
+
             List<MgrSyncChannel> allChannels =
                     new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
-
-            for (String label : ENTITLED_LABELS) {
-                ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
-                if (cf == null) {
-                    cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                        20000L, 0L, true, TestUtils.randomString());
-                    cf.setName(label);
-                    ChannelFamilyFactory.save(cf);
-                }
-            }
-
-            SUSEProductFactory.clearAllProducts();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
@@ -199,16 +198,27 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                                 product);
                     }
 
-                    if (sp.equals("3") && arch.equals("x86_64")) {
-                        product = j.next();
-                        assertMatches("Novell Open Enterprise Server 2 11.2", "11.2",
-                                arch, product);
+                    if (sp.equals("3")) {
+                        if (arch.equals("x86_64") || arch.equals("i586") ||
+                                arch.equals("s390x")) {
+                            product = j.next();
+                            assertMatches(
+                                "Geo Clustering for SUSE Linux Enterprise " +
+                                "High Availability Extension 11 SP3", "11.3", arch,
+                                product);
+                        }
 
-                        product = j.next();
-                        assertMatches("SUSE Cloud 2.0", "2.0", arch, product);
+                        if (arch.equals("x86_64")) {
+                            product = j.next();
+                            assertMatches("Novell Open Enterprise Server 2 11.2", "11.2",
+                                    arch, product);
 
-                        product = j.next();
-                        assertMatches("SUSE Cloud 3", "3", arch, product);
+                            product = j.next();
+                            assertMatches("SUSE Cloud 2.0", "2.0", arch, product);
+
+                            product = j.next();
+                            assertMatches("SUSE Cloud 3", "3", arch, product);
+                        }
                     }
 
                     product = j.next();
@@ -265,6 +275,14 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                             "11." + sp, arch, product);
 
                     Iterator<ListedProduct> j = product.getExtensions().iterator();
+
+                    if (sp.equals("3")) {
+                        product = j.next();
+                        assertMatches("Geo Clustering for SUSE Linux Enterprise "
+                                + "High Availability Extension 11 SP3", "11.3", arch,
+                                product);
+                    }
+
                     product = j.next();
                     assertMatches("SUSE Linux Enterprise High Availability Extension 11 SP"
                             + sp, "11." + sp, arch, product);
@@ -314,6 +332,29 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+    }
+
+    /**
+     * Ensures that channel families in ENTITLED_LABELS exist and have a high
+     * value of max members. This is needed for channels under test to be
+     * available
+     * @throws Exception if anything goes wrong
+     */
+    public void ensureChannelFamiliesAreEntitled() throws Exception {
+        for (String label : ENTITLED_LABELS) {
+            ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
+            if (cf == null) {
+                cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                    MANY_MEMBERS, 0L, true, TestUtils.randomString());
+                cf.setName(label);
+                ChannelFamilyFactory.save(cf);
+            }
+            else {
+                for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
+                    pcf.setMaxMembers(MANY_MEMBERS);
+                }
+            }
         }
     }
 
