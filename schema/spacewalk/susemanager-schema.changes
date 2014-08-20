@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Aug 20 15:16:38 CEST 2014 - mc@suse.de
+
+- version 1.7.56.24-1
+- Allow evr_t to be compared with NULL in Oracle (bnc#881111)
+- add SLE12 GPG Package Key
+
+-------------------------------------------------------------------
 Wed Apr 02 17:04:18 CEST 2014 - mc@suse.de
 
 - version 1.7.56.23-1
