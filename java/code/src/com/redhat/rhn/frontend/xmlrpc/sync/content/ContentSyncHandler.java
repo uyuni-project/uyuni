@@ -26,8 +26,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * API handler offering content synchronization methods.
+ *
  * @xmlrpc.namespace sync.content
- * @xmlrpc.doc Provides the namespace for the Content synchronization methods.
+ * @xmlrpc.doc Provides the namespace for the content synchronization methods.
  */
 public class ContentSyncHandler extends BaseHandler {
 
