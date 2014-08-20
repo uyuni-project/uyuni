@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Wed Aug 20 15:17:44 CEST 2014 - mc@suse.de
+
+- version 1.7.38.33-1
+- fix logging
+- find more wrong keyids and remove existing associations before
+  updating
+- recognize signature used by Oracle and newer SLES versions
+  (bnc#874634)
+- Raise error if channel cannot be subscribed (bnc#875958)
+
+-------------------------------------------------------------------
 Wed Apr 02 13:33:26 CEST 2014 - mc@suse.de
 
 - version 1.7.38.32-1
