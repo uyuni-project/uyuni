@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Aug 20 14:53:21 CEST 2014 - mc@suse.de
+
+- version 1.7.1.7-1
+- Adding requirement for patched Koan to fix bnc#880936
+- Fix provisioning of a registered server on SLES with static
+  IP address (bnc#880936)
+
+-------------------------------------------------------------------
 Wed Aug 21 15:52:11 CEST 2013 - mc@suse.de
 
 - version 1.7.1.6-1
