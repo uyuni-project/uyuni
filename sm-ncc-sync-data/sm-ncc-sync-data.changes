@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Aug 20 15:15:03 CEST 2014 - mc@suse.de
+
+- version 1.7.19-1
+- Provide SLES11-SP3-SUSE-Manager-Tools channels (bnc#890660)
+- Provide LTSS channel for SLMS
+- install new SLE12 GPG key
+- add SLE12 GPG Package Key
+- update SLES11 GPG key
+
+-------------------------------------------------------------------
 Wed Apr 30 13:30:51 CEST 2014 - mc@suse.de
 
 - version 1.7.18-1
