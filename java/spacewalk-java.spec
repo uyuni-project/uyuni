@@ -199,7 +199,7 @@ This package contains the code for the Java version of the Spacewalk Web Site.
 
 %package config
 %if 0%{?suse_version}
-Requires(Pre): tomcat6
+Requires(pre): tomcat6
 %endif
 Summary: Configuration files for Spacewalk Java
 Group: Applications/Internet
