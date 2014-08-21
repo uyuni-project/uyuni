@@ -513,3 +513,38 @@ Status:
         ]
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+
+    def test_add_channels(self):
+        options = get_options("add channel ch1 ch2".split())
+        available_channels = ['ch1', 'ch2']
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+
+        expected_output = []
+        expected_xmlrpc_calls = []
+        for channel in available_channels:
+            expected_output.append("Adding {0} channel".format(channel))
+            expected_output.append(
+                "Scheduling reposync for {0} channel".format(channel))
+
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.sync.content,
+                    "addChannel",
+                    self.fake_auth_token,
+                    channel)
+            )
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.channel.software,
+                    "syncRepo",
+                    self.fake_auth_token,
+                    channel)
+            )
+
+        self.assertEqual(expected_output, output)
+        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
