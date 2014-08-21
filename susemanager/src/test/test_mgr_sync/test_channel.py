@@ -19,7 +19,8 @@ import os
 import sys
 import unittest2 as unittest
 
-from spacewalk.susemanager.mgr_sync.channel import parse_channels
+from spacewalk.susemanager.mgr_sync.channel import parse_channels, \
+    find_channel_by_label, Channel
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import read_data_from_fixture, path_to_fixture
@@ -35,18 +36,28 @@ class ChannelTest(unittest.TestCase):
                          sorted(expected_hierarchy.keys()))
         for label, bc in channels.items():
             self.assertEqual(label, bc.label)
-            self.assertEqual(bc.short_status, expected_channels[bc.label])
+            self.assertEqual(
+                bc.status,
+                self._mgr_ncc_status_to_new_status(
+                    expected_channels[bc.label]))
 
-            if bc.children:
-                if bc.status in ("INSTALLED", "AVAILABLE"):
-                    children = sorted([c.label for c in bc.children])
-                    self.assertEqual(children,
-                                     sorted(expected_hierarchy[bc.label]))
-                else:
-                    # mgr-ncc-sync does not expand UNAVAILABLE nodes
-                    pass
+            if bc.children and bc.status == Channel.Status.INSTALLED:
+                children = sorted([c.label for c in bc.children])
+                self.assertEqual(children,
+                                 sorted(expected_hierarchy[bc.label]))
             else:
                 self.assertEqual(0, len(expected_hierarchy[bc.label]))
+
+    def _mgr_ncc_status_to_new_status(self, status):
+        status = status[1]
+        if status == 'P':
+            return Channel.Status.INSTALLED
+        elif status == 'X':
+            return Channel.Status.UNAVAILABLE
+        elif status == '.':
+            return Channel.Status.AVAILABLE
+        else:
+            raise Exception('Type unknown')
 
     def _parse_mgr_ncc_output(self):
         """

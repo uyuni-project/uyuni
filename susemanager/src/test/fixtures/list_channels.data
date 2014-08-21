@@ -35,7 +35,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "ATI Driver for SLE11-SP2", 
         "target": "7260", 
@@ -63,7 +63,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "ATI Driver for SLE11-SP2", 
         "target": "7260", 
@@ -106,7 +106,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "nVidia Driver for SLE11-SP2", 
         "target": "7260", 
@@ -134,7 +134,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "nVidia Driver for SLE11-SP2", 
         "target": "7260", 
@@ -162,7 +162,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -190,7 +190,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -218,7 +218,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -246,7 +246,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -274,7 +274,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -302,7 +302,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -330,7 +330,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -358,7 +358,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -386,7 +386,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 5", 
         "target": "RES", 
@@ -414,7 +414,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -442,7 +442,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -470,7 +470,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 5", 
         "target": "RES", 
@@ -498,7 +498,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 6", 
         "target": "RES", 
@@ -526,7 +526,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -554,7 +554,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "RES", 
@@ -582,7 +582,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "RES 6", 
         "target": "RES", 
@@ -610,7 +610,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -638,7 +638,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -666,7 +666,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 5", 
         "target": "RES", 
@@ -694,7 +694,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "Red Hat Expanded Support for RHEL 6", 
         "target": "RES", 
@@ -722,7 +722,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -750,7 +750,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
@@ -778,7 +778,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 5", 
         "target": "RES", 
@@ -806,7 +806,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "Red Hat Expanded Support for RHEL 6", 
         "target": "RES", 
@@ -834,7 +834,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -862,7 +862,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -890,7 +890,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -918,7 +918,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -946,7 +946,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -974,7 +974,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1002,7 +1002,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1030,7 +1030,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1058,7 +1058,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1086,7 +1086,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1114,7 +1114,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1142,7 +1142,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1170,7 +1170,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1198,7 +1198,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1226,7 +1226,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1254,7 +1254,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1282,7 +1282,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1310,7 +1310,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1338,7 +1338,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1366,7 +1366,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -1409,7 +1409,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "7261", 
@@ -1437,7 +1437,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "SLES-IA", 
@@ -1470,7 +1470,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "SLES-PPC", 
@@ -1503,7 +1503,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "SLES-Z", 
@@ -1531,7 +1531,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "7261", 
@@ -1574,7 +1574,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "7261", 
@@ -1602,7 +1602,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "SLES-IA", 
@@ -1635,7 +1635,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "SLES-PPC", 
@@ -1668,7 +1668,7 @@
             }
         ], 
         "status": {
-            "value": "."
+            "value": "AVAILABLE"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "7261", 
@@ -1696,7 +1696,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE-Manager-Tools", 
         "target": "7261", 
@@ -1739,7 +1739,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 i586", 
         "target": "SLE-HAE-X86", 
@@ -1782,7 +1782,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 i586", 
         "target": "SLE-HAE-X86", 
@@ -1810,7 +1810,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 ia64", 
         "target": "SLE-HAE-IA", 
@@ -1843,7 +1843,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 ppc", 
         "target": "SLE-HAE-PPC", 
@@ -1876,7 +1876,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 s390", 
         "target": "SLE-HAE-Z", 
@@ -1904,7 +1904,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -1932,7 +1932,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "AiO", 
@@ -1960,7 +1960,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2003,7 +2003,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 i586", 
         "target": "SLE-HAE-X86", 
@@ -2046,7 +2046,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 i586", 
         "target": "SLE-HAE-X86", 
@@ -2074,7 +2074,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 ia64", 
         "target": "SLE-HAE-IA", 
@@ -2107,7 +2107,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 ppc", 
         "target": "SLE-HAE-PPC", 
@@ -2140,7 +2140,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 s390", 
         "target": "SLE-HAE-Z", 
@@ -2168,7 +2168,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2196,7 +2196,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "AiO", 
@@ -2224,7 +2224,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP1 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2267,7 +2267,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 i686", 
         "target": "SLE-HAE-X86", 
@@ -2310,7 +2310,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 i686", 
         "target": "SLE-HAE-X86", 
@@ -2338,7 +2338,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 ia64", 
         "target": "SLE-HAE-IA", 
@@ -2371,7 +2371,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 ppc64", 
         "target": "SLE-HAE-PPC", 
@@ -2404,7 +2404,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 s390x", 
         "target": "SLE-HAE-Z", 
@@ -2432,7 +2432,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2460,7 +2460,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "AiO", 
@@ -2488,7 +2488,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2531,7 +2531,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 i686", 
         "target": "SLE-HAE-X86", 
@@ -2574,7 +2574,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 i686", 
         "target": "SLE-HAE-X86", 
@@ -2602,7 +2602,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 ia64", 
         "target": "SLE-HAE-IA", 
@@ -2635,7 +2635,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 ppc64", 
         "target": "SLE-HAE-PPC", 
@@ -2668,7 +2668,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 s390x", 
         "target": "SLE-HAE-Z", 
@@ -2696,7 +2696,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2724,7 +2724,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "AiO", 
@@ -2752,7 +2752,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP2 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2785,7 +2785,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 i586", 
         "target": "SLE-HAE-X86", 
@@ -2818,7 +2818,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 i586", 
         "target": "SLE-HAE-X86", 
@@ -2846,7 +2846,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 ia64", 
         "target": "SLE-HAE-IA", 
@@ -2874,7 +2874,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 ppc64", 
         "target": "SLE-HAE-PPC", 
@@ -2902,7 +2902,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 s390x", 
         "target": "SLE-HAE-Z", 
@@ -2930,7 +2930,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -2958,7 +2958,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "AiO", 
@@ -2986,7 +2986,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -3019,7 +3019,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 i586", 
         "target": "SLE-HAE-X86", 
@@ -3052,7 +3052,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 i586", 
         "target": "SLE-HAE-X86", 
@@ -3080,7 +3080,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 ia64", 
         "target": "SLE-HAE-IA", 
@@ -3108,7 +3108,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 ppc64", 
         "target": "SLE-HAE-PPC", 
@@ -3136,7 +3136,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 s390x", 
         "target": "SLE-HAE-Z", 
@@ -3164,7 +3164,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -3192,7 +3192,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "AiO", 
@@ -3220,7 +3220,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise High Availability Extension 11 SP3 x86_64", 
         "target": "SLE-HAE-X86", 
@@ -3248,7 +3248,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP1", 
         "target": "10040", 
@@ -3276,7 +3276,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP1", 
         "target": "10040", 
@@ -3304,7 +3304,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP1", 
         "target": "10040", 
@@ -3332,7 +3332,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP1", 
         "target": "10040", 
@@ -3360,7 +3360,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP3", 
         "target": "10040", 
@@ -3388,7 +3388,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP3", 
         "target": "10040", 
@@ -3416,7 +3416,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP3", 
         "target": "10040", 
@@ -3444,7 +3444,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Point of Service 11 SP3", 
         "target": "10040", 
@@ -3477,7 +3477,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3505,7 +3505,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3538,7 +3538,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3566,7 +3566,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3599,7 +3599,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3627,7 +3627,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3660,7 +3660,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3688,7 +3688,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3721,7 +3721,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3749,7 +3749,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3782,7 +3782,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3810,7 +3810,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3843,7 +3843,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3871,7 +3871,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3899,7 +3899,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3927,7 +3927,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3960,7 +3960,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -3988,7 +3988,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4021,7 +4021,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4049,7 +4049,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4082,7 +4082,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4110,7 +4110,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4143,7 +4143,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4171,7 +4171,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4204,7 +4204,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4232,7 +4232,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4265,7 +4265,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4293,7 +4293,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4326,7 +4326,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4354,7 +4354,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4387,7 +4387,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4415,7 +4415,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4448,7 +4448,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4476,7 +4476,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4504,7 +4504,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4532,7 +4532,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4565,7 +4565,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4593,7 +4593,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4626,7 +4626,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4654,7 +4654,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.1 SP1 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4682,7 +4682,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4710,7 +4710,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4738,7 +4738,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4766,7 +4766,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4794,7 +4794,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4822,7 +4822,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4850,7 +4850,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4878,7 +4878,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4906,7 +4906,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4934,7 +4934,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4962,7 +4962,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -4990,7 +4990,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5018,7 +5018,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5046,7 +5046,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5074,7 +5074,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5102,7 +5102,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5130,7 +5130,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5158,7 +5158,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5186,7 +5186,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5214,7 +5214,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5242,7 +5242,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5270,7 +5270,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5298,7 +5298,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5326,7 +5326,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5354,7 +5354,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5382,7 +5382,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5410,7 +5410,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5438,7 +5438,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5466,7 +5466,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5494,7 +5494,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5522,7 +5522,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5550,7 +5550,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5578,7 +5578,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5606,7 +5606,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5634,7 +5634,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5662,7 +5662,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5690,7 +5690,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5718,7 +5718,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.2 SP2 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5746,7 +5746,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5774,7 +5774,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5802,7 +5802,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5830,7 +5830,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5858,7 +5858,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5886,7 +5886,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5914,7 +5914,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5942,7 +5942,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5970,7 +5970,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -5998,7 +5998,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6026,7 +6026,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6054,7 +6054,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6082,7 +6082,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6110,7 +6110,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6138,7 +6138,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6166,7 +6166,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6194,7 +6194,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6222,7 +6222,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6250,7 +6250,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6278,7 +6278,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Software Development Kit 11.3 SP3 Software Development Kit", 
         "target": "SLE-SDK", 
@@ -6311,7 +6311,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -6339,7 +6339,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -6367,7 +6367,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -6395,7 +6395,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -6423,7 +6423,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -6451,7 +6451,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6479,7 +6479,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6507,7 +6507,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6535,7 +6535,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6563,7 +6563,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6591,7 +6591,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6619,7 +6619,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6647,7 +6647,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6675,7 +6675,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6703,7 +6703,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.2 SP2 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6731,7 +6731,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6759,7 +6759,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6787,7 +6787,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6815,7 +6815,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6843,7 +6843,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6871,7 +6871,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6899,7 +6899,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6927,7 +6927,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6955,7 +6955,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -6983,7 +6983,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -7011,7 +7011,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -7039,7 +7039,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11.3 SP3 Subscription Management Tool", 
         "target": "SLESMT", 
@@ -7067,7 +7067,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11", 
         "target": "SLESMT", 
@@ -7095,7 +7095,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11", 
         "target": "SLESMT", 
@@ -7123,7 +7123,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11", 
         "target": "SLESMT", 
@@ -7151,7 +7151,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11", 
         "target": "SLESMT", 
@@ -7179,7 +7179,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Subscription Management Tool 11", 
         "target": "SLESMT", 
@@ -7242,7 +7242,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -7295,7 +7295,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP1", 
         "target": "7260", 
@@ -7343,7 +7343,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7260", 
@@ -7386,7 +7386,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -7419,7 +7419,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -7447,7 +7447,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -7490,7 +7490,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-X86-VMWARE", 
@@ -7518,7 +7518,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-IA", 
@@ -7571,7 +7571,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -7604,7 +7604,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -7657,7 +7657,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -7690,7 +7690,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -7723,7 +7723,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -7751,7 +7751,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -7779,7 +7779,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -7807,7 +7807,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -7835,7 +7835,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -7863,7 +7863,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -7901,7 +7901,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP1", 
         "target": "7260", 
@@ -7934,7 +7934,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7260", 
@@ -7962,7 +7962,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -7990,7 +7990,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "STUDIOONSITE", 
@@ -8023,7 +8023,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -8051,7 +8051,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -8114,7 +8114,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -8167,7 +8167,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP1", 
         "target": "7260", 
@@ -8215,7 +8215,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7260", 
@@ -8258,7 +8258,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -8291,7 +8291,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -8319,7 +8319,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -8362,7 +8362,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-X86-VMWARE", 
@@ -8390,7 +8390,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-IA", 
@@ -8443,7 +8443,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -8476,7 +8476,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -8529,7 +8529,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -8562,7 +8562,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -8595,7 +8595,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -8623,7 +8623,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -8651,7 +8651,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -8679,7 +8679,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -8707,7 +8707,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -8735,7 +8735,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -8773,7 +8773,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP1", 
         "target": "7260", 
@@ -8806,7 +8806,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7260", 
@@ -8834,7 +8834,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -8862,7 +8862,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "STUDIOONSITE", 
@@ -8895,7 +8895,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -8923,7 +8923,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -8951,7 +8951,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1", 
         "target": "AiO", 
@@ -8979,7 +8979,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1", 
         "target": "AiO", 
@@ -9022,7 +9022,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -9075,7 +9075,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7260", 
@@ -9123,7 +9123,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7260", 
@@ -9166,7 +9166,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -9194,7 +9194,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -9222,7 +9222,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -9255,7 +9255,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-X86-VMWARE", 
@@ -9283,7 +9283,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-IA", 
@@ -9321,7 +9321,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -9354,7 +9354,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -9392,7 +9392,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -9425,7 +9425,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -9453,7 +9453,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -9481,7 +9481,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SMP", 
@@ -9509,7 +9509,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -9537,7 +9537,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -9575,7 +9575,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7260", 
@@ -9608,7 +9608,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7260", 
@@ -9636,7 +9636,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -9664,7 +9664,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "STUDIOONSITE", 
@@ -9692,7 +9692,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -9720,7 +9720,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -9763,7 +9763,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -9816,7 +9816,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7260", 
@@ -9864,7 +9864,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7260", 
@@ -9907,7 +9907,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -9935,7 +9935,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -9963,7 +9963,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -9996,7 +9996,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-X86-VMWARE", 
@@ -10024,7 +10024,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-IA", 
@@ -10062,7 +10062,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -10095,7 +10095,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -10133,7 +10133,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -10166,7 +10166,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -10194,7 +10194,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -10222,7 +10222,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SMP", 
@@ -10250,7 +10250,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -10278,7 +10278,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -10316,7 +10316,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7260", 
@@ -10349,7 +10349,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7260", 
@@ -10377,7 +10377,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -10405,7 +10405,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "STUDIOONSITE", 
@@ -10433,7 +10433,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -10461,7 +10461,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -10489,7 +10489,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2", 
         "target": "AiO", 
@@ -10517,7 +10517,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Lifecycle Management Server 1.3", 
         "target": "SLMS", 
@@ -10545,7 +10545,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Lifecycle Management Server 1.3", 
         "target": "SLMS", 
@@ -10573,7 +10573,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -10601,7 +10601,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -10629,7 +10629,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10657,7 +10657,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10685,7 +10685,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10713,7 +10713,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10741,7 +10741,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10769,7 +10769,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -10797,7 +10797,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -10825,7 +10825,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -10853,7 +10853,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10881,7 +10881,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10909,7 +10909,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10937,7 +10937,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10965,7 +10965,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE WebYaST 1.3", 
         "target": "WEBYAST", 
@@ -10993,7 +10993,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -11021,7 +11021,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -11049,7 +11049,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -11092,7 +11092,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -11140,7 +11140,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7260", 
@@ -11168,7 +11168,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "SLES-X86-VMWARE", 
@@ -11196,7 +11196,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -11229,7 +11229,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -11262,7 +11262,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -11290,7 +11290,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -11318,7 +11318,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMP", 
@@ -11346,7 +11346,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "AiO", 
@@ -11374,7 +11374,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMS", 
@@ -11407,7 +11407,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7260", 
@@ -11435,7 +11435,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -11478,7 +11478,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -11526,7 +11526,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7260", 
@@ -11554,7 +11554,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "SLES-X86-VMWARE", 
@@ -11582,7 +11582,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -11615,7 +11615,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -11648,7 +11648,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -11676,7 +11676,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -11704,7 +11704,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMP", 
@@ -11732,7 +11732,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "AiO", 
@@ -11760,7 +11760,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMS", 
@@ -11793,7 +11793,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7260", 
@@ -11821,7 +11821,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -11849,7 +11849,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -11877,7 +11877,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3", 
         "target": "AiO", 
@@ -11920,7 +11920,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -11948,7 +11948,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ia64", 
         "target": "SLES-IA", 
@@ -11981,7 +11981,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -12014,7 +12014,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -12042,7 +12042,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -12070,7 +12070,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -12113,7 +12113,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -12141,7 +12141,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ia64", 
         "target": "SLES-IA", 
@@ -12174,7 +12174,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -12207,7 +12207,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -12235,7 +12235,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -12263,7 +12263,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -12306,7 +12306,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -12334,7 +12334,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ia64", 
         "target": "SLES-IA", 
@@ -12367,7 +12367,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -12400,7 +12400,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 s390", 
         "target": "SLES-Z", 
@@ -12428,7 +12428,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -12456,7 +12456,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -12499,7 +12499,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -12527,7 +12527,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ia64", 
         "target": "SLES-IA", 
@@ -12560,7 +12560,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -12593,7 +12593,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 s390", 
         "target": "SLES-Z", 
@@ -12621,7 +12621,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -12649,7 +12649,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -12702,7 +12702,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -12750,7 +12750,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -12788,7 +12788,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -12821,7 +12821,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -12874,7 +12874,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -12922,7 +12922,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -12960,7 +12960,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -12993,7 +12993,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13036,7 +13036,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -13064,7 +13064,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -13117,7 +13117,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13165,7 +13165,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13203,7 +13203,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13236,7 +13236,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13289,7 +13289,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13337,7 +13337,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13375,7 +13375,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13408,7 +13408,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13451,7 +13451,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -13479,7 +13479,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -13532,7 +13532,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13580,7 +13580,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 i586", 
         "target": "7260", 
@@ -13618,7 +13618,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13651,7 +13651,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP2 x86_64", 
         "target": "7260", 
@@ -13699,7 +13699,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP3 i486", 
         "target": "7260", 
@@ -13732,7 +13732,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP3 x86_64", 
         "target": "7260", 
@@ -13780,7 +13780,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP3 i486", 
         "target": "7260", 
@@ -13813,7 +13813,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Desktop 11 SP3 x86_64", 
         "target": "7260", 
@@ -13841,7 +13841,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.1", 
         "target": "13319", 
@@ -13869,7 +13869,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.1", 
         "target": "13319", 
@@ -13897,7 +13897,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.2", 
         "target": "13319", 
@@ -13925,7 +13925,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.2", 
         "target": "13319", 
@@ -13953,7 +13953,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.3", 
         "target": "13319", 
@@ -13981,7 +13981,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Real Time 11.3", 
         "target": "13319", 
@@ -14024,7 +14024,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 i686", 
         "target": "7261", 
@@ -14052,7 +14052,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ia64", 
         "target": "SLES-IA", 
@@ -14085,7 +14085,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ppc64", 
         "target": "SLES-PPC", 
@@ -14118,7 +14118,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 s390x", 
         "target": "SLES-Z", 
@@ -14146,7 +14146,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 x86_64", 
         "target": "7261", 
@@ -14189,7 +14189,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 i686", 
         "target": "7261", 
@@ -14217,7 +14217,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 s390x", 
         "target": "SLES-Z", 
@@ -14245,7 +14245,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 x86_64", 
         "target": "7261", 
@@ -14288,7 +14288,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 i686", 
         "target": "7261", 
@@ -14316,7 +14316,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ia64", 
         "target": "SLES-IA", 
@@ -14349,7 +14349,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -14382,7 +14382,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 s390x", 
         "target": "SLES-Z", 
@@ -14410,7 +14410,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 x86_64", 
         "target": "7261", 
@@ -14453,7 +14453,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 i686", 
         "target": "7261", 
@@ -14481,7 +14481,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ia64", 
         "target": "SLES-IA", 
@@ -14514,7 +14514,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -14547,7 +14547,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 s390x", 
         "target": "SLES-Z", 
@@ -14575,7 +14575,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 x86_64", 
         "target": "7261", 
@@ -14618,7 +14618,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 i686", 
         "target": "7261", 
@@ -14646,7 +14646,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 ia64", 
         "target": "SLES-IA", 
@@ -14679,7 +14679,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ppc64", 
         "target": "SLES-PPC", 
@@ -14712,7 +14712,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 s390x", 
         "target": "SLES-Z", 
@@ -14740,7 +14740,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP3 x86_64", 
         "target": "7261", 
@@ -14783,7 +14783,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 i486", 
         "target": "7261", 
@@ -14811,7 +14811,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 s390x", 
         "target": "SLES-Z", 
@@ -14839,7 +14839,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 x86_64", 
         "target": "7261", 
@@ -14882,7 +14882,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 i486", 
         "target": "7261", 
@@ -14910,7 +14910,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ia64", 
         "target": "SLES-IA", 
@@ -14943,7 +14943,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ppc64", 
         "target": "SLES-PPC", 
@@ -14976,7 +14976,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 s390", 
         "target": "SLES-Z", 
@@ -15004,7 +15004,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 x86_64", 
         "target": "7261", 
@@ -15047,7 +15047,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 i486", 
         "target": "7261", 
@@ -15075,7 +15075,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ia64", 
         "target": "SLES-IA", 
@@ -15108,7 +15108,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 ppc64", 
         "target": "SLES-PPC", 
@@ -15141,7 +15141,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 s390", 
         "target": "SLES-Z", 
@@ -15169,7 +15169,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Server 10 SP4 x86_64", 
         "target": "7261", 
@@ -15232,7 +15232,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -15275,7 +15275,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -15308,7 +15308,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -15336,7 +15336,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "SLES-X86-VMWARE", 
@@ -15379,7 +15379,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-X86-VMWARE", 
@@ -15407,7 +15407,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 VMWARE", 
         "target": "SLES-IA", 
@@ -15460,7 +15460,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -15493,7 +15493,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -15546,7 +15546,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -15579,7 +15579,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -15612,7 +15612,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -15640,7 +15640,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -15668,7 +15668,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -15696,7 +15696,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -15724,7 +15724,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -15752,7 +15752,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -15785,7 +15785,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -15813,7 +15813,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -15856,7 +15856,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -15884,7 +15884,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390x", 
         "target": "SLES-Z", 
@@ -15912,7 +15912,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -15940,7 +15940,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -16003,7 +16003,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -16046,7 +16046,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -16079,7 +16079,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -16107,7 +16107,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "SLES-IA", 
@@ -16150,7 +16150,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -16183,7 +16183,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -16226,7 +16226,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -16259,7 +16259,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -16292,7 +16292,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -16320,7 +16320,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -16348,7 +16348,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -16376,7 +16376,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -16404,7 +16404,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -16432,7 +16432,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -16460,7 +16460,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -16488,7 +16488,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "STUDIOONSITE", 
@@ -16531,7 +16531,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -16559,7 +16559,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -16587,7 +16587,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-IA", 
@@ -16620,7 +16620,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-PPC", 
@@ -16653,7 +16653,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-Z", 
@@ -16681,7 +16681,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -16709,7 +16709,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SMP", 
@@ -16737,7 +16737,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "AiO", 
@@ -16765,7 +16765,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -16828,7 +16828,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -16871,7 +16871,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 i586", 
         "target": "7261", 
@@ -16904,7 +16904,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -16932,7 +16932,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "SLES-IA", 
@@ -16975,7 +16975,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -17008,7 +17008,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 ppc64", 
         "target": "SLES-PPC", 
@@ -17051,7 +17051,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -17084,7 +17084,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 s390", 
         "target": "SLES-Z", 
@@ -17117,7 +17117,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -17145,7 +17145,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -17173,7 +17173,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "SMP", 
@@ -17201,7 +17201,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -17229,7 +17229,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -17257,7 +17257,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "AiO", 
@@ -17285,7 +17285,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "7261", 
@@ -17313,7 +17313,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP1 x86_64", 
         "target": "STUDIOONSITE", 
@@ -17346,7 +17346,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17374,7 +17374,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17407,7 +17407,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17435,7 +17435,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17468,7 +17468,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17496,7 +17496,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17529,7 +17529,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17557,7 +17557,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -17600,7 +17600,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -17643,7 +17643,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -17671,7 +17671,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -17699,7 +17699,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "SLES-IA", 
@@ -17732,7 +17732,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -17765,7 +17765,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -17798,7 +17798,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -17831,7 +17831,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -17859,7 +17859,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -17887,7 +17887,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SMP", 
@@ -17915,7 +17915,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -17943,7 +17943,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -17971,7 +17971,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -17999,7 +17999,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "STUDIOONSITE", 
@@ -18042,7 +18042,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -18085,7 +18085,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -18113,7 +18113,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -18141,7 +18141,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "SLES-X86-VMWARE", 
@@ -18174,7 +18174,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-X86-VMWARE", 
@@ -18202,7 +18202,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2", 
         "target": "SLES-IA", 
@@ -18240,7 +18240,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -18273,7 +18273,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -18311,7 +18311,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -18344,7 +18344,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -18372,7 +18372,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -18400,7 +18400,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -18428,7 +18428,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -18456,7 +18456,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -18484,7 +18484,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SLES-X86-VMWARE", 
@@ -18512,7 +18512,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i586", 
         "target": "7261", 
@@ -18540,7 +18540,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 s390x", 
         "target": "SLES-Z", 
@@ -18568,7 +18568,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -18596,7 +18596,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -18624,7 +18624,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "STUDIOONSITE", 
@@ -18667,7 +18667,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -18715,7 +18715,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -18758,7 +18758,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -18786,7 +18786,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -18814,7 +18814,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -18842,7 +18842,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-IA", 
@@ -18870,7 +18870,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-IA", 
@@ -18903,7 +18903,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-PPC", 
@@ -18936,7 +18936,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-PPC", 
@@ -18969,7 +18969,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-Z", 
@@ -19002,7 +19002,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-Z", 
@@ -19030,7 +19030,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -19058,7 +19058,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "AiO", 
@@ -19086,7 +19086,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "AiO", 
@@ -19114,7 +19114,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "AiO", 
@@ -19147,7 +19147,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -19175,7 +19175,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -19203,7 +19203,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "STUDIOONSITE", 
@@ -19231,7 +19231,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -19259,7 +19259,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -19302,7 +19302,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -19345,7 +19345,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 i486", 
         "target": "7261", 
@@ -19373,7 +19373,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "STUDIOONSITE", 
@@ -19401,7 +19401,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Studio OnSite 1.3", 
         "target": "SLES-IA", 
@@ -19434,7 +19434,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -19467,7 +19467,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 ppc64", 
         "target": "SLES-PPC", 
@@ -19500,7 +19500,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -19533,7 +19533,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -19561,7 +19561,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -19589,7 +19589,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "SMP", 
@@ -19617,7 +19617,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -19645,7 +19645,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "AiO", 
@@ -19673,7 +19673,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "7261", 
@@ -19701,7 +19701,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP2 x86_64", 
         "target": "STUDIOONSITE", 
@@ -19729,7 +19729,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19757,7 +19757,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19785,7 +19785,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19813,7 +19813,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19841,7 +19841,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19869,7 +19869,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19897,7 +19897,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19925,7 +19925,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -19968,7 +19968,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -19996,7 +19996,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -20029,7 +20029,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -20062,7 +20062,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -20090,7 +20090,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -20118,7 +20118,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "AiO", 
@@ -20161,7 +20161,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -20189,7 +20189,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -20222,7 +20222,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -20255,7 +20255,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -20283,7 +20283,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -20311,7 +20311,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMP", 
@@ -20339,7 +20339,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "AiO", 
@@ -20367,7 +20367,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMS", 
@@ -20410,7 +20410,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -20458,7 +20458,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -20486,7 +20486,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -20514,7 +20514,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-IA", 
@@ -20547,7 +20547,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-PPC", 
@@ -20580,7 +20580,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-Z", 
@@ -20608,7 +20608,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7261", 
@@ -20636,7 +20636,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "AiO", 
@@ -20669,7 +20669,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "7260", 
@@ -20697,7 +20697,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Tools", 
         "target": "SLES-X86-VMWARE", 
@@ -20740,7 +20740,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 i686", 
         "target": "7261", 
@@ -20768,7 +20768,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ia64", 
         "target": "SLES-IA", 
@@ -20801,7 +20801,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 ppc64", 
         "target": "SLES-PPC", 
@@ -20834,7 +20834,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 s390x", 
         "target": "SLES-Z", 
@@ -20862,7 +20862,7 @@
             }
         ], 
         "status": {
-            "value": "P"
+            "value": "INSTALLED"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "7261", 
@@ -20890,7 +20890,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMP", 
@@ -20918,7 +20918,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "AiO", 
@@ -20946,7 +20946,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3 x86_64", 
         "target": "SMS", 
@@ -20974,7 +20974,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -21002,7 +21002,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -21030,7 +21030,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -21058,7 +21058,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Linux Enterprise Server 11 SP3", 
         "target": "SLES-X86-VMWARE", 
@@ -21086,7 +21086,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 1.0 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21114,7 +21114,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 1.0 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21142,7 +21142,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 2.0 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21170,7 +21170,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 2.0 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21198,7 +21198,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 3 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21226,7 +21226,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Cloud 3 x86_64", 
         "target": "SUSE_CLOUD", 
@@ -21254,7 +21254,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 1.2", 
         "target": "SMP", 
@@ -21282,7 +21282,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 1.2", 
         "target": "SMP", 
@@ -21310,7 +21310,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 1.7 x86_64", 
         "target": "SMP", 
@@ -21338,7 +21338,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 1.7 x86_64", 
         "target": "SMP", 
@@ -21366,7 +21366,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 2.1 x86_64", 
         "target": "SMP", 
@@ -21394,7 +21394,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Proxy 2.1 x86_64", 
         "target": "SMP", 
@@ -21422,7 +21422,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Server 2.1 s390x", 
         "target": "SMS", 
@@ -21450,7 +21450,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Server 2.1 x86_64", 
         "target": "SMS", 
@@ -21478,7 +21478,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Server 2.1 s390x", 
         "target": "SMS", 
@@ -21506,7 +21506,7 @@
             }
         ], 
         "status": {
-            "value": "X"
+            "value": "UNAVAILABLE"
         }, 
         "summary": "SUSE Manager Server 2.1 x86_64", 
         "target": "SMS", 
