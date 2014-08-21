@@ -43,7 +43,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all accessible products.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                       $SCCProductSerializer
+     *                       $ListedProductSerializer
      *                    #array_end()
      */
     public Object[] listProducts(String sessionKey) throws ContentSyncException {
