@@ -82,6 +82,11 @@ def _create_list_subparser(subparsers):
                              dest='no_optionals',
                              default=False,
                              help='do not list optional channels')
+    list_parser.add_argument('-c', '--compact',
+                             action='store_true',
+                             default=False,
+                             dest="compact",
+                             help='Compact output')
 
 
 def _create_refresh_subparser(subparsers):
