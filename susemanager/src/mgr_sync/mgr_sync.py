@@ -21,7 +21,7 @@ from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
 from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
-from spacewalk.susemanager.mgr_sync.helpers import cli_msg
+from spacewalk.susemanager.mgr_sync.helpers import cli_msg, cli_ask
 
 
 class MgrSync(object):
@@ -103,13 +103,36 @@ class MgrSync(object):
 
     def _add_channels(self, channels):
         if not channels:
-            self._add_channels_interactive_mode()
-        else:
-            pass
+            channels = [self._select_channel_interactive_mode()]
 
-    def _add_channels_interactive_mode(self):
-        self._list_channels(expand=False, filter=None, no_optionals=True,
-                            show_interactive_numbers=True)
+        for channel in channels:
+            print("Adding {0} channel".format(channel))
+            self._execute_xmlrpc_method(self.conn.sync.content,
+                                        "addChannel",
+                                        self.auth.token,
+                                        channel)
+            print("Scheduling reposync for {0} channel".format(channel))
+            self._execute_xmlrpc_method(self.conn.channel.software,
+                                        "syncRepo",
+                                        self.auth.token,
+                                        channel)
+
+    def _select_channel_interactive_mode(self):
+        """Show not installed channels prefixing a number, then reads
+        user input and returns the label of the chosen channel
+
+        """
+        channels = self._list_channels(
+            expand=False, filter=None,
+            no_optionals=True, show_interactive_numbers=True)
+
+        validator = lambda i: re.search("\d+", i) and \
+            int(i) in range(1, len(channels)+1)
+        choice = cli_ask(
+            msg=("Enter channel number (1-{0})".format(len(channels))),
+            validator=validator)
+
+        return channels[int(choice)-1]
 
     def _list_products(self, filter):
         """
