@@ -32,8 +32,10 @@ class MgrSyncTest(unittest.TestCase):
 
     def setUp(self):
         self.mgr_sync = MgrSync()
+        self.mgr_sync.conn = MagicMock()
         self.fake_auth_token = "fake_token"
-        type(self.mgr_sync.auth).token = PropertyMock(return_value=self.fake_auth_token)
+        type(self.mgr_sync.auth).token = PropertyMock(
+            return_value=self.fake_auth_token)
 
     def test_list_emtpy_channel(self):
         options = get_options("list channel".split())
@@ -43,8 +45,11 @@ class MgrSyncTest(unittest.TestCase):
             self.mgr_sync.run(options)
         self.assertEqual(output, ["No channels found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
+
     def test_list_channels(self):
         options = get_options("list channels".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
@@ -53,8 +58,10 @@ class MgrSyncTest(unittest.TestCase):
             self.mgr_sync.run(options)
         self.assertEqual(output, ["No channels found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
     def test_refresh(self):
         """ Test the refresh action """
@@ -75,12 +82,24 @@ Refreshing Upgrade paths                       [DONE]"""
         self.assertEqual(expected_output.split("\n"), output)
 
         expected_calls = [
-            call._execute_xmlrpc_method("synchronizeChannels", self.fake_auth_token),
-            call._execute_xmlrpc_method("synchronizeChannelFamilies", self.fake_auth_token),
-            call._execute_xmlrpc_method("synchronizeProducts", self.fake_auth_token),
-            call._execute_xmlrpc_method("synchronizeProductChannels", self.fake_auth_token),
-            call._execute_xmlrpc_method("synchronizeSubscriptions", self.fake_auth_token),
-            call._execute_xmlrpc_method("synchronizeUpgradePaths", self.fake_auth_token)
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannels",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannelFamilies",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProducts",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProductChannels",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeSubscriptions",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeUpgradePaths",
+                                        self.fake_auth_token)
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
@@ -106,14 +125,17 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
-
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
     def test_list_channels_expand_enabled(self):
         """ Testing list channel output when expand option is toggled """
         options = get_options("list channel -e".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with CaptureStdout() as output:
             self.mgr_sync.run(options)
@@ -133,14 +155,17 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
-
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
     def test_list_channels_filter_set(self):
         """ Testing list channel output when a filter is set """
         options = get_options("list channel --filter rhel".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with CaptureStdout() as output:
             self.mgr_sync.run(options)
@@ -156,21 +181,24 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
-
-
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
     def test_list_channels_interactive(self):
         """ Test listing channels when interactive more is set """
-        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         available_channels = []
         with CaptureStdout() as output:
-            available_channels = self.mgr_sync._list_channels(expand=False,
-                                                              filter=None,
-                                                              no_optionals=True,
-                                                              show_interactive_numbers=True)
+            available_channels = self.mgr_sync._list_channels(
+                expand=False,
+                filter=None,
+                no_optionals=True,
+                show_interactive_numbers=True)
         expected_output = """Available Channels:
 
 
@@ -186,8 +214,10 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listChannels",
-                                                    self.fake_auth_token)
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
         self.assertEqual(['rhel-i386-as-4', 'sle10-sdk-sp4-pool-x86_64'],
                          available_channels)
@@ -200,18 +230,23 @@ Status:
             self.mgr_sync.run(options)
         self.assertEqual(output, ["No products found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
-                                                    self.fake_auth_token)
-    def test_list_products(self):
-        options = get_options("list products".split())
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
+
+    def test_list_product(self):
+        options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         with CaptureStdout() as output:
             self.mgr_sync.run(options)
         self.assertEqual(output, ["No products found."])
 
-        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
-                                                    self.fake_auth_token)
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
 
     def test_list_products(self):
         """ Test listing products """
@@ -378,8 +413,10 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
-                                                    self.fake_auth_token)
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
 
     def test_list_products_with_filtering(self):
         """ Test listing products with filtering"""
@@ -404,7 +441,8 @@ Status:
 
         self.assertEqual(expected_output.split("\n"), output)
 
-        stubbed_xmlrpm_call.assert_called_once_with("listProducts",
-                                                    self.fake_auth_token)
-
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
 
