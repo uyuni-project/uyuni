@@ -50,7 +50,8 @@ class MgrSync(object):
         if filter:
             filter = filter.lower()
 
-        data = self._execute_xmlrpc_method("listChannels", self.auth.token)
+        data = self._execute_xmlrpc_method(self.conn.sync.content,
+                                           "listChannels", self.auth.token)
         if not data:
             print("No channels found.")
             return
@@ -118,7 +119,8 @@ class MgrSync(object):
         if filter:
             filter = filter.lower()
 
-        data = self._execute_xmlrpc_method("listProducts", self.auth.token)
+        data = self._execute_xmlrpc_method(self.conn.sync.content,
+                                           "listProducts", self.auth.token)
         if not data:
             print("No products found.")
             return
@@ -154,7 +156,8 @@ class MgrSync(object):
             sys.stdout.write("Refreshing %s" % operation)
             sys.stdout.flush()
             try:
-                self._execute_xmlrpc_method(method, self.auth.token)
+                self._execute_xmlrpc_method(self.conn.sync.content, method,
+                                            self.auth.token)
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
@@ -163,7 +166,7 @@ class MgrSync(object):
                 sys.stderr.write("\tError: %s\n\n" % ex)
                 sys.exit(1)
 
-    def _execute_xmlrpc_method(self, method, auth_token, *params, **opts):
+    def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """
         Invokes the remote method specified by the user. Repeats the operation
         once if there's a failure caused by the expiration of the sessions
@@ -176,13 +179,14 @@ class MgrSync(object):
         retry_on_session_failure = opts.get("retry_on_session_failure", True)
 
         try:
-            return getattr(self.conn.sync.content, method)(auth_token, *params)
+            return getattr(endoint, method)(auth_token, *params)
         except xmlrpclib.Fault, ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.auth.discard_token()
                 auth_token = self.auth.token
-                return self._execute_xmlrpc_method(method, auth_token, *params,
-                                                   retry_on_session_failure=False)
+                return self._execute_xmlrpc_method(
+                    endoint, method, auth_token, *params,
+                    retry_on_session_failure=False)
             else:
                 raise ex
 
