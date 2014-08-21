@@ -53,6 +53,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
     /** Channel family labels that are entitled in the scope of this non regression test. */
     private static final List<String> ENTITLED_LABELS = new LinkedList<String>() { {
+        // from UC7
         add("SLE-HAE-PPC"); add("RES"); add("SMS");
         add("SMP"); add("SUSE_CLOUD"); add("DSMP");
         add("MONO"); add("7261"); add("7260");
@@ -66,7 +67,9 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("RES-HA"); add("SLE-HAE-IA"); add("WEBYAST");
         add("jeos"); add("SLM"); add("Moblin-2-Samsung");
         add("nVidia"); add("STUDIOONSITERUNNER"); add("SLE-HAE-Z");
-        add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
+        add("SLE-HAE-X86"); add("SLES-IA");
+        // others
+        add("SLE-HAE-GEO");
     } };
 
     // channel family members
@@ -312,6 +315,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     assertFalse(j.hasNext());
                 }
             }
+
+            //TODO: SLES 12 assertions
 
             // SUSE Manager
             for (String version : new String[]{"1.2", "1.7", "2.1"}) {
