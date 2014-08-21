@@ -34,13 +34,13 @@ import java.io.IOException;
 public class ContentSyncHandler extends BaseHandler {
 
     /**
-     * List all products that are accessible to the organization.
+     * List all accessible products.
      *
      * @param sessionKey Session token.
      * @return List of products with their extensions (add-ons).
-     * @throws ContentSyncException if content cannot be synchronized
+     * @throws ContentSyncException
      *
-     * @xmlrpc.doc List all products that are accessible to the organization.
+     * @xmlrpc.doc List all accessible products.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
      *                       $SCCProductSerializer
@@ -53,13 +53,13 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * List all channels that are accessible to the organization.
+     * List all accessible channels.
      *
      * @param sessionKey Session Key
      * @return List of channels.
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * @throws ContentSyncException
      *
-     * @xmlrpc.doc List all channels that are accessible to the organization.
+     * @xmlrpc.doc List all accessible channels.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
      *                       $MgrSyncChannelSerializer
