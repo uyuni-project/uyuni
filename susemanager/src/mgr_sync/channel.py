@@ -29,7 +29,7 @@ class Channel(object):
         self.label = data["label"]
         self.name = data["name"]
         self.parent = data["parent"]
-        self.status = data["status"]["value"]
+        self.status = Channel.Status(data["status"]["value"])
         self.target = data["target"]
         self.url = data["url"]
         self._children = []
