@@ -158,6 +158,18 @@ public class MgrSyncChannel {
         return (this.isSigned + "").toUpperCase().equals("Y");
     }
 
+    /**
+     * Setter for isSigned.
+     * @param signedIn
+     */
+    public void setSigned(boolean signedIn) {
+        if (signedIn) {
+            isSigned = "Y";
+        }
+        else {
+            isSigned = "N";
+        }
+    }
 
     /**
      * True if this channel is optional (non-mandatory), false otherwise.
@@ -243,10 +255,26 @@ public class MgrSyncChannel {
     }
 
     /**
+     * Set the product name.
+     * @param productNameIn the product name to set
+     */
+    public void setProductName(String productNameIn) {
+        productName = productNameIn;
+    }
+
+    /**
      * @return the productVersion
      */
     public String getProductVersion() {
         return productVersion;
+    }
+
+    /**
+     * Set the product version.
+     * @param productVersionIn the product version to set
+     */
+    public void setProductVersion(String productVersionIn) {
+        productVersion = productVersionIn;
     }
 
     /**
