@@ -118,10 +118,39 @@ Status:
   - A - channel is not installed, but is available
   - U - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4
-[I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
-    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
-    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+[I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
+
+    def test_list_channels_compact_mode_enabled(self):
+        """ Testing list channel output """
+        options = get_options("list channel -c".split())
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        expected_output = """Available Channels:
+
+
+Status:
+  - I - channel is installed
+  - A - channel is not installed, but is available
+  - U - channel is unavailable
+
+[A] rhel-i386-as-4
+[I] sles10-sp4-pool-x86_64
+    [A] sle10-sdk-sp4-pool-x86_64
+    [I] sle10-sdk-sp4-updates-x86_64"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -147,11 +176,11 @@ Status:
   - A - channel is not installed, but is available
   - U - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4
-    [A] RES4 AS for i386 RES 4
-[I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
-    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
-    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+    [A] RES4 AS for i386 RES 4 [res4-as-i386]
+[I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -177,7 +206,7 @@ Status:
   - A - channel is not installed, but is available
   - U - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4"""
+[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -207,10 +236,10 @@ Status:
   - A - channel is not installed, but is available
   - U - channel is unavailable
 
-01) [A] RHEL i386 AS 4 RES 4
-    [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64
-    02) [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit
-        [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit"""
+01) [A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+    [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+    02) [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+        [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
@@ -470,7 +499,7 @@ Status:
 
         self.mgr_sync._list_channels.assert_called_once_with(
             expand=False, filter=None, no_optionals=True,
-            show_interactive_numbers=True)
+            show_interactive_numbers=True, compact=False)
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,

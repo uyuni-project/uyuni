@@ -39,7 +39,7 @@ class MgrSync(object):
         self.quiet = False
 
     def _list_channels(self, expand, filter, no_optionals,
-                       show_interactive_numbers=False):
+                       compact=False, show_interactive_numbers=False):
         """
         List channels.
         """
@@ -68,7 +68,7 @@ class MgrSync(object):
             base_channel = base_channels[bc_label]
 
             prefix = ""
-            output = base_channel.to_ascii_row()
+            output = base_channel.to_ascii_row(compact)
 
             if not filter or filter in output.lower():
                 if base_channel.status == Channel.Status.AVAILABLE:
@@ -87,7 +87,7 @@ class MgrSync(object):
                 for child in base_channel.children:
                     prefix = ""
                     if base_channel.status == Channel.Status.INSTALLED or expand:
-                        output = child.to_ascii_row()
+                        output = child.to_ascii_row(compact)
                         if not filter or filter in output.lower():
                             if child.status == Channel.Status.AVAILABLE:
                                 interactive_number += 1
@@ -123,7 +123,7 @@ class MgrSync(object):
 
         """
         channels = self._list_channels(
-            expand=False, filter=None,
+            expand=False, filter=None, compact=False,
             no_optionals=True, show_interactive_numbers=True)
 
         validator = lambda i: re.search("\d+", i) and \
@@ -223,7 +223,8 @@ class MgrSync(object):
             if 'channel' in options.list_target:
                 self._list_channels(expand=options.expand,
                                     filter=options.filter,
-                                    no_optionals=options.no_optionals)
+                                    no_optionals=options.no_optionals,
+                                    compact=options.compact)
             elif 'product' in options.list_target:
                 self._list_products(filter=options.filter)
             else:
