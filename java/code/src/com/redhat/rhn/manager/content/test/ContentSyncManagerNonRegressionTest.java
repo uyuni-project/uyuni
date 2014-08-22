@@ -111,10 +111,17 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             ListedProduct product = null;
 
             // RES
-            for (int version = 4; version <= 6; version++) {
+            for (String version : new String[] {"4", "5", "6"}) {
                 for (String arch : new String[] {"i386", "x86_64"}) {
+                    if (version.equals("4")) {
+                        // AS
+                        product = i.next();
+                        assertMatches("RES " + version, version, arch, product);
+                    }
+
+                    // ES
                     product = i.next();
-                    assertMatches("RES " + version, version + "", arch, product);
+                    assertMatches("RES " + version, version, arch, product);
                 }
             }
 
