@@ -205,7 +205,8 @@ public class MgrSyncUtils {
         if (productName == null) {
             productName = new ProductName();
             productName.setLabel(channel.getProductName());
-            productName.setLabel(channel.getProductName());
+            productName.setName(channel.getProductName());
+            ChannelFactory.save(productName);
         }
         return productName;
     }
