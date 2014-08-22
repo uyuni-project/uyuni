@@ -96,7 +96,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadChannels() throws Exception {
         List<MgrSyncChannel> channels = readChannels();
-        assertEquals(744, channels.size());
+        assertEquals(748, channels.size());
 
         // Verify the first channel
         MgrSyncChannel c = channels.get(0);
@@ -110,19 +110,19 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
         List<MgrSyncProduct> products = c.getProducts();
         assertEquals(4, products.size());
         MgrSyncProduct p0 = products.get(0);
-        assertEquals(new Integer(923), p0.getId());
+        assertEquals(new Integer(879), p0.getId());
         assertEquals("SUSE_SLED", p0.getName());
         assertEquals("11.2", p0.getVersion());
         MgrSyncProduct p1 = products.get(1);
-        assertEquals(new Integer(839), p1.getId());
+        assertEquals(new Integer(844), p1.getId());
         assertEquals("SUSE_SLED", p1.getName());
         assertEquals("11.2", p1.getVersion());
         MgrSyncProduct p2 = products.get(2);
-        assertEquals(new Integer(922), p2.getId());
+        assertEquals(new Integer(843), p2.getId());
         assertEquals("SUSE_SLED", p2.getName());
         assertEquals("11.2", p2.getVersion());
         MgrSyncProduct p3 = products.get(3);
-        assertEquals(new Integer(921), p3.getId());
+        assertEquals(new Integer(868), p3.getId());
         assertEquals("SUSE_SLED", p3.getName());
         assertEquals("11.2", p3.getVersion());
     }
@@ -142,6 +142,6 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadUpgradePaths() throws Exception {
         List<MgrSyncUpgradePath> paths = readUpgradePaths();
-        assertEquals(87, paths.size());
+        assertEquals(80, paths.size());
     }
 }
