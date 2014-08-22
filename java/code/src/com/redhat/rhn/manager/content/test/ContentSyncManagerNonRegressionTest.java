@@ -348,6 +348,35 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Checks that updateSUSEProducts() can be called multiple times in a row
+     * without failing.
+     * @throws Exception if anything goes wrong
+     */
+    public void testUpdateProductsMultipleTimes() throws Exception {
+        File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
+        try {
+            // clear existing products
+            SUSEProductFactory.clearAllProducts();
+
+            List<SCCProduct> sccProducts =
+                    new Gson().fromJson(FileUtils.readFileToString(productsJSON),
+                            new TypeToken<List<SCCProduct>>() { } .getType());
+
+            ContentSyncManager csm = new ContentSyncManager();
+
+            // HACK: some SCC products do not have correct data
+            // to be removed when SCC team fixes this
+            csm.addDirtyFixes(sccProducts);
+
+            csm.updateSUSEProducts(sccProducts);
+            csm.updateSUSEProducts(sccProducts);
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(productsJSON);
+        }
+    }
+
+    /**
      * Ensures that channel families in ENTITLED_LABELS exist and have a high
      * value of max members. This is needed for channels under test to be
      * available
