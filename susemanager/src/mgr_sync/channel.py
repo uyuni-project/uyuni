@@ -29,9 +29,8 @@ class Channel(object):
         self.label = data["label"]
         self.name = data["name"]
         self.parent = data["parent"]
-        self.status = Channel.Status(data["status"]["value"])
-        self.target = data["target"]
-        self.url = data["url"]
+        self.status = Channel.Status(data["status"])
+        self.url = data["source_url"]
         self._children = []
 
     @property
@@ -47,14 +46,6 @@ class Channel(object):
     @property
     def children(self):
         return sorted(self._children, key=lambda child: child.label)
-
-    def to_table_row(self):
-        name = self.name
-        if not self.base_channel:
-            name = "  \\_ " + name
-        return [self.short_status,
-                name,
-                self.description_or_url()]
 
     def to_ascii_row(self, compact=False):
         if not compact:
