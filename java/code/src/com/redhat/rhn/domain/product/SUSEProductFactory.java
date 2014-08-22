@@ -139,13 +139,13 @@ public class SUSEProductFactory extends HibernateFactory {
             c.add(Restrictions.isNull("version"));
         }
         else {
-            c.add(Restrictions.eq("version", version));
+            c.add(Restrictions.eq("version", version.toLowerCase()));
         }
         if (release == null) {
             c.add(Restrictions.isNull("release"));
         }
         else {
-            c.add(Restrictions.eq("release", release));
+            c.add(Restrictions.eq("release", release.toLowerCase()));
         }
         if (arch == null) {
             c.add(Restrictions.isNull("arch"));
