@@ -22,9 +22,10 @@ import sys
 from mock import MagicMock, PropertyMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import CaptureStdout, FakeStdin, read_data_from_fixture
+from helper import CaptureStdout, ConsoleRecorder, read_data_from_fixture
 
 from spacewalk.susemanager.mgr_sync.cli import get_options
+from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 
 
@@ -492,8 +493,8 @@ Status:
                 self.mgr_sync.run(options)
 
         expected_output = [
-            "Adding {0} channel".format(chosen_channel),
-            "Scheduling reposync for {0} channel".format(chosen_channel)
+            "Adding '{0}' channel".format(chosen_channel),
+            "Scheduling reposync for '{0}' channel".format(chosen_channel)
         ]
         self.assertEqual(expected_output, output)
 
@@ -514,37 +515,202 @@ Status:
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
+    def test_add_available_base_channel(self):
+        """ Test adding an available base channel"""
 
-    def test_add_channels(self):
-        options = get_options("add channel ch1 ch2".split())
-        available_channels = ['ch1', 'ch2']
+        channel = "rhel-i386-as-4"
+        options = get_options(
+            "add channel {0}".format(channel).split())
+
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=parse_channels(
+                read_data_from_fixture("list_channels.data")))
+
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with CaptureStdout() as output:
-            self.mgr_sync.run(options)
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
 
-        expected_output = []
-        expected_xmlrpc_calls = []
-        for channel in available_channels:
-            expected_output.append("Adding {0} channel".format(channel))
-            expected_output.append(
-                "Scheduling reposync for {0} channel".format(channel))
+        self.assertFalse(mock_exit.mock_calls)
 
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.sync.content,
-                    "addChannel",
-                    self.fake_auth_token,
-                    channel)
-            )
-            expected_xmlrpc_calls.append(
-                call._execute_xmlrpc_method(
-                    self.mgr_sync.conn.channel.software,
-                    "syncRepo",
-                    self.fake_auth_token,
-                    channel)
-            )
-
-        self.assertEqual(expected_output, output)
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannel",
+                                        self.fake_auth_token,
+                                        channel),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        channel)
+        ]
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+        expected_output = [
+            "Adding '{0}' channel".format(channel),
+            "Scheduling reposync for '{0}' channel".format(channel)
+        ]
+        self.assertEqual(expected_output, output)
+
+    def test_add_available_channel_with_available_base_channel(self):
+        """ Test adding an available channel whose parent is available.
+
+        Should add both of them."""
+
+        base_channel = "rhel-i386-es-4"
+        channel = "res4-es-i386"
+        options = get_options(
+            "add channel {0}".format(channel).split())
+
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=parse_channels(
+                read_data_from_fixture("list_channels.data")))
+
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with CaptureStdout() as output:
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
+
+        self.assertFalse(mock_exit.mock_calls)
+
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannel",
+                                        self.fake_auth_token,
+                                        base_channel),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        base_channel),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannel",
+                                        self.fake_auth_token,
+                                        channel),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        channel)
+        ]
+        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+        expected_output = """'res4-es-i386' depends on channel 'rhel-i386-es-4' which has not been added yet
+Going to add 'rhel-i386-es-4'
+Adding 'rhel-i386-es-4' channel
+Scheduling reposync for 'rhel-i386-es-4' channel
+Adding 'res4-es-i386' channel
+Scheduling reposync for 'res4-es-i386' channel"""
+        self.assertEqual(expected_output.split("\n"), output)
+
+    def test_add_already_installed_channel(self):
+        """Test adding an already added channel.
+
+        Should only trigger the reposync for the channel"""
+
+        channel = "sles11-sp3-pool-x86_64"
+        options = get_options(
+            "add channel {0}".format(channel).split())
+
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=parse_channels(
+                read_data_from_fixture("list_channels.data")))
+
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with CaptureStdout() as output:
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
+
+        self.assertFalse(mock_exit.mock_calls)
+
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        channel)
+        ]
+        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
+        expected_output = [
+            "Channel '{0}' has already been added".format(channel),
+            "Scheduling reposync for '{0}' channel".format(channel)
+        ]
+        self.assertEqual(expected_output, output)
+
+    def test_add_unavailable_base_channel(self):
+        """Test adding an unavailable base channel
+
+        Should refuse to perform the operation, print to stderr and exit with
+        an error code"""
+
+        options = get_options(
+            "add channel sles11-sp3-vmware-pool-i586".split())
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=parse_channels(
+                read_data_from_fixture("list_channels.data")))
+
+        with CaptureStdout() as output:
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
+
+        mock_exit.assert_called_once_with(1)
+        self.assertEqual(
+            ["Channel 'sles11-sp3-vmware-pool-i586' is not available, skipping"],
+            output)
+
+    def test_add_unavailable_child_channel(self):
+        """Test adding an unavailable child channel
+
+        Should refuse to perform the operation, print to stderr and exit with
+        an error code"""
+
+        options = get_options(
+            "add channel sle10-sdk-sp4-pool-x86_64".split())
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=parse_channels(
+                read_data_from_fixture("list_channels.data")))
+
+        with CaptureStdout() as output:
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
+
+        mock_exit.assert_called_once_with(1)
+        self.assertEqual(
+            ["Channel 'sle10-sdk-sp4-pool-x86_64' is not available, skipping"],
+            output)
+
+    def test_add_available_child_channel_with_unavailable_parent(self):
+        """Test adding an available child channel which has an unavailable parent.
+
+        Should refuse to perform the operation, print to stderr and exit with
+        an error code.
+        This should never occur.
+        """
+
+        channels = parse_channels(
+            read_data_from_fixture("list_channels.data"))
+        parent = channels['rhel-i386-es-4']
+        parent.status = Channel.Status.UNAVAILABLE
+        child = 'res4-es-i386'
+
+        options = get_options(
+            "add channel {0}".format(child).split())
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=channels)
+
+        with ConsoleRecorder() as recorder:
+            with patch('sys.exit') as mock_exit:
+                self.mgr_sync.run(options)
+
+        mock_exit.assert_called_once_with(1)
+
+        expected_output = """Error, 'res4-es-i386' depends on channel 'rhel-i386-es-4' which is not available
+'res4-es-i386' has not been added"""
+
+        self.assertFalse(recorder.stdout)
+        self.assertEqual(expected_output.split("\n"),
+                         recorder.stderr)
+
