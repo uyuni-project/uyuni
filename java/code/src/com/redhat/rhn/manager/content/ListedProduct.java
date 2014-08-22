@@ -46,11 +46,11 @@ public class ListedProduct implements Comparable<ListedProduct> {
     /** The version. */
     private String version;
 
-    /** The arch. */
-    private String arch;
-
     /** The status. */
     private MgrSyncStatus status;
+
+    /** The base channel for this product. */
+    private MgrSyncChannel baseChannel;
 
     /** The channels that make up this product. */
     private Set<MgrSyncChannel> channels;
@@ -64,14 +64,14 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @param friendlyNameIn the friendly name
      * @param idIn the id
      * @param versionIn the version
-     * @param archIn the arch
+     * @param baseChannelIn the base channel
      */
     public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
-            String archIn) {
+            MgrSyncChannel baseChannelIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
-        arch = archIn;
+        baseChannel = baseChannelIn;
         status = MgrSyncStatus.AVAILABLE;
         channels = new HashSet<MgrSyncChannel>();
         extensions = new TreeSet<ListedProduct>();
@@ -102,14 +102,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
-     * Gets the arch.
-     * @return the arch
-     */
-    public String getArch() {
-        return arch;
-    }
-
-    /**
      * Gets the status.
      * @return the status
      */
@@ -124,6 +116,15 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     public void setStatus(MgrSyncStatus statusIn) {
        status = statusIn;
+    }
+
+    /**
+     * Gets the base channel.
+     *
+     * @return the base channel
+     */
+    public MgrSyncChannel getBaseChannel() {
+        return baseChannel;
     }
 
     /**
@@ -162,6 +163,15 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
+     * Gets the arch.
+     *
+     * @return the arch
+     */
+    public String getArch() {
+        return getBaseChannel().getArch();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -171,6 +181,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
         .append(getVersion(), other.getVersion())
         .append(getArch(), other.getArch())
         .append(getId(), other.getId())
+        .append(getBaseChannel().getLabel(), other.getBaseChannel().getLabel())
         .toComparison();
     }
 
@@ -195,9 +206,10 @@ public class ListedProduct implements Comparable<ListedProduct> {
         return new EqualsBuilder()
                 .append(getNormalizedName(), otherListedProduct.getNormalizedName())
                 .append(getVersion(), otherListedProduct.getVersion())
-                .append(getArch(), otherListedProduct.getArch())
                 .append(getId(), otherListedProduct.getId())
-                .isEquals();
+                .append(getBaseChannel().getLabel(),
+                        otherListedProduct.getBaseChannel().getLabel())
+                 .isEquals();
     }
 
     /**
@@ -207,7 +219,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getId())
-            .append(getArch())
+            .append(getBaseChannel().getLabel())
             .hashCode();
     }
 
@@ -220,7 +232,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
             .append("name", friendlyName)
             .append("id", id)
             .append("version", version)
-            .append("arch", arch)
+            .append("baseChannel", baseChannel.getLabel())
             .toString();
     }
 }

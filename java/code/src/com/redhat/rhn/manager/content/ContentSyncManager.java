@@ -356,24 +356,45 @@ public class ContentSyncManager {
             Collection<MgrSyncProduct> products,
             Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
 
-        // convert every MgrSyncProduct to ListedProducts objects (one per arch)
+        // get a map from channel labels to channels
+        Map<String, MgrSyncChannel> labelsTochannels =
+                new HashMap<String, MgrSyncChannel>();
+        for (Set<MgrSyncChannel> channels : productToChannelMap.values()) {
+            for (MgrSyncChannel channel : channels) {
+                labelsTochannels.put(channel.getLabel(), channel);
+            }
+        }
+
+        // get a map from every channel to its base channel
+        Map<MgrSyncChannel, MgrSyncChannel> baseChannels =
+                new HashMap<MgrSyncChannel, MgrSyncChannel>();
+        for (MgrSyncChannel channel : labelsTochannels.values()) {
+            MgrSyncChannel parent = channel;
+            while (!parent.getParent().equals("BASE")) {
+                parent = labelsTochannels.get(parent.getParent());
+            }
+            baseChannels.put(channel, parent);
+        }
+
+        // convert every MgrSyncProduct to ListedProducts objects (one per base channel)
         SortedSet<ListedProduct> all = new TreeSet<ListedProduct>();
         for (MgrSyncProduct product : products) {
             Set<MgrSyncChannel> channels = productToChannelMap.get(product);
-            Map<String, ListedProduct> archMap = new HashMap<String, ListedProduct>();
+            Map<MgrSyncChannel, ListedProduct> baseMap =
+                    new HashMap<MgrSyncChannel, ListedProduct>();
             for (MgrSyncChannel channel : channels) {
-                String arch = channel.getArch();
+                MgrSyncChannel base = baseChannels.get(channel);
 
-                ListedProduct listedProduct = archMap.get(arch);
+                ListedProduct listedProduct = baseMap.get(base);
                 if (listedProduct == null) {
                     listedProduct =  new ListedProduct(
-                            product.getName(), product.getId(), product.getVersion(), arch
+                            product.getName(), product.getId(), product.getVersion(), base
                     );
-                    archMap.put(arch, listedProduct);
+                    baseMap.put(base, listedProduct);
                 }
                 listedProduct.addChannel(channel);
             }
-            all.addAll(archMap.values());
+            all.addAll(baseMap.values());
         }
 
         // divide base from extension products
