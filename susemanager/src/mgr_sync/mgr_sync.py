@@ -17,7 +17,7 @@ import re
 import sys
 import xmlrpclib
 
-from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
+from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
@@ -50,13 +50,11 @@ class MgrSync(object):
         if filter:
             filter = filter.lower()
 
-        data = self._execute_xmlrpc_method(self.conn.sync.content,
-                                           "listChannels", self.auth.token)
-        if not data:
+        base_channels = self._fetch_remote_channels()
+
+        if not base_channels:
             print("No channels found.")
             return
-
-        base_channels = parse_channels(data)
 
         print "Available Channels%s:\n" % (expand and " (full)" or "")
         print("\nStatus:")
@@ -101,21 +99,70 @@ class MgrSync(object):
 
         return available_channels
 
+    def _fetch_remote_channels(self):
+        return parse_channels(
+            self._execute_xmlrpc_method(self.conn.sync.content,
+                                        "listChannels", self.auth.token))
+
     def _add_channels(self, channels):
+        exit_with_error = False
+        enable_checks = True
+        current_channels = []
+
         if not channels:
             channels = [self._select_channel_interactive_mode()]
+            enable_checks = False
+
+        if enable_checks:
+            current_channels = self._fetch_remote_channels()
 
         for channel in channels:
-            print("Adding {0} channel".format(channel))
-            self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "addChannel",
-                                        self.auth.token,
-                                        channel)
-            print("Scheduling reposync for {0} channel".format(channel))
+            add_channel = True
+            if enable_checks:
+                match = find_channel_by_label(channel, current_channels)
+                if match:
+                    if match.status == Channel.Status.INSTALLED:
+                        add_channel = False
+                        print("Channel '{0}' has already been added".format(
+                            channel))
+                    elif match.status == Channel.Status.UNAVAILABLE:
+                        print("Channel '{0}' is not available, skipping".format(
+                            channel))
+                        exit_with_error = 1
+                        continue
+
+                    if not match.base_channel:
+                        parent = current_channels[match.parent]
+                        if parent.status == Channel.Status.UNAVAILABLE:
+                            sys.stderr.write(
+                                "Error, '{0}' depends on channel '{1}' which is not available\n".format(
+                                    channel, parent.label))
+                            sys.stderr.write(
+                                "'{0}' has not been added\n".format(channel))
+                            exit_with_error = True
+                            continue
+                        if parent.status == Channel.Status.AVAILABLE:
+                            print("'{0}' depends on channel '{1}' which has not been added yet".format(
+                                channel, parent.label))
+                            print("Going to add '{0}'".format(
+                                parent.label))
+                            self._add_channels([parent.label])
+
+            if add_channel:
+                print("Adding '{0}' channel".format(channel))
+                self._execute_xmlrpc_method(self.conn.sync.content,
+                                            "addChannel",
+                                            self.auth.token,
+                                            channel)
+
+            print("Scheduling reposync for '{0}' channel".format(channel))
             self._execute_xmlrpc_method(self.conn.channel.software,
                                         "syncRepo",
                                         self.auth.token,
                                         channel)
+
+        if exit_with_error:
+            sys.exit(1)
 
     def _select_channel_interactive_mode(self):
         """Show not installed channels prefixing a number, then reads

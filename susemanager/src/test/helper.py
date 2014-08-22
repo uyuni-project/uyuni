@@ -32,6 +32,22 @@ class CaptureStdout(list):
         sys.stdout = self._stdout
 
 
+class ConsoleRecorder(object):
+
+    def __enter__(self):
+        self._stdout = sys.stdout
+        self._stderr = sys.stderr
+        sys.stdout = self._stringio = StringIO()
+        sys.stderr = self._stringioerr = StringIO()
+        return self
+
+    def __exit__(self, *args):
+        self.stdout = self._stringio.getvalue().splitlines()
+        self.stderr = self._stringioerr.getvalue().splitlines()
+        sys.stdout = self._stdout
+        sys.stderr = self._stderr
+
+
 def fake_user_input(*args):
     for ret_value in args:
         yield ret_value
