@@ -93,3 +93,16 @@ class ChannelTest(unittest.TestCase):
                 channels[label] = status
 
         return (channels, channels_hierarcy)
+
+    def test_find_channel_by_label(self):
+        channels = parse_channels(
+            read_data_from_fixture("list_channels.data"))
+
+        for label in ['rhel-x86_64-es-4',
+                      'sles11-sp2-updates-i586']:
+            bc = find_channel_by_label(label, channels)
+            self.assertIsNotNone(bc)
+            self.assertEqual(label, bc.label)
+
+        self.assertIsNone(find_channel_by_label('foobar', channels))
+
