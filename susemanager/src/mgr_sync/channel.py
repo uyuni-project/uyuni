@@ -89,3 +89,21 @@ def parse_channels(data):
 
     return channels
 
+
+def find_channel_by_label(label, channels):
+    """ Looks for channel with label
+    :param channels: a data structure returned by `parse_channels`
+    :param label: the label to search
+    :return: None if the channel is not found, a Channel instance otherwise
+    """
+
+    if label in channels.keys():
+        return channels[label]
+
+    for bc in channels.values():
+        matches = [c for c in bc.children if c.label == label]
+        if len(matches) == 1:
+            return matches[0]
+
+    return None
+
