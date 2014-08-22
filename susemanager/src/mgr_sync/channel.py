@@ -36,7 +36,7 @@ class Channel(object):
 
     @property
     def short_status(self):
-        return "[%s]" % str(self.status)[0]
+        return "[%s]" % str(self.status[0])
 
     def description_or_url(self):
         return (self.description + "").strip() or self.url or "N/A"
