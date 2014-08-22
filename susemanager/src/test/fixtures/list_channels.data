@@ -274,7 +274,7 @@
             }
         ], 
         "status": {
-            "value": "UNAVAILABLE"
+            "value": "AVAILABLE"
         }, 
         "summary": "RES 4", 
         "target": "RES", 
