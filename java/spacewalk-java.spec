@@ -41,9 +41,6 @@ Source1:   %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 
-Summary: Java web application files for Spacewalk
-Group: Applications/Internet
-
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
