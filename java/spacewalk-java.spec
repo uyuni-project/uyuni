@@ -40,9 +40,6 @@ Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.ta
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
 
-Summary: Java web application files for Spacewalk
-Group: Applications/Internet
-
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
