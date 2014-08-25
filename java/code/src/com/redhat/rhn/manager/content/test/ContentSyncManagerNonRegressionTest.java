@@ -119,9 +119,15 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         assertMatches("RES " + version, version, arch, product);
                     }
 
-                    // ES
                     product = i.next();
                     assertMatches("RES " + version, version, arch, product);
+
+                    if (version.equals("6")) {
+                        Iterator<ListedProduct> j = product.getExtensions().iterator();
+                        product = j.next();
+                        assertMatches("RHEL 6 Expanded Support 6.0", "6.0", arch, product);
+                        assertFalse(j.hasNext());
+                    }
                 }
             }
 
