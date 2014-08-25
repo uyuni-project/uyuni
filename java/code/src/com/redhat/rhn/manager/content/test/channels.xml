@@ -116,14 +116,14 @@
 			<product_id name="RES" version="5">1122</product_id>
 		</products>
 	</channel>
-	<channel arch="i386" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-i386" name="RES6-HA for i386" optional="N" parent="rhel-i386-server-6" product_name="RES" product_version="6" source_url="https://nu.novell.com/repo/$RCE/RES6-HA/i386/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
+	<channel arch="i386" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-i386" name="RES6-HA for i386" optional="N" parent="rhel-i386-server-6" product_name="RES-HA" product_version="6.0" source_url="https://nu.novell.com/repo/$RCE/RES6-HA/i386/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
 		<products>
-			<product_id name="RES" version="6">1138</product_id>
+			<product_id name="RES-HA" version="6.0">1132</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-x86_64" name="RES6-HA for x86_64" optional="N" parent="rhel-x86_64-server-6" product_name="RES" product_version="6" source_url="https://nu.novell.com/repo/$RCE/RES6-HA/x86_64/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
+	<channel arch="x86_64" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-x86_64" name="RES6-HA for x86_64" optional="N" parent="rhel-x86_64-server-6" product_name="RES-HA" product_version="6.0" source_url="https://nu.novell.com/repo/$RCE/RES6-HA/x86_64/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
 		<products>
-			<product_id name="RES" version="6">1138</product_id>
+			<product_id name="RES-HA" version="6.0">1132</product_id>
 		</products>
 	</channel>
 	<channel arch="i386" description="RES 6" family="RES" is_signed="N" label="res6-i386" name="RES6 for i386" optional="N" parent="rhel-i386-server-6" product_name="RES" product_version="6" source_url="https://nu.novell.com/repo/$RCE/RES6/i386/" summary="RES 6" update_tag="">
