@@ -131,6 +131,79 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link ContentSyncManager#updateChannels()} mirror credentials IDs.
+     * @throws Exception
+     */
+    public void testUpdateChannelsCredentials() throws Exception {
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        try {
+            // Temporarily rename all installed vendor channels
+            renameVendorChannels();
+
+            // Create vendor channels and set labels that exist in the xml file
+            String channelLabel1 = "sles11-sp3-pool-x86_64";
+            Channel c1 = SUSEProductTestUtils.createTestVendorChannel();
+            c1.setLabel(channelLabel1);
+            String channelLabel2 = "sles11-sp3-updates-x86_64";
+            Channel c2 = SUSEProductTestUtils.createTestVendorChannel();
+            c2.setLabel(channelLabel2);
+
+            // Setup content sources accordingly
+            ContentSource cs = new ContentSource();
+            cs.setLabel(c1.getLabel());
+            cs.setSourceUrl("UPDATE ME!");
+            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+            cs.setOrg(null);
+            cs = (ContentSource) TestUtils.saveAndReload(cs);
+            c1.getSources().add(cs);
+            TestUtils.saveAndFlush(c1);
+            cs = new ContentSource();
+            cs.setLabel(c2.getLabel());
+            cs.setSourceUrl("UPDATE ME!");
+            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
+            cs.setOrg(null);
+            cs = (ContentSource) TestUtils.saveAndReload(cs);
+            c2.getSources().add(cs);
+            TestUtils.saveAndFlush(c2);
+
+            // Setup SCC repos
+            SCCRepository repo1 = new SCCRepository();
+            repo1.setCredentialsId(1);
+            repo1.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
+            List<SCCRepository> repos = new ArrayList<SCCRepository>();
+            repos.add(repo1);
+            SCCRepository repo2 = new SCCRepository();
+            repo2.setCredentialsId(2);
+            repo2.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/sle-11-x86_64");
+            repos.add(repo2);
+
+            // Update channel information from the xml file
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.setChannelsXML(channelsXML);
+            csm.updateChannels(repos);
+
+            // Verify mirror credentials in content source repo URLs
+            c1 = ChannelFactory.lookupByLabel(channelLabel1);
+            Set<ContentSource> sources = c1.getSources();
+            for (ContentSource s : sources) {
+                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/"
+                        + "sle-11-x86_64/?credentials=mirrcred_1";
+                assertEquals(url, s.getSourceUrl());
+            }
+            c2 = ChannelFactory.lookupByLabel(channelLabel2);
+            sources = c2.getSources();
+            for (ContentSource s : sources) {
+                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/"
+                        + "sle-11-x86_64/?credentials=mirrcred_2";
+                assertEquals(url, s.getSourceUrl());
+            }
+        }
+        finally {
+            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+    }
+
+    /**
      * Test for {@link ContentSyncManager#updateSUSEProducts()} inserting a new product.
      * @throws Exception
      */
