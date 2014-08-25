@@ -98,10 +98,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             c.getSources().add(cs);
             TestUtils.saveAndFlush(c);
 
+            // Setup SCC repo
+            SCCRepository repo = new SCCRepository();
+            repo.setCredentialsId(0);
+            repo.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
+            List<SCCRepository> repos = new ArrayList<SCCRepository>();
+            repos.add(repo);
+
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels();
+            csm.updateChannels(repos);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
