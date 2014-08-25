@@ -386,13 +386,24 @@ public class ContentSyncManager {
                 MgrSyncChannel base = baseChannels.get(channel);
 
                 ListedProduct listedProduct = baseMap.get(base);
+                // if this is a new product
                 if (listedProduct == null) {
-                    listedProduct =  new ListedProduct(
-                            product.getName(), product.getId(), product.getVersion(), base
-                    );
-                    baseMap.put(base, listedProduct);
+                    SUSEProduct dbProduct =
+                            SUSEProductFactory.lookupByProductId(product.getId());
+                    PackageArch arch = dbProduct.getArch();
+                    // and if the base channel arch matches the product arch
+                    if (arch == null || arch.getName().equals(base.getArch())) {
+                        // add it to the product map
+                        listedProduct =
+                                new ListedProduct(product.getName(), product.getId(),
+                                        product.getVersion(), base);
+                        listedProduct.addChannel(channel);
+                        baseMap.put(base, listedProduct);
+                    }
                 }
-                listedProduct.addChannel(channel);
+                else {
+                    listedProduct.addChannel(channel);
+                }
             }
             all.addAll(baseMap.values());
         }
@@ -502,20 +513,6 @@ public class ContentSyncManager {
                 }
                 product.getExtensions().removeAll(sp1ProductsInSp2);
             }
-        }
-
-        // remove products with arch not matching the channel
-        Collection<ListedProduct> wrongArch = new LinkedList<ListedProduct>();
-        for (ListedProduct product : all) {
-            SUSEProduct dbProduct = SUSEProductFactory.lookupByProductId(product.getId());
-            PackageArch arch = dbProduct.getArch();
-            if (arch != null && !arch.getName().equals(product.getArch())) {
-                wrongArch.add(product);
-            }
-        }
-        bases.removeAll(wrongArch);
-        for (ListedProduct product : bases) {
-            product.getExtensions().removeAll(wrongArch);
         }
     }
 
