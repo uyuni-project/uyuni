@@ -38,38 +38,14 @@ class MgrSyncTest(unittest.TestCase):
         type(self.mgr_sync.auth).token = PropertyMock(
             return_value=self.fake_auth_token)
 
-    def test_list_emtpy_channel(self):
-        options = get_options("list channel".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
-            self.mgr_sync.run(options)
-        self.assertEqual(output, ["No channels found."])
-
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
-
-    def test_list_channels(self):
-        options = get_options("list channels".split())
-        stubbed_xmlrpm_call = MagicMock(return_value=[])
-        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
-            self.mgr_sync.run(options)
-        self.assertEqual(output, ["No channels found."])
-
-        stubbed_xmlrpm_call.assert_called_once_with(
-            self.mgr_sync.conn.sync.content,
-            "listChannels",
-            self.fake_auth_token)
-
     def test_refresh(self):
         """ Test the refresh action """
 
         options = get_options("refresh".split())
         stubbed_xmlrpm_call = MagicMock(return_value=True)
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        stubbed_reposync = MagicMock()
+        self.mgr_sync._schedule_channel_reposync = stubbed_reposync
         with CaptureStdout() as output:
             self.mgr_sync.run(options)
 
@@ -103,6 +79,75 @@ Refreshing Upgrade paths                       [DONE]"""
                                         self.fake_auth_token)
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
+        self.assertFalse(stubbed_reposync.mock_calls)
+
+    def test_refresh_enable_reposync(self):
+        """ Test the refresh action """
+
+        options = get_options("refresh --enable-reposync".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+
+        expected_output = """Refreshing Channels                            [DONE]
+Refreshing Channel families                    [DONE]
+Refreshing SUSE products                       [DONE]
+Refreshing SUSE Product channels               [DONE]
+Refreshing Subscriptions                       [DONE]
+Refreshing Upgrade paths                       [DONE]
+
+Scheduling refresh of all the available channels
+Scheduling reposync for 'sles10-sp4-pool-x86_64' channel
+Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        expected_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannels",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannelFamilies",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProducts",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProductChannels",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeSubscriptions",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeUpgradePaths",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "listChannels",
+                                        self.fake_auth_token),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        "sles10-sp4-pool-x86_64"),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
+                                        "syncRepo",
+                                        self.fake_auth_token,
+                                        "sle10-sdk-sp4-updates-x86_64"),
+        ]
+        stubbed_xmlrpm_call.assert_has_calls(expected_calls)
+
+    def test_list_channels_no_channels(self):
+        options = get_options("list channels".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=[])
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        self.assertEqual(output, ["No channels found."])
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
 
     def test_list_channels(self):
         """ Testing list channel output """

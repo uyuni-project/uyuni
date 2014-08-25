@@ -159,14 +159,17 @@ class MgrSync(object):
                                             self.auth.token,
                                             channel)
 
-            print("Scheduling reposync for '{0}' channel".format(channel))
-            self._execute_xmlrpc_method(self.conn.channel.software,
-                                        "syncRepo",
-                                        self.auth.token,
-                                        channel)
+            self._schedule_channel_reposync(channel)
 
         if exit_with_error:
             sys.exit(1)
+
+    def _schedule_channel_reposync(self, channel):
+        print("Scheduling reposync for '{0}' channel".format(channel))
+        self._execute_xmlrpc_method(self.conn.channel.software,
+                                    "syncRepo",
+                                    self.auth.token,
+                                    channel)
 
     def _select_channel_interactive_mode(self):
         """Show not installed channels prefixing a number, then reads
@@ -209,7 +212,7 @@ class MgrSync(object):
         for product in products:
             product.to_stdout(filter=filter)
 
-    def _refresh(self):
+    def _refresh(self, enable_reposync):
         """
         Refresh the SCC data in the SUSE Manager database.
         """
@@ -238,6 +241,21 @@ class MgrSync(object):
                 sys.stdout.flush()
                 sys.stderr.write("\tError: %s\n\n" % ex)
                 sys.exit(1)
+
+        if enable_reposync:
+            print("\nScheduling refresh of all the available channels")
+
+            base_channels = self._fetch_remote_channels()
+            for bc_label in sorted(base_channels.keys()):
+                bc = base_channels[bc_label]
+
+                if bc.status != Channel.Status.INSTALLED:
+                    continue
+
+                self._schedule_channel_reposync(bc.label)
+                for child in bc.children:
+                    if child.status == Channel.Status.INSTALLED:
+                        self._schedule_channel_reposync(child.label)
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """
@@ -287,7 +305,7 @@ class MgrSync(object):
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
         elif vars(options).has_key('refresh'):
-            self._refresh()
+            self._refresh(enable_reposync=options.enable_reposync)
 
     def _check_session_fail(self, exception):
         """
