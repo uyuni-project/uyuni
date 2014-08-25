@@ -100,7 +100,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Setup SCC repo
             SCCRepository repo = new SCCRepository();
-            repo.setCredentialsId(0);
             repo.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
