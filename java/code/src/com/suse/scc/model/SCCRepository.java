@@ -29,6 +29,9 @@ public class SCCRepository {
     private String url;
     private boolean autorefresh;
 
+    // Store the mirror credentials ID
+    private int credentialsId;
+
     /**
      * @return the id
      */
@@ -111,6 +114,22 @@ public class SCCRepository {
      */
     public void setAutorefresh(boolean autorefresh) {
         this.autorefresh = autorefresh;
+    }
+
+    /**
+     * Get the mirror credentials ID.
+     * @return the credentialsId
+     */
+    public int getCredentialsId() {
+        return credentialsId;
+    }
+
+    /**
+     * Set the mirror credentials ID this repo can be retrieved with.
+     * @param credentialsId the credentials ID to set
+     */
+    public void setCredentialsId(int credentialsIdIn) {
+        this.credentialsId = credentialsIdIn;
     }
 
     /* (non-Javadoc)
