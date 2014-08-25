@@ -275,7 +275,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         }
                     }
 
-                    if (sp.equals("2")) {
+                    if (sp.equals("2") || sp.equals("3")) {
                         product = j.next();
                         assertMatches("SUSE WebYaST 1.3", "1.3", arch, product);
                     }
