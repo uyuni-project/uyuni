@@ -86,7 +86,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeChannels(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
-        new ContentSyncManager().updateChannels();
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateChannels(csm.getRepositories());
         return BaseHandler.VALID;
     }
 
