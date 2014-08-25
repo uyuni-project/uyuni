@@ -669,6 +669,8 @@ public class ContentSyncManager {
             if (channelsXML.containsKey(cs.getLabel())) {
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 Integer credsId = isMirrorable(channel, repos);
+                // TODO: if (credsId == null) { ... }
+                // Remove the content source?
                 String sourceURL = setupSourceURL(channel.getSourceUrl(), credsId);
                 if (!cs.getSourceUrl().equals(sourceURL)) {
                     cs.setSourceUrl(sourceURL);
