@@ -38,16 +38,29 @@ class Product(object):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
                                       self.arch)
 
-    def to_stdout(self, indentation_level=0):
+    def to_stdout(self, indentation_level=0, filter=None):
         prefix = indentation_level * "  "
-        print(prefix + self.to_ascii_row())
-        indentation_level += 1
-        for ext in self.extensions:
-            ext.to_stdout(indentation_level=indentation_level)
+
+        if not filter or self.matches_filter(filter):
+            print(prefix + self.to_ascii_row())
+            indentation_level += 1
+            for ext in self.extensions:
+                ext.to_stdout(indentation_level=indentation_level,
+                              filter=filter)
 
     def _parse_extensions(self, data):
         for extension in data:
             self.extensions.append(Product(extension))
+
+    def matches_filter(self, filter):
+        if not self.extensions:
+            return filter in self.to_ascii_row().lower()
+        else:
+            for ext in self.extensions:
+                if ext.matches_filter(filter):
+                    return True
+
+        return False
 
 
 def parse_products(data):

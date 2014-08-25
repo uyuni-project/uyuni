@@ -216,6 +216,37 @@ Status:
             "listChannels",
             self.fake_auth_token)
 
+    def test_list_channels_filter_show_parent_when_child_matches(self):
+        """ Testing list channel output when a filter is set.  Should show the 
+        parent even if it does not match the filter as long as one of his
+        children match the filter.
+        """
+
+        options = get_options("list channel --filter update".split())
+        stubbed_xmlrpm_call = MagicMock(
+            return_value=read_data_from_fixture(
+                'list_channels_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+        expected_output = """Available Channels:
+
+
+Status:
+  - I - channel is installed
+  - A - channel is not installed, but is available
+  - U - channel is unavailable
+
+[I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
+    [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listChannels",
+            self.fake_auth_token)
+
     def test_list_channels_interactive(self):
         """ Test listing channels when interactive more is set """
         stubbed_xmlrpm_call = MagicMock(
@@ -468,6 +499,38 @@ Status:
 [A] SUSE Manager Proxy 1.2 (x86_64)
 [A] SUSE Manager Proxy 1.7 (x86_64)
 [A] SUSE Manager Proxy 2.1 (x86_64)"""
+
+        self.assertEqual(expected_output.split("\n"), output)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
+
+    def test_list_products_with_filtering_matches_also_children(self):
+        """ Test listing products with filtering should match children even when
+        their parent does not.
+        """
+
+        options = get_options("list product --filter cloud".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
+            'list_products.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with CaptureStdout() as output:
+            self.mgr_sync.run(options)
+
+        expected_output = """Available Products:
+
+
+Status:
+  - I - channel is installed
+  - A - channel is not installed, but is available
+
+[A] SUSE Linux Enterprise Server 11 SP2 (x86_64)
+  [A] SUSE Cloud 1.0 (x86_64)
+[A] SUSE Linux Enterprise Server 11 SP3 (x86_64)
+  [A] SUSE Cloud 2.0 (x86_64)
+  [A] SUSE Cloud 3 (x86_64)"""
 
         self.assertEqual(expected_output.split("\n"), output)
 
