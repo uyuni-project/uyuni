@@ -66,19 +66,8 @@ class MgrSync(object):
             base_channel = base_channels[bc_label]
 
             prefix = ""
-            output = base_channel.to_ascii_row(compact)
-
-            if not filter or filter in output.lower():
-                if base_channel.status == Channel.Status.AVAILABLE:
-                    interactive_number += 1
-                    if show_interactive_numbers:
-                        prefix = "%.2d) " % interactive_number
-                    available_channels.append(base_channel.label)
-                elif show_interactive_numbers:
-                    prefix = "    "
-                print(prefix + output)
-            else:
-                continue
+            parent_output = base_channel.to_ascii_row(compact)
+            children_output = []
 
             if base_channel.status in (Channel.Status.INSTALLED,
                                        Channel.Status.AVAILABLE):
@@ -95,7 +84,22 @@ class MgrSync(object):
                             elif show_interactive_numbers:
                                 prefix = "    "
 
-                            print("    " + prefix + output)
+                            children_output.append("    " + prefix + output)
+
+            if not filter or filter in parent_output.lower() or children_output:
+                prefix = ""
+
+                if base_channel.status == Channel.Status.AVAILABLE:
+                    interactive_number += 1
+                    if show_interactive_numbers:
+                        prefix = "%.2d) " % interactive_number
+                    available_channels.append(base_channel.label)
+                elif show_interactive_numbers:
+                    prefix = "    "
+                print(prefix + parent_output)
+
+                for child_output in children_output:
+                    print(child_output)
 
         return available_channels
 
@@ -203,8 +207,7 @@ class MgrSync(object):
         print("  - A - channel is not installed, but is available\n")
 
         for product in products:
-            if not filter or filter in product.friendly_name.lower():
-                product.to_stdout()
+            product.to_stdout(filter=filter)
 
     def _refresh(self):
         """
