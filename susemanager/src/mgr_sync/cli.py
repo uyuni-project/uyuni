@@ -96,6 +96,13 @@ def _create_refresh_subparser(subparsers):
                                            help='Refresh product, channel and subscription')
     refresh_parser.set_defaults(refresh=True)
 
+    refresh_parser.add_argument(
+        '--enable-reposync',
+        action='store_true',
+        dest='enable_reposync',
+        default=False,
+        help='Schedule a refresh of all the installed channels.')
+ 
 def get_options(args=None):
     """ Parsers the command line options and returns them. """
     return _create_parser().parse_args(args)
