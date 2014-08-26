@@ -38,6 +38,7 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
+        self.mgr_sync._current_backend_is_scc = MagicMock(return_value=True)
 
     def test_refresh(self):
         """ Test the refresh action """

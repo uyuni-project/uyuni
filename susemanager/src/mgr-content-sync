@@ -19,7 +19,9 @@ import socket
 import sys
 import xmlrpclib
 
+from spacewalk.susemanager.authenticator import Authenticator
 from spacewalk.susemanager.content_sync_helper import *
+
 
 def get_options(args=None):
     """ Parsers the command line options and returns them. """
@@ -48,16 +50,22 @@ if len(sys.argv) == 1:
 
 options = get_options(args=args)
 
+connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
+    socket.getfqdn(), 80, "/rpc/api"))
+auth = Authenticator(connection=connection,
+                     user=None,
+                     password=None,
+                     token=None)
+
 if vars(options).has_key('status'):
     print("The {0} backend is currently in use.".format(
-        current_backend().value))
+        current_backend(connection, auth.token()).value))
     sys.exit(0)
 
 if vars(options).has_key('migrate'):
-    if current_backend() == BackendType.NCC:
-        connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
-            socket.getfqdn(), 80, "/rpc/api"))
-        switch_to_scc(connection)
+    token = auth.token()
+    if current_backend(connection, token) == BackendType.NCC:
+        switch_to_scc(connection, token)
         print("SCC backend successfully migrated.")
     else:
         print("SUSE Manager is already using the SCC backend.")
