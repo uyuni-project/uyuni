@@ -2681,7 +2681,7 @@
 		<products>
 			<product_id name="SUSE_SLED" version="11.2">879</product_id>
 			<product_id name="SUSE_SLED" version="11.2">844</product_id>
-			<product_id name="SUSE_SLED" version="11.2">834</product_id>
+			<product_id name="SUSE_SLED" version="11.2">843</product_id>
 			<product_id name="SUSE_SLED" version="11.2">868</product_id>
 		</products>
 	</channel>
