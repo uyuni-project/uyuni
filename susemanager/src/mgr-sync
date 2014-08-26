@@ -15,9 +15,9 @@
 # in this software or its documentation.
 
 import socket
+import sys
 
 from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.helpers import cli_msg
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 
 
@@ -26,13 +26,13 @@ options = get_options()
 try:
     MgrSync().run(options)
 except socket.error, ex:
-    cli_msg("Network error: %s" % ex, stderr=True)
+    sys.stderr.write("Network error: %s\n" % ex)
     if options.verbose:
         raise
 except KeyboardInterrupt, ex:
-    cli_msg("\n")
+    sys.stdout.write("\n")
 except Exception, ex:
-    cli_msg("General error: %s" % ex, stderr=True)
+    sys.stderr.write("General error: %s\n" % ex)
     if options.verbose:
         raise
 

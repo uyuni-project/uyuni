@@ -15,14 +15,6 @@
 
 import getpass
 import re
-import sys
-
-
-def cli_msg(message, stderr=True):
-    """
-    Print the message to the STDERR or STDOUT.
-    """
-    print >> (stderr and sys.stderr or sys.stdout), message + "\n"
 
 
 def cli_ask(msg, password=False, validator=None):
