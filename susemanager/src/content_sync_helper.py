@@ -13,13 +13,7 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-import os
 from enum import Enum
-
-from spacewalk.susemanager.authenticator import Authenticator
-
-
-MASTER_SWITCH_FILE = "/var/lib/spacewalk/scc/migrated"
 
 
 class BackendType(str, Enum):
@@ -27,19 +21,12 @@ class BackendType(str, Enum):
     SCC = "SCC"
 
 
-def current_backend():
+def current_backend(connection, token):
     """ Returns an instance of `BackendType` """
 
-    if os.path.isfile(MASTER_SWITCH_FILE):
-        return BackendType.SCC
-    else:
-        return BackendType.NCC
+    return BackendType(
+        connection.sync.content.currentContentSyncBackend(token))
 
 
-def switch_to_scc(connection):
-    auth = Authenticator(connection=connection,
-                         user=None,
-                         password=None,
-                         token=None)
-
-    connection.sync.content.performMigration(auth.token())
+def switch_to_scc(connection, token):
+    connection.sync.content.performMigration(token)
