@@ -11,6 +11,7 @@ SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
 										mgr_register mgr_clean_old_patchnames \
 										mgr_delete_patch \
 										authenticator \
+										content_sync_helper \
 										helpers \
 										simpleproduct errata_helper package_helper\
 										mgr_sync/__init__ \
@@ -21,7 +22,7 @@ SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
 										mgr_sync/product \
 										mgr_sync/version
 SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
-	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
+	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync mgr-content-sync
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 
