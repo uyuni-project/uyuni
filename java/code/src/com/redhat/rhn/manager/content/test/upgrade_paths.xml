@@ -19,7 +19,7 @@
 	<upgrade from_pdid="745" from_product="SUSE_SLES-11.1-None.s390x" to_pdid="755" to_product="SUSE_SLES-11.2-None.s390x"/>
 	<upgrade from_pdid="753" from_product="SUSE_SLES-11.2-None.i386" to_pdid="813" to_product="SUSE_SLES-11.3-None.i386"/>
 	<upgrade from_pdid="754" from_product="SUSE_SLES-11.2-None.s390" to_pdid="795" to_product="SUSE_SLES-11.3-None.s390"/>
-	<upgrade from_pdid="755" from_product="SUSE_SLES-11.2-None.s390x" to_pdid="834" to_product="SUSE_SLES-SP3-migration-11.2-None.s390x"/>
+	<upgrade from_pdid="755" from_product="SUSE_SLES-11.2-None.s390x" to_pdid="693" to_product="SUSE_SLES-11.3-None.s390x"/>
 	<upgrade from_pdid="768" from_product="SUSE_SLES-11.1-None.i486" to_pdid="723" to_product="SUSE_SLES-11.2-None.i486"/>
 	<upgrade from_pdid="769" from_product="SUSE_SLES-11.1-None.x86_64" to_pdid="690" to_product="SUSE_SLES-11.2-None.x86_64"/>
 	<upgrade from_pdid="777" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.i586" to_pdid="752" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i586"/>
@@ -34,7 +34,6 @@
 	<upgrade from_pdid="808" from_product="SUSE-Linux-Enterprise-Server-SP3-10-None.i486" to_pdid="687" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.i486"/>
 	<upgrade from_pdid="811" from_product="SUSE_SLES-11.2-None.i586" to_pdid="793" to_product="SUSE_SLES-11.3-None.i586"/>
 	<upgrade from_pdid="821" from_product="SUSE-Linux-Enterprise-Server-SP2-10-None.ppc64" to_pdid="689" to_product="SUSE-Linux-Enterprise-Server-SP4-10-None.ppc64"/>
-	<upgrade from_pdid="834" from_product="SUSE_SLES-SP3-migration-11.2-None.s390x" to_pdid="693" to_product="SUSE_SLES-11.3-None.s390x"/>
 	<upgrade from_pdid="840" from_product="SUSE_SLED-11.1-None.i486" to_pdid="844" to_product="SUSE_SLED-11.2-None.i486"/>
 	<upgrade from_pdid="843" from_product="SUSE_SLED-11.2-None.i586" to_pdid="892" to_product="SUSE_SLED-11.3-None.i586"/>
 	<upgrade from_pdid="844" from_product="SUSE_SLED-11.2-None.i486" to_pdid="869" to_product="SUSE_SLED-11.3-None.i486"/>
