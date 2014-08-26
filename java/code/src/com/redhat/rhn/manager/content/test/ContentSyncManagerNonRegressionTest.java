@@ -177,8 +177,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
-                            new TypeToken<List<SCCProduct>>() {
-                            }.getType());
+                    new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
 
@@ -204,9 +203,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         for (String label : ENTITLED_LABELS) {
             ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
             if (cf == null) {
-                cf =
-                        ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                                MANY_MEMBERS, 0L, true, TestUtils.randomString());
+                cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                    MANY_MEMBERS, 0L, true, TestUtils.randomString());
                 cf.setName(label);
                 ChannelFamilyFactory.save(cf);
             }
