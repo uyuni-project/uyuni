@@ -41,13 +41,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Tests for {@link ContentSyncManager} against expected output from previous
  * tool, mgr-ncc-sync.
  */
 public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
-
     // Files we read
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
@@ -56,7 +57,6 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
     /** Channel family labels that are entitled in the scope of this non regression test. */
     private static final List<String> ENTITLED_LABELS = new LinkedList<String>() { {
-        // from UC7
         add("SLE-HAE-PPC"); add("RES"); add("SMS");
         add("SMP"); add("SUSE_CLOUD"); add("DSMP");
         add("MONO"); add("7261"); add("7260");
@@ -70,16 +70,15 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("RES-HA"); add("SLE-HAE-IA"); add("WEBYAST");
         add("jeos"); add("SLM"); add("Moblin-2-Samsung");
         add("nVidia"); add("STUDIOONSITERUNNER"); add("SLE-HAE-Z");
-        add("SLE-HAE-X86"); add("SLES-IA");
-        // others
-        add("SLE-HAE-GEO");
+        add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
     } };
 
     // channel family members
     private static final long MANY_MEMBERS = 20000L;
 
     /**
-     * Tests listProducts() against known correct output (originally from mgr-ncc-sync).
+     * Tests listProducts() against known correct output (originally from
+     * mgr-ncc-sync).
      * @throws Exception if anything goes wrong
      */
     @SuppressWarnings("unchecked")
@@ -92,7 +91,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
 
-            // ensure all needed channel families have enough entitlements, so that channels
+            // ensure all needed channel families have enough entitlements, so
+            // that channels
             // are available later
             ensureChannelFamiliesAreEntitled();
 
@@ -101,7 +101,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
-                            new TypeToken<List<SCCProduct>>() { } .getType());
+                    new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
 
@@ -116,12 +116,16 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             Iterator<ListedProduct> i = products.iterator();
             ListedProduct base = null;
             Iterator<ListedProduct> j = IteratorUtils.EMPTY_ITERATOR;
-            for (String line : (List<String>)FileUtils.readLines(expectedProductsCSV)) {
+            for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
                 String version = expected.next();
                 String arch = expected.next();
                 boolean isBase = expected.next().equals("base");
+                SortedSet<String> channelLabels = new TreeSet<String>();
+                while (expected.hasNext()) {
+                    channelLabels.add(expected.next());
+                }
 
                 if (isBase) {
                     if (j.hasNext()) {
@@ -131,9 +135,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                     base = i.next();
 
-                    assertEquals(friendlyName, base.getFriendlyName());
-                    assertEquals(version, base.getVersion());
-                    assertEquals(arch, base.getArch());
+                    assertProductMatches(friendlyName, version, arch, channelLabels, base);
 
                     j = base.getExtensions().iterator();
                 }
@@ -144,9 +146,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     }
                     ListedProduct extension = j.next();
 
-                    assertEquals(friendlyName, extension.getFriendlyName());
-                    assertEquals(version, extension.getVersion());
-                    assertEquals(arch, extension.getArch());
+                    assertProductMatches(friendlyName, version, arch, channelLabels,
+                            extension);
                 }
             }
             if (i.hasNext()) {
@@ -176,7 +177,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
-                            new TypeToken<List<SCCProduct>>() { } .getType());
+                            new TypeToken<List<SCCProduct>>() {
+                            }.getType());
 
             ContentSyncManager csm = new ContentSyncManager();
 
@@ -202,8 +204,9 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         for (String label : ENTITLED_LABELS) {
             ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
             if (cf == null) {
-                cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                    MANY_MEMBERS, 0L, true, TestUtils.randomString());
+                cf =
+                        ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                                MANY_MEMBERS, 0L, true, TestUtils.randomString());
                 cf.setName(label);
                 ChannelFamilyFactory.save(cf);
             }
@@ -213,5 +216,27 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
         }
+    }
+
+    /**
+     * Check that a product matches expected attributes.
+     * @param friendlyName the expected friendly name
+     * @param version the expected version
+     * @param arch the expected arch
+     * @param channelLabels the expected channel labels
+     * @param product the actual product
+     */
+    public void assertProductMatches(String friendlyName, String version, String arch,
+            SortedSet<String> channelLabels, ListedProduct product) {
+        System.out.println("Checking product " + product.getId() + " (" + friendlyName
+                + ", " + arch + ")");
+        assertEquals(friendlyName, product.getFriendlyName());
+        assertEquals(version, product.getVersion());
+        assertEquals(arch, product.getArch());
+        SortedSet<String> actualChannelLabels = new TreeSet<String>();
+        for (MgrSyncChannel channel : product.getChannels()) {
+            actualChannelLabels.add(channel.getLabel());
+        }
+        assertEquals(channelLabels.toString(), actualChannelLabels.toString());
     }
 }
