@@ -8,7 +8,7 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 from optparse import OptionParser
 
 sys.path.append("/usr/share/susemanager")
-
+PKG_BACKEND = os.path.isfile("/var/lib/spacewalk/scc/migrated") and "SCC" or "NCC"
 
 initCFG('server.susemanager')
 rhnSQL.initDB()
@@ -77,11 +77,11 @@ def list_labels():
     synced_products = map(lambda x: x['id'], rhnSQL.fetchall_dict(_sql_synced_proucts) or [])
 
     for label in sorted(mgr_bootstrap_data.DATA.iterkeys()):
-        if mgr_bootstrap_data.DATA[label]['PDID'] in synced_products:
+        if mgr_bootstrap_data.DATA[label]['PDID'][PKG_BACKEND] in synced_products:
             print "%s" % label
 
 def create_repo(label):
-    pdid = int(mgr_bootstrap_data.DATA[label]['PDID'])
+    pdid = int(mgr_bootstrap_data.DATA[label]['PDID'][PKG_BACKEND])
     destdir = mgr_bootstrap_data.DATA[label]['DEST']
 
     if not os.path.exists(destdir):
