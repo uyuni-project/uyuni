@@ -20,6 +20,7 @@ import optparse
 import xml.etree.ElementTree as etree
 
 from spacewalk.susemanager import mgr_ncc_sync_lib
+from spacewalk.susemanager.content_sync_helper import current_backend, BackendType
 
 
 def main():
@@ -76,6 +77,11 @@ def main():
                       help="URL of a local mirror like SMT. Only to download the RPMs.")
 
     (options, args) = parser.parse_args()
+
+    if current_backend() == BackendType.SCC:
+        print "mgr-ncc-sync cannot be used when the SCC backend is activated."
+        print "Please use the 'mgr-sync' tool."
+        sys.exit(1)
 
     syncer = mgr_ncc_sync_lib.NCCSync(quiet=options.quiet,
                                       debug=options.debug,
