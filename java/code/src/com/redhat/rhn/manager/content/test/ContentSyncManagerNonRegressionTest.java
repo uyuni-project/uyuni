@@ -233,7 +233,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         assertEquals(arch, product.getArch());
         SortedSet<String> actualChannelLabels = new TreeSet<String>();
         for (MgrSyncChannel channel : product.getChannels()) {
-            actualChannelLabels.add(channel.getLabel());
+            String actualLabel = channel.getLabel();
+            // mandatory channels have a trailing * in the CSV file
+            if (!channel.isOptional()) {
+                actualLabel += "*";
+            }
+            actualChannelLabels.add(actualLabel);
         }
         assertEquals(channelLabels.toString(), actualChannelLabels.toString());
     }
