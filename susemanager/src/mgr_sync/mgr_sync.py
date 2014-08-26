@@ -35,7 +35,10 @@ class MgrSync(object):
                                   self.config.port,
                                   self.config.uri)
         self.conn = xmlrpclib.ServerProxy(url)
-        self.auth = Authenticator(self.conn, self.config)
+        self.auth = Authenticator(connection=self.conn,
+                                  user=self.config.user,
+                                  password=self.config.password,
+                                  token=self.config.token)
         self.quiet = False
 
     def _list_channels(self, expand, filter, no_optionals,
@@ -106,7 +109,7 @@ class MgrSync(object):
     def _fetch_remote_channels(self):
         return parse_channels(
             self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "listChannels", self.auth.token))
+                                        "listChannels", self.auth.token()))
 
     def _add_channels(self, channels):
         exit_with_error = False
@@ -156,7 +159,7 @@ class MgrSync(object):
                 print("Adding '{0}' channel".format(channel))
                 self._execute_xmlrpc_method(self.conn.sync.content,
                                             "addChannel",
-                                            self.auth.token,
+                                            self.auth.token(),
                                             channel)
 
             self._schedule_channel_reposync(channel)
@@ -168,7 +171,7 @@ class MgrSync(object):
         print("Scheduling reposync for '{0}' channel".format(channel))
         self._execute_xmlrpc_method(self.conn.channel.software,
                                     "syncRepo",
-                                    self.auth.token,
+                                    self.auth.token(),
                                     channel)
 
     def _select_channel_interactive_mode(self):
@@ -197,7 +200,7 @@ class MgrSync(object):
             filter = filter.lower()
 
         data = self._execute_xmlrpc_method(self.conn.sync.content,
-                                           "listProducts", self.auth.token)
+                                           "listProducts", self.auth.token())
         if not data:
             print("No products found.")
             return
@@ -233,7 +236,7 @@ class MgrSync(object):
             sys.stdout.flush()
             try:
                 self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                            self.auth.token)
+                                            self.auth.token())
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
@@ -274,7 +277,7 @@ class MgrSync(object):
         except xmlrpclib.Fault, ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.auth.discard_token()
-                auth_token = self.auth.token
+                auth_token = self.auth.token()
                 return self._execute_xmlrpc_method(
                     endoint, method, auth_token, *params,
                     retry_on_session_failure=False)
@@ -286,7 +289,6 @@ class MgrSync(object):
         Run the app.
         """
         self.quiet = not options.verbose
-        self.auth.persist = options.saveconfig
         if vars(options).has_key('list_target'):
             if 'channel' in options.list_target:
                 self._list_channels(expand=options.expand,
@@ -306,6 +308,16 @@ class MgrSync(object):
                 sys.exit(1)
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.enable_reposync)
+
+        if options.saveconfig and self.auth.has_credentials():
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
+            print("credentials has been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        if self.auth.token(connect=False):
+            self.config.token = self.auth.token(connect=False)
+            self.config.write()
 
     def _check_session_fail(self, exception):
         """

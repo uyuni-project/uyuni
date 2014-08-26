@@ -19,7 +19,7 @@ import unittest2 as unittest
 import os.path
 import sys
 
-from mock import MagicMock, PropertyMock, call, patch
+from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
@@ -35,8 +35,9 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
         self.fake_auth_token = "fake_token"
-        type(self.mgr_sync.auth).token = PropertyMock(
+        self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
+        self.mgr_sync.config.write = MagicMock()
 
     def test_refresh(self):
         """ Test the refresh action """
