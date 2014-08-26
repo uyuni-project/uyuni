@@ -30,6 +30,10 @@ def get_options(args=None):
     parser = argparse.ArgumentParser(
         prog='mgr-content-sync',
         description="Manage SUSE Manager content sync backend.")
+
+    parser.add_argument('-v', '--verbose', default=False,
+                        action='store_true', help='Be verbose')
+
     subparsers = parser.add_subparsers(title='Subcommands')
 
     migrate_parser = subparsers.add_parser(
@@ -44,29 +48,39 @@ def get_options(args=None):
 
     return parser.parse_args(args)
 
+
+def main(options):
+    connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
+        socket.getfqdn(), 80, "/rpc/api"))
+    auth = Authenticator(connection=connection,
+                         user=None,
+                         password=None,
+                         token=None)
+
+    if vars(options).has_key('status'):
+        print("The {0} backend is currently in use.".format(
+            current_backend(connection, auth.token()).value))
+        sys.exit(0)
+
+    if vars(options).has_key('migrate'):
+        token = auth.token()
+        if current_backend(connection, token) == BackendType.NCC:
+            switch_to_scc(connection, token)
+            print("SCC backend successfully migrated.")
+        else:
+            print("SUSE Manager is already using the SCC backend.")
+
 args = None
 if len(sys.argv) == 1:
     args = ["status"]
 
 options = get_options(args=args)
 
-connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
-    socket.getfqdn(), 80, "/rpc/api"))
-auth = Authenticator(connection=connection,
-                     user=None,
-                     password=None,
-                     token=None)
-
-if vars(options).has_key('status'):
-    print("The {0} backend is currently in use.".format(
-        current_backend(connection, auth.token()).value))
-    sys.exit(0)
-
-if vars(options).has_key('migrate'):
-    token = auth.token()
-    if current_backend(connection, token) == BackendType.NCC:
-        switch_to_scc(connection, token)
-        print("SCC backend successfully migrated.")
+try:
+    main(options)
+except Exception, ex:
+    sys.stderr.write("Error: %s\n" % ex)
+    if options.verbose:
+        raise
     else:
-        print("SUSE Manager is already using the SCC backend.")
-
+        sys.exit(1)

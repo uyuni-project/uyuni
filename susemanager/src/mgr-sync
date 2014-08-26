@@ -35,4 +35,5 @@ except Exception, ex:
     sys.stderr.write("General error: %s\n" % ex)
     if options.verbose:
         raise
-
+    else:
+        sys.exit(1)
