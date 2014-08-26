@@ -21,7 +21,7 @@ from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find
 from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
-from spacewalk.susemanager.mgr_sync.helpers import cli_msg, cli_ask
+from spacewalk.susemanager.mgr_sync.helpers import cli_ask
 
 
 class MgrSync(object):
