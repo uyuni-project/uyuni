@@ -13,7 +13,7 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-from helpers import cli_msg, cli_ask
+from helpers import cli_ask
 
 
 class Authenticator(object):
@@ -21,34 +21,26 @@ class Authenticator(object):
     Cache authentication, implements password-less connect.
     """
 
-    def __init__(self, conn, config):
-        self.conn = conn
-        self.config = config
-        self.persist = None
+    def __init__(self, connection, user, password, token):
+        self.connection = connection
 
-        self._token = self.config.token
-        self.uid = self.config.user
-        self.password = self.config.password
+        self._token = token
+        self.user = user
+        self.password = password
 
-    @property
-    def token(self):
+    def token(self, connect=True):
         """
         Authenticate user.
         """
-        if not self._token:
-            if not self.uid or not self.password:
+        if not self._token and connect:
+            if not self.user or not self.password:
                 self._get_credentials_interactive()
-            self._token = self.conn.auth.login(self.uid, self.password)
-            self.config.token = self._token
-
-            if self.persist:
-                self.config.user = self.uid
-                self.config.password = self.password
-                cli_msg("Credentials has been saved to the %s file.\n" % self.config.dotfile)
-
-            self.config.write()
+            self._token = self.connection.auth.login(self.user, self.password)
 
         return self._token
+
+    def has_credentials(self):
+        return self.user and self.password
 
     def discard_token(self):
         """
@@ -56,7 +48,6 @@ class Authenticator(object):
         """
 
         self._token = None
-        self.config.write()
 
     def _get_credentials_interactive(self):
         """
@@ -64,7 +55,7 @@ class Authenticator(object):
         """
 
         print "SUSE Manager needs you to login as an administrator."
-        self.uid = cli_ask("    User")
+        self.user = cli_ask("    User")
         self.password = cli_ask("Password", password=True)
 
 
