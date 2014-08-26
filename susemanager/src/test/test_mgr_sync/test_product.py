@@ -22,7 +22,7 @@ import unittest2 as unittest
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import read_data_from_fixture, CaptureStdout
+from helper import read_data_from_fixture, ConsoleRecorder
 
 
 class ProductTest(unittest.TestCase):
@@ -53,19 +53,19 @@ class ProductTest(unittest.TestCase):
 
     def test_to_stdout(self):
         sles11sp3_s390x = next(p for p in self.products if p.friendly_name == 'SUSE Linux Enterprise Server 11 SP3' and p.arch == 's390x')
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             sles11sp3_s390x.to_stdout()
 
         expected_output = """[A] SUSE Linux Enterprise Server 11 SP3 (s390x)
   [A] SUSE Linux Enterprise High Availability Extension 11 SP3 (s390x)
   [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (s390x)"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         res4 = next(p for p in self.products if p.friendly_name == 'RES 4' and p.arch == 'i386')
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             res4.to_stdout()
 
         expected_output = ["[A] RES 4 (i386)"]
-        self.assertEqual(expected_output, output)
+        self.assertEqual(expected_output, recorder.stdout)
 

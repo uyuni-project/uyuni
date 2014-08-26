@@ -22,7 +22,7 @@ import sys
 from mock import MagicMock, PropertyMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from helper import CaptureStdout, ConsoleRecorder, read_data_from_fixture
+from helper import ConsoleRecorder, read_data_from_fixture
 
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
@@ -46,7 +46,7 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         stubbed_reposync = MagicMock()
         self.mgr_sync._schedule_channel_reposync = stubbed_reposync
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
         expected_output = """Refreshing Channels                            [DONE]
@@ -56,7 +56,7 @@ Refreshing SUSE Product channels               [DONE]
 Refreshing Subscriptions                       [DONE]
 Refreshing Upgrade paths                       [DONE]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
@@ -87,7 +87,7 @@ Refreshing Upgrade paths                       [DONE]"""
         options = get_options("refresh --enable-reposync".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
         expected_output = """Refreshing Channels                            [DONE]
@@ -101,7 +101,7 @@ Scheduling refresh of all the available channels
 Scheduling reposync for 'sles10-sp4-pool-x86_64' channel
 Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
@@ -140,9 +140,9 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         options = get_options("list channels".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        self.assertEqual(output, ["No channels found."])
+        self.assertEqual(recorder.stdout, ["No channels found."])
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -154,7 +154,7 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         options = get_options("list channel".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture('list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
 
@@ -169,7 +169,7 @@ Status:
     [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -183,7 +183,7 @@ Status:
             return_value=read_data_from_fixture(
                 'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
 
@@ -198,7 +198,7 @@ Status:
     [A] sle10-sdk-sp4-pool-x86_64
     [I] sle10-sdk-sp4-updates-x86_64"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -212,7 +212,7 @@ Status:
             return_value=read_data_from_fixture(
                 'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels (full):
 
@@ -228,7 +228,7 @@ Status:
     [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -242,7 +242,7 @@ Status:
             return_value=read_data_from_fixture(
                 'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
 
@@ -254,7 +254,7 @@ Status:
 
 [A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -272,7 +272,7 @@ Status:
             return_value=read_data_from_fixture(
                 'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
         expected_output = """Available Channels:
 
@@ -285,7 +285,7 @@ Status:
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -299,7 +299,7 @@ Status:
                 'list_channels_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
         available_channels = []
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             available_channels = self.mgr_sync._list_channels(
                 expand=False,
                 filter=None,
@@ -318,7 +318,7 @@ Status:
     02) [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
         [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -332,9 +332,9 @@ Status:
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        self.assertEqual(output, ["No products found."])
+        self.assertEqual(recorder.stdout, ["No products found."])
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -345,9 +345,9 @@ Status:
         options = get_options("list product".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
-        self.assertEqual(output, ["No products found."])
+        self.assertEqual(recorder.stdout, ["No products found."])
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -361,7 +361,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
             'list_products.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
         expected_output = """Available Products:
@@ -517,7 +517,7 @@ Status:
 [A] SUSE Manager Server 2.1 (x86_64)
 [A] SUSE Studio OnSite 1.3 (x86_64)"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -531,7 +531,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
             'list_products.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
         expected_output = """Available Products:
@@ -545,7 +545,7 @@ Status:
 [A] SUSE Manager Proxy 1.7 (x86_64)
 [A] SUSE Manager Proxy 2.1 (x86_64)"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -561,7 +561,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
             'list_products.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             self.mgr_sync.run(options)
 
         expected_output = """Available Products:
@@ -577,7 +577,7 @@ Status:
   [A] SUSE Cloud 2.0 (x86_64)
   [A] SUSE Cloud 3 (x86_64)"""
 
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         stubbed_xmlrpm_call.assert_called_once_with(
             self.mgr_sync.conn.sync.content,
@@ -597,14 +597,14 @@ Status:
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
             mock.return_value = str(
                 available_channels.index(chosen_channel) + 1)
-            with CaptureStdout() as output:
+            with ConsoleRecorder() as recorder:
                 self.mgr_sync.run(options)
 
         expected_output = [
             "Adding '{0}' channel".format(chosen_channel),
             "Scheduling reposync for '{0}' channel".format(chosen_channel)
         ]
-        self.assertEqual(expected_output, output)
+        self.assertEqual(expected_output, recorder.stdout)
 
         self.mgr_sync._list_channels.assert_called_once_with(
             expand=False, filter=None, no_optionals=True,
@@ -637,7 +637,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             with patch('sys.exit') as mock_exit:
                 self.mgr_sync.run(options)
 
@@ -659,7 +659,7 @@ Status:
             "Adding '{0}' channel".format(channel),
             "Scheduling reposync for '{0}' channel".format(channel)
         ]
-        self.assertEqual(expected_output, output)
+        self.assertEqual(expected_output, recorder.stdout)
 
     def test_add_available_channel_with_available_base_channel(self):
         """ Test adding an available channel whose parent is available.
@@ -678,7 +678,7 @@ Status:
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             with patch('sys.exit') as mock_exit:
                 self.mgr_sync.run(options)
 
@@ -710,7 +710,7 @@ Adding 'rhel-i386-es-4' channel
 Scheduling reposync for 'rhel-i386-es-4' channel
 Adding 'res4-es-i386' channel
 Scheduling reposync for 'res4-es-i386' channel"""
-        self.assertEqual(expected_output.split("\n"), output)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
     def test_add_already_installed_channel(self):
         """Test adding an already added channel.
@@ -728,7 +728,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             with patch('sys.exit') as mock_exit:
                 self.mgr_sync.run(options)
 
@@ -746,7 +746,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             "Channel '{0}' has already been added".format(channel),
             "Scheduling reposync for '{0}' channel".format(channel)
         ]
-        self.assertEqual(expected_output, output)
+        self.assertEqual(expected_output, recorder.stdout)
 
     def test_add_unavailable_base_channel(self):
         """Test adding an unavailable base channel
@@ -760,14 +760,14 @@ Scheduling reposync for 'res4-es-i386' channel"""
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data")))
 
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             with patch('sys.exit') as mock_exit:
                 self.mgr_sync.run(options)
 
         mock_exit.assert_called_once_with(1)
         self.assertEqual(
             ["Channel 'sles11-sp3-vmware-pool-i586' is not available, skipping"],
-            output)
+            recorder.stdout)
 
     def test_add_unavailable_child_channel(self):
         """Test adding an unavailable child channel
@@ -781,14 +781,14 @@ Scheduling reposync for 'res4-es-i386' channel"""
             return_value=parse_channels(
                 read_data_from_fixture("list_channels.data")))
 
-        with CaptureStdout() as output:
+        with ConsoleRecorder() as recorder:
             with patch('sys.exit') as mock_exit:
                 self.mgr_sync.run(options)
 
         mock_exit.assert_called_once_with(1)
         self.assertEqual(
             ["Channel 'sle10-sdk-sp4-pool-x86_64' is not available, skipping"],
-            output)
+            recorder.stdout)
 
     def test_add_available_child_channel_with_unavailable_parent(self):
         """Test adding an available child channel which has an unavailable parent.
