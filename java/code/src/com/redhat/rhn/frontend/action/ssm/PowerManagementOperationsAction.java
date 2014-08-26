@@ -100,7 +100,7 @@ public class PowerManagementOperationsAction extends RhnAction implements
         }
 
         PowerManagementAction.setUpPowerTypes(request, strutsDelegate, errors);
-        PowerManagementAction.ensureAgentInstalled(request, strutsDelegate, errors);
+
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 

@@ -98,7 +98,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
 
         Map<String, String> types = PowerManagementAction.setUpPowerTypes(request,
                 strutsDelegate, errors);
-        PowerManagementAction.ensureAgentInstalled(request, strutsDelegate, errors);
+
         if (!types.isEmpty()) {
             types.put(
                 LocalizationService.getInstance().getPlainText(

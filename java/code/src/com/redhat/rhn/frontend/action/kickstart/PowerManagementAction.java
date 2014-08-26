@@ -180,7 +180,7 @@ public class PowerManagementAction extends RhnAction {
         request.setAttribute(RequestContext.SYSTEM, server);
 
         SortedMap<String, String> types = setUpPowerTypes(request, strutsDelegate, errors);
-        ensureAgentInstalled(request, strutsDelegate, errors);
+
         if (types.size() > 0) {
             SystemRecord record = getSystemRecord(user, server);
 
@@ -237,26 +237,4 @@ public class PowerManagementAction extends RhnAction {
             CobblerXMLRPCHelper.getConnection(user), server.getCobblerId());
     }
 
-    /**
-     * Ensure a fence agent is installed, raise an error and disable fields if not
-     * @param request the current request
-     * @param strutsDelegate the Struts delegate
-     * @param errors ActionErrors that might have already been raised
-     */
-    public static void ensureAgentInstalled(HttpServletRequest request,
-            StrutsDelegate strutsDelegate, ActionErrors errors) {
-        // written this way instead of one rpm command because if any of the rpms passed
-        // to a single rpm command are not installed the return status is 1
-        String[] rhelRpm = { "rpm", "-q", "fence-agents" };
-        String[] fedoraRpm = { "rpm", "-q", "fence-agents-all" };
-        String[] fedoraSpecificRpm = { "rpm", "-q", "fence-agents" };
-        SystemCommandExecutor ce = new SystemCommandExecutor();
-        if (ce.execute(rhelRpm) != 0 && ce.execute(fedoraRpm) != 0 &&
-                ce.execute(fedoraSpecificRpm) != 0) {
-            strutsDelegate.addError(errors, "cobbler.powermanagement.no_fence_agents");
-            strutsDelegate.saveMessages(request, errors);
-            // overwrite types with an empty list to disable pages
-            request.setAttribute(TYPES, new TreeMap<String, String>());
-        }
-    }
 }
