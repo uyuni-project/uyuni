@@ -34,6 +34,14 @@ import java.io.IOException;
 public class ContentSyncHandler extends BaseHandler {
 
     /**
+     * Type of content sync backend available.
+     */
+    public enum ContentSyncBackendType {
+        SCC,
+        NCC
+    }
+
+    /**
      * List all accessible products.
      *
      * @param sessionKey Session token.
@@ -238,5 +246,27 @@ public class ContentSyncHandler extends BaseHandler {
             throw new ContentSyncException(e);
         }
         return BaseHandler.VALID;
+    }
+
+    /**
+     * Returns the name of the content sync backend in use.
+     *
+     * @param sessionKey user session token
+     * @return String
+     *
+     * @xmlrpc.doc Returns the name of the content sync backend in use.
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype string backend - either "SCC" or "NCC"
+     */
+    public String currentContentSyncBackend(String sessionKey) {
+        BaseHandler.getLoggedInUser(sessionKey);
+        File migrationDoneFile = new File(ContentSyncManager.SCC_MIGRATED);
+
+        if (migrationDoneFile.exists()) {
+            return ContentSyncBackendType.SCC.toString();
+        }
+        else {
+            return ContentSyncBackendType.NCC.toString();
+        }
     }
 }
