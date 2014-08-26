@@ -31,10 +31,12 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.scc.model.SCCProduct;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -50,6 +52,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String PRODUCTS_JSON = JARPATH + "products.json";
+    private static final String EXPECTED_PRODUCTS_CSV = JARPATH + "expected_products.csv";
 
     /** Channel family labels that are entitled in the scope of this non regression test. */
     private static final List<String> ENTITLED_LABELS = new LinkedList<String>() { {
@@ -79,9 +82,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * Tests listProducts() against known correct output (originally from mgr-ncc-sync).
      * @throws Exception if anything goes wrong
      */
+    @SuppressWarnings("unchecked")
     public void testListProducts() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
+        File expectedProductsCSV =
+                new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
         try {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
@@ -108,246 +114,50 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
             Iterator<ListedProduct> i = products.iterator();
-            ListedProduct product = null;
+            ListedProduct base = null;
+            Iterator<ListedProduct> j = IteratorUtils.EMPTY_ITERATOR;
+            for (String line : (List<String>)FileUtils.readLines(expectedProductsCSV)) {
+                Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
+                String friendlyName = expected.next();
+                String version = expected.next();
+                String arch = expected.next();
+                boolean isBase = expected.next().equals("base");
 
-            // RES
-            for (String version : new String[] {"4", "5", "6"}) {
-                for (String arch : new String[] {"i386", "x86_64"}) {
-                    if (version.equals("4")) {
-                        // AS
-                        product = i.next();
-                        assertMatches("RES " + version, version, arch, product);
+                if (isBase) {
+                    if (j.hasNext()) {
+                        fail("Base product " + base.toString()
+                                + " should not have extension " + j.next().toString());
                     }
 
-                    product = i.next();
-                    assertMatches("RES " + version, version, arch, product);
+                    base = i.next();
 
-                    if (version.equals("6")) {
-                        Iterator<ListedProduct> j = product.getExtensions().iterator();
-                        product = j.next();
-                        assertMatches("RHEL 6 Expanded Support 6.0", "6.0", arch, product);
-                        assertFalse(j.hasNext());
+                    assertEquals(friendlyName, base.getFriendlyName());
+                    assertEquals(version, base.getVersion());
+                    assertEquals(arch, base.getArch());
+
+                    j = base.getExtensions().iterator();
+                }
+                else {
+                    if (!j.hasNext()) {
+                        fail("Base product " + base.toString()
+                                + " should have an extension named " + friendlyName);
                     }
+                    ListedProduct extension = j.next();
+
+                    assertEquals(friendlyName, extension.getFriendlyName());
+                    assertEquals(version, extension.getVersion());
+                    assertEquals(arch, extension.getArch());
                 }
             }
-
-            // SLED 11
-            for (String sp : new String[] {"2", "3"}) {
-                for (String arch : new String[] {"i586", "x86_64"}) {
-                    product = i.next();
-                    assertMatches("SUSE Linux Enterprise Desktop 11 SP" + sp, "11." + sp,
-                            arch, product);
-
-                    Iterator<ListedProduct> j = product.getExtensions().iterator();
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP"
-                            + sp, "11." + sp, arch, product);
-                    assertFalse(j.hasNext());
-                }
+            if (i.hasNext()) {
+                fail("Unexpected base product " + i.next().toString());
             }
-
-            // SLES 11 for SAP
-            for (String sp : new String[] {"1", "2", "3"}) {
-                product = i.next();
-                assertMatches("SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP" + sp,
-                        "11." + sp, "x86_64", product);
-
-                Iterator<ListedProduct> j = product.getExtensions().iterator();
-                product = j.next();
-                assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP" + sp,
-                        "11." + sp, "x86_64", product);
-
-                if (sp.equals("3")) {
-                    product = j.next();
-                    assertMatches(
-                            "SUSE Linux Enterprise Subscription Management Tool 11 SP" + sp,
-                            "11." + sp, "x86_64", product);
-                }
-
-                assertFalse(j.hasNext());
+            if (j.hasNext()) {
+                fail("Unexpected extension product " + j.next().toString());
             }
-
-            // SLES 10
-            for (String sp : new String[] {"3", "4"}) {
-                for (String arch : new String[] {"i586", "ia64", "ppc",
-                        "s390x", "x86_64"}) {
-                    product = i.next();
-                    assertMatches("SUSE Linux Enterprise Server 10 SP" + sp, "10." + sp,
-                            arch, product);
-
-                    Iterator<ListedProduct> j = product.getExtensions().iterator();
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise Software Development Kit 10 SP"
-                            + sp, "10." + sp, arch, product);
-                    assertFalse(j.hasNext());
-                }
-            }
-
-            // SLES 11
-            for (String sp : new String[] {"1", "2", "3"}) {
-                for (String arch : new String[] {"i586", "ia64", "ppc64", "s390x",
-                        "x86_64"}) {
-                    product = i.next();
-                    assertEquals("SUSE Linux Enterprise Server 11 SP" + sp,
-                            product.getFriendlyName());
-                    assertEquals("11." + sp, product.getVersion());
-                    assertEquals(arch, product.getArch());
-
-                    Iterator<ListedProduct> j = product.getExtensions().iterator();
-
-                    if (sp.equals("1") && arch.equals("x86_64")) {
-                        product = j.next();
-                        assertMatches("Novell Open Enterprise Server 2 11", "11", arch,
-                                product);
-                    }
-
-                    if (sp.equals("2") && arch.equals("x86_64")) {
-                        product = j.next();
-                        assertMatches("Novell Open Enterprise Server 2 11.1", "11.1",
-                                arch, product);
-
-                        product = j.next();
-                        assertMatches("SUSE Cloud 1.0", "1.0", arch, product);
-
-                        product = j.next();
-                        assertMatches("SUSE Lifecycle Management Server 1.3", "1.3", arch,
-                                product);
-                    }
-
-                    if (sp.equals("3")) {
-                        if (arch.equals("x86_64") || arch.equals("i586") ||
-                                arch.equals("s390x")) {
-                            product = j.next();
-                            assertMatches(
-                                "Geo Clustering for SUSE Linux Enterprise " +
-                                "High Availability Extension 11 SP3", "11.3", arch,
-                                product);
-                        }
-
-                        if (arch.equals("x86_64")) {
-                            product = j.next();
-                            assertMatches("Novell Open Enterprise Server 2 11.2", "11.2",
-                                    arch, product);
-
-                            product = j.next();
-                            assertMatches("SUSE Cloud 2.0", "2.0", arch, product);
-
-                            product = j.next();
-                            assertMatches("SUSE Cloud 3", "3", arch, product);
-                        }
-                    }
-
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise High Availability Extension 11 SP"
-                            + sp, "11." + sp, arch, product);
-
-                    if ((sp.equals("1") || sp.equals("3")) &&
-                        (arch.equals("i586") || arch.equals("x86_64"))) {
-                        product = j.next();
-                        assertMatches("SUSE Linux Enterprise Point of Service 11 SP" + sp,
-                                "11." + sp, arch, product);
-                    }
-
-                    if (arch.equals("x86_64")) {
-                        product = j.next();
-                        assertMatches("SUSE Linux Enterprise Real Time 11", "11." + sp,
-                                "x86_64", product);
-                    }
-
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP"
-                            + sp, "11." + sp, arch, product);
-
-                    if ((arch.equals("i586") || arch.equals("x86_64") ||
-                            arch.equals("s390x"))) {
-
-                        if (sp.equals("1")) {
-                            product = j.next();
-                            assertMatches(
-                                "SUSE Linux Enterprise Subscription Management Tool 11",
-                                "11", arch, product);
-                        }
-                        if (sp.equals("2") || sp.equals("3")) {
-                            product = j.next();
-                            assertMatches(
-                                "SUSE Linux Enterprise Subscription Management Tool 11" +
-                                " SP" + sp, "11." + sp, arch, product);
-                        }
-                    }
-
-                    if (sp.equals("2") || sp.equals("3")) {
-                        product = j.next();
-                        assertMatches("SUSE WebYaST 1.3", "1.3", arch, product);
-                    }
-
-                    // note: mono extensions were dropped
-                    assertFalse(j.hasNext());
-                }
-
-                // SLES 11 for VMWare
-                for (String arch : new String[] {"i586", "x86_64"}) {
-                    product = i.next();
-                    assertMatches("SUSE Linux Enterprise Server 11 SP" + sp + " VMWare",
-                            "11." + sp, arch, product);
-
-                    Iterator<ListedProduct> j = product.getExtensions().iterator();
-
-                    if (sp.equals("3")) {
-                        product = j.next();
-                        assertMatches("Geo Clustering for SUSE Linux Enterprise "
-                                + "High Availability Extension 11 SP3", "11.3", arch,
-                                product);
-                    }
-
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise High Availability Extension 11 SP"
-                            + sp, "11." + sp, arch, product);
-
-                    product = j.next();
-                    assertMatches("SUSE Linux Enterprise Software Development Kit 11 SP"
-                            + sp, "11." + sp, arch, product);
-
-                    if (sp.equals("1")) {
-                        product = j.next();
-                        assertMatches(
-                                "SUSE Linux Enterprise Subscription Management Tool 11",
-                                "11", arch, product);
-                    }
-                    if (sp.equals("2") || sp.equals("3")) {
-                        product = j.next();
-                        assertMatches(
-                                "SUSE Linux Enterprise Subscription Management Tool 11" +
-                                " SP" + sp, "11." + sp, arch, product);
-                    }
-
-                    if (sp.equals("3")) {
-                        product = j.next();
-                        assertMatches("SUSE WebYaST 1.3", "1.3", arch, product);
-                    }
-
-                    assertFalse(j.hasNext());
-                }
-            }
-
-            //TODO: SLES 12 assertions
-
-            // SUSE Manager
-            for (String version : new String[]{"1.2", "1.7", "2.1"}) {
-                product = i.next();
-                assertMatches("SUSE Manager Proxy " + version, version, "x86_64", product);
-            }
-            for (String arch : new String[]{"s390x", "x86_64"}) {
-                product = i.next();
-                assertMatches("SUSE Manager Server 2.1", "2.1", arch, product);
-            }
-
-            // SUSE Studio
-            product = i.next();
-            assertMatches("SUSE Studio OnSite 1.3", "1.3", "x86_64", product);
-
-            assertFalse(i.hasNext());
         }
         finally {
+            SUSEProductTestUtils.deleteIfTempFile(expectedProductsCSV);
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
@@ -403,20 +213,5 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
         }
-    }
-
-    /**
-     * Asserts that a product matches some fields.
-     *
-     * @param friendlyName the friendly name
-     * @param version the version
-     * @param arch the arch
-     * @param product the product
-     */
-    private void assertMatches(String friendlyName, String version, String arch,
-            ListedProduct product) {
-        assertEquals(friendlyName, product.getFriendlyName());
-        assertEquals(version, product.getVersion());
-        assertEquals(arch, product.getArch());
     }
 }
