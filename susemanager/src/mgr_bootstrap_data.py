@@ -61,6 +61,35 @@ PKGLIST11 = [
                 "zypper"
             ]
 
+PKGLIST12 = [
+                "dbus-1-python",
+                "libcurl4",
+                "libnewt0_52",
+                "libnl",
+                "libsqlite3-0",
+                "python-libxml2",
+                "libzypp",
+                "newt",
+                "python",
+                "python-dmidecode",
+                "python-ethtool",
+                "python-newt",
+                "python-pyOpenSSL",
+                "python-xml",
+                "rhnlib",
+                "rpm-python",
+                "libsolv-tools",
+                "slang",
+                "spacewalk-check",
+                "spacewalk-client-setup",
+                "spacewalk-client-tools",
+                "spacewalksd",
+                "suseRegisterInfo",
+                "zypp-plugin-python",
+                "zypp-plugin-spacewalk",
+                "zypper"
+            ]
+
 DATA = {
     'SLE-11-SP1-i586' : {
                           'PDID' : 1826, 'PKGLIST' : PKGLIST11,
@@ -169,6 +198,26 @@ DATA = {
     'SLES4SAP-11-SP3-x86_64' : {
                           'PDID' : 4160, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
+                        },
+    'SLE-12-SP1-i586' : {
+                          'PDID' : 0, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-ia64' : {
+                          'PDID' : 0, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-ppc64' : {
+                          'PDID' : 0, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-s390x' : {
+                          'PDID' : 0, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-x86_64' : {
+                          'PDID' : 0, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
 }
 
