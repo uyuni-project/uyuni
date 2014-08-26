@@ -2612,19 +2612,6 @@
 			<product_id name="SUSE_SLED" version="11.3">902</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sled11-sp1-suse-manager-tools-i586" name="SLED11-SP1-SUSE-Manager-Tools i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-i586/" summary="SUSE Manager Tools" update_tag="slesctsp1">
-		<products>
-			<product_id name="SUSE_SLED" version="11.1">928</product_id>
-			<product_id name="SUSE_SLED" version="11.1">840</product_id>
-			<product_id name="SUSE_SLED" version="11.1">853</product_id>
-			<product_id name="SUSE_SLED" version="11.1">927</product_id>
-		</products>
-	</channel>
-	<channel arch="x86_64" description="SUSE Manager Tools" family="7260" is_signed="Y" label="sled11-sp1-suse-manager-tools-x86_64" name="SLED11-SP1-SUSE-Manager-Tools x86_64" optional="N" parent="sled11-sp1-pool-x86_64" product_name="SUSE_SLED" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/SLES11-SP1-SUSE-Manager-Tools/sle-11-x86_64/" summary="SUSE Manager Tools" update_tag="slesctsp1">
-		<products>
-			<product_id name="SUSE_SLED" version="11.1">887</product_id>
-		</products>
-	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Desktop 11 SP2 i586" family="7260" is_signed="Y" label="sled11-sp1-updates-i586" name="SLED11-SP1-Updates for i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLED11-SP1-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Desktop 11 SP2 i586" update_tag="sledsp1">
 		<products>
 			<product_id name="SUSE_SLED" version="11.2">843</product_id>
