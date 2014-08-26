@@ -8,15 +8,15 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
-                    mgr_register mgr_clean_old_patchnames \
-                    mgr_delete_patch \
-                    simpleproduct errata_helper package_helper\
+										mgr_register mgr_clean_old_patchnames \
+										mgr_delete_patch \
+										authenticator \
+										helpers \
+										simpleproduct errata_helper package_helper\
 										mgr_sync/__init__ \
-										mgr_sync/authenticator \
 										mgr_sync/cli \
 										mgr_sync/channel \
 										mgr_sync/config \
-										mgr_sync/helpers \
 										mgr_sync/mgr_sync \
 										mgr_sync/product \
 										mgr_sync/version
