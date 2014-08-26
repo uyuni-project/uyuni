@@ -13,7 +13,7 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-from helpers import cli_ask
+from spacewalk.susemanager.helpers import cli_ask
 
 
 class Authenticator(object):

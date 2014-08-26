@@ -20,8 +20,8 @@ import xmlrpclib
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
-from spacewalk.susemanager.mgr_sync.authenticator import Authenticator
-from spacewalk.susemanager.mgr_sync.helpers import cli_ask
+from spacewalk.susemanager.authenticator import Authenticator
+from spacewalk.susemanager.helpers import cli_ask
 
 
 class MgrSync(object):

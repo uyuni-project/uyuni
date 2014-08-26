@@ -21,7 +21,7 @@ import re
 import unittest2 as unittest
 import sys
 
-from spacewalk.susemanager.mgr_sync.helpers import cli_ask
+from spacewalk.susemanager.helpers import cli_ask
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import FakeStdin
