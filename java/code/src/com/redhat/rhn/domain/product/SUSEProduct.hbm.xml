@@ -22,7 +22,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="productList" column="product_list" type="char" />
     <property name="productId" column="product_id" type="int" />
   </class>
-  <query name="SUSEProduct.findByProductId">
-    <![CDATA[from com.redhat.rhn.domain.product.SUSEProduct as p where p.productId = :id]]>
+
+  <query name="SUSEProduct.clear">
+    <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProduct]]>
   </query>
 </hibernate-mapping>

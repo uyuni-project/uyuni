@@ -54,6 +54,7 @@ Requires: jfreechart >= 1.0.9
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: dwr >= 3
+Requires: google-gson >= 2.2.4
 %if 0%{?fedora}
 Requires: hibernate3 >= 3.6.10
 Requires: hibernate3-c3p0 >= 3.6.10
@@ -164,6 +165,7 @@ BuildRequires: concurrent
 BuildRequires: cglib
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
+BuildRequires: google-gson >= 2.2.4
 %if 0%{?fedora}
 BuildRequires: hibernate3 >= 0:3.6.10
 BuildRequires: hibernate3-c3p0 >= 3.6.10
@@ -553,6 +555,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 
 %if 0%{?suse_version}
+install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs
 %else
 install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
@@ -759,6 +762,7 @@ fi
 %{jardir}/concurrent.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
+%{jardir}/google-gson.jar
 %{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
@@ -864,6 +868,7 @@ fi
 %{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
+%attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %dir %{appdir}/rhn/WEB-INF

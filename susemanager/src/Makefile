@@ -8,11 +8,21 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
-                          mgr_register mgr_clean_old_patchnames \
-                          mgr_delete_patch \
-                          simpleproduct errata_helper package_helper
+										mgr_register mgr_clean_old_patchnames \
+										mgr_delete_patch \
+										authenticator \
+										content_sync_helper \
+										helpers \
+										simpleproduct errata_helper package_helper\
+										mgr_sync/__init__ \
+										mgr_sync/cli \
+										mgr_sync/channel \
+										mgr_sync/config \
+										mgr_sync/mgr_sync \
+										mgr_sync/product \
+										mgr_sync/version
 SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
-	   mgr-create-bootstrap-repo mgr-delete-patch
+	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync mgr-content-sync
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 
@@ -32,4 +42,5 @@ all :: $(SCRIPTS)
 install :: $(SCRIPTS) $(PREFIX)/$(SBINDIR) $(SUMA_INSTALL_DATA_FILES)
 	$(INSTALL_BIN) $(SCRIPTS) $(PREFIX)/$(SBINDIR)
 	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager
+	$(INSTALL_DIR) $(PREFIX)/$(SPACEWALK_DEST)/mgr_sync
 	$(INSTALL_DATA) $(SUMA_INSTALL_DATA_FILES) $(PREFIX)/usr/share/susemanager

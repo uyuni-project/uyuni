@@ -182,5 +182,4 @@ select sgm.group_id as id,
  order by upper(sg.name)
   </query>
 </mode>
-
 </datasource_modes>

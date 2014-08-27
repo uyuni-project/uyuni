@@ -15,17 +15,21 @@
 
 package com.redhat.rhn.domain.product;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.hibernate.Session;
-
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SUSEProductFactory - the class used to fetch and store
@@ -35,9 +39,50 @@ import com.redhat.rhn.domain.server.Server;
 public class SUSEProductFactory extends HibernateFactory {
 
     private static Logger log = Logger.getLogger(SUSEProductFactory.class);
+    private static SUSEProductFactory singleton = new SUSEProductFactory();
 
     private SUSEProductFactory() {
         super();
+    }
+
+    /**
+     * Insert or update a SUSEProduct.
+     * @param product SUSE product to be inserted into the database.
+     */
+    public static void save(SUSEProduct product) {
+        singleton.saveObject(product);
+    }
+
+    /**
+     * Insert or update a {@link SUSEProductChannel}.
+     * @param productChannel SUSE product channel relationship to be inserted.
+     */
+    public static void save(SUSEProductChannel productChannel) {
+        singleton.saveObject(productChannel);
+    }
+
+    /**
+     * Insert or update a {@link SUSEUpgradePath}.
+     * @param upgradePath upgrade path to be inserted.
+     */
+    public static void save(SUSEUpgradePath upgradePath) {
+        singleton.saveObject(upgradePath);
+    }
+
+    /**
+     * Delete a {@link SUSEProductChannel} from the database.
+     * @param productChannel SUSE product channel relationship to be deleted.
+     */
+    public static void remove(SUSEProductChannel productChannel) {
+        singleton.removeObject(productChannel);
+    }
+
+    /**
+     * Delete a {@link SUSEUpgradePath} from the database.
+     * @param upgradePath upgrade path to be deleted.
+     */
+    public static void remove(SUSEUpgradePath upgradePath) {
+        singleton.removeObject(upgradePath);
     }
 
     /**
@@ -80,27 +125,36 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Find a {@link SUSEProduct} given by name, version, release and arch.
      * @param name name
-     * @param version version
-     * @param release release
-     * @param arch arch
-     * @return product
+     * @param version version or null
+     * @param release release or null
+     * @param arch arch or null
+     * @return product or null if it is not found
      */
-    @SuppressWarnings("unchecked")
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch) {
-        SUSEProduct product = null;
-        SelectMode mode = ModeFactory.getMode("System_queries", "find_suse_product_id");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("name", name.toLowerCase());
-        params.put("version", version != null ? version.toLowerCase() : "");
-        params.put("release", release != null ? release.toLowerCase() : "");
-        params.put("arch", arch != null ? arch.toLowerCase() : "");
-        DataResult<Map<String, Object>> result = mode.execute(params);
-        if (!result.isEmpty()) {
-            Map<String, Object> firstrow = result.get(0);
-            product = getProductById((Long) firstrow.get("id"));
+
+        Criteria c = getSession().createCriteria(SUSEProduct.class);
+        c.add(Restrictions.eq("name", name.toLowerCase()));
+        if (version == null) {
+            c.add(Restrictions.isNull("version"));
         }
-        return product;
+        else {
+            c.add(Restrictions.eq("version", version.toLowerCase()));
+        }
+        if (release == null) {
+            c.add(Restrictions.isNull("release"));
+        }
+        else {
+            c.add(Restrictions.eq("release", release.toLowerCase()));
+        }
+        if (arch == null) {
+            c.add(Restrictions.isNull("arch"));
+        }
+        else {
+            c.add(Restrictions.eq("arch", PackageFactory.lookupPackageArchByLabel(arch)));
+        }
+
+        return (SUSEProduct) c.uniqueResult();
     }
 
     /**
@@ -112,6 +166,80 @@ public class SUSEProductFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         SUSEProduct p = (SUSEProduct) session.get(SUSEProduct.class, id);
         return p;
+    }
+
+    /**
+     * Lookup a {@link SUSEProduct} object for given productId.
+     * @return SUSE product for given productId
+     */
+    public static SUSEProduct lookupByProductId(int productId) {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProduct.class);
+        c.add(Restrictions.eq("productId", productId));
+        return (SUSEProduct) c.uniqueResult();
+    }
+
+    /**
+     * Find all {@link SUSEProductChannel} relationships.
+     * @return list of SUSE product channel relationships
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProductChannel> findAllSUSEProductChannels() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEProductChannel.class);
+        return c.list();
+    }
+
+    /**
+     * Find SUSE Product Channel by label and product_id from the product table.
+     * @param channelLabel the label of the channel.
+     * @param productId product id.
+     * @return SUSE Product Channel if it is there.
+     */
+    public static SUSEProductChannel lookupSUSEProductChannel(
+            String channelLabel, int productId) {
+        Criteria c = HibernateFactory.getSession().createCriteria(SUSEProductChannel.class);
+        c.add(Restrictions.eq("channelLabel", channelLabel));
+        @SuppressWarnings("unchecked")
+        List<SUSEProductChannel> channels = c.list();
+        for (SUSEProductChannel channel : channels) {
+            if (channel.getProduct().getProductId() == productId) {
+                return channel;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Find all {@link SUSEUpgradePath}.
+     * @return list of upgrade paths
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEUpgradePath> findAllSUSEUpgradePaths() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(SUSEUpgradePath.class);
+        return c.list();
+    }
+
+    /**
+     * Find all {@link SUSEProduct}.
+     * @return list of all known products
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SUSEProduct> findAllSUSEProducts() {
+        return getSession().createCriteria(SUSEProduct.class).list();
+    }
+
+
+    /**
+     * Resets all product data.
+     */
+    public static void clearAllProducts() {
+        Session session = getSession();
+        session.getNamedQuery("SUSEProductChannel.clear").executeUpdate();
+        session.getNamedQuery("SUSEProduct.clear").executeUpdate();
+        session.getNamedQuery("SUSEUpgradePath.clear").executeUpdate();
     }
 
     /**

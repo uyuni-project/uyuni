@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.redhat.rhn.domain.product.SUSEProductChannel"
+         table="suseProductChannel">
+    <composite-id>
+      <key-many-to-one name="product"
+        column="product_id"
+        class="com.redhat.rhn.domain.product.SUSEProduct" />
+      <key-property name="channelLabel" column="channel_label" type="string" />
+    </composite-id>
+    <many-to-one name="channel" column="channel_id" class="com.redhat.rhn.domain.channel.Channel" />
+    <property name="parentChannelLabel" column="parent_channel_label" type="string" />
+    <property name="created" column="created" type="timestamp" insert="false" update="false" />
+    <property name="modified" column="modified" type="timestamp" insert="false" update="false" />
+  </class>
+
+  <query name="SUSEProductChannel.clear">
+    <![CDATA[delete from com.redhat.rhn.domain.product.SUSEProductChannel]]>
+  </query>
+</hibernate-mapping>

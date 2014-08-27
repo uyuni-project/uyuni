@@ -1222,4 +1222,69 @@ public class ChannelFactory extends HibernateFactory {
     public static void lock(Channel c) {
         singleton.lockObject(Channel.class, c.getId());
     }
+
+    /**
+     * List all vendor channels (org is null)
+     * @return list of vendor channels
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Channel> listVendorChannels() {
+        Map<String, Object> params = new HashMap<String, Object>();
+        return singleton.listObjectsByNamedQuery(
+                "Channel.findVendorChannels", params);
+    }
+
+    /**
+     * List all vendor content sources (org is null)
+     * @return list of vendor content sources
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ContentSource> listVendorContentSources() {
+        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        criteria.add(Restrictions.isNull("org"));
+        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
+        return criteria.list();
+    }
+
+    /**
+     * Find a vendor content source (org is null) for a given repo URL.
+     * @param repoUrl url to match against
+     * @return vendor content source if it exists
+     */
+    public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
+        Criteria criteria = getSession().createCriteria(ContentSource.class);
+        criteria.add(Restrictions.isNull("org"));
+        criteria.add(Restrictions.eq("type", ChannelFactory.CONTENT_SOURCE_TYPE_YUM));
+        criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+        return (ContentSource) criteria.uniqueResult();
+    }
+
+    /**
+     * Find a {@link ChannelProduct} for given name and version.
+     * @param name name
+     * @param version
+     * @return channel product
+     */
+    public static ChannelProduct findChannelProduct(String product, String version) {
+        Criteria criteria = getSession().createCriteria(ChannelProduct.class);
+        criteria.add(Restrictions.eq("product", product));
+        criteria.add(Restrictions.eq("version", version));
+        return (ChannelProduct) criteria.uniqueResult();
+    }
+
+    /**
+     * Insert or update a {@link ChannelProduct}.
+     * @param channelProduct ChannelProduct to be stored in database.
+     */
+    public static void save(ChannelProduct channelProduct) {
+        singleton.saveObject(channelProduct);
+    }
+
+    /**
+     * Insert or update a {@link ProductName}.
+     * @param productName ProductName to be stored in database.
+     */
+    public static void save(ProductName productName) {
+        singleton.saveObject(productName);
+    }
 }

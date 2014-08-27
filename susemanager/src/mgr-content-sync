@@ -1,0 +1,107 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+# Copyright (c) 2014 SUSE
+#
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#
+# SUSE trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate SUSE trademarks that are incorporated
+# in this software or its documentation.
+
+import argparse
+import socket
+import sys
+import xmlrpclib
+
+from spacewalk.susemanager.authenticator import Authenticator
+from spacewalk.susemanager.content_sync_helper import *
+
+
+def get_options(args=None):
+    """ Parsers the command line options and returns them. """
+
+    # create the top-level parser
+    parser = argparse.ArgumentParser(
+        prog='mgr-content-sync',
+        description="Manage SUSE Manager content sync backend.")
+
+    parser.add_argument('-v', '--verbose', default=False,
+                        action='store_true', help='Be verbose')
+
+    subparsers = parser.add_subparsers(title='Subcommands')
+
+    migrate_parser = subparsers.add_parser(
+        'migrate',
+        help='Migrates from NCC to SCC backend')
+    migrate_parser.set_defaults(migrate=True)
+
+    status_parser = subparsers.add_parser(
+        'status',
+        help='Print the name of the backend being used')
+    status_parser.set_defaults(status=True)
+
+    return parser.parse_args(args)
+
+
+def refresh_data(connection, token):
+    actions = (
+        ("Channels             ", "synchronizeChannels"),
+        ("Channel families     ", "synchronizeChannelFamilies"),
+        ("SUSE products        ", "synchronizeProducts"),
+        ("SUSE Product channels", "synchronizeProductChannels"),
+        ("Subscriptions        ", "synchronizeSubscriptions"),
+        ("Upgrade paths        ", "synchronizeUpgradePaths")
+    )
+    text_width = len("Refreshing ") + 8 + \
+                 len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
+
+    for operation, method in actions:
+        sys.stdout.write("Refreshing %s" % operation)
+        sys.stdout.flush()
+        getattr(connection.sync.content, method)(token)
+        sys.stdout.write("[DONE]".rjust(text_width) + "\n")
+        sys.stdout.flush()
+
+
+def main(options):
+    connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
+        socket.getfqdn(), 80, "/rpc/api"))
+    auth = Authenticator(connection=connection,
+                         user=None,
+                         password=None,
+                         token=None)
+
+    if vars(options).has_key('status'):
+        print("The {0} backend is currently in use.".format(
+            current_backend().value))
+        sys.exit(0)
+
+    if vars(options).has_key('migrate'):
+        token = auth.token()
+        if current_backend() == BackendType.NCC:
+            switch_to_scc(connection, token)
+            refresh_data(connection, token)
+            print("SCC backend successfully migrated.")
+        else:
+            print("SUSE Manager is already using the SCC backend.")
+
+args = None
+if len(sys.argv) == 1:
+    args = ["status"]
+
+options = get_options(args=args)
+
+try:
+    main(options)
+except Exception, ex:
+    sys.stderr.write("Error: %s\n" % ex)
+    if options.verbose:
+        raise
+    else:
+        sys.exit(1)

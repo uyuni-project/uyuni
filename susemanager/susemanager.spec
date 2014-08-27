@@ -46,6 +46,10 @@ Requires:       spacewalk-backend >= 1.7.38.20
 Requires:       spacewalk-backend-sql
 Requires:       python
 Requires:       createrepo
+Requires:       python-configobj
+BuildRequires:  python-configobj
+Requires:       python-enum34
+BuildRequires:  python-enum34
 
 %description tools
 This package contains SUSE Manager tools
@@ -146,15 +150,21 @@ chown root.root /etc/sysconfig
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
+%attr(0755,root,root) %{_sbindir}/mgr-content-sync
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
+%attr(0755,root,root) %{_sbindir}/mgr-sync
 %{pythonsmroot}/susemanager/__init__.py*
 %{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/mgr_delete_patch.py*
+%{pythonsmroot}/susemanager/authenticator.py*
+%{pythonsmroot}/susemanager/content_sync_helper.py*
 %{pythonsmroot}/susemanager/errata_helper.py*
+%{pythonsmroot}/susemanager/helpers.py*
 %{pythonsmroot}/susemanager/package_helper.py*
 %{pythonsmroot}/susemanager/simpleproduct.py*
+%{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
 
 %changelog

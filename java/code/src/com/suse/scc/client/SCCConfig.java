@@ -1,0 +1,132 @@
+/**
+ * Copyright (c) 2014 SUSE
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.suse.scc.client;
+
+import java.util.Properties;
+
+/**
+ * SCC configuration wrapper class.
+ */
+public class SCCConfig {
+
+    // Valid keys
+    public static final String SCHEMA = "schema";
+    public static final String HOSTNAME = "hostname";
+    public static final String ENCODED_CREDS = "encoded-creds";
+    public static final String UUID = "uuid";
+
+    // Proxy settings
+    public static final String PROXY_HOSTNAME = "proxy-hostname";
+    public static final String PROXY_PORT = "proxy-port";
+    public static final String PROXY_USERNAME = "proxy-username";
+    public static final String PROXY_PASSWORD = "proxy-password";
+
+    // Default values
+    private static final String DEFAULT_SCHEMA = "https://";
+    private static final String DEFAULT_HOSTNAME = "scc.suse.com";
+
+    // The properties object
+    private Properties properties;
+
+    /**
+     * Default constructor.
+     */
+    public SCCConfig() {
+        this.properties = new Properties();
+    }
+
+    /**
+     * Sets a preference given by key and value. Use one of the public key strings above.
+     *
+     * @param key
+     * @param value
+     */
+    public void put(String key, String value) {
+        properties.setProperty(key, value);
+    }
+
+    /**
+     * Returns the configured hostname or "scc.suse.com".
+     *
+     * @return hostname
+     */
+    public String getHostname() {
+        return properties.getProperty(HOSTNAME, DEFAULT_HOSTNAME);
+    }
+
+    /**
+     * Returns the configured schema or "https://".
+     *
+     * @return schema
+     */
+    public String getSchema() {
+        return properties.getProperty(SCHEMA, DEFAULT_SCHEMA);
+    }
+
+    /**
+     * Returns the encoded credentials or null.
+     *
+     * @return credentials
+     */
+    public String getEncodedCredentials() {
+        return properties.getProperty(ENCODED_CREDS, null);
+    }
+
+    /**
+     * Returns the UUID or null.
+     *
+     * @return UUID
+     */
+    public String getUUID() {
+        return properties.getProperty(UUID, null);
+    }
+
+    /**
+     * Returns the proxy hostname or null.
+     *
+     * @return proxy hostname
+     */
+    public String getProxyHostname() {
+        return properties.getProperty(PROXY_HOSTNAME, null);
+    }
+
+     /**
+     * Returns the configured proxy port or default
+     *
+     * @return proxy port
+     */
+    public String getProxyPort() {
+        return properties.getProperty(PROXY_PORT,
+                getSchema().equals("https://") ? "443": "80");
+    }
+
+    /**
+     * Returns the proxy username or null.
+     *
+     * @return proxy username
+     */
+    public String getProxyUsername() {
+        return properties.getProperty(PROXY_USERNAME, null);
+    }
+
+    /**
+     * Returns the proxy password or null.
+     *
+     * @return proxy password
+     */
+    public String getProxyPassword() {
+       return properties.getProperty(PROXY_PASSWORD, null);
+    }
+}
