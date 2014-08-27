@@ -87,10 +87,6 @@ public class MgrSyncUtils {
                 }
             }
             else {
-                // No proxy is used
-                if (log.isDebugEnabled()) {
-                    log.debug("Sending HEAD request without proxy: " + proxyHost);
-                }
                 connection = (HttpURLConnection) new URL(url).openConnection();
             }
 
