@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCProxySettings;
 
 import org.apache.commons.codec.binary.Base64;
@@ -54,7 +53,7 @@ public class MgrSyncUtils {
      * @return the response code of the request
      */
     public static int sendHeadRequest(String url, String username, String password)
-            throws SCCClientException {
+            throws ContentSyncException {
         if (log.isDebugEnabled()) {
             log.debug("Sending HEAD request to: " + url);
         }
@@ -109,10 +108,10 @@ public class MgrSyncUtils {
             responseCode = connection.getResponseCode();
         }
         catch (MalformedURLException e) {
-            throw new SCCClientException(e);
+            throw new ContentSyncException(e);
         }
         catch (IOException e) {
-            throw new SCCClientException(e);
+            throw new ContentSyncException(e);
         }
         finally {
             if (connection != null) {
@@ -123,6 +122,8 @@ public class MgrSyncUtils {
     }
 
     /**
+     * Return the current proxy settings as {@link SCCProxySettings}.
+     *
      * @return the proxy settings configured in /etc/rhn/rhn.conf
      */
     public static SCCProxySettings getRhnProxySettings() {

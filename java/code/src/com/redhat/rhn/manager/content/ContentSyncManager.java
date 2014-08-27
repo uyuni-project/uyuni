@@ -1335,7 +1335,7 @@ public class ContentSyncManager {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     return creds.getId().intValue();
                 }
-            } catch (SCCClientException e) {
+            } catch (ContentSyncException e) {
                 log.error(e.getMessage());
             }
         }
