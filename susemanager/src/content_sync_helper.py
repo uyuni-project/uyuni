@@ -13,7 +13,10 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
+import os
 from enum import Enum
+
+MASTER_SWITCH_FILE = "/var/lib/spacewalk/scc/migrated"
 
 
 class BackendType(str, Enum):
@@ -21,11 +24,13 @@ class BackendType(str, Enum):
     SCC = "SCC"
 
 
-def current_backend(connection, token):
+def current_backend():
     """ Returns an instance of `BackendType` """
 
-    return BackendType(
-        connection.sync.content.currentContentSyncBackend(token))
+    if os.path.isfile(MASTER_SWITCH_FILE):
+        return BackendType.SCC
+    else:
+        return BackendType.NCC
 
 
 def switch_to_scc(connection, token):
