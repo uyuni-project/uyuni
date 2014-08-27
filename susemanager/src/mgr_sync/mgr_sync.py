@@ -17,7 +17,6 @@ import re
 import sys
 import xmlrpclib
 
-from spacewalk.susemanager.content_sync_helper import current_backend, BackendType
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -290,11 +289,6 @@ class MgrSync(object):
         Run the app.
         """
 
-        if not self._current_backend_is_scc():
-            print "mgr-sync requires the SCC backend to be activated."
-            print "Use the 'mgr-content-sync migrate' command to switch to SCC."
-            sys.exit(1)
-
         self.quiet = not options.verbose
         if vars(options).has_key('list_target'):
             if 'channel' in options.list_target:
@@ -342,7 +336,4 @@ class MgrSync(object):
                 return True
 
         return False
-
-    def _current_backend_is_scc(self):
-        return current_backend(self.conn, self.auth.token()) == BackendType.SCC
 

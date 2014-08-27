@@ -81,7 +81,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    if not current_backend_is_ncc():
+    if not current_backend() == BackendType.NCC:
         print "mgr-ncc-sync cannot be used when the SCC backend is activated."
         print "Please use the 'mgr-sync' tool."
         sys.exit(1)
@@ -272,15 +272,6 @@ def do_display(label='', filter=''):
         return True
     return False
 
-
-def current_backend_is_ncc():
-    connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
-        socket.getfqdn(), 80, "/rpc/api"))
-    auth = Authenticator(connection=connection,
-                         user=None,
-                         password=None,
-                         token=None)
-    return current_backend(connection, auth.token()) == BackendType.NCC
 
 if __name__ == "__main__":
     try:

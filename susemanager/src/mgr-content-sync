@@ -59,12 +59,12 @@ def main(options):
 
     if vars(options).has_key('status'):
         print("The {0} backend is currently in use.".format(
-            current_backend(connection, auth.token()).value))
+            current_backend().value))
         sys.exit(0)
 
     if vars(options).has_key('migrate'):
         token = auth.token()
-        if current_backend(connection, token) == BackendType.NCC:
+        if current_backend() == BackendType.NCC:
             switch_to_scc(connection, token)
             print("SCC backend successfully migrated.")
         else:
