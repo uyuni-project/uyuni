@@ -21,12 +21,14 @@ zypper in -y perl \
 zypper in -y  cx_Oracle \
               make \
               python \
+              python-argparse \
               python-base \
               python-crypto \
               python-curl \
               python-debian \
               python-devel \
               python-dmidecode \
+              python-enum34 \
               python-ethtool \
               python-gobject2 \
               python-gpgme \
