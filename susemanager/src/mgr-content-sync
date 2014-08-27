@@ -49,6 +49,26 @@ def get_options(args=None):
     return parser.parse_args(args)
 
 
+def refresh_data(connection, token):
+    actions = (
+        ("Channels             ", "synchronizeChannels"),
+        ("Channel families     ", "synchronizeChannelFamilies"),
+        ("SUSE products        ", "synchronizeProducts"),
+        ("SUSE Product channels", "synchronizeProductChannels"),
+        ("Subscriptions        ", "synchronizeSubscriptions"),
+        ("Upgrade paths        ", "synchronizeUpgradePaths")
+    )
+    text_width = len("Refreshing ") + 8 + \
+                 len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
+
+    for operation, method in actions:
+        sys.stdout.write("Refreshing %s" % operation)
+        sys.stdout.flush()
+        getattr(connection.sync.content, method)(token)
+        sys.stdout.write("[DONE]".rjust(text_width) + "\n")
+        sys.stdout.flush()
+
+
 def main(options):
     connection = xmlrpclib.ServerProxy("http://{0}:{1}{2}".format(
         socket.getfqdn(), 80, "/rpc/api"))
@@ -66,6 +86,7 @@ def main(options):
         token = auth.token()
         if current_backend() == BackendType.NCC:
             switch_to_scc(connection, token)
+            refresh_data(connection, token)
             print("SCC backend successfully migrated.")
         else:
             print("SUSE Manager is already using the SCC backend.")
