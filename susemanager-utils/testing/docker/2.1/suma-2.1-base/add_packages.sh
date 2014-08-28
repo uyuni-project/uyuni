@@ -23,6 +23,7 @@ zypper in -y  cx_Oracle \
               python \
               python-argparse \
               python-base \
+              python-configobj \
               python-crypto \
               python-curl \
               python-debian \
