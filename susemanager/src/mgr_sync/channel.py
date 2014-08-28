@@ -25,7 +25,7 @@ class Channel(object):
 
     def __init__(self, data):
         self.base_channel = data['parent'] == 'BASE'
-        self.description = data["description"]
+        self.summary = data["summary"]
         self.label = data["label"]
         self.name = data["name"]
         self.parent = data["parent"]
@@ -37,8 +37,8 @@ class Channel(object):
     def short_status(self):
         return "[%s]" % str(self.status[0])
 
-    def description_or_url(self):
-        return (self.description + "").strip() or self.url or "N/A"
+    def summary_or_url(self):
+        return (self.summary + "").strip() or self.url or "N/A"
 
     def add_child(self, channel):
         self._children.append(channel)
@@ -52,7 +52,7 @@ class Channel(object):
             return "{0} {1} {2} [{3}]".format(
                 self.short_status,
                 self.name,
-                self.description_or_url(),
+                self.summary_or_url(),
                 self.label)
         else:
             return "{0} {1}".format(self.short_status,  self.label)

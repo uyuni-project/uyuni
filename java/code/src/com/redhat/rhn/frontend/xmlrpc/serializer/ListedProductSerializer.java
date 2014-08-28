@@ -32,12 +32,11 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "friendly_name", "Friendly name of the product")
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available' or 'installed'")
+ *     #array("channels")
+ *       $MgrSyncChannelSerializer
+ *     #array_end()
  *     #array("extensions")
- *       #struct("product")
- *         #prop_desc("string", "friendly_name", "Friendly name of the product")
- *         #prop_desc("string", "arch", "Architecture")
- *         #prop_desc("string", "status", "'available' or 'installed'")
- *       #struct_end()
+ *       $ListedProductSerializer
  *     #array_end()
  *   #struct_end()
  */
@@ -60,6 +59,7 @@ public class ListedProductSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("friendly_name", product.getFriendlyName());
         helper.add("arch", product.getArch());
         helper.add("status", product.getStatus().toString().toLowerCase());
+        helper.add("channels", product.getChannels());
         helper.add("extensions", product.getExtensions());
 
         helper.writeTo(output);

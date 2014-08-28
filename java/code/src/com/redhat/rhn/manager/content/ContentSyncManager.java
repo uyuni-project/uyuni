@@ -236,17 +236,18 @@ public class ContentSyncManager {
             try {
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
+                    // Check for missing attributes
                     String missing = verifySCCProduct(product);
-
-                    if (StringUtils.isBlank(missing)) {
-                        productList.add(product);
-                    }
-                    else {
+                    if (!StringUtils.isBlank(missing)) {
                         log.warn("Broken product: " + product.getName() +
                                 ", Version: " + product.getVersion() +
                                 ", Identifier: " + product.getIdentifier() +
+                                ", Product ID: " + product.getId() +
                                 " ### Missing attributes: " + missing);
                     }
+
+                    // Add product in any case
+                    productList.add(product);
                 }
             }
             catch (SCCClientException e) {
@@ -304,6 +305,54 @@ public class ContentSyncManager {
                 friendlyName += " VMWare";
             }
             product.setFriendlyName(friendlyName);
+
+            // Fix missing SLE12 product classes
+            if (StringUtils.isBlank(product.getProductClass()) &&
+                    product.getVersion().equals("12")) {
+                int productId = product.getId();
+                switch (productId) {
+                    case 1117: // SLES (x86_64)
+                    case 1150: // sle-module-legacy (x86_64)
+                    case 1153: // sle-module-web-scripting (x86_64)
+                    case 1212: // sle-module-adv-systems-management (x86_64)
+                    case 1220: // sle-module-public-cloud (x86_64)
+                        product.setProductClass("7261");
+                        break;
+                    case 1118: // SLED (x86_64)
+                    case 1222: // sle-we (x86_64)
+                        product.setProductClass("7260");
+                        break;
+                    case 1156: // sle-ha-geo (s390x)
+                    case 1157: // sle-ha-geo (x86_64)
+                        product.setProductClass("SLE-HAE-GEO");
+                        break;
+                    case 1244: // sle-ha (s390x)
+                        product.setProductClass("SLE-HAE-Z");
+                        break;
+                    case 1245: // sle-ha (x86_64)
+                        product.setProductClass("SLE-HAE-X86");
+                        break;
+                    case 1116: // SLES (ppc)
+                    case 1148: // sle-module-legacy (ppc)
+                    case 1151: // sle-module-web-scripting (ppc)
+                    case 1218: // sle-module-public-cloud (ppc)
+                        product.setProductClass("SLES-PPC");
+                        break;
+                    case 1115: // SLES (s390x)
+                    case 1149: // sle-module-legacy (s390x)
+                    case 1152: // sle-module-web-scripting (s390x)
+                    case 1219: // sle-module-public-cloud (s390x)
+                        product.setProductClass("SLES-Z");
+                        break;
+                    case 1145: // sle-sdk (ppc)
+                    case 1146: // sle-sdk (s390x)
+                    case 1223: // sle-sdk (x86_64)
+                        product.setProductClass("SLE-SDK");
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         // add OES
@@ -1308,9 +1357,6 @@ public class ContentSyncManager {
         }
         if (product.getVersion() == null) {
             missingAttributes.add("Version");
-        }
-        if (product.getVersion() == null) {
-            missingAttributes.add("Product ID");
         }
         return StringUtils.join(missingAttributes, ", ");
     }

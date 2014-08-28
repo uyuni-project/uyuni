@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.MgrSyncStatus;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -68,7 +69,10 @@ public class MgrSyncChannelSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("product_name", channel.getProductName());
         helper.add("product_version", channel.getProductVersion());
         helper.add("source_url", channel.getSourceUrl());
-        helper.add("status", channel.getStatus().name());
+        MgrSyncStatus status = channel.getStatus();
+        if (status != null) {
+            helper.add("status", channel.getStatus().name());
+        }
         helper.add("summary", channel.getSummary());
         helper.add("update_tag", channel.getUpdateTag());
         helper.writeTo(writer);
