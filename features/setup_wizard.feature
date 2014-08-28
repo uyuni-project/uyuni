@@ -8,7 +8,6 @@ Feature: I want to verify the Setup Wizard
         And I should see a "HTTP Proxy Hostname" text
         And I should see a "HTTP Proxy Username" text
         And I should see a "HTTP Proxy Password" text
-       Then I click on "Edit" link in the setup wizard
         And I click on "Save and Verify"
 
    Scenario: I want to test the credentials setup
