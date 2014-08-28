@@ -199,6 +199,11 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sle-12-ga-desktop-nvidia-driver-x86_64-we" name="SLE-12-GA-Desktop-nVidia-Driver for x86_64 WE" optional="N" parent="sles12-pool-x86_64" product_name="sle-we" product_version="12" source_url="http://download.nvidia.com/novell/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
+		<products>
+			<product_id name="sle-we" version="12">1222</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-pool-s390x" name="SLE-HA-GEO12-Pool for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-ha-geo" product_version="12" source_url="https://nu.novell.com/SUSE:/Products:/SLE-12/images/repo/SLE-12-HA-GEO-POOL-s390x-x86_64-Media1/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 s390x" update_tag="SLE-HA-GEO">
 		<products>
 			<product_id name="sle-ha-geo" version="12">1156</product_id>
