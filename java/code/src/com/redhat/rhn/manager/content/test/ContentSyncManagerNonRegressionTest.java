@@ -206,6 +206,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
                     MANY_MEMBERS, 0L, true, TestUtils.randomString());
                 cf.setName(label);
+                cf.setLabel(label);
                 ChannelFamilyFactory.save(cf);
             }
             else {
