@@ -33,11 +33,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available' or 'installed'")
  *     #array("extensions")
- *       #struct("product")
- *         #prop_desc("string", "friendly_name", "Friendly name of the product")
- *         #prop_desc("string", "arch", "Architecture")
- *         #prop_desc("string", "status", "'available' or 'installed'")
- *       #struct_end()
+ *       $ListedProductSerializer
  *     #array_end()
  *   #struct_end()
  */
