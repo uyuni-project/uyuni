@@ -92,131 +92,123 @@ PKGLIST12 = [
 
 DATA = {
     'SLE-11-SP1-i586' : {
-                          'PDID' : {'NCC' : 1826, 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 1826, 'SCC' : 684}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
                         },
     'SLE-11-SP1-ia64' : {
-                          'PDID' : {'NCC' : 1832 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 1832 , 'SCC' : 1033}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
                         },
     'SLE-11-SP1-ppc64' : {
-                          'PDID' : {'NCC' : 1831 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 1831 , 'SCC' : 940}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
                         },
     'SLE-11-SP1-s390x' : {
-                          'PDID' : {'NCC' : 1834 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 1834 , 'SCC' : 745}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
                         },
     'SLE-11-SP1-x86_64' : {
-                          'PDID' : {'NCC' : 1829 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 1829 , 'SCC' : 769}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/1/bootstrap/'
                         },
     'SLE-11-SP2-i586' : {
-                          'PDID' : {'NCC' : 3006 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3006 , 'SCC' : 811}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-ia64' : {
-                          'PDID' : {'NCC' : 3012 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3012 , 'SCC' : 1034}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-ppc64' : {
-                          'PDID' : {'NCC' : 3011 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3011 , 'SCC' : 964}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-s390x' : {
-                          'PDID' : {'NCC' : 3014 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3014 , 'SCC' : 755}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-x86_64' : {
-                          'PDID' : {'NCC' : 3009 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3009 , 'SCC' : 690}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP3-i586' : {
-                          'PDID' : {'NCC' : 3887 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3887 , 'SCC' : 793}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-ia64' : {
-                          'PDID' : {'NCC' : 3893 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3893 , 'SCC' : 1037}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-ppc64' : {
-                          'PDID' : {'NCC' : 3892 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3892 , 'SCC' : 949}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-s390x' : {
-                          'PDID' : {'NCC' : 3895 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3895 , 'SCC' : 693}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-11-SP3-x86_64' : {
-                          'PDID' : {'NCC' : 3890 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3890 , 'SCC' : 814}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
     'SLE-10-SP3-i586' : {
-                          'PDID' : {'NCC' : 1501 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 1501 , 'SCC' : 785}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
                         },
     'SLE-10-SP3-ia64' : {
-                          'PDID' : {'NCC' : 1507 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 1507 , 'SCC' : 740}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
                         },
     'SLE-10-SP3-ppc' : {
-                          'PDID' : {'NCC' : 1505 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 1505 , 'SCC' : 787}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
                         },
     'SLE-10-SP3-s390x' : {
-                          'PDID' : {'NCC' : 1509 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 1509 , 'SCC' : 682}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
                         },
     'SLE-10-SP3-x86_64' : {
-                          'PDID' : {'NCC' : 1504 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 1504 , 'SCC' : 721}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
                         },
     'SLE-10-SP4-i586' : {
-                          'PDID' : {'NCC' : 2523 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 2523 , 'SCC' : 752}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
     'SLE-10-SP4-ia64' : {
-                          'PDID' : {'NCC' : 2529 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 2529 , 'SCC' : 770}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
     'SLE-10-SP4-ppc' : {
-                          'PDID' : {'NCC' : 2527 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 2527 , 'SCC' : 711}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
     'SLE-10-SP4-s390x' : {
-                          'PDID' : {'NCC' : 2531 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 2531 , 'SCC' : 771}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
     'SLE-10-SP4-x86_64' : {
-                          'PDID' : {'NCC' : 2526 , 'SCC' : 0}, 'PKGLIST' : PKGLIST10,
+                          'PDID' : {'NCC' : 2526 , 'SCC' : 832}, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/4/bootstrap/'
                         },
     'SLES4SAP-11-SP2-x86_64' : {
-                          'PDID' : {'NCC' : 3520 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3520 , 'SCC' : 1130}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLES4SAP-11-SP3-x86_64' : {
-                          'PDID' : {'NCC' : 4160 , 'SCC' : 0}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 4160 , 'SCC' : 1131}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
-    'SLE-12-SP1-i586' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 0}, 'PKGLIST' : PKGLIST12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
-                        },
-    'SLE-12-SP1-ia64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 0}, 'PKGLIST' : PKGLIST12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
-                        },
-    'SLE-12-SP1-ppc64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 0}, 'PKGLIST' : PKGLIST12,
+    'SLE-12-SP1-ppc64le' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1116}, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
     'SLE-12-SP1-s390x' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 0}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1115}, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
     'SLE-12-SP1-x86_64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 0}, 'PKGLIST' : PKGLIST12,
+                          'PDID' : {'NCC' : 0 , 'SCC' : 01117}, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
                         },
 }
