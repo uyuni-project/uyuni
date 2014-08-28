@@ -41,6 +41,48 @@ class MgrSync(object):
                                   token=self.config.token)
         self.quiet = False
 
+    def run(self, options):
+        """
+        Run the app.
+        """
+
+        self.quiet = not options.verbose
+        if vars(options).has_key('list_target'):
+            if 'channel' in options.list_target:
+                self._list_channels(expand=options.expand,
+                                    filter=options.filter,
+                                    no_optionals=options.no_optionals,
+                                    compact=options.compact)
+            elif 'product' in options.list_target:
+                self._list_products(filter=options.filter)
+            else:
+                sys.stderr.write('List target not recognized\n')
+                sys.exit(1)
+        elif vars(options).has_key('add_target'):
+            if options.add_target == 'channel':
+                self._add_channels(options.target)
+            else:
+                sys.stderr.write('List target not recognized\n')
+                sys.exit(1)
+        elif vars(options).has_key('refresh'):
+            self._refresh(enable_reposync=options.enable_reposync)
+
+        if options.saveconfig and self.auth.has_credentials():
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
+            print("credentials has been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        if self.auth.token(connect=False):
+            self.config.token = self.auth.token(connect=False)
+            self.config.write()
+
+    ###########################
+    #                         #
+    # Channel related methods #
+    #                         #
+    ###########################
+
     def _list_channels(self, expand, filter, no_optionals,
                        compact=False, show_interactive_numbers=False):
         """
@@ -107,11 +149,17 @@ class MgrSync(object):
         return available_channels
 
     def _fetch_remote_channels(self):
+        """ Returns the list of channels as reported by the remote server """
         return parse_channels(
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listChannels", self.auth.token()))
 
     def _add_channels(self, channels):
+        """ Add a list of channels.
+
+        If the channel list is empty the interactive mode is started.
+        """
+
         exit_with_error = False
         enable_checks = True
         current_channels = []
@@ -168,6 +216,11 @@ class MgrSync(object):
             sys.exit(1)
 
     def _schedule_channel_reposync(self, channel):
+        """ Schedules a reposync for the given channel.
+
+        :param channel: the label identifying the channel
+        """
+
         print("Scheduling reposync for '{0}' channel".format(channel))
         self._execute_xmlrpc_method(self.conn.channel.software,
                                     "syncRepo",
@@ -190,6 +243,12 @@ class MgrSync(object):
             validator=validator)
 
         return channels[int(choice)-1]
+
+    ############################
+    #                          #
+    # Products related methods #
+    #                          #
+    ############################
 
     def _list_products(self, filter):
         """
@@ -214,6 +273,12 @@ class MgrSync(object):
 
         for product in products:
             product.to_stdout(filter=filter)
+
+    #################
+    #               #
+    # Other methods #
+    #               #
+    #################
 
     def _refresh(self, enable_reposync):
         """
@@ -283,42 +348,6 @@ class MgrSync(object):
                     retry_on_session_failure=False)
             else:
                 raise ex
-
-    def run(self, options):
-        """
-        Run the app.
-        """
-
-        self.quiet = not options.verbose
-        if vars(options).has_key('list_target'):
-            if 'channel' in options.list_target:
-                self._list_channels(expand=options.expand,
-                                    filter=options.filter,
-                                    no_optionals=options.no_optionals,
-                                    compact=options.compact)
-            elif 'product' in options.list_target:
-                self._list_products(filter=options.filter)
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
-        elif vars(options).has_key('add_target'):
-            if options.add_target == 'channel':
-                self._add_channels(options.target)
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
-        elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.enable_reposync)
-
-        if options.saveconfig and self.auth.has_credentials():
-            self.config.user = self.auth.user
-            self.config.password = self.auth.password
-            print("credentials has been saved to the {0} file.".format(
-                self.config.dotfile))
-
-        if self.auth.token(connect=False):
-            self.config.token = self.auth.token(connect=False)
-            self.config.write()
 
     def _check_session_fail(self, exception):
         """
