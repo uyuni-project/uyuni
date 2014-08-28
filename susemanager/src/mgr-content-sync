@@ -83,8 +83,8 @@ def main(options):
         sys.exit(0)
 
     if vars(options).has_key('migrate'):
-        token = auth.token()
         if current_backend() == BackendType.NCC:
+            token = auth.token()
             switch_to_scc(connection, token)
             refresh_data(connection, token)
             print("SCC backend successfully migrated.")
