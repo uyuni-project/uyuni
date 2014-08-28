@@ -1358,9 +1358,6 @@ public class ContentSyncManager {
         if (product.getVersion() == null) {
             missingAttributes.add("Version");
         }
-        if (product.getVersion() == null) {
-            missingAttributes.add("Product ID");
-        }
         return StringUtils.join(missingAttributes, ", ");
     }
 
