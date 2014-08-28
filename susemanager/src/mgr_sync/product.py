@@ -15,6 +15,8 @@
 
 from enum import Enum
 
+from spacewalk.susemanager.mgr_sync.channel import Channel
+
 
 class Product(object):
 
@@ -28,6 +30,7 @@ class Product(object):
         self.status = Product.Status(data["status"].upper())
         self.extensions = []
         self._parse_extensions(data["extensions"])
+        self.channels = [Channel(channel) for channel in data['channels']
 
     @property
     def short_status(self):
