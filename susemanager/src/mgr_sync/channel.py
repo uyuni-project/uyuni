@@ -29,8 +29,9 @@ class Channel(object):
         self.label = data["label"]
         self.name = data["name"]
         self.parent = data["parent"]
-        self.status = Channel.Status(data["status"])
+        self.status = data["status"]
         self.url = data["source_url"]
+        self.optional = data["optional"]
         self._children = []
 
     @property
