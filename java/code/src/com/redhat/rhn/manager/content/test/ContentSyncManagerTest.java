@@ -845,7 +845,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
-                String message = "Channel is not available: " + label;
+                String message = "Channel is unknown: " + label;
                 assertEquals(message, e.getMessage());
             }
         }
