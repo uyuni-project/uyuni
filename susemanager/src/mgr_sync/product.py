@@ -30,7 +30,7 @@ class Product(object):
         self.status = Product.Status(data["status"].upper())
         self.extensions = []
         self._parse_extensions(data["extensions"])
-        self.channels = [Channel(channel) for channel in data['channels']
+        self.channels = [Channel(channel) for channel in data['channels']]
 
     @property
     def short_status(self):
@@ -41,15 +41,23 @@ class Product(object):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
                                       self.arch)
 
-    def to_stdout(self, indentation_level=0, filter=None):
+    def to_stdout(self, indentation_level=0, filter=None,
+                  interactive_number=[]):
         prefix = indentation_level * "  "
+        if interactive_number:
+            if self.status == Product.Status.INSTALLED:
+                prefix = "     " + prefix
+            else:
+                prefix = "%.3d) %s" % (interactive_number[0], prefix)
+                interactive_number[0] += 1
 
         if not filter or self.matches_filter(filter):
             print(prefix + self.to_ascii_row())
             indentation_level += 1
             for ext in self.extensions:
                 ext.to_stdout(indentation_level=indentation_level,
-                              filter=filter)
+                              filter=filter,
+                              interactive_number=interactive_number)
 
     def _parse_extensions(self, data):
         for extension in data:
@@ -65,6 +73,19 @@ class Product(object):
 
         return False
 
+def find_product_by_label(label, products):
+    """
+    Find a product with the specified label.
+    """
+
+    for p in products:
+        if product.label == label:
+            return product
+        match = find_product_by_label(label, product.extension)
+        if match:
+            return match
+
+    return None
 
 def parse_products(data):
     """
