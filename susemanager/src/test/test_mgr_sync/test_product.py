@@ -38,7 +38,7 @@ class ProductTest(unittest.TestCase):
         self.assertEqual(Product.Status.AVAILABLE, res4.status)
 
         sles11sp3_s390x = next(p for p in self.products if p.friendly_name == 'SUSE Linux Enterprise Server 11 SP3' and p.arch == 's390x')
-        self.assertEqual(2, len(sles11sp3_s390x.extensions))
+        self.assertEqual(4, len(sles11sp3_s390x.extensions))
         self.assertEqual(Product.Status.AVAILABLE, sles11sp3_s390x.status)
 
         sle_ha = next(p for p in sles11sp3_s390x.extensions if p.friendly_name == 'SUSE Linux Enterprise High Availability Extension 11 SP3')
@@ -48,7 +48,7 @@ class ProductTest(unittest.TestCase):
 
         sles_sdk = next(p for p in sles11sp3_s390x.extensions if p.friendly_name == 'SUSE Linux Enterprise Software Development Kit 11 SP3')
         self.assertEqual([], sles_sdk.extensions)
-        self.assertEqual(Product.Status.INSTALLED, sles_sdk.status)
+        self.assertEqual(Product.Status.AVAILABLE, sles_sdk.status)
         self.assertEqual(sles_sdk.arch, sles11sp3_s390x.arch)
 
     def test_to_stdout(self):
@@ -58,8 +58,9 @@ class ProductTest(unittest.TestCase):
 
         expected_output = """[ ] SUSE Linux Enterprise Server 11 SP3 (s390x)
   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (s390x)
-  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (s390x)"""
-
+  [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (s390x)
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (s390x)
+  [ ] SUSE WebYaST 1.3 (s390x)"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         res4 = next(p for p in self.products if p.friendly_name == 'RES 4' and p.arch == 'i386')

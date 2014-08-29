@@ -212,6 +212,7 @@ class MgrSync(object):
                                             self.auth.token(),
                                             channel)
 
+            print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)
 
         if exit_with_error:
