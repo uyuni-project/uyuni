@@ -278,8 +278,8 @@ class MgrSync(object):
 
         print("Available Products:\n")
         print("\nStatus:")
-        print("  - [I] - channel is installed")
-        print("  - [ ] - channel is not installed, but is available\n")
+        print("  - [I] - product is installed")
+        print("  - [ ] - product is not installed, but is available\n")
 
         for product in products:
             product.to_stdout(filter=filter,
