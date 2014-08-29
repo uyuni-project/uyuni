@@ -46,9 +46,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
     /** The version. */
     private String version;
 
-    /** The status. */
-    private MgrSyncStatus status;
-
     /** The base channel for this product. */
     private MgrSyncChannel baseChannel;
 
@@ -72,7 +69,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
-        status = MgrSyncStatus.AVAILABLE;
         channels = new HashSet<MgrSyncChannel>();
         extensions = new TreeSet<ListedProduct>();
     }
@@ -99,23 +95,6 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     public String getVersion() {
         return version;
-    }
-
-    /**
-     * Gets the status.
-     * @return the status
-     */
-    public MgrSyncStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets the status
-     *
-     * @param statusIn the new status
-     */
-    public void setStatus(MgrSyncStatus statusIn) {
-       status = statusIn;
     }
 
     /**
@@ -169,6 +148,23 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     public String getArch() {
         return getBaseChannel().getArch();
+    }
+
+    /**
+     * Gets the status.
+     *
+     * A product is installed iff all mandatory channels are installed,
+     * otherwise it is available.
+     *
+     * @return the status
+     */
+    public MgrSyncStatus getStatus() {
+        for (MgrSyncChannel channel : channels) {
+            if (!channel.isOptional() && channel.getStatus() != MgrSyncStatus.INSTALLED) {
+                return MgrSyncStatus.AVAILABLE;
+            }
+        }
+        return MgrSyncStatus.INSTALLED;
     }
 
     /**
