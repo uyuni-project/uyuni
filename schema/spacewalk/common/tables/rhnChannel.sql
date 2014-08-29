@@ -58,7 +58,7 @@ CREATE TABLE rhnChannel
     maint_email         VARCHAR2(128),
     maint_phone         VARCHAR2(128),
     support_policy      VARCHAR2(256),
-    update_tag          VARCHAR2(20),
+    update_tag          VARCHAR2(128),
     created             timestamp with local time zone
                             DEFAULT (current_timestamp) NOT NULL,
     modified            timestamp with local time zone
