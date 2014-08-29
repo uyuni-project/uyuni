@@ -48,6 +48,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
  */
 public class MgrSyncChannelSerializer extends RhnXmlRpcCustomSerializer {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<MgrSyncChannel> getSupportedClass() {
         return MgrSyncChannel.class;
