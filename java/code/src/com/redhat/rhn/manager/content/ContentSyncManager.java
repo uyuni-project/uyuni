@@ -1180,9 +1180,10 @@ public class ContentSyncManager {
             }
         }
         if (channel == null) {
-            throw new ContentSyncException("Channel is not available: " + label);
+            throw new ContentSyncException("Channel is unknown: " + label);
         }
 
+        // Check if channel is mirrorable
         Integer mirrcredsID = isMirrorable(channel, repositories);
         if (mirrcredsID == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
