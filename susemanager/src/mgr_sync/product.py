@@ -35,7 +35,10 @@ class Product(object):
     @property
     def short_status(self):
         # pylint: disable=E1101
-        return "[%s]" % str(self.status.value)[0]
+        if self.status == Product.Status.AVAILABLE:
+            return "[ ]"
+        else:
+            return "[%s]" % str(self.status.value)[0]
 
     def to_ascii_row(self):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
