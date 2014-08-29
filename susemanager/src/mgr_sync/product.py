@@ -76,19 +76,6 @@ class Product(object):
 
         return False
 
-def find_product_by_label(label, products):
-    """
-    Find a product with the specified label.
-    """
-
-    for product in products:
-        if product.label == label:
-            return product
-        match = find_product_by_label(label, product.extension)
-        if match:
-            return match
-
-    return None
 
 def parse_products(data):
     """
