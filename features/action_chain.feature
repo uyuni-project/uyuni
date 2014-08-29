@@ -40,7 +40,7 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
      When I follow "Software" in the content area
       And I follow "List / Remove" in the content area
-      And I check "adaptec-firmware-1.35-2.15.4" in the list
+      And I check "adaptec-firmware" in the list
       And I click on "Remove Packages"
       And I check radio button "schedule-by-action-chain"
       And I click on "Confirm"
