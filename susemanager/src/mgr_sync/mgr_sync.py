@@ -105,9 +105,9 @@ class MgrSync(object):
 
         print "Available Channels%s:\n" % (expand and " (full)" or "")
         print("\nStatus:")
-        print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available")
-        print("  - U - channel is unavailable\n")
+        print("  - [I] - channel is installed")
+        print("  - [ ] - channel is not installed, but is available")
+        print("  - [U] - channel is unavailable\n")
 
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
@@ -275,8 +275,8 @@ class MgrSync(object):
 
         print("Available Products:\n")
         print("\nStatus:")
-        print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available\n")
+        print("  - [I] - channel is installed")
+        print("  - [ ] - channel is not installed, but is available\n")
 
         for product in products:
             product.to_stdout(filter=filter,

@@ -65,13 +65,13 @@ class ChannelOperationsTest(unittest.TestCase):
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+[ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
-    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -94,13 +94,13 @@ Status:
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
-[A] rhel-i386-as-4
+[ ] rhel-i386-as-4
 [I] sles10-sp4-pool-x86_64
-    [A] sle10-sdk-sp4-pool-x86_64
+    [ ] sle10-sdk-sp4-pool-x86_64
     [I] sle10-sdk-sp4-updates-x86_64"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -123,14 +123,14 @@ Status:
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
-    [A] RES4 AS for i386 RES 4 [res4-as-i386]
+[ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+    [ ] RES4 AS for i386 RES 4 [res4-as-i386]
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
-    [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -153,11 +153,11 @@ Status:
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
-[A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]"""
+[ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -183,9 +183,9 @@ Status:
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
 [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
     [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
@@ -214,13 +214,13 @@ Status:
 
 
 Status:
-  - I - channel is installed
-  - A - channel is not installed, but is available
-  - U - channel is unavailable
+  - [I] - channel is installed
+  - [ ] - channel is not installed, but is available
+  - [U] - channel is unavailable
 
-01) [A] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
+01) [ ] RHEL i386 AS 4 RES 4 [rhel-i386-as-4]
     [I] SLES10-SP4-Pool for x86_64 SUSE Linux Enterprise Server 10 SP4 x86_64 [sles10-sp4-pool-x86_64]
-    02) [A] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
+    02) [ ] SLE10-SDK-SP4-Pool for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-pool-x86_64]
         [I] SLE10-SDK-SP4-Updates for x86_64 SUSE Linux Enterprise Software Development Kit 10 SP4 Software Development Kit [sle10-sdk-sp4-updates-x86_64]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
