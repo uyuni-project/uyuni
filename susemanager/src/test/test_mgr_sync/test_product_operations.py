@@ -80,8 +80,8 @@ class ProductOperationsTest(unittest.TestCase):
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 [ ] RES 4 (x86_64)
 [ ] RES 4 (x86_64)
@@ -159,8 +159,8 @@ Status:
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -189,8 +189,8 @@ Status:
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
   [ ] SUSE Cloud 1.0 (x86_64)
@@ -219,8 +219,8 @@ Status:
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 001) [ ] RES 4 (x86_64)
 002) [ ] RES 4 (x86_64)
@@ -304,8 +304,8 @@ Status:
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -366,8 +366,8 @@ Product successfully added"""
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -430,8 +430,8 @@ Product successfully added"""
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 001) [ ] RES 4 (x86_64)"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -470,8 +470,8 @@ Status:
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
      [I] RES 4 (x86_64)
 Product 'RES 4' has already been added"""
@@ -509,8 +509,8 @@ Product 'RES 4' has already been added"""
 
 
 Status:
-  - [I] - channel is installed
-  - [ ] - channel is not installed, but is available
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
