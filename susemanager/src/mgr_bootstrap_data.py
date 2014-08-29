@@ -65,7 +65,7 @@ PKGLIST12 = [
                 "dbus-1-python",
                 "libcurl4",
                 "libnewt0_52",
-                "libnl",
+                "libnl1",
                 "libsqlite3-0",
                 "python-libxml2",
                 "libzypp",
@@ -79,7 +79,7 @@ PKGLIST12 = [
                 "rhnlib",
                 "rpm-python",
                 "libsolv-tools",
-                "slang",
+                "libslang2",
                 "spacewalk-check",
                 "spacewalk-client-setup",
                 "spacewalk-client-tools",
@@ -199,17 +199,17 @@ DATA = {
                           'PDID' : {'NCC' : 4160 , 'SCC' : 1131}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
-    'SLE-12-SP1-ppc64le' : {
+    'SLE-12-ppc64le' : {
                           'PDID' : {'NCC' : 0 , 'SCC' : 1116}, 'PKGLIST' : PKGLIST12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
-    'SLE-12-SP1-s390x' : {
+    'SLE-12-s390x' : {
                           'PDID' : {'NCC' : 0 , 'SCC' : 1115}, 'PKGLIST' : PKGLIST12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
-    'SLE-12-SP1-x86_64' : {
-                          'PDID' : {'NCC' : 0 , 'SCC' : 01117}, 'PKGLIST' : PKGLIST12,
-                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+    'SLE-12-x86_64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1117}, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
 }
 
