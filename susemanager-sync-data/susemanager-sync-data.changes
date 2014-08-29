@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Aug 29 11:06:12 CEST 2014 - mc@suse.de
+
+- version 2.2.1-1
+- update channels.xml - add nVidia driver for Workstation Extension
+- add 'family' attributes for SLE12 channels
+
+-------------------------------------------------------------------
 Wed Aug 27 16:30:30 CEST 2014 - mc@suse.de
 
 - version 2.1.1-1
