@@ -29,13 +29,17 @@ class Channel(object):
         self.label = data["label"]
         self.name = data["name"]
         self.parent = data["parent"]
-        self.status = Channel.Status(data["status"])
+        self.status = data["status"]
         self.url = data["source_url"]
+        self.optional = data["optional"]
         self._children = []
 
     @property
     def short_status(self):
-        return "[%s]" % str(self.status[0])
+        if self.status == Channel.Status.AVAILABLE:
+            return "[ ]"
+        else:
+            return "[%s]" % str(self.status[0])
 
     def summary_or_url(self):
         return (self.summary + "").strip() or self.url or "N/A"

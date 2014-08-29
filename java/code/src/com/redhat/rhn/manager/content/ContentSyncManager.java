@@ -465,6 +465,7 @@ public class ContentSyncManager {
             for (MgrSyncChannel channel : product.getChannels()) {
                 if (channel.getParent().equals(BASE_CHANNEL)) {
                     isBase = true;
+                    break;
                 }
             }
             if (isBase) {
@@ -485,14 +486,6 @@ public class ContentSyncManager {
                         }
                     }
                 }
-            }
-        }
-
-        // figure out installed products
-        List<String> installedChannelLabels = getInstalledChannelLabels();
-        for (ListedProduct product : all) {
-            if (isInstalled(product.getChannels(), installedChannelLabels)) {
-                product.setStatus(MgrSyncStatus.INSTALLED);
             }
         }
 
@@ -519,7 +512,7 @@ public class ContentSyncManager {
                 Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
-                    if (extension.getFriendlyName().matches("SUSE.*") &&
+                    if (extension.getFriendlyName().startsWith("SUSE") &&
                         extensionVersion.startsWith("11.") &&
                         !extensionVersion.equals(productVersion)) {
                         wrongSP.add(extension);
@@ -563,24 +556,6 @@ public class ContentSyncManager {
                 product.getExtensions().removeAll(sp1ProductsInSp2);
             }
         }
-    }
-
-    /**
-     * Checks if a product is installed.
-     *
-     * @param channels the product's channels
-     * @param installedChannelLabels the installed channel labels
-     * @return true, if the product is installed
-     */
-    private boolean isInstalled(Collection<MgrSyncChannel> channels,
-            Collection<String> installedChannelLabels) {
-        for (MgrSyncChannel channel : channels) {
-            if (!channel.isOptional() &&
-                !installedChannelLabels.contains(channel.getLabel())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -1205,15 +1180,27 @@ public class ContentSyncManager {
             }
         }
         if (channel == null) {
-            throw new ContentSyncException("Channel is not available: " + label);
+            throw new ContentSyncException("Channel is unknown: " + label);
         }
 
+        // Check if channel is mirrorable
         Integer mirrcredsID = isMirrorable(channel, repositories);
         if (mirrcredsID == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
 
-        // Create channel and save it in the database
+        // Lookup all related products
+        List<SUSEProduct> products = new ArrayList<SUSEProduct>();
+        for (MgrSyncProduct p : channel.getProducts()) {
+            SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
+            if (product == null) {
+                throw new ContentSyncException("Related product (" + p.getId() +
+                        ") could not be found, please refresh!");
+            }
+            products.add(product);
+        }
+
+        // Create the channel
         Channel dbChannel = ChannelFactory.createChannel();
         dbChannel.setBaseDir("/dev/null");
         dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(channel));
@@ -1257,14 +1244,8 @@ public class ContentSyncManager {
                 parentChannelLabel = null;
             }
 
-            // Lookup products and create the relations
-            for (MgrSyncProduct p : channel.getProducts()) {
-                SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
-                if (product == null) {
-                    throw new ContentSyncException(
-                            "Product not found (" + p.getId() + ") please refresh!");
-                }
-
+            // Create the product/channel relations
+            for (SUSEProduct product : products) {
                 // Update or insert the product/channel relationship
                 SUSEProductChannel spc = SUSEProductFactory.lookupSUSEProductChannel(
                         channel.getLabel(), product.getProductId());

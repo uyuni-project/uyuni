@@ -48,6 +48,9 @@ import redstone.xmlrpc.XmlRpcSerializer;
  */
 public class MgrSyncChannelSerializer extends RhnXmlRpcCustomSerializer {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<MgrSyncChannel> getSupportedClass() {
         return MgrSyncChannel.class;
@@ -69,10 +72,7 @@ public class MgrSyncChannelSerializer extends RhnXmlRpcCustomSerializer {
         helper.add("product_name", channel.getProductName());
         helper.add("product_version", channel.getProductVersion());
         helper.add("source_url", channel.getSourceUrl());
-        MgrSyncStatus status = channel.getStatus();
-        if (status != null) {
-            helper.add("status", channel.getStatus().name());
-        }
+        helper.add("status", channel.getStatus().name());
         helper.add("summary", channel.getSummary());
         helper.add("update_tag", channel.getUpdateTag());
         helper.writeTo(writer);

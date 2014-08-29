@@ -18,7 +18,7 @@ import sys
 import xmlrpclib
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
-from spacewalk.susemanager.mgr_sync.product import parse_products
+from spacewalk.susemanager.mgr_sync.product import parse_products, Product, find_product_by_label
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.authenticator import Authenticator
 from spacewalk.susemanager.helpers import cli_ask
@@ -61,6 +61,8 @@ class MgrSync(object):
         elif vars(options).has_key('add_target'):
             if options.add_target == 'channel':
                 self._add_channels(options.target)
+            elif options.add_target == 'product':
+                self._add_products(options.target)
             else:
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
@@ -103,9 +105,9 @@ class MgrSync(object):
 
         print "Available Channels%s:\n" % (expand and " (full)" or "")
         print("\nStatus:")
-        print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available")
-        print("  - U - channel is unavailable\n")
+        print("  - [I] - channel is installed")
+        print("  - [ ] - channel is not installed, but is available")
+        print("  - [U] - channel is unavailable\n")
 
         for bc_label in sorted(base_channels.keys()):
             base_channel = base_channels[bc_label]
@@ -250,16 +252,21 @@ class MgrSync(object):
     #                          #
     ############################
 
-    def _list_products(self, filter):
+    def _list_products(self, filter, show_interactive_numbers=False):
         """
-        List products on the channel.
+        List products
         """
+
+        interactive_number = None
+        if show_interactive_numbers:
+            interactive_number = [1]
 
         if filter:
             filter = filter.lower()
 
         data = self._execute_xmlrpc_method(self.conn.sync.content,
                                            "listProducts", self.auth.token())
+
         if not data:
             print("No products found.")
             return
@@ -268,11 +275,64 @@ class MgrSync(object):
 
         print("Available Products:\n")
         print("\nStatus:")
-        print("  - I - channel is installed")
-        print("  - A - channel is not installed, but is available\n")
+        print("  - [I] - channel is installed")
+        print("  - [ ] - channel is not installed, but is available\n")
 
         for product in products:
-            product.to_stdout(filter=filter)
+            product.to_stdout(filter=filter,
+                              interactive_number=interactive_number)
+
+    def _add_products(self, products):
+        """ Add a list of products.
+
+        If the products list is empty the interactive mode is started.
+        """
+
+        exit_with_error = False
+        current_products = []
+
+        if not products:
+            products = [self._select_product_interactive_mode()]
+
+        current_products = self._fetch_remote_products()
+
+        for product_label in products:
+            product = find_product_by_label(product_label, current_products)
+            if product:
+                if product.status == Product.Status.INSTALLED:
+                    print("Product '{0}' has already been added".format(
+                        product))
+                    continue
+            else:
+                sys.stderr.write("Cannot find product '{0}'".format(
+                    product_label))
+                exit_with_error = True
+
+            print("Adding '{0}' product".format(product))
+            print("Channels to add:")
+            for channel in product.channels:
+                if channel.optional:
+                    continue
+                print("  * {0}".format(channel))
+
+        if exit_with_error:
+            sys.exit(1)
+
+    def _select_product_interactive_mode(self):
+        """Show not installed products prefixing a number, then reads
+        user input and returns the label of the chosen product
+
+        """
+        products = self._list_products(
+            filter=None, show_interactive_numbers=True)
+
+        validator = lambda i: re.search("\d+", i) and \
+            int(i) in range(1, len(products)+1)
+        choice = cli_ask(
+            msg=("Enter product number (1-{0})".format(len(products))),
+            validator=validator)
+
+        return products[int(choice)-1]
 
     #################
     #               #

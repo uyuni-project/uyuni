@@ -49,7 +49,7 @@ public class ContentSyncHandler extends BaseHandler {
     public Object[] listProducts(String sessionKey) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts(csm.getAvailableChannels(csm.readChannels())).toArray();
+        return csm.listProducts(csm.listChannels(csm.getRepositories())).toArray();
     }
 
     /**
