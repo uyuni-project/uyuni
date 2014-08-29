@@ -465,6 +465,7 @@ public class ContentSyncManager {
             for (MgrSyncChannel channel : product.getChannels()) {
                 if (channel.getParent().equals(BASE_CHANNEL)) {
                     isBase = true;
+                    break;
                 }
             }
             if (isBase) {
@@ -511,7 +512,7 @@ public class ContentSyncManager {
                 Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
                 for (ListedProduct extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
-                    if (extension.getFriendlyName().matches("SUSE.*") &&
+                    if (extension.getFriendlyName().startsWith("SUSE") &&
                         extensionVersion.startsWith("11.") &&
                         !extensionVersion.equals(productVersion)) {
                         wrongSP.add(extension);
