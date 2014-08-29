@@ -18,7 +18,7 @@ import sys
 import xmlrpclib
 
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
-from spacewalk.susemanager.mgr_sync.product import parse_products, Product, find_product_by_label
+from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.authenticator import Authenticator
 from spacewalk.susemanager.helpers import cli_ask
@@ -62,7 +62,7 @@ class MgrSync(object):
             if options.add_target == 'channel':
                 self._add_channels(options.target)
             elif options.add_target == 'product':
-                self._add_products(options.target)
+                self._add_products()
             else:
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
@@ -223,7 +223,6 @@ class MgrSync(object):
         :param channel: the label identifying the channel
         """
 
-        print("Scheduling reposync for '{0}' channel".format(channel))
         self._execute_xmlrpc_method(self.conn.channel.software,
                                     "syncRepo",
                                     self.auth.token(),
@@ -252,6 +251,13 @@ class MgrSync(object):
     #                          #
     ############################
 
+    def _fetch_remote_products(self):
+        """ Returns the list of products as reported by the remote server """
+        return parse_products(
+            self._execute_xmlrpc_method(self.conn.sync.content,
+                                        "listProducts", self.auth.token()))
+
+
     def _list_products(self, filter, show_interactive_numbers=False):
         """
         List products
@@ -264,14 +270,11 @@ class MgrSync(object):
         if filter:
             filter = filter.lower()
 
-        data = self._execute_xmlrpc_method(self.conn.sync.content,
-                                           "listProducts", self.auth.token())
+        products = self._fetch_remote_products()
 
-        if not data:
+        if not products:
             print("No products found.")
             return
-
-        products = parse_products(data)
 
         print("Available Products:\n")
         print("\nStatus:")
@@ -282,41 +285,51 @@ class MgrSync(object):
             product.to_stdout(filter=filter,
                               interactive_number=interactive_number)
 
-    def _add_products(self, products):
+        return products
+
+    def _add_products(self):
         """ Add a list of products.
 
         If the products list is empty the interactive mode is started.
         """
 
-        exit_with_error = False
-        current_products = []
+        product = self._select_product_interactive_mode()
 
-        if not products:
-            products = [self._select_product_interactive_mode()]
+        if product.status == Product.Status.INSTALLED:
+            print("Product '{0}' has already been added".format(
+                product.friendly_name))
+            return
 
-        current_products = [] #self._fetch_remote_products()
+        mandatory_channels = [c for c in product.channels
+                              if not c.optional]
+        missing_channels = [c for c in mandatory_channels
+                            if c.status == Channel.Status.UNAVAILABLE]
 
-        for product_label in products:
-            product = find_product_by_label(product_label, current_products)
-            if product:
-                if product.status == Product.Status.INSTALLED:
-                    print("Product '{0}' has already been added".format(
-                        product))
-                    continue
-            else:
-                sys.stderr.write("Cannot find product '{0}'".format(
-                    product_label))
-                exit_with_error = True
-
-            print("Adding '{0}' product".format(product))
-            print("Channels to add:")
-            for channel in product.channels:
-                if channel.optional:
-                    continue
-                print("  * {0}".format(channel))
-
-        if exit_with_error:
+        if missing_channels:
+            sys.stderr.write(
+                "Cannot add product '{0}' because the "
+                "following channels are not available:\n".format(
+                    product.friendly_name))
+            for c in missing_channels:
+                sys.stderr.write("  - {0}\n".format(c.label))
             sys.exit(1)
+
+        print("Adding channels required by '{0}' product".format(
+            product.friendly_name))
+        for channel in mandatory_channels:
+            sys.stdout.write("  * {0}: ".format(channel.label))
+            if channel.status == Channel.Status.INSTALLED:
+                sys.stdout.write("already added, ")
+            else:
+                self._execute_xmlrpc_method(self.conn.sync.content,
+                                            "addChannel",
+                                            self.auth.token(),
+                                            channel.label)
+                sys.stdout.write("added, ")
+            self._schedule_channel_reposync(channel.label)
+            sys.stdout.write("reposync scheduled\n")
+            sys.stdout.flush()
+        print("Product successfully added")
 
     def _select_product_interactive_mode(self):
         """Show not installed products prefixing a number, then reads
@@ -380,9 +393,12 @@ class MgrSync(object):
                 if bc.status != Channel.Status.INSTALLED:
                     continue
 
+                print("Scheduling reposync for '{0}' channel".format(bc.label))
                 self._schedule_channel_reposync(bc.label)
                 for child in bc.children:
                     if child.status == Channel.Status.INSTALLED:
+                        print("Scheduling reposync for '{0}' channel".format(
+                            child.label))
                         self._schedule_channel_reposync(child.label)
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
