@@ -488,14 +488,6 @@ public class ContentSyncManager {
             }
         }
 
-        // figure out installed products
-        List<String> installedChannelLabels = getInstalledChannelLabels();
-        for (ListedProduct product : all) {
-            if (isInstalled(product.getChannels(), installedChannelLabels)) {
-                product.setStatus(MgrSyncStatus.INSTALLED);
-            }
-        }
-
         // HACK: add dirty fixes
         addDirtyFixes(all, bases);
 
@@ -563,24 +555,6 @@ public class ContentSyncManager {
                 product.getExtensions().removeAll(sp1ProductsInSp2);
             }
         }
-    }
-
-    /**
-     * Checks if a product is installed.
-     *
-     * @param channels the product's channels
-     * @param installedChannelLabels the installed channel labels
-     * @return true, if the product is installed
-     */
-    private boolean isInstalled(Collection<MgrSyncChannel> channels,
-            Collection<String> installedChannelLabels) {
-        for (MgrSyncChannel channel : channels) {
-            if (!channel.isOptional() &&
-                !installedChannelLabels.contains(channel.getLabel())) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
