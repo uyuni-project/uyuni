@@ -36,7 +36,10 @@ class Channel(object):
 
     @property
     def short_status(self):
-        return "[%s]" % str(self.status[0])
+        if self.status == Channel.Status.AVAILABLE:
+            return "[ ]"
+        else:
+            return "[%s]" % str(self.status[0])
 
     def summary_or_url(self):
         return (self.summary + "").strip() or self.url or "N/A"
