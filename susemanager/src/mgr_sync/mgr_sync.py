@@ -61,7 +61,7 @@ class MgrSync(object):
         elif vars(options).has_key('add_target'):
             if options.add_target == 'channel':
                 self._add_channels(options.target)
-            if options.add_target == 'product':
+            elif options.add_target == 'product':
                 self._add_products(options.target)
             else:
                 sys.stderr.write('List target not recognized\n')
