@@ -1188,7 +1188,18 @@ public class ContentSyncManager {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
 
-        // Create channel and save it in the database
+        // Lookup all related products
+        List<SUSEProduct> products = new ArrayList<SUSEProduct>();
+        for (MgrSyncProduct p : channel.getProducts()) {
+            SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
+            if (product == null) {
+                throw new ContentSyncException("Related product (" + p.getId() +
+                        ") could not be found, please refresh!");
+            }
+            products.add(product);
+        }
+
+        // Create the channel
         Channel dbChannel = ChannelFactory.createChannel();
         dbChannel.setBaseDir("/dev/null");
         dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(channel));
@@ -1232,14 +1243,8 @@ public class ContentSyncManager {
                 parentChannelLabel = null;
             }
 
-            // Lookup products and create the relations
-            for (MgrSyncProduct p : channel.getProducts()) {
-                SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
-                if (product == null) {
-                    throw new ContentSyncException(
-                            "Product not found (" + p.getId() + ") please refresh!");
-                }
-
+            // Create the product/channel relations
+            for (SUSEProduct product : products) {
                 // Update or insert the product/channel relationship
                 SUSEProductChannel spc = SUSEProductFactory.lookupSUSEProductChannel(
                         channel.getLabel(), product.getProductId());
