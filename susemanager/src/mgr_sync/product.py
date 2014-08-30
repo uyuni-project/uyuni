@@ -81,7 +81,7 @@ def find_product_by_label(label, products):
     Find a product with the specified label.
     """
 
-    for p in products:
+    for product in products:
         if product.label == label:
             return product
         match = find_product_by_label(label, product.extension)
