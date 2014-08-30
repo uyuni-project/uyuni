@@ -294,7 +294,7 @@ class MgrSync(object):
         if not products:
             products = [self._select_product_interactive_mode()]
 
-        current_products = self._fetch_remote_products()
+        current_products = [] #self._fetch_remote_products()
 
         for product_label in products:
             product = find_product_by_label(product_label, current_products)
