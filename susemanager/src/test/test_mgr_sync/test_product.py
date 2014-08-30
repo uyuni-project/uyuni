@@ -56,8 +56,8 @@ class ProductTest(unittest.TestCase):
         with ConsoleRecorder() as recorder:
             sles11sp3_s390x.to_stdout()
 
-        expected_output = """[A] SUSE Linux Enterprise Server 11 SP3 (s390x)
-  [A] SUSE Linux Enterprise High Availability Extension 11 SP3 (s390x)
+        expected_output = """[ ] SUSE Linux Enterprise Server 11 SP3 (s390x)
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (s390x)
   [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (s390x)"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
@@ -66,6 +66,6 @@ class ProductTest(unittest.TestCase):
         with ConsoleRecorder() as recorder:
             res4.to_stdout()
 
-        expected_output = ["[A] RES 4 (i386)"]
+        expected_output = ["[ ] RES 4 (i386)"]
         self.assertEqual(expected_output, recorder.stdout)
 
