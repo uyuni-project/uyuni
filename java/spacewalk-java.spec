@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.18
+Version: 2.3.27
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -103,12 +103,10 @@ BuildRequires: struts >= 0:1.2.9
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: struts >= 0:1.3.0
-Requires: struts-taglib >= 0:1.3.0
 Requires: tomcat >= 7
 Requires: tomcat-lib >= 7
 Requires: tomcat-servlet-3.0-api >= 7
 BuildRequires: struts >= 0:1.3.0
-BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
 %else
@@ -525,7 +523,7 @@ ant -Dprefix=$RPM_BUILD_ROOT install-tomcat5
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
@@ -860,7 +858,7 @@ fi
 %if  0%{?rhel} && 0%{?rhel} < 6
 %config(noreplace) %{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
 %else
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
@@ -922,6 +920,41 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Aug 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.27-1
+- 1119447 - show package link if package is in database
+
+* Fri Aug 29 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.26-1
+- 1128825 - AKey package names separated by spaces.
+
+* Thu Aug 28 2014 Stephen Herr <sherr@redhat.com> 2.3.25-1
+- 1135073, 1132398 - repomd generation memory increases with channel size
+
+* Wed Aug 27 2014 Tomas Lestach <tlestach@redhat.com> 2.3.24-1
+- remove jasper2 validateXml attribute as it's causing troubles
+- improve spacing between UI elements
+- 1063808 - Custom info empty value added (java/api)
+
+* Mon Aug 25 2014 Jan Dobes 2.3.23-1
+- 1127730 - check if action chain with same name already exists
+
+* Fri Aug 22 2014 Stephen Herr <sherr@redhat.com> 2.3.22-1
+- Fix SELinux denials in fedora
+
+* Wed Aug 20 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.21-1
+- struts-taglib is no more needed
+- use tomcat 7 on RHEL7
+
+* Tue Aug 19 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.20-1
+- added missing PPC64LE localization string
+- Don't swallow exceptions (try...finally should be considered harmful)
+
+* Mon Aug 18 2014 Tomas Lestach <tlestach@redhat.com> 2.3.19-1
+- introduce system.transitionDataForSystem API
+- expression of type SystemsPerChannelDto is already an instance of type
+  SystemsPerChannelDto
+- Eclipse code formatter settings: use checkstyle compatible spacing for array
+  initializers
+
 * Fri Aug 08 2014 Jan Dobes 2.3.18-1
 - 1127750 - ISE when activation key has no description.
 
