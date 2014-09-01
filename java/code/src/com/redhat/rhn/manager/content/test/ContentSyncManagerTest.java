@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -914,6 +915,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
+
+            // Ensure family has members
+            ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "7261");
+            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
 
             // Add the channel by label
             csm.addChannel(xmlChannel.getLabel(), repos);

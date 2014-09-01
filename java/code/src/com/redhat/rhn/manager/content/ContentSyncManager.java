@@ -804,7 +804,10 @@ public class ContentSyncManager {
                         sumMaxMembers += pcf.getMaxMembers();
                     }
                 }
-                satelliteOrgPrivateChannelFamily.setMaxMembers(INFINITE - sumMaxMembers);
+                if (satelliteOrgPrivateChannelFamily != null) {
+                    satelliteOrgPrivateChannelFamily
+                            .setMaxMembers(INFINITE - sumMaxMembers);
+                }
             }
             else {
                 // No subscription, reset to 0
