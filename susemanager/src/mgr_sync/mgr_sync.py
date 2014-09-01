@@ -67,7 +67,7 @@ class MgrSync(object):
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.enable_reposync)
+            self._refresh(enable_reposync=options.refresh_channels)
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
