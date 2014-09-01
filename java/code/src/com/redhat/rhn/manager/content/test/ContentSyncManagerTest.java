@@ -394,6 +394,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 0L, 0L, true, TestUtils.randomString());
             family.setName("SMS");
             family.setLabel("SMS");
+            family.setOrg(OrgFactory.getSatelliteOrg());
             ChannelFamilyFactory.save(family);
         }
         for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
@@ -918,7 +919,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Ensure family has members
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "7261");
-            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
+            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
 
             // Add the channel by label
             csm.addChannel(xmlChannel.getLabel(), repos);
