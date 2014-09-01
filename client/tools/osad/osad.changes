@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 01 17:04:21 CEST 2014 - mc@suse.de
+
+- version 5.11.33.4-1
+- osad: fix traceback if http proxy is not configured
+- osad: support communication over proxy
+
+-------------------------------------------------------------------
 Tue Jun 17 10:57:46 CEST 2014 - jrenner@suse.de
 
 - version 5.11.33.3-1
