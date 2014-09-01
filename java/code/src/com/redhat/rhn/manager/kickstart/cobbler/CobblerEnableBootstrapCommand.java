@@ -102,9 +102,7 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
 
         Distro distro = Distro.create(connection, Distro.BOOTSTRAP_NAME, kernelPath,
             initrdPath, new HashMap<Object, Object>(),
-            config.getCobblerBootstrapBreed(), null, null);
-        distro.setArch(config.getCobblerBootstrapArch());
-        distro.save();
+            config.getCobblerBootstrapBreed(), null, config.getCobblerBootstrapArch());
         log.debug("Distro added");
 
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
