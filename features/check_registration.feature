@@ -24,7 +24,7 @@ Feature: Check client registration
      And I should see a "delete system" link
      And I should see a "Initial Registration Parameters:" text
      And I should see a "OS: sles-release" text
-     And I should see a "Release: 11.3" text
+     And I should see a "Release: 12" text
      #And I should see a "[Virtualization]" text
 
   Scenario: check tab links "Details"
