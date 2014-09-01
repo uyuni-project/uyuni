@@ -55,7 +55,7 @@ class Authenticator(object):
         """
 
         print "Please enter the credentials of SUSE Manager Administrator."
-        self.user = cli_ask("Login: ")
-        self.password = cli_ask("Password: ", password=True)
+        self.user = cli_ask("Login")
+        self.password = cli_ask("Password", password=True)
 
 
