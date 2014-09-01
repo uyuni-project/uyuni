@@ -258,15 +258,17 @@ class MgrSync(object):
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listProducts", self.auth.token()))
 
-
     def _list_products(self, filter, show_interactive_numbers=False):
         """
         List products
         """
 
-        interactive_number = None
+        interactive_data = None
         if show_interactive_numbers:
-            interactive_number = [1]
+            interactive_data = {
+                'counter': 1,
+                'num_prod': {}
+            }
 
         if filter:
             filter = filter.lower()
@@ -284,9 +286,9 @@ class MgrSync(object):
 
         for product in products:
             product.to_stdout(filter=filter,
-                              interactive_number=interactive_number)
+                              interactive_data=interactive_data)
 
-        return products
+        return interactive_data
 
     def _add_products(self):
         """ Add a list of products.
@@ -337,16 +339,22 @@ class MgrSync(object):
         user input and returns the label of the chosen product
 
         """
-        products = self._list_products(
+        interactive_data = self._list_products(
             filter=None, show_interactive_numbers=True)
 
-        validator = lambda i: re.search("\d+", i) and \
-            int(i) in range(1, len(products)+1)
-        choice = cli_ask(
-            msg=("Enter product number (1-{0})".format(len(products))),
-            validator=validator)
-
-        return products[int(choice)-1]
+        num_prod = interactive_data['num_prod']
+        if num_prod:
+            validator = lambda i: re.search("\d+", i) and \
+                int(i) in range(1, len(num_prod.keys()))
+            choice = cli_ask(
+                msg=("Enter product number (1-{0})".format(
+                    len(num_prod.keys()))),
+                validator=validator)
+            return num_prod[int(choice)]
+        else:
+            print("All the available products have already been installed, "
+                  "nothing to do")
+            sys.exit(0)
 
     #################
     #               #

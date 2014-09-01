@@ -45,14 +45,16 @@ class Product(object):
                                       self.arch)
 
     def to_stdout(self, indentation_level=0, filter=None,
-                  interactive_number=[]):
+                  interactive_data={}):
         prefix = indentation_level * "  "
-        if interactive_number:
+        if interactive_data:
             if self.status == Product.Status.INSTALLED:
                 prefix = "     " + prefix
             else:
-                prefix = "%.3d) %s" % (interactive_number[0], prefix)
-                interactive_number[0] += 1
+                counter = interactive_data['counter']
+                prefix = "%.3d) %s" % (counter, prefix)
+                interactive_data['num_prod'][counter] = self
+                interactive_data['counter'] += 1
 
         if not filter or self.matches_filter(filter):
             print(prefix + self.to_ascii_row())
@@ -60,7 +62,7 @@ class Product(object):
             for ext in self.extensions:
                 ext.to_stdout(indentation_level=indentation_level,
                               filter=filter,
-                              interactive_number=interactive_number)
+                              interactive_data=interactive_data)
 
     def _parse_extensions(self, data):
         for extension in data:
