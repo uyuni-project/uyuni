@@ -117,9 +117,9 @@ def _create_refresh_subparser(subparsers):
     refresh_parser.set_defaults(refresh=True)
 
     refresh_parser.add_argument(
-        '--enable-reposync',
+        '--refresh-channels',
         action='store_true',
-        dest='enable_reposync',
+        dest='refresh_channels',
         default=False,
         help='Schedule a refresh of all the installed channels.')
 
