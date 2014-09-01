@@ -54,8 +54,8 @@ class Authenticator(object):
         Get credentials from CLI interactively.
         """
 
-        print "SUSE Manager needs you to login as an administrator."
-        self.user = cli_ask("    User")
-        self.password = cli_ask("Password", password=True)
+        print "Please enter the credentials of SUSE Manager Administrator."
+        self.user = cli_ask("Login: ")
+        self.password = cli_ask("Password: ", password=True)
 
 
