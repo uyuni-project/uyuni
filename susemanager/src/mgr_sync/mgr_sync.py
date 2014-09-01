@@ -59,9 +59,9 @@ class MgrSync(object):
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
         elif vars(options).has_key('add_target'):
-            if options.add_target == 'channel':
+            if 'channel' in options.add_target:
                 self._add_channels(options.target)
-            elif options.add_target == 'product':
+            elif 'product' in options.add_target:
                 self._add_products()
             else:
                 sys.stderr.write('List target not recognized\n')
