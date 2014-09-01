@@ -68,6 +68,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+    /** Maximum members for SUSE Manager. */
+    public static final long MANY_MEMBERS = 20000L;
 
     /**
      * Test for {@link ContentSyncManager#updateChannels()}.
@@ -150,7 +152,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Setup content sources accordingly
             ContentSource cs = new ContentSource();
             cs.setLabel(c1.getLabel());
-            cs.setSourceUrl("UPDATE ME!");
+            cs.setSourceUrl(TestUtils.randomString());
             cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
             cs.setOrg(null);
             cs = (ContentSource) TestUtils.saveAndReload(cs);
@@ -158,7 +160,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             TestUtils.saveAndFlush(c1);
             cs = new ContentSource();
             cs.setLabel(c2.getLabel());
-            cs.setSourceUrl("UPDATE ME!");
+            cs.setSourceUrl(TestUtils.randomString());
             cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
             cs.setOrg(null);
             cs = (ContentSource) TestUtils.saveAndReload(cs);
@@ -386,6 +388,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Check reset to 0
         ChannelFamily family = ChannelFamilyFactory.lookupByLabel("SMS", null);
+        if (family == null) {
+            family = ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                0L, 0L, true, TestUtils.randomString());
+            family.setName("SMS");
+            family.setLabel("SMS");
+            ChannelFamilyFactory.save(family);
+        }
         for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
             assertEquals(new Long(0), pcf.getMaxMembers());
         }
