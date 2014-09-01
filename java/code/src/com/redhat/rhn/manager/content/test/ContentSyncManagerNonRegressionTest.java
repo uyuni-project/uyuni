@@ -15,9 +15,7 @@
 package com.redhat.rhn.manager.content.test;
 
 import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
-import com.redhat.rhn.domain.channel.PrivateChannelFamily;
-import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
+import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -73,9 +71,6 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
     } };
 
-    // channel family members
-    private static final long MANY_MEMBERS = 20000L;
-
     /**
      * Tests listProducts() against known correct output (originally from
      * mgr-ncc-sync).
@@ -92,9 +87,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             SUSEProductFactory.clearAllProducts();
 
             // ensure all needed channel families have enough entitlements, so
-            // that channels
-            // are available later
-            ensureChannelFamiliesAreEntitled();
+            // that channels are available later
+            for (String label : ENTITLED_LABELS) {
+                ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, label);
+                ChannelFamilyTest.ensureChannelFamilyHasMembers(cf,
+                        ContentSyncManagerTest.MANY_MEMBERS);
+            }
 
             List<MgrSyncChannel> allChannels =
                     new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
@@ -190,30 +188,6 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
-        }
-    }
-
-    /**
-     * Ensures that channel families in ENTITLED_LABELS exist and have a high
-     * value of max members. This is needed for channels under test to be
-     * available
-     * @throws Exception if anything goes wrong
-     */
-    public void ensureChannelFamiliesAreEntitled() throws Exception {
-        for (String label : ENTITLED_LABELS) {
-            ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
-            if (cf == null) {
-                cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                    MANY_MEMBERS, 0L, true, TestUtils.randomString());
-                cf.setName(label);
-                cf.setLabel(label);
-                ChannelFamilyFactory.save(cf);
-            }
-            else {
-                for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
-                    pcf.setMaxMembers(MANY_MEMBERS);
-                }
-            }
         }
     }
 
