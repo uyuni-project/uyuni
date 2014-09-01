@@ -356,7 +356,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         num_prod = interactive_data['num_prod']
         if num_prod:
             validator = lambda i: re.search("\d+", i) and \
-                int(i) in range(1, len(num_prod.keys()))
+                int(i) in range(1, len(num_prod.keys() + 1))
             choice = cli_ask(
                 msg=("Enter product number (1-{0})".format(
                     len(num_prod.keys()))),
