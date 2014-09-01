@@ -442,8 +442,8 @@ Status:
 
         self.assertFalse(stubbed_xmlrpm_call.mock_calls)
 
-    def test_add_already_installed_product(self):
-        """ Test adding an already installed product"""
+    def test_all_available_products_are_already_installed(self):
+        """ Test all the available products are already installed"""
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
@@ -463,8 +463,10 @@ Status:
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
+                try:
                     self.mgr_sync.run(options)
+                except SystemExit, ex:
+                    self.assertEqual(0, ex.code)
 
         expected_output = """Available Products:
 
@@ -474,10 +476,9 @@ Status:
   - [ ] - product is not installed, but is available
 
      [I] RES 4 (x86_64)
-Product 'RES 4' has already been added"""
+All the available products have already been installed, nothing to do"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
-        self.assertFalse(mock_exit.mock_calls)
         self.assertFalse(stubbed_xmlrpm_call.mock_calls)
 
     def test_add_products_with_an_optional_channel_unavailable(self):
