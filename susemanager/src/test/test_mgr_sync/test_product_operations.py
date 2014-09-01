@@ -415,7 +415,7 @@ Product successfully added"""
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         # set the 1st required channel as already installed
-        chosen_product.channels[0].status = Channel.Status.UNAVAILABLE
+        chosen_product.status = Product.Status.UNAVAILABLE
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
             mock.return_value = str(
@@ -423,8 +423,8 @@ Product successfully added"""
             try:
                 with ConsoleRecorder() as recorder:
                     self.mgr_sync.run(options)
-            except SystemExit:
-                self.assertTrue(True)
+            except SystemExit, ex:
+                self.assertEqual(0, ex.code)
 
         expected_output = """Available Products:
 
@@ -433,12 +433,10 @@ Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
 
-001) [ ] RES 4 (x86_64)"""
-        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+     [U] RES 4 (x86_64)
+All the available products have already been installed, nothing to do"""
 
-        expected_stderr = """Cannot add product 'RES 4' because the following channels are not available:
-  - res4-as-suse-manager-tools-x86_64"""
-        self.assertEqual(expected_stderr.split("\n"), recorder.stderr)
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         self.assertFalse(stubbed_xmlrpm_call.mock_calls)
 

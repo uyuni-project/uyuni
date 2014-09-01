@@ -23,6 +23,7 @@ class Product(object):
     class Status(str, Enum):
         INSTALLED = "INSTALLED"
         AVAILABLE = "AVAILABLE"
+        UNAVAILABLE = "UNAVAILABLE"
 
     def __init__(self, data):
         self.arch = data["arch"]
@@ -48,7 +49,8 @@ class Product(object):
                   interactive_data={}):
         prefix = indentation_level * "  "
         if interactive_data:
-            if self.status == Product.Status.INSTALLED:
+            if self.status in (Product.Status.INSTALLED,
+                               Product.Status.UNAVAILABLE):
                 prefix = "     " + prefix
             else:
                 counter = interactive_data['counter']

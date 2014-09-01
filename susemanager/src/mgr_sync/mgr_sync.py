@@ -305,17 +305,6 @@ class MgrSync(object):
 
         mandatory_channels = [c for c in product.channels
                               if not c.optional]
-        missing_channels = [c for c in mandatory_channels
-                            if c.status == Channel.Status.UNAVAILABLE]
-
-        if missing_channels:
-            sys.stderr.write(
-                "Cannot add product '{0}' because the "
-                "following channels are not available:\n".format(
-                    product.friendly_name))
-            for c in missing_channels:
-                sys.stderr.write("  - {0}\n".format(c.label))
-            sys.exit(1)
 
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
