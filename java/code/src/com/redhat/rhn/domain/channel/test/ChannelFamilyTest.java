@@ -17,9 +17,12 @@ package com.redhat.rhn.domain.channel.test;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.common.CommonConstants;
 import com.redhat.rhn.domain.common.VirtSubscriptionLevel;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -65,5 +68,37 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
         cfam = (ChannelFamily) reload(cfam);
         assertNotNull(cfam.getVirtSubscriptionLevels());
         assertTrue(cfam.getVirtSubscriptionLevels().size() >= 2);
+    }
+
+    /**
+     * Utility method that ensures that a channel family exists.
+     * @param user the user
+     * @param label the label
+     * @return the channel family
+     * @throws Exception the exception if anything goes wrong
+     */
+    public static ChannelFamily ensureChannelFamilyExists(User user, String label)
+        throws Exception {
+        ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
+        if (cf == null) {
+            cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
+                0L, 0L, true, TestUtils.randomString());
+            cf.setName(label);
+            cf.setLabel(label);
+            ChannelFamilyFactory.save(cf);
+        }
+        return cf;
+    }
+
+    /**
+     * Utility method that ensures that a channel family has maximum members.
+     * @param channelFamily the channel family
+     * @param memberCount the number of maximum members
+     */
+    public static void ensureChannelFamilyHasMembers(ChannelFamily channelFamily,
+            Long memberCount) {
+        for (PrivateChannelFamily pcf : channelFamily.getPrivateChannelFamilies()) {
+            pcf.setMaxMembers(memberCount);
+        }
     }
 }
