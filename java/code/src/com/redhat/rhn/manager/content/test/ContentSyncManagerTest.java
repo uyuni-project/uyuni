@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -69,8 +70,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+
     /** Maximum members for SUSE Manager. */
-    public static final long MANY_MEMBERS = 20000L;
+    public static final long MANY_MEMBERS = 200000L;
 
     /**
      * Test for {@link ContentSyncManager#updateChannels()}.
@@ -388,17 +390,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.updateChannelSubscriptions(productClasses);
 
         // Check reset to 0
-        ChannelFamily family = ChannelFamilyFactory.lookupByLabel("SMS", null);
-        if (family == null) {
-            family = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                0L, 0L, true, TestUtils.randomString());
-            family.setName("SMS");
-            family.setLabel("SMS");
-            family.setOrg(OrgFactory.getSatelliteOrg());
-            ChannelFamilyFactory.save(family);
-        }
-        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-            assertEquals(new Long(0), pcf.getMaxMembers());
+        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS");
+        ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
+        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
+            pcf.setOrg(OrgFactory.getSatelliteOrg());
         }
 
         // Add subscription for a product class
@@ -406,9 +401,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Update subscriptions and check max_members = 200000
         csm.updateChannelSubscriptions(productClasses);
-        family = ChannelFamilyFactory.lookupByLabel("SMS", null);
-        for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
-            assertEquals(new Long(200000), pcf.getMaxMembers());
+        cf = ChannelFamilyFactory.lookupByLabel("SMS", null);
+        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
+            assertEquals(new Long(MANY_MEMBERS), pcf.getMaxMembers());
         }
     }
 
@@ -848,6 +843,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
+
+            HibernateFactory.getSession().flush();
 
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
