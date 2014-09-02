@@ -18,10 +18,13 @@ try:
     import hashlib
 except ImportError:
     import sha
+    import md5
     class hashlib:
         def new(checksum):
             if checksum == 'sha1':
                 return sha.new()
+            elif checksum == 'md5':
+                return md5.new()
             else:
                 raise ValueError, "Incompatible checksum type"
         new = staticmethod(new)
@@ -164,6 +167,10 @@ def rm_trailing_slash(slashstring):
         slashstring = slashstring[0:-1]
     return slashstring
 
+def getContentChecksum(checksum_type, contents):
+    engine = hashlib.new(checksum_type)
+    engine.update(contents)
+    return engine.hexdigest()
 
 def sha1_file(filename):
     engine = hashlib.new('sha1')
