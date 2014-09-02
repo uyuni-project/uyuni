@@ -391,9 +391,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.updateChannelSubscriptions(productClasses);
 
         // Check reset to 0
-        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                UserTestUtils.createUserInOrgOne(), "SMS");
+        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS");
         ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
+        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
+            pcf.setOrg(OrgFactory.getSatelliteOrg());
 
         // Add subscription for a product class
         productClasses.add("SMS");
@@ -842,6 +843,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
+
+            HibernateFactory.getSession().flush();
 
             HibernateFactory.getSession().flush();
 
