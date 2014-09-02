@@ -27,7 +27,7 @@ public class ListedProductTest extends TestCase {
     }
 
     /**
-     * Tests getstatus().
+     * Tests getStatus().
      *
      * @throws Exception if anything goes bad
      */
@@ -35,6 +35,7 @@ public class ListedProductTest extends TestCase {
         assertEquals(MgrSyncStatus.INSTALLED, listedProduct.getStatus());
 
         MgrSyncChannel installedChannel = new MgrSyncChannel();
+        installedChannel.setLabel("installed");
         installedChannel.setStatus(MgrSyncStatus.INSTALLED);
 
         for (int i = 0; i < 3; i++) {
@@ -43,11 +44,14 @@ public class ListedProductTest extends TestCase {
         }
 
         MgrSyncChannel availableChannel = new MgrSyncChannel();
-        installedChannel.setStatus(MgrSyncStatus.AVAILABLE);
+        availableChannel.setLabel("available");
+        availableChannel.setStatus(MgrSyncStatus.AVAILABLE);
+        availableChannel.setOptional(false);
         listedProduct.addChannel(availableChannel);
         assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
 
         MgrSyncChannel unavailableChannel = new MgrSyncChannel();
+        unavailableChannel.setLabel("unavailable");
         unavailableChannel.setStatus(MgrSyncStatus.UNAVAILABLE);
         listedProduct.addChannel(availableChannel);
         assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
