@@ -84,7 +84,7 @@ Refreshing Upgrade paths                       [DONE]"""
     def test_refresh_enable_reposync(self):
         """ Test the refresh action """
 
-        options = get_options("refresh --enable-reposync".split())
+        options = get_options("refresh --refresh-channels".split())
         stubbed_xmlrpm_call = MagicMock(
             return_value=read_data_from_fixture(
                 'list_channels_simplified.data'))

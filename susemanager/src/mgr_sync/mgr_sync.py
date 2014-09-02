@@ -67,7 +67,7 @@ class MgrSync(object):
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.enable_reposync)
+            self._refresh(enable_reposync=options.refresh_channels)
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
@@ -305,17 +305,6 @@ class MgrSync(object):
 
         mandatory_channels = [c for c in product.channels
                               if not c.optional]
-        missing_channels = [c for c in mandatory_channels
-                            if c.status == Channel.Status.UNAVAILABLE]
-
-        if missing_channels:
-            sys.stderr.write(
-                "Cannot add product '{0}' because the "
-                "following channels are not available:\n".format(
-                    product.friendly_name))
-            for c in missing_channels:
-                sys.stderr.write("  - {0}\n".format(c.label))
-            sys.exit(1)
 
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
@@ -345,7 +334,7 @@ class MgrSync(object):
         num_prod = interactive_data['num_prod']
         if num_prod:
             validator = lambda i: re.search("\d+", i) and \
-                int(i) in range(1, len(num_prod.keys()))
+                int(i) in range(1, len(num_prod.keys()) + 1)
             choice = cli_ask(
                 msg=("Enter product number (1-{0})".format(
                     len(num_prod.keys()))),

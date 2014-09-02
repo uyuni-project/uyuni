@@ -156,12 +156,19 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * A product is installed iff all mandatory channels are installed,
      * otherwise it is available.
      *
+     * A product is unavailable iff at least one mandatory channel is
+     * unavailable.
      * @return the status
      */
     public MgrSyncStatus getStatus() {
         for (MgrSyncChannel channel : channels) {
-            if (!channel.isOptional() && channel.getStatus() != MgrSyncStatus.INSTALLED) {
-                return MgrSyncStatus.AVAILABLE;
+            if (!channel.isOptional()) {
+                if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
+                    return MgrSyncStatus.UNAVAILABLE;
+                }
+                if (channel.getStatus() != MgrSyncStatus.INSTALLED) {
+                    return MgrSyncStatus.AVAILABLE;
+                }
             }
         }
         return MgrSyncStatus.INSTALLED;
