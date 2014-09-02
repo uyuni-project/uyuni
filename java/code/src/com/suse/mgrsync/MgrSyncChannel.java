@@ -14,15 +14,17 @@
  */
 package com.suse.mgrsync;
 
-import java.util.Collections;
-import java.util.List;
-
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A channel as we parse it from the channels.xml file.
@@ -335,6 +337,26 @@ public class MgrSyncChannel {
      */
     public void setStatus(MgrSyncStatus statusIn) {
         this.status = statusIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(label).toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MgrSyncChannel)) {
+            return false;
+        }
+        MgrSyncChannel other = (MgrSyncChannel) obj;
+        return new EqualsBuilder().append(label, other.label).isEquals();
     }
 
     /**
