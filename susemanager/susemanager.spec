@@ -13,6 +13,7 @@ BuildRequires:  python-devel
 # check section
 BuildRequires:  python-mock
 BuildRequires:  python-curl
+BuildRequires:  python-unittest2
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
