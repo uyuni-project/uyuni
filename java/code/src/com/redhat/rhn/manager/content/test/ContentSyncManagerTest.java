@@ -392,9 +392,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Check reset to 0
         ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS");
         ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
-        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
-            pcf.setOrg(OrgFactory.getSatelliteOrg());
-        }
 
         // Add subscription for a product class
         productClasses.add("SMS");
