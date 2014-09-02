@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.common.CommonConstants;
 import com.redhat.rhn.domain.common.VirtSubscriptionLevel;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -99,6 +100,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             Long memberCount) {
         for (PrivateChannelFamily pcf : channelFamily.getPrivateChannelFamilies()) {
             pcf.setMaxMembers(memberCount);
+            pcf.setOrg(OrgFactory.getSatelliteOrg());
         }
     }
 }
