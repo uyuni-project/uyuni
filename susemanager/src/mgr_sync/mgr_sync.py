@@ -68,17 +68,11 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                                     compact=options.compact)
             elif 'product' in options.list_target:
                 self._list_products(filter=options.filter)
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
                 self._add_channels(options.target)
             elif 'product' in options.add_target:
                 self._add_products()
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.refresh_channels)
         elif vars(options).has_key('enable_scc'):
@@ -91,6 +85,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
             self.config.password = self.auth.password
+            self.config.write()
             print("credentials has been saved to the {0} file.".format(
                 self.config.dotfile))
 
