@@ -17,20 +17,14 @@
 import socket
 import sys
 
-from spacewalk.susemanager.content_sync_helper import current_backend, BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 
 
 options = get_options()
 
-if not current_backend() == BackendType.SCC:
-    print "mgr-sync requires the SCC backend to be activated."
-    print "Use the 'mgr-content-sync migrate' command to switch to SCC."
-    sys.exit(1)
-
 try:
-    MgrSync().run(options)
+    sys.exit(MgrSync().run(options))
 except socket.error, ex:
     sys.stderr.write("Network error: %s\n" % ex)
     if options.verbose:

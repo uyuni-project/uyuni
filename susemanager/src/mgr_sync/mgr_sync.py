@@ -17,6 +17,7 @@ import re
 import sys
 import xmlrpclib
 
+from spacewalk.susemanager.content_sync_helper import current_backend, switch_to_scc, BackendType
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -45,8 +46,22 @@ class MgrSync(object):
         """
         Run the app.
         """
+        if not current_backend() == BackendType.SCC \
+           and not vars(options).has_key('enable_scc'):
+            msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
+mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
+
+This can be done using the following commmand:
+    mgr-sync enable-scc
+
+Note well: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
+"""
+            sys.stderr.write(msg)
+            sys.exit(1)
 
         self.quiet = not options.verbose
+        self.exit_with_error = False
+
         if vars(options).has_key('list_target'):
             if 'channel' in options.list_target:
                 self._list_channels(expand=options.expand,
@@ -55,29 +70,35 @@ class MgrSync(object):
                                     compact=options.compact)
             elif 'product' in options.list_target:
                 self._list_products(filter=options.filter)
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
                 self._add_channels(options.target)
             elif 'product' in options.add_target:
                 self._add_products()
-            else:
-                sys.stderr.write('List target not recognized\n')
-                sys.exit(1)
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.refresh_channels)
+        elif vars(options).has_key('enable_scc'):
+            if current_backend() == BackendType.SCC:
+                print("The SUSE Customer Center (SCC) backend is already "
+                      "active, nothing to do.")
+            else:
+                self._enable_scc()
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
             self.config.password = self.auth.password
+            self.config.write()
             print("credentials has been saved to the {0} file.".format(
                 self.config.dotfile))
 
         if self.auth.token(connect=False):
             self.config.token = self.auth.token(connect=False)
             self.config.write()
+
+        if self.exit_with_error:
+            return 1
+        else:
+            return 0
 
     ###########################
     #                         #
@@ -162,7 +183,6 @@ class MgrSync(object):
         If the channel list is empty the interactive mode is started.
         """
 
-        exit_with_error = False
         enable_checks = True
         current_channels = []
 
@@ -185,7 +205,7 @@ class MgrSync(object):
                     elif match.status == Channel.Status.UNAVAILABLE:
                         print("Channel '{0}' is not available, skipping".format(
                             channel))
-                        exit_with_error = 1
+                        self.exit_with_error = True
                         continue
 
                     if not match.base_channel:
@@ -196,7 +216,7 @@ class MgrSync(object):
                                     channel, parent.label))
                             sys.stderr.write(
                                 "'{0}' has not been added\n".format(channel))
-                            exit_with_error = True
+                            self.exit_with_error = True
                             continue
                         if parent.status == Channel.Status.AVAILABLE:
                             print("'{0}' depends on channel '{1}' which has not been added yet".format(
@@ -214,9 +234,6 @@ class MgrSync(object):
 
             print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)
-
-        if exit_with_error:
-            sys.exit(1)
 
     def _schedule_channel_reposync(self, channel):
         """ Schedules a reposync for the given channel.
@@ -297,6 +314,8 @@ class MgrSync(object):
         """
 
         product = self._select_product_interactive_mode()
+        if not product:
+            return
 
         if product.status == Product.Status.INSTALLED:
             print("Product '{0}' has already been added".format(
@@ -343,7 +362,7 @@ class MgrSync(object):
         else:
             print("All the available products have already been installed, "
                   "nothing to do")
-            sys.exit(0)
+            return None
 
     #################
     #               #
@@ -379,7 +398,8 @@ class MgrSync(object):
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
                 sys.stderr.write("\tError: %s\n\n" % ex)
-                sys.exit(1)
+                self.exit_with_error = True
+                return
 
         if enable_reposync:
             print("\nScheduling refresh of all the available channels")
@@ -398,6 +418,24 @@ class MgrSync(object):
                         print("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         self._schedule_channel_reposync(child.label)
+
+    def _enable_scc(self, retry_on_session_failure=True):
+        """ Enable the SCC backend """
+
+        if current_backend() == BackendType.NCC:
+
+            try:
+                switch_to_scc(self.conn, self.auth.token())
+            except xmlrpclib.Fault, ex:
+                if retry_on_session_failure and self._check_session_fail(ex):
+                    self.auth.discard_token()
+                    return self._enable_scc(retry_on_session_failure=False)
+                else:
+                    raise ex
+            self._refresh(enable_reposync=False)
+            print("SCC backend successfully migrated.")
+        else:
+            print("SUSE Manager is already using the SCC backend.")
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """

@@ -19,11 +19,12 @@ import unittest2 as unittest
 import os.path
 import sys
 
-from mock import MagicMock, call
+from mock import MagicMock, call, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
 
+from spacewalk.susemanager.content_sync_helper import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 
@@ -37,6 +38,10 @@ class RefreshOperationsTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
+
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_backend')
+        mock = patcher.start()
+        mock.return_value = BackendType.SCC
 
     def test_refresh(self):
         """ Test the refresh action """
@@ -138,3 +143,20 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
+    def test_refresh_should_not_trigger_reposync_when_there_is_an_error(self):
+        """ The refresh action should not trigger a reposync when something
+            went wrong during one of the refresh steps.
+        """
+
+        options = get_options("refresh --refresh-channels".split())
+        stubbed_xmlrpm_call = MagicMock(
+            side_effect=Exception("Boom baby!"))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        mock_reposync = MagicMock()
+        self.mgr_sync._schedule_channel_reposync = mock_reposync
+
+        with ConsoleRecorder() as recorder:
+            self.assertEqual(1, self.mgr_sync.run(options))
+
+        self.assertTrue(recorder.stderr)
+        self.assertFalse(mock_reposync.mock_calls)

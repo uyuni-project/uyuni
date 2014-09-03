@@ -24,6 +24,7 @@ from mock import MagicMock, call, patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
 
+from spacewalk.susemanager.content_sync_helper import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync.channel import Channel 
@@ -39,6 +40,10 @@ class ProductOperationsTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
+
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_backend')
+        mock = patcher.start()
+        mock.return_value = BackendType.SCC
 
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
@@ -297,8 +302,7 @@ Status:
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -314,8 +318,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels
@@ -359,8 +361,7 @@ Product successfully added"""
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -376,8 +377,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels
@@ -400,8 +399,7 @@ Product successfully added"""
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
     def test_add_products_interactive_with_a_required_channel_unavailable(self):
-        """ Test adding a product with one of the required channels
-        unavailable should exit immediately"""
+        """ Test should not be able to select an unavailable product """
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
@@ -417,14 +415,10 @@ Product successfully added"""
         # set the 1st required channel as already installed
         chosen_product.status = Product.Status.UNAVAILABLE
 
-        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
-            mock.return_value = str(
-                available_products.index(chosen_product) + 1)
-            try:
-                with ConsoleRecorder() as recorder:
-                    self.mgr_sync.run(options)
-            except SystemExit, ex:
-                self.assertEqual(0, ex.code)
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock_cli_ask:
+            with ConsoleRecorder() as recorder:
+                self.assertEqual(0, self.mgr_sync.run(options))
+            self.assertFalse(mock_cli_ask.mock_calls)
 
         expected_output = """Available Products:
 
@@ -501,8 +495,7 @@ All the available products have already been installed, nothing to do"""
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -517,8 +510,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels

@@ -19,14 +19,16 @@ from spacewalk.susemanager.mgr_sync.version import VERSION
 
 def _create_parser():
     # create the top-level parser
-    parser = argparse.ArgumentParser(prog='mgr-sync',
-                                     description="Synchronize SUSE Manager repositories.")
+    parser = argparse.ArgumentParser(
+        prog='mgr-sync',
+        description="Synchronize SUSE Manager repositories.")
 
     # Generic options
-    parser.add_argument('--version',
-                        action='version',
-                        version=VERSION,
-                        help='Print mgr-sync version')
+    parser.add_argument(
+        '--version',
+        action='version',
+        version=VERSION,
+        help='Print mgr-sync version')
 
     parser.add_argument('-v', '--verbose', default=False,
                         action='store_true', help='Be verbose')
@@ -41,6 +43,7 @@ def _create_parser():
     _create_list_subparser(subparsers)
     _create_add_subparser(subparsers)
     _create_refresh_subparser(subparsers)
+    _create_enable_scc_subparser(subparsers)
 
     return parser
 
@@ -53,11 +56,13 @@ def _create_add_subparser(subparsers):
     add_parser.add_argument(
         'add_target',
         choices=['channel', 'channels', 'product', 'products'])
-    add_parser.add_argument('target',
-                            nargs='*',
-                            help='element to add, could be either a channel or a product')
-    add_parser.add_argument('--from-mirror', action='store', dest='mirror',
-                            help='URL of a local mirror like SMT. Only to download the RPMs.')
+    add_parser.add_argument(
+        'target',
+        nargs='*',
+        help='element to add, could be either a channel or a product')
+    add_parser.add_argument(
+        '--from-mirror', action='store', dest='mirror',
+        help='URL of a local mirror like SMT. Only to download the RPMs.')
 
 
 def _create_list_subparser(subparsers):
@@ -68,32 +73,47 @@ def _create_list_subparser(subparsers):
     list_parser.add_argument(
         'list_target',
         choices=['channel', 'channels', 'product', 'products'])
-    list_parser.add_argument('-e', '--expand',
-                             action='store_true',
-                             default=False,
-                             dest="expand",
-                             help='show also children, if the parent is not synced yet')
-    list_parser.add_argument('-f', '--filter',
-                             action='store',
-                             dest="filter",
-                             help='show only labels, which contains the filter word (case-insensitive)')
-    list_parser.add_argument('--no-optional',
-                             action='store_true',
-                             dest='no_optionals',
-                             default=False,
-                             help='do not list optional channels')
-    list_parser.add_argument('-c', '--compact',
-                             action='store_true',
-                             default=False,
-                             dest="compact",
-                             help='Compact output')
+    list_parser.add_argument(
+        '-e', '--expand',
+        action='store_true',
+        default=False,
+        dest="expand",
+        help='show also children, if the parent is not installed yet')
+    list_parser.add_argument(
+        '-f', '--filter',
+        action='store',
+        dest="filter",
+        help="show only labels, which contains the filter word "
+             "(case-insensitive)")
+    list_parser.add_argument(
+        '--no-optional',
+        action='store_true',
+        dest='no_optionals',
+        default=False,
+        help='do not list optional channels')
+    list_parser.add_argument(
+        '-c', '--compact',
+        action='store_true',
+        default=False,
+        dest="compact",
+        help='Compact output')
+
+
+def _create_enable_scc_subparser(subparsers):
+    """ Create the parser for the "enable_scc" command. """
+
+    enable_scc_parser = subparsers.add_parser(
+        'enable-scc',
+        help='Enable SUSE Customer Center (SCC)')
+    enable_scc_parser.set_defaults(enable_scc=True)
 
 
 def _create_refresh_subparser(subparsers):
     """ Create the parser for the "refresh" command. """
 
-    refresh_parser = subparsers.add_parser('refresh',
-                                           help='Refresh product, channel and subscription')
+    refresh_parser = subparsers.add_parser(
+        'refresh',
+        help='Refresh product, channel and subscription')
     refresh_parser.set_defaults(refresh=True)
 
     refresh_parser.add_argument(
@@ -102,7 +122,9 @@ def _create_refresh_subparser(subparsers):
         dest='refresh_channels',
         default=False,
         help='Schedule a refresh of all the installed channels.')
- 
+
+
 def get_options(args=None):
     """ Parsers the command line options and returns them. """
+
     return _create_parser().parse_args(args)
