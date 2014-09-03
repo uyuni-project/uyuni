@@ -83,6 +83,11 @@ public class NCCProductSyncManager extends ProductSyncManager {
         return parseBaseProducts(readProducts());
     }
 
+     /**
+     * Invoke external commands which list all the available SUSE products.
+     * @return a String containing the XML description of the SUSE products
+     * @throws ProductSyncManagerCommandException if external commands fail
+     */
     public String readProducts() throws ProductSyncManagerCommandException {
         return runProductSyncCommand(LIST_PRODUCT_SWITCH);
     }
