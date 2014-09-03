@@ -143,3 +143,20 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
+    def test_refresh_should_not_trigger_reposync_when_there_is_an_error(self):
+        """ The refresh action should not trigger a reposync when something
+            went wrong during one of the refresh steps.
+        """
+
+        options = get_options("refresh --refresh-channels".split())
+        stubbed_xmlrpm_call = MagicMock(
+            side_effect=Exception("Boom baby!"))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        mock_reposync = MagicMock()
+        self.mgr_sync._schedule_channel_reposync = mock_reposync
+
+        with ConsoleRecorder() as recorder:
+            self.assertEqual(1, self.mgr_sync.run(options))
+
+        self.assertTrue(recorder.stderr)
+        self.assertFalse(mock_reposync.mock_calls)

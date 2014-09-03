@@ -253,10 +253,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
-
-        self.assertFalse(mock_exit.mock_calls)
+            self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
@@ -294,10 +291,7 @@ Status:
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
-
-        self.assertFalse(mock_exit.mock_calls)
+            self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
@@ -344,10 +338,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
-
-        self.assertFalse(mock_exit.mock_calls)
+            self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_xmlrpc_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
@@ -376,10 +367,8 @@ Scheduling reposync for 'res4-es-i386' channel"""
                 read_data_from_fixture("list_channels.data")))
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
+            self.assertEqual(1, self.mgr_sync.run(options))
 
-        mock_exit.assert_called_once_with(1)
         self.assertEqual(
             ["Channel 'sles11-sp3-vmware-pool-i586' is not available, skipping"],
             recorder.stdout)
@@ -397,10 +386,8 @@ Scheduling reposync for 'res4-es-i386' channel"""
                 read_data_from_fixture("list_channels.data")))
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
+            self.assertEqual(1, self.mgr_sync.run(options))
 
-        mock_exit.assert_called_once_with(1)
         self.assertEqual(
             ["Channel 'sle10-sdk-sp4-pool-x86_64' is not available, skipping"],
             recorder.stdout)
@@ -425,10 +412,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             return_value=channels)
 
         with ConsoleRecorder() as recorder:
-            with patch('sys.exit') as mock_exit:
-                self.mgr_sync.run(options)
-
-        mock_exit.assert_called_once_with(1)
+            self.assertEqual(1, self.mgr_sync.run(options))
 
         expected_output = """Error, 'res4-es-i386' depends on channel 'rhel-i386-es-4' which is not available
 'res4-es-i386' has not been added"""
