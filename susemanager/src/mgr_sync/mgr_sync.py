@@ -60,6 +60,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
             sys.exit(1)
 
         self.quiet = not options.verbose
+        self.exit_with_error = False
+
         if vars(options).has_key('list_target'):
             if 'channel' in options.list_target:
                 self._list_channels(expand=options.expand,
@@ -92,6 +94,11 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         if self.auth.token(connect=False):
             self.config.token = self.auth.token(connect=False)
             self.config.write()
+
+        if self.exit_with_error:
+            return 1
+        else:
+            return 0
 
     ###########################
     #                         #
@@ -176,7 +183,6 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         If the channel list is empty the interactive mode is started.
         """
 
-        exit_with_error = False
         enable_checks = True
         current_channels = []
 
@@ -199,7 +205,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                     elif match.status == Channel.Status.UNAVAILABLE:
                         print("Channel '{0}' is not available, skipping".format(
                             channel))
-                        exit_with_error = 1
+                        self.exit_with_error = True
                         continue
 
                     if not match.base_channel:
@@ -210,7 +216,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                                     channel, parent.label))
                             sys.stderr.write(
                                 "'{0}' has not been added\n".format(channel))
-                            exit_with_error = True
+                            self.exit_with_error = True
                             continue
                         if parent.status == Channel.Status.AVAILABLE:
                             print("'{0}' depends on channel '{1}' which has not been added yet".format(
@@ -228,9 +234,6 @@ Note well: there is no way to revert the migration from Novell Customer Center (
 
             print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)
-
-        if exit_with_error:
-            sys.exit(1)
 
     def _schedule_channel_reposync(self, channel):
         """ Schedules a reposync for the given channel.
@@ -311,6 +314,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         """
 
         product = self._select_product_interactive_mode()
+        if not product:
+            return
 
         if product.status == Product.Status.INSTALLED:
             print("Product '{0}' has already been added".format(
@@ -368,7 +373,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         else:
             print("All the available products have already been installed, "
                   "nothing to do")
-            sys.exit(0)
+            return None
 
     #################
     #               #
@@ -404,7 +409,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
                 sys.stderr.write("\tError: %s\n\n" % ex)
-                sys.exit(1)
+                self.exit_with_error = True
+                return
 
         if enable_reposync:
             print("\nScheduling refresh of all the available channels")

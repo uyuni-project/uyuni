@@ -24,7 +24,7 @@ from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 options = get_options()
 
 try:
-    MgrSync().run(options)
+    sys.exit(MgrSync().run(options))
 except socket.error, ex:
     sys.stderr.write("Network error: %s\n" % ex)
     if options.verbose:
