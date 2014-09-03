@@ -24,6 +24,7 @@ from mock import MagicMock, call, patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
 
+from spacewalk.susemanager.content_sync_helper import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
@@ -38,6 +39,10 @@ class ChannelOperationsTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
+
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_backend')
+        mock = patcher.start()
+        mock.return_value = BackendType.SCC
 
     def test_list_channels_no_channels(self):
         options = get_options("list channels".split())
