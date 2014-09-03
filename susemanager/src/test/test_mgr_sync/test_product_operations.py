@@ -302,8 +302,7 @@ Status:
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -319,8 +318,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels
@@ -364,8 +361,7 @@ Product successfully added"""
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -381,8 +377,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels
@@ -405,8 +399,7 @@ Product successfully added"""
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
     def test_add_products_interactive_with_a_required_channel_unavailable(self):
-        """ Test adding a product with one of the required channels
-        unavailable should exit immediately"""
+        """ Test should not be able to select an unavailable product """
 
         products = read_data_from_fixture('list_products_simplified.data')
         res4 = next(p for p in products
@@ -422,14 +415,10 @@ Product successfully added"""
         # set the 1st required channel as already installed
         chosen_product.channels[0].status = Channel.Status.UNAVAILABLE
 
-        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
-            mock.return_value = str(
-                available_products.index(chosen_product) + 1)
-            try:
-                with ConsoleRecorder() as recorder:
-                    self.mgr_sync.run(options)
-            except SystemExit:
-                self.assertTrue(True)
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock_cli_ask:
+            with ConsoleRecorder() as recorder:
+                self.assertEqual(0, self.mgr_sync.run(options))
+            self.assertFalse(mock_cli_ask.mock_calls)
 
         expected_output = """Available Products:
 
@@ -508,8 +497,7 @@ All the available products have already been installed, nothing to do"""
             mock.return_value = str(
                 available_products.index(chosen_product) + 1)
             with ConsoleRecorder() as recorder:
-                with patch('sys.exit') as mock_exit:
-                    self.mgr_sync.run(options)
+                self.assertEqual(0, self.mgr_sync.run(options))
 
         expected_output = """Available Products:
 
@@ -524,8 +512,6 @@ Adding channels required by 'RES 4' product
   * res4-as-x86_64: added, reposync scheduled
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        self.assertFalse(mock_exit.mock_calls)
 
         expected_xmlrpc_calls = []
         mandatory_channels = [c for c in chosen_product.channels
