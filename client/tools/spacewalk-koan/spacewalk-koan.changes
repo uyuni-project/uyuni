@@ -5,6 +5,11 @@ Wed Sep 03 12:11:38 CEST 2014 - mc@suse.de
 - spacewalk-koan: fix package requirements
 
 -------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
 Wed Jul 16 14:28:30 CEST 2014 - mc@suse.de
 
 - version 2.1.4.6-1
