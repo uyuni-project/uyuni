@@ -54,7 +54,7 @@ public class ProductSyncAction {
         }
 
         try {
-            new ProductSyncManager().addProducts(productIdents);
+            ProductSyncManager.createInstance().addProducts(productIdents);
         }
         catch (ProductSyncManagerCommandException e) {
             log.error(e);
