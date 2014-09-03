@@ -17,6 +17,7 @@ import re
 import sys
 import xmlrpclib
 
+from spacewalk.susemanager.content_sync_helper import current_backend, switch_to_scc, BackendType
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -67,7 +68,9 @@ class MgrSync(object):
                 sys.stderr.write('List target not recognized\n')
                 sys.exit(1)
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.enable_reposync)
+            self._refresh(enable_reposync=options.refresh_channels)
+        elif vars(options).has_key('enable_scc'):
+            self._enable_scc()
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
@@ -409,6 +412,16 @@ class MgrSync(object):
                         print("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         self._schedule_channel_reposync(child.label)
+
+    def _enable_scc(self):
+        """ Enable the SCC backend """
+
+        if current_backend() == BackendType.NCC:
+            switch_to_scc(self.conn, self.auth.token())
+            self._refresh(enable_reposync=False)
+            print("SCC backend successfully migrated.")
+        else:
+            print("SUSE Manager is already using the SCC backend.")
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """

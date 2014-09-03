@@ -41,6 +41,7 @@ def _create_parser():
     _create_list_subparser(subparsers)
     _create_add_subparser(subparsers)
     _create_refresh_subparser(subparsers)
+    _create_enable_scc_subparser(subparsers)
 
     return parser
 
@@ -87,6 +88,15 @@ def _create_list_subparser(subparsers):
                              default=False,
                              dest="compact",
                              help='Compact output')
+
+
+def _create_enable_scc_subparser(subparsers):
+    """ Create the parser for the "enable_scc" command. """
+
+    enable_scc_parser = subparsers.add_parser(
+        'enable-scc',
+        help='Enable SUSE Customer Center (SCC)')
+    enable_scc_parser.set_defaults(enable_scc=True)
 
 
 def _create_refresh_subparser(subparsers):
