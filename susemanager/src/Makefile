@@ -22,7 +22,7 @@ SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
 										mgr_sync/product \
 										mgr_sync/version
 SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
-	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync mgr-content-sync
+	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
 
 SUMA_DATA_FILES = mgr_bootstrap_data
 

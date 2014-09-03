@@ -149,7 +149,6 @@ chown root.root /etc/sysconfig
 %attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
-%attr(0755,root,root) %{_sbindir}/mgr-content-sync
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
 %attr(0755,root,root) %{_sbindir}/mgr-sync
 %{pythonsmroot}/susemanager/__init__.py*
