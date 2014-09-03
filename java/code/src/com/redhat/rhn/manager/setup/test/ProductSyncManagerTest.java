@@ -193,7 +193,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     private Product getProductWithAllChannelsProvided() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(getTestExecutor());
         List<Product> parsedProds = productSyncManager.getBaseProducts();
 
         Product prod = null;
@@ -210,7 +210,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testProductStatusNotMirrored() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(getTestExecutor());
         List<Product> parsedProds = productSyncManager.getBaseProducts();
 
         for (Product p : parsedProds) {
@@ -472,7 +472,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
 
         List<Product> output = productSyncManager.getBaseProducts();
 
@@ -505,7 +505,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
 
         String output = productSyncManager.runProductSyncCommand("daisan");
 
@@ -517,7 +517,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testParseProducts() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager();
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
         List<Product> baseProducts =
                 productSyncManager.parseBaseProducts(getFixtureProductXml());
 
@@ -562,7 +562,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
 
         productSyncManager.readProducts();
     }
@@ -593,7 +593,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
 
         productSyncManager.refreshProducts();
     }
@@ -627,7 +627,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
 
         productSyncManager.addProduct(productIdent);
     }
@@ -671,7 +671,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
+        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
         productSyncManager.addProducts(idents);
         assertTrue(expectedIdents.isEmpty());
     }

@@ -79,10 +79,18 @@ public class ProductSyncManager {
     /** The executor. */
     private Executor executor;
 
+    public static ProductSyncManager createInstance(Executor executorIn) {
+        return new ProductSyncManager(executorIn);
+    }
+
+    public static ProductSyncManager createInstance() {
+        return new ProductSyncManager();
+    }
+
     /**
      * Default constructor.
      */
-    public ProductSyncManager() {
+    private ProductSyncManager() {
         this(new SystemCommandExecutor());
     }
 
@@ -90,7 +98,7 @@ public class ProductSyncManager {
      * Executor constructor, use directly for tests.
      * @param executorIn the executor in
      */
-    public ProductSyncManager(Executor executorIn) {
+    private ProductSyncManager(Executor executorIn) {
         executor = executorIn;
     }
 

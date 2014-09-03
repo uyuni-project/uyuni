@@ -51,7 +51,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         }
 
         try {
-            ProductSyncManager productSyncManager = new ProductSyncManager();
+            ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
             productSyncManager.refreshProducts();
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
                     productSyncManager.getBaseProducts());
