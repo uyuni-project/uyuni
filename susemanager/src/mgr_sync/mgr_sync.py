@@ -46,6 +46,18 @@ class MgrSync(object):
         """
         Run the app.
         """
+        if not current_backend() == BackendType.SCC \
+           and not vars(options).has_key('enable_scc'):
+            msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
+mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
+
+This can be done using the following commmand:
+    mgr-sync enable-scc
+
+Note well: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
+"""
+            sys.stderr.write(msg)
+            sys.exit(1)
 
         self.quiet = not options.verbose
         if vars(options).has_key('list_target'):
@@ -70,7 +82,11 @@ class MgrSync(object):
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.refresh_channels)
         elif vars(options).has_key('enable_scc'):
-            self._enable_scc()
+            if current_backend() == BackendType.SCC:
+                print("The SUSE Customer Center (SCC) backend is already "
+                      "active, nothing to do.")
+            else:
+                self._enable_scc()
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
@@ -413,11 +429,19 @@ class MgrSync(object):
                             child.label))
                         self._schedule_channel_reposync(child.label)
 
-    def _enable_scc(self):
+    def _enable_scc(self, retry_on_session_failure=True):
         """ Enable the SCC backend """
 
         if current_backend() == BackendType.NCC:
-            switch_to_scc(self.conn, self.auth.token())
+
+            try:
+                switch_to_scc(self.conn, self.auth.token())
+            except xmlrpclib.Fault, ex:
+                if retry_on_session_failure and self._check_session_fail(ex):
+                    self.auth.discard_token()
+                    return self._enable_scc(retry_on_session_failure=False)
+                else:
+                    raise ex
             self._refresh(enable_reposync=False)
             print("SCC backend successfully migrated.")
         else:
