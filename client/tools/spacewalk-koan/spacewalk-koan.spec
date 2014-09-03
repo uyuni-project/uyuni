@@ -34,7 +34,9 @@ Conflicts: rhn-kickstart-virtualization
 
 Requires: %{rhn_check}
 
+%if 0%{?suse_version} && 0%{?suse_version} < 1315
 Requires:       bncfix(880936)
+%endif
 
 %description
 Support package for spacewalk koan interaction.
