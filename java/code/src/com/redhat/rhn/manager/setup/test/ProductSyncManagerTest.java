@@ -560,7 +560,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         };
 
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
+        NCCProductSyncManager productSyncManager = new NCCProductSyncManager(executor);
 
         productSyncManager.readProducts();
     }
