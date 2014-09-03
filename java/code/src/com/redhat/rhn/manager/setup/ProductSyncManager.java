@@ -47,59 +47,17 @@ import org.apache.commons.lang.StringUtils;
 /**
  * Manager class for interacting with SUSE products.
  */
-public class ProductSyncManager {
-
-    /** Product sync command command line. */
-    public static final String[] PRODUCT_SYNC_COMMAND = {
-        "/usr/bin/sudo",
-        "/usr/sbin/mgr-ncc-sync"
-    };
-
-    /** Product sync command switch to obtain a list of products. */
-    public static final String LIST_PRODUCT_SWITCH = "--list-products-xml";
-
-    /** Product sync command switch add a product. */
-    public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
-
-    /** String returned by the sync command if there is any invalid mirror credential. */
-    private static final String INVALID_MIRROR_CREDENTIAL_ERROR = "HTTP error code 401";
-
-    /** String returned by the sync command if there is any invalid mirror credential. */
-    private static final String COULD_NOT_CONNECT_ERROR = "connection failed.";
-
-    /**
-     * Product sync command switch to refresh product, channel and subscription
-     * information without triggering any reposync.
-     */
-    public static final String REFRESH_SWITCH = "--refresh";
+public abstract class ProductSyncManager {
 
     /** The logger. */
-    private static Logger logger = Logger.getLogger(ProductSyncManager.class);
-
-    /** The executor. */
-    private Executor executor;
+    protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
     public static ProductSyncManager createInstance(Executor executorIn) {
-        return new ProductSyncManager(executorIn);
+        return new NCCProductSyncManager(executorIn);
     }
 
     public static ProductSyncManager createInstance() {
-        return new ProductSyncManager();
-    }
-
-    /**
-     * Default constructor.
-     */
-    private ProductSyncManager() {
-        this(new SystemCommandExecutor());
-    }
-
-    /**
-     * Executor constructor, use directly for tests.
-     * @param executorIn the executor in
-     */
-    private ProductSyncManager(Executor executorIn) {
-        executor = executorIn;
+        return new NCCProductSyncManager();
     }
 
     /**
@@ -108,95 +66,45 @@ public class ProductSyncManager {
      * @throws ProductSyncManagerCommandException if external commands or parsing fail
      * @throws ProductSyncManagerParseException if a parsing problem shows up
      */
-    public List<Product> getBaseProducts()
-        throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
-        return parseBaseProducts(readProducts());
-    }
+    public abstract List<Product> getBaseProducts() throws ProductSyncManagerCommandException, ProductSyncManagerParseException;
 
     /**
      * Invoke external commands which list all the available SUSE products.
      * @return a String containing the XML description of the SUSE products
      * @throws ProductSyncManagerCommandException if external commands fail
      */
-    public String readProducts() throws ProductSyncManagerCommandException {
-        return runProductSyncCommand(LIST_PRODUCT_SWITCH);
-    }
+    public abstract String readProducts() throws ProductSyncManagerCommandException;
+
+     /**
+     * Adds multiple products.
+     * @param productIdents the product ident list
+     * @throws ProductSyncManagerCommandException if a product addition failed
+     */
+    public abstract void addProducts(List<String> productIdents) throws ProductSyncManagerCommandException;
 
     /**
-     * Run product sync command.
-     * @param arguments the arguments
-     * @return the string
-     * @throws ProductSyncManagerCommandException the product sync manager exception
+     * Adds the product.
+     * @param productIdent the product ident
+     * @throws ProductSyncManagerCommandException if the product addition failed
      */
-    public String runProductSyncCommand(String... arguments)
-        throws ProductSyncManagerCommandException {
-        String[] commandLine =
-                (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
-        int exitCode = executor.execute(commandLine);
-        String output = executor.getLastCommandOutput();
-        String errorMessage = executor.getLastCommandErrorMessage();
-        if (exitCode != 0) {
-            String message = "Error while running product sync command: " +
-                    ArrayUtils.toString(commandLine);
-            throw new ProductSyncManagerCommandException(message, exitCode, output,
-                    errorMessage);
-        }
-        if (logger.isTraceEnabled()) {
-            logger.trace("This the output of product sync command:");
-            logger.trace(output);
-        }
-
-        return output;
-    }
+    public abstract void addProduct(String productIdent) throws ProductSyncManagerCommandException;
 
     /**
-     * Returns a list of base products from an XML string.
-     * @param xml a String containing an XML description of SUSE products
-     * @return list of parsed base products
-     * @throws ProductSyncManagerParseException if the xml cannot be parsed
+     * Refresh product, channel and subscription information without triggering
+     * any reposysnc.
+     * @throws ProductSyncManagerCommandException if the refresh failed
+     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
+     * @throws ConnectionException if a connection to NCC was not possible
      */
-    public List<Product> parseBaseProducts(String xml)
-        throws ProductSyncManagerParseException {
-        List<Product> result = new LinkedList<Product>();
-        Set<Product> products = parsePlainProducts(xml);
-
-        // associates ident codes to parsed product objects
-        Map<String, Product> identProductMap = new HashMap<String, Product>();
-        for (Product product : products) {
-            identProductMap.put(product.getIdent(), product);
-        }
-
-        for (Product product : products) {
-            if (product.isBase()) {
-                result.add(product);
-            }
-            else {
-                Product parent = identProductMap.get(product.getBaseProductIdent());
-                product.setBaseProduct(parent);
-                parent.getAddonProducts().add(product);
-            }
-
-            // If status is "P", get a more detailed status
-            if (product.isProvided()) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Product is provided: " + product.getName());
-                }
-                product.setSyncStatus(getProductSyncStatus(product));
-            }
-            else {
-                product.setSyncStatus(SyncStatus.NOT_MIRRORED);
-            }
-        }
-
-        return result;
-    }
+    public abstract void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
+        ConnectionException;
 
     /**
      * Get the synchronization status for a given product.
      * @param product product
      * @return sync status as string
      */
-    private SyncStatus getProductSyncStatus(Product product) {
+    protected SyncStatus getProductSyncStatus(Product product) {
         // Compute statistics about channels
         int finishedCounter = 0;
         int failedCounter = 0;
@@ -382,72 +290,5 @@ public class ProductSyncManager {
             logger.error(e.getMessage());
         }
         return ret;
-    }
-
-    /**
-     * Parses an XML string into an ordered Set of products, does not handle
-     * base/addon relationships.
-     * @param xml the xml
-     * @return the product set
-     * @throws ProductSyncManagerParseException the product sync manager exception
-     */
-    private Set<Product> parsePlainProducts(String xml)
-        throws ProductSyncManagerParseException {
-        try {
-            ProductList result =
-                    new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
-            TreeSet<Product> products = new TreeSet<Product>(result.getProducts());
-            return products;
-        }
-        catch (Exception e) {
-            throw new ProductSyncManagerParseException(e);
-        }
-    }
-
-    /**
-     * Adds multiple products.
-     * @param productIdents the product ident list
-     * @throws ProductSyncManagerCommandException if a product addition failed
-     */
-    public void addProducts(List<String> productIdents)
-        throws ProductSyncManagerCommandException {
-        for (String productIdent : productIdents) {
-            addProduct(productIdent);
-        }
-    }
-
-    /**
-     * Adds the product.
-     * @param productIdent the product ident
-     * @throws ProductSyncManagerCommandException if the product addition failed
-     */
-    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
-        runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
-    }
-
-    /**
-     * Refresh product, channel and subscription information without triggering
-     * any reposysnc.
-     * @throws ProductSyncManagerCommandException if the refresh failed
-     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
-     * @throws ConnectionException if a connection to NCC was not possible
-     */
-    public void refreshProducts()
-        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
-        ConnectionException {
-        try {
-            runProductSyncCommand(REFRESH_SWITCH);
-        }
-        catch (ProductSyncManagerCommandException e) {
-            if (e.getErrorCode() == 1) {
-                if (e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
-                    throw new InvalidMirrorCredentialException();
-                }
-                if (e.getCommandErrorMessage().contains(COULD_NOT_CONNECT_ERROR)) {
-                    throw new ConnectionException();
-                }
-            }
-            throw e;
-        }
     }
 }

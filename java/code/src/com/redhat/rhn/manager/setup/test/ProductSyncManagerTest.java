@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.manager.satellite.Executor;
+import com.redhat.rhn.manager.setup.NCCProductSyncManager;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -28,12 +29,10 @@ import com.redhat.rhn.taskomatic.TaskoSchedule;
 import com.redhat.rhn.taskomatic.TaskoTemplate;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
-
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +41,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -183,9 +181,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.LIST_PRODUCT_SWITCH);
                 return 0;
             }
         };
@@ -465,9 +463,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.LIST_PRODUCT_SWITCH);
                 return 0;
             }
         };
@@ -498,14 +496,14 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
                 assertEquals(argsIn[2], "daisan");
                 return 0;
             }
         };
 
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
+        NCCProductSyncManager productSyncManager = new NCCProductSyncManager(executor);
 
         String output = productSyncManager.runProductSyncCommand("daisan");
 
@@ -517,7 +515,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testParseProducts() throws Exception {
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
+        NCCProductSyncManager productSyncManager = new NCCProductSyncManager();
         List<Product> baseProducts =
                 productSyncManager.parseBaseProducts(getFixtureProductXml());
 
@@ -555,9 +553,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.LIST_PRODUCT_SWITCH);
                 return 0;
             }
         };
@@ -586,9 +584,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.REFRESH_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.REFRESH_SWITCH);
                 return 0;
             }
         };
@@ -619,9 +617,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
             @Override
             public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.ADD_PRODUCT_SWITCH);
                 assertEquals(argsIn[3], productIdent);
                 return 0;
             }
@@ -663,9 +661,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
                 String expected = expectedIdents.get(0);
                 expectedIdents.remove(0);
 
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.ADD_PRODUCT_SWITCH);
                 assertEquals(argsIn[3], expected);
                 return 0;
             }
