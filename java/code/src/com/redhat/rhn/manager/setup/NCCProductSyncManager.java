@@ -119,13 +119,6 @@ public class NCCProductSyncManager extends ProductSyncManager {
         return output;
     }
 
-    public void addProducts(List<String> productIdents)
-        throws ProductSyncManagerCommandException {
-        for (String productIdent : productIdents) {
-            addProduct(productIdent);
-        }
-    }
-
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
