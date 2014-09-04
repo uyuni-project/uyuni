@@ -14,8 +14,16 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.ListedProduct;
+import com.suse.manager.model.products.Channel;
+import com.suse.manager.model.products.MandatoryChannels;
+import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
+import com.suse.mgrsync.MgrSyncChannel;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -25,7 +33,15 @@ import java.util.List;
 public class SCCProductSyncManager extends ProductSyncManager {
 
     public List<Product> getBaseProducts() throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
-        return new ArrayList<Product>();
+        ContentSyncManager csm = new ContentSyncManager();
+        try {
+        Collection<ListedProduct> products = csm.listProducts(
+            csm.listChannels(csm.getRepositories()));
+            return ncc2scc(products);
+        }
+        catch (ContentSyncException e) {
+            throw new ProductSyncManagerParseException(e);
+        }
     }
 
     public void addProducts(List<String> productIdents) throws ProductSyncManagerCommandException {
@@ -36,5 +52,32 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
     public void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
         ConnectionException {
+    }
+
+    /**
+     * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
+     * for further display.
+     *
+     * @param products
+     * @return List of {@link Product}
+     */
+    private List<Product> ncc2scc(Collection<ListedProduct> products) {
+        List<Product> sccProducts = new ArrayList<Product>();
+        List<Channel> mandatoryChannels = new ArrayList<Channel>();
+        List<Channel> optionalChannels = new ArrayList<Channel>();
+        for (ListedProduct lp : products) {
+            for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
+                (mgrSyncChannel.isOptional()
+                     ? optionalChannels
+                     : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), "P")); // XXX: Get provided status
+            }
+            //String identifier = lp.getFriendlyName().toLowerCase().replaceAll("\\s+", "_");
+            String identifier = "product-" + lp.getId();
+            sccProducts.add(new Product(lp.getArch(), identifier,
+                    lp.getFriendlyName(), "",
+                    new MandatoryChannels(mandatoryChannels),
+                    new OptionalChannels(optionalChannels)));
+        }
+        return sccProducts;
     }
 }
