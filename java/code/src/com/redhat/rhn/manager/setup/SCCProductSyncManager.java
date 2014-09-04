@@ -97,7 +97,12 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 lp.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannels),
                 new OptionalChannels(optionalChannels));
-        product.setSyncStatus(getProductSyncStatus(product));
+        if (product.isProvided()) {
+            product.setSyncStatus(getProductSyncStatus(product));
+        }
+        else {
+            product.setSyncStatus(Product.SyncStatus.NOT_MIRRORED);
+        }
 
         // set extensions as addon products
         for (ListedProduct lpExt : lp.getExtensions()) {
