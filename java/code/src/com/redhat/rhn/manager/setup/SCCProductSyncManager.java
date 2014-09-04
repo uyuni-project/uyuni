@@ -65,26 +65,47 @@ public class SCCProductSyncManager extends ProductSyncManager {
      */
     private List<Product> ncc2scc(Collection<ListedProduct> products) {
         List<Product> sccProducts = new ArrayList<Product>();
-        List<Channel> mandatoryChannels = new ArrayList<Channel>();
-        List<Channel> optionalChannels = new ArrayList<Channel>();
         for (ListedProduct lp : products) {
-            for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
-                MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
-                String status = sccStatus.equals(MgrSyncStatus.INSTALLED)
-                        ? Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
-                (mgrSyncChannel.isOptional()
-                     ? optionalChannels
-                     : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), status));
-            }
-            //String identifier = lp.getFriendlyName().toLowerCase().replaceAll("\\s+", "_");
-            String identifier = "product-" + lp.getId();
-            Product product = new Product(lp.getArch(), identifier,
-                    lp.getFriendlyName(), "",
-                    new MandatoryChannels(mandatoryChannels),
-                    new OptionalChannels(optionalChannels));
-            product.setSyncStatus(getProductSyncStatus(product));
-            sccProducts.add(product);
+            sccProducts.add(ncc2scc(lp));
         }
         return sccProducts;
+    }
+
+    /**
+     * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
+     * for further display.
+     *
+     * @param products
+     * @return List of {@link Product}
+     */
+    private Product ncc2scc(ListedProduct lp) {
+        List<Channel> mandatoryChannels = new ArrayList<Channel>();
+        List<Channel> optionalChannels = new ArrayList<Channel>();
+
+        for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
+            MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
+            String status = sccStatus.equals(MgrSyncStatus.INSTALLED)
+                ? Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
+            (mgrSyncChannel.isOptional()
+                    ? optionalChannels
+                    : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), status));
+        }
+
+        //String identifier = lp.getFriendlyName().toLowerCase().replaceAll("\\s+", "_");
+        String identifier = "product-" + lp.getId();
+        Product product = new Product(lp.getArch(), identifier,
+                lp.getFriendlyName(), "",
+                new MandatoryChannels(mandatoryChannels),
+                new OptionalChannels(optionalChannels));
+        product.setSyncStatus(getProductSyncStatus(product));
+
+        // set extensions as addon products
+        for (ListedProduct lpExt : lp.getExtensions()) {
+            Product ext = ncc2scc(lpExt);
+            ext.setBaseProduct(product);
+            product.getAddonProducts().add(ext);
+            ext.setBaseProductIdent(product.getIdent());
+        }
+        return product;
     }
 }
