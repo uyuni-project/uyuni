@@ -145,6 +145,7 @@ class RepoSync(object):
         self.no_errata = no_errata
         self.sync_kickstart = sync_kickstart
         self.error_messages = []
+        self.available_packages = {}
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -842,8 +843,23 @@ class RepoSync(object):
                 continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
+                if 'epoch' not in param_dict:
+                    param_dict['epoch'] = ''
+                else:
+                    param_dict['epoch'] = '%s:' % param_dict['epoch']
+                if "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s" % param_dict not in self.available_packages:
+                    continue
                 # This package could not be found in the database
+                # but should be available in this repo
                 # so we skip the broken patch.
+                errmsg = ("The package "
+                          "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s "
+                          "which is referenced by patch %(patch)s was not found "
+                          "in the database. This patch has been skipped." % dict(
+                              patch=advisory_name,
+                              **param_dict))
+                self.print_msg(errmsg)
+                self.error_messages.append(errmsg)
                 return []
 
             # add new packages to the errata
@@ -883,8 +899,23 @@ class RepoSync(object):
                 continue
             ret = self._process_package(param_dict, advisory_name)
             if not ret:
+                if 'epoch' not in param_dict:
+                    param_dict['epoch'] = ''
+                else:
+                    param_dict['epoch'] = '%s:' % param_dict['epoch']
+                if "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s" % param_dict not in self.available_packages:
+                    continue
                 # This package could not be found in the database
+                # but should be available in this repo
                 # so we skip the broken patch.
+                errmsg = ("The package "
+                          "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s "
+                          "which is referenced by patch %(patch)s was not found "
+                          "in the database. This patch has been skipped." % dict(
+                              patch=advisory_name,
+                              **param_dict))
+                self.print_msg(errmsg)
+                self.error_messages.append(errmsg)
                 return []
 
             # add new packages to the errata
@@ -944,19 +975,6 @@ class RepoSync(object):
         cs = h.fetchone_dict()
 
         if not cs:
-            # package could not be found in the database.
-            if 'epoch' not in param_dict:
-                param_dict['epoch'] = ''
-            else:
-                param_dict['epoch'] = '%s:' % param_dict['epoch']
-            errmsg = ("The package "
-                     "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s "
-                     "which is referenced by patch %(patch)s was not found "
-                     "in the database. This patch has been skipped." % dict(
-                         patch=advisory_name,
-                         **param_dict))
-            self.print_msg(errmsg)
-            self.error_messages.append(errmsg)
             return None
 
         package = IncompletePackage()
@@ -1012,6 +1030,11 @@ class RepoSync(object):
                 # skip packages with incompatible architecture
                 skipped += 1
                 continue
+            epoch = ''
+            if pack.epoch and pack.epoch != '0':
+                epoch = "%s:" % pack.epoch
+            ident = "%s-%s%s-%s.%s" % (pack.name, epoch, pack.version, pack.release, pack.arch)
+            self.available_packages[ident] = 1
 
             db_pack = rhnPackage.get_info_for_package(
                    [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
