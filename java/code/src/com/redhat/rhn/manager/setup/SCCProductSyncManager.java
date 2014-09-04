@@ -21,7 +21,9 @@ import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
+import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.MgrSyncStatus;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -67,16 +69,21 @@ public class SCCProductSyncManager extends ProductSyncManager {
         List<Channel> optionalChannels = new ArrayList<Channel>();
         for (ListedProduct lp : products) {
             for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
+                MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
+                String status = sccStatus.equals(MgrSyncStatus.INSTALLED)
+                        ? Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
                 (mgrSyncChannel.isOptional()
                      ? optionalChannels
-                     : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), "P")); // XXX: Get provided status
+                     : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), status));
             }
             //String identifier = lp.getFriendlyName().toLowerCase().replaceAll("\\s+", "_");
             String identifier = "product-" + lp.getId();
-            sccProducts.add(new Product(lp.getArch(), identifier,
+            Product product = new Product(lp.getArch(), identifier,
                     lp.getFriendlyName(), "",
                     new MandatoryChannels(mandatoryChannels),
-                    new OptionalChannels(optionalChannels)));
+                    new OptionalChannels(optionalChannels));
+            product.setSyncStatus(getProductSyncStatus(product));
+            sccProducts.add(product);
         }
         return sccProducts;
     }
