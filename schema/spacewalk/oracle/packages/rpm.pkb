@@ -89,7 +89,7 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
         two := str2;
 
         <<segment_loop>>
-        while one is not null and two is not null
+        while one is not null or two is not null
         loop
             declare
                 segm1 VARCHAR2(32767);
@@ -97,15 +97,23 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
             begin
                 --DBMS_OUTPUT.PUT_LINE('Params: ' || one || ',' || two);
                 -- Throw out all non-alphanum characters
-                while one is not null and not isalphanum(one)
+                -- 126 == ~
+                while one is not null and not isalphanum(one) and ascii(one) <> 126
                 loop
                     one := substr(one, 2);
                 end loop;
-                while two is not null and not isalphanum(two)
+                while two is not null and not isalphanum(two) and ascii(two) <> 126
                 loop
                     two := substr(two, 2);
                 end loop;
                 --DBMS_OUTPUT.PUT_LINE('new params: ' || one || ',' || two);
+
+                if ascii(one) = 126 or ascii(two) = 126
+                then
+                    if ascii(one) <> 126 then return 1; end if;
+                    if ascii(two) <> 126 then return -1; end if;
+                    continue;
+                end if;
 
                 str1 := one;
                 str2 := two;

@@ -69,7 +69,7 @@ $$ language 'plpgsql';
         two := str2;
 
         <<segment_loop>>
-        while one <> '' and two <> ''
+        while one <> '' or two <> ''
         loop
             declare
                 segm1 VARCHAR;
@@ -77,14 +77,21 @@ $$ language 'plpgsql';
             begin
                 --DBMS_OUTPUT.PUT_LINE('Params: ' || one || ',' || two);
                 -- Throw out all non-alphanum characters
-                while one <> '' and not rpm.isalphanum(one)
+                -- 126 == ~
+                while one <> '' and not rpm.isalphanum(one) and ascii(one) <> 126
                 loop
                     one := substr(one, 2);
                 end loop;
-                while two <> '' and not rpm.isalphanum(two)
+                while two <> '' and not rpm.isalphanum(two) and ascii(two) <> 126
                 loop
                     two := substr(two, 2);
                 end loop;
+                if ascii(one) = 126 or ascii(two) = 126
+                then
+                    if ascii(one) <> 126 then return 1; end if;
+                    if ascii(two) <> 126 then return -1; end if;
+                    continue;
+                end if;
                 str1 := one;
                 str2 := two;
                 if str1 <> '' and rpm.isdigit(str1)
