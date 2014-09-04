@@ -229,14 +229,6 @@ while read PKG_NAME; do
     continue
   }
 
-  # Provide a proper release number;
-  # - 1.git.a0e2924efdff87699b2989a1c92925b05586aac1%{?dist}
-  # - 1.git.154.01b72e9%{?dist}
-  # + 1%{?dist}.<RELEASE>
-  sed -i '/^Release:/{s/\.git[^%]*//;s/%{?dist}.*$/%{?dist}.<RELEASE>/}' "$SRPM_PKG_DIR/$PKG_NAME.spec" || {
-    log_and_add_failure "$PKG_NAME" "inject %{?!dist:.A}.<RELEASE>"
-  }
-
   # update from obs (create missing package on the fly)
   for tries in 1 2 3; do
     echo "Try: $tries"
