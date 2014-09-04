@@ -46,9 +46,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
     }
 
-    public void addProducts(List<String> productIdents) throws ProductSyncManagerCommandException {
-    }
-
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
     }
 

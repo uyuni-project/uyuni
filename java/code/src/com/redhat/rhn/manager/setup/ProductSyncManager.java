@@ -68,12 +68,17 @@ public abstract class ProductSyncManager {
      */
     public abstract List<Product> getBaseProducts() throws ProductSyncManagerCommandException, ProductSyncManagerParseException;
 
-     /**
+    /**
      * Adds multiple products.
      * @param productIdents the product ident list
      * @throws ProductSyncManagerCommandException if a product addition failed
      */
-    public abstract void addProducts(List<String> productIdents) throws ProductSyncManagerCommandException;
+    public void addProducts(List<String> productIdents)
+        throws ProductSyncManagerCommandException {
+        for (String productIdent : productIdents) {
+            addProduct(productIdent);
+        }
+    }
 
     /**
      * Adds the product.
