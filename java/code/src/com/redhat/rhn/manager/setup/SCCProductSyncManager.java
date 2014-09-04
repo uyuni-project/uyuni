@@ -51,6 +51,19 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
     public void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
         ConnectionException {
+        ContentSyncManager csm = new ContentSyncManager();
+        try {
+            csm.updateChannels(csm.getRepositories());
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+            csm.updateSUSEProducts(csm.getProducts());
+            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+            csm.updateUpgradePaths();
+            csm.updateSubscriptions(csm.getSubscriptions());
+        }
+        catch (ContentSyncException e) {
+            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
+                -1, e.getCause().getMessage(), e.getMessage());
+        }
     }
 
     /**
