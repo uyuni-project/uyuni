@@ -113,6 +113,10 @@ while read PKG_NAME PKG_VER PKG_DIR; do
   fi
 
   mv "$T_DIR" "$SRPM_DIR/$PKG_NAME"
+  # Release is handled by the Buildservice
+  # Remove everything what prevents us from submitting
+  sed -i 's/^Release.*$/Release:    1/i' $SRPM_DIR/$PKG_NAME/*.spec
+
   #
   # change BuildRoot: in spec files to SUSE flavor.
   # The buildservice requires it this way.
