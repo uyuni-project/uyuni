@@ -91,7 +91,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
                     : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), status));
         }
 
-        //String identifier = lp.getFriendlyName().toLowerCase().replaceAll("\\s+", "_");
         String identifier = "product-" + lp.getId();
         Product product = new Product(lp.getArch(), identifier,
                 lp.getFriendlyName(), "",
