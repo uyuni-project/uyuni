@@ -24,6 +24,7 @@ import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.scc.model.SCCRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +48,27 @@ public class SCCProductSyncManager extends ProductSyncManager {
     }
 
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
+        ContentSyncManager csm = new ContentSyncManager();
+        Collection<SCCRepository> repos = csm.getRepositories();
+        try {
+            List<Product> products = getBaseProducts();
+            for (Product product : products) {
+                if (product.getIdent().equals(productIdent)) {
+                    for (Channel mandatoryCh : product.getMandatoryChannels()) {
+                        csm.addChannel(mandatoryCh.getLabel(), repos);
+                    }
+                    break;
+                }
+            }
+        }
+        catch (ProductSyncManagerParseException e) {
+            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
+                -1, e.getMessage(), e.getMessage());
+        }
+        catch (ContentSyncException e) {
+            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
+                -1, e.getMessage(), e.getMessage());
+        }
     }
 
     public void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
@@ -57,8 +79,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
             csm.updateChannelFamilies(csm.readChannelFamilies());
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
-            csm.updateUpgradePaths();
             csm.updateSubscriptions(csm.getSubscriptions());
+            csm.updateUpgradePaths();
         }
         catch (ContentSyncException e) {
             throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
