@@ -806,9 +806,12 @@ class RepoSync(object):
         # remove the channel-specific prefix
         # this way we can merge patches from different channels like
         # SDK, HAE and SLES
-        prefix = self.channel['update_tag']
-        if prefix and patch_name.startswith(prefix):
-            patch_name = patch_name[len(prefix)+1:] # +1 for the hyphen
+        update_tag = self.channel['update_tag']
+        if update_tag and patch_name.startswith(update_tag):
+            patch_name = patch_name[len(update_tag)+1:] # +1 for the hyphen
+        elif update_tag and update_tag in patch_name:
+            # SLE12 has SUSE-<update-tag>-...
+            patch_name = patch_name.replace('SUSE-' + update_tag , 'SUSE', 1)
 
         return patch_name
 
