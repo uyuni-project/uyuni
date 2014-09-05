@@ -398,10 +398,14 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * res4-as-suse-manager-tools-x86_64: added, reposync scheduled
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'res4-as-suse-manager-tools-x86_64' channel
+Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
+
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = []
@@ -457,9 +461,12 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * res4-as-suse-manager-tools-x86_64: already added, reposync scheduled
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'res4-as-suse-manager-tools-x86_64' channel
+Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -591,8 +598,10 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
