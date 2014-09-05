@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 8e25dac353139f5da5d1bfcfd816444e02478d04
+-- oracle equivalent source sha1 56ec29df7b559e173c031f35729aa1fab0ce3fe3
 -- create schema rpm;
 
 --update pg_setting
@@ -88,8 +88,10 @@ $$ language 'plpgsql';
                 end loop;
                 if ascii(one) = 126 or ascii(two) = 126
                 then
-                    if ascii(one) <> 126 then return 1; end if;
-                    if ascii(two) <> 126 then return -1; end if;
+                    if one is NULL or ascii(one) <> 126 then return 1; end if;
+                    if two is NULL or ascii(two) <> 126 then return -1; end if;
+                    one := substr(one, 2);
+                    two := substr(two, 2);
                     continue;
                 end if;
                 str1 := one;
