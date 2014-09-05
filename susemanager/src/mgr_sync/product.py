@@ -45,7 +45,7 @@ class Product(object):
         return "{0} {1} ({2})".format(self.short_status, self.friendly_name,
                                       self.arch)
 
-    def to_stdout(self, indentation_level=0, filter=None,
+    def to_stdout(self, indentation_level=0, filter=None, expand=False,
                   interactive_data={}):
         prefix = indentation_level * "  "
         if interactive_data:
@@ -60,9 +60,15 @@ class Product(object):
 
         if not filter or self.matches_filter(filter):
             print(prefix + self.to_ascii_row())
+
+            if (not expand and self.status is not Product.Status.INSTALLED) or \
+               self.status == Product.Status.UNAVAILABLE:
+                return
+
             indentation_level += 1
             for ext in self.extensions:
                 ext.to_stdout(indentation_level=indentation_level,
+                              expand=expand,
                               filter=filter,
                               interactive_data=interactive_data)
 
