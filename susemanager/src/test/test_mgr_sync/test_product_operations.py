@@ -308,6 +308,7 @@ Status:
   - [ ] - product is not installed, but is available
 
 [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
+  [ ] SUSE Cloud 1.0 (x86_64)
 [I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
   [ ] SUSE Cloud 2.0 (x86_64)
   [ ] SUSE Cloud 3 (x86_64)"""
