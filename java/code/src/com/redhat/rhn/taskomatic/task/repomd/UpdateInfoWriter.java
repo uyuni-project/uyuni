@@ -112,12 +112,17 @@ public class UpdateInfoWriter extends RepomdWriter {
         attr.addAttribute("version", Long.toString(erratum.getAdvisoryRel()));
         handler.startElement("update", attr);
 
-        String id = new String();
+        String id = erratum.getAdvisoryName();
         String updateTag = findUpdateTag(channel);
         if (updateTag != null) {
-            id += updateTag + "-";
+            if (id.startsWith("SUSE-")) {
+                // SLE12 style where the update tag is not a prefix
+                id = id.replaceFirst("SUSE", "SUSE-" + updateTag);
+            }
+            else {
+                id = updateTag + "-" + id;
+            }
         }
-        id += erratum.getAdvisoryName();
 
         handler.addElementWithCharacters("id",
                 sanitize(0L, id));
