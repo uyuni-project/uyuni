@@ -399,6 +399,8 @@ class RepoSyncTest(unittest.TestCase):
                      'arch': 'arch2',
                      'channel_label': 'l2',
                      'epoch': 'e2'}]
+        ident = "%(name)s-%(epoch)s:%(version)s-%(release)s.%(arch)s" % packages[0]
+        rs.available_packages[ident] = 1
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
@@ -416,7 +418,9 @@ class RepoSyncTest(unittest.TestCase):
                      'release': 'r1',
                      'arch': 'arch1',
                      'channel_label': 'l1',
-                     'epoch': []}]
+                     'epoch': '' }]
+        ident = "%(name)s-%(epoch)s%(version)s-%(release)s.%(arch)s" % packages[0]
+        rs.available_packages[ident] = 1
 
         _mock_rhnsql(self.reposync, [])
         self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
@@ -425,6 +429,22 @@ class RepoSyncTest(unittest.TestCase):
                 ("The package n1-v1-r1.arch1 "
                  "which is referenced by patch patchy was not found "
                  "in the database. This patch has been skipped.", ),{}))
+
+    def test_updates_process_packages_checksum_not_found_but_not_available(self):
+        rs = self._create_mocked_reposync()
+
+        packages = [{'name': 'n1',
+                     'version': 'v1',
+                     'release': 'r1',
+                     'arch': 'arch1',
+                     'channel_label': 'l1',
+                     'epoch': '' }]
+
+        _mock_rhnsql(self.reposync, [])
+        self.assertEqual(rs._updates_process_packages(packages, 'patchy', []),
+                         [])
+        self.assertEqual(rs.print_msg.call_args, None)
+
 
     def test_upload_updates_referenced_package_not_found(self):
         timestamp1 = datetime.now().isoformat(' ')
