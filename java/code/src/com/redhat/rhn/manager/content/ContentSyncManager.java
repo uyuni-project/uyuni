@@ -918,7 +918,16 @@ public class ContentSyncManager {
                 product.setRelease(p.getReleaseType() != null ?
                                    p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
-                product.setArch(PackageFactory.lookupPackageArchByLabel(p.getArch()));
+
+                PackageArch pArch = PackageFactory.lookupPackageArchByLabel(p.getArch());
+                if (pArch == null && p.getArch() != null) {
+                    // unsupported architecture, skip the product
+                    log.error("Unknown architecture '" + p.getArch()
+                            + "'. This may be caused by a missing database migration");
+                    continue;
+                }
+
+                product.setArch(pArch);
                 product.setProductList('Y');
                 if (channelFamily != null) {
                     product.setChannelFamilyId(channelFamily.getId().toString());
