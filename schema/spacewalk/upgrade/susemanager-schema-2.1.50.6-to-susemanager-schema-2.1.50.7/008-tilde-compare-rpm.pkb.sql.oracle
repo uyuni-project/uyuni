@@ -110,8 +110,10 @@ CREATE OR REPLACE PACKAGE BODY rpm AS
 
                 if ascii(one) = 126 or ascii(two) = 126
                 then
-                    if ascii(one) <> 126 then return 1; end if;
-                    if ascii(two) <> 126 then return -1; end if;
+                    if one is NULL or ascii(one) <> 126 then return 1; end if;
+                    if two is NULL or ascii(two) <> 126 then return -1; end if;
+                    one := substr(one, 2);
+                    two := substr(two, 2);
                     continue;
                 end if;
 
