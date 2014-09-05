@@ -326,7 +326,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                 product.friendly_name))
             return
 
-        mandatory_channels = [c for c in product.channels
+        mandatory_channels = [c.label for c in product.channels
                               if not c.optional]
         missing_channels = [c for c in mandatory_channels
                             if c.status == Channel.Status.UNAVAILABLE]
@@ -342,19 +342,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
 
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
-        for channel in mandatory_channels:
-            sys.stdout.write("  * {0}: ".format(channel.label))
-            if channel.status == Channel.Status.INSTALLED:
-                sys.stdout.write("already added, ")
-            else:
-                self._execute_xmlrpc_method(self.conn.sync.content,
-                                            "addChannel",
-                                            self.auth.token(),
-                                            channel.label)
-                sys.stdout.write("added, ")
-            self._schedule_channel_reposync(channel.label)
-            sys.stdout.write("reposync scheduled\n")
-            sys.stdout.flush()
+        self._add_channels(mandatory_channels)
         print("Product successfully added")
 
     def _select_product_interactive_mode(self):
