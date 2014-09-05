@@ -69,7 +69,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
                                     no_optionals=options.no_optionals,
                                     compact=options.compact)
             elif 'product' in options.list_target:
-                self._list_products(filter=options.filter)
+                self._list_products(expand=options.expand,
+                                    filter=options.filter)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
                 self._add_channels(options.target)
@@ -275,7 +276,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listProducts", self.auth.token()))
 
-    def _list_products(self, filter, show_interactive_numbers=False):
+    def _list_products(self, filter, expand=False,
+                       show_interactive_numbers=False):
         """
         List products
         """
@@ -303,6 +305,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
 
         for product in products:
             product.to_stdout(filter=filter,
+                              expand=expand,
                               interactive_data=interactive_data)
 
         return interactive_data
@@ -359,7 +362,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
 
         """
         interactive_data = self._list_products(
-            filter=None, show_interactive_numbers=True)
+            filter=None, expand=False, show_interactive_numbers=True)
 
         num_prod = interactive_data['num_prod']
         if num_prod:

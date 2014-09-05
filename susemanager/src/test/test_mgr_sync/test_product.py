@@ -54,7 +54,7 @@ class ProductTest(unittest.TestCase):
     def test_to_stdout(self):
         sles11sp3_s390x = next(p for p in self.products if p.friendly_name == 'SUSE Linux Enterprise Server 11 SP3' and p.arch == 's390x')
         with ConsoleRecorder() as recorder:
-            sles11sp3_s390x.to_stdout()
+            sles11sp3_s390x.to_stdout(expand=True)
 
         expected_output = """[ ] SUSE Linux Enterprise Server 11 SP3 (s390x)
   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (s390x)
