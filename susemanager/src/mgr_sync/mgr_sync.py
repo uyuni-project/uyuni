@@ -291,6 +291,7 @@ Note well: there is no way to revert the migration from Novell Customer Center (
 
         if filter:
             filter = filter.lower()
+            expand = True
 
         products = self._fetch_remote_products()
 
