@@ -136,28 +136,24 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
             MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
-            String status = sccStatus.equals(MgrSyncStatus.INSTALLED)
-                ? Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
-            (mgrSyncChannel.isOptional()
-                    ? optionalChannels
-                    : mandatoryChannels).add(new Channel(mgrSyncChannel.getLabel(), status));
+            (mgrSyncChannel.isOptional() ? optionalChannels : mandatoryChannels)
+                    .add(new Channel(mgrSyncChannel.getLabel(),
+                            sccStatus.equals(MgrSyncStatus.INSTALLED)
+                                ? Channel.STATUS_PROVIDED
+                                : Channel.STATUS_NOT_PROVIDED));
         }
 
-        String identifier = "product-" + lp.getId();
-        Product product = new Product(lp.getArch(), identifier,
+        Product product = new Product(lp.getArch(), "product-" + lp.getId(),
                 lp.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannels),
                 new OptionalChannels(optionalChannels));
-        if (product.isProvided()) {
-            product.setSyncStatus(getProductSyncStatus(product));
-        }
-        else {
-            product.setSyncStatus(Product.SyncStatus.NOT_MIRRORED);
-        }
+        product.setSyncStatus(product.isProvided()
+                              ? this.getProductSyncStatus(product)
+                              : Product.SyncStatus.NOT_MIRRORED);
 
         // set extensions as addon products
-        for (ListedProduct lpExt : lp.getExtensions()) {
-            Product ext = ncc2scc(lpExt);
+        for (ListedProduct extension : lp.getExtensions()) {
+            Product ext = ncc2scc(extension);
             ext.setBaseProduct(product);
             product.getAddonProducts().add(ext);
             ext.setBaseProductIdent(product.getIdent());
