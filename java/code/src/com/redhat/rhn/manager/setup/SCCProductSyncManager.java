@@ -104,7 +104,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
         catch (ContentSyncException e) {
             throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
-                -1, e.getCause().getMessage(), e.getMessage());
+                -1, e.getMessage(), e.getMessage());
         }
     }
 
