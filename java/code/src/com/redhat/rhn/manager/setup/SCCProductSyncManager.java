@@ -28,6 +28,8 @@ import com.suse.scc.model.SCCRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -47,27 +49,43 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
     }
 
+    private Product findProductByIdent(String ident)
+            throws ProductSyncManagerCommandException,
+                   ProductSyncManagerParseException {
+        for (Product p : this.getBaseProducts()) {
+            if (p.getIdent().equals(ident)
+                && (p.getSyncStatus() != Product.SyncStatus.FINISHED)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         ContentSyncManager csm = new ContentSyncManager();
         Collection<SCCRepository> repos = csm.getRepositories();
+        Product product = null;
         try {
-            List<Product> products = getBaseProducts();
-            for (Product product : products) {
-                if (product.getIdent().equals(productIdent)) {
-                    for (Channel mandatoryCh : product.getMandatoryChannels()) {
-                        csm.addChannel(mandatoryCh.getLabel(), repos);
-                    }
-                    break;
+            product = this.findProductByIdent(productIdent);
+        } catch (ProductSyncManagerParseException ex) {
+            throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
+                    ex.getMessage(), ex.getMessage());
+        }
+
+        if (product != null) {
+            try {
+                for (Channel mandatoryCh : product.getMandatoryChannels()) {
+                    csm.addChannel(mandatoryCh.getLabel(), repos);
+                    // Schedule reposync here
                 }
+            } catch (ContentSyncException ex) {
+                throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
+                        ex.getMessage(), ex.getMessage());
             }
         }
-        catch (ProductSyncManagerParseException e) {
-            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
-                -1, e.getMessage(), e.getMessage());
-        }
-        catch (ContentSyncException e) {
-            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
-                -1, e.getMessage(), e.getMessage());
+        else {
+            // Cry "Product cannot be installed"
         }
     }
 
