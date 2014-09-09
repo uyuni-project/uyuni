@@ -24,9 +24,10 @@ import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCRepository;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -85,7 +86,9 @@ public class SCCProductSyncManager extends ProductSyncManager {
             }
         }
         else {
-            // Display unable to install.
+            // XXX: Refactor this for the other exception.
+            String msg = String.format("Product %s cannot be found.", productIdent);
+            throw new ProductSyncManagerCommandException(msg, -1, msg, msg);
         }
     }
 
