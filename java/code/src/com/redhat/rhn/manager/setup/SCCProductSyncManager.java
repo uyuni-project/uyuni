@@ -53,8 +53,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             throws ProductSyncManagerCommandException,
                    ProductSyncManagerParseException {
         for (Product p : this.getBaseProducts()) {
-            if (p.getIdent().equals(ident)
-                && (p.getSyncStatus() != Product.SyncStatus.FINISHED)) {
+            if (p.getIdent().equals(ident)) {
                 return p;
             }
         }
@@ -78,15 +77,15 @@ public class SCCProductSyncManager extends ProductSyncManager {
             try {
                 for (Channel mandatoryCh : product.getMandatoryChannels()) {
                     csm.addChannel(mandatoryCh.getLabel(), repos);
-                    // Schedule reposync here
                 }
+                // Schedule reposync here
             } catch (ContentSyncException ex) {
                 throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
                         ex.getMessage(), ex.getMessage());
             }
         }
         else {
-            // Cry "Product cannot be installed"
+            // Display unable to install.
         }
     }
 
@@ -163,6 +162,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             product.getAddonProducts().add(ext);
             ext.setBaseProductIdent(product.getIdent());
         }
+
         return product;
     }
 }
