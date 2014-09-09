@@ -133,7 +133,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * @param products
      * @return List of {@link Product}
      */
-    private Product ncc2scc(ListedProduct lp) {
+    private Product ncc2scc(final ListedProduct lp) {
         List<Channel> mandatoryChannels = new ArrayList<Channel>();
         List<Channel> optionalChannels = new ArrayList<Channel>();
 
@@ -145,6 +145,20 @@ public class SCCProductSyncManager extends ProductSyncManager {
                                 ? Channel.STATUS_PROVIDED
                                 : Channel.STATUS_NOT_PROVIDED));
         }
+
+        // Add base channel on top of everything else so it can be added first.
+        Collections.sort(mandatoryChannels, new Comparator<Channel>() {
+            public int compare(Channel a, Channel b) {
+                if (a.getLabel().equals(lp.getBaseChannel().getLabel())) {
+                    return -1;
+                }
+                else if (b.getLabel().equals(lp.getBaseChannel().getLabel())) {
+                    return 1;
+                }
+
+                return 0;
+            };
+        });
 
         Product product = new Product(lp.getArch(), "product-" + lp.getId(),
                 lp.getFriendlyName(), "",
