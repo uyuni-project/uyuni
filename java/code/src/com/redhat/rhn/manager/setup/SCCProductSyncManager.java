@@ -24,6 +24,7 @@ import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCRepository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -121,7 +122,9 @@ public class SCCProductSyncManager extends ProductSyncManager {
     private List<Product> ncc2scc(Collection<ListedProduct> products) {
         List<Product> sccProducts = new ArrayList<Product>();
         for (ListedProduct lp : products) {
-            sccProducts.add(ncc2scc(lp));
+            if (!lp.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
+                sccProducts.add(ncc2scc(lp));
+            }
         }
         return sccProducts;
     }
