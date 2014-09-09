@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.satellite.Executor;
-import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
@@ -28,21 +27,14 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.Product.SyncStatus;
-import com.suse.manager.model.products.ProductList;
 
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Manager class for interacting with SUSE products.
@@ -66,7 +58,9 @@ public abstract class ProductSyncManager {
      * @throws ProductSyncManagerCommandException if external commands or parsing fail
      * @throws ProductSyncManagerParseException if a parsing problem shows up
      */
-    public abstract List<Product> getBaseProducts() throws ProductSyncManagerCommandException, ProductSyncManagerParseException;
+    public abstract List<Product> getBaseProducts()
+            throws ProductSyncManagerCommandException,
+                   ProductSyncManagerParseException;
 
     /**
      * Adds multiple products.
@@ -85,7 +79,8 @@ public abstract class ProductSyncManager {
      * @param productIdent the product ident
      * @throws ProductSyncManagerCommandException if the product addition failed
      */
-    public abstract void addProduct(String productIdent) throws ProductSyncManagerCommandException;
+    public abstract void addProduct(String productIdent)
+            throws ProductSyncManagerCommandException;
 
     /**
      * Refresh product, channel and subscription information without triggering
@@ -94,7 +89,9 @@ public abstract class ProductSyncManager {
      * @throws InvalidMirrorCredentialException if mirror credentials are not valid
      * @throws ConnectionException if a connection to NCC was not possible
      */
-    public abstract void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
+    public abstract void refreshProducts()
+            throws ProductSyncManagerCommandException,
+                   InvalidMirrorCredentialException,
         ConnectionException;
 
     /**
