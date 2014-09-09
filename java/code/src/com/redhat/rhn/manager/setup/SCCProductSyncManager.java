@@ -21,15 +21,13 @@ import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
-import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCRepository;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -37,7 +35,9 @@ import java.util.logging.Logger;
  */
 public class SCCProductSyncManager extends ProductSyncManager {
 
-    public List<Product> getBaseProducts() throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
+    public List<Product> getBaseProducts()
+            throws ProductSyncManagerCommandException,
+                   ProductSyncManagerParseException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
         Collection<ListedProduct> products = csm.listProducts(
@@ -62,7 +62,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
         return null;
     }
 
-    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
+    public void addProduct(String productIdent)
+            throws ProductSyncManagerCommandException {
         ContentSyncManager csm = new ContentSyncManager();
         Collection<SCCRepository> repos = csm.getRepositories();
         Product product = null;
@@ -89,7 +90,9 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
     }
 
-    public void refreshProducts() throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
+    public void refreshProducts()
+            throws ProductSyncManagerCommandException,
+                   InvalidMirrorCredentialException,
         ConnectionException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
