@@ -79,8 +79,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
             try {
                 for (Channel mandatoryCh : product.getMandatoryChannels()) {
                     csm.addChannel(mandatoryCh.getLabel(), repos);
+                    this.scheduleSingleSatRepoSync(mandatoryCh);
                 }
-                // Schedule reposync here
             } catch (ContentSyncException ex) {
                 throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
                         ex.getMessage(), ex.getMessage());
