@@ -105,13 +105,6 @@ def getSUSEOsTarget():
 
     return ostarget.strip()
 
-def getSUSEConnectIDs():
-    systemidFile = tempfile.NamedTemporaryFile(prefix='systemid-info-')
-    ret = os.system("/usr/bin/SUSEconnect.rb --systemid > %s" % systemidFile)
-    if ret != 0:
-        raise Exception("Getting systemid failed")
-    return parseSystemID(systemidFile)
-
 def parseSystemID(systemidFile):
     guid = ""
     secret = ""
@@ -127,8 +120,6 @@ def parseSystemID(systemidFile):
     return { 'guid' : guid.strip(), 'secret' : secret.strip() }
 
 def getSystemID():
-    if os.path.exists('/usr/bin/SUSEconnect.rb'):
-        return getSUSEConnectIDs()
 
     sccCredentialsFile = '/etc/zypp/credentials.d/SCCcredentials'
     nccCredentialsFile = '/etc/zypp/credentials.d/NCCcredentials'
