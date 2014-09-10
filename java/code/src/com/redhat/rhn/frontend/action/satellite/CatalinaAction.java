@@ -20,6 +20,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -49,8 +50,9 @@ public class CatalinaAction extends RhnAction {
        Matcher m = Pattern.compile("/tomcat[0-9]$").matcher(catalina);
        m.find();
 
-       request.setAttribute("contents",
-               FileUtils.readStringFromFile("/var/log" + m.group(0) + "/catalina.out"));
+       String contents = FileUtils.readStringFromFile("/var/log" + m.group(0) + "/catalina.out");
+       contents = StringEscapeUtils.escapeHtml(contents);
+       request.setAttribute("contents", contents);
 
        return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
    }
