@@ -171,6 +171,7 @@ chmod 755 /var/lib/rhn/rhn-satellite-prep/etc || :
 %if 0%{?suse_version}
 %post
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy_ajp
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
