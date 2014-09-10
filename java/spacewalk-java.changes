@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Sep 10 14:55:30 CEST 2014 - mc@suse.de
+
+- fix XSS flaws - CVE-2014-3595 (bnc#896012)
+
+-------------------------------------------------------------------
 Wed Jul  2 15:24:34 CEST 2014 - mantel@suse.de
 
 - fix logrotate for /var/log/rhn/rhn_web_api.log (bnc#884081)
