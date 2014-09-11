@@ -50,7 +50,7 @@ import static junit.framework.Assert.fail;
 /**
  * Tests ProductSyncManager.
  */
-public class ProductSyncManagerCommonTest extends BaseTestCaseWithUser {
+public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUser {
 
     private final ProductList products = new ProductList();
     private String providedProductIdent;
@@ -94,66 +94,6 @@ public class ProductSyncManagerCommonTest extends BaseTestCaseWithUser {
         // make one of the products an addon
         products.getProducts().get(3).setBaseProductIdent(
                 products.getProducts().get(2).getIdent());
-    }
-
-    /**
-     * builds the xml of mgr-ncc-sync from the created
-     * test channels in setUp()
-     */
-    protected String getTestProductXml() {
-        try {
-            Serializer s = new Persister();
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            s.write(this.getProducts(), os);
-            String ret = new String(os.toByteArray(), "UTF-8");
-            return ret;
-        }
-        catch (Exception e) {
-            fail("Can't get the xml fixture data:" + e.getMessage());
-            return null;
-        }
-    }
-
-    protected Product getProductWithAllChannelsProvided() throws Exception {
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(getTestExecutor());
-        List<Product> parsedProds = productSyncManager.getBaseProducts();
-
-        Product prod = null;
-        for (Product p : parsedProds) {
-            if (p.getIdent().equals(this.getProvidedProductIdent())) {
-                prod = p;
-            }
-        }
-        return prod;
-    }
-
-    /**
-     * Returns an executor that outputs the xml from the created
-     * products in setUp()
-     * @return {@link Executor}
-     */
-    protected Executor getTestExecutor() {
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return getTestProductXml();
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], NCCProductSyncManager.LIST_PRODUCT_SWITCH);
-                return 0;
-            }
-        };
-        return executor;
     }
 
     /**
@@ -203,29 +143,6 @@ public class ProductSyncManagerCommonTest extends BaseTestCaseWithUser {
         return p;
     }
 
-    /**
-     * {@inheritDoc}}
-     * @throws java.lang.Exception
-     */
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-
-   /**
-     * Fake product data, but static
-     * @return
-     */
-    protected String getFixtureProductXml() {
-        try {
-            return TestUtils.readAll(TestUtils.findTestData("mgr_ncc_sync_products.xml"));
-        }
-        catch (Exception e) {
-            fail(e.getMessage());
-            return null;
-        }
-    }
 
     /**
      * Generate fake metadata for a given product.
@@ -360,6 +277,16 @@ public class ProductSyncManagerCommonTest extends BaseTestCaseWithUser {
         TaskoFactory.save(taskRun);
         TaskoFactory.getSession().flush();
     }
+
+    /**
+     * Actual implementation should feed getProducts() fixtures into the real
+     * product sync manager backend getBaseProducts(). As an example NCC backend uses
+     * a test {@link Executor} which outputs the fixtures to the XML.
+     *
+     * @return {@link Product}
+     * @throws Exception
+     */
+    protected abstract Product getProductWithAllChannelsProvided() throws Exception;
 
     /**
      * A product with all channels on P without previous download runs
