@@ -42,8 +42,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
                    ProductSyncManagerParseException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
-        Collection<ListedProduct> products = csm.listProducts(
-            csm.listChannels(csm.getRepositories()));
+            Collection<ListedProduct> products = csm.listProducts(
+                    csm.listChannels(csm.getRepositories()));
             return ncc2scc(products);
         }
         catch (ContentSyncException e) {
@@ -152,14 +152,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
         // Add base channel on top of everything else so it can be added first.
         Collections.sort(mandatoryChannels, new Comparator<Channel>() {
             public int compare(Channel a, Channel b) {
-                if (a.getLabel().equals(lp.getBaseChannel().getLabel())) {
-                    return -1;
-                }
-                else if (b.getLabel().equals(lp.getBaseChannel().getLabel())) {
-                    return 1;
-                }
-
-                return 0;
+                return a.getLabel().equals(lp.getBaseChannel().getLabel()) ? -1 :
+                       b.getLabel().equals(lp.getBaseChannel().getLabel()) ? 1 : 0;
             };
         });
 
