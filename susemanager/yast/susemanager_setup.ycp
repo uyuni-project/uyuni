@@ -2,8 +2,16 @@
     import "GetInstArgs";
     import "Label";
     import "Wizard";
+    import "FileUtils";
 
     Wizard::CreateDialog();
+
+    string customer_center = "susemanager_scc";
+    if (FileUtils::Exists ("/var/lib/spacewalk/scc/default_scc")) {
+       customer_center = "susemanager_scc";
+    } else {
+       customer_center = "susemanager_ncc";
+    }
 
     list dialog = [
 	"susemanager_reqs",
@@ -12,7 +20,7 @@
 	"susemanager_manager",
 	"susemanager_cert",
 	"susemanager_db",
-	"susemanager_ncc",
+	customer_center,
 	"susemanager_write",
 	"susemanager_congratulate",
     ];
@@ -64,6 +72,12 @@
 	  result = `next;
           break;
       }
+    }
+
+    if (customer_center == "susemanager_scc") {
+        SCR::Execute (.target.bash,
+                      sformat ("/usr/bin/touch %1; /bin/chmod 0644 %1;", "/var/lib/spacewalk/scc/migrated")
+        );
     }
 
     Wizard::CloseDialog();
