@@ -71,10 +71,10 @@ class ProductOperationsTest(unittest.TestCase):
             "listProducts",
             self.fake_auth_token)
 
-    def test_list_products(self):
-        """ Test listing products """
+    def test_list_products_with_expand_enabled(self):
+        """ Test listing products with expand enabled """
 
-        options = get_options("list product".split())
+        options = get_options("list product -e".split())
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
             'list_products_simplified.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -142,6 +142,116 @@ Status:
 [ ] SUSE Manager Proxy 1.7 (x86_64)
 [ ] SUSE Manager Proxy 2.1 (x86_64)
 [ ] SUSE Manager Server 2.1 (x86_64)"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
+
+    def test_list_products(self):
+        """ Test listing products """
+
+        options = get_options("list product".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
+            'list_products_simplified.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.mgr_sync.run(options)
+
+        expected_output = """Available Products:
+
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+
+[ ] RES 4 (x86_64)
+[ ] RES 4 (x86_64)
+[ ] RES 5 (x86_64)
+[ ] RES 6 (x86_64)
+[ ] SUSE Linux Enterprise Desktop 11 SP2 (x86_64)
+[ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
+[ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
+[ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
+[I] SUSE Linux Enterprise Server 10 SP4 (x86_64)
+  [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
+[ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
+[ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
+[I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
+  [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
+  [ ] SUSE Cloud 2.0 (x86_64)
+  [ ] SUSE Cloud 3 (x86_64)
+  [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
+  [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
+  [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
+  [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
+  [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
+  [ ] SUSE WebYaST 1.3 (x86_64)
+[ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
+[ ] SUSE Manager Proxy 1.2 (x86_64)
+[ ] SUSE Manager Proxy 1.7 (x86_64)
+[ ] SUSE Manager Proxy 2.1 (x86_64)
+[ ] SUSE Manager Server 2.1 (x86_64)"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
+
+    def test_list_products_with_filtering(self):
+        """ Test listing products with filtering"""
+
+        options = get_options("list product --filter proxy".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
+            'list_products.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.mgr_sync.run(options)
+
+        expected_output = """Available Products:
+
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+
+[ ] SUSE Manager Proxy 1.2 (x86_64)
+[ ] SUSE Manager Proxy 1.7 (x86_64)
+[ ] SUSE Manager Proxy 2.1 (x86_64)"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        stubbed_xmlrpm_call.assert_called_once_with(
+            self.mgr_sync.conn.sync.content,
+            "listProducts",
+            self.fake_auth_token)
+
+    def test_list_products_with_filtering(self):
+        """ Test listing products with filtering"""
+
+        options = get_options("list product --filter proxy".split())
+        stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
+            'list_products.data'))
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.mgr_sync.run(options)
+
+        expected_output = """Available Products:
+
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+
+[ ] SUSE Manager Proxy 1.2 (x86_64)
+[ ] SUSE Manager Proxy 1.7 (x86_64)
+[ ] SUSE Manager Proxy 2.1 (x86_64)"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -232,55 +342,30 @@ Status:
 003) [ ] RES 5 (x86_64)
 004) [ ] RES 6 (x86_64)
 005) [ ] SUSE Linux Enterprise Desktop 11 SP2 (x86_64)
-006)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-007) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
-008)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-009) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
-010)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 (x86_64)
-011) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
-012)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-013) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
-014)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-015)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-016) [ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
-017)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP3 (x86_64)
+006) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
+007) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP1 (x86_64)
+008) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP2 (x86_64)
+009) [ ] SUSE Linux Enterprise Server 10 SP1 SAP AiO 11 SP3 (x86_64)
+010) [ ] SUSE Linux Enterprise Server 10 SP3 (x86_64)
      [I] SUSE Linux Enterprise Server 10 SP4 (x86_64)
-018)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
-019) [ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
-020)   [ ] Novell Open Enterprise Server 2 11 (x86_64)
-021)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP1 (x86_64)
-022)   [ ] SUSE Linux Enterprise Point of Service 11 SP1 (x86_64)
-023)   [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-024)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP1 (x86_64)
-025)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 (x86_64)
-026) [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
-027)   [ ] Novell Open Enterprise Server 2 11.1 (x86_64)
-028)   [ ] SUSE Cloud 1.0 (x86_64)
-029)   [ ] SUSE Lifecycle Management Server 1.3 (x86_64)
-030)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP2 (x86_64)
-031)   [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
-032)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP2 (x86_64)
-033)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP2 (x86_64)
-034)   [ ] SUSE WebYaST 1.3 (x86_64)
+011)   [ ] SUSE Linux Enterprise Software Development Kit 10 SP4 (x86_64)
+012) [ ] SUSE Linux Enterprise Server 11 SP1 (x86_64)
+013) [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
      [I] SUSE Linux Enterprise Server 11 SP3 (x86_64)
-035)   [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
-036)   [ ] SUSE Cloud 2.0 (x86_64)
-037)   [ ] SUSE Cloud 3 (x86_64)
-038)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-039)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
-040)   [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
+014)   [ ] Novell Open Enterprise Server 2 11.2 (x86_64)
+015)   [ ] SUSE Cloud 2.0 (x86_64)
+016)   [ ] SUSE Cloud 3 (x86_64)
+017)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
+018)   [ ] SUSE Linux Enterprise Point of Service 11 SP3 (x86_64)
+019)   [ ] SUSE Linux Enterprise Real Time 11 (x86_64)
        [I] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-041)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-042)   [ ] SUSE WebYaST 1.3 (x86_64)
-043) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
-044)   [ ] SUSE Linux Enterprise High Availability Extension 11 SP3 (x86_64)
-045)   [ ] SUSE Linux Enterprise Software Development Kit 11 SP3 (x86_64)
-046)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
-047)   [ ] SUSE WebYaST 1.3 (x86_64)
-048) [ ] SUSE Manager Proxy 1.2 (x86_64)
-049) [ ] SUSE Manager Proxy 1.7 (x86_64)
-050) [ ] SUSE Manager Proxy 2.1 (x86_64)
-051) [ ] SUSE Manager Server 2.1 (x86_64)"""
+020)   [ ] SUSE Linux Enterprise Subscription Management Tool 11 SP3 (x86_64)
+021)   [ ] SUSE WebYaST 1.3 (x86_64)
+022) [ ] SUSE Linux Enterprise Server 11 SP3 VMWare (x86_64)
+023) [ ] SUSE Manager Proxy 1.2 (x86_64)
+024) [ ] SUSE Manager Proxy 1.7 (x86_64)
+025) [ ] SUSE Manager Proxy 2.1 (x86_64)
+026) [ ] SUSE Manager Server 2.1 (x86_64)"""
 
         self.assertEqual(recorder.stdout, expected_output.split("\n"))
 
@@ -313,10 +398,14 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * res4-as-suse-manager-tools-x86_64: added, reposync scheduled
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'res4-as-suse-manager-tools-x86_64' channel
+Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
+
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = []
@@ -372,9 +461,12 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * res4-as-suse-manager-tools-x86_64: already added, reposync scheduled
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'res4-as-suse-manager-tools-x86_64' channel
+Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -506,8 +598,10 @@ Status:
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
-  * rhel-x86_64-as-4: added, reposync scheduled
-  * res4-as-x86_64: added, reposync scheduled
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
