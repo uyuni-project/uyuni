@@ -21,26 +21,116 @@ import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.setup.NCCProductSyncManager;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.model.products.Product;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 /**
  *
  * @author bo
  */
-public class NCCProductSyncManagerTest extends ProductSyncManagerCommonTest {
+public class NCCProductSyncManagerTest extends BaseProductSyncManagerTestCase {
+    /**
+     * {@inheritDoc}}
+     * @throws java.lang.Exception
+     */
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+
+   /**
+     * Fake product data, but static
+     * @return
+     */
+    protected String getFixtureProductXml() {
+        try {
+            return TestUtils.readAll(TestUtils.findTestData("mgr_ncc_sync_products.xml"));
+        }
+        catch (Exception e) {
+            fail(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * builds the xml of mgr-ncc-sync from the created
+     * test channels in setUp()
+     */
+    protected String getTestProductXml() {
+        try {
+            Serializer s = new Persister();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            s.write(this.getProducts(), os);
+            String ret = new String(os.toByteArray(), "UTF-8");
+            return ret;
+        }
+        catch (Exception e) {
+            fail("Can't get the xml fixture data:" + e.getMessage());
+            return null;
+        }
+    }
+
+    protected Product getProductWithAllChannelsProvided() throws Exception {
+        ProductSyncManager productSyncManager = new NCCProductSyncManager(getTestExecutor());
+        List<Product> parsedProds = productSyncManager.getBaseProducts();
+
+        Product prod = null;
+        for (Product p : parsedProds) {
+            if (p.getIdent().equals(this.getProvidedProductIdent())) {
+                prod = p;
+            }
+        }
+        return prod;
+    }
+
+    /**
+     * Returns an executor that outputs the xml from the created
+     * products in setUp()
+     * @return {@link Executor}
+     */
+    protected Executor getTestExecutor() {
+        Executor executor = new Executor() {
+
+            @Override
+            public String getLastCommandOutput() {
+                return getTestProductXml();
+            }
+
+            @Override
+            public String getLastCommandErrorMessage() {
+                return null;
+            }
+
+            @Override
+            public int execute(String[] argsIn) {
+                assertEquals(argsIn[0], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
+                assertEquals(argsIn[1], NCCProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
+                assertEquals(argsIn[2], NCCProductSyncManager.LIST_PRODUCT_SWITCH);
+                return 0;
+            }
+        };
+        return executor;
+    }
+
     /**
      * See if we get NOT_MIRRORED in case product status is not parsed as P.
      * @throws Exception if anything goes wrong
      */
     public void testProductStatusNotMirrored() throws Exception {
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(getTestExecutor());
+        ProductSyncManager productSyncManager = new NCCProductSyncManager(getTestExecutor());
         List<Product> parsedProds = productSyncManager.getBaseProducts();
 
         for (Product p : parsedProds) {
@@ -104,7 +194,7 @@ public class NCCProductSyncManagerTest extends ProductSyncManagerCommonTest {
             }
         };
 
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
+        ProductSyncManager productSyncManager = new NCCProductSyncManager(executor);
 
         List<Product> output = productSyncManager.getBaseProducts();
 
@@ -181,7 +271,7 @@ public class NCCProductSyncManagerTest extends ProductSyncManagerCommonTest {
             }
         };
 
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
+        ProductSyncManager productSyncManager = new NCCProductSyncManager(executor);
         productSyncManager.addProducts(idents);
         assertTrue(expectedIdents.isEmpty());
     }
@@ -215,7 +305,7 @@ public class NCCProductSyncManagerTest extends ProductSyncManagerCommonTest {
             }
         };
 
-        ProductSyncManager productSyncManager = ProductSyncManager.createInstance(executor);
+        ProductSyncManager productSyncManager = new NCCProductSyncManager(executor);
 
         productSyncManager.addProduct(productIdent);
     }
