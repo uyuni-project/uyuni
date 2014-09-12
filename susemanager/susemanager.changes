@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:37:56 CEST 2014 - mc@suse.de
+
+- version 2.1.12-1
+- Implement mgr-sync to manage products and channels from SCC
+- mgr-ncc-sync: update the error message when SCC is active
+- make mgr-create-bootstrap-repo SCC and SLE12 aware
+
+-------------------------------------------------------------------
 Tue Jun 17 10:08:08 CEST 2014 - jrenner@suse.de
 
 - version 2.1.11-1
