@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:44:42 CEST 2014 - mc@suse.de
+
+- version 2.1.6.3-1
+- bootstrap.sh: when installing cert via rpm, support both curl and wget
+- bootstrap.sh: fail if both curl and wget are missing
+- bootstrap.sh: install certificate in the right location on SLE-12
+- Fix removal of existing host key entries (bnc#886391)
+
+-------------------------------------------------------------------
 Thu Mar 27 14:09:29 CET 2014 - fcastelli@suse.com
 
 - version 2.1.6.2-1
