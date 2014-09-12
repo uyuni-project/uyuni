@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:47:09 CEST 2014 - mc@suse.de
+
+- version 2.1.8-1
+- remove asking SUSEConnect for systemid.
+  Not implemented in SUSEConnect
+
+-------------------------------------------------------------------
 Thu Jul 10 16:57:20 CEST 2014 - mc@suse.de
 
 - version 2.1.7-1
