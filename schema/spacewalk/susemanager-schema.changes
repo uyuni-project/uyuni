@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Fri Sep 12 16:02:16 CEST 2014 - mc@suse.de
+
+- version 2.1.50.7-1
+- implement tilde compare for 1.0~beta1 in version numbers
+- force character set and numerical separators to good known
+  defaults.
+- increase size of update_tag column
+- fixing order of commands
+- make config file deletion faster if there are lots of snapshots
+- make future installs run ErrataCache task more often
+- add Fedora 21 GPG keys
+- add CentOS 7 GPG key
+- Fix rhnKickstartableTree trigger, 'null = null' is not true in sql
+- Add support to ppc64le arch
+- add Korea to the list of timezones
+- Allow evr_t to be compared with NULL in Oracle (bnc#881111)
+
+-------------------------------------------------------------------
 Tue Jun 17 10:06:46 CEST 2014 - jrenner@suse.de
 
 - version 2.1.50.6-1
