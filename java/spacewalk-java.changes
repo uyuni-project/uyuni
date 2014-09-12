@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:21:22 CEST 2014 - mc@suse.de
+
+- version 2.1.165.7-1
+- SCC client for managing products and channels
+- fix XSS flaws - CVE-2014-3595 (bnc#896012)
+- implement SLE12 style of update tag handling while generating updateinfo
+- show package link if package is in database
+- Custom info empty value added (java/api)
+- check if action chain with same name already exists
+- remove duplicate Summary and Group entries
+- ISE when activation key has no description.
+- create /software/packages/Dependencies page in Java
+- add queries for weak package dependencies to Java
+- auto errata updates have to wait for errataCache to finish
+- fix NullPointerException
+- ssm config actions should show details for specific system in
+  history
+- ISE comparing config files in SSM
+- history events should show script results for this system only
+- config revision not found when following history link
+- fix broken links to old perl events page
+- fix to support custom kickstart distributions
+- call rhn-config-satellite.pl only if anything has changed
+- add Korea to the list of timezones
+- pre-require tomcat package for spacewalk-java-config
+- Fix ISE when tag name is left empty
+- Guest Provisioning was broken because of refactoring
+- Read and display only a limited number of logfile lines (bnc#883009)
+
+-------------------------------------------------------------------
 Wed Sep 10 14:55:30 CEST 2014 - mc@suse.de
 
 - fix XSS flaws - CVE-2014-3595 (bnc#896012)
