@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:45:44 CEST 2014 - mc@suse.de
+
+- version 0.12.3-1
+- do not use new checks which old pylint do not understand
+- fixed  Invalid class attribute name
+- silenced Abstract class is only referenced 1 times
+- fixed Invalid name
+
+-------------------------------------------------------------------
 Tue May 06 15:45:45 CEST 2014 - mc@suse.de
 
 - version 0.12.2-1

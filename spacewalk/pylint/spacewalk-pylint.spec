@@ -1,5 +1,5 @@
 Name:		spacewalk-pylint
-Version:	0.12.2
+Version:	0.12.3
 Release:	1%{?dist}
 Summary:	Pylint configuration for spacewalk python packages
 
