@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Sep 12 14:53:30 CEST 2014 - mc@suse.de
+
+- version 2.1.7.2-1
+- don't encode proxy url if not set
+- encode proxy url when passing it to urlgrabber
+
+-------------------------------------------------------------------
 Wed Feb 26 13:44:57 CET 2014 - mc@suse.de
 
 - version 2.1.7.1-1
