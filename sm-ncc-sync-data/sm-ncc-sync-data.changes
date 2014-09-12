@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:46:26 CEST 2014 - mc@suse.de
+
+- version 2.1.7-1
+- add channels for SUSE Manager Server 2.1 s390x
+- add SUSE Cloud 4 channels (bnc#883057)
+- fix parent label of the LTSS channel for SLMS
+
+-------------------------------------------------------------------
 Fri May 16 12:55:49 CEST 2014 - mc@suse.de
 
 - version 2.1.6-1
