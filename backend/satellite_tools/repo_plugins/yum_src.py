@@ -175,7 +175,8 @@ class ContentSource:
             raise
         warnings.restore()
         for burl in repo.baseurl:
-            repo.gpgkey = [burl + '/repodata/repomd.xml.key']
+            (scheme, netloc, path, query, fragid) = urlparse.urlsplit(burl)
+            repo.gpgkey = [urlparse.urlunsplit((scheme, netloc, path + '/repodata/repomd.xml.key', query, fragid))]
         repo.setup(False, None, gpg_import_func=self.getKeyForRepo,
                    confirm_func=self.askImportKey)
         # use a fix dir for repo metadata sig checks
