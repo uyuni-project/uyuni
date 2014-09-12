@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:47:56 CEST 2014 - mc@suse.de
+
+- version 2.1.27.8-1
+- man page update: clone-by-date doesn't support 3rd party repos
+- improve clone-by-date dependency resolution
+- Check if dest parent is cloned
+- sw-clone-by-date --dry-run
+- make clone-by-date able to specify --parents from config file
+- you should not have to specify both parent channels for clone-by-
+  date
+- CentOS 7 + EPEL 7 channels
+
+-------------------------------------------------------------------
 Tue Jun 17 10:17:09 CEST 2014 - jrenner@suse.de
 
 - version 2.1.27.7-1
