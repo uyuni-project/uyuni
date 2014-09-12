@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri Sep 12 15:34:51 CEST 2014 - mc@suse.de
+
+- version 2.1.55.9-1
+- preserve the query params in the url
+- allow missing packages in patches if they are not part of this repo
+- handle SLE12 update tag correctly in reposync
+- fix traceback when pushing rpms with archive size > 4GB
+- queue server for errata cache update when package list changes
+- recognize oVirt node as virtual system
+- adding handling for new rpm header information
+
+-------------------------------------------------------------------
 Tue Jun 17 11:04:37 CEST 2014 - jrenner@suse.de
 
 - version 2.1.55.8-1
