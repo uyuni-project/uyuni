@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Sep 12 16:06:20 CEST 2014 - mc@suse.de
+
+- version 5.10.65.7-1
+- validate the content of config files before deploying
+
+-------------------------------------------------------------------
 Wed Sep  3 01:41:38 CEST 2014 - ro@suse.de
 
 - sanitize release line in specfile
