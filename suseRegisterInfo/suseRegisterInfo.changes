@@ -6,6 +6,11 @@ Fri Sep 12 15:47:09 CEST 2014 - mc@suse.de
   Not implemented in SUSEConnect
 
 -------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
 Thu Jul 10 16:57:20 CEST 2014 - mc@suse.de
 
 - version 2.1.7-1
