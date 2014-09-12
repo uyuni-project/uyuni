@@ -5,3 +5,4 @@ gem "capybara","~> 2.1.0"
 gem "selenium-webdriver"
 gem "rubyzip"
 gem 'owasp_zap'
+gem 'net-ssh'
