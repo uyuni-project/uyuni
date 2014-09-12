@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Sep 12 16:04:10 CEST 2014 - mc@suse.de
+
+- version 2.1.2-1
+- renamed modules and added Update channels to modules
+- add LTSS for SLMS 1.3 and SUSE Cloud 4 channels (bnc#883057)
+- add nVidia driver for Workstation Extension
+- add 'family' attributes for SLE12 channels
+
+-------------------------------------------------------------------
 Wed Aug 27 16:30:30 CEST 2014 - mc@suse.de
 
 - version 2.1.1-1
