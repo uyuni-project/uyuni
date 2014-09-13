@@ -686,7 +686,7 @@ IS
         current_members_count number := 0;
 
     begin
-        select count(sc.server_id)
+        select count(distinct sc.server_id)
           into current_members_count
           from rhnServerChannel sc,
                rhnChannelFamilyMembers cfm,
