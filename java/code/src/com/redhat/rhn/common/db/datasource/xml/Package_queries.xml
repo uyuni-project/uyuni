@@ -923,8 +923,8 @@ SELECT  distinct pn.name AS NAME,
         pn.id name_id,
         full_list.arch_id,
         lookup_evr((full_list.evr).epoch, (full_list.evr).version, (full_list.evr).release) evr_id,
-        (full_list.evr).version as version,
-        (full_list.evr).release as release
+        (full_list.evr).release as release,
+        (full_list.evr).version as version
   FROM  (
          SELECT  p.name_id name_id, max(pe.evr) evr,
                  pa.label as arch_label, pa.id as arch_id
@@ -950,7 +950,7 @@ SELECT  distinct pn.name AS NAME,
                      WHERE SP.server_id = :sid
                        AND SP.name_id = full_list.name_id
                        AND (SP.package_arch_id = full_list.arch_id or SP.package_arch_id is null))
-) pkgs
+) x
 order by upper(name)
   </query>
 </mode>

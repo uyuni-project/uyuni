@@ -14277,8 +14277,8 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="filedetails.add_details.jspf.md5">
-        <source>MD5 Sum:</source>
+      <trans-unit id="filedetails.add_details.jspf.checksum">
+        <source>Checksum:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -16644,6 +16644,12 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="kickstart.powermanagement.unsupported_power_type">
         <source>Selected power management type is not supported by Cobbler. Please check your configuration.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.powermanagement.invalid_chars">
+        <source>Provided characters aren't supported by Cobbler. Please update your entry.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>

@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.5
+Version: 2.3.7
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -174,7 +174,7 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
-%if 0%{?rhel}
+%if 0%{?rhel} && 0%{?rhel} < 7 || 0%{?suse_version} && 0%{?suse_version} < 1310
 rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/PXT/Apache24Config.pm
 %endif
 
@@ -311,6 +311,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Sep 11 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.7-1
+- RHEL7 contains apache 2.4
+
+* Tue Sep 02 2014 Stephen Herr <sherr@redhat.com> 2.3.6-1
+- 1136529 - Add aarch64 and ppc64le to parent-child channel compatibility list
+
 * Fri Aug 01 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.5-1
 - 1117976 - WebUI cloning uses the same SQL query as API
 
