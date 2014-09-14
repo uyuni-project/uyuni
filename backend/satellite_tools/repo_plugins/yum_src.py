@@ -153,6 +153,7 @@ class ContentSource:
         repo.mirrorlist = self.url
         repo.baseurl = [self.url]
         repo.basecachedir = CACHE_DIR
+        repo.setAttribute('_override_sigchecks', False)
         if self.insecure:
             repo.repo_gpgcheck = False
         else:
