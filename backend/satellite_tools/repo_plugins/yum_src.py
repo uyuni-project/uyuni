@@ -129,7 +129,7 @@ class ContentSource:
         initCFG('server.satellite')
         self.proxy_url, self.proxy_user, self.proxy_pass = get_proxy(self.url)
         self._authenticate(url)
-        if name in self.yumbase.repos.repos:
+        if type(self.yumbase.repos.repos) == type({}) and name in self.yumbase.repos.repos:
             repo = self.yumbase.repos.repos[name]
         else:
             repo = yum.yumRepo.YumRepository(name)
