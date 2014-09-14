@@ -124,7 +124,9 @@ def getParentsChilds(b_only_custom=False):
 
 def getCustomChannels():
 
-    d_parents = getParentsChilds(True)
+    # with SUSE we sync also Vendor channels with reposync
+    # change parameter to False to get not only Custom Channels
+    d_parents = getParentsChilds(False)
     l_custom_ch = []
 
     for ch in d_parents:
