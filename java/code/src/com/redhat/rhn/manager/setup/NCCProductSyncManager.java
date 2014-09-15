@@ -16,19 +16,20 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
-import static com.redhat.rhn.manager.setup.ProductSyncManager.logger;
+
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
+import org.simpleframework.xml.core.Persister;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
 
 /**
  *
