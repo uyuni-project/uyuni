@@ -203,7 +203,7 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 	"ISS_PARENT"    : _("Parent Server Name")
     ];
 
-    string env_file	= Directory::tmpdir + "/env_ncc";
+    string env_file	= Directory::tmpdir + "/env_cc";
     if (FileUtils::Exists (env_file))
     {
 	SCR::Execute (.target.remove, env_file);
