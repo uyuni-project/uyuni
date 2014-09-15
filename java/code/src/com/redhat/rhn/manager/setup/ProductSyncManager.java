@@ -26,9 +26,13 @@ import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
+
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.Product.SyncStatus;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -37,8 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+
 import redstone.xmlrpc.XmlRpcClient;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcFault;
