@@ -4741,10 +4741,46 @@ value for this entitlement, excluding the default organization's consumption.</s
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.powermanagement.configure">
           <source>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Configure power management&lt;/a&gt;</source>
+          <context-group>
+            <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+            <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+          </context-group>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.powermanagement.operations">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
+          <context-group>
+            <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+            <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+          </context-group>
         </trans-unit>
+      <trans-unit id="provisioning.powermanagement.address_note">
+        <source>The hostname or IP address of the power management server.</source>
+        <context-group>
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+          <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="provisioning.powermanagement.username_note">
+        <source>The username used to log in to the power management server.</source>
+        <context-group>
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+          <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="provisioning.powermanagement.password_note">
+        <source>The password used to log in to the power management server.</source>
+        <context-group>
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+          <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="provisioning.powermanagement.identifier_note">
+        <source>The identifier used to specify this system on the power management server.</source>
+        <context-group>
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
+          <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
+        </context-group>
+      </trans-unit>
         <trans-unit id="ssm.overview.misc">
           <source>Misc</source>
         </trans-unit>
