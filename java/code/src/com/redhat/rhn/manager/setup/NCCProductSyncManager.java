@@ -79,6 +79,10 @@ public class NCCProductSyncManager extends ProductSyncManager {
         executor = executorIn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Product> getBaseProducts()
         throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
         return parseBaseProducts(readProducts());
@@ -120,10 +124,18 @@ public class NCCProductSyncManager extends ProductSyncManager {
         return output;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void refreshProducts()
         throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
         ConnectionException {
