@@ -32,8 +32,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 /**
- *
- * @author duncan
+ * Methods for listing and synchronizing products, the NCC version.
  */
 public class NCCProductSyncManager extends ProductSyncManager {
 
