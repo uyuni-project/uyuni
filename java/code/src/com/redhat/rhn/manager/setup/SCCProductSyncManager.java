@@ -57,9 +57,14 @@ public class SCCProductSyncManager extends ProductSyncManager {
     private Product findProductByIdent(String ident)
             throws ProductSyncManagerCommandException,
                    ProductSyncManagerParseException {
-        for (Product p : this.getBaseProducts()) {
+        for (Product p : getBaseProducts()) {
             if (p.getIdent().equals(ident)) {
                 return p;
+            }
+            for (Product addon : p.getAddonProducts()) {
+                if (addon.getIdent().equals(ident)) {
+                    return p;
+                }
             }
         }
 
