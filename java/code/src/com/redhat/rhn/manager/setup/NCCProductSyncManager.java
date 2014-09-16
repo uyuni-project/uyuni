@@ -82,8 +82,8 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public List<Product> getBaseProducts()
-        throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
+    public List<Product> getBaseProducts() throws ProductSyncManagerCommandException,
+            ProductSyncManagerParseException {
         return parseBaseProducts(readProducts());
     }
 
@@ -135,9 +135,8 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void refreshProducts()
-        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
-        ConnectionException {
+    public void refreshProducts() throws ProductSyncManagerCommandException,
+            InvalidMirrorCredentialException, ConnectionException {
         try {
             runProductSyncCommand(REFRESH_SWITCH);
         }
@@ -162,7 +161,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * @throws ProductSyncManagerParseException the product sync manager exception
      */
     private Set<Product> parsePlainProducts(String xml)
-        throws ProductSyncManagerParseException {
+            throws ProductSyncManagerParseException {
         try {
             ProductList result =
                     new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
@@ -181,7 +180,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * @throws ProductSyncManagerParseException if the xml cannot be parsed
      */
     public List<Product> parseBaseProducts(String xml)
-        throws ProductSyncManagerParseException {
+            throws ProductSyncManagerParseException {
         List<Product> result = new LinkedList<Product>();
         Set<Product> products = parsePlainProducts(xml);
 

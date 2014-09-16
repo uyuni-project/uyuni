@@ -88,7 +88,7 @@ public abstract class ProductSyncManager {
      * @throws ProductSyncManagerCommandException if a product addition failed
      */
     public void addProducts(List<String> productIdents)
-        throws ProductSyncManagerCommandException {
+            throws ProductSyncManagerCommandException {
         for (String productIdent : productIdents) {
             addProduct(productIdent);
         }
@@ -109,10 +109,8 @@ public abstract class ProductSyncManager {
      * @throws InvalidMirrorCredentialException if mirror credentials are not valid
      * @throws ConnectionException if a connection to NCC was not possible
      */
-    public abstract void refreshProducts()
-            throws ProductSyncManagerCommandException,
-                   InvalidMirrorCredentialException,
-        ConnectionException;
+    public abstract void refreshProducts() throws ProductSyncManagerCommandException,
+            InvalidMirrorCredentialException, ConnectionException;
 
     /**
      * Check if SCC provider is in use.

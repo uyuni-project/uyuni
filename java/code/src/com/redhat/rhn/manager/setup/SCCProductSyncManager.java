@@ -41,9 +41,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public List<Product> getBaseProducts()
-            throws ProductSyncManagerCommandException,
-                   ProductSyncManagerParseException {
+    public List<Product> getBaseProducts() throws ProductSyncManagerCommandException,
+            ProductSyncManagerParseException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             Collection<ListedProduct> products = csm.listProducts(
@@ -71,8 +70,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void addProduct(String productIdent)
-            throws ProductSyncManagerCommandException {
+    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         ContentSyncManager csm = new ContentSyncManager();
         Collection<SCCRepository> repos = csm.getRepositories();
         Product product = null;
@@ -105,10 +103,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void refreshProducts()
-            throws ProductSyncManagerCommandException,
-                   InvalidMirrorCredentialException,
-        ConnectionException {
+    public void refreshProducts() throws ProductSyncManagerCommandException,
+            InvalidMirrorCredentialException, ConnectionException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             csm.updateChannels(csm.getRepositories());
