@@ -72,7 +72,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
     @Override
     public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<SCCRepository> repos = csm.getRepositories();
         Product product = null;
         try {
             product = this.findProductByIdent(productIdent);
@@ -83,9 +82,10 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         if (product != null) {
             try {
-                for (Channel mandatoryCh : product.getMandatoryChannels()) {
-                    csm.addChannel(mandatoryCh.getLabel(), repos);
-                    this.scheduleSingleSatRepoSync(mandatoryCh);
+                Collection<SCCRepository> repos = csm.getRepositories();
+                for (Channel channel : product.getMandatoryChannels()) {
+                    csm.addChannel(channel.getLabel(), repos);
+                    scheduleSingleSatRepoSync(channel);
                 }
             } catch (ContentSyncException ex) {
                 throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
