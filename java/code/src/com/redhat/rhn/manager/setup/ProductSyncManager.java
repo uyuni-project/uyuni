@@ -54,10 +54,19 @@ public abstract class ProductSyncManager {
     /** The logger. */
     protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
+    /**
+     * Create {@link ProductSyncManager} instance for a given {@link Executor}.
+     * @param executorIn instance of {@link Executor}
+     * @return instance of {@link ProductSyncManager}
+     */
     public static ProductSyncManager createInstance(Executor executorIn) {
         return isMigratedToSCC() ? new SCCProductSyncManager() : new NCCProductSyncManager(executorIn);
     }
 
+    /**
+     * Create {@link ProductSyncManager} instance.
+     * @return instance of {@link ProductSyncManager}
+     */
     public static ProductSyncManager createInstance() {
         return isMigratedToSCC() ? new SCCProductSyncManager() : new NCCProductSyncManager();
     }
