@@ -48,7 +48,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
         try {
             Collection<ListedProduct> products = csm.listProducts(
                     csm.listChannels(csm.getRepositories()));
-            return ncc2scc(products);
+            return convertProducts(products);
         }
         catch (ContentSyncException e) {
             throw new ProductSyncManagerParseException(e);
@@ -128,31 +128,30 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
      * for further display.
      *
-     * @param products
+     * @param products collection of {@link ListedProduct}
      * @return List of {@link Product}
      */
-    private List<Product> ncc2scc(Collection<ListedProduct> products) {
-        List<Product> sccProducts = new ArrayList<Product>();
+    private List<Product> convertProducts(Collection<ListedProduct> products) {
+        List<Product> displayProducts = new ArrayList<Product>();
         for (ListedProduct lp : products) {
             if (!lp.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
-                sccProducts.add(ncc2scc(lp));
+                displayProducts.add(convertProduct(lp));
             }
         }
-        return sccProducts;
+        return displayProducts;
     }
 
     /**
-     * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
-     * for further display.
+     * Convert a given {@link ListedProduct} to a {@link Product} for further display.
      *
-     * @param products
-     * @return List of {@link Product}
+     * @param product instance of {@link ListedProduct}
+     * @return instance of {@link Product}
      */
-    private Product ncc2scc(final ListedProduct lp) {
+    private Product convertProduct(final ListedProduct product) {
         List<Channel> mandatoryChannels = new ArrayList<Channel>();
         List<Channel> optionalChannels = new ArrayList<Channel>();
 
-        for (MgrSyncChannel mgrSyncChannel : lp.getChannels()) {
+        for (MgrSyncChannel mgrSyncChannel : product.getChannels()) {
             MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
             (mgrSyncChannel.isOptional() ? optionalChannels : mandatoryChannels)
                     .add(new Channel(mgrSyncChannel.getLabel(),
@@ -164,27 +163,27 @@ public class SCCProductSyncManager extends ProductSyncManager {
         // Add base channel on top of everything else so it can be added first.
         Collections.sort(mandatoryChannels, new Comparator<Channel>() {
             public int compare(Channel a, Channel b) {
-                return a.getLabel().equals(lp.getBaseChannel().getLabel()) ? -1 :
-                       b.getLabel().equals(lp.getBaseChannel().getLabel()) ? 1 : 0;
+                return a.getLabel().equals(product.getBaseChannel().getLabel()) ? -1 :
+                       b.getLabel().equals(product.getBaseChannel().getLabel()) ? 1 : 0;
             };
         });
 
-        Product product = new Product(lp.getArch(), "product-" + lp.getId(),
-                lp.getFriendlyName(), "",
+        Product displayProduct = new Product(product.getArch(), "product-" + product.getId(),
+                product.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannels),
                 new OptionalChannels(optionalChannels));
-        product.setSyncStatus(product.isProvided()
-                              ? this.getProductSyncStatus(product)
+        displayProduct.setSyncStatus(displayProduct.isProvided()
+                              ? this.getProductSyncStatus(displayProduct)
                               : Product.SyncStatus.NOT_MIRRORED);
 
         // set extensions as addon products
-        for (ListedProduct extension : lp.getExtensions()) {
-            Product ext = ncc2scc(extension);
-            ext.setBaseProduct(product);
-            product.getAddonProducts().add(ext);
-            ext.setBaseProductIdent(product.getIdent());
+        for (ListedProduct extension : product.getExtensions()) {
+            Product ext = convertProduct(extension);
+            ext.setBaseProduct(displayProduct);
+            displayProduct.getAddonProducts().add(ext);
+            ext.setBaseProductIdent(displayProduct.getIdent());
         }
 
-        return product;
+        return displayProduct;
     }
 }
