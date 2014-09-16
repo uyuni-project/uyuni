@@ -60,7 +60,8 @@ public abstract class ProductSyncManager {
      * @return instance of {@link ProductSyncManager}
      */
     public static ProductSyncManager createInstance(Executor executorIn) {
-        return isMigratedToSCC() ? new SCCProductSyncManager() : new NCCProductSyncManager(executorIn);
+        return isMigratedToSCC() ? new SCCProductSyncManager() :
+                new NCCProductSyncManager(executorIn);
     }
 
     /**
