@@ -54,9 +54,15 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
     }
 
+    /**
+     * Find a product for any given ident by looking through base and their addons.
+     * @param ident ident of a product
+     * @return the {@link Product}
+     * @throws ProductSyncManagerCommandException
+     * @throws ProductSyncManagerParseException
+     */
     private Product findProductByIdent(String ident)
-            throws ProductSyncManagerCommandException,
-                   ProductSyncManagerParseException {
+            throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
         for (Product p : getBaseProducts()) {
             if (p.getIdent().equals(ident)) {
                 return p;
@@ -67,7 +73,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 }
             }
         }
-
         return null;
     }
 
