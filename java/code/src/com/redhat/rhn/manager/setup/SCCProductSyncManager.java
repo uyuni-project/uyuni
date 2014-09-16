@@ -33,8 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *
- * @author duncan
+ * Methods for listing and synchronizing products, the SCC version.
  */
 public class SCCProductSyncManager extends ProductSyncManager {
 
