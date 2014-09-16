@@ -38,6 +38,10 @@ import java.util.List;
  */
 public class SCCProductSyncManager extends ProductSyncManager {
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Product> getBaseProducts()
             throws ProductSyncManagerCommandException,
                    ProductSyncManagerParseException {
@@ -64,6 +68,10 @@ public class SCCProductSyncManager extends ProductSyncManager {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void addProduct(String productIdent)
             throws ProductSyncManagerCommandException {
         ContentSyncManager csm = new ContentSyncManager();
@@ -94,6 +102,10 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void refreshProducts()
             throws ProductSyncManagerCommandException,
                    InvalidMirrorCredentialException,
