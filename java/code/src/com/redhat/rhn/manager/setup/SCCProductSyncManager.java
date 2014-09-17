@@ -69,7 +69,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             }
             for (Product addon : p.getAddonProducts()) {
                 if (addon.getIdent().equals(ident)) {
-                    return p;
+                    return addon;
                 }
             }
         }
