@@ -161,17 +161,18 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @return the status
      */
     public MgrSyncStatus getStatus() {
+        MgrSyncStatus result = MgrSyncStatus.INSTALLED;
         for (MgrSyncChannel channel : channels) {
             if (!channel.isOptional()) {
                 if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
                     return MgrSyncStatus.UNAVAILABLE;
                 }
                 if (channel.getStatus() != MgrSyncStatus.INSTALLED) {
-                    return MgrSyncStatus.AVAILABLE;
+                    result = MgrSyncStatus.AVAILABLE;
                 }
             }
         }
-        return MgrSyncStatus.INSTALLED;
+        return result;
     }
 
     /**
