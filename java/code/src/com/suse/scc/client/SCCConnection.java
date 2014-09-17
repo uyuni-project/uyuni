@@ -30,24 +30,30 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCConnection {
 
+    /** The endpoint. */
     private final String endpoint;
+
+    /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
+
+    /** The config object. */
     private final SCCConfig config;
 
     /**
      * Init a connection to a given SCC endpoint.
      *
-     * @param endpoint
-     * @param config
-    */
-    public SCCConnection(String endpoint, SCCConfig config) {
-        this.config = config;
-        this.endpoint = endpoint;
+     * @param endpointIn the endpoint
+     * @param configIn the config
+     */
+    public SCCConnection(String endpointIn, SCCConfig configIn) {
+        endpoint = endpointIn;
+        config = configIn;
     }
 
     /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
+     * @param <T> the generic type
      * @param resultType the type of the result
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
@@ -59,6 +65,7 @@ public class SCCConnection {
     /**
      * Perform HTTP request and parse the result into a given result type.
      *
+     * @param <T> the generic type
      * @param resultType the type of the result
      * @param method the HTTP method to use
      * @return object of type given by resultType
