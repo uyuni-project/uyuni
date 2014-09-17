@@ -105,9 +105,8 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
-        Type returnType = new TypeToken<List<SCCProduct>>() { } .getType();
         return new SCCConnection("/connect/organizations/products/unscoped", config)
-                .get(returnType);
+                .get(SCCProduct.class);
     }
 
     /**
@@ -119,9 +118,8 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCRepository> listRepositories() throws SCCClientException {
-        Type returnType = new TypeToken<List<SCCRepository>>() { } .getType();
         return new SCCConnection("/connect/organizations/repositories", config)
-                .get(returnType);
+                .get(SCCRepository.class);
     }
 
     /**
@@ -133,8 +131,7 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
-        Type returnType = new TypeToken<List<SCCSubscription>>() { } .getType();
         return new SCCConnection("/connect/organizations/subscriptions", config)
-                .get(returnType);
+                .get(SCCSubscription.class);
     }
 }
