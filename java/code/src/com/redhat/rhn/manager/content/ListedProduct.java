@@ -176,6 +176,18 @@ public class ListedProduct implements Comparable<ListedProduct> {
     }
 
     /**
+     * This returns an artificial identifier that was previously called "ident" and had been
+     * used for triggering sync of a product with NCC via the CLI as well as the GUI. There
+     * is no need for this ident anymore if we modify the GUI implementation to send channel
+     * labels instead of those idents.
+     *
+     * @return ident
+     */
+    public String getIdent() {
+        return id + "-" + getBaseChannel().getLabel();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

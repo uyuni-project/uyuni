@@ -139,13 +139,10 @@ public class SCCProductSyncManager extends ProductSyncManager {
      */
     private List<Product> convertProducts(Collection<ListedProduct> products) {
         List<Product> displayProducts = new ArrayList<Product>();
-        int i = 1;
         for (ListedProduct p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
-                Product displayProduct = convertProduct(p, i);
+                Product displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
-                // Increase the ident for the next base product
-                i += displayProduct.getAddonProducts().size() + 1;
             }
         }
         return displayProducts;
@@ -158,7 +155,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * @param ident a counter enumerating all products
      * @return instance of {@link Product}
      */
-    private Product convertProduct(final ListedProduct product, int ident) {
+    private Product convertProduct(final ListedProduct product) {
         List<Channel> mandatoryChannels = new ArrayList<Channel>();
         List<Channel> optionalChannels = new ArrayList<Channel>();
 
@@ -179,7 +176,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             };
         });
 
-        Product displayProduct = new Product(product.getArch(), "product-" + ident,
+        Product displayProduct = new Product(product.getArch(), product.getIdent(),
                 product.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannels),
                 new OptionalChannels(optionalChannels));
@@ -189,8 +186,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         // Set extensions as addon products, increase ident with every addon
         for (ListedProduct extension : product.getExtensions()) {
-            ident++;
-            Product ext = convertProduct(extension, ident);
+            Product ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
             displayProduct.getAddonProducts().add(ext);
             ext.setBaseProductIdent(displayProduct.getIdent());
