@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -99,7 +101,7 @@ public class SCCConnection {
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
-                return gson.fromJson(streamReader, resultType);
+                return gson.fromJson(streamReader, toListType(resultType));
             }
             else {
                 // Request was not successful
@@ -117,5 +119,31 @@ public class SCCConnection {
             SCCClientUtils.closeQuietly(inputStream);
             SCCClientUtils.closeQuietly(gzipStream);
         }
+    }
+
+    /**
+     * Returns a type which is a list of the specified type.
+     * @param elementType the element type
+     * @return the List type
+     */
+    public Type toListType(final Type elementType) {
+        Type resultListType = new ParameterizedType() {
+
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] {elementType};
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
+        return resultListType;
     }
 }
