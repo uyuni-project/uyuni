@@ -24,7 +24,10 @@ import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -33,13 +36,24 @@ import java.util.zip.GZIPInputStream;
 public class SCCConnection {
 
     /** The endpoint. */
-    private final String endpoint;
+    private String endpoint;
 
     /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
 
     /** The config object. */
     private final SCCConfig config;
+
+    /** Represents a partial result with a pointer to the next one. */
+    private class PaginatedResult<T> {
+        private T result;
+        private String nextUrl;
+
+        public PaginatedResult(T resultIn, String nextUrlIn) {
+            result = resultIn;
+            nextUrl = nextUrlIn;
+        }
+    }
 
     /**
      * Init a connection to a given SCC endpoint.
@@ -60,8 +74,15 @@ public class SCCConnection {
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    public <T> T get(Type resultType) throws SCCClientException {
-        return request(resultType, "GET");
+    public <T> List<T> getList(Type resultType) throws SCCClientException {
+        List<T> result = new LinkedList<T>();
+        PaginatedResult<List<T>> partialResult;
+        do {
+            partialResult = request(toListType(resultType), "GET");
+            result.addAll(partialResult.result);
+            endpoint = partialResult.nextUrl;
+        } while (partialResult.nextUrl != null);
+        return result;
     }
 
     /**
@@ -73,7 +94,8 @@ public class SCCConnection {
      * @return object of type given by resultType
      * @throws SCCClientException in case of a problem
      */
-    private <T> T request(Type resultType, String method) throws SCCClientException {
+    private <T> PaginatedResult<T> request(Type resultType, String method)
+        throws SCCClientException {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         GZIPInputStream gzipStream = null;
@@ -101,7 +123,19 @@ public class SCCConnection {
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
-                return gson.fromJson(streamReader, toListType(resultType));
+                T result = gson.fromJson(streamReader, resultType);
+
+                String nextUrl = null;
+                String linkHeader = connection.getHeaderField("Link");
+                if (linkHeader != null) {
+                    Matcher m = Pattern
+                            .compile(".*<https://scc.suse.com(.*?)>; rel=\"next\".*")
+                            .matcher(linkHeader);
+                    if (m.matches()) {
+                        nextUrl = m.group(1);
+                    }
+                }
+                return new PaginatedResult<T>(result, nextUrl);
             }
             else {
                 // Request was not successful
