@@ -14,10 +14,13 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
@@ -27,11 +30,16 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCRepository;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import redstone.xmlrpc.XmlRpcClient;
+import redstone.xmlrpc.XmlRpcException;
+import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * Methods for listing and synchronizing products, the SCC version.
@@ -110,7 +118,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Trigger sync: " + channel.getLabel());
                     }
-                    scheduleSingleSatRepoSync(channel);
+                    scheduleRepoSync(channel);
                 }
             }
             catch (ContentSyncException ex) {
@@ -209,5 +217,44 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
 
         return displayProduct;
+    }
+
+    /**
+     * Schedule an immediate reposync via the Taskomatic API.
+     *
+     * @param channel the channel to sync
+     */
+    private void scheduleRepoSync(Channel channel) {
+        List<String> labels = new ArrayList<String>();
+        labels.add(channel.getLabel());
+        @SuppressWarnings("unchecked")
+        List<Long> channelIds = ChannelFactory.getChannelIds(labels);
+        if (!channelIds.isEmpty()) {
+            this.rpcInvoke("tasko.scheduleSingleSatRepoSync", channelIds.get(0));
+        }
+    }
+
+    /**
+     * Invoke an XMLRPC method from the client.
+     *
+     * @param name
+     * @param args
+     * @return
+     */
+    private Object rpcInvoke(String name, Object...args) {
+        try {
+            return new XmlRpcClient(ConfigDefaults.get()
+                    .getTaskoServerUrl(), false)
+                    .invoke(name, args);
+        }
+        catch (MalformedURLException e) {
+            throw new TaskomaticApiException(e);
+        }
+        catch (XmlRpcException e) {
+            throw new TaskomaticApiException(e);
+        }
+        catch (XmlRpcFault e) {
+            throw new TaskomaticApiException(e);
+        }
     }
 }
