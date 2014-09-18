@@ -1177,7 +1177,7 @@ public class ContentSyncManager {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
-                log.debug("Channel exists: " + label);
+                log.debug("Channel exists (" + label + "), returning...");
             }
             return;
         }
