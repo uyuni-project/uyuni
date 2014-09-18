@@ -119,7 +119,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             }
         }
         else {
-            // XXX: Refactor this for the other exception.
+            // XXX: Refactor this to use a more generic exception class here
             String msg = String.format("Product %s cannot be found.", productIdent);
             throw new ProductSyncManagerCommandException(msg, -1, msg, msg);
         }
