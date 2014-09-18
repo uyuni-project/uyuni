@@ -162,7 +162,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             public int compare(Channel a, Channel b) {
                 return a.getLabel().equals(product.getBaseChannel().getLabel()) ? -1 :
                        b.getLabel().equals(product.getBaseChannel().getLabel()) ? 1 : 0;
-            };
+            }
         });
 
         Product displayProduct = new Product(product.getArch(), product.getIdent(),
