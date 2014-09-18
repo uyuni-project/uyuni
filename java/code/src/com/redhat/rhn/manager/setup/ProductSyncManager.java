@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -24,7 +23,6 @@ import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.model.products.Channel;
@@ -35,16 +33,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import redstone.xmlrpc.XmlRpcClient;
-import redstone.xmlrpc.XmlRpcException;
-import redstone.xmlrpc.XmlRpcFault;
 
 /**
  * Manager class for interacting with SUSE products.
@@ -311,44 +303,5 @@ public abstract class ProductSyncManager {
             logger.error(e.getMessage());
         }
         return ret;
-    }
-
-    /**
-     * Schedule single sat reposync.
-     *
-     * @param channel
-     */
-    public void scheduleSingleSatRepoSync(Channel channel) {
-        List<String> labels = new ArrayList<String>();
-        labels.add(channel.getLabel());
-        @SuppressWarnings("unchecked")
-        List<Long> channelIds = ChannelFactory.getChannelIds(labels);
-        if (!channelIds.isEmpty()) {
-            this.rpcInvoke("tasko.scheduleSingleSatRepoSync", channelIds.get(0));
-        }
-    }
-
-    /**
-     * Invoke an XMLRPC method from the client.
-     * @param name
-     * @param args
-     * @return
-     * @throws MalformedURLException
-     */
-    private Object rpcInvoke(String name, Object...args) {
-        try {
-            return new XmlRpcClient(ConfigDefaults.get()
-                    .getTaskoServerUrl(), false)
-                    .invoke(name, args);
-        }
-        catch (XmlRpcException e) {
-            throw new TaskomaticApiException(e);
-        }
-        catch (MalformedURLException e) {
-            throw new TaskomaticApiException(e);
-        }
-        catch (XmlRpcFault e) {
-            throw new TaskomaticApiException(e);
-        }
     }
 }
