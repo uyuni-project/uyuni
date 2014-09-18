@@ -67,18 +67,11 @@ public class SCCProductSyncManager extends ProductSyncManager {
      */
     @Override
     public void addProduct(String productIdent) throws ProductSyncException {
-        ContentSyncManager csm = new ContentSyncManager();
-        Product product = null;
-        try {
-            product = this.findProductByIdent(productIdent);
-        } catch (ProductSyncParseException ex) {
-            throw new ProductSyncCommandException(ex.getMessage(), -1,
-                    ex.getMessage(), ex.getMessage());
-        }
-
+        Product product = findProductByIdent(productIdent);
         if (product != null) {
             try {
                 // Add the channels first
+                ContentSyncManager csm = new ContentSyncManager();
                 Collection<SCCRepository> repos = csm.getRepositories();
                 for (Channel channel : product.getMandatoryChannels()) {
                     if (logger.isDebugEnabled()) {
@@ -99,8 +92,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 }
             }
             catch (ContentSyncException ex) {
-                throw new ProductSyncCommandException(ex.getMessage(), -1,
-                        ex.getMessage(), ex.getMessage());
+                throw new ProductSyncException(ex.getMessage());
             }
         }
         else {
