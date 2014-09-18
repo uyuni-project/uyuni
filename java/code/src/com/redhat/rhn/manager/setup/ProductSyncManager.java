@@ -218,7 +218,7 @@ public abstract class ProductSyncManager {
                 String runStatus = run.getStatus();
                 if (logger.isDebugEnabled()) {
                     logger.debug("Repo sync run found for channel " + c.getLabel() +
-                            ", status is: " + runStatus);
+                            " (" + runStatus + ")");
                 }
 
                 String prefix = "setupwizard.syncstatus.";
