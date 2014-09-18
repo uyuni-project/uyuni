@@ -50,8 +50,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public List<Product> getBaseProducts() throws ProductSyncManagerCommandException,
-            ProductSyncManagerParseException {
+    public List<Product> getBaseProducts() throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             Collection<ListedProduct> products = csm.listProducts(
@@ -59,43 +58,21 @@ public class SCCProductSyncManager extends ProductSyncManager {
             return convertProducts(products);
         }
         catch (ContentSyncException e) {
-            throw new ProductSyncManagerParseException(e);
+            throw new ProductSyncException(e);
         }
-    }
-
-    /**
-     * Find a product for any given ident by looking through base and their addons.
-     * @param ident ident of a product
-     * @return the {@link Product}
-     * @throws ProductSyncManagerCommandException
-     * @throws ProductSyncManagerParseException
-     */
-    private Product findProductByIdent(String ident)
-            throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
-        for (Product p : getBaseProducts()) {
-            if (p.getIdent().equals(ident)) {
-                return p;
-            }
-            for (Product addon : p.getAddonProducts()) {
-                if (addon.getIdent().equals(ident)) {
-                    return addon;
-                }
-            }
-        }
-        return null;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
+    public void addProduct(String productIdent) throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         Product product = null;
         try {
             product = this.findProductByIdent(productIdent);
-        } catch (ProductSyncManagerParseException ex) {
-            throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
+        } catch (ProductSyncParseException ex) {
+            throw new ProductSyncCommandException(ex.getMessage(), -1,
                     ex.getMessage(), ex.getMessage());
         }
 
@@ -122,14 +99,13 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 }
             }
             catch (ContentSyncException ex) {
-                throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
+                throw new ProductSyncCommandException(ex.getMessage(), -1,
                         ex.getMessage(), ex.getMessage());
             }
         }
         else {
-            // XXX: Refactor this to use a more generic exception class here
             String msg = String.format("Product %s cannot be found.", productIdent);
-            throw new ProductSyncManagerCommandException(msg, -1, msg, msg);
+            throw new ProductSyncException(msg);
         }
     }
 
@@ -137,8 +113,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void refreshProducts() throws ProductSyncManagerCommandException,
-            InvalidMirrorCredentialException, ConnectionException {
+    public void refreshProducts() throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             csm.updateChannels(csm.getRepositories());
@@ -149,8 +124,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
             csm.updateUpgradePaths();
         }
         catch (ContentSyncException e) {
-            throw new ProductSyncManagerCommandException(e.getLocalizedMessage(),
-                -1, e.getMessage(), e.getMessage());
+            throw new ProductSyncException(e.getLocalizedMessage());
         }
     }
 
@@ -217,6 +191,27 @@ public class SCCProductSyncManager extends ProductSyncManager {
         }
 
         return displayProduct;
+    }
+
+    /**
+     * Find a product for any given ident by looking through base and their addons.
+     *
+     * @param ident ident of a product
+     * @return the {@link Product}
+     * @throws ProductSyncException in case of an error
+     */
+    private Product findProductByIdent(String ident) throws ProductSyncException {
+        for (Product p : getBaseProducts()) {
+            if (p.getIdent().equals(ident)) {
+                return p;
+            }
+            for (Product addon : p.getAddonProducts()) {
+                if (addon.getIdent().equals(ident)) {
+                    return addon;
+                }
+            }
+        }
+        return null;
     }
 
     /**
