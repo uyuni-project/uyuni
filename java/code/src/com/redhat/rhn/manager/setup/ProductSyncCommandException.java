@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.setup;
 /**
  * Represents an error while working with SUSE products.
  */
-public class ProductSyncManagerCommandException extends Exception {
+public class ProductSyncCommandException extends ProductSyncException {
 
     /** The error code. */
     private int errorCode;
@@ -35,7 +35,7 @@ public class ProductSyncManagerCommandException extends Exception {
      * @param commandOutputIn the command output in
      * @param commandErrorMessageIn the command error message in
      */
-    public ProductSyncManagerCommandException(String messageIn, int errorCodeIn,
+    public ProductSyncCommandException(String messageIn, int errorCodeIn,
             String commandOutputIn, String commandErrorMessageIn) {
         super(messageIn);
         errorCode = errorCodeIn;

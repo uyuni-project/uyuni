@@ -67,20 +67,16 @@ public abstract class ProductSyncManager {
     /**
      * Returns a list of base products.
      * @return the products list
-     * @throws ProductSyncManagerCommandException if external commands or parsing fail
-     * @throws ProductSyncManagerParseException if a parsing problem shows up
+     * @throws ProductSyncException if an error occurred
      */
-    public abstract List<Product> getBaseProducts()
-            throws ProductSyncManagerCommandException,
-                   ProductSyncManagerParseException;
+    public abstract List<Product> getBaseProducts() throws ProductSyncException;
 
     /**
      * Adds multiple products.
      * @param productIdents the product ident list
-     * @throws ProductSyncManagerCommandException if a product addition failed
+     * @throws ProductSyncException if an error occurred
      */
-    public void addProducts(List<String> productIdents)
-            throws ProductSyncManagerCommandException {
+    public void addProducts(List<String> productIdents) throws ProductSyncException {
         for (String productIdent : productIdents) {
             addProduct(productIdent);
         }
@@ -89,19 +85,18 @@ public abstract class ProductSyncManager {
     /**
      * Adds the product.
      * @param productIdent the product ident
-     * @throws ProductSyncManagerCommandException if the product addition failed
+     * @throws ProductSyncException if an error occurred
      */
-    public abstract void addProduct(String productIdent)
-            throws ProductSyncManagerCommandException;
+    public abstract void addProduct(String productIdent) throws ProductSyncException;
 
     /**
      * Refresh product, channel and subscription information without triggering
      * any reposysnc.
-     * @throws ProductSyncManagerCommandException if the refresh failed
+     * @throws ProductSyncException if the refresh failed
      * @throws InvalidMirrorCredentialException if mirror credentials are not valid
      * @throws ConnectionException if a connection to NCC was not possible
      */
-    public abstract void refreshProducts() throws ProductSyncManagerCommandException,
+    public abstract void refreshProducts() throws ProductSyncException,
             InvalidMirrorCredentialException, ConnectionException;
 
     /**

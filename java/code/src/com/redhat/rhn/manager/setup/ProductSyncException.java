@@ -15,15 +15,23 @@
 package com.redhat.rhn.manager.setup;
 
 /**
- * Represents an error while parsing SUSE product data.
+ * Represents a generic error while working with SUSE products.
  */
-public class ProductSyncManagerParseException extends Exception {
+public class ProductSyncException extends Exception {
 
     /**
      * Exception constructor.
      * @param exception the exception
      */
-    public ProductSyncManagerParseException(Exception exception) {
+    public ProductSyncException(Exception exception) {
         super(exception);
+    }
+
+    /**
+     * Message constructor.
+     * @param message the message
+     */
+    public ProductSyncException(String message) {
+        super(message);
     }
 }
