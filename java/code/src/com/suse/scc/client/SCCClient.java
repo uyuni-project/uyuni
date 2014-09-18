@@ -106,7 +106,7 @@ public class SCCClient {
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
         return new SCCConnection("/connect/organizations/products/unscoped", config)
-                .get(SCCProduct.class);
+                .getList(SCCProduct.class);
     }
 
     /**
@@ -119,7 +119,7 @@ public class SCCClient {
      */
     public List<SCCRepository> listRepositories() throws SCCClientException {
         return new SCCConnection("/connect/organizations/repositories", config)
-                .get(SCCRepository.class);
+                .getList(SCCRepository.class);
     }
 
     /**
@@ -132,6 +132,6 @@ public class SCCClient {
      */
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
         return new SCCConnection("/connect/organizations/subscriptions", config)
-                .get(SCCSubscription.class);
+                .getList(SCCSubscription.class);
     }
 }
