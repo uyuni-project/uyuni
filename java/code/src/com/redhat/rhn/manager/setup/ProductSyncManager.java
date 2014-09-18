@@ -296,7 +296,7 @@ public abstract class ProductSyncManager {
 
     /**
      * For a given {@link TaskoSchedule} return the id of the associated channel.
-     * @param schdule a taskomatic schedule
+     * @param schedule a taskomatic schedule
      * @return channel ID as {@link Long} or null in case of an error
      */
     @SuppressWarnings("unchecked")
