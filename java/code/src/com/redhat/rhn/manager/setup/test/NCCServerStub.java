@@ -21,6 +21,7 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import simple.http.Request;
 import simple.http.Response;
 
 /**
@@ -44,7 +45,7 @@ public class NCCServerStub implements Responder {
      * {@inheritDoc}
      */
     @Override
-    public void respond(Response response) {
+    public void respond(Request request, Response response) {
         PrintStream body;
         try {
             body = response.getPrintStream();
