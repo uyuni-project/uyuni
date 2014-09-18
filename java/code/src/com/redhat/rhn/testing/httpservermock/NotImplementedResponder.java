@@ -21,6 +21,7 @@
  */
 package com.redhat.rhn.testing.httpservermock;
 
+import simple.http.Request;
 import simple.http.Response;
 
 /**
@@ -32,7 +33,7 @@ public class NotImplementedResponder implements Responder {
      * {@inheritDoc}
      */
     @Override
-    public void respond(Response response) {
+    public void respond(Request request, Response response) {
         response.setCode(501);
         //response.setDescription("Not Implemented");
     }

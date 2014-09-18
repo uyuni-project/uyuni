@@ -21,6 +21,7 @@
  */
 package com.redhat.rhn.testing.httpservermock;
 
+import simple.http.Request;
 import simple.http.Response;
 
 /**
@@ -29,8 +30,8 @@ import simple.http.Response;
 public interface Responder {
     /**
      * Respond to an HTTP request through a response object.
-     *
+     * @param request a request object
      * @param response a response object
      */
-    void respond(Response response);
+    void respond(Request request, Response response);
 }
