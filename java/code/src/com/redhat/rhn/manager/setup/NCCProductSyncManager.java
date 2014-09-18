@@ -82,17 +82,17 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public List<Product> getBaseProducts() throws ProductSyncManagerCommandException,
-            ProductSyncManagerParseException {
+    public List<Product> getBaseProducts() throws ProductSyncCommandException,
+            ProductSyncParseException {
         return parseBaseProducts(readProducts());
     }
 
      /**
      * Invoke external commands which list all the available SUSE products.
      * @return a String containing the XML description of the SUSE products
-     * @throws ProductSyncManagerCommandException if external commands fail
+     * @throws ProductSyncCommandException if external commands fail
      */
-    public String readProducts() throws ProductSyncManagerCommandException {
+    public String readProducts() throws ProductSyncCommandException {
         return runProductSyncCommand(LIST_PRODUCT_SWITCH);
     }
 
@@ -100,10 +100,10 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * Run product sync command.
      * @param arguments the arguments
      * @return the string
-     * @throws ProductSyncManagerCommandException the product sync manager exception
+     * @throws ProductSyncCommandException the product sync manager exception
      */
     public String runProductSyncCommand(String... arguments)
-        throws ProductSyncManagerCommandException {
+        throws ProductSyncCommandException {
         String[] commandLine =
                 (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
         int exitCode = executor.execute(commandLine);
@@ -112,7 +112,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
         if (exitCode != 0) {
             String message = "Error while running product sync command: " +
                     ArrayUtils.toString(commandLine);
-            throw new ProductSyncManagerCommandException(message, exitCode, output,
+            throw new ProductSyncCommandException(message, exitCode, output,
                     errorMessage);
         }
         if (logger.isTraceEnabled()) {
@@ -127,7 +127,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
+    public void addProduct(String productIdent) throws ProductSyncCommandException {
         runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
     }
 
@@ -135,12 +135,12 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * {@inheritDoc}
      */
     @Override
-    public void refreshProducts() throws ProductSyncManagerCommandException,
+    public void refreshProducts() throws ProductSyncCommandException,
             InvalidMirrorCredentialException, ConnectionException {
         try {
             runProductSyncCommand(REFRESH_SWITCH);
         }
-        catch (ProductSyncManagerCommandException e) {
+        catch (ProductSyncCommandException e) {
             if (e.getErrorCode() == 1) {
                 if (e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
                     throw new InvalidMirrorCredentialException();
@@ -158,10 +158,10 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * base/addon relationships.
      * @param xml the xml
      * @return the product set
-     * @throws ProductSyncManagerParseException the product sync manager exception
+     * @throws ProductSyncParseException the product sync manager exception
      */
     private Set<Product> parsePlainProducts(String xml)
-            throws ProductSyncManagerParseException {
+            throws ProductSyncParseException {
         try {
             ProductList result =
                     new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
@@ -169,7 +169,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
             return products;
         }
         catch (Exception e) {
-            throw new ProductSyncManagerParseException(e);
+            throw new ProductSyncParseException(e);
         }
     }
 
@@ -177,10 +177,10 @@ public class NCCProductSyncManager extends ProductSyncManager {
      * Returns a list of base products from an XML string.
      * @param xml a String containing an XML description of SUSE products
      * @return list of parsed base products
-     * @throws ProductSyncManagerParseException if the xml cannot be parsed
+     * @throws ProductSyncParseException if the xml cannot be parsed
      */
     public List<Product> parseBaseProducts(String xml)
-            throws ProductSyncManagerParseException {
+            throws ProductSyncParseException {
         List<Product> result = new LinkedList<Product>();
         Set<Product> products = parsePlainProducts(xml);
 
