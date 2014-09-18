@@ -142,7 +142,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * Convert a given {@link ListedProduct} to a {@link Product} for further display.
      *
      * @param product instance of {@link ListedProduct}
-     * @param ident a counter enumerating all products
      * @return instance of {@link Product}
      */
     private Product convertProduct(final ListedProduct product) {
