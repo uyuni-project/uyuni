@@ -230,7 +230,7 @@ public abstract class ProductSyncManager {
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Repo sync run found for channel " + c +
+                    logger.debug("Repo sync run found for channel " + c.getLabel() +
                             ", status is: " + runStatus);
                 }
 
