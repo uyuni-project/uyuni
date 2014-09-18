@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
@@ -92,12 +93,27 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         if (product != null) {
             try {
+                // Add the channels first
                 Collection<SCCRepository> repos = csm.getRepositories();
                 for (Channel channel : product.getMandatoryChannels()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Add channel: " + channel.getLabel());
+                    }
                     csm.addChannel(channel.getLabel(), repos);
+                }
+
+                // Commit the transaction to make sure that the channels are there
+                HibernateFactory.commitTransaction();
+
+                // Trigger sync of those channels
+                for (Channel channel : product.getMandatoryChannels()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Trigger sync: " + channel.getLabel());
+                    }
                     scheduleSingleSatRepoSync(channel);
                 }
-            } catch (ContentSyncException ex) {
+            }
+            catch (ContentSyncException ex) {
                 throw new ProductSyncManagerCommandException(ex.getMessage(), -1,
                         ex.getMessage(), ex.getMessage());
             }
