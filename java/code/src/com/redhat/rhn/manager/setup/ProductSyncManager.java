@@ -61,7 +61,8 @@ public abstract class ProductSyncManager {
      * @return instance of {@link ProductSyncManager}
      */
     public static ProductSyncManager createInstance() {
-        return isMigratedToSCC() ? new SCCProductSyncManager() : new NCCProductSyncManager();
+        return isMigratedToSCC() ? new SCCProductSyncManager() :
+            new NCCProductSyncManager();
     }
 
     /**
@@ -139,8 +140,8 @@ public abstract class ProductSyncManager {
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
-            if (maxLastSyncDate == null
-                    || (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
+            if (maxLastSyncDate == null ||
+                    (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
                 maxLastSyncDate = lastSyncDate;
             }
         }
