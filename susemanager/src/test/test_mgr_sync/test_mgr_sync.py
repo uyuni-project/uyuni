@@ -59,7 +59,7 @@ mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
 This can be done using the following commmand:
     mgr-sync enable-scc
 
-Note well: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC)."""
+Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC)."""
 
         self.assertEqual(expected_stderr.split("\n"), recorder.stderr)
         self.assertFalse(recorder.stdout)

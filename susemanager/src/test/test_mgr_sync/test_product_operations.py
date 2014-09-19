@@ -87,6 +87,7 @@ class ProductOperationsTest(unittest.TestCase):
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] RES 4 (x86_64)
 [ ] RES 4 (x86_64)
@@ -166,6 +167,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] RES 4 (x86_64)
 [ ] RES 4 (x86_64)
@@ -220,6 +222,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -248,6 +251,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -276,6 +280,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -306,6 +311,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
   [ ] SUSE Cloud 1.0 (x86_64)
@@ -336,6 +342,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 002) [ ] RES 4 (x86_64)
@@ -395,6 +402,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -458,6 +466,7 @@ Product successfully added"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -519,6 +528,7 @@ Product successfully added"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
      [U] RES 4 (x86_64)
 All the available products have already been installed, nothing to do"""
@@ -559,6 +569,7 @@ All the available products have already been installed, nothing to do"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
      [I] RES 4 (x86_64)
 All the available products have already been installed, nothing to do"""
@@ -596,6 +607,7 @@ All the available products have already been installed, nothing to do"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
