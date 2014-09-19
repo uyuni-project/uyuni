@@ -152,13 +152,13 @@ public class SCCProductSyncManager extends ProductSyncManager {
             MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
             (mgrSyncChannel.isOptional() ? optionalChannels : mandatoryChannels)
                     .add(new Channel(mgrSyncChannel.getLabel(),
-                            sccStatus.equals(MgrSyncStatus.INSTALLED)
-                                ? Channel.STATUS_PROVIDED
-                                : Channel.STATUS_NOT_PROVIDED));
+                            sccStatus.equals(MgrSyncStatus.INSTALLED) ?
+                                Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED));
         }
 
         // Add base channel on top of everything else so it can be added first.
         Collections.sort(mandatoryChannels, new Comparator<Channel>() {
+            @Override
             public int compare(Channel a, Channel b) {
                 return a.getLabel().equals(product.getBaseChannel().getLabel()) ? -1 :
                        b.getLabel().equals(product.getBaseChannel().getLabel()) ? 1 : 0;
@@ -169,9 +169,9 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 product.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannels),
                 new OptionalChannels(optionalChannels));
-        displayProduct.setSyncStatus(displayProduct.isProvided()
-                              ? this.getProductSyncStatus(displayProduct)
-                              : Product.SyncStatus.NOT_MIRRORED);
+        displayProduct.setSyncStatus(displayProduct.isProvided() ?
+                this.getProductSyncStatus(displayProduct) :
+                Product.SyncStatus.NOT_MIRRORED);
 
         // Set extensions as addon products, increase ident with every addon
         for (ListedProduct extension : product.getExtensions()) {
