@@ -19,6 +19,10 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+<<<<<<< HEAD
+=======
+import com.redhat.rhn.manager.satellite.Executor;
+>>>>>>> fix wrong usage of enums as non-static, causing duplicate statuses
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
@@ -287,8 +291,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
     public void testNewProductStatusInProgress() throws Exception {
         productInsertTaskoSchedule(this.getProvidedProductIdent());
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                        prod.getSyncStatus());
+        assert(prod.isStatusInProgress());
     }
 
     /**
@@ -297,8 +300,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
      */
     public void testNewProductStatusFailed() throws Exception {
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                        prod.getSyncStatus());
+        assert(prod.isStatusFailed());
     }
 
     /**
@@ -309,8 +311,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
         productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
         productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_RUNNING);
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                        prod.getSyncStatus());
+        assert(prod.isStatusInProgress());
     }
 
     /**
@@ -320,8 +321,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
     public void testProductStatusFailed() throws Exception {
         productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                prod.getSyncStatus());
+        assert(prod.isStatusFailed());
     }
 
     /**
@@ -332,8 +332,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
         productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
         productInsertTaskoSchedule(this.getProvidedProductIdent());
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                prod.getSyncStatus());
+        assert(prod.isStatusInProgress());
     }
 
     /**
@@ -343,7 +342,6 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
     public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
         productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FINISHED);
         Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                        prod.getSyncStatus());
+        assert(prod.isStatusFailed());
     }
 }

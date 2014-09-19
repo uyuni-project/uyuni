@@ -135,8 +135,7 @@ public class NCCProductSyncManagerTest extends BaseProductSyncManagerTestCase {
 
         for (Product p : parsedProds) {
             if (!p.isProvided()) {
-                assertEquals(Product.SyncStatus.NOT_MIRRORED,
-                    p.getSyncStatus());
+                assert(p.isStatusNotMirrored());
             }
         }
     }
@@ -162,8 +161,7 @@ public class NCCProductSyncManagerTest extends BaseProductSyncManagerTestCase {
 
         Product prod = getProductWithAllChannelsProvided();
 
-        assertEquals(Product.SyncStatus.FINISHED,
-                        prod.getSyncStatus());
+        assert(prod.getSyncStatus().isFinished());
         assertNotNull((prod.getSyncStatus().getLastSyncDate()));
         // restore old cache path
         Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
