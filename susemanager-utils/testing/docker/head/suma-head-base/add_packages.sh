@@ -15,7 +15,9 @@ zypper in -y perl \
              perl-libwww-perl \
              perl-Net-LibIDN \
              perl-Satcon \
-             perl-DBI
+             perl-DBI \
+             which \
+             timezone
 
 # Packages required to run the python unit tests
 zypper in -y  cx_Oracle \
@@ -24,8 +26,6 @@ zypper in -y  cx_Oracle \
               python-argparse \
               python-base \
               python-configobj \
-              python-crypto \
-              python-curl \
               python-debian \
               python-devel \
               python-dmidecode \
@@ -35,14 +35,15 @@ zypper in -y  cx_Oracle \
               python-gpgme \
               python-gzipstream \
               python-iniparse \
-              python-logilab-astng \
-              python-logilab-common \
               python-mock \
               python-newt \
               python-nose \
-              python-openssl \
               python-pam \
               python-psycopg2 \
+              python-pyOpenSSL \
+              python-pycrypto \
+              python-pycurl \
+              python-pylint \
               python-selinux \
               python-setools \
               python-unittest2 \
@@ -50,11 +51,6 @@ zypper in -y  cx_Oracle \
               python-xml \
               rpm-python \
               yum
-
-# Pylint packages - for some reason head wants this specific version of pylint (and its dependencies)
-zypper in -y --oldpackage pylint-0.15.0-1.17 \
-                          python-logilab-common-0.35.0-1.17 \
-                          python-logilab-astng-0.17.3-1.17
 
 # Packages required to run the python unit tests
 zypper in -y ant \
