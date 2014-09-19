@@ -55,7 +55,27 @@ public class SCCProductSyncManager extends ProductSyncManager {
         try {
             Collection<ListedProduct> products = csm.listProducts(
                     csm.listChannels(csm.getRepositories()));
-            return convertProducts(products);
+            List<Product> result = convertProducts(products);
+
+            for (Product p : result) {
+                if (p.isProvided()) {
+                    Product.SyncStatus status = getProductSyncStatus(p);
+                    p.setSyncStatus(status);
+                }
+                else {
+                    p.setStatusNotMirrored();
+                }
+
+                for (Product addon : p.getAddonProducts()) {
+                    if (addon.isProvided()) {
+                        addon.setSyncStatus(getProductSyncStatus(addon));
+                    }
+                    else {
+                        addon.setStatusNotMirrored();
+                    }
+                }
+            }
+            return result;
         }
         catch (ContentSyncException e) {
             throw new ProductSyncException(e);
@@ -130,6 +150,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
     private List<Product> convertProducts(Collection<ListedProduct> products) {
         List<Product> displayProducts = new ArrayList<Product>();
         for (ListedProduct p : products) {
+
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 Product displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
@@ -141,40 +162,42 @@ public class SCCProductSyncManager extends ProductSyncManager {
     /**
      * Convert a given {@link ListedProduct} to a {@link Product} for further display.
      *
-     * @param product instance of {@link ListedProduct}
+     * @param productIn instance of {@link ListedProduct}
      * @return instance of {@link Product}
      */
-    private Product convertProduct(final ListedProduct product) {
-        List<Channel> mandatoryChannels = new ArrayList<Channel>();
-        List<Channel> optionalChannels = new ArrayList<Channel>();
+    private Product convertProduct(final ListedProduct productIn) {
+        List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
+        List<Channel> optionalChannelsOut = new ArrayList<Channel>();
 
-        for (MgrSyncChannel mgrSyncChannel : product.getChannels()) {
-            MgrSyncStatus sccStatus = mgrSyncChannel.getStatus();
-            (mgrSyncChannel.isOptional() ? optionalChannels : mandatoryChannels)
-                    .add(new Channel(mgrSyncChannel.getLabel(),
-                            sccStatus.equals(MgrSyncStatus.INSTALLED) ?
-                                Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED));
+        for (MgrSyncChannel channelIn : productIn.getChannels()) {
+            MgrSyncStatus statusIn = channelIn.getStatus();
+            String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED)
+                                ? Channel.STATUS_PROVIDED
+                                : Channel.STATUS_NOT_PROVIDED;
+            Channel channelOut = new Channel(channelIn.getLabel(), statusOut);
+            if (channelIn.isOptional()) {
+                optionalChannelsOut.add(channelOut);
+            }
+            else {
+                mandatoryChannelsOut.add(channelOut);
+            }
         }
 
         // Add base channel on top of everything else so it can be added first.
-        Collections.sort(mandatoryChannels, new Comparator<Channel>() {
-            @Override
+        Collections.sort(mandatoryChannelsOut, new Comparator<Channel>() {
             public int compare(Channel a, Channel b) {
-                return a.getLabel().equals(product.getBaseChannel().getLabel()) ? -1 :
-                       b.getLabel().equals(product.getBaseChannel().getLabel()) ? 1 : 0;
+                return a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
+                       b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
             }
         });
 
-        Product displayProduct = new Product(product.getArch(), product.getIdent(),
-                product.getFriendlyName(), "",
-                new MandatoryChannels(mandatoryChannels),
-                new OptionalChannels(optionalChannels));
-        displayProduct.setSyncStatus(displayProduct.isProvided() ?
-                this.getProductSyncStatus(displayProduct) :
-                Product.SyncStatus.NOT_MIRRORED);
+        Product displayProduct = new Product(productIn.getArch(), productIn.getIdent(),
+                productIn.getFriendlyName(), "",
+                new MandatoryChannels(mandatoryChannelsOut),
+                new OptionalChannels(optionalChannelsOut));
 
-        // Set extensions as addon products
-        for (ListedProduct extension : product.getExtensions()) {
+        // Set extensions as addon products, increase ident with every addon
+        for (ListedProduct extension : productIn.getExtensions()) {
             Product ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
             displayProduct.getAddonProducts().add(ext);
