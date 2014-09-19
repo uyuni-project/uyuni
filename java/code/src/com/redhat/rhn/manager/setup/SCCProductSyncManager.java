@@ -173,7 +173,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 this.getProductSyncStatus(displayProduct) :
                 Product.SyncStatus.NOT_MIRRORED);
 
-        // Set extensions as addon products, increase ident with every addon
+        // Set extensions as addon products
         for (ListedProduct extension : product.getExtensions()) {
             Product ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
