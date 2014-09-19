@@ -171,9 +171,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         for (MgrSyncChannel channelIn : productIn.getChannels()) {
             MgrSyncStatus statusIn = channelIn.getStatus();
-            String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED)
-                                ? Channel.STATUS_PROVIDED
-                                : Channel.STATUS_NOT_PROVIDED;
+            String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
+                    Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
             Channel channelOut = new Channel(channelIn.getLabel(), statusOut);
             if (channelIn.isOptional()) {
                 optionalChannelsOut.add(channelOut);

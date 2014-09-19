@@ -19,10 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-<<<<<<< HEAD
-=======
-import com.redhat.rhn.manager.satellite.Executor;
->>>>>>> fix wrong usage of enums as non-static, causing duplicate statuses
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
@@ -276,7 +272,7 @@ public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUse
     /**
      * Actual implementation should feed getProducts() fixtures into the real
      * product sync manager backend getBaseProducts(). As an example NCC backend uses
-     * a test {@link Executor} which outputs the fixtures to the XML.
+     * a test {@link com.redhat.rhn.manager.satellite.Executor} which outputs the fixtures to the XML.
      *
      * @return {@link Product}
      * @throws Exception
