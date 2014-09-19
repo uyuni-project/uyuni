@@ -39,6 +39,9 @@ public class Product implements Selectable, Comparable<Product> {
      */
     public static class SyncStatus {
 
+        /**
+         * The stage of the synchronization status
+         */
         public enum SyncStage {
             /** Product has never been installed at all. */
             NOT_MIRRORED,
@@ -54,7 +57,8 @@ public class Product implements Selectable, Comparable<Product> {
              * @return the key
              */
             public String getTranslationKey() {
-                return "setupwizard.syncstatus." + toString().replace("_", ".").toLowerCase();
+                return "setupwizard.syncstatus." +
+                        toString().replace("_", ".").toLowerCase();
             }
         }
 
@@ -73,10 +77,17 @@ public class Product implements Selectable, Comparable<Product> {
         // If FINISHED, the last reposync date, else null
         private Date lastSyncDate;
 
-        public SyncStatus(SyncStage stage) {
-            this.stage = stage;
+        /**
+         * Constructor
+         * @param stageIn of the synchronization stage
+         */
+        public SyncStatus(SyncStage stageIn) {
+            this.stage = stageIn;
         }
 
+        /**
+         * Default constructor (not mirrored yet)
+         */
         public SyncStatus() {
             this(SyncStage.NOT_MIRRORED);
         }
