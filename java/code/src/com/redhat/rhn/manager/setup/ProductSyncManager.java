@@ -127,11 +127,11 @@ public abstract class ProductSyncManager {
                 debugDetails.append(channelStatus.getDetails());
             }
 
-            if (channelStatus.equals(SyncStatus.FINISHED)) {
+            if (channelStatus.isFinished()) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
-            else if (channelStatus.equals(SyncStatus.FAILED)) {
+            else if (channelStatus.isFailed()) {
                 logger.debug("Channel failed: " + c.getLabel());
                 failedCounter++;
             }
@@ -148,19 +148,19 @@ public abstract class ProductSyncManager {
 
         // Set FINISHED if all mandatory channels have metadata
         if (finishedCounter == product.getMandatoryChannels().size()) {
-            SyncStatus result = SyncStatus.FINISHED;
+            SyncStatus result = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             result.setLastSyncDate(maxLastSyncDate);
             return result;
         }
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
-            SyncStatus failedResult = SyncStatus.FAILED;
+            SyncStatus failedResult = new SyncStatus(SyncStatus.SyncStage.FAILED);
             failedResult.setDetails(debugDetails.toString());
             return failedResult;
         }
         // Otherwise return IN_PROGRESS
         else {
-            SyncStatus status = SyncStatus.IN_PROGRESS;
+            SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             int totalChannels = product.getMandatoryChannels().size();
             status.setSyncProgress((finishedCounter * 100) / totalChannels);
             return status;
@@ -174,7 +174,7 @@ public abstract class ProductSyncManager {
      */
     private SyncStatus getChannelSyncStatus(Channel channel) {
         // Fall back to FAILED if no progress or success is detected
-        SyncStatus channelSyncStatus = SyncStatus.FAILED;
+        SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
 
         // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
@@ -183,11 +183,11 @@ public abstract class ProductSyncManager {
         // the XML data may say P, but if the channel is not in the database
         // we assume the XML data is wrong
         if (c == null) {
-            return SyncStatus.NOT_MIRRORED;
+            return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
         }
 
         if (ChannelManager.getRepoLastBuild(c) != null) {
-            channelSyncStatus = SyncStatus.FINISHED;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             channelSyncStatus.setLastSyncDate(c.getLastSynced());
             return channelSyncStatus;
         }
@@ -226,7 +226,7 @@ public abstract class ProductSyncManager {
                 if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
                         runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
                     // Reposync has failed or has been interrupted
-                    channelSyncStatus = SyncStatus.FAILED;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
                     channelSyncStatus.setDetails(debugInfo);
                     // Don't return from here, there might be a new schedule already
@@ -234,7 +234,7 @@ public abstract class ProductSyncManager {
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
                         runStatus.equals(TaskoRun.STATUS_RUNNING)) {
                     // Reposync is in progress
-                    channelSyncStatus = SyncStatus.IN_PROGRESS;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
                     channelSyncStatus.setDetails(debugInfo);
                     return channelSyncStatus;
@@ -246,14 +246,14 @@ public abstract class ProductSyncManager {
         }
 
         // Check if there is a schedule that is newer than the last (FAILED) run
-        if (!repoSyncRunFound || channelSyncStatus == SyncStatus.FAILED) {
+        if (!repoSyncRunFound || channelSyncStatus.isFailed()) {
             List<TaskoSchedule> schedules =
                     TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
             for (TaskoSchedule s : schedules) {
                 Long scheduleChannelId = getChannelIdForSchedule(s);
                 if (channelId.equals(scheduleChannelId)) {
                     // There is a schedule for this channel
-                    channelSyncStatus = SyncStatus.IN_PROGRESS;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     return channelSyncStatus;
                 }
             }
@@ -264,7 +264,7 @@ public abstract class ProductSyncManager {
 
         // Check if channel metadata generation is in progress
         if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
 
@@ -274,7 +274,7 @@ public abstract class ProductSyncManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_label", channel.getLabel());
         if (selector.execute(params).size() > 0) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
 
