@@ -208,7 +208,7 @@ public class NCCProductSyncManager extends ProductSyncManager {
                 product.setSyncStatus(getProductSyncStatus(product));
             }
             else {
-                product.setSyncStatus(Product.SyncStatus.NOT_MIRRORED);
+                product.setStatusNotMirrored();
             }
         }
 
