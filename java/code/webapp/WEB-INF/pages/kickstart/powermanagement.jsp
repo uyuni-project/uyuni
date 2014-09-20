@@ -11,7 +11,6 @@
 
 <body>
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf"%>
-    <br />
 
     <rhn:toolbar base="h2" icon="header-power"
         helpUrl="/rhn/help/user/en-US/s2-sm-system-list.jsp#s5-sdc-provisioning-powermgnt">
