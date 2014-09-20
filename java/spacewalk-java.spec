@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.36
+Version: 2.3.39
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,21 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Sep 18 2014 Stephen Herr <sherr@redhat.com> 2.3.39-1
+- 990998 - package details page should not list channels we can't see
+- 698241 - suppress unnecessary warnings in ks snippet
+- 1133634 - fix file descriptor leak in system.crash.getCrashFile
+
+* Wed Sep 17 2014 Stephen Herr <sherr@redhat.com> 2.3.38-1
+- 1138708, 1142110 - make child channel architecture check universal
+- fix typo
+- specify usage of java.config_file_edit_size option
+- 1142133 - throw LookupException instead of NoSuchCrashException
+
+* Mon Sep 15 2014 Stephen Herr <sherr@redhat.com> 2.3.37-1
+- 1126305 - add more documentation to Power Management page
+- 1126297 - power management - make system identifier clearable
+
 * Fri Sep 12 2014 Tomas Lestach <tlestach@redhat.com> 2.3.36-1
 - do not offer the channel itself within the channel list to add packages from
 - do not offer channel itself among the channel list to clone errata from
