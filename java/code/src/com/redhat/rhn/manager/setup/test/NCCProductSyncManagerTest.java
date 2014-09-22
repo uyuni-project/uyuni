@@ -32,8 +32,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 /**
- *
- * @author bo
+ * Tests for {@link NCCProductSyncManager}.
  */
 public class NCCProductSyncManagerTest extends ProductSyncManagerTest {
     /**
