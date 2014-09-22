@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * Tests ProductSyncManager.
  */
-public abstract class BaseProductSyncManagerTestCase extends BaseTestCaseWithUser {
+public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     private final ProductList products = new ProductList();
     private String providedProductIdent;

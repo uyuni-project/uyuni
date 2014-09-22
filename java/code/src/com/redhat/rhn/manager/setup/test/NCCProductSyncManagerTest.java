@@ -35,7 +35,7 @@ import org.simpleframework.xml.core.Persister;
  *
  * @author bo
  */
-public class NCCProductSyncManagerTest extends BaseProductSyncManagerTestCase {
+public class NCCProductSyncManagerTest extends ProductSyncManagerTest {
     /**
      * {@inheritDoc}}
      * @throws java.lang.Exception
