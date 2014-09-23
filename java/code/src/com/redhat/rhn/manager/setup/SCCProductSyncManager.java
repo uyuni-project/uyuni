@@ -183,7 +183,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
                 new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
-        // Set extensions as addon products, increase ident with every addon
+        // Set extensions as addon products
         for (ListedProduct extension : productIn.getExtensions()) {
             Product ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
