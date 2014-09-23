@@ -46,19 +46,19 @@ public class SCCProductSyncManager extends ProductSyncManager {
     public List<Product> getBaseProducts() throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
+            // Convert the listed products to objects we can display
             Collection<ListedProduct> products = csm.listProducts(
                     csm.listChannels(csm.getRepositories()));
             List<Product> result = convertProducts(products);
 
+            // Determine their product sync status separately
             for (Product p : result) {
                 if (p.isProvided()) {
-                    Product.SyncStatus status = getProductSyncStatus(p);
-                    p.setSyncStatus(status);
+                    p.setSyncStatus(getProductSyncStatus(p));
                 }
                 else {
                     p.setStatusNotMirrored();
                 }
-
                 for (Product addon : p.getAddonProducts()) {
                     if (addon.isProvided()) {
                         addon.setSyncStatus(getProductSyncStatus(addon));
@@ -139,7 +139,6 @@ public class SCCProductSyncManager extends ProductSyncManager {
     private List<Product> convertProducts(Collection<ListedProduct> products) {
         List<Product> displayProducts = new ArrayList<Product>();
         for (ListedProduct p : products) {
-
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 Product displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
