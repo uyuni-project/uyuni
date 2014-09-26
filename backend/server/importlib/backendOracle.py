@@ -337,7 +337,7 @@ class OracleBackend(Backend):
                 'channel_product_id' : DBint(),
                 'checksum_type_id' : DBint(),
                 'channel_access': DBstring(10),
-                'update_tag'    : DBstring(20),
+                'update_tag'    : DBstring(128),
             },
             pk          = ['label'],
             severityHash = {
