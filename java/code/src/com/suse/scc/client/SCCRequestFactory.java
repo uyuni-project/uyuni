@@ -76,7 +76,7 @@ public class SCCRequestFactory {
                 try {
                     byte[] encodedBytes =
                             Base64.encodeBase64((proxyUsername + ':' + proxyPassword)
-                                    .getBytes("iso-8859-1"));
+                                    .getBytes("UTF-8"));
                     final String encoded = new String(encodedBytes, "iso-8859-1");
                     connection.addRequestProperty("Proxy-Authorization", encoded);
                 }
