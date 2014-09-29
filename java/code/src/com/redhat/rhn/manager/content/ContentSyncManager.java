@@ -106,7 +106,7 @@ public class ContentSyncManager {
             "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
 
     // Source URL handling
-    private static final String OFFICIAL_REPO_HOST = "nu.novell.com";
+    private static final String OFFICIAL_REPO_HOST = "updates.suse.com";
     private static final String MIRRCRED_QUERY = "credentials=mirrcred";
 
     // Static XML files we parse
