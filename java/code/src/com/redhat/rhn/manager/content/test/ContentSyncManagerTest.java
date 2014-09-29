@@ -106,7 +106,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Setup SCC repo
             SCCRepository repo = new SCCRepository();
-            repo.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
+            repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
 
@@ -125,7 +125,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Verify content sources (there is only one)
             Set<ContentSource> sources = c.getSources();
             for (ContentSource s : sources) {
-                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/"
+                String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/"
                         + "sle-11-x86_64/?credentials=mirrcred";
                 assertEquals(url, s.getSourceUrl());
             }
@@ -174,12 +174,12 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Setup SCC repos
             SCCRepository repo1 = new SCCRepository();
             repo1.setCredentialsId(1);
-            repo1.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
+            repo1.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo1);
             SCCRepository repo2 = new SCCRepository();
             repo2.setCredentialsId(2);
-            repo2.setUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/sle-11-x86_64");
+            repo2.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Updates/sle-11-x86_64");
             repos.add(repo2);
 
             // Update channel information from the xml file
@@ -191,14 +191,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             c1 = ChannelFactory.lookupByLabel(channelLabel1);
             Set<ContentSource> sources = c1.getSources();
             for (ContentSource s : sources) {
-                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/"
+                String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/"
                         + "sle-11-x86_64/?credentials=mirrcred_1";
                 assertEquals(url, s.getSourceUrl());
             }
             c2 = ChannelFactory.lookupByLabel(channelLabel2);
             sources = c2.getSources();
             for (ContentSource s : sources) {
-                String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Updates/"
+                String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Updates/"
                         + "sle-11-x86_64/?credentials=mirrcred_2";
                 assertEquals(url, s.getSourceUrl());
             }
@@ -653,7 +653,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         try {
             // Match against a manually created list of SCC repositories
             SCCRepository repo = new SCCRepository();
-            String sourceUrl = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
+            String sourceUrl = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(sourceUrl);
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
@@ -836,7 +836,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
-            String url = "https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
+            String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(url);
             List<SCCRepository> repos = new ArrayList<SCCRepository>();
             repos.add(repo);
@@ -885,7 +885,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             xmlChannel.setFamily("7261");
             xmlChannel.setLabel("sles11-sp3-pool-x86_64");
             xmlChannel.setName("SLES11-SP3-Pool for x86_64");
-            xmlChannel.setSourceUrl("https://nu.novell.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/");
+            xmlChannel.setSourceUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/");
             xmlChannel.setSummary("SUSE Linux Enterprise Server 11 SP3 x86_64");
             xmlChannel.setUpdateTag("slessp3");
 
