@@ -154,9 +154,9 @@ public class SCCProductSyncManager extends ProductSyncManager {
      * @return instance of {@link Product}
      */
     private Product convertProduct(final ListedProduct productIn) {
+        // Sort product channels (mandatory/optional)
         List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
         List<Channel> optionalChannelsOut = new ArrayList<Channel>();
-
         for (MgrSyncChannel channelIn : productIn.getChannels()) {
             MgrSyncStatus statusIn = channelIn.getStatus();
             String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
@@ -174,13 +174,13 @@ public class SCCProductSyncManager extends ProductSyncManager {
         Collections.sort(mandatoryChannelsOut, new Comparator<Channel>() {
             public int compare(Channel a, Channel b) {
                 return a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
-                       b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
+                        b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
             }
         });
 
+        // Setup the product that will be displayed
         Product displayProduct = new Product(productIn.getArch(), productIn.getIdent(),
-                productIn.getFriendlyName(), "",
-                new MandatoryChannels(mandatoryChannelsOut),
+                productIn.getFriendlyName(), "", new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
         // Set extensions as addon products
