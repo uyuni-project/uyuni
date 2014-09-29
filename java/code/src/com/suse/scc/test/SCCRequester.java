@@ -29,6 +29,25 @@ import java.util.concurrent.Callable;
  */
 public abstract class SCCRequester<T> implements Callable<T> {
 
+    /** The client instance. */
+    private SCCClient client;
+
+    /**
+     * Default constructor
+     */
+    public SCCRequester() {
+        client = new SCCClient("localhost:" + HttpServerMock.PORT, "user", "pass");
+        client.getConfig().put(SCCConfig.SCHEMA, "http://");
+    }
+
+    /**
+     * Gets the client instance.
+     * @return the client
+     */
+    public SCCClient getClient() {
+        return client;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -36,8 +55,6 @@ public abstract class SCCRequester<T> implements Callable<T> {
     public T call() {
         T ret = null;
         try {
-            SCCClient client = new SCCClient("localhost:" + HttpServerMock.PORT, "user", "pass");
-            client.getConfig().put(SCCConfig.SCHEMA, "http://");
             ret = request(client);
         }
         catch (SCCClientException e) {

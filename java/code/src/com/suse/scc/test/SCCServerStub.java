@@ -16,6 +16,8 @@ package com.suse.scc.test;
 
 import com.redhat.rhn.testing.httpservermock.Responder;
 
+import com.suse.scc.client.SCCConfig;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -31,6 +33,17 @@ public class SCCServerStub implements Responder {
     // Path to example json files and filename
     private static final String PATH_EXAMPLES = "/com/suse/scc/test/";
 
+    /** The configuration object. */
+    private SCCConfig config;
+
+    /**
+     * Standard constructor
+     * @param configIn the configuration object
+     */
+    public SCCServerStub(SCCConfig configIn) {
+        config = configIn;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -42,10 +55,12 @@ public class SCCServerStub implements Responder {
         response.setDate("Date", time);
         response.setDate("Last-Modified", time);
         String uri = request.getURI();
+        String schema = config.getSchema();
+        String hostname = config.getHostname();
         if (!uri.endsWith("2")) {
             response.set("Link",
-                    "<https://scc.suse.com" + uri + "2>; rel=\"last\", " +
-                    "<https://scc.suse.com" + uri + "2>; rel=\"next\"");
+                    "<" + schema + hostname + uri + "2>; rel=\"last\", " +
+                    "<" + schema + hostname + uri + "2>; rel=\"next\"");
         }
 
         // Send file content

@@ -128,8 +128,10 @@ public class SCCConnection {
                 String nextUrl = null;
                 String linkHeader = connection.getHeaderField("Link");
                 if (linkHeader != null) {
+                    String schema = config.getSchema();
+                    String hostname = config.getHostname();
                     Matcher m = Pattern
-                            .compile(".*<https://scc.suse.com(.*?)>; rel=\"next\".*")
+                            .compile(".*<" + schema + hostname + "(.*?)>; rel=\"next\".*")
                             .matcher(linkHeader);
                     if (m.matches()) {
                         nextUrl = m.group(1);
