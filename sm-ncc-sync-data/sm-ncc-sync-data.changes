@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Sep 29 15:27:12 CEST 2014 - mc@suse.de
+
+- version 1.7.20-1
+- fix parent label of LTSS channel for SLMS
+- add cloud 4 channels (bnc#883057)
+
+-------------------------------------------------------------------
 Wed Aug 20 15:15:03 CEST 2014 - mc@suse.de
 
 - version 1.7.19-1
