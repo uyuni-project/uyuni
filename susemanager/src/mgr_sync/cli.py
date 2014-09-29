@@ -62,7 +62,7 @@ def _create_add_subparser(subparsers):
         nargs='*',
         help='element to add, could be either a channel, SCC organization credentials or a product')
     add_parser.add_argument(
-        '--from-mirror', action='store', dest='mirror',
+        '--from-mirror', action='store', dest='mirror', default="",
         help='URL of a local mirror like SMT. Only to download the RPMs.')
     add_parser.add_argument(
         '--primary',
@@ -144,6 +144,10 @@ def _create_refresh_subparser(subparsers):
         dest='refresh_channels',
         default=False,
         help='Schedule a refresh of all the installed channels.')
+    refresh_parser.add_argument(
+        '--from-mirror', action='store', dest='mirror', default="",
+        help='URL of a local mirror like SMT. Only to download the RPMs.')
+
 
 
 def get_options(args=None):
