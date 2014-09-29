@@ -97,11 +97,11 @@ public class SCCClient {
     }
 
     /**
-     * Gets and returns the list of products available to an organization.
+     * Gets and returns the list of all products.
      *
-     * GET /connect/organizations/products
+     * GET /connect/organizations/products/unscoped
      *
-     * @return list of products available to organization
+     * @return list of all available products
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
