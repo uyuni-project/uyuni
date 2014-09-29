@@ -35,6 +35,5 @@ public class NotImplementedResponder implements Responder {
     @Override
     public void respond(Request request, Response response) {
         response.setCode(501);
-        //response.setDescription("Not Implemented");
     }
 }
