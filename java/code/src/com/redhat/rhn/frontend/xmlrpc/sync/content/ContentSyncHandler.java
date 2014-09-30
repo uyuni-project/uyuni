@@ -24,6 +24,8 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * API handler offering content synchronization methods.
@@ -238,5 +240,64 @@ public class ContentSyncHandler extends BaseHandler {
             throw new ContentSyncException(e);
         }
         return BaseHandler.VALID;
+    }
+
+    /**
+     * Add credentials to SUSE Manager
+     *
+     * @param sessionKey user session token
+     * @param login Login of the credentials
+     * @param pass Password of the credentials
+     * @param mail Email of the credentials
+     * @return Integer
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Add credentials to SUSE Manager
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "login", "User's login name")
+     * @xmlrpc.param #param_desc("string", "pass", "User's password")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer addCredentials(String sessionKey, String login, String pass)
+            throws ContentSyncException {
+        return BaseHandler.VALID;
+    }
+
+    /**
+     * Remove credentials from SUSE Manager
+     *
+     * @param sessionKey user session token
+     * @param Login of the credentials to be deleted
+     * @return Integer
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc Remove credentials from SUSE Manager
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "login", "Login of the credentials to be deleted")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer removeCredentials(String sessionKey, String login)
+            throws ContentSyncException {
+        return BaseHandler.VALID;
+    }
+
+    /**
+     * List credentials available in SUSE Manager
+     *
+     * @param sessionKey user session token
+     * @return List of credentials
+     * @throws ContentSyncException
+     *
+     * @xmlrpc.doc List credentials available in SUSE Manager
+     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.returntype #array()
+     *                       $credentials
+     *                    #array_end()
+     */
+    public Object[] listCredentials(String sessionKey) throws ContentSyncException {
+        List<String> credentialList = new ArrayList<String>();
+        credentialList.add("foo");
+        credentialList.add("bar");
+        return credentialList.toArray();
     }
 }
