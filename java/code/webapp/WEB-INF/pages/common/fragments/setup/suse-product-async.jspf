@@ -56,20 +56,20 @@
         </button>
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
-    <c:set var="allSyncStatus" value="<%=com.suse.manager.model.products.Product.SyncStatus.values()%>"/>
+    <c:set var="allSyncStages" value="<%=com.suse.manager.model.products.Product.SyncStatus.SyncStage.values()%>"/>
     <td>
-        <c:forEach var="syncStatus" items="${allSyncStatus}">
+        <c:forEach var="syncStage" items="${allSyncStages}">
             <div
-                data-syncstatus="${fn:toLowerCase(syncStatus)}"
+                data-syncstatus="${fn:toLowerCase(syncStage)}"
                 class="product-status"
-                <c:if test="${syncStatus != product.syncStatus}">
+                <c:if test="${product.syncStatus.stage != syncStage}">
                     hidden
                 </c:if>
             >
                 <c:choose>
-                    <c:when test="${syncStatus == 'IN_PROGRESS'}">
+                    <c:when test="${syncStage == 'IN_PROGRESS'}">
                         <c:choose>
-                            <c:when test="${product.syncStatus == 'IN_PROGRESS'}">
+                            <c:when test="${product.syncStatus.inProgress}">
                                 <div class="product-sync-progress progress progress-striped active">
                                     <span class="progress-value">${product.syncStatus.syncProgress}%</span>
                                     <div class="progress-bar" role="progressbar"
@@ -86,7 +86,7 @@
                             </c:otherwise>
                         </c:choose>
                     </c:when>
-                    <c:when test="${syncStatus == 'FINISHED'}">
+                    <c:when test="${syncStage == 'FINISHED'}">
                         <div class="product-completed-status">
                             <span class="product-status-label product-completed-label label label-success">
                                 <c:if test="${!empty requestScope.product.syncStatus.details}">
@@ -97,7 +97,7 @@
                                         <rhn:formatDate value="${requestScope.product.syncStatus.lastSyncDate}" humanStyle="from" type="date" dateStyle="short" />
                                     </c:when>
                                     <c:otherwise>
-                                      <bean:message key="${syncStatus.translationKey}"/>
+                                      <bean:message key="${syncStage.translationKey}"/>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:if test="${!empty requestScope.product.syncStatus.details}">
@@ -106,14 +106,14 @@
                             </span>
                         </div>
                     </c:when>
-                    <c:when test="${syncStatus == 'FAILED'}">
+                    <c:when test="${syncStage == 'FAILED'}">
                         <div class="product-failed-status
                              <c:if test="${!empty requestScope.product.syncStatus.details}"> product-sync-log-available</c:if>">
                             <span class="product-status-label product-failed-label label label-danger">
                                 <c:if test="${!empty requestScope.product.syncStatus.details}">
                                 <button class="btn btn-link product-sync-log-btn">
                                 </c:if>
-                                <bean:message key="${syncStatus.translationKey}"/>
+                                <bean:message key="${syncStage.translationKey}"/>
                                 <c:if test="${!empty requestScope.product.syncStatus.details}">
                                 </button>
                                 </c:if>
@@ -126,16 +126,16 @@
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-sync-log.jspf" />
     </td>
     <td class="add-button">
-        <c:forEach var="syncStatus" items="${allSyncStatus}">
+        <c:forEach var="syncStage" items="${allSyncStages}">
             <div
-                data-syncstatus="${fn:toLowerCase(syncStatus)}"
+                data-syncstatus="${fn:toLowerCase(syncStage)}"
                 class="product-status-action"
-                <c:if test="${syncStatus != product.syncStatus}">
+                <c:if test="${product.syncStatus.stage != syncStage}">
                     hidden
                 </c:if>
             >
                 <c:choose>
-                    <c:when test="${syncStatus == 'NOT_MIRRORED'}">
+                    <c:when test="${syncStage == 'NOT_MIRRORED'}">
                         <button class="product-add-btn btn btn-default btn-3d btn-xs"
                                 data-toggle='tooltip'
                                 title="<bean:message key='suse-products.jsp.add-this-product' />"
@@ -143,14 +143,14 @@
                             <i class="fa fa-plus"></i>
                         </button>
                     </c:when>
-                    <c:when test="${syncStatus == 'FINISHED'}">
+                    <c:when test="${syncStage == 'FINISHED'}">
                         <button class="product-retry-btn btn btn-default btn-3d btn-xs"
                                 data-toggle="tooltip"
                                 title="<bean:message key='suse-products.jsp.refresh' />">
                             <i class="fa fa-refresh"></i>
                         </button>
                     </c:when>
-                    <c:when test="${syncStatus == 'FAILED'}">
+                    <c:when test="${syncStage == 'FAILED'}">
                         <button class="product-retry-btn btn btn-default btn-3d btn-xs"
                                 data-toggle="tooltip"
                                 title="<bean:message key='suse-products.jsp.try-again' />">

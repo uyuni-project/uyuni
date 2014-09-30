@@ -54,7 +54,7 @@ mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
 This can be done using the following commmand:
     mgr-sync enable-scc
 
-Note well: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
+Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
 """
             sys.stderr.write(msg)
             sys.exit(1)
@@ -302,7 +302,8 @@ Note well: there is no way to revert the migration from Novell Customer Center (
         print("Available Products:\n")
         print("\nStatus:")
         print("  - [I] - product is installed")
-        print("  - [ ] - product is not installed, but is available\n")
+        print("  - [ ] - product is not installed, but is available")
+        print("  - [U] - product is unavailable\n")
 
         for product in products:
             product.to_stdout(filter=filter,

@@ -97,7 +97,7 @@ public class HttpServerMock {
             }
         }
         finally {
-            if (connection != null) {
+            if (socket != null) {
                 socket.close();
             }
         }

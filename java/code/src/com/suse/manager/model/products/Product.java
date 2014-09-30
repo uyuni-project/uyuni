@@ -37,15 +37,33 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Aggregated product sync status.
      */
-    public enum SyncStatus {
-        /** Product has never been installed at all. */
-        NOT_MIRRORED,
-        /** Product has been installed, synchronization is in progress. */
-        IN_PROGRESS,
-        /** Product has been installed and synchronized completely. */
-        FINISHED,
-        /** Product installation or sync went bad. */
-        FAILED;
+    public static class SyncStatus {
+
+        /**
+         * The stage of the synchronization status
+         */
+        public enum SyncStage {
+            /** Product has never been installed at all. */
+            NOT_MIRRORED,
+            /** Product has been installed, synchronization is in progress. */
+            IN_PROGRESS,
+            /** Product has been installed and synchronized completely. */
+            FINISHED,
+            /** Product installation or sync went bad. */
+            FAILED;
+
+            /**
+             * Returns a translation key for a stage.
+             * @return the key
+             */
+            public String getTranslationKey() {
+                return "setupwizard.syncstatus." +
+                        toString().replace("_", ".").toLowerCase();
+            }
+        }
+
+        // Stage of the sync
+        private SyncStage stage;
 
         // Error message key
         private String messageKey;
@@ -60,11 +78,41 @@ public class Product implements Selectable, Comparable<Product> {
         private Date lastSyncDate;
 
         /**
-         * Returns a translation key for a status.
-         * @return the key
+         * Constructor
+         * @param stageIn of the synchronization stage
          */
-        public String getTranslationKey() {
-            return "setupwizard.syncstatus." + toString().replace("_", ".").toLowerCase();
+        public SyncStatus(SyncStage stageIn) {
+            this.stage = stageIn;
+        }
+
+        /**
+         * Default constructor (not mirrored yet)
+         */
+        public SyncStatus() {
+            this(SyncStage.NOT_MIRRORED);
+        }
+
+        /**
+         * @return stage of the synchronization
+         */
+        public SyncStage getStage() {
+            return stage;
+        }
+
+        /**
+         * Convenience equals with an Stage
+         * @param stage
+         * @return whether the stages are equal
+         */
+        boolean equals(SyncStage stage) {
+            return getStage().equals(stage);
+        }
+
+        /**
+         * @param stage of the synchronization
+         */
+        public void setStage(SyncStage stage) {
+            this.stage = stage;
         }
 
         /**
@@ -125,10 +173,46 @@ public class Product implements Selectable, Comparable<Product> {
 
         /**
          * Sets the last sync date.
-         * @param lastSyncDateIn the new last sync date
+         *  @param lastSyncDateIn the new last sync date
          */
         public void setLastSyncDate(Date lastSyncDateIn) {
             lastSyncDate = lastSyncDateIn;
+        }
+
+        /**
+         * Convenience method to query the stage
+         * @return true if the stage is not mirrored
+         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         */
+        public boolean isNotMirrored() {
+            return equals(SyncStage.NOT_MIRRORED);
+        }
+
+        /**
+         * Convenience method to query the stage
+         * @return true if the stage is in progress
+         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         */
+        public boolean isInProgress() {
+            return equals(SyncStage.IN_PROGRESS);
+        }
+
+        /**
+         * Convenience method to query the stage
+         * @return true if the stage is failed
+         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         */
+        public boolean isFailed() {
+            return equals(SyncStage.FAILED);
+        }
+
+        /**
+         * Convenience method to query the stage
+         * @return true if the stage is finished
+         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         */
+        public boolean isFinished() {
+            return equals(SyncStatus.SyncStage.FINISHED);
         }
     };
 
@@ -419,5 +503,73 @@ public class Product implements Selectable, Comparable<Product> {
      */
     public void setBaseProductIdent(String identIn) {
         this.parentProduct = identIn;
+    }
+
+    /**
+     * Convenience method to query the sync status
+     * @return true if the product status is not mirrored
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public boolean isStatusNotMirrored() {
+        return getSyncStatus().equals(SyncStatus.SyncStage.NOT_MIRRORED);
+    }
+
+    /**
+     * Convenience method to set the sync status to not mirrored
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public void setStatusNotMirrored() {
+        setSyncStatus(new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED));
+    }
+
+    /**
+     * Convenience method to query the sync status
+     * @return true if the product status is in progress
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public boolean isStatusInProgress() {
+        return getSyncStatus().equals(SyncStatus.SyncStage.IN_PROGRESS);
+    }
+
+    /**
+     * Convenience method to set the sync status to in progress
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public void setStatusInProgress() {
+        setSyncStatus(new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS));
+    }
+
+    /**
+     * Convenience method to query the sync status
+     * @return true if the product status is finished
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public boolean isStatusFinished() {
+        return getSyncStatus().equals(SyncStatus.SyncStage.FINISHED);
+    }
+
+    /**
+     * Convenience method to set the sync status to finished
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public void setStatusFinished() {
+        setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FINISHED));
+    }
+
+    /**
+     * Convenience method to query the sync status
+     * @return true if the product status is failed
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public boolean isStatusFailed() {
+        return getSyncStatus().equals(SyncStatus.SyncStage.FAILED);
+    }
+
+    /**
+     * Convenience method to set the sync status to failed
+     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     */
+    public void setStatusFailed() {
+        setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FAILED));
     }
 }
