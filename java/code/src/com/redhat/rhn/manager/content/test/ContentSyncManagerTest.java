@@ -42,6 +42,7 @@ import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -390,7 +391,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.updateChannelSubscriptions(productClasses);
 
         // Check reset to 0
-        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS");
+        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
+                UserTestUtils.createUserInOrgOne(), "SMS");
         ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
 
         // Add subscription for a product class
@@ -912,8 +914,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             renameVendorChannels();
 
             // Ensure family has members
-            ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, "7261");
+            ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
+                    UserTestUtils.createUserInOrgOne(), "7261");
             ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
+            HibernateFactory.getSession().flush();
 
             // Add the channel by label
             csm.addChannel(xmlChannel.getLabel(), repos);
