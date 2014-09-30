@@ -17,8 +17,9 @@ package com.redhat.rhn.frontend.action.setupwizard;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.setup.ProductSyncException;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
-import com.redhat.rhn.manager.setup.ProductSyncManagerCommandException;
+import com.redhat.rhn.manager.setup.ProductSyncCommandException;
 
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContextFactory;
@@ -37,10 +38,9 @@ public class ProductSyncAction {
      * Synchronize or add a given list of products.
      * @param productIdents list of product idents
      * @param add indicate if this is a new product to be added
-     * @throws ProductSyncManagerCommandException in case of errors
+     * @throws ProductSyncCommandException in case of errors
      */
-    public void syncProducts(List<String> productIdents)
-            throws ProductSyncManagerCommandException {
+    public void syncProducts(List<String> productIdents) throws ProductSyncException {
         User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
                 .getCurrentUser();
 
@@ -54,9 +54,9 @@ public class ProductSyncAction {
         }
 
         try {
-            new ProductSyncManager().addProducts(productIdents);
+            ProductSyncManager.createInstance().addProducts(productIdents);
         }
-        catch (ProductSyncManagerCommandException e) {
+        catch (ProductSyncException e) {
             log.error(e);
             throw e;
         }

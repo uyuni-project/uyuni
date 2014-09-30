@@ -31,6 +31,8 @@ import com.redhat.rhn.frontend.events.NewUserAction;
 import com.redhat.rhn.frontend.events.NewUserEvent;
 import com.redhat.rhn.frontend.events.RestartSatelliteAction;
 import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
+import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
+import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
@@ -295,6 +297,10 @@ public class MessageQueue {
                                     NewCloneErrataEvent.class);
         MessageQueue.registerAction(new SsmErrataAction(),
                                     SsmErrataEvent.class);
+
+        // Asynchronously schedule immediate repo sync
+        MessageQueue.registerAction(new ScheduleRepoSyncAction(),
+                ScheduleRepoSyncEvent.class);
 
         // Misc
         MessageQueue.registerAction(new SsmSystemRebootAction(),

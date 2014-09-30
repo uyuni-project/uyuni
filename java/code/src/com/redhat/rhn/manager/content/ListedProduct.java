@@ -156,15 +156,35 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * A product is installed iff all mandatory channels are installed,
      * otherwise it is available.
      *
+     * A product is unavailable iff at least one mandatory channel is
+     * unavailable.
      * @return the status
      */
     public MgrSyncStatus getStatus() {
+        MgrSyncStatus result = MgrSyncStatus.INSTALLED;
         for (MgrSyncChannel channel : channels) {
-            if (!channel.isOptional() && channel.getStatus() != MgrSyncStatus.INSTALLED) {
-                return MgrSyncStatus.AVAILABLE;
+            if (!channel.isOptional()) {
+                if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
+                    return MgrSyncStatus.UNAVAILABLE;
+                }
+                if (channel.getStatus() != MgrSyncStatus.INSTALLED) {
+                    result = MgrSyncStatus.AVAILABLE;
+                }
             }
         }
-        return MgrSyncStatus.INSTALLED;
+        return result;
+    }
+
+    /**
+     * This returns an artificial identifier that was previously called "ident" and had been
+     * used for triggering sync of a product with NCC via the CLI as well as the GUI. There
+     * is no need for this ident anymore if we modify the GUI implementation to send channel
+     * labels instead of those idents.
+     *
+     * @return ident
+     */
+    public String getIdent() {
+        return id + "-" + getBaseChannel().getLabel();
     }
 
     /**

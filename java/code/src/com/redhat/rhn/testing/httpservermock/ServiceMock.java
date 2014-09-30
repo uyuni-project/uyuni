@@ -64,6 +64,6 @@ public class ServiceMock extends Service {
     @Override
     protected void process(Request requestIn, Response response) throws Exception {
         this.request = requestIn;
-        responder.respond(response);
+        responder.respond(requestIn, response);
     }
 }

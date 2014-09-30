@@ -18,13 +18,13 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
 
 import java.util.List;
+
 import javax.xml.bind.DatatypeConverter;
 
 import junit.framework.TestCase;
@@ -47,10 +47,10 @@ public class SCCClientTest extends TestCase {
                     }
                 };
         List<SCCProduct> products = new HttpServerMock().getResult(
-                requester, new SCCServerStub("products.json"));
+                requester, new SCCServerStub(requester.getClient().getConfig()));
 
         // Assertions
-        assertEquals(1, products.size());
+        assertEquals(2, products.size());
         SCCProduct p = products.get(0);
         assertEquals(42, p.getId());
         assertEquals("SUSE Linux Enterprise Server", p.getName());
@@ -97,6 +97,10 @@ public class SCCClientTest extends TestCase {
         assertEquals(1, repos.size());
         SCCRepository r = repos.get(0);
         assertEquals(1357, r.getId());
+
+        // API v4 support (paging)
+        SCCProduct p2 = products.get(1);
+        assertEquals(43, p2.getId());
     }
 
     /**
@@ -112,10 +116,10 @@ public class SCCClientTest extends TestCase {
                     }
                 };
         List<SCCRepository> repos = new HttpServerMock().getResult(
-                requester, new SCCServerStub("repositories.json"));
+                requester, new SCCServerStub(requester.getClient().getConfig()));
 
         // Assertions
-        assertEquals(1, repos.size());
+        assertEquals(2, repos.size());
         SCCRepository r = repos.get(0);
         assertEquals(1358, r.getId());
         assertEquals("SLE10-SDK-SP4-Online", r.getName());
@@ -138,10 +142,10 @@ public class SCCClientTest extends TestCase {
                     }
                 };
         List<SCCSubscription> subs = new HttpServerMock().getResult(
-                requester, new SCCServerStub("subscriptions.json"));
+                requester, new SCCServerStub(requester.getClient().getConfig()));
 
         // Assertions
-        assertEquals(1, subs.size());
+        assertEquals(2, subs.size());
         SCCSubscription s = subs.get(0);
         assertEquals(1, s.getId());
         assertEquals("631dc51f", s.getRegcode());
