@@ -117,6 +117,17 @@ public class CredentialsFactory extends HibernateFactory {
         return lookupByUserAndType(user, Credentials.TYPE_SUSESTUDIO);
     }
 
+    /**
+     * Helper method for creating new SCC {@link Credentials}
+     * @return new credential with type SCC
+     */
+    public static Credentials createSCCCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SCC));
+        return creds;
+    }
+
     @Override
     protected Logger getLogger() {
         return log;

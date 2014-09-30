@@ -261,7 +261,9 @@ public class MirrorCredentialsManager extends BaseManager {
 
         // Store configuration and clean cache for deleted credentials
         errors = configCommand.storeConfiguration();
-        SetupWizardSessionCache.clearSubscriptions(credentials, request);
+        if (request != null) {
+            SetupWizardSessionCache.clearSubscriptions(credentials, request);
+        }
         return errors;
     }
 
