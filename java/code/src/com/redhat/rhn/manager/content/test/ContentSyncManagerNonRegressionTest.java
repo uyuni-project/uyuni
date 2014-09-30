@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -22,6 +23,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -89,9 +91,11 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             // ensure all needed channel families have enough entitlements, so
             // that channels are available later
             for (String label : ENTITLED_LABELS) {
-                ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(user, label);
+                ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
+                        UserTestUtils.createUserInOrgOne(), label);
                 ChannelFamilyTest.ensureChannelFamilyHasMembers(cf,
                         ContentSyncManagerTest.MANY_MEMBERS);
+                HibernateFactory.getSession().flush();
             }
 
             List<MgrSyncChannel> allChannels =
