@@ -34,8 +34,8 @@ public class SCCConfig {
     public static final String PROXY_PASSWORD = "proxy-password";
 
     // Default values
-    private static final String DEFAULT_SCHEMA = "https://";
-    private static final String DEFAULT_HOSTNAME = "scc.suse.com";
+    public static final String DEFAULT_SCHEMA = "https://";
+    public static final String DEFAULT_HOSTNAME = "scc.suse.com";
 
     // The properties object
     private Properties properties;

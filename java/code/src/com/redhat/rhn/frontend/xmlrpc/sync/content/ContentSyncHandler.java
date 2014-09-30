@@ -15,10 +15,17 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+
+import com.suse.scc.client.SCCConfig;
 
 import org.apache.commons.io.FileUtils;
 
@@ -231,8 +238,25 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer performMigration(String sessionKey) throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        User user = BaseHandler.getLoggedInUser(sessionKey);
         SUSEProductFactory.clearAllProducts();
+
+        MirrorCredentialsManager mcm = new MirrorCredentialsManager();
+        int id = 0;
+        for (MirrorCredentialsDto dto : mcm.findMirrorCredentials()) {
+            Credentials c = CredentialsFactory.createSCCCredentials();
+            c.setUsername(dto.getUser());
+            c.setPassword(dto.getPassword());
+            if (id == 0) {
+                c.setUrl(SCCConfig.DEFAULT_SCHEMA + SCCConfig.DEFAULT_HOSTNAME);
+            }
+            CredentialsFactory.storeCredentials(c);
+            id++;
+        }
+        for (long i = --id; id >= 0; id--) {
+            mcm.deleteMirrorCredentials(i, user, null);
+        }
+
         try {
             FileUtils.touch(new File(ContentSyncManager.SCC_MIGRATED));
         }
