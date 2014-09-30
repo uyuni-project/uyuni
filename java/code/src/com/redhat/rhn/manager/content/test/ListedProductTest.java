@@ -45,8 +45,8 @@ public class ListedProductTest extends TestCase {
         }
 
         MgrSyncChannel availableChannel = new MgrSyncChannel();
+        availableChannel.setLabel("available");
         availableChannel.setStatus(MgrSyncStatus.AVAILABLE);
-        availableChannel.setOptional(false);
         availableChannel.setOptional(false);
         listedProduct.addChannel(availableChannel);
         assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
