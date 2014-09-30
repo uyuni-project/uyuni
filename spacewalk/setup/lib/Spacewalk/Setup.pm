@@ -36,7 +36,7 @@ our $VERSION = '1.1';
 
 use constant SHARED_DIR => "/usr/share/spacewalk/setup";
 
-use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/etc", "sysconfig", 
+use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/etc", "sysconfig",
     'rhn', 'postgres', 'main.sql');
 
 use constant POSTGRESQL_DEPLOY_FILE => File::Spec->catfile("/etc", "sysconfig",
@@ -388,23 +388,23 @@ sub upgrade_stop_services {
 
 my $spinning_callback_count;
 my @spinning_pattern = split /\n/, <<EOF;
-.               
- .              
-  o             
-   @            
-   (O)          
-    (*)         
-   ((%%))       
-    (( # ))     
-   ( ( # ) )    
- (  (  #  )  )  
-    (  !  )     
-       :        
-       .        
-       _        
-      . .       
-    .     .     
-                
+.
+ .
+  o
+   @
+   (O)
+    (*)
+   ((%%))
+    (( # ))
+   ( ( # ) )
+ (  (  #  )  )
+    (  !  )
+       :
+       .
+       _
+      . .
+    .     .
+
 EOF
 
 my $spinning_pattern_maxlength = 0;
@@ -1155,7 +1155,7 @@ sub postgresql_test_db_schema {
     return $row ? 1 : 0;
 }
 
-# Clear the PostgreSQL schema by deleting the 'public' schema with cascade, 
+# Clear the PostgreSQL schema by deleting the 'public' schema with cascade,
 # then re-creating it. Also delete all the other known schemas that
 # Spacewalk might have created.
 
