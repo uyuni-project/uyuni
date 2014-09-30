@@ -519,8 +519,7 @@ Product successfully added"""
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock_cli_ask:
             with ConsoleRecorder() as recorder:
                 self.assertEqual(0, self.mgr_sync.run(options))
-            except SystemExit, ex:
-                self.assertEqual(0, ex.code)
+            self.assertFalse(mock_cli_ask.mock_calls)
 
         expected_output = """Available Products:
 
