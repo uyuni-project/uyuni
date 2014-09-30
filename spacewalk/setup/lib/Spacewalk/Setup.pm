@@ -141,11 +141,12 @@ sub parse_options {
             "rhn-http-proxy-password:s",
             "managed-db",
             "ncc",
+            "scc"
 		   );
 
   my $usage = loc("usage: %s %s\n",
 		  $0,
-		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql ] [--ncc]" );
+		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql ] [--ncc|--scc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
