@@ -3779,7 +3779,7 @@
 			<product_id name="sle-studioonsite" version="1.3">1008</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2 i486" family="7261" is_signed="Y" label="sles11-sp2-extension-store-i586" name="SLES11-SP2-Extension-Store for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2 i486" update_tag="slessp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2 i486" family="7261" is_signed="Y" label="sles11-sp2-extension-store-i586" name="SLES11-SP2-Extension-Store for i586" optional="Y" parent="sles11-sp1-pool-i586" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2 i486" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">723</product_id>
 			<product_id name="SUSE_SLES" version="11.2">753</product_id>
@@ -3795,7 +3795,7 @@
 			<product_id name="SUSE_SLES" version="11.3">813</product_id>
 		</products>
 	</channel>
-	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2 i486" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-extension-store-i586-vmware" name="SLES11-SP2-Extension-Store for i586 VMWare" optional="N" parent="sles11-sp1-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2 i486" update_tag="slessp2">
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2 i486" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-extension-store-i586-vmware" name="SLES11-SP2-Extension-Store for i586 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2 i486" update_tag="slessp2">
 		<products>
 			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
@@ -3805,7 +3805,7 @@
 			<product_id name="SLES-for-VMware" version="11.3">993</product_id>
 		</products>
 	</channel>
-	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2 ia64" family="SLES-IA" is_signed="Y" label="sles11-sp2-extension-store-ia64" name="SLES11-SP2-Extension-Store for ia64" optional="N" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2 ia64" update_tag="slessp2">
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP2 ia64" family="SLES-IA" is_signed="Y" label="sles11-sp2-extension-store-ia64" name="SLES11-SP2-Extension-Store for ia64" optional="Y" parent="sles11-sp1-pool-ia64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP2 ia64" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">1034</product_id>
 		</products>
@@ -3815,7 +3815,7 @@
 			<product_id name="SUSE_SLES" version="11.3">1037</product_id>
 		</products>
 	</channel>
-	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2 ppc64" family="SLES-PPC" is_signed="Y" label="sles11-sp2-extension-store-ppc64" name="SLES11-SP2-Extension-Store for ppc64" optional="N" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2 ppc64" update_tag="slessp2">
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP2 ppc64" family="SLES-PPC" is_signed="Y" label="sles11-sp2-extension-store-ppc64" name="SLES11-SP2-Extension-Store for ppc64" optional="Y" parent="sles11-sp1-pool-ppc64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP2 ppc64" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">946</product_id>
 			<product_id name="SUSE_SLES" version="11.2">952</product_id>
@@ -3839,7 +3839,7 @@
 			<product_id name="SUSE_SLES" version="11.3">795</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2 x86_64" family="7261" is_signed="Y" label="sles11-sp2-extension-store-x86_64" name="SLES11-SP2-Extension-Store for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2 x86_64" update_tag="slessp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2 x86_64" family="7261" is_signed="Y" label="sles11-sp2-extension-store-x86_64" name="SLES11-SP2-Extension-Store for x86_64" optional="Y" parent="sles11-sp1-pool-x86_64" product_name="SUSE_SLES" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2 x86_64" update_tag="slessp2">
 		<products>
 			<product_id name="SUSE_SLES" version="11.2">690</product_id>
 		</products>
@@ -3854,7 +3854,7 @@
 			<product_id name="SUSE_SLES" version="11.3">814</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2 x86_64" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-extension-store-x86_64-vmware" name="SLES11-SP2-Extension-Store for x86_64 VMWare" optional="N" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2 x86_64" update_tag="slessp2">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP2 x86_64" family="SLES-X86-VMWARE" is_signed="Y" label="sles11-sp2-extension-store-x86_64-vmware" name="SLES11-SP2-Extension-Store for x86_64 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-x86_64" product_name="SLES-for-VMware" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLES11-SP2-Extension-Store/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP2 x86_64" update_tag="slessp2">
 		<products>
 			<product_id name="SLES-for-VMware" version="11.2">996</product_id>
 		</products>
