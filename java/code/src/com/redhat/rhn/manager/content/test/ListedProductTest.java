@@ -37,6 +37,7 @@ public class ListedProductTest extends TestCase {
         MgrSyncChannel installedChannel = new MgrSyncChannel();
         installedChannel.setLabel("installed");
         installedChannel.setStatus(MgrSyncStatus.INSTALLED);
+        installedChannel.setOptional(false);
 
         for (int i = 0; i < 3; i++) {
             listedProduct.addChannel(installedChannel);
@@ -53,7 +54,8 @@ public class ListedProductTest extends TestCase {
         MgrSyncChannel unavailableChannel = new MgrSyncChannel();
         unavailableChannel.setLabel("unavailable");
         unavailableChannel.setStatus(MgrSyncStatus.UNAVAILABLE);
-        listedProduct.addChannel(availableChannel);
-        assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
+        unavailableChannel.setOptional(false);
+        listedProduct.addChannel(unavailableChannel);
+        assertEquals(MgrSyncStatus.UNAVAILABLE, listedProduct.getStatus());
     }
 }

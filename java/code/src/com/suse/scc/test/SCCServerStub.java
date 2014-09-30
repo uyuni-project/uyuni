@@ -16,10 +16,13 @@ package com.suse.scc.test;
 
 import com.redhat.rhn.testing.httpservermock.Responder;
 
+import com.suse.scc.client.SCCConfig;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import simple.http.Request;
 import simple.http.Response;
 
 /**
@@ -29,31 +32,42 @@ public class SCCServerStub implements Responder {
 
     // Path to example json files and filename
     private static final String PATH_EXAMPLES = "/com/suse/scc/test/";
-    private final String filename;
+
+    /** The configuration object. */
+    private SCCConfig config;
 
     /**
-     * Constructor expecting a filename of example json file.
+     * Standard constructor
+     * @param configIn the configuration object
      */
-    public SCCServerStub(String filename) {
-        this.filename = filename;
+    public SCCServerStub(SCCConfig configIn) {
+        config = configIn;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void respond(Response response) {
+    public void respond(Request request, Response response) {
         // Set some respond headers
         response.set("Content-Type", "application/json");
         long time = System.currentTimeMillis();
         response.setDate("Date", time);
         response.setDate("Last-Modified", time);
+        String uri = request.getURI();
+        String schema = config.getSchema();
+        String hostname = config.getHostname();
+        if (!uri.endsWith("2")) {
+            response.set("Link",
+                    "<" + schema + hostname + uri + "2>; rel=\"last\", " +
+                    "<" + schema + hostname + uri + "2>; rel=\"next\"");
+        }
 
         // Send file content
         PrintStream printStream = null;
         try {
             printStream = response.getPrintStream();
-            InputStream inputStream = getStreamFromExampleFile(filename);
+            InputStream inputStream = getStreamFromExampleFile(uri + ".json");
 
             byte[] buffer = new byte[1024];
             int length = 0;

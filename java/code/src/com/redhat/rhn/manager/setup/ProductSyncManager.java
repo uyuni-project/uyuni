@@ -18,8 +18,8 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.satellite.Executor;
-import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
@@ -28,159 +28,84 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.Product.SyncStatus;
-import com.suse.manager.model.products.ProductList;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Manager class for interacting with SUSE products.
  */
-public class ProductSyncManager {
-
-    /** Product sync command command line. */
-    public static final String[] PRODUCT_SYNC_COMMAND = {
-        "/usr/bin/sudo",
-        "/usr/sbin/mgr-ncc-sync"
-    };
-
-    /** Product sync command switch to obtain a list of products. */
-    public static final String LIST_PRODUCT_SWITCH = "--list-products-xml";
-
-    /** Product sync command switch add a product. */
-    public static final String ADD_PRODUCT_SWITCH = "--add-product-by-ident";
-
-    /** String returned by the sync command if there is any invalid mirror credential. */
-    private static final String INVALID_MIRROR_CREDENTIAL_ERROR = "HTTP error code 401";
-
-    /** String returned by the sync command if there is any invalid mirror credential. */
-    private static final String COULD_NOT_CONNECT_ERROR = "connection failed.";
-
-    /**
-     * Product sync command switch to refresh product, channel and subscription
-     * information without triggering any reposync.
-     */
-    public static final String REFRESH_SWITCH = "--refresh";
+public abstract class ProductSyncManager {
 
     /** The logger. */
-    private static Logger logger = Logger.getLogger(ProductSyncManager.class);
-
-    /** The executor. */
-    private Executor executor;
+    protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
     /**
-     * Default constructor.
+     * Create {@link ProductSyncManager} instance for a given {@link Executor}.
+     * @param executorIn instance of {@link Executor}
+     * @return instance of {@link ProductSyncManager}
      */
-    public ProductSyncManager() {
-        this(new SystemCommandExecutor());
+    public static ProductSyncManager createInstance(Executor executorIn) {
+        return isMigratedToSCC() ? new SCCProductSyncManager() :
+                new NCCProductSyncManager(executorIn);
     }
 
     /**
-     * Executor constructor, use directly for tests.
-     * @param executorIn the executor in
+     * Create {@link ProductSyncManager} instance.
+     * @return instance of {@link ProductSyncManager}
      */
-    public ProductSyncManager(Executor executorIn) {
-        executor = executorIn;
+    public static ProductSyncManager createInstance() {
+        return isMigratedToSCC() ? new SCCProductSyncManager() :
+            new NCCProductSyncManager();
     }
 
     /**
      * Returns a list of base products.
      * @return the products list
-     * @throws ProductSyncManagerCommandException if external commands or parsing fail
-     * @throws ProductSyncManagerParseException if a parsing problem shows up
+     * @throws ProductSyncException if an error occurred
      */
-    public List<Product> getBaseProducts()
-        throws ProductSyncManagerCommandException, ProductSyncManagerParseException {
-        return parseBaseProducts(readProducts());
+    public abstract List<Product> getBaseProducts() throws ProductSyncException;
+
+    /**
+     * Adds multiple products.
+     * @param productIdents the product ident list
+     * @throws ProductSyncException if an error occurred
+     */
+    public void addProducts(List<String> productIdents) throws ProductSyncException {
+        for (String productIdent : productIdents) {
+            addProduct(productIdent);
+        }
     }
 
     /**
-     * Invoke external commands which list all the available SUSE products.
-     * @return a String containing the XML description of the SUSE products
-     * @throws ProductSyncManagerCommandException if external commands fail
+     * Adds the product.
+     * @param productIdent the product ident
+     * @throws ProductSyncException if an error occurred
      */
-    public String readProducts() throws ProductSyncManagerCommandException {
-        return runProductSyncCommand(LIST_PRODUCT_SWITCH);
-    }
+    public abstract void addProduct(String productIdent) throws ProductSyncException;
 
     /**
-     * Run product sync command.
-     * @param arguments the arguments
-     * @return the string
-     * @throws ProductSyncManagerCommandException the product sync manager exception
+     * Refresh product, channel and subscription information without triggering
+     * any reposysnc.
+     * @throws ProductSyncException if the refresh failed
+     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
+     * @throws ConnectionException if a connection to NCC was not possible
      */
-    public String runProductSyncCommand(String... arguments)
-        throws ProductSyncManagerCommandException {
-        String[] commandLine =
-                (String[]) ArrayUtils.addAll(PRODUCT_SYNC_COMMAND, arguments);
-        int exitCode = executor.execute(commandLine);
-        String output = executor.getLastCommandOutput();
-        String errorMessage = executor.getLastCommandErrorMessage();
-        if (exitCode != 0) {
-            String message = "Error while running product sync command: " +
-                    ArrayUtils.toString(commandLine);
-            throw new ProductSyncManagerCommandException(message, exitCode, output,
-                    errorMessage);
-        }
-        if (logger.isTraceEnabled()) {
-            logger.trace("This the output of product sync command:");
-            logger.trace(output);
-        }
-
-        return output;
-    }
+    public abstract void refreshProducts() throws ProductSyncException,
+            InvalidMirrorCredentialException, ConnectionException;
 
     /**
-     * Returns a list of base products from an XML string.
-     * @param xml a String containing an XML description of SUSE products
-     * @return list of parsed base products
-     * @throws ProductSyncManagerParseException if the xml cannot be parsed
+     * Check if SCC provider is in use.
+     * @return true if provider is migrated from the NCC to SCC.
      */
-    public List<Product> parseBaseProducts(String xml)
-        throws ProductSyncManagerParseException {
-        List<Product> result = new LinkedList<Product>();
-        Set<Product> products = parsePlainProducts(xml);
-
-        // associates ident codes to parsed product objects
-        Map<String, Product> identProductMap = new HashMap<String, Product>();
-        for (Product product : products) {
-            identProductMap.put(product.getIdent(), product);
-        }
-
-        for (Product product : products) {
-            if (product.isBase()) {
-                result.add(product);
-            }
-            else {
-                Product parent = identProductMap.get(product.getBaseProductIdent());
-                product.setBaseProduct(parent);
-                parent.getAddonProducts().add(product);
-            }
-
-            // If status is "P", get a more detailed status
-            if (product.isProvided()) {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Product is provided: " + product.getName());
-                }
-                product.setSyncStatus(getProductSyncStatus(product));
-            }
-            else {
-                product.setSyncStatus(SyncStatus.NOT_MIRRORED);
-            }
-        }
-
-        return result;
+    private static boolean isMigratedToSCC() {
+        return new File(ContentSyncManager.SCC_MIGRATED).exists();
     }
 
     /**
@@ -188,7 +113,7 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    private SyncStatus getProductSyncStatus(Product product) {
+    protected SyncStatus getProductSyncStatus(Product product) {
         // Compute statistics about channels
         int finishedCounter = 0;
         int failedCounter = 0;
@@ -202,11 +127,11 @@ public class ProductSyncManager {
                 debugDetails.append(channelStatus.getDetails());
             }
 
-            if (channelStatus.equals(SyncStatus.FINISHED)) {
+            if (channelStatus.isFinished()) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
-            else if (channelStatus.equals(SyncStatus.FAILED)) {
+            else if (channelStatus.isFailed()) {
                 logger.debug("Channel failed: " + c.getLabel());
                 failedCounter++;
             }
@@ -215,27 +140,27 @@ public class ProductSyncManager {
             }
 
             Date lastSyncDate = channelStatus.getLastSyncDate();
-            if (maxLastSyncDate == null
-                    || (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
+            if (maxLastSyncDate == null ||
+                    (lastSyncDate != null && lastSyncDate.after(maxLastSyncDate))) {
                 maxLastSyncDate = lastSyncDate;
             }
         }
 
         // Set FINISHED if all mandatory channels have metadata
         if (finishedCounter == product.getMandatoryChannels().size()) {
-            SyncStatus result = SyncStatus.FINISHED;
+            SyncStatus result = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             result.setLastSyncDate(maxLastSyncDate);
             return result;
         }
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
-            SyncStatus failedResult = SyncStatus.FAILED;
+            SyncStatus failedResult = new SyncStatus(SyncStatus.SyncStage.FAILED);
             failedResult.setDetails(debugDetails.toString());
             return failedResult;
         }
         // Otherwise return IN_PROGRESS
         else {
-            SyncStatus status = SyncStatus.IN_PROGRESS;
+            SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             int totalChannels = product.getMandatoryChannels().size();
             status.setSyncProgress((finishedCounter * 100) / totalChannels);
             return status;
@@ -249,7 +174,7 @@ public class ProductSyncManager {
      */
     private SyncStatus getChannelSyncStatus(Channel channel) {
         // Fall back to FAILED if no progress or success is detected
-        SyncStatus channelSyncStatus = SyncStatus.FAILED;
+        SyncStatus channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
 
         // Check for success: is there metadata for this channel?
         com.redhat.rhn.domain.channel.Channel c =
@@ -258,11 +183,11 @@ public class ProductSyncManager {
         // the XML data may say P, but if the channel is not in the database
         // we assume the XML data is wrong
         if (c == null) {
-            return SyncStatus.NOT_MIRRORED;
+            return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
         }
 
         if (ChannelManager.getRepoLastBuild(c) != null) {
-            channelSyncStatus = SyncStatus.FINISHED;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             channelSyncStatus.setLastSyncDate(c.getLastSynced());
             return channelSyncStatus;
         }
@@ -293,15 +218,15 @@ public class ProductSyncManager {
                 // Set the status and debug info
                 String runStatus = run.getStatus();
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Repo sync run found for channel " + c +
-                            ", status is: " + runStatus);
+                    logger.debug("Repo sync run found for channel " + c.getLabel() +
+                            " (" + runStatus + ")");
                 }
 
                 String prefix = "setupwizard.syncstatus.";
                 if (runStatus.equals(TaskoRun.STATUS_FAILED) ||
                         runStatus.equals(TaskoRun.STATUS_INTERRUPTED)) {
                     // Reposync has failed or has been interrupted
-                    channelSyncStatus = SyncStatus.FAILED;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.failed");
                     channelSyncStatus.setDetails(debugInfo);
                     // Don't return from here, there might be a new schedule already
@@ -309,7 +234,7 @@ public class ProductSyncManager {
                 else if (runStatus.equals(TaskoRun.STATUS_READY_TO_RUN) ||
                         runStatus.equals(TaskoRun.STATUS_RUNNING)) {
                     // Reposync is in progress
-                    channelSyncStatus = SyncStatus.IN_PROGRESS;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     channelSyncStatus.setMessageKey(prefix + "message.reposync.progress");
                     channelSyncStatus.setDetails(debugInfo);
                     return channelSyncStatus;
@@ -321,14 +246,14 @@ public class ProductSyncManager {
         }
 
         // Check if there is a schedule that is newer than the last (FAILED) run
-        if (!repoSyncRunFound || channelSyncStatus == SyncStatus.FAILED) {
+        if (!repoSyncRunFound || channelSyncStatus.isFailed()) {
             List<TaskoSchedule> schedules =
                     TaskoFactory.listRepoSyncSchedulesNewerThan(lastRunEndTime);
             for (TaskoSchedule s : schedules) {
                 Long scheduleChannelId = getChannelIdForSchedule(s);
                 if (channelId.equals(scheduleChannelId)) {
                     // There is a schedule for this channel
-                    channelSyncStatus = SyncStatus.IN_PROGRESS;
+                    channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
                     return channelSyncStatus;
                 }
             }
@@ -339,7 +264,7 @@ public class ProductSyncManager {
 
         // Check if channel metadata generation is in progress
         if (ChannelManager.isChannelLabelInProgress(channel.getLabel())) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
 
@@ -349,7 +274,7 @@ public class ProductSyncManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("channel_label", channel.getLabel());
         if (selector.execute(params).size() > 0) {
-            channelSyncStatus = SyncStatus.IN_PROGRESS;
+            channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             return channelSyncStatus;
         }
 
@@ -359,7 +284,7 @@ public class ProductSyncManager {
 
     /**
      * For a given {@link TaskoSchedule} return the id of the associated channel.
-     * @param schdule a taskomatic schedule
+     * @param schedule a taskomatic schedule
      * @return channel ID as {@link Long} or null in case of an error
      */
     @SuppressWarnings("unchecked")
@@ -374,72 +299,5 @@ public class ProductSyncManager {
             logger.error(e.getMessage());
         }
         return ret;
-    }
-
-    /**
-     * Parses an XML string into an ordered Set of products, does not handle
-     * base/addon relationships.
-     * @param xml the xml
-     * @return the product set
-     * @throws ProductSyncManagerParseException the product sync manager exception
-     */
-    private Set<Product> parsePlainProducts(String xml)
-        throws ProductSyncManagerParseException {
-        try {
-            ProductList result =
-                    new Persister().read(ProductList.class, IOUtils.toInputStream(xml));
-            TreeSet<Product> products = new TreeSet<Product>(result.getProducts());
-            return products;
-        }
-        catch (Exception e) {
-            throw new ProductSyncManagerParseException(e);
-        }
-    }
-
-    /**
-     * Adds multiple products.
-     * @param productIdents the product ident list
-     * @throws ProductSyncManagerCommandException if a product addition failed
-     */
-    public void addProducts(List<String> productIdents)
-        throws ProductSyncManagerCommandException {
-        for (String productIdent : productIdents) {
-            addProduct(productIdent);
-        }
-    }
-
-    /**
-     * Adds the product.
-     * @param productIdent the product ident
-     * @throws ProductSyncManagerCommandException if the product addition failed
-     */
-    public void addProduct(String productIdent) throws ProductSyncManagerCommandException {
-        runProductSyncCommand(ADD_PRODUCT_SWITCH, productIdent);
-    }
-
-    /**
-     * Refresh product, channel and subscription information without triggering
-     * any reposysnc.
-     * @throws ProductSyncManagerCommandException if the refresh failed
-     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
-     * @throws ConnectionException if a connection to NCC was not possible
-     */
-    public void refreshProducts()
-        throws ProductSyncManagerCommandException, InvalidMirrorCredentialException,
-        ConnectionException {
-        try {
-            runProductSyncCommand(REFRESH_SWITCH);
-        }
-        catch (ProductSyncManagerCommandException e) {
-            if (e.getErrorCode() == 1) {
-                if (e.getCommandErrorMessage().contains(INVALID_MIRROR_CREDENTIAL_ERROR)) {
-                    throw new InvalidMirrorCredentialException();
-                }
-                if (e.getCommandErrorMessage().contains(COULD_NOT_CONNECT_ERROR)) {
-                    throw new ConnectionException();
-                }
-            }
-            throw e;
-        }
     }
 }

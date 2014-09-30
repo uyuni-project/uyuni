@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1359,
+    "name": "SLE10-SDK-SP4-Online",
+    "distro_target": "sles-10-i586",
+    "description": "SLE10-SDK-SP4-Online for sles-10-i586",
+    "url": "https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586",
+    "autorefresh": true
+  }
+]

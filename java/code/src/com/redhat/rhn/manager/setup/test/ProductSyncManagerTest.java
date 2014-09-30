@@ -19,8 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.manager.satellite.Executor;
-import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
@@ -34,28 +32,40 @@ import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.ProductList;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 /**
  * Tests ProductSyncManager.
  */
-public class ProductSyncManagerTest extends BaseTestCaseWithUser {
+public abstract class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     private final ProductList products = new ProductList();
     private String providedProductIdent;
 
     /**
+     * Returns list of products as an XML element.
+     * @return {@link ProductList}
+     */
+    protected ProductList getProducts() {
+        return products;
+    }
+
+    /**
+     * Returns provided product ident.
+     * @return Product ident.
+     */
+    protected String getProvidedProductIdent() {
+        return providedProductIdent;
+    }
+
+
+    /**
      * {@inheritDoc}}
+     * @throws java.lang.Exception if anything goes wrong
      */
     @Override
     public void setUp() throws Exception {
@@ -81,8 +91,10 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * Creates a fake product with the channels as described in
      * channelDesc eg: "P..P"
      * @param channelDesc
+     * @return {@link Product}
+     * @throws java.lang.Exception
      */
-    private Product createFakeProduct(String channelDesc)  throws Exception {
+    protected Product createFakeProduct(String channelDesc)  throws Exception {
         String ident = "product-" + TestUtils.randomString();
         Product p = new Product("x86_64",
             ident,
@@ -122,206 +134,13 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         return p;
     }
 
-    /**
-     * {@inheritDoc}}
-     */
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-    /**
-     * builds the xml of mgr-ncc-sync from the created
-     * test channels in setUp()
-     */
-    private String getTestProductXml() {
-        try {
-            Serializer s = new Persister();
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            s.write(products, os);
-            String ret = new String(os.toByteArray(), "UTF-8");
-            return ret;
-        }
-        catch (Exception e) {
-            fail("Can't get the xml fixture data:" + e.getMessage());
-            return null;
-        }
-    }
-
-   /**
-     * Fake product data, but static
-     * @return
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    private String getFixtureProductXml() {
-        try {
-            return TestUtils.readAll(TestUtils.findTestData("mgr_ncc_sync_products.xml"));
-        }
-        catch (Exception e) {
-            fail(e.getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Returns an executor that outputs the xml from the created
-     * products in setUp()
-     */
-    private Executor getTestExecutor() {
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return getTestProductXml();
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
-                return 0;
-            }
-        };
-        return executor;
-    }
-
-    private Product getProductWithAllChannelsProvided() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
-        List<Product> parsedProds = productSyncManager.getBaseProducts();
-
-        Product prod = null;
-        for (Product p : parsedProds) {
-            if (p.getIdent().equals(providedProductIdent)) {
-                prod = p;
-            }
-        }
-        return prod;
-    }
-
-    /**
-     * See if we get NOT_MIRRORED in case product status is not parsed as P.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusNotMirrored() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager(getTestExecutor());
-        List<Product> parsedProds = productSyncManager.getBaseProducts();
-
-        for (Product p : parsedProds) {
-            if (!p.isProvided()) {
-                assertEquals(Product.SyncStatus.NOT_MIRRORED,
-                    p.getSyncStatus());
-            }
-        }
-    }
-
-    /**
-     * A product with all channels on P without previous download runs
-     * is in progress if there is schedules for all those channels.
-     * @throws Exception if anything goes wrong
-     */
-    public void testNewProductStatusInProgress() throws Exception {
-        productInsertTaskoSchedule(providedProductIdent);
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                        prod.getSyncStatus());
-    }
-
-    /**
-     * There is no runs and no schedules: FAILED.
-     * @throws Exception if anything goes wrong
-     */
-    public void testNewProductStatusFailed() throws Exception {
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                        prod.getSyncStatus());
-    }
-
-    /**
-     * There is a run with status RUNNING (even after FAILED ones), so IN_PROGRESS.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusInProgress() throws Exception {
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_RUNNING);
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                        prod.getSyncStatus());
-    }
-
-    /**
-     * Repo sync run has FAILED and there is no new schedule: FAILED.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusFailed() throws Exception {
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                prod.getSyncStatus());
-    }
-
-    /**
-     * Repo sync run has FAILED and there is a new schedule (retry): IN_PROGRESS.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusAfterRetry() throws Exception {
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FAILED);
-        productInsertTaskoSchedule(providedProductIdent);
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.IN_PROGRESS,
-                prod.getSyncStatus());
-    }
-
-    /**
-     * Repo sync finished, but no metadata: FAILED.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FINISHED);
-        Product prod = getProductWithAllChannelsProvided();
-        assertEquals(Product.SyncStatus.FAILED,
-                        prod.getSyncStatus());
-    }
-
-    /**
-     * Repo sync finished and metadata is there: FINISHED.
-     * @throws Exception if anything goes wrong
-     */
-    public void testProductStatusDownloadCompletedAndMetadata() throws Exception {
-        String oldMountPoint = Config.get().getString(
-                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
-        // temporary repodata directory
-        File tempMountPoint = File.createTempFile("folder-name", "");
-        tempMountPoint.delete();
-        tempMountPoint.mkdir();
-        // change the default mount point
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
-                tempMountPoint.getAbsolutePath());
-
-        // download finished
-        productInsertTaskoRun(providedProductIdent, TaskoRun.STATUS_FINISHED);
-        productGenerateFakeMetadata(providedProductIdent);
-
-        Product prod = getProductWithAllChannelsProvided();
-
-        assertEquals(Product.SyncStatus.FINISHED,
-                        prod.getSyncStatus());
-        assertNotNull((prod.getSyncStatus().getLastSyncDate()));
-        // restore old cache path
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
-    }
 
     /**
      * Generate fake metadata for a given product.
      * @param prodIdent ident of a product
+     * @throws java.io.IOException
      */
-    private void productGenerateFakeMetadata(String prodIdent) throws IOException {
+    protected void productGenerateFakeMetadata(String prodIdent) throws IOException {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
                 for (com.suse.manager.model.products.Channel ch : prod
@@ -335,8 +154,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     /**
      * Generate fake metadata for a given channel.
      * @param ch channel DTO
+     * @throws java.io.IOException
      */
-    private void channelGenerateFakeMetadata(
+    protected void channelGenerateFakeMetadata(
             com.suse.manager.model.products.Channel ch) throws IOException {
         if (ch.isProvided()) {
             Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
@@ -354,8 +174,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     /**
      * Generate fake metadata for a {@link Channel} object.
      * @param chObj channel bean
+     * @throws java.io.IOException
      */
-    private void channelGenerateFakeMetadata(Channel chObj) throws IOException {
+    protected void channelGenerateFakeMetadata(Channel chObj) throws IOException {
         String prefix = Config.get().getString(
                 ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
         String mountPoint = Config.get().getString(
@@ -375,7 +196,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * for all channels with status P, while those with . will be ignored.
      * @param prodIdent
      */
-    private void productInsertTaskoSchedule(String prodIdent) {
+    protected void productInsertTaskoSchedule(String prodIdent) {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
                 for (com.suse.manager.model.products.Channel ch : prod
@@ -386,7 +207,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    private void insertTaskoSchedule(com.suse.manager.model.products.Channel ch) {
+    protected void insertTaskoSchedule(com.suse.manager.model.products.Channel ch) {
         if (ch.isProvided()) {
             Channel chObj = ChannelFactory.lookupByLabel(ch.getLabel());
             insertTaskoSchedule(chObj);
@@ -411,8 +232,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * and schedules for all channels with status P, while those with . will be ignored.
      * @param prodIdent ident of a product
      * @param status status
+     * @throws java.lang.Exception
      */
-    private void productInsertTaskoRun(String prodIdent, String status) throws Exception {
+    protected void productInsertTaskoRun(String prodIdent, String status) throws Exception {
         for (Product prod : products.getProducts()) {
             if (prodIdent.equals(prod.getIdent())) {
                 for (com.suse.manager.model.products.Channel ch : prod
@@ -437,10 +259,10 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         assertNotNull(template);
         TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, schedule.getId());
         taskRun.setStatus(status);
-        if (status == TaskoRun.STATUS_FAILED ||
-                status == TaskoRun.STATUS_FINISHED ||
-                status == TaskoRun.STATUS_INTERRUPTED ||
-                status == TaskoRun.STATUS_SKIPPED) {
+        if (status.equals(TaskoRun.STATUS_FAILED) ||
+            status.equals(TaskoRun.STATUS_FINISHED) ||
+            status.equals(TaskoRun.STATUS_INTERRUPTED) ||
+            status.equals(TaskoRun.STATUS_SKIPPED)) {
             taskRun.setEndTime(new Date());
         }
         TaskoFactory.save(taskRun);
@@ -448,231 +270,74 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests getBaseProducts().
+     * Actual implementation should feed getProducts() fixtures into the real
+     * product sync manager backend getBaseProducts(). As an example NCC backend uses
+     * a test {@link com.redhat.rhn.manager.satellite.Executor} which outputs the fixtures to the XML.
+     *
+     * @return {@link Product}
+     * @throws Exception
+     */
+    protected abstract Product getProductWithAllChannelsProvided() throws Exception;
+
+    /**
+     * A product with all channels on P without previous download runs
+     * is in progress if there is schedules for all those channels.
      * @throws Exception if anything goes wrong
      */
-    public void testGetBaseProducts() throws Exception {
-        Executor executor = new Executor() {
-            @Override
-            public String getLastCommandOutput() {
-                return getFixtureProductXml();
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
-        List<Product> output = productSyncManager.getBaseProducts();
-
-        assertEquals(output.get(0).getIdent(), "res-4-i386-1321-rhel-i386-es-4");
+    public void testNewProductStatusInProgress() throws Exception {
+        productInsertTaskoSchedule(this.getProvidedProductIdent());
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusInProgress());
     }
 
     /**
-     * Tests runProductSyncCommand().
+     * There is no runs and no schedules: FAILED.
      * @throws Exception if anything goes wrong
      */
-    public void testRunProductSyncCommand() throws Exception {
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return "expected test output";
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], "daisan");
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
-        String output = productSyncManager.runProductSyncCommand("daisan");
-
-        assertEquals("expected test output", output);
+    public void testNewProductStatusFailed() throws Exception {
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusFailed());
     }
 
     /**
-     * Tests parsing of SUSE products
+     * There is a run with status RUNNING (even after FAILED ones), so IN_PROGRESS.
      * @throws Exception if anything goes wrong
      */
-    public void testParseProducts() throws Exception {
-        ProductSyncManager productSyncManager = new ProductSyncManager();
-        List<Product> baseProducts =
-                productSyncManager.parseBaseProducts(getFixtureProductXml());
-
-        assertEquals(3, baseProducts.size());
-        assertEquals("res-4-i386-1321-rhel-i386-es-4", baseProducts.get(0).getIdent());
-        assertEquals("res-4-x86_64-1321-rhel-x86_64-as-4", baseProducts.get(1).getIdent());
-        assertEquals("res-6-x86_64-2580-rhel-x86_64-server-6", baseProducts.get(2)
-                .getIdent());
-
-        assertTrue(baseProducts.get(0).getAddonProducts().isEmpty());
-        assertTrue(baseProducts.get(1).getAddonProducts().isEmpty());
-
-        List<Product> res6Addons = baseProducts.get(2).getAddonProducts();
-        assertEquals(1, res6Addons.size());
-        assertEquals("rhel-6-expanded-support-x86_64-3200-rhel-x86_64-server-6", res6Addons
-                .get(0).getIdent());
+    public void testProductStatusInProgress() throws Exception {
+        productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
+        productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_RUNNING);
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusInProgress());
     }
 
     /**
-     * Tests readProducts().
+     * Repo sync run has FAILED and there is no new schedule: FAILED.
      * @throws Exception if anything goes wrong
      */
-    public void testReadProducts() throws Exception {
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return getTestProductXml();
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.LIST_PRODUCT_SWITCH);
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
-        productSyncManager.readProducts();
+    public void testProductStatusFailed() throws Exception {
+        productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusFailed());
     }
 
     /**
-     * Tests refreshProducts().
+     * Repo sync run has FAILED and there is a new schedule (retry): IN_PROGRESS.
      * @throws Exception if anything goes wrong
      */
-    public void testRefreshProducts() throws Exception {
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return "Done";
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.REFRESH_SWITCH);
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
-        productSyncManager.refreshProducts();
+    public void testProductStatusAfterRetry() throws Exception {
+        productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FAILED);
+        productInsertTaskoSchedule(this.getProvidedProductIdent());
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusInProgress());
     }
 
     /**
-     * Tests addProduct().
+     * Repo sync finished, but no metadata: FAILED.
      * @throws Exception if anything goes wrong
      */
-    public void testAddProduct() throws Exception {
-        final String productIdent = "test";
-
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return "Done";
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
-                assertEquals(argsIn[3], productIdent);
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-
-        productSyncManager.addProduct(productIdent);
-    }
-
-    /**
-     * Tests addProducts().
-     * @throws Exception if anything goes wrong
-     */
-    public void testAddProducts() throws Exception {
-        final List<String> idents = new LinkedList<String>();
-        idents.add("first_ident");
-        idents.add("second_ident");
-
-        // This list is used by the custom executor to make some assertions.
-        // Items are removed from this list, hence we cannot pass idents to it,
-        // we have to make a copy of it.
-        final List<String> expectedIdents = new LinkedList<String>(idents);
-
-        Executor executor = new Executor() {
-
-            @Override
-            public String getLastCommandOutput() {
-                return "Done";
-            }
-
-            @Override
-            public String getLastCommandErrorMessage() {
-                return null;
-            }
-
-            @Override
-            public int execute(String[] argsIn) {
-                String expected = expectedIdents.get(0);
-                expectedIdents.remove(0);
-
-                assertEquals(argsIn[0], ProductSyncManager.PRODUCT_SYNC_COMMAND[0]);
-                assertEquals(argsIn[1], ProductSyncManager.PRODUCT_SYNC_COMMAND[1]);
-                assertEquals(argsIn[2], ProductSyncManager.ADD_PRODUCT_SWITCH);
-                assertEquals(argsIn[3], expected);
-                return 0;
-            }
-        };
-
-        ProductSyncManager productSyncManager = new ProductSyncManager(executor);
-        productSyncManager.addProducts(idents);
-        assertTrue(expectedIdents.isEmpty());
+    public void testProductStatusDownloadCompletedNoMetadata() throws Exception {
+        productInsertTaskoRun(this.getProvidedProductIdent(), TaskoRun.STATUS_FINISHED);
+        Product prod = getProductWithAllChannelsProvided();
+        assert(prod.isStatusFailed());
     }
 }

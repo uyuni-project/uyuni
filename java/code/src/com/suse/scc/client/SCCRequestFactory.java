@@ -28,12 +28,19 @@ import org.apache.commons.lang.StringUtils;
  */
 public class SCCRequestFactory {
 
-    // Singleton instance
+    /** Singleton instance. */
     private static SCCRequestFactory instance = new SCCRequestFactory();
 
+    /**
+     * Instantiates a new SCC request factory.
+     */
     private SCCRequestFactory() {
     }
 
+    /**
+     * Gets the single instance of SCCRequestFactory.
+     * @return single instance of SCCRequestFactory
+     */
     public static SCCRequestFactory getInstance() {
         return instance;
     }
@@ -41,11 +48,11 @@ public class SCCRequestFactory {
     /**
      * Init a {@link HttpURLConnection} object from a given URI.
      *
-     * @param method
-     * @param uri
-     * @param encodedCredentials
+     * @param method the method
+     * @param endpoint the endpoint
+     * @param config the config
      * @return connection
-     * @throws IOException
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public HttpURLConnection initConnection(
             String method, String endpoint, SCCConfig config) throws IOException {
@@ -67,9 +74,9 @@ public class SCCRequestFactory {
             if (!StringUtils.isEmpty(proxyUsername) &&
                 !StringUtils.isEmpty(proxyPassword)) {
                 try {
-                    byte[] encodedBytes = Base64
-                        .encodeBase64((proxyUsername + ':' + proxyPassword)
-                            .getBytes("iso-8859-1"));
+                    byte[] encodedBytes =
+                            Base64.encodeBase64((proxyUsername + ':' + proxyPassword)
+                                    .getBytes("UTF-8"));
                     final String encoded = new String(encodedBytes, "iso-8859-1");
                     connection.addRequestProperty("Proxy-Authorization", encoded);
                 }
@@ -90,12 +97,12 @@ public class SCCRequestFactory {
         }
 
         // Set additional request headers here
-        connection.setRequestProperty("Accept", "application/vnd.scc.suse.com.v2+json");
+        connection.setRequestProperty("Accept", "application/vnd.scc.suse.com.v4+json");
         connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
 
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
-        connection.setRequestProperty("SMT", uuid != null ? uuid : "undefined");
+        connection.setRequestProperty("SMS", uuid != null ? uuid : "undefined");
 
         return connection;
     }

@@ -21,8 +21,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -30,41 +35,67 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCConnection {
 
-    private final String endpoint;
+    /** The endpoint. */
+    private String endpoint;
+
+    /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
+
+    /** The config object. */
     private final SCCConfig config;
+
+    /** Represents a partial result with a pointer to the next one. */
+    private class PaginatedResult<T> {
+        private T result;
+        private String nextUrl;
+
+        public PaginatedResult(T resultIn, String nextUrlIn) {
+            result = resultIn;
+            nextUrl = nextUrlIn;
+        }
+    }
 
     /**
      * Init a connection to a given SCC endpoint.
      *
-     * @param endpoint
-     * @param config
-    */
-    public SCCConnection(String endpoint, SCCConfig config) {
-        this.config = config;
-        this.endpoint = endpoint;
+     * @param endpointIn the endpoint
+     * @param configIn the config
+     */
+    public SCCConnection(String endpointIn, SCCConfig configIn) {
+        endpoint = endpointIn;
+        config = configIn;
     }
 
     /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
+     * @param <T> the generic type
      * @param resultType the type of the result
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    public <T> T get(Type resultType) throws SCCClientException {
-        return request(resultType, "GET");
+    public <T> List<T> getList(Type resultType) throws SCCClientException {
+        List<T> result = new LinkedList<T>();
+        PaginatedResult<List<T>> partialResult;
+        do {
+            partialResult = request(toListType(resultType), "GET");
+            result.addAll(partialResult.result);
+            endpoint = partialResult.nextUrl;
+        } while (partialResult.nextUrl != null);
+        return result;
     }
 
     /**
      * Perform HTTP request and parse the result into a given result type.
      *
+     * @param <T> the generic type
      * @param resultType the type of the result
      * @param method the HTTP method to use
      * @return object of type given by resultType
      * @throws SCCClientException in case of a problem
      */
-    private <T> T request(Type resultType, String method) throws SCCClientException {
+    private <T> PaginatedResult<T> request(Type resultType, String method)
+        throws SCCClientException {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
         GZIPInputStream gzipStream = null;
@@ -92,7 +123,21 @@ public class SCCConnection {
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
-                return gson.fromJson(streamReader, resultType);
+                T result = gson.fromJson(streamReader, resultType);
+
+                String nextUrl = null;
+                String linkHeader = connection.getHeaderField("Link");
+                if (linkHeader != null) {
+                    String schema = config.getSchema();
+                    String hostname = config.getHostname();
+                    Matcher m = Pattern
+                            .compile(".*<" + schema + hostname + "(.*?)>; rel=\"next\".*")
+                            .matcher(linkHeader);
+                    if (m.matches()) {
+                        nextUrl = m.group(1);
+                    }
+                }
+                return new PaginatedResult<T>(result, nextUrl);
             }
             else {
                 // Request was not successful
@@ -110,5 +155,31 @@ public class SCCConnection {
             SCCClientUtils.closeQuietly(inputStream);
             SCCClientUtils.closeQuietly(gzipStream);
         }
+    }
+
+    /**
+     * Returns a type which is a list of the specified type.
+     * @param elementType the element type
+     * @return the List type
+     */
+    public Type toListType(final Type elementType) {
+        Type resultListType = new ParameterizedType() {
+
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] {elementType};
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
+        return resultListType;
     }
 }

@@ -87,6 +87,7 @@ class ProductOperationsTest(unittest.TestCase):
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] RES 4 (x86_64)
 [ ] RES 4 (x86_64)
@@ -166,6 +167,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] RES 4 (x86_64)
 [ ] RES 4 (x86_64)
@@ -220,6 +222,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -248,6 +251,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -276,6 +280,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Manager Proxy 1.2 (x86_64)
 [ ] SUSE Manager Proxy 1.7 (x86_64)
@@ -306,6 +311,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 [ ] SUSE Linux Enterprise Server 11 SP2 (x86_64)
   [ ] SUSE Cloud 1.0 (x86_64)
@@ -336,6 +342,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 002) [ ] RES 4 (x86_64)
@@ -395,6 +402,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -458,6 +466,7 @@ Product successfully added"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product
@@ -505,7 +514,7 @@ Product successfully added"""
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         # set the 1st required channel as already installed
-        chosen_product.channels[0].status = Channel.Status.UNAVAILABLE
+        chosen_product.status = Product.Status.UNAVAILABLE
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock_cli_ask:
             with ConsoleRecorder() as recorder:
@@ -518,13 +527,12 @@ Product successfully added"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
-001) [ ] RES 4 (x86_64)"""
+     [U] RES 4 (x86_64)
+All the available products have already been installed, nothing to do"""
+
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
-
-        expected_stderr = """Cannot add product 'RES 4' because the following channels are not available:
-  - res4-as-suse-manager-tools-x86_64"""
-        self.assertEqual(expected_stderr.split("\n"), recorder.stderr)
 
         self.assertFalse(stubbed_xmlrpm_call.mock_calls)
 
@@ -560,6 +568,7 @@ Status:
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
      [I] RES 4 (x86_64)
 All the available products have already been installed, nothing to do"""
@@ -597,6 +606,7 @@ All the available products have already been installed, nothing to do"""
 Status:
   - [I] - product is installed
   - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
 
 001) [ ] RES 4 (x86_64)
 Adding channels required by 'RES 4' product

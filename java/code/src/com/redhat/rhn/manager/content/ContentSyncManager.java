@@ -106,7 +106,7 @@ public class ContentSyncManager {
             "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
 
     // Source URL handling
-    private static final String OFFICIAL_REPO_HOST = "nu.novell.com";
+    private static final String OFFICIAL_REPO_HOST = "updates.suse.com";
     private static final String MIRRCRED_QUERY = "credentials=mirrcred";
 
     // Static XML files we parse
@@ -918,7 +918,16 @@ public class ContentSyncManager {
                 product.setRelease(p.getReleaseType() != null ?
                                    p.getReleaseType().toLowerCase() : null);
                 product.setFriendlyName(p.getFriendlyName());
-                product.setArch(PackageFactory.lookupPackageArchByLabel(p.getArch()));
+
+                PackageArch pArch = PackageFactory.lookupPackageArchByLabel(p.getArch());
+                if (pArch == null && p.getArch() != null) {
+                    // unsupported architecture, skip the product
+                    log.error("Unknown architecture '" + p.getArch()
+                            + "'. This may be caused by a missing database migration");
+                    continue;
+                }
+
+                product.setArch(pArch);
                 product.setProductList('Y');
                 if (channelFamily != null) {
                     product.setChannelFamilyId(channelFamily.getId().toString());
@@ -1168,7 +1177,7 @@ public class ContentSyncManager {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
-                log.debug("Channel exists: " + label);
+                log.debug("Channel exists (" + label + "), returning...");
             }
             return;
         }
