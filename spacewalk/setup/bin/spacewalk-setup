@@ -55,7 +55,7 @@ my $product_name = $answers{'product_name'} || 'Spacewalk';
 
 my $hn = `/bin/hostname -f`;
 chomp($hn);
-$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq ""); 
+$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq "");
 $answers{hostname} ||= "$hn";
 
 if (not defined $opts{"clear-db"} and defined $answers{"clear-db"} and
