@@ -16,10 +16,10 @@
                 <div class="text-left col-xs-10">
                     <span id="verify-${current.id}"></span>
                     <span id="primary-${current.id}">
-                        <c:if test="${current.id == 0}">
+                        <c:if test="${current.primary}">
                             <rhn:icon type="setup-wizard-creds-primary" title="mirror-credentials.jsp.primary" />
                         </c:if>
-                        <c:if test="${current.id > 0}">
+                        <c:if test="${not current.primary}">
                             <a href="javascript:void(0);" onCLick="makePrimaryCredentials('${current.id}')">
                                 <rhn:icon type="setup-wizard-creds-make-primary" title="mirror-credentials.jsp.make-primary" />
                             </a>

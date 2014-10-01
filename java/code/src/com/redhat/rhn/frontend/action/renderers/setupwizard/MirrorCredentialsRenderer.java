@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
@@ -66,7 +66,7 @@ public class MirrorCredentialsRenderer {
      * @throws IOException in case something really bad happens
      */
     public String saveCredentials(Long id, String email, String user, String password)
-        throws ServletException, IOException {
+        throws ServletException, IOException, ContentSyncException {
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
@@ -97,11 +97,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-
-        // TODO: Handle errors
-        @SuppressWarnings("unused")
-        ValidatorError[] errors = credsManager.storeMirrorCredentials(
-                creds, webUser, request);
+        credsManager.storeMirrorCredentials(creds, webUser, request);
         return renderCredentials();
     }
 
