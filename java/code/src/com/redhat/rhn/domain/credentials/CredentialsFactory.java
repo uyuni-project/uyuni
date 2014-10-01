@@ -15,14 +15,19 @@
 
 package com.redhat.rhn.domain.credentials;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
+
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * CredentialsFactory
@@ -126,6 +131,20 @@ public class CredentialsFactory extends HibernateFactory {
         creds.setType(CredentialsFactory
                 .findCredentialsTypeByLabel(Credentials.TYPE_SCC));
         return creds;
+    }
+
+    /**
+     * Helper method for looking up SCC credentials.
+     * @return credentials or null
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Credentials> lookupSCCCredentials() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(Credentials.class);
+        c.add(Restrictions.eq("type", CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
+        c.addOrder(Order.asc("id"));
+        return c.list();
     }
 
     @Override
