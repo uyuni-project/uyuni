@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 import com.suse.manager.model.ncc.Subscription;
@@ -109,7 +110,7 @@ public class MirrorCredentialsManager extends BaseManager {
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
         List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
-        if (ProductSyncManager.isMigratedToSCC()) {
+        if (MgrSyncUtils.isMigratedToSCC()) {
             for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
                 MirrorCredentialsDto creds = new MirrorCredentialsDto(null, c.getUsername(), c.getPassword());
                 creds.setId(c.getId());

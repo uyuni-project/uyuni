@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
@@ -258,7 +259,7 @@ public class ContentSyncHandler extends BaseHandler {
         }
 
         try {
-            FileUtils.touch(new File(ContentSyncManager.SCC_MIGRATED));
+            FileUtils.touch(new File(MgrSyncUtils.SCC_MIGRATED));
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
