@@ -621,6 +621,21 @@ public class ContentSyncManager {
     }
 
     /**
+     * Get subscriptions from SCC for a single pair of mirror credentials.
+     *
+     * @param user username
+     * @param password password
+     * @return list of subscriptions as received from SCC.
+     */
+    public List<SCCSubscription> getSubscriptions(String user, String password)
+            throws SCCClientException {
+        SCCClient scc = new SCCClient(user, password);
+        scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+        scc.setUUID(getUUID());
+        return scc.listSubscriptions();
+    }
+
+    /**
      * Returns all subscriptions available to all configured credentials.
      * @return list of all available subscriptions
      */
@@ -630,12 +645,8 @@ public class ContentSyncManager {
                 new MirrorCredentialsManager().findMirrorCredentials();
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
-                List<SCCSubscription> subs = scc.listSubscriptions();
-                subscriptions.addAll(subs);
+                subscriptions.addAll(getSubscriptions(c.getUser(), c.getPassword()));
             }
             catch (SCCClientException e) {
                 log.error("Error getting subscriptions for " +
