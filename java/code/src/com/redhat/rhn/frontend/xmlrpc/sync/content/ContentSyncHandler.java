@@ -245,9 +245,9 @@ public class ContentSyncHandler extends BaseHandler {
         SUSEProductFactory.clearAllProducts();
 
         // Migrate mirror credentials into the DB
-        MirrorCredentialsManager mcm = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         int id = 0;
-        for (MirrorCredentialsDto dto : mcm.findMirrorCredentials()) {
+        for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
             Credentials c = CredentialsFactory.createSCCCredentials();
             c.setUsername(dto.getUser());
             c.setPassword(dto.getPassword());
@@ -259,7 +259,7 @@ public class ContentSyncHandler extends BaseHandler {
             id++;
         }
         for (long i = --id; id >= 0; id--) {
-            mcm.deleteMirrorCredentials(i, user, null);
+            credsManager.deleteMirrorCredentials(i, user, null);
         }
 
         // Touch file to indicate that server has been migrated
