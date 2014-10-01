@@ -104,7 +104,7 @@ public abstract class ProductSyncManager {
      * Check if SCC provider is in use.
      * @return true if provider is migrated from the NCC to SCC.
      */
-    private static boolean isMigratedToSCC() {
+    public static boolean isMigratedToSCC() {
         return new File(ContentSyncManager.SCC_MIGRATED).exists();
     }
 
