@@ -240,14 +240,18 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer performMigration(String sessionKey) throws ContentSyncException {
         User user = BaseHandler.getLoggedInUser(sessionKey);
+
+        // Clear relevant database tables
         SUSEProductFactory.clearAllProducts();
 
+        // Migrate mirror credentials into the DB
         MirrorCredentialsManager mcm = new MirrorCredentialsManager();
         int id = 0;
         for (MirrorCredentialsDto dto : mcm.findMirrorCredentials()) {
             Credentials c = CredentialsFactory.createSCCCredentials();
             c.setUsername(dto.getUser());
             c.setPassword(dto.getPassword());
+            // We identify the primary credentials by setting a URL
             if (id == 0) {
                 c.setUrl(SCCConfig.DEFAULT_SCHEMA + SCCConfig.DEFAULT_HOSTNAME);
             }
@@ -258,6 +262,7 @@ public class ContentSyncHandler extends BaseHandler {
             mcm.deleteMirrorCredentials(i, user, null);
         }
 
+        // Touch file to indicate that server has been migrated
         try {
             FileUtils.touch(new File(MgrSyncUtils.SCC_MIGRATED));
         }

@@ -105,12 +105,15 @@ public class MirrorCredentialsManager extends BaseManager {
     }
 
     /**
-     * Find all valid mirror credentials and return them.
+     * Find all valid mirror credentials and return them. Read from the DB as soon as this
+     * server has been migrated to use SCC.
+     *
      * @return List of all available mirror credentials
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
         List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
         if (MgrSyncUtils.isMigratedToSCC()) {
+            // We are on SCC, read from the database
             for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
                 MirrorCredentialsDto creds = new MirrorCredentialsDto(
                         c.getUsername(), c.getPassword());
