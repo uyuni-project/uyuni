@@ -17,6 +17,8 @@ package com.redhat.rhn.manager.setup;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
@@ -107,31 +109,39 @@ public class MirrorCredentialsManager extends BaseManager {
      */
     public List<MirrorCredentialsDto> findMirrorCredentials() {
         List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
-
-        // Get the main pair of credentials
-        String user = Config.get().getString(KEY_MIRRCREDS_USER);
-        String password = Config.get().getString(KEY_MIRRCREDS_PASS);
-        String email = Config.get().getString(KEY_MIRRCREDS_EMAIL);
-
-        // Add credentials as long as they have user and password
-        MirrorCredentialsDto creds;
-        int id = 0;
-        while (user != null && password != null) {
-            if (log.isTraceEnabled()) {
-                log.trace("Found credentials (" + id + "): " + user);
+        if (ProductSyncManager.isMigratedToSCC()) {
+            for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+                MirrorCredentialsDto creds = new MirrorCredentialsDto(null, c.getUsername(), c.getPassword());
+                creds.setId(c.getId());
+                credsList.add(creds);
             }
+        }
+        else {
+            // Get the main pair of credentials
+            String user = Config.get().getString(KEY_MIRRCREDS_USER);
+            String password = Config.get().getString(KEY_MIRRCREDS_PASS);
+            String email = Config.get().getString(KEY_MIRRCREDS_EMAIL);
 
-            // Create credentials object
-            creds = new MirrorCredentialsDto(email, user, password);
-            creds.setId(new Long(id));
-            credsList.add(creds);
+            // Add credentials as long as they have user and password
+            MirrorCredentialsDto creds;
+            int id = 0;
+            while (user != null && password != null) {
+                if (log.isTraceEnabled()) {
+                    log.trace("Found credentials (" + id + "): " + user);
+                }
 
-            // Search additional credentials with continuous enumeration
-            id++;
-            String suffix = KEY_MIRRCREDS_SEPARATOR + id;
-            user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
-            password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
-            email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
+                // Create credentials object
+                creds = new MirrorCredentialsDto(email, user, password);
+                creds.setId(new Long(id));
+                credsList.add(creds);
+
+                // Search additional credentials with continuous enumeration
+                id++;
+                String suffix = KEY_MIRRCREDS_SEPARATOR + id;
+                user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
+                password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
+                email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
+            }
         }
         return credsList;
     }
