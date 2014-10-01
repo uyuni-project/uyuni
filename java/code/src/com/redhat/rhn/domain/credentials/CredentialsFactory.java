@@ -147,6 +147,16 @@ public class CredentialsFactory extends HibernateFactory {
         return c.list();
     }
 
+    /**
+     * Find credentials by ID.
+     * @return credentials object or null
+     */
+    public static Credentials lookupCredentialsById(long id) {
+        Session session = getSession();
+        Credentials creds = (Credentials) session.get(Credentials.class, id);
+        return creds;
+    }
+
     @Override
     protected Logger getLogger() {
         return log;

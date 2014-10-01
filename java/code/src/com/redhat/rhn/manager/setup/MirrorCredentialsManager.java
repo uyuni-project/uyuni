@@ -21,11 +21,17 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.satellite.ConfigureSatelliteCommand;
 
 import com.suse.manager.model.ncc.Subscription;
+import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Constructor;
@@ -118,6 +124,13 @@ public class MirrorCredentialsManager extends BaseManager {
                 MirrorCredentialsDto creds = new MirrorCredentialsDto(
                         c.getUsername(), c.getPassword());
                 creds.setId(c.getId());
+                if (c.getUrl() != null) {
+                    creds.setPrimary(true);
+                }
+                if (log.isDebugEnabled()) {
+                    log.debug("Found credentials (" + creds.getId() + "): " +
+                            creds.getUser());
+                }
                 credsList.add(creds);
             }
         }
@@ -131,13 +144,16 @@ public class MirrorCredentialsManager extends BaseManager {
             MirrorCredentialsDto creds;
             int id = 0;
             while (user != null && password != null) {
-                if (log.isTraceEnabled()) {
-                    log.trace("Found credentials (" + id + "): " + user);
+                if (log.isDebugEnabled()) {
+                    log.debug("Found credentials (" + id + "): " + user);
                 }
 
                 // Create credentials object
                 creds = new MirrorCredentialsDto(email, user, password);
                 creds.setId(new Long(id));
+                if (id == 0) {
+                    creds.setPrimary(true);
+                }
                 credsList.add(creds);
 
                 // Search additional credentials with continuous enumeration
@@ -157,78 +173,119 @@ public class MirrorCredentialsManager extends BaseManager {
      * @return pair of credentials for given ID.
      */
     public MirrorCredentialsDto findMirrorCredentials(long id) {
-        // Generate suffix depending on the ID
-        String suffix = "";
-        if (id > 0) {
-            suffix = KEY_MIRRCREDS_SEPARATOR + id;
-        }
-
-        // Get the credentials from config
-        String user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
-        String password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
-        String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
         MirrorCredentialsDto creds = null;
-        if (user != null && password != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Found credentials for ID: " + id);
+        if (MgrSyncUtils.isMigratedToSCC()) {
+            // Lookup the database when on SCC
+            Credentials c = CredentialsFactory.lookupCredentialsById(id);
+            creds = new MirrorCredentialsDto(c.getUsername(), c.getPassword());
+            creds.setId(c.getId());
+            if (c.getUrl() != null) {
+                creds.setPrimary(true);
             }
-            // Create credentials object
-            creds = new MirrorCredentialsDto(email, user, password);
-            creds.setId(id);
+            log.debug("Returning credentials: " + creds.getUser() + " (" + creds.getId() + ")");
         }
-        return creds;
-    }
-
-    /**
-     * Store a given pair of credentials in the filesystem after editing or using the next
-     * available free index for new credentials.
-     * @param creds mirror credentials to store
-     * @param userIn the current user
-     * @param request the current HTTP request object, used for session caching
-     * @return list of validation errors or null in case of success
-     */
-    public ValidatorError[] storeMirrorCredentials(MirrorCredentialsDto creds,
-            User userIn, HttpServletRequest request) {
-        if (creds.getUser() == null || creds.getPassword() == null) {
-            return null;
-        }
-
-        // Find the first free ID if necessary
-        Long id = creds.getId();
-        if (creds.getId() == null) {
-            List<MirrorCredentialsDto> credentials = findMirrorCredentials();
-            id = new Long(credentials.size());
-        }
-
-        // Check if there is changes by looking at previous object
-        MirrorCredentialsDto oldCreds = findMirrorCredentials(id);
-        if (!creds.equals(oldCreds)) {
+        else {
             // Generate suffix depending on the ID
             String suffix = "";
             if (id > 0) {
                 suffix = KEY_MIRRCREDS_SEPARATOR + id;
             }
-            ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
-            configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
-            configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
-            if (creds.getEmail() != null) {
-                configCommand.updateString(KEY_MIRRCREDS_EMAIL + suffix, creds.getEmail());
+
+            // Get the credentials from config
+            String user = Config.get().getString(KEY_MIRRCREDS_USER + suffix);
+            String password = Config.get().getString(KEY_MIRRCREDS_PASS + suffix);
+            String email = Config.get().getString(KEY_MIRRCREDS_EMAIL + suffix);
+            if (user != null && password != null) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Found credentials for ID: " + id);
+                }
+                // Create credentials object
+                creds = new MirrorCredentialsDto(email, user, password);
+                creds.setId(id);
+                if (id == 0) {
+                    creds.setPrimary(true);
+                }
             }
-            // Remove old credentials data from cache
-            if (oldCreds != null) {
+        }
+        return creds;
+    }
+
+    /**
+     * Store a given pair of mirror credentials.
+     * @param creds mirror credentials to store
+     * @param userIn the current user
+     * @param request the current HTTP request object, used for session caching
+     * @return id of the stored mirror credentials
+     * @throws ContentSyncException
+     */
+    public long storeMirrorCredentials(MirrorCredentialsDto creds, User userIn,
+            HttpServletRequest request) throws ContentSyncException {
+        if (creds.getUser() == null || creds.getPassword() == null) {
+            throw new ContentSyncException("User or password is empty");
+        }
+
+        if (MgrSyncUtils.isMigratedToSCC()) {
+            // Store in the database when on SCC
+            Credentials c = null;
+            if (creds.getId() != null) {
+                c = CredentialsFactory.lookupCredentialsById(creds.getId());
+            }
+            if (c == null) {
+                c = CredentialsFactory.createSCCCredentials();
+            }
+            else {
+                // We are editing existing credentials, clear the cache
+                MirrorCredentialsDto oldCreds = findMirrorCredentials(creds.getId());
                 SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
             }
-            return configCommand.storeConfiguration();
+            c.setUsername(creds.getUser());
+            c.setPassword(creds.getPassword());
+            CredentialsFactory.storeCredentials(c);
+
+            // Make this the primary pair of credentials if it's the only one
+            if (CredentialsFactory.lookupSCCCredentials().size() == 1) {
+                makePrimaryCredentials(c.getId(), userIn, request);
+            }
+            return c.getId();
         }
         else {
-            // Nothing to do
-            return null;
+            // Find the first free ID if necessary
+            Long id = creds.getId();
+            if (creds.getId() == null) {
+                List<MirrorCredentialsDto> credentials = findMirrorCredentials();
+                id = new Long(credentials.size());
+            }
+
+            // Check if there is changes by looking at previous object
+            MirrorCredentialsDto oldCreds = findMirrorCredentials(id);
+            if (!creds.equals(oldCreds)) {
+                // Generate suffix depending on the ID
+                String suffix = "";
+                if (id > 0) {
+                    suffix = KEY_MIRRCREDS_SEPARATOR + id;
+                }
+                ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
+                configCommand.updateString(KEY_MIRRCREDS_USER + suffix, creds.getUser());
+                configCommand.updateString(KEY_MIRRCREDS_PASS + suffix, creds.getPassword());
+                if (creds.getEmail() != null) {
+                    configCommand.updateString(KEY_MIRRCREDS_EMAIL + suffix, creds.getEmail());
+                }
+                // Remove old credentials data from cache
+                if (oldCreds != null) {
+                    SetupWizardSessionCache.clearSubscriptions(oldCreds, request);
+                }
+                ValidatorError[] errors = configCommand.storeConfiguration();
+                if (errors != null) {
+                    throw new ContentSyncException(errors[0].getLocalizedMessage());
+                }
+            }
+            return id;
         }
     }
 
     /**
      * Delete a pair of credentials given by their ID. Includes some sophisticated logic
-     * to shift IDs in case you delete a pair of credentials from the middle.
+     * to shift IDs in case you delete a pair of credentials from the middle (when on NCC).
      * @param id the id of credentials being deleted
      * @param userIn the user currently logged in
      * @param request the current HTTP request object, used for session caching
@@ -241,41 +298,58 @@ public class MirrorCredentialsManager extends BaseManager {
         // Store credentials to empty cache later
         MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
-        // Find all credentials and see what needs to be done
-        List<MirrorCredentialsDto> creds = findMirrorCredentials();
-        ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
+        if (MgrSyncUtils.isMigratedToSCC()) {
+            // Delete from database when on SCC
+            Credentials dbCreds = CredentialsFactory.lookupCredentialsById(id);
+            CredentialsFactory.removeCredentials(dbCreds);
 
-        for (MirrorCredentialsDto c : creds) {
-            int index = creds.indexOf(c);
-            // First skip all credentials to the left of the one that should be deleted
-            if (index > id) {
-                // Then shift to the left each
-                String targetSuffix = "";
-                if (index > 1) {
-                    targetSuffix = KEY_MIRRCREDS_SEPARATOR + (index - 1);
-                }
-                configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
-                        c.getUser());
-                configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
-                        c.getPassword());
-                if (c.getEmail() != null) {
-                    configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
-                            c.getEmail());
+            // Make new primary credentials if necessary
+            if (credentials.isPrimary()) {
+                List<Credentials> credsList = CredentialsFactory.lookupSCCCredentials();
+                if (credsList != null && !credsList.isEmpty()) {
+                    makePrimaryCredentials(credsList.get(0).getId(), userIn, request);
                 }
             }
         }
+        else {
+            // Find all credentials and see what needs to be done
+            List<MirrorCredentialsDto> creds = findMirrorCredentials();
+            ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
 
-        // Delete the last credentials
-        String suffix = "";
-        if (creds.size() > 1) {
-            suffix = KEY_MIRRCREDS_SEPARATOR + (creds.size() - 1);
+            for (MirrorCredentialsDto c : creds) {
+                int index = creds.indexOf(c);
+                // First skip all credentials to the left of the one that should be deleted
+                if (index > id) {
+                    // Then shift to the left each
+                    String targetSuffix = "";
+                    if (index > 1) {
+                        targetSuffix = KEY_MIRRCREDS_SEPARATOR + (index - 1);
+                    }
+                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
+                            c.getUser());
+                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
+                            c.getPassword());
+                    if (c.getEmail() != null) {
+                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
+                                c.getEmail());
+                    }
+                }
+            }
+
+            // Delete the last credentials
+            String suffix = "";
+            if (creds.size() > 1) {
+                suffix = KEY_MIRRCREDS_SEPARATOR + (creds.size() - 1);
+            }
+            configCommand.remove(KEY_MIRRCREDS_USER + suffix);
+            configCommand.remove(KEY_MIRRCREDS_PASS + suffix);
+            configCommand.remove(KEY_MIRRCREDS_EMAIL + suffix);
+
+            // Store configuration
+            errors = configCommand.storeConfiguration();
         }
-        configCommand.remove(KEY_MIRRCREDS_USER + suffix);
-        configCommand.remove(KEY_MIRRCREDS_PASS + suffix);
-        configCommand.remove(KEY_MIRRCREDS_EMAIL + suffix);
 
-        // Store configuration and clean cache for deleted credentials
-        errors = configCommand.storeConfiguration();
+        // Clear the cache for deleted credentials
         if (request != null) {
             SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
@@ -294,36 +368,60 @@ public class MirrorCredentialsManager extends BaseManager {
             HttpServletRequest request) {
         ValidatorError[] errors = null;
         List<MirrorCredentialsDto> allCreds = findMirrorCredentials();
-        if (allCreds.size() > 1) {
-            // Find the future primary creds before reordering
-            MirrorCredentialsDto primaryCreds = findMirrorCredentials(id);
-            ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
-
-            // Shift all indices starting from 1
-            int i = 1;
-            for (MirrorCredentialsDto c : allCreds) {
-                if (allCreds.indexOf(c) != id) {
-                    String targetSuffix = KEY_MIRRCREDS_SEPARATOR + i;
-                    configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
-                            c.getUser());
-                    configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
-                            c.getPassword());
-                    if (c.getEmail() != null) {
-                        configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
-                                c.getEmail());
+        if (MgrSyncUtils.isMigratedToSCC()) {
+            // Check if future primary credentials exist
+            if (CredentialsFactory.lookupCredentialsById(id) != null) {
+                for (MirrorCredentialsDto c : allCreds) {
+                    Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
+                    if (dbCreds.getId().equals(id)) {
+                        dbCreds.setUrl(SCCConfig.DEFAULT_SCHEMA + SCCConfig.DEFAULT_HOSTNAME);
+                        CredentialsFactory.storeCredentials(dbCreds);
                     }
-                    i++;
+                    else if (dbCreds.getUrl() != null) {
+                        dbCreds.setUrl(null);
+                        CredentialsFactory.storeCredentials(dbCreds);
+                    }
                 }
             }
-
-            // Set the primary credentials and store
-            primaryCreds.setId(0L);
-            configCommand.updateString(KEY_MIRRCREDS_USER, primaryCreds.getUser());
-            configCommand.updateString(KEY_MIRRCREDS_PASS, primaryCreds.getPassword());
-            if (primaryCreds.getEmail() != null) {
-                configCommand.updateString(KEY_MIRRCREDS_EMAIL, primaryCreds.getEmail());
+            else {
+                // FIXME: We should return something else from this method
+                errors = new ValidatorError[1];
+                errors[0] = new ValidatorError("config.storeconfig.error",
+                        Integer.toString(-1));
             }
-            errors = configCommand.storeConfiguration();
+        }
+        else {
+            if (allCreds.size() > 1) {
+                // Find the future primary creds before reordering
+                MirrorCredentialsDto primaryCreds = findMirrorCredentials(id);
+                ConfigureSatelliteCommand configCommand = getConfigCommand(userIn);
+
+                // Shift all indices starting from 1
+                int i = 1;
+                for (MirrorCredentialsDto c : allCreds) {
+                    if (allCreds.indexOf(c) != id) {
+                        String targetSuffix = KEY_MIRRCREDS_SEPARATOR + i;
+                        configCommand.updateString(KEY_MIRRCREDS_USER + targetSuffix,
+                                c.getUser());
+                        configCommand.updateString(KEY_MIRRCREDS_PASS + targetSuffix,
+                                c.getPassword());
+                        if (c.getEmail() != null) {
+                            configCommand.updateString(KEY_MIRRCREDS_EMAIL + targetSuffix,
+                                    c.getEmail());
+                        }
+                        i++;
+                    }
+                }
+
+                // Set the primary credentials and store
+                primaryCreds.setId(0L);
+                configCommand.updateString(KEY_MIRRCREDS_USER, primaryCreds.getUser());
+                configCommand.updateString(KEY_MIRRCREDS_PASS, primaryCreds.getPassword());
+                if (primaryCreds.getEmail() != null) {
+                    configCommand.updateString(KEY_MIRRCREDS_EMAIL, primaryCreds.getEmail());
+                }
+                errors = configCommand.storeConfiguration();
+            }
         }
         return errors;
     }
@@ -408,6 +506,58 @@ public class MirrorCredentialsManager extends BaseManager {
     }
 
     /**
+     * This is the SCC version of the above method, should be refactored into a
+     * separate class.
+     * @param subscriptions SCC subscriptions
+     * @return list of subscription DTOs
+     */
+    private List<SubscriptionDto> makeDtosSCC(List<SCCSubscription> subscriptions) {
+        if (subscriptions == null) {
+            return null;
+        }
+        // Go through all of the given subscriptions
+        List<SubscriptionDto> dtos = new ArrayList<SubscriptionDto>();
+        for (SCCSubscription sub : subscriptions) {
+            // Skip all non-active
+            if (!sub.getStatus().equals("ACTIVE")) {
+                continue;
+            }
+
+            // Determine subscription name from given product class
+            List<String> productClasses = sub.getProductClasses();
+            if (productClasses.isEmpty()) {
+                log.warn("No product class for subscription: " +
+                        sub.getName() + ", skipping");
+                continue;
+            }
+            String subName = null;
+            for (String productClass : productClasses) {
+                String name = ChannelFamilyFactory.getNameByLabel(productClass);
+                if (StringUtils.isBlank(name)) {
+                    log.warn("Empty name for: " + productClass);
+                    name = productClass;
+                }
+
+                // It is an OR relationship: append with OR
+                if (subName == null) {
+                    subName = name;
+                }
+                else {
+                    subName = subName + " OR " + name;
+                }
+            }
+
+            // We have a valid subscription, add it as DTO
+            SubscriptionDto dto = new SubscriptionDto();
+            dto.setName(subName);
+            dto.setStartDate(sub.getStartsAt());
+            dto.setEndDate(sub.getExpiresAt());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    /**
      * Return cached list of subscriptions or "null" for signaling "verification failed".
      * @param creds credentials
      * @param request request
@@ -422,9 +572,21 @@ public class MirrorCredentialsManager extends BaseManager {
             if (log.isDebugEnabled()) {
                 log.debug("Downloading subscriptions for " + creds.getUser());
             }
-            List<Subscription> subscriptions = downloadSubscriptions(creds);
-            SetupWizardSessionCache.storeSubscriptions(
-                    makeDtos(subscriptions), creds, request);
+            if (MgrSyncUtils.isMigratedToSCC()) {
+                try {
+                    List<SCCSubscription> subscriptions = new ContentSyncManager().
+                            getSubscriptions(creds.getUser(), creds.getPassword());
+                    SetupWizardSessionCache.storeSubscriptions(
+                            makeDtosSCC(subscriptions), creds, request);
+                } catch (SCCClientException e) {
+                    log.error(e.getMessage());
+                }
+            }
+            else {
+                List<Subscription> subscriptions = downloadSubscriptions(creds);
+                SetupWizardSessionCache.storeSubscriptions(
+                        makeDtos(subscriptions), creds, request);
+            }
         }
 
         // Return from cache

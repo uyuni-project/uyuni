@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
@@ -148,7 +149,11 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         creds.setPassword("testpass" + id);
         creds.setEmail("testemail" + id);
         creds.setId(id);
-        credsManager.storeMirrorCredentials(creds, user, request);
+        try {
+            credsManager.storeMirrorCredentials(creds, user, request);
+        } catch (ContentSyncException e) {
+            e.printStackTrace();
+        }
         return creds;
     }
 
