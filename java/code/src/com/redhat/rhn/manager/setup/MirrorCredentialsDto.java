@@ -46,6 +46,16 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
+     * Instantiates a new mirror credentials DTO without email address.
+     *
+     * @param userIn the user
+     * @param passwordIn the password
+     */
+    public MirrorCredentialsDto(String userIn, String passwordIn) {
+        this(null, userIn, passwordIn);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

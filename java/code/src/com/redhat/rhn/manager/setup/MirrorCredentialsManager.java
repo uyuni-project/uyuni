@@ -112,7 +112,8 @@ public class MirrorCredentialsManager extends BaseManager {
         List<MirrorCredentialsDto> credsList = new ArrayList<MirrorCredentialsDto>();
         if (MgrSyncUtils.isMigratedToSCC()) {
             for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
-                MirrorCredentialsDto creds = new MirrorCredentialsDto(null, c.getUsername(), c.getPassword());
+                MirrorCredentialsDto creds = new MirrorCredentialsDto(
+                        c.getUsername(), c.getPassword());
                 creds.setId(c.getId());
                 credsList.add(creds);
             }
