@@ -33,7 +33,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * API handler offering content synchronization methods.
@@ -273,61 +275,83 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Add credentials to SUSE Manager
+     * Add mirror credentials to SUSE Manager.
      *
      * @param sessionKey user session token
-     * @param login Login of the credentials
-     * @param pass Password of the credentials
-     * @param mail Email of the credentials
+     * @param username mirror credentials username
+     * @param password mirror credentials password
+     * @param primary make this the primary credentials
      * @return Integer
      * @throws ContentSyncException
      *
-     * @xmlrpc.doc Add credentials to SUSE Manager
+     * @xmlrpc.doc Add mirror credentials to SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "login", "User's login name")
-     * @xmlrpc.param #param_desc("string", "pass", "User's password")
+     * @xmlrpc.param #param_desc("string", "username", "Mirror credentials username")
+     * @xmlrpc.param #param_desc("string", "password", "Mirror credentials password")
+     * @xmlrpc.param #param_desc("boolean", "primary", "Make this the primary credentials")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer addCredentials(String sessionKey, String login, String pass)
-            throws ContentSyncException {
+    public Integer addCredentials(String sessionKey, String username, String password,
+            boolean primary) throws ContentSyncException {
+        User user = BaseHandler.getLoggedInUser(sessionKey);
+        MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
+        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        long id = credsManager.storeMirrorCredentials(creds, user, null);
+        if (primary) {
+            credsManager.makePrimaryCredentials(id, user, null);
+        }
         return BaseHandler.VALID;
     }
 
     /**
-     * Remove credentials from SUSE Manager
+     * Delete mirror credentials from SUSE Manager.
      *
      * @param sessionKey user session token
-     * @param Login of the credentials to be deleted
+     * @param username username of the credentials to be deleted
      * @return Integer
      * @throws ContentSyncException
      *
-     * @xmlrpc.doc Remove credentials from SUSE Manager
+     * @xmlrpc.doc Delete mirror credentials from SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "login", "Login of the credentials to be deleted")
+     * @xmlrpc.param #param_desc("string", "username", "Username of the credentials to be deleted")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer removeCredentials(String sessionKey, String login)
+    public Integer deleteCredentials(String sessionKey, String username)
             throws ContentSyncException {
+        User user = BaseHandler.getLoggedInUser(sessionKey);
+        for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+            if (c.getUsername().equals(username)) {
+                new MirrorCredentialsManager().deleteMirrorCredentials(
+                        c.getId(), user, null);
+                break;
+            }
+        }
         return BaseHandler.VALID;
     }
 
     /**
-     * List credentials available in SUSE Manager
+     * List mirror credentials available in SUSE Manager.
      *
      * @param sessionKey user session token
-     * @return List of credentials
+     * @return List of mirror credentials
      * @throws ContentSyncException
      *
-     * @xmlrpc.doc List credentials available in SUSE Manager
+     * @xmlrpc.doc List mirror credentials available in SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
      *                       $credentials
      *                    #array_end()
      */
     public Object[] listCredentials(String sessionKey) throws ContentSyncException {
-        List<String> credentialList = new ArrayList<String>();
-        credentialList.add("foo");
-        credentialList.add("bar");
-        return credentialList.toArray();
+        List<Map<String, Object>> credentials = new ArrayList<Map<String, Object>>();
+        for (MirrorCredentialsDto creds :
+                new MirrorCredentialsManager().findMirrorCredentials()) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("id", creds.getId());
+            map.put("user", creds.getUser());
+            map.put("isPrimary", creds.isPrimary());
+            credentials.add(map);
+        }
+        return credentials.toArray();
     }
 }
