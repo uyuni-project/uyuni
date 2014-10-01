@@ -121,9 +121,6 @@ public class ContentSyncManager {
     private static final File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
     private static String uuid;
 
-    // This file is touched once the server has been migrated to SCC
-    public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
-
     // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
     private static Integer cachedCredentialsOES = null;
 
