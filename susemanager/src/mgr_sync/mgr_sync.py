@@ -68,12 +68,16 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                     filter=options.filter,
                                     no_optionals=options.no_optionals,
                                     compact=options.compact)
+            elif 'credentials' in options.list_target:
+                self._list_credentials()
             elif 'product' in options.list_target:
                 self._list_products(expand=options.expand,
                                     filter=options.filter)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
                 self._add_channels(options.target)
+            elif 'credentials' in options.add_target:
+                self._add_credentials(options.primary)
             elif 'product' in options.add_target:
                 self._add_products()
         elif vars(options).has_key('refresh'):
@@ -84,6 +88,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                       "active, nothing to do.")
             else:
                 self._enable_scc()
+        elif vars(options).has_key('delete_target'):
+            if 'credentials' in options.delete_target:
+                self._delete_credentials(options.target)
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
@@ -357,6 +364,79 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                   "nothing to do")
             return None
 
+    ##############################
+    #                            #
+    # Credential related methods #
+    #                            #
+    ##############################
+
+    def _fetch_credentials(self):
+        """ Returns the list of credentials as reported by the remote server """
+        return self._execute_xmlrpc_method(self.conn.sync.content,
+                                    "listCredentials", self.auth.token())
+
+    def _list_credentials(self):
+        """
+        List credentials in the SUSE Manager database.
+        """
+        credentials = self._fetch_credentials()
+
+        if credentials:
+            print("Credentials:")
+            for credential in credentials:
+                if credential['isPrimary']:
+                    print(credential['user'] + " (primary)")
+                else:
+                    print(credential['user'])
+        else:
+            print("No credentials found")
+
+    def _add_credentials(self, primary):
+        """
+        Add credentials to the SUSE Manager database.
+        """
+        user = cli_ask(
+            msg=("User to add"))
+        pw = cli_ask(
+            msg=("Password to add"),
+            password=True)
+
+        saved_users = self._fetch_credentials()
+        if any(user == saved_user['user'] for saved_user in saved_users):
+            print("Credentials already exist")
+            self.exit_with_error = True
+        else:
+            self._execute_xmlrpc_method(self.conn.sync.content,
+                                        "addCredentials",
+                                        self.auth.token(),
+                                        user,
+                                        pw,
+                                        primary)
+            print("Successfully added credentials")
+
+    def _delete_credentials(self, credentials):
+        """
+        Delete credentials from the SUSE Manager database.
+
+        If the credentials list is empty interactive mode is used.
+        """
+        if not credentials:
+            credentials = (cli_ask(
+                msg=("Credentials to be deleted"))).split()
+
+        saved_credentials = self._fetch_credentials()
+
+        for user in credentials:
+            if any(user == saved_user['user'] for saved_user in  saved_credentials):
+                self._execute_xmlrpc_method(self.conn.sync.content,
+                                                  "deleteCredentials",
+                                                  self.auth.token(),
+                                                  user)
+                print("Successfully deleted credentials")
+            else:
+                print("Credentials not found in database")
+                self.exit_with_error = True
+
     #################
     #               #
     # Other methods #
@@ -470,4 +550,3 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 return True
 
         return False
-
