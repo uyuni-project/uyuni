@@ -65,7 +65,6 @@ public class SetupWizardAction extends RhnAction {
      * @param request current request object
      * @throws Exception if parsing of navigation XML fails
      */
-    @SuppressWarnings("unchecked")
     private void setAttributes(ActionMapping mapping, HttpServletRequest request)
         throws Exception {
         String path = mapping.getPath();
@@ -96,7 +95,6 @@ public class SetupWizardAction extends RhnAction {
      * @return the index
      * @throws IllegalArgumentException if path is not found
      */
-    @SuppressWarnings("unchecked")
     private int getNodeIndex(String path, List<NavNode> nodes) {
         for (int i = 0; i < nodes.size(); i++) {
             NavNode node = nodes.get(i);
