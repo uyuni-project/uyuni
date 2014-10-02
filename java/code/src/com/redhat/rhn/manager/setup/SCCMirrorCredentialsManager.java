@@ -196,7 +196,8 @@ public class SCCMirrorCredentialsManager extends MirrorCredentialsManager {
                 SetupWizardSessionCache.storeSubscriptions(
                         makeDtos(subscriptions), creds, request);
             } catch (SCCClientException e) {
-                log.error(e.getMessage());
+                log.error("Error getting subscriptions for " +
+                        creds.getUser() + ", " + e.getMessage());
             }
         }
 
