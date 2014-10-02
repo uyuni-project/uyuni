@@ -5671,7 +5671,7 @@ value for this entitlement, excluding the default organization's consumption.</s
         <trans-unit id="systems.groups.jsp.summary.nonadmin">
           <source>Below are all the system groups that have been added to this system.</source>
         </trans-unit>
-        <trans-unit id="systems.groups.jsp.summary">
+        <trans-unit id="systems.groups.jsp.summary">                                                                                                   Con
           <source>Below are all the system groups that have been added to this system. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
         </trans-unit>
         <trans-unit id="systems.groups.add.jsp.summary">
