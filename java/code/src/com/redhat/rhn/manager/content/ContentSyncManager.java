@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -230,10 +231,11 @@ public class ContentSyncManager {
         List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
+                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                        c.getUser(), c.getPassword());
+                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+                scc.setUUID(getUUID());
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -253,6 +255,9 @@ public class ContentSyncManager {
             catch (SCCClientException e) {
                 log.error("Error getting products for " +
                         c.getUser() + ", " + e.getMessage());
+            }
+            catch (URISyntaxException e1) {
+                log.error("Invalid URL:" + e1.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -594,10 +599,11 @@ public class ContentSyncManager {
         List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
+                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                        c.getUser(), c.getPassword());
+                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+                scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
                 // Add the mirror credentials ID to all returned repos
                 int credsId = c.getId().intValue();
@@ -612,6 +618,9 @@ public class ContentSyncManager {
             }
             catch (SCCClientException e) {
                 log.error("Error getting repos for " + c.getUser() + ", " + e.getMessage());
+            }
+            catch (URISyntaxException e1) {
+                log.error("Invalid URL:" + e1.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -629,9 +638,15 @@ public class ContentSyncManager {
      */
     public List<SCCSubscription> getSubscriptions(String user, String password)
             throws SCCClientException {
-        SCCClient scc = new SCCClient(user, password);
-        scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-        scc.setUUID(getUUID());
+        SCCClient scc = null;
+        try {
+            scc = new SCCClient(Config.get().getString("scc_url"), user, password);
+            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+            scc.setUUID(getUUID());
+        } catch (URISyntaxException e1) {
+            log.error("Invalid URL:" + e1.getMessage());
+            return new ArrayList<SCCSubscription>();
+        }
         return scc.listSubscriptions();
     }
 

@@ -20,6 +20,7 @@ import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.codec.binary.Base64;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -30,32 +31,34 @@ public class SCCClient {
     private SCCConfig config = new SCCConfig();
 
     /**
-     * Constructor expecting a hostname and credentials.
+     * Constructor for connecting to scc.suse.com.
      *
-     * @param hostname the hostname
      * @param username the username
      * @param password the password
+     * @throws URISyntaxException
      */
-    public SCCClient(String hostname, String username, String password) {
-        // Put a given hostname to config
-        if (hostname != null) {
-            config.put(SCCConfig.HOSTNAME, hostname);
-        }
-
-        // Encode the given credentials
-        byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-        String credsString = new String(credsBytes);
-        config.put(SCCConfig.ENCODED_CREDS, credsString);
+    public SCCClient(String username, String password)
+            throws URISyntaxException {
+        this(SCCConfig.DEFAULT_URL, username, password);
     }
 
     /**
      * Constructor for connecting to scc.suse.com.
      *
+     * @param url the URL of scc
      * @param username the username
      * @param password the password
+     * @throws URISyntaxException
      */
-    public SCCClient(String username, String password) {
-        this(null, username, password);
+    public SCCClient(String url, String username, String password)
+            throws URISyntaxException {
+        // Put the schema int the config
+        config.setUrl(url);
+
+        // Encode the given credentials
+        byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
+        String credsString = new String(credsBytes);
+        config.put(SCCConfig.ENCODED_CREDS, credsString);
     }
 
     /**

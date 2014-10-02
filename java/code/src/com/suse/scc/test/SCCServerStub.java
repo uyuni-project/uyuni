@@ -55,12 +55,10 @@ public class SCCServerStub implements Responder {
         response.setDate("Date", time);
         response.setDate("Last-Modified", time);
         String uri = request.getURI();
-        String schema = config.getSchema();
-        String hostname = config.getHostname();
         if (!uri.endsWith("2")) {
             response.set("Link",
-                    "<" + schema + hostname + uri + "2>; rel=\"last\", " +
-                    "<" + schema + hostname + uri + "2>; rel=\"next\"");
+                    "<" + config.getUrl() + uri + "2>; rel=\"last\", " +
+                    "<" + config.getUrl() + uri + "2>; rel=\"next\"");
         }
 
         // Send file content
