@@ -124,6 +124,9 @@ public class ContentSyncManager {
     // This file is touched once the server has been migrated to SCC
     public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
 
+    // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
+    private static Integer cachedCredentialsOES = null;
+
     /**
      * Default constructor.
      */
@@ -1120,6 +1123,9 @@ public class ContentSyncManager {
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
+        // Reset the cached OES credentials (OES will be queried only once)
+        cachedCredentialsOES = null;
+
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
             if (installedChannelLabels.contains(c.getLabel())) {
@@ -1153,7 +1159,13 @@ public class ContentSyncManager {
 
         // Check OES availability by sending an HTTP HEAD request
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
-            return verifyOESRepo();
+            if (cachedCredentialsOES == null) {
+                cachedCredentialsOES = verifyOESRepo();
+            }
+            else if (log.isDebugEnabled()) {
+                log.debug("Return cached OES availablity");
+            }
+            return cachedCredentialsOES;
         }
 
         // Remove trailing slashes before matching URLs
