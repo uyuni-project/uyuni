@@ -94,10 +94,12 @@ public class MgrSyncUtils {
             connection.setRequestMethod("HEAD");
 
             // Basic authentication
-            byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-            String credsString = new String(credsBytes);
-            if (credsString != null) {
-                connection.setRequestProperty("Authorization", "Basic " + credsString);
+            if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
+            	byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
+            	String credsString = new String(credsBytes);
+            	if (credsString != null) {
+            		connection.setRequestProperty("Authorization", "Basic " + credsString);
+            	}
             }
 
             // Get the response code
