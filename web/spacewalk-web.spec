@@ -269,7 +269,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn
 %dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
-%attr(644,root,apache) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
+%attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
 %defattr(644,root,root,755)
