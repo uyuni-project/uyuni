@@ -251,7 +251,8 @@ public class ContentSyncManager {
                 }
             }
             catch (SCCClientException e) {
-                log.error(e.getMessage(), e);
+                log.error("Error getting products for " +
+                        c.getUser() + ", " + e.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -605,12 +606,12 @@ public class ContentSyncManager {
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Found " + repos.size() +
-                            " repos with credentials: " + credsId);
+                            " repos with credentials: " + c.getUser());
                 }
                 reposList.addAll(repos);
             }
             catch (SCCClientException e) {
-                log.error(e.getMessage(), e);
+                log.error("Error getting repos for " + c.getUser() + ", " + e.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -637,7 +638,8 @@ public class ContentSyncManager {
                 subscriptions.addAll(subs);
             }
             catch (SCCClientException e) {
-                log.error(e.getMessage(), e);
+                log.error("Error getting subscriptions for " +
+                        c.getUser() + ", " + e.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
