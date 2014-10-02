@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Tests for {@link NCCMirrorCredentialsManager}.
  */
-public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
+public class NCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     // Manager class instance
     private NCCMirrorCredentialsManager credsManager;
