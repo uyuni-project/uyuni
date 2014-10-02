@@ -1884,6 +1884,11 @@ tree will not be usable for autoinstalling.
         <source>IPMI</source>
       </trans-unit>
 
+      <!-- SCC Migration -->
+      <trans-unit id="message.sccmigrationavailable">
+            <source>You are currently connected to the Novell Customer Center. Migrate to the new &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;SUSE Customer Center&lt;/a&gt; for the best customer experience.</source>
+      </trans-unit>
+
       <!-- Setup Wizard -->
       <trans-unit id="message.firstusercreated">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>

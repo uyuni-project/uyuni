@@ -5616,6 +5616,19 @@
                  path="/WEB-INF/pages/admin/config/general.jsp"/>
     </action>
 
+    <action path="/admin/config/SCCConfig"
+        scope="request"
+        input="/WEB-INF/pages/admin/config/scc.jsp"
+        type="com.redhat.rhn.frontend.action.satellite.SCCConfigAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="postRequiredIfSubmitted" value="true" />
+        <set-property property="acls" value="user_role(satellite_admin)"/>
+        <forward name="default"
+                 path="/WEB-INF/pages/admin/config/scc.jsp"/>
+        <forward name="failure"
+                 path="/WEB-INF/pages/admin/config/scc.jsp"/>
+    </action>
+
 
     <action path="/admin/config/CertificateConfig"
         scope="request"

@@ -3538,6 +3538,12 @@ user before attempting to deactivate their account.</source>
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+        <trans-unit id="SUSE Customer Center">
+          <source>SUSE Customer Center</source>
+          <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Admin">
         <source>Admin</source>
         <context-group name="ctx">
