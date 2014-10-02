@@ -92,10 +92,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeChannels(String sessionKey) throws ContentSyncException {
+    public Integer synchronizeChannels(String sessionKey, String mirrorUrl) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannels(csm.getRepositories());
+        csm.updateChannels(csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
     }
 
@@ -111,9 +111,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc Synchronize channel families between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional SMT mirror")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeChannelFamilies(String sessionKey)
+    public Integer synchronizeChannelFamilies(String sessionKey, String mirrorUrl)
             throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
@@ -131,10 +132,11 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @xmlrpc.doc Synchronize SUSE products between the Customer Center
      *             and the SUSE Manager database.
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional SMT mirror")
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProducts(String sessionKey) throws ContentSyncException {
+    public Integer synchronizeProducts(String sessionKey, String mirrorUrl) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(csm.getProducts());
@@ -153,9 +155,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc Synchronize SUSE product channels between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional SMT mirror")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProductChannels(String sessionKey)
+    public Integer synchronizeProductChannels(String sessionKey, String mirrorUrl)
             throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
@@ -175,9 +178,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc Synchronize upgrade paths between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional SMT mirror")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
+    public Integer synchronizeUpgradePaths(String sessionKey, String mirrorUrl) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         new ContentSyncManager().updateUpgradePaths();
         return BaseHandler.VALID;
@@ -195,9 +199,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc Synchronize subscriptions between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Optional SMT mirror")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeSubscriptions(String sessionKey) throws ContentSyncException {
+    public Integer synchronizeSubscriptions(String sessionKey, String mirrorUrl) throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSubscriptions(csm.getSubscriptions());
@@ -209,19 +214,22 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @param sessionKey user session token
      * @param channelLabel label of the channel to add
+     * @param mirrorUrl mirror url passed by cli
      * @return Integer
      * @throws ContentSyncException
      *
      * @xmlrpc.doc Add a new channel to the SUSE Manager database
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.param #param_desc("string", "channelLabel", "Label of the channel to add")
+     * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer addChannel(String sessionKey, String channelLabel)
+    public Integer addChannel(String sessionKey, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        csm.addChannel(channelLabel, csm.getRepositories());
+
+        csm.addChannel(channelLabel, csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
     }
 
