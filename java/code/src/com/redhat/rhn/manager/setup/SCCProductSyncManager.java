@@ -90,7 +90,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Add channel: " + channel.getLabel());
                     }
-                    csm.addChannel(channel.getLabel(), repos);
+                    csm.addChannel(channel.getLabel(), repos, null);
                 }
 
                 // Trigger sync of those channels
@@ -117,7 +117,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
     public void refreshProducts() throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
-            csm.updateChannels(csm.getRepositories());
+            csm.updateChannels(csm.getRepositories(), null);
             csm.updateChannelFamilies(csm.readChannelFamilies());
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
