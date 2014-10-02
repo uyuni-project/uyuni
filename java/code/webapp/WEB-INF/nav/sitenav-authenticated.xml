@@ -323,6 +323,9 @@
        <rhn-tab name="General" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/GeneralConfig.do</rhn-tab-url>
       </rhn-tab>
+      <rhn-tab name="SUSE Customer Center" acl="user_role(satellite_admin)">
+        <rhn-tab-url>/rhn/admin/config/SCCConfig.do</rhn-tab-url>
+      </rhn-tab>
       <rhn-tab name="Monitoring" acl="user_role(satellite_admin); show_scout()">
         <rhn-tab-url>/rhn/admin/config/MonitoringConfig.do</rhn-tab-url>
       </rhn-tab>
