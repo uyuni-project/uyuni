@@ -18,8 +18,8 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 
+import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
 
 /**
@@ -34,10 +34,10 @@ public abstract class SCCRequester<T> implements Callable<T> {
 
     /**
      * Default constructor
+     * @throws URISyntaxException
      */
-    public SCCRequester() {
-        client = new SCCClient("localhost:" + HttpServerMock.PORT, "user", "pass");
-        client.getConfig().put(SCCConfig.SCHEMA, "http://");
+    public SCCRequester() throws URISyntaxException {
+        client = new SCCClient("http://localhost:" + HttpServerMock.PORT, "user", "pass");
     }
 
     /**
