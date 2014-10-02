@@ -30,6 +30,7 @@ BuildRequires:  python-devel
 
 Requires:       perl
 Requires:       python
+Requires:       perl-XML-Parser
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires:       e2fsprogs
 %endif
@@ -48,6 +49,7 @@ for a registration
 make -C suseRegister install PREFIX=$RPM_BUILD_ROOT
 mkdir -p %{buildroot}/usr/lib/suseRegister/bin/
 install -m 0755 suseRegister/parse_release_info %{buildroot}/usr/lib/suseRegister/bin/parse_release_info
+install -m 0755 suseRegister/suse_register_info.pl %{buildroot}/usr/lib/suseRegister/bin/suse_register_info
 
 %if 0%{?suse_version}
 %py_compile %{buildroot}/
@@ -62,6 +64,7 @@ rm -rf %{buildroot}
 %dir /usr/lib/suseRegister
 %dir /usr/lib/suseRegister/bin
 /usr/lib/suseRegister/bin/parse_release_info
+/usr/lib/suseRegister/bin/suse_register_info
 %{python_sitelib}/suseRegister
 
 %changelog
