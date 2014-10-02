@@ -18,18 +18,18 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
-import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
 import java.util.List;
 
 /**
- * Tests for {@link MirrorCredentialsManager}.
+ * Tests for {@link NCCMirrorCredentialsManager}.
  */
 public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     // Manager class instance
-    private MirrorCredentialsManager credsManager;
+    private NCCMirrorCredentialsManager credsManager;
 
     /**
      * Tests findMirrorCredentials().
@@ -121,7 +121,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         // User needs to be SAT_ADMIN
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         // Setup manager object
-        credsManager = new MirrorCredentialsManager(NoopConfigureSatelliteCommand.class);
+        credsManager = new NCCMirrorCredentialsManager(NoopConfigureSatelliteCommand.class);
     }
 
     /**
@@ -163,13 +163,13 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * @param id the index of credentials to remove
      */
     private void removeTestCredentials(int id) {
-        String keyUser = MirrorCredentialsManager.KEY_MIRRCREDS_USER;
-        String keyPass = MirrorCredentialsManager.KEY_MIRRCREDS_PASS;
-        String keyEmail = MirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
+        String keyUser = NCCMirrorCredentialsManager.KEY_MIRRCREDS_USER;
+        String keyPass = NCCMirrorCredentialsManager.KEY_MIRRCREDS_PASS;
+        String keyEmail = NCCMirrorCredentialsManager.KEY_MIRRCREDS_EMAIL;
         if (id >= 1) {
-            keyUser += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
-            keyPass += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
-            keyEmail += MirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+            keyUser += NCCMirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+            keyPass += NCCMirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
+            keyEmail += NCCMirrorCredentialsManager.KEY_MIRRCREDS_SEPARATOR + id;
         }
         Config.get().remove(keyUser);
         Config.get().remove(keyPass);
