@@ -226,8 +226,8 @@ public class ContentSyncManager {
      */
     public Collection<SCCProduct> getProducts() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
@@ -590,8 +590,8 @@ public class ContentSyncManager {
      */
     public Collection<SCCRepository> getRepositories() {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
@@ -641,8 +641,8 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
@@ -1387,8 +1387,8 @@ public class ContentSyncManager {
      * @return mirror credentials ID or null if OES channels are not mirrorable
      */
     private Integer verifyOESRepo() {
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query OES repo for all mirror credentials until success
         for (MirrorCredentialsDto creds : credentials) {
             int responseCode;
