@@ -58,7 +58,7 @@ public class SCCMirrorCredentialsManager extends MirrorCredentialsManager {
             credsList.add(creds);
         }
         if (log.isDebugEnabled()) {
-            log.debug("Found " + credsList.size() + " pairs of mirror credentials");
+            log.debug("Found " + credsList.size() + " mirror credentials");
         }
         return credsList;
     }
