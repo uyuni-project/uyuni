@@ -57,7 +57,7 @@ public class SCCRequestFactory {
     public HttpURLConnection initConnection(
             String method, String endpoint, SCCConfig config) throws IOException {
         // Init the connection
-        String uri = config.getSchema() + config.getHostname() + endpoint;
+        String uri = config.getUrl() + endpoint;
         String encodedCredentials = config.getEncodedCredentials();
         URL url = new URL(uri);
         HttpURLConnection connection;

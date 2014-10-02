@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -25,8 +26,6 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-
-import com.suse.scc.client.SCCConfig;
 
 import org.apache.commons.io.FileUtils;
 
@@ -255,7 +254,7 @@ public class ContentSyncHandler extends BaseHandler {
             c.setPassword(dto.getPassword());
             // We identify the primary credentials by setting a URL
             if (id == 0) {
-                c.setUrl(SCCConfig.DEFAULT_SCHEMA + SCCConfig.DEFAULT_HOSTNAME);
+                c.setUrl(Config.get().getString("scc_url"));
             }
             CredentialsFactory.storeCredentials(c);
             id++;
