@@ -247,7 +247,7 @@ public class ContentSyncHandler extends BaseHandler {
         SUSEProductFactory.clearAllProducts();
 
         // Migrate mirror credentials into the DB
-        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         int id = 0;
         for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
             Credentials c = CredentialsFactory.createSCCCredentials();
@@ -295,7 +295,7 @@ public class ContentSyncHandler extends BaseHandler {
             boolean primary) throws ContentSyncException {
         User user = BaseHandler.getLoggedInUser(sessionKey);
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
-        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         long id = credsManager.storeMirrorCredentials(creds, user, null);
         if (primary) {
             credsManager.makePrimaryCredentials(id, user, null);
@@ -321,8 +321,9 @@ public class ContentSyncHandler extends BaseHandler {
         User user = BaseHandler.getLoggedInUser(sessionKey);
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             if (c.getUsername().equals(username)) {
-                new MirrorCredentialsManager().deleteMirrorCredentials(
-                        c.getId(), user, null);
+                MirrorCredentialsManager credsManager =
+                        MirrorCredentialsManager.createInstance();
+                credsManager.deleteMirrorCredentials(c.getId(), user, null);
                 break;
             }
         }
@@ -344,8 +345,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Object[] listCredentials(String sessionKey) throws ContentSyncException {
         List<Map<String, Object>> credentials = new ArrayList<Map<String, Object>>();
-        for (MirrorCredentialsDto creds :
-                new MirrorCredentialsManager().findMirrorCredentials()) {
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        for (MirrorCredentialsDto creds : credsManager.findMirrorCredentials()) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("id", creds.getId());
             map.put("user", creds.getUser());
