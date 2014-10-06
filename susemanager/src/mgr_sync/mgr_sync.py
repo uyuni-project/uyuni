@@ -375,19 +375,24 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         return self._execute_xmlrpc_method(self.conn.sync.content,
                                     "listCredentials", self.auth.token())
 
-    def _list_credentials(self):
+    def _list_credentials(self, show_interactive_numbers=False):
         """
         List credentials in the SUSE Manager database.
         """
         credentials = self._fetch_credentials()
+        interactive_number = 0
 
         if credentials:
             print("Credentials:")
             for credential in credentials:
+                msg=credential['user']
+                if show_interactive_numbers:
+                    interactive_number += 1
+                    msg = "%.2d) " % interactive_number + msg
                 if credential['isPrimary']:
-                    print(credential['user'] + " (primary)")
-                else:
-                    print(credential['user'])
+                    msg += " (primary)"
+                print(msg)
+
         else:
             print("No credentials found")
 
@@ -406,7 +411,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 self.exit_with_error = True
                 return
         else:
-            user, pw = " ".join(credentials).split(" ")
+            user = credentials[0]
+            pw = credentials[1]
 
         saved_users = self._fetch_credentials()
         if any(user == saved_user['user'] for saved_user in saved_users):
@@ -427,22 +433,46 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         If the credentials list is empty interactive mode is used.
         """
+        interactive = False
+
         if not credentials:
-            credentials = (cli_ask(
-                msg=("Credentials to be deleted"))).split()
+            credentials = self._delete_credentials_interactive_mode()
+            interactive = True
 
         saved_credentials = self._fetch_credentials()
-
         for user in credentials:
             if any(user == saved_user['user'] for saved_user in  saved_credentials):
+                if interactive:
+                    confirm = cli_ask(
+                        msg=("Really delete credentials '{0}'? (y/n)".format(user)))
+                    if not re.search("[yY]", confirm):
+                        return
                 self._execute_xmlrpc_method(self.conn.sync.content,
-                                                  "deleteCredentials",
-                                                  self.auth.token(),
-                                                  user)
+                                            "deleteCredentials",
+                                            self.auth.token(),
+                                            user)
                 print("Successfully deleted credentials: " + user)
             else:
                 print("Credentials not found in database: " + user)
                 self.exit_with_error = True
+
+    def _delete_credentials_interactive_mode(self):
+        """
+        Show saved credentials prefixed with a number, read the user input
+        and return the chosen credential.
+        """
+        credentials = [];
+        saved_credentials = self._fetch_credentials()
+        validator = lambda i: re.search("\d+", i) and \
+            int(i) in range(1, len(saved_credentials)+1)
+
+        self._list_credentials(True);
+        number = cli_ask(
+            msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
+                 validator=validator)
+
+        return [saved_credentials[int(number)-1]['user']]
+
 
     #################
     #               #
