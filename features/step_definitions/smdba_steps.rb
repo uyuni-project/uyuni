@@ -2,6 +2,15 @@
 $is_postgres = true
 $msg = "This test has been disabled"
 
+Given(/^database is running$/) do
+  if not sshcmd("smdba db-status")[:stdout].include? "online"
+    sshcmd("smdba db-start")
+    fail if not sshcmd("smdba db-status")[:stdout].include? "online"
+  else
+    puts "Database is running"
+  end
+end
+
 When(/^I cannot find file "(.*?)"$/) do |target_file|
   $output = sshcmd("file #{target_file}", ignore_err: true)
 end
@@ -41,8 +50,6 @@ end
 Then(/^when I issue command "(.*?)"$/) do |command|
   if $is_postgres
     $output = sshcmd(command)
-  else
-    puts $msg
   end
 end
 
@@ -75,10 +82,10 @@ Then(/^I want to see if "(.*?)" is in the output$/) do |status|
 end
 
 When(/^when I configure "(.*?)" parameter "(.*?)" to "(.*?)"$/) do |config_file, param, value|
-    sshcmd("sed -i '/wal_level/d' #{config_file}", ignore_err: true)
-    sshcmd("echo \"#{param} = #{value}\" >> #{config_file}", ignore_err: true)
-    local_output = sshcmd("cat #{config_file} | grep #{param}", ignore_err: true)
-    fail if not local_output[:stdout].include? value
+  sshcmd("sed -i '/wal_level/d' #{config_file}", ignore_err: true)
+  sshcmd("echo \"#{param} = #{value}\" >> #{config_file}", ignore_err: true)
+  local_output = sshcmd("cat #{config_file} | grep #{param}", ignore_err: true)
+  fail if not local_output[:stdout].include? value
 end
 
 Then(/^when I check internally configuration for "(.*?)" option$/) do |config_key|
@@ -90,6 +97,48 @@ Then(/^I expect to see the configuration is set to "(.*?)"$/) do |value|
 end
 
 Then(/^I issue command "(.*?)"$/) do |cmd|
-    sshcmd(cmd)
+  #puts "Trying to call: #{cmd}"
+  $output = sshcmd(cmd, ignore_err: true)
+  #puts $output[:stdout]
 end
 
+Then(/^I find tablespaces "(.*?)" and "(.*?)"$/) do |suma_ts, pg_ts|
+  fail if not $output[:stdout].include? suma_ts
+  fail if not $output[:stdout].include? pg_ts
+end
+
+Then(/^I find core examination is "(.*?)", database analysis is "(.*?)" and space reclamation is "(.*?)"$/) do |arg1, arg2, arg3|
+  fail if $output[:stdout].include? "failed"
+end
+
+Then(/^I find "(.*?)", "(.*?)" and "(.*?)" are in the list\.$/) do |rhn_tbl, rhn_tbl1, suse_tbl|
+  [rhn_tbl, rhn_tbl1, suse_tbl].each do |tbl|
+    if not $output[:stdout].include? tbl
+      fail
+    end
+  end 
+end
+
+
+#
+# Backup-related tests
+#
+
+When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do |bkp_dir, uid, gid|
+  sshcmd("test -d #{bkp_dir} || mkdir #{bkp_dir};chown #{uid}:#{gid} #{bkp_dir}")
+  bkp_dir.sub!("/", "")
+  puts "Backup directory:"
+  puts sshcmd("ls -la / | /usr/bin/grep #{bkp_dir}")[:stdout]
+end
+
+Then(/^I should see error message that asks "(.*?)" belong to the same UID\/GID as "(.*?)" directory$/) do |bkp_dir, data_dir|
+  fail if not $output[:stderr].include? "The \"#{bkp_dir}\" directory must belong to the same user and group as \"#{data_dir}\" directory."
+end
+
+Then(/^I should see error message that asks "(.*?)" has same permissions as "(.*?)" directory$/) do |bkp_dir, data_dir|
+  fail if not $output[:stderr].include? "The \"#{bkp_dir}\" directory must have the same permissions as \"#{data_dir}\" directory."
+end
+
+Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
+  sshcmd("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
+end

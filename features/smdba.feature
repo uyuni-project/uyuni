@@ -41,3 +41,25 @@ Feature: Verify SMDBA infrastructure
     And when I check internally configuration for "wal_level" option
     Then I expect to see the configuration is set to "archive"
 
+  Scenario: Check database utilities
+    Given database is running
+    When I issue command "smdba space-overview"
+    Then I find tablespaces "susemanager" and "postgres"
+    When I issue command "smdba space-reclaim"
+    Then I find core examination is "finished", database analysis is "done" and space reclamation is "done"
+    When I issue command "smdba space-tables"
+    Then I find "public.rhnserver", "public.rhnpackage" and "public.web_contact" are in the list.
+
+  Scenario: Check SMDBA backup setup facility
+    Given database is running
+    When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
+    When I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    Then I should see error message that asks "/smdba-backup-test" belong to the same UID/GID as "/var/lib/pgsql/data" directory
+    Then I remove backup directory "/smdba-backup-test"
+    When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
+    When I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    Then I should see error message that asks "/smdba-backup-test" has same permissions as "/var/lib/pgsql/data" directory
+    Then I remove backup directory "/smdba-backup-test"
+
+
+  
