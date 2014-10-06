@@ -657,6 +657,7 @@ if [ "$DO_SETUP" = "1" ]; then
     rm /tmp/changeorg.sql
 
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
+    echo "You can access SUSE Manager via https://`hostname -f`" > /etc/motd
 fi
 wait_step
 
