@@ -77,7 +77,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             if 'channel' in options.add_target:
                 self._add_channels(options.target)
             elif 'credentials' in options.add_target:
-                self._add_credentials(options.primary)
+                self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
                 self._add_products()
         elif vars(options).has_key('refresh'):
@@ -391,15 +391,22 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         else:
             print("No credentials found")
 
-    def _add_credentials(self, primary):
+    def _add_credentials(self, primary, credentials):
         """
         Add credentials to the SUSE Manager database.
         """
-        user = cli_ask(
-            msg=("User to add"))
-        pw = cli_ask(
-            msg=("Password to add"),
-            password=True)
+        if not credentials:
+            user = cli_ask(
+                msg=("User to add"))
+            pw = cli_ask(
+                msg=("Password to add"),
+                password=True)
+            if not pw == cli_ask(msg=("Confirm password"),password=True):
+                print("Passwords do not match")
+                self.exit_with_error = True
+                return
+        else:
+            user, pw = " ".join(credentials).split(" ")
 
         saved_users = self._fetch_credentials()
         if any(user == saved_user['user'] for saved_user in saved_users):
@@ -432,9 +439,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                                   "deleteCredentials",
                                                   self.auth.token(),
                                                   user)
-                print("Successfully deleted credentials")
+                print("Successfully deleted credentials: " + user)
             else:
-                print("Credentials not found in database")
+                print("Credentials not found in database: " + user)
                 self.exit_with_error = True
 
     #################
