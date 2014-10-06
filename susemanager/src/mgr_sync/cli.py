@@ -53,14 +53,14 @@ def _create_add_subparser(subparsers):
     """ Create the parser for the "add" command. """
 
     add_parser = subparsers.add_parser('add',
-                                       help='add channels, credentials or products')
+                                       help='add channels, SCC organization credentials or products')
     add_parser.add_argument(
         'add_target',
         choices=['channel', 'channels', 'credentials', 'product', 'products'])
     add_parser.add_argument(
         'target',
         nargs='*',
-        help='element to add, could be either a channel or a product')
+        help='element to add, could be either a channel, SCC organization credentials or a product')
     add_parser.add_argument(
         '--from-mirror', action='store', dest='mirror',
         help='URL of a local mirror like SMT. Only to download the RPMs.')
@@ -68,14 +68,14 @@ def _create_add_subparser(subparsers):
         '--primary',
         action='store_true',
         dest='primary',
-        help='Designate credential as primary')
+        help='Designate SCC organization credentials as primary')
 
 
 def _create_list_subparser(subparsers):
     """ Create the parser for the "list" command. """
 
     list_parser = subparsers.add_parser('list',
-                                        help='List channels, credentials or products')
+                                        help='List channels, SCC organization credentials or products')
     list_parser.add_argument(
         'list_target',
         choices=['channel', 'channels', 'credentials', 'product', 'products'])
@@ -119,7 +119,7 @@ def _create_delete_subparser(subparsers):
 
     delete_parser = subparsers.add_parser(
         'delete',
-        help='Delete credentials')
+        help='Delete SCC organization credentials')
 
     delete_parser.add_argument(
         'delete_target',
@@ -127,7 +127,7 @@ def _create_delete_subparser(subparsers):
     delete_parser.add_argument(
         'target',
         nargs='*',
-        help='Credentials to delete')
+        help='SCC organization credentials to delete')
 
 
 def _create_refresh_subparser(subparsers):
