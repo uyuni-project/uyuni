@@ -71,7 +71,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
-    
+
     /** Maximum members for SUSE Manager. */
     public static final long MANY_MEMBERS = 200000L;
 
@@ -113,7 +113,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-
             csm.updateChannels(repos, null);
 
             // Verify channel attributes
