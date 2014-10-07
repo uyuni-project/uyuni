@@ -20,6 +20,7 @@ import socket
 import sys
 import time
 import traceback
+import base64
 from datetime import datetime
 from optparse import OptionParser
 
@@ -325,23 +326,38 @@ class RepoSync(object):
         url = suseLib.URL(url_dict['source_url'])
         creds = url.get_query_param('credentials')
         if creds:
-            # switch config so we can read the mirror credentials
-            initCFG('server.susemanager')
             namespace = creds.split("_")[0]
+            creds_no = ""
             try:
                 creds_no = int(creds.split("_")[1])
-            except IndexError: # default credentials don't have a number
-                url.username = CFG.get(namespace+"_user")
-                url.password = CFG.get(namespace+"_pass")
+            except IndexError:
+                # default credentials don't have a number in NCC case
+                pass
             except ValueError: # we got something after the "_", but not an int
                 self.error_msg("Could not figure out which credentials to use "
                                "for this URL: "+url.getURL())
                 sys.exit(1)
+            if suseLib.current_cc_backend() == suseLib.BackendType.NCC:
+                # switch config so we can read the mirror credentials
+                initCFG('server.susemanager')
+                if creds_no:
+                    creds_no = "_" + str(creds_no)
+                url.username = CFG.get("%s%s%s" % (namespace, "_user", creds_no))
+                url.password = CFG.get("%s%s%s" % (namespace, "_pass", creds_no))
+                initCFG('server.satellite')
             else:
-                url.username = CFG.get("%s_user_%s" % (namespace, creds_no))
-                url.password = CFG.get("%s_pass_%s" % (namespace, creds_no))
-            initCFG('server.satellite')
-        url.query = ""
+                # SCC - read credentials from DB
+                h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""");
+                h.execute(id=creds_no);
+                credentials = h.fetchone_dict() or None;
+                if not credentials:
+                    self.error_msg("Could not figure out which credentials to use "
+                                   "for this URL: "+url.getURL())
+                    sys.exit(1)
+                url.username = credentials['username']
+                url.password = base64.decodestring(credentials['password'])
+            # remove query parameter from url
+            url.query = ""
         url_dict['source_url'] = url.getURL()
 
     def update_date(self):
