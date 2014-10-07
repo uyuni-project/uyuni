@@ -1784,10 +1784,10 @@ tree will not be usable for autoinstalling.
         <source>System patch status to search:</source>
       </trans-unit>
       <trans-unit id="cveaudit.jsp.patchstatus.affectedpatchinapplicable">
-        <source>Affected, patch available in a channel which is not assigned</source>
+        <source>Affected, patches available in channels which are not assigned</source>
       </trans-unit>     
       <trans-unit id="cveaudit.jsp.patchstatus.affectedpatchapplicable">
-        <source>Affected, patch available in an assigned channel</source>
+        <source>Affected, at least one patch available in an assigned channel</source>
       </trans-unit>     
       <trans-unit id="cveaudit.jsp.patchstatus.notaffected">
         <source>Not affected</source>
