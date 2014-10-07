@@ -172,7 +172,7 @@ Status:
             self.fake_auth_token)
 
     def test_list_channels_filter_show_parent_when_child_matches(self):
-        """ Testing list channel output when a filter is set.  Should show the 
+        """ Testing list channel output when a filter is set.  Should show the
         parent even if it does not match the filter as long as one of his
         children match the filter.
         """
