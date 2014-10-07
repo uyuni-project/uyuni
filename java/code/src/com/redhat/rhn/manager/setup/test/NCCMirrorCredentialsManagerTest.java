@@ -84,9 +84,9 @@ public class NCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test deleteMirrorCredentials().
-     * @throws Exception if something goes wrong
+     * @throws ContentSyncException if something goes wrong
      */
-    public void testDeleteCredentials() {
+    public void testDeleteCredentials() throws ContentSyncException {
         MirrorCredentialsDto creds0 = storeTestCredentials(0L);
         MirrorCredentialsDto creds1 = storeTestCredentials(1L);
         assertEquals(2, credsManager.findMirrorCredentials().size());
@@ -99,9 +99,9 @@ public class NCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     /**
      * Test makePrimaryCredentials()
-     * @throws Exception if something goes wrong
+     * @throws ContentSyncException if something goes wrong
      */
-    public void testMakePrimaryCredentials() {
+    public void testMakePrimaryCredentials() throws ContentSyncException {
         MirrorCredentialsDto creds0 = storeTestCredentials(0);
         MirrorCredentialsDto creds1 = storeTestCredentials(1);
         MirrorCredentialsDto creds2 = storeTestCredentials(2);
@@ -142,18 +142,15 @@ public class NCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Store test credentials for a given id.
      *
      * @param id the id of stored credentials
+     * @throws ContentSyncException
      */
-    private MirrorCredentialsDto storeTestCredentials(long id) {
+    private MirrorCredentialsDto storeTestCredentials(long id) throws ContentSyncException {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
         creds.setUser("testuser" + id);
         creds.setPassword("testpass" + id);
         creds.setEmail("testemail" + id);
         creds.setId(id);
-        try {
-            credsManager.storeMirrorCredentials(creds, user, request);
-        } catch (ContentSyncException e) {
-            e.printStackTrace();
-        }
+        credsManager.storeMirrorCredentials(creds, user, request);
         return creds;
     }
 
