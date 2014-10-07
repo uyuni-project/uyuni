@@ -650,17 +650,20 @@ public class CVEAuditManager {
      * Set the patch status of a system record.
      *
      * @param system the system
-     * @param installed true if system has the relevant package installed
-     * @param assigned the true if system has the relevant channel assigned
+     * @param allPackagesForAllErrataInstalled true if system has all relevant
+     * packages installed
+     * @param allChannelsForOneErrataAssigned the true if system has all
+     * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
      */
-    public static void setPatchStatus(CVEAuditSystem system, boolean installed,
-            boolean assigned, boolean hasErrata) {
+    public static void setPatchStatus(CVEAuditSystem system,
+            boolean allPackagesForAllErrataInstalled,
+            boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
         if (hasErrata) {
-            if (installed) {
+            if (allPackagesForAllErrataInstalled) {
                 system.setPatchStatus(PatchStatus.PATCHED);
             }
-            else if (assigned) {
+            else if (allChannelsForOneErrataAssigned) {
                 system.setPatchStatus(PatchStatus.AFFECTED_PATCH_APPLICABLE);
             }
             else {
