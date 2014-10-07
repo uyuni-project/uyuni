@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE
+ * Copyright (c) 2014 SUSE/
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -71,8 +71,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
-    private static final String MIRROR_URL = "http://smt.suse.de";
-
+    
     /** Maximum members for SUSE Manager. */
     public static final long MANY_MEMBERS = 200000L;
 
@@ -115,7 +114,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
 
-            csm.updateChannels(repos, MIRROR_URL);
+            csm.updateChannels(repos, null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
@@ -187,7 +186,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos, MIRROR_URL);
+            csm.updateChannels(repos, null);
 
             // Verify mirror credentials in content source repo URLs
             c1 = ChannelFactory.lookupByLabel(channelLabel1);
@@ -850,7 +849,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
-                csm.addChannel(label, repos, MIRROR_URL);
+                csm.addChannel(label, repos, null);
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
@@ -922,7 +921,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             HibernateFactory.getSession().flush();
 
             // Add the channel by label
-            csm.addChannel(xmlChannel.getLabel(), repos, MIRROR_URL);
+            csm.addChannel(xmlChannel.getLabel(), repos, null);
 
             // Check if channel has been added correctly
             Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
@@ -958,6 +957,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
+    }
+
+    public void testSetupSourceURL() throws Exception {
+        String repoUrl = "https://updates.suse.com/";
+        String mirrorUrl = "http://localhost/";
+        ContentSyncManager csm = new ContentSyncManager();
+        assertNull(csm.setupSourceURL("", 2, mirrorUrl));
+        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl,  0, null));
+        assertEquals(repoUrl + "?credentials=mirrcred_3", csm.setupSourceURL(repoUrl , 3, null));
+        assertEquals(mirrorUrl, csm.setupSourceURL(repoUrl, 0, mirrorUrl));
     }
 
     /**
