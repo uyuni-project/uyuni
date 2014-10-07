@@ -23,7 +23,7 @@ import xmlrpclib
 
 from spacewalk.susemanager import mgr_ncc_sync_lib
 from spacewalk.susemanager.authenticator import Authenticator
-from spacewalk.susemanager.content_sync_helper import current_backend, BackendType
+from spacewalk.common.suseLib import current_cc_backend, BackendType
 
 
 def main():
@@ -81,7 +81,7 @@ def main():
 
     (options, args) = parser.parse_args()
 
-    if not current_backend() == BackendType.NCC:
+    if not current_cc_backend() == BackendType.NCC:
         msg = """Error: mgr-ncc-sync cannot be used because the Suse Customer Center (SCC) backend is currently active.
 
 Please use the "mgr-sync" tool instead.
