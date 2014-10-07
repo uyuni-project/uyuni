@@ -679,9 +679,12 @@ public class ContentSyncManager {
 
     /**
      * Update channel information in the database.
+     * @param repos list of repositories to match against
+     * @param mirrorUrl optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrl) throws ContentSyncException {
+    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrl)
+            throws ContentSyncException {
         // If this is an ISS slave then do nothing
         if (IssFactory.getCurrentMaster() != null) {
             return;
@@ -722,7 +725,8 @@ public class ContentSyncManager {
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 Integer credsId = isMirrorable(channel, repos);
                 if (credsId != null) {
-                    String sourceURL = setupSourceURL(channel.getSourceUrl(), credsId, mirrorUrl);
+                    String sourceURL = setupSourceURL(
+                            channel.getSourceUrl(), credsId, mirrorUrl);
                     if (!cs.getSourceUrl().equals(sourceURL)) {
                         cs.setSourceUrl(sourceURL);
                         ChannelFactory.save(cs);
@@ -1220,8 +1224,8 @@ public class ContentSyncManager {
      * @param mirrorUrl repo mirror passed by cli
      * @throws ContentSyncException in case of problems
      */
-    public void addChannel(String label, Collection<SCCRepository> repositories, String mirrorUrl)
-            throws ContentSyncException {
+    public void addChannel(String label, Collection<SCCRepository> repositories,
+            String mirrorUrl) throws ContentSyncException {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
@@ -1500,8 +1504,8 @@ public class ContentSyncManager {
      * add the mirror credentials query string to the end of the URL.
      *
      * @param url the original source URL
-     * @param credsId
-     * @param mirrorUrl
+     * @param credsId the id of credentials to use
+     * @param mirrorUrl optional mirror URL that can be null
      * @return the URL with query string including mirror credentials or null
      */
     public String setupSourceURL(String url, int credsId, String mirrorUrl) {
