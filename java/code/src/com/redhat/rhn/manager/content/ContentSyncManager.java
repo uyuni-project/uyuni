@@ -1554,8 +1554,9 @@ public class ContentSyncManager {
                         mirrorUri.getPort(), testUrlPath, mirrorUri.getQuery(), null);
 
                 // Verify the mirrored repo by sending a HEAD request
-                if (MgrSyncUtils.sendHeadRequest(testUri.toString(), username, password) ==
-                        HttpURLConnection.HTTP_OK) {
+                int mirrorStatus = MgrSyncUtils.sendHeadRequest(testUri.toString(),
+                        username, password);
+                if (mirrorStatus == HttpURLConnection.HTTP_OK) {
                     // Build URL combining the mirror and N/SCC parts
                     String[] mirrorParams = StringUtils.split(mirrorUri.getQuery(), '&');
                     String[] sourceParams = StringUtils.split(sourceUri.getQuery(), '&');
@@ -1565,6 +1566,9 @@ public class ContentSyncManager {
                             mirrorUri.getUserInfo(), mirrorUri.getHost(),
                             mirrorUri.getPort(), combinedPath, combinedQuery, null);
                     return completeMirrorUri.toString();
+                }
+                else {
+                    log.warn("Mirror status " + mirrorStatus + " for: " + testUri);
                 }
             }
             catch (ContentSyncException e) {
