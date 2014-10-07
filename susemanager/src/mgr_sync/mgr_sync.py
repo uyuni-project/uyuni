@@ -239,7 +239,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             "addChannel",
                                             self.auth.token(),
                                             channel,
-					    mirror)
+                                            mirror)
 
             print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)
