@@ -589,7 +589,7 @@ public class CVEAuditManager {
                 }
 
                 // Add errata and channel ID
-                if(!errataInstalled) {
+                if (!errataInstalled) {
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             errataID, (String) result.get("errata_advisory"));
                     currentSystem.addErrata(errata);
