@@ -815,6 +815,41 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
     }
 
+    /**
+     * Runs testPatchPartlyApplied on a server bnc#899266
+     * @throws Exception if anything goes wrong
+     */
+    public void testPatchPartlyApplied() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a server with a channel, one errata, one upgradable package
+        // and one package which is already installed
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = new HashSet<Channel>();
+        channels.add(channel);
+        // order is important first package is installed, the second one
+        // can be upgraded.
+        Package patched = createTestPackage(user, errata, channel, "noarch");
+        Package unpatched = createTestPackage(user, channel, "noarch");
+        createLaterTestPackage(user, errata, channel, unpatched);
+
+        Server server = createTestServer(user, channels);
+        createTestInstalledPackage(unpatched, server);
+        createTestInstalledPackage(patched, server);
+        CVEAuditManager.populateCVEServerChannels();
+
+        // No filtering
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+    }
 
     /**
      * Find record for a given server in a list as returned by

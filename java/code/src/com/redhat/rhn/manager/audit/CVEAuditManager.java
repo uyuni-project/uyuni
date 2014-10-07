@@ -517,10 +517,10 @@ public class CVEAuditManager {
         Long currentErrata = null;
 
         // Flags
-        boolean errataChannelsAssigned = false;
-        boolean errataInstalled = false;
-        boolean assigned = false;
-        boolean installed = false;
+        boolean currentChannelAssigned = false;
+        boolean currentPackageInstalled = false;
+        boolean allChannelsForOneErrataAssigned = false;
+        boolean allPackagesForAllErrataInstalled = true;
         boolean hasErrata = false;
 
         for (Map<String, Object> result : results) {
@@ -531,7 +531,10 @@ public class CVEAuditManager {
             if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
                 // Finish up work on the last one
                 if (currentSystem != null) {
-                    setPatchStatus(currentSystem, installed, assigned, hasErrata);
+                    allChannelsForOneErrataAssigned |= currentChannelAssigned;
+                    allPackagesForAllErrataInstalled &= currentPackageInstalled;
+                    setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
+                            allChannelsForOneErrataAssigned, hasErrata);
                     // Check if the patch status is contained in the filter
                     if (patchStatuses.contains(currentSystem.getPatchStatus())) {
                         ret.add(currentSystem);
@@ -543,8 +546,10 @@ public class CVEAuditManager {
                 currentSystem.setSystemName((String) result.get("system_name"));
 
                 // First assignment
-                assigned = getBooleanValue(result, "channel_assigned");
-                installed = getBooleanValue(result, "package_installed");
+                currentChannelAssigned = getBooleanValue(result, "channel_assigned");
+                currentPackageInstalled = getBooleanValue(result, "package_installed");
+                allChannelsForOneErrataAssigned = false;
+                allPackagesForAllErrataInstalled = true;
 
                 // Get errata and channel ID
                 currentErrata = (Long) result.get("errata_id");
@@ -552,10 +557,8 @@ public class CVEAuditManager {
 
                 // Add these to the current system
                 hasErrata = currentErrata != null;
-                if (hasErrata) {
+                if (hasErrata && !currentPackageInstalled) {
                     // We have an errata
-                    errataChannelsAssigned = assigned;
-                    errataInstalled = installed;
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             currentErrata, (String) result.get("errata_advisory"));
                     currentSystem.addErrata(errata);
@@ -573,24 +576,26 @@ public class CVEAuditManager {
                 Long errataID = (Long) result.get("errata_id");
                 if (errataID.equals(currentErrata)) {
                     // Combine flags with &
-                    errataChannelsAssigned &= getBooleanValue(result, "channel_assigned");
-                    errataInstalled &= getBooleanValue(result, "package_installed");
+                    currentChannelAssigned &= getBooleanValue(result, "channel_assigned");
+                    currentPackageInstalled &= getBooleanValue(result, "package_installed");
                 }
                 else {
                     // Finish work on old errata
-                    assigned |= errataChannelsAssigned;
-                    installed |= errataInstalled;
+                    allChannelsForOneErrataAssigned |= currentChannelAssigned;
+                    allPackagesForAllErrataInstalled &= currentPackageInstalled;
 
                     // Switch to the new errata
                     currentErrata = errataID;
-                    errataChannelsAssigned = getBooleanValue(result, "channel_assigned");
-                    errataInstalled = getBooleanValue(result, "package_installed");
+                    currentChannelAssigned = getBooleanValue(result, "channel_assigned");
+                    currentPackageInstalled = getBooleanValue(result, "package_installed");
                 }
 
                 // Add errata and channel ID
-                ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
-                        errataID, (String) result.get("errata_advisory"));
-                currentSystem.addErrata(errata);
+                if (!currentPackageInstalled) {
+                    ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
+                            errataID, (String) result.get("errata_advisory"));
+                    currentSystem.addErrata(errata);
+                }
                 ChannelIdNameLabelTriple channel =
                         new ChannelIdNameLabelTriple((Long) result.get("channel_id"),
                                 (String) result.get("channel_name"),
@@ -601,7 +606,10 @@ public class CVEAuditManager {
 
         // Finish up the *very* last system record
         if (currentSystem != null) {
-            setPatchStatus(currentSystem, installed, assigned, hasErrata);
+            allChannelsForOneErrataAssigned |= currentChannelAssigned;
+            allPackagesForAllErrataInstalled &= currentPackageInstalled;
+            setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
+                    allChannelsForOneErrataAssigned, hasErrata);
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(currentSystem.getPatchStatus())) {
                 ret.add(currentSystem);
@@ -642,17 +650,20 @@ public class CVEAuditManager {
      * Set the patch status of a system record.
      *
      * @param system the system
-     * @param installed true if system has the relevant package installed
-     * @param assigned the true if system has the relevant channel assigned
+     * @param allPackagesForAllErrataInstalled true if system has all relevant
+     * packages installed
+     * @param allChannelsForOneErrataAssigned the true if system has all
+     * channels for at least one relevant errata assigned
      * @param hasErrata true if query row has an errata ID
      */
-    public static void setPatchStatus(CVEAuditSystem system, boolean installed,
-            boolean assigned, boolean hasErrata) {
+    public static void setPatchStatus(CVEAuditSystem system,
+            boolean allPackagesForAllErrataInstalled,
+            boolean allChannelsForOneErrataAssigned, boolean hasErrata) {
         if (hasErrata) {
-            if (installed) {
+            if (allPackagesForAllErrataInstalled) {
                 system.setPatchStatus(PatchStatus.PATCHED);
             }
-            else if (assigned) {
+            else if (allChannelsForOneErrataAssigned) {
                 system.setPatchStatus(PatchStatus.AFFECTED_PATCH_APPLICABLE);
             }
             else {
