@@ -32,7 +32,7 @@ try:
     from spacewalk.common.rhnTB import fetchTraceback
     from spacewalk.susemanager import mgr_register
     from spacewalk.common.rhnLog import log_debug
-    from spacewalk.susemanager.content_sync_helper import current_backend, BackendType
+    from spacewalk.common.suseLib import current_cc_backend, BackendType
 except KeyboardInterrupt:
     systemExit(0, "\nUser interrupted process.")
 except ImportError:
@@ -46,7 +46,7 @@ def releaseLOCK():
         LOCK = None
 
 def main():
-    if current_backend() == BackendType.SCC:
+    if current_cc_backend() == BackendType.SCC:
         log_debug(2, "Not yet supported with SCC backend")
         sys.exit(0)
 

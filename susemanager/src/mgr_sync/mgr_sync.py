@@ -17,7 +17,8 @@ import re
 import sys
 import xmlrpclib
 
-from spacewalk.susemanager.content_sync_helper import current_backend, switch_to_scc, BackendType
+from spacewalk.common.suseLib import current_cc_backend, BackendType
+from spacewalk.susemanager.content_sync_helper import switch_to_scc
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -46,7 +47,7 @@ class MgrSync(object):
         """
         Run the app.
         """
-        if not current_backend() == BackendType.SCC \
+        if not current_cc_backend() == BackendType.SCC \
            and not vars(options).has_key('enable_scc'):
             msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
 mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
@@ -83,7 +84,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror)
         elif vars(options).has_key('enable_scc'):
-            if current_backend() == BackendType.SCC:
+            if current_cc_backend() == BackendType.SCC:
                 print("The SUSE Customer Center (SCC) backend is already "
                       "active, nothing to do.")
             else:
@@ -537,7 +538,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     def _enable_scc(self, retry_on_session_failure=True):
         """ Enable the SCC backend """
 
-        if current_backend() == BackendType.NCC:
+        if current_cc_backend() == BackendType.NCC:
 
             try:
                 switch_to_scc(self.conn, self.auth.token())
