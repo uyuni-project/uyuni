@@ -1528,10 +1528,9 @@ public class ContentSyncManager {
             mirrorUrl = Config.get().getString(MIRROR_CFG_KEY);
         }
 
+        // See if we have a mirror URL and try to set it up
         if (mirrorUrl != null) {
-            // We have a mirror URL
             try {
-                // Setup the mirror URL
                 URI mirrorUri = new URI(mirrorUrl);
                 String username = null;
                 String password = null;
@@ -1554,6 +1553,7 @@ public class ContentSyncManager {
                 URI testUri = new URI(mirrorUri.getScheme(), null, mirrorUri.getHost(),
                         mirrorUri.getPort(), testUrlPath, mirrorUri.getQuery(), null);
 
+                // Verify the mirrored repo by sending a HEAD request
                 if (MgrSyncUtils.sendHeadRequest(testUri.toString(), username, password) ==
                         HttpURLConnection.HTTP_OK) {
                     // Build URL combining the mirror and N/SCC parts
@@ -1577,8 +1577,9 @@ public class ContentSyncManager {
                 log.debug(e.getMessage());
             }
         }
+
+        // If we are still here, there was an error before or no mirror was given.
         // Official repos need the mirror credentials query string
-        // If we are still here, there as an error above or no mirror given
         if (sourceUri.getHost().equals(OFFICIAL_REPO_HOST)) {
             String separator = sourceUri.getQuery() == null ? "?" : "&";
             StringBuilder credUrl =
