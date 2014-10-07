@@ -342,7 +342,7 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $credentials
      *                    #array_end()
      */
-    public Object[] listCredentials(String sessionKey) throws ContentSyncException {
+    public List<Map<String, Object>> listCredentials(String sessionKey) throws ContentSyncException {
         List<Map<String, Object>> credentials = new ArrayList<Map<String, Object>>();
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         for (MirrorCredentialsDto creds : credsManager.findMirrorCredentials()) {
@@ -352,6 +352,6 @@ public class ContentSyncHandler extends BaseHandler {
             map.put("isPrimary", creds.isPrimary());
             credentials.add(map);
         }
-        return credentials.toArray();
+        return credentials;
     }
 }
