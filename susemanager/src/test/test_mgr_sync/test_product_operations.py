@@ -484,7 +484,7 @@ Product successfully added"""
                     "addChannel",
                     self.fake_auth_token,
                     channel.label,
-		    None))
+                    None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
@@ -549,7 +549,7 @@ Product successfully added"""
                         "addChannel",
                         self.fake_auth_token,
                         channel.label,
-			None))
+                        None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
@@ -687,7 +687,7 @@ Product successfully added"""
                     "addChannel",
                     self.fake_auth_token,
                     channel.label,
-		    None))
+                    None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,

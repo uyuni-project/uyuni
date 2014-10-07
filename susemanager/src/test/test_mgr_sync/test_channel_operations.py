@@ -240,7 +240,7 @@ Status:
 
     def test_add_available_base_channel_with_mirror(self):
         """ Test adding an available base channel"""
-	mirror_url = "http://smt.suse.de"
+        mirror_url = "http://smt.suse.de"
         channel = "rhel-i386-as-4"
         options = get_options(
             "add channel {0} --from-mirror {1}".format(channel, mirror_url).split())
@@ -260,7 +260,7 @@ Status:
                                         "addChannel",
                                         self.fake_auth_token,
                                         channel,
-					mirror_url),
+                                        mirror_url),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -331,7 +331,7 @@ Status:
                                         "addChannel",
                                         self.fake_auth_token,
                                         base_channel,
-					None),
+                                        None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -340,7 +340,7 @@ Status:
                                         "addChannel",
                                         self.fake_auth_token,
                                         channel,
-					None),
+                                        None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -487,7 +487,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
                                         "addChannel",
                                         self.fake_auth_token,
                                         chosen_channel,
-					None),
+                                        None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
