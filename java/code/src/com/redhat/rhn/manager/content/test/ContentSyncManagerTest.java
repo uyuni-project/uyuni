@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE/
+ * Copyright (c) 2014 SUSE
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -959,6 +959,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Test for setupSourceURL()
+     * @throws Exception if something goes wrong
+     */
     public void testSetupSourceURL() throws Exception {
         String repoUrl = "https://updates.suse.com/";
         String mirrorUrl = "http://localhost/";
@@ -966,7 +970,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertNull(csm.setupSourceURL("", 2, mirrorUrl));
         assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl,  0, null));
         assertEquals(repoUrl + "?credentials=mirrcred_3", csm.setupSourceURL(repoUrl , 3, null));
-        assertEquals(mirrorUrl, csm.setupSourceURL(repoUrl, 0, mirrorUrl));
+        // Fall back to official repo in case mirror is not reachable
+        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl, 0, mirrorUrl));
     }
 
     /**

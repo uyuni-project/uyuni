@@ -1524,7 +1524,6 @@ public class ContentSyncManager {
             mirrorUrl = Config.get().getString(MIRROR_CFG_KEY);
         }
 
-        String returnURL = null;
         if (mirrorUrl != null) {
             // We have a mirror URL
             try {
@@ -1561,7 +1560,7 @@ public class ContentSyncManager {
                     URI completeMirrorUri = new URI(mirrorUri.getScheme(),
                             mirrorUri.getUserInfo(), mirrorUri.getHost(),
                             mirrorUri.getPort(), combinedPath, combinedQuery, null);
-                    returnURL = completeMirrorUri.toString();
+                    return completeMirrorUri.toString();
                 }
             }
             catch (ContentSyncException e) {
@@ -1574,21 +1573,19 @@ public class ContentSyncManager {
                 log.debug(e.getMessage());
             }
         }
-        else {
-            // Official repos need the mirror credentials query string
-            if (sourceUri.getHost().equals(OFFICIAL_REPO_HOST)) {
-                String separator = sourceUri.getQuery() == null ? "?" : "&";
-                StringBuilder credUrl =
-                        new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
-                if (credsId > 0) {
-                    credUrl.append("_").append(credsId);
-                }
-                returnURL = credUrl.toString();
+        // Official repos need the mirror credentials query string
+        // If we are still here, there as an error above or no mirror given
+        if (sourceUri.getHost().equals(OFFICIAL_REPO_HOST)) {
+            String separator = sourceUri.getQuery() == null ? "?" : "&";
+            StringBuilder credUrl =
+                    new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
+            if (credsId > 0) {
+                credUrl.append("_").append(credsId);
             }
-            else {
-                returnURL = sourceUri.toString();
-            }
+            return credUrl.toString();
         }
-        return returnURL;
+        else {
+            return sourceUri.toString();
+        }
     }
 }
