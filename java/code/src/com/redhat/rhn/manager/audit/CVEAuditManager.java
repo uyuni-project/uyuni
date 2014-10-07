@@ -520,7 +520,7 @@ public class CVEAuditManager {
         boolean currentChannelAssigned = false;
         boolean currentPackageInstalled = false;
         boolean allChannelsForOneErrataAssigned = false;
-        boolean allPackagesForAllErrataInstalled = false;
+        boolean allPackagesForAllErrataInstalled = true;
         boolean hasErrata = false;
 
         for (Map<String, Object> result : results) {
@@ -548,8 +548,8 @@ public class CVEAuditManager {
                 // First assignment
                 currentChannelAssigned = getBooleanValue(result, "channel_assigned");
                 currentPackageInstalled = getBooleanValue(result, "package_installed");
-                allChannelsForOneErrataAssigned = currentChannelAssigned;
-                allPackagesForAllErrataInstalled = currentPackageInstalled;
+                allChannelsForOneErrataAssigned = false;
+                allPackagesForAllErrataInstalled = true;
 
                 // Get errata and channel ID
                 currentErrata = (Long) result.get("errata_id");
