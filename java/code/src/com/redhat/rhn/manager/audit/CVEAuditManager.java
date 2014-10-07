@@ -548,6 +548,7 @@ public class CVEAuditManager {
                 // First assignment
                 currentChannelAssigned = getBooleanValue(result, "channel_assigned");
                 currentPackageInstalled = getBooleanValue(result, "package_installed");
+                allChannelsForOneErrataAssigned = currentChannelAssigned;
                 allPackagesForAllErrataInstalled = currentPackageInstalled;
 
                 // Get errata and channel ID
