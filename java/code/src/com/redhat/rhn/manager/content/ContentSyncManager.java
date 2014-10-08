@@ -123,7 +123,7 @@ public class ContentSyncManager {
     private static String uuid;
 
     // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
-    private static Integer cachedCredentialsOES = null;
+    private static SCCRepository cachedOESRepo = null;
 
     // Mirror URL read from rhn.conf
     public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
@@ -561,7 +561,7 @@ public class ContentSyncManager {
                 scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
                 // Add the mirror credentials ID to all returned repos
-                int credsId = c.getId().intValue();
+                Long credsId = c.getId();
                 for (SCCRepository r : repos) {
                     r.setCredentialsId(credsId);
                 }
@@ -677,8 +677,7 @@ public class ContentSyncManager {
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 SCCRepository repo = isMirrorable(channel, repos);
                 if (repo != null) {
-                    String sourceURL = setupSourceURL(
-                            repo.getUrl(), repo.getCredentialsId(), mirrorUrl);
+                    String sourceURL = setupSourceURL(repo, mirrorUrl);
                     if (!cs.getSourceUrl().equals(sourceURL)) {
                         cs.setSourceUrl(sourceURL);
                         ChannelFactory.save(cs);
@@ -1106,7 +1105,7 @@ public class ContentSyncManager {
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
         // Reset the cached OES credentials (OES will be queried only once)
-        cachedCredentialsOES = null;
+        cachedOESRepo = null;
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
@@ -1142,16 +1141,16 @@ public class ContentSyncManager {
 
         // Check OES availability by sending an HTTP HEAD request
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
-            if (cachedCredentialsOES == null) {
-                cachedCredentialsOES = verifyOESRepo();
+            if (cachedOESRepo == null) {
+                Long oesCredsID = verifyOESRepo();
+                cachedOESRepo = new SCCRepository();
+                cachedOESRepo.setUrl(channel.getSourceUrl());
+                cachedOESRepo.setCredentialsId(oesCredsID);
             }
             else if (log.isDebugEnabled()) {
                 log.debug("Return cached OES availablity");
             }
-            SCCRepository oesRepo = new SCCRepository();
-            oesRepo.setUrl(channel.getSourceUrl());
-            oesRepo.setCredentialsId(cachedCredentialsOES);
-            return oesRepo;
+            return cachedOESRepo.getCredentialsId() != null ? cachedOESRepo : null;
         }
 
         // Remove trailing slashes before matching URLs
@@ -1235,7 +1234,7 @@ public class ContentSyncManager {
         // Create or link the content source
         String url = repo.getUrl();
         if (!StringUtils.isBlank(url)) {
-            url = setupSourceURL(url, repo.getCredentialsId(), mirrorUrl);
+            url = setupSourceURL(repo, mirrorUrl);
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
             if (source == null) {
                 source = ChannelFactory.createRepo();
@@ -1365,7 +1364,7 @@ public class ContentSyncManager {
      *
      * @return mirror credentials ID or null if OES channels are not mirrorable
      */
-    private Integer verifyOESRepo() {
+    private Long verifyOESRepo() {
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query OES repo for all mirror credentials until success
@@ -1379,7 +1378,7 @@ public class ContentSyncManager {
                             creds.getUser() + ": " + responseCode);
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    return creds.getId().intValue();
+                    return creds.getId();
                 }
             } catch (ContentSyncException e) {
                 log.error(e.getMessage());
@@ -1460,7 +1459,8 @@ public class ContentSyncManager {
      * @param mirrorUrl optional mirror URL that can be null
      * @return the URL with query string including mirror credentials or null
      */
-    public String setupSourceURL(String url, int credsId, String mirrorUrl) {
+    public String setupSourceURL(SCCRepository repo, String mirrorUrl) {
+        String url = repo.getUrl();
         if (StringUtils.isBlank(url)) {
             return null;
         }
@@ -1540,6 +1540,7 @@ public class ContentSyncManager {
             String separator = sourceUri.getQuery() == null ? "?" : "&";
             StringBuilder credUrl =
                     new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
+            Long credsId = repo.getCredentialsId();
             if (credsId > 0) {
                 credUrl.append("_").append(credsId);
             }
