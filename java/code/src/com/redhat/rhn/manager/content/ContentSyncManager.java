@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -121,9 +122,6 @@ public class ContentSyncManager {
     private static final File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
     private static String uuid;
 
-    // This file is touched once the server has been migrated to SCC
-    public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
-
     // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
     private static Integer cachedCredentialsOES = null;
 
@@ -229,14 +227,15 @@ public class ContentSyncManager {
      */
     public Collection<SCCProduct> getProducts() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
+                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                        c.getUser(), c.getPassword());
+                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+                scc.setUUID(getUUID());
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -256,6 +255,9 @@ public class ContentSyncManager {
             catch (SCCClientException e) {
                 log.error("Error getting products for " +
                         c.getUser() + ", " + e.getMessage());
+            }
+            catch (URISyntaxException e1) {
+                log.error("Invalid URL:" + e1.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -593,14 +595,15 @@ public class ContentSyncManager {
      */
     public Collection<SCCRepository> getRepositories() {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
+                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                        c.getUser(), c.getPassword());
+                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+                scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
                 // Add the mirror credentials ID to all returned repos
                 int credsId = c.getId().intValue();
@@ -616,6 +619,9 @@ public class ContentSyncManager {
             catch (SCCClientException e) {
                 log.error("Error getting repos for " + c.getUser() + ", " + e.getMessage());
             }
+            catch (URISyntaxException e1) {
+                log.error("Invalid URL:" + e1.getMessage());
+            }
         }
         if (log.isDebugEnabled()) {
             log.debug("Found " + reposList.size() + " available repositories.");
@@ -624,21 +630,38 @@ public class ContentSyncManager {
     }
 
     /**
+     * Get subscriptions from SCC for a single pair of mirror credentials.
+     *
+     * @param user username
+     * @param password password
+     * @return list of subscriptions as received from SCC.
+     */
+    public List<SCCSubscription> getSubscriptions(String user, String password)
+            throws SCCClientException {
+        SCCClient scc = null;
+        try {
+            scc = new SCCClient(Config.get().getString("scc_url"), user, password);
+            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
+            scc.setUUID(getUUID());
+        } catch (URISyntaxException e1) {
+            log.error("Invalid URL:" + e1.getMessage());
+            return new ArrayList<SCCSubscription>();
+        }
+        return scc.listSubscriptions();
+    }
+
+    /**
      * Returns all subscriptions available to all configured credentials.
      * @return list of all available subscriptions
      */
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
-            SCCClient scc = new SCCClient(c.getUser(), c.getPassword());
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             try {
-                List<SCCSubscription> subs = scc.listSubscriptions();
-                subscriptions.addAll(subs);
+                subscriptions.addAll(getSubscriptions(c.getUser(), c.getPassword()));
             }
             catch (SCCClientException e) {
                 log.error("Error getting subscriptions for " +
@@ -1379,8 +1402,8 @@ public class ContentSyncManager {
      * @return mirror credentials ID or null if OES channels are not mirrorable
      */
     private Integer verifyOESRepo() {
-        List<MirrorCredentialsDto> credentials =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query OES repo for all mirror credentials until success
         for (MirrorCredentialsDto creds : credentials) {
             int responseCode;

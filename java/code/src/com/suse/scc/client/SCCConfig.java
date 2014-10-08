@@ -14,6 +14,8 @@
  */
 package com.suse.scc.client;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**
@@ -22,8 +24,7 @@ import java.util.Properties;
 public class SCCConfig {
 
     // Valid keys
-    public static final String SCHEMA = "schema";
-    public static final String HOSTNAME = "hostname";
+    public static final String URL = "url";
     public static final String ENCODED_CREDS = "encoded-creds";
     public static final String UUID = "uuid";
 
@@ -34,8 +35,8 @@ public class SCCConfig {
     public static final String PROXY_PASSWORD = "proxy-password";
 
     // Default values
-    private static final String DEFAULT_SCHEMA = "https://";
-    private static final String DEFAULT_HOSTNAME = "scc.suse.com";
+    protected static final String DEFAULT_URL = "https://scc.suse.com";
+    private static final String DEFAULT_PROXY_PORT = "3128";
 
     // The properties object
     private Properties properties;
@@ -49,30 +50,34 @@ public class SCCConfig {
 
     /**
      * Sets a preference given by key and value. Use one of the public key strings above.
+     * DO NOT USE FOR URL!!!!!!!!!!
      *
      * @param key
      * @param value
+     * @throws URISyntaxException
      */
     public void put(String key, String value) {
         properties.setProperty(key, value);
     }
 
     /**
-     * Returns the configured hostname or "scc.suse.com".
+     * Set the URL parameter
      *
-     * @return hostname
+     * @param url
+     * @throws URISyntaxException
      */
-    public String getHostname() {
-        return properties.getProperty(HOSTNAME, DEFAULT_HOSTNAME);
+    public void setUrl(String url) throws URISyntaxException {
+        new URI(url);
+        properties.setProperty(URL, url);
     }
 
     /**
-     * Returns the configured schema or "https://".
+     * Returns the configured url or "https://scc.suse.com".
      *
-     * @return schema
+     * @return url
      */
-    public String getSchema() {
-        return properties.getProperty(SCHEMA, DEFAULT_SCHEMA);
+    public String getUrl() {
+        return properties.getProperty(URL, DEFAULT_URL);
     }
 
     /**
@@ -103,13 +108,12 @@ public class SCCConfig {
     }
 
      /**
-     * Returns the configured proxy port or default
+     * Returns the configured proxy port or 3128 as default
      *
      * @return proxy port
      */
     public String getProxyPort() {
-        return properties.getProperty(PROXY_PORT,
-                getSchema().equals("https://") ? "443": "80");
+        return properties.getProperty(PROXY_PORT, DEFAULT_PROXY_PORT);
     }
 
     /**

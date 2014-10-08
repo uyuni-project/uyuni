@@ -33,6 +33,7 @@ use Fcntl qw(F_GETFD F_SETFD FD_CLOEXEC);
 use IO::Socket ();
 use RHN::DB ();
 use File::Copy;
+use MIME::Base64;
 
 my $DEBUG;
 $DEBUG = 0;
@@ -54,7 +55,7 @@ my $product_name = $answers{'product_name'} || 'Spacewalk';
 
 my $hn = `/bin/hostname -f`;
 chomp($hn);
-$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq ""); 
+$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq "");
 $answers{hostname} ||= "$hn";
 
 # Skip the logfile init, normally just used when called from install.pl,
@@ -81,7 +82,7 @@ if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         \%rhnOptions);
 }
 
-setup_ncc(\%opts, \%answers);
+setup_cc(\%opts, \%answers);
 
 setup_default_proxy(\%answers);
 
@@ -373,40 +374,63 @@ sub setup_default_proxy {
     };
 }
 
-sub setup_ncc {
+sub setup_cc {
   my $opts = shift;
   my $answers = shift;
 
-  if (! $opts{"ncc"})
+  if (! ($opts{"ncc"} || $opts{"scc"}))
   {
-    # no ncc connection wanted
+    # no customer center connection wanted
     $answers{'setup-ncc'} = 'N';
+    $answers{'setup-scc'} = 'N';
     return;
   }
   $opts{disconnected} = 1;
-  $answers{'setup-ncc'} = 'Y';
+  if ($opts{"ncc"})
+  {
+      $answers{'setup-ncc'} = 'Y';
+      $answers{'setup-scc'} = 'N';
+      Spacewalk::Setup::ask(
+          -noninteractive => $opts{"non-interactive"},
+          -question => "NCC Mirror Credential Username",
+          -test => sub { my $text = shift;
+                         return $text =~ /\S+/ && length($text) <= 128 },
+          -answer => \$answers{'ncc-user'});
 
-  Spacewalk::Setup::ask(
-        -noninteractive => $opts{"non-interactive"},
-        -question => "NCC Mirror Credential Username",
-        -test => sub { my $text = shift;
-                       return $text =~ /\S+/ && length($text) <= 128 },
-        -answer => \$answers{'ncc-user'});
+      Spacewalk::Setup::ask(
+          -noninteractive => $opts{"non-interactive"},
+          -question => "NCC Mirror Credential Password",
+          -test => sub { my $text = shift;
+                         return $text =~ /\S+/ && length($text) <= 128 },
+          -answer => \$answers{'ncc-pass'},
+          -password => 1);
 
-  Spacewalk::Setup::ask(
-        -noninteractive => $opts{"non-interactive"},
-        -question => "NCC Mirror Credential Password",
-        -test => sub { my $text = shift;
-                       return $text =~ /\S+/ && length($text) <= 128 },
-        -answer => \$answers{'ncc-pass'},
-        -password => 1);
+      Spacewalk::Setup::ask(
+          -noninteractive => $opts{"non-interactive"},
+          -question => "NCC Email Address",
+          -test => sub { my $text = shift;
+              valid_multiple_email($text) && length($text) <= 128 },
+          -answer => \$answers{'ncc-email'});
+  }
+  else
+  {
+      $answers{'setup-scc'} = 'Y';
+      $answers{'setup-ncc'} = 'N';
+      Spacewalk::Setup::ask(
+          -noninteractive => $opts{"non-interactive"},
+          -question => "SCC Mirror Credential Username",
+          -test => sub { my $text = shift;
+                         return $text =~ /\S+/ && length($text) <= 128 },
+          -answer => \$answers{'scc-user'});
 
-  Spacewalk::Setup::ask(
-        -noninteractive => $opts{"non-interactive"},
-        -question => "NCC Email Address",
-        -test => sub { my $text = shift;
-                       valid_multiple_email($text) && length($text) <= 128 },
-        -answer => \$answers{'ncc-email'});
+      Spacewalk::Setup::ask(
+          -noninteractive => $opts{"non-interactive"},
+          -question => "SCC Mirror Credential Password",
+          -test => sub { my $text = shift;
+                         return $text =~ /\S+/ && length($text) <= 128 },
+          -answer => \$answers{'scc-pass'},
+          -password => 1);
+  }
 }
 
 sub setup_sudoers {
@@ -1095,12 +1119,25 @@ sub populate_initial_configs {
 
   if ($answers->{'setup-ncc'} && $answers->{'setup-ncc'} =~ /^[Yy]/)
   {
-    $rhnopt{'server.susemanager.mirrcred_user'}  = $answers->{'ncc-user'};
-    $rhnopt{'server.susemanager.mirrcred_pass'}  = $answers->{'ncc-pass'};
-    $rhnopt{'server.susemanager.mirrcred_email'} = $answers->{'ncc-email'};
-    $config_opts{'serverDOTsusemanagerDOTmirrcred_email'} = $answers->{'ncc-email'};
-    $config_opts{'serverDOTsusemanagerDOTmirrcred_user'} = $answers->{'ncc-user'};
-    $config_opts{'serverDOTsusemanagerDOTmirrcred_pass'} = $answers->{'ncc-pass'};
+      $rhnopt{'server.susemanager.mirrcred_user'}  = $answers->{'ncc-user'};
+      $rhnopt{'server.susemanager.mirrcred_pass'}  = $answers->{'ncc-pass'};
+      $rhnopt{'server.susemanager.mirrcred_email'} = $answers->{'ncc-email'};
+      $config_opts{'serverDOTsusemanagerDOTmirrcred_email'} = $answers->{'ncc-email'};
+      $config_opts{'serverDOTsusemanagerDOTmirrcred_user'} = $answers->{'ncc-user'};
+      $config_opts{'serverDOTsusemanagerDOTmirrcred_pass'} = $answers->{'ncc-pass'};
+  }
+  elsif ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
+  {
+      # SCC - write to DB
+      my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password)
+                        values (sequence_nextval('suse_credentials_id_seq'), NULL,
+                                (select id from suseCredentialsType where label = 'scc'),
+                                 '%s', '%s')",
+                       $answers->{'scc-user'},
+                       encode_base64($answers->{'scc-pass'}));
+      system_or_exit(["/bin/bash", "-c",
+                     "echo "$st" | spacewalk-sql --select-mode - 2>&1",
+                     1, "*** Setup Mirror Credentials failed.");
   }
   write_config( \%rhnopt,
 		'/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );

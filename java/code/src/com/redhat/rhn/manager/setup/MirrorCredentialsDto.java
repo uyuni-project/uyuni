@@ -25,6 +25,7 @@ public class MirrorCredentialsDto extends BaseDto {
     private String user;
     private String password;
     private String email;
+    private boolean primary = false;
 
     /**
      * Default constructor.
@@ -43,6 +44,16 @@ public class MirrorCredentialsDto extends BaseDto {
         this.setEmail(emailIn);
         this.setUser(userIn);
         this.setPassword(passwordIn);
+    }
+
+    /**
+     * Instantiates a new mirror credentials DTO without email address.
+     *
+     * @param userIn the user
+     * @param passwordIn the password
+     */
+    public MirrorCredentialsDto(String userIn, String passwordIn) {
+        this(null, userIn, passwordIn);
     }
 
     /**
@@ -101,6 +112,20 @@ public class MirrorCredentialsDto extends BaseDto {
      */
     public void setEmail(String emailIn) {
         this.email = emailIn;
+    }
+
+    /**
+     * @return the primary
+     */
+    public boolean isPrimary() {
+        return primary;
+    }
+
+    /**
+     * @param primary the primary to set
+     */
+    public void setPrimary(boolean primary) {
+        this.primary = primary;
     }
 
     /**

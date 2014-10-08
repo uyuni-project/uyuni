@@ -36,7 +36,7 @@ our $VERSION = '1.1';
 
 use constant SHARED_DIR => "/usr/share/spacewalk/setup";
 
-use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/etc", "sysconfig", 
+use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/etc", "sysconfig",
     'rhn', 'postgres', 'main.sql');
 
 use constant POSTGRESQL_DEPLOY_FILE => File::Spec->catfile("/etc", "sysconfig",
@@ -141,11 +141,12 @@ sub parse_options {
             "rhn-http-proxy-password:s",
             "managed-db",
             "ncc",
+            "scc"
 		   );
 
   my $usage = loc("usage: %s %s\n",
 		  $0,
-		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql ] [--ncc]" );
+		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql ] [--ncc|--scc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -387,23 +388,23 @@ sub upgrade_stop_services {
 
 my $spinning_callback_count;
 my @spinning_pattern = split /\n/, <<EOF;
-.               
- .              
-  o             
-   @            
-   (O)          
-    (*)         
-   ((%%))       
-    (( # ))     
-   ( ( # ) )    
- (  (  #  )  )  
-    (  !  )     
-       :        
-       .        
-       _        
-      . .       
-    .     .     
-                
+.
+ .
+  o
+   @
+   (O)
+    (*)
+   ((%%))
+    (( # ))
+   ( ( # ) )
+ (  (  #  )  )
+    (  !  )
+       :
+       .
+       _
+      . .
+    .     .
+
 EOF
 
 my $spinning_pattern_maxlength = 0;
@@ -1154,7 +1155,7 @@ sub postgresql_test_db_schema {
     return $row ? 1 : 0;
 }
 
-# Clear the PostgreSQL schema by deleting the 'public' schema with cascade, 
+# Clear the PostgreSQL schema by deleting the 'public' schema with cascade,
 # then re-creating it. Also delete all the other known schemas that
 # Spacewalk might have created.
 

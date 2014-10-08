@@ -28,6 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -43,6 +44,9 @@ public class MgrSyncUtils {
 
     // Logger instance
     private static final Logger log = Logger.getLogger(MgrSyncUtils.class);
+
+    // This file is touched once the server has been migrated to SCC
+    public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
 
     /**
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
@@ -208,5 +212,13 @@ public class MgrSyncUtils {
             ChannelFactory.save(productName);
         }
         return productName;
+    }
+
+    /**
+     * Check if this server has been migrated to an SCC backend yet.
+     * @return true if provider is migrated from NCC to SCC.
+     */
+    public static boolean isMigratedToSCC() {
+        return new File(MgrSyncUtils.SCC_MIGRATED).exists();
     }
 }

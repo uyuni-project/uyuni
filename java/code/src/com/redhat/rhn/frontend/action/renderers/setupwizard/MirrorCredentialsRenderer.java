@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.RendererHelper;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
@@ -66,7 +66,7 @@ public class MirrorCredentialsRenderer {
      * @throws IOException in case something really bad happens
      */
     public String saveCredentials(Long id, String email, String user, String password)
-        throws ServletException, IOException {
+        throws ServletException, IOException, ContentSyncException {
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
@@ -76,7 +76,7 @@ public class MirrorCredentialsRenderer {
         // Otherwise get the current user in SetupWizardManager.
 
         MirrorCredentialsDto creds;
-        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         if (id != null) {
             // Save an existing pair of credentials
             creds = credsManager.findMirrorCredentials(id);
@@ -97,11 +97,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-
-        // TODO: Handle errors
-        @SuppressWarnings("unused")
-        ValidatorError[] errors = credsManager.storeMirrorCredentials(
-                creds, webUser, request);
+        credsManager.storeMirrorCredentials(creds, webUser, request);
         return renderCredentials();
     }
 
@@ -123,7 +119,8 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Deleting credentials: " + id);
         }
-        new MirrorCredentialsManager().deleteMirrorCredentials(id, webUser, request);
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        credsManager.deleteMirrorCredentials(id, webUser, request);
         return renderCredentials();
     }
 
@@ -145,7 +142,8 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Make primary credentials: " + id);
         }
-        new MirrorCredentialsManager().makePrimaryCredentials(id, webUser, request);
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        credsManager.makePrimaryCredentials(id, webUser, request);
         return renderCredentials();
     }
 
@@ -160,8 +158,8 @@ public class MirrorCredentialsRenderer {
         HttpServletRequest request = webContext.getHttpServletRequest();
 
         // Find mirror credentials
-        List<MirrorCredentialsDto> creds =
-                new MirrorCredentialsManager().findMirrorCredentials();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
         if (logger.isDebugEnabled()) {
             logger.debug("Found " + creds.size() + " pairs of credentials");
         }
@@ -184,7 +182,7 @@ public class MirrorCredentialsRenderer {
         HttpServletRequest request = webContext.getHttpServletRequest();
 
         // Load credentials for given ID and the subscriptions
-        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
             logger.debug("Verify credentials: " + creds.getUser());
@@ -214,7 +212,7 @@ public class MirrorCredentialsRenderer {
         HttpServletRequest request = webContext.getHttpServletRequest();
 
         // Load credentials for given ID and the subscriptions
-        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
+        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         MirrorCredentialsDto creds = credsManager.findMirrorCredentials(id);
         if (logger.isDebugEnabled()) {
             logger.debug("List subscriptions: " + creds.getUser());

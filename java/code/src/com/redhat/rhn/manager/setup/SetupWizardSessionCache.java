@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.setup;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
+
 import com.suse.manager.model.ncc.Subscription;
 
 import org.apache.log4j.Logger;
@@ -147,12 +151,28 @@ public class SetupWizardSessionCache {
         HttpSession session = request.getSession();
         Boolean ret = (Boolean) session.getAttribute(PROXY_STATUS_KEY);
 
-        // Ping NCC if refresh is enforced or status is unknown
+        // Ping NCC/SCC if refresh is enforced or status is unknown
         if (forceRefresh || ret == null) {
-            NCCClient client = new NCCClient();
-            ret = client.ping();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Proxy verification is " + ret);
+            if (MgrSyncUtils.isMigratedToSCC()) {
+                try {
+                    int code = MgrSyncUtils.sendHeadRequest(
+                            Config.get().getString("scc_url") + "/login", null, null);
+                    if (code != 200) {
+                        ret = false;
+                    }
+                    else {
+                        ret = true;
+                    }
+                } catch (ContentSyncException e) {
+                    ret = false;
+                }
+            }
+            else {
+                NCCClient client = new NCCClient();
+                ret = client.ping();
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Proxy verification is " + ret);
+                }
             }
 
             // Put validation status in cache

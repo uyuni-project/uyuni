@@ -18,7 +18,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
@@ -32,7 +32,6 @@ import com.suse.manager.model.products.Product.SyncStatus;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +51,7 @@ public abstract class ProductSyncManager {
      * @return instance of {@link ProductSyncManager}
      */
     public static ProductSyncManager createInstance(Executor executorIn) {
-        return isMigratedToSCC() ? new SCCProductSyncManager() :
+        return MgrSyncUtils.isMigratedToSCC() ? new SCCProductSyncManager() :
                 new NCCProductSyncManager(executorIn);
     }
 
@@ -61,7 +60,7 @@ public abstract class ProductSyncManager {
      * @return instance of {@link ProductSyncManager}
      */
     public static ProductSyncManager createInstance() {
-        return isMigratedToSCC() ? new SCCProductSyncManager() :
+        return MgrSyncUtils.isMigratedToSCC() ? new SCCProductSyncManager() :
             new NCCProductSyncManager();
     }
 
@@ -99,14 +98,6 @@ public abstract class ProductSyncManager {
      */
     public abstract void refreshProducts() throws ProductSyncException,
             InvalidMirrorCredentialException, ConnectionException;
-
-    /**
-     * Check if SCC provider is in use.
-     * @return true if provider is migrated from the NCC to SCC.
-     */
-    private static boolean isMigratedToSCC() {
-        return new File(ContentSyncManager.SCC_MIGRATED).exists();
-    }
 
     /**
      * Get the synchronization status for a given product.

@@ -31,6 +31,7 @@ public class Credentials extends BaseDomainHelper {
 
     // Available type labels
     public static final String TYPE_SUSESTUDIO = "susestudio";
+    public static final String TYPE_SCC = "scc";
 
     private Long id;
     private User user;

@@ -150,3 +150,6 @@ java.development_environment = 0
 
 # Power management settings
 java.power_management.types = ipmilan
+
+# SCC
+scc_url = https://scc.suse.com
