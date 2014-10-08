@@ -11,6 +11,10 @@ Given(/^database is running$/) do
   end
 end
 
+Given(/^there is no such "(.*?)" directory$/) do |bkp_dir|
+  sshcmd("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
+end
+
 When(/^I cannot find file "(.*?)"$/) do |target_file|
   $output = sshcmd("file #{target_file}", ignore_err: true)
 end
@@ -49,7 +53,7 @@ end
 
 Then(/^when I issue command "(.*?)"$/) do |command|
   if $is_postgres
-    $output = sshcmd(command)
+    $output = sshcmd(command, ignore_err: true)
   end
 end
 
@@ -125,7 +129,7 @@ end
 #
 
 When(/^I create backup directory "(.*?)" with UID "(.*?)" and GID "(.*?)"$/) do |bkp_dir, uid, gid|
-  sshcmd("test -d #{bkp_dir} || mkdir #{bkp_dir};chown #{uid}:#{gid} #{bkp_dir}")
+  sshcmd("mkdir /#{bkp_dir};chown #{uid}:#{gid} /#{bkp_dir}")
   bkp_dir.sub!("/", "")
   puts "Backup directory:"
   puts sshcmd("ls -la / | /usr/bin/grep #{bkp_dir}")[:stdout]
@@ -142,3 +146,50 @@ end
 Then(/^I remove backup directory "(.*?)"$/) do |bkp_dir|
   sshcmd("test -d #{bkp_dir} && rm -rf #{bkp_dir}")
 end
+
+When(/^when I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_dir, acl_octal|
+  bkp_dir.sub!("/", "")
+  sshcmd("test -d /#{bkp_dir} && chmod #{acl_octal} /#{bkp_dir}")
+  puts "Backup directory, ACL to \"#{acl_octal}\":"
+  puts sshcmd("ls -la / | /usr/bin/grep #{bkp_dir}")[:stdout]
+  puts "\n*** Taking backup, this might take a while ***\n"
+end
+
+Then(/^base backup is taken$/) do
+  fail if not $output[:stdout].include? "Finished"
+end
+
+Then(/^in "(.*?)" directory there is "(.*?)" file and at least one backup checkpoint file$/) do |bkp_dir, archive_file|
+  fail if sshcmd("test -f #{bkp_dir}/#{archive_file} && echo \"exists\" || echo \"missing\"")[:stdout].include? "missing"
+  fail if sshcmd("ls #{bkp_dir}/*.backup 1>/dev/null 2>/dev/null && echo \"exists\" || echo \"missing\"")[:stdout].include? "missing"
+end
+
+Then(/^parameter "(.*?)" in the configuration file "(.*?)" is "(.*?)"$/) do |param, cfg_file, fuzzy_value|
+  $output = sshcmd("cat #{cfg_file} | grep #{param}")
+  fail if not $output[:stdout].include? fuzzy_value
+end
+
+Then(/^"(.*?)" destination should be set to "(.*?)" in configuration file$/) do |arch_cmd, dest_dir|
+  fail if not $output[:stdout].include? dest_dir
+end
+
+#When(/^in the database I create dummy table "(.*?)" with column "(.*?)" and value "(.*?)"$/) do |tbl, clm, val|
+#  fn = "/tmp/smdba-data-test.sql"
+#  db = "susemanager"
+#  sshcmd("echo \"create table #{tbl} (#{clm} varchar);insert into #{tbl} (#{clm}) values (\'#{val}\');\" > #{fn}", ignore_err: false)
+#  sshcmd("sudo -u postgres psql -d #{db} -c 'drop table dummy' 2>/dev/null", ignore_err: true)
+#  sshcmd("sudo -u postgres psql -d #{db} -af #{fn}", ignore_err: true)
+#  sshcmd("file -f #{fn} && rm #{fn}")
+#  fail if not sshcmd("sudo -u postgres psql -d #{db} -c 'select * from dummy' 2>/dev/null", ignore_err: true)[:stdout].include? val
+#  puts "Table \"#{tbl}\" has been created with some dummy data inside"
+#end
+
+When(/^when I restore database from the backup$/) do
+  puts "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
+  sshcmd("smdba backup-restore")
+end
+
+Then(/^I disable backup in the directory "(.*?)"$/) do |arg1|
+  fail if not sshcmd("smdba backup-hot --enable=off")[:stdout].include? "Finished"
+end
+

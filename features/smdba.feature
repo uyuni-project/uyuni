@@ -52,14 +52,33 @@ Feature: Verify SMDBA infrastructure
 
   Scenario: Check SMDBA backup setup facility
     Given database is running
+    Given there is no such "/smdba-backup-test" directory
     When I create backup directory "/smdba-backup-test" with UID "root" and GID "root"
-    When I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" belong to the same UID/GID as "/var/lib/pgsql/data" directory
     Then I remove backup directory "/smdba-backup-test"
     When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
-    When I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
     Then I should see error message that asks "/smdba-backup-test" has same permissions as "/var/lib/pgsql/data" directory
     Then I remove backup directory "/smdba-backup-test"
 
+  Scenario: Take backup with SMDBA
+    Given database is running
+    Given there is no such "/smdba-backup-test" directory
+    When I create backup directory "/smdba-backup-test" with UID "postgres" and GID "postgres"
+    And when I change Access Control List on "/smdba-backup-test" directory to "0700"
+    And when I issue command "smdba backup-hot --enable=on --backup-dir=/smdba-backup-test"
+    Then base backup is taken
+    Then in "/smdba-backup-test" directory there is "base.tar.gz" file and at least one backup checkpoint file
+    Then parameter "archive_command" in the configuration file "/var/lib/pgsql/data/postgresql.conf" is "/usr/bin/smdba-pgarchive"
+    Then "/usr/bin/smdba-pgarchive" destination should be set to "/smdba-backup-test" in configuration file
 
-  
+  Scenario: Restore backup with SMDBA
+    Given database is running
+    #When in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    And when I restore database from the backup
+    And when I issue command "smdba db-status"
+    Then I want to see if the database is "online"
+    Then I disable backup in the directory "/smdba-backup-test" 
+    Then I remove backup directory "/smdba-backup-test"
+
