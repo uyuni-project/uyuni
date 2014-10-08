@@ -128,6 +128,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(OrgUserExtGroupSerializer.class);
         SERIALIZER_CLASSES.add(ListedProductSerializer.class);
         SERIALIZER_CLASSES.add(MgrSyncChannelSerializer.class);
+        SERIALIZER_CLASSES.add(MirrorCredentialsDtoSerializer.class);
     }
 
     /**
