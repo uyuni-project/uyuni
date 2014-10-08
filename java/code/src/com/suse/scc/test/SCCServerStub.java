@@ -14,13 +14,16 @@
  */
 package com.suse.scc.test;
 
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
 import com.suse.scc.client.SCCConfig;
 
-import java.io.IOException;
+import org.apache.commons.compress.utils.IOUtils;
+
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.URL;
 
 import simple.http.Request;
 import simple.http.Response;
@@ -62,36 +65,16 @@ public class SCCServerStub implements Responder {
         }
 
         // Send file content
-        PrintStream printStream = null;
         try {
-            printStream = response.getPrintStream();
-            InputStream inputStream = getStreamFromExampleFile(uri + ".json");
+            URL url = TestUtils.findTestData(PATH_EXAMPLES + uri + ".json");
 
-            byte[] buffer = new byte[1024];
-            int length = 0;
-            while ((length = inputStream.read(buffer)) >= 0) {
-                printStream.write(buffer, 0, length);
-            }
+            InputStream in = url.openStream();
+            PrintStream out = response.getPrintStream();
+            IOUtils.copy(in, out);
+            out.close();
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
-        finally {
-            if (printStream != null) {
-                printStream.close();
-            }
-        }
-    }
-
-    /**
-     * Return an example resource file as a stream.
-     *
-     * @param filename filename of test resource
-     * @return an input stream
-     */
-    public static InputStream getStreamFromExampleFile(String filename) {
-        String path = PATH_EXAMPLES + filename;
-        InputStream stream = SCCServerStub.class.getResourceAsStream(path);
-        return stream;
     }
 }
