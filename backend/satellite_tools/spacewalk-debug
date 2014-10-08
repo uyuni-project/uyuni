@@ -93,6 +93,7 @@ mkdir -p $DIR/httpd-logs
 mkdir -p $DIR/tomcat-logs
 mkdir -p $DIR/cobbler-logs
 mkdir -p $DIR/rhn-logs
+mkdir -p $DIR/config-defaults
 mkdir -p $DIR/kickstarts
 mkdir -p $DIR/database
 mkdir -p $DIR/cobbler-lib
@@ -158,6 +159,12 @@ if [ -x /usr/bin/rhn-entitlement-report ]; then
    /usr/bin/rhn-entitlement-report &> $DIR/entitlement-report
 fi
 
+# copying the /usr/share/rhn/config-defaults
+echo "    * copying config-defaults files"
+if [ -d /usr/share/rhn/config-defaults ]; then
+    cp -fapRd /usr/share/rhn/config-defaults/* $DIR/config-defaults
+fi
+
 #cobbler stuff
 echo "    * copying cobbler files"
 if [ -d /etc/cobbler ]; then
@@ -210,22 +217,22 @@ fi
 # /etc/passwd
 if [ -f /etc/passwd ] ; then
     if [ $IS_SUSE -eq 1 ]; then
-	echo "    * copying wwwrun, oracle, tomcat, nocpulse entries from /etc/passwd"
-	getent passwd wwwrun tomcat oracle nocpulse > $DIR/conf/passwd
+	echo "    * copying wwwrun, oracle, postgres, tomcat, nocpulse entries from /etc/passwd"
+	getent passwd wwwrun tomcat oracle postgres nocpulse > $DIR/conf/passwd
     else
-	echo "    * copying apache, oracle, tomcat, nocpulse entries from /etc/passwd"
-	getent passwd apache tomcat oracle nocpulse > $DIR/conf/passwd
+	echo "    * copying apache, postgres, tomcat, nocpulse entries from /etc/passwd"
+	getent passwd apache tomcat postgres nocpulse > $DIR/conf/passwd
     fi
 fi
 
 # /etc/group
 if [ -f /etc/group ] ; then
     if [ $IS_SUSE -eq 1 ]; then
-	echo "    * copying www, oracle, tomcat, nocpulse entries from /etc/group"
-	getent group www tomcat oracle nocpulse dba > $DIR/conf/group
+	echo "    * copying www, oracle, postgres, tomcat, nocpulse entries from /etc/group"
+	getent group www tomcat oracle postgres nocpulse dba > $DIR/conf/group
     else
-	echo "    * copying apache, oracle, tomcat, nocpulse entries from /etc/group"
-	getent group apache tomcat oracle nocpulse dba > $DIR/conf/group
+	echo "    * copying apache, postgres, tomcat, nocpulse entries from /etc/group"
+	getent group apache tomcat postgres nocpulse > $DIR/conf/group
     fi
 fi
 

@@ -652,6 +652,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "packageName")
      * @xmlrpc.returntype #return_int_success()
      */
+    @Deprecated
     public int addPackageNames(String sessionKey, String key, List packageNames) {
 
         User user = getLoggedInUser(sessionKey);
@@ -684,6 +685,7 @@ public class ActivationKeyHandler extends BaseHandler {
      * @xmlrpc.param #array_single("string", "packageName")
      * @xmlrpc.returntype #return_int_success()
      */
+    @Deprecated
     public int removePackageNames(String sessionKey, String key, List packageNames) {
 
         User user = getLoggedInUser(sessionKey);

@@ -25,6 +25,9 @@
     <html:text property="powerAddress" name="powerAddress"
       value="${powerAddress}" styleClass="form-control"
     />
+    <p class="small-text">
+      <bean:message key="provisioning.powermanagement.address_note" />
+    </p>
   </div>
 </div>
 
@@ -39,6 +42,9 @@
     <html:text property="powerUsername" name="powerUsername"
       value="${powerUsername}" styleClass="form-control"
     />
+    <p class="small-text">
+      <bean:message key="provisioning.powermanagement.username_note" />
+    </p>
   </div>
 </div>
 
@@ -53,6 +59,9 @@
     <html:password property="powerPassword" name="powerPassword"
       value="${powerPassword}" styleClass="form-control"
     />
+    <p class="small-text">
+      <bean:message key="provisioning.powermanagement.password_note" />
+    </p>
   </div>
 </div>
 
@@ -64,6 +73,9 @@
     <html:text property="powerId" name="powerId"
       value="${powerId}" styleClass="form-control"
     />
+    <p class="small-text">
+      <bean:message key="provisioning.powermanagement.identifier_note" />
+    </p>
   </div>
 </div>
 

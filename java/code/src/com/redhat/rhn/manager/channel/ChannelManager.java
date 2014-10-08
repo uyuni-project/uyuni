@@ -1292,7 +1292,7 @@ public class ChannelManager extends BaseManager {
 
     /**
      * List the errata applicable to a channel between start and end date
-     * @deprecated
+     * @deprecated Use appropriate listErrata
      * @param channel channel whose errata are sought
      * @param start start date
      * @param end end date
@@ -2487,6 +2487,7 @@ public class ChannelManager extends BaseManager {
 
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("custom_cid", targetChannel.getId());
+        params.put("org_id", targetChannel.getOrg().getId());
 
         SelectMode m = ModeFactory.getMode(
                 "Errata_queries", mode);
