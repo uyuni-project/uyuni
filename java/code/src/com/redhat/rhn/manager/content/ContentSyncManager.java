@@ -1156,12 +1156,8 @@ public class ContentSyncManager {
         // Match the channel source URL against URLs we got from SCC
         for (SCCRepository repo : repos) {
             // Remove auth-token for url comparison
-            int questionMark = repo.getUrl().indexOf('?');
-            String strippedURL = repo.getUrl();
-            // Check if it contains a ?
-            if (questionMark != -1) {
-                strippedURL = strippedURL.substring(0, questionMark);
-            }
+            String strippedURL = repo.getUrl().replaceFirst("\\?.*$", "");
+
             if (sourceUrl.equals(removeTrailingSlashes(strippedURL))) {
                 return repo.getCredentialsId();
             }
