@@ -1136,7 +1136,7 @@ sub populate_initial_configs {
                        $answers->{'scc-user'},
                        encode_base64($answers->{'scc-pass'}));
       system_or_exit(["/bin/bash", "-c",
-                     "echo "$st" | spacewalk-sql --select-mode - 2>&1",
+                     "echo '$st' | spacewalk-sql --select-mode - 2>&1",
                      1, "*** Setup Mirror Credentials failed.");
   }
   write_config( \%rhnopt,
