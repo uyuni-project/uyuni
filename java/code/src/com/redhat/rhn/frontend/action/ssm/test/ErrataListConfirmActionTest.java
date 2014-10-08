@@ -11,6 +11,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+import com.redhat.rhn.testing.ServerTestUtils;
 
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.*;
 
@@ -41,7 +42,11 @@ public class ErrataListConfirmActionTest extends RhnMockStrutsTestCase {
         createTestInstalledPackage(package2, server2);
         Package package2_updated = createLaterTestPackage(user, errata2, channel2, package2);
 
+        // add servers to SSM
+        ServerTestUtils.addServersToSsm(user, server1.getId());
+        ServerTestUtils.addServersToSsm(user, server2.getId());
 
+        // simulate the selected erratas
         RhnSet errataSet = RhnSetDecl.ERRATA.get(user);
         errataSet.addElement(errata1.getId());
         errataSet.addElement(errata2.getId());
