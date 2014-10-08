@@ -31,10 +31,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * API handler offering content synchronization methods.
@@ -339,19 +336,13 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List mirror credentials available in SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                       $credentials
+     *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
      */
-    public List<Map<String, Object>> listCredentials(String sessionKey) throws ContentSyncException {
-        List<Map<String, Object>> credentials = new ArrayList<Map<String, Object>>();
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        for (MirrorCredentialsDto creds : credsManager.findMirrorCredentials()) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", creds.getId());
-            map.put("user", creds.getUser());
-            map.put("isPrimary", creds.isPrimary());
-            credentials.add(map);
-        }
-        return credentials;
+    public List<MirrorCredentialsDto> listCredentials(String sessionKey)
+            throws ContentSyncException {
+        MirrorCredentialsManager credsManager =
+                MirrorCredentialsManager.createInstance();
+        return credsManager.findMirrorCredentials();
     }
 }
