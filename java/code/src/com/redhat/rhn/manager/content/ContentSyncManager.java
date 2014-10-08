@@ -964,9 +964,6 @@ public class ContentSyncManager {
                 if (StringUtils.isBlank(c.getUpdateTag())) {
                     c.setUpdateTag(null);
                 }
-
-                // TODO: make the repo source URL point to local path in 'fromdir',
-                // but only in case no 'mirror' is given.
             }
         }
 
@@ -1221,6 +1218,8 @@ public class ContentSyncManager {
         dbChannel.setChannelArch(MgrSyncUtils.getChannelArch(channel));
         dbChannel.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
                 channel.getFamily(), null));
+        // Checksum type is only a dummy here. spacewalk-repo-sync will update it
+        // and set it to the type used in the (last) repo to hash the primary file
         dbChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         dbChannel.setDescription(channel.getDescription());
         dbChannel.setLabel(label);
