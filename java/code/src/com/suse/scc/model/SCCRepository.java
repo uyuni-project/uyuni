@@ -30,7 +30,7 @@ public class SCCRepository {
     private boolean autorefresh;
 
     // Store the mirror credentials ID
-    private int credentialsId;
+    private Long credentialsId;
 
     /**
      * @return the id
@@ -120,7 +120,7 @@ public class SCCRepository {
      * Get the mirror credentials ID.
      * @return the credentialsId
      */
-    public int getCredentialsId() {
+    public Long getCredentialsId() {
         return credentialsId;
     }
 
@@ -128,7 +128,7 @@ public class SCCRepository {
      * Set the mirror credentials ID this repo can be retrieved with.
      * @param credentialsId the credentials ID to set
      */
-    public void setCredentialsId(int credentialsIdIn) {
+    public void setCredentialsId(Long credentialsIdIn) {
         this.credentialsId = credentialsIdIn;
     }
 
