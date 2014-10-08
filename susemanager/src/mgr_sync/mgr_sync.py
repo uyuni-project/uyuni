@@ -75,13 +75,13 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                     filter=options.filter)
         elif vars(options).has_key('add_target'):
             if 'channel' in options.add_target:
-                self._add_channels(options.target)
+                self._add_channels(channels=options.target, mirror=options.mirror)
             elif 'credentials' in options.add_target:
                 self._add_credentials(options.primary, options.target)
             elif 'product' in options.add_target:
-                self._add_products()
+                self._add_products(mirror="")
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.refresh_channels)
+            self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror)
         elif vars(options).has_key('enable_scc'):
             if current_backend() == BackendType.SCC:
                 print("The SUSE Customer Center (SCC) backend is already "
@@ -185,7 +185,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             self._execute_xmlrpc_method(self.conn.sync.content,
                                         "listChannels", self.auth.token()))
 
-    def _add_channels(self, channels):
+    def _add_channels(self, channels, mirror=""):
         """ Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
@@ -238,7 +238,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 self._execute_xmlrpc_method(self.conn.sync.content,
                                             "addChannel",
                                             self.auth.token(),
-                                            channel)
+                                            channel,
+                                            mirror)
 
             print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)
@@ -319,7 +320,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         return interactive_data
 
-    def _add_products(self):
+    def _add_products(self, mirror=""):
         """ Add a list of products.
 
         If the products list is empty the interactive mode is started.
@@ -339,7 +340,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
-        self._add_channels(mandatory_channels)
+        self._add_channels(channels=mandatory_channels, mirror=mirror)
         print("Product successfully added")
 
     def _select_product_interactive_mode(self):
@@ -480,7 +481,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     #               #
     #################
 
-    def _refresh(self, enable_reposync):
+    def _refresh(self, enable_reposync, mirror=""):
         """
         Refresh the SCC data in the SUSE Manager database.
         """
@@ -500,7 +501,11 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stdout.write("Refreshing %s" % operation)
             sys.stdout.flush()
             try:
-                self._execute_xmlrpc_method(self.conn.sync.content, method,
+                if method == "synchronizeChannels":
+                    self._execute_xmlrpc_method(self.conn.sync.content, method,
+                                            self.auth.token(), mirror)
+                else:
+                    self._execute_xmlrpc_method(self.conn.sync.content, method,
                                             self.auth.token())
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()

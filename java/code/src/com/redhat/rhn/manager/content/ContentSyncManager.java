@@ -38,7 +38,6 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -54,6 +53,7 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
@@ -124,6 +124,9 @@ public class ContentSyncManager {
 
     // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
     private static Integer cachedCredentialsOES = null;
+
+    // Mirror URL read from rhn.conf
+    public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
 
     /**
      * Default constructor.
@@ -676,9 +679,12 @@ public class ContentSyncManager {
 
     /**
      * Update channel information in the database.
+     * @param repos list of repositories to match against
+     * @param mirrorUrl optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public void updateChannels(Collection<SCCRepository> repos) throws ContentSyncException {
+    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrl)
+            throws ContentSyncException {
         // If this is an ISS slave then do nothing
         if (IssFactory.getCurrentMaster() != null) {
             return;
@@ -719,7 +725,8 @@ public class ContentSyncManager {
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
                 Integer credsId = isMirrorable(channel, repos);
                 if (credsId != null) {
-                    String sourceURL = setupSourceURL(channel.getSourceUrl(), credsId);
+                    String sourceURL = setupSourceURL(
+                            channel.getSourceUrl(), credsId, mirrorUrl);
                     if (!cs.getSourceUrl().equals(sourceURL)) {
                         cs.setSourceUrl(sourceURL);
                         ChannelFactory.save(cs);
@@ -1197,8 +1204,12 @@ public class ContentSyncManager {
         // Match the channel source URL against URLs we got from SCC
         for (SCCRepository repo : repos) {
             // Remove auth-token for url comparison
-            String strippedURL = repo.getUrl().substring(0, repo.getUrl().indexOf('?'));
-
+            int questionMark = repo.getUrl().indexOf('?');
+            String strippedURL = repo.getUrl();
+            // Check if it contains a ?
+            if (questionMark != -1) {
+                strippedURL = strippedURL.substring(0, questionMark);
+            }
             if (sourceUrl.equals(removeTrailingSlashes(strippedURL))) {
                 return repo.getCredentialsId();
             }
@@ -1210,10 +1221,11 @@ public class ContentSyncManager {
      * Add a new channel to the database.
      * @param label the label of the channel to be added.
      * @param repositories list of repos to use for the availability check
+     * @param mirrorUrl repo mirror passed by cli
      * @throws ContentSyncException in case of problems
      */
-    public void addChannel(String label, Collection<SCCRepository> repositories)
-            throws ContentSyncException {
+    public void addChannel(String label, Collection<SCCRepository> repositories,
+            String mirrorUrl) throws ContentSyncException {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
@@ -1271,7 +1283,7 @@ public class ContentSyncManager {
         // Create or link the content source
         String url = channel.getSourceUrl();
         if (!StringUtils.isBlank(url)) {
-            url = setupSourceURL(url, mirrcredsID);
+            url = setupSourceURL(url, mirrcredsID, mirrorUrl);
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
             if (source == null) {
                 source = ChannelFactory.createRepo();
@@ -1491,29 +1503,98 @@ public class ContentSyncManager {
      * Setup the source URL of a repository correctly before saving it, particularly
      * add the mirror credentials query string to the end of the URL.
      *
-     * TODO: Check if alternative mirror URL is set and consider it here!
-     *
      * @param url the original source URL
-     * @return the URL with query string including mirror credentials
+     * @param credsId the id of credentials to use
+     * @param mirrorUrl optional mirror URL that can be null
+     * @return the URL with query string including mirror credentials or null
      */
-    private String setupSourceURL(String url, int credsId) {
+    public String setupSourceURL(String url, int credsId, String mirrorUrl) {
         if (StringUtils.isBlank(url)) {
-            return url;
+            return null;
         }
-        String ret = url;
+
+        // Setup the source URI
+        URI sourceUri = null;
         try {
-            URI uri = new URI(url);
-            // Official repos need the mirror credentials query string
-            if (uri.getHost().equals(OFFICIAL_REPO_HOST)) {
-                String separator = uri.getQuery() == null ? "?" : "&";
-                ret = url + separator + MIRRCRED_QUERY;
-                if (credsId > 0) {
-                    ret += "_" + credsId;
+            sourceUri = new URI(url);
+        }
+        catch (URISyntaxException e) {
+            log.warn(e.getMessage());
+            return null;
+        }
+
+        // Try to read mirror from config if not given
+        if (StringUtils.isBlank(mirrorUrl)) {
+            mirrorUrl = Config.get().getString(MIRROR_CFG_KEY);
+        }
+
+        // See if we have a mirror URL and try to set it up
+        if (mirrorUrl != null) {
+            try {
+                URI mirrorUri = new URI(mirrorUrl);
+                String username = null;
+                String password = null;
+                if (mirrorUri.getUserInfo() != null) {
+                    String userInfo = mirrorUri.getUserInfo();
+                    username = userInfo.substring(0, userInfo.indexOf(':'));
+                    password = userInfo.substring(userInfo.indexOf(':') + 1);
+                }
+
+                // Setup the path
+                String mirrorPath = StringUtils.defaultString(mirrorUri.getRawPath());
+                String combinedPath = new File(StringUtils.stripToEmpty(mirrorPath),
+                        sourceUri.getRawPath()).getPath();
+
+                // SMT doesn't do dir listings, so we try to get the metadata
+                String testUrlPath =
+                        new File(combinedPath, "/repodata/repomd.xml").getPath();
+
+                // Build full URL to test
+                URI testUri = new URI(mirrorUri.getScheme(), null, mirrorUri.getHost(),
+                        mirrorUri.getPort(), testUrlPath, mirrorUri.getQuery(), null);
+
+                // Verify the mirrored repo by sending a HEAD request
+                int mirrorStatus = MgrSyncUtils.sendHeadRequest(testUri.toString(),
+                        username, password);
+                if (mirrorStatus == HttpURLConnection.HTTP_OK) {
+                    // Build URL combining the mirror and N/SCC parts
+                    String[] mirrorParams = StringUtils.split(mirrorUri.getQuery(), '&');
+                    String[] sourceParams = StringUtils.split(sourceUri.getQuery(), '&');
+                    String combinedQuery = StringUtils.join(
+                            ArrayUtils.addAll(mirrorParams, sourceParams), '&');
+                    URI completeMirrorUri = new URI(mirrorUri.getScheme(),
+                            mirrorUri.getUserInfo(), mirrorUri.getHost(),
+                            mirrorUri.getPort(), combinedPath, combinedQuery, null);
+                    return completeMirrorUri.toString();
+                }
+                else {
+                    log.warn("Mirror status " + mirrorStatus + " for: " + testUri);
                 }
             }
-        } catch (URISyntaxException e) {
-            log.warn(e.getMessage());
+            catch (ContentSyncException e) {
+                log.warn(e.getMessage());
+            }
+            catch (URISyntaxException e) {
+                log.warn(e.getMessage());
+            }
+            catch (NullPointerException e) {
+                log.debug(e.getMessage());
+            }
         }
-        return ret;
+
+        // If we are still here, there was an error before or no mirror was given.
+        // Official repos need the mirror credentials query string
+        if (sourceUri.getHost().equals(OFFICIAL_REPO_HOST)) {
+            String separator = sourceUri.getQuery() == null ? "?" : "&";
+            StringBuilder credUrl =
+                    new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
+            if (credsId > 0) {
+                credUrl.append("_").append(credsId);
+            }
+            return credUrl.toString();
+        }
+        else {
+            return sourceUri.toString();
+        }
     }
 }

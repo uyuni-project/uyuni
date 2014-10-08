@@ -376,6 +376,64 @@ Status:
 
         self.assertEqual(recorder.stdout, expected_output.split("\n"))
 
+    def test_add_products_interactive_with_mirror(self):
+        """ Test adding a product with all the required channels available. """
+        mirror_url = "http://smt.suse.de"
+        products = read_data_from_fixture('list_products_simplified.data')
+        res4 = next(p for p in products
+                    if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
+        options = get_options("add product --from-mirror {0}".format(mirror_url).split())
+        available_products = parse_products([res4])
+        chosen_product = available_products[0]
+        self.mgr_sync._fetch_remote_products = MagicMock(
+            return_value=available_products)
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_products.index(chosen_product) + 1)
+            with ConsoleRecorder() as recorder:
+                self.assertEqual(0, self.mgr_sync.run(options))
+
+        expected_output = """Available Products:
+
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
+
+001) [ ] RES 4 (x86_64)
+Adding channels required by 'RES 4' product
+Adding 'res4-as-suse-manager-tools-x86_64' channel
+Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
+Adding 'rhel-x86_64-as-4' channel
+Scheduling reposync for 'rhel-x86_64-as-4' channel
+Adding 'res4-as-x86_64' channel
+Scheduling reposync for 'res4-as-x86_64' channel
+Product successfully added"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        expected_xmlrpc_calls = []
+        mandatory_channels = [c for c in chosen_product.channels
+                              if not c.optional]
+        for channel in mandatory_channels:
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.sync.content,
+                    "addChannel",
+                    self.fake_auth_token,
+                    channel.label,
+		    mirror_url))
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.channel.software,
+                    "syncRepo",
+                    self.fake_auth_token,
+                    channel.label))
+
     def test_add_products_interactive(self):
         """ Test adding a product with all the required channels available. """
 
@@ -425,7 +483,8 @@ Product successfully added"""
                     self.mgr_sync.conn.sync.content,
                     "addChannel",
                     self.fake_auth_token,
-                    channel.label))
+                    channel.label,
+                    None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
@@ -489,7 +548,8 @@ Product successfully added"""
                         self.mgr_sync.conn.sync.content,
                         "addChannel",
                         self.fake_auth_token,
-                        channel.label))
+                        channel.label,
+                        None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
@@ -626,7 +686,8 @@ Product successfully added"""
                     self.mgr_sync.conn.sync.content,
                     "addChannel",
                     self.fake_auth_token,
-                    channel.label))
+                    channel.label,
+                    None))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,

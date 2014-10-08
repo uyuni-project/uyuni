@@ -113,7 +113,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos);
+            csm.updateChannels(repos, null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
@@ -185,7 +185,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos);
+            csm.updateChannels(repos, null);
 
             // Verify mirror credentials in content source repo URLs
             c1 = ChannelFactory.lookupByLabel(channelLabel1);
@@ -848,7 +848,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
-                csm.addChannel(label, repos);
+                csm.addChannel(label, repos, null);
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
@@ -920,7 +920,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             HibernateFactory.getSession().flush();
 
             // Add the channel by label
-            csm.addChannel(xmlChannel.getLabel(), repos);
+            csm.addChannel(xmlChannel.getLabel(), repos, null);
 
             // Check if channel has been added correctly
             Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
@@ -956,6 +956,21 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
+    }
+
+    /**
+     * Test for setupSourceURL()
+     * @throws Exception if something goes wrong
+     */
+    public void testSetupSourceURL() throws Exception {
+        String repoUrl = "https://updates.suse.com/";
+        String mirrorUrl = "http://localhost/";
+        ContentSyncManager csm = new ContentSyncManager();
+        assertNull(csm.setupSourceURL("", 2, mirrorUrl));
+        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl,  0, null));
+        assertEquals(repoUrl + "?credentials=mirrcred_3", csm.setupSourceURL(repoUrl , 3, null));
+        // Fall back to official repo in case mirror is not reachable
+        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl, 0, mirrorUrl));
     }
 
     /**

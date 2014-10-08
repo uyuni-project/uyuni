@@ -43,6 +43,49 @@ class RefreshOperationsTest(unittest.TestCase):
         mock = patcher.start()
         mock.return_value = BackendType.SCC
 
+    def test_refresh_from_mirror(self):
+        """ Test the refresh action """
+	mirror_url = "http://smt.suse.de"
+        options = get_options("refresh --from-mirror {0}".format(mirror_url).split())
+        stubbed_xmlrpm_call = MagicMock(return_value=True)
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        stubbed_reposync = MagicMock()
+        self.mgr_sync._schedule_channel_reposync = stubbed_reposync
+        with ConsoleRecorder() as recorder:
+            self.mgr_sync.run(options)
+
+        expected_output = """Refreshing Channels                            [DONE]
+Refreshing Channel families                    [DONE]
+Refreshing SUSE products                       [DONE]
+Refreshing SUSE Product channels               [DONE]
+Refreshing Subscriptions                       [DONE]
+Refreshing Upgrade paths                       [DONE]"""
+
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        expected_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannels",
+                                        self.fake_auth_token, mirror_url),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeChannelFamilies",
+                                        self.fake_auth_token, mirror_url),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProducts",
+                                        self.fake_auth_token, mirror_url),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeProductChannels",
+                                        self.fake_auth_token, mirror_url),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeSubscriptions",
+                                        self.fake_auth_token, mirror_url),
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "synchronizeUpgradePaths",
+                                        self.fake_auth_token, mirror_url)
+        ]
+        stubbed_xmlrpm_call.assert_has_calls(expected_calls)
+        self.assertFalse(stubbed_reposync.mock_calls)
+
     def test_refresh(self):
         """ Test the refresh action """
 
@@ -66,22 +109,22 @@ Refreshing Upgrade paths                       [DONE]"""
         expected_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannels",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannelFamilies",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeProducts",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeProductChannels",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeUpgradePaths",
-                                        self.fake_auth_token)
+                                        self.fake_auth_token, None)
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
         self.assertFalse(stubbed_reposync.mock_calls)
@@ -113,22 +156,22 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         expected_calls = [
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannels",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeChannelFamilies",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeProducts",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeProductChannels",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeUpgradePaths",
-                                        self.fake_auth_token),
+                                        self.fake_auth_token, None),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "listChannels",
                                         self.fake_auth_token),
