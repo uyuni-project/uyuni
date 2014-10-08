@@ -107,7 +107,7 @@ public class ContentSyncManager {
             "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
 
     // Source URL handling
-    private static final String OFFICIAL_REPO_HOST = "updates.suse.com";
+    private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
     private static final String MIRRCRED_QUERY = "credentials=mirrcred";
 
     // Static XML files we parse
@@ -675,10 +675,10 @@ public class ContentSyncManager {
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
                 MgrSyncChannel channel = channelsXML.get(cs.getLabel());
-                Integer credsId = isMirrorable(channel, repos);
-                if (credsId != null) {
+                SCCRepository repo = isMirrorable(channel, repos);
+                if (repo != null) {
                     String sourceURL = setupSourceURL(
-                            channel.getSourceUrl(), credsId, mirrorUrl);
+                            repo.getUrl(), repo.getCredentialsId(), mirrorUrl);
                     if (!cs.getSourceUrl().equals(sourceURL)) {
                         cs.setSourceUrl(sourceURL);
                         ChannelFactory.save(cs);
@@ -1132,11 +1132,12 @@ public class ContentSyncManager {
      * @param repos list of repos from SCC to match against
      * @return mirror credentials ID or null if the channel is not mirrorable
      */
-    public Integer isMirrorable(MgrSyncChannel channel, Collection<SCCRepository> repos) {
+    public SCCRepository isMirrorable(MgrSyncChannel channel,
+            Collection<SCCRepository> repos) {
         // No source URL means it's mirrorable (return 0 in this case)
         String sourceUrl = channel.getSourceUrl();
         if (StringUtils.isBlank(sourceUrl)) {
-            return 0;
+            return new SCCRepository();
         }
 
         // Check OES availability by sending an HTTP HEAD request
@@ -1147,7 +1148,10 @@ public class ContentSyncManager {
             else if (log.isDebugEnabled()) {
                 log.debug("Return cached OES availablity");
             }
-            return cachedCredentialsOES;
+            SCCRepository oesRepo = new SCCRepository();
+            oesRepo.setUrl(channel.getSourceUrl());
+            oesRepo.setCredentialsId(cachedCredentialsOES);
+            return oesRepo;
         }
 
         // Remove trailing slashes before matching URLs
@@ -1159,7 +1163,7 @@ public class ContentSyncManager {
             String strippedURL = repo.getUrl().replaceFirst("\\?.*$", "");
 
             if (sourceUrl.equals(removeTrailingSlashes(strippedURL))) {
-                return repo.getCredentialsId();
+                return repo;
             }
         }
         return null;
@@ -1196,8 +1200,8 @@ public class ContentSyncManager {
         }
 
         // Check if channel is mirrorable
-        Integer mirrcredsID = isMirrorable(channel, repositories);
-        if (mirrcredsID == null) {
+        SCCRepository repo = isMirrorable(channel, repositories);
+        if (repo == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
 
@@ -1229,9 +1233,9 @@ public class ContentSyncManager {
         dbChannel.setUpdateTag(channel.getUpdateTag());
 
         // Create or link the content source
-        String url = channel.getSourceUrl();
+        String url = repo.getUrl();
         if (!StringUtils.isBlank(url)) {
-            url = setupSourceURL(url, mirrcredsID, mirrorUrl);
+            url = setupSourceURL(url, repo.getCredentialsId(), mirrorUrl);
             ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
             if (source == null) {
                 source = ChannelFactory.createRepo();
@@ -1530,9 +1534,9 @@ public class ContentSyncManager {
             }
         }
 
-        // If we are still here, there was an error before or no mirror was given.
-        // Official repos need the mirror credentials query string
-        if (sourceUri.getHost().equals(OFFICIAL_REPO_HOST)) {
+        // If we are still here there was no mirror given or mirror doesn't have repo.
+        // For the official novell update host we do basic auth with mirror credentials
+        if (sourceUri.getHost().equals(OFFICIAL_NOVELL_UPDATE_HOST)) {
             String separator = sourceUri.getQuery() == null ? "?" : "&";
             StringBuilder credUrl =
                     new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
@@ -1542,6 +1546,7 @@ public class ContentSyncManager {
             return credUrl.toString();
         }
         else {
+            // This is especially the case for updates.suse.com (token auth or no auth)
             return sourceUri.toString();
         }
     }
