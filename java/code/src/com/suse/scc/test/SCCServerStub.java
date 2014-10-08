@@ -33,9 +33,6 @@ import simple.http.Response;
  */
 public class SCCServerStub implements Responder {
 
-    // Path to example json files and filename
-    private static final String PATH_EXAMPLES = "/com/suse/scc/test/";
-
     /** The configuration object. */
     private SCCConfig config;
 
@@ -66,7 +63,8 @@ public class SCCServerStub implements Responder {
 
         // Send file content
         try {
-            URL url = TestUtils.findTestData(PATH_EXAMPLES + uri + ".json");
+            String filename = uri.replaceFirst("/", "") + ".json";
+            URL url = TestUtils.findTestData(filename);
 
             InputStream in = url.openStream();
             PrintStream out = response.getPrintStream();
