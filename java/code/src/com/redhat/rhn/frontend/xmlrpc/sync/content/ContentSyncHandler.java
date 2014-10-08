@@ -158,7 +158,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProductChannels(String sessionKey, String mirrorUrl)
+    public Integer synchronizeProductChannels(String sessionKey)
             throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
