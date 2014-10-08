@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
 import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncStatus;
 
 import java.io.IOException;
 import java.io.Writer;
