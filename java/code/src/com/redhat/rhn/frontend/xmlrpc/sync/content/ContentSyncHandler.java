@@ -23,14 +23,18 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+
+import com.suse.mgrsync.MgrSyncChannel;
 
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -54,10 +58,11 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $ListedProductSerializer
      *                    #array_end()
      */
-    public Object[] listProducts(String sessionKey) throws ContentSyncException {
+    public Collection<ListedProduct> listProducts(String sessionKey)
+            throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts(csm.listChannels(csm.getRepositories())).toArray();
+        return csm.listProducts(csm.listChannels(csm.getRepositories()));
     }
 
     /**
@@ -73,10 +78,11 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MgrSyncChannelSerializer
      *                    #array_end()
      */
-    public Object[] listChannels(String sessionKey) throws ContentSyncException {
+    public List<MgrSyncChannel> listChannels(String sessionKey)
+            throws ContentSyncException {
         BaseHandler.getLoggedInUser(sessionKey);
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listChannels(csm.getRepositories()).toArray();
+        return csm.listChannels(csm.getRepositories());
     }
 
     /**
