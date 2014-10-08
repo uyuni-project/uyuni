@@ -5,3 +5,6 @@ com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
 tests that look completely broken in upstream code:
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
+
+abstract test classes:
+com/redhat/rhn/manager/setup/test/ProductSyncManagerTest.class
