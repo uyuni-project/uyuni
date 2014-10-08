@@ -126,80 +126,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             Set<ContentSource> sources = c.getSources();
             for (ContentSource s : sources) {
                 String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/"
-                        + "sle-11-x86_64/?credentials=mirrcred";
-                assertEquals(url, s.getSourceUrl());
-            }
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
-        }
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#updateChannels()} mirror credentials IDs.
-     * @throws Exception
-     */
-    public void testUpdateChannelsCredentials() throws Exception {
-        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        try {
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
-            // Create vendor channels and set labels that exist in the xml file
-            String channelLabel1 = "sles11-sp3-pool-x86_64";
-            Channel c1 = SUSEProductTestUtils.createTestVendorChannel();
-            c1.setLabel(channelLabel1);
-            String channelLabel2 = "sles11-sp3-updates-x86_64";
-            Channel c2 = SUSEProductTestUtils.createTestVendorChannel();
-            c2.setLabel(channelLabel2);
-
-            // Setup content sources accordingly
-            ContentSource cs = new ContentSource();
-            cs.setLabel(c1.getLabel());
-            cs.setSourceUrl(TestUtils.randomString());
-            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
-            cs.setOrg(null);
-            cs = (ContentSource) TestUtils.saveAndReload(cs);
-            c1.getSources().add(cs);
-            TestUtils.saveAndFlush(c1);
-            cs = new ContentSource();
-            cs.setLabel(c2.getLabel());
-            cs.setSourceUrl(TestUtils.randomString());
-            cs.setType(ChannelFactory.CONTENT_SOURCE_TYPE_YUM);
-            cs.setOrg(null);
-            cs = (ContentSource) TestUtils.saveAndReload(cs);
-            c2.getSources().add(cs);
-            TestUtils.saveAndFlush(c2);
-
-            // Setup SCC repos
-            SCCRepository repo1 = new SCCRepository();
-            repo1.setCredentialsId(1);
-            repo1.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo1);
-            SCCRepository repo2 = new SCCRepository();
-            repo2.setCredentialsId(2);
-            repo2.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Updates/sle-11-x86_64");
-            repos.add(repo2);
-
-            // Update channel information from the xml file
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos, null);
-
-            // Verify mirror credentials in content source repo URLs
-            c1 = ChannelFactory.lookupByLabel(channelLabel1);
-            Set<ContentSource> sources = c1.getSources();
-            for (ContentSource s : sources) {
-                String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/"
-                        + "sle-11-x86_64/?credentials=mirrcred_1";
-                assertEquals(url, s.getSourceUrl());
-            }
-            c2 = ChannelFactory.lookupByLabel(channelLabel2);
-            sources = c2.getSources();
-            for (ContentSource s : sources) {
-                String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Updates/"
-                        + "sle-11-x86_64/?credentials=mirrcred_2";
+                        + "sle-11-x86_64";
                 assertEquals(url, s.getSourceUrl());
             }
         }
@@ -939,8 +866,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, c.getSources().size());
             for (ContentSource cs : c.getSources()) {
                 assertEquals(xmlChannel.getLabel(), cs.getLabel());
-                assertEquals(xmlChannel.getSourceUrl() + "?credentials=mirrcred",
-                        cs.getSourceUrl());
+                assertEquals(xmlChannel.getSourceUrl(), cs.getSourceUrl());
                 assertEquals(ChannelFactory.CONTENT_SOURCE_TYPE_YUM, cs.getType());
             }
 
@@ -963,14 +889,35 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testSetupSourceURL() throws Exception {
-        String repoUrl = "https://updates.suse.com/";
-        String mirrorUrl = "http://localhost/";
+        // Verify updates.suse.com uses token auth
+        String repoUrlSCC = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/?asdfgh";
         ContentSyncManager csm = new ContentSyncManager();
-        assertNull(csm.setupSourceURL("", 2, mirrorUrl));
-        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl,  0, null));
-        assertEquals(repoUrl + "?credentials=mirrcred_3", csm.setupSourceURL(repoUrl , 3, null));
+        SCCRepository repo = new SCCRepository();
+        repo.setUrl(repoUrlSCC);
+        repo.setCredentialsId(2L);
+        assertEquals(repoUrlSCC, csm.setupSourceURL(repo, null));
+
+        // Test basic auth with nu.novell.com
+        String repoUrlNCC = "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/";
+        repo = new SCCRepository();
+        repo.setUrl("");
+        repo.setCredentialsId(2L);
+        assertNull(csm.setupSourceURL(repo, null));
+        repo.setUrl(repoUrlNCC);
+        repo.setCredentialsId(0L);
+        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, null));
+        repo.setUrl(repoUrlNCC);
+        repo.setCredentialsId(3L);
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_3", csm.setupSourceURL(repo, null));
+
         // Fall back to official repo in case mirror is not reachable
-        assertEquals(repoUrl + "?credentials=mirrcred", csm.setupSourceURL(repoUrl, 0, mirrorUrl));
+        String mirrorUrl = "http://localhost/";
+        repo.setUrl(repoUrlNCC);
+        repo.setCredentialsId(0L);
+        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, mirrorUrl));
+        repo.setUrl(repoUrlSCC);
+        repo.setCredentialsId(0L);
+        assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
     }
 
     /**
