@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.39
+Version: 2.3.45
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,37 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Sep 26 2014 Stephen Herr <sherr@redhat.com> 2.3.45-1
+- 1084522 - make parsing repo filters more robust
+
+* Fri Sep 26 2014 Tomas Lestach <tlestach@redhat.com> 2.3.44-1
+- return empty string instead of null, when a required completion_time of a
+  rhnServerAction isn't set
+- set a completion time, when marking an actin as failed
+
+* Fri Sep 26 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.43-1
+- checkstyle fix
+- patternfly: css files order fixed because of spacewalk specific icons
+- patternfly: fixing footer position
+- Integrating patternfly for more awesomeness...
+- packageNamesByCapabilityAndChannel: dead code removed
+- packageNamesByCapability: dead code removed
+
+* Thu Sep 25 2014 Tomas Lestach <tlestach@redhat.com> 2.3.42-1
+- allow selecting users on the /rhn/users/DisabledList.do page
+- 1145478 - enhance Org.numOfOrgAdmins sql-query
+- 1145478 - change readOnly hbm type to yes_no
+- 1145478 - behave differently when the user was a readonly one before the
+  change
+- 1145186 - fix api.getApiCallList not to return 'struct' as the 1st parameter
+
+* Wed Sep 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.41-1
+- do not offer errata to add to the channel that are already in there
+- Use IconTag
+
+* Mon Sep 22 2014 Stephen Herr <sherr@redhat.com> 2.3.40-1
+- 1028308 - suppress ks-tree-copy warning in ks-rhn-post.log
+
 * Thu Sep 18 2014 Stephen Herr <sherr@redhat.com> 2.3.39-1
 - 990998 - package details page should not list channels we can't see
 - 698241 - suppress unnecessary warnings in ks snippet

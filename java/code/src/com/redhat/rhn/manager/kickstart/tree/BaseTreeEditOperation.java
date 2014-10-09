@@ -28,7 +28,6 @@ import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.BasePersistOperation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import org.cobbler.Distro;
 import org.cobbler.XmlRpcException;
@@ -203,17 +202,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      */
     public void setChannel(Channel channelIn) {
         this.tree.setChannel(channelIn);
-    }
-
-    /**
-     * Get the list of autokickstart package names.
-     * @return List of String package names
-     */
-    public List getAutoKickstartPackageNames() {
-       List retval = PackageManager.
-           packageNamesByCapability(user.getOrg(), KICKSTART_CAPABILITY);
-       replaceLegacyPackageNames(retval);
-       return retval;
     }
 
     /**

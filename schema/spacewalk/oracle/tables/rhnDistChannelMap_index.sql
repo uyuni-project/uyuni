@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2014 Red Hat, Inc.
+-- Copyright (c) 2014 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,20 +13,6 @@
 -- in this software or its documentation.
 --
 
-create or replace view
-rhnWebContactEnabled
-as
-select
-   wcon.id,
-   wcon.org_id,
-   wcon.login,
-   wcon.login_uc,
-   wcon.password,
-   wcon.oracle_contact_id,
-   wcon.created,
-   wcon.modified,
-   wcon.ignore_flag,
-   wcon.read_only
-from
-   web_contact wcon left join rhnWebContactDisabled wcond on wcond.id = wcon.id
-   where wcond.id is null;
+ALTER TABLE rhnDistChannelMap
+    ADD CONSTRAINT rhn_dcm_release_caid_oid_uq UNIQUE (release, channel_arch_id, org_id);
+

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.rhnpackage.test;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
@@ -411,19 +410,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, result);
     }
 
-    // This test only works if you have Channels syched to your sat
-    public void xxxxPackageNamesByCapability() throws Exception {
-
-        /*user.addRole(RoleFactory.ORG_ADMIN);
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Package pak = addPackageToChannel(user, TestUtils.randomString(), c);
-        PackageCapability cap = PackageCapabilityTest.createTestCapability();*/
-        DataResult dr = PackageManager.packageNamesByCapability(user.getOrg(),
-                "rhn.kickstart.boot_image");
-        assertNotNull(dr);
-        assertTrue(dr.size() > 0);
-    }
-
     /**
      * Add the up2date package to a system and a channel.  Version
      * should be specified such as "2.9.0"
@@ -525,41 +511,6 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         return PackageCapabilityTest.createTestCapability(
                 BaseTreeEditOperation.KICKSTART_CAPABILITY);
-    }
-
-    public void testPackageNamesByCapabilityAndChannel() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        addKickstartPackageToChannel(
-                ConfigDefaults.get().getKickstartPackageName(), channel1);
-
-        // Add a regular non-kickstart package as well:
-        PackageManagerTest.addPackageToChannel("Another package", channel1);
-
-        DataResult dr = PackageManager.packageNamesByCapabilityAndChannel(user.getOrg(),
-                BaseTreeEditOperation.KICKSTART_CAPABILITY, channel1);
-        assertNotNull(dr);
-        assertEquals(1, dr.size());
-        PackageListItem item = (PackageListItem)dr.get(0);
-        assertEquals(ConfigDefaults.get().getKickstartPackageName(), item.getName());
-    }
-
-    // Verify that packages with the given capability in other channels are not visible:
-    public void testPackageNamesByCapabilityAndChannelFiltering() throws Exception {
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        addKickstartPackageToChannel(
-                ConfigDefaults.get().getKickstartPackageName(), channel1);
-
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        addKickstartPackageToChannel(ConfigDefaults.get().
-                        getKickstartPackageName() + "2", channel2);
-
-        DataResult dr = PackageManager.packageNamesByCapabilityAndChannel(user.getOrg(),
-                BaseTreeEditOperation.KICKSTART_CAPABILITY, channel1);
-        assertNotNull(dr);
-
-        assertEquals(1, dr.size());
-        PackageListItem item = (PackageListItem)dr.get(0);
-        assertEquals(ConfigDefaults.get().getKickstartPackageName(), item.getName());
     }
 
     public void testPackageNameOverview() {

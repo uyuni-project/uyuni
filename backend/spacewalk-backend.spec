@@ -26,7 +26,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.15
+Version: 2.3.16
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -311,6 +311,9 @@ Requires: python-base
 Requires: apache2-prefork
 %else
 Requires: python-hashlib
+%if 0%{?fedora} || 0%{?rhel} > 6
+Requires: pyliblzma
+%endif
 Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
@@ -802,6 +805,9 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Sep 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.16-1
+- 1144008 - support for xz compressed repos
+
 * Tue Sep 16 2014 Stephen Herr <sherr@redhat.com> 2.3.15-1
 - 1142412 - backend should correctly checksum config files with macros in them
 

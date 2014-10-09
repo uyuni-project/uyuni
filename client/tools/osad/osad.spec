@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.45
+Version: 5.11.46
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -444,6 +444,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Thu Sep 25 2014 Stephen Herr <sherr@redhat.com> 5.11.46-1
+- 1125432 - self-heal jabberd connection to proxies if satellite restarts
+
 * Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 5.11.45-1
 - increasing osad version to be above builds in SPACEWALK-2.2
 
