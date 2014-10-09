@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
  * @author Bo Maryniuk
  */
 public class SsmErrataAction extends AbstractDatabaseAction {
-    private static Logger log = Logger.getLogger(SsmRemovePackagesAction.class);
+    private static Logger log = Logger.getLogger(SsmErrataAction.class);
 
     /** {@inheritDoc} */
     @Override
@@ -51,7 +51,7 @@ public class SsmErrataAction extends AbstractDatabaseAction {
                                       event.getServerIds());
         }
         catch (Exception e) {
-            SsmErrataAction.log.error("Error scheduling SSM errata for event: " + event, e);
+            log.error("Error scheduling SSM errata for event: " + event, e);
         }
         finally {
             SsmOperationManager.completeOperation(
