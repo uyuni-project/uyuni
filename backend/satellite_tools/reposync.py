@@ -20,6 +20,7 @@ import socket
 import sys
 import time
 import traceback
+import base64
 from datetime import datetime
 from optparse import OptionParser
 
@@ -165,6 +166,9 @@ class RepoSync(object):
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
+                # update the checksum type of channels with org_id NULL
+                self.updateChannelChecksumType(plugin.get_md_checksum_type())
+
                 if data['id'] is not None:
                     keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
@@ -255,23 +259,38 @@ class RepoSync(object):
         url = suseLib.URL(url_dict['source_url'])
         creds = url.get_query_param('credentials')
         if creds:
-            # switch config so we can read the mirror credentials
-            initCFG('server.susemanager')
             namespace = creds.split("_")[0]
+            creds_no = ""
             try:
                 creds_no = int(creds.split("_")[1])
-            except IndexError: # default credentials don't have a number
-                url.username = CFG.get(namespace+"_user")
-                url.password = CFG.get(namespace+"_pass")
+            except IndexError:
+                # default credentials don't have a number in NCC case
+                pass
             except ValueError: # we got something after the "_", but not an int
                 self.error_msg("Could not figure out which credentials to use "
                                "for this URL: "+url.getURL())
                 sys.exit(1)
+            if suseLib.current_cc_backend() == suseLib.BackendType.NCC:
+                # switch config so we can read the mirror credentials
+                initCFG('server.susemanager')
+                if creds_no:
+                    creds_no = "_" + str(creds_no)
+                url.username = CFG.get("%s%s%s" % (namespace, "_user", creds_no))
+                url.password = CFG.get("%s%s%s" % (namespace, "_pass", creds_no))
+                initCFG('server.satellite')
             else:
-                url.username = CFG.get("%s_user_%s" % (namespace, creds_no))
-                url.password = CFG.get("%s_pass_%s" % (namespace, creds_no))
-            initCFG('server.satellite')
-        url.query = ""
+                # SCC - read credentials from DB
+                h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""");
+                h.execute(id=creds_no);
+                credentials = h.fetchone_dict() or None;
+                if not credentials:
+                    self.error_msg("Could not figure out which credentials to use "
+                                   "for this URL: "+url.getURL())
+                    sys.exit(1)
+                url.username = credentials['username']
+                url.password = base64.decodestring(credentials['password'])
+            # remove query parameter from url
+            url.query = ""
         url_dict['source_url'] = url.getURL()
 
     def update_date(self):
@@ -1198,6 +1217,38 @@ class RepoSync(object):
                 insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path), st_size = st.st_size, st_time = st.st_mtime)
 
         rhnSQL.commit()
+
+    def updateChannelChecksumType(self, repo_checksum_type):
+        """
+        check, if the checksum_type of the channel matches the one of the repo
+        if not, change the type of the channel
+        """
+        if self.channel['org_id']:
+            # custom channels are user managed.
+            # Do not autochange this
+            return
+
+        h = rhnSQL.prepare("""SELECT ct.label
+                                FROM rhnChannel c
+                                JOIN rhnChecksumType ct ON c.checksum_type_id = ct.id
+                               WHERE c.id = :cid""")
+        h.execute(cid=self.channel['id'])
+        d = h.fetchone_dict() or None
+        if d and d['label'] == repo_checksum_type:
+            # checksum_type is the same, no need to change anything
+            return
+        h = rhnSQL.prepare("""SELECT id FROM rhnChecksumType WHERE label = :clabel""")
+        h.execute(clabel=repo_checksum_type)
+        d = h.fetchone_dict() or None
+        if not (d and d['id']):
+            # unknown or invalid checksum_type
+            # better not change the channel
+            return
+        # update the checksum_type
+        h = rhnSQL.prepare("""UPDATE rhnChannel
+                                 SET checksum_type_id = :ctid
+                               WHERE id = :cid""")
+        h.execute(ctid=d['id'], cid=self.channel['id'])
 
 def get_errata(update_id):
     """ Return an Errata dict

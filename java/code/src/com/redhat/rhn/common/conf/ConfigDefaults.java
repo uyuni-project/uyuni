@@ -202,6 +202,11 @@ public class ConfigDefaults {
         "server.satellite.http_proxy_password";
     private static final int DEFAULT_HTTP_PROXY_PORT = 80;
 
+    /**
+     * SUSE Manager defaults
+     */
+    public static final String SCC_URL = "server.susemanager.scc_url";
+
     private ConfigDefaults() {
     }
 

@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
@@ -156,7 +157,8 @@ public class SetupWizardSessionCache {
             if (MgrSyncUtils.isMigratedToSCC()) {
                 try {
                     int code = MgrSyncUtils.sendHeadRequest(
-                            Config.get().getString("scc_url") + "/login", null, null);
+                            Config.get().getString(ConfigDefaults.SCC_URL) + "/login",
+                            null, null);
                     if (code != 200) {
                         ret = false;
                     }

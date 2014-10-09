@@ -10,6 +10,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+import os
+from enum import Enum
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -30,7 +33,11 @@ from rhn.connections import idn_pune_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
 SYS_PROXY = "/etc/sysconfig/proxy"
+MASTER_SWITCH_FILE = "/var/lib/spacewalk/scc/migrated"
 
+class BackendType(str, Enum):
+    NCC = "NCC"
+    SCC = "SCC"
 
 class TransferException(Exception):
     """Transfer Error"""
@@ -43,7 +50,6 @@ class TransferException(Exception):
 
     def __unicode__(self):
         return '%s' % unicode(self.value, "utf-8")
-
 
 class URL(object):
     """URL class that allows modifying the various attributes of a URL"""
@@ -140,6 +146,13 @@ def _curl_debug(mtype, text):
         log_debug(6, "%s: %s" % (mtype, text))
     return 0
 
+def current_cc_backend():
+    """ Returns an instance of `BackendType` """
+
+    if os.path.isfile(MASTER_SWITCH_FILE):
+        return BackendType.SCC
+    else:
+        return BackendType.NCC
 
 def send(url, sendData=None):
     """Connect to ncc and return the XML document as stringIO
