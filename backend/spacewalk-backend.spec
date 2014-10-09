@@ -51,6 +51,9 @@ Requires(pre): apache2
 Requires(pre): httpd
 %endif
 
+Requires:       python-enum34
+BuildRequires:  python-enum34
+
 Requires: python, rpm-python
 # /etc/rhn is provided by spacewalk-proxy-common or by spacewalk-config
 Requires: /etc/rhn
