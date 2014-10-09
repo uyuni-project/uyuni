@@ -124,7 +124,8 @@ public class ContentSyncManager {
     private static final File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
     private static String uuid;
 
-    // Cached creds ID as returned by isMirrorable() in order to avoid repeated requests
+    // Cached OES SCCRepository as returned by isMirrorable() in order
+    // to avoid repeated HEAD requests
     private static SCCRepository cachedOESRepo = null;
 
     // Mirror URL read from rhn.conf
@@ -1125,11 +1126,11 @@ public class ContentSyncManager {
     }
 
     /**
-     * For a given channel, check if it is mirrorable and return the ID of the first pair of
-     * mirror credentials with access to the given channel.
+     * For a given channel, check if it is mirrorable and return the repository object
+     * with the ID of the first pair of mirror credentials with access to the given channel.
      * @param channel Channel
      * @param repos list of repos from SCC to match against
-     * @return mirror credentials ID or null if the channel is not mirrorable
+     * @return repository object or null if the channel is not mirrorable
      */
     public SCCRepository isMirrorable(MgrSyncChannel channel,
             Collection<SCCRepository> repos) {
