@@ -503,10 +503,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             try:
                 if method == "synchronizeChannels":
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                            self.auth.token(), mirror)
+                                                self.auth.token(), mirror)
                 else:
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                            self.auth.token())
+                                                self.auth.token(), mirror)
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
