@@ -38,7 +38,7 @@ class CredentialOperationsTest(unittest.TestCase):
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
 
-        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_backend')
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_cc_backend')
         mock = patcher.start()
         mock.return_value = BackendType.SCC
 
