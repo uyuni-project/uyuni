@@ -47,13 +47,13 @@ class MgrSync(object):
         """
         Run the app.
         """
-        if not current_cc_backend() == BackendType.SCC \
-           and not vars(options).has_key('enable_scc'):
+        if current_backend() != BackendType.SCC \
+           and vars(options).get('enable_target', '').lower() != 'scc':
             msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
 mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
 
 This can be done using the following commmand:
-    mgr-sync enable-scc
+    mgr-sync enable scc
 
 Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
 """
@@ -83,15 +83,19 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 self._add_products(mirror="")
         elif vars(options).has_key('refresh'):
             self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror)
-        elif vars(options).has_key('enable_scc'):
-            if current_cc_backend() == BackendType.SCC:
-                print("The SUSE Customer Center (SCC) backend is already "
-                      "active, nothing to do.")
-            else:
-                self._enable_scc()
         elif vars(options).has_key('delete_target'):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
+        elif vars(options).has_key('enable_target'):
+            print(options)
+            if 'from-dir' in options.enable_target:
+                print options.target
+            elif 'scc' in options.enable_target.lower():
+                if current_backend() == BackendType.SCC:
+                    print("The SUSE Customer Center (SCC) backend is already "
+                          "active, nothing to do.")
+                else:
+                    self._enable_scc()
 
         if options.saveconfig and self.auth.has_credentials():
             self.config.user = self.auth.user
