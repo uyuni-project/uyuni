@@ -57,7 +57,7 @@ class MgrSyncTest(unittest.TestCase):
 mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
 
 This can be done using the following commmand:
-    mgr-sync enable-scc
+    mgr-sync enable scc
 
 Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC)."""
 
@@ -65,14 +65,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         self.assertFalse(recorder.stdout)
 
     def test_should_allow_migration_to_scc(self):
-        """ Should allow the execution of the enable-scc action even when
+        """ Should allow the execution of the enable scc action even when
         NCC is active """
 
         self.mock_current_backend.return_value = BackendType.NCC
         mock_enable_scc = MagicMock()
         self.mgr_sync._enable_scc = mock_enable_scc
 
-        options = get_options("enable-scc".split())
+        options = get_options("enable scc".split())
         with ConsoleRecorder():
             self.mgr_sync.run(options)
 
@@ -85,7 +85,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         mock_enable_scc = MagicMock()
         self.mgr_sync._enable_scc = mock_enable_scc
 
-        options = get_options("enable-scc".split())
+        options = get_options("enable scc".split())
         with ConsoleRecorder():
             self.mgr_sync.run(options)
 
