@@ -67,7 +67,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     private String login;
     private String loginUc;
     private String password;
-    private String readOnly;
+    private boolean readOnly;
     private Set<UserGroupMembers> groupMembers;
     private Org org;
     private Set<StateChange> stateChanges;
@@ -1319,29 +1319,15 @@ public class UserImpl extends BaseDomainHelper implements User {
     /**
      * @return Returns whether user is readonly
      */
-    public String getReadOnly() {
+    public boolean isReadOnly() {
         return readOnly;
     }
 
     /**
      * @param readOnlyIn readOnly to set
      */
-    public void setReadOnly(String readOnlyIn) {
-        this.readOnly = readOnlyIn;
-    }
-
-    /**
-     * @return Returns whether user is readonly
-     */
-    public boolean getReadOnlyBool() {
-        return this.readOnly.equals("Y");
-    }
-
-    /**
-     * @param readOnlyIn readOnly to set
-     */
     public void setReadOnly(boolean readOnlyIn) {
-        this.readOnly = readOnlyIn ? "Y" : "N";
+        this.readOnly = readOnlyIn;
     }
 
 }

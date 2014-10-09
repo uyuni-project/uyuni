@@ -6,7 +6,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:            oracle-xe-selinux
-Version:         10.2.0.35
+Version:         10.2.0.37
 Release:         1%{?dist}
 Summary:         SELinux policy module supporting Oracle XE
 Group:           System Environment/Base
@@ -81,7 +81,7 @@ rm -rf %{buildroot}
 
 %pre
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %define min_uid 1000
 %else
 %define min_uid 500
@@ -138,6 +138,12 @@ fi
 %attr(0755,root,root) %{_sbindir}/%{name}-enable
 
 %changelog
+* Fri Sep 26 2014 Michael Mraka <michael.mraka@redhat.com> 10.2.0.37-1
+- fixed typo in macro
+
+* Thu Sep 25 2014 Michael Mraka <michael.mraka@redhat.com> 10.2.0.36-1
+- updated system uid limit for RHEL7
+
 * Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 10.2.0.35-1
 - spec file polish
 

@@ -14,9 +14,9 @@
   </head>
   <body onload="<decorator:getProperty property="body.onload" />">
     <div class="spacewalk-top-wrap">
-      <header>
+      <nav class="navbar navbar-default navbar-pf" role="navigation">
         <jsp:include page="/WEB-INF/includes/header.jsp" />
-      </header>
+      </nav>
       <div class="spacewalk-main-column-layout">
         <aside id="spacewalk-aside">
           <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
