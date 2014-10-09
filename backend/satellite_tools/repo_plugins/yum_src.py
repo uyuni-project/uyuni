@@ -192,6 +192,14 @@ class ContentSource:
         self.initgpgdir( repo.gpgdir )
         self.sack = self.repo.getPackageSack()
 
+    def get_md_checksum_type(self):
+        """Return the checksum_type of primary.xml"""
+        if 'primary' in self.repo.repoXML.repoData:
+            checksum = self.repo.repoXML.repoData['primary'].checksum
+            return checksum[0] #tuple (checksum_type,checksum)
+        else:
+            return "sha1"
+
     def list_packages(self, filters):
         """ list packages"""
         try:

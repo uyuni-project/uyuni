@@ -236,6 +236,9 @@ class RepoSync(object):
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
+                # update the checksum type of channels with org_id NULL
+                self.updateChannelChecksumType(plugin.get_md_checksum_type())
+
                 if data['id'] is not None:
                     keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
@@ -1288,6 +1291,38 @@ class RepoSync(object):
                                  st_size = st.st_size, st_time = st.st_mtime)
 
         rhnSQL.commit()
+
+    def updateChannelChecksumType(self, repo_checksum_type):
+        """
+        check, if the checksum_type of the channel matches the one of the repo
+        if not, change the type of the channel
+        """
+        if self.channel['org_id']:
+            # custom channels are user managed.
+            # Do not autochange this
+            return
+
+        h = rhnSQL.prepare("""SELECT ct.label
+                                FROM rhnChannel c
+                                JOIN rhnChecksumType ct ON c.checksum_type_id = ct.id
+                               WHERE c.id = :cid""")
+        h.execute(cid=self.channel['id'])
+        d = h.fetchone_dict() or None
+        if d and d['label'] == repo_checksum_type:
+            # checksum_type is the same, no need to change anything
+            return
+        h = rhnSQL.prepare("""SELECT id FROM rhnChecksumType WHERE label = :clabel""")
+        h.execute(clabel=repo_checksum_type)
+        d = h.fetchone_dict() or None
+        if not (d and d['id']):
+            # unknown or invalid checksum_type
+            # better not change the channel
+            return
+        # update the checksum_type
+        h = rhnSQL.prepare("""UPDATE rhnChannel
+                                 SET checksum_type_id = :ctid
+                               WHERE id = :cid""")
+        h.execute(ctid=d['id'], cid=self.channel['id'])
 
 
 def get_errata(update_id):
