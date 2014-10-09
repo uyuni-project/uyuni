@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
  * @author Bo Maryniuk
  */
 public class SsmErrataAction extends AbstractDatabaseAction {
+
     private static Logger log = Logger.getLogger(SsmErrataAction.class);
 
     /** {@inheritDoc} */
@@ -40,26 +41,20 @@ public class SsmErrataAction extends AbstractDatabaseAction {
 
         SsmErrataEvent event = (SsmErrataEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());
-        ActionChain actionChain = ActionChainFactory.getActionChain(event
-            .getActionChainId());
+        ActionChain actionChain =
+                ActionChainFactory.getActionChain(event.getActionChainId());
 
         try {
-            ErrataManager.applyErrata(user,
-                                      event.getErrataIds(),
-                                      event.getEarliest(),
-                                      actionChain,
-                                      event.getServerIds());
+            ErrataManager.applyErrata(user, event.getErrataIds(), event.getEarliest(),
+                    actionChain, event.getServerIds());
         }
         catch (Exception e) {
             log.error("Error scheduling SSM errata for event: " + event, e);
         }
         finally {
-            SsmOperationManager.completeOperation(
-                    user,
-                    SsmOperationManager.createOperation(user,
-                                                        "ssm.package.remove.operationname",
-                                                        RhnSetDecl.SYSTEMS.getLabel())
-            );
+            SsmOperationManager.completeOperation(user, SsmOperationManager
+                    .createOperation(user, "ssm.package.remove.operationname",
+                            RhnSetDecl.SYSTEMS.getLabel()));
         }
     }
 }
