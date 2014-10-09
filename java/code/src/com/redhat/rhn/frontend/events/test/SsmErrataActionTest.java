@@ -1,4 +1,25 @@
+/**
+ * Copyright (c) 2014 SUSE
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.redhat.rhn.frontend.events.test;
+
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+    .createLaterTestPackage;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+    .createTestInstalledPackage;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestPackage;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -8,23 +29,32 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.rhnpackage.*;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.events.SsmErrataAction;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
 import org.hibernate.criterion.Restrictions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createLaterTestPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestInstalledPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestPackage;
-
+/**
+ * Tests SsmErrataAction.
+ */
 public class SsmErrataActionTest extends BaseTestCaseWithUser {
 
+    /**
+     * Test only relevant errata per system.
+     *
+     * @throws Exception the exception
+     */
+    @SuppressWarnings("unchecked")
     public void testOnlyRelevantErrataPerSystem() throws Exception {
 
         // Create System
@@ -38,14 +68,15 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
 
         // server 1 has an errata for package1 available
-        com.redhat.rhn.domain.rhnpackage.Package package1 = createTestPackage(user, channel1, "noarch");
+        com.redhat.rhn.domain.rhnpackage.Package package1 =
+                createTestPackage(user, channel1, "noarch");
         createTestInstalledPackage(package1, server1);
-        Package package1_updated = createLaterTestPackage(user, errata1, channel1, package1);
+        createLaterTestPackage(user, errata1, channel1, package1);
 
         // server 2 has an errata for package2 available
         Package package2 = createTestPackage(user, channel2, "noarch");
         createTestInstalledPackage(package2, server2);
-        Package package2_updated = createLaterTestPackage(user, errata2, channel2, package2);
+        createLaterTestPackage(user, errata2, channel2, package2);
 
         List<Long> errataIds = new ArrayList<Long>();
         errataIds.add(errata1.getId());
@@ -56,12 +87,8 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         serverIds.add(server1.getId());
 
         SsmErrataAction action = new SsmErrataAction();
-        SsmErrataEvent event = new SsmErrataEvent(
-                user.getId(),
-                new Date(),
-                null, //actionchain
-                errataIds,
-                serverIds);
+        SsmErrataEvent event = new SsmErrataEvent(user.getId(), new Date(),
+                null, errataIds, serverIds);
 
         action.execute(event);
 
@@ -77,16 +104,21 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
                 server1ScheduledErrata.add(e.getId());
             }
         }
-        //assert(!server1ScheduledErrata.contains(errata1.getId()));
-        //assertEquals(1, server1ScheduledErrata.size());
+
         assertFalse("Scheduled Erratas do not include other server's errata",
                 server1ScheduledErrata.contains(errata2.getId()));
     }
 
-   private ErrataAction errataActionFromAction(Action action) {
-       ErrataAction errataAction = (ErrataAction) HibernateFactory.getSession()
-               .createCriteria(ErrataAction.class)
-               .add(Restrictions.idEq(action.getId())).uniqueResult();
-       return errataAction;
-   }
+    /**
+     * Get an ErrataAction from an Action.
+     * @param action the action
+     * @return the errata action
+     */
+    private ErrataAction errataActionFromAction(Action action) {
+        ErrataAction errataAction = (ErrataAction) HibernateFactory.getSession()
+            .createCriteria(ErrataAction.class)
+            .add(Restrictions.idEq(action.getId()))
+            .uniqueResult();
+        return errataAction;
+    }
 }
