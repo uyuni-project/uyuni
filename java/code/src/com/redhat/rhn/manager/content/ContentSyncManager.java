@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -38,6 +39,7 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -235,7 +237,7 @@ public class ContentSyncManager {
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
-                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
                         c.getUser(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
@@ -555,7 +557,7 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
-                SCCClient scc = new SCCClient(Config.get().getString("scc_url"),
+                SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
                         c.getUser(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
@@ -595,7 +597,8 @@ public class ContentSyncManager {
             throws SCCClientException {
         SCCClient scc = null;
         try {
-            scc = new SCCClient(Config.get().getString("scc_url"), user, password);
+            scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
+                    user, password);
             scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
         } catch (URISyntaxException e1) {
