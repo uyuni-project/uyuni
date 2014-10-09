@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
@@ -160,7 +161,7 @@ public class SCCMirrorCredentialsManager extends MirrorCredentialsManager {
             for (MirrorCredentialsDto c : findMirrorCredentials()) {
                 Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
                 if (dbCreds.getId().equals(id)) {
-                    dbCreds.setUrl(Config.get().getString("scc_url"));
+                    dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
                     CredentialsFactory.storeCredentials(dbCreds);
                 }
                 else if (dbCreds.getUrl() != null) {
