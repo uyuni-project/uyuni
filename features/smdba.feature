@@ -75,10 +75,15 @@ Feature: Verify SMDBA infrastructure
 
   Scenario: Restore backup with SMDBA
     Given database is running
-    #When in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    Given database "susemanager" has no table "dummy"
+    When I set a checkpoint
+    And when I issue command "smdba backup-hot"
+    And when in the database I create dummy table "dummy" with column "test" and value "bogus data"
+    And when I destroy "/var/lib/pgsql/data/pg_xlog" directory
     And when I restore database from the backup
     And when I issue command "smdba db-status"
-    Then I want to see if the database is "online"
+    Given database is running
+    Given database "susemanager" has no table "dummy"
     Then I disable backup in the directory "/smdba-backup-test" 
     Then I remove backup directory "/smdba-backup-test"
 
