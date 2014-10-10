@@ -1474,35 +1474,8 @@ public class ErrataManager extends BaseManager {
             throw new InvalidParameterException("No errata to apply.");
         }
 
-        // first check, whether the errata list is applicable to the whole system list
-        // if not, exception is thrown
-        for (Long sid : systemIds) {
-            checkApplicableErrata(loggedInUser, errataIds, sid);
-        }
-
         // at this point all errata is applicable to all systems, so let's apply
-        return applyErrata(loggedInUser, errataIds, earliestOccurrence, systemIds);
-    }
-
-    private static void checkApplicableErrata(User loggedInUser, List<Integer> errataIds,
-            Long serverId) {
-        // Check to make sure the given errata are applicable to and unscheduled for the
-        // system in question. This catches three scenarios, errata that don't apply to
-        // this system, are already scheduled, or don't exist in the first place.
-        // TODO: fail silently in some of these cases?
-        Set unscheduledErrataIds = new HashSet();
-        List unscheduledErrata = SystemManager.unscheduledErrata(loggedInUser,
-                serverId, null);
-        for (Iterator it = unscheduledErrata.iterator(); it.hasNext();) {
-            Errata e = (Errata)it.next();
-            unscheduledErrataIds.add(e.getId());
-        }
-        for (Iterator it = errataIds.iterator(); it.hasNext();) {
-            Integer currentId = (Integer)it.next();
-            if (!unscheduledErrataIds.contains(currentId.longValue())) {
-                throw new InvalidErrataException();
-            }
-        }
+        return applyErrata(loggedInUser, errataIds, earliestOccurrence, null, systemIds, false);
     }
 
     /**
@@ -1531,7 +1504,28 @@ public class ErrataManager extends BaseManager {
      * @return list of action ids
      */
     public static List<Long> applyErrata(User user, List errataIds, Date earliest,
-        ActionChain actionChain, List<Long> serverIds) {
+                                         ActionChain actionChain, List<Long> serverIds) {
+        return  applyErrata(user, errataIds, earliest, actionChain, serverIds, true);
+    }
+
+    /**
+     * Apply a list of errata to a list of servers, with an optional Action
+     * Chain
+     * Note that
+     *
+     * @param user user
+     * @param errataIds errata ids
+     * @param earliest schedule time
+     * @param actionChain the action chain to add the action to or null
+     * @param serverIds server ids
+     * @param onlyRelevant If true not all erratas are applied to all systems.
+     *        Systems get only the erratas relevant for them.
+     *        If false, InvalidErrataException is thrown if an errata does not apply
+     *        to a system.
+     * @return list of action ids
+     */
+    private static List<Long> applyErrata(User user, List errataIds, Date earliest,
+        ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
 
         // not all errata applies to all systems, so we will group actions per systems
         // having the same sets of errata
@@ -1544,6 +1538,11 @@ public class ErrataManager extends BaseManager {
             for (Errata e : relevantErrata) {
                 if (errataIds.contains(e.getId())) {
                     relevantRequestedErrata.add(e);
+                }
+                else {
+                    if (!onlyRelevant) {
+                        throw new InvalidErrataException();
+                    }
                 }
             }
             relevantErrataForServer.put(serverId, relevantRequestedErrata);
