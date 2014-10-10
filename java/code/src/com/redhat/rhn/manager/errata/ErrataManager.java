@@ -1617,6 +1617,7 @@ public class ErrataManager extends BaseManager {
             List<Long> serverList = serversForErrataSet.get(errataSet);
             if (serverList == null) {
                 serverList = new ArrayList<Long>();
+                serversForErrataSet.put(errataSet, serverList);
             }
             serverList.add(serverId);
         }
