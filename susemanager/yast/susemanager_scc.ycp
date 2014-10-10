@@ -17,9 +17,8 @@
     boolean text_mode   = display_info["TextMode"]:false;
 
     map<string,string> settings = $[
-        "NCC_USER"      : "",
-        "NCC_PASS"      : "",
-        "NCC_EMAIL"     : "",
+        "SCC_USER"      : "",
+        "SCC_PASS"      : "",
         "ISS_PARENT"    : ""
     ];
 
@@ -44,8 +43,8 @@
     boolean CredentialsTest(any log_view) {
         log_view_ID = log_view;
 
-        string user = settings["NCC_USER"]:"";
-        string pass = settings["NCC_PASS"]:"";
+        string user = settings["SCC_USER"]:"";
+        string pass = settings["SCC_PASS"]:"";
         string serv = settings["ISS_PARENT"]:"";
         if (serv == "")
             serv = "scc.suse.com";
@@ -167,11 +166,9 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 
     map<string,string> labels   = $[
         // text entry label
-        "NCC_USER"      : _("SCC Mirror Credentials Username"),
+        "SCC_USER"      : _("SCC Mirror Credentials Username"),
         // text entry label
-        "NCC_PASS"      : _("SCC Mirror Credentials Password"),
-        // text entry label
-        "NCC_EMAIL"     : _("SCC E-mail Address"),
+        "SCC_PASS"      : _("SCC Mirror Credentials Password"),
         // text entry label
         "ISS_PARENT"    : _("Parent Server Name")
     ];
@@ -208,14 +205,11 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
                    `InputField (`id ("ISS_PARENT"), `opt (`hstretch), _("Parent &Server Name"), settings["ISS_PARENT"]:""))
             )))),
         // text entry label
-        `InputField (`id ("NCC_USER"), `opt (`hstretch), _("SCC Mirror Credentials &Username"),
-            settings["NCC_USER"]:""),
+        `InputField (`id ("SCC_USER"), `opt (`hstretch), _("SCC Mirror Credentials &Username"),
+            settings["SCC_USER"]:""),
         // text entry label
-        `Password (`id ("NCC_PASS"), `opt (`hstretch), _("SCC Mirror Credentials &Password"),
-            settings["NCC_PASS"]:""),
-        // text entry label
-        `InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("SCC &E-mail Address"),
-            settings["NCC_EMAIL"]:""),
+        `Password (`id ("SCC_PASS"), `opt (`hstretch), _("SCC Mirror Credentials &Password"),
+            settings["SCC_PASS"]:""),
         `VSpacing (),
         `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
         `VSpacing (0.5)
@@ -286,14 +280,6 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         }
         if (ret == `next)
         {
-            string email        = (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
-            if (!issubstring (email, "@"))
-            {
-                // error popup
-                Popup::Error (_("The E-mail Address is not valid."));
-                UI::SetFocus (`id ("NCC_EMAIL"));
-                continue;
-            }
             foreach (string key, string value, settings, {
                 string val      = (string) UI::QueryWidget (`id (key), `Value);
                 setenv (key, val, true);
