@@ -1086,12 +1086,12 @@ sub populate_initial_configs {
       my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password)
                         values (sequence_nextval('suse_credentials_id_seq'), NULL,
                                 (select id from suseCredentialsType where label = 'scc'),
-                                 '%s', '%s')",
+                                 '%s', '%s');",
                        $answers->{'scc-user'},
                        encode_base64($answers->{'scc-pass'}));
-      system_or_exit(["/bin/bash", "-c",
-                     "echo '$st' | spacewalk-sql --select-mode - 2>&1"],
-                     1, "*** Setup Mirror Credentials failed.");
+      Spacewalk::Setup::system_or_exit(["/bin/bash", "-c",
+                                        "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
+                                       1, "*** Setup Mirror Credentials failed.");
   }
   write_config( \%rhnopt,
 		'/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
