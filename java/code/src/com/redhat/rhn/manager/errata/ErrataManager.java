@@ -1475,7 +1475,8 @@ public class ErrataManager extends BaseManager {
         }
 
         // at this point all errata is applicable to all systems, so let's apply
-        return applyErrata(loggedInUser, errataIds, earliestOccurrence, null, systemIds, false);
+        return applyErrata(loggedInUser, errataIds, earliestOccurrence,
+                null, systemIds, false);
     }
 
     /**
@@ -1532,7 +1533,8 @@ public class ErrataManager extends BaseManager {
         Map<Long, Set<Errata>> relevantErrataForServer = new HashMap<Long, Set<Errata>>();
         //
         for (Long serverId : serverIds) {
-            Set<Errata> relevantErrata = new HashSet<Errata>(SystemManager.unscheduledErrata(user, serverId, null));
+            Set<Errata> relevantErrata = new HashSet<Errata>(
+                    SystemManager.unscheduledErrata(user, serverId, null));
             // select only the relevant errata that was requested
             Set<Errata> relevantRequestedErrata = new HashSet<Errata>();
             for (Errata e : relevantErrata) {
@@ -1548,7 +1550,8 @@ public class ErrataManager extends BaseManager {
             relevantErrataForServer.put(serverId, relevantRequestedErrata);
         }
 
-        Map<Set<Errata>, List<Long>> serversForErrataSet = new HashMap<Set<Errata>, List<Long>>();
+        Map<Set<Errata>, List<Long>> serversForErrataSet =
+                new HashMap<Set<Errata>, List<Long>>();
         for (Long serverId : relevantErrataForServer.keySet()) {
             Set<Errata> errataSet = relevantErrataForServer.get(serverId);
             List<Long> serverList = serversForErrataSet.get(errataSet);
@@ -1569,9 +1572,10 @@ public class ErrataManager extends BaseManager {
             for (Errata erratum : erratas) {
                 if (erratum.hasKeyword("restart_suggested")) {
                     if (stackUpdates == null) {
-                        stackUpdates = createErrataActions(user, erratum, earliest, actionChain,
-                                affectedServers);
-                    } else {
+                        stackUpdates = createErrataActions(user, erratum,
+                                earliest, actionChain, affectedServers);
+                    }
+                    else {
                         for (ErrataAction stackUpdate : stackUpdates) {
                             stackUpdate.addErrata(erratum);
                         }
