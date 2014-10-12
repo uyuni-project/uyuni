@@ -147,12 +147,6 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas",
-                new HashSet<Errata>(), server1ScheduledErrata);
-
-        //assertEquals("Server 2 Scheduled Erratas",
-        //        new HashSet<Errata>(), server2ScheduledErrata);
-
         assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata3)",
                 2, server1ScheduledErrata.size());
         assertFalse("Server 1 Scheduled Erratas do not include other server's errata",

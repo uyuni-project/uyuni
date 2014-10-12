@@ -1530,30 +1530,33 @@ public class ErrataManager extends BaseManager {
 
         // not all errata applies to all systems, so we will group actions per systems
         // having the same sets of errata
-        Map<Long, Set<Errata>> relevantErrataForServer = new HashMap<Long, Set<Errata>>();
+        // We can't do a Set<Errata> because AbstractErrata equals/hashCode does not use Id.
+        // System Id -> Errata Ids
+        Map<Long, Set<Long>> relevantErrataForServer = new HashMap<Long, Set<Long>>();
         //
         for (Long serverId : serverIds) {
-            Set<Errata> relevantErrata = new HashSet<Errata>(
-                    SystemManager.unscheduledErrata(user, serverId, null));
-            // select only the relevant errata that was requested
-            Set<Errata> relevantRequestedErrata = new HashSet<Errata>();
-            for (Errata e : relevantErrata) {
+            List<Errata> relevantErrataList = SystemManager.unscheduledErrata(user, serverId, null);
+            Set<Long> relevantErrataIds = new HashSet<Long>();
+            for (Errata e : relevantErrataList) {
+                // only count the errata if is requested _AND_
+                // part of the relevant erratas
                 if (errataIds.contains(e.getId())) {
-                    relevantRequestedErrata.add(e);
+                    relevantErrataIds.add(e.getId());
                 }
-                else {
+                else
+                {
                     if (!onlyRelevant) {
                         throw new InvalidErrataException();
                     }
                 }
             }
-            relevantErrataForServer.put(serverId, relevantRequestedErrata);
+            relevantErrataForServer.put(serverId, relevantErrataIds);
         }
 
-        Map<Set<Errata>, List<Long>> serversForErrataSet =
-                new HashMap<Set<Errata>, List<Long>>();
+        Map<Set<Long>, List<Long>> serversForErrataSet =
+                new HashMap<Set<Long>, List<Long>>();
         for (Long serverId : relevantErrataForServer.keySet()) {
-            Set<Errata> errataSet = relevantErrataForServer.get(serverId);
+            Set<Long> errataSet = relevantErrataForServer.get(serverId);
             List<Long> serverList = serversForErrataSet.get(errataSet);
             if (serverList == null) {
                 serverList = new ArrayList<Long>();
@@ -1563,14 +1566,15 @@ public class ErrataManager extends BaseManager {
         }
 
         List<Long> actionIds = new ArrayList<Long>();
-        for (Set<Errata> erratas : serversForErrataSet.keySet()) {
+        for (Set<Long> relevantErrataIds : serversForErrataSet.keySet()) {
 
-            List<Long> affectedServers = serversForErrataSet.get(erratas);
+            List<Long> affectedServers = serversForErrataSet.get(relevantErrataIds);
 
             // Schedule updates to the software update stack first
             List<ErrataAction> stackUpdates = null;
             List<Errata> errata = new ArrayList<Errata>();
-            for (Errata erratum : erratas) {
+            for (Long eid : relevantErrataIds) {
+                Errata erratum = ErrataManager.lookupErrata(eid, user);
                 if (erratum.hasKeyword("restart_suggested")) {
                     if (stackUpdates == null) {
                         stackUpdates = createErrataActions(user, erratum,
