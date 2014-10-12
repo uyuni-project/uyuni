@@ -16,6 +16,8 @@
 package com.redhat.rhn.frontend.events.test;
 
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+        .createTestServer;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
     .createLaterTestPackage;
 import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
     .createTestInstalledPackage;
@@ -34,11 +36,14 @@ import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.SsmErrataAction;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
+import com.redhat.rhn.testing.TestUtils;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.*;
@@ -56,17 +61,26 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     public void testOnlyRelevantErrataPerSystem() throws Exception {
 
-        // Create System
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
-
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> server1Channels = new HashSet<Channel>();
+        server1Channels.add(channel1);
+        server1Channels.add(channel3);
+        Server server1 = createTestServer(user, server1Channels);
+
+        Set<Channel> server2Channels = new HashSet<Channel>();
+        server2Channels.add(channel2);
+        server2Channels.add(channel3);
+        Server server2 = createTestServer(user, server2Channels);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
@@ -85,14 +99,16 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         createTestInstalledPackage(package3, server2);
         createLaterTestPackage(user, errata3, channel3, package3);
 
-        //ErrataCacheManager.insertNeededErrataCache(
-        //        server1.getId(), errata1.getId(), package1.getId());
-        //ErrataCacheManager.insertNeededErrataCache(
-        //        server2.getId(), errata2.getId(), package2.getId());
-        //ErrataCacheManager.insertNeededErrataCache(
-        //        server1.getId(), errata3.getId(), package3.getId());
-        //ErrataCacheManager.insertNeededErrataCache(
-        //        server2.getId(), errata3.getId(), package3.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata2.getId(), package2.getId());
+        // Erata 3 is common to server 1 and server 2
+        ErrataCacheManager.insertNeededErrataCache(
+                server1.getId(), errata3.getId(), package3.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server2.getId(), errata3.getId(), package3.getId());
+        HibernateFactory.getSession().flush();
 
         List<Long> errataIds = new ArrayList<Long>();
         errataIds.add(errata1.getId());
@@ -114,7 +130,7 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         // server1 do not contain the erratas for server2
 
         List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
-        Set<Long> server1ScheduledErrata = new HashSet<Long>();
+            Set<Long> server1ScheduledErrata = new HashSet<Long>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
             for (Errata e : errataAction.getErrata()) {
@@ -131,8 +147,14 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
             }
         }
 
-        assertEquals("Server 1 Scheduled Erratas has 1 erratas",
-                1, server1ScheduledErrata.size());
+        assertEquals("Server 1 Scheduled Erratas",
+                new HashSet<Errata>(), server1ScheduledErrata);
+
+        //assertEquals("Server 2 Scheduled Erratas",
+        //        new HashSet<Errata>(), server2ScheduledErrata);
+
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata1 and errata3)",
+                2, server1ScheduledErrata.size());
         assertFalse("Server 1 Scheduled Erratas do not include other server's errata",
                 server1ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
@@ -140,6 +162,8 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         assertTrue("Server 1 Scheduled Erratas contain relevant erratas",
                 server1ScheduledErrata.contains(errata3.getId()));
 
+        assertEquals("Server 1 Scheduled Erratas has 2 erratas (errata2 and errata3)",
+                2, server2ScheduledErrata.size());
         assertFalse("Server 2 Scheduled Erratas do not include other server's errata",
                 server2ScheduledErrata.contains(errata1.getId()));
         assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
