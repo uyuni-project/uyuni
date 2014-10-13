@@ -720,6 +720,10 @@ public class ContentSyncManager {
                 }
                 pcf.setChannelFamily(family);
                 ChannelFamilyFactory.save(pcf);
+
+                // Update the channel family accordingly
+                family.addPrivateChannelFamily(pcf);
+                ChannelFamilyFactory.save(family);
             }
         }
     }
@@ -800,7 +804,7 @@ public class ContentSyncManager {
                             .setMaxMembers(INFINITE - sumMaxMembers);
                 }
             }
-            else {
+            else if (!channelFamily.getLabel().startsWith("private-channel-family")) {
                 // No subscription, reset to 0
                 for (PrivateChannelFamily pcf : privateFamilies) {
                     pcf.setMaxMembers(0L);
@@ -879,7 +883,7 @@ public class ContentSyncManager {
             String productClass = p.getProductClass();
 
             if (productClass != null) {
-                channelFamily = createOrUpdateChannelFamily(productClass, productClass);
+                channelFamily = createOrUpdateChannelFamily(productClass, null);
             }
 
             // Update this product in the database if it is there
@@ -1313,8 +1317,12 @@ public class ContentSyncManager {
             family = new ChannelFamily();
             family.setLabel(label);
             family.setOrg(null);
-            family.setName(name);
+            family.setName(StringUtils.isBlank(name) ? label : name);
             family.setProductUrl("some url");
+            ChannelFamilyFactory.save(family);
+        }
+        else if (family != null && !StringUtils.isBlank(name)) {
+            family.setName(name);
             ChannelFamilyFactory.save(family);
         }
         return family;
