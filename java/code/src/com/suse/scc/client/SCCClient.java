@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class SCCClient {
 
-    private SCCConfig config = new SCCConfig();
+    private final SCCConfig config = new SCCConfig();
 
     /**
      * Constructor for connecting to scc.suse.com.
