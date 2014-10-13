@@ -27,6 +27,7 @@ public class SCCConfig {
     public static final String URL = "url";
     public static final String ENCODED_CREDS = "encoded-creds";
     public static final String UUID = "uuid";
+    public static final String RESOURCE_PATH = "local-resource";
 
     // Proxy settings
     public static final String PROXY_HOSTNAME = "proxy-hostname";
@@ -54,7 +55,6 @@ public class SCCConfig {
      *
      * @param key
      * @param value
-     * @throws URISyntaxException
      */
     public void put(String key, String value) {
         properties.setProperty(key, value);
@@ -143,5 +143,13 @@ public class SCCConfig {
      */
     public String getProxyPassword() {
        return properties.getProperty(PROXY_PASSWORD, null);
+    }
+
+    /**
+     * Returns the local path of the directory for resources. Null, if is not set.
+     * @return directory path
+     */
+    public String getLocalResourcePath() {
+        return properties.getProperty(SCCConfig.RESOURCE_PATH);
     }
 }
