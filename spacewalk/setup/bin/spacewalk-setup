@@ -1128,13 +1128,23 @@ sub populate_initial_configs {
   }
   elsif ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {
+      my %mgrDefaults = ();
+      if (-e "/usr/share/rhn/config-defaults/rhn_server_susemanager.conf")
+      {
+          Spacewalk::Setup::read_config("/usr/share/rhn/config-defaults/rhn_server_susemanager.conf",
+                  \%mgrDefaults);
+      }
+      $mgrDefaults{'scc_url'} = "https://scc.suse.com" if (not $mgrDefaults{'scc_url'});
+
       # SCC - write to DB
-      my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password)
+      my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password, url)
                         values (sequence_nextval('suse_credentials_id_seq'), NULL,
                                 (select id from suseCredentialsType where label = 'scc'),
-                                 '%s', '%s');",
+                                 '%s', '%s', '%s');",
                        $answers->{'scc-user'},
-                       encode_base64($answers->{'scc-pass'}));
+                       encode_base64($answers->{'scc-pass'}),
+                       $mgrDefaults{'scc_url'}
+                      );
       Spacewalk::Setup::system_or_exit(["/bin/bash", "-c",
                                         "echo \"$st\" | spacewalk-sql --select-mode - 2>&1"],
                                        1, "*** Setup Mirror Credentials failed.");
