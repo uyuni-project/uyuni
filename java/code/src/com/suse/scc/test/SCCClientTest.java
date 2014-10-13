@@ -15,19 +15,18 @@
 package com.suse.scc.test;
 
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
-
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-
 import javax.xml.bind.DatatypeConverter;
-
 import junit.framework.TestCase;
+import org.apache.commons.io.FileUtils;
 
 /**
  * Tests for {@link SCCClient} methods.
@@ -170,4 +169,48 @@ public class SCCClientTest extends TestCase {
         assertEquals(1, sys.getId());
         assertEquals("login1", sys.getLogin());
     }
+
+    // File-based configuration
+    private File createTempDir() throws IOException {
+        File tmpDir = new File(System.getProperty("java.io.tmpdir") +
+                               "/json-smt-scc-" + this.getClass().getCanonicalName());
+        this.removeTempDir(tmpDir);
+        tmpDir.mkdir();
+        return tmpDir;
+    }
+
+    private void removeTempDir(File tmpDir) throws IOException {
+        if (tmpDir.exists()) {
+            FileUtils.forceDelete(tmpDir);
+        }
+    }
+
+    /**
+     * Test for {@link SCCClient#listRepositories()} but from the directory.
+     * @throws java.lang.Exception
+     */
+    public void testListRepositoriesFromDirectory() throws Exception {
+        File tmpDir = this.createTempDir();
+        FileUtils.copyURLToFile(this.getClass().getResource(
+                "/com/suse/scc/test/connect/organizations/repositories.json"),
+                new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
+        try {
+            SCCClient client = new SCCClient("http://localhost:" + HttpServerMock.PORT, "user", "pass");
+            client.setResourceLocalPath(tmpDir);
+            List<SCCRepository> repos = client.listRepositories();
+
+            // Assertions
+            assertEquals(1, repos.size());
+            SCCRepository r = repos.get(0);
+            assertEquals(1358, r.getId());
+            assertEquals("SLE10-SDK-SP4-Online", r.getName());
+            assertEquals("sles-10-i586", r.getDistroTarget());
+            assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
+            assertEquals("https://nu.novell.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586", r.getUrl());
+            assertEquals(true, r.isAutorefresh());
+        } finally {
+            this.removeTempDir(tmpDir);
+        }
+    }
+
 }
