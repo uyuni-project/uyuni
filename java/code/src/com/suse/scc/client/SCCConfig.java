@@ -67,8 +67,7 @@ public class SCCConfig {
      * @throws URISyntaxException
      */
     public void setUrl(String url) throws URISyntaxException {
-        new URI(url);
-        properties.setProperty(URL, url);
+        properties.setProperty(URL, new URI(url).toASCIIString());
     }
 
     /**
