@@ -17,11 +17,10 @@ package com.suse.scc.client;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
-
-import org.apache.commons.codec.binary.Base64;
-
+import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * SCC API Client.
@@ -95,6 +94,31 @@ public class SCCClient {
         if (uuid != null) {
             config.put(SCCConfig.UUID, uuid);
         }
+    }
+
+    /**
+     * Set local resource path from where JSON data will be read instead of accessing
+     * the network. If path is set to null, network will be used instead.
+     * @param path
+     * @throws SCCClientException
+     */
+    public void setResourceLocalPath(File path) throws SCCClientException {
+        if (path == null) {
+            this.config.remove(SCCConfig.RESOURCE_PATH);
+            return;
+        }
+
+        if (!path.canRead()) {
+            throw new SCCClientException(
+                    String.format("Unable to access resource at \"%s\" location.",
+                                  path.getAbsolutePath()));
+        } else if (!path.isDirectory()) {
+            throw new SCCClientException(
+                    String.format("Path \"%s\" must be a directory.",
+                                  path.getAbsolutePath()));
+        }
+
+        this.config.put(SCCConfig.RESOURCE_PATH, path.getAbsolutePath());
     }
 
     /**
