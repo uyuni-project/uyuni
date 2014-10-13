@@ -207,8 +207,9 @@ public class SCCMirrorCredentialsManager extends MirrorCredentialsManager {
     }
 
     /**
-     * This is the SCC version of the above method, should be refactored into a
-     * separate class.
+     * Create a list of {@link SubscriptionDto} objects from a given list of subscriptions
+     * as parsed from SCC.
+     *
      * @param subscriptions SCC subscriptions
      * @return list of subscription DTOs
      */
