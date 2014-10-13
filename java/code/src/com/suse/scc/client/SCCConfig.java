@@ -39,7 +39,7 @@ public class SCCConfig {
     private static final String DEFAULT_PROXY_PORT = "3128";
 
     // The properties object
-    private Properties properties;
+    private final Properties properties;
 
     /**
      * Default constructor.
