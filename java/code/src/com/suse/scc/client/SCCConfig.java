@@ -61,6 +61,18 @@ public class SCCConfig {
     }
 
     /**
+     * Removes a preference given by key.
+     * DO NOT USE AT HOME!!!!!!!!!!
+     *
+     * @param key
+     */
+    public void remove(String key) {
+        if (properties.containsKey(key)) {
+            properties.remove(key);
+        }
+    }
+
+    /**
      * Set the URL parameter
      *
      * @param url
