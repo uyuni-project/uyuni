@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
@@ -21,6 +22,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,6 +55,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         try {
             ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
             productSyncManager.refreshProducts();
+            HibernateFactory.getSession().flush();
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
                     productSyncManager.getBaseProducts());
         }
