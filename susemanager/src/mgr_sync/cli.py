@@ -43,8 +43,8 @@ def _create_parser():
     _create_list_subparser(subparsers)
     _create_add_subparser(subparsers)
     _create_refresh_subparser(subparsers)
+    _create_enable_scc_subparser(subparsers)
     _create_delete_subparser(subparsers)
-    _create_enable_subparser(subparsers)
 
     return parser
 
@@ -105,6 +105,15 @@ def _create_list_subparser(subparsers):
         help='Compact output')
 
 
+def _create_enable_scc_subparser(subparsers):
+    """ Create the parser for the "enable_scc" command. """
+
+    enable_scc_parser = subparsers.add_parser(
+        'enable-scc',
+        help='Enable SUSE Customer Center (SCC)')
+    enable_scc_parser.set_defaults(enable_scc=True)
+
+
 def _create_delete_subparser(subparsers):
     """ Create the parser for the "delete" command. """
 
@@ -139,21 +148,6 @@ def _create_refresh_subparser(subparsers):
         '--from-mirror', action='store', dest='mirror', default="",
         help='URL of a local mirror like SMT. Only to download the RPMs.')
 
-
-def _create_enable_subparser(subparsers):
-    """ Create the parser for the "enable" command. """
-
-    enable_parser = subparsers.add_parser('enable',
-                                          help='enable SCC from-dir')
-    enable_parser.add_argument(
-        'enable_target',
-        choices=['scc', 'from-dir'])
-    enable_parser.add_argument(
-        'target',
-        nargs='*',
-        help='value of the setting')
-
-    return enable_parser
 
 
 def get_options(args=None):
