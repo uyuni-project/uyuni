@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 14 15:13:41 CEST 2014 - mc@suse.de
+
+- version 2.1.14.5-1
+- use StringUtils for checking non-empty values
+- set newly constructed "db_name" even if db_ssl_enabled is disabled
+
+-------------------------------------------------------------------
 Fri Sep 12 14:54:22 CEST 2014 - mc@suse.de
 
 - version 2.1.14.4-1
