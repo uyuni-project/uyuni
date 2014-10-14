@@ -1533,9 +1533,10 @@ public class ErrataManager extends BaseManager {
         // We can't do a Set<Errata> because AbstractErrata equals/hashCode does not use Id.
         // System Id -> Errata Ids
         Map<Long, Set<Long>> relevantErrataForServer = new HashMap<Long, Set<Long>>();
-        //
+
         for (Long serverId : serverIds) {
-            List<Errata> relevantErrataList = SystemManager.unscheduledErrata(user, serverId, null);
+            List<Errata> relevantErrataList =
+                    SystemManager.unscheduledErrata(user, serverId, null);
             Set<Long> relevantErrataIds = new HashSet<Long>();
             for (Errata e : relevantErrataList) {
                 // only count the errata if is requested _AND_
@@ -1543,8 +1544,7 @@ public class ErrataManager extends BaseManager {
                 if (errataIds.contains(e.getId())) {
                     relevantErrataIds.add(e.getId());
                 }
-                else
-                {
+                else {
                     if (!onlyRelevant) {
                         throw new InvalidErrataException();
                     }
@@ -1585,7 +1585,8 @@ public class ErrataManager extends BaseManager {
                             stackUpdate.addErrata(erratum);
                         }
                     }
-                } else {
+                }
+                else {
                     errata.add(erratum);
                 }
             }

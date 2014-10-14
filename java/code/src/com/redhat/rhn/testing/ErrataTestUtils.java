@@ -28,7 +28,6 @@ import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.impl.PublishedClonedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
-import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -44,7 +43,14 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.manager.audit.ServerChannelIdPair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * A collection of utility methods for testing scenarios

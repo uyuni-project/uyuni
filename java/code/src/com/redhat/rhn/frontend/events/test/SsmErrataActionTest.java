@@ -304,7 +304,7 @@ public class SsmErrataActionTest extends BaseTestCaseWithUser {
         assertTrue("Server 2 Scheduled Erratas contain relevant erratas",
                 server2ScheduledErrata.contains(errata2.getId()));
         assertTrue("Server 2 Scheduled Erratas contain one yum errata",
-                server2 ScheduledErrata.contains(yumErrata1.getId()));
+                server2ScheduledErrata.contains(yumErrata1.getId()));
     }
 
     /**
