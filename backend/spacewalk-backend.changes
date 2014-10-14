@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Oct 14 14:57:25 CEST 2014 - mc@suse.de
+
+- version 2.1.55.10-1
+- require python-enum34
+- update channel checksum type for vendor channels
+- read mirror credenatials from DB depending on the cc_backend.
+- move current_backend() from susemanager to backend and rename it to
+  current_cc_backend
+- Speed up satellite-sync by avoiding commonly-called dblink_exec
+- backend should correctly checksum config files with macros in them
+- Add /usr/share/rhn/config-defaults in spacewalk-debug
+- fix spacewalk-debug to be fully postgreSQL aware.
+- correct UTF8 config files from being marked as binary
+- increase size of update_tag column in rhnChannel table
+
+-------------------------------------------------------------------
 Fri Sep 12 15:34:51 CEST 2014 - mc@suse.de
 
 - version 2.1.55.9-1
