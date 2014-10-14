@@ -14,46 +14,46 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createLaterTestPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestChannel;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestChannelFamily;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestChannelProduct;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestClonedChannel;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestClonedErrata;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestCve;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestErrata;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestInstalledPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-    createTestSUSEProduct;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-    createTestSUSEProductChannel;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-    createTestSUSEUpgradePath;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEUpgradePath;
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestServer;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestUser;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestVendorBaseChannel;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestVendorChildChannel;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     getAllRelevantChannels;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+import static com.redhat.rhn.testing.ErrataTestUtils.
     getRelevantChannels;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
-    installSUSEProductOnServer;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        installSUSEProductOnServer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -15,16 +15,14 @@
 
 package com.redhat.rhn.frontend.events.test;
 
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+import static com.redhat.rhn.testing.ErrataTestUtils
         .createTestServer;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+import static com.redhat.rhn.testing.ErrataTestUtils
     .createLaterTestPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper
+import static com.redhat.rhn.testing.ErrataTestUtils
     .createTestInstalledPackage;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestPackage;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 
-import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -35,12 +33,9 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.SsmErrataAction;
 import com.redhat.rhn.frontend.events.SsmErrataEvent;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import com.redhat.rhn.testing.TestUtils;
