@@ -46,29 +46,6 @@ public class SUSEProductTestUtils {
     }
 
     /**
-     * Create a {@link SUSEProduct} for a given {@link ChannelFamily}.
-     * @param family the channel family
-     * @return the newly created SUSE product
-     * @throws Exception if anything goes wrong
-     */
-    /*
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
-        SUSEProduct product = new SUSEProduct();
-        String name = TestUtils.randomString().toLowerCase();
-        product.setName(name);
-        product.setVersion("12");
-        product.setFriendlyName("SUSE Test Product " + name);
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setRelease("GA");
-        product.setChannelFamilyId(family.getId().toString());
-        product.setProductList('Y');
-        product.setProductId(new Random().nextInt(999999));
-        TestUtils.saveAndFlush(product);
-        return product;
-    }
-    */
-
-    /**
      * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
      * @param family the channel family
      * @return the newly created channel product
