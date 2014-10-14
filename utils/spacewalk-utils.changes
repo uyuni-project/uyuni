@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 14 15:15:59 CEST 2014 - mc@suse.de
+
+- version 2.1.27.9-1
+- spacewalk-manage-channel-lifecycle: put default phases in help output
+- Allow use of "-" symbol in phase names
+
+-------------------------------------------------------------------
 Fri Sep 12 15:47:56 CEST 2014 - mc@suse.de
 
 - version 2.1.27.8-1
