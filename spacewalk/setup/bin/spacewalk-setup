@@ -1129,12 +1129,11 @@ sub populate_initial_configs {
   elsif ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {
       my %mgrDefaults = ();
-      if (-e "/usr/share/rhn/config-defaults/rhn_server_susemanager.conf")
+      if (-e Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF)
       {
-          Spacewalk::Setup::read_config("/usr/share/rhn/config-defaults/rhn_server_susemanager.conf",
-                  \%mgrDefaults);
+          Spacewalk::Setup::read_config(Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF, \%mgrDefaults);
       }
-      $mgrDefaults{'scc_url'} = "https://scc.suse.com" if (not $mgrDefaults{'scc_url'});
+      $mgrDefaults{'scc_url'} = Spacewalk::Setup::DEFAULT_SCC_URL if (not $mgrDefaults{'scc_url'});
 
       # SCC - write to DB
       my $st = sprintf("insert into suseCredentials (id, user_id, type_id, username, password, url)
