@@ -54,6 +54,7 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         try {
             ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
             productSyncManager.refreshProducts();
+            // Flush the session after the refresh so we can lookup the products
             HibernateFactory.getSession().flush();
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
                     productSyncManager.getBaseProducts());
