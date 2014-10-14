@@ -22,7 +22,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 
 import javax.servlet.http.HttpServletRequest;
 
