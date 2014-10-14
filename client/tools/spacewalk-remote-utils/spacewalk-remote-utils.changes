@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 14 15:12:13 CEST 2014 - mc@suse.de
+
+- version 2.1.3.6-1
+- channel definitions for RHEL 5.11
+
+-------------------------------------------------------------------
 Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
 
 - sanitize release line in specfile
