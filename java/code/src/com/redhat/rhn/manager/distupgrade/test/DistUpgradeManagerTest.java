@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.manager.distupgrade.test;
 
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestChannelFamily;
-import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.createTestChannelProduct;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
+import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -24,8 +24,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -54,11 +54,11 @@ public class DistUpgradeManagerTest extends RhnBaseTestCase {
         channelArch = ChannelFactory.findArchByLabel("channel-ia32");
         Channel baseChannelIA32 = createTestBaseChannel(
                 channelFamily, channelProduct, channelArch);
-        CVEAuditManagerTestHelper.createTestSUSEProductChannel(baseChannelIA32, product);
+        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelIA32, product);
         channelArch = ChannelFactory.findArchByLabel("channel-x86_64");
         Channel baseChannelX8664 = createTestBaseChannel(
                 channelFamily, channelProduct, channelArch);
-        CVEAuditManagerTestHelper.createTestSUSEProductChannel(baseChannelX8664, product);
+        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product);
 
         // Check the product base channels for given architectures
         EssentialChannelDto productBaseChannel;
