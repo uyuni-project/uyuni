@@ -104,6 +104,11 @@ if ( -e '/etc/SuSE-release' )
 {
     $DEFAULT_DOC_ROOT = '/srv/www/htdocs';
 }
+use constant DEFAULT_SUSEMANAGER_CONF =>
+  '/usr/share/rhn/config-defaults/rhn_server_susemanager.conf';
+
+use constant DEFAULT_SCC_URL =>
+  'https://scc.suse.com';
 
 my $DEBUG;
 $DEBUG = 0;
