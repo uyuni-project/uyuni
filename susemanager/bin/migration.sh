@@ -309,10 +309,19 @@ db-host=$MANAGER_DB_HOST
 db-port=$MANAGER_DB_PORT
 db-protocol=$MANAGER_DB_PROTOCOL
 enable-tftp=$MANAGER_ENABLE_TFTP
-ncc-user = $NCC_USER
+" > /root/spacewalk-answers
+if [ -n "$NCC_USER" ]; then
+    echo "ncc-user = $NCC_USER
 ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
-" > /root/spacewalk-answers
+" >> /root/spacewalk-answers
+PARAM_CC="--ncc"
+else
+    echo "scc-user = $SCC_USER
+scc-pass = $SCC_PASS
+" >> /root/spacewalk-answers
+PARAM_CC="--scc"
+fi
 
     if [ "$DB_BACKEND" = "oracle" ]; then
             PARAM_DB="--external-oracle"
@@ -321,10 +330,10 @@ ncc-email = $NCC_EMAIL
     fi
 
     if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup --ncc --skip-db-population --answer-file=/root/spacewalk-answers $PARAM_DB
+        /usr/bin/spacewalk-setup $PARAM_CC --skip-db-population --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     else
-        /usr/bin/spacewalk-setup --clear-db --ncc --answer-file=/root/spacewalk-answers $PARAM_DB
+        /usr/bin/spacewalk-setup --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
@@ -336,7 +345,7 @@ ncc-email = $NCC_EMAIL
     fi
 
     rm /root/spacewalk-answers
-    if [ "$SWRET" != "0" ]; then 
+    if [ "$SWRET" != "0" ]; then
         echo "ERROR: spacewalk-setup failed" >&2
         exit 1
     fi
@@ -535,6 +544,8 @@ do_setup() {
         echo -n "MANAGER_DB_PORT="    ; read MANAGER_DB_PORT
         echo -n "MANAGER_DB_PROTOCOL="; read MANAGER_DB_PROTOCOL
         echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
+        echo -n "SCC_USER="           ; read SCC_USER
+        echo -n "SCC_PASS="           ; read SCC_PASS
         echo -n "NCC_USER="           ; read NCC_USER
         echo -n "NCC_PASS="           ; read NCC_PASS
         echo -n "NCC_EMAIL="          ; read NCC_EMAIL
@@ -678,12 +689,16 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/sbin/spacewalk-service restart
     fi
     setup_dobby
-    # Finaly call mgr-ncc-sync
-    /usr/sbin/mgr-ncc-sync --refresh
+    if [ -n "$NCC_USER" ]; then
+        # Finaly call mgr-ncc-sync
+        /usr/sbin/mgr-ncc-sync --refresh
+    fi
     if [ -n "$ISS_PARENT" ]; then
         # call inter-sync list - this updates the org data
         /usr/bin/mgr-inter-sync -l
     fi
+    # we cannot do this for SCC - the Java API requires a first user
+    # which does not exist yet.
 fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then

@@ -802,16 +802,16 @@ public class ContentSyncManager {
                 if (satelliteOrgPrivateChannelFamily != null) {
                     satelliteOrgPrivateChannelFamily
                             .setMaxMembers(INFINITE - sumMaxMembers);
+                    ChannelFamilyFactory.save(satelliteOrgPrivateChannelFamily);
                 }
             }
             else if (!channelFamily.getLabel().startsWith("private-channel-family")) {
                 // No subscription, reset to 0
                 for (PrivateChannelFamily pcf : privateFamilies) {
                     pcf.setMaxMembers(0L);
+                    ChannelFamilyFactory.save(pcf);
                 }
             }
-
-            ChannelFamilyFactory.save(channelFamily);
         }
     }
 
