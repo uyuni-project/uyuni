@@ -51,6 +51,7 @@ import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
@@ -80,6 +81,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -228,18 +230,37 @@ public class ContentSyncManager {
     }
 
     /**
+     * There can be no network credentials, but still can read the local files
+     * As well as we do need to read the file only once.
+     * If /etc/rhn/rhn.conf contains local path URL, then the SCCClient will read
+     * from the local file instead of the network.
+     *
+     * @param credentials
+     * @return List of {@link MirrorCredentialsDto}
+     */
+    private List<MirrorCredentialsDto>
+        filterCredentials(List<MirrorCredentialsDto> credentials) {
+        if (Config.get().getString(SCCConfig.RESOURCE_PATH) != null) {
+            credentials.clear();
+            credentials.add(new MirrorCredentialsDto()); // Only one bogus credential
+        }
+
+        return credentials;
+    }
+
+    /**
      * Returns all products available to all configured credentials.
      * @return list of all available products
      */
     public Collection<SCCProduct> getProducts() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = this.filterCredentials(
+                credsManager.findMirrorCredentials());
         // Query products for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
-                SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
-                        c.getUser(), c.getPassword());
+                SCCClient scc = this.getSCCClient(c.getUser(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
                 List<SCCProduct> products = scc.listProducts();
@@ -554,12 +575,12 @@ public class ContentSyncManager {
     public Collection<SCCRepository> getRepositories() {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = this.filterCredentials(
+                credsManager.findMirrorCredentials());
         // Query repos for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
-                SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
-                        c.getUser(), c.getPassword());
+                SCCClient scc = this.getSCCClient(c.getUser(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
@@ -593,20 +614,19 @@ public class ContentSyncManager {
      * @param user username
      * @param password password
      * @return list of subscriptions as received from SCC.
+     * @throws com.suse.scc.client.SCCClientException
      */
     public List<SCCSubscription> getSubscriptions(String user, String password)
             throws SCCClientException {
-        SCCClient scc = null;
         try {
-            scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
-                    user, password);
+            SCCClient scc = this.getSCCClient(user, password);
             scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
+            return scc.listSubscriptions();
         } catch (URISyntaxException e1) {
             log.error("Invalid URL:" + e1.getMessage());
             return new ArrayList<SCCSubscription>();
         }
-        return scc.listSubscriptions();
     }
 
     /**
@@ -1562,5 +1582,28 @@ public class ContentSyncManager {
             // This is especially the case for updates.suse.com (token auth or no auth)
             return sourceUri.toString();
         }
+    }
+
+    /**
+     * Get an instance of {@link SCCClient} and configure it to use localpath, if
+     * such is setup in /etc/rhn/rhn.conf
+     *
+     * @param user network credential: user
+     * @param password networ credential: password
+     * @throws URISyntaxException
+     * @throws SCCClientException
+     * @return {@link SCCClient}
+     */
+    private SCCClient getSCCClient(String user, String password)
+            throws URISyntaxException,
+                   SCCClientException {
+        SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
+                user, password);
+        String localPath = Config.get().getString(SCCConfig.RESOURCE_PATH, null);
+        if (localPath != null) {
+            scc.setResourceLocalPath(new File(localPath));
+        }
+
+        return scc;
     }
 }
