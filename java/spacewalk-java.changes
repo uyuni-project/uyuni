@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Tue Oct 14 15:01:36 CEST 2014 - mc@suse.de
+
+- version 2.1.165.8-1
+- make parsing repo filters more robust
+- package details page should not list channels we can't see
+- fix file descriptor leak in system.crash.getCrashFile
+- specify usage of java.config_file_edit_size option
+- add more documentation to Power Management page
+- power management - make system identifier clearable
+- do not clone custom errata when merging
+- check, whether referenced kickstart profile and crypto keys are
+  available
+- display error messages in red
+- re-set number of config file diffs correctly
+- improving 'All Custom Channels' queries
+- move Mirror Credentials from config file into DB
+- ping SCC for testing proxy status if SCC is enabled
+- Implement the API methods to work with mirror credentials
+- fix CVE Audit when some packages of a patch are already installed
+  (bnc#899266)
+- broken checkbox layout in /rhn/channels/manage/Sync.do?cid=xxx
+- Download CSV button does not export all columns ("Base Channel" missing)
+  (bnc#896238)
+- support SCC API v4
+- support token auth with updates.suse.com
+- Official repo host is now updates.suse.com (after channels.xml change)
+- support list/add channels and products with SCC
+
+-------------------------------------------------------------------
 Fri Sep 12 15:21:22 CEST 2014 - mc@suse.de
 
 - version 2.1.165.7-1
