@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 14 15:14:21 CEST 2014 - mc@suse.de
+
+- version 2.1.14.7-1
+- give tomcat read permissions on the NCCcredentials file
+- setup with scc credentials in DB
+
+-------------------------------------------------------------------
 Fri Sep 12 14:58:56 CEST 2014 - mc@suse.de
 
 - version 2.1.14.6-1
