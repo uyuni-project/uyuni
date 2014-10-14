@@ -110,6 +110,9 @@ use constant DEFAULT_SUSEMANAGER_CONF =>
 use constant DEFAULT_SCC_URL =>
   'https://scc.suse.com';
 
+use constant NCC_CREDENTIAL_FILE =>
+  '/etc/zypp/credentials.d/NCCcredentials';
+
 my $DEBUG;
 $DEBUG = 0;
 
