@@ -1,12 +1,18 @@
-package com.redhat.rhn.manager.audit.test;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+/**
+ * Copyright (c) 2013 SUSE
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.testing;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -37,20 +43,21 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.manager.audit.ServerChannelIdPair;
-import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
+
+import java.util.*;
 
 /**
- * A collection of utility methods for testing.
+ * A collection of utility methods for testing scenarios
+ * involving erratas
  *
  * @version $Rev$
  */
-public class CVEAuditManagerTestHelper {
+public class ErrataTestUtils {
 
     /**
      * Not to be instantiated.
      */
-    private CVEAuditManagerTestHelper() {
+    private ErrataTestUtils() {
     }
 
     /**
@@ -131,52 +138,6 @@ public class CVEAuditManagerTestHelper {
     }
 
     /**
-     * Create a SUSE product (which is different from a {@link ChannelProduct}).
-     * @param family the channel family
-     * @return the newly created channel product
-     * @throws Exception if anything goes wrong
-     */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
-        SUSEProduct product = new SUSEProduct();
-        String name = TestUtils.randomString().toLowerCase();
-        product.setName(name);
-        product.setVersion("1");
-        product.setFriendlyName("SUSE Test product " + name);
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setRelease("test");
-        product.setChannelFamilyId(family.getId().toString());
-        product.setProductList('Y');
-        product.setProductId(0);
-
-        TestUtils.saveAndFlush(product);
-
-        return product;
-    }
-
-    /**
-     * Create a SUSE product channel (that is, links a channel to a SUSE
-     * product, eg. a row in suseproductchannel).
-     * @param channel the channel
-     * @param product the SUSE product
-     */
-    public static void createTestSUSEProductChannel(Channel channel, SUSEProduct product) {
-        WriteMode m = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseproductchannel");
-
-        Channel parentChannel = channel.getParentChannel();
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("product_id", product.getId());
-        parameters.put("channel_id", channel.getId());
-        parameters.put("channel_label", channel.getLabel());
-        parameters.put("parent_channel_label",
-                parentChannel != null ? parentChannel.getLabel() : null);
-
-        m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
-    }
-
-    /**
      * Create a {@link ChannelFamily}.
      * @return the newly created channel family
      * @throws Exception if anything goes wrong
@@ -195,23 +156,6 @@ public class CVEAuditManagerTestHelper {
         ChannelFamilyFactory.save(channelFamily);
         channelFamily = (ChannelFamily) TestUtils.reload(channelFamily);
         return channelFamily;
-    }
-
-    /**
-     * Marks one SUSE product as a possible upgrade of another.
-     * @param from the first SUSE product
-     * @param to the second SUSE product
-     */
-    public static void createTestSUSEUpgradePath(SUSEProduct from, SUSEProduct to) {
-        WriteMode m = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseupgradepath");
-
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("from_pdid", from.getId());
-        parameters.put("to_pdid", to.getId());
-
-        m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
     }
 
     /**
@@ -268,41 +212,6 @@ public class CVEAuditManagerTestHelper {
         channel.setProduct(channelProduct);
         TestUtils.saveAndFlush(channel);
         return channel;
-    }
-
-    /**
-     * Link a {@link SUSEProduct} with a {@link Server}.
-     * @param product the product
-     * @param server the server
-     */
-    @SuppressWarnings("unchecked")
-    public static void installSUSEProductOnServer(SUSEProduct product, Server server) {
-        // Get the next id from the sequence
-        SelectMode selectMode = ModeFactory.getMode("test_queries",
-                "select_next_suseinstalledproduct_id");
-        DataResult<Map<String, Long>> dataResults = selectMode.execute();
-        Long installedProductId = dataResults.get(0).get("id");
-
-        // Insert into suseInstalledProduct
-        WriteMode writeMode1 = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseinstalledproduct");
-        Map<String, Object> params1 = new HashMap<String, Object>();
-        params1.put("id", installedProductId);
-        params1.put("name", product.getName());
-        params1.put("version", product.getVersion());
-        params1.put("arch_type_id", product.getArch().getId());
-        params1.put("release", product.getRelease());
-        params1.put("is_baseproduct", "Y");
-        writeMode1.executeUpdate(params1);
-
-        // Insert into suseServerInstalledProduct
-        WriteMode writeMode2 = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseserverinstalledproduct");
-        Map<String, Object> params2 = new HashMap<String, Object>();
-        params2.put("rhn_server_id", server.getId());
-        params2.put("suse_installed_product_id", installedProductId);
-        writeMode2.executeUpdate(params2);
-        HibernateFactory.getSession().flush();
     }
 
     /**
