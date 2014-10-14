@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.testing;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -41,7 +39,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
-import com.redhat.rhn.manager.audit.ServerChannelIdPair;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -441,35 +438,6 @@ public class ErrataTestUtils {
         TestUtils.saveAndFlush(result);
 
         return result;
-    }
-
-    /**
-     * Return all CVE audit relevant channels for a given system
-     * (rows from table suseCVEServerChannel).
-     * @param systemID ID of system
-     * @return list of relevant channel IDs
-     */
-    @SuppressWarnings("unchecked")
-    public static List<ServerChannelIdPair> getRelevantChannels(Long systemID) {
-        SelectMode selectMode = ModeFactory.getMode("test_queries",
-                "find_relevant_channels");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sid", systemID);
-        DataResult<ServerChannelIdPair> ret = selectMode.execute(params);
-        return ret;
-    }
-
-    /**
-     * Return all {@link ServerChannelIdPair} objects from suseCVEServerChannel.
-     * @return list of all relevant channels for all systems
-     */
-    @SuppressWarnings("unchecked")
-    public static List<ServerChannelIdPair> getAllRelevantChannels() {
-        SelectMode selectMode = ModeFactory.getMode("test_queries",
-                "find_all_relevant_channels");
-        Map<String, Object> params = new HashMap<String, Object>();
-        DataResult<ServerChannelIdPair> ret = selectMode.execute(params);
-        return ret;
     }
 
     /**
