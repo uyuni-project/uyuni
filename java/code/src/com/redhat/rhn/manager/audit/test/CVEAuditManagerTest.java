@@ -14,6 +14,10 @@
  */
 package com.redhat.rhn.manager.audit.test;
 
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+        getAllRelevantChannels;
+import static com.redhat.rhn.manager.audit.test.CVEAuditManagerTestHelper.
+        getRelevantChannels;
 import static com.redhat.rhn.testing.ErrataTestUtils.
     createLaterTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.
@@ -34,12 +38,6 @@ import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestInstalledPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestPackage;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEProduct;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEProductChannel;
-import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
-        createTestSUSEUpgradePath;
 import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestServer;
 import static com.redhat.rhn.testing.ErrataTestUtils.
@@ -48,10 +46,12 @@ import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestVendorBaseChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.
     createTestVendorChildChannel;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    getAllRelevantChannels;
-import static com.redhat.rhn.testing.ErrataTestUtils.
-    getRelevantChannels;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEProduct;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEProductChannel;
+import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
+        createTestSUSEUpgradePath;
 import static com.redhat.rhn.domain.product.test.SUSEProductTestUtils.
         installSUSEProductOnServer;
 
