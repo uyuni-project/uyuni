@@ -48,7 +48,7 @@ public class SUSEProductTestUtils {
     /**
      * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
      * @param family the channel family
-     * @return the newly created channel product
+     * @return the newly created SUSE product
      * @throws Exception if anything goes wrong
      */
     public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
@@ -61,7 +61,6 @@ public class SUSEProductTestUtils {
         product.setRelease("test");
         product.setChannelFamilyId(family.getId().toString());
         product.setProductList('Y');
-        //product.setProductId(0);
         product.setProductId(new Random().nextInt(999999));
 
         TestUtils.saveAndFlush(product);
@@ -133,7 +132,8 @@ public class SUSEProductTestUtils {
     }
 
     /**
-     * Link a {@link com.redhat.rhn.domain.product.SUSEProduct} with a {@link com.redhat.rhn.domain.server.Server}.
+     * Link a {@link com.redhat.rhn.domain.product.SUSEProduct}
+     * with a {@link com.redhat.rhn.domain.server.Server}.
      * @param product the product
      * @param server the server
      */
