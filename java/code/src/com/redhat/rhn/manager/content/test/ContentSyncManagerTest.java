@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -43,23 +44,22 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.scc.client.SCCClient;
+import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
-
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -882,6 +882,23 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
+    }
+
+    public void testSetupSourceURLLocalFS() throws Exception {
+        // Set offline mode
+        Config.get().setString(SCCConfig.RESOURCE_PATH, System.getProperty("java.io.tmpdir"));
+
+        // Make some data
+        String repoUrlSCC = "https://www.somehost.com/path/to/resource?query=like&this=here";
+        SCCRepository repo = new SCCRepository();
+        repo.setUrl(repoUrlSCC);
+        ContentSyncManager csm = new ContentSyncManager();
+        assertEquals(csm.setupSourceURL(repo, null),
+                     String.format("file:%s/path/to/resource",
+                                   System.getProperty("java.io.tmpdir")));
+
+        // Switch to online mode
+        Config.get().remove(SCCConfig.RESOURCE_PATH);
     }
 
     /**
