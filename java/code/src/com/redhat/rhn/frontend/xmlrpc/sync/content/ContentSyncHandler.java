@@ -61,7 +61,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Collection<ListedProduct> listProducts(String sessionKey)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listProducts(csm.listChannels(csm.getRepositories()));
     }
@@ -81,7 +81,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public List<MgrSyncChannel> listChannels(String sessionKey)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listChannels(csm.getRepositories());
     }
@@ -103,7 +103,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeChannels(String sessionKey, String mirrorUrl)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         if (mirrorUrl == null) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }
@@ -128,7 +128,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeChannelFamilies(String sessionKey)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannelFamilies(csm.readChannelFamilies());
         return BaseHandler.VALID;
@@ -148,7 +148,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeProducts(String sessionKey) throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(csm.getProducts());
         return BaseHandler.VALID;
@@ -170,7 +170,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeProductChannels(String sessionKey)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
         return BaseHandler.VALID;
@@ -191,7 +191,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         new ContentSyncManager().updateUpgradePaths();
         return BaseHandler.VALID;
     }
@@ -211,7 +211,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer synchronizeSubscriptions(String sessionKey) throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSubscriptions(csm.getSubscriptions());
         return BaseHandler.VALID;
@@ -234,7 +234,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer addChannel(String sessionKey, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
-        BaseHandler.getLoggedInUser(sessionKey);
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.addChannel(channelLabel, csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
@@ -252,7 +252,8 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer performMigration(String sessionKey) throws ContentSyncException {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        User user = getLoggedInUser(sessionKey);
+        ensureSatAdmin(user);
 
         // Clear relevant database tables
         SUSEProductFactory.clearAllProducts();
@@ -304,7 +305,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer addCredentials(String sessionKey, String username, String password,
             boolean primary) throws ContentSyncException {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        User user = getLoggedInUser(sessionKey);
+        ensureSatAdmin(user);
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         long id = credsManager.storeMirrorCredentials(creds, user, null);
@@ -329,7 +331,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer deleteCredentials(String sessionKey, String username)
             throws ContentSyncException {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        User user = getLoggedInUser(sessionKey);
+        ensureSatAdmin(user);
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 MirrorCredentialsManager credsManager =
@@ -356,6 +359,7 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public List<MirrorCredentialsDto> listCredentials(String sessionKey)
             throws ContentSyncException {
+        ensureSatAdmin(getLoggedInUser(sessionKey));
         MirrorCredentialsManager credsManager =
                 MirrorCredentialsManager.createInstance();
         return credsManager.findMirrorCredentials();
