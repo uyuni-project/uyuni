@@ -1554,9 +1554,9 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Apply a list of errata to a list of servers, with an optional Action
-     * Chain
+     * Chain.
      * Note that not all erratas are applied to all systems. Systems get
-     * only the erratas relevant for them
+     * only the erratas relevant for them.
      * @param user user
      * @param errataIds errata ids
      * @param earliest schedule time
@@ -1571,8 +1571,9 @@ public class ErrataManager extends BaseManager {
 
     /**
      * Apply a list of errata to a list of servers, with an optional Action
-     * Chain
-     * Note that
+     * Chain.
+     * Note that not all erratas are applied to all systems. Systems get
+     * only the erratas relevant for them.
      *
      * @param user user
      * @param errataIds errata ids
