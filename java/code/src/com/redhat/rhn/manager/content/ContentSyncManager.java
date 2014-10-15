@@ -1524,10 +1524,12 @@ public class ContentSyncManager {
         if (this.localSCCDataPath != null) {
             try {
                 return this.URLToFSPath(url).toExternalForm();
-            } catch (MalformedURLException e) {
+            }
+            catch (MalformedURLException e) {
                 log.error(e.getMessage());
                 return null;
-            } catch (ContentSyncException e) {
+            }
+            catch (ContentSyncException e) {
                 log.error(e.getMessage());
                 return null;
             }
