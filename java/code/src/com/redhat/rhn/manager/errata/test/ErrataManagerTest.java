@@ -334,8 +334,6 @@ public class ErrataManagerTest extends BaseTestCaseWithUser {
         assertFalse(ErrataManager.advisoryNameIsUnique(e2.getId(), e1.getAdvisoryName()));
     }
 
-
-
     // Don't need this test to actually run right now.  Its experimental.
     public void xxxxLookupErrataByAdvisoryType() throws IOException {
 
