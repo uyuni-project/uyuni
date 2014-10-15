@@ -36,7 +36,16 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *       $MgrSyncChannelSerializer
  *     #array_end()
  *     #array("extensions")
- *       $ListedProductSerializer
+ *       #struct("product")
+ *         #prop_desc("string", "friendly_name", "Friendly name of extension product")
+ *         #prop_desc("string", "arch", "Architecture")
+ *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
+ *         #array("channels")
+ *           $MgrSyncChannelSerializer
+ *         #array_end()
+ *         #array("extensions")
+ *         #array_end()
+ *       #struct_end()
  *     #array_end()
  *   #struct_end()
  */
