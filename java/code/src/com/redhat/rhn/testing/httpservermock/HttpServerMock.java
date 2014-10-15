@@ -15,6 +15,7 @@
 package com.redhat.rhn.testing.httpservermock;
 
 import java.net.ServerSocket;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import simple.http.Request;
@@ -27,9 +28,15 @@ import simple.http.connect.ConnectionFactory;
 public class HttpServerMock {
 
     /**
-     * Port the mock server will listen to.
+     * Port the mock server will listen to. Try hard not to conflict with other
+     * testsuites that may be running at the same time in other processes on the same
+     * machine, making the port time-dependent and random-dependent.
      */
-    public static final int PORT = 12345;
+    public static final int PORT = (int) (
+            10000 +
+            (System.currentTimeMillis() % 100) * 100 +
+            new Random().nextInt(100)
+    );
 
     /**
      * Run an HTTP requester on this mock server, record the request and return
