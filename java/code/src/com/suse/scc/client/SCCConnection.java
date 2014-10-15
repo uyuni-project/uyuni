@@ -84,10 +84,12 @@ public class SCCConnection {
         do {
             if (SCCConnection.this.config.getLocalResourcePath() == null) {
                 partialResult = request(toListType(resultType), "GET");
-            } else {
+            }
+            else {
                 try {
                     partialResult = localFSRequest(toListType(resultType));
-                } catch (IOException ex) {
+                }
+                catch (IOException ex) {
                     throw new SCCClientException(ex);
                 }
             }
