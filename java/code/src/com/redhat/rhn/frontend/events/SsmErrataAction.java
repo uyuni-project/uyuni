@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
  * @author Bo Maryniuk
  */
 public class SsmErrataAction extends AbstractDatabaseAction {
-
     private static Logger log = Logger.getLogger(SsmErrataAction.class);
 
     /** {@inheritDoc} */
