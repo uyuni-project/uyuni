@@ -67,8 +67,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -133,10 +135,14 @@ public class ContentSyncManager {
     // Mirror URL read from rhn.conf
     public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
 
+    // Off-line file system path
+    private final String localSCCDataPath;
+
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
+        this.localSCCDataPath = Config.get().getString(SCCConfig.RESOURCE_PATH, null);
     }
 
     /**
@@ -1483,16 +1489,50 @@ public class ContentSyncManager {
     }
 
     /**
+     * Convert network URL to file system URL.
+     * @param urlString
+     * @return
+     * @throws MalformedURLException
+     * @throws ContentSyncException
+     */
+    private URL URLToFSPath(String urlString)
+            throws MalformedURLException,
+                   ContentSyncException {
+        URL url = new URL(urlString);
+        File dataPath = new File(this.localSCCDataPath);
+
+        if (!dataPath.canRead()) {
+            throw new ContentSyncException(
+                    String.format("Path \"%s\" does not exists or cannot be read",
+                                  this.localSCCDataPath));
+        }
+
+        return new File(dataPath.getAbsolutePath() + url.getPath()).toURI().toURL();
+    }
+
+    /**
      * Setup the source URL of a repository correctly before saving it, particularly
      * add the mirror credentials query string to the end of the URL.
      *
-     * @param url the original source URL
-     * @param credsId the id of credentials to use
+     * @param repo {@link SCCRepository}
      * @param mirrorUrl optional mirror URL that can be null
      * @return the URL with query string including mirror credentials or null
      */
     public String setupSourceURL(SCCRepository repo, String mirrorUrl) {
         String url = repo.getUrl();
+
+        if (this.localSCCDataPath != null) {
+            try {
+                return this.URLToFSPath(url).toExternalForm();
+            } catch (MalformedURLException e) {
+                log.error(e.getMessage());
+                return null;
+            } catch (ContentSyncException e) {
+                log.error(e.getMessage());
+                return null;
+            }
+        }
+
         if (StringUtils.isBlank(url)) {
             return null;
         }
