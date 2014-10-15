@@ -112,7 +112,8 @@ public class SCCClient {
             throw new SCCClientException(
                     String.format("Unable to access resource at \"%s\" location.",
                                   path.getAbsolutePath()));
-        } else if (!path.isDirectory()) {
+        }
+        else if (!path.isDirectory()) {
             throw new SCCClientException(
                     String.format("Path \"%s\" must be a directory.",
                                   path.getAbsolutePath()));
