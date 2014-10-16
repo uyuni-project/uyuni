@@ -48,10 +48,10 @@ public class SCCConnection {
 
     /** Represents a partial result with a pointer to the next one. */
     private class PaginatedResult<T> {
-        private T result;
-        private String nextUrl;
+        private final T result;
+        private final String nextUrl;
 
-        public PaginatedResult(T resultIn, String nextUrlIn) {
+        PaginatedResult(T resultIn, String nextUrlIn) {
             result = resultIn;
             nextUrl = nextUrlIn;
         }
