@@ -55,12 +55,16 @@ public class SCCConfig {
      *
      * @param key
      * @param value
-     * @throws java.net.URISyntaxException
      */
-    public void put(String key, String value) throws URISyntaxException {
+    public void put(String key, String value) {
         // The URL key should be treated differently.
         if (key.equals(SCCConfig.URL)) {
-            this.setUrl(key);
+            try {
+                this.setUrl(key);
+            } catch (URISyntaxException ex) {
+                // Complain to the log for invalid URL.
+                throw new RuntimeException(ex);
+            }
         } else {
             properties.setProperty(key, value);
         }
