@@ -51,7 +51,6 @@ import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
@@ -133,6 +132,9 @@ public class ContentSyncManager {
 
     // Mirror URL read from rhn.conf
     public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
+
+    // SCC JSON files location in rhn.conf
+    public static final String RESOURCE_PATH = "server.susemanager.fromdir";
 
     // Off-line file system path
     private final String localSCCDataPath;
@@ -245,7 +247,7 @@ public class ContentSyncManager {
      */
     private List<MirrorCredentialsDto>
         filterCredentials(List<MirrorCredentialsDto> credentials) {
-        if (Config.get().getString(SCCConfig.RESOURCE_PATH) != null) {
+        if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
             credentials.clear();
             credentials.add(new MirrorCredentialsDto()); // Only one bogus credential
         }
@@ -1640,7 +1642,7 @@ public class ContentSyncManager {
                    SCCClientException {
         SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
                 user, password);
-        String localPath = Config.get().getString(SCCConfig.RESOURCE_PATH, null);
+        String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         if (localPath != null) {
             scc.setResourceLocalPath(new File(localPath));
         }
