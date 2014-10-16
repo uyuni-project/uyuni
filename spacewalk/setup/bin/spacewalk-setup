@@ -988,6 +988,12 @@ sub satellite_activate {
 			      disconnected => 0,
 			    });
 
+  if($opts{"skip-db-population"}) {
+      # If the DB exists, we expect orgs and entitlements are already there.
+      # This should also fix bsc#900956
+      return 1;
+  }
+
   my @args = ('--rhn-cert', $params{filename});
 
   if ($params{sanity_only}) {
