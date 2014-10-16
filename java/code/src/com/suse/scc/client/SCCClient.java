@@ -17,10 +17,12 @@ package com.suse.scc.client;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
+
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.List;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * SCC API Client.
