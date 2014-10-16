@@ -29,7 +29,7 @@ Scenario: searching for a known CVE number
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
   Then I should see this client as link
-    And I should see a "Affected, patch available in an assigned channel" text
+    And I should see a "Affected, at least one patch available in an assigned channel" text
     And I should see a "Install a new patch in this system" link
     And I should see a "Only candidate is: milkyway-dummy-2345" text
     And I should see a "Download CSV" link
@@ -52,8 +52,8 @@ Scenario: selecting a system for the System Set Manager
     And I select "1999" from "cveIdentifierYear"
     And I enter "9999" as "cveIdentifierId"
     And I click on "Audit systems"
-    And I should see a "Affected, patch available in an assigned channel" text
-  When I check "Affected, patch available in an assigned channel" in the list
+    And I should see a "Affected, at least one patch available in an assigned channel" text
+  When I check "Affected, at least one patch available in an assigned channel" in the list
     Then I should see a "system selected" text
   When I follow "Manage"
      And I follow "Systems" in the content area
