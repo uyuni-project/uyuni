@@ -104,7 +104,7 @@ public class SCCClient {
      * @param path
      * @throws SCCClientException
      */
-    public void setResourceLocalPath(File path) throws SCCClientException {
+    public void setLocalResourcePath(File path) throws SCCClientException {
         if (path == null) {
             this.config.remove(SCCConfig.RESOURCE_PATH);
             return;

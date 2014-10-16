@@ -1641,7 +1641,7 @@ public class ContentSyncManager {
                 user, password);
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         if (localPath != null) {
-            scc.setResourceLocalPath(new File(localPath));
+            scc.setLocalResourcePath(new File(localPath));
         }
 
         return scc;
