@@ -343,6 +343,7 @@ def parse_line(line):
                        'server.satellite.http_proxy_username': str,
                        'server.satellite.http_proxy_password': str,
                        'server.satellite.rhn_parent': str,
+                       'db_name': str}
                        'server.susemanager.mirrcred_user': str,
                        'server.susemanager.mirrcred_pass': str}
         val = val.strip()
