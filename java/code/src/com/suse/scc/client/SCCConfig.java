@@ -61,11 +61,13 @@ public class SCCConfig {
         if (key.equals(SCCConfig.URL)) {
             try {
                 this.setUrl(key);
-            } catch (URISyntaxException ex) {
+            }
+            catch (URISyntaxException ex) {
                 // Complain to the log for invalid URL.
                 throw new RuntimeException(ex);
             }
-        } else {
+        }
+        else {
             properties.setProperty(key, value);
         }
     }
