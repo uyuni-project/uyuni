@@ -137,13 +137,13 @@ public class ContentSyncManager {
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
 
     // Off-line file system path
-    private final String localSCCDataPath;
+    private final String sccDataPath;
 
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
-        this.localSCCDataPath = Config.get().getString(SCCConfig.RESOURCE_PATH, null);
+        this.sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
     }
 
     /**
@@ -1500,12 +1500,12 @@ public class ContentSyncManager {
             throws MalformedURLException,
                    ContentSyncException {
         URL url = new URL(urlString);
-        File dataPath = new File(this.localSCCDataPath);
+        File dataPath = new File(this.sccDataPath);
 
         if (!dataPath.canRead()) {
             throw new ContentSyncException(
                     String.format("Path \"%s\" does not exists or cannot be read",
-                                  this.localSCCDataPath));
+                                  this.sccDataPath));
         }
 
         return new File(dataPath.getAbsolutePath() + url.getPath()).toURI().toURL();
@@ -1522,7 +1522,7 @@ public class ContentSyncManager {
     public String setupSourceURL(SCCRepository repo, String mirrorUrl) {
         String url = repo.getUrl();
 
-        if (this.localSCCDataPath != null) {
+        if (this.sccDataPath != null) {
             try {
                 return this.URLToFSPath(url).toExternalForm();
             }
