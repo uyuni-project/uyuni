@@ -1496,7 +1496,7 @@ public class ContentSyncManager {
      * @throws MalformedURLException
      * @throws ContentSyncException
      */
-    private URL URLToFSPath(String urlString)
+    private URI URLToFSPath(String urlString)
             throws MalformedURLException,
                    ContentSyncException {
         URL url = new URL(urlString);
@@ -1508,7 +1508,7 @@ public class ContentSyncManager {
                                   this.sccDataPath));
         }
 
-        return new File(dataPath.getAbsolutePath() + url.getPath()).toURI().toURL();
+        return new File(dataPath.getAbsolutePath() + url.getPath()).toURI();
     }
 
     /**
@@ -1524,7 +1524,7 @@ public class ContentSyncManager {
 
         if (this.sccDataPath != null) {
             try {
-                return this.URLToFSPath(url).toExternalForm();
+                return this.URLToFSPath(url).toASCIIString();
             }
             catch (MalformedURLException e) {
                 log.error(e.getMessage());
