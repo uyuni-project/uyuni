@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Oct 16 10:09:54 UTC 2014 - smoioli@suse.com
+
+- correctly apply patches to multiple systems in SSM (bsc#898242)
+
+-------------------------------------------------------------------
 Tue Oct 14 15:01:36 CEST 2014 - mc@suse.de
 
 - version 2.1.165.8-1
