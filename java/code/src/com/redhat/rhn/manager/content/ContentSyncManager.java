@@ -136,14 +136,10 @@ public class ContentSyncManager {
     // SCC JSON files location in rhn.conf
     public static final String RESOURCE_PATH = "server.susemanager.fromdir";
 
-    // Off-line file system path
-    private final String sccDataPath;
-
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
-        this.sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
     }
 
     /**
@@ -1500,12 +1496,13 @@ public class ContentSyncManager {
             throws MalformedURLException,
                    ContentSyncException {
         URL url = new URL(urlString);
-        File dataPath = new File(this.sccDataPath);
+        String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        File dataPath = new File(sccDataPath);
 
         if (!dataPath.canRead()) {
             throw new ContentSyncException(
                     String.format("Path \"%s\" does not exists or cannot be read",
-                                  this.sccDataPath));
+                                  sccDataPath));
         }
 
         return new File(dataPath.getAbsolutePath() + url.getPath()).toURI();
@@ -1522,7 +1519,7 @@ public class ContentSyncManager {
     public String setupSourceURL(SCCRepository repo, String mirrorUrl) {
         String url = repo.getUrl();
 
-        if (this.sccDataPath != null) {
+        if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             try {
                 return this.URLToFSPath(url).toASCIIString();
             }
