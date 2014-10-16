@@ -15,18 +15,23 @@
 package com.suse.scc.test;
 
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
+
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
+
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import javax.xml.bind.DatatypeConverter;
+
 import junit.framework.TestCase;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Tests for {@link SCCClient} methods.
