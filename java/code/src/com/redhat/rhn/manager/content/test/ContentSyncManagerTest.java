@@ -49,7 +49,6 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
@@ -888,19 +887,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     public void testSetupSourceURLLocalFS() throws Exception {
         // Set offline mode
-        Config.get().setString(SCCConfig.RESOURCE_PATH, System.getProperty("java.io.tmpdir"));
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH, System.getProperty("java.io.tmpdir"));
 
         // Make some data
         String repoUrlSCC = "https://www.somehost.com/path/to/resource?query=like&this=here";
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
-        ContentSyncManager csm = new ContentSyncManager();
-        assertEquals(csm.setupSourceURL(repo, null),
-                     String.format("file:%s/path/to/resource",
-                                   System.getProperty("java.io.tmpdir")));
+        assertEquals(String.format("file:%s/path/to/resource",
+                                   System.getProperty("java.io.tmpdir")),
+                     new ContentSyncManager().setupSourceURL(repo, null));
 
         // Switch to online mode
-        Config.get().remove(SCCConfig.RESOURCE_PATH);
+        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
     }
 
     /**
