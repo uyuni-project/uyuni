@@ -44,22 +44,24 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
+
+import org.apache.commons.lang.StringUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Tests for {@link ContentSyncManager}.
