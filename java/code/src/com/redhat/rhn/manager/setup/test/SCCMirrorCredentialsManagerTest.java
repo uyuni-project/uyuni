@@ -93,7 +93,7 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test deleteMirrorCredentials().
      * @throws Exception if something goes wrong
      */
-    public void testDeleteCredentials() {
+    public void testDeleteCredentials() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         int size = credsManager.findMirrorCredentials().size();
@@ -109,7 +109,7 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * Test makePrimaryCredentials()
      * @throws Exception if something goes wrong
      */
-    public void testMakePrimaryCredentials() {
+    public void testMakePrimaryCredentials() throws Exception {
         MirrorCredentialsDto creds0 = storeTestCredentials();
         MirrorCredentialsDto creds1 = storeTestCredentials();
         MirrorCredentialsDto creds2 = storeTestCredentials();
@@ -155,16 +155,12 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      *
      * @param id the id of stored credentials
      */
-    private MirrorCredentialsDto storeTestCredentials() {
+    private MirrorCredentialsDto storeTestCredentials() throws ContentSyncException {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
         creds.setUser("testuser-" + TestUtils.randomString());
         creds.setPassword("testpass-" + TestUtils.randomString());
-        try {
-            long dbId = credsManager.storeMirrorCredentials(creds, user, request);
-            creds.setId(dbId);
-        } catch (ContentSyncException e) {
-            e.printStackTrace();
-        }
+        long dbId = credsManager.storeMirrorCredentials(creds, user, request);
+        creds.setId(dbId);
         return creds;
     }
 }
