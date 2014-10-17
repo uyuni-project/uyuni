@@ -639,7 +639,8 @@ public class ContentSyncManager {
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
+        List<MirrorCredentialsDto> credentials = filterCredentials(
+                credsManager.findMirrorCredentials());
         // Query subscriptions for all mirror credentials
         for (MirrorCredentialsDto c : credentials) {
             try {
