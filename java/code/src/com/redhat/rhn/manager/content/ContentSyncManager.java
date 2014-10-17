@@ -243,9 +243,10 @@ public class ContentSyncManager {
      */
     private List<MirrorCredentialsDto>
         filterCredentials(List<MirrorCredentialsDto> credentials) {
+        // Create one pair of bogus credentials
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
             credentials.clear();
-            credentials.add(new MirrorCredentialsDto()); // Only one bogus credential
+            credentials.add(new MirrorCredentialsDto("local file", null));
         }
 
         return credentials;
