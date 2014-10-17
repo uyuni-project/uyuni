@@ -882,7 +882,7 @@ public class ContentSyncManager {
             ChannelFamily channelFamily = null;
             String productClass = p.getProductClass();
 
-            if (productClass != null) {
+            if (!StringUtils.isBlank(productClass)) {
                 channelFamily = createOrUpdateChannelFamily(productClass, null);
             }
 
