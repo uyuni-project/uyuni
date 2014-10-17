@@ -20,6 +20,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SCCMirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
 
@@ -36,9 +37,9 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     public void testFindAllMirrorCreds() throws Exception {
-        MirrorCredentialsDto creds0 = storeTestCredentials(0);
-        MirrorCredentialsDto creds1 = storeTestCredentials(1);
-        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        MirrorCredentialsDto creds0 = storeTestCredentials();
+        MirrorCredentialsDto creds1 = storeTestCredentials();
+        MirrorCredentialsDto creds2 = storeTestCredentials();
         List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
         assertTrue(creds.size() >= 3);
         assertTrue(creds.contains(creds0));
@@ -52,10 +53,10 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      */
     public void testFindMirrorCredentialsSortOrder() throws Exception {
         // Store some credentials
-        storeTestCredentials(0);
-        storeTestCredentials(1);
-        MirrorCredentialsDto primaryCreds = storeTestCredentials(2);
-        storeTestCredentials(3);
+        storeTestCredentials();
+        storeTestCredentials();
+        MirrorCredentialsDto primaryCreds = storeTestCredentials();
+        storeTestCredentials();
 
         // Make one of them the primary
         credsManager.makePrimaryCredentials(primaryCreds.getId(), user, null);
@@ -81,9 +82,9 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     public void testFindMirrorCredsById() throws Exception {
-        MirrorCredentialsDto creds0 = storeTestCredentials(0);
-        MirrorCredentialsDto creds1 = storeTestCredentials(1);
-        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        MirrorCredentialsDto creds0 = storeTestCredentials();
+        MirrorCredentialsDto creds1 = storeTestCredentials();
+        MirrorCredentialsDto creds2 = storeTestCredentials();
         assertEquals(creds0, credsManager.findMirrorCredentials(creds0.getId()));
         assertEquals(creds1, credsManager.findMirrorCredentials(creds1.getId()));
         assertEquals(creds2, credsManager.findMirrorCredentials(creds2.getId()));
@@ -94,8 +95,8 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     public void testDeleteCredentials() {
-        MirrorCredentialsDto creds0 = storeTestCredentials(0);
-        MirrorCredentialsDto creds1 = storeTestCredentials(1);
+        MirrorCredentialsDto creds0 = storeTestCredentials();
+        MirrorCredentialsDto creds1 = storeTestCredentials();
         int size = credsManager.findMirrorCredentials().size();
         assertTrue(size >= 2);
         credsManager.deleteMirrorCredentials(creds0.getId(), user, request);
@@ -110,9 +111,9 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      * @throws Exception if something goes wrong
      */
     public void testMakePrimaryCredentials() {
-        MirrorCredentialsDto creds0 = storeTestCredentials(0);
-        MirrorCredentialsDto creds1 = storeTestCredentials(1);
-        MirrorCredentialsDto creds2 = storeTestCredentials(2);
+        MirrorCredentialsDto creds0 = storeTestCredentials();
+        MirrorCredentialsDto creds1 = storeTestCredentials();
+        MirrorCredentialsDto creds2 = storeTestCredentials();
 
         credsManager.makePrimaryCredentials(creds0.getId(), user, request);
         assertTrue(credsManager.findMirrorCredentials(creds0.getId()).isPrimary());
@@ -161,10 +162,10 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
      *
      * @param id the id of stored credentials
      */
-    private MirrorCredentialsDto storeTestCredentials(long id) {
+    private MirrorCredentialsDto storeTestCredentials() {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
-        creds.setUser("testuser" + id);
-        creds.setPassword("testpass" + id);
+        creds.setUser("testuser-" + TestUtils.randomString());
+        creds.setPassword("testpass-" + TestUtils.randomString());
         try {
             long dbId = credsManager.storeMirrorCredentials(creds, user, request);
             creds.setId(dbId);
