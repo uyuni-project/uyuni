@@ -51,6 +51,10 @@ if (not defined $my_schema_release) {
     die "Failed to retrieve our schema package name and version.\n";
 }
 
+if ($ENV{SUMA_TEST_SCHEMA_VERSION}) {
+    $my_schema_version = $ENV{SUMA_TEST_SCHEMA_VERSION};
+}
+
 my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
 (my $target_schema_norm = $target_schema) =~ s!^(.+-\d+(\.\d+)*)(\..*)*$!$1!;
 
