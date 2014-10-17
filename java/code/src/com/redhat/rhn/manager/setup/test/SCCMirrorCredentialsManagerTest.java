@@ -47,6 +47,36 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     }
 
     /**
+     * Test findMirrorCredentials() sort order.
+     * @throws Exception if something goes wrong
+     */
+    public void testFindMirrorCredentialsSortOrder() throws Exception {
+        // Store some credentials
+        storeTestCredentials(0);
+        storeTestCredentials(1);
+        MirrorCredentialsDto primaryCreds = storeTestCredentials(2);
+        storeTestCredentials(3);
+
+        // Make one of them the primary
+        credsManager.makePrimaryCredentials(primaryCreds.getId(), user, null);
+        List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
+
+        // Remember the ID of the last iteration
+        long lastId = -1;
+        for (MirrorCredentialsDto c : creds) {
+            // Primary should be first
+            if (creds.indexOf(c) == 0) {
+                assertEquals(primaryCreds, c);
+            }
+            // After that: ascending IDs
+            else if (creds.indexOf(c) >= 2) {
+                assertTrue(c.getId() > lastId);
+            }
+            lastId = c.getId();
+        }
+    }
+
+    /**
      * Test findMirrorCredentials(long).
      * @throws Exception if something goes wrong
      */
