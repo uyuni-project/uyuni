@@ -11,12 +11,10 @@ rpm -ivh /root/susemanager-schema-2.1.50.5-0.7.1.noarch.rpm
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
 
-echo Going to reset pgsql database
+echo Going to reset oracle database
 
 echo $PATH
 echo $PERLLIB
-
-rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
@@ -40,9 +38,12 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 # run the schema upgrade from git repo
-/manager/schema/spacewalk/spacewalk-schema-upgrade -y
+if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
+    cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
+    /etc/init.d/oracle stop
+    exit 1
+fi
 
-
-# Postgres shutdown (avoid stale memory by shmget())
-rcpostgresql stop
+# oracle shutdown (avoid stale memory by shmget())
+/etc/init.d/oracle stop
 
