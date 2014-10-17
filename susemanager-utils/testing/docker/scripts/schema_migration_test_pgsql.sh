@@ -40,8 +40,11 @@ else
     export SUMA_TEST_SCHEMA_VERSION=$RPMVERSION
 fi
 # run the schema upgrade from git repo
-/manager/schema/spacewalk/spacewalk-schema-upgrade -y
-
+if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y; then
+    cat /var/log/spacewalk/schema-upgrade/schema-from-*.log
+    rcpostgresql stop
+    exit 1
+fi
 
 # Postgres shutdown (avoid stale memory by shmget())
 rcpostgresql stop
