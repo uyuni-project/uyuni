@@ -32,6 +32,7 @@ RUN chown -R root:root /root/.ssh
 RUN chmod 600 /root/.ssh/*
 
 ADD spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
+ADD susemanager-schema-1.7.56.14-0.5.1.noarch.rpm /root/susemanager-schema-1.7.56.14-0.5.1.noarch.rpm
 
 ADD gnupg /.gnupg
 ADD webapp-keyring.gpg /etc/webapp-keyring.gpg
