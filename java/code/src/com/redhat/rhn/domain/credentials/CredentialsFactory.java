@@ -143,6 +143,7 @@ public class CredentialsFactory extends HibernateFactory {
         Criteria c = session.createCriteria(Credentials.class);
         c.add(Restrictions.eq("type", CredentialsFactory
                 .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
+        c.addOrder(Order.asc("url"));
         c.addOrder(Order.asc("id"));
         return c.list();
     }
