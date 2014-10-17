@@ -27,6 +27,7 @@ public class SCCConfig {
     public static final String URL = "url";
     public static final String ENCODED_CREDS = "encoded-creds";
     public static final String UUID = "uuid";
+    public static final String RESOURCE_PATH = "resource-path";
 
     // Proxy settings
     public static final String PROXY_HOSTNAME = "proxy-hostname";
@@ -39,7 +40,7 @@ public class SCCConfig {
     private static final String DEFAULT_PROXY_PORT = "3128";
 
     // The properties object
-    private Properties properties;
+    private final Properties properties;
 
     /**
      * Default constructor.
@@ -50,14 +51,36 @@ public class SCCConfig {
 
     /**
      * Sets a preference given by key and value. Use one of the public key strings above.
-     * DO NOT USE FOR URL!!!!!!!!!!
+     * NOTE: To set the URL, use method setURL instead.
      *
      * @param key
      * @param value
-     * @throws URISyntaxException
      */
     public void put(String key, String value) {
-        properties.setProperty(key, value);
+        // The URL key should be treated differently.
+        if (key.equals(SCCConfig.URL)) {
+            try {
+                this.setUrl(key);
+            }
+            catch (URISyntaxException ex) {
+                // Complain to the log for invalid URL.
+                throw new RuntimeException(ex);
+            }
+        }
+        else {
+            properties.setProperty(key, value);
+        }
+    }
+
+    /**
+     * Removes a preference given by key.
+     *
+     * @param key
+     */
+    public void remove(String key) {
+        if (properties.containsKey(key)) {
+            properties.remove(key);
+        }
     }
 
     /**
@@ -67,8 +90,7 @@ public class SCCConfig {
      * @throws URISyntaxException
      */
     public void setUrl(String url) throws URISyntaxException {
-        new URI(url);
-        properties.setProperty(URL, url);
+        properties.setProperty(URL, new URI(url).toASCIIString());
     }
 
     /**
@@ -132,5 +154,13 @@ public class SCCConfig {
      */
     public String getProxyPassword() {
        return properties.getProperty(PROXY_PASSWORD, null);
+    }
+
+    /**
+     * Returns the local path of the directory for resources. Null, if is not set.
+     * @return directory path
+     */
+    public String getLocalResourcePath() {
+        return properties.getProperty(SCCConfig.RESOURCE_PATH);
     }
 }

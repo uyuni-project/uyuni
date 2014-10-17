@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -882,6 +883,22 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         finally {
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
+    }
+
+    public void testSetupSourceURLLocalFS() throws Exception {
+        // Set offline mode
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH, System.getProperty("java.io.tmpdir"));
+
+        // Make some data
+        String repoUrlSCC = "https://www.somehost.com/path/to/resource?query=like&this=here";
+        SCCRepository repo = new SCCRepository();
+        repo.setUrl(repoUrlSCC);
+        assertEquals(String.format("file:%s/path/to/resource",
+                                   System.getProperty("java.io.tmpdir")),
+                     new ContentSyncManager().setupSourceURL(repo, null));
+
+        // Switch to online mode
+        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
     }
 
     /**

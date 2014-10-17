@@ -17,6 +17,9 @@ package com.suse.scc.client;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,10 +49,10 @@ public class SCCConnection {
 
     /** Represents a partial result with a pointer to the next one. */
     private class PaginatedResult<T> {
-        private T result;
-        private String nextUrl;
+        private final T result;
+        private final String nextUrl;
 
-        public PaginatedResult(T resultIn, String nextUrlIn) {
+        PaginatedResult(T resultIn, String nextUrlIn) {
             result = resultIn;
             nextUrl = nextUrlIn;
         }
@@ -78,11 +81,42 @@ public class SCCConnection {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
-            partialResult = request(toListType(resultType), "GET");
+            if (SCCConnection.this.config.getLocalResourcePath() == null) {
+                partialResult = request(toListType(resultType), "GET");
+            }
+            else {
+                try {
+                    partialResult = localFSRequest(toListType(resultType));
+                }
+                catch (IOException ex) {
+                    throw new SCCClientException(ex);
+                }
+            }
             result.addAll(partialResult.result);
             endpoint = partialResult.nextUrl;
         } while (partialResult.nextUrl != null);
         return result;
+    }
+
+    /**
+     * Read data from the file in the local directory.
+     * @param <T> the generic type
+     * @return object of type given by resultType
+     */
+    @SuppressWarnings({"unchecked"})
+    private <T> PaginatedResult<T> localFSRequest(Type resultType)
+            throws FileNotFoundException,
+                   IOException {
+        String filename = this.endpoint
+                .replaceAll("connect/", "/")     // Remove SCC part for APIs, no leading "/"
+                .replaceAll("/+", "/")           // Replace double slashes to single
+                .replaceAll("^/", "")            // Remove leading slash, if any
+                .replaceAll("/", "_") + ".json"; // Replace slashes with underscore, add ext
+
+        return new PaginatedResult<T>((T) new Gson().fromJson(
+                new BufferedReader(new InputStreamReader(new FileInputStream(
+                        new File(this.config.getLocalResourcePath() + "/" + filename)))),
+                resultType), null);
     }
 
     /**

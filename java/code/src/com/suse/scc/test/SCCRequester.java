@@ -30,7 +30,7 @@ import java.util.concurrent.Callable;
 public abstract class SCCRequester<T> implements Callable<T> {
 
     /** The client instance. */
-    private SCCClient client;
+    private final SCCClient client;
 
     /**
      * Default constructor
