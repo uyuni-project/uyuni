@@ -1402,6 +1402,22 @@ public class ContentSyncManager {
      * @return mirror credentials ID or null if OES channels are not mirrorable
      */
     private Long verifyOESRepo() {
+        // Look for local file in case of from-dir
+        if (Config.get().getString(RESOURCE_PATH) != null) {
+            try {
+                if (new File(URLToFSPath(OES_URL)).canRead()) {
+                    return new Long(-1);
+                }
+            }
+            catch (MalformedURLException e) {
+                log.error(e.getMessage());
+            }
+            catch (ContentSyncException e) {
+                log.error(e.getMessage());
+            }
+            return null;
+        }
+
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query OES repo for all mirror credentials until success
