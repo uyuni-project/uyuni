@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
-import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
@@ -146,12 +145,6 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        // Clear test credentials from database
-        for (MirrorCredentialsDto c : credsManager.findMirrorCredentials()) {
-            if (c.getUser().startsWith("testuser")) {
-                removeTestCredentials(c.getId());
-            }
-        }
 
         // Tear down the manager class instance
         credsManager = null;
@@ -173,15 +166,5 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
             e.printStackTrace();
         }
         return creds;
-    }
-
-    /**
-     * Clean up credentials from database by calling remove().
-     *
-     * @param id the index of credentials to remove
-     */
-    private void removeTestCredentials(long id) {
-        CredentialsFactory.removeCredentials(
-                CredentialsFactory.lookupCredentialsById(id));
     }
 }
