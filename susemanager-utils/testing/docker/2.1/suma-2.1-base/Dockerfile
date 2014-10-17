@@ -32,6 +32,7 @@ ADD spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
 ADD gnupg /.gnupg
 ADD webapp-keyring.gpg /etc/webapp-keyring.gpg
 ADD susemanager-schema-2.1.50.5-0.7.1.noarch.rpm /root/susemanager-schema-2.1.50.5-0.7.1.noarch.rpm
+ADD susemanager-schema-1.7.56.14-0.5.1.noarch.rpm /root/susemanager-schema-1.7.56.14-0.5.1.noarch.rpm
 
 ENV PYTHONPATH /manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src
 ENV PERLLIB /manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
