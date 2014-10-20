@@ -3,6 +3,7 @@ Description=Spacewalk Monitoring service
 After=syslog.target network.target
 
 [Service]
+ExecStartPre=/usr/bin/test -f /var/lib/nocpulse/.ssh/nocpulse-identity || /bin/su -s /bin/bash -c "/usr/bin/ssh-keygen -q -t dsa -N '' -f /var/lib/nocpulse/.ssh/nocpulse-identity" - nocpulse
 ExecStart=/usr/sbin/Monitoring start
 ExecStop=/usr/sbin/Monitoring stop
 Type=oneshot
