@@ -120,6 +120,15 @@ There is few special substitution available:
 %file:/some/file% 
         Is replaced by content of given file.
 
+%boolean:value%
+        Is interpreted as a boolean value. Use B<0> as B<false> and B<any other integer> as B<true>.
+
+%integer:value%
+        Is interpreted as an integer value.
+
+%string:value%
+        Is interpreted as a string value.
+
 =head1 OPTIONS
 
 --server
@@ -140,6 +149,8 @@ There is few special substitution available:
   spacewalk-api --server=spacewalk.com --nologin api.systemVersion
 
   spacewalk-api --server=spacewalk.com --user=foo --password=bar channel.listAllChannels "%session%"
+
+  spacewalk-api --server=spacewalk.com --user=foo --password=bar user.setReadOnly "%session%" user "%boolean:1%"
 
   spacewalk-api --server=spacewalk.com --nologin proxy.isProxy '%file:/etc/sysconfig/rhn/systemid%'
 
