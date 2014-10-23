@@ -90,13 +90,13 @@ BuildRequires: simple-core
 Requires(post): aaa_base
 Requires(preun): aaa_base
 %else
-%if 0%{?rhel} < 7
+%if 0%{?rhel} && 0%{?rhel} < 7
 Requires(post): chkconfig
 Requires(preun): chkconfig
 # This is for /sbin/service
 Requires(preun): initscripts
 %endif
-%if 0%{?fedora} || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 BuildRequires: systemd
 %endif
 %endif
@@ -122,7 +122,7 @@ install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search
 install -d -m 755 $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes
 ln -s -f %{_prefix}/share/rhn/search/indexes/docs $RPM_BUILD_ROOT%{_var}/lib/rhn/search/indexes/docs
 install -d -m 755 $RPM_BUILD_ROOT%{_sbindir}
-%if 0%{?fedora} || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 install -d -m 755 $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -d -m 755 $RPM_BUILD_ROOT%{_initrddir}
@@ -136,7 +136,7 @@ install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rh
 cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
-%if 0%{?fedora} || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 install -p -m 755 src/config/rhn-search.service $RPM_BUILD_ROOT%{_unitdir}
 %else
 install -p -m 755 src/config/rhn-search.init $RPM_BUILD_ROOT%{_initrddir}/rhn-search
@@ -148,7 +148,11 @@ ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BU
 
 # add rc link
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
+%if 0%{?suse_version} >= 1210
+ln -sf service $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
+%else
 ln -sf ../../etc/init.d/rhn-search $RPM_BUILD_ROOT/%{_sbindir}/rcrhn-search
+%endif
 
 # mybatis is build with newer API. This statements needs to stay, until we have a build with 1.5
 export NO_BRP_CHECK_BYTECODE_VERSION=true
@@ -218,7 +222,7 @@ fi
 %attr(755, root, root) %{_var}/log/rhn/search
 %{_prefix}/share/rhn/search/lib/*
 %attr(755, root, root) %{_sbindir}/rhn-search
-%if 0%{?fedora} || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
 %attr(755, root, root) %{_unitdir}/rhn-search.service
 %else
 %attr(755, root, root) %{_initrddir}/rhn-search
