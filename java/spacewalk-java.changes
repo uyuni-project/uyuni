@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Oct 27 16:17:00 CET 2014 - mc@suse.de
+
+- version 1.7.54.33-1
+- fix various XSS issues CVE-2014-3654 (bsc#902182)
+- fix CVE Audit when some packages of a patch are already installed
+  (bnc#899266)
+- fix XSS flaws - CVE-2014-3595 (bnc#896012)
+
+-------------------------------------------------------------------
 Wed Aug 20 15:21:31 CEST 2014 - mc@suse.de
 
 - version 1.7.54.32-1
