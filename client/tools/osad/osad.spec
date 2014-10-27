@@ -260,6 +260,11 @@ fi
 ARG=$1
 %if 0%{?suse_version} >= 1210
 %service_add_post osad.service
+if [ $ARG -eq 1 ] ; then
+    # executed only in case of install
+    /usr/bin/systemctl enable osad.service >/dev/null 2>&1
+    /usr/bin/systemctl start osad.service ||:
+fi
 %else
 if [ -f %{_sysconfdir}/init.d/osad ]; then
     /sbin/chkconfig --add osad
@@ -279,11 +284,11 @@ fi
 if [ -f %{_var}/log/osad ]; then
     /bin/chmod 600 %{_var}/log/osad
 fi
-%endif
 if [ $ARG -eq 1 ] ; then
   # executed only in case of install
   %{_sbindir}/service osad start ||:
 fi
+%endif
 
 %preun
 %if 0%{?suse_version} >= 1210
