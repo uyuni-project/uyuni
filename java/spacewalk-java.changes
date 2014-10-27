@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:20:08 CET 2014 - mc@suse.de
+
+- fix various XSS issues CVE-2014-3654 (bsc#902182)
+  CVE-2014-3654-cobbler.patch
+  CVE-2014-3654-sort-attributes.patch
+
+-------------------------------------------------------------------
 Thu Oct 16 10:09:54 UTC 2014 - smoioli@suse.com
 
 - correctly apply patches to multiple systems in SSM (bsc#898242)
