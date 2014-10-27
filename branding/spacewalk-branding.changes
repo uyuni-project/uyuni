@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Oct 27 16:18:39 CET 2014 - mc@suse.de
+
+- version 1.7.1.12-1
+- End-user documentation clarification for CVE Audit (bnc#899266)
+
+-------------------------------------------------------------------
 Mon Jan 20 16:49:15 CET 2014 - mc@suse.de
 
 - version 1.7.1.11-1
