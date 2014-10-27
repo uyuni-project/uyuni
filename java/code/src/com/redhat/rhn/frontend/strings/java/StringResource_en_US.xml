@@ -1938,7 +1938,7 @@ available for this kickstart profile to function properly.
        </trans-unit>
 
       <trans-unit id="cobbler.snippet.invalidfilename.message">
-       <source>The requested snippet filename is not valid. The autoinstallation snippet file name cannot contain slash (/) or  begin with a period(.)</source>
+       <source>The requested snippet filename is not valid. The autoinstallation snippet file name cannot contain slash (/), quote (&quot;), ampersand (&amp;), or  begin with a period(.)</source>
          <context-group name="ctx">
            <context context-type="sourcefile">Kickstart Profile Details pages.</context>
          </context-group>
