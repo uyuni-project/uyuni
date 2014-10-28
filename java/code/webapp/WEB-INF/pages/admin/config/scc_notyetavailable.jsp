@@ -15,12 +15,7 @@
                 <h4>SUSE Customer Center</h4>
             </div>
             <div class="panel-body">
-                <p><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.stillncc"/></p>
-                <p><bean:message key="sccconfig.jsp.migrationinfo"/></p>
-
-                <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
-
-                <a class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
+                <bean:message key="sccconfig.jsp.notyetavailable"/>
             </div>
         </div>
     </body>

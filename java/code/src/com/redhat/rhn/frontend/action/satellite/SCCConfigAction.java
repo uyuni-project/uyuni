@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -40,6 +41,15 @@ public class SCCConfigAction extends RhnAction {
                                  ActionForm formIn,
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
+
+        if (!MgrSyncUtils.isSCCTheDefault()) {
+            return mapping.findForward("notyetavailable");
+        }
+
+        if (MgrSyncUtils.isMigratedToSCC()) {
+            return mapping.findForward("alreadymigrated");
+        }
+
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
