@@ -47,6 +47,7 @@ public class MgrSyncUtils {
 
     // This file is touched once the server has been migrated to SCC
     public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
+    public static final String SCC_DEFAULT = "/var/lib/spacewalk/scc/default_scc";
 
     /**
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
@@ -220,5 +221,13 @@ public class MgrSyncUtils {
      */
     public static boolean isMigratedToSCC() {
         return new File(MgrSyncUtils.SCC_MIGRATED).exists();
+    }
+
+    /**
+     * @return true if SCC is the default backend to be used, no matter
+     * if the customer has migrated yet or not.
+     */
+    public static boolean isSCCTheDefault() {
+        return new File(MgrSyncUtils.SCC_DEFAULT).exists();
     }
 }
