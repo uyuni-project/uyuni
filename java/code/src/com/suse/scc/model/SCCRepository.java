@@ -16,6 +16,10 @@ package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
  */
@@ -131,35 +135,38 @@ public class SCCRepository {
         this.credentialsId = credentialsIdIn;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof SCCRepository)) {
+            return false;
+        }
+        SCCRepository otherSCCRepository = (SCCRepository) other;
+        return new EqualsBuilder()
+            .append(getUrl(), otherSCCRepository.getUrl())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
+        return new HashCodeBuilder()
+            .append(getUrl())
+            .toHashCode();
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SCCRepository other = (SCCRepository) obj;
-        if (id != other.id) {
-            return false;
-        }
-        return true;
+    public String toString() {
+        return new ToStringBuilder(this)
+        .append("id", getId())
+        .append("description", getDescription())
+        .toString();
     }
 }
