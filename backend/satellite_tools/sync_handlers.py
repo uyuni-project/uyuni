@@ -20,7 +20,7 @@ import sys
 from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL
 from spacewalk.server.importlib import channelImport, packageImport, errataImport, \
-    kickstartImport, importLib, supportInformationImport
+    kickstartImport, importLib
 import diskImportLib
 import xmlSource
 import string # pylint: disable=W0402
@@ -446,6 +446,7 @@ class ContainerHandler:
         self.setProductNamesContainer()
         self.setOrgContainer(master_label, create_orgs)
         self.setSupportInformationContainer()
+        self.setSuseProductsContainer()
 
     def __del__(self):
         self.handler.close() # kill the circular reference.
@@ -496,6 +497,8 @@ class ContainerHandler:
                 master_label, create_orgs)
     def setSupportInformationContainer(self):
         self.handler.set_container(diskImportLib.SupportInformationContainer())
+    def setSuseProductsContainer(self):
+        self.handler.set_container(diskImportLib.SuseProductsContainer())
 
 #
 # more containers
