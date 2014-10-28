@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -55,7 +56,6 @@ import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.io.FileUtils;

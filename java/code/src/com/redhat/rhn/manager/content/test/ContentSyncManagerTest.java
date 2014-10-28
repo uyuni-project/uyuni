@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -52,7 +53,6 @@ import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.lang.StringUtils;

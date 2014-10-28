@@ -14,6 +14,8 @@
  */
 package com.suse.scc.model;
 
+import com.redhat.rhn.domain.scc.SCCRepository;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
