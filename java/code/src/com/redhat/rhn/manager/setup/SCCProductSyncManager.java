@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -27,7 +28,6 @@ import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.scc.model.SCCRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -12,8 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.scc.model;
+package com.redhat.rhn.domain.scc;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 
 import com.google.gson.annotations.SerializedName;
@@ -25,9 +26,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
  */
-public class SCCRepository {
+public class SCCRepository extends BaseDomainHelper {
 
-    private int id;
+    private long id;
     private String name;
     @SerializedName("distro_target")
     private String distroTarget;
@@ -41,14 +42,14 @@ public class SCCRepository {
     /**
      * @return the id
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    public void setId(int idIn) {
+    public void setId(long idIn) {
         this.id = idIn;
     }
 

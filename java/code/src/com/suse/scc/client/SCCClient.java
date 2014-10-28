@@ -14,8 +14,9 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.domain.scc.SCCRepository;
+
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.codec.binary.Base64;
