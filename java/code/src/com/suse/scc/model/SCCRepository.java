@@ -28,8 +28,7 @@ public class SCCRepository {
     private String description;
     private String url;
     private boolean autorefresh;
-
-    // Store the mirror credentials ID
+    // not in JSON
     private Long credentialsId;
 
     /**
@@ -40,10 +39,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param id the id to set
+     * @param idIn the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int idIn) {
+        this.id = idIn;
     }
 
     /**
@@ -54,10 +53,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
@@ -68,10 +67,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param distroTarget the distroTarget to set
+     * @param distroTargetIn the distroTarget to set
      */
-    public void setDistroTarget(String distroTarget) {
-        this.distroTarget = distroTarget;
+    public void setDistroTarget(String distroTargetIn) {
+        this.distroTarget = distroTargetIn;
     }
 
     /**
@@ -82,10 +81,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param description the description to set
+     * @param descriptionIn the description to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
     }
 
     /**
@@ -96,10 +95,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param url the url to set
+     * @param urlIn the url to set
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl(String urlIn) {
+        this.url = urlIn;
     }
 
     /**
@@ -110,10 +109,10 @@ public class SCCRepository {
     }
 
     /**
-     * @param autorefresh the autorefresh to set
+     * @param autorefreshIn the autorefresh to set
      */
-    public void setAutorefresh(boolean autorefresh) {
-        this.autorefresh = autorefresh;
+    public void setAutorefresh(boolean autorefreshIn) {
+        this.autorefresh = autorefreshIn;
     }
 
     /**
@@ -126,7 +125,7 @@ public class SCCRepository {
 
     /**
      * Set the mirror credentials ID this repo can be retrieved with.
-     * @param credentialsId the credentials ID to set
+     * @param credentialsIdIn the credentials ID to set
      */
     public void setCredentialsId(Long credentialsIdIn) {
         this.credentialsId = credentialsIdIn;
