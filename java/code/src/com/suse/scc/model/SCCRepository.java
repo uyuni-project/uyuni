@@ -14,6 +14,8 @@
  */
 package com.suse.scc.model;
 
+import com.redhat.rhn.domain.credentials.Credentials;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -32,8 +34,9 @@ public class SCCRepository {
     private String description;
     private String url;
     private boolean autorefresh;
+
     // not in JSON
-    private Long credentialsId;
+    private Credentials credentials;
 
     /**
      * @return the id
@@ -120,19 +123,19 @@ public class SCCRepository {
     }
 
     /**
-     * Get the mirror credentials ID.
-     * @return the credentialsId
+     * Get the mirror credentials.
+     * @return the credentials
      */
-    public Long getCredentialsId() {
-        return credentialsId;
+    public Credentials getCredentials() {
+        return credentials;
     }
 
     /**
-     * Set the mirror credentials ID this repo can be retrieved with.
-     * @param credentialsIdIn the credentials ID to set
+     * Set the mirror credentials this repo can be retrieved with.
+     * @param credentialsIn the credentials to set
      */
-    public void setCredentialsId(Long credentialsIdIn) {
-        this.credentialsId = credentialsIdIn;
+    public void setCredentials(Credentials credentialsIn) {
+        this.credentials = credentialsIn;
     }
 
     /**

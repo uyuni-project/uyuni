@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -255,6 +257,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         subscriptions.add(subscription);
 
         // Check the consolidated product classes
+        clearCredentials();
         ContentSyncManager csm = new ContentSyncManager();
         File channelFamiliesXML = new File(
                 TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
@@ -595,6 +598,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             TestUtils.saveAndFlush(channel);
 
             // List channels and verify status
+            clearCredentials();
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
             List<MgrSyncChannel> channels = csm.listChannels(repos);
@@ -911,30 +915,50 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         ContentSyncManager csm = new ContentSyncManager();
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
-        repo.setCredentialsId(2L);
+        repo.setCredentials(getTestCredentials((2L)));
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, null));
 
         // Test basic auth with nu.novell.com
         String repoUrlNCC = "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/";
         repo = new SCCRepository();
         repo.setUrl("");
-        repo.setCredentialsId(2L);
+        repo.setCredentials(getTestCredentials((2L)));
         assertNull(csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(0L);
-        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, null));
+        repo.setCredentials(getTestCredentials((0L)));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(3L);
+        repo.setCredentials(getTestCredentials((3L)));
         assertEquals(repoUrlNCC + "?credentials=mirrcred_3", csm.setupSourceURL(repo, null));
 
         // Fall back to official repo in case mirror is not reachable
         String mirrorUrl = "http://localhost/";
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(0L);
-        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, mirrorUrl));
+        repo.setCredentials(getTestCredentials((0L)));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, mirrorUrl));
         repo.setUrl(repoUrlSCC);
-        repo.setCredentialsId(0L);
+        repo.setCredentials(getTestCredentials((0L)));
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
+    }
+
+    /**
+     * Create credentials for testing given an ID.
+     * @param id
+     * @return credentials
+     */
+    private Credentials getTestCredentials(Long id) {
+        Credentials creds = new Credentials();
+        creds.setId(id);
+        return creds;
+    }
+
+    /**
+     * Clear all credentials from the database.
+     */
+    private void clearCredentials() {
+        for (Credentials creds : CredentialsFactory.lookupSCCCredentials()) {
+            CredentialsFactory.removeCredentials(creds);
+        }
     }
 
     /**
