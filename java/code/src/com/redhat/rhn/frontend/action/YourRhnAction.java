@@ -32,6 +32,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.*;
@@ -129,11 +130,11 @@ public class YourRhnAction extends RhnAction {
     }
 
     private void remindSCCMigration(HttpServletRequest request) {
-        if (!ProductSyncManager.isMigratedToSCC()) {
-            ActionMessages msgs = new ActionMessages();
-            msgs.add(ActionMessages.GLOBAL_MESSAGE,
+        if (!MgrSyncUtils.isMigratedToSCC() && MgrSyncUtils.isSCCTheDefault()) {
+            ActionMessages messages = new ActionMessages();
+            messages.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("message.sccmigrationavailable"));
-            saveMessages(request, msgs);
+            saveMessages(request, messages);
         }
     }
 

@@ -5579,6 +5579,10 @@
         <set-property property="acls" value="user_role(satellite_admin)"/>
         <forward name="default"
                  path="/WEB-INF/pages/admin/config/scc.jsp"/>
+        <forward name="notyetavailable"
+                 path="/WEB-INF/pages/admin/config/scc_notyetavailable.jsp"/>
+        <forward name="alreadymigrated"
+                 path="/WEB-INF/pages/admin/config/scc_alreadymigrated.jsp"/>
         <forward name="failure"
                  path="/WEB-INF/pages/admin/config/scc.jsp"/>
     </action>
