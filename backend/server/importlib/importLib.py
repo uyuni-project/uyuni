@@ -172,6 +172,16 @@ class SupportInformation(Information):
         'channel'           : StringType,
     }
 
+class SuseProduct(Information):
+    attributeTypes = {
+        'name'          : StringType,
+        'version'       : StringType,
+        'friendly_name' : StringType,
+        'arch'          : StringType,
+        'release'       : StringType,
+        'product_list'  : StringType,
+        'product_id'    : IntType,
+    }
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,

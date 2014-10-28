@@ -712,6 +712,36 @@ class SupportInfoDumper(BaseQueryDumper):
         cf = _SupportInfoDumper(self._writer, data)
         cf.dump()
 
+class _SuseProductDumper(BaseRowDumper):
+    tag_name = 'suse-product'
+
+    def set_attributes(self):
+        return {
+            'name'  : self._row['name'],
+            'version' : self._row['version'],
+            'friendly-name' : self._row['friendly_name'],
+            'arch' : self._row['arch'],
+            'release' : self._row['release'],
+            'product-list' : self._row['product_list'],
+            'product-id' : self._row['product_id']
+            }
+
+class SuseProductDumper(BaseQueryDumper):
+    tag_name = 'suse-products'
+    iterator_query = """
+    SELECT p.name, p.version, p.friendly_name,
+           pa.label AS arch, p.release, p.product_list,
+           p.product_id
+      FROM suseProducts p
+ LEFT JOIN rhnPackageArch pa ON p.arch_type_id = pa.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductDumper(self._writer, data)
+        cf.dump()
 
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'

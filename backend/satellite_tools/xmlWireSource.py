@@ -289,6 +289,10 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.support_information", (self.systemid,))
 
+    def getSuseProductsXmlStream(self):
+        """retrieve xml stream for SUSE Products"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_products", (self.systemid,))
 
 class XMLRPCWireSource(BaseWireSource):
 
