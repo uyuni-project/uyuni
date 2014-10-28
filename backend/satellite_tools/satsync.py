@@ -108,6 +108,8 @@ class Runner:
         'arches'                    : [''], #5/26/05 wregglej 156079 Added arches to precedence list.
         'orgs'                      : [''],
         'supportinfo'               : ['channels', 'packages'],
+        'suse-products'             : ['arches'],
+        # FIXME: remove old code
         'suse-products-subscriptions' : [''],
     }
 
@@ -130,6 +132,8 @@ class Runner:
         'errata',
         'kickstarts',
         'supportinfo',
+        'suse-products',
+        # FIXME: remove old code
         'suse-products-subscriptions',
     ]
     def __init__(self):
@@ -373,6 +377,10 @@ class Runner:
     def _step_supportinfo(self):
         self.syncer.import_supportinfo()
 
+    def _step_suse_products(self):
+        self.syncer.import_suse_products()
+
+    #FIXME: remove old code
     def _step_suse_products_subscriptions(self):
         try:
             mountpoint = None
@@ -468,7 +476,6 @@ class Syncer:
         self._channel_source_packages_full = {}
 
         self._channel_kickstarts = {}
-        self._supportinfo = {}
         self._avail_channel_source_packages = None
         self._missing_channel_src_packages = None
         self._missing_fs_source_packages = None
@@ -1903,7 +1910,9 @@ Please contact your administrator""") % (generation, sat_cert.generation))
         """Imports the support-related information"""
         self._process_simple("getSupportInformationXmlStream", "supportinfo")
 
-
+    def import_suse_products(self):
+        """Imports SUSE Products"""
+        self._process_simple("getSuseProductsXmlStream", "suse_products")
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer,

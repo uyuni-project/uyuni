@@ -54,6 +54,7 @@ sequences = {
     'suseProductFile'           : 'suse_prod_file_id_seq',
     'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
     'suseEula'                  : 'suse_eula_id_seq',
+    'suseProducts'              : 'suse_products_id_seq',
 }
 
 class Backend:
@@ -1363,6 +1364,69 @@ class Backend:
             delete_support_info.executemany(channel_id=todelete[0], package_id=todelete[1], keyword_id=todelete[2])
         if toinsert[0]:
             insert_support_info.executemany(channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2])
+
+    def processSuseProducts(self, batch):
+        """Check if SUSE Product is already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_product = self.dbmodule.prepare("""
+            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_list, product_id)
+            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_list, :product_id)
+            """)
+        delete_product = self.dbmodule.prepare("""
+            DELETE FROM suseProducts WHERE product_id = :product_id
+            """)
+        update_product = self.dbmodule.prepare("""
+            UPDATE suseProducts
+               SET name = :name,
+                   version = :version,
+                   friendly_name = :friendly_name,
+                   arch_type_id = :arch_type_id,
+                   release = :release,
+                   product_list = :product_list
+             WHERE product_id = :product_id
+             """)
+        _query_product = self.dbmodule.prepare("""
+            SELECT product_id FROM suseProducts
+            """)
+        _query_product.execute()
+        existing_data = map(lambda x: "%s" % (x['product_id']), _query_product.fetchall_dict() or [])
+        toinsert = [[], [], [], [], [], [], [], []]
+        todelete = [[]]
+        toupdate = [[], [], [], [], [], [], []]
+        for item in batch:
+            if item['product_id'] in existing_data:
+                existing_data.remove(item['product_id'])
+                toupdate[0].append(item['name'])
+                toupdate[1].append(item['version'])
+                toupdate[2].append(item['friendly_name'])
+                toupdate[3].append(item['arch_type_id'])
+                toupdate[4].append(item['release'])
+                toupdate[5].append(item['product_list'])
+                toupdate[6].append(int(item['product_id']))
+                continue
+            toinsert[0].append(self.sequences['suseProducts'].next())
+            toinsert[1].append(item['name'])
+            toinsert[2].append(item['version'])
+            toinsert[3].append(item['friendly_name'])
+            toinsert[4].append(item['arch_type_id'])
+            toinsert[5].append(item['release'])
+            toinsert[6].append(item['product_list'])
+            toinsert[7].append(int(item['product_id']))
+        for ident in existing_data:
+            todelete[0].append(int(item['product_id']))
+        if todelete[0]:
+            delete_product.executemany(product_id=todelete[0])
+        if toinsert[0]:
+            insert_product.executemany(pid=toinsert[0], name=toinsert[1], version=toinsert[2],
+                                       friendly_name=toinsert[3], arch_type_id=toinsert[4],
+                                       release=toinsert[5], product_list=toinsert[6],
+                                       product_id=toinsert[7])
+        if toupdate[0]:
+            update_product.executemany(name=toinsert[0], version=toinsert[1],
+                                       friendly_name=toinsert[2], arch_type_id=toinsert[3],
+                                       release=toinsert[4], product_list=toinsert[5],
+                                       product_id=toinsert[6])
 
     def lookupPackageIdFromPackage(self, package):
         if not isinstance(package, IncompletePackage):

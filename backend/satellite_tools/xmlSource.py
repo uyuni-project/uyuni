@@ -754,6 +754,15 @@ class SupportInfoItem(BaseItem):
     item_class = importLib.SupportInformation
 addItem(SupportInfoItem)
 
+class SuseProductItem(BaseItem):
+    item_name = 'suse-product'
+    item_class = importLib.SuseProduct
+    tagMap = {
+        'product-list'  : 'product_list',
+        'product-id'    : 'product_id',
+        'friendly-name' : 'friendly_name'
+    }
+addItem(SuseProductItem)
 
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
@@ -1177,3 +1186,7 @@ class OrgContainer(ContainerHandler):
 
 class SupportInformationContainer(ContainerHandler):
     container_name = 'suse-data'
+
+class SuseProductsContainer(ContainerHandler):
+    container_name = 'suse-products'
+

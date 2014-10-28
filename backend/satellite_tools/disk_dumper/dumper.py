@@ -532,6 +532,10 @@ class XML_Dumper:
         self._write_dump(exportLib.SupportInfoDumper)
         return 0
 
+    def dump_suse_products(self):
+        log_debug(2)
+        self._write_dump(exportLib.SuseProductDumper)
+        return 0
 
 class SatelliteDumper(exportLib.SatelliteDumper):
     def set_attributes(self):

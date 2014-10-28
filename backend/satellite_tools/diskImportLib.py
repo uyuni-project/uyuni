@@ -27,7 +27,7 @@ from spacewalk.server.importlib.packageImport import PackageImport, SourcePackag
 from spacewalk.server.importlib import archImport
 from spacewalk.server.importlib import productNamesImport
 from spacewalk.server.importlib import orgImport
-from spacewalk.server.importlib import supportInformationImport
+from spacewalk.server.importlib import supportInformationImport, suseProductsImport
 
 class Backend:
     __backend = None
@@ -140,3 +140,9 @@ class SupportInformationContainer(diskImportLibContainer, xmlSource.SupportInfor
             return
         diskImportLibContainer.endContainerCallback(self)
 
+class SuseProductsContainer(diskImportLibContainer, xmlSource.SuseProductsContainer):
+    importer_class = suseProductsImport.SuseProductsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)

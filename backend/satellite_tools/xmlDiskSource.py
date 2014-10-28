@@ -307,6 +307,9 @@ class MetadataDiskSource:
     def getSupportInformationXmlStream(self):
         return SupportInformationDiskSource(self.mountpoint).load()
 
+    def getSuseProductsXmlStream(self):
+        return SuseProductsDiskSource(self.mountpoint).load()
+
 class SupportInformationDiskSource(DiskSource):
     subdir = 'support_info'
 
@@ -315,6 +318,15 @@ class SupportInformationDiskSource(DiskSource):
         if create and not os.path.isdir(dirname):
             createPath(dirname)
         return "%s/support_info.xml" % dirname
+
+class SuseProductsDiskSource(DiskSource):
+    subdir = 'suse_products'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/suse_products.xml" % dirname
 
 if __name__ == '__main__':
     # TEST CODE

@@ -33,6 +33,8 @@ class ActionDeps:
             'arches'                    : ['arches-extra'],
             'arches-extra'              : [''],
             'supportinfo'               : [''],
+            'suse-products'             : [''],
+            #FIXME: remove old code
             'suse-products-subscriptions' : [''],
         }
 
@@ -50,6 +52,8 @@ class ActionDeps:
             'errata',
             'kickstarts',
             'supportinfo',
+            'suse-products',
+            #FIXME: remove old code
             'suse-products-subscriptions'
         ]
         self.options = options

@@ -86,6 +86,7 @@ class FileMapper:
                             'binary_rpms'       :   xmlDiskSource.BinaryRPMDiskSource(self.mp),
                             'comps'             :   xmlDiskSource.ChannelCompsDiskSource(self.mp),
                             'supportinfo'       :   xmlDiskSource.SupportInformationDiskSource(self.mp),
+                            'suse_products'     :   xmlDiskSource.SuseProductsDiskSource(self.mp),
                        }
 
     #This will make sure that all of the directories leading up to the
@@ -160,6 +161,9 @@ class FileMapper:
 
     def getSupportInformationFile(self):
         return self.setup_file(self.filemap['supportinfo']._getFile())
+
+    def getSuseProductsFile(self):
+        return self.setup_file(self.filemap['suse_products']._getFile())
 
 class Dumper(dumper.XML_Dumper):
     """ This class subclasses the XML_Dumper class. It overrides
@@ -1007,6 +1011,13 @@ class Dumper(dumper.XML_Dumper):
                           "Support Information exported to %s",
                           "%s caught in dump_support_information.")
 
+    def dump_suse_products(self):
+        self._dump_simple(self.fm.getSuseProductsFile(),
+                          dumper.XML_Dumper.dump_suse_products,
+                          "Exporting SUSE Product Information...",
+                          "SUSE Product Information exported to %s",
+                          "%s caught in dump_suse_products.")
+    #FIXME: remove old calls
     def dump_suse_products_subscriptions(self):
         self._dump_simple("%s/productdata.xml" % self.mp,
                           self.getProductData,
@@ -1222,7 +1233,9 @@ class ExporterMain:
                                                                            self.dumper.dump_kickstart_files]},
                                     'rpms'             :   {'dump' : self.dumper.dump_rpms},
                                     'orgs'             :   {'dump' : self.dumper.dump_orgs},
-                                    'supportinfo'           :   {'dump' : self.dumper.dump_support_information},
+                                    'supportinfo'      :   {'dump' : self.dumper.dump_support_information},
+                                    'suse-products'    :   {'dump' : self.dumper.dump_suse_products},
+                                    #FIXME: remove old calls
                                     'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }
             else:
