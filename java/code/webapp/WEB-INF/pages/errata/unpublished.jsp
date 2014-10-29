@@ -9,9 +9,9 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
+ helpUrl=""
  creationUrl="/rhn/errata/manage/Create.do"
  creationType="erratum">
-  <!-- helpUrl="-!-/rhn/help/channel-mgmt/en-US/channel-mgmt-Custom_Errata_Management.jsp#channel-mgmt-Manage_Errata-Unpublished_Errata" -->
   <bean:message key="erratalist.jsp.erratamgmt"/>
 </rhn:toolbar>
 

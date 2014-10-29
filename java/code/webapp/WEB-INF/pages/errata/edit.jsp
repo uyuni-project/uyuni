@@ -9,9 +9,9 @@
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
+                     helpUrl=""
                      deletionUrl="/rhn/errata/manage/Delete.do?eid=${param.eid}"
                      deletionType="errata">
-            <!-- helpUrl="-!-/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp#sect-Getting_Started_Guide-Errata_Management-Creating_and_Editing_Errata" -->
             <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
         </rhn:toolbar>
 

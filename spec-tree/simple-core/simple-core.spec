@@ -1,12 +1,13 @@
 Name:		simple-core		
 Version:	3.1.3
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
 Group:	 	Development/Libraries	
 License:	GNU
 URL:	 	http://www.simpleframework.org	
 Source0:	simple-core-%{version}.tar.gz	
 BuildRoot:	%{_tmppath}/%{origname}-%{version}-%{release}-buildroot
+BuildArch: noarch
 
 BuildRequires:  ant
 %if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
@@ -59,6 +60,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadocdir}/*
 
 %changelog
+* Fri Oct 17 2014 Tomas Lestach <tlestach@redhat.com> 3.1.3-6
+- change simple-core package to be noarch
+
 * Tue Jun 24 2014 Michael Mraka <michael.mraka@redhat.com> 3.1.3-5
 - update deps for RHEL7
 

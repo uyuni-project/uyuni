@@ -2,7 +2,7 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.4
+Version: 2.3.6
 Release: 1%{?dist}
 URL: https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -46,6 +46,18 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Thu Oct 16 2014 Matej Kollar <mkollar@redhat.com> 2.3.6-1
+- 1150982 - Update man page
+- Tab vs. Spaces
+- 1150982 - Column named "group" can be a little complicated...
+- Add summary info about scan results
+
+* Sat Oct 11 2014 Matej Kollar <mkollar@redhat.com> 2.3.5-1
+- 1150982 - coping with old python
+- 1150982 - forgotten WHERE
+- 1150982 - Change gt to ge and lt to le
+- 1150982 - Add more filtering options
+- 1150982 - Add org_id to report
 * Mon Aug 25 2014 Tomas Lestach <tlestach@redhat.com> 2.3.4-1
 - 1132868 - avoid getting multiple host_system_id(s) per server
 

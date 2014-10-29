@@ -82,7 +82,7 @@ p {
 	overflow: hidden;
 	min-height: 100%;
 	aside {
-		.make-md-column(2);			
+		.make-md-column(2);
 	}
 	section {
 		.make-md-column(10);
@@ -95,7 +95,7 @@ p {
 	margin-right: 0;
 	margin-left: 0;
  	aside {
-		background: #eeeeee;
+		background: @spacewalk-aside;
 		border-right: 1px solid #d5d5d5;
 		height: auto;
 		min-height: 100%;
@@ -133,6 +133,9 @@ p {
 	margin-right: auto;
 	margin-left: auto;
 	overflow: hidden;
+	ul {
+		list-style: none;
+	}
 }
 
 
@@ -504,7 +507,7 @@ aside .nav > li > a {
 /* Margins to elements */
 //margins bottom
 .margin-bottom-xs {
-	margin-bottom: .5em; 
+	margin-bottom: .5em;
 }
 .margin-bottom-sm {
 	margin-bottom: 1em;
@@ -517,7 +520,7 @@ aside .nav > li > a {
 }
 //margins top
 .margin-top-xs {
-	margin-top: .5em; 
+	margin-top: .5em;
 }
 .margin-top-sm {
 	margin-top: 1em;
@@ -563,6 +566,10 @@ h1, h2, h3, h4, h5, h6 {
 // alerts
 .alert {
   margin: 18px 0;
+  padding-right: 34px;
+  ul {
+    padding-left: 0px;
+  }
 }
 
 // data lists
@@ -614,8 +621,8 @@ h1, h2, h3, h4, h5, h6 {
 	.spacewalk-list-footer-addons {
 		.make-row(0);
 		.spacewalk-list-footer-addons-extra {
-			.pull-left;
-			.text-left;
+			.pull-right;
+			.text-right;
 		}
 		.spacewalk-list-reflinks {
 			.pull-right;
@@ -630,6 +637,9 @@ h1, h2, h3, h4, h5, h6 {
 		.spacewalk-list-pagination {
 			.text-right;
 			.pull-right;
+			.spacewalk-list-pagination-btns {
+				padding-left: 0.5em;
+			}
 		}
 		.spacewalk-list-bottom-addons-extra {
 		}
@@ -709,8 +719,8 @@ ul.nav.nav-tabs:last-child {
   }
 }
 
-/* Links inside alert-info with darker colour and underline text */
-.alert-info a{
+/* Links inside alert with darker colour and underline text */
+.alert a{
 	color: darken(@brand-primary, 10%);
 	text-decoration: underline;
 }
@@ -795,4 +805,45 @@ div:not([class~="alert"]) i.fa {
     &.text-danger {
         color: @spacewalk-red;
     }
+}
+
+// icons for alert boxes decoration
+.alert:before,
+.alert:after {
+  font-family: 'PatternFlyIcons-webfont';
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.alert-info:after {
+  content: "\e604";
+  color: #72767b;
+}
+
+.alert-success:after {
+  content: "\e602";
+  color: #57a81c;
+}
+
+.alert-warning:before {
+  content: "\e60c";
+  color: #eb7720;
+}
+
+.alert-warning:after {
+  content: "\e60d";
+  color: #fff;
+}
+
+.alert-danger:before {
+  content: "\e609";
+  color: #c90813;
+}
+
+.alert-danger:after {
+  content: "\e608";
+  color: #fff;
 }

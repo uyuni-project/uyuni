@@ -1,5 +1,5 @@
 Name:           oracle-lib-compat
-Version:        11.2.0.9.1
+Version:        11.2.0.10
 Release:        0.<RELEASE7>
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
@@ -110,6 +110,9 @@ ldconfig
 
 
 %changelog
+* Wed Oct 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.10-1
+- oracle-instantclient11.2 requires libstdc++.so.6
+
 * Wed Jan 22 2014 Michael Mraka <michael.mraka@redhat.com> 11.2.0.9-1
 - LD_PRELOAD setup has been moved to spacewalk-setup-tomcat
 - Purging %%changelog entries preceding Spacewalk 1.0, in active packages.

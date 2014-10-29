@@ -8,7 +8,7 @@
 
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
 
-    <h1><rhn-icon type="header-system-groups" title="system set"/> System Set Manager <rhn-help href="s1-sm-systems.jsp#s2-sm-ssm" /></h1>
+    <h1><rhn-icon type="header-system-groups" title="system set"/> System Set Manager </h1>
 
     <rhn-navi-nav prefix="system_set_manager" depth="0" file="/nav/ssm.xml" style="contentnav" />
 
@@ -24,7 +24,7 @@ Tag Systems
         Tag name:
     </label>
     <div class="col-md-6">
-        <input type="text" name="tag" size="30" maxlength="256" class="form-control"/>
+        <input type="text" name="tag" size="30" maxlength="128" class="form-control"/>
         <span class="help-block">
             You may tag the most recent snapshots for the selected systems.
         </span>

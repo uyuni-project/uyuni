@@ -3,16 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Gatis Kalnins <gatis.kalnins@metatrons.lv>, 2006.
+# Gatis Kalnins <gatis.kalnins@metatrons.lv>, 2006
+# Kristaps, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-10 10:36+0200\n"
-"PO-Revision-Date: 2012-11-20 08:42+0000\n"
-"Last-Translator: adelton <jpx-tx@adelton.com>\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/fedora/language/"
-"lv/)\n"
+"POT-Creation-Date: 2014-10-06 14:52+0200\n"
+"PO-Revision-Date: 2014-01-14 09:23+0000\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Latvian (http://www.transifex.com/projects/p/spacewalk/"
+"language/lv/)\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr ""
 #: ../src/up2date_client/rhnregGui.py:169
 #: ../src/up2date_client/rhnreg_constants.py:248
 msgid "Warning"
-msgstr ""
+msgstr "Brīdinājums"
 
 #: ../src/up2date_client/rhnregGui.py:270
 msgid "There was an error while applying your choice."
@@ -85,11 +86,11 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:414
 msgid "You must enter a login."
-msgstr ""
+msgstr "Jums jāievada lietotājvārds."
 
 #: ../src/up2date_client/rhnregGui.py:420
 msgid "You must enter a password."
-msgstr ""
+msgstr "Jums jāievada parole."
 
 #: ../src/up2date_client/rhnregGui.py:433
 msgid "There was an error while logging in."
@@ -127,7 +128,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:711
 msgid "Registering System"
-msgstr ""
+msgstr "Reģistrē sistēmu"
 
 #: ../src/up2date_client/rhnregGui.py:725
 #: ../src/up2date_client/rhnregGui.py:729
@@ -269,7 +270,7 @@ msgstr ""
 #: ../src/up2date_client/config.py:154
 #, python-format
 msgid "%s was not found"
-msgstr ""
+msgstr "%s netika atrasts"
 
 #: ../src/up2date_client/rpcServer.py:45
 msgid "Error: Server Unavailable. Please try later."
@@ -298,7 +299,7 @@ msgstr ""
 #: ../src/up2date_client/tui.py:135
 #: ../src/up2date_client/rhnreg_constants.py:84
 msgid "Login:"
-msgstr ""
+msgstr "Lietotājvārds:"
 
 #: ../src/up2date_client/tui.py:136
 msgid "System ID:"
@@ -307,7 +308,7 @@ msgstr ""
 #: ../src/up2date_client/tui.py:536
 #: ../src/up2date_client/rhnreg_constants.py:313
 msgid "Error"
-msgstr ""
+msgstr "Kļūds"
 
 #: ../src/up2date_client/tui.py:536
 msgid "The server indicated an error:\n"
@@ -317,7 +318,7 @@ msgstr ""
 #: ../src/up2date_client/tui.py:536
 #: ../src/up2date_client/rhnreg_constants.py:312
 msgid "OK"
-msgstr ""
+msgstr "Labi"
 
 #: ../src/up2date_client/tui.py:540
 msgid "There was an error communicating with the registration server:\n"
@@ -329,11 +330,11 @@ msgstr ""
 
 #: ../src/up2date_client/tui.py:753 ../src/up2date_client/tui.py:754
 msgid "Version: "
-msgstr ""
+msgstr "Versija:"
 
 #: ../src/up2date_client/tui.py:760
 msgid "CPU model: "
-msgstr ""
+msgstr "CPU modelis:"
 
 #: ../src/up2date_client/tui.py:766
 msgid "Hostname: "
@@ -345,11 +346,11 @@ msgstr ""
 
 #: ../src/up2date_client/tui.py:784
 msgid "IP Address: "
-msgstr ""
+msgstr "IP adrese:"
 
 #: ../src/up2date_client/tui.py:793
 msgid "Memory: "
-msgstr ""
+msgstr "Atmiņa"
 
 #: ../src/up2date_client/tui.py:797
 #, python-format
@@ -387,6 +388,252 @@ msgstr ""
 
 #: ../src/up2date_client/tui.py:1346
 msgid "You must run the RHN registration program as root."
+msgstr ""
+
+#: ../src/up2date_client/rhnreg.py:59
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr ""
+
+#: ../src/up2date_client/rhnreg.py:65
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr ""
+
+#: ../src/up2date_client/hardware.py:819
+msgid "Error reading cpu information:"
+msgstr "Kļūda, nolasot CPU informāciju:"
+
+#: ../src/up2date_client/hardware.py:826
+msgid "Error reading system memory information:"
+msgstr ""
+
+#: ../src/up2date_client/hardware.py:836
+msgid "Error reading networking information:"
+msgstr ""
+
+#: ../src/up2date_client/hardware.py:857
+msgid "Error reading install method information:"
+msgstr ""
+
+#: ../src/up2date_client/hardware.py:865
+msgid "Error reading network interface information:"
+msgstr ""
+
+#: ../src/up2date_client/messageWindow.py:98
+msgid "Error:"
+msgstr "Kļūda:"
+
+#: ../src/up2date_client/messageWindow.py:105
+msgid "Yes/No dialog:"
+msgstr "Jā/nē dialogs:"
+
+#: ../src/up2date_client/rhnChannel.py:96
+msgid "Unable to Locate SystemId"
+msgstr ""
+
+#: ../src/up2date_client/rhnChannel.py:113
+msgid "This system may not be updated until it is associated with a channel."
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:39
+#: ../src/up2date_client/up2dateErrors.py:74
+#, python-format
+msgid "class %s has no attribute '%s'"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:97
+msgid "RPM error.  The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:104
+msgid "Password error. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:108
+msgid "RPM dependency error. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:118
+msgid "Error communicating with server. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:125
+msgid "File Not Found: \n"
+msgstr "Datne nav atrasta:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:132
+msgid "Delay error from server.  The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:170
+msgid "Error validating data at server:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:183
+msgid ""
+"\n"
+"Red Hat Network Classic is not supported.\n"
+"To register with Red Hat Subscription Management please run:\n"
+"\n"
+"    subscription-manager register --auto-attach\n"
+"\n"
+"Get more information at access.redhat.com/knowledge\n"
+"    "
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:194
+msgid "The installation number is invalid"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:197
+msgid "Error parsing the oemInfo file at field:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:224
+msgid "Network error: "
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:292
+msgid ""
+"\n"
+"    Your organization does not have enough Management entitlements to "
+"register this\n"
+"    system to Red Hat Satellite. Please notify your organization "
+"administrator of this error.\n"
+"    You should be able to register this system after your organization frees "
+"existing\n"
+"    or purchases additional entitlements. Additional entitlements may be "
+"purchased by your\n"
+"    organization administrator by logging into Red Hat Network Classic and "
+"visiting\n"
+"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
+"\n"
+"    A common cause of this error code is due to having mistakenly setup an\n"
+"    Activation Key which is set as the universal default.  If an activation "
+"key is set\n"
+"    on the account as a universal default, you can disable this key and "
+"retry to avoid\n"
+"    requiring a Management entitlement."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:70
+msgid "Show additional output"
+msgstr "Parādīt papildu izvadi"
+
+#: ../src/up2date_client/rhncli.py:72
+msgid "Specify an http proxy to use"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:74
+msgid "Specify a username to use with an authenticated http proxy"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:76
+msgid "Specify a password to use with an authenticated http proxy"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:98
+msgid ""
+"\n"
+"Aborted.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:101
+#, python-format
+msgid "An unexpected OS error occurred: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:105
+msgid "A connection was attempted with a malformed URI.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:107
+#, python-format
+msgid "A connection was attempted with a malformed URI: %s.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:109
+#, python-format
+msgid "There was some sort of I/O error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:112
+#, python-format
+msgid "There was an SSL error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:113
+msgid ""
+"A common cause of this error is the system time being incorrect. Verify that "
+"the time on this system is correct.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:120
+#, python-format
+msgid "There was a SSL crypto error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:124
+#, python-format
+msgid "There was an authentication error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:140
+#, python-format
+msgid "You must be root to run %s"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
+msgid "Unable to open gui. Try `up2date --nox`"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:212
+#, python-format
+msgid ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licensed under the terms of the GPLv2."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:227
+msgid "An error has occurred:"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:235
+msgid "See /var/log/up2date for more information"
+msgstr ""
+
+#: ../src/up2date_client/capabilities.py:88
+#, python-format
+msgid ""
+"This client requires the server to support %s, which the current server does "
+"not support"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:313
+msgid "_Finish"
+msgstr "_Pabeigt"
+
+#. Finish Window
+#: ../src/up2date_client/gui.py:314
+#: ../src/up2date_client/rhnreg_constants.py:150
+msgid "Updates Configured"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:316
+msgid "_Exit"
+msgstr "_Iziet"
+
+#: ../src/up2date_client/gui.py:317
+msgid "Software Updates Not Set Up"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:327
+msgid "You must run rhn_register as root."
+msgstr ""
+
+#: ../src/up2date_client/gui.py:351
+#, python-format
+msgid "There was some sort of I/O error: %s"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:14
@@ -473,15 +720,15 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:53
 msgid "Security & Updates:"
-msgstr ""
+msgstr "Drošība un atjauninājumi"
 
 #: ../src/up2date_client/rhnreg_constants.py:54
 msgid "Downloads & Upgrades:"
-msgstr ""
+msgstr "Lejuplādes un uzlabojumi"
 
 #: ../src/up2date_client/rhnreg_constants.py:55
 msgid "Support:"
-msgstr ""
+msgstr "Atbalsts:"
 
 #: ../src/up2date_client/rhnreg_constants.py:56
 msgid "Compliance:"
@@ -565,7 +812,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:85
 msgid "Password:"
-msgstr ""
+msgstr "Parole:"
 
 #: ../src/up2date_client/rhnreg_constants.py:86
 msgid ""
@@ -602,7 +849,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:96
 #: ../data/rh_register.glade.h:151
 msgid "All available updates"
-msgstr ""
+msgstr "Visi pieejamie atjauninājumi"
 
 #: ../src/up2date_client/rhnreg_constants.py:97
 msgid "Confirm operating system release selection"
@@ -662,7 +909,7 @@ msgstr ""
 #. Product Window
 #: ../src/up2date_client/rhnreg_constants.py:126
 msgid "*Email Address:"
-msgstr ""
+msgstr "*E-pasta adrese:"
 
 #: ../src/up2date_client/rhnreg_constants.py:128
 #: ../data/rh_register.glade.h:125
@@ -677,7 +924,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:130
 #: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
-msgstr ""
+msgstr "Vai esat drošs, ka vēlaties turpināt?"
 
 #: ../src/up2date_client/rhnreg_constants.py:132
 msgid ""
@@ -710,12 +957,6 @@ msgstr ""
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:147
 msgid "Sending Profile to Red Hat Satellite"
-msgstr ""
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:150
-#: ../src/up2date_client/gui.py:314
-msgid "Updates Configured"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:151
@@ -986,268 +1227,28 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:314
 msgid "Next"
-msgstr ""
+msgstr "Nākamais"
 
 #: ../src/up2date_client/rhnreg_constants.py:315
 msgid "Back"
-msgstr ""
+msgstr "Atpakaļ"
 
 #: ../src/up2date_client/rhnreg_constants.py:316
 msgid "Cancel"
-msgstr ""
+msgstr "Atcelt"
 
 #: ../src/up2date_client/rhnreg_constants.py:317
 #: ../data/rh_register.glade.h:110
 msgid "No, Cancel"
-msgstr ""
+msgstr "Nē, atcelt"
 
 #: ../src/up2date_client/rhnreg_constants.py:318
 #: ../data/rh_register.glade.h:112
 msgid "Yes, Continue"
-msgstr ""
+msgstr "Jā, turpināt"
 
 #: ../src/up2date_client/rhnreg_constants.py:319
 msgid "Press <space> to deselect the option."
-msgstr ""
-
-#: ../src/up2date_client/hardware.py:819
-msgid "Error reading cpu information:"
-msgstr ""
-
-#: ../src/up2date_client/hardware.py:826
-msgid "Error reading system memory information:"
-msgstr ""
-
-#: ../src/up2date_client/hardware.py:836
-msgid "Error reading networking information:"
-msgstr ""
-
-#: ../src/up2date_client/hardware.py:857
-msgid "Error reading install method information:"
-msgstr ""
-
-#: ../src/up2date_client/hardware.py:865
-msgid "Error reading network interface information:"
-msgstr ""
-
-#: ../src/up2date_client/messageWindow.py:98
-msgid "Error:"
-msgstr ""
-
-#: ../src/up2date_client/messageWindow.py:105
-msgid "Yes/No dialog:"
-msgstr ""
-
-#: ../src/up2date_client/rhnChannel.py:96
-msgid "Unable to Locate SystemId"
-msgstr ""
-
-#: ../src/up2date_client/rhnChannel.py:113
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-
-#: ../src/up2date_client/rhnreg.py:59
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg.py:65
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:39
-#: ../src/up2date_client/up2dateErrors.py:74
-#, python-format
-msgid "class %s has no attribute '%s'"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:97
-msgid "RPM error.  The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:104
-msgid "Password error. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:108
-msgid "RPM dependency error. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:118
-msgid "Error communicating with server. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:125
-msgid "File Not Found: \n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:132
-msgid "Delay error from server.  The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:170
-msgid "Error validating data at server:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:183
-msgid ""
-"\n"
-"Red Hat Network Classic is not supported.\n"
-"To register with Red Hat Subscription Management please run:\n"
-"\n"
-"    subscription-manager register --auto-attach\n"
-"\n"
-"Get more information at access.redhat.com/knowledge\n"
-"    "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:194
-msgid "The installation number is invalid"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:197
-msgid "Error parsing the oemInfo file at field:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:224
-msgid "Network error: "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:292
-msgid ""
-"\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
-"    system to Red Hat Satellite. Please notify your organization "
-"administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
-"    organization administrator by logging into Red Hat Network Classic and "
-"visiting\n"
-"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
-"\n"
-"    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
-"    requiring a Management entitlement."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:72
-msgid "Specify an http proxy to use"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:74
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:76
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:98
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:105
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:107
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:112
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:113
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:120
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:124
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:140
-#, python-format
-msgid "You must be root to run %s"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:212
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:227
-msgid "An error has occurred:"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:235
-msgid "See /var/log/up2date for more information"
-msgstr ""
-
-#: ../src/up2date_client/capabilities.py:88
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:313
-msgid "_Finish"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:316
-msgid "_Exit"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:317
-msgid "Software Updates Not Set Up"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:327
-msgid "You must run rhn_register as root."
-msgstr ""
-
-#: ../src/up2date_client/gui.py:351
-#, python-format
-msgid "There was some sort of I/O error: %s"
 msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:46
@@ -1361,7 +1362,7 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:61
 msgid "subscribe to channel"
-msgstr ""
+msgstr "abonēt kanālu"
 
 #: ../src/bin/spacewalk-channel.py:63
 msgid "unsubscribe from channel"
@@ -1385,11 +1386,11 @@ msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:73
 msgid "your user name"
-msgstr ""
+msgstr "Jūsu lietotājvārds"
 
 #: ../src/bin/spacewalk-channel.py:75
 msgid "your password"
-msgstr ""
+msgstr "Jūsu parole"
 
 #: ../src/bin/spacewalk-channel.py:83
 msgid "ERROR: these arguments make no sense in this context (try --help)"
@@ -1467,7 +1468,7 @@ msgstr ""
 
 #: ../data/gui.glade.h:6
 msgid "Create Profile"
-msgstr ""
+msgstr "Izveidot profilu"
 
 #: ../data/gui.glade.h:8
 msgid "Provide a security certificate"
@@ -1508,11 +1509,11 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:8
 msgid "Location:"
-msgstr ""
+msgstr "Atrašanās vieta:"
 
 #: ../data/rh_register.glade.h:9
 msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr ""
+msgstr "Piemērs https://satellite.example.com/XMLRPC"
 
 #: ../data/rh_register.glade.h:10
 msgid "satellite server location"
@@ -1520,7 +1521,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:11
 msgid "_Proxy Setup"
-msgstr ""
+msgstr "_Starpniekservera uzstādīšana"
 
 #: ../data/rh_register.glade.h:12
 msgid "Proxy Setup Button"
@@ -1540,11 +1541,11 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:17
 msgid "_Password:"
-msgstr ""
+msgstr "_Parole"
 
 #: ../data/rh_register.glade.h:18
 msgid "_Login:"
-msgstr ""
+msgstr "_Lietotājvārds"
 
 #: ../data/rh_register.glade.h:19
 msgid ""
@@ -1566,15 +1567,15 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:23
 msgid "IP Address:"
-msgstr ""
+msgstr "IP adrese:"
 
 #: ../data/rh_register.glade.h:24
 msgid "ERROR"
-msgstr ""
+msgstr "KĻŪDA"
 
 #: ../data/rh_register.glade.h:25
 msgid "CPU Model:"
-msgstr ""
+msgstr "CPU modelis:"
 
 #: ../data/rh_register.glade.h:26
 msgid "CPU Speed:"
@@ -1582,7 +1583,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:27
 msgid "Memory:"
-msgstr ""
+msgstr "Atmiņa:"
 
 #: ../data/rh_register.glade.h:28
 msgid "Hardware Profile"
@@ -1677,7 +1678,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:47
 msgid "•"
-msgstr ""
+msgstr "•"
 
 #: ../data/rh_register.glade.h:48
 msgid "installation number field"
@@ -1701,7 +1702,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:54
 msgid "Create profile"
-msgstr ""
+msgstr "Izveidot profilu"
 
 #: ../data/rh_register.glade.h:55
 msgid "<big><b>System Name</b></big>"
@@ -1719,7 +1720,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:58
 msgid "system name"
-msgstr ""
+msgstr "sistēmas nosaukums"
 
 #: ../data/rh_register.glade.h:59
 msgid "<big><b>Profile Data</b></big>"
@@ -1775,7 +1776,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:72
 msgid "Close"
-msgstr ""
+msgstr "Aizvērt"
 
 #: ../data/rh_register.glade.h:73
 msgid "<b>Security &amp; Updates:</b>"
@@ -1860,7 +1861,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:94
 msgid "Proxy Configuration"
-msgstr ""
+msgstr "Starpniekservera konfigurācija"
 
 #: ../data/rh_register.glade.h:95
 msgid "<b>HTTP Proxy</b>"
@@ -1945,7 +1946,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:117
 msgid "Are you Sure?"
-msgstr ""
+msgstr "Vai esat drošs?"
 
 #: ../data/rh_register.glade.h:118
 msgid "_Go Back and Register"

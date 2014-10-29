@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 35%{?dist}
+Release: 37%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -23,6 +23,7 @@ Patch9: cobbler-rhel7-variant.patch
 Patch10: cobbler-findks.patch
 Patch11: cobbler-arm-arch.patch
 Patch12: cobbler-modprobe-d.patch
+Patch13: fedora_os_entry.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -118,6 +119,7 @@ a XMLRPC API for integration with other applications.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 %{__python} setup.py build 
@@ -468,6 +470,12 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Wed Oct 08 2014 Tomas Lestach <tlestach@redhat.com> 2.0.11-37
+- use fedora18 as fedora kickstart type
+
+* Tue Sep 30 2014 Tomas Lestach <tlestach@redhat.com> 2.0.11-36
+- cobbler needs to know 'fedora' OS entry
+
 * Mon Sep 15 2014 Michael Mraka <michael.mraka@redhat.com> 2.0.11-35
 - 979966 - updated patch to match latest post_install_network_config version
 

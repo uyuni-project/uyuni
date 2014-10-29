@@ -184,6 +184,9 @@ public class UserHandler extends BaseHandler {
      *     false if the user is disabled")
      *     #prop_desc("boolean", "use_pam", "true if user is configured to use
      *     PAM authentication")
+     *     #prop_desc("boolean", "read_only", "true if user is readonly")
+     *     #prop_desc("boolean", "errata_notification", "true if errata e-mail notification
+     *     is enabled for the user")
      *   #struct_end()
      */
     public Map getDetails(User loggedInUser, String login) throws FaultException {
@@ -216,6 +219,8 @@ public class UserHandler extends BaseHandler {
             ret.put("enabled", Boolean.TRUE);
         }
         ret.put("use_pam", target.getUsePamAuthentication());
+        ret.put("read_only", target.isReadOnly());
+        ret.put("errata_notification", target.getEmailNotify() == 1);
 
         return ret;
     }

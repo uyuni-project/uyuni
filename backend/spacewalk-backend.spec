@@ -26,7 +26,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.16
+Version: 2.3.19
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -808,6 +808,15 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Thu Oct 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.19-1
+- 1152271 - sanitize db_name config value
+
+* Wed Oct 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.18-1
+- 1148163 - fixed variable name
+
+* Tue Sep 30 2014 Stephen Herr <sherr@redhat.com> 2.3.17-1
+- remove deprecated allowed_iss_slaves config option
+
 * Fri Sep 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.16-1
 - 1144008 - support for xz compressed repos
 

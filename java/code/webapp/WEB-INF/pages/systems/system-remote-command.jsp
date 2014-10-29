@@ -16,6 +16,8 @@
                 <h4><bean:message key="ssm.overview.provisioning.remotecommand.header" arg0="${fn:escapeXml(system.name)}"/></h4>
             </div>
             <div class="panel-body">
+                <c:choose>
+                <c:when test="${requestScope.has_script_run == true}">
                 <form name="remoteCommandForm" action="/rhn/systems/details/SystemRemoteCommand.do" method="post" class="form-horizontal" role="form">
                     <rhn:csrf />
                     <div class="form-group">
@@ -52,7 +54,7 @@
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.lbl.label"/>:
                         </label>
                         <div class="col-lg-6">
-                            <input type="text" name="lbl" maxlength="10" class="form-control"
+                            <input type="text" name="lbl" class="form-control"
                                    value="${formData.label}" size="" id="fLblInput"/>
                         </div>
                     </div>
@@ -78,6 +80,11 @@
                     <input type="hidden" name="sid" value="${system.id}" />
                     <input type="hidden" name="submitted" value="true" />
                 </form>
+                </c:when>
+                <c:otherwise>
+                    <bean:message key="ssm.operations.provisioning.remotecommand.no_script_run"/>
+                </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </body>

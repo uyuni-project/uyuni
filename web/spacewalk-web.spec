@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.10
+Version: 2.3.15
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -311,6 +311,25 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Tue Oct 21 2014 Tomas Lestach <tlestach@redhat.com> 2.3.15-1
+- limit snapshot tag length to the DB field lenght
+- 1150526 - introduce a check for an empty snapshot tag for ssm
+- 1024118 - Remove bogus help-url/rhn-help/helpUrl links from all pages
+
+* Wed Oct 15 2014 Jan Dobes 2.3.14-1
+- there is more to hide on unauthenticated pages
+
+* Tue Oct 14 2014 Jan Dobes 2.3.13-1
+- style SSM status bar
+
+* Thu Oct 09 2014 Jan Dobes 2.3.12-1
+- style perl local messages
+- style /network/software/channels/manage/edit.pxt
+
+* Mon Oct 06 2014 Jan Dobes 2.3.11-1
+- style lot of buttons
+- missing bootstrap class for textarea
+
 * Fri Sep 26 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.10-1
 - patternfly: don't hide SSM when no systems are selected
 - patternfly: fixed SSM animation duration

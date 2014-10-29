@@ -35,6 +35,13 @@
            <form-property name="childChannels" type="java.lang.String[]"/>
            <form-property name="submitted" type="java.lang.Boolean"/>
        </form-bean>
+
+       <form-bean name="activationKeyCloneForm"
+                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
+            <form-property name="label" type="java.lang.String"/>
+            <form-property name="submitted"  type="java.lang.Boolean"/>
+       </form-bean>
+
        <form-bean name="storedProfileForm"
            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
            <form-property name="name" type="java.lang.String"/>
@@ -6257,6 +6264,19 @@
                  path="/activationkeys/List.do"/>
     </action>
 
+    <action path="/activationkeys/Clone"
+        scope="request"
+        name="activationKeyCloneForm"
+        input="/WEB-INF/pages/activationkeys/clone.jsp"
+        type="com.redhat.rhn.frontend.action.token.ActivationKeyCloneAction"
+        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
+        <set-property property="acls" value="user_role(activation_key_admin)"/>
+        <forward name="default"
+                 path="/WEB-INF/pages/activationkeys/clone.jsp"/>
+        <forward name="success"
+                 path="/activationkeys/List.do"/>
+    </action>
+
     <action path="/activationkeys/channels/ChildChannels"
         name="activationKeyChildChannelForm"
         scope="request"
@@ -7439,7 +7459,7 @@
         name="channelOverviewForm"
         validate="false"
         scope="request"
-        input="/WEB-INF/pages/configuration/channelOverview.jsp"
+        input="/WEB-INF/pages/configuration/channel/channelOverview.jsp"
         type="com.redhat.rhn.frontend.action.configuration.channel.ChannelOverviewAction"
         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
         <set-property property="postRequiredIfSubmitted" value="true" />

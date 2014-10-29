@@ -10,7 +10,7 @@
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-errata">
-	<!-- helpUrl="-!-/rhn/help/getting-started/en-US/chap-Getting_Started_Guide-Errata_Management.jsp#sect-Getting_Started_Guide-Errata_Management-Creating_and_Editing_Errata" -->
+	           helpUrl="">
     <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 
@@ -47,6 +47,7 @@
           <rhn:submitted/>
           <hr/>
           <input type="submit"
+                 class="btn btn-success"
                  name="dispatch"
                  value='<bean:message key="errata.edit.packages.confirm.confirm"/>'/>
       </div>
