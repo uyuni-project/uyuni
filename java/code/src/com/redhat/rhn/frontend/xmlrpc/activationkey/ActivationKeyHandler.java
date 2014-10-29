@@ -841,7 +841,7 @@ public class ActivationKeyHandler extends BaseHandler {
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
         for (Iterator it = manager.findAll(loggedInUser).iterator(); it.hasNext();) {
             ActivationKey key = (ActivationKey)it.next();
-            manager.validateCredentials(loggedInUser, null, key);
+            manager.validateCredentials(user, null, key);
             result.add(key);
         }
 
