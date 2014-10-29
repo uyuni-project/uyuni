@@ -42,8 +42,12 @@ sub add_system_tag_bulk_cb {
   my $pxt = shift;
   my $tagname = $pxt->dirty_param('tag');
 
-  if (length($tagname) > 256) {
-    $pxt->push_message(local_alert => 'Tag names must be no more than 256 characters.');
+  if (not $tagname) {
+    $pxt->push_message(local_alert => 'Tag names must not be empty.');
+    $pxt->redirect("/network/systems/ssm/provisioning/tag_systems.pxt");
+  }
+  if (length($tagname) > 128) {
+    $pxt->push_message(local_alert => 'Tag names must be no more than 128 characters.');
     $pxt->redirect("/network/systems/ssm/provisioning/tag_systems.pxt");
   }
 

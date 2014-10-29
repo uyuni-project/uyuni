@@ -20,7 +20,7 @@
         <bean:message key="sdc.details.hardware.refresh" />
           <rhn:csrf />
           <html:hidden property="submitted" value="true" />
-          <div class="text-right">
+          <div class="text-right margin-bottom-sm">
             <html:submit styleClass="btn btn-default">
               <bean:message key="sdc.details.hardware.schedule" />
             </html:submit>
