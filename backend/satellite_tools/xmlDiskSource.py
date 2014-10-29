@@ -316,6 +316,9 @@ class MetadataDiskSource:
     def getSuseUpgradePathsXmlStream(self):
         return SuseUpgradePathsDiskSource(self.mountpoint).load()
 
+    def getSuseSubscriptionsXmlStream(self):
+        return SuseSubscriptionsDiskSource(self.mountpoint).load()
+
 class SupportInformationDiskSource(DiskSource):
     subdir = 'support_info'
 
@@ -351,6 +354,15 @@ class SuseUpgradePathsDiskSource(DiskSource):
         if create and not os.path.isdir(dirname):
             createPath(dirname)
         return "%s/suse_upgrade_paths.xml" % dirname
+
+class SuseSubscriptionsDiskSource(DiskSource):
+    subdir = 'suse_products'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/suse_subscriptions.xml" % dirname
 
 if __name__ == '__main__':
     # TEST CODE

@@ -161,3 +161,9 @@ class SuseUpgradePathsContainer(diskImportLibContainer, xmlSource.SuseUpgradePat
             return
         diskImportLibContainer.endContainerCallback(self)
 
+class SuseSubscriptionsContainer(diskImportLibContainer, xmlSource.SuseSubscriptionsContainer):
+    importer_class = suseProductsImport.SuseSubscriptionsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)

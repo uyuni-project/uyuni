@@ -197,6 +197,14 @@ class SuseUpgradePath(Information):
         'to_pdid'   : IntType,
     }
 
+class SuseSubscription(Information):
+    attributeTypes = {
+        'max_members'       : IntType,
+        'org_id'            : IntType,
+        'channel_family_id' : IntType,
+        'group_type'        : IntType
+    }
+
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,
