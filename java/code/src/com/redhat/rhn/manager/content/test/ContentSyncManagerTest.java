@@ -15,7 +15,6 @@
 package com.redhat.rhn.manager.content.test;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -86,9 +85,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testUpdateChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         try {
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
             Channel c = SUSEProductTestUtils.createTestVendorChannel();
@@ -257,7 +253,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         subscriptions.add(subscription);
 
         // Check the consolidated product classes
-        clearCredentials();
         ContentSyncManager csm = new ContentSyncManager();
         File channelFamiliesXML = new File(
                 TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
@@ -587,9 +582,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             repo.setUrl(sourceUrl);
             SCCCachingFactory.saveRepository(repo);
 
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
             // Create a channel that is INSTALLED
             Channel channel = SUSEProductTestUtils.createTestVendorChannel();
             String label = "sles11-sp3-pool-x86_64";
@@ -597,7 +589,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             TestUtils.saveAndFlush(channel);
 
             // List channels and verify status
-            clearCredentials();
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
             List<MgrSyncChannel> channels = csm.listChannels(csm.getRepositories());
@@ -770,11 +761,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             repo.setUrl(url);
             SCCCachingFactory.saveRepository(repo);
 
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
-            HibernateFactory.getSession().flush();
-
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
@@ -839,14 +825,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             repo.setUrl(xmlChannel.getSourceUrl());
             SCCCachingFactory.saveRepository(repo);
 
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
             // Ensure family has members
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
                     UserTestUtils.createUserInOrgOne(), "7261");
             ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
-            HibernateFactory.getSession().flush();
 
             // Add the channel by label
             csm.addChannel(xmlChannel.getLabel(), csm.getRepositories(), null);
@@ -1001,6 +983,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+
+        // Clear data for all tests
+        clearCredentials();
         SCCCachingFactory.clearRepositories();
+        renameVendorChannels();
     }
 }
