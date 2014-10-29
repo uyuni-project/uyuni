@@ -166,9 +166,9 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
 
     map<string,string> labels   = $[
         // text entry label
-        "SCC_USER"      : _("SCC Mirror Credentials Username"),
+        "SCC_USER"      : _("SCC Organization Credentials Username"),
         // text entry label
-        "SCC_PASS"      : _("SCC Mirror Credentials Password"),
+        "SCC_PASS"      : _("SCC Organization Credentials Password"),
         // text entry label
         "ISS_PARENT"    : _("Parent Server Name")
     ];
@@ -205,10 +205,10 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
                    `InputField (`id ("ISS_PARENT"), `opt (`hstretch), _("Parent &Server Name"), settings["ISS_PARENT"]:""))
             )))),
         // text entry label
-        `InputField (`id ("SCC_USER"), `opt (`hstretch), _("SCC Mirror Credentials &Username"),
+        `InputField (`id ("SCC_USER"), `opt (`hstretch), _("SCC Organization Credentials &Username"),
             settings["SCC_USER"]:""),
         // text entry label
-        `Password (`id ("SCC_PASS"), `opt (`hstretch), _("SCC Mirror Credentials &Password"),
+        `Password (`id ("SCC_PASS"), `opt (`hstretch), _("SCC Organization Credentials &Password"),
             settings["SCC_PASS"]:""),
         `VSpacing (),
         `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
