@@ -111,6 +111,7 @@ class Runner:
         'suse-products'             : ['arches'],
         'suse-product-channels'     : ['suse-products', 'channels'],
         'suse-upgrade-paths'        : ['suse-products'],
+        'suse-subscriptions'        : ['channel-families'],
     }
 
     # The step hierarchy. We need access to it both for command line
@@ -135,6 +136,7 @@ class Runner:
         'suse-products',
         'suse-product-channels',
         'suse-upgrade-paths',
+        'suse-subscriptions',
     ]
     def __init__(self):
         self.syncer = None
@@ -386,6 +388,8 @@ class Runner:
     def _step_suse_upgrade_paths(self):
         self.syncer.import_suse_upgrade_paths()
 
+    def _step_suse_subscriptions(self):
+        self.syncer.import_suse_subscriptions()
 
 def sendMail(forceEmail=0):
     """ Send email summary """
@@ -1906,6 +1910,10 @@ Please contact your administrator""") % (generation, sat_cert.generation))
     def import_suse_upgrade_paths(self):
         """Imports Upgrade Paths"""
         self._process_simple("getSuseUpgradePathsXmlStream", "suse_upgrade_paths")
+
+    def import_suse_subscriptions(self):
+        """Imports Subscriptions"""
+        self._process_simple("getSuseSubscriptionsXmlStream", "suse_subscriptions")
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer,

@@ -304,6 +304,11 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.suse_upgrade_paths", (self.systemid,))
 
+    def getSuseSubscriptionsXmlStream(self):
+        """retrieve xml stream for Subscriptions"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_subscriptions", (self.systemid,))
+
 class XMLRPCWireSource(BaseWireSource):
 
     "Base class for all the XMLRPC calls"
