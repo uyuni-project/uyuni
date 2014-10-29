@@ -783,6 +783,16 @@ class SuseUpgradePathItem(BaseItem):
     }
 addItem(SuseUpgradePathItem)
 
+class SuseSubscriptionItem(BaseItem):
+    item_name = 'suse-subscription'
+    item_class = importLib.SuseSubscription
+    tagMap = {
+        'sub-label'       : 'label',
+        'sub-max-members' : 'max_members',
+        'sub-system-ent'  : 'system_entitlement'
+    }
+addItem(SuseSubscriptionItem)
+
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
     item_class = importLib.ChannelErratum
@@ -1214,3 +1224,6 @@ class SuseProductChannelsContainer(ContainerHandler):
 
 class SuseUpgradePathsContainer(ContainerHandler):
     container_name = 'suse-upgrade-paths'
+
+class SuseSubscriptionsContainer(ContainerHandler):
+    container_name = 'suse-subscriptions'

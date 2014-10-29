@@ -89,6 +89,7 @@ class FileMapper:
                             'suse_products'     :   xmlDiskSource.SuseProductsDiskSource(self.mp),
                             'suse_product_channels' : xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
                             'suse_upgrade_paths':   xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
+                            'suse_subscriptions':   xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
                        }
 
     #This will make sure that all of the directories leading up to the
@@ -172,6 +173,9 @@ class FileMapper:
 
     def getSuseUpgradePathsFile(self):
         return self.setup_file(self.filemap['suse_upgrade_paths']._getFile())
+
+    def getSuseSubscriptionsFile(self):
+        return self.setup_file(self.filemap['suse_subscriptions']._getFile())
 
 class Dumper(dumper.XML_Dumper):
     """ This class subclasses the XML_Dumper class. It overrides
@@ -1040,6 +1044,13 @@ class Dumper(dumper.XML_Dumper):
                           "Upgrade Path Information exported to %s",
                           "%s caught in dump_suse_upgrade_paths.")
 
+    def dump_suse_subscriptions(self):
+        self._dump_simple(self.fm.getSuseSubscriptionsFile(),
+                          dumper.XML_Dumper.dump_suse_subscriptions,
+                          "Exporting Subscription Information...",
+                          "Subscription Information exported to %s",
+                          "%s caught in dump_suse_subscriptions.")
+
     #FIXME: remove old calls  - when NCC is really dead
     def dump_suse_products_subscriptions(self):
         self._dump_simple("%s/productdata.xml" % self.mp,
@@ -1260,6 +1271,7 @@ class ExporterMain:
                                     'suse-products'    :   {'dump' : self.dumper.dump_suse_products},
                                     'suse-product-channels' : {'dump' : self.dumper.dump_suse_product_channels},
                                     'suse-upgrade-paths' : {'dump' : self.dumper.dump_suse_upgrade_paths},
+                                    'suse-subscriptions' : {'dump' : self.dumper.dump_suse_subscriptions},
                                     #FIXME: remove old calls  - when NCC is really dead
                                     'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }

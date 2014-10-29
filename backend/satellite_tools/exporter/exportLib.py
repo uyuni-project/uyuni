@@ -796,6 +796,39 @@ class SuseUpgradePathDumper(BaseQueryDumper):
         cf = _SuseUpgradePathDumper(self._writer, data)
         cf.dump()
 
+class _SuseSubscriptionDumper(BaseRowDumper):
+    tag_name = 'suse-subscription'
+
+    def set_attributes(self):
+        return {
+            'sub-label'       : self._row['label'],
+            'sub-max-members' : self._row['max_members'],
+            'sub-system-ent'  : self._row['system_entitlement'],
+            }
+
+class SuseSubscriptionDumper(BaseQueryDumper):
+    tag_name = 'suse-subscriptions'
+    iterator_query = """
+        SELECT cf.label, pcf.max_members, 0 AS system_entitlement
+          FROM rhnPrivateChannelFamily pcf
+          JOIN rhnChannelFamily cf ON pcf.channel_family_id = cf.id
+         WHERE pcf.org_id = 1
+           AND max_members > 0
+         UNION
+        SELECT sgt.label, sg.max_members, 1 AS system_entitlement
+          FROM rhnServerGroup sg
+          JOIN rhnServerGroupType sgt ON sg.group_type = sgt.id
+         WHERE org_id = 1
+           AND max_members > 10
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseSubscriptionDumper(self._writer, data)
+        cf.dump()
+
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'
     iterator_query = 'select cf.* from rhnChannelFamily'
