@@ -109,6 +109,8 @@ class Runner:
         'orgs'                      : [''],
         'supportinfo'               : ['channels', 'packages'],
         'suse-products'             : ['arches'],
+        'suse-product-channels'     : ['suse-products', 'channels'],
+        'suse-upgrade-paths'        : ['suse-products'],
         # FIXME: remove old code
         'suse-products-subscriptions' : [''],
     }
@@ -133,6 +135,8 @@ class Runner:
         'kickstarts',
         'supportinfo',
         'suse-products',
+        'suse-product-channels',
+        'suse-upgrade-paths',
         # FIXME: remove old code
         'suse-products-subscriptions',
     ]
@@ -379,6 +383,12 @@ class Runner:
 
     def _step_suse_products(self):
         self.syncer.import_suse_products()
+
+    def _step_suse_product_channels(self):
+        self.syncer.import_suse_product_channels()
+
+    def _step_suse_upgrade_paths(self):
+        self.syncer.import_suse_upgrade_paths()
 
     #FIXME: remove old code
     def _step_suse_products_subscriptions(self):
@@ -1915,6 +1925,14 @@ Please contact your administrator""") % (generation, sat_cert.generation))
     def import_suse_products(self):
         """Imports SUSE Products"""
         self._process_simple("getSuseProductsXmlStream", "suse_products")
+
+    def import_suse_product_channels(self):
+        """Imports SUSE Product Channels"""
+        self._process_simple("getSuseProductChannelsXmlStream", "suse_product_channels")
+
+    def import_suse_upgrade_paths(self):
+        """Imports Upgrade Paths"""
+        self._process_simple("getSuseUpgradePathsXmlStream", "suse_upgrade_paths")
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer,

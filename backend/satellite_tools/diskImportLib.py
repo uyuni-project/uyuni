@@ -146,3 +146,18 @@ class SuseProductsContainer(diskImportLibContainer, xmlSource.SuseProductsContai
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
+
+class SuseProductChannelsContainer(diskImportLibContainer, xmlSource.SuseProductChannelsContainer):
+    importer_class = suseProductsImport.SuseProductChannelsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SuseUpgradePathsContainer(diskImportLibContainer, xmlSource.SuseUpgradePathsContainer):
+    importer_class = suseProductsImport.SuseUpgradePathsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
