@@ -14,13 +14,19 @@
  */
 package com.redhat.rhn.frontend.action.satellite;
 
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,13 +40,31 @@ public class SCCConfigAction extends RhnAction {
     private static Logger log = Logger.getLogger(SCCConfigAction.class);
 
     /**
-     * DWR end-point for this action
+     * DWR ajax end-point for this action
      */
     public static class AjaxEndPoint {
 
         public static String sayHello() {
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             logger.debug("I am on DWR");
             return "Hello!";
+        }
+
+        public static void performMigration() throws ContentSyncException {
+            User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
+                    .getCurrentUser();
+
+            if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+                throw new IllegalArgumentException(
+                        "Must be SAT_ADMIN to perform a migration");
+            }
+
+            ContentSyncManager manager = new ContentSyncManager();
+            //manager.performMigration(user);
         }
     }
 
@@ -62,7 +86,6 @@ public class SCCConfigAction extends RhnAction {
         if (MgrSyncUtils.isMigratedToSCC()) {
             return mapping.findForward("alreadymigrated");
         }
-
 
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }

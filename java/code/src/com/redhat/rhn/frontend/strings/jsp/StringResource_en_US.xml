@@ -22173,10 +22173,13 @@ given channel.</source>
           <source>Start Migration to SUSE Customer Center</source>
         </trans-unit>
         <trans-unit id="sccconfig.jsp.migrationinprogress">
-          <source>Migration in progress</source>
+          <source>Migration in progress.</source>
         </trans-unit>
         <trans-unit id="sccconfig.jsp.migrationcompleted">
-          <source>Migration in progress</source>
+          <source>Migration was successfully completed.</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.migrationfailed">
+          <source>Migration did not succeed.</source>
         </trans-unit>
       </group>
     </body>
