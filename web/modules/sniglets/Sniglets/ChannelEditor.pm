@@ -554,6 +554,7 @@ sub channel_edit_form {
   if (exists $editable{channel_arch}) {
     $subs{channel_arch} =
       PXT::HTML->select(-name => 'channel_arch',
+			-class => 'form-control',
 			-options => [ map { [ $archmap->{$_}->{NAME}, $_, $_ == $subs{channel_arch} ] } @arch_order ]);
   }
   else {
@@ -576,6 +577,7 @@ sub channel_edit_form {
     }
 
     $subs{channel_parent} = PXT::HTML->select(-name => 'channel_parent',
+					      -class => 'form-control',
 					      -options => [ [ "None", "", 1 ],
 							    map { [ $_->{NAME}, $_->{ID}, $_->{SELECTED} ] }
 							    sort { $a->{NAME} cmp $b->{NAME} }
@@ -584,7 +586,6 @@ sub channel_edit_form {
 
   if ($editable{channel_label}) {
     $subs{channel_label} = PXT::HTML->text(-name => 'new_channel_label', -value => $subs{channel_label}, -size => 32, -maxlength => 128);
-    $subs{channel_label} .= '<br />Ex: custom-channel';
   }
   if ($editable{channel_name}) {
     $subs{channel_name} = PXT::HTML->text(-name => 'channel_name', -value => $subs{channel_name}, -size => 48, -maxlength => 256);
@@ -602,7 +603,7 @@ sub channel_edit_form {
     $subs{channel_gpg_key_fp} = PXT::HTML->text(-name => 'channel_gpg_key_fp', -value => $subs{channel_gpg_key_fp}, -size => 60, -maxlength => 50);
   }
   if ($editable{channel_description}) {
-    $subs{channel_description} = PXT::HTML->textarea(-name => 'channel_description', -value => $subs{channel_description}, -rows => 6, -cols => 40, -wrap => 'VIRTUAL');
+    $subs{channel_description} = PXT::HTML->textarea(-name => 'channel_description', -value => $subs{channel_description}, -rows => 6, -cols => 40, -wrap => 'VIRTUAL', -class => 'form-control');
   }
 
   $block = PXT::Utils->perform_substitutions($block, \%subs);

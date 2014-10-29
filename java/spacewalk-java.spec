@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.45
+Version: 2.3.65
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,105 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Oct 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.65-1
+- do not allow to cancel the kickstart once completed
+- 796434 - [RFE] Add clone action to activation keys
+
+* Thu Oct 23 2014 Jan Dobes 2.3.64-1
+- remove invalid div
+- Style tweak to fix /rhn/configuration/channel/ChannelSystems
+- Correct style-issue due to empty old-list-tag in /rhn/configuration/Overview
+- Correct style-issue due to empty old-list-tag in
+  /rhn/configuration/file/LocalConfigFileList
+- Correct style-issue due to empty old-list-tag in
+  /rhn/configuration/GlobalConfigFileList
+- style /rhn/configuration/file/DeleteFile
+- style /rhn/configuration/file/DeleteRevision
+
+* Mon Oct 20 2014 Stephen Herr <sherr@redhat.com> 2.3.63-1
+- 1151005 - add package id to query results so webui can generate link
+- 1024118 - Remove bogus help-url/rhn-help/helpUrl links from all pages
+- do not re-init the exception cause with the same
+
+* Fri Oct 17 2014 Stephen Herr <sherr@redhat.com> 2.3.62-1
+- 1154175 - Show ppc64le profiles to ppc systems
+- fix spelling error
+
+* Fri Oct 17 2014 Jan Dobes 2.3.61-1
+- another list items count and selected items count texts style
+- improve style of navigation sub menu
+- separate list items count and selected items count texts
+- use fontawesome icon instead of image
+
+* Thu Oct 16 2014 Stephen Herr <sherr@redhat.com> 2.3.60-1
+- 1153793 - set default kernel and initrd locations for ppc64le distros
+- 1153789 - prevent infinite loop when scheduling kickstart
+
+* Thu Oct 16 2014 Tomas Lestach <tlestach@redhat.com> 2.3.59-1
+- 1153651 - actually a File.separator should work better
+- 1153651 - slash needed when building paths
+
+* Thu Oct 16 2014 Tomas Lestach <tlestach@redhat.com> 2.3.58-1
+- accept lowercase gpg channel information
+- let javascript do the uppercase of gpg fields for the user
+- 1008677 - fix system.schedulePackageInstall APIdoc
+
+* Tue Oct 14 2014 Jan Dobes 2.3.57-1
+- style /rhn/kickstart/SystemDetailsEdit page
+- remove header of always empty section
+
+* Tue Oct 14 2014 Tomas Lestach <tlestach@redhat.com> 2.3.56-1
+- fix javascript injection on /rhn/systems/details/kickstart/ScheduleWizard.do
+  page
+- 1150980 - add read_only and errata_notification to user.getDetails APIdoc
+- 1013672 - add id to errata.getDetails APIdoc
+- fixing javascript injection on /rhn/kickstart/KickstartOverview.do page
+- close forgotten div in lists
+
+* Mon Oct 13 2014 Stephen Herr <sherr@redhat.com> 2.3.55-1
+- 1132398 - fix debian repo generation and unused code cleanup
+- 1150980 - extend user.getDetails API
+
+* Fri Oct 10 2014 Tomas Lestach <tlestach@redhat.com> 2.3.54-1
+- fixing javascript injection on
+  /rhn/systems/details/configuration/addfiles/ImportFileConfirm.do page
+- fixing javascript injection on /rhn/errata/details/SystemsAffected.do page
+- 1020414 - Removed bogus label-limit from SDC Remote Cmd pg
+
+* Thu Oct 09 2014 Jan Dobes 2.3.53-1
+- improve look of /rhn/channels/manage/repos/RepoDelete page
+
+* Wed Oct 08 2014 Jan Dobes 2.3.52-1
+- style /rhn/systems/details/configuration/Overview page
+- remove redundant symbol
+
+* Wed Oct 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.51-1
+- 1150275 - fixed pt_BR translation
+- style /rhn/systems/ssm/provisioning/RemoteCommand page
+- 'Erratum' is singular, 'Errata' is plural, 'Erratas' is nothing
+
+* Mon Oct 06 2014 Grant Gainey 2.3.50-1
+- 1148836 - DOn't schedule a remote-cmd if the system can't execute it
+- fix used icon
+- add some space under button
+- fix button indentation
+
+* Fri Oct 03 2014 Jan Dobes 2.3.49-1
+- style lot of buttons
+- making Channel.equals(SelectableChannel) symmetric
+- broken checkbox layout in /rhn/channels/manage/Sync.do?cid=xxx
+
+* Wed Oct 01 2014 Jan Dobes 2.3.48-1
+- 1136492 - check if user can see activation key
+
+* Wed Oct 01 2014 Jan Dobes 2.3.47-1
+- 1093045 - schedule configuration actions asynchronously
+- fixed missing boostrap design
+- missing bootstrap class
+
+* Mon Sep 29 2014 Stephen Herr <sherr@redhat.com> 2.3.46-1
+- 481001 - throw sensible error to user if multiple channels containing rhncfg
+
 * Fri Sep 26 2014 Stephen Herr <sherr@redhat.com> 2.3.45-1
 - 1084522 - make parsing repo filters more robust
 

@@ -5,7 +5,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.3.0
+Version: 2.3.2
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -116,6 +116,12 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri Oct 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.2-1
+- 1011455 - fixed missing function parameter
+
+* Fri Oct 17 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.1-1
+- 1011455 - don't hardcode systemid path in rhn-proxy-activate
+
 * Fri May 23 2014 Milan Zazrivec <mzazrivec@redhat.com> 2.2.1-1
 - spec file polish
 

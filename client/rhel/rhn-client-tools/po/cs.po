@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Martin Minar <skulliq@gmail.com>, 2011.
-# Milan Kerslager <kerslage@linux.cz>, 2002,2007.
-# Miloslav Trmac <mitr@volny.cz>, 2002.
-# Miroslav Suchý <msuchy@redhat.com>, 2011-2012.
+# Martin Minar <skulliq@gmail.com>, 2011
+# Milan Kerslager <kerslage@linux.cz>, 2002,2007
+# Miloslav Trmač <mitr@volny.cz>, 2002
+# Miroslav Suchý <msuchy@redhat.com>, 2011-2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-10 10:36+0200\n"
-"PO-Revision-Date: 2013-02-06 09:40+0000\n"
-"Last-Translator: adelton <jpx-tx@adelton.com>\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/fedora/language/"
+"POT-Creation-Date: 2014-10-06 13:09+0200\n"
+"PO-Revision-Date: 2014-01-14 09:23+0000\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Czech (http://www.transifex.com/projects/p/spacewalk/language/"
 "cs/)\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "Varování"
 
 #: ../src/up2date_client/rhnregGui.py:270
 msgid "There was an error while applying your choice."
-msgstr ""
+msgstr "Fatální chyba při instalaci balíčku:"
 
 #: ../src/up2date_client/rhnregGui.py:289
 msgid "You specified an invalid protocol. Only https and http are allowed."
@@ -68,9 +68,8 @@ msgid "Make sure the network connection on this system is operational."
 msgstr "Ujistěte se, že vaše síťové připojení je funkční."
 
 #: ../src/up2date_client/rhnregGui.py:339
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Při komunikaci s Red Hat Network došlo k chybě."
+msgstr "Při komunikaci se Spacewalk serverem došlo k chybě."
 
 #: ../src/up2date_client/rhnregGui.py:340
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -84,7 +83,7 @@ msgstr "Váš klient, který právě spouštíte, je nekompatibilní se serverem
 #, python-format
 msgid ""
 "Please enter your account information for the <b>%s</b> Spacewalk server:"
-msgstr ""
+msgstr "Registrační informace pro:"
 
 #: ../src/up2date_client/rhnregGui.py:414
 msgid "You must enter a login."
@@ -126,7 +125,7 @@ msgstr "Nastala chyba při vytváření profilu."
 
 #: ../src/up2date_client/rhnregGui.py:692
 msgid "Registering system and sending profile information.  Please wait."
-msgstr ""
+msgstr "Registruji systém a odesílám informace vašeho profilu. Čekejte prosím."
 
 #: ../src/up2date_client/rhnregGui.py:711
 msgid "Registering System"
@@ -224,7 +223,7 @@ msgstr "neznámý"
 
 #: ../src/up2date_client/rhnregGui.py:1118
 msgid "There was an error getting the list of hardware."
-msgstr ""
+msgstr "Fatální chyba při instalaci balíčku:"
 
 #: ../src/up2date_client/rhnregGui.py:1130 ../src/up2date_client/tui.py:782
 #, python-format
@@ -294,7 +293,7 @@ msgstr "CHYBA: nemohu najít soubor RHNS CA"
 
 #: ../src/up2date_client/rpcServer.py:206
 msgid "Connection aborted by the user"
-msgstr "Spojení přerušeno uživatelem."
+msgstr "Spojení přerušeno uživatelem"
 
 #: ../src/up2date_client/rpcServer.py:251
 msgid "Server has refused connection due to high load"
@@ -305,9 +304,8 @@ msgid "Getting list of packages installed on the system"
 msgstr "Získávám seznam balíčků nainstalovaných v systému"
 
 #: ../src/up2date_client/tui.py:134
-#, fuzzy
 msgid "Spacewalk Location:"
-msgstr "Adresa Red Hat Network:"
+msgstr "Adresa Spacewalk serveru:"
 
 #: ../src/up2date_client/tui.py:135
 #: ../src/up2date_client/rhnreg_constants.py:84
@@ -405,15 +403,276 @@ msgstr ""
 msgid "You must run the RHN registration program as root."
 msgstr "Registrační program RHN musíte spustit jako root."
 
+#: ../src/up2date_client/rhnreg.py:65
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr "Varování: nemohu povolit rhnsd pomocí chkconfig"
+
+#: ../src/up2date_client/hardware.py:819
+msgid "Error reading cpu information:"
+msgstr "Chyba při čtení informací o cpu:"
+
+#: ../src/up2date_client/hardware.py:826
+msgid "Error reading system memory information:"
+msgstr "Chyba při čtení informací o systémové paměti:"
+
+#: ../src/up2date_client/hardware.py:836
+msgid "Error reading networking information:"
+msgstr "Chyba při čtení informací o síti:"
+
+#: ../src/up2date_client/hardware.py:857
+msgid "Error reading install method information:"
+msgstr "Chyba při čtení informací o metodě instalace:"
+
+#: ../src/up2date_client/rhnreg_constants.py:23
+msgid "SSL certificate:"
+msgstr "SSL certifikát:"
+
+#: ../src/up2date_client/rhnreg_constants.py:24
+#, fuzzy
+msgid "You must enter a valid Satellite URL."
+msgstr "Musíte zadat platné URL."
+
+
+#: ../src/up2date_client/hardware.py:865
+msgid "Error reading network interface information:"
+msgstr "Chyba při čtení informací o síťových rozhraních:"
+
+
+#: ../src/up2date_client/messageWindow.py:98
+msgid "Error:"
+msgstr "Chyba:"
+
+#. Connect Window
+#: ../src/up2date_client/rhnreg_constants.py:29
+#, fuzzy
+msgid "Attempting to contact the Spacewalk server."
+msgstr "Navazuji spojení se Spacewalk serverem."
+
+#: ../src/up2date_client/messageWindow.py:105
+msgid "Yes/No dialog:"
+msgstr "Dialog Ano/Ne:"
+
+#: ../src/up2date_client/rhnChannel.py:113
+msgid "This system may not be updated until it is associated with a channel."
+msgstr ""
+"Tento systém nemůže být aktualizován, dokud není asociován s nějakým kanálem."
+
+#. Start Window
+#: ../src/up2date_client/rhnreg_constants.py:35 ../data/gui.glade.h:1
+msgid "System Registration"
+msgstr "Registrace systému"
+
+#: ../src/up2date_client/up2dateErrors.py:97
+msgid "RPM error.  The message was:\n"
+msgstr "Chyba RPM:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:104
+msgid "Password error. The message was:\n"
+msgstr "Chyba v heslu:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:108
+msgid "RPM dependency error. The message was:\n"
+msgstr "Chyba  závislostí RPM. Zpráva byla:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:118
+msgid "Error communicating with server. The message was:\n"
+msgstr "Chyba při komunikaci se serverem. Zpráva byla:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:125
+msgid "File Not Found: \n"
+msgstr "Soubor nenalezen: \n"
+
+#: ../src/up2date_client/up2dateErrors.py:132
+msgid "Delay error from server.  The message was:\n"
+msgstr "Překročen maximální čas odezvy serveru:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:170
+msgid "Error validating data at server:\n"
+msgstr "Chyba při ověřování správnosti dat na serveru:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:183
+msgid ""
+"\n"
+"Red Hat Network Classic is not supported.\n"
+"To register with Red Hat Subscription Management please run:\n"
+"\n"
+"    subscription-manager register --auto-attach\n"
+"\n"
+"Get more information at access.redhat.com/knowledge\n"
+"    "
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:194
+msgid "The installation number is invalid"
+msgstr "Instalační číslo je neplatné"
+
+#: ../src/up2date_client/up2dateErrors.py:197
+msgid "Error parsing the oemInfo file at field:\n"
+msgstr "Chyba při zpracovávání souboru oemInfo v poli:\n"
+
+#: ../src/up2date_client/up2dateErrors.py:292
+msgid ""
+"\n"
+"    Your organization does not have enough Management entitlements to "
+"register this\n"
+"    system to Red Hat Satellite. Please notify your organization "
+"administrator of this error.\n"
+"    You should be able to register this system after your organization frees "
+"existing\n"
+"    or purchases additional entitlements. Additional entitlements may be "
+"purchased by your\n"
+"    organization administrator by logging into Red Hat Network Classic and "
+"visiting\n"
+"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
+"\n"
+"    A common cause of this error code is due to having mistakenly setup an\n"
+"    Activation Key which is set as the universal default.  If an activation "
+"key is set\n"
+"    on the account as a universal default, you can disable this key and "
+"retry to avoid\n"
+"    requiring a Management entitlement."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:70
+msgid "Show additional output"
+msgstr "Vypisovat více informací"
+
+#: ../src/up2date_client/rhncli.py:72
+msgid "Specify an http proxy to use"
+msgstr "Zadejte HTTP proxy, kterou chcete používat"
+
+#: ../src/up2date_client/rhncli.py:74
+msgid "Specify a username to use with an authenticated http proxy"
+msgstr ""
+"Zadejte jméno uživatele, které chcete použít pro autentizaci k HTTP proxy"
+
+#: ../src/up2date_client/rhncli.py:76
+msgid "Specify a password to use with an authenticated http proxy"
+msgstr "Zadejte heslo, které chcete použít pro autentizaci k HTTP proxy"
+
+#: ../src/up2date_client/rhncli.py:98
+msgid ""
+"\n"
+"Aborted.\n"
+msgstr ""
+"\n"
+"Přerušeno.\n"
+
+#: ../src/up2date_client/rhncli.py:101
+#, python-format
+msgid "An unexpected OS error occurred: %s\n"
+msgstr "Došlo k neočekávané chybě OS: %s\n"
+
+#: ../src/up2date_client/rhncli.py:105
+msgid "A connection was attempted with a malformed URI.\n"
+msgstr ""
+"Došlo k pokusu o spojení s poškozeným URI.\n"
+"\n"
+
+#: ../src/up2date_client/rhncli.py:107
+#, python-format
+msgid "A connection was attempted with a malformed URI: %s.\n"
+msgstr ""
+"Došlo k pokusu o spojení s poškozeným URI: %s.\n"
+"\n"
+
+#: ../src/up2date_client/rhncli.py:109
+#, python-format
+msgid "There was some sort of I/O error: %s\n"
+msgstr "Došlo k I/O chybě: %s\n"
+
+#: ../src/up2date_client/rhncli.py:112
+#, python-format
+msgid "There was an SSL error: %s\n"
+msgstr "Došlo k chybě SSL: %s\n"
+
+#: ../src/up2date_client/rhncli.py:113
+msgid ""
+"A common cause of this error is the system time being incorrect. Verify that "
+"the time on this system is correct.\n"
+msgstr ""
+"Častý důvod této chyby je nesprávný systémový čas. Zkontrolujte, zda je čas "
+"v systému správně nastaven.\n"
+
+#: ../src/up2date_client/rhncli.py:120
+#, python-format
+msgid "There was a SSL crypto error: %s\n"
+msgstr "Došlo k chybě šifrování SSL: %s\n"
+
+#: ../src/up2date_client/rhncli.py:124
+#, python-format
+msgid "There was an authentication error: %s\n"
+msgstr "Došlo k chybě autentizace: %s\n"
+
+#: ../src/up2date_client/rhncli.py:140
+#, python-format
+msgid "You must be root to run %s"
+msgstr "Musíte být root, aby šlo spustit %s"
+
+#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
+msgid "Unable to open gui. Try `up2date --nox`"
+msgstr "Nelze použít grafické rozhraní. Zkuste `up2date --nox`"
+
+#: ../src/up2date_client/rhncli.py:212
+#, python-format
+msgid ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licensed under the terms of the GPLv2."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:227
+msgid "An error has occurred:"
+msgstr "Došlo k chybě:"
+
+#: ../src/up2date_client/rhncli.py:235
+msgid "See /var/log/up2date for more information"
+msgstr "Více informací naleznete ve /var/log/up2date"
+
+#: ../src/up2date_client/capabilities.py:88
+#, python-format
+msgid ""
+"This client requires the server to support %s, which the current server does "
+"not support"
+msgstr ""
+"Tento klient vyžaduje, aby server podporoval %s, což aktuální server "
+"nepodporuje"
+
+#: ../src/up2date_client/gui.py:313
+msgid "_Finish"
+msgstr "_Dokončit"
+
+#. Finish Window
+#: ../src/up2date_client/gui.py:314
+#: ../src/up2date_client/rhnreg_constants.py:150
+msgid "Updates Configured"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:316
+msgid "_Exit"
+msgstr "_Ukončit"
+
+#: ../src/up2date_client/gui.py:317
+msgid "Software Updates Not Set Up"
+msgstr "_Přerušit nastavení aktualizace programů"
+
+#: ../src/up2date_client/gui.py:327
+msgid "You must run rhn_register as root."
+msgstr "Program rhn_register musíte spustit jako root."
+
+#: ../src/up2date_client/gui.py:351
+#, python-format
+msgid "There was some sort of I/O error: %s"
+msgstr "Došlo k I/O chybě: %s"
+
 #: ../src/up2date_client/rhnreg_constants.py:14
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
 msgstr "Copyright © 2006--2014 Red Hat, Inc. Všechna práva vyhrazena."
 
 #. Satellite URL Window
 #: ../src/up2date_client/rhnreg_constants.py:17
-#, fuzzy
 msgid "Enter your Red Hat Satellite URL."
-msgstr "Musíte zadat váš login."
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:18
 msgid ""
@@ -426,44 +685,34 @@ msgstr ""
 msgid "Satellite URL:"
 msgstr ""
 
-#: ../src/up2date_client/rhnreg_constants.py:23
-msgid "SSL certificate:"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:24
-#, fuzzy
-msgid "You must enter a valid Satellite URL."
-msgstr "Musíte zadat váš login."
-
 #: ../src/up2date_client/rhnreg_constants.py:25
 msgid ""
 "If you are using https you must enter the location of a valid SSL "
 "certificate."
 msgstr ""
 
-#. Connect Window
-#: ../src/up2date_client/rhnreg_constants.py:29
-#, fuzzy
-msgid "Attempting to contact the Spacewalk server."
-msgstr "Navazuji spojení se serverem Red Hat Network."
-
 #: ../src/up2date_client/rhnreg_constants.py:30
 #, python-format
 msgid "We are attempting to contact the Red Hat Network server at %s."
 msgstr "Navazuji spojení se serverem Red Hat Network: %s"
+
+#: ../src/up2date_client/rhnreg_constants.py:128
+#: ../data/rh_register.glade.h:125
+msgid "System Already Registered"
+msgstr "Systém je již registrován"
+
+#: ../src/up2date_client/rhnreg_constants.py:129
+#: ../data/rh_register.glade.h:126
+msgid "It appears this system has already been set up for software updates:"
+msgstr ""
+
 
 #: ../src/up2date_client/rhnreg_constants.py:32
 #, python-format
 msgid "A proxy was specified at %s."
 msgstr "Nastavena proxy %s."
 
-#. Start Window
-#: ../src/up2date_client/rhnreg_constants.py:35 ../data/gui.glade.h:1
-msgid "System Registration"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:36
-#, fuzzy
 msgid ""
 "This assistant will guide you through connecting your system to Red Hat "
 "Satellite to receive software updates, including security updates, to keep "
@@ -475,15 +724,6 @@ msgid ""
 " * The location of a Red Hat Satellite or Proxy\n"
 "\n"
 msgstr ""
-"Pomocí průvodce projdete nastavení pro připojení k RHN (Red Hat Network), "
-"které umožňuje přijímat aktualizace programů včetně bezpečnostních "
-"aktualizací, které budou udržovat váš systém v vyhovujícím podporovaném "
-"stavu. K tomu budete potřebovat:\n"
-"\n"
-" * Připojení k Internetu\n"
-" * Vaše přihlašovací jméno a heslo k RHN\n"
-" * Umístění Red Hat Network Satellite nebo Proxy (volitelně)\n"
-"\n"
 
 #. Why Register Window
 #: ../src/up2date_client/rhnreg_constants.py:49 ../data/rh_register.glade.h:5
@@ -495,13 +735,10 @@ msgid "Why Register"
 msgstr "Proč se registrovat"
 
 #: ../src/up2date_client/rhnreg_constants.py:51
-#, fuzzy
 msgid ""
 "Connecting your system to Red Hat Satellite allows you to take full "
 "advantage of the benefits of a paid subscription, including:"
 msgstr ""
-"Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
-"předplaceného přístupu včetně:"
 
 #: ../src/up2date_client/rhnreg_constants.py:53
 msgid "Security & Updates:"
@@ -563,16 +800,13 @@ msgstr "Chci se vrátit k registraci"
 #. Confirm Quit Window
 #: ../src/up2date_client/rhnreg_constants.py:71
 msgid "Software Update Not Set Up"
-msgstr ""
+msgstr "_Přerušit nastavení aktualizace programů"
 
 #: ../src/up2date_client/rhnreg_constants.py:72
-#, fuzzy
 msgid ""
 "Are you sure you don't want to connect your system to Red Hat Satellite? "
 "You'll miss out on the benefits of a Red Hat Enterprise Linux subscription:\n"
 msgstr ""
-"Jste si jisti, že se nechcete připojit do Red Hat Network? Připojení "
-"umožňuje naplno využít výhody předplaceného přístupu včetně:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:74
 msgid ""
@@ -592,7 +826,7 @@ msgstr "Zaregistruji se později."
 #: ../src/up2date_client/rhnreg_constants.py:80 ../data/gui.glade.h:4
 #: ../data/rh_register.glade.h:13
 msgid "Red Hat Account"
-msgstr ""
+msgstr "Přihlášení u Red Hat"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 #, python-format
@@ -661,18 +895,14 @@ msgstr ""
 #. Hardware Window
 #: ../src/up2date_client/rhnreg_constants.py:103
 msgid "Create Profile - Hardware"
-msgstr ""
+msgstr "Připojit váš systém"
 
 #: ../src/up2date_client/rhnreg_constants.py:104
-#, fuzzy
 msgid ""
 "A Profile Name is a descriptive name that you choose to identify this System "
 "Profile on the Red Hat Satellite web pages. Optionally, include a computer "
 "serial or identification number."
 msgstr ""
-"Název profilu je popisný název, podle kterého tento systémový profil "
-"identifikujete na WWW stránkách Red Hat Network. Můžete přidat sériové nebo "
-"identifikační číslo počítače."
 
 #: ../src/up2date_client/rhnreg_constants.py:108
 msgid ""
@@ -689,7 +919,7 @@ msgstr "Zahrnout následující informace o hardware a síti:"
 #. Packages Window
 #: ../src/up2date_client/rhnreg_constants.py:115
 msgid "Create Profile - Packages"
-msgstr ""
+msgstr "Připojit váš systém"
 
 #: ../src/up2date_client/rhnreg_constants.py:116
 msgid ""
@@ -718,16 +948,6 @@ msgstr "Sestavuji seznam balíčků"
 msgid "*Email Address:"
 msgstr "*Emailová adresa:"
 
-#: ../src/up2date_client/rhnreg_constants.py:128
-#: ../data/rh_register.glade.h:125
-msgid "System Already Registered"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg_constants.py:129
-#: ../data/rh_register.glade.h:126
-msgid "It appears this system has already been set up for software updates:"
-msgstr "Restartuji up2date"
-
 #: ../src/up2date_client/rhnreg_constants.py:130
 #: ../data/rh_register.glade.h:131
 msgid "Are you sure you would like to continue?"
@@ -749,12 +969,10 @@ msgstr ""
 
 #. Send Window
 #: ../src/up2date_client/rhnreg_constants.py:139
-#, fuzzy
 msgid "Send Profile Information to Red Hat Satellite"
-msgstr "Odeslat informace profilu do Red Hat Network"
+msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:140
-#, fuzzy
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
@@ -762,27 +980,13 @@ msgid ""
 "\"Cancel\" and no information will be sent.  You can run the registration "
 "program later by typing `rhn_register` at the command line."
 msgstr ""
-"Dokončili jsme sbírání informací pro profil systému.\n"
-"\n"
-"Tento profil systému odešlete do Red Hat Network kliknutím na \"Vpřed\". "
-"Jestliže kliknete na \"Zrušit\", nebudou odeslány žádné informace. "
-"Registrační program můžete spustit později napsáním `rhn_register` na "
-"příkazovém řádku."
 
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:147
-#, fuzzy
 msgid "Sending Profile to Red Hat Satellite"
-msgstr "Posílám profil do Red Hat Network"
-
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:150
-#: ../src/up2date_client/gui.py:314
-msgid "Updates Configured"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:151
-#, fuzzy
 msgid ""
 "You may now run 'yum update' from this system's command line to get the "
 "latest software updates from Red Hat Satellite. You will need to run this "
@@ -792,18 +996,11 @@ msgid ""
 "are in chapter 6 of the RHN Reference Guide, available from the 'Help' "
 "button in the main Red Hat Network Satellite web interface.)"
 msgstr ""
-"Abyste získali nejnovější aktualizace z Red Hat Network, můžete nyní spustit "
-"'yum update' z příkazové řádky tohoto systému. Spouštějte tento příkaz "
-"pravidelně, abyste získávali nejnovější aktualizace. Nebo můžete tento "
-"systém nastavit na automatické aktualizace (též známé jako 'auto errata "
-"update') via webové rozhraní Red Hat Network.   (Instrukce jak to udělat "
-"jsou v kapitole 6 RHN Reference Guide dostupné pod tlačítkem 'Help' na "
-"hlavní straně webového rozhraní Red Hat Network.)"
 
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:162 ../data/gui.glade.h:7
 msgid "Review Subscription"
-msgstr ""
+msgstr "Popis"
 
 #: ../src/up2date_client/rhnreg_constants.py:163
 #: ../data/rh_register.glade.h:53
@@ -821,11 +1018,11 @@ msgstr ""
 msgid ""
 "Subscriptions have been activated for the following Red Hat products/"
 "services:"
-msgstr ""
+msgstr "Číslo přihlášení není platné"
 
 #: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Software Channel Subscriptions:"
-msgstr ""
+msgstr "Informace o kanálech"
 
 #: ../src/up2date_client/rhnreg_constants.py:169
 msgid "This system will receive updates from the following software channels:"
@@ -1085,259 +1282,6 @@ msgstr "Ano, pokračovat"
 msgid "Press <space> to deselect the option."
 msgstr "Zmáčkněte <mezerník> pro zrušení výběru."
 
-#: ../src/up2date_client/hardware.py:819
-msgid "Error reading cpu information:"
-msgstr "Chyba při čtení informací o cpu:"
-
-#: ../src/up2date_client/hardware.py:826
-msgid "Error reading system memory information:"
-msgstr "Chyba při čtení informací o systémové paměti:"
-
-#: ../src/up2date_client/hardware.py:836
-msgid "Error reading networking information:"
-msgstr "Chyba při čtení informací o síti:"
-
-#: ../src/up2date_client/hardware.py:857
-msgid "Error reading install method information:"
-msgstr "Chyba při čtení informací o metodě instalace:"
-
-#: ../src/up2date_client/hardware.py:865
-msgid "Error reading network interface information:"
-msgstr "Chyba při čtení informací o síťových rozhraních:"
-
-#: ../src/up2date_client/messageWindow.py:98
-msgid "Error:"
-msgstr "Chyba:"
-
-#: ../src/up2date_client/messageWindow.py:105
-msgid "Yes/No dialog:"
-msgstr "Dialog Ano/Ne:"
-
-#: ../src/up2date_client/rhnChannel.py:96
-msgid "Unable to Locate SystemId"
-msgstr "Neporařilo se nalézt ID systému"
-
-#: ../src/up2date_client/rhnChannel.py:113
-msgid "This system may not be updated until it is associated with a channel."
-msgstr ""
-"Tento systém nemůže být aktualizován, dokud není asociován s nějakým kanálem."
-
-#: ../src/up2date_client/rhnreg.py:59
-#, fuzzy
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr "Varování: nemohu povolit rhnsd pomocí chkconfig"
-
-#: ../src/up2date_client/rhnreg.py:65
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr "Varování: nemohu povolit rhnsd pomocí chkconfig"
-
-#: ../src/up2date_client/up2dateErrors.py:39
-#: ../src/up2date_client/up2dateErrors.py:74
-#, python-format
-msgid "class %s has no attribute '%s'"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:97
-msgid "RPM error.  The message was:\n"
-msgstr "Chyba RPM:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:104
-msgid "Password error. The message was:\n"
-msgstr "Chyba v heslu:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:108
-msgid "RPM dependency error. The message was:\n"
-msgstr "Chyba  závislostí RPM. Zpráva byla:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:118
-msgid "Error communicating with server. The message was:\n"
-msgstr "Chyba při komunikaci se serverem. Zpráva byla:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:125
-msgid "File Not Found: \n"
-msgstr "Soubor nenalezen: \n"
-
-#: ../src/up2date_client/up2dateErrors.py:132
-msgid "Delay error from server.  The message was:\n"
-msgstr "Překročen maximální čas odezvy serveru:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:170
-msgid "Error validating data at server:\n"
-msgstr "Chyba při ověřování správnosti dat na serveru:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:183
-msgid ""
-"\n"
-"Red Hat Network Classic is not supported.\n"
-"To register with Red Hat Subscription Management please run:\n"
-"\n"
-"    subscription-manager register --auto-attach\n"
-"\n"
-"Get more information at access.redhat.com/knowledge\n"
-"    "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:194
-msgid "The installation number is invalid"
-msgstr "Instalační číslo je neplatné"
-
-#: ../src/up2date_client/up2dateErrors.py:197
-msgid "Error parsing the oemInfo file at field:\n"
-msgstr "Chyba při zpracovávání souboru oemInfo v poli:\n"
-
-#: ../src/up2date_client/up2dateErrors.py:224
-msgid "Network error: "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:292
-msgid ""
-"\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
-"    system to Red Hat Satellite. Please notify your organization "
-"administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
-"    organization administrator by logging into Red Hat Network Classic and "
-"visiting\n"
-"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
-"\n"
-"    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
-"    requiring a Management entitlement."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
-msgstr "Vypisovat více informací"
-
-#: ../src/up2date_client/rhncli.py:72
-msgid "Specify an http proxy to use"
-msgstr "Zadejte HTTP proxy, kterou chcete používat"
-
-#: ../src/up2date_client/rhncli.py:74
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr ""
-"Zadejte jméno uživatele, které chcete použít pro autentizaci k HTTP proxy"
-
-#: ../src/up2date_client/rhncli.py:76
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Zadejte heslo, které chcete použít pro autentizaci k HTTP proxy"
-
-#: ../src/up2date_client/rhncli.py:98
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Přerušeno.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr "Došlo k neočekávané chybě OS: %s\n"
-
-#: ../src/up2date_client/rhncli.py:105
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
-"Došlo k pokusu o spojení s poškozeným URI.\n"
-"\n"
-
-#: ../src/up2date_client/rhncli.py:107
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-"Došlo k pokusu o spojení s poškozeným URI: %s.\n"
-"\n"
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr "Došlo k I/O chybě: %s\n"
-
-#: ../src/up2date_client/rhncli.py:112
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr "Došlo k chybě SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:113
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-"Častý důvod této chyby je nesprávný systémový čas. Zkontrolujte, zda je čas "
-"v systému správně nastaven.\n"
-
-#: ../src/up2date_client/rhncli.py:120
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr "Došlo k chybě šifrování SSL: %s\n"
-
-#: ../src/up2date_client/rhncli.py:124
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr "Došlo k chybě autentizace: %s\n"
-
-#: ../src/up2date_client/rhncli.py:140
-#, python-format
-msgid "You must be root to run %s"
-msgstr "Musíte být root, aby šlo spustit %s"
-
-#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr "Nelze použít grafické rozhraní. Zkuste `up2date --nox`"
-
-#: ../src/up2date_client/rhncli.py:212
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:227
-msgid "An error has occurred:"
-msgstr "Došlo k chybě:"
-
-#: ../src/up2date_client/rhncli.py:235
-msgid "See /var/log/up2date for more information"
-msgstr "Více informací naleznete ve /var/log/up2date"
-
-#: ../src/up2date_client/capabilities.py:88
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-"Tento klient vyžaduje, aby server podporoval %s, což aktuální server "
-"nepodporuje"
-
-#: ../src/up2date_client/gui.py:313
-msgid "_Finish"
-msgstr "_Dokončit"
-
-#: ../src/up2date_client/gui.py:316
-msgid "_Exit"
-msgstr "_Ukončit"
-
-#: ../src/up2date_client/gui.py:317
-msgid "Software Updates Not Set Up"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:327
-msgid "You must run rhn_register as root."
-msgstr "Program rhn_register musíte spustit jako root."
-
-#: ../src/up2date_client/gui.py:351
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "Došlo k I/O chybě: %s"
-
 #: ../src/bin/rhnreg_ks.py:46
 msgid "Specify a profilename"
 msgstr "Zadejte jméno profilu"
@@ -1373,15 +1317,19 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:62
 msgid "[Deprecated] Read contact info from stdin"
-msgstr ""
+msgstr "    --contactinfo              - číst kontaktní informace ze stdin "
 
 #: ../src/bin/rhnreg_ks.py:64
 msgid "Do not probe or upload any hardware info"
 msgstr ""
+"    --nohardware               - nedetekovat a neodesílat informace o "
+"hardware"
 
 #: ../src/bin/rhnreg_ks.py:66
 msgid "Do not profile or upload any package info"
 msgstr ""
+"    --nopackages               - nezařazovat do profilu a neodesílat žádné "
+"informace o balíčcích"
 
 #: ../src/bin/rhnreg_ks.py:68
 msgid "Do not upload any virtualization info"
@@ -1390,10 +1338,6 @@ msgstr ""
 #: ../src/bin/rhnreg_ks.py:70
 msgid "Do not start rhnsd after completion"
 msgstr "Po dokončení nestartuj rhnsd"
-
-#: ../src/bin/rhnreg_ks.py:72
-msgid "Register the system even if it is already registered"
-msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:82
 msgid "A username and password are required to register a system."
@@ -1446,14 +1390,6 @@ msgstr "Nezkoušejte použít X"
 #: ../src/bin/spacewalk-channel.py:53
 msgid "ERROR: must be root to execute\n"
 msgstr "CHYBA: Musíte být root, abyste toto mohl spustit.\n"
-
-#: ../src/bin/spacewalk-channel.py:59
-msgid "name of channel you want to (un)subscribe"
-msgstr ""
-
-#: ../src/bin/spacewalk-channel.py:61
-msgid "subscribe to channel"
-msgstr ""
 
 #: ../src/bin/spacewalk-channel.py:63
 msgid "unsubscribe from channel"
@@ -1524,10 +1460,6 @@ msgstr "Nemohu najít soubor se SystemId. Je tento systém zaregistrován?"
 msgid "ERROR: you may want to specify --add, --remove or --list"
 msgstr "CHYBA: asi chcete uvést --add, --remove nebo --list"
 
-#: ../src/bin/spacewalk-channel.py:178
-msgid "User interrupted process."
-msgstr ""
-
 #: ../src/bin/rhn_check.py:386
 msgid "Attempting to run more than one instance of rhn_check. Exiting.\n"
 msgstr ""
@@ -1537,6 +1469,8 @@ msgid ""
 "You need to register this system by running `rhn_register` before using this "
 "option"
 msgstr ""
+"Před použitím této volby musíte svůj systém zaregistrovat spuštěním `up2date "
+"--register`"
 
 #: ../src/bin/rhn-profile-sync.py:43
 msgid "Updating package profile..."
@@ -1548,7 +1482,7 @@ msgstr "Aktualizuji profil hardware..."
 
 #: ../src/bin/rhn-profile-sync.py:50
 msgid "Updating virtualization profile..."
-msgstr ""
+msgstr "Aktualizuji seznam balíčků v profilu..."
 
 #: ../data/gui.glade.h:2
 msgid "Set Up Software Updates"
@@ -1564,11 +1498,11 @@ msgstr "Vytvoření profilu"
 
 #: ../data/gui.glade.h:8
 msgid "Provide a security certificate"
-msgstr ""
+msgstr "Musíte zadat jméno uživatele."
 
 #: ../data/progress.glade.h:1
 msgid "Sending Information"
-msgstr ""
+msgstr "Odeslat informace o _hardware"
 
 #: ../data/progress.glade.h:2
 msgid "progress bar"
@@ -1599,21 +1533,9 @@ msgid ""
 "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
 msgstr ""
 
-#: ../data/rh_register.glade.h:8
-msgid "Location:"
-msgstr ""
-
-#: ../data/rh_register.glade.h:9
-msgid "Example: https://satellite.example.com/XMLRPC"
-msgstr ""
-
 #: ../data/rh_register.glade.h:10
 msgid "satellite server location"
 msgstr "umístnění satellite serveru"
-
-#: ../data/rh_register.glade.h:11
-msgid "_Proxy Setup"
-msgstr ""
 
 #: ../data/rh_register.glade.h:12
 msgid "Proxy Setup Button"
@@ -1621,7 +1543,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:14
 msgid "Please enter your Red Hat account information:"
-msgstr ""
+msgstr "Informace o účtu"
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
@@ -1710,14 +1632,6 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:35
 msgid "• The address of an Red Hat Satellite or Red Hat Satellite Proxy"
-msgstr ""
-
-#: ../data/rh_register.glade.h:36
-msgid "_Why Should I Register?"
-msgstr ""
-
-#: ../data/rh_register.glade.h:37
-msgid "Why Should I Register?"
 msgstr ""
 
 #: ../data/rh_register.glade.h:38
@@ -1846,7 +1760,7 @@ msgstr "Odeslat _hardwarový profil"
 
 #: ../data/rh_register.glade.h:66
 msgid "Send hardware profile checkbox"
-msgstr ""
+msgstr "Profil hardware"
 
 #: ../data/rh_register.glade.h:67
 msgid "Send _package profile"
@@ -1854,13 +1768,15 @@ msgstr "Odeslat seznam _balíků"
 
 #: ../data/rh_register.glade.h:68
 msgid "Send package profile checkbox"
-msgstr ""
+msgstr "Odeslat _seznam balíčků"
 
 #: ../data/rh_register.glade.h:70
 msgid ""
 "Registering your system with Red Hat allows you to take full advantage of "
 "the benefits of a paid subscription, including:"
 msgstr ""
+"Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
+"předplaceného přístupu včetně:"
 
 #: ../data/rh_register.glade.h:71
 msgid "_Close"
@@ -1929,10 +1845,6 @@ msgstr ""
 msgid "I have an <b>_SSL certificate</b> to communicate with Spacewalk:"
 msgstr ""
 
-#: ../data/rh_register.glade.h:89
-msgid "Certificate _Location:"
-msgstr ""
-
 #: ../data/rh_register.glade.h:90
 msgid "Select A File"
 msgstr "Vyberte soubor"
@@ -1952,10 +1864,8 @@ msgid ""
 "You won't be able to receive software updates, including security updates, "
 "for this system."
 msgstr ""
-
-#: ../data/rh_register.glade.h:94
-msgid "Proxy Configuration"
-msgstr ""
+"Přijímejte nejnovější aktualizace programů včetně bezpečnostních oprav, "
+"které budou systém Red Hat Enterprise Linux udržovat bezpečný a aktuální."
 
 #: ../data/rh_register.glade.h:95
 msgid "<b>HTTP Proxy</b>"
@@ -1973,10 +1883,6 @@ msgstr ""
 msgid "<small><b>Example:</b> squid.example.com:3128</small>"
 msgstr "<small><b>Příklad:</b> squid.priklad.cz:3128</small>"
 
-#: ../data/rh_register.glade.h:99
-msgid "_Proxy Location:"
-msgstr ""
-
 #: ../data/rh_register.glade.h:100
 msgid "Enter in the format hostname(:port)"
 msgstr "Vložte ve formátu jméno_počítače(:port)"
@@ -1991,7 +1897,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:103
 msgid "Use Authentication with HTTP Proxy"
-msgstr ""
+msgstr "Použít autentizaci"
 
 #: ../data/rh_register.glade.h:104
 msgid "Proxy _Username:"
@@ -2050,19 +1956,13 @@ msgstr ""
 msgid "Go Back and Register"
 msgstr ""
 
-#: ../data/rh_register.glade.h:120
-msgid "Register _Later"
-msgstr ""
-
-#: ../data/rh_register.glade.h:121
-msgid "Register Later"
-msgstr ""
-
 #: ../data/rh_register.glade.h:122
 msgid ""
 "Are you sure you don't want to register your system with Red Hat? You'll "
 "miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
 msgstr ""
+"Připojení systému k RHN (Red Hat Network) umožňuje naplno využít výhody "
+"předplaceného přístupu včetně:"
 
 #: ../data/rh_register.glade.h:123
 msgid "Management:"
@@ -2074,9 +1974,8 @@ msgid ""
 msgstr ""
 
 #: ../data/rh_register.glade.h:127
-#, fuzzy
 msgid "<b>Spacewalk Location:</b>"
-msgstr "<b>Umístnění Red Hat Network:</b>"
+msgstr ""
 
 #: ../data/rh_register.glade.h:128
 msgid "<b>Login:</b>"
@@ -2230,9 +2129,78 @@ msgstr ""
 msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 msgstr ""
 
-#~ msgid "Username: "
-#~ msgstr "Uživatelské jméno: "
+#: ../src/up2date_client/rhnChannel.py:96
+msgid "Unable to Locate SystemId"
+msgstr "Nepodařilo se nalézt ID systému"
 
-#~ msgid "Please verify the value of sslCACert in /etc/sysconfig/rhn/up2date"
-#~ msgstr ""
-#~ "Prosím ověřte si hodnotu sslCACert v souboru /etc/sysconfig/rhn/up2date"
+#: ../src/up2date_client/rhnreg.py:59
+#, fuzzy
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr "Varování: nemohu povolit rhnsd pomocí systemd"
+
+#: ../src/up2date_client/up2dateErrors.py:39
+#: ../src/up2date_client/up2dateErrors.py:74
+#, python-format
+msgid "class %s has no attribute '%s'"
+msgstr "třída %s nemá atribut '%s'"
+
+#: ../src/up2date_client/up2dateErrors.py:224
+msgid "Network error: "
+msgstr "Chyba sítě: "
+
+#: ../src/bin/rhnreg_ks.py:72
+msgid "Register the system even if it is already registered"
+msgstr "Zaregistrovat systém, i když už je registrován"
+
+#: ../src/bin/spacewalk-channel.py:59
+msgid "name of channel you want to (un)subscribe"
+msgstr "jméno kanálu, který chcete (od|při)hlásit"
+
+#: ../src/bin/spacewalk-channel.py:61
+msgid "subscribe to channel"
+msgstr "přihlásit do kanálu"
+
+#: ../src/bin/spacewalk-channel.py:178
+msgid "User interrupted process."
+msgstr "Proces přerušen uživatelem."
+
+#: ../data/rh_register.glade.h:8
+msgid "Location:"
+msgstr "Umístění:"
+
+#: ../data/rh_register.glade.h:9
+msgid "Example: https://satellite.example.com/XMLRPC"
+msgstr "Příklad: https://satellite.example.com/XMLRPC"
+
+#: ../data/rh_register.glade.h:11
+msgid "_Proxy Setup"
+msgstr "Nastavení _proxy"
+
+#: ../data/rh_register.glade.h:36
+msgid "_Why Should I Register?"
+msgstr "Proč se registrovat?"
+
+#: ../data/rh_register.glade.h:37
+msgid "Why Should I Register?"
+msgstr "Proč se registrovat?"
+
+#: ../data/rh_register.glade.h:89
+msgid "Certificate _Location:"
+msgstr "Umístění certifikátu:"
+
+#: ../data/rh_register.glade.h:94
+msgid "Proxy Configuration"
+msgstr "Nastavení proxy"
+
+#: ../data/rh_register.glade.h:99
+msgid "_Proxy Location:"
+msgstr "Umístění _proxy:"
+
+#: ../data/rh_register.glade.h:120
+msgid "Register _Later"
+msgstr "Zaregistrovat později"
+
+#: ../data/rh_register.glade.h:121
+msgid "Register Later"
+msgstr "Zaregistrovat později"
+

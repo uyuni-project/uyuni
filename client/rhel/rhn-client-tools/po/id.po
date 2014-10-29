@@ -3,16 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
-# Miroslav Suchý <msuchy@redhat.com>, 2011.
-#   <sentabi@sentabi.com>, 2012.
+# Miroslav Suchý <msuchy@redhat.com>, 2011
+# Tommy Albert Surbakti, 2012
+# Teguh Dwicaksana <dheche@songolimo.net>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-10 10:36+0200\n"
-"PO-Revision-Date: 2012-11-21 07:32+0000\n"
-"Last-Translator: adelton <jpx-tx@adelton.com>\n"
-"Language-Team: Indonesian <trans-id@lists.fedoraproject.org>\n"
+"POT-Creation-Date: 2014-10-06 14:52+0200\n"
+"PO-Revision-Date: 2014-01-14 09:23+0000\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Indonesian (http://www.transifex.com/projects/p/spacewalk/"
+"language/id/)\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,7 +137,7 @@ msgstr ""
 #: ../src/up2date_client/tui.py:988 ../src/up2date_client/tui.py:991
 #: ../src/up2date_client/tui.py:994
 msgid "Problem registering system:\n"
-msgstr ""
+msgstr "Ada masalah saat mendaftarkan sistem:\n"
 
 #: ../src/up2date_client/rhnregGui.py:739
 #, python-format
@@ -328,7 +330,7 @@ msgstr ""
 
 #: ../src/up2date_client/tui.py:753 ../src/up2date_client/tui.py:754
 msgid "Version: "
-msgstr ""
+msgstr "Versi"
 
 #: ../src/up2date_client/tui.py:760
 msgid "CPU model: "
@@ -388,6 +390,254 @@ msgstr ""
 msgid "You must run the RHN registration program as root."
 msgstr ""
 
+#: ../src/up2date_client/rhnreg.py:59
+msgid "Warning: unable to enable rhnsd with systemd"
+msgstr ""
+
+#: ../src/up2date_client/rhnreg.py:65
+msgid "Warning: unable to enable rhnsd with chkconfig"
+msgstr ""
+
+#: ../src/up2date_client/hardware.py:819
+msgid "Error reading cpu information:"
+msgstr "Terjadi kesalahan membaca informasi cpu:"
+
+#: ../src/up2date_client/hardware.py:826
+msgid "Error reading system memory information:"
+msgstr "Terjadi kesalahan membaca informasi memori:"
+
+#: ../src/up2date_client/hardware.py:836
+msgid "Error reading networking information:"
+msgstr "Terjadi kesalahan membaca informasi jaringan:"
+
+#: ../src/up2date_client/hardware.py:857
+msgid "Error reading install method information:"
+msgstr "Terjadi kesalahan membaca informasi cara instalasi:"
+
+#: ../src/up2date_client/hardware.py:865
+msgid "Error reading network interface information:"
+msgstr "Terjadi kesalahan membaca perangkat jaringan:"
+
+#: ../src/up2date_client/messageWindow.py:98
+msgid "Error:"
+msgstr "Kesalahan:"
+
+#: ../src/up2date_client/messageWindow.py:105
+msgid "Yes/No dialog:"
+msgstr "Ya/Tidak:"
+
+#: ../src/up2date_client/rhnChannel.py:96
+msgid "Unable to Locate SystemId"
+msgstr "Tidak dapat Menemukan SystemId"
+
+#: ../src/up2date_client/rhnChannel.py:113
+msgid "This system may not be updated until it is associated with a channel."
+msgstr "Sistem mungkin tidak diupdate, sampai berasosiasi dengan kanal."
+
+#: ../src/up2date_client/up2dateErrors.py:39
+#: ../src/up2date_client/up2dateErrors.py:74
+#, python-format
+msgid "class %s has no attribute '%s'"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:97
+msgid "RPM error.  The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:104
+msgid "Password error. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:108
+msgid "RPM dependency error. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:118
+msgid "Error communicating with server. The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:125
+msgid "File Not Found: \n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:132
+msgid "Delay error from server.  The message was:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:170
+msgid "Error validating data at server:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:183
+msgid ""
+"\n"
+"Red Hat Network Classic is not supported.\n"
+"To register with Red Hat Subscription Management please run:\n"
+"\n"
+"    subscription-manager register --auto-attach\n"
+"\n"
+"Get more information at access.redhat.com/knowledge\n"
+"    "
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:194
+msgid "The installation number is invalid"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:197
+msgid "Error parsing the oemInfo file at field:\n"
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:224
+msgid "Network error: "
+msgstr ""
+
+#: ../src/up2date_client/up2dateErrors.py:292
+msgid ""
+"\n"
+"    Your organization does not have enough Management entitlements to "
+"register this\n"
+"    system to Red Hat Satellite. Please notify your organization "
+"administrator of this error.\n"
+"    You should be able to register this system after your organization frees "
+"existing\n"
+"    or purchases additional entitlements. Additional entitlements may be "
+"purchased by your\n"
+"    organization administrator by logging into Red Hat Network Classic and "
+"visiting\n"
+"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
+"\n"
+"    A common cause of this error code is due to having mistakenly setup an\n"
+"    Activation Key which is set as the universal default.  If an activation "
+"key is set\n"
+"    on the account as a universal default, you can disable this key and "
+"retry to avoid\n"
+"    requiring a Management entitlement."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:70
+msgid "Show additional output"
+msgstr "Tampilkan output tambahan."
+
+#: ../src/up2date_client/rhncli.py:72
+msgid "Specify an http proxy to use"
+msgstr "Tentukan http proxy yang digunakan"
+
+#: ../src/up2date_client/rhncli.py:74
+msgid "Specify a username to use with an authenticated http proxy"
+msgstr "Tentukan username yang digunakan untuk http proxy"
+
+#: ../src/up2date_client/rhncli.py:76
+msgid "Specify a password to use with an authenticated http proxy"
+msgstr "Tentukan password yang digunakan untuk http proxy"
+
+#: ../src/up2date_client/rhncli.py:98
+msgid ""
+"\n"
+"Aborted.\n"
+msgstr ""
+"\n"
+"Digagalkan.\n"
+
+#: ../src/up2date_client/rhncli.py:101
+#, python-format
+msgid "An unexpected OS error occurred: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:105
+msgid "A connection was attempted with a malformed URI.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:107
+#, python-format
+msgid "A connection was attempted with a malformed URI: %s.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:109
+#, python-format
+msgid "There was some sort of I/O error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:112
+#, python-format
+msgid "There was an SSL error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:113
+msgid ""
+"A common cause of this error is the system time being incorrect. Verify that "
+"the time on this system is correct.\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:120
+#, python-format
+msgid "There was a SSL crypto error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:124
+#, python-format
+msgid "There was an authentication error: %s\n"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:140
+#, python-format
+msgid "You must be root to run %s"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
+msgid "Unable to open gui. Try `up2date --nox`"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:212
+#, python-format
+msgid ""
+"%%prog (Spacewalk Client Tools) %s\n"
+"Copyright (C) 1999--2014 Red Hat, Inc.\n"
+"Licensed under the terms of the GPLv2."
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:227
+msgid "An error has occurred:"
+msgstr ""
+
+#: ../src/up2date_client/rhncli.py:235
+msgid "See /var/log/up2date for more information"
+msgstr ""
+
+#: ../src/up2date_client/capabilities.py:88
+#, python-format
+msgid ""
+"This client requires the server to support %s, which the current server does "
+"not support"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:313
+msgid "_Finish"
+msgstr "_Selesai"
+
+#. Finish Window
+#: ../src/up2date_client/gui.py:314
+#: ../src/up2date_client/rhnreg_constants.py:150
+msgid "Updates Configured"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:316
+msgid "_Exit"
+msgstr "_Keluar"
+
+#: ../src/up2date_client/gui.py:317
+msgid "Software Updates Not Set Up"
+msgstr ""
+
+#: ../src/up2date_client/gui.py:327
+msgid "You must run rhn_register as root."
+msgstr "Anda harus menjalankan rhn_register sebagai root."
+
+#: ../src/up2date_client/gui.py:351
+#, python-format
+msgid "There was some sort of I/O error: %s"
+msgstr "Ada kesalahan I/O: %s"
+
 #: ../src/up2date_client/rhnreg_constants.py:14
 msgid "Copyright © 2006--2014 Red Hat, Inc. All rights reserved."
 msgstr ""
@@ -440,7 +690,7 @@ msgstr ""
 #. Start Window
 #: ../src/up2date_client/rhnreg_constants.py:35 ../data/gui.glade.h:1
 msgid "System Registration"
-msgstr ""
+msgstr "Up2date - Informasi Pendaftaran"
 
 #: ../src/up2date_client/rhnreg_constants.py:36
 msgid ""
@@ -472,7 +722,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:53
 msgid "Security & Updates:"
-msgstr ""
+msgstr "Keamanan & Pemutakhiran:"
 
 #: ../src/up2date_client/rhnreg_constants.py:54
 msgid "Downloads & Upgrades:"
@@ -549,7 +799,7 @@ msgstr ""
 #: ../src/up2date_client/rhnreg_constants.py:80 ../data/gui.glade.h:4
 #: ../data/rh_register.glade.h:13
 msgid "Red Hat Account"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 #, python-format
@@ -557,10 +807,12 @@ msgid ""
 "Please enter your login information for the %s Red Hat Network Satellite:\n"
 "\n"
 msgstr ""
+"Silakan masukkan informasi login Anda untuk %s Red Hat Network Satellite:\n"
+"\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:83
 msgid "Red Hat Login:"
-msgstr ""
+msgstr "Login Red Hat:"
 
 #: ../src/up2date_client/rhnreg_constants.py:85
 msgid "Password:"
@@ -592,7 +844,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid " Minor Release: "
-msgstr ""
+msgstr "Rilis"
 
 #: ../src/up2date_client/rhnreg_constants.py:95
 msgid "Limited Updates Only"
@@ -616,7 +868,7 @@ msgstr ""
 #. Hardware Window
 #: ../src/up2date_client/rhnreg_constants.py:103
 msgid "Create Profile - Hardware"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../src/up2date_client/rhnreg_constants.py:104
 msgid ""
@@ -638,7 +890,7 @@ msgstr ""
 #. Packages Window
 #: ../src/up2date_client/rhnreg_constants.py:115
 msgid "Create Profile - Packages"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../src/up2date_client/rhnreg_constants.py:116
 msgid ""
@@ -711,12 +963,6 @@ msgstr ""
 msgid "Sending Profile to Red Hat Satellite"
 msgstr ""
 
-#. Finish Window
-#: ../src/up2date_client/rhnreg_constants.py:150
-#: ../src/up2date_client/gui.py:314
-msgid "Updates Configured"
-msgstr ""
-
 #: ../src/up2date_client/rhnreg_constants.py:151
 msgid ""
 "You may now run 'yum update' from this system's command line to get the "
@@ -731,7 +977,7 @@ msgstr ""
 #. Review Window
 #: ../src/up2date_client/rhnreg_constants.py:162 ../data/gui.glade.h:7
 msgid "Review Subscription"
-msgstr ""
+msgstr "Diskripsi"
 
 #: ../src/up2date_client/rhnreg_constants.py:163
 #: ../data/rh_register.glade.h:53
@@ -753,7 +999,7 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:168
 msgid "Software Channel Subscriptions:"
-msgstr ""
+msgstr "Diskripsi"
 
 #: ../src/up2date_client/rhnreg_constants.py:169
 msgid "This system will receive updates from the following software channels:"
@@ -1009,248 +1255,6 @@ msgstr ""
 msgid "Press <space> to deselect the option."
 msgstr ""
 
-#: ../src/up2date_client/hardware.py:819
-msgid "Error reading cpu information:"
-msgstr "Terjadi kesalahan membaca informasi cpu:"
-
-#: ../src/up2date_client/hardware.py:826
-msgid "Error reading system memory information:"
-msgstr "Terjadi kesalahan membaca informasi memori:"
-
-#: ../src/up2date_client/hardware.py:836
-msgid "Error reading networking information:"
-msgstr "Terjadi kesalahan membaca informasi jaringan:"
-
-#: ../src/up2date_client/hardware.py:857
-msgid "Error reading install method information:"
-msgstr "Terjadi kesalahan membaca informasi cara instalasi:"
-
-#: ../src/up2date_client/hardware.py:865
-msgid "Error reading network interface information:"
-msgstr "Terjadi kesalahan membaca perangkat jaringan:"
-
-#: ../src/up2date_client/messageWindow.py:98
-msgid "Error:"
-msgstr "Kesalahan:"
-
-#: ../src/up2date_client/messageWindow.py:105
-msgid "Yes/No dialog:"
-msgstr "Ya/Tidak:"
-
-#: ../src/up2date_client/rhnChannel.py:96
-msgid "Unable to Locate SystemId"
-msgstr "Tidak dapat Menemukan SystemId"
-
-#: ../src/up2date_client/rhnChannel.py:113
-msgid "This system may not be updated until it is associated with a channel."
-msgstr "Sistem mungkin tidak diupdate, sampai berasosiasi dengan kanal."
-
-#: ../src/up2date_client/rhnreg.py:59
-msgid "Warning: unable to enable rhnsd with systemd"
-msgstr ""
-
-#: ../src/up2date_client/rhnreg.py:65
-msgid "Warning: unable to enable rhnsd with chkconfig"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:39
-#: ../src/up2date_client/up2dateErrors.py:74
-#, python-format
-msgid "class %s has no attribute '%s'"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:97
-msgid "RPM error.  The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:104
-msgid "Password error. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:108
-msgid "RPM dependency error. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:118
-msgid "Error communicating with server. The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:125
-msgid "File Not Found: \n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:132
-msgid "Delay error from server.  The message was:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:170
-msgid "Error validating data at server:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:183
-msgid ""
-"\n"
-"Red Hat Network Classic is not supported.\n"
-"To register with Red Hat Subscription Management please run:\n"
-"\n"
-"    subscription-manager register --auto-attach\n"
-"\n"
-"Get more information at access.redhat.com/knowledge\n"
-"    "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:194
-msgid "The installation number is invalid"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:197
-msgid "Error parsing the oemInfo file at field:\n"
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:224
-msgid "Network error: "
-msgstr ""
-
-#: ../src/up2date_client/up2dateErrors.py:292
-msgid ""
-"\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
-"    system to Red Hat Satellite. Please notify your organization "
-"administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
-"    organization administrator by logging into Red Hat Network Classic and "
-"visiting\n"
-"    the 'Subscription Management' page in the 'Your RHN' section of RHN.\n"
-"\n"
-"    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
-"    requiring a Management entitlement."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
-msgstr "Tampilkan output tambahan."
-
-#: ../src/up2date_client/rhncli.py:72
-msgid "Specify an http proxy to use"
-msgstr "Tentukan http proxy yang digunakan"
-
-#: ../src/up2date_client/rhncli.py:74
-msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Tentukan username yang digunakan untuk http proxy"
-
-#: ../src/up2date_client/rhncli.py:76
-msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Tentukan password yang digunakan untuk http proxy"
-
-#: ../src/up2date_client/rhncli.py:98
-msgid ""
-"\n"
-"Aborted.\n"
-msgstr ""
-"\n"
-"Digagalkan.\n"
-
-#: ../src/up2date_client/rhncli.py:101
-#, python-format
-msgid "An unexpected OS error occurred: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:105
-msgid "A connection was attempted with a malformed URI.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:107
-#, python-format
-msgid "A connection was attempted with a malformed URI: %s.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:109
-#, python-format
-msgid "There was some sort of I/O error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:112
-#, python-format
-msgid "There was an SSL error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:113
-msgid ""
-"A common cause of this error is the system time being incorrect. Verify that "
-"the time on this system is correct.\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:120
-#, python-format
-msgid "There was a SSL crypto error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:124
-#, python-format
-msgid "There was an authentication error: %s\n"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:140
-#, python-format
-msgid "You must be root to run %s"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:170 ../src/up2date_client/rhncli.py:205
-msgid "Unable to open gui. Try `up2date --nox`"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:212
-#, python-format
-msgid ""
-"%%prog (Spacewalk Client Tools) %s\n"
-"Copyright (C) 1999--2014 Red Hat, Inc.\n"
-"Licensed under the terms of the GPLv2."
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:227
-msgid "An error has occurred:"
-msgstr ""
-
-#: ../src/up2date_client/rhncli.py:235
-msgid "See /var/log/up2date for more information"
-msgstr ""
-
-#: ../src/up2date_client/capabilities.py:88
-#, python-format
-msgid ""
-"This client requires the server to support %s, which the current server does "
-"not support"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:313
-msgid "_Finish"
-msgstr "_Selesai"
-
-#: ../src/up2date_client/gui.py:316
-msgid "_Exit"
-msgstr "_Keluar"
-
-#: ../src/up2date_client/gui.py:317
-msgid "Software Updates Not Set Up"
-msgstr ""
-
-#: ../src/up2date_client/gui.py:327
-msgid "You must run rhn_register as root."
-msgstr "Anda harus menjalankan rhn_register sebagai root."
-
-#: ../src/up2date_client/gui.py:351
-#, python-format
-msgid "There was some sort of I/O error: %s"
-msgstr "Ada kesalahan I/O: %s"
-
 #: ../src/bin/rhnreg_ks.py:46
 msgid "Specify a profilename"
 msgstr ""
@@ -1468,7 +1472,7 @@ msgstr ""
 
 #: ../data/gui.glade.h:6
 msgid "Create Profile"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../data/gui.glade.h:8
 msgid "Provide a security certificate"
@@ -1476,7 +1480,7 @@ msgstr ""
 
 #: ../data/progress.glade.h:1
 msgid "Sending Information"
-msgstr ""
+msgstr "Up2date - Informasi Rahasia"
 
 #: ../data/progress.glade.h:2
 msgid "progress bar"
@@ -1533,7 +1537,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../data/rh_register.glade.h:16
 msgid "RHN password field"
@@ -1644,7 +1648,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:41
 msgid "Link To Subscription"
-msgstr ""
+msgstr "Diskripsi"
 
 #: ../data/rh_register.glade.h:42
 msgid ""
@@ -1694,7 +1698,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:51
 msgid "_Activate a subscription now..."
-msgstr ""
+msgstr "Diskripsi"
 
 #: ../data/rh_register.glade.h:52
 msgid "Review system..."
@@ -1702,7 +1706,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:54
 msgid "Create profile"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../data/rh_register.glade.h:55
 msgid "<big><b>System Name</b></big>"
@@ -1738,7 +1742,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:62
 msgid "View Hardware Profile"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../data/rh_register.glade.h:63
 msgid "V_iew Package Profile ..."
@@ -1746,7 +1750,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:64
 msgid "View Package Profile"
-msgstr ""
+msgstr "Buat Login"
 
 #: ../data/rh_register.glade.h:65
 msgid "Send _hardware profile"
@@ -1962,7 +1966,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:121
 msgid "Register Later"
-msgstr ""
+msgstr "Up2date - Informasi Pendaftaran"
 
 #: ../data/rh_register.glade.h:122
 msgid ""
@@ -2063,7 +2067,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:148
 msgid "Choose minor release"
-msgstr ""
+msgstr "Rilis"
 
 #: ../data/rh_register.glade.h:149
 msgid "       "
@@ -2123,7 +2127,7 @@ msgstr ""
 
 #: ../rhn_register.desktop.in.h:1
 msgid "RHN Registration"
-msgstr ""
+msgstr "Up2date - Informasi Pendaftaran"
 
 #: ../rhn_register.desktop.in.h:2
 msgid ""
@@ -2134,3 +2138,151 @@ msgstr ""
 #: ../rhn_register.desktop.in.h:3
 msgid "Register to Spacewalk/Red Hat Satellite/Red Hat Network Classic."
 msgstr ""
+
+#~ msgid "Red Hat Network Location:"
+#~ msgstr "Buat Login"
+
+#, fuzzy
+#~ msgctxt "yes"
+#~ msgid "Red Hat Subscription Management"
+#~ msgstr "Diskripsi"
+
+#~ msgid "Red Hat Subscription Management"
+#~ msgstr "Diskripsi"
+
+#, fuzzy
+#~ msgctxt "yes"
+#~ msgid "Red Hat Network (RHN) Classic"
+#~ msgstr "Buat Login"
+
+#~ msgid "Red Hat Network (RHN) Classic"
+#~ msgstr "Buat Login"
+
+#, fuzzy
+#~ msgctxt "yes"
+#~ msgid "Please enter your Red Hat account information:"
+#~ msgstr "Buat Login"
+
+#, fuzzy
+#~ msgctxt "yes"
+#~ msgid "Package Information"
+#~ msgstr "Up2date - Informasi Rahasia"
+
+#, fuzzy
+#~ msgid "• Your Red Hat Network or Red Hat Network Satellite login "
+#~ msgstr "Buat Login"
+
+#, fuzzy
+#~ msgid "• Your Red Hat account login"
+#~ msgstr "Buat Login"
+
+#~ msgid "Your Red Hat account login"
+#~ msgstr "Buat Login"
+
+#, fuzzy
+#~ msgid "<b>Red Hat Network Location:</b>"
+#~ msgstr "Buat Login"
+
+#~ msgid "Create your system profile"
+#~ msgstr "Buat Login"
+
+#~ msgid "yes|Red Hat Network _Location:"
+#~ msgstr "Buat Login"
+
+#~ msgid "Create a New Login ..."
+#~ msgstr "Buat Login"
+
+#~ msgid "Access a subscription"
+#~ msgstr "Diskripsi"
+
+#~ msgid "Access Subscription"
+#~ msgstr "Diskripsi"
+
+#~ msgid "C_reate new login"
+#~ msgstr "Buat Login"
+
+#~ msgid "Create a _New Login"
+#~ msgstr "Buat Login"
+
+#~ msgid "and manage subscriptions "
+#~ msgstr "Diskripsi"
+
+#~ msgid "Version: %s"
+#~ msgstr "Versi"
+
+#~ msgid ""
+#~ "\n"
+#~ "    %-30.30s\t%-30.30s\n"
+#~ msgstr ""
+#~ "\n"
+#~ "    %-30.30s\t%-30.30s\n"
+
+#~ msgid "Package Name"
+#~ msgstr "Nama Paket"
+
+#~ msgid "Reason For Skipping"
+#~ msgstr "Alasan Untuk Melewatinya"
+
+#~ msgid "Testing package set / solving RPM inter-dependencies"
+#~ msgstr ""
+#~ "Melakukan tes pada paketnya/ Menyelesaikan inter-dependensi dari RPM"
+
+#~ msgid "Package                                Required by\n"
+#~ msgstr "Paket                                Diperlukan Oleh\n"
+
+#~ msgid "%-40.40s %s %s \n"
+#~ msgstr "%-40.40s %s %s \n"
+
+#~ msgid "%-40.40s %s %s\n"
+#~ msgstr "%-40.40s %s %s\n"
+
+#~ msgid "Don't know how to handle dependency sense \"%s\""
+#~ msgstr "Tidak tahu bagaimana harus menyelesaikan dependensi dari \"%s\""
+
+#~ msgid "Old Version"
+#~ msgstr "Versi Lama"
+
+#~ msgid "Size"
+#~ msgstr "Ukuran"
+
+#~ msgid "Reason Skipped"
+#~ msgstr "Alasan Dilewati"
+
+#~ msgid "*"
+#~ msgstr "*"
+
+#~ msgid "..."
+#~ msgstr "..."
+
+#~ msgid "6.0"
+#~ msgstr "6.0"
+
+#~ msgid "6.1"
+#~ msgstr "6.1"
+
+#~ msgid "6.2"
+#~ msgstr "6.2"
+
+#~ msgid "7.0"
+#~ msgstr "7.0"
+
+#~ msgid "7.1"
+#~ msgstr "7.1"
+
+#~ msgid "7.2"
+#~ msgstr "7.2"
+
+#~ msgid "7.3"
+#~ msgstr "7.3"
+
+#~ msgid "8.0"
+#~ msgstr "8.0"
+
+#~ msgid "9"
+#~ msgstr "9"
+
+#~ msgid "Add"
+#~ msgstr "Tambah"
+
+#~ msgid "Add new:"
+#~ msgstr "Tambah baru:"

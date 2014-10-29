@@ -35,6 +35,8 @@ import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
+import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
+import com.redhat.rhn.frontend.events.SsmConfigFilesEvent;
 import com.redhat.rhn.frontend.events.SsmDeleteServersAction;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.events.SsmErrataAction;
@@ -305,6 +307,10 @@ public class MessageQueue {
         // Misc
         MessageQueue.registerAction(new SsmSystemRebootAction(),
                                     SsmSystemRebootEvent.class);
+
+        // Deploy configuration files
+        MessageQueue.registerAction(new SsmConfigFilesAction(),
+                                    SsmConfigFilesEvent.class);
     }
 }
 

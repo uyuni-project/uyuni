@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.3.1
+Version: 2.3.5
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -460,6 +460,19 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu Oct 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.5-1
+- fixed translations
+
+* Thu Oct 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.4-1
+- fixed ar.po formating
+
+* Tue Oct 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.3-1
+- disable sgmlop import in rhn_check
+
+* Mon Oct 06 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.2-1
+- rhn-client-tools translations backported from RHEL6
+- rhn-client-tools translations updated from Transifex
+
 * Tue Aug 26 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.1-1
 - updated translations
 
