@@ -4,6 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <html:html>
+    <head>
+        <script type="text/javascript" src="/rhn/dwr/interface/SCCConfigAjax.js"></script>
+        <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
+        <script type="text/javascript" src="/javascript/scc-config.js"></script>
+    </head>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img">
             <bean:message key="general.jsp.toolbar"/>
@@ -20,7 +25,7 @@
 
                 <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
 
-                <a class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
+                <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
             </div>
         </div>
     </body>
