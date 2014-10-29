@@ -101,5 +101,9 @@
             converter="exception">
             <param name='include' value='message' />
         </convert>
+        <create creator="new" javascript="SCCConfigAjax">
+            <param name="class" value="com.redhat.rhn.frontend.action.satellite.SCCConfigAction$AjaxEndPoint" />
+            <include method="sayHello" />
+        </create>
     </allow>
 </dwr>

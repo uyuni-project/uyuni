@@ -31,6 +31,19 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SCCConfigAction extends RhnAction {
 
+    private static Logger log = Logger.getLogger(SCCConfigAction.class);
+
+    /**
+     * DWR end-point for this action
+     */
+    public static class AjaxEndPoint {
+
+        public static String sayHello() {
+            logger.debug("I am on DWR");
+            return "Hello!";
+        }
+    }
+
     /**
      * Logger for this class
      */
