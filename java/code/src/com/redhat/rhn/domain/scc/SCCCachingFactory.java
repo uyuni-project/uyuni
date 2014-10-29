@@ -45,7 +45,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * Store {@link SCCRepository} to the database.
      * @param repo repository
      */
-    public static void storeRepository(SCCRepository repo) {
+    public static void saveRepository(SCCRepository repo) {
         singleton.saveObject(repo);
     }
 

@@ -43,9 +43,9 @@ public class SCCCachingFactoryTest extends TestCase {
         SCCRepository repo1 = createTestRepo(1L);
         SCCRepository repo2 = createTestRepo(2L);
 
-        SCCCachingFactory.storeRepository(repo0);
-        SCCCachingFactory.storeRepository(repo1);
-        SCCCachingFactory.storeRepository(repo2);
+        SCCCachingFactory.saveRepository(repo0);
+        SCCCachingFactory.saveRepository(repo1);
+        SCCCachingFactory.saveRepository(repo2);
 
         List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
         assertFalse(repos.isEmpty());
