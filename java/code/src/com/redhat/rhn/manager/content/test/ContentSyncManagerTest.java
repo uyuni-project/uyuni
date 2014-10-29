@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -107,16 +108,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             c.getSources().add(cs);
             TestUtils.saveAndFlush(c);
 
-            // Setup SCC repo
+            // Save SCC repo to the cache
             SCCRepository repo = new SCCRepository();
             repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
+            SCCCachingFactory.saveRepository(repo);
 
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos, null);
+            csm.updateChannels(csm.getRepositories(), null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
@@ -581,12 +581,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testListChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
         try {
-            // Match against a manually created list of SCC repositories
+            // Match against a manually created cache of SCC repositories
             SCCRepository repo = new SCCRepository();
             String sourceUrl = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(sourceUrl);
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
+            SCCCachingFactory.saveRepository(repo);
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
@@ -601,7 +600,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             clearCredentials();
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            List<MgrSyncChannel> channels = csm.listChannels(repos);
+            List<MgrSyncChannel> channels = csm.listChannels(csm.getRepositories());
             for (MgrSyncChannel c : channels) {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
                     assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
@@ -769,8 +768,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SCCRepository repo = new SCCRepository();
             String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(url);
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
+            SCCCachingFactory.saveRepository(repo);
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
@@ -780,7 +778,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
-                csm.addChannel(label, repos, null);
+                csm.addChannel(label, csm.getRepositories(), null);
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
@@ -839,8 +837,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
             repo.setUrl(xmlChannel.getSourceUrl());
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
+            SCCCachingFactory.saveRepository(repo);
 
             // Temporarily rename all installed vendor channels
             renameVendorChannels();
@@ -852,7 +849,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             HibernateFactory.getSession().flush();
 
             // Add the channel by label
-            csm.addChannel(xmlChannel.getLabel(), repos, null);
+            csm.addChannel(xmlChannel.getLabel(), csm.getRepositories(), null);
 
             // Check if channel has been added correctly
             Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
@@ -996,5 +993,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             cs.setSourceUrl(TestUtils.randomString());
             TestUtils.saveAndFlush(cs);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        SCCCachingFactory.clearRepositories();
     }
 }
