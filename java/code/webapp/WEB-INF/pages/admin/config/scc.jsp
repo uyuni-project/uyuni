@@ -20,12 +20,16 @@
                 <h4>SUSE Customer Center</h4>
             </div>
             <div class="panel-body">
-                <p><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.stillncc"/></p>
+                <p id="still-ncc-msg"><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.stillncc"/></p>
                 <p><bean:message key="sccconfig.jsp.migrationinfo"/></p>
 
                 <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
 
                 <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
+
+                <p id="scc-migration-in-progress-msg"><i class="fa fa-spinner fa-spin"></i><bean:message key="sccconfig.jsp.migrationinprogress"/></p>
+                <p id="scc-migration-in-completed-msg"><i class="fa fa-check success"></i><bean:message key="sccconfig.jsp.migrationcompleted"/></p>
+                <p id="scc-migration-in-failed-msg"><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.migrationfailed"/>: <div id="scc-migration-failed-details"></div></p>
             </div>
         </div>
     </body>
