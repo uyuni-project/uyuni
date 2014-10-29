@@ -1200,14 +1200,11 @@ public class ContentSyncManager {
         }
 
         // Remove trailing slashes before matching URLs
-        sourceUrl = removeTrailingSlashes(sourceUrl);
+        sourceUrl = sourceUrl.replaceFirst("/+$", "");
 
         // Match the channel source URL against URLs we got from SCC
         for (SCCRepository repo : repos) {
-            // Remove auth-token for url comparison
-            String strippedURL = repo.getUrl().replaceFirst("\\?.*$", "");
-
-            if (sourceUrl.equals(removeTrailingSlashes(strippedURL))) {
+            if (repo.getUrl().startsWith(sourceUrl)) {
                 return repo;
             }
         }
@@ -1503,18 +1500,6 @@ public class ContentSyncManager {
             installedChannelLabels.add(c.getLabel());
         }
         return installedChannelLabels;
-    }
-
-    /**
-     * Strip off trailing slashes from a given string.
-     * @param url the string to remove trailing slashes from
-     * @return string without trailing slashes
-     */
-    private String removeTrailingSlashes(String url) {
-        while (url.endsWith("/")) {
-            url = url.substring(0, url.length() - 1);
-        }
-        return url;
     }
 
     /**
