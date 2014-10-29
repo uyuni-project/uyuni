@@ -55,6 +55,7 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<SCCRepository> lookupRepositories() {
+        log.debug("Retrieving repositories from cache");
         Session session = getSession();
         Criteria c = session.createCriteria(SCCRepository.class);
         return c.list();
