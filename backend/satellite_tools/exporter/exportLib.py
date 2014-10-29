@@ -743,6 +743,59 @@ class SuseProductDumper(BaseQueryDumper):
         cf = _SuseProductDumper(self._writer, data)
         cf.dump()
 
+class _SuseProductChannelDumper(BaseRowDumper):
+    tag_name = 'suse-product-channel'
+
+    def set_attributes(self):
+        return {
+            'product-id'  : self._row['pdid'],
+            'channel-label' : self._row['clabel'],
+            'parent-channel-label' : self._row['pclabel'],
+            }
+
+class SuseProductChannelDumper(BaseQueryDumper):
+    tag_name = 'suse-product-channels'
+    iterator_query = """
+    SELECT p.product_id AS pdid,
+           pc.channel_label AS clabel,
+           pc.parent_channel_label AS pclabel
+      FROM suseProductChannel pc
+      JOIN suseProducts p ON pc.product_id = p.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductChannelDumper(self._writer, data)
+        cf.dump()
+
+class _SuseUpgradePathDumper(BaseRowDumper):
+    tag_name = 'suse-upgrade-path'
+
+    def set_attributes(self):
+        return {
+            'from-product-id'  : self._row['fromid'],
+            'to-product-id'  : self._row['toid'],
+            }
+
+class SuseUpgradePathDumper(BaseQueryDumper):
+    tag_name = 'suse-upgrade-paths'
+    iterator_query = """
+    SELECT p1.product_id AS fromid,
+           p2.product_id AS toid
+      FROM suseUpgradePath up
+      JOIN suseProducts p1 ON up.from_pdid = p1.id
+      JOIN suseProducts p2 ON up.to_pdid = p2.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseUpgradePathDumper(self._writer, data)
+        cf.dump()
+
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'
     iterator_query = 'select cf.* from rhnChannelFamily'

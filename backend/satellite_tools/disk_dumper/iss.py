@@ -87,6 +87,8 @@ class FileMapper:
                             'comps'             :   xmlDiskSource.ChannelCompsDiskSource(self.mp),
                             'supportinfo'       :   xmlDiskSource.SupportInformationDiskSource(self.mp),
                             'suse_products'     :   xmlDiskSource.SuseProductsDiskSource(self.mp),
+                            'suse_product_channels' : xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
+                            'suse_upgrade_paths':   xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
                        }
 
     #This will make sure that all of the directories leading up to the
@@ -164,6 +166,12 @@ class FileMapper:
 
     def getSuseProductsFile(self):
         return self.setup_file(self.filemap['suse_products']._getFile())
+
+    def getSuseProductChannelsFile(self):
+        return self.setup_file(self.filemap['suse_product_channels']._getFile())
+
+    def getSuseUpgradePathsFile(self):
+        return self.setup_file(self.filemap['suse_upgrade_paths']._getFile())
 
 class Dumper(dumper.XML_Dumper):
     """ This class subclasses the XML_Dumper class. It overrides
@@ -1017,6 +1025,21 @@ class Dumper(dumper.XML_Dumper):
                           "Exporting SUSE Product Information...",
                           "SUSE Product Information exported to %s",
                           "%s caught in dump_suse_products.")
+
+    def dump_suse_product_channels(self):
+        self._dump_simple(self.fm.getSuseProductChannelsFile(),
+                          dumper.XML_Dumper.dump_suse_product_channels,
+                          "Exporting SUSE Product Channel Information...",
+                          "SUSE Product Channel Information exported to %s",
+                          "%s caught in dump_suse_product_channels.")
+
+    def dump_suse_upgrade_paths(self):
+        self._dump_simple(self.fm.getSuseUpgradePathsFile(),
+                          dumper.XML_Dumper.dump_suse_upgrade_paths,
+                          "Exporting Upgrade Path Information...",
+                          "Upgrade Path Information exported to %s",
+                          "%s caught in dump_suse_upgrade_paths.")
+
     #FIXME: remove old calls
     def dump_suse_products_subscriptions(self):
         self._dump_simple("%s/productdata.xml" % self.mp,
@@ -1235,6 +1258,8 @@ class ExporterMain:
                                     'orgs'             :   {'dump' : self.dumper.dump_orgs},
                                     'supportinfo'      :   {'dump' : self.dumper.dump_support_information},
                                     'suse-products'    :   {'dump' : self.dumper.dump_suse_products},
+                                    'suse-product-channels' : {'dump' : self.dumper.dump_suse_product_channels},
+                                    'suse-upgrade-paths' : {'dump' : self.dumper.dump_suse_upgrade_paths},
                                     #FIXME: remove old calls
                                     'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }

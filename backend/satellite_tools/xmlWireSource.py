@@ -294,6 +294,16 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.suse_products", (self.systemid,))
 
+    def getSuseProductChannelsXmlStream(self):
+        """retrieve xml stream for SUSE Product Channels"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_product_channels", (self.systemid,))
+
+    def getSuseUpgradePathsXmlStream(self):
+        """retrieve xml stream for Upgrade Paths"""
+        self._prepare()
+        return self._openSocketStream("dump.suse_upgrade_paths", (self.systemid,))
+
 class XMLRPCWireSource(BaseWireSource):
 
     "Base class for all the XMLRPC calls"

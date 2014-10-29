@@ -764,6 +764,25 @@ class SuseProductItem(BaseItem):
     }
 addItem(SuseProductItem)
 
+class SuseProductChannelItem(BaseItem):
+    item_name = 'suse-product-channel'
+    item_class = importLib.SuseProductChannel
+    tagMap = {
+        'product-id'           : 'product_id',
+        'channel-label'        : 'channel_label',
+        'parent-channel-label' : 'parent_channel_label',
+    }
+addItem(SuseProductChannelItem)
+
+class SuseUpgradePathItem(BaseItem):
+    item_name = 'suse-upgrade-path'
+    item_class = importLib.SuseUpgradePath
+    tagMap = {
+        'from-product-id' : 'from_product_id',
+        'to-product-id'   : 'to_product_id',
+    }
+addItem(SuseUpgradePathItem)
+
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
     item_class = importLib.ChannelErratum
@@ -1190,3 +1209,8 @@ class SupportInformationContainer(ContainerHandler):
 class SuseProductsContainer(ContainerHandler):
     container_name = 'suse-products'
 
+class SuseProductChannelsContainer(ContainerHandler):
+    container_name = 'suse-product-channels'
+
+class SuseUpgradePathsContainer(ContainerHandler):
+    container_name = 'suse-upgrade-paths'

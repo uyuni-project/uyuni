@@ -182,6 +182,21 @@ class SuseProduct(Information):
         'product_list'  : StringType,
         'product_id'    : IntType,
     }
+
+class SuseProductChannel(Information):
+    attributeTypes = {
+        'product_id'           : IntType,
+        'channel_id'           : IntType,
+        'channel_label'        : StringType,
+        'parent_channel_label' : StringType,
+    }
+
+class SuseUpgradePath(Information):
+    attributeTypes = {
+        'from_pdid' : IntType,
+        'to_pdid'   : IntType,
+    }
+
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,
