@@ -668,8 +668,13 @@ public class ContentSyncManager {
      * @param mirrorUrl optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrl)
+    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrlIn)
             throws ContentSyncException {
+        String mirrorUrl = mirrorUrlIn;
+        if (mirrorUrl == null) {
+            mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
+        }
+
         // If this is an ISS slave then do nothing
         if (IssFactory.getCurrentMaster() != null) {
             return;
