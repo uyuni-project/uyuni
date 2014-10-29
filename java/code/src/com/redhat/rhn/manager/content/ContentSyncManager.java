@@ -665,7 +665,7 @@ public class ContentSyncManager {
     /**
      * Update channel information in the database.
      * @param repos list of repositories to match against
-     * @param mirrorUrl optional mirror URL that can be null
+     * @param mirrorUrlIn optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
     public void updateChannels(Collection<SCCRepository> repos, String mirrorUrlIn)
