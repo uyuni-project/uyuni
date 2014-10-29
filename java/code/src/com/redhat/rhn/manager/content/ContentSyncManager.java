@@ -623,15 +623,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * Retrieve repositories from the cache.
-     * @return list of repositories from the cache
-     */
-    private List<SCCRepository> getRepositories() {
-        log.debug("Retrieving repositories from cache");
-        return SCCCachingFactory.lookupRepositories();
-    }
-
-    /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
      *
      * @param user username
@@ -720,7 +711,7 @@ public class ContentSyncManager {
         }
 
         // Update content source URLs
-        List<SCCRepository> repos = getRepositories();
+        List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
@@ -1160,7 +1151,7 @@ public class ContentSyncManager {
         cachedOESRepo = null;
 
         // Get the cached list of repositories
-        List<SCCRepository> repositories = getRepositories();
+        List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
@@ -1254,7 +1245,7 @@ public class ContentSyncManager {
         }
 
         // Check if channel is mirrorable
-        SCCRepository repo = isMirrorable(channel, getRepositories());
+        SCCRepository repo = isMirrorable(channel, SCCCachingFactory.lookupRepositories());
         if (repo == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
