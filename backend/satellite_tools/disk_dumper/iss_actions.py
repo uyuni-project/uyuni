@@ -34,6 +34,8 @@ class ActionDeps:
             'arches-extra'              : [''],
             'supportinfo'               : [''],
             'suse-products'             : [''],
+            'suse-product-channels'     : ['suse-products', 'channels'],
+            'suse-upgrade-paths'        : ['suse-products'],
             #FIXME: remove old code
             'suse-products-subscriptions' : [''],
         }
@@ -53,6 +55,8 @@ class ActionDeps:
             'kickstarts',
             'supportinfo',
             'suse-products',
+            'suse-product-channels',
+            'suse-upgrade-paths',
             #FIXME: remove old code
             'suse-products-subscriptions'
         ]

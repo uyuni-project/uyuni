@@ -1425,10 +1425,102 @@ class Backend:
                                        release=toinsert[5], product_list=toinsert[6],
                                        product_id=toinsert[7])
         if toupdate[0]:
-            update_product.executemany(name=toinsert[0], version=toinsert[1],
-                                       friendly_name=toinsert[2], arch_type_id=toinsert[3],
-                                       release=toinsert[4], product_list=toinsert[5],
-                                       product_id=toinsert[6])
+            update_product.executemany(name=toupdate[0], version=toupdate[1],
+                                       friendly_name=toupdate[2], arch_type_id=toupdate[3],
+                                       release=toupdate[4], product_list=toupdate[5],
+                                       product_id=toupdate[6])
+
+    def processSuseProductChannels(self, batch):
+        """Check if the SUSE ProductChannel is already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_pc = self.dbmodule.prepare("""
+            INSERT INTO suseProductChannel
+                   (product_id, channel_id, channel_label, parent_channel_label)
+            VALUES (:pid, :cid, :clabel, :pclabel)
+            """)
+        delete_pc = self.dbmodule.prepare("""
+            DELETE FROM suseProductChannel
+             WHERE product_id = :pid
+               AND channel_label = :clabel
+            """)
+        update_pc = self.dbmodule.prepare("""
+            UPDATE suseProductChannel
+               SET channel_id = :cid,
+                   parent_channel_label = :pclabel
+             WHERE product_id = :pid
+               AND channel_label = :clabel
+             """)
+        _query_pc = self.dbmodule.prepare("""
+            SELECT product_id, channel_label FROM suseProductChannel
+            """)
+        _query_pc.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['product_id'], x['channel_label']), _query_pc.fetchall_dict() or [])
+        toinsert = [[], [], [], []]
+        todelete = [[], []]
+        toupdate = [[], [], [], []]
+        for item in batch:
+            ident = "%s-%s" % (item['product_id'], item['channel_label'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['channel_id'])
+                toupdate[1].append(item['parent_channel_label'])
+                toupdate[2].append(item['product_id'])
+                toupdate[3].append(item['channel_label'])
+                continue
+            toinsert[0].append(item['product_id'])
+            toinsert[1].append(item['channel_id'])
+            toinsert[2].append(item['channel_label'])
+            toinsert[3].append(item['parent_channel_label'])
+        for ident in existing_data:
+            pid, clabel = ident.split('-', 1)
+            todelete[0].append(int(pid))
+            todelete[1].append(clabel)
+        if todelete[0]:
+            delete_pc.executemany(pid=todelete[0], clabel=todelete[1])
+        if toinsert[0]:
+            insert_pc.executemany(pid=toinsert[0], cid=toinsert[1],
+                                  clabel=toinsert[2], pclabel=toinsert[3])
+        if toupdate[0]:
+            update_pc.executemany(cid=toupdate[0], pclabel=toupdate[1],
+                                  pid=toupdate[2], clabel=toupdate[3])
+
+    def processSuseUpgradePaths(self, batch):
+        """Check if the SUSE Upgrade Paths are already in DB.
+           If not add it.
+        """
+        insert_up = self.dbmodule.prepare("""
+            INSERT INTO suseUpgradePath
+                   (from_pdid, to_pdid)
+            VALUES (:from_pdid, :to_pdid)
+            """)
+        delete_up = self.dbmodule.prepare("""
+            DELETE FROM suseUpgradePath
+             WHERE from_pdid = :from_pdid
+               AND to_pdid = :to_pdid
+            """)
+        _query_up = self.dbmodule.prepare("""
+            SELECT from_pdid, to_pdid FROM suseUpgradePath
+            """)
+        _query_up.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['from_pdid'], x['to_pdid']), _query_up.fetchall_dict() or [])
+        toinsert = [[], []]
+        todelete = [[], []]
+        for item in batch:
+            ident = "%s-%s" % (item['from_pdid'], item['to_pdid'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                continue
+            toinsert[0].append(item['from_pdid'])
+            toinsert[1].append(item['to_pdid'])
+        for ident in existing_data:
+            fpdid, tpdid = ident.split('-', 1)
+            todelete[0].append(int(fpdid))
+            todelete[1].append(int(tpdid))
+        if todelete[0]:
+            delete_up.executemany(from_pdid=todelete[0], to_pdid=todelete[1])
+        if toinsert[0]:
+            insert_up.executemany(from_pdid=toinsert[0], to_pdid=toinsert[1])
 
     def lookupPackageIdFromPackage(self, package):
         if not isinstance(package, IncompletePackage):
@@ -1467,6 +1559,15 @@ class Backend:
                 package.id = pkgid['id']
                 return
 
+    def lookupSuseProductIdByProductId(self, pid):
+        _query = self.dbmodule.prepare("""
+            SELECT id FROM suseProducts WHERE product_id = :pid
+        """)
+        _query.execute(pid=pid)
+        res = _query.fetchone_dict()
+        if res:
+            return res['id']
+        return None
 
     def lookupKeyword(self, keyword):
         statement = self.dbmodule.prepare("""

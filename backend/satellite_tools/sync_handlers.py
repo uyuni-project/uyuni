@@ -447,6 +447,8 @@ class ContainerHandler:
         self.setOrgContainer(master_label, create_orgs)
         self.setSupportInformationContainer()
         self.setSuseProductsContainer()
+        self.setSuseProductChannelsContainer()
+        self.setSuseUpgradePathsContainer()
 
     def __del__(self):
         self.handler.close() # kill the circular reference.
@@ -499,6 +501,10 @@ class ContainerHandler:
         self.handler.set_container(diskImportLib.SupportInformationContainer())
     def setSuseProductsContainer(self):
         self.handler.set_container(diskImportLib.SuseProductsContainer())
+    def setSuseProductChannelsContainer(self):
+        self.handler.set_container(diskImportLib.SuseProductChannelsContainer())
+    def setSuseUpgradePathsContainer(self):
+        self.handler.set_container(diskImportLib.SuseUpgradePathsContainer())
 
 #
 # more containers

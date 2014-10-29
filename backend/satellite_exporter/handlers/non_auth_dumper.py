@@ -76,6 +76,8 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
             'orgs',
             'support_information',
             'suse_products',
+            'suse_product_channels',
+            'suse_upgrade_paths',
         ]
 
         self.system_id = None
@@ -305,6 +307,24 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         self.close()
         return 0
 
+    def dump_suse_product_channels(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SuseProductChannelDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
+    def dump_suse_upgrade_paths(self):
+        log_debug(4)
+        writer = self._get_xml_writer()
+        d = dumper.SatelliteDumper(writer, exportLib.SuseUpgradePathDumper(writer))
+        d.dump()
+        writer.flush()
+        self.close()
+        return 0
+
     def arches(self):
         return self.dump_arches(rpm_arch_type_only=1)
 
@@ -316,6 +336,12 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
 
     def suse_products(self):
         self.dump_suse_products()
+
+    def suse_product_channels(self):
+        self.dump_suse_product_channels()
+
+    def suse_upgrade_paths(self):
+        self.dump_suse_upgrade_paths()
 
     def blacklist_obsoletes(self):
         return self.dump_blacklist_obsoletes()
