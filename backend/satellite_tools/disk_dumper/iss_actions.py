@@ -36,7 +36,7 @@ class ActionDeps:
             'suse-products'             : [''],
             'suse-product-channels'     : ['suse-products', 'channels'],
             'suse-upgrade-paths'        : ['suse-products'],
-            #FIXME: remove old code
+            #FIXME: remove old code - when NCC is really dead
             'suse-products-subscriptions' : [''],
         }
 
@@ -57,7 +57,7 @@ class ActionDeps:
             'suse-products',
             'suse-product-channels',
             'suse-upgrade-paths',
-            #FIXME: remove old code
+            #FIXME: remove old code - when NCC is really dead
             'suse-products-subscriptions'
         ]
         self.options = options

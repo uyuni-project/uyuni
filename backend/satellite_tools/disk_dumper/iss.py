@@ -1040,7 +1040,7 @@ class Dumper(dumper.XML_Dumper):
                           "Upgrade Path Information exported to %s",
                           "%s caught in dump_suse_upgrade_paths.")
 
-    #FIXME: remove old calls
+    #FIXME: remove old calls  - when NCC is really dead
     def dump_suse_products_subscriptions(self):
         self._dump_simple("%s/productdata.xml" % self.mp,
                           self.getProductData,
@@ -1260,7 +1260,7 @@ class ExporterMain:
                                     'suse-products'    :   {'dump' : self.dumper.dump_suse_products},
                                     'suse-product-channels' : {'dump' : self.dumper.dump_suse_product_channels},
                                     'suse-upgrade-paths' : {'dump' : self.dumper.dump_suse_upgrade_paths},
-                                    #FIXME: remove old calls
+                                    #FIXME: remove old calls  - when NCC is really dead
                                     'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }
             else:
