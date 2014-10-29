@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -575,21 +576,24 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns all repositories available to all configured credentials.
-     * @return list of all available repositories
+     * Refresh the repositories cache by reading repos from SCC for all available mirror
+     * credentials, consolidating and inserting into the database.
      */
-    public Collection<SCCRepository> getRepositories() {
+    public void refreshRepositoriesCache() {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
         List<Credentials> credentials = filterCredentials(
                 CredentialsFactory.lookupSCCCredentials());
-        // Query repos for all mirror credentials
+
+        // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             try {
+                log.debug("Getting repos for: " + c.getUsername());
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
-                // Add the mirror credentials to all returned repos
+
+                // Add mirror credentials to all repos
                 for (SCCRepository r : repos) {
                     r.setCredentials(c);
                 }
@@ -600,16 +604,31 @@ public class ContentSyncManager {
                 reposList.addAll(repos);
             }
             catch (SCCClientException e) {
-                log.error("Error getting repos for " + c.getUsername() + ", " + e.getMessage());
+                log.error("Error getting repos for " + c.getUsername() +
+                        ": " + e.getMessage());
             }
             catch (URISyntaxException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
             }
         }
+
+        // Update the repositories cache
         if (log.isDebugEnabled()) {
-            log.debug("Found " + reposList.size() + " available repositories.");
+            log.debug("Populating cache with " + reposList.size() + " repositories.");
         }
-        return reposList;
+        SCCCachingFactory.clearRepositories();
+        for (SCCRepository repo : reposList) {
+            SCCCachingFactory.saveRepository(repo);
+        }
+    }
+
+    /**
+     * Retrieve repositories from the cache.
+     * @return list of repositories from the cache
+     */
+    public List<SCCRepository> getRepositories() {
+        log.debug("Retrieving repositories from cache");
+        return SCCCachingFactory.lookupRepositories();
     }
 
     /**
