@@ -25,8 +25,12 @@ fi
 
 BASE_DIR=/tmp
 IS_SUSE=0
+SCC=0
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
+fi
+if [ -f /var/lib/spacewalk/scc/migrated ]; then
+    SCC=1
 fi
 
 usage() {
@@ -307,9 +311,18 @@ if [ -d /var/log/rhn/tasko/sat ] ; then
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
-    echo "    * requesting NCC data"
-    mkdir -p $DIR/nccdata
-    /usr/sbin/mgr-ncc-sync -D $DIR/nccdata
+    if [ $SCC -eq 0 ]; then
+        echo "    * requesting NCC data"
+        mkdir -p $DIR/nccdata
+        /usr/sbin/mgr-ncc-sync -D $DIR/nccdata
+    elif [ -d "/var/lib/spacewalk/scc/scc-data" ]; then
+        echo  "    * copying SCC data"
+        mkdir -p $DIR/sccdata
+        IFS=$(echo -en "\n\b")
+        for i in $(ls -A /var/lib/spacewalk/scc/scc-data); do
+            cp -r /var/lib/spacewalk/scc/scc-data/$i $DIR/sccdata/
+        done
+    fi
 fi
 
 echo "    * timestamping"
@@ -333,4 +346,3 @@ rm -Rf $(echo $DIR | sed -e 's/\/[^\/]*$//g')
 
 echo
 echo "Debug dump created, stored in $TARBALL"
-
