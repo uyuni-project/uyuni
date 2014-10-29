@@ -28,6 +28,8 @@ CREATE TABLE suseSCCRepository
     description    VARCHAR2(2048),
     url            VARCHAR2(2048),
     created        timestamp with local time zone
+                       DEFAULT (current_timestamp) NOT NULL,
+    modified       timestamp with local time zone
                        DEFAULT (current_timestamp) NOT NULL
 )
 ENABLE ROW MOVEMENT
