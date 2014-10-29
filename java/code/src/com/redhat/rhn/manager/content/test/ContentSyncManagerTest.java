@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content.test;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -112,7 +113,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(csm.getRepositories(), null);
+            csm.updateChannels(null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
@@ -591,7 +592,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // List channels and verify status
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            List<MgrSyncChannel> channels = csm.listChannels(csm.getRepositories());
+            List<MgrSyncChannel> channels = csm.listChannels();
             for (MgrSyncChannel c : channels) {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
                     assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
@@ -754,17 +755,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Reset all channel subscriptions
             List<String> productClasses = new ArrayList<String>();
             csm.updateChannelSubscriptions(productClasses);
+            HibernateFactory.getSession().flush();
 
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
-            String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
-            repo.setUrl(url);
+            repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
             SCCCachingFactory.saveRepository(repo);
 
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
-                csm.addChannel(label, csm.getRepositories(), null);
+                csm.addChannel(label, null);
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
@@ -831,7 +832,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
 
             // Add the channel by label
-            csm.addChannel(xmlChannel.getLabel(), csm.getRepositories(), null);
+            csm.addChannel(xmlChannel.getLabel(), null);
 
             // Check if channel has been added correctly
             Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());

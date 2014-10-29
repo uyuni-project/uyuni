@@ -63,7 +63,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts(csm.listChannels(csm.getRepositories()));
+        return csm.listProducts(csm.listChannels());
     }
 
     /**
@@ -83,7 +83,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listChannels(csm.getRepositories());
+        return csm.listChannels();
     }
 
     /**
@@ -106,7 +106,7 @@ public class ContentSyncHandler extends BaseHandler {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
         csm.refreshRepositoriesCache();
-        csm.updateChannels(csm.getRepositories(), mirrorUrl);
+        csm.updateChannels(mirrorUrl);
         return BaseHandler.VALID;
     }
 
@@ -234,7 +234,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        csm.addChannel(channelLabel, csm.getRepositories(), mirrorUrl);
+        csm.addChannel(channelLabel, mirrorUrl);
         return BaseHandler.VALID;
     }
 

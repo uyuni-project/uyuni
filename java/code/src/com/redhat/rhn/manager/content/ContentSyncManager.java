@@ -626,7 +626,7 @@ public class ContentSyncManager {
      * Retrieve repositories from the cache.
      * @return list of repositories from the cache
      */
-    public List<SCCRepository> getRepositories() {
+    private List<SCCRepository> getRepositories() {
         log.debug("Retrieving repositories from cache");
         return SCCCachingFactory.lookupRepositories();
     }
@@ -677,13 +677,11 @@ public class ContentSyncManager {
 
     /**
      * Update channel information in the database.
-     * @param repos list of repositories to match against
-     * @param mirrorUrlIn optional mirror URL that can be null
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * @param mirrorUrl optional mirror URL that can be null
+     * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
+     * can't be updated
      */
-    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrlIn)
-            throws ContentSyncException {
-        String mirrorUrl = mirrorUrlIn;
+    public void updateChannels(String mirrorUrl) throws ContentSyncException {
         if (mirrorUrl == null) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }
@@ -722,6 +720,7 @@ public class ContentSyncManager {
         }
 
         // Update content source URLs
+        List<SCCRepository> repos = getRepositories();
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
@@ -1151,7 +1150,7 @@ public class ContentSyncManager {
      * @return list of channels
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public List<MgrSyncChannel> listChannels(Collection<SCCRepository> repositories)
+    public List<MgrSyncChannel> listChannels()
             throws ContentSyncException {
         // This list will be returned
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
@@ -1159,6 +1158,9 @@ public class ContentSyncManager {
 
         // Reset the cached OES credentials (OES will be queried only once)
         cachedOESRepo = null;
+
+        // Get the cached list of repositories
+        List<SCCRepository> repositories = getRepositories();
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
@@ -1228,8 +1230,8 @@ public class ContentSyncManager {
      * @param mirrorUrl repo mirror passed by cli
      * @throws ContentSyncException in case of problems
      */
-    public void addChannel(String label, Collection<SCCRepository> repositories,
-            String mirrorUrl) throws ContentSyncException {
+    public void addChannel(String label, String mirrorUrl)
+            throws ContentSyncException {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
@@ -1252,7 +1254,7 @@ public class ContentSyncManager {
         }
 
         // Check if channel is mirrorable
-        SCCRepository repo = isMirrorable(channel, repositories);
+        SCCRepository repo = isMirrorable(channel, getRepositories());
         if (repo == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
