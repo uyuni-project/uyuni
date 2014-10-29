@@ -105,6 +105,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
+        csm.refreshRepositoriesCache();
         csm.updateChannels(csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
     }
