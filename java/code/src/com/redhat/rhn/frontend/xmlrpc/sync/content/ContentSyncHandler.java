@@ -104,9 +104,6 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannels(String sessionKey, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
-        if (mirrorUrl == null) {
-            mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
-        }
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannels(csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
