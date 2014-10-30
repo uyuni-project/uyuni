@@ -2,17 +2,18 @@
 $(function() {
   var button = $('#scc-start-migration-btn');
   var dialog = $('#scc-migration-dialog');
-  var taskList = $('#scc-migration-dialog ul.dialog-steps');
   var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
+  var statusLabel = $('#scc-migration-dialog-status');
+
+  var completedTasks = 0;
+  var totalTasks = 6;
 
   function addLastTask(message, iconClass) {
-    var lastTask = taskList.children('li').last();
     var icon = $('<i></i>').attr('class', iconClass);
     var iconText = $('<div></div>');
     iconText.append(icon);
     iconText.append(message);
-    var item = $('<li></li>').append(iconText);
-    taskList.append(item);
+    $('#scc-migration-current-task').html(iconText);
   }
 
   function addTask(message) {
@@ -20,13 +21,13 @@ $(function() {
   }
 
   function taskFailed(message) {
-    taskList.children().last('li').remove();
     addLastTask(message, 'fa fa-exclamation-triangle fa-1-5x text-warning');
   }
 
   function taskSucceeded(message) {
-    taskList.children().last('li').remove();
     addLastTask(message, 'fa fa-check success');
+    completedTasks = completedTasks + 1;
+    statusLabel.html(completedTasks + '/' + totalTasks);
   }
 
   // starts a task func with message. On completion
@@ -36,7 +37,6 @@ $(function() {
     taskFunc(makeAjaxHandler(
       function(ret) {
         taskSucceeded(message);
-        //alert(message);
         thenFunc();
       },
       function(message, exception) {
@@ -50,12 +50,21 @@ $(function() {
     button.prop('disabled', true);
     dialog.modal({show: true, keyboard: false});
     dialog.modal('show');
+    // reload the page after the dialog is closed
+    dialog.on('hidden.bs.modal', function() {
+      location.reload();
+    });
+
     dialogCloseBtn.prop('disabled', true);
 
     function cleanupFunc() {
         dialogCloseBtn.prop('disabled', false);
+        statusLabel.html(
+          '<i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>' +
+          $('#sccconfig\\.jsp\\.failed').html());
     }
 
+    statusLabel.html('0/6');
     // as one tasks succeeeds, start the next
     startTask($('#sccconfig\\.jsp\\.channels').html(), SCCConfigAjax.sayHello, function() {
         startTask($('#sccconfig\\.jsp\\.channelfamilies').html(), SCCConfigAjax.sayHello, function() {
@@ -66,6 +75,7 @@ $(function() {
                 button.hide();
                 button.prop('disabled', false);
                 dialogCloseBtn.prop('disabled', false);
+                statusLabel.html('<i class="fa fa-check success"></i>' + $('#sccconfig\\.jsp\\.completed').html());
               }, cleanupFunc);
             }, cleanupFunc);
           }, cleanupFunc);
