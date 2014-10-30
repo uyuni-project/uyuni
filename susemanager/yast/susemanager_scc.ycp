@@ -196,6 +196,16 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
             `Left (`RadioButton(`id(`scc), `opt (`notify),
                 // radio button label
                 _("Connect to SCC"), settings["ISS_PARENT"]:"" == "")),
+            `HBox (`HSpacing (4), `VBox (
+                // text entry label
+                `InputField (`id ("SCC_USER"), `opt (`hstretch), _("SCC Organization Credentials &Username"),
+                             settings["SCC_USER"]:""),
+                // text entry label
+                `Password (`id ("SCC_PASS"), `opt (`hstretch), _("SCC Organization Credentials &Password"),
+                           settings["SCC_PASS"]:""),
+                `VSpacing (),
+                `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")))
+            ),
             text_mode ? `Empty () : `VSpacing (),
             `Left ( `RadioButton(`id(`iss), `opt (`notify),
                 // radio button label
@@ -204,14 +214,6 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
                    // text entry label
                    `InputField (`id ("ISS_PARENT"), `opt (`hstretch), _("Parent &Server Name"), settings["ISS_PARENT"]:""))
             )))),
-        // text entry label
-        `InputField (`id ("SCC_USER"), `opt (`hstretch), _("SCC Organization Credentials &Username"),
-            settings["SCC_USER"]:""),
-        // text entry label
-        `Password (`id ("SCC_PASS"), `opt (`hstretch), _("SCC Organization Credentials &Password"),
-            settings["SCC_PASS"]:""),
-        `VSpacing (),
-        `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
         `VSpacing (0.5)
     ), `HSpacing (1));
 
@@ -230,6 +232,9 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         {
             settings["ISS_PARENT"] = "";
             UI::ChangeWidget (`id ("ISS_PARENT"), `Enabled, ret == `iss);
+            UI::ChangeWidget (`id ("SCC_USER"), `Enabled, ret == `scc);
+            UI::ChangeWidget (`id ("SCC_PASS"), `Enabled, ret == `scc);
+            UI::ChangeWidget (`id ("test_NU_credentials"), `Enabled, ret == `scc);
         }
         if (ret == `back)
         {
@@ -241,31 +246,47 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         }
         if (ret == "test_NU_credentials" || ret == `next)
         {
-            boolean missing     = false;
+            boolean missing = false;
+            boolean isscc   = UI::QueryWidget (`id (`rb), `CurrentButton) == `scc;
             foreach (string key, string value, settings, {
-                string val      = (string) UI::QueryWidget (`id (key), `Value);
-                if ( key == "ISS_PARENT")
+                string val  = (string) UI::QueryWidget (`id (key), `Value);
+                if (isscc)
                 {
-                    boolean sccconnect = UI::QueryWidget (`id (`rb), `CurrentButton) == `scc;
-                    if (sccconnect)
+                    if (key == "SCC_USER" || key == "SCC_PASS")
                     {
-                        settings[key]       = "";
-                        UI::ChangeWidget (`id ("ISS_PARENT"), `Value, "");
-                        continue;
+                        if (val == "")
+                        {
+                            // error label
+                            Popup::Error (sformat (_("The value of '%1' is empty."), labels[key]:key));
+                            UI::SetFocus (`id (key));
+                            missing     = true;
+                            break;
+                        }
+                        settings[key] = val;
                     }
-                }
-                if (val == "")
-                {
-                    string label        = labels[key]:key;
-                    // error label
-                    Popup::Error (sformat (_("The value of '%1' is empty."), label));
-                    UI::SetFocus (`id (key));
-                    missing     = true;
-                    break;
+                    else
+                    {
+                        settings[key] = "";
+                    }
                 }
                 else
                 {
-                    settings[key]       = val;
+                    if ( key == "ISS_PARENT")
+                    {
+                        if (val == "")
+                        {
+                            // error label
+                            Popup::Error (sformat (_("The value of '%1' is empty."), labels[key]:key));
+                            UI::SetFocus (`id (key));
+                            missing     = true;
+                            break;
+                        }
+                        settings[key] = val;
+                    }
+                    else
+                    {
+                        settings[key] = "";
+                    }
                 }
             });
             if (missing)
@@ -280,8 +301,7 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         }
         if (ret == `next)
         {
-            foreach (string key, string value, settings, {
-                string val      = (string) UI::QueryWidget (`id (key), `Value);
+            foreach (string key, string val, settings, {
                 setenv (key, val, true);
                 SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
             });
