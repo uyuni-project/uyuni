@@ -489,19 +489,40 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Create Patch</source>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions">
-        <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
-        </trans-unit>
-        <trans-unit id="ssm.misc.index.reboot.summary">
-          <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
-        </trans-unit>
-        <trans-unit id="ssm.misc.index.lock.summary">
-          <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
+      <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.reboot.summary">
+        <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
+      </trans-unit>
+      <trans-unit id="ssm.misc.index.lock.summary">
+        <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
       </trans-unit>
       <trans-unit id="ssm.overview.errata">
         <source>Patches</source>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule">
         <source>&lt;a href="/rhn/systems/ssm/ListPatches.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
+      </trans-unit>
+      <trans-unit id="ssm.patches.list.header">
+        <source>Relevant Patches List</source>
+      </trans-unit>
+      <trans-unit id="ssm.patches.list.summary">
+        <source>The patches below apply to one or more of your selected systems.</source>
+      </trans-unit>
+      <trans-unit id="ssm.errata-relevant-systems.summary">
+        <source>Below is a list of the systems in the system set manager which are affected by this patch.</source>
+      </trans-unit>
+      <trans-unit id="ssm.errata-apply-confirm.title">
+        <source>Relevant Patches Confirm</source>
+      </trans-unit>
+      <trans-unit id="ssm.errata-apply-confirm.summary">
+        <source>The patches below will be applied to listed systems.</source>
+      </trans-unit>
+      <trans-unit id="ssm.errata.message.scheduled">
+        <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
+      </trans-unit>
+      <trans-unit id="ssm.errata.message.queued">
+        <source>Patch updates have been added to the Action Chain &lt;a href="https://s21pg/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.kickstart">
         <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
