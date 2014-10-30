@@ -103,7 +103,13 @@
         </convert>
         <create creator="new" javascript="SCCConfigAjax">
             <param name="class" value="com.redhat.rhn.frontend.action.satellite.SCCConfigAction$AjaxEndPoint" />
-            <include method="sayHello" />
+            <include method="performMigration" />
+            <include method="synchronizeChannels" />
+            <include method="synchronizeChannelFamilies" />
+            <include method="synchronizeProducts" />
+            <include method="synchronizeProductChannels" />
+            <include method="synchronizeSubscriptions" />
+            <include method="synchronizeUpgradePaths" />
         </create>
     </allow>
 </dwr>
