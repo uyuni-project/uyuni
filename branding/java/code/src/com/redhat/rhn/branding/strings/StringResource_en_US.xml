@@ -1744,6 +1744,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="task.status.cve-server-channels">
         <source>CVE Server Channels</source>
       </trans-unit>
+      <trans-unit id="task.status.mgr-sync-refresh">
+        <source>Refresh mgr-sync data</source>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
         <source>Registers SUSE Manager clients</source>
       </trans-unit>
@@ -1755,6 +1758,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch">
         <source>Generates data required for performing CVE audit queries</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch">
+        <source>Refreshes data about channels, products and subscriptions</source>
       </trans-unit>
 
       <!-- Server Contact Methods -->
