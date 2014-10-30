@@ -8,7 +8,7 @@ Feature: Delete user user1
 
   Scenario: Delete user1
     Given I am on the Details page
-      When I follow "delete user"
+      When I follow "Delete User"
       Then I should see a "Confirm User Deletion" text
         And I should see a "This will delete this user permanently." text
       When I click on "Delete User"

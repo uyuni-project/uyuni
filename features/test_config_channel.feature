@@ -66,7 +66,7 @@ Feature: Create a configuration channel
     Then I should see a "/etc/mgr-test-file.cnf" link
      And I should see this client as link
     When I click on "Deploy Files to Selected Systems"
-    Then I should see a "1 revision-deploy successfully scheduled." text
+    Then I should see a "1 revision-deploy is being scheduled." text
      And I should see a "0 revision-deploys overridden." text
 
   Scenario: Check File deployment

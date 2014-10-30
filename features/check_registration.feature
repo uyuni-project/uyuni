@@ -21,7 +21,7 @@ Feature: Check client registration
      And I should see a "[Provisioning]" text
      And I should see a "[Management]" text
      And I should see a "add to ssm" link
-     And I should see a "delete system" link
+     And I should see a "Delete System" link
      And I should see a "Initial Registration Parameters:" text
      And I should see a "OS: sles-release" text
      And I should see a "Release: 12" text

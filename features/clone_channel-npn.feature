@@ -5,7 +5,7 @@ Feature: Clone a Channel
 
   Scenario: Clone a Channel without errata
     Given I am on the manage software channels page
-    When I follow "clone channel"
+    When I follow "Clone Channel"
      And I select "SLES11-SP3-Updates x86_64 Channel" from "clone_from"
      And I choose "original"
      And I click on "Create Channel"
@@ -23,7 +23,7 @@ Feature: Clone a Channel
 
   Scenario: Clone a Channel with errata
     Given I am on the manage software channels page
-    When I follow "clone channel"
+    When I follow "Clone Channel"
      And I select "SLES11-SP3-Updates x86_64 Channel" from "clone_from"
      And I choose "current"
      And I click on "Create Channel"
@@ -44,7 +44,7 @@ Feature: Clone a Channel
 
   Scenario: Clone a Channel with selected errata
     Given I am on the manage software channels page
-    When I follow "clone channel"
+    When I follow "Clone Channel"
      And I select "SLES11-SP3-Updates x86_64 Channel" from "clone_from"
      And I choose "select_errata"
      And I click on "Create Channel"

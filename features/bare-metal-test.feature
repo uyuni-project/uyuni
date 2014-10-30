@@ -96,7 +96,7 @@ Feature: Test Bare-metal discovery
 
     Scenario: Delete the system profile
         Given I am on the Systems overview page of this client
-         When I follow "delete system"
+         When I follow "Delete System"
           And I should see a "Confirm System Profile Deletion" text
           And I click on "Delete Profile"
     Scenario: Disable Bare-metal discovery

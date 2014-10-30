@@ -35,10 +35,11 @@ def debrand_string(str)
         when "Kickstart Snippets" then str
         when "Create a New Kickstart Profile" then str
         when "Step 1: Create Kickstart Profile" then str
+        when "Create Kickstart Profile" then str
         when "Test Erratum" then str
         # replacement exceptions
         when "Create Kickstart Distribution" then "Create Autoinstallable Distribution"
-        when "upload new kickstart file" then "upload new kickstart/autoyast file"
+        when "upload kickstart file" then "upload new kickstart/autoyast file"
         when "Upload a New Kickstart File" then "Upload a New Kickstart/AutoYaST File"
         when "RHN Reference Guide" then "Reference Guide"
         when "Create Errata" then "Create Patch"

@@ -160,7 +160,7 @@ Feature: Explore the main landing page
      And The table should have a column named "Security (Important)"
      And The table should have a column named "Security (Moderate)"
      And The table should have a column named "Security (Low)"
-     And The table should have a column named "Bugfixes"
+     And The table should have a column named "Bug Fixes"
      And The table should have a column named "Enhancements"
      And The table should have a column named "Score"
 

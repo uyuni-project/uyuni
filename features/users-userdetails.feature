@@ -9,7 +9,7 @@ Feature: Watch/edit user details
   Scenario: Access user details
     Given I am on the Details page
       Then I should see a "User Details" text
-        And I should see a "delete user" link
+        And I should see a "Delete User" link
         And I should see a "deactivate user" link
         And I should see a "Details" link
         And I should see a "System Groups" link
