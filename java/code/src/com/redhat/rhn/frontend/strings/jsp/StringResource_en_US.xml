@@ -22282,14 +22282,29 @@ given channel.</source>
         <trans-unit id="sccconfig.jsp.migrate">
           <source>Start Migration to SUSE Customer Center</source>
         </trans-unit>
-        <trans-unit id="sccconfig.jsp.migrationinprogress">
-          <source>Migration in progress.</source>
+        <trans-unit id="sccconfig.jsp.switchingtoscc">
+          <source>Switching to SUSE Customer Center</source>
         </trans-unit>
-        <trans-unit id="sccconfig.jsp.migrationcompleted">
-          <source>Migration was successfully completed.</source>
+        <trans-unit id="sccconfig.jsp.channels">
+          <source>Channels</source>
         </trans-unit>
-        <trans-unit id="sccconfig.jsp.migrationfailed">
-          <source>Migration did not succeed.</source>
+        <trans-unit id="sccconfig.jsp.channelfamilies">
+          <source>Channel Families</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.products">
+          <source>Products</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.productchannels">
+          <source>Product Channels</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.subscriptions">
+          <source>Subscriptions</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.upgradepaths">
+          <source>Upgrade Paths</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.close">
+          <source>Close</source>
         </trans-unit>
       </group>
     </body>
