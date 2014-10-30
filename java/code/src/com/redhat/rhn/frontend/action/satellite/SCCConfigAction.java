@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.satellite;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -39,6 +40,7 @@ import java.util.Random;
 public class SCCConfigAction extends RhnAction {
 
     private static Logger log = Logger.getLogger(SCCConfigAction.class);
+    private static final String LOCAL_MIRROR_USED = "local.mirror.used";
 
     /**
      * DWR ajax end-point for this action
@@ -136,7 +138,14 @@ public class SCCConfigAction extends RhnAction {
             return mapping.findForward("alreadymigrated");
         }
 
+        request.setAttribute(LOCAL_MIRROR_USED, localMirrorUsed());
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
+
+    private boolean localMirrorUsed() {
+        return Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY) != null ||
+            Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null;
+    }
+
 }
 
