@@ -9,7 +9,7 @@ When(/^I save migration state$/) do
 end
 
 Given(/^there is no "(.*?)" file on the server$/) do |target_file|
-  sshcmd("test #{target_file} && -e rm #{target_file}", ignore_err: true)
+  sshcmd("test -e #{target_file} && rm #{target_file}", ignore_err: true)
 end
 
 Given(/^there is "(.*?)" file on the server$/) do |target_file|
