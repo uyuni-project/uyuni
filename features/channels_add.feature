@@ -13,7 +13,7 @@ Feature: Adding channels
   Scenario: Adding a base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
      And I select "None" from "Parent Channel"
@@ -26,7 +26,7 @@ Feature: Adding channels
   Scenario: Adding a child channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "Test Child Channel" as "Channel Name"
      And I enter "test_child_channel" as "Channel Label"
      And I select "Test Base Channel" from "Parent Channel"
@@ -39,7 +39,7 @@ Feature: Adding channels
   Scenario: Adding SLES11-SP3-Updates i586 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates i586 Channel" as "Channel Name"
      And I enter "sles11-sp3-updates-i586-channel" as "Channel Label"
      And I select "None" from "Parent Channel"
@@ -52,7 +52,7 @@ Feature: Adding channels
   Scenario: Adding a child channel to SLES11-SP3-Updates i586
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates i586 Child Channel" as "Channel Name"
      And I enter "sles11-sp3-updates-i586-child-channel" as "Channel Label"
      And I select "SLES11-SP3-Updates i586 Channel" from "Parent Channel"
@@ -65,7 +65,7 @@ Feature: Adding channels
   Scenario: Adding SLES11-SP3-Updates x86_64 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates x86_64 Channel" as "Channel Name"
      And I enter "sles11-sp3-updates-x86_64-channel" as "Channel Label"
      And I select "None" from "Parent Channel"
@@ -78,7 +78,7 @@ Feature: Adding channels
   Scenario: Adding a child channel to SLES11-SP3-Updates x86_64
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "SLES11-SP3-Updates x86_64 Child Channel" as "Channel Name"
      And I enter "sles11-sp3-updates-x86_64-child-channel" as "Channel Label"
      And I select "SLES11-SP3-Updates x86_64 Channel" from "Parent Channel"
@@ -91,7 +91,7 @@ Feature: Adding channels
   Scenario: Adding Fedora x86_64 base channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "Fedora x86_64 Channel" as "Channel Name"
      And I enter "fedora-x86_64-channel" as "Channel Label"
      And I select "None" from "Parent Channel"
@@ -104,7 +104,7 @@ Feature: Adding channels
    Scenario: Adding a duplicate channel fails
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "Test Base Channel" as "Channel Name"
      And I enter "test_base_channel" as "Channel Label"
      And I select "None" from "Parent Channel"
@@ -117,7 +117,7 @@ Feature: Adding channels
     Scenario: I am not allowed to use invalid characters in the channel label
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "test123" as "Channel Name"
      And I enter "tesT123" as "Channel Label"
      And I enter "test123" as "Channel Summary"
@@ -127,7 +127,7 @@ Feature: Adding channels
     Scenario: I am not allowed to invalid characters in the channel name
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
-     And I follow "create new channel"
+     And I follow "Create Channel"
     When I enter "!test123" as "Channel Name"
      And I enter "test123" as "Channel Label"
      And I enter "test123" as "Channel Summary"

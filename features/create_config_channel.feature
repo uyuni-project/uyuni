@@ -19,7 +19,7 @@ Feature: Create a configuration channel
      And I should see a "Edit Properties" link
      And I should see a "Configuration Actions" text
      And I should see a "Add/Create Files" text
-     And I should see a "Create new configuration file or directory" link
+     And I should see a "Create configuration file or directory" link
      And I should see a "Upload configuration files" link
      And I should see a "Import a file from another channel or system" link
      And I should see a "delete channel" link

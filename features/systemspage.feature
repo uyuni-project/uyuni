@@ -167,7 +167,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "System Groups" in the left menu
     Then I should see a "System Groups" text
-     And I should see a "create new group" link
+     And I should see a "Create Group" link
      And I should see a "Your organization has no system groups." text
 
   @failed
@@ -195,7 +195,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
     Then I should see a "Activation Keys" text
-     And I should see a "create new key" link
+     And I should see a "Create Key" link
      And I should see a "No activation keys available" text
 
   Scenario: Check sidebar link destination for Systems => Stored Profiles
@@ -208,7 +208,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Custom System Info" in the left menu
     Then I should see a "Custom System Info Keys" text
-     And I should see a "create new key" link
+     And I should see a "Create Key" link
      And I should see a "No Custom Info Keys Found" text
 
    Scenario: Check sidebar link destination for Systems => Kickstart
@@ -221,8 +221,8 @@ Feature: Explore the main landing page
      And I should see a "Distributions" link in the left menu
      And I should see a "File Preservation" link in the left menu
      And I should see a "Autoinstallation Snippets" link in the left menu
-     And I should see a "create new kickstart profile" link
-     And I should see a "upload new kickstart file" link
+     And I should see a "Create Kickstart Profile" link
+     And I should see a "Upload Kickstart File" link
      And I should see a "View a List of Kickstart Profiles" link
      And I should see a "Create a New Kickstart Profile" link
      And I should see a "Upload a New Kickstart File" link
@@ -232,8 +232,8 @@ Feature: Explore the main landing page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
     Then I should see a "Kickstart Profiles" text
-     And I should see a "create new kickstart profile" link
-     And I should see a "upload new kickstart file" link
+     And I should see a "Create Kickstart Profile" link
+     And I should see a "Upload Kickstart File" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Bare Metal
     Given I am on the Systems page
@@ -247,7 +247,7 @@ Feature: Explore the main landing page
       And I follow "Kickstart" in the left menu
       And I follow "GPG and SSL Keys" in the left menu
     Then I should see a "GPG Public Keys and SSL Certificates" text
-     And I should see a "create new stored key/cert" link
+     And I should see a "Create Stored Key/Cert" link
      And I should see a "RHN Reference Guide" link
      And I should see a "RHN-ORG-TRUSTED-SSL-CERT" link
 
@@ -257,7 +257,7 @@ Feature: Explore the main landing page
       And I follow "Distributions" in the left menu
     Then I should see a "Kickstartable Distributions" text
      And I should see a "No kickstartable distributions available." text
-     And I should see a "create new distribution" link
+     And I should see a "Create Distribution" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => File Preservation
     Given I am on the Systems page
@@ -265,7 +265,7 @@ Feature: Explore the main landing page
       And I follow "File Preservation" in the left menu
     Then I should see a "File Preservation" text
      And I should see a "RHN Reference Guide" link
-     And I should see a "create new file preservation list" link
+     And I should see a "Create File Preservation List" link
 
   Scenario: Check sidebar link destination for Systems => Kickstart => Kickstart Snippets
     Given I am on the Systems page
@@ -273,23 +273,23 @@ Feature: Explore the main landing page
       And I follow "Autoinstallation Snippets" in the left menu
     Then I should see a "Autoinstallation Snippets" text
      And I should see a "No autoinstallation snippets found." text
-     And I should see a "create new snippet" link
+     And I should see a "Create Snippet" link
      And I should see a "Default Snippets" link in the content area
      And I should see a "Custom Snippets" link in the content area
      And I should see a "All Snippets" link in the content area
 
-  Scenario: Check "create new kickstart profile" page Systems => Kickstart => Profiles => create new kickstart profile
+  Scenario: Check "Create Kickstart Profile" page Systems => Kickstart => Profiles => Create Kickstart Profile
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
-      And I follow "create new kickstart profile"
+      And I follow "Create Kickstart Profile"
     Then I should see a "Step 1: Create Kickstart Profile" text
 
-  Scenario: Check "upload new kickstart file" page Systems => Kickstart => Profiles => upload new kickstart file
+  Scenario: Check "Upload Kickstart File" page Systems => Kickstart => Profiles => Upload Kickstart File
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
-      And I follow "upload new kickstart file"
+      And I follow "Upload Kickstart File"
     Then I should see a "Create Kickstart Profile" text
       And I should see a "File Contents:" text
       And I should see a "Kickstart Details" text
@@ -298,7 +298,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Distributions" in the left menu
-      And I follow "create new distribution"
+      And I follow "Create Distribution"
     Then I should see a "Create Kickstart Distribution" text
       And I should see a "Distribution Label" text
 
@@ -326,7 +326,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Distributions" in the left menu
-      And I follow "create new distribution"
+      And I follow "Create Distribution"
     When I enter "fedora_kickstart_distro" as "label"
       And I enter "/install/Fedora_12_i386/" as "basepath"
       And I select "Fedora" from "installtype"
@@ -339,7 +339,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
-      And I follow "create new kickstart profile"
+      And I follow "Create Kickstart Profile"
     When I enter "fedora_kickstart_profile" as "kickstartLabel"
       And I click on "Next"
       And I click on "Next"
@@ -355,7 +355,7 @@ Feature: Explore the main landing page
     Given I am on the Systems page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
-      And I follow "upload new kickstart file"
+      And I follow "Upload Kickstart File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
       And I attach the file "/example.ks" to "fileUpload"
       And I click on "Upload File"
@@ -429,7 +429,7 @@ Feature: Explore the main landing page
      Given I am on the Systems page
       And I follow "Autoinstallation" in the left menu
       And I follow "Autoinstallation Snippets" in the left menu
-      And I follow "create new snippet"
+      And I follow "Create Snippet"
       And I enter "created_test_snippet" as "name"
       And I enter "<test_element>a text string</test_element>" in the editor
       And I click on "Create Snippet"

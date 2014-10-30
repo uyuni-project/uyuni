@@ -7,7 +7,7 @@ Feature: Create a new user
 
   Scenario: Create a new user
     Given I am on the Users page
-      When I follow "create new user"
+      When I follow "Create User"
         And I enter "user1" as "login"
         And I enter "user1" as "desiredpassword"
         And I enter "user1" as "desiredpasswordConfirm"

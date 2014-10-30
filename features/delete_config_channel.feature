@@ -13,5 +13,5 @@ Feature: Delete a configuration channel
      And I follow "delete channel"
      And I click on "Delete Config Channel"
     Then I should see a "Centrally Managed Configuration Channels" text
-     And I should see a "create new config channel" link
+     And I should see a "Create Config Channel" link
 

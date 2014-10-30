@@ -43,7 +43,7 @@ Feature: Explore the Errata page
   Scenario: Create new bugfix erratum with bnc URL
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
-    And I follow "create new erratum"
+    And I follow "Create Erratum"
     When I enter "Test Erratum" as "synopsis"
     And I enter "Test Advisory" as "advisoryName"
     And I enter "Test Product" as "product"
@@ -64,7 +64,7 @@ Feature: Explore the Errata page
   Scenario: Create new enhancement erratum with no bnc URL
     Given I am on the Errata page
     And I follow "Manage Errata" in the left menu
-    And I follow "create new erratum"
+    And I follow "Create Erratum"
     When I enter "Enhancement Erratum" as "synopsis"
     And I enter "Enhancement Advisory" as "advisoryName"
     And I select "Product Enhancement Advisory" from "advisoryType"

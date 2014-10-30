@@ -10,7 +10,7 @@ Feature: Register a system to be managed via SSH push
   Scenario: Create activation key for SSH push
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
      When I enter "SSH push key" as "description"
       And I enter "ssh-push" as "key"
       And I check "provisioning_entitled"
@@ -21,7 +21,7 @@ Feature: Register a system to be managed via SSH push
   Scenario: Create activation key for SSH push via tunnel
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
      When I enter "SSH push via tunnel key" as "description"
       And I enter "ssh-push-tunnel" as "key"
       And I check "provisioning_entitled"

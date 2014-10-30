@@ -8,21 +8,21 @@ Feature: Create a group
 
   Scenario: fail to create a group
     Given I am on the groups page
-    When I follow "create new group"
+    When I follow "Create Group"
      And I enter "newgroup" as "name"
      And I click on "Create Group"
     Then I should see a "Both name and description are required for System Groups." text
 
   Scenario: fail to create a group
     Given I am on the groups page
-    When I follow "create new group"
+    When I follow "Create Group"
      And I enter "My new group" as "description"
      And I click on "Create Group"
     Then I should see a "Both name and description are required for System Groups." text
 
   Scenario: create a group
     Given I am on the groups page
-    When I follow "create new group"
+    When I follow "Create Group"
      And I enter "newgroup" as "name"
      And I enter "My new group" as "description"
      And I click on "Create Group"

@@ -13,7 +13,7 @@ Feature: Adding repository to a channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Manage Repositories" in the left menu
-     And I follow "create new repository"
+     And I follow "Create Repository"
     When I enter "SLES11-SP3-Updates-x86_64" as "label"
      And I enter "http://localhost/pub/TestRepo/" as "url"
      And I click on "Create Repository"
@@ -57,7 +57,7 @@ Feature: Adding repository to a channel
      And I follow "Channels"
      And I follow "Manage Software Channels" in the left menu
      And I follow "Manage Repositories" in the left menu
-     And I follow "create new repository"
+     And I follow "Create Repository"
     When I enter "SLES11-SP3-Updates-i586" as "label"
     And I enter "file:///srv/www/htdocs/pub/TestRepo/" as "url"
      And I uncheck "metadataSigned"

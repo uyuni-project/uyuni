@@ -10,7 +10,7 @@ Feature: Create an activation key
   Scenario: fail to create an activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
     When I enter "SUSE Test Key" as "description"
      And I enter "SUSE-DEV" as "key"
      And I check "monitoring_entitled"
@@ -23,7 +23,7 @@ Feature: Create an activation key
   Scenario: create an activation key
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
     When I enter "SUSE Test Key i586" as "description"
      And I enter "SUSE-DEV-i586" as "key"
      And I check "monitoring_entitled"
@@ -58,7 +58,7 @@ Feature: Create an activation key
   Scenario: create an activation key with Channel
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
     When I enter "SUSE Test Key x86_64" as "description"
      And I enter "SUSE-DEV-x86_64" as "key"
      And I check "monitoring_entitled"
@@ -78,7 +78,7 @@ Feature: Create an activation key
   Scenario: create an activation key with Channel and package list
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
     When I enter "SUSE Test PKG Key x86_64" as "description"
      And I enter "SUSE-PKG-x86_64" as "key"
      And I check "monitoring_entitled"
@@ -100,7 +100,7 @@ Feature: Create an activation key
   Scenario: create an activation key with Channel and package list
     Given I am on the Systems page
       And I follow "Activation Keys" in the left menu
-      And I follow "create new key"
+      And I follow "Create Key"
     When I enter "SUSE Test PKG Key i586" as "description"
      And I enter "SUSE-PKG-i586" as "key"
      And I check "monitoring_entitled"

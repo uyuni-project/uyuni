@@ -43,7 +43,7 @@ Feature: Create initial users
   Scenario: Create Testing username
     Given I am authorized as "admin" with password "admin"
     When I go to the users page
-     And I follow "create new user"
+     And I follow "Create User"
      And I enter "testing" as "login"
      And I enter "testing" as "desiredpassword"
      And I enter "testing" as "desiredpasswordConfirm"

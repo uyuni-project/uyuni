@@ -12,7 +12,7 @@ Feature: Test custom system info key value pairs
   Scenario: Create a new key
     When I follow "Custom System Info" in the left menu
      And I should see a "No Custom Info Keys Found" text
-     And I follow "create new key"
+     And I follow "Create Key"
      And I should see a "Create Custom Info Key" text
      And I enter "key-label" as "label"
      And I enter "key-desc" as "description"
@@ -23,7 +23,7 @@ Feature: Test custom system info key value pairs
     When I follow "Systems" in the left menu
      And I follow this client link
      And I follow "Custom Info"
-     And I follow "create new value"
+     And I follow "Create Value"
      And I follow "key-label"
      And I enter "key-value" as "value"
      And I click on "Update Key"

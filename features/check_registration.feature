@@ -119,7 +119,7 @@ Feature: Check client registration
   Scenario: check tab links "Monitoring"
     Given I am on the Systems overview page of this client
     When I follow "Monitoring" in the content area
-    Then I should see a "create new probe" link
+    Then I should see a "Create Probe" link
      And I should see a "Configured Monitoring Probes" text
 
   Scenario: check tab links "Groups"
@@ -224,13 +224,13 @@ Feature: Check client registration
     Given I am on the Systems overview page of this client
     When I follow "Notes" in the content area
     Then I should see a "System Notes" text
-     And I should see a "create new note" link
+     And I should see a "Create Note" link
 
   Scenario: check tab links "Details" => "Custom Info"
     Given I am on the Systems overview page of this client
     When I follow "Custom Info" in the content area
     Then I should see a "Custom System Information" text
-     And I should see a "create new value" link
+     And I should see a "Create Value" link
      And I should see a "Custom System Information" link
 
   Scenario: check tab links "Software" => "Errata"
@@ -376,7 +376,7 @@ Feature: Check client registration
     When I follow "Provisioning" in the content area
      And I follow "Snapshot Tags" in the content area
     Then I should see a "Snapshot Tags" text
-      And I should see a "create new system tag" link
+      And I should see a "Create System Tag" link
 
   Scenario: check tab links "Groups" => "Join"
     Given I am on the Systems overview page of this client

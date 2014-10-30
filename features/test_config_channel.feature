@@ -19,7 +19,7 @@ Feature: Create a configuration channel
      And I should see a "Edit Properties" link
      And I should see a "Configuration Actions" text
      And I should see a "Add/Create Files" text
-     And I should see a "Create new configuration file or directory" link
+     And I should see a "Create configuration file or directory" link
      And I should see a "Upload configuration files" link
      And I should see a "Import a file from another channel or system" link
      And I should see a "delete channel" link
@@ -28,7 +28,7 @@ Feature: Create a configuration channel
     Given I am testing configuration
     When I follow "Configuration Channels" in the left menu
      And I follow "New Test Channel"
-     And I follow "Create new configuration file or directory"
+     And I follow "Create configuration file or directory"
      And I enter "/etc/mgr-test-file.cnf" as "cffPath"
      And I enter "MGR_PROXY=yes" in the editor
      And I click on "Create Configuration File"

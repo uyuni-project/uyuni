@@ -32,7 +32,7 @@ Feature: Configure monitoring
   Scenario: Create a probe suite
     Given I am on the Monitoring page
      And I follow "Probe Suites"
-     And I follow "create new probe suite"
+     And I follow "Create Probe Suite"
      And I enter "Test" as "suite_name"
      And I enter "Just testing" as "description"
      And I click on "Create Probe Suite"
@@ -43,7 +43,7 @@ Feature: Configure monitoring
      And I follow "Probe Suites"
      And I follow "Test"
      And I follow "Probes"
-     And I follow "create new probe"
+     And I follow "Create Probe"
      And I click on "Create probe"
     Then I should see a "Probe Linux: Load created" text
 

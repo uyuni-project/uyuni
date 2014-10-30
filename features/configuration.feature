@@ -40,7 +40,7 @@ Feature: Check configuration page/tab
   Scenario: Check "View All Managed Configuration Channels"
     Given I am testing configuration
     When I follow "View All Managed Configuration Channels"
-    Then I should see a "create new config channel" link
+    Then I should see a "Create Config Channel" link
 
   Scenario: Check "Enable Configuration Management on Systems"
     Given I am testing configuration
