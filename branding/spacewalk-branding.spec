@@ -4,8 +4,6 @@
 %define apacheconfdir %{_sysconfdir}/apache2/conf.d
 %define apache_group www
 %global tomcat tomcat
-%define lesspkg lesscss-engine
-%define lesscmd lesscss-engine
 %define bootstrappkg susemanager-frontend-libs-devel
 %else
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -20,8 +18,6 @@
 %define wwwdocroot %{_var}/www/html
 %define apacheconfdir %{_sysconfdir}/httpd/conf.d
 %define apache_group apache
-%define lesspkg nodejs-less
-%define lesscmd lessc
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
@@ -36,7 +32,8 @@ Source0:    https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.t
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 #BuildArch:  noarch
 BuildRequires: java-devel >= 1.5.0
-BuildRequires: %{lesspkg}
+BuildRequires: nodejs
+BuildRequires: nodejs-less
 BuildRequires: %{bootstrappkg}
 BuildRequires: apache2
 Requires:      apache2
@@ -65,7 +62,7 @@ jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
-%{lesscmd} css/spacewalk.less > css/spacewalk.css
+lessc css/spacewalk.less > css/spacewalk.css
 rm -f css/bootstrap
 
 %install
