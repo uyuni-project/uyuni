@@ -1677,7 +1677,7 @@ public class ContentSyncManager {
     /**
      * Migrate this SUSE Manager server to work with SCC.
      *
-     * @param user
+     * @param user user (used to the deletion of mirror credentials)
      * @throws ContentSyncException in case of an error
      *
      */
