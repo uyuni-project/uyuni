@@ -30,6 +30,7 @@ import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Random;
 
 /**
  * SCCConfigAction - Struts action to handle migration to the
@@ -47,6 +48,10 @@ public class SCCConfigAction extends RhnAction {
         public static String sayHello() {
             try {
                 Thread.sleep(4000);
+                Random random = new Random();
+                if (random.nextInt(10) >= 5) {
+                    throw new RuntimeException("Test error");
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -54,17 +59,61 @@ public class SCCConfigAction extends RhnAction {
             return "Hello!";
         }
 
-        public static void performMigration() throws ContentSyncException {
-            User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
-                    .getCurrentUser();
-
+        private static void ensureSatAdmin(User user) {
             if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
                 throw new IllegalArgumentException(
                         "Must be SAT_ADMIN to perform a migration");
             }
+        }
 
+        private static void ensureSatAdmin() {
+            User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
+                    .getCurrentUser();
+            ensureSatAdmin(user);
+        }
+
+        public static void performMigration() throws ContentSyncException {
+            User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
+                    .getCurrentUser();
+            ensureSatAdmin(user);
             ContentSyncManager manager = new ContentSyncManager();
-            //manager.performMigration(user);
+            manager.performMigration(user);
+        }
+
+        public static void synchronizeChannels() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannels(csm.getRepositories(), null);
+        }
+
+        public static void synchronizeChannelFamilies() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateChannelFamilies(csm.readChannelFamilies());
+        }
+
+        public static void synchronizeProducts() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProducts(csm.getProducts());
+        }
+
+        public static void synchronizeProductChannels() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+        }
+
+        public static void synchronizeSubscriptions() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateSubscriptions(csm.getSubscriptions());
+        }
+
+        public static void synchronizeUpgradePaths() throws ContentSyncException {
+            ensureSatAdmin();
+            ContentSyncManager csm = new ContentSyncManager();
+            csm.updateUpgradePaths();
         }
     }
 
