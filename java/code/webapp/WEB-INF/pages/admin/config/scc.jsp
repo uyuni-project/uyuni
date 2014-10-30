@@ -35,11 +35,12 @@
                     <div class="modal-header">
                       <h4 class="modal-title"><bean:message key="sccconfig.jsp.switchingtoscc"/></h4>
                     </div>
-                    <p>blah blah</p>
-                    <ul class="dialog-steps">
-                    </ul>
+                    <div class="modal-body">
+                        <div id='scc-migration-current-task'></div>
+                    </div>
                     <div class="modal-footer">
-                      <button id="scc-migrate-dialog-close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <div id="scc-migration-dialog-status" class="pull-left"></div>
+                      <button id="scc-migrate-dialog-close-btn" type="button" class="btn btn-default" data-dismiss="modal"><bean:message key="sccconfig.jsp.close"/></button>
                     </div>
                 </div>
             </div>
@@ -51,6 +52,8 @@
         <div class="hidden" id="sccconfig.jsp.productchannels"><bean:message key="sccconfig.jsp.productchannels"/></div>
         <div class="hidden" id="sccconfig.jsp.subscriptions"><bean:message key="sccconfig.jsp.subscriptions"/></div>
         <div class="hidden" id="sccconfig.jsp.upgradepaths"><bean:message key="sccconfig.jsp.upgradepaths"/></div>
+        <div class="hidden" id="sccconfig.jsp.completed"><bean:message key="sccconfig.jsp.completed"/></div>
+        <div class="hidden" id="sccconfig.jsp.failed"><bean:message key="sccconfig.jsp.failed"/></div>
     </body>
 </html:html>
 

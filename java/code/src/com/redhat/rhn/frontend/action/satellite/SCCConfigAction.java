@@ -49,7 +49,7 @@ public class SCCConfigAction extends RhnAction {
             try {
                 Thread.sleep(4000);
                 Random random = new Random();
-                if (random.nextInt(10) >= 5) {
+                if (random.nextInt(10) == 0) {
                     throw new RuntimeException("Test error");
                 }
             } catch (InterruptedException e) {
