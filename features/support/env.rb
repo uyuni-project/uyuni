@@ -39,7 +39,7 @@ def debrand_string(str)
         when "Test Erratum" then str
         # replacement exceptions
         when "Create Kickstart Distribution" then "Create Autoinstallable Distribution"
-        when "upload kickstart file" then "upload new kickstart/autoyast file"
+        when "Upload Kickstart File" then "Upload Kickstart/Autoyast File"
         when "Upload a New Kickstart File" then "Upload a New Kickstart/AutoYaST File"
         when "RHN Reference Guide" then "Reference Guide"
         when "Create Errata" then "Create Patch"
