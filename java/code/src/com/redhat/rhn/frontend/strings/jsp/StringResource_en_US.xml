@@ -22196,6 +22196,12 @@ given channel.</source>
         <trans-unit id="sccconfig.jsp.close">
           <source>Close</source>
         </trans-unit>
+        <trans-unit id="sccconfig.jsp.completed">
+          <source>Migration completed successfully</source>
+        </trans-unit>
+        <trans-unit id="sccconfig.jsp.failed">
+          <source>Migration was not successful</source>
+        </trans-unit>
       </group>
     </body>
   </file>
