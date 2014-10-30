@@ -47,20 +47,6 @@ public class SCCConfigAction extends RhnAction {
      */
     public static class AjaxEndPoint {
 
-        public static String sayHello() {
-            try {
-                Thread.sleep(4000);
-                Random random = new Random();
-                if (random.nextInt(10) == 0) {
-                    throw new RuntimeException("Test error");
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            logger.debug("I am on DWR");
-            return "Hello!";
-        }
-
         private static void ensureSatAdmin(User user) {
             if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
                 throw new IllegalArgumentException(

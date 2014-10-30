@@ -66,21 +66,23 @@ $(function() {
 
     statusLabel.html('0/6');
     // as one tasks succeeeds, start the next
-    startTask($('#sccconfig\\.jsp\\.channels').html(), SCCConfigAjax.sayHello, function() {
-        startTask($('#sccconfig\\.jsp\\.channelfamilies').html(), SCCConfigAjax.sayHello, function() {
-          startTask($('#sccconfig\\.jsp\\.products').html(), SCCConfigAjax.sayHello, function() {
-            startTask($('#sccconfig\\.jsp\\.productchannels').html(), SCCConfigAjax.sayHello, function() {
-              startTask($('#sccconfig\\.jsp\\.subscriptions').html(), SCCConfigAjax.sayHello, function() {
-              startTask($('#sccconfig\\.jsp\\.upgradepaths').html(), SCCConfigAjax.sayHello, function() {
-                button.hide();
-                button.prop('disabled', false);
-                dialogCloseBtn.prop('disabled', false);
-                statusLabel.html('<i class="fa fa-check success"></i>' + $('#sccconfig\\.jsp\\.completed').html());
+    startTask($('#sccconfig\\.jsp\\.switchingtoscc').html(), SCCConfigAjax.performMigration, function() {
+      startTask($('#sccconfig\\.jsp\\.channels').html(), SCCConfigAjax.synchronizeChannels, function() {
+          startTask($('#sccconfig\\.jsp\\.channelfamilies').html(), SCCConfigAjax.synchronizeChannelFamilies, function() {
+            startTask($('#sccconfig\\.jsp\\.products').html(), SCCConfigAjax.synchronizeProducts, function() {
+              startTask($('#sccconfig\\.jsp\\.productchannels').html(), SCCConfigAjax.synchronizeProductChannels, function() {
+                startTask($('#sccconfig\\.jsp\\.subscriptions').html(), SCCConfigAjax.synchronizeSubscriptions, function() {
+                startTask($('#sccconfig\\.jsp\\.upgradepaths').html(), SCCConfigAjax.synchronizeUpgradePaths, function() {
+                  button.hide();
+                  button.prop('disabled', false);
+                  dialogCloseBtn.prop('disabled', false);
+                  statusLabel.html('<i class="fa fa-check success"></i>' + $('#sccconfig\\.jsp\\.completed').html());
+                }, cleanupFunc);
               }, cleanupFunc);
             }, cleanupFunc);
           }, cleanupFunc);
         }, cleanupFunc);
       }, cleanupFunc);
-    }, cleanupFunc);
-  });
+      }, cleanupFunc);
+    });
 });
