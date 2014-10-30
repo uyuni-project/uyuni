@@ -2024,6 +2024,56 @@ tree will not be usable for autoinstalling.
       <trans-unit id="setupwizard.syncstatus.message.reposync.progress">
         <source>Repository synchronization is in progress.</source>
       </trans-unit>
-    </body>
-  </file>
-</xliff>
+
+      <!--  SCC Setup and migration -->
+      <trans-unit id="sccconfig.jsp.notyetavailable">
+        <source>The SUSE Customer Center is not yet available.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.alreadymigrated">
+        <source>Congratulations! SUSE Manager is already migrated to the SUSE Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.stillncc">
+        <source>SUSE Manager is still connected to the Novell Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrationinfo">
+        <source>Migration is an straightforward process but may take some minutes.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrationinfosmt">
+        <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrate">
+        <source>Start Migration to SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.switchingtoscc">
+        <source>Switching to SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.channels">
+        <source>Channels</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.channelfamilies">
+        <source>Channel Families</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.products">
+        <source>Products</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.productchannels">
+        <source>Product Channels</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.subscriptions">
+        <source>Subscriptions</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.upgradepaths">
+        <source>Upgrade Paths</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.completed">
+        <source>Migration completed successfully</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.failed">
+        <source>Migration was not successful</source>
+      </trans-unit>
+      </body>
+    </file>
+  </xliff>
