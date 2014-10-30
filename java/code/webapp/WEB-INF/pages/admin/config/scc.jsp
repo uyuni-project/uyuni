@@ -23,8 +23,9 @@
                 <p id="still-ncc-msg"><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.stillncc"/></p>
                 <p><bean:message key="sccconfig.jsp.migrationinfo"/></p>
 
-                <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
-
+                <c:if test="${local.mirror.used}">
+                    <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
+                </c:if>
                 <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
             </div>
         </div>
