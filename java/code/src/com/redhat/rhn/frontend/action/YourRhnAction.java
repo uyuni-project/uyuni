@@ -33,8 +33,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
 import com.redhat.rhn.manager.content.MgrSyncUtils;
-import com.redhat.rhn.manager.setup.ProductSyncManager;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.struts.action.*;
 
 import java.util.Arrays;
