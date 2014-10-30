@@ -2074,6 +2074,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.failed">
         <source>Migration was not successful</source>
       </trans-unit>
+      <trans-unit id="SUSE Customer Center">
+        <source>SUSE Customer Center</source>
+          <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       </body>
     </file>
   </xliff>
