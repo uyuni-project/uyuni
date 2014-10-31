@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -49,7 +48,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
         try {
             ContentSyncManager csm = new ContentSyncManager();
             csm.refreshRepositoriesCache();
-            csm.updateChannels(Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY));
+            csm.updateChannels(null);
             csm.updateChannelFamilies(csm.readChannelFamilies());
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
