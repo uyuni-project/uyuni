@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2014 SUSE
+ * Copyright (c) 2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -68,10 +69,10 @@ public class ActionChainHandler extends BaseHandler {
      *                    #array_end()
      */
     public List<Map<String, Object>> listChains(String sessionKey) {
-        BaseHandler.getLoggedInUser(sessionKey);
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
 
         List<Map<String, Object>> chains = new ArrayList<Map<String, Object>>();
-        for (ActionChain actionChain : ActionChainFactory.getActionChains()) {
+        for (ActionChain actionChain : ActionChainFactory.getActionChains(loggedInUser)) {
             Map<String, Object> info = new HashMap<String, Object>();
             info.put("label", actionChain.getLabel());
             info.put("entrycount", actionChain.getEntries().size());
@@ -106,8 +107,10 @@ public class ActionChainHandler extends BaseHandler {
      */
     public List<Map<String, Object>> listChainActions(String sessionKey,
                                                       String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         List<Map<String, Object>> entries = new ArrayList<Map<String, Object>>();
-        ActionChain chain = this.acUtil.getActionChainByLabel(chainLabel);
+        ActionChain chain = this.acUtil.getActionChainByLabel(loggedInUser, chainLabel);
 
         if (chain.getEntries() != null && !chain.getEntries().isEmpty()) {
             for (ActionChainEntry entry : chain.getEntries()) {
@@ -147,8 +150,9 @@ public class ActionChainHandler extends BaseHandler {
     public Integer removeAction(String sessionKey,
                                 String chainLabel,
                                 Integer actionId) {
-        BaseHandler.getLoggedInUser(sessionKey);
-        ActionChain chain = this.acUtil.getActionChainByLabel(chainLabel);
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
+        ActionChain chain = this.acUtil.getActionChainByLabel(loggedInUser, chainLabel);
 
         for (ActionChainEntry entry : chain.getEntries()) {
             if (entry.getAction().getId().equals(Long.valueOf(actionId))) {
@@ -174,8 +178,10 @@ public class ActionChainHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer deleteChain(String sessionKey, String chainLabel) {
-        BaseHandler.getLoggedInUser(sessionKey);
-        ActionChainFactory.delete(this.acUtil.getActionChainByLabel(chainLabel));
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
+        ActionChainFactory.delete(
+                        this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
 
         return BaseHandler.VALID;
     }
@@ -194,11 +200,13 @@ public class ActionChainHandler extends BaseHandler {
      */
     public Integer createChain(String sessionKey,
                                      String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (StringUtil.nullOrValue(chainLabel) == null) {
             throw new InvalidParameterException("Chain label is missing");
         }
 
-        if (ActionChainFactory.getActionChain(chainLabel) != null) {
+        if (ActionChainFactory.getActionChain(loggedInUser, chainLabel) != null) {
             throw new InvalidParameterException(
                     "Another Action Chain with the same label already exists");
         }
@@ -226,10 +234,10 @@ public class ActionChainHandler extends BaseHandler {
     public Integer addSystemReboot(String sessionKey,
                                    Integer serverId,
                                    String chainLabel) {
-        User user = BaseHandler.getLoggedInUser(sessionKey);
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
         return ActionChainManager.scheduleRebootAction(
-                user, this.acUtil.getServerById(serverId, user), new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)
+                loggedInUser, this.acUtil.getServerById(serverId, loggedInUser),
+                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).getId().intValue();
     }
 
@@ -254,6 +262,8 @@ public class ActionChainHandler extends BaseHandler {
                                      Integer serverId,
                                      List<Integer> packages,
                                      String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (packages.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
@@ -264,7 +274,8 @@ public class ActionChainHandler extends BaseHandler {
                 this.acUtil.resolvePackages(packages,
                                             BaseHandler.getLoggedInUser(sessionKey)),
                 new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)).getId().intValue();
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                        .getId().intValue();
     }
 
     /**
@@ -287,15 +298,16 @@ public class ActionChainHandler extends BaseHandler {
                                      Integer serverId,
                                      List<Integer> packages,
                                      String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (packages.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        User user = BaseHandler.getLoggedInUser(sessionKey);
-        return ActionChainManager.schedulePackageInstall(user,
-                this.acUtil.getServerById(serverId, user),
-                this.acUtil.resolvePackages(packages, user), new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)
+        return ActionChainManager.schedulePackageInstall(loggedInUser,
+                this.acUtil.getServerById(serverId, loggedInUser),
+                this.acUtil.resolvePackages(packages, loggedInUser), new Date(),
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).getId().intValue();
     }
 
@@ -320,15 +332,16 @@ public class ActionChainHandler extends BaseHandler {
                                     Integer serverId,
                                     List<Integer> packages,
                                     String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (packages.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        User user = BaseHandler.getLoggedInUser(sessionKey);
-        Server server = this.acUtil.getServerById(serverId, user);
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
         return ActionChainManager.schedulePackageVerify(
-                user, server, this.acUtil.resolvePackages(packages, user), new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)
+                loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
+                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).getId().intValue();
     }
 
@@ -353,15 +366,18 @@ public class ActionChainHandler extends BaseHandler {
                                  Integer serverId,
                                  List<Integer> packages,
                                  String chainLabel) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (packages.isEmpty()) {
             throw new InvalidParameterException("No specified packages.");
         }
 
-        User user = BaseHandler.getLoggedInUser(sessionKey);
-        Server server = this.acUtil.getServerById(serverId, user);
+        Server server = this.acUtil.getServerById(serverId, loggedInUser);
         return ActionChainManager.schedulePackageUpgrade(
-                user, server, this.acUtil.resolvePackages(packages, user), new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)).getId().intValue();
+                loggedInUser, server, this.acUtil.resolvePackages(packages, loggedInUser),
+                new Date(),
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel))
+                    .getId().intValue();
     }
 
     /**
@@ -392,6 +408,8 @@ public class ActionChainHandler extends BaseHandler {
      */
     public Integer addScriptRun(String sessionKey, Integer serverId, String chainLabel,
             String uid, String gid, Integer timeout, String scriptBody) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         List<Long> systems = new ArrayList<Long>();
         systems.add((long) serverId);
 
@@ -399,8 +417,8 @@ public class ActionChainHandler extends BaseHandler {
                 uid, gid, (long) timeout, new String(
                         DatatypeConverter.parseBase64Binary(scriptBody)));
         return ActionChainManager.scheduleScriptRuns(
-                BaseHandler.getLoggedInUser(sessionKey), systems, null, script, new Date(),
-                this.acUtil.getActionChainByLabel(chainLabel)
+                loggedInUser, systems, null, script, new Date(),
+                this.acUtil.getActionChainByLabel(loggedInUser, chainLabel)
         ).iterator().next().getId().intValue();
     }
 
@@ -421,7 +439,10 @@ public class ActionChainHandler extends BaseHandler {
      */
     public Integer scheduleChain(String sessionKey, String chainLabel, Date date) {
         BaseHandler.getLoggedInUser(sessionKey);
-        ActionChainFactory.schedule(this.acUtil.getActionChainByLabel(chainLabel), date);
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
+        ActionChainFactory.schedule(
+                        this.acUtil.getActionChainByLabel(loggedInUser, chainLabel), date);
 
         return BaseHandler.VALID;
     }
@@ -447,6 +468,8 @@ public class ActionChainHandler extends BaseHandler {
                                               String chainLabel,
                                               Integer serverId,
                                               List<Integer> revisions) {
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (revisions.isEmpty()) {
             throw new InvalidParameterException("At least one revision should be given.");
         }
@@ -454,11 +477,11 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> server = new ArrayList<Long>();
         server.add(serverId.longValue());
 
-        ActionChainManager.createConfigActions(BaseHandler.getLoggedInUser(sessionKey),
+        ActionChainManager.createConfigActions(loggedInUser,
                 CollectionUtils.collect(revisions,
                         new ActionChainRPCCommon.IntegerToLongTransformer()), server,
                 ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                new Date(), this.acUtil.getActionChainByLabel(chainLabel));
+                new Date(), this.acUtil.getActionChainByLabel(loggedInUser, chainLabel));
 
         return BaseHandler.VALID;
     }
@@ -480,7 +503,8 @@ public class ActionChainHandler extends BaseHandler {
     public Integer renameChain(String sessionKey,
                                String previousLabel,
                                String newLabel) {
-        BaseHandler.getLoggedInUser(sessionKey);
+        User loggedInUser = BaseHandler.getLoggedInUser(sessionKey);
+
         if (previousLabel.equals(newLabel)) {
             throw new InvalidParameterException("New label of the Action Chain should " +
                     "not be the same as previous!");
@@ -492,12 +516,12 @@ public class ActionChainHandler extends BaseHandler {
             throw new InvalidParameterException("New label cannot be empty.");
         }
 
-        if (ActionChainFactory.getActionChain(newLabel) != null) {
+        if (ActionChainFactory.getActionChain(loggedInUser, newLabel) != null) {
             throw new InvalidParameterException(
                     "Another Action Chain with the same label already exists");
         }
 
-        this.acUtil.getActionChainByLabel(previousLabel).setLabel(newLabel);
+        this.acUtil.getActionChainByLabel(loggedInUser, previousLabel).setLabel(newLabel);
 
         return BaseHandler.VALID;
     }
