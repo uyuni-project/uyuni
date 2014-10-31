@@ -1884,6 +1884,11 @@ tree will not be usable for autoinstalling.
         <source>IPMI</source>
       </trans-unit>
 
+      <!-- SCC Migration -->
+      <trans-unit id="message.sccmigrationavailable">
+            <source>You are currently connected to the Novell Customer Center. Migrate to the new &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;SUSE Customer Center&lt;/a&gt; for the best customer experience.</source>
+      </trans-unit>
+
       <!-- Setup Wizard -->
       <trans-unit id="message.firstusercreated">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
@@ -2018,6 +2023,62 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.message.reposync.progress">
         <source>Repository synchronization is in progress.</source>
+      </trans-unit>
+
+      <!--  SCC Setup and migration -->
+      <trans-unit id="sccconfig.jsp.notyetavailable">
+        <source>The SUSE Customer Center is not yet available.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.alreadymigrated">
+        <source>Congratulations! SUSE Manager is already migrated to the SUSE Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.stillncc">
+        <source>SUSE Manager is still connected to the Novell Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrationinfo">
+        <source>Migration is an straightforward process but may take some minutes.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrationinfosmt">
+        <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.migrate">
+        <source>Start Migration to SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.switchingtoscc">
+        <source>Switching to SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.channels">
+        <source>Channels</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.channelfamilies">
+        <source>Channel Families</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.products">
+        <source>Products</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.productchannels">
+        <source>Product Channels</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.subscriptions">
+        <source>Subscriptions</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.upgradepaths">
+        <source>Upgrade Paths</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.close">
+        <source>Close</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.completed">
+        <source>Migration completed successfully</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.failed">
+        <source>Migration was not successful</source>
+      </trans-unit>
+      <trans-unit id="SUSE Customer Center">
+        <source>SUSE Customer Center</source>
+          <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
       </trans-unit>
     </body>
   </file>

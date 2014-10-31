@@ -104,9 +104,6 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer synchronizeChannels(String sessionKey, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
-        if (mirrorUrl == null) {
-            mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
-        }
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannels(csm.getRepositories(), mirrorUrl);
         return BaseHandler.VALID;
@@ -255,34 +252,9 @@ public class ContentSyncHandler extends BaseHandler {
         User user = getLoggedInUser(sessionKey);
         ensureSatAdmin(user);
 
-        // Clear relevant database tables
-        SUSEProductFactory.clearAllProducts();
+        ContentSyncManager manager = new ContentSyncManager();
+        manager.performMigration(user);
 
-        // Migrate mirror credentials into the DB
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        int id = 0;
-        for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
-            Credentials c = CredentialsFactory.createSCCCredentials();
-            c.setUsername(dto.getUser());
-            c.setPassword(dto.getPassword());
-            // We identify the primary credentials by setting a URL
-            if (id == 0) {
-                c.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
-            }
-            CredentialsFactory.storeCredentials(c);
-            id++;
-        }
-        for (long i = --id; id >= 0; id--) {
-            credsManager.deleteMirrorCredentials(i, user, null);
-        }
-
-        // Touch file to indicate that server has been migrated
-        try {
-            FileUtils.touch(new File(MgrSyncUtils.SCC_MIGRATED));
-        }
-        catch (IOException e) {
-            throw new ContentSyncException(e);
-        }
         return BaseHandler.VALID;
     }
 
