@@ -113,7 +113,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(null);
+            csm.updateChannelsInternal(null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
