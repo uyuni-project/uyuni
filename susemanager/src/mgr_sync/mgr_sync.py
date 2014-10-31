@@ -47,6 +47,11 @@ class MgrSync(object):
         """
         Run the app.
         """
+        if not os.path.isfile("/var/lib/spacewalk/scc/default_scc"):
+            msg = """Support for SUSE Customer Center (SCC) is not yet available."""
+            sys.stderr.write(msg)
+            sys.exit(1)
+
         if not current_cc_backend() == BackendType.SCC \
            and not vars(options).has_key('enable_scc'):
             msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
