@@ -1066,17 +1066,23 @@ class Dumper(dumper.XML_Dumper):
 
     def getProductData(self, arg):
         src = os.path.join("/var/cache/rhn/", "ncc-data", "productdata.xml")
-        shutil.copy2(src, arg.filename)
+        if os.path.exists(src):
+            shutil.copy2(src, arg.filename)
+        else:
+            log2stdout(2, "\nDeprecated file(%s) not found. Ignoring." % src)
 
     def getSubscriptions(self, arg):
         src = os.path.join("/var/cache/rhn/", "ncc-data", "subscriptions.xml")
-        shutil.copy2(src, arg.filename)
-        # create a dummy repoindex.xml file
-        repodir = os.path.join(self.mp, "repo")
-        if not os.path.exists(repodir):
-            os.mkdir(repodir)
-        f = open("%s/repoindex.xml" % repodir, "w")
-        f.close()
+        if os.path.exists(src):
+            shutil.copy2(src, arg.filename)
+            # create a dummy repoindex.xml file
+            repodir = os.path.join(self.mp, "repo")
+            if not os.path.exists(repodir):
+                os.mkdir(repodir)
+            f = open("%s/repoindex.xml" % repodir, "w")
+            f.close()
+        else:
+            log2stdout(2, "\nDeprecated file(%s) not found. Ignoring." % src)
 
 def get_report():
     body = dumpEMAIL_LOG()
