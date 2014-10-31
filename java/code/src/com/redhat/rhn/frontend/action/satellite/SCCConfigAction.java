@@ -71,7 +71,7 @@ public class SCCConfigAction extends RhnAction {
         public static void synchronizeChannels() throws ContentSyncException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannels(csm.getRepositories(), null);
+            csm.updateChannels(null);
         }
 
         public static void synchronizeChannelFamilies() throws ContentSyncException {
