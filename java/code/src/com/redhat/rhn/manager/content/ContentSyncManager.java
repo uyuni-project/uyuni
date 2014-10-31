@@ -667,12 +667,24 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update channel information in the database.
+     * Update the repositories cache and the channel information in the database.
      * @param mirrorUrl optional mirror URL that can be null
      * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
      * can't be updated
      */
     public void updateChannels(String mirrorUrl) throws ContentSyncException {
+        refreshRepositoriesCache();
+        updateChannelsInternal(mirrorUrl);
+    }
+
+    /**
+     * Update channel information in the database. This is only public for testing purposes
+     * and should apart from that only be called internally.
+     * @param mirrorUrl optional mirror URL that can be null
+     * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
+     * can't be updated
+     */
+    public void updateChannelsInternal(String mirrorUrl) throws ContentSyncException {
         if (mirrorUrl == null) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }

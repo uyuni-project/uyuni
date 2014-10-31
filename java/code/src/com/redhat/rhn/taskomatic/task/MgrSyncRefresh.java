@@ -47,7 +47,6 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
         try {
             ContentSyncManager csm = new ContentSyncManager();
-            csm.refreshRepositoriesCache();
             csm.updateChannels(null);
             csm.updateChannelFamilies(csm.readChannelFamilies());
             csm.updateSUSEProducts(csm.getProducts());
