@@ -49,7 +49,7 @@
 
         <div class="hidden" id="sccconfig.jsp.switchingtoscc"><bean:message key="sccconfig.jsp.switchingtoscc"/></div>
         <div class="hidden" id="sccconfig.jsp.channels"><bean:message key="sccconfig.jsp.channels"/></div>
-        <div class="hidden" id="sccconfig.jsp.channelfamilies"></i><bean:message key="sccconfig.jsp.channelfamilies"/></div>
+        <div class="hidden" id="sccconfig.jsp.channelfamilies"><bean:message key="sccconfig.jsp.channelfamilies"/></div>
         <div class="hidden" id="sccconfig.jsp.products"><bean:message key="sccconfig.jsp.products"/></div>
         <div class="hidden" id="sccconfig.jsp.productchannels"><bean:message key="sccconfig.jsp.productchannels"/></div>
         <div class="hidden" id="sccconfig.jsp.subscriptions"><bean:message key="sccconfig.jsp.subscriptions"/></div>
