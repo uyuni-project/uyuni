@@ -43,7 +43,7 @@ Group:      Productivity/Other
 Requires:       suseRegisterInfo
 Requires:       sm-ncc-sync-data
 Requires:       susemanager-sync-data
-Requires:       spacewalk-backend >= 1.7.38.20
+Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
 Requires:       python
 Requires:       createrepo

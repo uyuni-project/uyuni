@@ -70,22 +70,26 @@ class FileMapper:
     def __init__(self, mount_point):
         self.mp = mount_point
         self.filemap = {
-                            'arches'            :   xmlDiskSource.ArchesDiskSource(self.mp),
-                            'arches-extra'      :   xmlDiskSource.ArchesExtraDiskSource(self.mp),
-                            'blacklists'        :   xmlDiskSource.BlacklistsDiskSource(self.mp),
-                            'channelfamilies'   :   xmlDiskSource.ChannelFamilyDiskSource(self.mp),
-                            'orgs'              :   xmlDiskSource.OrgsDiskSource(self.mp),
-                            'channels'          :   xmlDiskSource.ChannelDiskSource(self.mp),
-                            'channel-pkg-short' :   ISSChannelPackageShortDiskSource(self.mp),
-                            'packages-short'    :   xmlDiskSource.ShortPackageDiskSource(self.mp),
-                            'packages'          :   xmlDiskSource.PackageDiskSource(self.mp),
-                            'sourcepackages'    :   xmlDiskSource.SourcePackageDiskSource(self.mp),
-                            'errata'            :   xmlDiskSource.ErrataDiskSource(self.mp),
-                            'kickstart_trees'   :   xmlDiskSource.KickstartDataDiskSource(self.mp),
-                            'kickstart_files'   :   xmlDiskSource.KickstartFileDiskSource(self.mp),
-                            'binary_rpms'       :   xmlDiskSource.BinaryRPMDiskSource(self.mp),
-                            'comps'             :   xmlDiskSource.ChannelCompsDiskSource(self.mp),
-                            'supportinfo'       :   xmlDiskSource.SupportInformationDiskSource(self.mp),
+                            'arches'                : xmlDiskSource.ArchesDiskSource(self.mp),
+                            'arches-extra'          : xmlDiskSource.ArchesExtraDiskSource(self.mp),
+                            'blacklists'            : xmlDiskSource.BlacklistsDiskSource(self.mp),
+                            'channelfamilies'       : xmlDiskSource.ChannelFamilyDiskSource(self.mp),
+                            'orgs'                  : xmlDiskSource.OrgsDiskSource(self.mp),
+                            'channels'              : xmlDiskSource.ChannelDiskSource(self.mp),
+                            'channel-pkg-short'     : ISSChannelPackageShortDiskSource(self.mp),
+                            'packages-short'        : xmlDiskSource.ShortPackageDiskSource(self.mp),
+                            'packages'              : xmlDiskSource.PackageDiskSource(self.mp),
+                            'sourcepackages'        : xmlDiskSource.SourcePackageDiskSource(self.mp),
+                            'errata'                : xmlDiskSource.ErrataDiskSource(self.mp),
+                            'kickstart_trees'       : xmlDiskSource.KickstartDataDiskSource(self.mp),
+                            'kickstart_files'       : xmlDiskSource.KickstartFileDiskSource(self.mp),
+                            'binary_rpms'           : xmlDiskSource.BinaryRPMDiskSource(self.mp),
+                            'comps'                 : xmlDiskSource.ChannelCompsDiskSource(self.mp),
+                            'supportinfo'           : xmlDiskSource.SupportInformationDiskSource(self.mp),
+                            'suse_products'         : xmlDiskSource.SuseProductsDiskSource(self.mp),
+                            'suse_product_channels' : xmlDiskSource.SuseProductChannelsDiskSource(self.mp),
+                            'suse_upgrade_paths'    : xmlDiskSource.SuseUpgradePathsDiskSource(self.mp),
+                            'suse_subscriptions'    : xmlDiskSource.SuseSubscriptionsDiskSource(self.mp),
                        }
 
     #This will make sure that all of the directories leading up to the
@@ -160,6 +164,18 @@ class FileMapper:
 
     def getSupportInformationFile(self):
         return self.setup_file(self.filemap['supportinfo']._getFile())
+
+    def getSuseProductsFile(self):
+        return self.setup_file(self.filemap['suse_products']._getFile())
+
+    def getSuseProductChannelsFile(self):
+        return self.setup_file(self.filemap['suse_product_channels']._getFile())
+
+    def getSuseUpgradePathsFile(self):
+        return self.setup_file(self.filemap['suse_upgrade_paths']._getFile())
+
+    def getSuseSubscriptionsFile(self):
+        return self.setup_file(self.filemap['suse_subscriptions']._getFile())
 
 class Dumper(dumper.XML_Dumper):
     """ This class subclasses the XML_Dumper class. It overrides
@@ -1007,6 +1023,35 @@ class Dumper(dumper.XML_Dumper):
                           "Support Information exported to %s",
                           "%s caught in dump_support_information.")
 
+    def dump_suse_products(self):
+        self._dump_simple(self.fm.getSuseProductsFile(),
+                          dumper.XML_Dumper.dump_suse_products,
+                          "Exporting SUSE Product Information...",
+                          "SUSE Product Information exported to %s",
+                          "%s caught in dump_suse_products.")
+
+    def dump_suse_product_channels(self):
+        self._dump_simple(self.fm.getSuseProductChannelsFile(),
+                          dumper.XML_Dumper.dump_suse_product_channels,
+                          "Exporting SUSE Product Channel Information...",
+                          "SUSE Product Channel Information exported to %s",
+                          "%s caught in dump_suse_product_channels.")
+
+    def dump_suse_upgrade_paths(self):
+        self._dump_simple(self.fm.getSuseUpgradePathsFile(),
+                          dumper.XML_Dumper.dump_suse_upgrade_paths,
+                          "Exporting Upgrade Path Information...",
+                          "Upgrade Path Information exported to %s",
+                          "%s caught in dump_suse_upgrade_paths.")
+
+    def dump_suse_subscriptions(self):
+        self._dump_simple(self.fm.getSuseSubscriptionsFile(),
+                          dumper.XML_Dumper.dump_suse_subscriptions,
+                          "Exporting Subscription Information...",
+                          "Subscription Information exported to %s",
+                          "%s caught in dump_suse_subscriptions.")
+
+    #FIXME: remove old calls  - when NCC is really dead
     def dump_suse_products_subscriptions(self):
         self._dump_simple("%s/productdata.xml" % self.mp,
                           self.getProductData,
@@ -1021,17 +1066,23 @@ class Dumper(dumper.XML_Dumper):
 
     def getProductData(self, arg):
         src = os.path.join("/var/cache/rhn/", "ncc-data", "productdata.xml")
-        shutil.copy2(src, arg.filename)
+        if os.path.exists(src):
+            shutil.copy2(src, arg.filename)
+        else:
+            log2stdout(2, "\nDeprecated file(%s) not found. Ignoring." % src)
 
     def getSubscriptions(self, arg):
         src = os.path.join("/var/cache/rhn/", "ncc-data", "subscriptions.xml")
-        shutil.copy2(src, arg.filename)
-        # create a dummy repoindex.xml file
-        repodir = os.path.join(self.mp, "repo")
-        if not os.path.exists(repodir):
-            os.mkdir(repodir)
-        f = open("%s/repoindex.xml" % repodir, "w")
-        f.close()
+        if os.path.exists(src):
+            shutil.copy2(src, arg.filename)
+            # create a dummy repoindex.xml file
+            repodir = os.path.join(self.mp, "repo")
+            if not os.path.exists(repodir):
+                os.mkdir(repodir)
+            f = open("%s/repoindex.xml" % repodir, "w")
+            f.close()
+        else:
+            log2stdout(2, "\nDeprecated file(%s) not found. Ignoring." % src)
 
 def get_report():
     body = dumpEMAIL_LOG()
@@ -1208,21 +1259,26 @@ class ExporterMain:
                                      use_rhn_date=self.options.use_rhn_date,
                                      whole_errata=self.options.whole_errata)
                 self.actionmap = {
-                                    'arches'           :   {'dump' : self.dumper.dump_arches},
-                                    'arches-extra'     :   {'dump' : self.dumper.dump_server_group_type_server_arches},
-                                    'blacklists'       :   {'dump' : self.dumper.dump_blacklist_obsoletes},
-                                    'channel-families' :   {'dump' : self.dumper.dump_channel_families},
-                                    'channels'         :   {'dump' : self.dumper.dump_channels},
-                                    'packages'         :   {'dump' : self.dumper.dump_packages},
-                                    'short'            :   {'dump' : self.dumper.dump_packages_short},
-                                    #'channel-pkg-short' :   {'dump' : self.dumper.dump_channel_packages_short},
-                                    #'source-packages'   :   {'dump' : self.dumper.dump_source_packages},
-                                    'errata'           :   {'dump' : self.dumper.dump_errata},
-                                    'kickstarts'       :   {'dump' : [self.dumper.dump_kickstart_data,
-                                                                           self.dumper.dump_kickstart_files]},
-                                    'rpms'             :   {'dump' : self.dumper.dump_rpms},
-                                    'orgs'             :   {'dump' : self.dumper.dump_orgs},
-                                    'supportinfo'           :   {'dump' : self.dumper.dump_support_information},
+                                    'arches'                      : {'dump' : self.dumper.dump_arches},
+                                    'arches-extra'                : {'dump' : self.dumper.dump_server_group_type_server_arches},
+                                    'blacklists'                  : {'dump' : self.dumper.dump_blacklist_obsoletes},
+                                    'channel-families'            : {'dump' : self.dumper.dump_channel_families},
+                                    'channels'                    : {'dump' : self.dumper.dump_channels},
+                                    'packages'                    : {'dump' : self.dumper.dump_packages},
+                                    'short'                       : {'dump' : self.dumper.dump_packages_short},
+                                    #'channel-pkg-short'           : {'dump' : self.dumper.dump_channel_packages_short},
+                                    #'source-packages'             : {'dump' : self.dumper.dump_source_packages},
+                                    'errata'                      : {'dump' : self.dumper.dump_errata},
+                                    'kickstarts'                  : {'dump' : [self.dumper.dump_kickstart_data,
+                                                                               self.dumper.dump_kickstart_files]},
+                                    'rpms'                        : {'dump' : self.dumper.dump_rpms},
+                                    'orgs'                        : {'dump' : self.dumper.dump_orgs},
+                                    'supportinfo'                 : {'dump' : self.dumper.dump_support_information},
+                                    'suse-products'               : {'dump' : self.dumper.dump_suse_products},
+                                    'suse-product-channels'       : {'dump' : self.dumper.dump_suse_product_channels},
+                                    'suse-upgrade-paths'          : {'dump' : self.dumper.dump_suse_upgrade_paths},
+                                    'suse-subscriptions'          : {'dump' : self.dumper.dump_suse_subscriptions},
+                                    #FIXME: remove old calls  - when NCC is really dead
                                     'suse-products-subscriptions' : {'dump' : self.dumper.dump_suse_products_subscriptions},
                                  }
             else:

@@ -551,6 +551,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/importlib/userAuth.py*
 %{pythonrhnroot}/server/importlib/orgImport.py*
 %{pythonrhnroot}/server/importlib/supportInformationImport.py*
+%{pythonrhnroot}/server/importlib/suseProductsImport.py*
 %{rhnroot}/server/handlers/__init__.py*
 
 # Repomd stuff
@@ -2442,7 +2443,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 - removed dead function dbiDate2timestamp() (michael.mraka@redhat.com)
 
 * Mon Feb 28 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.12-1
-- reverted bask to RHEL4 rpm read header code 
+- reverted bask to RHEL4 rpm read header code
 * Thu Feb 24 2011 Michael Mraka <michael.mraka@redhat.com> 1.4.11-1
 - RPMTransaction is dead after RPMReadOnlyTransaction removal
 - SharedStateTransaction is dead after RPMReadOnlyTransaction removal

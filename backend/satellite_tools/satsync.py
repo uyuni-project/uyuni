@@ -108,7 +108,10 @@ class Runner:
         'arches'                    : [''], #5/26/05 wregglej 156079 Added arches to precedence list.
         'orgs'                      : [''],
         'supportinfo'               : ['channels', 'packages'],
-        'suse-products-subscriptions' : [''],
+        'suse-products'             : ['arches'],
+        'suse-product-channels'     : ['suse-products', 'channels'],
+        'suse-upgrade-paths'        : ['suse-products'],
+        'suse-subscriptions'        : ['channel-families'],
     }
 
     # The step hierarchy. We need access to it both for command line
@@ -130,7 +133,10 @@ class Runner:
         'errata',
         'kickstarts',
         'supportinfo',
-        'suse-products-subscriptions',
+        'suse-products',
+        'suse-product-channels',
+        'suse-upgrade-paths',
+        'suse-subscriptions',
     ]
     def __init__(self):
         self.syncer = None
@@ -373,28 +379,17 @@ class Runner:
     def _step_supportinfo(self):
         self.syncer.import_supportinfo()
 
-    def _step_suse_products_subscriptions(self):
-        try:
-            mountpoint = None
-            if self.syncer.mountpoint and os.path.isdir(self.syncer.mountpoint):
-                mountpoint = self.syncer.mountpoint
-            mgrsync = mgr_ncc_sync_lib.NCCSync(quiet=True, debug=CFG.DEBUG, fromdir=mountpoint)
-            log(1, ['', 'Update channel-families descriptions'])
-            mgrsync.update_channel_family_table_by_config()
-            log(1, ['', 'Update SUSE Products data'])
-            suse_products = mgrsync.get_suse_products_from_ncc()
-            mgrsync.update_suse_products_table(suse_products)
-            log(1, ['', 'Update subscriptions data'])
-            mgrsync.update_subscriptions()
-            log(1, ['', 'Linking products to channels'])
-            mgrsync.sync_suseproductchannel()
-            log(1, ['', 'Update upgrade path information'])
-            mgrsync.update_upgrade_pathes_by_config()
-        except Exception, e:
-            log(-1, ['    Failed:', "        %s" % str(e)])
-            sendMail()
-            return 1
+    def _step_suse_products(self):
+        self.syncer.import_suse_products()
 
+    def _step_suse_product_channels(self):
+        self.syncer.import_suse_product_channels()
+
+    def _step_suse_upgrade_paths(self):
+        self.syncer.import_suse_upgrade_paths()
+
+    def _step_suse_subscriptions(self):
+        self.syncer.import_suse_subscriptions()
 
 def sendMail(forceEmail=0):
     """ Send email summary """
@@ -468,7 +463,6 @@ class Syncer:
         self._channel_source_packages_full = {}
 
         self._channel_kickstarts = {}
-        self._supportinfo = {}
         self._avail_channel_source_packages = None
         self._missing_channel_src_packages = None
         self._missing_fs_source_packages = None
@@ -1903,7 +1897,21 @@ Please contact your administrator""") % (generation, sat_cert.generation))
         """Imports the support-related information"""
         self._process_simple("getSupportInformationXmlStream", "supportinfo")
 
+    def import_suse_products(self):
+        """Imports SUSE Products"""
+        self._process_simple("getSuseProductsXmlStream", "suse_products")
 
+    def import_suse_product_channels(self):
+        """Imports SUSE Product Channels"""
+        self._process_simple("getSuseProductChannelsXmlStream", "suse_product_channels")
+
+    def import_suse_upgrade_paths(self):
+        """Imports Upgrade Paths"""
+        self._process_simple("getSuseUpgradePathsXmlStream", "suse_upgrade_paths")
+
+    def import_suse_subscriptions(self):
+        """Imports Subscriptions"""
+        self._process_simple("getSuseSubscriptionsXmlStream", "suse_subscriptions")
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer,

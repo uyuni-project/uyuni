@@ -172,6 +172,39 @@ class SupportInformation(Information):
         'channel'           : StringType,
     }
 
+class SuseProduct(Information):
+    attributeTypes = {
+        'name'          : StringType,
+        'version'       : StringType,
+        'friendly_name' : StringType,
+        'arch'          : StringType,
+        'release'       : StringType,
+        'product_list'  : StringType,
+        'product_id'    : IntType,
+    }
+
+class SuseProductChannel(Information):
+    attributeTypes = {
+        'product_id'           : IntType,
+        'channel_id'           : IntType,
+        'channel_label'        : StringType,
+        'parent_channel_label' : StringType,
+    }
+
+class SuseUpgradePath(Information):
+    attributeTypes = {
+        'from_pdid' : IntType,
+        'to_pdid'   : IntType,
+    }
+
+class SuseSubscription(Information):
+    attributeTypes = {
+        'max_members'       : IntType,
+        'org_id'            : IntType,
+        'channel_family_id' : IntType,
+        'group_type'        : IntType
+    }
+
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,

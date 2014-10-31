@@ -27,7 +27,7 @@ from spacewalk.server.importlib.packageImport import PackageImport, SourcePackag
 from spacewalk.server.importlib import archImport
 from spacewalk.server.importlib import productNamesImport
 from spacewalk.server.importlib import orgImport
-from spacewalk.server.importlib import supportInformationImport
+from spacewalk.server.importlib import supportInformationImport, suseProductsImport
 
 class Backend:
     __backend = None
@@ -140,3 +140,30 @@ class SupportInformationContainer(diskImportLibContainer, xmlSource.SupportInfor
             return
         diskImportLibContainer.endContainerCallback(self)
 
+class SuseProductsContainer(diskImportLibContainer, xmlSource.SuseProductsContainer):
+    importer_class = suseProductsImport.SuseProductsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SuseProductChannelsContainer(diskImportLibContainer, xmlSource.SuseProductChannelsContainer):
+    importer_class = suseProductsImport.SuseProductChannelsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SuseUpgradePathsContainer(diskImportLibContainer, xmlSource.SuseUpgradePathsContainer):
+    importer_class = suseProductsImport.SuseUpgradePathsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)
+
+class SuseSubscriptionsContainer(diskImportLibContainer, xmlSource.SuseSubscriptionsContainer):
+    importer_class = suseProductsImport.SuseSubscriptionsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)

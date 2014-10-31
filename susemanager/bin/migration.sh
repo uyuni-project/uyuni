@@ -316,11 +316,13 @@ ncc-pass = $NCC_PASS
 ncc-email = $NCC_EMAIL
 " >> /root/spacewalk-answers
 PARAM_CC="--ncc"
-else
+elif [ -n "$SCC_USER" ]; then
     echo "scc-user = $SCC_USER
 scc-pass = $SCC_PASS
 " >> /root/spacewalk-answers
 PARAM_CC="--scc"
+elif [ -n "$ISS_PARENT" ]; then
+PARAM_CC="--disconnected"
 fi
 
     if [ "$DB_BACKEND" = "oracle" ]; then

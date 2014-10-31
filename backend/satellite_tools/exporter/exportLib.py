@@ -712,6 +712,122 @@ class SupportInfoDumper(BaseQueryDumper):
         cf = _SupportInfoDumper(self._writer, data)
         cf.dump()
 
+class _SuseProductDumper(BaseRowDumper):
+    tag_name = 'suse-product'
+
+    def set_attributes(self):
+        return {
+            'name'          : self._row['name'],
+            'version'       : self._row['version'],
+            'friendly-name' : self._row['friendly_name'],
+            'arch'          : self._row['arch'],
+            'release'       : self._row['release'],
+            'product-list'  : self._row['product_list'],
+            'product-id'    : self._row['product_id']
+            }
+
+class SuseProductDumper(BaseQueryDumper):
+    tag_name = 'suse-products'
+    iterator_query = """
+    SELECT p.name, p.version, p.friendly_name,
+           pa.label AS arch, p.release, p.product_list,
+           p.product_id
+      FROM suseProducts p
+ LEFT JOIN rhnPackageArch pa ON p.arch_type_id = pa.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductDumper(self._writer, data)
+        cf.dump()
+
+class _SuseProductChannelDumper(BaseRowDumper):
+    tag_name = 'suse-product-channel'
+
+    def set_attributes(self):
+        return {
+            'product-id'           : self._row['pdid'],
+            'channel-label'        : self._row['clabel'],
+            'parent-channel-label' : self._row['pclabel'],
+            }
+
+class SuseProductChannelDumper(BaseQueryDumper):
+    tag_name = 'suse-product-channels'
+    iterator_query = """
+    SELECT p.product_id AS pdid,
+           pc.channel_label AS clabel,
+           pc.parent_channel_label AS pclabel
+      FROM suseProductChannel pc
+      JOIN suseProducts p ON pc.product_id = p.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseProductChannelDumper(self._writer, data)
+        cf.dump()
+
+class _SuseUpgradePathDumper(BaseRowDumper):
+    tag_name = 'suse-upgrade-path'
+
+    def set_attributes(self):
+        return {
+            'from-product-id' : self._row['fromid'],
+            'to-product-id'   : self._row['toid'],
+            }
+
+class SuseUpgradePathDumper(BaseQueryDumper):
+    tag_name = 'suse-upgrade-paths'
+    iterator_query = """
+    SELECT p1.product_id AS fromid,
+           p2.product_id AS toid
+      FROM suseUpgradePath up
+      JOIN suseProducts p1 ON up.from_pdid = p1.id
+      JOIN suseProducts p2 ON up.to_pdid = p2.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseUpgradePathDumper(self._writer, data)
+        cf.dump()
+
+class _SuseSubscriptionDumper(BaseRowDumper):
+    tag_name = 'suse-subscription'
+
+    def set_attributes(self):
+        return {
+            'sub-label'       : self._row['label'],
+            'sub-max-members' : self._row['max_members'],
+            'sub-system-ent'  : self._row['system_entitlement'],
+            }
+
+class SuseSubscriptionDumper(BaseQueryDumper):
+    tag_name = 'suse-subscriptions'
+    iterator_query = """
+        SELECT cf.label, pcf.max_members, 0 AS system_entitlement
+          FROM rhnPrivateChannelFamily pcf
+          JOIN rhnChannelFamily cf ON pcf.channel_family_id = cf.id
+         WHERE pcf.org_id = 1
+           AND max_members > 0
+         UNION
+        SELECT sgt.label, sg.max_members, 1 AS system_entitlement
+          FROM rhnServerGroup sg
+          JOIN rhnServerGroupType sgt ON sg.group_type = sgt.id
+         WHERE org_id = 1
+           AND max_members > 10
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _SuseSubscriptionDumper(self._writer, data)
+        cf.dump()
 
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'

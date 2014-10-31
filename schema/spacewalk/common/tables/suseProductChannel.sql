@@ -15,9 +15,11 @@ suseProductChannel
 (
     product_id number        not null
                              CONSTRAINT spc_pid_fk
-                             REFERENCES suseProducts (id),
+                             REFERENCES suseProducts (id)
+                             ON DELETE CASCADE,
     channel_id number        CONSTRAINT spc_rhn_cid_fk
-                             REFERENCES rhnChannel (id),
+                             REFERENCES rhnChannel (id)
+                             ON DELETE SET NULL,
     channel_label VARCHAR2(128) NOT NULL,
     parent_channel_label VARCHAR2(128),
     created   timestamp with local time zone

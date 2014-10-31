@@ -33,6 +33,11 @@ class ActionDeps:
             'arches'                    : ['arches-extra'],
             'arches-extra'              : [''],
             'supportinfo'               : [''],
+            'suse-products'             : [''],
+            'suse-product-channels'     : ['suse-products', 'channels'],
+            'suse-upgrade-paths'        : ['suse-products'],
+            'suse-subscriptions'        : ['channel-families'],
+            #FIXME: remove old code - when NCC is really dead
             'suse-products-subscriptions' : [''],
         }
 
@@ -50,6 +55,11 @@ class ActionDeps:
             'errata',
             'kickstarts',
             'supportinfo',
+            'suse-products',
+            'suse-product-channels',
+            'suse-upgrade-paths',
+            'suse-subscriptions',
+            #FIXME: remove old code - when NCC is really dead
             'suse-products-subscriptions'
         ]
         self.options = options

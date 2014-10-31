@@ -54,6 +54,7 @@ sequences = {
     'suseProductFile'           : 'suse_prod_file_id_seq',
     'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
     'suseEula'                  : 'suse_eula_id_seq',
+    'suseProducts'              : 'suse_products_id_seq',
 }
 
 class Backend:
@@ -1364,6 +1365,288 @@ class Backend:
         if toinsert[0]:
             insert_support_info.executemany(channel_id=toinsert[0], package_id=toinsert[1], keyword_id=toinsert[2])
 
+    def processSuseProducts(self, batch):
+        """Check if SUSE Product is already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_product = self.dbmodule.prepare("""
+            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_list, product_id)
+            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_list, :product_id)
+            """)
+        delete_product = self.dbmodule.prepare("""
+            DELETE FROM suseProducts WHERE product_id = :product_id
+            """)
+        update_product = self.dbmodule.prepare("""
+            UPDATE suseProducts
+               SET name = :name,
+                   version = :version,
+                   friendly_name = :friendly_name,
+                   arch_type_id = :arch_type_id,
+                   release = :release,
+                   product_list = :product_list
+             WHERE product_id = :product_id
+             """)
+        _query_product = self.dbmodule.prepare("""
+            SELECT product_id FROM suseProducts
+            """)
+        _query_product.execute()
+        existing_data = map(lambda x: "%s" % (x['product_id']), _query_product.fetchall_dict() or [])
+        toinsert = [[], [], [], [], [], [], [], []]
+        todelete = [[]]
+        toupdate = [[], [], [], [], [], [], []]
+        for item in batch:
+            if item['product_id'] in existing_data:
+                existing_data.remove(item['product_id'])
+                toupdate[0].append(item['name'])
+                toupdate[1].append(item['version'])
+                toupdate[2].append(item['friendly_name'])
+                toupdate[3].append(item['arch_type_id'])
+                toupdate[4].append(item['release'])
+                toupdate[5].append(item['product_list'])
+                toupdate[6].append(int(item['product_id']))
+                continue
+            toinsert[0].append(self.sequences['suseProducts'].next())
+            toinsert[1].append(item['name'])
+            toinsert[2].append(item['version'])
+            toinsert[3].append(item['friendly_name'])
+            toinsert[4].append(item['arch_type_id'])
+            toinsert[5].append(item['release'])
+            toinsert[6].append(item['product_list'])
+            toinsert[7].append(int(item['product_id']))
+        for ident in existing_data:
+            todelete[0].append(int(item['product_id']))
+        if todelete[0]:
+            delete_product.executemany(product_id=todelete[0])
+        if toinsert[0]:
+            insert_product.executemany(pid=toinsert[0], name=toinsert[1], version=toinsert[2],
+                                       friendly_name=toinsert[3], arch_type_id=toinsert[4],
+                                       release=toinsert[5], product_list=toinsert[6],
+                                       product_id=toinsert[7])
+        if toupdate[0]:
+            update_product.executemany(name=toupdate[0], version=toupdate[1],
+                                       friendly_name=toupdate[2], arch_type_id=toupdate[3],
+                                       release=toupdate[4], product_list=toupdate[5],
+                                       product_id=toupdate[6])
+
+    def processSuseProductChannels(self, batch):
+        """Check if the SUSE ProductChannel is already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_pc = self.dbmodule.prepare("""
+            INSERT INTO suseProductChannel
+                   (product_id, channel_id, channel_label, parent_channel_label)
+            VALUES (:pid, :cid, :clabel, :pclabel)
+            """)
+        delete_pc = self.dbmodule.prepare("""
+            DELETE FROM suseProductChannel
+             WHERE product_id = :pid
+               AND channel_label = :clabel
+            """)
+        update_pc = self.dbmodule.prepare("""
+            UPDATE suseProductChannel
+               SET channel_id = :cid,
+                   parent_channel_label = :pclabel
+             WHERE product_id = :pid
+               AND channel_label = :clabel
+             """)
+        _query_pc = self.dbmodule.prepare("""
+            SELECT product_id, channel_label FROM suseProductChannel
+            """)
+        _query_pc.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['product_id'], x['channel_label']), _query_pc.fetchall_dict() or [])
+        toinsert = [[], [], [], []]
+        todelete = [[], []]
+        toupdate = [[], [], [], []]
+        for item in batch:
+            ident = "%s-%s" % (item['product_id'], item['channel_label'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['channel_id'])
+                toupdate[1].append(item['parent_channel_label'])
+                toupdate[2].append(item['product_id'])
+                toupdate[3].append(item['channel_label'])
+                continue
+            toinsert[0].append(item['product_id'])
+            toinsert[1].append(item['channel_id'])
+            toinsert[2].append(item['channel_label'])
+            toinsert[3].append(item['parent_channel_label'])
+        for ident in existing_data:
+            pid, clabel = ident.split('-', 1)
+            todelete[0].append(int(pid))
+            todelete[1].append(clabel)
+        if todelete[0]:
+            delete_pc.executemany(pid=todelete[0], clabel=todelete[1])
+        if toinsert[0]:
+            insert_pc.executemany(pid=toinsert[0], cid=toinsert[1],
+                                  clabel=toinsert[2], pclabel=toinsert[3])
+        if toupdate[0]:
+            update_pc.executemany(cid=toupdate[0], pclabel=toupdate[1],
+                                  pid=toupdate[2], clabel=toupdate[3])
+
+    def processSuseUpgradePaths(self, batch):
+        """Check if the SUSE Upgrade Paths are already in DB.
+           If not add it.
+        """
+        insert_up = self.dbmodule.prepare("""
+            INSERT INTO suseUpgradePath
+                   (from_pdid, to_pdid)
+            VALUES (:from_pdid, :to_pdid)
+            """)
+        delete_up = self.dbmodule.prepare("""
+            DELETE FROM suseUpgradePath
+             WHERE from_pdid = :from_pdid
+               AND to_pdid = :to_pdid
+            """)
+        _query_up = self.dbmodule.prepare("""
+            SELECT from_pdid, to_pdid FROM suseUpgradePath
+            """)
+        _query_up.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['from_pdid'], x['to_pdid']), _query_up.fetchall_dict() or [])
+        toinsert = [[], []]
+        todelete = [[], []]
+        for item in batch:
+            ident = "%s-%s" % (item['from_pdid'], item['to_pdid'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                continue
+            toinsert[0].append(item['from_pdid'])
+            toinsert[1].append(item['to_pdid'])
+        for ident in existing_data:
+            fpdid, tpdid = ident.split('-', 1)
+            todelete[0].append(int(fpdid))
+            todelete[1].append(int(tpdid))
+        if todelete[0]:
+            delete_up.executemany(from_pdid=todelete[0], to_pdid=todelete[1])
+        if toinsert[0]:
+            insert_up.executemany(from_pdid=toinsert[0], to_pdid=toinsert[1])
+
+    def processSuseSubscriptions(self, batch):
+        """Check if the Subscriptions are already in DB.
+           If yes, update it, if not add it.
+        """
+        insert_pcf = self.dbmodule.prepare("""
+            INSERT INTO rhnPrivateChannelFamily
+                   (channel_family_id, org_id, max_members)
+            VALUES (:cfid, :org_id, :max_members)
+            """)
+        update_pcf = self.dbmodule.prepare("""
+            UPDATE rhnPrivateChannelFamily
+               SET max_members = :max_members
+             WHERE channel_family_id = :cfid
+               AND org_id = :org_id
+             """)
+        _query_pcf = self.dbmodule.prepare("""
+            SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
+            """)
+        _query_pcf.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['channel_family_id'], x['org_id']), _query_pcf.fetchall_dict() or [])
+        toinsert = [[], [], []]
+        toupdate = [[], [], []]
+        for item in batch:
+            ident = "%s-%s" % (item['channel_family_id'], item['org_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['max_members'])
+                toupdate[1].append(item['channel_family_id'])
+                toupdate[2].append(item['org_id'])
+                continue
+            toinsert[0].append(item['channel_family_id'])
+            toinsert[1].append(item['org_id'])
+            toinsert[2].append(item['max_members'])
+        if toinsert[0]:
+            insert_pcf.executemany(cfid=toinsert[0],
+                                   org_id=toinsert[1],
+                                   max_members=toinsert[2])
+        if toupdate[0]:
+            update_pcf.executemany(max_members=toupdate[0],
+                                   cfid=toupdate[1],
+                                   org_id=toupdate[2])
+
+    def processSuseEntitlements(self, batch):
+        """Check if the System Entitlements are already in DB.
+           If yes, update it, if not add it.
+        """
+        # for org 1 all entitlements enries should be in DB
+        # so we need only to update the numbers
+        update_ents = self.dbmodule.prepare("""
+            UPDATE rhnServerGroup
+               SET max_members = :max_members
+             WHERE group_type = :group_type
+               AND org_id = :org_id
+             """)
+        _query_ents = self.dbmodule.prepare("""
+            SELECT group_type, org_id FROM rhnServerGroup
+            """)
+        _query_ents.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['group_type'], x['org_id']), _query_ents.fetchall_dict() or [])
+        toupdate = [[], [], []]
+        for item in batch:
+            ident = "%s-%s" % (item['group_type'], item['org_id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                toupdate[0].append(item['max_members'])
+                toupdate[1].append(item['group_type'])
+                toupdate[2].append(item['org_id'])
+                continue
+            # this should not happen
+            log_error("Not existing entitlement found %s" % item['group_type'])
+        if toupdate[0]:
+            update_ents.executemany(max_members=toupdate[0],
+                                    group_type=toupdate[1],
+                                    org_id=toupdate[2])
+
+    def getEntitlementLabels(self):
+        result = {}
+        sql = self.dbmodule.prepare("""
+           SELECT id, label FROM rhnServerGroupType
+           """)
+        sql.execute()
+        for item in (sql.fetchall_dict() or []):
+            result[item['label']] = item['id']
+        return result
+
+    def calcSubMaxMembers(self, subs):
+        """SUM max_members of org_id > 1 and set
+           new max_members = max_members - SUM(max_members of org > 1)
+        """
+        _query = self.dbmodule.prepare("""
+            SELECT pcf.channel_family_id, SUM(pcf.max_members) AS giveaway
+              FROM rhnPrivateChannelFamily pcf
+             WHERE pcf.org_id > 1
+          GROUP BY pcf.channel_family_id
+        """)
+        _query.execute()
+        existing_counts = {}
+        for entry in (_query.fetchall_dict() or []):
+            existing_counts[entry['channel_family_id']] = 0
+            if entry['giveaway'] and int(entry['giveaway']) > 0:
+                existing_counts[entry['channel_family_id']] = int(entry['giveaway'])
+
+        for item in subs:
+            if item['channel_family_id'] in existing_counts:
+                item['max_members'] = item['max_members'] - existing_counts[item['channel_family_id']]
+
+    def calcEntMaxMembers(self, ents):
+        """SUM max_members of org_id > 1 and set
+           new max_members = max_members - SUM(max_members of org > 1)
+        """
+        _query = self.dbmodule.prepare("""
+            SELECT sg.group_type, SUM(sg.max_members) AS giveaway
+              FROM rhnServerGroup sg
+             WHERE sg.org_id > 1
+          GROUP BY sg.group_type
+        """)
+        _query.execute()
+        existing_counts = {}
+        for entry in (_query.fetchall_dict() or []):
+            existing_counts[entry['group_type']] = 0
+            if entry['giveaway'] and int(entry['giveaway']) > 0:
+                existing_counts[entry['group_type']] = int(entry['giveaway'])
+
+        for item in ents:
+            if item['group_type'] in existing_counts:
+                item['max_members'] = item['max_members'] - existing_counts[item['group_type']]
+
     def lookupPackageIdFromPackage(self, package):
         if not isinstance(package, IncompletePackage):
             raise TypeError("Expected an IncompletePackage instance, found %s" % \
@@ -1401,6 +1684,15 @@ class Backend:
                 package.id = pkgid['id']
                 return
 
+    def lookupSuseProductIdByProductId(self, pid):
+        _query = self.dbmodule.prepare("""
+            SELECT id FROM suseProducts WHERE product_id = :pid
+        """)
+        _query.execute(pid=pid)
+        res = _query.fetchone_dict()
+        if res:
+            return res['id']
+        return None
 
     def lookupKeyword(self, keyword):
         statement = self.dbmodule.prepare("""
