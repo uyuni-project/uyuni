@@ -717,13 +717,13 @@ class _SuseProductDumper(BaseRowDumper):
 
     def set_attributes(self):
         return {
-            'name'  : self._row['name'],
-            'version' : self._row['version'],
+            'name'          : self._row['name'],
+            'version'       : self._row['version'],
             'friendly-name' : self._row['friendly_name'],
-            'arch' : self._row['arch'],
-            'release' : self._row['release'],
-            'product-list' : self._row['product_list'],
-            'product-id' : self._row['product_id']
+            'arch'          : self._row['arch'],
+            'release'       : self._row['release'],
+            'product-list'  : self._row['product_list'],
+            'product-id'    : self._row['product_id']
             }
 
 class SuseProductDumper(BaseQueryDumper):
@@ -748,8 +748,8 @@ class _SuseProductChannelDumper(BaseRowDumper):
 
     def set_attributes(self):
         return {
-            'product-id'  : self._row['pdid'],
-            'channel-label' : self._row['clabel'],
+            'product-id'           : self._row['pdid'],
+            'channel-label'        : self._row['clabel'],
             'parent-channel-label' : self._row['pclabel'],
             }
 
@@ -775,8 +775,8 @@ class _SuseUpgradePathDumper(BaseRowDumper):
 
     def set_attributes(self):
         return {
-            'from-product-id'  : self._row['fromid'],
-            'to-product-id'  : self._row['toid'],
+            'from-product-id' : self._row['fromid'],
+            'to-product-id'   : self._row['toid'],
             }
 
 class SuseUpgradePathDumper(BaseQueryDumper):
