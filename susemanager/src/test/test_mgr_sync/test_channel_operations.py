@@ -283,18 +283,18 @@ Status:
         self.mgr_sync._fetch_remote_channels = MagicMock(
         return_value=parse_channels(
             read_data_from_fixture("list_channels.data")))
-	stubbed_xmlrpm_call = MagicMock()
-	self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
-	with ConsoleRecorder() as recorder:
-	    self.assertEqual(0, self.mgr_sync.run(options))
-	expected_xmlrpc_calls = [
-	    call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-		                        "addChannel",
-		                        self.fake_auth_token,
-		                        channel,
-		                        None),
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+        with ConsoleRecorder() as recorder:
+            self.assertEqual(0, self.mgr_sync.run(options))
+        expected_xmlrpc_calls = [
+            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
+                                        "addChannel",
+                                        self.fake_auth_token,
+                                        channel,
+                                        ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
-		                        "syncRepo",
+                                        "syncRepo",
                                         self.fake_auth_token,
                                         channel)
         ]
@@ -331,7 +331,7 @@ Status:
                                         "addChannel",
                                         self.fake_auth_token,
                                         base_channel,
-                                        None),
+                                        ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -340,7 +340,7 @@ Status:
                                         "addChannel",
                                         self.fake_auth_token,
                                         channel,
-                                        None),
+                                        ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
@@ -487,7 +487,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
                                         "addChannel",
                                         self.fake_auth_token,
                                         chosen_channel,
-                                        None),
+                                        ''),
             call._execute_xmlrpc_method(self.mgr_sync.conn.channel.software,
                                         "syncRepo",
                                         self.fake_auth_token,
