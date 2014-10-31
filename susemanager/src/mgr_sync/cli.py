@@ -68,7 +68,8 @@ def _create_add_subparser(subparsers):
         '--primary',
         action='store_true',
         dest='primary',
-        help='Designate SCC organization credentials as primary')
+        help='Designate SCC organization credentials as primary. '
+             'There can be only a primary credential, which is the first one used when retrieving the list of products and channels.')
 
 
 def _create_list_subparser(subparsers):
