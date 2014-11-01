@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Sat Nov 01 15:54:13 CET 2014 - mc@suse.de
+
+- version 2.1.55.11-1
+- ISS: Ignore errors if deprecated files do not exist on export
+- ISS: export/import Subscriptions and entitlements
+- ISS: remove old import code for NCC products and subscriptions
+- ISS: export/import suseProductChannels and suseUpgradePaths via ISS
+- ISS: export/import SUSE Products via ISS
+- Fix cleanup when DB init goes wrong
+- sanitize db_name config value
+- fixed variable name
+
+-------------------------------------------------------------------
 Tue Oct 14 14:57:25 CEST 2014 - mc@suse.de
 
 - version 2.1.55.10-1
