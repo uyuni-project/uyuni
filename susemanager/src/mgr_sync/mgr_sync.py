@@ -15,6 +15,7 @@
 
 import re
 import sys
+import os.path
 import xmlrpclib
 
 from spacewalk.common.suseLib import current_cc_backend, BackendType
@@ -47,6 +48,11 @@ class MgrSync(object):
         """
         Run the app.
         """
+        if not self._is_scc_allowed():
+            msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
+            sys.stderr.write(msg)
+            sys.exit(1)
+
         if not current_cc_backend() == BackendType.SCC \
            and not vars(options).has_key('enable_scc'):
             msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
@@ -595,3 +601,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 return True
 
         return False
+
+    def _is_scc_allowed(self):
+        return os.path.isfile("/var/lib/spacewalk/scc/default_scc")

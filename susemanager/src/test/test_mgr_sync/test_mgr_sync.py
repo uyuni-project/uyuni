@@ -45,6 +45,7 @@ class MgrSyncTest(unittest.TestCase):
     def test_should_exit_when_ncc_is_active(self):
         """ Should exit with an error when NCC backend is active """
 
+        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mock_current_backend.return_value = BackendType.NCC
         options = get_options("refresh".split())
         try:
@@ -68,6 +69,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """ Should allow the execution of the enable-scc action even when
         NCC is active """
 
+        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mock_current_backend.return_value = BackendType.NCC
         mock_enable_scc = MagicMock()
         self.mgr_sync._enable_scc = mock_enable_scc
@@ -81,6 +83,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     def test_should_not_migrate_to_scc_more_than_once(self):
         """ Should not migrate to SCC when the SCC backend is already active"""
 
+        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mock_current_backend.return_value = BackendType.SCC
         mock_enable_scc = MagicMock()
         self.mgr_sync._enable_scc = mock_enable_scc
@@ -91,3 +94,20 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         self.assertFalse(mock_enable_scc.mock_calls)
 
+    def test_should_not_allow_migration(self):
+        """Should not allow migration until the default_scc file exists"""
+
+        self.mock_current_backend.return_value = BackendType.NCC
+        mock_enable_scc = MagicMock()
+        self.mgr_sync._enable_scc = mock_enable_scc
+
+        options = get_options("enable-scc".split())
+        try:
+            with ConsoleRecorder() as recorder:
+                self.mgr_sync.run(options)
+        except SystemExit, ex:
+            self.assertEqual(1, ex.code)
+
+        expected_stderr = """Support for SUSE Customer Center (SCC) is not yet available."""
+        self.assertEqual(expected_stderr.split("\n"), recorder.stderr)
+        self.assertFalse(recorder.stdout)

@@ -35,6 +35,7 @@ class ProductOperationsTest(unittest.TestCase):
 
     def setUp(self):
         self.mgr_sync = MgrSync()
+        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mgr_sync.conn = MagicMock()
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(
