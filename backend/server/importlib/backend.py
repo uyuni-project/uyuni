@@ -1416,7 +1416,7 @@ class Backend:
             toinsert[6].append(item['product_list'])
             toinsert[7].append(int(item['product_id']))
         for ident in existing_data:
-            todelete[0].append(int(item['product_id']))
+            todelete[0].append(int(ident))
         if todelete[0]:
             delete_product.executemany(product_id=todelete[0])
         if toinsert[0]:
