@@ -48,8 +48,8 @@ class MgrSync(object):
         """
         Run the app.
         """
-        if not _is_scc_allowed():
-            msg = """Support for SUSE Customer Center (SCC) is not yet available."""
+        if not self._is_scc_allowed():
+            msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
             sys.stderr.write(msg)
             sys.exit(1)
 

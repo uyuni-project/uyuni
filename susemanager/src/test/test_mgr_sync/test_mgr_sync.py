@@ -103,7 +103,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         options = get_options("enable-scc".split())
         try:
-            with ConsoleRecorder():
+            with ConsoleRecorder() as recorder:
                 self.mgr_sync.run(options)
         except SystemExit, ex:
             self.assertEqual(1, ex.code)
