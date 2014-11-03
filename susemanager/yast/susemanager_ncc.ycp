@@ -226,19 +226,6 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
             `Left (`RadioButton(`id(`ncc), `opt (`notify),
                 // radio button label
                 _("Connect to NCC"), settings["ISS_PARENT"]:"" == "")),
-            `HBox (`HSpacing (4), `VBox (
-                // text entry label
-                `InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credentials &Username"),
-                             settings["NCC_USER"]:""),
-                // text entry label
-                `Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credentials &Password"),
-                           settings["NCC_PASS"]:""),
-                // text entry label
-                `InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),
-                             settings["NCC_EMAIL"]:""),
-                `VSpacing (),
-                `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")))
-            ),
             text_mode ? `Empty () : `VSpacing (),
             `Left ( `RadioButton(`id(`iss), `opt (`notify),
                 // radio button label
@@ -247,6 +234,17 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
                    // text entry label
                    `InputField (`id ("ISS_PARENT"), `opt (`hstretch), _("Parent &Server Name"), settings["ISS_PARENT"]:""))
             )))),
+        // text entry label
+        `InputField (`id ("NCC_USER"), `opt (`hstretch), _("NCC Mirror Credentials &Username"),
+            settings["NCC_USER"]:""),
+        // text entry label
+        `Password (`id ("NCC_PASS"), `opt (`hstretch), _("NCC Mirror Credentials &Password"),
+            settings["NCC_PASS"]:""),
+        // text entry label
+        `InputField (`id ("NCC_EMAIL"), `opt (`hstretch), _("NCC &E-mail Address"),
+            settings["NCC_EMAIL"]:""),
+        `VSpacing (),
+        `PushButton (`id ("test_NU_credentials"), `opt(`key_F6), _("&Test...")),
         `VSpacing (0.5)
     ), `HSpacing (1));
 
@@ -265,10 +263,6 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         {
             settings["ISS_PARENT"] = "";
             UI::ChangeWidget (`id ("ISS_PARENT"), `Enabled, ret == `iss);
-            UI::ChangeWidget (`id ("NCC_USER"), `Enabled, ret == `ncc);
-            UI::ChangeWidget (`id ("NCC_PASS"), `Enabled, ret == `ncc);
-            UI::ChangeWidget (`id ("NCC_EMAIL"), `Enabled, ret == `ncc);
-            UI::ChangeWidget (`id ("test_NU_credentials"), `Enabled, ret == `ncc);
         }
         if (ret == `back)
         {
@@ -280,56 +274,31 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         }
         if (ret == "test_NU_credentials" || ret == `next)
         {
-            boolean missing = false;
-            boolean isncc   = UI::QueryWidget (`id (`rb), `CurrentButton) == `ncc;
+            boolean missing     = false;
             foreach (string key, string value, settings, {
-                string val  = (string) UI::QueryWidget (`id (key), `Value);
-                if (isncc)
+                string val      = (string) UI::QueryWidget (`id (key), `Value);
+                if ( key == "ISS_PARENT")
                 {
-                    if (key == "NCC_USER" || key == "NCC_PASS" || key == "NCC_EMAIL")
+                    boolean nccconnect = UI::QueryWidget (`id (`rb), `CurrentButton) == `ncc;
+                    if (nccconnect)
                     {
-                        if (val == "")
-                        {
-                            // error label
-                            Popup::Error (sformat (_("The value of '%1' is empty."), labels[key]:key));
-                            UI::SetFocus (`id (key));
-                            missing     = true;
-                            break;
-                        }
-                        settings[key] = val;
+                        settings[key]       = "";
+                        UI::ChangeWidget (`id ("ISS_PARENT"), `Value, "");
+                        continue;
                     }
-                    else
-                    {
-                        settings[key] = "";
-                    }
-                    string email        = (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
-                    if (!issubstring (email, "@"))
-                    {
-                        // error popup
-                        Popup::Error (_("The E-mail Address is not valid."));
-                        UI::SetFocus (`id ("NCC_EMAIL"));
-                        missing     = true;
-                        break;
-                    }
+                }
+                if (val == "")
+                {
+                    string label        = labels[key]:key;
+                    // error label
+                    Popup::Error (sformat (_("The value of '%1' is empty."), label));
+                    UI::SetFocus (`id (key));
+                    missing     = true;
+                    break;
                 }
                 else
                 {
-                    if ( key == "ISS_PARENT")
-                    {
-                        if (val == "")
-                        {
-                            // error label
-                            Popup::Error (sformat (_("The value of '%1' is empty."), labels[key]:key));
-                            UI::SetFocus (`id (key));
-                            missing     = true;
-                            break;
-                        }
-                        settings[key] = val;
-                    }
-                    else
-                    {
-                        settings[key] = "";
-                    }
+                    settings[key]       = val;
                 }
             });
             if (missing)
@@ -344,7 +313,16 @@ user=\\\"\\\"\" > '%1'", String::Quote (test_file)));
         }
         if (ret == `next)
         {
-            foreach (string key, string val, settings, {
+            string email        = (string) UI::QueryWidget (`id ("NCC_EMAIL"), `Value);
+            if (!issubstring (email, "@"))
+            {
+                // error popup
+                Popup::Error (_("The E-mail Address is not valid."));
+                UI::SetFocus (`id ("NCC_EMAIL"));
+                continue;
+            }
+            foreach (string key, string value, settings, {
+                string val      = (string) UI::QueryWidget (`id (key), `Value);
                 setenv (key, val, true);
                 SCR::Execute (.target.bash, sformat ("echo \"export %1='%2'\" >> %3", key, val, env_file));
             });
