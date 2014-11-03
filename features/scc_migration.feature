@@ -8,7 +8,7 @@ Feature: Check the SCC Migration UI
 
   Scenario: SUSE Customer Center is not available
     Given I am authorized as "admin" with password "admin"
-    When I save migration state
+    Given migration state saved
     Given the server is not yet migrated to SCC
     Given the SCC is not yet the default customer center
     When I follow "Admin"
@@ -19,7 +19,7 @@ Feature: Check the SCC Migration UI
 
   Scenario: SUSE Manager is still connected to NCC
     Given I am authorized as "admin" with password "admin"
-    When I save migration state
+    Given migration state saved
     Given the server is not yet migrated to SCC
     Given the SCC is the default customer center
     When I follow "Admin"
@@ -32,7 +32,7 @@ Feature: Check the SCC Migration UI
 
   Scenario: SUSE Manager is already migrated to SCC
     Given I am authorized as "admin" with password "admin"
-    When I save migration state
+    Given migration state saved
     Given the server is migrated to SCC
     Given the SCC is the default customer center
     When I follow "Admin"
