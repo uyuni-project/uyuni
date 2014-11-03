@@ -1,4 +1,4 @@
-# Copyright (c) 2014 SUSE
+# Copyright (c) 2014 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Check the SCC Migration UI
