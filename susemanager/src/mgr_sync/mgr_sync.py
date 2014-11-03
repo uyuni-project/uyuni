@@ -18,7 +18,7 @@ import sys
 import os.path
 import xmlrpclib
 
-from spacewalk.common.suseLib import current_cc_backend, BackendType
+from spacewalk.common.suseLib import current_cc_backend, BackendType, hasISSMaster
 from spacewalk.susemanager.content_sync_helper import switch_to_scc
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
@@ -63,6 +63,11 @@ This can be done using the following commmand:
 
 Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
 """
+            sys.stderr.write(msg)
+            sys.exit(1)
+
+        if hasISSMaster() and not vars(options).has_key('enable_scc'):
+            msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             sys.stderr.write(msg)
             sys.exit(1)
 
@@ -503,6 +508,12 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         )
         text_width = len("Refreshing ") + 8 + \
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
+
+        if hasISSMaster():
+            msg = """To refresh the channels, please call 'mgr-inter-sync'\n"""
+            sys.stdout.write(msg)
+            sys.stdout.flush()
+            return
 
         for operation, method in actions:
             sys.stdout.write("Refreshing %s" % operation)
