@@ -1690,14 +1690,17 @@ public class ContentSyncManager {
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         int id = 0;
         for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
-            Credentials c = CredentialsFactory.createSCCCredentials();
-            c.setUsername(dto.getUser());
-            c.setPassword(dto.getPassword());
-            // We identify the primary credentials by setting a URL
-            if (id == 0) {
-                c.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
+            // If we are an ISS slave, only remove the credentials
+            if (IssFactory.getCurrentMaster() == null) {
+                Credentials c = CredentialsFactory.createSCCCredentials();
+                c.setUsername(dto.getUser());
+                c.setPassword(dto.getPassword());
+                //  We identify the primary credentials by setting a URL
+                if (id == 0) {
+                    c.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
+                }
+                CredentialsFactory.storeCredentials(c);
             }
-            CredentialsFactory.storeCredentials(c);
             id++;
         }
         for (long i = --id; id >= 0; id--) {
