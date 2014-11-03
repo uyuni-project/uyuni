@@ -112,6 +112,8 @@ class Runner:
         'suse-product-channels'     : ['suse-products', 'channels'],
         'suse-upgrade-paths'        : ['suse-products'],
         'suse-subscriptions'        : ['channel-families'],
+        # FIXME: remove old code
+        'suse-products-subscriptions' : [''],
     }
 
     # The step hierarchy. We need access to it both for command line
@@ -137,6 +139,8 @@ class Runner:
         'suse-product-channels',
         'suse-upgrade-paths',
         'suse-subscriptions',
+        # FIXME: remove old code
+        'suse-products-subscriptions',
     ]
     def __init__(self):
         self.syncer = None
@@ -387,6 +391,29 @@ class Runner:
 
     def _step_suse_upgrade_paths(self):
         self.syncer.import_suse_upgrade_paths()
+
+    #FIXME: remove old code
+    def _step_suse_products_subscriptions(self):
+        try:
+            mountpoint = None
+            if self.syncer.mountpoint and os.path.isdir(self.syncer.mountpoint):
+                mountpoint = self.syncer.mountpoint
+            mgrsync = mgr_ncc_sync_lib.NCCSync(quiet=True, debug=CFG.DEBUG, fromdir=mountpoint)
+            log(1, ['', 'Update channel-families descriptions'])
+            mgrsync.update_channel_family_table_by_config()
+            log(1, ['', 'Update SUSE Products data'])
+            suse_products = mgrsync.get_suse_products_from_ncc()
+            mgrsync.update_suse_products_table(suse_products)
+            log(1, ['', 'Update subscriptions data'])
+            mgrsync.update_subscriptions()
+            log(1, ['', 'Linking products to channels'])
+            mgrsync.sync_suseproductchannel()
+            log(1, ['', 'Update upgrade path information'])
+            mgrsync.update_upgrade_pathes_by_config()
+        except Exception, e:
+            log(-1, ['    Failed:', "        %s" % str(e)])
+            sendMail()
+            return 1
 
     def _step_suse_subscriptions(self):
         self.syncer.import_suse_subscriptions()
