@@ -48,6 +48,7 @@ from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnServer import satellite_cert
 from spacewalk.server.rhnLib import get_package_path
 from spacewalk.common import fileutils
+from spacewalk.common.suseLib import current_cc_backend, BackendType
 
 initCFG('server.satellite')
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
@@ -181,6 +182,14 @@ class Runner:
         timeStart = time.time()
 
         actionDict, channels = processCommandline()
+
+        if current_cc_backend() == BackendType.SCC:
+            self.step_hierarchy.remove('suse-products-subscriptions')
+        else:
+            self.step_hierarchy.remove('suse-products')
+            self.step_hierarchy.remove('suse-product-channels')
+            self.step_hierarchy.remove('suse-upgrade-paths')
+            self.step_hierarchy.remove('suse-subscriptions')
 
         #5/24/05 wregglej - 156079 turn off an step's dependent steps if it's turned off.
         #look at self.step_precedence for a listing of how the steps are dependent on each other.
