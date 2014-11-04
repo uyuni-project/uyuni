@@ -290,7 +290,7 @@ Feature: Explore the main landing page
       And I follow "Kickstart" in the left menu
       And I follow "Profiles" in the left menu
       And I follow "Upload Kickstart File"
-    Then I should see a "Create Kickstart Profile" text
+    Then I should see a "Create Autoinstallation Profile" text
       And I should see a "File Contents:" text
       And I should see a "Kickstart Details" text
 
