@@ -59,10 +59,10 @@ public class SCCCachingFactoryTest extends TestCase {
     }
 
     /**
-     * Test needsRefresh().
+     * Test refreshNeeded().
      */
     @SuppressWarnings("deprecation")
-    public void testNeedsRefresh() {
+    public void testRefreshNeeded() {
         SCCCachingFactory.clearRepositories();
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
@@ -77,12 +77,12 @@ public class SCCCachingFactoryTest extends TestCase {
         SCCRepository repo = createTestRepo(0L);
         repo.setModified(new Date(114, 1, 2));
         HibernateFactory.getSession().save(repo);
-        assertFalse(SCCCachingFactory.needsRefresh());
+        assertFalse(SCCCachingFactory.refreshNeeded());
 
         // Newer credentials -> refresh
         creds.setModified(new Date(114, 2, 3));
         HibernateFactory.getSession().save(creds);
-        assertTrue(SCCCachingFactory.needsRefresh());
+        assertTrue(SCCCachingFactory.refreshNeeded());
     }
 
     /**

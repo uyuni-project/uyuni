@@ -78,7 +78,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * Check if the cache needs a refresh.
      * @return true if refresh is needed, false otherwise
      */
-    public static boolean needsRefresh() {
+    public static boolean refreshNeeded() {
         Session session = getSession();
         Criteria c = session.createCriteria(Credentials.class);
         c.add(Restrictions.eq("type", CredentialsFactory
