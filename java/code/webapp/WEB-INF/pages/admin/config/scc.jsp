@@ -7,7 +7,8 @@
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/SCCConfigAjax.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
-        <script type="text/javascript" src="/javascript/scc-config.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-scc-refresh-dialog.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-scc.js"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img">
