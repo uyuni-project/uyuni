@@ -43,6 +43,10 @@ class CredentialOperationsTest(unittest.TestCase):
         mock = patcher.start()
         mock.return_value = BackendType.SCC
 
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
+        mock = patcher.start()
+        mock.return_value = False
+
     def test_list_credentials_no_credentials(self):
         """ Test listing credentials with none present """
         options = get_options("list credentials".split())

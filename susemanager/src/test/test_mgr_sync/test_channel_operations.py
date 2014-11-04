@@ -45,6 +45,10 @@ class ChannelOperationsTest(unittest.TestCase):
         mock = patcher.start()
         mock.return_value = BackendType.SCC
 
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
+        mock = patcher.start()
+        mock.return_value = False
+
     def test_list_channels_no_channels(self):
         options = get_options("list channels".split())
         stubbed_xmlrpm_call = MagicMock(return_value=[])

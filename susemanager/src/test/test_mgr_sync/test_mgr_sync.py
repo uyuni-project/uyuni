@@ -42,6 +42,10 @@ class MgrSyncTest(unittest.TestCase):
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_cc_backend')
         self.mock_current_backend = patcher.start()
 
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
+        mock = patcher.start()
+        mock.return_value = False
+
     def test_should_exit_when_ncc_is_active(self):
         """ Should exit with an error when NCC backend is active """
 
