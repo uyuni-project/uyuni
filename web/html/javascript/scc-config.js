@@ -1,14 +1,7 @@
-
 $(function() {
-  var button = $('#scc-start-migration-btn');
-  var dialog = $('#scc-migration-dialog');
-  var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
-  var statusLabel = $('#scc-migration-dialog-status');
 
-  var completedTasks = 0;
-  var totalTasks = 6;
-
-  function addLastTask(message, iconClass) {
+  // Helper function: show a given message with an icon
+  function showMessageWithIcon(message, iconClass) {
     var icon = $('<i></i>').attr('class', iconClass);
     var iconText = $('<div></div>');
     iconText.append(icon);
@@ -16,73 +9,90 @@ $(function() {
     $('#scc-migration-current-task').html(iconText);
   }
 
-  function addTask(message) {
-    addLastTask(message, 'fa fa-spinner fa-spin');
-  }
-
-  function taskFailed(message) {
-    addLastTask(message, 'fa fa-exclamation-triangle fa-1-5x text-warning');
-  }
-
-  function taskSucceeded(message) {
-    addLastTask(message, 'fa fa-check success');
-    completedTasks = completedTasks + 1;
+  // Helper function: refresh the status label
+  function refreshStatusLabel(completedTasks, totalTasks) {
+    var statusLabel = $('#scc-migration-dialog-status');
     statusLabel.html(completedTasks + '/' + totalTasks);
   }
 
-  // starts a task func with message. On completion
-  // continues with task then
-  function startTask(message, taskFunc, thenFunc, cleanupFunc) {
-    addTask(message);
-    taskFunc(makeAjaxHandler(
-      function(ret) {
-        taskSucceeded(message);
-        thenFunc();
-      },
-      function(message, exception) {
-        taskFailed(message);
-        cleanupFunc();
-      })
-    );
+  // Central function to run a given list of tasks
+  function runTasks(tasks, cleanupTask, currentTask, totalTasks) {
+    if (tasks.length >= 1) {
+      var message = $(tasks[0].messageKey).html();
+      showMessageWithIcon(message, 'fa fa-spinner fa-spin');
+
+      if (currentTask <= totalTasks) {
+        refreshStatusLabel(currentTask, totalTasks);
+      }
+
+      tasks[0].task(makeAjaxHandler(
+        function(ret) {
+          showMessageWithIcon(message, 'fa fa-check success');
+          runTasks(tasks.slice(1), cleanupTask, currentTask + 1, totalTasks);
+        },
+        function(message, exception) {
+          showMessageWithIcon(message, 'fa fa-exclamation-triangle fa-1-5x text-warning');
+          cleanupTask();
+        })
+      );
+    }
   }
 
-  button.click(function() {
-    button.prop('disabled', true);
+  // Show the dialog and perform migration and/or refresh
+  function refreshContent(migration, refresh, onSuccess) {
+    var dialog = $('#scc-migration-dialog');
+    var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
     dialog.modal({show: true, keyboard: false});
     dialog.modal('show');
-    // reload the page after the dialog is closed
+    dialogCloseBtn.prop('disabled', true);
+
+    // Reload the page after the dialog is closed
     dialog.on('hidden.bs.modal', function() {
       location.reload();
     });
 
-    dialogCloseBtn.prop('disabled', true);
-
-    function cleanupFunc() {
-        dialogCloseBtn.prop('disabled', false);
-        statusLabel.html(
-          '<i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>' +
-          $('#sccconfig\\.jsp\\.failed').html());
+    // A task to perform in case of success
+    function successTask() {
+      dialogCloseBtn.prop('disabled', false);
+      showMessageWithIcon($('#sccconfig\\.jsp\\.completed').html(), "fa fa-check success");
+      onSuccess();
     }
 
-    statusLabel.html('0/6');
-    // as one tasks succeeeds, start the next
-    startTask($('#sccconfig\\.jsp\\.switchingtoscc').html(), SCCConfigAjax.performMigration, function() {
-      startTask($('#sccconfig\\.jsp\\.channels').html(), SCCConfigAjax.synchronizeChannels, function() {
-          startTask($('#sccconfig\\.jsp\\.channelfamilies').html(), SCCConfigAjax.synchronizeChannelFamilies, function() {
-            startTask($('#sccconfig\\.jsp\\.products').html(), SCCConfigAjax.synchronizeProducts, function() {
-              startTask($('#sccconfig\\.jsp\\.productchannels').html(), SCCConfigAjax.synchronizeProductChannels, function() {
-                startTask($('#sccconfig\\.jsp\\.subscriptions').html(), SCCConfigAjax.synchronizeSubscriptions, function() {
-                startTask($('#sccconfig\\.jsp\\.upgradepaths').html(), SCCConfigAjax.synchronizeUpgradePaths, function() {
-                  button.hide();
-                  button.prop('disabled', false);
-                  dialogCloseBtn.prop('disabled', false);
-                  statusLabel.html('<i class="fa fa-check success"></i>' + $('#sccconfig\\.jsp\\.completed').html());
-                }, cleanupFunc);
-              }, cleanupFunc);
-            }, cleanupFunc);
-          }, cleanupFunc);
-        }, cleanupFunc);
-      }, cleanupFunc);
-      }, cleanupFunc);
+    // Compile the list of tasks to be executed
+    tasks = [
+      {"task" : SCCConfigAjax.performMigration, "messageKey" : "#sccconfig\\.jsp\\.switchingtoscc"},
+      {"task" : SCCConfigAjax.synchronizeChannels, "messageKey" : "#sccconfig\\.jsp\\.channels"},
+      {"task" : SCCConfigAjax.synchronizeChannelFamilies, "messageKey" : "#sccconfig\\.jsp\\.channelfamilies"},
+      {"task" : SCCConfigAjax.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"},
+      {"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"},
+      {"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"},
+      {"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"},
+      {"task" : successTask, "messageKey" : "#sccconfig\\.jsp\\.completed"}
+    ];
+
+    // Cleanup task
+    function cleanupTask() {
+      dialogCloseBtn.prop('disabled', false);
+      $('#scc-migration-dialog-status').html(
+          '<i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>' +
+      $('#sccconfig\\.jsp\\.failed').html());
+    }
+
+    // Run the list of tasks
+    runTasks(tasks, cleanupTask, 1, tasks.length - 1);
+  }
+
+  // Event handler for button click event
+  function onMigrationButtonClick() {
+    var button = $('#scc-start-migration-btn');
+    button.prop('disabled', true);
+    refreshContent(true, true, function() {
+      button.hide();
+      button.prop('disabled', false);
     });
+  }
+
+  // Event Handlers
+  $("#scc-start-migration-btn").on("click", onMigrationButtonClick);
 });
+
