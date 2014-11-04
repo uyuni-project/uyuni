@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -41,6 +42,7 @@ public class SCCConfigAction extends RhnAction {
 
     private static Logger log = Logger.getLogger(SCCConfigAction.class);
     private static final String LOCAL_MIRROR_USED = "local.mirror.used";
+    private static final String ISS_MASTER = "issMaster";
 
     /**
      * DWR ajax end-point for this action
@@ -125,6 +127,10 @@ public class SCCConfigAction extends RhnAction {
         }
 
         request.setAttribute(LOCAL_MIRROR_USED, localMirrorUsed());
+
+        // Perform a refresh only if this is an ISS master
+        request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
