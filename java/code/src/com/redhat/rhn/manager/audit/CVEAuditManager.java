@@ -557,7 +557,7 @@ public class CVEAuditManager {
 
                 // Add these to the current system
                 hasErrata = currentErrata != null;
-                if (hasErrata && !currentPackageInstalled) {
+                if (hasErrata) {
                     // We have an errata
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             currentErrata, (String) result.get("errata_advisory"));
@@ -591,7 +591,7 @@ public class CVEAuditManager {
                 }
 
                 // Add errata and channel ID
-                if (!currentPackageInstalled) {
+                if (errataID != null) {
                     ErrataIdAdvisoryPair errata = new ErrataIdAdvisoryPair(
                             errataID, (String) result.get("errata_advisory"));
                     currentSystem.addErrata(errata);
