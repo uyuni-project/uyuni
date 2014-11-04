@@ -1,5 +1,4 @@
 $(function() {
-
   // Helper function: show a given message with an icon
   function showMessageWithIcon(message, iconClass) {
     var icon = $('<i></i>').attr('class', iconClass);
@@ -39,12 +38,14 @@ $(function() {
   }
 
   // Show the dialog and perform migration and/or refresh
-  function refreshContent(migration, refresh, onSuccess) {
-    var dialog = $('#scc-migration-dialog');
+  function refreshContent(title, migration, refresh, onSuccess) {
+    // Prepare the dialog and show
+    $("#scc-refresh-dialog-title").html(title);
     var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
+    dialogCloseBtn.prop('disabled', true);
+    var dialog = $('#scc-migration-dialog');
     dialog.modal({show: true, keyboard: false});
     dialog.modal('show');
-    dialogCloseBtn.prop('disabled', true);
 
     // Reload the page after the dialog is closed
     dialog.on('hidden.bs.modal', function() {
@@ -86,7 +87,7 @@ $(function() {
   function onMigrationButtonClick() {
     var button = $('#scc-start-migration-btn');
     button.prop('disabled', true);
-    refreshContent(true, true, function() {
+    refreshContent($("#sccconfig\\.jsp\\.switchingtoscc").html(), true, true, function() {
       button.hide();
       button.prop('disabled', false);
     });
