@@ -44,6 +44,10 @@ class RefreshOperationsTest(unittest.TestCase):
         mock = patcher.start()
         mock.return_value = BackendType.SCC
 
+        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
+        mock = patcher.start()
+        mock.return_value = False
+
     def test_refresh_from_mirror(self):
         """ Test the refresh action """
 	mirror_url = "http://smt.suse.de"
