@@ -3,7 +3,8 @@ $(function() {
     var button = $('#scc-start-migration-btn');
     button.prop('disabled', true);
     var refresh = $("#iss-master").data("iss-master");
-    refreshContent($("#sccconfig\\.jsp\\.switchingtoscc").html(), true, refresh, function() {
+    document.getElementById("scc-migration-dialog").refreshContent(
+        $("#sccconfig\\.jsp\\.switchingtoscc").html(), true, refresh, function() {
       button.hide();
       button.prop('disabled', false);
     });
