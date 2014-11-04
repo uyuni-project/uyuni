@@ -29,6 +29,8 @@
                 <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
             </div>
         </div>
+
         <jsp:include page="/WEB-INF/pages/common/fragments/admin/scc-refresh-dialog.jspf"/>
+        <div class="hidden" id="sccconfig.jsp.switchingtoscc"><bean:message key="sccconfig.jsp.switchingtoscc"/></div>
     </body>
 </html:html>

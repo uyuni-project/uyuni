@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">
-                <span id="switch-to-scc-title"><bean:message key="sccconfig.jsp.switchingtoscc"/></span>
+                <span id="scc-refresh-dialog-title"></span>
               </h4>
             </div>
             <div class="modal-body">
@@ -19,7 +19,6 @@
     </div>
 </div>
 
-<div class="hidden" id="sccconfig.jsp.switchingtoscc"><bean:message key="sccconfig.jsp.switchingtoscc"/></div>
 <div class="hidden" id="sccconfig.jsp.channels"><bean:message key="sccconfig.jsp.channels"/></div>
 <div class="hidden" id="sccconfig.jsp.channelfamilies"><bean:message key="sccconfig.jsp.channelfamilies"/></div>
 <div class="hidden" id="sccconfig.jsp.products"><bean:message key="sccconfig.jsp.products"/></div>
