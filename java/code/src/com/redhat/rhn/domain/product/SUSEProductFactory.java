@@ -136,13 +136,31 @@ public class SUSEProductFactory extends HibernateFactory {
 
         Criteria c = getSession().createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("name", name.toLowerCase()));
-        c.add(Restrictions.or(Restrictions.eq("version", version.toLowerCase()),
-                              Restrictions.isNull("version")));
-        c.add(Restrictions.or(Restrictions.eq("release", release.toLowerCase()),
-                              Restrictions.isNull("release")));
-        c.add(Restrictions.or(Restrictions.eq("arch",
-                                              PackageFactory.lookupPackageArchByLabel(arch)),
-                              Restrictions.isNull("arch")));
+        if (version == null) {
+            c.add(Restrictions.isNull("version"));
+        }
+        else {
+            c.add(Restrictions.or(Restrictions.eq("version", version.toLowerCase()),
+                                  Restrictions.isNull("version")));
+        }
+
+        if (release == null) {
+            c.add(Restrictions.or(Restrictions.eq("release", release.toLowerCase()),
+                                  Restrictions.isNull("release")));
+        }
+        else {
+            c.add(Restrictions.isNull("release"));
+        }
+
+        if (arch == null) {
+            c.add(Restrictions.isNull("arch"));
+        }
+        else {
+            c.add(Restrictions.or(Restrictions.eq("arch",
+                  PackageFactory.lookupPackageArchByLabel(arch)),
+                                  Restrictions.isNull("arch")));
+        }
+
         c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
                 .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
 
