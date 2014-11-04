@@ -12,7 +12,9 @@ def sshcmd(command, host: ENV['TESTHOST'], user: 'root', ignore_err: false)
       err << data if str == :stderr
     end
   end
-  if err.string.empty? || ignore_err
+  # smdba print this warning on stderr. Ignore it. It is not an error
+  errstring = err.string.gsub("WARNING: Reserved space for the backup is smaller than available disk space. Adjusting.", "")
+  if errstring.empty? || ignore_err
     results = { stdout: out.string, stderr: err.string }
   else
     raise "Execute command failed #{command}: #{err.string}"
