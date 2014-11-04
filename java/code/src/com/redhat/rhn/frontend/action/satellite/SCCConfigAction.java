@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
-import org.apache.log4j.Logger;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -32,7 +32,6 @@ import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Random;
 
 /**
  * SCCConfigAction - Struts action to handle migration to the
@@ -40,7 +39,6 @@ import java.util.Random;
  */
 public class SCCConfigAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(SCCConfigAction.class);
     private static final String LOCAL_MIRROR_USED = "local.mirror.used";
     private static final String ISS_MASTER = "issMaster";
 
@@ -106,11 +104,6 @@ public class SCCConfigAction extends RhnAction {
             csm.updateUpgradePaths();
         }
     }
-
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = Logger.getLogger(SCCConfigAction.class);
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
