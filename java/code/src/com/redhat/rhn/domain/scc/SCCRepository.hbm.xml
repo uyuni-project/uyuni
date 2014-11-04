@@ -8,7 +8,8 @@
         <property name="distroTarget" column="distro_target" type="string"/>
         <property name="description" column="description" type="string"/>
         <property name="url" column="url" type="string"/>
-        <property name="created" column="created" type="date" insert="false" update="false"/>
+        <property name="created" column="created" type="timestamp" insert="false" update="false"/>
+        <property name="modified" column="modified" type="timestamp"/>
         <many-to-one name="credentials" column="credentials_id" class="com.redhat.rhn.domain.credentials.Credentials"/>
     </class>
     <query name="SCCRepository.deleteAll">
