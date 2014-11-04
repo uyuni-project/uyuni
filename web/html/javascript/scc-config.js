@@ -60,16 +60,19 @@ $(function() {
     }
 
     // Compile the list of tasks to be executed
-    tasks = [
-      {"task" : SCCConfigAjax.performMigration, "messageKey" : "#sccconfig\\.jsp\\.switchingtoscc"},
-      {"task" : SCCConfigAjax.synchronizeChannels, "messageKey" : "#sccconfig\\.jsp\\.channels"},
-      {"task" : SCCConfigAjax.synchronizeChannelFamilies, "messageKey" : "#sccconfig\\.jsp\\.channelfamilies"},
-      {"task" : SCCConfigAjax.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"},
-      {"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"},
-      {"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"},
-      {"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"},
-      {"task" : successTask, "messageKey" : "#sccconfig\\.jsp\\.completed"}
-    ];
+    tasks = [];
+    if (migration) {
+      tasks.push({"task" : SCCConfigAjax.performMigration, "messageKey" : "#sccconfig\\.jsp\\.switchingtoscc"});
+    }
+    if (refresh) {
+      tasks.push({"task" : SCCConfigAjax.synchronizeChannels, "messageKey" : "#sccconfig\\.jsp\\.channels"});
+      tasks.push({"task" : SCCConfigAjax.synchronizeChannelFamilies, "messageKey" : "#sccconfig\\.jsp\\.channelfamilies"});
+      tasks.push({"task" : SCCConfigAjax.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"});
+      tasks.push({"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"});
+      tasks.push({"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
+      tasks.push({"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
+    }
+    tasks.push({"task" : successTask, "messageKey" : "#sccconfig\\.jsp\\.completed"});
 
     // Cleanup task
     function cleanupTask() {
