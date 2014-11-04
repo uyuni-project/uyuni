@@ -15,11 +15,16 @@
 package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +51,7 @@ public class SCCCachingFactory extends HibernateFactory {
      * @param repo repository
      */
     public static void saveRepository(SCCRepository repo) {
+        repo.setModified(new Date());
         singleton.saveObject(repo);
     }
 
@@ -66,5 +72,31 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static void clearRepositories() {
         getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
+    }
+
+    /**
+     * Check if the cache needs a refresh.
+     * @return true if refresh is needed, false otherwise
+     */
+    public static boolean needsRefresh() {
+        Session session = getSession();
+        Criteria c = session.createCriteria(Credentials.class);
+        c.add(Restrictions.eq("type", CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_SCC)));
+        c = c.setProjection(Projections.max("modified"));
+        Date modifiedCreds = (Date) c.uniqueResult();
+        if (modifiedCreds == null) {
+            return true;
+        }
+
+        // When was the cache last modified?
+        Criteria c2 = session.createCriteria(SCCRepository.class);
+        c2 = c2.setProjection(Projections.max("modified"));
+        Date modifiedCache = (Date) c2.uniqueResult();
+        if (modifiedCache == null) {
+            return true;
+        }
+
+        return modifiedCache.compareTo(modifiedCreds) < 0;
     }
 }

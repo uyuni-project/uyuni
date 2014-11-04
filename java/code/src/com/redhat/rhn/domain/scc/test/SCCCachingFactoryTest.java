@@ -14,10 +14,14 @@
  */
 package com.redhat.rhn.domain.scc.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -52,6 +56,33 @@ public class SCCCachingFactoryTest extends TestCase {
         assertEquals(repo0, repos.get(0));
         assertEquals(repo1, repos.get(1));
         assertEquals(repo2, repos.get(2));
+    }
+
+    /**
+     * Test needsRefresh().
+     */
+    @SuppressWarnings("deprecation")
+    public void testNeedsRefresh() {
+        SCCCachingFactory.clearRepositories();
+        for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
+            CredentialsFactory.removeCredentials(c);
+        }
+        Credentials creds = CredentialsFactory.createSCCCredentials();
+        creds.setUsername(TestUtils.randomString());
+        creds.setPassword(TestUtils.randomString());
+        creds.setModified(new Date(114, 0, 1));
+        HibernateFactory.getSession().save(creds);
+
+        // Repos are newer than credentials -> no refresh
+        SCCRepository repo = createTestRepo(0L);
+        repo.setModified(new Date(114, 1, 2));
+        HibernateFactory.getSession().save(repo);
+        assertFalse(SCCCachingFactory.needsRefresh());
+
+        // Newer credentials -> refresh
+        creds.setModified(new Date(114, 2, 3));
+        HibernateFactory.getSession().save(creds);
+        assertTrue(SCCCachingFactory.needsRefresh());
     }
 
     /**
