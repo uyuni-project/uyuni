@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SCCConfigAction extends RhnAction {
 
-    private static final String LOCAL_MIRROR_USED = "local.mirror.used";
+    private static final String LOCAL_MIRROR_USED = "localMirrorUsed";
     private static final String ISS_MASTER = "issMaster";
 
     /**
