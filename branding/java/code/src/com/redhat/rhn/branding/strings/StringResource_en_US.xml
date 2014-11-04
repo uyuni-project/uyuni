@@ -2075,10 +2075,10 @@ tree will not be usable for autoinstalling.
         <source>Close</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.completed">
-        <source>Migration completed successfully</source>
+        <source>Completed</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.failed">
-        <source>Migration was not successful</source>
+        <source>Operation not successful</source>
       </trans-unit>
       <trans-unit id="SUSE Customer Center">
         <source>SUSE Customer Center</source>
