@@ -32,6 +32,7 @@
         </div>
 
         <jsp:include page="/WEB-INF/pages/common/fragments/admin/scc-refresh-dialog.jspf"/>
+        <div class="hidden" id="iss-master" data-iss-master="${issMaster}"></div>
         <div class="hidden" id="sccconfig.jsp.switchingtoscc"><bean:message key="sccconfig.jsp.switchingtoscc"/></div>
     </body>
 </html:html>
