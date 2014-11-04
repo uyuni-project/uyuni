@@ -120,7 +120,9 @@ bar"""
             "foo",
             False)
 
-        self.assertEqual(recorder.stdout, ["Successfully added credentials"])
+        expected_output = """Successfully added credentials.
+It is now recommended to run 'mgr-sync refresh'."""
+        self.assertEqual(recorder.stdout, expected_output.split("\n"))
 
     def test_add_credentials_non_interactive(self):
         """ Test adding credentials non-interactively """
@@ -162,7 +164,13 @@ bar"""
             self.fake_auth_token,
             "foo")
 
-        self.assertEqual([recorder.stdout[-1]], ["Successfully deleted credentials: foo"])
+        expected_output = """Credentials:
+01) foo (primary)
+02) bar
+Successfully deleted credentials: foo
+It is now recommended to run 'mgr-sync refresh'."""
+
+        self.assertEqual(recorder.stdout, expected_output.split("\n"))
 
     def test_delete_credentials_non_interactive(self):
         """ Test deleting credentials non-interactively """
@@ -181,4 +189,7 @@ bar"""
             self.fake_auth_token,
             "foo")
 
-        self.assertEqual(recorder.stdout, ["Successfully deleted credentials: foo"])
+        expected_output = """Successfully deleted credentials: foo
+It is now recommended to run 'mgr-sync refresh'."""
+
+        self.assertEqual(recorder.stdout, expected_output.split("\n"))

@@ -433,7 +433,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                         user,
                                         pw,
                                         primary)
-            print("Successfully added credentials")
+            print("Successfully added credentials.")
+            print("It is now recommended to run 'mgr-sync refresh'.")
 
     def _delete_credentials(self, credentials):
         """
@@ -460,6 +461,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             self.auth.token(),
                                             user)
                 print("Successfully deleted credentials: " + user)
+                print("It is now recommended to run 'mgr-sync refresh'.")
             else:
                 print("Credentials not found in database: " + user)
                 self.exit_with_error = True
