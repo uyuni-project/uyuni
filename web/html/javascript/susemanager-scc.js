@@ -1,4 +1,9 @@
 $(function() {
+  // Reload the page after the dialog is closed
+  $('#scc-migration-dialog').on('hidden.bs.modal', function() {
+    location.reload();
+  });
+
   $("#scc-start-migration-btn").on("click", function() {
     var button = $('#scc-start-migration-btn');
     button.prop('disabled', true);

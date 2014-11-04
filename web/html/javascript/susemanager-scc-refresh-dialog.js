@@ -47,11 +47,6 @@ $(function() {
     dialog.modal({show: true, keyboard: false});
     dialog.modal('show');
 
-    // Reload the page after the dialog is closed
-    dialog.on('hidden.bs.modal', function() {
-      location.reload();
-    });
-
     // A task to perform in case of success
     function successTask() {
       dialogCloseBtn.prop('disabled', false);
