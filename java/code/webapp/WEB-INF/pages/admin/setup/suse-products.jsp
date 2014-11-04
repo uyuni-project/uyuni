@@ -8,8 +8,10 @@
 <head>
     <script type="text/javascript" src="/rhn/dwr/interface/ProductsRenderer.js"></script>
     <script type="text/javascript" src="/rhn/dwr/interface/ProductSyncAction.js"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/SCCConfigAjax.js"></script>
     <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
     <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
+    <script type="text/javascript" src="/javascript/susemanager-scc-refresh-dialog.js"></script>
     <script type="text/javascript" src="/javascript/susemanager-setup-wizard.js"></script>
     <script type="text/javascript" src="/javascript/susemanager-setup-wizard-suse-products.js"></script>
 </head>
@@ -21,7 +23,7 @@
         <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/setup_wizard.xml"
             renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
 
-        <div class="panel panel-default" id="products-content">
+        <div class="panel panel-default" id="products-content" data-refresh-needed="${refreshNeeded}">
             <div class="panel-body">
                 <div class="row" id="suse-products">
                     <div class="col-sm-9">
@@ -73,6 +75,11 @@
                     </div>
                 </div>
             </div>
+
+            <jsp:include page="/WEB-INF/pages/common/fragments/admin/scc-refresh-dialog.jspf"/>
+            <div class="hidden" id="iss-master" data-iss-master="${issMaster}"></div>
+            <div class="hidden" id="sccconfig.jsp.refresh"><bean:message key="sccconfig.jsp.refresh"/></div>
+
             <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
         </div>
     </div>
