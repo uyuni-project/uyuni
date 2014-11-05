@@ -15,26 +15,18 @@
 
 package com.redhat.rhn.frontend.xmlrpc.sync.content;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
-import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.mgrsync.MgrSyncChannel;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -63,7 +55,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listProducts(csm.listChannels(csm.getRepositories()));
+        return csm.listProducts(csm.listChannels());
     }
 
     /**
@@ -83,7 +75,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        return csm.listChannels(csm.getRepositories());
+        return csm.listChannels();
     }
 
     /**
@@ -105,7 +97,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannels(csm.getRepositories(), mirrorUrl);
+        csm.updateChannels(mirrorUrl);
         return BaseHandler.VALID;
     }
 
@@ -233,7 +225,7 @@ public class ContentSyncHandler extends BaseHandler {
             throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
         ContentSyncManager csm = new ContentSyncManager();
-        csm.addChannel(channelLabel, csm.getRepositories(), mirrorUrl);
+        csm.addChannel(channelLabel, mirrorUrl);
         return BaseHandler.VALID;
     }
 

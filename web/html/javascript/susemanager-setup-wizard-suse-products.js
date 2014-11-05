@@ -1,5 +1,14 @@
 $(function() {
-  showProducts();
+  // Refresh the cache if needed
+  if ($("#products-content").data("refresh-needed")) {
+    var refresh = $("#iss-master").data("iss-master");
+    document.getElementById("scc-migration-dialog").refreshContent(
+        $("#sccconfig\\.jsp\\.refresh").html(), false, refresh, function() {
+      showProducts();
+    });
+  } else {
+    showProducts();
+  }
 
   // handles select all top/bottom checkboxes
   $("input.select-all").change(function() {

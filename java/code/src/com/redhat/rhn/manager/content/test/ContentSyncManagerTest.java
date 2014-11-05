@@ -24,6 +24,8 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
@@ -32,6 +34,8 @@ import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -50,7 +54,6 @@ import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.lang.StringUtils;
@@ -83,9 +86,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testUpdateChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         try {
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
             Channel c = SUSEProductTestUtils.createTestVendorChannel();
@@ -105,16 +105,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             c.getSources().add(cs);
             TestUtils.saveAndFlush(c);
 
-            // Setup SCC repo
+            // Save SCC repo to the cache
             SCCRepository repo = new SCCRepository();
             repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
+            SCCCachingFactory.saveRepository(repo);
 
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            csm.updateChannels(repos, null);
+            csm.updateChannelsInternal(null);
 
             // Verify channel attributes
             c = ChannelFactory.lookupByLabel(channelLabel);
@@ -578,15 +577,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testListChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
         try {
-            // Match against a manually created list of SCC repositories
+            // Match against a manually created cache of SCC repositories
             SCCRepository repo = new SCCRepository();
             String sourceUrl = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(sourceUrl);
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
-
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
+            SCCCachingFactory.saveRepository(repo);
 
             // Create a channel that is INSTALLED
             Channel channel = SUSEProductTestUtils.createTestVendorChannel();
@@ -597,7 +592,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // List channels and verify status
             ContentSyncManager csm = new ContentSyncManager();
             csm.setChannelsXML(channelsXML);
-            List<MgrSyncChannel> channels = csm.listChannels(repos);
+            List<MgrSyncChannel> channels = csm.listChannels();
             for (MgrSyncChannel c : channels) {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
                     assertEquals(MgrSyncStatus.AVAILABLE, c.getStatus());
@@ -760,23 +755,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Reset all channel subscriptions
             List<String> productClasses = new ArrayList<String>();
             csm.updateChannelSubscriptions(productClasses);
+            HibernateFactory.getSession().flush();
 
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
-            String url = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
-            repo.setUrl(url);
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
-
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
-
-            HibernateFactory.getSession().flush();
+            repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
+            SCCCachingFactory.saveRepository(repo);
 
             // Add the channel by label and check the exception message
             String label = "sles11-sp3-pool-x86_64";
             try {
-                csm.addChannel(label, repos, null);
+                csm.addChannel(label, null);
                 fail("Missing subscriptions should make addChannel() fail!");
             }
             catch (ContentSyncException e) {
@@ -835,20 +824,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Manually create SCC repository to match against
             SCCRepository repo = new SCCRepository();
             repo.setUrl(xmlChannel.getSourceUrl());
-            List<SCCRepository> repos = new ArrayList<SCCRepository>();
-            repos.add(repo);
-
-            // Temporarily rename all installed vendor channels
-            renameVendorChannels();
+            SCCCachingFactory.saveRepository(repo);
 
             // Ensure family has members
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
                     UserTestUtils.createUserInOrgOne(), "7261");
             ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
-            HibernateFactory.getSession().flush();
 
             // Add the channel by label
-            csm.addChannel(xmlChannel.getLabel(), repos, null);
+            csm.addChannel(xmlChannel.getLabel(), null);
 
             // Check if channel has been added correctly
             Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
@@ -911,30 +895,50 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         ContentSyncManager csm = new ContentSyncManager();
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
-        repo.setCredentialsId(2L);
+        repo.setCredentials(getTestCredentials((2L)));
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, null));
 
         // Test basic auth with nu.novell.com
         String repoUrlNCC = "https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/";
         repo = new SCCRepository();
         repo.setUrl("");
-        repo.setCredentialsId(2L);
+        repo.setCredentials(getTestCredentials((2L)));
         assertNull(csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(0L);
-        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, null));
+        repo.setCredentials(getTestCredentials((0L)));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(3L);
+        repo.setCredentials(getTestCredentials((3L)));
         assertEquals(repoUrlNCC + "?credentials=mirrcred_3", csm.setupSourceURL(repo, null));
 
         // Fall back to official repo in case mirror is not reachable
         String mirrorUrl = "http://localhost/";
         repo.setUrl(repoUrlNCC);
-        repo.setCredentialsId(0L);
-        assertEquals(repoUrlNCC + "?credentials=mirrcred", csm.setupSourceURL(repo, mirrorUrl));
+        repo.setCredentials(getTestCredentials((0L)));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, mirrorUrl));
         repo.setUrl(repoUrlSCC);
-        repo.setCredentialsId(0L);
+        repo.setCredentials(getTestCredentials((0L)));
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
+    }
+
+    /**
+     * Create credentials for testing given an ID.
+     * @param id
+     * @return credentials
+     */
+    private Credentials getTestCredentials(Long id) {
+        Credentials creds = new Credentials();
+        creds.setId(id);
+        return creds;
+    }
+
+    /**
+     * Clear all credentials from the database.
+     */
+    private void clearCredentials() {
+        for (Credentials creds : CredentialsFactory.lookupSCCCredentials()) {
+            CredentialsFactory.removeCredentials(creds);
+        }
     }
 
     /**
@@ -972,5 +976,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             cs.setSourceUrl(TestUtils.randomString());
             TestUtils.saveAndFlush(cs);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        // Clear data for all tests
+        clearCredentials();
+        SCCCachingFactory.clearRepositories();
+        renameVendorChannels();
     }
 }

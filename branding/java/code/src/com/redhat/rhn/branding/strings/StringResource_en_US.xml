@@ -1744,6 +1744,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="task.status.cve-server-channels">
         <source>CVE Server Channels</source>
       </trans-unit>
+      <trans-unit id="task.status.mgr-sync-refresh">
+        <source>Refresh mgr-sync data</source>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch">
         <source>Registers SUSE Manager clients</source>
       </trans-unit>
@@ -1755,6 +1758,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch">
         <source>Generates data required for performing CVE audit queries</source>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch">
+        <source>Refreshes data about channels, products and subscriptions</source>
       </trans-unit>
 
       <!-- Server Contact Methods -->
@@ -2036,7 +2042,7 @@ tree will not be usable for autoinstalling.
         <source>SUSE Manager is still connected to the Novell Customer Center.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.migrationinfo">
-        <source>Migration is an straightforward process but may take some minutes.</source>
+        <source>Migration is a straightforward process but may take some minutes.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.migrationinfosmt">
         <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
@@ -2046,6 +2052,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="sccconfig.jsp.switchingtoscc">
         <source>Switching to SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.refresh">
+        <source>Refreshing data from SUSE Customer Center</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.channels">
         <source>Channels</source>
@@ -2069,10 +2078,10 @@ tree will not be usable for autoinstalling.
         <source>Close</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.completed">
-        <source>Migration completed successfully</source>
+        <source>Completed</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.failed">
-        <source>Migration was not successful</source>
+        <source>Operation not successful</source>
       </trans-unit>
       <trans-unit id="SUSE Customer Center">
         <source>SUSE Customer Center</source>

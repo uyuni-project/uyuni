@@ -7,7 +7,8 @@
     <head>
         <script type="text/javascript" src="/rhn/dwr/interface/SCCConfigAjax.js"></script>
         <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
-        <script type="text/javascript" src="/javascript/scc-config.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-scc-refresh-dialog.js"></script>
+        <script type="text/javascript" src="/javascript/susemanager-scc.js"></script>
     </head>
     <body>
         <rhn:toolbar base="h1" icon="header-info" imgAlt="info.alt.img">
@@ -23,39 +24,15 @@
                 <p id="still-ncc-msg"><i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i><bean:message key="sccconfig.jsp.stillncc"/></p>
                 <p><bean:message key="sccconfig.jsp.migrationinfo"/></p>
 
-                <c:if test="${local.mirror.used}">
+                <c:if test="${localMirrorUsed}">
                     <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
                 </c:if>
                 <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
             </div>
         </div>
 
-        <div id="scc-migration-dialog" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="<bean:message key='SUSE Customer Center'/>" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title"><bean:message key="sccconfig.jsp.switchingtoscc"/></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id='scc-migration-current-task'></div>
-                    </div>
-                    <div class="modal-footer">
-                      <div id="scc-migration-dialog-status" class="pull-left"></div>
-                      <button id="scc-migrate-dialog-close-btn" type="button" class="btn btn-default" data-dismiss="modal"><bean:message key="sccconfig.jsp.close"/></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <jsp:include page="/WEB-INF/pages/common/fragments/admin/scc-refresh-dialog.jspf"/>
+        <div class="hidden" id="iss-master" data-iss-master="${issMaster}"></div>
         <div class="hidden" id="sccconfig.jsp.switchingtoscc"><bean:message key="sccconfig.jsp.switchingtoscc"/></div>
-        <div class="hidden" id="sccconfig.jsp.channels"><bean:message key="sccconfig.jsp.channels"/></div>
-        <div class="hidden" id="sccconfig.jsp.channelfamilies"></i><bean:message key="sccconfig.jsp.channelfamilies"/></div>
-        <div class="hidden" id="sccconfig.jsp.products"><bean:message key="sccconfig.jsp.products"/></div>
-        <div class="hidden" id="sccconfig.jsp.productchannels"><bean:message key="sccconfig.jsp.productchannels"/></div>
-        <div class="hidden" id="sccconfig.jsp.subscriptions"><bean:message key="sccconfig.jsp.subscriptions"/></div>
-        <div class="hidden" id="sccconfig.jsp.upgradepaths"><bean:message key="sccconfig.jsp.upgradepaths"/></div>
-        <div class="hidden" id="sccconfig.jsp.completed"><bean:message key="sccconfig.jsp.completed"/></div>
-        <div class="hidden" id="sccconfig.jsp.failed"><bean:message key="sccconfig.jsp.failed"/></div>
     </body>
 </html:html>
-

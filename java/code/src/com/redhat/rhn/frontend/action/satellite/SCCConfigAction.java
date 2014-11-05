@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.satellite;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -23,7 +24,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
-import org.apache.log4j.Logger;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -31,7 +32,6 @@ import org.directwebremoting.WebContextFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Random;
 
 /**
  * SCCConfigAction - Struts action to handle migration to the
@@ -39,8 +39,8 @@ import java.util.Random;
  */
 public class SCCConfigAction extends RhnAction {
 
-    private static Logger log = Logger.getLogger(SCCConfigAction.class);
-    private static final String LOCAL_MIRROR_USED = "local.mirror.used";
+    private static final String LOCAL_MIRROR_USED = "localMirrorUsed";
+    public static final String ISS_MASTER = "issMaster";
 
     /**
      * DWR ajax end-point for this action
@@ -71,7 +71,7 @@ public class SCCConfigAction extends RhnAction {
         public static void synchronizeChannels() throws ContentSyncException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannels(csm.getRepositories(), null);
+            csm.updateChannels(null);
         }
 
         public static void synchronizeChannelFamilies() throws ContentSyncException {
@@ -105,11 +105,6 @@ public class SCCConfigAction extends RhnAction {
         }
     }
 
-    /**
-     * Logger for this class
-     */
-    private static Logger logger = Logger.getLogger(SCCConfigAction.class);
-
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm formIn,
@@ -125,6 +120,10 @@ public class SCCConfigAction extends RhnAction {
         }
 
         request.setAttribute(LOCAL_MIRROR_USED, localMirrorUsed());
+
+        // Perform a refresh only if this is an ISS master
+        request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
+
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 

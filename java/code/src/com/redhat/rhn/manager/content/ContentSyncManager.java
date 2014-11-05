@@ -35,6 +35,8 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -55,7 +57,6 @@ import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCRepository;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.io.FileUtils;
@@ -243,14 +244,13 @@ public class ContentSyncManager {
      * from the local file instead of the network.
      *
      * @param credentials
-     * @return List of {@link MirrorCredentialsDto}
+     * @return List of {@link Credentials}
      */
-    private List<MirrorCredentialsDto>
-        filterCredentials(List<MirrorCredentialsDto> credentials) {
+    private List<Credentials> filterCredentials(List<Credentials> credentials) {
         // Create one pair of bogus credentials
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
             credentials.clear();
-            credentials.add(new MirrorCredentialsDto("local file", null));
+            credentials.add(new Credentials());
         }
 
         return credentials;
@@ -262,13 +262,12 @@ public class ContentSyncManager {
      */
     public Collection<SCCProduct> getProducts() {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = this.filterCredentials(
-                credsManager.findMirrorCredentials());
+        List<Credentials> credentials = filterCredentials(
+                CredentialsFactory.lookupSCCCredentials());
         // Query products for all mirror credentials
-        for (MirrorCredentialsDto c : credentials) {
+        for (Credentials c : credentials) {
             try {
-                SCCClient scc = this.getSCCClient(c.getUser(), c.getPassword());
+                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
                 List<SCCProduct> products = scc.listProducts();
@@ -289,7 +288,7 @@ public class ContentSyncManager {
             }
             catch (SCCClientException e) {
                 log.error("Error getting products for " +
-                        c.getUser() + ", " + e.getMessage());
+                        c.getUsername() + ", " + e.getMessage());
             }
             catch (URISyntaxException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
@@ -577,43 +576,50 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns all repositories available to all configured credentials.
-     * @return list of all available repositories
+     * Refresh the repositories cache by reading repos from SCC for all available mirror
+     * credentials, consolidating and inserting into the database.
      */
-    public Collection<SCCRepository> getRepositories() {
+    public void refreshRepositoriesCache() {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = this.filterCredentials(
-                credsManager.findMirrorCredentials());
-        // Query repos for all mirror credentials
-        for (MirrorCredentialsDto c : credentials) {
+        List<Credentials> credentials = filterCredentials(
+                CredentialsFactory.lookupSCCCredentials());
+
+        // Query repos for all mirror credentials and consolidate
+        for (Credentials c : credentials) {
             try {
-                SCCClient scc = this.getSCCClient(c.getUser(), c.getPassword());
+                log.debug("Getting repos for: " + c.getUsername());
+                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
                 scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
-                // Add the mirror credentials ID to all returned repos
-                Long credsId = c.getId();
+
+                // Add mirror credentials to all repos
                 for (SCCRepository r : repos) {
-                    r.setCredentialsId(credsId);
+                    r.setCredentials(c);
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Found " + repos.size() +
-                            " repos with credentials: " + c.getUser());
+                            " repos with credentials: " + c.getUsername());
                 }
                 reposList.addAll(repos);
             }
             catch (SCCClientException e) {
-                log.error("Error getting repos for " + c.getUser() + ", " + e.getMessage());
+                log.error("Error getting repos for " + c.getUsername() +
+                        ": " + e.getMessage());
             }
             catch (URISyntaxException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
             }
         }
+
+        // Update the repositories cache
         if (log.isDebugEnabled()) {
-            log.debug("Found " + reposList.size() + " available repositories.");
+            log.debug("Populating cache with " + reposList.size() + " repositories.");
         }
-        return reposList;
+        SCCCachingFactory.clearRepositories();
+        for (SCCRepository repo : reposList) {
+            SCCCachingFactory.saveRepository(repo);
+        }
     }
 
     /**
@@ -643,17 +649,15 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = filterCredentials(
-                credsManager.findMirrorCredentials());
+        List<Credentials> credentials = filterCredentials(CredentialsFactory.lookupSCCCredentials());
         // Query subscriptions for all mirror credentials
-        for (MirrorCredentialsDto c : credentials) {
+        for (Credentials c : credentials) {
             try {
-                subscriptions.addAll(getSubscriptions(c.getUser(), c.getPassword()));
+                subscriptions.addAll(getSubscriptions(c.getUsername(), c.getPassword()));
             }
             catch (SCCClientException e) {
                 log.error("Error getting subscriptions for " +
-                        c.getUser() + ", " + e.getMessage());
+                        c.getUsername() + ", " + e.getMessage());
             }
         }
         if (log.isDebugEnabled()) {
@@ -663,14 +667,24 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update channel information in the database.
-     * @param repos list of repositories to match against
-     * @param mirrorUrlIn optional mirror URL that can be null
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * Update the repositories cache and the channel information in the database.
+     * @param mirrorUrl optional mirror URL that can be null
+     * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
+     * can't be updated
      */
-    public void updateChannels(Collection<SCCRepository> repos, String mirrorUrlIn)
-            throws ContentSyncException {
-        String mirrorUrl = mirrorUrlIn;
+    public void updateChannels(String mirrorUrl) throws ContentSyncException {
+        refreshRepositoriesCache();
+        updateChannelsInternal(mirrorUrl);
+    }
+
+    /**
+     * Update channel information in the database. This is only public for testing purposes
+     * and should apart from that only be called internally.
+     * @param mirrorUrl optional mirror URL that can be null
+     * @throws com.redhat.rhn.manager.content.ContentSyncException if channels
+     * can't be updated
+     */
+    public void updateChannelsInternal(String mirrorUrl) throws ContentSyncException {
         if (mirrorUrl == null) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }
@@ -709,6 +723,7 @@ public class ContentSyncManager {
         }
 
         // Update content source URLs
+        List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXML.containsKey(cs.getLabel())) {
@@ -1138,7 +1153,7 @@ public class ContentSyncManager {
      * @return list of channels
      * @throws com.redhat.rhn.manager.content.ContentSyncException
      */
-    public List<MgrSyncChannel> listChannels(Collection<SCCRepository> repositories)
+    public List<MgrSyncChannel> listChannels()
             throws ContentSyncException {
         // This list will be returned
         List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
@@ -1146,6 +1161,9 @@ public class ContentSyncManager {
 
         // Reset the cached OES credentials (OES will be queried only once)
         cachedOESRepo = null;
+
+        // Get the cached list of repositories
+        List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
 
         // Determine the channel status
         for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
@@ -1182,26 +1200,23 @@ public class ContentSyncManager {
         // Check OES availability by sending an HTTP HEAD request
         if (channel.getFamily().equals(OES_CHANNEL_FAMILY)) {
             if (cachedOESRepo == null) {
-                Long oesCredsID = verifyOESRepo();
+                Credentials oesCreds = verifyOESRepo();
                 cachedOESRepo = new SCCRepository();
                 cachedOESRepo.setUrl(channel.getSourceUrl());
-                cachedOESRepo.setCredentialsId(oesCredsID);
+                cachedOESRepo.setCredentials(oesCreds);
             }
             else if (log.isDebugEnabled()) {
                 log.debug("Return cached OES availablity");
             }
-            return cachedOESRepo.getCredentialsId() != null ? cachedOESRepo : null;
+            return cachedOESRepo.getCredentials() != null ? cachedOESRepo : null;
         }
 
         // Remove trailing slashes before matching URLs
-        sourceUrl = removeTrailingSlashes(sourceUrl);
+        sourceUrl = sourceUrl.replaceFirst("/+$", "");
 
         // Match the channel source URL against URLs we got from SCC
         for (SCCRepository repo : repos) {
-            // Remove auth-token for url comparison
-            String strippedURL = repo.getUrl().replaceFirst("\\?.*$", "");
-
-            if (sourceUrl.equals(removeTrailingSlashes(strippedURL))) {
+            if (repo.getUrl().startsWith(sourceUrl)) {
                 return repo;
             }
         }
@@ -1215,8 +1230,8 @@ public class ContentSyncManager {
      * @param mirrorUrl repo mirror passed by cli
      * @throws ContentSyncException in case of problems
      */
-    public void addChannel(String label, Collection<SCCRepository> repositories,
-            String mirrorUrl) throws ContentSyncException {
+    public void addChannel(String label, String mirrorUrl)
+            throws ContentSyncException {
         // Return immediately if the channel is already there
         if (ChannelFactory.doesChannelLabelExist(label)) {
             if (log.isDebugEnabled()) {
@@ -1239,7 +1254,7 @@ public class ContentSyncManager {
         }
 
         // Check if channel is mirrorable
-        SCCRepository repo = isMirrorable(channel, repositories);
+        SCCRepository repo = isMirrorable(channel, SCCCachingFactory.lookupRepositories());
         if (repo == null) {
             throw new ContentSyncException("Channel is not mirrorable: " + label);
         }
@@ -1408,14 +1423,14 @@ public class ContentSyncManager {
      * we have access with at least one of the available credentials, it means that the
      * customer has bought the product.
      *
-     * @return mirror credentials ID or null if OES channels are not mirrorable
+     * @return mirror credentials or null if OES channels are not mirrorable
      */
-    private Long verifyOESRepo() {
+    private Credentials verifyOESRepo() {
         // Look for local file in case of from-dir
         if (Config.get().getString(RESOURCE_PATH) != null) {
             try {
                 if (new File(URLToFSPath(OES_URL)).canRead()) {
-                    return new Long(-1);
+                    return new Credentials();
                 }
             }
             catch (MalformedURLException e) {
@@ -1427,20 +1442,19 @@ public class ContentSyncManager {
             return null;
         }
 
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        List<MirrorCredentialsDto> credentials = credsManager.findMirrorCredentials();
         // Query OES repo for all mirror credentials until success
-        for (MirrorCredentialsDto creds : credentials) {
+        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+        for (Credentials creds : credentials) {
             int responseCode;
             try {
                 responseCode = MgrSyncUtils.sendHeadRequest(
-                        OES_URL, creds.getUser(), creds.getPassword());
+                        OES_URL, creds.getUsername(), creds.getPassword());
                 if (log.isDebugEnabled()) {
                     log.debug("OES repo response code for " +
-                            creds.getUser() + ": " + responseCode);
+                            creds.getUsername() + ": " + responseCode);
                 }
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    return creds.getId();
+                    return creds;
                 }
             } catch (ContentSyncException e) {
                 log.error(e.getMessage());
@@ -1498,18 +1512,6 @@ public class ContentSyncManager {
             installedChannelLabels.add(c.getLabel());
         }
         return installedChannelLabels;
-    }
-
-    /**
-     * Strip off trailing slashes from a given string.
-     * @param url the string to remove trailing slashes from
-     * @return string without trailing slashes
-     */
-    private String removeTrailingSlashes(String url) {
-        while (url.endsWith("/")) {
-            url = url.substring(0, url.length() - 1);
-        }
-        return url;
     }
 
     /**
@@ -1639,10 +1641,8 @@ public class ContentSyncManager {
             String separator = sourceUri.getQuery() == null ? "?" : "&";
             StringBuilder credUrl =
                     new StringBuilder(url).append(separator).append(MIRRCRED_QUERY);
-            Long credsId = repo.getCredentialsId();
-            if (credsId > 0) {
-                credUrl.append("_").append(credsId);
-            }
+            Long credsId = repo.getCredentials().getId();
+            credUrl.append("_").append(credsId);
             return credUrl.toString();
         }
         else {

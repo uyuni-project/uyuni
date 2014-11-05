@@ -14,11 +14,14 @@
  */
 package com.redhat.rhn.frontend.action.satellite;
 
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.frontend.nav.NavCache;
 import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -42,6 +45,7 @@ public class SetupWizardAction extends RhnAction {
     private static final String PREVIOUS_STEP_ATTRIBUTE = "previousStep";
     private static final String TOTAL_STEPS_ATTRIBUTE = "totalSteps";
     private static final String CURRENT_STEP_ATTRIBUTE = "currentStep";
+    private static final String REFRESH_NEEDED = "refreshNeeded";
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
@@ -86,6 +90,11 @@ public class SetupWizardAction extends RhnAction {
         request.setAttribute(NEXT_STEP_ATTRIBUTE,
                 nodeIndex == (totalSteps - 1) ? null : nodes.get(nodeIndex + 1).getURLs()
                         .get(0));
+
+        request.setAttribute(SCCConfigAction.ISS_MASTER,
+                IssFactory.getCurrentMaster() == null);
+        request.setAttribute(REFRESH_NEEDED,
+                SCCCachingFactory.refreshNeeded() && MgrSyncUtils.isMigratedToSCC());
     }
 
     /**

@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -27,7 +26,6 @@ import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.scc.model.SCCRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +46,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             // Convert the listed products to objects we can display
-            Collection<ListedProduct> products = csm.listProducts(
-                    csm.listChannels(csm.getRepositories()));
+            Collection<ListedProduct> products = csm.listProducts(csm.listChannels());
             List<Product> result = convertProducts(products);
 
             // Determine their product sync status separately
@@ -86,12 +83,11 @@ public class SCCProductSyncManager extends ProductSyncManager {
             try {
                 // Add the channels first
                 ContentSyncManager csm = new ContentSyncManager();
-                Collection<SCCRepository> repos = csm.getRepositories();
                 for (Channel channel : product.getMandatoryChannels()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug("Add channel: " + channel.getLabel());
                     }
-                    csm.addChannel(channel.getLabel(), repos, null);
+                    csm.addChannel(channel.getLabel(), null);
                 }
 
                 // Trigger sync of those channels
@@ -116,19 +112,7 @@ public class SCCProductSyncManager extends ProductSyncManager {
      */
     @Override
     public void refreshProducts() throws ProductSyncException {
-        ContentSyncManager csm = new ContentSyncManager();
-        try {
-            csm.updateChannels(csm.getRepositories(),
-                    Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY));
-            csm.updateChannelFamilies(csm.readChannelFamilies());
-            csm.updateSUSEProducts(csm.getProducts());
-            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
-            csm.updateSubscriptions(csm.getSubscriptions());
-            csm.updateUpgradePaths();
-        }
-        catch (ContentSyncException e) {
-            throw new ProductSyncException(e.getLocalizedMessage());
-        }
+        // Nothing to do in the case of SCC
     }
 
     /**
