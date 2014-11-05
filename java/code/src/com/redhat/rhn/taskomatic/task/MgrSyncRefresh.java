@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -39,6 +40,12 @@ public class MgrSyncRefresh extends RhnJavaJob {
         // Do nothing if this server has not been migrated yet
         if (!MgrSyncUtils.isMigratedToSCC()) {
             log.warn("No need to refresh, this server has not been migrated to SCC yet.");
+            return;
+        }
+
+        // Do nothing if this server is an ISS slave
+        if (IssFactory.getCurrentMaster() != null) {
+            log.warn("No need to refresh, this server is an ISS slave.");
             return;
         }
 
