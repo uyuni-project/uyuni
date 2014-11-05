@@ -527,7 +527,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             except xmlrpclib.Fault, e:
                 sys.stderr.write("Error scheduling refresh: %s\n" % e)
                 return
-            sys.stdout.write("Refresh successfully scheduled")
+            sys.stdout.write("Refresh successfully scheduled\n")
             sys.stdout.flush()
             return
 
