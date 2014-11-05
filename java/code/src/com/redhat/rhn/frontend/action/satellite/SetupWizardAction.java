@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -93,7 +94,7 @@ public class SetupWizardAction extends RhnAction {
         request.setAttribute(SCCConfigAction.ISS_MASTER,
                 IssFactory.getCurrentMaster() == null);
         request.setAttribute(REFRESH_NEEDED,
-                SCCCachingFactory.refreshNeeded());
+                SCCCachingFactory.refreshNeeded() && MgrSyncUtils.isMigratedToSCC());
     }
 
     /**
