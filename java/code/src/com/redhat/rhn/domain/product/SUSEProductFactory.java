@@ -145,11 +145,11 @@ public class SUSEProductFactory extends HibernateFactory {
         }
 
         if (release == null) {
-            c.add(Restrictions.or(Restrictions.eq("release", release.toLowerCase()),
-                                  Restrictions.isNull("release")));
+            c.add(Restrictions.isNull("release"));
         }
         else {
-            c.add(Restrictions.isNull("release"));
+            c.add(Restrictions.or(Restrictions.eq("release", release.toLowerCase()),
+                                  Restrictions.isNull("release")));
         }
 
         if (arch == null) {
