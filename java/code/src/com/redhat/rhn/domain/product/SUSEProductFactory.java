@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashMap;
@@ -139,22 +140,33 @@ public class SUSEProductFactory extends HibernateFactory {
             c.add(Restrictions.isNull("version"));
         }
         else {
-            c.add(Restrictions.eq("version", version.toLowerCase()));
+            c.add(Restrictions.or(Restrictions.eq("version", version.toLowerCase()),
+                                  Restrictions.isNull("version")));
         }
+
         if (release == null) {
             c.add(Restrictions.isNull("release"));
         }
         else {
-            c.add(Restrictions.eq("release", release.toLowerCase()));
+            c.add(Restrictions.or(Restrictions.eq("release", release.toLowerCase()),
+                                  Restrictions.isNull("release")));
         }
+
         if (arch == null) {
             c.add(Restrictions.isNull("arch"));
         }
         else {
-            c.add(Restrictions.eq("arch", PackageFactory.lookupPackageArchByLabel(arch)));
+            c.add(Restrictions.or(Restrictions.eq("arch",
+                  PackageFactory.lookupPackageArchByLabel(arch)),
+                                  Restrictions.isNull("arch")));
         }
 
-        return (SUSEProduct) c.uniqueResult();
+        c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
+                .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
+
+        @SuppressWarnings("unchecked")
+        List<SUSEProduct> result = c.list();
+        return result.isEmpty() ? null : result.get(0); // Always get first in line
     }
 
     /**
