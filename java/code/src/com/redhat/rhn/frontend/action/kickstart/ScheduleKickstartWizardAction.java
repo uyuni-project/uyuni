@@ -433,7 +433,8 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         }
 
         // display a warning if displaying ppc64le profiles to a ppc system
-        if (system.getBaseChannel().getChannelArch().getLabel().equals("channel-ppc")) {
+        if (system.getBaseChannel() != null && system.getBaseChannel().getChannelArch()
+                .getLabel().equals("channel-ppc")) {
             List<KickstartDto> profiles = helper.getDataSet();
             for (KickstartDto profile : profiles) {
                 KickstartableTree tree = KickstartFactory.findTreeById(profile
