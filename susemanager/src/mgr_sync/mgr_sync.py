@@ -26,6 +26,8 @@ from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.authenticator import Authenticator
 from spacewalk.susemanager.helpers import cli_ask
 
+# see TaskoXmlRpcHandler.java for available methods
+TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
 
 class MgrSync(object):
     """
@@ -93,7 +95,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             elif 'product' in options.add_target:
                 self._add_products(mirror="")
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror)
+            self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror,
+                          schedule=options.schedule)
         elif vars(options).has_key('enable_scc'):
             if current_cc_backend() == BackendType.SCC:
                 print("The SUSE Customer Center (SCC) backend is already "
@@ -495,7 +498,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     #               #
     #################
 
-    def _refresh(self, enable_reposync, mirror=""):
+    def _refresh(self, enable_reposync, mirror="", schedule=False):
         """
         Refresh the SCC data in the SUSE Manager database.
         """
@@ -514,6 +517,17 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         if hasISSMaster():
             msg = """To refresh the channels, please call 'mgr-inter-sync'\n"""
             sys.stdout.write(msg)
+            sys.stdout.flush()
+            return
+
+        if schedule:
+            client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+            try:
+                client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', {})
+            except xmlrpclib.Fault, e:
+                sys.stderr.write("Error scheduling refresh: %s\n" % e)
+                return
+            sys.stdout.write("Refresh successfully scheduled")
             sys.stdout.flush()
             return
 
