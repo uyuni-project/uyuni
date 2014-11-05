@@ -2042,7 +2042,7 @@ tree will not be usable for autoinstalling.
         <source>SUSE Manager is still connected to the Novell Customer Center.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.migrationinfo">
-        <source>Migration is an straightforward process but may take some minutes.</source>
+        <source>Migration is a straightforward process but may take some minutes.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.migrationinfosmt">
         <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
