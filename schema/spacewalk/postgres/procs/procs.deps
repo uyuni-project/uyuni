@@ -129,4 +129,4 @@ rhn_synch_probe_state           :: rhn_probe_state rhn_deployed_probe \
 set_ks_session_history_message  :: rhnKickstartSessionState \
                                    rhnKickstartSessionHistory
 get_hw_info_as_clob             :: rhnCpu rhnServerNetInterface
-
+randomize_bunch_schedule        :: rhnTaskoSchedule
