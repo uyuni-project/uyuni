@@ -62,5 +62,5 @@ rhnTaskoSchedule           :: rhnTaskoBunch
 rhnTaskoTemplate           :: rhnTaskoBunch rhnTaskoTask
 rhnTemplateString          :: data/rhnTemplateCategory
 rhn_schedule_days          :: data/rhn_schedules
-
+reschedule                 :: data/rhnTaskoSchedule
 
