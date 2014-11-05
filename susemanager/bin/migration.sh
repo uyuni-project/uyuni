@@ -694,6 +694,9 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ -n "$NCC_USER" ]; then
         # Finaly call mgr-ncc-sync
         /usr/sbin/mgr-ncc-sync --refresh
+    elif [ -n "$SCC_USER" ]; then
+        # schedule refresh
+        mgr-sync refresh --schedule
     fi
     if [ -n "$ISS_PARENT" ]; then
         # call inter-sync list - this updates the org data
