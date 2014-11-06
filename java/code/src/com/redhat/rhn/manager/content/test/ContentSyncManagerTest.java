@@ -816,7 +816,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 SUSEProductFactory.save(suseProduct);
             }
 
-            // Manually create SCC repository to match against
+            // Manually save SCC repository in cache to match against
             SCCRepository repo = new SCCRepository();
             repo.setUrl(xmlChannel.getSourceUrl());
             SCCCachingFactory.saveRepository(repo);
