@@ -62,7 +62,6 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      */
     @SuppressWarnings("deprecation")
     public void testRefreshNeeded() {
-        SCCCachingFactory.clearRepositories();
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
