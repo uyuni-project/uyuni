@@ -25,7 +25,12 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.EmptyExpression;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.DisjunctionFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +108,7 @@ public class SUSEProductFactory extends HibernateFactory {
         if (result.size() > 0) {
             Map<String, String> row = result.get(0);
             SUSEProduct baseProduct = findSUSEProduct(row.get("name"), row.get("version"),
-                    row.get("release"), row.get("arch"));
+                    row.get("release"), row.get("arch"), true);
             products.setBaseProduct(baseProduct);
         }
 
@@ -112,7 +117,7 @@ public class SUSEProductFactory extends HibernateFactory {
         result = m.execute(params);
         for (Map<String, String> row : result) {
             SUSEProduct childProduct = findSUSEProduct(row.get("name"), row.get("version"),
-                    row.get("release"), row.get("arch"));
+                    row.get("release"), row.get("arch"), true);
             // Ignore unknown addon products
             if (childProduct != null) {
                 products.addAddonProduct(childProduct);
@@ -128,33 +133,50 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param version version or null
      * @param release release or null
      * @param arch arch or null
+     * @param imprecise if true, allow returning products with NULL name, version or
+     * release even if the corresponding parameters are not null
      * @return product or null if it is not found
      */
+    @SuppressWarnings("unchecked")
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
-            String arch) {
+            String arch, boolean imprecise) {
 
         Criteria c = getSession().createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("name", name.toLowerCase()));
-        if (version == null) {
-            c.add(Restrictions.isNull("version"));
-        }
-        else {
-            c.add(Restrictions.eq("version", version.toLowerCase()));
-        }
-        if (release == null) {
-            c.add(Restrictions.isNull("release"));
-        }
-        else {
-            c.add(Restrictions.eq("release", release.toLowerCase()));
-        }
-        if (arch == null) {
-            c.add(Restrictions.isNull("arch"));
-        }
-        else {
-            c.add(Restrictions.eq("arch", PackageFactory.lookupPackageArchByLabel(arch)));
-        }
 
-        return (SUSEProduct) c.uniqueResult();
+        Disjunction versionCriterion = Restrictions.disjunction();
+        if (imprecise || version == null) {
+            versionCriterion.add(Restrictions.isNull("version"));
+        }
+        if (version != null) {
+            versionCriterion.add(Restrictions.eq("version", version.toLowerCase()));
+        }
+        c.add(versionCriterion);
+
+        Disjunction releaseCriterion = Restrictions.disjunction();
+        if (imprecise || release == null) {
+            releaseCriterion.add(Restrictions.isNull("release"));
+        }
+        if (release != null) {
+            releaseCriterion.add(Restrictions.eq("release", release.toLowerCase()));
+        }
+        c.add(releaseCriterion);
+
+        Disjunction archCriterion = Restrictions.disjunction();
+        if (imprecise || arch == null) {
+            archCriterion.add(Restrictions.isNull("arch"));
+        }
+        if (arch != null) {
+            archCriterion.add(Restrictions.eq("arch",
+                    PackageFactory.lookupPackageArchByLabel(arch)));
+        }
+        c.add(archCriterion);
+
+        c.addOrder(Order.asc("name")).addOrder(Order.asc("version"))
+                .addOrder(Order.asc("release")).addOrder(Order.asc("arch"));
+
+        List<SUSEProduct> result = c.list();
+        return result.isEmpty() ? null : result.get(0);
     }
 
     /**

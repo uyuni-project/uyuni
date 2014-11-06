@@ -936,8 +936,8 @@ public class ContentSyncManager {
             }
 
             // Update this product in the database if it is there
-            SUSEProduct product = SUSEProductFactory.findSUSEProduct(
-                    p.getIdentifier(), p.getVersion(), p.getReleaseType(), p.getArch());
+            SUSEProduct product = SUSEProductFactory.findSUSEProduct(p.getIdentifier(),
+                    p.getVersion(), p.getReleaseType(), p.getArch(), false);
             if (product != null) {
                 // it is not guaranteed for this ID to be stable in time, as it
                 // depends on IBS
