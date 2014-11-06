@@ -19,17 +19,16 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 /**
  * Tests for {@link SCCCachingFactory}.
  */
-public class SCCCachingFactoryTest extends TestCase {
+public class SCCCachingFactoryTest extends RhnBaseTestCase {
 
     /**
      * Test if initially an empty list is returned.
