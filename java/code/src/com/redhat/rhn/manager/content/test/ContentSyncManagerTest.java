@@ -787,11 +787,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         ContentSyncManager csm = new ContentSyncManager();
         csm.setChannelsXML(channelsXML);
         try {
-            // Make sure there is availability for channel family 7261
-            List<String> productClasses = new ArrayList<String>();
-            productClasses.add("7261");
-            csm.updateChannelSubscriptions(productClasses);
-
             // Manually create channel object as parsed from channels.xml
             MgrSyncChannel xmlChannel = new MgrSyncChannel();
             xmlChannel.setArch("x86_64");
@@ -826,10 +821,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             repo.setUrl(xmlChannel.getSourceUrl());
             SCCCachingFactory.saveRepository(repo);
 
-            // Ensure family has members
-            ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                    UserTestUtils.createUserInOrgOne(), "7261");
-            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
+            // Make sure there is availability for channel family 7261
+            List<String> productClasses = new ArrayList<String>();
+            productClasses.add("7261");
+            csm.updateChannelSubscriptions(productClasses);
+            HibernateFactory.getSession().flush();
 
             // Add the channel by label
             csm.addChannel(xmlChannel.getLabel(), null);
