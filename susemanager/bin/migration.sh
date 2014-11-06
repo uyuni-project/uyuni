@@ -696,6 +696,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         # Finaly call mgr-ncc-sync
         /usr/sbin/mgr-ncc-sync --refresh
     elif [ -n "$SCC_USER" ]; then
+        touch /var/lib/spacewalk/scc/migrated
         # schedule refresh
         mgr-sync refresh --schedule
     fi
