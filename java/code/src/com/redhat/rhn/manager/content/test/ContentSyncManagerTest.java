@@ -822,9 +822,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SCCCachingFactory.saveRepository(repo);
 
             // Make sure there is availability for channel family 7261
-            List<String> productClasses = new ArrayList<String>();
-            productClasses.add("7261");
-            csm.updateChannelSubscriptions(productClasses);
+            ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
+                    UserTestUtils.createUserInOrgOne(), "7261");
+            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
             HibernateFactory.getSession().flush();
 
             // Add the channel by label
