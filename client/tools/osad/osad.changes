@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:06:40 CET 2014 - mc@suse.de
+
+- version 5.11.33.5-1
+- enable and install osad during first installation (bsc#901958)
+
+-------------------------------------------------------------------
 Wed Sep  3 01:41:37 CEST 2014 - ro@suse.de
 
 - sanitize release line in specfile
