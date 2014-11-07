@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:02:38 CET 2014 - mc@suse.de
+
+- version 2.1.60.10-1
+- Integrate the refresh dialog with the setup wizard products page
+- Do a refresh only for ISS masters
+- minor updates to strings / wording
+- introduce a check for an empty snapshot tag for ssm
+- minor UI improvements
+
+-------------------------------------------------------------------
 Tue Oct 14 15:16:52 CEST 2014 - mc@suse.de
 
 - version 2.1.60.9-1
