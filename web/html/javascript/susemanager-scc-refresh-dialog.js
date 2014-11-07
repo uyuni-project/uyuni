@@ -44,8 +44,7 @@ $(function() {
     var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
     dialogCloseBtn.prop('disabled', true);
     var dialog = $('#scc-migration-dialog');
-    dialog.modal({show: true, keyboard: false});
-    dialog.modal('show');
+    dialog.modal({show: true, keyboard: false, backdrop: "static"});
 
     // A task to perform in case of success
     function successTask() {
