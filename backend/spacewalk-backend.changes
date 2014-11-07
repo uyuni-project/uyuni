@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:27:27 CET 2014 - mc@suse.de
+
+- version 2.1.55.12-1
+- With NCC Backend still use the old style ISS method
+- Make spacewalk-debug scc migration compatible
+
+-------------------------------------------------------------------
 Sat Nov 01 15:54:13 CET 2014 - mc@suse.de
 
 - version 2.1.55.11-1
