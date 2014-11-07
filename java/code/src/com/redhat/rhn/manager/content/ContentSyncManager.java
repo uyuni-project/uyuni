@@ -81,6 +81,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -264,8 +265,11 @@ public class ContentSyncManager {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
         List<Credentials> credentials = filterCredentials(
                 CredentialsFactory.lookupSCCCredentials());
-        // Query products for all mirror credentials
-        for (Credentials c : credentials) {
+        Iterator<Credentials> i = credentials.iterator();
+
+        // stop as soon as a credential pair works
+        while (i.hasNext() && productList.size() == 0) {
+            Credentials c = i.next();
             try {
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
@@ -294,6 +298,7 @@ public class ContentSyncManager {
                 log.error("Invalid URL:" + e1.getMessage());
             }
         }
+
         if (log.isDebugEnabled()) {
             log.debug("Found " + productList.size() + " available products.");
         }
