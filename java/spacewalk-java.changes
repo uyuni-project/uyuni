@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:28:54 CET 2014 - mc@suse.de
+
+- version 2.1.165.9-1
+- No refresh if this server is an ISS slave
+- Refresh is needed only if we are migrated to use SCC yet
+- Integrate the refresh dialog with the setup wizard products page
+- Implement new "mgr-sync-refresh" taskomatic job
+- Introduce caching of repositories read from SCC
+- Fix pxt page link to point to the ported version of that page (bsc#903720)
+- Fix Null Pointer Exception: bare-metal systems do not have a base channel
+- Only show the SMT warning if we are using from-mirror or from-dir
+- add progress and reload page after finish
+- do not allow to cancel the kickstart once completed
+- minor UI improvements
+- Show ppc64le profiles to ppc systems
+- fix system.schedulePackageInstall APIdoc
+- fix javascript injections
+- add id to errata.getDetails APIdoc
+- Removed bogus label-limit from SDC Remote Cmd pg
+- Don't schedule a remote-cmd if the system can't execute it
+- check if user can see activation key
+- schedule configuration actions asynchronously
+- initial SCC integration
+
+-------------------------------------------------------------------
 Mon Oct 27 15:20:08 CET 2014 - mc@suse.de
 
 - fix various XSS issues CVE-2014-3654 (bsc#902182)
