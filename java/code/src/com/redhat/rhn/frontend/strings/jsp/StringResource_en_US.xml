@@ -1551,7 +1551,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.names">
-        <source>First, Last Name</source>
+        <source>First Name, Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
@@ -1588,7 +1588,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>If you would like to set up your satellite to authenticate against LDAP, kerberos, and other network-based authentication systems, please visit the &lt;a href="/rhn/help/install/en-US/s1-maintenance-pam-auth.jsp"&gt;reference guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>To set up SUSE Manager to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
@@ -22126,6 +22126,9 @@ given channel.</source>
         </context-group>
         <trans-unit id="help.credentials.jsp.passwordreset">
           <source>Password Reset</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.passwordstrength">
+          <source>Password Strength</source>
         </trans-unit>
         <trans-unit id="help.credentials.jsp.logininfo">
           <source>Login Information</source>
