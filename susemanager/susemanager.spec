@@ -1,5 +1,5 @@
 Name:           susemanager
-Version:        2.1.13
+Version:        2.1.14
 Release:        1%{?dist}
 Summary:        SUSE Manager specific scripts
 Group:          Applications/System

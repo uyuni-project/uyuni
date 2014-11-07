@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:07:48 CET 2014 - mc@suse.de
+
+- version 2.1.14-1
+- schedule refresh after setup with SCC
+- On an ISS Slave disalow the use of mgr-sync except of enable-scc
+- mgr-sync: recommend to run refresh after credentials are changed
+- ISS setup for SCC do not need Mirror Credentials anymore
+- mgr-sync: explain what a primary credential is.
+- rename Mirror Credentials to Organization Credentials for SCC
+
+-------------------------------------------------------------------
 Wed Oct 29 11:33:36 CET 2014 - mantel@suse.de
 
 - rename "Mirror Credentials" to "Organization Credentials" for SCC
