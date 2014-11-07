@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Nov 07 13:20:08 CET 2014 - mc@suse.de
+
+- version 2.1.50.9-1
+- add SLE12 distro targets to DB
+- randomize mgr-sync refresh task schedule
+- add aarch64 server to noarch package mapping
+
+-------------------------------------------------------------------
 Tue Oct 14 15:17:50 CEST 2014 - mc@suse.de
 
 - version 2.1.50.8-1
