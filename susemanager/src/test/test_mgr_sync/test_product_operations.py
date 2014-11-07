@@ -552,14 +552,13 @@ Product successfully added"""
         mandatory_channels = [c for c in chosen_product.channels
                               if not c.optional]
         for channel in mandatory_channels:
-            if channel is not channel_to_not_add:
-                expected_xmlrpc_calls.append(
-                    call._execute_xmlrpc_method(
-                        self.mgr_sync.conn.sync.content,
-                        "addChannel",
-                        self.fake_auth_token,
-                        channel.label,
-                        ''))
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.sync.content,
+                    "addChannel",
+                    self.fake_auth_token,
+                    channel.label,
+                    ''))
             expected_xmlrpc_calls.append(
                 call._execute_xmlrpc_method(
                     self.mgr_sync.conn.channel.software,
