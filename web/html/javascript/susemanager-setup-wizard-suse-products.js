@@ -108,6 +108,7 @@ $(function() {
 
     // Disable all sync buttons until we are back
     $('#synchronize').prop('disabled', true);
+    $('#refresh').prop('disabled', true);
     $('button.product-add-btn').prop('disabled', true);
     $('button.product-retry-btn').prop('disabled', true);
 
@@ -134,6 +135,7 @@ $(function() {
 
       // Re-enable and re-init sync buttons
       $('#synchronize').prop('disabled', false);
+      $('#refresh').prop('disabled', false);
       $('button.product-add-btn').prop('disabled', false);
       $('button.product-retry-btn').prop('disabled', false);
       initSyncButtons();
