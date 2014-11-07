@@ -1082,6 +1082,8 @@ class RepoSync(object):
         num_to_process = len(to_process)
         if num_to_process == 0:
             self.print_msg("No new packages to sync.")
+            if plug.num_packages == 0:
+                self.regen = True
             return
         else:
             self.print_msg("Packages already synced:      %5d" %
