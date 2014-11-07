@@ -637,7 +637,8 @@ public class ContentSyncManager {
             scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
             scc.setUUID(getUUID());
             return scc.listSubscriptions();
-        } catch (URISyntaxException e1) {
+        }
+        catch (URISyntaxException e1) {
             log.error("Invalid URL:" + e1.getMessage());
             return new ArrayList<SCCSubscription>();
         }
@@ -649,7 +650,8 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscription> getSubscriptions() {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        List<Credentials> credentials = filterCredentials(CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials(
+                CredentialsFactory.lookupSCCCredentials());
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
             try {
