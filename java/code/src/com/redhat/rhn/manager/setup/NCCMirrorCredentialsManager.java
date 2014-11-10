@@ -56,7 +56,7 @@ public class NCCMirrorCredentialsManager extends MirrorCredentialsManager {
     /**
      * Default constructor.
      */
-    protected NCCMirrorCredentialsManager() {
+    public NCCMirrorCredentialsManager() {
         this(ConfigureSatelliteCommand.class);
     }
 

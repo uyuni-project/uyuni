@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
@@ -1704,7 +1705,7 @@ public class ContentSyncManager {
         SUSEProductFactory.clearAllProducts();
 
         // Migrate mirror credentials into the DB
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        MirrorCredentialsManager credsManager = new NCCMirrorCredentialsManager();
         int id = 0;
         for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
             // If we are an ISS slave, only remove the credentials
