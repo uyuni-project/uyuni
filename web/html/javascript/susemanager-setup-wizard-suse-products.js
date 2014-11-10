@@ -64,6 +64,19 @@ $(function() {
     triggerProductSync(checkboxes, $(this));
   });
 
+  // Handle the refresh button
+  $("#refresh").click(function() {
+    var button = $("#refresh");
+    button.prop('disabled', true);
+    var refresh = $("#iss-master").data("iss-master");
+    document.getElementById("scc-migration-dialog").refreshContent(
+        $("#sccconfig\\.jsp\\.refresh").html(), false, refresh, function() {
+      button.prop('disabled', false);
+      clearProducts();
+      showProducts();
+    });
+  });
+
   // Handle add product buttons
   $(".table-content").on("click", ".product-add-btn", function() {
     var checkbox = $(this).closest('tr').find('input:checkbox');
@@ -95,6 +108,7 @@ $(function() {
 
     // Disable all sync buttons until we are back
     $('#synchronize').prop('disabled', true);
+    $('#refresh').prop('disabled', true);
     $('button.product-add-btn').prop('disabled', true);
     $('button.product-retry-btn').prop('disabled', true);
 
@@ -121,10 +135,17 @@ $(function() {
 
       // Re-enable and re-init sync buttons
       $('#synchronize').prop('disabled', false);
+      $('#refresh').prop('disabled', false);
       $('button.product-add-btn').prop('disabled', false);
       $('button.product-retry-btn').prop('disabled', false);
       initSyncButtons();
     }));
+  }
+
+  // Clear all products from the table, but show the placeholder
+  function clearProducts() {
+    $("#products-content").find("tbody tr:not(#loading-placeholder)").remove();
+    $("#loading-placeholder").show();
   }
 
   // Get the products or show message in case of errors
