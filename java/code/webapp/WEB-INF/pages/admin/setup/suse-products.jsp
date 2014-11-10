@@ -61,6 +61,9 @@
                                         <button class="btn btn-success" id="synchronize">
                                             <i class="fa fa-plus"></i> <bean:message key='suse-products.jsp.add-products' />
                                         </button>
+                                        <button class="btn btn-default <c:if test="${not migratedToSCC}">hidden</c:if>" id="refresh">
+                                            <i class="fa fa-refresh"></i> <bean:message key='suse-products.jsp.refresh' />
+                                        </button>
                                     </td>
                                 </tr>
                             </tfoot>
