@@ -2059,6 +2059,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.refresh">
         <source>Refreshing data from SUSE Customer Center</source>
       </trans-unit>
+      <trans-unit id="sccconfig.jsp.bepatient">
+         <source>Please be patient, this might take several minutes.</source>
+      </trans-unit>
       <trans-unit id="sccconfig.jsp.channels">
         <source>Channels</source>
       </trans-unit>

@@ -9,6 +9,9 @@
               </h4>
             </div>
             <div class="modal-body">
+                <p><bean:message key="sccconfig.jsp.bepatient"/></p>
+                <ul id='scc-task-list'>
+                </ul>
                 <div id='scc-migration-current-task'></div>
             </div>
             <div class="modal-footer">
