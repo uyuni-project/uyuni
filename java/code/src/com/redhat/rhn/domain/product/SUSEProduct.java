@@ -32,7 +32,6 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private String release;
     private PackageArch arch;
     private String friendlyName;
-    private char productList;
     private int productId;
 
     /**
