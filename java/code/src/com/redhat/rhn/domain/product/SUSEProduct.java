@@ -120,20 +120,6 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @return the productList
-     */
-    public char getProductList() {
-        return productList;
-    }
-
-    /**
-     * @param productListIn the productList to set
-     */
-    public void setProductList(char productListIn) {
-        this.productList = productListIn;
-    }
-
-    /**
      * @return the productId
      */
     public int getProductId() {
