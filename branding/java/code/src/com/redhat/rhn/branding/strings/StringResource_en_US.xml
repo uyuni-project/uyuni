@@ -2036,7 +2036,7 @@ tree will not be usable for autoinstalling.
         <source>The SUSE Customer Center is not yet available.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.alreadymigrated">
-        <source>Congratulations! SUSE Manager is already migrated to the SUSE Customer Center.</source>
+        <source>Congratulations! SUSE Manager is migrated to the SUSE Customer Center.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.stillncc">
         <source>SUSE Manager is still connected to the Novell Customer Center.</source>
