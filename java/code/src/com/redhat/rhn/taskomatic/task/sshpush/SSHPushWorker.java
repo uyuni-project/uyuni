@@ -226,12 +226,9 @@ public class SSHPushWorker implements QueueWorker {
                 }
             }
             // Check exit status for errors
-            if (exitStatus != 0) {
-                log.error("Exit status: " + exitStatus);
+            if (exitStatus != 0 || log.isTraceEnabled()) {
+                log.error("Exit status: " + exitStatus + " [" + client + "]");
                 log.error("stdout:\n" + sb.toString());
-            }
-            else if (log.isTraceEnabled()) {
-                log.trace("stdout:\n" + sb.toString());
             }
         }
         catch (JSchException e) {
@@ -248,7 +245,7 @@ public class SSHPushWorker implements QueueWorker {
                 }
             }
             else {
-                log.error(e.getMessage(), e);
+                log.error(e.getMessage() + " [" + client + "]", e);
             }
         }
         catch (IOException ioe) {
