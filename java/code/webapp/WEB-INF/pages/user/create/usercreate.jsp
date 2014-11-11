@@ -33,7 +33,6 @@
 <html:form action="${action_path}">
 
   <rhn:csrf />
-  <div class="row-0">
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4><bean:message key="usercreate.login" /></h4>
@@ -135,7 +134,6 @@
           </table>
         </div>
       </div>
-  </div>
 
 <c:if test="${account_type == 'into_org'}">
   <div class="panel panel-default">
@@ -146,7 +144,7 @@
       <p><bean:message key="preferences.jsp.datestimes"/></p>
       <div class="well well-sm">
         <bean:message key="preferences.jsp.displaytimesas"/>
-        <select name="timezone">
+        <select name="timezone" class="form-control">
           <c:forEach var="tz" items="${requestScope.timezones}">
             <c:if test="${tz.value == requestScope.default_tz}">
               <option value="${tz.value}" selected="selected">${tz.display}</option>
