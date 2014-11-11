@@ -715,7 +715,6 @@ class NCCSync(object):
                     UPDATE SUSEPRODUCTS
                     SET
                       friendly_name     = :friendly_name,
-                      channel_family_id = :channel_family_id,
                       product_list      = :product_list
                     WHERE id = :id
                 """
@@ -723,20 +722,17 @@ class NCCSync(object):
                 query.execute(
                     id = row["id"],
                     friendly_name = p["FRIENDLY"],
-                    channel_family_id = channel_family_id,
                     product_list = p["PRODUCT_LIST"]
                 )
             else:
                 insert_sql = """
                     INSERT INTO SUSEPRODUCTS
                         (id, NAME, VERSION, FRIENDLY_NAME,
-                         ARCH_TYPE_ID, RELEASE, CHANNEL_FAMILY_ID,
-                         PRODUCT_LIST, PRODUCT_ID)
+                         ARCH_TYPE_ID, RELEASE, PRODUCT_LIST, PRODUCT_ID)
                     VALUES
                         (sequence_nextval('suse_products_id_seq'),
                          :name, :version, :friendly_name, :arch_type_id,
-                         :release, :channel_family_id, :product_list,
-                         :product_id)
+                         :release, :product_list, :product_id)
                 """
                 query = rhnSQL.prepare(insert_sql)
                 if p["PRODUCT"] != None:
@@ -751,7 +747,6 @@ class NCCSync(object):
                     friendly_name = p["FRIENDLY"],
                     arch_type_id = arch_type_id,
                     release = p["REL"],
-                    channel_family_id = channel_family_id,
                     product_list = p["PRODUCT_LIST"],
                     product_id = p["PRODUCTDATAID"])
         rhnSQL.commit()
