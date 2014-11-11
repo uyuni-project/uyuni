@@ -91,7 +91,10 @@ $(function() {
     function cleanupTask(errmsg, exception) {
       dialogCloseBtn.prop('disabled', false);
       var message = $('#sccconfig\\.jsp\\.failed').html();
-      showMessageWithIcon(message + ': ' + exception.message, 'fa fa-exclamation-triangle fa-1-5x text-warning');
+      showMessageWithIcon(
+        message + ': ' + '<a href="/rhn/admin/Catalina.do">' +
+          exception.message + '</a>',
+        'fa fa-exclamation-triangle fa-1-5x text-warning');
     }
 
     // create the task list in the UI
