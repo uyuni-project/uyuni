@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -91,10 +92,11 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             // ensure all needed channel families have enough entitlements, so
             // that channels are available later
+            User admin = UserTestUtils.createUserInOrgOne();
             for (String label : ENTITLED_LABELS) {
                 ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                        UserTestUtils.createUserInOrgOne(), label);
-                ChannelFamilyTest.ensureChannelFamilyHasMembers(cf,
+                        admin, label);
+                ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf,
                         ContentSyncManagerTest.MANY_MEMBERS);
                 HibernateFactory.getSession().flush();
             }

@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -318,9 +319,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         csm.updateChannelSubscriptions(productClasses);
 
         // Check reset to 0
+        User admin = UserTestUtils.createUserInOrgOne();
         ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                UserTestUtils.createUserInOrgOne(), "SMS");
-        ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, 0L);
+                admin, "SMS");
+        ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, 0L);
 
         // Add subscription for a product class
         productClasses.add("SMS");
@@ -822,9 +824,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             SCCCachingFactory.saveRepository(repo);
 
             // Make sure there is availability for channel family 7261
+            User admin = UserTestUtils.createUserInOrgOne();
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                    UserTestUtils.createUserInOrgOne(), "7261");
-            ChannelFamilyTest.ensureChannelFamilyHasMembers(cf, MANY_MEMBERS);
+                    admin, "7261");
+            ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, MANY_MEMBERS);
             HibernateFactory.getSession().flush();
 
             // Add the channel by label
