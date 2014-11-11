@@ -189,8 +189,8 @@ exit_in_case_of_error
 echo "* Removing duplicate host keys remotely"
 AUTH_KEYS=~/.ssh/authorized_keys
 AUTH_KEYS2=~/.ssh/authorized_keys2
-ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping (not found): ${AUTH_KEYS}'"
-ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping (not found): ${AUTH_KEYS2}'"
+ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
+ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
 exit_in_case_of_error
 
 # Copy scripts to the client
