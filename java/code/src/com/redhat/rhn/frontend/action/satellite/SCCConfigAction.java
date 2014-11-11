@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
@@ -29,6 +28,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.directwebremoting.WebContextFactory;
+import org.directwebremoting.io.DwrConvertedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,48 +60,84 @@ public class SCCConfigAction extends RhnAction {
             ensureSatAdmin(user);
         }
 
-        public static void performMigration() throws ContentSyncException {
+        public static void performMigration() throws DwrConvertedException {
             User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
                     .getCurrentUser();
             ensureSatAdmin(user);
             ContentSyncManager manager = new ContentSyncManager();
-            manager.performMigration(user);
+            try {
+                manager.performMigration(user);
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeChannels() throws ContentSyncException {
+        public static void synchronizeChannels() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannels(null);
+            try {
+                csm.updateChannels(null);
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeChannelFamilies() throws ContentSyncException {
+        public static void synchronizeChannelFamilies() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannelFamilies(csm.readChannelFamilies());
+            try {
+                csm.updateChannelFamilies(csm.readChannelFamilies());
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeProducts() throws ContentSyncException {
+        public static void synchronizeProducts() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSUSEProducts(csm.getProducts());
+            try {
+                csm.updateSUSEProducts(csm.getProducts());
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeProductChannels() throws ContentSyncException {
+        public static void synchronizeProductChannels() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+            try {
+                csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeSubscriptions() throws ContentSyncException {
+        public static void synchronizeSubscriptions() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateSubscriptions(csm.getSubscriptions());
+            try {
+
+                csm.updateSubscriptions(csm.getSubscriptions());
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
 
-        public static void synchronizeUpgradePaths() throws ContentSyncException {
+        public static void synchronizeUpgradePaths() throws DwrConvertedException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
-            csm.updateUpgradePaths();
+            try {
+                csm.updateUpgradePaths();
+            }
+            catch (Exception e) {
+                throw new DwrConvertedException(e.getLocalizedMessage());
+            }
         }
     }
 
