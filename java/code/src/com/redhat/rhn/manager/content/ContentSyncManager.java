@@ -953,9 +953,6 @@ public class ContentSyncManager {
                 product.setFriendlyName(p.getFriendlyName());
                 // TODO: Remove this attribute from database if it is not used anywhere
                 product.setProductList('Y');
-                if (channelFamily != null) {
-                    product.setChannelFamilyId(channelFamily.getId().toString());
-                }
             }
             else {
                 // Otherwise create a new SUSE product and save it
@@ -981,9 +978,6 @@ public class ContentSyncManager {
 
                 product.setArch(pArch);
                 product.setProductList('Y');
-                if (channelFamily != null) {
-                    product.setChannelFamilyId(channelFamily.getId().toString());
-                }
             }
             SUSEProductFactory.save(product);
         }
