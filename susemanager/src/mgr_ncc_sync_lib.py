@@ -462,6 +462,7 @@ class NCCSync(object):
                         else:
                             suseProduct[key] = col.text
                     if (suseProduct["PRODUCT_CLASS"] and
+                        suseProduct["PRODUCT_LIST"] == 'Y' and
                         suseProduct['PRODUCTDATAID'] not in product_ids):
                         # FIXME: skip buggy NCC entries. Some have no
                         # product_class, which is invalid data
@@ -714,26 +715,23 @@ class NCCSync(object):
             if row:
                 update_sql = """
                     UPDATE SUSEPRODUCTS
-                    SET
-                      friendly_name     = :friendly_name,
-                      product_list      = :product_list
-                    WHERE id = :id
+                       SET friendly_name = :friendly_name
+                     WHERE id = :id
                 """
                 query = rhnSQL.prepare(update_sql)
                 query.execute(
                     id = row["id"],
                     friendly_name = p["FRIENDLY"],
-                    product_list = p["PRODUCT_LIST"]
                 )
             else:
                 insert_sql = """
                     INSERT INTO SUSEPRODUCTS
                         (id, NAME, VERSION, FRIENDLY_NAME,
-                         ARCH_TYPE_ID, RELEASE, PRODUCT_LIST, PRODUCT_ID)
+                         ARCH_TYPE_ID, RELEASE, PRODUCT_ID)
                     VALUES
                         (sequence_nextval('suse_products_id_seq'),
                          :name, :version, :friendly_name, :arch_type_id,
-                         :release, :product_list, :product_id)
+                         :release, :product_id)
                 """
                 query = rhnSQL.prepare(insert_sql)
                 if p["PRODUCT"] != None:
@@ -748,7 +746,6 @@ class NCCSync(object):
                     friendly_name = p["FRIENDLY"],
                     arch_type_id = arch_type_id,
                     release = p["REL"],
-                    product_list = p["PRODUCT_LIST"],
                     product_id = p["PRODUCTDATAID"])
         rhnSQL.commit()
 

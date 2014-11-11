@@ -179,7 +179,6 @@ class SuseProduct(Information):
         'friendly_name' : StringType,
         'arch'          : StringType,
         'release'       : StringType,
-        'product_list'  : StringType,
         'product_id'    : IntType,
     }
 
