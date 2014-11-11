@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.channel.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -95,10 +96,27 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
      * @param channelFamily the channel family
      * @param memberCount the number of maximum members
      */
-    public static void ensureChannelFamilyHasMembers(ChannelFamily channelFamily,
+    public static void ensureChannelFamilyHasMembers(User user, ChannelFamily channelFamily,
             Long memberCount) {
-        for (PrivateChannelFamily pcf : channelFamily.getPrivateChannelFamilies()) {
-            pcf.setMaxMembers(memberCount);
+        Set<PrivateChannelFamily> families = channelFamily.getPrivateChannelFamilies();
+
+        if (families.size() == 0) {
+            PrivateChannelFamily privateChannelFamily = new PrivateChannelFamily();
+            privateChannelFamily.setOrg(user.getOrg());
+            privateChannelFamily.setChannelFamily(channelFamily);
+            privateChannelFamily.setCurrentMembers(new Long(0));
+            privateChannelFamily.setMaxMembers(memberCount);
+            privateChannelFamily.setCurrentFlex(0L);
+            privateChannelFamily.setMaxFlex(0L);
+            channelFamily.addPrivateChannelFamily(privateChannelFamily);
+
+            HibernateFactory.getSession().save(privateChannelFamily);
+
+        }
+        else {
+            for (PrivateChannelFamily pcf : channelFamily.getPrivateChannelFamilies()) {
+                pcf.setMaxMembers(memberCount);
+            }
         }
     }
 }
