@@ -32,7 +32,6 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private String release;
     private PackageArch arch;
     private String friendlyName;
-    private String channelFamilyId;
     private char productList;
     private int productId;
 
@@ -118,34 +117,6 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     public void setFriendlyName(String friendlyNameIn) {
         this.friendlyName = friendlyNameIn;
-    }
-
-    /**
-     * @return the channelFamilyId
-     */
-    public String getChannelFamilyId() {
-        return channelFamilyId;
-    }
-
-    /**
-     * @param channelFamilyIdIn the channelFamilyId to set
-     */
-    public void setChannelFamilyId(String channelFamilyIdIn) {
-        this.channelFamilyId = channelFamilyIdIn;
-    }
-
-    /**
-     * @return the productList
-     */
-    public char getProductList() {
-        return productList;
-    }
-
-    /**
-     * @param productListIn the productList to set
-     */
-    public void setProductList(char productListIn) {
-        this.productList = productListIn;
     }
 
     /**
