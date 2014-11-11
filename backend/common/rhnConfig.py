@@ -345,7 +345,9 @@ def parse_line(line):
                        'server.satellite.rhn_parent': str,
                        'db_name': str,
                        'server.susemanager.mirrcred_user': str,
-                       'server.susemanager.mirrcred_pass': str}
+                       'server.susemanager.mirrcred_pass': str,
+                       'db_host': str,
+                       }
         val = val.strip()
 
         if converTable.get(key):

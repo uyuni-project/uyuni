@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 
 package com.redhat.rhn.frontend.events;
 
@@ -38,7 +41,7 @@ public class SsmSystemRebootAction extends AbstractDatabaseAction {
         SsmSystemRebootAction.log.debug("Scheduling systems reboot in SSM.");
         SsmSystemRebootEvent event = (SsmSystemRebootEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());
-        ActionChain actionChain = ActionChainFactory.getActionChain(event
+        ActionChain actionChain = ActionChainFactory.getActionChain(user, event
             .getActionChainId());
 
         ActionChainManager.scheduleRebootActions(user, event.getServerIds(),

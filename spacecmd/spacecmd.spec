@@ -18,6 +18,7 @@ BuildArch: noarch
 %endif
 
 BuildRequires: spacewalk-pylint
+BuildRequires: python
 BuildRequires: python-devel
 BuildRequires: python-simplejson
 BuildRequires: rpm-python

@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 package com.redhat.rhn.frontend.struts;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -84,8 +87,9 @@ public class ActionChainHelper {
     public static void prepopulateActionChains(HttpServletRequest request) {
         log.debug("Prepopulating Action Chains");
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
+        User u = new RequestContext(request).getCurrentUser();
         List<ActionChain> actionChains = ActionChainFactory
-            .getActionChainsByModificationDate();
+            .getActionChainsByModificationDate(u);
 
         for (ActionChain actionChain : actionChains) {
             populateActionChain(result, actionChain.getLabel());

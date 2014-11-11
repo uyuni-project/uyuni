@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 package com.redhat.rhn.frontend.events;
 
 import com.redhat.rhn.common.messaging.EventMessage;
@@ -40,8 +43,8 @@ public class SsmErrataAction extends AbstractDatabaseAction {
 
         SsmErrataEvent event = (SsmErrataEvent) msg;
         User user = UserFactory.lookupById(event.getUserId());
-        ActionChain actionChain =
-                ActionChainFactory.getActionChain(event.getActionChainId());
+        ActionChain actionChain = ActionChainFactory.getActionChain(user, event
+            .getActionChainId());
 
         try {
             ErrataManager.applyErrata(user, event.getErrataIds(), event.getEarliest(),
