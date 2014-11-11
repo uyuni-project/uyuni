@@ -90,7 +90,6 @@ public class DistUpgradeManagerTest extends RhnBaseTestCase {
         product.setFriendlyName("SUSE Test product " + name);
         product.setArch(null);
         product.setRelease("test");
-        product.setProductList('Y');
         product.setProductId(0);
         TestUtils.saveAndFlush(product);
         return product;

@@ -200,7 +200,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         suseProduct.setProductId(productId);
         PackageArch arch = PackageFactory.lookupPackageArchByLabel("i686");
         suseProduct.setArch(arch);
-        suseProduct.setProductList('Y');
         SUSEProductFactory.save(suseProduct);
 
         // Setup SCC product accordingly
@@ -804,7 +803,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 suseProduct = new SUSEProduct();
                 suseProduct.setName(TestUtils.randomString().toLowerCase());
                 suseProduct.setProductId(814);
-                suseProduct.setProductList('Y');
                 SUSEProductFactory.save(suseProduct);
             }
 

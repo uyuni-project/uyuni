@@ -59,7 +59,6 @@ public class SUSEProductTestUtils {
         product.setFriendlyName("SUSE Test product " + name);
         product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
         product.setRelease("test");
-        product.setProductList('Y');
         product.setProductId(new Random().nextInt(999999));
 
         TestUtils.saveAndFlush(product);

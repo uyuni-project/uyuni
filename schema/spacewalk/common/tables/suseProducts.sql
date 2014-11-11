@@ -21,8 +21,7 @@ suseProducts
     arch_type_id  NUMBER
                   CONSTRAINT suse_products_aid_fk
                   REFERENCES rhnPackageArch (id),
-    release           varchar2(256),
-    product_list      CHAR(1) DEFAULT ('N') NOT NULL,
+    release       varchar2(256),
     product_id    NUMBER NOT NULL,
     created   timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL,

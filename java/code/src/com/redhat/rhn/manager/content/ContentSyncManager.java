@@ -951,8 +951,6 @@ public class ContentSyncManager {
                 // depends on IBS
                 product.setProductId(p.getId());
                 product.setFriendlyName(p.getFriendlyName());
-                // TODO: Remove this attribute from database if it is not used anywhere
-                product.setProductList('Y');
             }
             else {
                 // Otherwise create a new SUSE product and save it
@@ -977,7 +975,6 @@ public class ContentSyncManager {
                 }
 
                 product.setArch(pArch);
-                product.setProductList('Y');
             }
             SUSEProductFactory.save(product);
         }
