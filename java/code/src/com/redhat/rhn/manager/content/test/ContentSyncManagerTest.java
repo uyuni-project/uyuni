@@ -81,8 +81,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public static final long MANY_MEMBERS = 200000L;
 
     /**
-     * Test for {@link ContentSyncManager#updateChannels()}.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateChannels}.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
@@ -137,8 +137,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateSUSEProducts()} inserting a new product.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateSUSEProducts} inserting a new product.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateSUSEProductsNew() throws Exception {
         // Create test product attributes
@@ -179,8 +179,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateSUSEProducts()} update a product.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateSUSEProducts} update a product.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateSUSEProductsUpdate() throws Exception {
         // Create test product attributes
@@ -229,7 +229,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link ContentSyncManager#consolidateSubscriptions(java.util.Collection)}.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testConsolidateSubscriptions() throws Exception {
         SCCSubscription subscription = new SCCSubscription();
@@ -268,7 +268,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateSystemEntitlements() throws Exception {
         // Start with no subscribed product classes
@@ -297,7 +297,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for {@link ContentSyncManager#updateChannelSubscriptions(List)}.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelSubscriptions() throws Exception {
         // Start with no subscribed product classes
@@ -325,8 +325,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#getAvailableChannels()}.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#getAvailableChannels}.
+     * @throws Exception if anything goes wrong
      */
     public void testGetAvailableChannels() throws Exception {
         // Create channel family with availability
@@ -382,8 +382,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateSUSEProductChannels()}.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateSUSEProductChannels}.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateSUSEProductChannels() throws Exception {
         // Setup a product in the database
@@ -434,8 +434,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateChannelFamilies() method, insert case.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateChannelFamilies} method, insert case.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelFamiliesInsert() throws Exception {
         // Get test data and insert
@@ -461,8 +461,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateChannelFamilies() method, update case.
-     * @throws Exception
+     * Test for {@link ContentSyncManager#updateChannelFamilies} method, update case.
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelFamiliesUpdate() throws Exception {
         // Get test data and insert
@@ -498,7 +498,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Update the upgrade paths test.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testUpdateUpgradePaths() throws Exception {
         File upgradePathsXML = new File(
@@ -563,14 +563,16 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#listChannels()}.
+     * Test for {@link ContentSyncManager#listChannels}.
+     * @throws Exception if anything goes wrong
      */
     public void testListChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData("channels.xml").getPath());
         try {
             // Match against a manually created cache of SCC repositories
             SCCRepository repo = new SCCRepository();
-            String sourceUrl = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
+            String sourceUrl =
+                "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64";
             repo.setUrl(sourceUrl);
             SCCCachingFactory.saveRepository(repo);
 
@@ -607,7 +609,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests listProducts(), in particular the filtering of unavailable products.
+     * Tests {@link ContentSyncManager#listProducts}, in particular the
+     * filtering of unavailable products.
      * @throws Exception if anything goes wrong
      */
     public void testListProductsAvailability() throws Exception {
@@ -677,7 +680,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests listProducts(), in particular the computing of product status.
+     * Tests {@link ContentSyncManager#listProducts}, in particular the
+     * computing of product status.
      * @throws Exception if anything goes wrong
      */
     public void testListProductsStatus() throws Exception {
@@ -735,7 +739,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for addChannel() checking failure because of missing subscriptions.
+     * Test for {@link ContentSyncManager#addChannel} checking failure because
+     * of missing subscriptions.
      * @throws Exception if anything goes wrong
      */
     public void testAddChannelNoSubscriptions() throws Exception {
@@ -770,7 +775,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for addChannel().
+     * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */
     public void testAddChannel() throws Exception {
@@ -785,7 +790,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             xmlChannel.setFamily("7261");
             xmlChannel.setLabel("sles11-sp3-pool-x86_64");
             xmlChannel.setName("SLES11-SP3-Pool for x86_64");
-            xmlChannel.setSourceUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/");
+            xmlChannel.setSourceUrl("https://updates.suse.com/repo/$RCE/" +
+                    "SLES11-SP3-Pool/sle-11-x86_64/");
             xmlChannel.setSummary("SUSE Linux Enterprise Server 11 SP3 x86_64");
             xmlChannel.setUpdateTag("slessp3");
 
@@ -856,12 +862,18 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
+    /**
+     * Tests {@link ContentSyncManager#setupSourceURL} with a local filesystem link.
+     * @throws Exception if anything goes wrong
+     */
     public void testSetupSourceURLLocalFS() throws Exception {
         // Set offline mode
-        Config.get().setString(ContentSyncManager.RESOURCE_PATH, System.getProperty("java.io.tmpdir"));
+        Config.get().setString(ContentSyncManager.RESOURCE_PATH,
+                System.getProperty("java.io.tmpdir"));
 
         // Make some data
-        String repoUrlSCC = "https://www.somehost.com/path/to/resource?query=like&this=here";
+        String repoUrlSCC =
+                "https://www.somehost.com/path/to/resource?query=like&this=here";
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
         assertEquals(String.format("file:%s/path/to/resource",
@@ -873,12 +885,13 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for setupSourceURL()
+     * Tests {@link ContentSyncManager#setupSourceURL}.
      * @throws Exception if something goes wrong
      */
     public void testSetupSourceURL() throws Exception {
         // Verify updates.suse.com uses token auth
-        String repoUrlSCC = "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/?asdfgh";
+        String repoUrlSCC =
+                "https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64/?asdfgh";
         ContentSyncManager csm = new ContentSyncManager();
         SCCRepository repo = new SCCRepository();
         repo.setUrl(repoUrlSCC);
@@ -893,23 +906,26 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertNull(csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
         repo.setCredentials(getTestCredentials((0L)));
-        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, null));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0",
+                csm.setupSourceURL(repo, null));
         repo.setUrl(repoUrlNCC);
         repo.setCredentials(getTestCredentials((3L)));
-        assertEquals(repoUrlNCC + "?credentials=mirrcred_3", csm.setupSourceURL(repo, null));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_3",
+                csm.setupSourceURL(repo, null));
 
         // Fall back to official repo in case mirror is not reachable
         String mirrorUrl = "http://localhost/";
         repo.setUrl(repoUrlNCC);
         repo.setCredentials(getTestCredentials((0L)));
-        assertEquals(repoUrlNCC + "?credentials=mirrcred_0", csm.setupSourceURL(repo, mirrorUrl));
+        assertEquals(repoUrlNCC + "?credentials=mirrcred_0",
+                csm.setupSourceURL(repo, mirrorUrl));
         repo.setUrl(repoUrlSCC);
         repo.setCredentials(getTestCredentials((0L)));
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
     }
 
     /**
-     * Tests findMatchingRepo().
+     * Tests {@link ContentSyncManager#findMatchingRepo}.
      */
     public void testFindMatchingRepo() {
         final String base = "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64";
