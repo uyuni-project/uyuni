@@ -917,6 +917,25 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
     }
 
+    public void testFindMatchingRepo() {
+        final String base = "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64";
+        final SCCRepository good = new SCCRepository() { {
+            setUrl(base + "/product?veryverylongtoken");
+        } };
+        final SCCRepository bad = new SCCRepository() { {
+            setUrl(base + "/product_debug?veryverylongtoken");
+        } };
+
+        Collection<SCCRepository> repos = new LinkedList<SCCRepository>() { {
+            add(good);
+            add(bad);
+        } };
+
+        SCCRepository result = new ContentSyncManager().
+                findMatchingRepo(repos, base + "/product///");
+        assertEquals(good, result);
+    }
+
     /**
      * Create credentials for testing given an ID.
      * @param id
