@@ -32,8 +32,10 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * KickstartableTree
@@ -267,38 +269,48 @@ public class KickstartableTree extends BaseDomainHelper {
     }
 
     /**
-     * Returns default kernel path
-     * @return default kernel path
+     * Returns default kernel paths
+     * @return default kernel paths
      */
-    public String getDefaultKernelPath() {
+    public String[] getDefaultKernelPaths() {
+        List<String> paths = new ArrayList<String>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
-            String archName = this.getChannel().getChannelArch().getName();
-            if (archName.equals("IA-32")) {
+            String archName = this.getChannel().getChannelArch().getName().toLowerCase();
+            if (archName.equals("ia-32")) {
                 archName = "i386";
             }
-            else if (archName.equals("IA-64")) {
+            else if (archName.equals("ia-64")) {
                 archName = "ia64";
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/boot/" + archName + "/image"));
             }
-            else if (archName.equals("PPC")) {
+            else if (archName.equals("ppc")) {
                 archName = "ppc64";
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/suseboot/linux64.gz"));
             }
-            else if (archName.equals("s390") || archName.equals("s390x")) {
-                return StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                    archName + "/vmrdr.ikr");
+            else if (archName.equals("s390") || archName.equals("s390x") ||
+                     archName.equals("ppc64le") || archName.equals("aarch64")) {
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/boot/" + archName + "/vmrdr.ikr"));
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/boot/" + archName + "/linux"));
             }
-            return StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                archName + "/loader/linux");
+            paths.add(StringUtil.addPath(getAbsolutePath(),
+                                         "/boot/" + archName + "/loader/linux"));
         }
         else if (arch.equals("channel-s390") || arch.endsWith("channel-s390x")) {
-            return StringUtil.addPath(getAbsolutePath(), "/images/kernel.img");
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/images/kernel.img"));
         }
-        else if (arch.equals("channel-ppc")) {
-            return StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/vmlinuz");
+        else if (arch.startsWith("channel-ppc")) {
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/vmlinuz"));
         }
         else {
-            return StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/vmlinuz");
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/vmlinuz"));
         }
+
+        return paths.toArray(new String[paths.size()]);
     }
 
     /**
@@ -306,11 +318,16 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return valid kernel path
      */
     public String getKernelPath() {
-        String defaultPath = getDefaultKernelPath();
-        if (pathExists(defaultPath)) {
-            return defaultPath;
+        String lastKnownPath = null;
+        String[] defaultKernelPaths = this.getDefaultKernelPaths();
+        for (int i = 0; i < defaultKernelPaths.length; i++) {
+            lastKnownPath = defaultKernelPaths[i];
+            if (pathExists(lastKnownPath)) {
+                return lastKnownPath;
+            }
         }
-        ValidatorException.raiseException(INVALID_KERNEL, defaultPath);
+
+        ValidatorException.raiseException(INVALID_KERNEL, lastKnownPath);
         // we'll never get here, just a compiler required line
         return "";
     }
@@ -319,39 +336,46 @@ public class KickstartableTree extends BaseDomainHelper {
      * Returns default initrd paths
      * @return default initrd paths
      */
-    public String[] getDefaultInitrdPath() {
+    public String[] getDefaultInitrdPaths() {
+        List<String> paths = new ArrayList<String>();
         String arch = this.getChannel().getChannelArch().getLabel();
         if (this.installType.isSUSE()) {
-            String archName = this.getChannel().getChannelArch().getName();
-            if (archName.equals("IA-32")) {
+            String archName = this.getChannel().getChannelArch().getName().toLowerCase();
+            if (archName.equals("ia-32")) {
                 archName = "i386";
             }
-            else if (archName.equals("IA-64")) {
+            else if (archName.equals("ia-64")) {
                 archName = "ia64";
+                // SLE-10
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/boot/" + archName + "/initdisk.gz"));
             }
-            else if (archName.equals("PPC")) {
+
+            if (archName.equals("ppc")) {
                 archName = "ppc64";
+                paths.add(StringUtil.addPath(getAbsolutePath(), "/suseboot/initrd64"));
             }
-            else if (archName.equals("s390") || archName.equals("s390x")) {
-                return new String[] {StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                    archName + "/initrd")};
+            else if (archName.equals("s390") || archName.equals("s390x") ||
+                     archName.equals("aarch64") || archName.equals("ppc64le") ||
+                     archName.equals("ia64")) {
+                paths.add(StringUtil.addPath(getAbsolutePath(),
+                                             "/boot/" + archName + "/initrd"));
             }
-            return new String[] {StringUtil.addPath(getAbsolutePath(), "/boot/" +
-                archName + "/loader/initrd")};
+            paths.add(StringUtil.addPath(getAbsolutePath(),
+                                         "/boot/" + archName + "/loader/initrd"));
         }
         else if (arch.equals("channel-s390") || arch.endsWith("channel-s390x")) {
-            return new String[] {
-                    StringUtil.addPath(getAbsolutePath(), "/images/initrd.img")};
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/images/initrd.img"));
         }
-        else if (arch.equals("channel-ppc")) {
-            return new String[] {
-                    StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz"),
-                    StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/initrd.img")};
+        else if (arch.startsWith("channel-ppc")) {
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/ramdisk.image.gz"));
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/ppc/ppc64/initrd.img"));
         }
         else {
-            return new String[] {
-                    StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img")};
+            paths.add(StringUtil.addPath(getAbsolutePath(), "/images/pxeboot/initrd.img"));
         }
+
+        return paths.toArray(new String[paths.size()]);
     }
 
     /**
@@ -359,7 +383,7 @@ public class KickstartableTree extends BaseDomainHelper {
      * @return the Initrd path
      */
     public String getInitrdPath() {
-        String[] defaultPaths = getDefaultInitrdPath();
+        String[] defaultPaths = getDefaultInitrdPaths();
         for (String initrdPath : defaultPaths) {
             if (pathExists(initrdPath)) {
                 return initrdPath;
