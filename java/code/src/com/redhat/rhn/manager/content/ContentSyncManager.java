@@ -935,12 +935,10 @@ public class ContentSyncManager {
      */
     public void updateSUSEProducts(Collection<SCCProduct> products) {
         for (SCCProduct p : products) {
-            // Get channel family if it is available, otherwise create it
-            ChannelFamily channelFamily = null;
+            // Create the channel family if it is not available
             String productClass = p.getProductClass();
-
             if (!StringUtils.isBlank(productClass)) {
-                channelFamily = createOrUpdateChannelFamily(productClass, null);
+                createOrUpdateChannelFamily(productClass, null);
             }
 
             // Update this product in the database if it is there
