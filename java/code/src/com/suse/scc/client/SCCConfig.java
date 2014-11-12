@@ -14,8 +14,6 @@
  */
 package com.suse.scc.client;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 /**

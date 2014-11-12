@@ -34,9 +34,8 @@ public abstract class SCCRequester<T> implements Callable<T> {
 
     /**
      * Default constructor
-     * @throws URISyntaxException
      */
-    public SCCRequester() throws URISyntaxException {
+    public SCCRequester() {
         client = new SCCClient("http://localhost:" + HttpServerMock.PORT, "user", "pass");
     }
 
