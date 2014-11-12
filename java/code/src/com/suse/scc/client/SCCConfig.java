@@ -70,16 +70,6 @@ public class SCCConfig {
     }
 
     /**
-     * Set the URL parameter
-     *
-     * @param url
-     * @throws URISyntaxException
-     */
-    public void setUrl(String url) throws URISyntaxException {
-        properties.setProperty(URL, new URI(url).toASCIIString());
-    }
-
-    /**
      * Returns the configured url or "https://scc.suse.com".
      *
      * @return url

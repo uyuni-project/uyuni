@@ -22,6 +22,7 @@ import com.suse.scc.model.SCCSubscription;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class SCCClient {
     public SCCClient(String url, String username, String password)
             throws URISyntaxException {
         // Put the schema int the config
-        config.setUrl(url);
+        config.put(SCCConfig.URL, new URI(url).toASCIIString());
 
         // Encode the given credentials
         byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
