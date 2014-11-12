@@ -934,7 +934,17 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         SCCRepository result = new ContentSyncManager().
                 findMatchingRepo(repos, base + "/product///");
         assertEquals(good, result);
-    }
+
+        final SCCRepository alternateGood = new SCCRepository() { {
+            setUrl(base + "/product/");
+        } };
+        repos.remove(good);
+        repos.add(alternateGood);
+
+        result = new ContentSyncManager().
+                findMatchingRepo(repos, base + "/product///");
+        assertEquals(alternateGood, result);
+}
 
     /**
      * Create credentials for testing given an ID.
