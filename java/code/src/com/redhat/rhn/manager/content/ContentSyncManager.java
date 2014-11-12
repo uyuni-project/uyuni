@@ -1673,8 +1673,11 @@ public class ContentSyncManager {
     private SCCClient getSCCClient(String user, String password)
             throws URISyntaxException,
                    SCCClientException {
-        SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
-                user, password);
+        // check that URL is valid. Will throw URISyntaxException otherwise
+        String rawUrl = Config.get().getString(ConfigDefaults.SCC_URL);
+        String url = new URI(rawUrl).toASCIIString();
+
+        SCCClient scc = new SCCClient(url, user, password);
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         if (localPath != null) {
             scc.setLocalResourcePath(new File(localPath));
