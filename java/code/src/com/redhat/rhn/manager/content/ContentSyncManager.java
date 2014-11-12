@@ -1221,10 +1221,11 @@ public class ContentSyncManager {
 
         // Remove trailing slashes before matching URLs
         sourceUrl = sourceUrl.replaceFirst("/+$", "");
+        Pattern p = Pattern.compile(Pattern.quote(sourceUrl) + "(?:\\?.*)?$");
 
         // Match the channel source URL against URLs we got from SCC
         for (SCCRepository repo : repos) {
-            if (repo.getUrl().startsWith(sourceUrl)) {
+            if (p.matcher(repo.getUrl()).matches()) {
                 return repo;
             }
         }
