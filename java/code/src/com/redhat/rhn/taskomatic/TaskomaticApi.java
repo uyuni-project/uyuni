@@ -20,6 +20,7 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
@@ -92,6 +93,26 @@ public class TaskomaticApi {
         scheduleParams.put("channel_id", chan.getId().toString());
         invoke("tasko.scheduleSingleBunchRun", user.getOrg().getId(),
                 "repo-sync-bunch", scheduleParams);
+    }
+
+    /**
+     * Schedule a single reposync for a given list of channels. This is scheduled from
+     * within another taskomatic job, so we don't have a user here. We pass in the
+     * satellite org to create the job label internally.
+     * @param channels list of channels
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRepoSync(List<Channel> channels)
+            throws TaskomaticApiException {
+        if (channels == null) {
+            return;
+        }
+        for (Channel c : channels) {
+            Map<String, String> scheduleParams = new HashMap<String, String>();
+            scheduleParams.put("channel_id", c.getId().toString());
+            invoke("tasko.scheduleSingleBunchRun", OrgFactory.getSatelliteOrg().getId(),
+                    "repo-sync-bunch", scheduleParams);
+        }
     }
 
     /**
