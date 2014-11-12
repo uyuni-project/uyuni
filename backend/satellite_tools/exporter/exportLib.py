@@ -722,7 +722,6 @@ class _SuseProductDumper(BaseRowDumper):
             'friendly-name' : self._row['friendly_name'],
             'arch'          : self._row['arch'],
             'release'       : self._row['release'],
-            'product-list'  : self._row['product_list'],
             'product-id'    : self._row['product_id']
             }
 
@@ -730,8 +729,7 @@ class SuseProductDumper(BaseQueryDumper):
     tag_name = 'suse-products'
     iterator_query = """
     SELECT p.name, p.version, p.friendly_name,
-           pa.label AS arch, p.release, p.product_list,
-           p.product_id
+           pa.label AS arch, p.release, p.product_id
       FROM suseProducts p
  LEFT JOIN rhnPackageArch pa ON p.arch_type_id = pa.id
     """
