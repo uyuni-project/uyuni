@@ -111,5 +111,10 @@
             <include method="synchronizeSubscriptions" />
             <include method="synchronizeUpgradePaths" />
         </create>
+        <convert match="com.redhat.rhn.frontend.action.satellite.SCCConfigAction$SCCConfigException"
+                 converter="exception">
+            <param name='include' value='message' />
+        </convert>
+        <convert match="java.lang.StackTraceElement" converter="bean"/>
     </allow>
 </dwr>
