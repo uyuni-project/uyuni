@@ -917,6 +917,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         assertEquals(repoUrlSCC, csm.setupSourceURL(repo, mirrorUrl));
     }
 
+    /**
+     * Tests findMatchingRepo().
+     */
     public void testFindMatchingRepo() {
         final String base = "https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64";
         final SCCRepository good = new SCCRepository() { {
