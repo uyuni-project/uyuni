@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.util.Date;
 
@@ -32,9 +33,10 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
     /**
      * {@inheritDoc}
+     * @throws JobExecutionException in case of errors during mgr-inter-sync execution
      */
     @Override
-    public void execute(JobExecutionContext context) {
+    public void execute(JobExecutionContext context) throws JobExecutionException {
         if (log.isDebugEnabled()) {
             log.debug("Refreshing mgr-sync data");
         }
@@ -45,9 +47,12 @@ public class MgrSyncRefresh extends RhnJavaJob {
             return;
         }
 
-        // Do nothing if this server is an ISS slave
+        // Use mgr-inter-sync if this server is an ISS slave
         if (IssFactory.getCurrentMaster() != null) {
-            log.warn("No need to refresh, this server is an ISS slave.");
+            log.debug("This server is an ISS slave, refresh using mgr-inter-sync");
+            String cmd[] = new String[1];
+            cmd[0] = "/usr/bin/mgr-inter-sync";
+            executeExtCmd(cmd);
             return;
         }
 
