@@ -47,33 +47,34 @@ public class MgrSyncRefresh extends RhnJavaJob {
             return;
         }
 
-        // Use mgr-inter-sync if this server is an ISS slave
-        if (IssFactory.getCurrentMaster() != null) {
-            log.debug("This server is an ISS slave, refresh using mgr-inter-sync");
-            String cmd[] = new String[1];
-            cmd[0] = "/usr/bin/mgr-inter-sync";
-            executeExtCmd(cmd);
-            return;
-        }
-
         // Measure time to calculate the total duration
         Date start = new Date();
 
-        try {
-            ContentSyncManager csm = new ContentSyncManager();
-            csm.updateChannels(null);
-            csm.updateChannelFamilies(csm.readChannelFamilies());
-            csm.updateSUSEProducts(csm.getProducts());
-            csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
-            csm.updateSubscriptions(csm.getSubscriptions());
-            csm.updateUpgradePaths();
+        // Use mgr-inter-sync if this server is an ISS slave
+        if (IssFactory.getCurrentMaster() != null) {
+            log.info("This server is an ISS slave, refresh using mgr-inter-sync");
+            String cmd[] = new String[1];
+            cmd[0] = "/usr/bin/mgr-inter-sync";
+            executeExtCmd(cmd);
         }
-        catch (ContentSyncException e) {
-            log.error("Error during mgr-sync refresh", e);
-        }
+        else {
+            // Perform the refresh
+            try {
+                ContentSyncManager csm = new ContentSyncManager();
+                csm.updateChannels(null);
+                csm.updateChannelFamilies(csm.readChannelFamilies());
+                csm.updateSUSEProducts(csm.getProducts());
+                csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
+                csm.updateSubscriptions(csm.getSubscriptions());
+                csm.updateUpgradePaths();
+            }
+            catch (ContentSyncException e) {
+                log.error("Error during mgr-sync refresh", e);
+            }
 
-        // Schedule sync of all vendor channels
-        new TaskomaticApi().scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
+            // Schedule sync of all vendor channels
+            new TaskomaticApi().scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
+        }
 
         if (log.isDebugEnabled()) {
             long duration = new Date().getTime() - start.getTime();
