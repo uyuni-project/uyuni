@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 package com.redhat.rhn.frontend.struts.test;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
@@ -72,20 +75,20 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     public void testPrepopulateActionChains() {
         List<ActionChain> actionChains = new LinkedList<ActionChain>();
         for (int i = 0; i < 10; i++) {
-            actionChains.add(ActionChainFactory.createActionChain(
-                i + TestUtils.randomString(), user));
+            actionChains.add(ActionChainFactory.createActionChain(TestUtils.randomString(),
+                user));
         }
 
         List<Map<String, String>> result = new LinkedList<Map<String, String>>();
 
-        for (ActionChain actionChain : ActionChainFactory.getActionChains()) {
+        for (ActionChain actionChain : ActionChainFactory.getActionChains(user)) {
             Map<String, String> map = new HashMap<String, String>();
             map.put("id", actionChain.getLabel());
             map.put("text", actionChain.getLabel());
             result.add(map);
         }
 
-        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
         String s = new JSONWriter().write(result);
         request.addExpectedSetAttribute(
             ActionChainHelper.EXISTING_ACTION_CHAINS_PROPERTY_NAME, s);

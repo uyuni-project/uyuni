@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.common.util.DatePicker;
@@ -68,8 +71,9 @@ public class ActionChainEditAction extends RhnAction {
         HttpServletRequest request, HttpServletResponse response) {
         DynaActionForm form = (DynaActionForm) formIn;
         RequestContext requestContext = new RequestContext(request);
-        ActionChain actionChain = ActionChainFactory.getActionChain(Long
-            .valueOf(request.getParameter(ACTION_CHAIN_ID_PARAMETER)));
+        ActionChain actionChain = ActionChainFactory.getActionChain(
+            requestContext.getCurrentUser(),
+            Long.valueOf(request.getParameter(ACTION_CHAIN_ID_PARAMETER)));
 
         if (isSubmitted(form)) {
             if (requestContext.wasDispatched("actionchain.jsp.delete")) {

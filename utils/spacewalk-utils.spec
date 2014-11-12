@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.3.15
+Version:	2.3.18
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -113,6 +113,18 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Nov 07 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.18-1
+- Updated spacewalk-common-channels.ini to include Oracle Linux 7
+- remove openSUSE 12.3 from spacewalk-common-channels
+- Add openSUSE 13.2 repositories to spacewalk-common-channels
+
+* Thu Nov 06 2014 Stephen Herr <sherr@redhat.com> 2.3.17-1
+- 1161040 - prevent empty dir creation by scbd
+
+* Wed Oct 29 2014 Stephen Herr <sherr@redhat.com> 2.3.16-1
+- 1158655 - fix error if blacklist / removelist not in scbd config file
+- 1015963 - improve error messaging in scbd about optinos that don't make sense
+
 * Thu Oct 23 2014 Tomas Lestach <tlestach@redhat.com> 2.3.15-1
 - 1028933 - extending spacewalk-api man page with usage of boolean values
 

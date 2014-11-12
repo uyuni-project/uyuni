@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacecmd
-Version:     2.3.1
+Version:     2.3.3
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -18,6 +18,7 @@ BuildArch:   noarch
 %if ! 0%{?suse_version}
 BuildRequires: spacewalk-pylint
 %endif
+BuildRequires: python
 BuildRequires: python-devel
 BuildRequires: python-simplejson
 BuildRequires: rpm-python
@@ -79,6 +80,13 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Mon Nov 03 2014 Grant Gainey 2.3.3-1
+- 1111680 - Teach spacecmd report_errata to process all-errata in the absence
+  of further args
+
+* Mon Nov 03 2014 Miroslav Suchý <msuchy@redhat.com> 2.3.2-1
+- add BR: python
+
 * Sun Sep 28 2014 Aron Parsons <aronparsons@gmail.com> 2.3.1-1
 - spacecmd: fix -p argument in distribution_update help
 

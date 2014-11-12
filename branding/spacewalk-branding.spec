@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.3.10
+Version:    2.3.13
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,16 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Nov 06 2014 Jan Dobes 2.3.13-1
+- changing left navigation menu colors to be darker
+- collapse class should work on all screen widths
+
+* Tue Nov 04 2014 Jan Dobes 2.3.12-1
+- we don't actually need equal height columns there
+
+* Tue Nov 04 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.11-1
+- do not use list bullets in messages on centered login page
+
 * Thu Oct 23 2014 Jan Dobes 2.3.10-1
 - decorate alert messages with patternfly icons
 - change style of alerts

@@ -53,7 +53,7 @@ function columnHeight() {
     var sectionHeight = $(".spacewalk-main-column-layout section").outerHeight(true);
     var headHeight = $("header").height();
     var footerHeight = $("footer").outerHeight(true);
-  	var heightDoc = $(document).height();
+    var heightDoc = $(document).height();
     // Only if there is empty space
     var heightElements = sectionHeight + headHeight + footerHeight;
     if (heightElements < heightDoc) {

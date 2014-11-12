@@ -37,7 +37,7 @@ public class SsmConfigFilesAction extends AbstractDatabaseAction {
 
         User user = UserFactory.lookupById(event.getUserId());
         ActionChain actionChain = ActionChainFactory.getActionChain(
-                event.getActionChainId());
+                user, event.getActionChainId());
 
         try {
             ActionChainManager.createConfigActions(

@@ -12,6 +12,9 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+/**
+ * Copyright (c) 2014 Red Hat, Inc.
+ */
 package com.redhat.rhn.frontend.action.schedule;
 
 import com.redhat.rhn.domain.action.ActionChain;
@@ -56,6 +59,6 @@ public class ActionChainListAction extends RhnAction implements Listable<ActionC
      * {@inheritDoc}
      */
     public List<ActionChain> getResult(RequestContext context) {
-        return ActionChainFactory.getActionChains();
+        return ActionChainFactory.getActionChains(context.getCurrentUser());
     }
 }

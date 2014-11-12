@@ -102,7 +102,7 @@ public abstract class SsmPackagesAction extends AbstractDatabaseAction {
 
         log.debug("Scheduling package actions.");
         Date earliest = event.getEarliest();
-        ActionChain actionChain = ActionChainFactory.getActionChain(event
+        ActionChain actionChain = ActionChainFactory.getActionChain(user, event
             .getActionChainId());
 
         List<Long> sids = getAffectedServers(event, user);
