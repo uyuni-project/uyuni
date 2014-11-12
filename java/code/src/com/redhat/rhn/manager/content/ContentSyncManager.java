@@ -1213,11 +1213,20 @@ public class ContentSyncManager {
             return cachedOESRepo.getCredentials() != null ? cachedOESRepo : null;
         }
 
-        // Remove trailing slashes before matching URLs
-        sourceUrl = sourceUrl.replaceFirst("/+$", "");
-        Pattern p = Pattern.compile(Pattern.quote(sourceUrl) + "(?:\\?.*)?$");
+        return findMatchingRepo(repos, sourceUrl);
+    }
 
-        // Match the channel source URL against URLs we got from SCC
+    /**
+     * Finds the repo corresponding to an URL.
+     *
+     * @param repos the repos
+     * @param url the source url
+     * @return the repository
+     */
+    public SCCRepository findMatchingRepo(Collection<SCCRepository> repos, String url) {
+        String noTrailingSlashUrl = url.replaceFirst("/+$", "");
+        Pattern p = Pattern.compile(Pattern.quote(noTrailingSlashUrl) + "(?:\\?.*)?$");
+
         for (SCCRepository repo : repos) {
             if (p.matcher(repo.getUrl()).matches()) {
                 return repo;
