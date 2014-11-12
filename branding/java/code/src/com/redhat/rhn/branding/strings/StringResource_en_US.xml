@@ -2047,6 +2047,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.migrationinfosmt">
         <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
       </trans-unit>
+      <trans-unit id="sccconfig.jsp.disablecronjobs">
+        <source>After this migration regular channel synchronization will be done via a taskomatic job. Please remove any existing cron jobs calling &lt;b&gt;mgr-ncc-sync&lt;/b&gt; or &lt;b&gt;mgr-inter-sync&lt;/b&gt; accordingly.</source>
+      </trans-unit>
       <trans-unit id="sccconfig.jsp.migrate">
         <source>Start Migration to SUSE Customer Center</source>
       </trans-unit>

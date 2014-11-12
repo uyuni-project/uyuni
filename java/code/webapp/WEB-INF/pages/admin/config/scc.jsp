@@ -27,6 +27,7 @@
                 <c:if test="${localMirrorUsed}">
                     <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.migrationinfosmt"/></div>
                 </c:if>
+                <div class="alert alert-warning" role="alert"><bean:message key="sccconfig.jsp.disablecronjobs"/></div>
                 <a id="scc-start-migration-btn" class="btn btn-success"><bean:message key="sccconfig.jsp.migrate"/></a>
             </div>
         </div>
