@@ -468,7 +468,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
         self.mgr_sync._list_channels = MagicMock(
             return_value=available_channels)
         stubbed_xmlrpm_call = MagicMock(return_value=read_data_from_fixture(
-            'list_products.data'))
+            'list_channels.data'))
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
