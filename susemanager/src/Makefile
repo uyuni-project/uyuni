@@ -31,9 +31,18 @@ PYCSUMA_DATA_FILES      = $(addsuffix .pyc,$(SUMA_DATA_FILES))
 
 SUMA_INSTALL_DATA_FILES += $(PYSUMA_DATA_FILES) $(PYCSUMA_DATA_FILES)
 
-SBINDIR  = /usr/sbin
 
-EXTRA_DIRS = $(SBINDIR)
+# check if we can build man pages
+DOCBOOK = $(wildcard /usr/bin/docbook2man)
+
+SGMLS	= $(wildcard *.sgml)
+MANS	= $(patsubst %.sgml,%.8,$(SGMLS))
+
+BINDIR	= /usr/bin
+SBINDIR	 = /usr/sbin
+MANDIR	?= /usr/man
+
+EXTRA_DIRS = $(MANDIR)/man8 $(BINDIR) $(SBINDIR)
 
 include $(TOP)/Makefile.defs
 
@@ -44,3 +53,17 @@ install :: $(SCRIPTS) $(PREFIX)/$(SBINDIR) $(SUMA_INSTALL_DATA_FILES)
 	$(INSTALL_DIR) $(PREFIX)/usr/share/susemanager
 	$(INSTALL_DIR) $(PREFIX)/$(SPACEWALK_DEST)/mgr_sync
 	$(INSTALL_DATA) $(SUMA_INSTALL_DATA_FILES) $(PREFIX)/usr/share/susemanager
+
+ifneq ($(DOCBOOK),)
+# install man pages
+all	:: $(MANS)
+install :: $(MANS) $(PREFIX)/$(MANDIR)
+	$(INSTALL_DATA) $(MANS) $(PREFIX)/$(MANDIR)/man8
+endif
+
+%.8 : %.sgml
+	$(DOCBOOK) $<
+
+clean ::
+	@rm -fv $(MANS) manpage.* *.new
+
