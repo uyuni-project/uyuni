@@ -31,6 +31,8 @@ import java.util.Date;
  */
 public class MgrSyncRefresh extends RhnJavaJob {
 
+    private static final String noRepoSyncKey = "noRepoSync";
+
     /**
      * {@inheritDoc}
      * @throws JobExecutionException in case of errors during mgr-inter-sync execution
@@ -49,6 +51,12 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
         // Measure time to calculate the total duration
         Date start = new Date();
+
+        // Get parameter
+        boolean noRepoSync = false;
+        if (context.getJobDetail().getJobDataMap().containsKey(noRepoSyncKey)) {
+            noRepoSync = true;
+        }
 
         // Use mgr-inter-sync if this server is an ISS slave
         if (IssFactory.getCurrentMaster() != null) {
@@ -73,7 +81,11 @@ public class MgrSyncRefresh extends RhnJavaJob {
             }
 
             // Schedule sync of all vendor channels
-            new TaskomaticApi().scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
+            if (!noRepoSync) {
+                log.debug("Scheduling synchronization of all vendor channels");
+                new TaskomaticApi().scheduleSingleRepoSync(
+                        ChannelFactory.listVendorChannels());
+            }
         }
 
         if (log.isDebugEnabled()) {
