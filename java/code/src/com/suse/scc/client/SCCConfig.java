@@ -51,25 +51,11 @@ public class SCCConfig {
 
     /**
      * Sets a preference given by key and value. Use one of the public key strings above.
-     * NOTE: To set the URL, use method setURL instead.
-     *
      * @param key
      * @param value
      */
     public void put(String key, String value) {
-        // The URL key should be treated differently.
-        if (key.equals(SCCConfig.URL)) {
-            try {
-                this.setUrl(key);
-            }
-            catch (URISyntaxException ex) {
-                // Complain to the log for invalid URL.
-                throw new RuntimeException(ex);
-            }
-        }
-        else {
-            properties.setProperty(key, value);
-        }
+        properties.setProperty(key, value);
     }
 
     /**
