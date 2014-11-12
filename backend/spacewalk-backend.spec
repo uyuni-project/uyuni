@@ -26,7 +26,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.19
+Version: 2.3.21
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -809,6 +809,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Thu Oct 30 2014 Tomas Lestach <tlestach@redhat.com> 2.3.21-1
+- start enforcing minimum password length for satpasswd
+
+* Fri Oct 24 2014 Matej Kollar <mkollar@redhat.com> 2.3.20-1
+- 1151386 - Fix cleanup when DB init goes wrong
+
 * Thu Oct 16 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.19-1
 - 1152271 - sanitize db_name config value
 

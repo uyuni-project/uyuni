@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.65
+Version: 2.3.73
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,44 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Nov 07 2014 Tomas Lestach <tlestach@redhat.com> 2.3.73-1
+- 1134879 - we do not want to use cascade for evr and name attributes of
+  PackageActionDetails
+
+* Thu Nov 06 2014 Jan Dobes 2.3.72-1
+- Fix pxt page link to point to the ported version of that page
+- style /rhn/kickstart/KickstartScript(Create|Edit) page
+- change position of tip
+- remove closing button and change class of box
+
+* Tue Nov 04 2014 Grant Gainey 2.3.71-1
+- 1159070 - Fix GPG_URL_REGEX
+
+* Fri Oct 31 2014 Grant Gainey 2.3.70-1
+- 1158639 - checkstyle fixes
+
+* Fri Oct 31 2014 Grant Gainey 2.3.69-1
+- 1158639 - AccessChains belong to their creator, only
+
+* Fri Oct 31 2014 Tomas Lestach <tlestach@redhat.com> 2.3.68-1
+- 1009396 - fix javascript injection on the /rhn/groups/ProbesList.do page
+- 1009396 - fix javascript injection on the
+  /rhn/monitoring/config/ProbeSuiteSystems.do page
+- 1156456 - fix Portuguese message.channeldeleted translation
+
+* Thu Oct 30 2014 Stephen Herr <sherr@redhat.com> 2.3.67-1
+- 1159053 - Fix two XSS flaws in Kickstart Snippets and List Attributes
+- uppercase the toolbar stuff
+
+* Thu Oct 30 2014 Tomas Lestach <tlestach@redhat.com> 2.3.66-1
+- let the links open in a new window/tab
+- 1003565 - extend packages.getPackage API documentation
+- Test fixes after rewording
+- fix typo in api doc
+- add csv export for /rhn/errata/manage/PublishedErrata.do
+- add csv output for /rhn/systems/details/packages/profiles/CompareSystems.do
+- minor updates to strings / wording
+
 * Fri Oct 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.65-1
 - do not allow to cancel the kickstart once completed
 - 796434 - [RFE] Add clone action to activation keys
