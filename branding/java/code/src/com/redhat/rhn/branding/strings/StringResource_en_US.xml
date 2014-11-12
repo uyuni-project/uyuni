@@ -2009,6 +2009,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.refresh">
         <source>Refresh</source>
       </trans-unit>
+      <trans-unit id="suse-products.jsp.refresh.help">
+        <source>Refreshes the product catalog from the Customer Center</source>
+      </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
       </trans-unit>
