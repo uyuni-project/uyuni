@@ -24,7 +24,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Taskomatic job for refreshing data about channels, products and subscriptions.
@@ -61,9 +63,14 @@ public class MgrSyncRefresh extends RhnJavaJob {
         // Use mgr-inter-sync if this server is an ISS slave
         if (IssFactory.getCurrentMaster() != null) {
             log.info("This server is an ISS slave, refresh using mgr-inter-sync");
-            String cmd[] = new String[1];
-            cmd[0] = "/usr/bin/mgr-inter-sync";
-            executeExtCmd(cmd);
+            List<String> cmd = new ArrayList<String>();
+            cmd.add("/usr/bin/mgr-inter-sync");
+            if (noRepoSync) {
+                cmd.add("--no-kickstarts");
+                cmd.add("--no-errata");
+                cmd.add("--no-packages");
+            }
+            executeExtCmd(cmd.toArray(new String[cmd.size()]));
         }
         else {
             // Perform the refresh
