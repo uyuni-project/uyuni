@@ -255,6 +255,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             self.auth.token(),
                                             channel,
                                             mirror)
+                match = find_channel_by_label(channel, current_channels)
+                if match:
+                    match.status = Channel.Status.INSTALLED
 
             print("Scheduling reposync for '{0}' channel".format(channel))
             self._schedule_channel_reposync(channel)

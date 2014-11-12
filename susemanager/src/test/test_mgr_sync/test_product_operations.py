@@ -499,6 +499,75 @@ Product successfully added"""
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
+    def test_channel_interactive_child_with_parent_already_added(self):
+        """Tests that if the parent is added at the beggining, depending
+        child channels do not try or display the adding of the parent"""
+
+        products = read_data_from_fixture('list_products.data')
+        sled = next(p for p in products
+                    if p['friendly_name'] == 'SUSE Linux Enterprise Desktop 11 SP3'
+                    and p['arch'] == 'x86_64')
+
+        options = get_options("add product".split())
+        available_products = parse_products([sled])
+        chosen_product = available_products[0]
+        self.mgr_sync._fetch_remote_products = MagicMock(
+            return_value=available_products)
+        # the installed status is verified against the remote fetched
+        # channels
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=dict((c.label, c) for c in chosen_product.channels))
+
+        stubbed_xmlrpm_call = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
+
+        with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
+            mock.return_value = str(
+                available_products.index(chosen_product) + 1)
+            with ConsoleRecorder() as recorder:
+                self.assertEqual(0, self.mgr_sync.run(options))
+
+        expected_output = """Available Products:
+
+
+Status:
+  - [I] - product is installed
+  - [ ] - product is not installed, but is available
+  - [U] - product is unavailable
+
+001) [ ] SUSE Linux Enterprise Desktop 11 SP3 (x86_64)
+Adding channels required by 'SUSE Linux Enterprise Desktop 11 SP3' product
+Adding 'sled11-sp3-pool-x86_64' channel
+Scheduling reposync for 'sled11-sp3-pool-x86_64' channel
+Adding 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
+Scheduling reposync for 'sles11-sp3-suse-manager-tools-x86_64-sled-sp3' channel
+Adding 'sled11-sp3-updates-x86_64' channel
+Scheduling reposync for 'sled11-sp3-updates-x86_64' channel
+Product successfully added"""
+
+        self.maxDiff = None
+        self.assertEqual(expected_output.split("\n"), recorder.stdout)
+
+        expected_xmlrpc_calls = []
+        mandatory_channels = [c for c in chosen_product.channels
+                              if not c.optional]
+        for channel in mandatory_channels:
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.sync.content,
+                    "addChannel",
+                    self.fake_auth_token,
+                    channel.label,
+                    ''))
+            expected_xmlrpc_calls.append(
+                call._execute_xmlrpc_method(
+                    self.mgr_sync.conn.channel.software,
+                    "syncRepo",
+                    self.fake_auth_token,
+                    channel.label))
+
+        stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
+
     def test_add_products_interactive_with_a_channel_already_installed(self):
         """ Test adding a product with one of the required channels
         already installed """
@@ -511,12 +580,20 @@ Product successfully added"""
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
+        # the installed status is verified against the remote fetched
+        # channels
+        self.mgr_sync._fetch_remote_channels = MagicMock(
+            return_value=dict((c.label, c) for c in chosen_product.channels))
+
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 
-        # set the 1st required channel as already installed
-        chosen_product.channels[0].status = Channel.Status.INSTALLED
-        channel_to_not_add = chosen_product.channels[0]
+        # set the base channel as already installed
+        for channel in chosen_product.channels:
+            if channel.label == 'rhel-x86_64-as-4':
+                channel.status = Channel.Status.INSTALLED
+                channel_to_not_add = channel
+                break
 
         with patch('spacewalk.susemanager.mgr_sync.mgr_sync.cli_ask') as mock:
             mock.return_value = str(
@@ -536,11 +613,12 @@ Status:
 Adding channels required by 'RES 4' product
 Adding 'res4-as-suse-manager-tools-x86_64' channel
 Scheduling reposync for 'res4-as-suse-manager-tools-x86_64' channel
-Adding 'rhel-x86_64-as-4' channel
+Channel 'rhel-x86_64-as-4' has already been added
 Scheduling reposync for 'rhel-x86_64-as-4' channel
 Adding 'res4-as-x86_64' channel
 Scheduling reposync for 'res4-as-x86_64' channel
 Product successfully added"""
+        self.maxDiff = None
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
         expected_xmlrpc_calls = []
