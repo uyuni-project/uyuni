@@ -1225,7 +1225,7 @@ public class ContentSyncManager {
      */
     public SCCRepository findMatchingRepo(Collection<SCCRepository> repos, String url) {
         String noTrailingSlashUrl = url.replaceFirst("/+$", "");
-        Pattern p = Pattern.compile(Pattern.quote(noTrailingSlashUrl) + "(?:\\?.*)?$");
+        Pattern p = Pattern.compile(Pattern.quote(noTrailingSlashUrl) + "/*(?:\\?.*)?$");
 
         for (SCCRepository repo : repos) {
             if (p.matcher(repo.getUrl()).matches()) {
