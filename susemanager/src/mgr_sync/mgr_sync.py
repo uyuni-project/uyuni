@@ -213,8 +213,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             channels = [self._select_channel_interactive_mode()]
             enable_checks = False
 
-        if enable_checks:
-            current_channels = self._fetch_remote_channels()
+        current_channels = self._fetch_remote_channels()
 
         for channel in channels:
             add_channel = True
