@@ -103,7 +103,7 @@ public class SCCConnection {
      * @param <T> the generic type
      * @return object of type given by resultType
      */
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings("unchecked")
     private <T> PaginatedResult<T> localFSRequest(Type resultType)
             throws FileNotFoundException,
                    IOException {

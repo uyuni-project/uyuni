@@ -97,8 +97,8 @@ public class SCCClient {
     /**
      * Set local resource path from where JSON data will be read instead of accessing
      * the network. If path is set to null, network will be used instead.
-     * @param path
-     * @throws SCCClientException
+     * @param path the local resource path
+     * @throws SCCClientException if the path is not valid
      */
     public void setLocalResourcePath(File path) throws SCCClientException {
         if (path == null) {

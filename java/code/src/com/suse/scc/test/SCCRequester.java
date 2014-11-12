@@ -19,7 +19,6 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 
-import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
 
 /**
