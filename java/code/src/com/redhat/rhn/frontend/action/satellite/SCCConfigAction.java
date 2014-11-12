@@ -24,11 +24,11 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
+import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.io.DwrConvertedException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,8 +39,20 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SCCConfigAction extends RhnAction {
 
+    protected static Logger logger = Logger.getLogger(SCCConfigAction.class);
     private static final String LOCAL_MIRROR_USED = "localMirrorUsed";
     public static final String ISS_MASTER = "issMaster";
+
+    /**
+     * Exception thrown by the AJAX end-point
+     * DWR-convertible so that it can be handled on the client
+     * side.
+     */
+    public static class SCCConfigException extends Exception {
+        public SCCConfigException(String message) {
+            super(message);
+        }
+    };
 
     /**
      * DWR ajax end-point for this action
@@ -60,7 +72,7 @@ public class SCCConfigAction extends RhnAction {
             ensureSatAdmin(user);
         }
 
-        public static void performMigration() throws DwrConvertedException {
+        public static void performMigration() throws SCCConfigException {
             User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
                     .getCurrentUser();
             ensureSatAdmin(user);
@@ -69,55 +81,60 @@ public class SCCConfigAction extends RhnAction {
                 manager.performMigration(user);
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeChannels() throws DwrConvertedException {
+        public static void synchronizeChannels() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
                 csm.updateChannels(null);
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeChannelFamilies() throws DwrConvertedException {
+        public static void synchronizeChannelFamilies() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
                 csm.updateChannelFamilies(csm.readChannelFamilies());
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeProducts() throws DwrConvertedException {
+        public static void synchronizeProducts() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
                 csm.updateSUSEProducts(csm.getProducts());
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeProductChannels() throws DwrConvertedException {
+        public static void synchronizeProductChannels() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
                 csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeSubscriptions() throws DwrConvertedException {
+        public static void synchronizeSubscriptions() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
@@ -125,18 +142,20 @@ public class SCCConfigAction extends RhnAction {
                 csm.updateSubscriptions(csm.getSubscriptions());
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
 
-        public static void synchronizeUpgradePaths() throws DwrConvertedException {
+        public static void synchronizeUpgradePaths() throws SCCConfigException {
             ensureSatAdmin();
             ContentSyncManager csm = new ContentSyncManager();
             try {
                 csm.updateUpgradePaths();
             }
             catch (Exception e) {
-                throw new DwrConvertedException(e.getLocalizedMessage());
+                logger.fatal(e.getMessage(), e);
+                throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
     }
