@@ -14,10 +14,12 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.quartz.JobExecutionContext;
 
@@ -64,6 +66,9 @@ public class MgrSyncRefresh extends RhnJavaJob {
         catch (ContentSyncException e) {
             log.error("Error during mgr-sync refresh", e);
         }
+
+        // Schedule sync of all vendor channels
+        new TaskomaticApi().scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
 
         if (log.isDebugEnabled()) {
             long duration = new Date().getTime() - start.getTime();
