@@ -1372,8 +1372,8 @@ class Backend:
            If yes, update it, if not add it.
         """
         insert_product = self.dbmodule.prepare("""
-            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_list, product_id)
-            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_list, :product_id)
+            INSERT INTO suseProducts (id, name, version, friendly_name, arch_type_id, release, product_id)
+            VALUES (:pid, :name, :version, :friendly_name, :arch_type_id, :release, :product_id)
             """)
         delete_product = self.dbmodule.prepare("""
             DELETE FROM suseProducts WHERE product_id = :product_id
@@ -1385,7 +1385,6 @@ class Backend:
                    friendly_name = :friendly_name,
                    arch_type_id = :arch_type_id,
                    release = :release,
-                   product_list = :product_list
              WHERE product_id = :product_id
              """)
         _query_product = self.dbmodule.prepare("""
@@ -1404,8 +1403,7 @@ class Backend:
                 toupdate[2].append(item['friendly_name'])
                 toupdate[3].append(item['arch_type_id'])
                 toupdate[4].append(item['release'])
-                toupdate[5].append(item['product_list'])
-                toupdate[6].append(int(item['product_id']))
+                toupdate[5].append(int(item['product_id']))
                 continue
             toinsert[0].append(self.sequences['suseProducts'].next())
             toinsert[1].append(item['name'])
@@ -1413,8 +1411,7 @@ class Backend:
             toinsert[3].append(item['friendly_name'])
             toinsert[4].append(item['arch_type_id'])
             toinsert[5].append(item['release'])
-            toinsert[6].append(item['product_list'])
-            toinsert[7].append(int(item['product_id']))
+            toinsert[6].append(int(item['product_id']))
         for ident in existing_data:
             todelete[0].append(int(ident))
         if todelete[0]:
@@ -1422,13 +1419,11 @@ class Backend:
         if toinsert[0]:
             insert_product.executemany(pid=toinsert[0], name=toinsert[1], version=toinsert[2],
                                        friendly_name=toinsert[3], arch_type_id=toinsert[4],
-                                       release=toinsert[5], product_list=toinsert[6],
-                                       product_id=toinsert[7])
+                                       release=toinsert[5], product_id=toinsert[6])
         if toupdate[0]:
             update_product.executemany(name=toupdate[0], version=toupdate[1],
                                        friendly_name=toupdate[2], arch_type_id=toupdate[3],
-                                       release=toupdate[4], product_list=toupdate[5],
-                                       product_id=toupdate[6])
+                                       release=toupdate[4], product_id=toupdate[5])
 
     def processSuseProductChannels(self, batch):
         """Check if the SUSE ProductChannel is already in DB.
