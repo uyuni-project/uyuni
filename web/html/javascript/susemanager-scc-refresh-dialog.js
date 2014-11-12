@@ -64,14 +64,6 @@ $(function() {
     var dialog = $('#scc-migration-dialog');
     dialog.modal({show: true, keyboard: false, backdrop: "static"});
 
-    // A task to perform in case of success
-    function successTask() {
-      dialogCloseBtn.prop('disabled', false);
-      var message = $('#sccconfig\\.jsp\\.completed').html();
-      showMessageWithIcon(message, 'fa fa-check text-success');
-      onSuccess();
-    }
-
     // Compile the list of tasks to be executed
     tasks = [];
     if (migration) {
@@ -84,6 +76,14 @@ $(function() {
       tasks.push({"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"});
       tasks.push({"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
       tasks.push({"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
+    }
+    // A task to perform in case of success
+    function successTask() {
+      dialogCloseBtn.prop('disabled', false);
+      var message = $('#sccconfig\\.jsp\\.completed').html();
+      updateTaskMessageWithIcon(tasks.length, message, 'fa-check text-success', 'text-success');
+      showMessageWithIcon(message, 'fa fa-check text-success');
+      onSuccess();
     }
     tasks.push({"task" : successTask, "messageKey" : "#sccconfig\\.jsp\\.completed"});
 
