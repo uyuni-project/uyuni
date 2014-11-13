@@ -75,7 +75,7 @@ Feature: Test action chaining
       And I check radio button "schedule-by-action-chain"
       And I click on "Reboot system"
       And I should see a "Action has been successfully added to the Action Chain" text
- 
+
   Scenario: I verify the action chain list
     Given I am on the Systems overview page of this client
      When I follow "Schedule"
@@ -89,14 +89,17 @@ Feature: Test action chaining
       And I should see a "6. Deploy /etc/mgr-test-file.cnf" text
       And I should see a "7. Reboot 1 system" text
 
-  
-  Scenario: I delete the action chain
+  Scenario: check that different user cannot see the action chain
      Given I am authorized as "admin" with password "admin"
+     When  I follow "Schedule"
+       And I follow "Action Chains"
+      Then I should not see a "new action chain" link
+
+  Scenario: I delete the action chain
+     Given I am authorized as "testing" with password "testing"
       Then I follow "Schedule"
        And I follow "Action Chains"
        And I follow "new action chain"
        And I follow "delete action chain" in the content area
        And I click on "Delete"
-        
-    
 
