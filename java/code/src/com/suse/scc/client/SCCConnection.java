@@ -38,9 +38,6 @@ import java.util.zip.GZIPInputStream;
  */
 public class SCCConnection {
 
-    /** The endpoint. */
-    private String endpoint;
-
     /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
 
@@ -61,11 +58,9 @@ public class SCCConnection {
     /**
      * Init a connection to a given SCC endpoint.
      *
-     * @param endpointIn the endpoint
      * @param configIn the config
      */
-    public SCCConnection(String endpointIn, SCCConfig configIn) {
-        endpoint = endpointIn;
+    public SCCConnection(SCCConfig configIn) {
         config = configIn;
     }
 
@@ -73,20 +68,21 @@ public class SCCConnection {
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
      * @param <T> the generic type
+     * @param endpoint the GET request endpoint
      * @param resultType the type of the result
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    public <T> List<T> getList(Type resultType) throws SCCClientException {
+    public <T> List<T> getList(String endpoint, Type resultType) throws SCCClientException {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
             if (SCCConnection.this.config.getLocalResourcePath() == null) {
-                partialResult = request(toListType(resultType), "GET");
+                partialResult = request(endpoint, toListType(resultType), "GET");
             }
             else {
                 try {
-                    partialResult = localFSRequest(toListType(resultType));
+                    partialResult = localFSRequest(endpoint, toListType(resultType));
                 }
                 catch (IOException ex) {
                     throw new SCCClientException(ex);
@@ -104,10 +100,10 @@ public class SCCConnection {
      * @return object of type given by resultType
      */
     @SuppressWarnings("unchecked")
-    private <T> PaginatedResult<T> localFSRequest(Type resultType)
+    private <T> PaginatedResult<T> localFSRequest(String endpoint, Type resultType)
             throws FileNotFoundException,
                    IOException {
-        String filename = this.endpoint
+        String filename = endpoint
                 .replaceAll("connect/", "/")     // Remove SCC part for APIs, no leading "/"
                 .replaceAll("/+", "/")           // Replace double slashes to single
                 .replaceAll("^/", "")            // Remove leading slash, if any
@@ -128,7 +124,7 @@ public class SCCConnection {
      * @return object of type given by resultType
      * @throws SCCClientException in case of a problem
      */
-    private <T> PaginatedResult<T> request(Type resultType, String method)
+    private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
         throws SCCClientException {
         HttpURLConnection connection = null;
         InputStream inputStream = null;
