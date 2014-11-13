@@ -190,7 +190,9 @@ class RepoSync(object):
                 self.import_groups(plugin, data['source_url'])
                 if not self.no_errata:
                     self.import_updates(plugin, data['source_url'])
-                if self.sync_kickstart:
+
+                # only for repos obtained from the DB
+                if self.sync_kickstart and repo_label:
                     try:
                         self.import_kickstart(plugin, data['source_url'], data['label'])
                     except:
