@@ -67,17 +67,6 @@ public class SCCClient {
     }
 
     /**
-     * Configure this client's UUID that will be sent to SCC for debugging
-     * purposes.
-     * @param uuid the UUID to send for debugging
-     */
-    public void setUUID(String uuid) {
-        if (uuid != null) {
-            config.put(SCCConfig.UUID, uuid);
-        }
-    }
-
-    /**
      * Set local resource path from where JSON data will be read instead of accessing
      * the network. If path is set to null, network will be used instead.
      * @param path the local resource path
