@@ -519,8 +519,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         if hasISSMaster() or schedule:
             client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
             params = {}
-            if not enable_reposync:
-                params['noRepoSync'] = True
+            params['noRepoSync'] = not enable_reposync
+
             try:
                 client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
             except xmlrpclib.Fault, e:
