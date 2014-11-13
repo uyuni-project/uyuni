@@ -274,8 +274,8 @@ public class ContentSyncManager {
             Credentials c = i.next();
             try {
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
-                scc.setUUID(getUUID());
                 scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
+                scc.getConfig().put(SCCConfig.UUID, getUUID());
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -596,8 +596,8 @@ public class ContentSyncManager {
             try {
                 log.debug("Getting repos for: " + c.getUsername());
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
-                scc.setUUID(getUUID());
                 scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
+                scc.getConfig().put(SCCConfig.UUID, getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
 
                 // Add mirror credentials to all repos
@@ -643,8 +643,8 @@ public class ContentSyncManager {
             throws SCCClientException {
         try {
             SCCClient scc = this.getSCCClient(user, password);
-            scc.setUUID(getUUID());
             scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
+            scc.getConfig().put(SCCConfig.UUID, getUUID());
             return scc.listSubscriptions();
         }
         catch (URISyntaxException e1) {

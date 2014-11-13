@@ -49,11 +49,13 @@ public class SCCConfig {
 
     /**
      * Sets a preference given by key and value. Use one of the public key strings above.
-     * @param key
-     * @param value
+     * @param key the preference key, must not be null
+     * @param value the value, ignored if null
      */
     public void put(String key, String value) {
-        properties.setProperty(key, value);
+        if (value != null) {
+            properties.setProperty(key, value);
+        }
     }
 
     /**
