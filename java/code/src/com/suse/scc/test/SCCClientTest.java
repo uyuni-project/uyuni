@@ -19,6 +19,7 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
