@@ -55,9 +55,9 @@ import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
-import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConnection;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -273,7 +273,7 @@ public class ContentSyncManager {
         while (i.hasNext() && productList.size() == 0) {
             Credentials c = i.next();
             try {
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                SCCConnection scc = getSCCConnection(c.getUsername(), c.getPassword());
                 scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
                 scc.getConfig().put(SCCConfig.UUID, getUUID());
                 List<SCCProduct> products = scc.listProducts();
@@ -595,7 +595,7 @@ public class ContentSyncManager {
         for (Credentials c : credentials) {
             try {
                 log.debug("Getting repos for: " + c.getUsername());
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                SCCConnection scc = getSCCConnection(c.getUsername(), c.getPassword());
                 scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
                 scc.getConfig().put(SCCConfig.UUID, getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
@@ -640,7 +640,7 @@ public class ContentSyncManager {
     public List<SCCSubscription> getSubscriptions(String user, String password)
             throws SCCClientException {
         try {
-            SCCClient scc = this.getSCCClient(user, password);
+            SCCConnection scc = this.getSCCConnection(user, password);
             scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
             scc.getConfig().put(SCCConfig.UUID, getUUID());
             return scc.listSubscriptions();
@@ -1662,23 +1662,23 @@ public class ContentSyncManager {
     }
 
     /**
-     * Get an instance of {@link SCCClient} and configure it to use localpath, if
+     * Get an instance of {@link SCCConnection} and configure it to use localpath, if
      * such is setup in /etc/rhn/rhn.conf
      *
      * @param user network credential: user
      * @param password networ credential: password
      * @throws URISyntaxException
      * @throws SCCClientException
-     * @return {@link SCCClient}
+     * @return {@link SCCConnection}
      */
-    private SCCClient getSCCClient(String user, String password)
+    private SCCConnection getSCCConnection(String user, String password)
             throws URISyntaxException,
                    SCCClientException {
         // check that URL is valid. Will throw URISyntaxException otherwise
         String rawUrl = Config.get().getString(ConfigDefaults.SCC_URL);
         String url = new URI(rawUrl).toASCIIString();
 
-        SCCClient scc = new SCCClient(url, user, password);
+        SCCConnection scc = new SCCConnection(url, user, password);
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         if (localPath != null) {
             File localFile = new File(localPath);
@@ -1695,7 +1695,6 @@ public class ContentSyncManager {
             }
 
             scc.getConfig().put(SCCConfig.RESOURCE_PATH, localFile.getAbsolutePath());
-
         }
 
         return scc;

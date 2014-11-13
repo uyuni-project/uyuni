@@ -14,7 +14,13 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.domain.scc.SCCRepository;
+
 import com.google.gson.Gson;
+import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCSubscription;
+
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -56,12 +62,38 @@ public class SCCConnection {
     }
 
     /**
-     * Init a connection to a given SCC endpoint.
+     * Constructor for connecting to scc.suse.com.
      *
-     * @param configIn the config
+     * @param username the username
+     * @param password the password
      */
-    public SCCConnection(SCCConfig configIn) {
-        config = configIn;
+    public SCCConnection(String username, String password) {
+        this(SCCConfig.DEFAULT_URL, username, password);
+    }
+
+    /**
+     * Constructor for connecting to scc.suse.com.
+     *
+     * @param url the URL of scc
+     * @param username the username
+     * @param password the password
+     */
+    public SCCConnection(String url, String username, String password) {
+        config = new SCCConfig();
+
+        config.put(SCCConfig.URL, url);
+
+        byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
+        String credsString = new String(credsBytes);
+        config.put(SCCConfig.ENCODED_CREDS, credsString);
+    }
+
+    /**
+     * Gets the configuration object.
+     * @return the config
+     */
+    public SCCConfig getConfig() {
+        return config;
     }
 
     /**
@@ -209,5 +241,44 @@ public class SCCConnection {
             }
         };
         return resultListType;
+    }
+
+    /**
+     * Gets and returns the list of repositories available to an organization.
+     *
+     * GET /connect/organizations/repositories
+     *
+     * @return list of repositories available to organization
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCRepository> listRepositories() throws SCCClientException {
+        return getList("/connect/organizations/repositories",
+                SCCRepository.class);
+    }
+
+    /**
+     * Gets and returns the list of all products.
+     *
+     * GET /connect/organizations/products/unscoped
+     *
+     * @return list of all available products
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCProduct> listProducts() throws SCCClientException {
+        return getList(
+                "/connect/organizations/products/unscoped", SCCProduct.class);
+    }
+
+    /**
+     * Gets and returns the list of subscriptions available to an organization.
+     *
+     * GET /connect/organizations/subscriptions
+     *
+     * @return list of subscriptions available to organization
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+        return getList("/connect/organizations/subscriptions",
+                SCCSubscription.class);
     }
 }
