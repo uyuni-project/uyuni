@@ -38,7 +38,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * Default constructor
      */
     public SCCRequester() {
-        connection = new SCCConnection(URL, "user", "pass");
+        connection = new SCCConnection(URL, "user", "pass", null, null, null);
     }
 
     /**

@@ -201,8 +201,7 @@ public class SCCConnectionTest extends TestCase {
                 "/com/suse/scc/test/connect/organizations/repositories.json"),
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
-            SCCConnection connection = new SCCConnection("http://localhost:" + HttpServerMock.PORT, null, null);
-            connection.getConfig().put(SCCConfig.RESOURCE_PATH, tmpDir.getAbsolutePath());
+            SCCConnection connection = new SCCConnection("http://localhost:" + HttpServerMock.PORT, null, null, tmpDir.getAbsolutePath(), null, null);
             List<SCCRepository> repos = connection.listRepositories();
 
             // Assertions
