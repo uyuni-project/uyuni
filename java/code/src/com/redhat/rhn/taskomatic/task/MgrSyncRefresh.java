@@ -57,7 +57,15 @@ public class MgrSyncRefresh extends RhnJavaJob {
         // Get parameter
         boolean noRepoSync = false;
         if (context.getJobDetail().getJobDataMap().containsKey(noRepoSyncKey)) {
-            noRepoSync = true;
+            try {
+                noRepoSync = context.getJobDetail().getJobDataMap().
+                        getBooleanValue(noRepoSyncKey);
+            }
+            catch (ClassCastException e) {
+                // if the provided value is not a bool we treat the presence of
+                // the key as a true
+                noRepoSync = true;
+            }
         }
 
         // Use mgr-inter-sync if this server is an ISS slave
