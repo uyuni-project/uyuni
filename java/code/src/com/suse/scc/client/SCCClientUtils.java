@@ -16,6 +16,9 @@ package com.suse.scc.client;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * Utilities for {@link SCCClient}.
@@ -36,5 +39,31 @@ public class SCCClientUtils {
         }
         catch (IOException e) {
         }
+    }
+
+    /**
+     * Returns a type which is a list of the specified type.
+     * @param elementType the element type
+     * @return the List type
+     */
+    public static Type toListType(final Type elementType) {
+        Type resultListType = new ParameterizedType() {
+
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] {elementType};
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        };
+        return resultListType;
     }
 }

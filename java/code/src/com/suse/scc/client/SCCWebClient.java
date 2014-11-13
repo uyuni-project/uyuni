@@ -20,17 +20,11 @@ import com.google.gson.Gson;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.LinkedList;
@@ -42,7 +36,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * Class representation of a connection to SCC for issuing API requests.
  */
-public class SCCConnection implements SCCClient {
+public class SCCWebClient implements SCCClient {
 
     /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
@@ -63,26 +57,10 @@ public class SCCConnection implements SCCClient {
 
     /**
      * Constructor for connecting to scc.suse.com.
-     * @param url the URL of scc
-     * @param username the username
-     * @param password the password
-     * @param resourcePath the local path for JSON files or null
-     * @param proxySettings a proxy settings object
-     * @param uuid the UUID or null
+     * @param configIn the configuration object
      */
-    public SCCConnection(String url, String username, String password, String resourcePath,
-            SCCProxySettings proxySettings, String uuid) {
-        config = new SCCConfig();
-
-        config.put(SCCConfig.URL, url);
-
-        byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-        String credsString = new String(credsBytes);
-        config.put(SCCConfig.ENCODED_CREDS, credsString);
-
-        config.put(SCCConfig.RESOURCE_PATH, resourcePath);
-        config.put(proxySettings);
-        config.put(SCCConfig.UUID, uuid);
+    public SCCWebClient(SCCConfig configIn) {
+        config = configIn;
     }
 
     /**
@@ -126,42 +104,11 @@ public class SCCConnection implements SCCClient {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
-            if (SCCConnection.this.config.getLocalResourcePath() == null) {
-                partialResult = request(endpoint, toListType(resultType), "GET");
-            }
-            else {
-                try {
-                    partialResult = localFSRequest(endpoint, toListType(resultType));
-                }
-                catch (IOException ex) {
-                    throw new SCCClientException(ex);
-                }
-            }
+            partialResult = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
             result.addAll(partialResult.result);
             endpoint = partialResult.nextUrl;
         } while (partialResult.nextUrl != null);
         return result;
-    }
-
-    /**
-     * Read data from the file in the local directory.
-     * @param <T> the generic type
-     * @return object of type given by resultType
-     */
-    @SuppressWarnings("unchecked")
-    private <T> PaginatedResult<T> localFSRequest(String endpoint, Type resultType)
-            throws FileNotFoundException,
-                   IOException {
-        String filename = endpoint
-                .replaceAll("connect/", "/")     // Remove SCC part for APIs, no leading "/"
-                .replaceAll("/+", "/")           // Replace double slashes to single
-                .replaceAll("^/", "")            // Remove leading slash, if any
-                .replaceAll("/", "_") + ".json"; // Replace slashes with underscore, add ext
-
-        return new PaginatedResult<T>((T) new Gson().fromJson(
-                new BufferedReader(new InputStreamReader(new FileInputStream(
-                        new File(this.config.getLocalResourcePath() + "/" + filename)))),
-                resultType), null);
     }
 
     /**
@@ -232,31 +179,5 @@ public class SCCConnection implements SCCClient {
             SCCClientUtils.closeQuietly(inputStream);
             SCCClientUtils.closeQuietly(gzipStream);
         }
-    }
-
-    /**
-     * Returns a type which is a list of the specified type.
-     * @param elementType the element type
-     * @return the List type
-     */
-    private Type toListType(final Type elementType) {
-        Type resultListType = new ParameterizedType() {
-
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] {elementType};
-            }
-
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
-        return resultListType;
     }
 }
