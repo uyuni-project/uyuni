@@ -64,16 +64,6 @@ public class SCCConnection {
     /**
      * Constructor for connecting to scc.suse.com.
      *
-     * @param username the username
-     * @param password the password
-     */
-    public SCCConnection(String username, String password) {
-        this(SCCConfig.DEFAULT_URL, username, password);
-    }
-
-    /**
-     * Constructor for connecting to scc.suse.com.
-     *
      * @param url the URL of scc
      * @param username the username
      * @param password the password
