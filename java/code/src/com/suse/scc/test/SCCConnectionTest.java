@@ -52,7 +52,7 @@ public class SCCConnectionTest extends TestCase {
                     }
                 };
         List<SCCProduct> products = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getConnection().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, products.size());
@@ -121,7 +121,7 @@ public class SCCConnectionTest extends TestCase {
                     }
                 };
         List<SCCRepository> repos = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getConnection().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, repos.size());
@@ -147,7 +147,7 @@ public class SCCConnectionTest extends TestCase {
                     }
                 };
         List<SCCSubscription> subs = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getConnection().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, subs.size());

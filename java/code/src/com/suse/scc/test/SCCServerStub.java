@@ -17,8 +17,6 @@ package com.suse.scc.test;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
-import com.suse.scc.client.SCCConfig;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
@@ -33,17 +31,6 @@ import simple.http.Response;
  */
 public class SCCServerStub implements Responder {
 
-    /** The configuration object. */
-    private SCCConfig config;
-
-    /**
-     * Standard constructor
-     * @param configIn the configuration object
-     */
-    public SCCServerStub(SCCConfig configIn) {
-        config = configIn;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -57,8 +44,8 @@ public class SCCServerStub implements Responder {
         String uri = request.getURI();
         if (!uri.endsWith("2")) {
             response.set("Link",
-                    "<" + config.getUrl() + uri + "2>; rel=\"last\", " +
-                    "<" + config.getUrl() + uri + "2>; rel=\"next\"");
+                    "<" + SCCRequester.URL + uri + "2>; rel=\"last\", " +
+                    "<" + SCCRequester.URL + uri + "2>; rel=\"next\"");
         }
 
         // Send file content
