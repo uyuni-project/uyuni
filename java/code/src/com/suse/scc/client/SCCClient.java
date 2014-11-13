@@ -74,8 +74,8 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
-        return new SCCConnection("/connect/organizations/products/unscoped", config)
-                .getList(SCCProduct.class);
+        return new SCCConnection(config).getList(
+                "/connect/organizations/products/unscoped", SCCProduct.class);
     }
 
     /**
@@ -87,8 +87,8 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCRepository> listRepositories() throws SCCClientException {
-        return new SCCConnection("/connect/organizations/repositories", config)
-                .getList(SCCRepository.class);
+        return new SCCConnection(config).getList("/connect/organizations/repositories",
+                SCCRepository.class);
     }
 
     /**
@@ -100,7 +100,7 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
-        return new SCCConnection("/connect/organizations/subscriptions", config)
-                .getList(SCCSubscription.class);
+        return new SCCConnection(config).getList("/connect/organizations/subscriptions",
+                SCCSubscription.class);
     }
 }
