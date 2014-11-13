@@ -57,6 +57,7 @@ import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.client.SCCConnection;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -1690,7 +1691,7 @@ public class ContentSyncManager {
             }
         }
 
-        return SCCConnection.getInstance(url, user, password, localAbsolutePath,
+        return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
                 MgrSyncUtils.getRhnProxySettings(), getUUID());
     }
 
