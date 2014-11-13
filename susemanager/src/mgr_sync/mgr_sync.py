@@ -548,7 +548,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 sys.stdout.flush()
                 sys.stderr.write("\tError: %s\n\n" % ex)
                 self.exit_with_error = True
-                return
+                return False
 
         if enable_reposync:
             print("\nScheduling refresh of all the available channels")
@@ -567,6 +567,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                         print("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         self._schedule_channel_reposync(child.label)
+        return True
 
     def _enable_scc(self, retry_on_session_failure=True):
         """ Enable the SCC backend """
@@ -581,7 +582,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                     return self._enable_scc(retry_on_session_failure=False)
                 else:
                     raise ex
-            self._refresh(enable_reposync=False)
+            if not self._refresh(enable_reposync=False):
+                sys.exit(1)
             print("SCC backend successfully migrated.")
         else:
             print("SUSE Manager is already using the SCC backend.")
