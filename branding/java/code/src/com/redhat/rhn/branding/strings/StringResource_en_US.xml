@@ -2038,7 +2038,7 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.notyetavailable">
         <source>The SUSE Customer Center is not yet available.</source>
       </trans-unit>
-      <trans-unit id="sccconfig.jsp.alreadymigrated">
+      <trans-unit id="sccconfig.jsp.migrated">
         <source>Congratulations! SUSE Manager is migrated to the SUSE Customer Center.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.stillncc">
