@@ -20,7 +20,6 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.client.SCCConnection;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
@@ -36,12 +35,12 @@ import javax.xml.bind.DatatypeConverter;
 import junit.framework.TestCase;
 
 /**
- * Tests for {@link SCCConnection} methods.
+ * Tests for {@link SCCClient} methods.
  */
-public class SCCConnectionTest extends TestCase {
+public class SCCClientTest extends TestCase {
 
     /**
-     * Test for {@link SCCConnection#listProducts()}.
+     * Test for {@link SCCWebClient#listProducts()}.
      */
     public void testListProducts() throws Exception {
         SCCRequester<List<SCCProduct>> requester =
@@ -110,7 +109,7 @@ public class SCCConnectionTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCConnection#listRepositories()}.
+     * Test for {@link SCCWebClient#listRepositories()}.
      */
     public void testListRepositories() throws Exception {
         SCCRequester<List<SCCRepository>> requester =
@@ -136,7 +135,7 @@ public class SCCConnectionTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCConnection#listSubscriptions()}.
+     * Test for {@link SCCWebClient#listSubscriptions()}.
      */
     public void testListSubscriptions() throws Exception {
         SCCRequester<List<SCCSubscription>> requester =
@@ -193,7 +192,7 @@ public class SCCConnectionTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCConnection#listRepositories()} but from the directory.
+     * Test for {@link SCCWebClient#listRepositories()} but from the directory.
      * @throws java.lang.Exception
      */
     public void testListRepositoriesFromDirectory() throws Exception {
