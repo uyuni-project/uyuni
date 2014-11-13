@@ -18,7 +18,7 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConnection;
+import com.suse.scc.client.SCCClientFactory;
 
 import java.util.concurrent.Callable;
 
@@ -39,7 +39,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * Default constructor
      */
     public SCCRequester() {
-        scc = SCCConnection.getInstance(URL, "user", "pass", null, null, null);
+        scc = SCCClientFactory.getInstance(URL, "user", "pass", null, null, null);
     }
 
     /**
