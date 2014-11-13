@@ -586,6 +586,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 else:
                     raise ex
             self._refresh(enable_reposync=False)
+            if self.exit_with_error:
+                sys.exit(1)
             print("SCC backend successfully migrated.")
         else:
             print("SUSE Manager is already using the SCC backend.")
