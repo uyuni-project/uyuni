@@ -1892,7 +1892,7 @@ tree will not be usable for autoinstalling.
 
       <!-- SCC Migration -->
       <trans-unit id="message.sccmigrationavailable">
-            <source>You are currently connected to the Novell Customer Center (NCC). Migrate to the new &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;SUSE Customer Center&lt;/a&gt; (SCC) for the best customer experience.</source>
+            <source>You are currently connected to the Novell Customer Center (NCC). &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;Migrate&lt;/a&gt; to the new SUSE Customer Center (SCC) for the best customer experience.</source>
       </trans-unit>
 
       <!-- Setup Wizard -->
