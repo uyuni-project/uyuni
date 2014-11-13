@@ -171,7 +171,7 @@ public class SCCConfigAction extends RhnAction {
         }
 
         if (MgrSyncUtils.isMigratedToSCC()) {
-            return mapping.findForward("alreadymigrated");
+            return mapping.findForward("migrated");
         }
 
         request.setAttribute(LOCAL_MIRROR_USED, localMirrorUsed());
