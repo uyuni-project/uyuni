@@ -87,6 +87,45 @@ public class SCCConnection {
     }
 
     /**
+     * Gets and returns the list of repositories available to an organization.
+     *
+     * GET /connect/organizations/repositories
+     *
+     * @return list of repositories available to organization
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCRepository> listRepositories() throws SCCClientException {
+        return getList("/connect/organizations/repositories",
+                SCCRepository.class);
+    }
+
+    /**
+     * Gets and returns the list of all products.
+     *
+     * GET /connect/organizations/products/unscoped
+     *
+     * @return list of all available products
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCProduct> listProducts() throws SCCClientException {
+        return getList(
+                "/connect/organizations/products/unscoped", SCCProduct.class);
+    }
+
+    /**
+     * Gets and returns the list of subscriptions available to an organization.
+     *
+     * GET /connect/organizations/subscriptions
+     *
+     * @return list of subscriptions available to organization
+     * @throws SCCClientException if anything goes wrong SCC side
+     */
+    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+        return getList("/connect/organizations/subscriptions",
+                SCCSubscription.class);
+    }
+
+    /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
      * @param <T> the generic type
@@ -95,7 +134,8 @@ public class SCCConnection {
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    public <T> List<T> getList(String endpoint, Type resultType) throws SCCClientException {
+    private <T> List<T> getList(String endpoint, Type resultType)
+        throws SCCClientException {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
@@ -212,7 +252,7 @@ public class SCCConnection {
      * @param elementType the element type
      * @return the List type
      */
-    public Type toListType(final Type elementType) {
+    private Type toListType(final Type elementType) {
         Type resultListType = new ParameterizedType() {
 
             @Override
@@ -231,44 +271,5 @@ public class SCCConnection {
             }
         };
         return resultListType;
-    }
-
-    /**
-     * Gets and returns the list of repositories available to an organization.
-     *
-     * GET /connect/organizations/repositories
-     *
-     * @return list of repositories available to organization
-     * @throws SCCClientException if anything goes wrong SCC side
-     */
-    public List<SCCRepository> listRepositories() throws SCCClientException {
-        return getList("/connect/organizations/repositories",
-                SCCRepository.class);
-    }
-
-    /**
-     * Gets and returns the list of all products.
-     *
-     * GET /connect/organizations/products/unscoped
-     *
-     * @return list of all available products
-     * @throws SCCClientException if anything goes wrong SCC side
-     */
-    public List<SCCProduct> listProducts() throws SCCClientException {
-        return getList(
-                "/connect/organizations/products/unscoped", SCCProduct.class);
-    }
-
-    /**
-     * Gets and returns the list of subscriptions available to an organization.
-     *
-     * GET /connect/organizations/subscriptions
-     *
-     * @return list of subscriptions available to organization
-     * @throws SCCClientException if anything goes wrong SCC side
-     */
-    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
-        return getList("/connect/organizations/subscriptions",
-                SCCSubscription.class);
     }
 }
