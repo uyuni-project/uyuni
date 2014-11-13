@@ -17,8 +17,8 @@ package com.suse.scc.test;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConnection;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -46,9 +46,9 @@ public class SCCConnectionTest extends TestCase {
         SCCRequester<List<SCCProduct>> requester =
                 new SCCRequester<List<SCCProduct>>() {
                     @Override
-                    public List<SCCProduct> request(SCCConnection connection)
+                    public List<SCCProduct> request(SCCClient scc)
                             throws SCCClientException {
-                        return connection.listProducts();
+                        return scc.listProducts();
                     }
                 };
         List<SCCProduct> products = new HttpServerMock().getResult(
@@ -115,9 +115,9 @@ public class SCCConnectionTest extends TestCase {
         SCCRequester<List<SCCRepository>> requester =
                 new SCCRequester<List<SCCRepository>>() {
                     @Override
-                    public List<SCCRepository> request(SCCConnection connection)
+                    public List<SCCRepository> request(SCCClient scc)
                             throws SCCClientException {
-                        return connection.listRepositories();
+                        return scc.listRepositories();
                     }
                 };
         List<SCCRepository> repos = new HttpServerMock().getResult(
@@ -141,9 +141,9 @@ public class SCCConnectionTest extends TestCase {
         SCCRequester<List<SCCSubscription>> requester =
                 new SCCRequester<List<SCCSubscription>>() {
                     @Override
-                    public List<SCCSubscription> request(SCCConnection connection)
+                    public List<SCCSubscription> request(SCCClient scc)
                             throws SCCClientException {
-                        return connection.listSubscriptions();
+                        return scc.listSubscriptions();
                     }
                 };
         List<SCCSubscription> subs = new HttpServerMock().getResult(
@@ -201,8 +201,10 @@ public class SCCConnectionTest extends TestCase {
                 "/com/suse/scc/test/connect/organizations/repositories.json"),
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
-            SCCConnection connection = new SCCConnection("http://localhost:" + HttpServerMock.PORT, null, null, tmpDir.getAbsolutePath(), null, null);
-            List<SCCRepository> repos = connection.listRepositories();
+            SCCClient scc = SCCConnection.getInstance(
+                    "http://localhost:" + HttpServerMock.PORT, null, null,
+                    tmpDir.getAbsolutePath(), null, null);
+            List<SCCRepository> repos = scc.listRepositories();
 
             // Assertions
             assertEquals(1, repos.size());
