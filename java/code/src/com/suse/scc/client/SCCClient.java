@@ -29,6 +29,7 @@ import java.util.List;
 public class SCCClient {
 
     private final SCCConfig config = new SCCConfig();
+    private final SCCConnection connection = new SCCConnection(config);
 
     /**
      * Constructor for connecting to scc.suse.com.
@@ -74,7 +75,7 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCProduct> listProducts() throws SCCClientException {
-        return new SCCConnection(config).getList(
+        return connection.getList(
                 "/connect/organizations/products/unscoped", SCCProduct.class);
     }
 
@@ -87,7 +88,7 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCRepository> listRepositories() throws SCCClientException {
-        return new SCCConnection(config).getList("/connect/organizations/repositories",
+        return connection.getList("/connect/organizations/repositories",
                 SCCRepository.class);
     }
 
@@ -100,7 +101,7 @@ public class SCCClient {
      * @throws SCCClientException if anything goes wrong SCC side
      */
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
-        return new SCCConnection(config).getList("/connect/organizations/subscriptions",
+        return connection.getList("/connect/organizations/subscriptions",
                 SCCSubscription.class);
     }
 }
