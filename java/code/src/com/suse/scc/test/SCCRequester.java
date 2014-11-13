@@ -16,6 +16,7 @@ package com.suse.scc.test;
 
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConnection;
 
@@ -32,21 +33,21 @@ public abstract class SCCRequester<T> implements Callable<T> {
     public static final String URL = "http://localhost:" + HttpServerMock.PORT;
 
     /** The client instance. */
-    private final SCCConnection connection;
+    private final SCCClient scc;
 
     /**
      * Default constructor
      */
     public SCCRequester() {
-        connection = new SCCConnection(URL, "user", "pass", null, null, null);
+        scc = SCCConnection.getInstance(URL, "user", "pass", null, null, null);
     }
 
     /**
      * Gets the client instance.
      * @return the client
      */
-    public SCCConnection getConnection() {
-        return connection;
+    public SCCClient getClient() {
+        return scc;
     }
 
     /**
@@ -56,7 +57,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
     public T call() {
         T ret = null;
         try {
-            ret = request(connection);
+            ret = request(scc);
         }
         catch (SCCClientException e) {
             // Catch it in here, we are expecting it
@@ -67,9 +68,9 @@ public abstract class SCCRequester<T> implements Callable<T> {
     /**
      * Run a request to SCC.
      *
-     * @param connectionIn the connection object to make the request
+     * @param clientIn the client object to make the request
      * @return a generic request result
      * @throws SCCClientException if there is a problem
      */
-    public abstract T request(SCCConnection connectionIn) throws SCCClientException;
+    public abstract T request(SCCClient clientIn) throws SCCClientException;
 }
