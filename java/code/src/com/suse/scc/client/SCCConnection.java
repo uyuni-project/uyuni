@@ -62,23 +62,6 @@ public class SCCConnection implements SCCClient {
     }
 
     /**
-     * Factory method.
-     * @param url the URL of scc
-     * @param username the username
-     * @param password the password
-     * @param resourcePath the local path for JSON files or null
-     * @param proxySettings a proxy settings object
-     * @param uuid the UUID or null
-     * @return the new {@link SCCConnection}
-     */
-    public static SCCClient getInstance(String url, String username,
-            String password, String resourcePath, SCCProxySettings proxySettings,
-            String uuid) {
-        return new SCCConnection(url, username, password, resourcePath,
-                proxySettings, uuid);
-    }
-
-    /**
      * Constructor for connecting to scc.suse.com.
      * @param url the URL of scc
      * @param username the username
@@ -87,7 +70,7 @@ public class SCCConnection implements SCCClient {
      * @param proxySettings a proxy settings object
      * @param uuid the UUID or null
      */
-    private SCCConnection(String url, String username, String password, String resourcePath,
+    public SCCConnection(String url, String username, String password, String resourcePath,
             SCCProxySettings proxySettings, String uuid) {
         config = new SCCConfig();
 
