@@ -202,7 +202,7 @@ public class SCCClientTest extends TestCase {
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
             SCCClient client = new SCCClient("http://localhost:" + HttpServerMock.PORT, null, null);
-            client.setLocalResourcePath(tmpDir);
+            client.getConfig().put(SCCConfig.RESOURCE_PATH, tmpDir.getAbsolutePath());
             List<SCCRepository> repos = client.listRepositories();
 
             // Assertions

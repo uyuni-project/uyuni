@@ -21,7 +21,6 @@ import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -64,32 +63,6 @@ public class SCCClient {
      */
     public SCCConfig getConfig() {
         return config;
-    }
-
-    /**
-     * Set local resource path from where JSON data will be read instead of accessing
-     * the network. If path is set to null, network will be used instead.
-     * @param path the local resource path
-     * @throws SCCClientException if the path is not valid
-     */
-    public void setLocalResourcePath(File path) throws SCCClientException {
-        if (path == null) {
-            this.config.remove(SCCConfig.RESOURCE_PATH);
-            return;
-        }
-
-        if (!path.canRead()) {
-            throw new SCCClientException(
-                    String.format("Unable to access resource at \"%s\" location.",
-                                  path.getAbsolutePath()));
-        }
-        else if (!path.isDirectory()) {
-            throw new SCCClientException(
-                    String.format("Path \"%s\" must be a directory.",
-                                  path.getAbsolutePath()));
-        }
-
-        this.config.put(SCCConfig.RESOURCE_PATH, path.getAbsolutePath());
     }
 
     /**
