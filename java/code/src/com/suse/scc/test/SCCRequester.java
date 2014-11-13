@@ -28,6 +28,9 @@ import java.util.concurrent.Callable;
  */
 public abstract class SCCRequester<T> implements Callable<T> {
 
+    /** The test URL. */
+    public static final String URL = "http://localhost:" + HttpServerMock.PORT;
+
     /** The client instance. */
     private final SCCConnection connection;
 
@@ -35,8 +38,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * Default constructor
      */
     public SCCRequester() {
-        connection = new SCCConnection("http://localhost:" + HttpServerMock.PORT,
-                "user", "pass");
+        connection = new SCCConnection(URL, "user", "pass");
     }
 
     /**
