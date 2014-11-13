@@ -91,9 +91,10 @@ $(function() {
     function cleanupTask(errmsg, exception) {
       dialogCloseBtn.prop('disabled', false);
       var message = $('#sccconfig\\.jsp\\.failed').html();
+      var link = $('#sccconfig\\.jsp\\.failed\\.details\\.link').html();
       showMessageWithIcon(
-        message + ': ' + '<a href="/rhn/admin/Catalina.do">' +
-          exception.message + '</a>',
+        message + ': ' + exception.message + ' (<a href="/rhn/admin/Catalina.do">' +
+          link + '</a>)',
         'fa fa-exclamation-triangle fa-1-5x text-warning');
     }
 
