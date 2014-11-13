@@ -2092,6 +2092,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.failed">
         <source>Operation not successful</source>
       </trans-unit>
+      <trans-unit id="sccconfig.jsp.failed.details.link">
+        <source>Details</source>
+      </trans-unit>
       <trans-unit id="SUSE Customer Center">
         <source>SUSE Customer Center</source>
           <context-group name="ctx">
