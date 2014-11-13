@@ -42,7 +42,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * Class representation of a connection to SCC for issuing API requests.
  */
-public class SCCConnection {
+public class SCCConnection implements SCCClient {
 
     /** The gzip encoding string. */
     private final String GZIP_ENCODING = "gzip";
@@ -62,8 +62,24 @@ public class SCCConnection {
     }
 
     /**
+     * Factory method.
+     * @param url the URL of scc
+     * @param username the username
+     * @param password the password
+     * @param resourcePath the local path for JSON files or null
+     * @param proxySettings a proxy settings object
+     * @param uuid the UUID or null
+     * @return the new {@link SCCConnection}
+     */
+    public static SCCClient getInstance(String url, String username,
+            String password, String resourcePath, SCCProxySettings proxySettings,
+            String uuid) {
+        return new SCCConnection(url, username, password, resourcePath,
+                proxySettings, uuid);
+    }
+
+    /**
      * Constructor for connecting to scc.suse.com.
-     *
      * @param url the URL of scc
      * @param username the username
      * @param password the password
@@ -71,7 +87,7 @@ public class SCCConnection {
      * @param proxySettings a proxy settings object
      * @param uuid the UUID or null
      */
-    public SCCConnection(String url, String username, String password, String resourcePath,
+    private SCCConnection(String url, String username, String password, String resourcePath,
             SCCProxySettings proxySettings, String uuid) {
         config = new SCCConfig();
 
@@ -87,39 +103,27 @@ public class SCCConnection {
     }
 
     /**
-     * Gets and returns the list of repositories available to an organization.
-     *
-     * GET /connect/organizations/repositories
-     *
-     * @return list of repositories available to organization
-     * @throws SCCClientException if anything goes wrong SCC side
+     * {@inheritDoc}
      */
+    @Override
     public List<SCCRepository> listRepositories() throws SCCClientException {
         return getList("/connect/organizations/repositories",
                 SCCRepository.class);
     }
 
     /**
-     * Gets and returns the list of all products.
-     *
-     * GET /connect/organizations/products/unscoped
-     *
-     * @return list of all available products
-     * @throws SCCClientException if anything goes wrong SCC side
+     * {@inheritDoc}
      */
+    @Override
     public List<SCCProduct> listProducts() throws SCCClientException {
         return getList(
                 "/connect/organizations/products/unscoped", SCCProduct.class);
     }
 
     /**
-     * Gets and returns the list of subscriptions available to an organization.
-     *
-     * GET /connect/organizations/subscriptions
-     *
-     * @return list of subscriptions available to organization
-     * @throws SCCClientException if anything goes wrong SCC side
+     * {@inheritDoc}
      */
+    @Override
     public List<SCCSubscription> listSubscriptions() throws SCCClientException {
         return getList("/connect/organizations/subscriptions",
                 SCCSubscription.class);

@@ -55,8 +55,8 @@ import com.suse.mgrsync.MgrSyncProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
+import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
-import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConnection;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -273,7 +273,7 @@ public class ContentSyncManager {
         while (i.hasNext() && productList.size() == 0) {
             Credentials c = i.next();
             try {
-                SCCConnection scc = getSCCConnection(c.getUsername(), c.getPassword());
+                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -593,7 +593,7 @@ public class ContentSyncManager {
         for (Credentials c : credentials) {
             try {
                 log.debug("Getting repos for: " + c.getUsername());
-                SCCConnection scc = getSCCConnection(c.getUsername(), c.getPassword());
+                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
                 List<SCCRepository> repos = scc.listRepositories();
 
                 // Add mirror credentials to all repos
@@ -638,7 +638,7 @@ public class ContentSyncManager {
     public List<SCCSubscription> getSubscriptions(String user, String password)
             throws SCCClientException {
         try {
-            SCCConnection scc = this.getSCCConnection(user, password);
+            SCCClient scc = this.getSCCClient(user, password);
             return scc.listSubscriptions();
         }
         catch (URISyntaxException e1) {
@@ -1665,7 +1665,7 @@ public class ContentSyncManager {
      * @throws SCCClientException
      * @return {@link SCCConnection}
      */
-    private SCCConnection getSCCConnection(String user, String password)
+    private SCCClient getSCCClient(String user, String password)
             throws URISyntaxException,
                    SCCClientException {
         // check that URL is valid. Will throw URISyntaxException otherwise
@@ -1690,7 +1690,7 @@ public class ContentSyncManager {
             }
         }
 
-        return new SCCConnection(url, user, password, localAbsolutePath,
+        return SCCConnection.getInstance(url, user, password, localAbsolutePath,
                 MgrSyncUtils.getRhnProxySettings(), getUUID());
     }
 
