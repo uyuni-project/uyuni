@@ -67,8 +67,12 @@ public class SCCConnection {
      * @param url the URL of scc
      * @param username the username
      * @param password the password
+     * @param resourcePath the local path for JSON files or null
+     * @param proxySettings a proxy settings object
+     * @param uuid the UUID or null
      */
-    public SCCConnection(String url, String username, String password) {
+    public SCCConnection(String url, String username, String password, String resourcePath,
+            SCCProxySettings proxySettings, String uuid) {
         config = new SCCConfig();
 
         config.put(SCCConfig.URL, url);
@@ -76,14 +80,10 @@ public class SCCConnection {
         byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
         String credsString = new String(credsBytes);
         config.put(SCCConfig.ENCODED_CREDS, credsString);
-    }
 
-    /**
-     * Gets the configuration object.
-     * @return the config
-     */
-    public SCCConfig getConfig() {
-        return config;
+        config.put(SCCConfig.RESOURCE_PATH, resourcePath);
+        config.put(proxySettings);
+        config.put(SCCConfig.UUID, uuid);
     }
 
     /**

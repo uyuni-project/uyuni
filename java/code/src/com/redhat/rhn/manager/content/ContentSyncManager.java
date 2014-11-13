@@ -1672,29 +1672,26 @@ public class ContentSyncManager {
         String rawUrl = Config.get().getString(ConfigDefaults.SCC_URL);
         String url = new URI(rawUrl).toASCIIString();
 
-        SCCConnection scc = new SCCConnection(url, user, password);
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        String localAbsolutePath = null;
         if (localPath != null) {
             File localFile = new File(localPath);
+            localAbsolutePath = localFile.getAbsolutePath();
 
             if (!localFile.canRead()) {
                 throw new SCCClientException(
                         String.format("Unable to access resource at \"%s\" location.",
-                                localFile.getAbsolutePath()));
+                                localAbsolutePath));
             }
             else if (!localFile.isDirectory()) {
                 throw new SCCClientException(
                         String.format("Path \"%s\" must be a directory.",
-                                localFile.getAbsolutePath()));
+                                localAbsolutePath));
             }
-
-            scc.getConfig().put(SCCConfig.RESOURCE_PATH, localFile.getAbsolutePath());
         }
 
-        scc.getConfig().put(MgrSyncUtils.getRhnProxySettings());
-        scc.getConfig().put(SCCConfig.UUID, getUUID());
-
-        return scc;
+        return new SCCConnection(url, user, password, localAbsolutePath,
+                MgrSyncUtils.getRhnProxySettings(), getUUID());
     }
 
     /**
