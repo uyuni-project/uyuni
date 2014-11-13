@@ -67,23 +67,6 @@ public class SCCClient {
     }
 
     /**
-     * Set the proxy for this client
-     * @param settings Proxy settings
-     */
-    public void setProxySettings(SCCProxySettings settings) {
-        if (settings.getHostname() != null) {
-            config.put(SCCConfig.PROXY_HOSTNAME, settings.getHostname());
-            config.put(SCCConfig.PROXY_PORT, String.valueOf(settings.getPort()));
-        }
-        if (settings.getUsername() != null) {
-            config.put(SCCConfig.PROXY_USERNAME, settings.getUsername());
-            if (settings.getPassword() != null) {
-                config.put(SCCConfig.PROXY_PASSWORD, settings.getPassword());
-            }
-        }
-    }
-
-    /**
      * Configure this client's UUID that will be sent to SCC for debugging
      * purposes.
      * @param uuid the UUID to send for debugging

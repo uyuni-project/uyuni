@@ -57,6 +57,23 @@ public class SCCConfig {
     }
 
     /**
+     * Sets proxy settings
+     * @param settings Proxy settings object
+     */
+    public void put(SCCProxySettings settings) {
+        if (settings.getHostname() != null) {
+            put(SCCConfig.PROXY_HOSTNAME, settings.getHostname());
+            put(SCCConfig.PROXY_PORT, String.valueOf(settings.getPort()));
+        }
+        if (settings.getUsername() != null) {
+            put(SCCConfig.PROXY_USERNAME, settings.getUsername());
+            if (settings.getPassword() != null) {
+                put(SCCConfig.PROXY_PASSWORD, settings.getPassword());
+            }
+        }
+    }
+
+    /**
      * Removes a preference given by key.
      *
      * @param key
