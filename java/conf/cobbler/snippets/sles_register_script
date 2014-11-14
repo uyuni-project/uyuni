@@ -34,18 +34,47 @@ redhat_management_key="$redhat_management_key"
 #if not $varExists('dont_register')
 # if you don't want to register, set the 'dont_register' variable
 echo "export sm_registred=1" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
+
+files=""
+directories=""
+#if $varExists('allow_config_actions')
+if [ $allow_config_actions -eq 1 ] ; then
+    for i in "/etc/sysconfig/rhn/allowed-actions /etc/sysconfig/rhn/allowed-actions/configfiles"; do
+        [ -d "\$i" ] || (mkdir -p \$i && directories="\$i \$directories")
+    done
+    [ -f /etc/sysconfig/rhn/allowed-actions/configfiles/all ] || files="\$files /etc/sysconfig/rhn/allowed-actions/configfiles/all"
+    [ -n "\$files" ] && touch \$files
+fi
+#end if
+
 if [ \$key ]; then
     rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$key,\$redhat_management_key --force
 else
-     rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$redhat_management_key --force
+    rhnreg_ks --serverUrl=$endpoint --sslCACert=$mycert --activationkey=\$redhat_management_key --force
 fi
+
+[ -n "\$files" ] && rm -f \$files
+[ -n "\$directories" ] && rmdir \$directories
+
+#if $varExists('allow_config_actions')
+if [ $allow_config_actions -eq 1 ]; then
+   mgr-actions-control --enable-deploy --enable-diff
+fi
+#end if
+
+#if $varExists('allow_remote_commands')
+if [ $allow_remote_commands -eq 1 ]; then
+   mgr-actions-control --enable-run
+fi
+#end if
+
 #else
 # registration turned off
 echo "export sm_registred=0" >> /var/adm/autoinstall/cache/SUSE_Manager_keys
 #end if
 
 #else
-# not configured to register to any Red Hat management server (ok)
+# not configured to register to any management server (ok)
 #end if
         ]]>
     </source>
