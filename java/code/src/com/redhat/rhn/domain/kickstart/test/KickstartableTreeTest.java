@@ -15,9 +15,12 @@
 package com.redhat.rhn.domain.kickstart.test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.cobbler.Distro;
@@ -26,6 +29,7 @@ import org.hibernate.Session;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -67,18 +71,18 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     }
 
     public static void createKickstartTreeItems(KickstartableTree tree) throws Exception {
-        createDirIfNotExists(new File(tree.getDefaultKernelPath()).getParentFile());
+        createDirIfNotExists(new File(tree.getDefaultKernelPaths()[0]).getParentFile());
         createDirIfNotExists(new File(tree.getKernelXenPath()).getParentFile());
 
-        FileUtils.writeStringToFile("kernel", tree.getDefaultKernelPath());
+        FileUtils.writeStringToFile("kernel", tree.getDefaultKernelPaths()[0]);
         FileUtils.writeStringToFile("kernel-xen", tree.getKernelXenPath());
 
 
-        createDirIfNotExists(new File(tree.getDefaultInitrdPath()[0]).getParentFile());
+        createDirIfNotExists(new File(tree.getDefaultInitrdPaths()[0]).getParentFile());
         createDirIfNotExists(new File(tree.getInitrdXenPath()).getParentFile());
 
         FileUtils.writeStringToFile("initrd-xen", tree.getInitrdXenPath());
-        FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPath()[0]);
+        FileUtils.writeStringToFile("initrd", tree.getDefaultInitrdPaths()[0]);
     }
 
     public void testKickstartableTree() throws Exception {
@@ -203,11 +207,11 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         createKickstartTreeItems(k);
 
         Distro d = Distro.create(CobblerXMLRPCHelper.getConnection("test"),
-                k.getLabel(), k.getDefaultKernelPath(), k.getDefaultInitrdPath()[0],
+                k.getLabel(), k.getDefaultKernelPaths()[0], k.getDefaultInitrdPaths()[0],
                 new HashMap(), k.getInstallType().getCobblerBreed(),
                 k.getInstallType().getCobblerOsVersion());
         Distro xend = Distro.create(CobblerXMLRPCHelper.getConnection("test"),
-                k.getLabel(), k.getDefaultKernelPath(), k.getDefaultInitrdPath()[0],
+                k.getLabel(), k.getDefaultKernelPaths()[0], k.getDefaultInitrdPaths()[0],
                 new HashMap(), k.getInstallType().getCobblerBreed(),
                 k.getInstallType().getCobblerOsVersion());
 
@@ -236,5 +240,68 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         tree.setInstallType(installtype);
         TestUtils.saveAndFlush(tree);
         return tree;
+    }
+
+    private KickstartableTree createSUSEKsTreeByArch(Long archId, File ksRoot)
+            throws Exception {
+        ChannelArch arch = (ChannelArch)
+                TestUtils.lookupFromCacheById(archId, "ChannelArch.findById");
+        KickstartInstallType suseInstallType = (KickstartInstallType)
+                TestUtils.lookupFromCacheById(9L, "KickstartInstallType.findById");
+        KickstartTreeType treetype = (KickstartTreeType)
+                TestUtils.lookupFromCacheById(1L, "KickstartTreeType.findById");
+
+        User u = UserTestUtils.findNewUser("testUser", "testCreateTestKickstartableTree");
+        Channel channel = ChannelFactoryTest.createTestChannel(u);
+        ChannelTestUtils.addDistMapToChannel(channel);
+        channel.setChannelArch(arch);
+
+        KickstartableTree tree = new KickstartableTree();
+        tree.setBasePath(ksRoot.getAbsolutePath());
+        tree.setCreated(new Date());
+        tree.setModified(new Date());
+        tree.setOrg(channel.getOrg());
+        tree.setLastModified(new Date());
+        tree.setInstallType(suseInstallType);
+        tree.setTreeType(treetype);
+        tree.setChannel(channel);
+
+        return tree;
+    }
+
+    public void testSUSEStartupPaths() throws Exception {
+        File ksRoot = new File("/media");
+
+        Map<Long, String[]> archMap = new LinkedHashMap<Long, String[]>();
+        archMap.put(500L, new String[]{"i386", "/media/boot/%s/loader/linux",
+                                               "/media/boot/%s/loader/initrd"});
+        archMap.put(502L, new String[]{"ia64", "/media/boot/%s/image",
+                                               "/media/boot/%s/initrd"});
+        archMap.put(502L, new String[]{"ia64", "/media/boot/%s/image",
+                                               "/media/boot/%s/initdisk.gz"});
+        archMap.put(508L, new String[]{"s390", "/media/boot/%s/vmrdr.ikr",
+                                               "/media/boot/%s/initrd"});
+        archMap.put(508L, new String[]{"s390", "/media/boot/%s/linux",
+                                               "/media/boot/%s/initrd"});
+        archMap.put(510L, new String[]{"s390x", "/media/boot/%s/vmrdr.ikr",
+                                                "/media/boot/%s/initrd"});
+        archMap.put(510L, new String[]{"s390x", "/media/boot/%s/linux",
+                                                "/media/boot/%s/initrd"});
+        archMap.put(513L, new String[]{"x86_64", "/media/boot/%s/loader/linux",
+                                                 "/media/boot/%s/loader/initrd"});
+        archMap.put(515L, new String[]{"ppc64", "/media/suseboot/linux64.gz",
+                                                "/media/suseboot/initrd64"});
+        archMap.put(516L, new String[]{"ppc64le", "/media/boot/%s/linux",
+                                                  "/media/boot/%s/initrd"});
+        archMap.put(520L, new String[]{"aarch64", "/media/boot/%s/linux",
+                                                  "/media/boot/%s/initrd"});
+
+        for (Map.Entry<Long, String[]> entry : archMap.entrySet()) {
+            KickstartableTree tree = this.createSUSEKsTreeByArch(entry.getKey(), ksRoot);
+            assertContains(Arrays.asList(tree.getDefaultKernelPaths()),
+                           String.format(entry.getValue()[1], entry.getValue()[0]));
+            assertContains(Arrays.asList(tree.getDefaultInitrdPaths()),
+                           String.format(entry.getValue()[2], entry.getValue()[0]));
+        }
     }
 }
