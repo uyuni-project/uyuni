@@ -285,6 +285,9 @@ public class SSHPushWorker implements QueueWorker {
             sb.append(RHN_CHECK);
             cmd = sb.toString();
         }
+        if (log.isDebugEnabled()) {
+            log.debug("Command: " + cmd);
+        }
         return cmd;
     }
 }
