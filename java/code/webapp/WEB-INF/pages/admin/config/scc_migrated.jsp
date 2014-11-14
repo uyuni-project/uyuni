@@ -15,7 +15,7 @@
                 <h4>SUSE Customer Center</h4>
             </div>
             <div class="panel-body">
-                <bean:message key="sccconfig.jsp.alreadymigrated"/>
+                <bean:message key="sccconfig.jsp.migrated"/>
             </div>
         </div>
     </body>

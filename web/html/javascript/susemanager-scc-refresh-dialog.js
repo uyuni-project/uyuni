@@ -5,7 +5,25 @@ $(function() {
     var iconText = $('<div></div>');
     iconText.append(icon);
     iconText.append(message);
-    $('#scc-migration-current-task').html(iconText);
+    $('#scc-migration-dialog-status').html(iconText);
+  }
+
+  function updateTaskMessageWithIcon(taskIndex, message, iconClass, textClass) {
+    // Helper function to update a task item message and icon
+    var taskItemSel = '#scc-task-list li[data-task="' + taskIndex + '"]';
+    var li = $(taskItemSel)
+    if (li.length < 1) {
+      $('#scc-task-list').append('<li data-task="' + taskIndex + '"></li>');
+      li = $(taskItemSel);
+    }
+    var icon = $('<i></i>').attr('class', iconClass);
+    icon.addClass('fa fa-li');
+    li.empty();
+    li.append(icon);
+    var textDiv = $('<div></div>');
+    textDiv.html(message);
+    textDiv.attr('class', textClass);
+    li.append(textDiv);
   }
 
   // Helper function: refresh the status label
@@ -18,7 +36,7 @@ $(function() {
   function runTasks(tasks, cleanupTask, currentTask, totalTasks) {
     if (tasks.length >= 1) {
       var message = $(tasks[0].messageKey).html();
-      showMessageWithIcon(message, 'fa fa-spinner fa-spin');
+      updateTaskMessageWithIcon(currentTask, message, 'fa-spinner fa-spin', '');
 
       if (currentTask <= totalTasks) {
         refreshStatusLabel(currentTask, totalTasks);
@@ -26,12 +44,12 @@ $(function() {
 
       tasks[0].task(makeAjaxHandler(
         function(ret) {
-          showMessageWithIcon(message, 'fa fa-check success');
+          updateTaskMessageWithIcon(currentTask, message, 'fa-check text-success', 'text-success');
           runTasks(tasks.slice(1), cleanupTask, currentTask + 1, totalTasks);
         },
-        function(message, exception) {
-          showMessageWithIcon(message, 'fa fa-exclamation-triangle fa-1-5x text-warning');
-          cleanupTask();
+        function(errmsg, exception) {
+          updateTaskMessageWithIcon(currentTask, message, 'fa-exclamation-triangle text-warning', 'text-warning');
+          cleanupTask(errmsg, exception);
         })
       );
     }
@@ -46,13 +64,6 @@ $(function() {
     var dialog = $('#scc-migration-dialog');
     dialog.modal({show: true, keyboard: false, backdrop: "static"});
 
-    // A task to perform in case of success
-    function successTask() {
-      dialogCloseBtn.prop('disabled', false);
-      showMessageWithIcon($('#sccconfig\\.jsp\\.completed').html(), "fa fa-check success");
-      onSuccess();
-    }
-
     // Compile the list of tasks to be executed
     tasks = [];
     if (migration) {
@@ -66,14 +77,32 @@ $(function() {
       tasks.push({"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
       tasks.push({"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
     }
+    // A task to perform in case of success
+    function successTask() {
+      dialogCloseBtn.prop('disabled', false);
+      var message = $('#sccconfig\\.jsp\\.completed').html();
+      updateTaskMessageWithIcon(tasks.length, message, 'fa-check text-success', 'text-success');
+      showMessageWithIcon(message, 'fa fa-check text-success');
+      onSuccess();
+    }
     tasks.push({"task" : successTask, "messageKey" : "#sccconfig\\.jsp\\.completed"});
 
     // Cleanup task
-    function cleanupTask() {
+    function cleanupTask(errmsg, exception) {
       dialogCloseBtn.prop('disabled', false);
-      $('#scc-migration-dialog-status').html(
-          '<i class="fa fa-exclamation-triangle fa-1-5x text-warning"></i>' +
-      $('#sccconfig\\.jsp\\.failed').html());
+      var message = $('#sccconfig\\.jsp\\.failed').html();
+      var link = $('#sccconfig\\.jsp\\.failed\\.details\\.link').html();
+      showMessageWithIcon(
+        message + ': ' + exception.message + ' (<a href="/rhn/admin/Catalina.do">' +
+          link + '</a>)',
+        'fa fa-exclamation-triangle fa-1-5x text-warning');
+    }
+
+    // create the task list in the UI
+    $('#scc-task-list').addClass('fa-ul');
+    for (i=0; i < tasks.length; ++i) {
+      var message = $(tasks[i].messageKey).html();
+      updateTaskMessageWithIcon(i + 1, message, 'fa-circle-o text-muted', 'text-muted');
     }
 
     // Run the list of tasks
