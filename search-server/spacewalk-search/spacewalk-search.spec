@@ -163,12 +163,16 @@ rm -rf $RPM_BUILD_ROOT
 %post
 was_running=0
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%service_add_post rhn-search.service
+%else
 %{fillup_and_insserv rhn-search}
 if [ -f /etc/init.d/rhn-search ]; then
    if /sbin/service rhn-search status > /dev/null 2>&1 ; then
        was_running=1
    fi
 fi
+%endif
 %else
 if [ -f /etc/init.d/rhn-search ]; then
    # This adds the proper /etc/rc*.d links for the script
@@ -207,7 +211,11 @@ fi
 
 %preun
 %if 0%{?suse_version}
+%if 0%{?suse_version} >= 1210
+%service_del_preun rhn-search.service
+%else
 %stop_on_removal rhn-search
+%endif
 %else
 if [ $1 = 0 ] ; then
     if [ -f /etc/init.d/rhn-search ]; then
@@ -215,6 +223,14 @@ if [ $1 = 0 ] ; then
        /sbin/chkconfig --del rhn-search
     fi
 fi
+%endif
+
+%if 0%{?suse_version} >= 1210
+%postun
+%service_del_postun rhn-search.service
+
+%pre
+%service_add_pre rhn-search.service
 %endif
 
 %files
