@@ -1892,7 +1892,7 @@ tree will not be usable for autoinstalling.
 
       <!-- SCC Migration -->
       <trans-unit id="message.sccmigrationavailable">
-            <source>You are currently connected to the Novell Customer Center. Migrate to the new &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;SUSE Customer Center&lt;/a&gt; for the best customer experience.</source>
+            <source>You are currently connected to the Novell Customer Center (NCC). &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;Migrate&lt;/a&gt; to the new SUSE Customer Center (SCC) for the best customer experience.</source>
       </trans-unit>
 
       <!-- Setup Wizard -->
@@ -2009,6 +2009,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="suse-products.jsp.refresh">
         <source>Refresh</source>
       </trans-unit>
+      <trans-unit id="suse-products.jsp.refresh.help">
+        <source>Refreshes the product catalog from the Customer Center</source>
+      </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
       </trans-unit>
@@ -2035,8 +2038,8 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.notyetavailable">
         <source>The SUSE Customer Center is not yet available.</source>
       </trans-unit>
-      <trans-unit id="sccconfig.jsp.alreadymigrated">
-        <source>Congratulations! SUSE Manager is already migrated to the SUSE Customer Center.</source>
+      <trans-unit id="sccconfig.jsp.migrated">
+        <source>Congratulations! SUSE Manager is migrated to the SUSE Customer Center.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.stillncc">
         <source>SUSE Manager is still connected to the Novell Customer Center.</source>
@@ -2058,6 +2061,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="sccconfig.jsp.refresh">
         <source>Refreshing data from SUSE Customer Center</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.bepatient">
+         <source>Please be patient, this might take several minutes.</source>
       </trans-unit>
       <trans-unit id="sccconfig.jsp.channels">
         <source>Channels</source>
@@ -2085,6 +2091,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="sccconfig.jsp.failed">
         <source>Operation not successful</source>
+      </trans-unit>
+      <trans-unit id="sccconfig.jsp.failed.details.link">
+        <source>Details</source>
       </trans-unit>
       <trans-unit id="SUSE Customer Center">
         <source>SUSE Customer Center</source>

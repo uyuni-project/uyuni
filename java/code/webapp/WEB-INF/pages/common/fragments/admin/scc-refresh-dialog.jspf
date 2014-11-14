@@ -9,11 +9,16 @@
               </h4>
             </div>
             <div class="modal-body">
+                <p><bean:message key="sccconfig.jsp.bepatient"/></p>
+                <ul id='scc-task-list'>
+                </ul>
                 <div id='scc-migration-current-task'></div>
             </div>
-            <div class="modal-footer">
-              <div id="scc-migration-dialog-status" class="pull-left"></div>
-              <button id="scc-migrate-dialog-close-btn" type="button" class="btn btn-default" data-dismiss="modal"><bean:message key="sccconfig.jsp.close"/></button>
+            <div class="modal-footer row">
+                <div id="scc-migration-dialog-status" class="col-md-9 text-left"></div>
+                <div class="col-md-3 text-right">
+                  <button id="scc-migrate-dialog-close-btn" type="button" class="btn btn-default" data-dismiss="modal"><bean:message key="sccconfig.jsp.close"/></button>
+                </div>
             </div>
         </div>
     </div>
@@ -27,3 +32,4 @@
 <div class="hidden" id="sccconfig.jsp.upgradepaths"><bean:message key="sccconfig.jsp.upgradepaths"/></div>
 <div class="hidden" id="sccconfig.jsp.completed"><bean:message key="sccconfig.jsp.completed"/></div>
 <div class="hidden" id="sccconfig.jsp.failed"><bean:message key="sccconfig.jsp.failed"/></div>
+<div class="hidden" id="sccconfig.jsp.failed.details.link"><bean:message key="sccconfig.jsp.failed.details.link"/></div>
