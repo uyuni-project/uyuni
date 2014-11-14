@@ -1,4 +1,7 @@
 $(function() {
+  // help for refresh button
+  $('#refresh').tooltip();
+
   // Refresh the cache if needed
   if ($("#products-content").data("refresh-needed")) {
     var refresh = $("#iss-master").data("iss-master");
