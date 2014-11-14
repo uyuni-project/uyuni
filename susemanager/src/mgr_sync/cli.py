@@ -150,7 +150,7 @@ def _create_refresh_subparser(subparsers):
         help='URL of a local mirror like SMT. Only to download the RPMs.')
     refresh_parser.add_argument(
         '--schedule', action='store_true', dest='schedule',
-        default=False, help='Schedule a refresh asynchronously')
+        default=False, help='Schedule a refresh asynchronously (always enabled in case of ISS).')
 
 
 def get_options(args=None):

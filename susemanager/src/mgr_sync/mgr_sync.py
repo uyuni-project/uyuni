@@ -68,7 +68,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             sys.exit(1)
 
-        if hasISSMaster() and not vars(options).has_key('enable_scc'):
+        if hasISSMaster() and not (vars(options).has_key('enable_scc') or vars(options).has_key('refresh')):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             sys.stderr.write(msg)
             sys.exit(1)
@@ -516,16 +516,13 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         text_width = len("Refreshing ") + 8 + \
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
 
-        if hasISSMaster():
-            msg = """To refresh the channels, please call 'mgr-inter-sync'\n"""
-            sys.stdout.write(msg)
-            sys.stdout.flush()
-            return
-
-        if schedule:
+        if hasISSMaster() or schedule:
             client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+            params = {}
+            params['noRepoSync'] = not enable_reposync
+
             try:
-                client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', {})
+                client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
             except xmlrpclib.Fault, e:
                 sys.stderr.write("Error scheduling refresh: %s\n" % e)
                 return
