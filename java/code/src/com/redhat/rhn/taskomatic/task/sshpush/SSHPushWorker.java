@@ -268,7 +268,10 @@ public class SSHPushWorker implements QueueWorker {
     private String getCommand() {
         String cmd = RHN_CHECK;
         if (proxy != null) {
-            StringBuilder sb = new StringBuilder("ssh ");
+            StringBuilder sb = new StringBuilder("ssh");
+            sb.append(" -i ");
+            sb.append(PRIVATE_KEY);
+            sb.append(" ");
             sb.append(client);
             if (system.getContactMethodLabel().equals(SSH_PUSH_TUNNEL)) {
                 sb.append(" -R ");
