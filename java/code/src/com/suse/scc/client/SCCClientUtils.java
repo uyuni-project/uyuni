@@ -14,8 +14,8 @@
  */
 package com.suse.scc.client;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -26,18 +26,18 @@ import java.util.List;
 public class SCCClientUtils {
 
     /**
-     * Quietly close a given stream, suppressing exceptions.
-     *
-     * @param stream
+     * Quietly close a given closeable object, suppressing exceptions.
+     * @param closeable a closeable object
      */
-    public static void closeQuietly(InputStream stream) {
-        if (stream == null) {
+    public static void closeQuietly(Closeable closeable) {
+        if (closeable == null) {
             return;
         }
         try {
-            stream.close();
+            closeable.close();
         }
         catch (IOException e) {
+            // ignore
         }
     }
 
