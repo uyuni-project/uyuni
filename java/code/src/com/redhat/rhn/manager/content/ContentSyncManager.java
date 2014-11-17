@@ -601,7 +601,9 @@ public class ContentSyncManager {
 
                 // Add mirror credentials to all repos
                 for (SCCRepository r : repos) {
-                    r.setCredentials(c);
+                    if (c.getUsername() != null) {
+                        r.setCredentials(c);
+                    }
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Found " + repos.size() +
