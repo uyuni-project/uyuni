@@ -54,6 +54,8 @@ public class SCCClientFactory {
             String credsString = new String(credsBytes);
             config.put(SCCConfig.ENCODED_CREDS, credsString);
 
+            config.put(SCCConfig.USER, username);
+
             config.put(proxySettings);
             config.put(SCCConfig.UUID, uuid);
 
