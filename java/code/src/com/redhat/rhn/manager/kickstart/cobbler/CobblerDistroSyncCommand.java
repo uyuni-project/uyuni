@@ -215,7 +215,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             }
             catch (ValidatorException e) {
                 return "ERROR: No kernel found in this path: [" +
-                        StringUtil.join(", ", Arrays.asList(tree.getDefaultInitrdPath())) +
+                        StringUtil.join(", ", Arrays.asList(tree.getDefaultInitrdPaths())) +
                         "] Cannot create the distro in cobbler which" +
                         " makes this kickstart distribution: [" + treeLabel +
                         "] unusable.";
@@ -226,7 +226,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
             }
             catch (ValidatorException e) {
                 return "ERROR: No initrd found in this path: [" +
-                        StringUtil.join(", ", Arrays.asList(tree.getDefaultInitrdPath())) +
+                        StringUtil.join(", ", Arrays.asList(tree.getDefaultInitrdPaths())) +
                         "] Cannot create the distro in cobbler which" +
                         " makes this kickstart distribution: [" + treeLabel +
                         "] unusable.";
