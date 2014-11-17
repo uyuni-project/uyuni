@@ -13,6 +13,21 @@
 			<product_id name="SUSE_SLED" version="11.2">901</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-adv-toolchain" name="IBM-DLPAR-Adv-Toolchain" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://ftp.unicamp.br/pub/linuxpatch/toolchain/at/suse/SLES_12/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR SDK for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-sdk" name="IBM-DLPAR-SDK" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-sdk" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/SDK/SLES/12/ppc64le/" summary="IBM DLPAR sdk for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-sdk" version="12">1249</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="IBM DLPAR Utils for SLE 12" family="SLES-PPC" is_signed="Y" label="ibm-dlpar-utils" name="IBM-DLPAR-utils" optional="N" parent="sles12-pool-ppc64le" product_name="ibm-dlpar-utils" product_version="12" source_url="http://public.dhe.ibm.com/software/server/POWER/Linux/yum/IBM/SLES/12/ppc64le/" summary="IBM DLPAR Utils for SLE 12 ppc64le" update_tag="">
+		<products>
+			<product_id name="ibm-dlpar-utils" version="12">1250</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="nVidia Driver for SLE11-SP2" family="7260" is_signed="Y" label="nvidia-driver-sle11-sp2-i586" name="nVidia-Driver-SLE11-SP2 i586" optional="N" parent="sled11-sp1-pool-i586" product_name="SUSE_SLED" product_version="11.2" source_url="http://download.nvidia.com/novell/sle11sp2" summary="nVidia Driver for SLE11-SP2" update_tag="">
 		<products>
 			<product_id name="SUSE_SLED" version="11.2">879</product_id>
@@ -26,32 +41,32 @@
 			<product_id name="SUSE_SLED" version="11.2">901</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11" family="OES2" is_signed="Y" label="oes11-pool-x86_64" name="OES11-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11" update_tag="oes11">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11" family="OES2" is_signed="Y" label="oes11-pool-x86_64" name="OES11-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 11" update_tag="oes11">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11">1232</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11.1" family="OES2" is_signed="Y" label="oes11-sp1-pool-x86_64" name="OES11-SP1-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11.1" update_tag="oes11sp1">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11.1" family="OES2" is_signed="Y" label="oes11-sp1-pool-x86_64" name="OES11-SP1-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 11.1" update_tag="oes11sp1">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11.1">1241</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11.1" family="OES2" is_signed="Y" label="oes11-sp1-updates-x86_64" name="OES11-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11.1" update_tag="oes11sp1">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11.1" family="OES2" is_signed="Y" label="oes11-sp1-updates-x86_64" name="OES11-SP1-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.1" source_url="https://nu.novell.com/repo/$RCE/OES11-SP1-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 11.1" update_tag="oes11sp1">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11.1">1241</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11.2 x86_64" family="OES2" is_signed="Y" label="oes11-sp2-pool-x86_64" name="OES11-SP2-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11.2 x86_64" update_tag="oes11sp2">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11.2" family="OES2" is_signed="Y" label="oes11-sp2-pool-x86_64" name="OES11-SP2-Pool for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/OES11-SP2-Pool/sle-11-x86_64/" summary="Novell Open Enterprise Server 11.2" update_tag="oes11sp2">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11.2">1242</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11.2 x86_64" family="OES2" is_signed="Y" label="oes11-sp2-updates-x86_64" name="OES11-SP2-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/OES11-SP2-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11.2 x86_64" update_tag="oes11sp2">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11.2" family="OES2" is_signed="Y" label="oes11-sp2-updates-x86_64" name="OES11-SP2-Updates for x86_64" optional="N" parent="sles11-sp3-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/OES11-SP2-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 11.2" update_tag="oes11sp2">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11.2">1242</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="Novell Open Enterprise Server 2 11" family="OES2" is_signed="Y" label="oes11-updates-x86_64" name="OES11-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 2 11" update_tag="oes11">
+	<channel arch="x86_64" description="Novell Open Enterprise Server 11" family="OES2" is_signed="Y" label="oes11-updates-x86_64" name="OES11-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="Open_Enterprise_Server" product_version="11" source_url="https://nu.novell.com/repo/$RCE/OES11-Updates/sle-11-x86_64/" summary="Novell Open Enterprise Server 11" update_tag="oes11">
 		<products>
 			<product_id name="Open_Enterprise_Server" version="11">1232</product_id>
 		</products>
@@ -116,12 +131,12 @@
 			<product_id name="RES" version="5">1122</product_id>
 		</products>
 	</channel>
-	<channel arch="i386" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-i386" name="RES6-HA for i386" optional="N" parent="rhel-i386-server-6" product_name="RES-HA" product_version="6.0" source_url="https://updates.suse.com/repo/$RCE/RES6-HA/i386/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
+	<channel arch="i386" description="RHEL Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-i386" name="RES6-HA for i386" optional="N" parent="rhel-i386-server-6" product_name="RES-HA" product_version="6.0" source_url="https://updates.suse.com/repo/$RCE/RES6-HA/i386/" summary="RHEL Expanded Support 6.0" update_tag="">
 		<products>
 			<product_id name="RES-HA" version="6.0">1132</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="RHEL 6 Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-x86_64" name="RES6-HA for x86_64" optional="N" parent="rhel-x86_64-server-6" product_name="RES-HA" product_version="6.0" source_url="https://updates.suse.com/repo/$RCE/RES6-HA/x86_64/" summary="RHEL 6 Expanded Support 6.0" update_tag="">
+	<channel arch="x86_64" description="RHEL Expanded Support 6.0" family="RES-HA" is_signed="N" label="res6-ha-x86_64" name="RES6-HA for x86_64" optional="N" parent="rhel-x86_64-server-6" product_name="RES-HA" product_version="6.0" source_url="https://updates.suse.com/repo/$RCE/RES6-HA/x86_64/" summary="RHEL Expanded Support 6.0" update_tag="">
 		<products>
 			<product_id name="RES-HA" version="6.0">1132</product_id>
 		</products>
