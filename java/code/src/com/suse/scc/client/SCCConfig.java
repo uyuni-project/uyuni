@@ -26,6 +26,7 @@ public class SCCConfig {
     public static final String ENCODED_CREDS = "encoded-creds";
     public static final String UUID = "uuid";
     public static final String RESOURCE_PATH = "resource-path";
+    public static final String USER = "user";
 
     // Proxy settings
     public static final String PROXY_HOSTNAME = "proxy-hostname";
@@ -157,5 +158,13 @@ public class SCCConfig {
      */
     public String getLocalResourcePath() {
         return properties.getProperty(SCCConfig.RESOURCE_PATH);
+    }
+
+    /**
+     * Returns the user name or null, if is not set.
+     * @return the user
+     */
+    public String getUser() {
+        return properties.getProperty(SCCConfig.USER);
     }
 }

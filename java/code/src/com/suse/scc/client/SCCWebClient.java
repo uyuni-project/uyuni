@@ -20,10 +20,7 @@ import com.google.gson.Gson;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -31,24 +28,37 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
 
 /**
  * Class representation of a connection to SCC for issuing API requests.
  */
 public class SCCWebClient implements SCCClient {
 
-    /** The gzip encoding string. */
-    private final String GZIP_ENCODING = "gzip";
-
     /** The config object. */
     private final SCCConfig config;
 
-    /** Represents a partial result with a pointer to the next one. */
+    /** Directory where to save logging files. */
+    private final String LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
+
+    /**
+     *  Represents a partial result with a pointer to the next one.
+     *
+     * @param <T> the generic type
+     */
     private class PaginatedResult<T> {
+
+        /** The result. */
         private final T result;
+
+        /** The next url. */
         private final String nextUrl;
 
+        /**
+         * Instantiates a new paginated result.
+         *
+         * @param resultIn the result in
+         * @param nextUrlIn the next url in
+         */
         PaginatedResult(T resultIn, String nextUrlIn) {
             result = resultIn;
             nextUrl = nextUrlIn;
@@ -115,6 +125,7 @@ public class SCCWebClient implements SCCClient {
      * Perform HTTP request and parse the result into a given result type.
      *
      * @param <T> the generic type
+     * @param endpoint the endpoint
      * @param resultType the type of the result
      * @param method the HTTP method to use
      * @return object of type given by resultType
@@ -123,8 +134,7 @@ public class SCCWebClient implements SCCClient {
     private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
         throws SCCClientException {
         HttpURLConnection connection = null;
-        InputStream inputStream = null;
-        GZIPInputStream gzipStream = null;
+        Reader streamReader = null;
         try {
             // Setup the connection
             connection = SCCRequestFactory.getInstance().initConnection(
@@ -134,18 +144,8 @@ public class SCCWebClient implements SCCClient {
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                inputStream = connection.getInputStream();
-
-                // Unzip stream if in gzip format
-                Reader inputStreamReader;
-                if (GZIP_ENCODING.equals(connection.getContentEncoding())) {
-                    gzipStream = new GZIPInputStream(inputStream);
-                    inputStreamReader = new InputStreamReader(gzipStream);
-                }
-                else {
-                    inputStreamReader = new InputStreamReader(inputStream);
-                }
-                Reader streamReader = new BufferedReader(inputStreamReader);
+                streamReader = SCCClientUtils.getLoggingReader(connection,
+                        config.getUser(), LOGGING_DIR);
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
@@ -176,8 +176,7 @@ public class SCCWebClient implements SCCClient {
             if (connection != null) {
                 connection.disconnect();
             }
-            SCCClientUtils.closeQuietly(inputStream);
-            SCCClientUtils.closeQuietly(gzipStream);
+            SCCClientUtils.closeQuietly(streamReader);
         }
     }
 }
