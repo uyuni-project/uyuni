@@ -76,7 +76,7 @@ install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/suse-manager-server %{bui
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 install -m 755 etc/init.d/susemanager %{buildroot}/%{_sysconfdir}/init.d
-make -C src install PREFIX=$RPM_BUILD_ROOT
+make -C src install PREFIX=$RPM_BUILD_ROOT MANDIR=%{_mandir}
 
 # YaST configuration
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
