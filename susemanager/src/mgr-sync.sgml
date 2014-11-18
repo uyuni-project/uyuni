@@ -1,26 +1,25 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 <!ENTITY RHNSAT "Spacewalk Server" >
-<!ENTITY RHNSATDEBUG "Spacewalk Diagnostic Info-Gathering Utility" >
 
 ]>
 <refentry>
 
 <RefMeta>
-<RefEntryTitle>spacewalk-debug</RefEntryTitle><manvolnum>8</manvolnum>
-<RefMiscInfo>Version 3.6</RefMiscInfo>
+<RefEntryTitle>mgr-sync</RefEntryTitle><manvolnum>8</manvolnum>
+<RefMiscInfo>Version 0.1</RefMiscInfo>
 </RefMeta>
 
 <RefNameDiv>
-<RefName><command>spacewalk-debug</command></RefName>
+<RefName><command>mgr-sync</command></RefName>
 <RefPurpose>
-Debug utility that packages log files and relevant debug information needed for full diagnosis of Spacewalk Server issues.
+Management utility for adding, syncing, and enabling SUSE Customer Center channels.
 </RefPurpose>
 </RefNameDiv>
 
 <RefSynopsisDiv>
 <Synopsis>
     <cmdsynopsis>
-        <command>spacewalk-debug</command>
+        <command>mgr-sync</command>
     </cmdsynopsis>
 </Synopsis>
 </RefSynopsisDiv>
@@ -28,9 +27,10 @@ Debug utility that packages log files and relevant debug information needed for 
 <RefSect1><Title>Description</Title>
 
 <para>
-    The &RHNSATDEBUG; (<emphasis>spacewalk-debug</emphasis>) is a
-    debug utility that packages log files, and relevant debug information
-    needed for full diagnosis of &RHNSAT; issues.
+  The (<emphasis>mgr-sync</emphasis>) is a utility that allows you to work
+  with SUSE Customer Center for adding or syncing of products and channels.
+  As well as enabling and refreshing SCC data.  This tool requires that
+  SCC is enabled by running "mgr-sync enable-scc".
 </para>
 </RefSect1>
 
@@ -43,30 +43,163 @@ Debug utility that packages log files and relevant debug information needed for 
         </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--dir</term>
+        <term>--version</term>
         <listitem>
-            <para>Destination directory for the tar archive.</para>
+            <para>Prints the version.</para>
         </listitem>
     </varlistentry>
+    <varlistentry>
+        <term>-v, --verbose</term>
+        <listitem>
+            <para>Enable verbose output.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-s,  --save-config</term>
+        <listitem>
+            <para>Save the configuration to the local dot file.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-s,  --save-config</term>
+        <listitem>
+            <para>Save the configuration to the local dot file.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-s,  --save-config</term>
+        <listitem>
+            <para>Save the configuration to the local dot file.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-s,  --save-config</term>
+        <listitem>
+            <para>Save the configuration to the local dot file.</para>
+        </listitem>
+    </varlistentry>
+      #under list
+    <varlistentry>
+        <term>list</term>
+        <listitem>
+          <term>channel | channels</term>
+          <para>channel or channels to list channels.</para>
+        </listitem>
+        <listitem>
+            <term>product | products</term>
+            <para>product or products to list products.</para>
+        </listitem>    
+        <listitem>
+            <term>credentials</term>
+            <para>credentials to list credentials</para>
+        </listitem>    
+        <listitem>
+            <term>-e , --expand</term>
+            <para>Expands all children if parent is not subsribed.</para>
+        </listitem>    
+        <listitem>
+            <term>-f FILTER , --filter FILTER</term>
+            <para>Filter the ouput by what contains the filter word.</para>
+        </listitem>     
+        <listitem>
+            <term>--no-optional</term>
+            <para>Don't show optional channels.</para>
+        </listitem>     
+        <listitem>
+            <term>-c, --compatct</term>
+            <para>Compact output.</para>
+        </listitem>     
+        <listitem>
+            <term>--from-mirror</term>
+            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
+        </listitem>     
+        <listitem>
+            <term>-h, --help</term>
+            <para>Show help menu for this command.</para>
+        </listitem>     
+        <listitem>
+            <term>--primary</term>
+            <para>Desginate SCC organization credentials as primary.</para>
+        </listitem>     
+    </varlistentry>
+    <varlistentry>
+        <term>add</term>
+        <listitem>
+          <term>channel, channels CHANNEL</term>
+          <para>Add and sync channel.</para>
+        </listitem>
+        <listitem>
+            <term>product, products PRODUCT</term>
+            <para>Add and sync minimum cannels for product or products to list products.</para>
+        </listitem>    
+        <listitem>
+            <term>credentials</term>
+            <para>To add credentials.</para>
+        </listitem>    
+        <listitem>
+            <term>-c, --compatct</term>
+            <para>Compact output.</para>
+        </listitem>     
+        <listitem>
+            <term>--from-mirror</term>
+            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
+        </listitem>     
+        <listitem>
+            <term>-h, --help</term>
+            <para>Show help menu for this command.</para>
+        </listitem>     
+        <listitem>
+            <term>--primary</term>
+            <para>Desginate SCC organization credentials as primary.</para>
+        </listitem>     
+    <varlistentry>
+        <term>refresh</term>
+        <listitem>
+          <term>--refresh-channels</term>
+          <para>Schedule a refresh of all installed channels.</para>
+        </listitem>
+        <listitem>
+            <term>--from-mirror</term>
+            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
+        </listitem>     
+        <listitem>
+            <term>-h, --help</term>
+            <para>Show help menu for this command.</para>
+        </listitem>     
+     <varlistentry>
+        <term>delete</term>
+        <listitem>
+          <term>TARGET</term>
+          <para>SCC orginization credentials to delete.</para>
+        </listitem>
+        <listitem>
+            <term>-h, --help</term>
+            <para>Show help menu for this command.</para>
+        </listitem>     
+    </varlistentry>
+    </varlistentry>
+  </varlistentry>
 </variablelist>
 </RefSect1>
 
+<refsect1><title>Examples</title>
+<simplelist>
+  <member><command>mgr-sync enable-scc</command></member>
+  <member><command>mgr-sync channel add test-channel-name</command></member>
+  <member><command>mgr-sync list -e</command></member>
+  <member><command>mgr-sync product add --from-mirror http//smtmirror.com product-name</command></member>
+ </simplelist>
+</refsect1>
+
 <RefSect1><Title>See Also</Title>
 <simplelist>
-    <member>db-control(1) - embedded database environment only!</member>
-    <member>rhn-charsets(8)</member>
-    <member>rhnpush(8)</member>
-    <member>rhn-satellite-activate(8)</member>
-    <member>rhn-schema-version(8)</member>
-    <member>rhn-ssl-dbstore(8)</member>
-    <member>satellite-sync(8)</member>
+    <member>mgr-ncc-sync</member>
 </simplelist>
 </RefSect1>
 
 <RefSect1><Title>Authors</Title>
 <simplelist>
-    <member>Todd Warner <email>taw@redhat.com</email></member>
-    <member>Pradeep Kilambi <email>pkilambi@redhat.com</email></member>
+    <member>Flavio Castelli  <email>fcastelli@suse.de</email></member>
 </simplelist>
 </RefSect1>
 </RefEntry>
