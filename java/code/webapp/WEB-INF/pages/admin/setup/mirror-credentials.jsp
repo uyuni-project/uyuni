@@ -110,28 +110,28 @@
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
             <div class="panel panel-default">
-                <c:choose>
-                <c:when test='${issMaster}'>
-                    <div class="panel-body">
-                        <div class="row" id="mirror-credentials">
-                            <div class="col-sm-9" id="listset-container">
-                                <rhn:icon type="spinner"></rhn:icon>
-                                <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
+                <div class="panel-body">
+                    <c:choose>
+                        <c:when test='${issMaster}'>
+                            <div class="row" id="mirror-credentials">
+                                <div class="col-sm-9" id="listset-container">
+                                    <rhn:icon type="spinner"></rhn:icon>
+                                    <script>MirrorCredentialsRenderer.renderCredentials(makeRendererHandler("listset-container", false));</script>
+                                </div>
+                                <div class="col-sm-3 hidden-xs" id="wizard-faq">
+                                    <h4>What are Mirror Credentials</h4>
+                                    <p>Mirror credentials are your access to SUSE product downloads.</p>
+                                    <img src="../../../img/setup-wizard/credentials-help.png" />
+                                    <h4>Where do I find my Mirror Credentials?</h4>
+                                    <p>You can find them in the <a href="https://scc.suse.com/organization" target="_blank">Customer Center</a>.</p>
+                                </div>
                             </div>
-                            <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                <h4>What are Mirror Credentials</h4>
-                                <p>Mirror credentials are your access to SUSE product downloads.</p>
-                                <img src="../../../img/setup-wizard/credentials-help.png" />
-                                <h4>Where do I find my Mirror Credentials?</h4>
-                                <p>You can find them in the <a href="https://scc.suse.com/organization" target="_blank">Customer Center</a>.</p>
-                            </div>
-                        </div>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.notISSmaster"/></div>
-                </c:otherwise>
-                </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.notISSmaster"/></div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
                 <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
             </div>
         </div>
