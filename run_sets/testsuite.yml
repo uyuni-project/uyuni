@@ -58,6 +58,7 @@
 - features/datepicker.feature
 - features/delete_system_profile.feature
 - features/bare-metal-test.feature
+- features/compare_channel.feature
 - features/ssh_push.feature
 - features/delete_config_channel.feature
 - features/users-deleteuser1.feature
