@@ -51,6 +51,7 @@ Requires:       python-configobj
 BuildRequires:  python-configobj
 Requires:       python-enum34
 BuildRequires:  python-enum34
+BuildRequires:  docbook-utils
 
 %description tools
 This package contains SUSE Manager tools
@@ -165,6 +166,7 @@ chown root.root /etc/sysconfig
 %{pythonsmroot}/susemanager/simpleproduct.py*
 %{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
+%{_mandir}/man8/mgr-sync.8*
 
 %changelog
 
