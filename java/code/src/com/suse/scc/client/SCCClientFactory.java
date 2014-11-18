@@ -42,7 +42,7 @@ public class SCCClientFactory {
             String resourcePath, SCCProxySettings proxySettings, String uuid) {
         SCCConfig config = new SCCConfig();
 
-        if (resourcePath != null || new SCCConfig().getLocalResourcePath() != null) {
+        if (resourcePath != null) {
             config.put(SCCConfig.RESOURCE_PATH, resourcePath);
 
             return new SCCFileClient(config);
