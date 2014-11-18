@@ -90,8 +90,12 @@ Feature: Create a configuration channel
      And I follow "Events" in the content area
      And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
-    When I follow "Show differences between profiled config files and deployed config files"
+    When I follow first "Show differences between profiled config files and deployed config files"
     Then I should see a "Differences exist" link
+    When I follow "Differences exist"
+    Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
+     And I should see a "+MGR_PROXY=no" text
+
 
   Scenario: Import the changed file
    Given I am on the Systems overview page of this client
