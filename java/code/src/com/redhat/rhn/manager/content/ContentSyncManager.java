@@ -58,7 +58,6 @@ import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
-import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
