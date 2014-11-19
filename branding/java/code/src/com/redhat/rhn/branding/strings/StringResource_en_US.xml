@@ -1973,6 +1973,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.modal-subscriptions.title">
         <source>Subscriptions related to these credentials</source>
       </trans-unit>
+      <trans-unit id="mirror-credentials.jsp.iss-slave">
+        <source>This server is configured as ISS slave. Credentials can be managed on the ISS master only.</source>
+      </trans-unit>
 
       <!-- SUSE Products -->
       <trans-unit id="suse-products.jsp.invalid-credentials-alert-message">
@@ -2011,6 +2014,9 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="suse-products.jsp.refresh.help">
         <source>Refreshes the product catalog from the Customer Center</source>
+      </trans-unit>
+      <trans-unit id="suse-products.jsp.iss-slave">
+        <source>This server is configured as ISS slave. SUSE Products can be managed on the ISS master only.</source>
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
