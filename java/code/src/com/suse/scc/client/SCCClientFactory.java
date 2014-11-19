@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.codec.binary.Base64;
+import java.net.URL;
 
 /**
  * Instantiates {@link SCCClient}
@@ -38,27 +38,15 @@ public class SCCClientFactory {
      * @param uuid the UUID or null
      * @return the new {@link SCCWebClient}
      */
-    public static SCCClient getInstance(String url, String username, String password,
+    public static SCCClient getInstance(URL url, String username, String password,
             String resourcePath, SCCProxySettings proxySettings, String uuid) {
-        SCCConfig config = new SCCConfig();
 
         if (resourcePath != null) {
-            config.put(SCCConfig.RESOURCE_PATH, resourcePath);
-
-            return new SCCFileClient(config);
+            return new SCCFileClient(new SCCConfig(resourcePath));
         }
         else {
-            config.put(SCCConfig.URL, url);
-
-            byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-            String credsString = new String(credsBytes);
-            config.put(SCCConfig.ENCODED_CREDS, credsString);
-
-            config.put(SCCConfig.USER, username);
-
-            config.put(proxySettings);
-            config.put(SCCConfig.UUID, uuid);
-
+            SCCConfig config = new SCCConfig(url, username, password,
+                uuid, null, proxySettings);
             return new SCCWebClient(config);
         }
     }

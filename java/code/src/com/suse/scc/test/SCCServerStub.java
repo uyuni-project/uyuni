@@ -44,8 +44,8 @@ public class SCCServerStub implements Responder {
         String uri = request.getURI();
         if (!uri.endsWith("2")) {
             response.set("Link",
-                    "<" + SCCRequester.URL + uri + "2>; rel=\"last\", " +
-                    "<" + SCCRequester.URL + uri + "2>; rel=\"next\"");
+                    "<" + SCCRequester.TEST_URL + uri + "2>; rel=\"last\", " +
+                    "<" + SCCRequester.TEST_URL + uri + "2>; rel=\"next\"");
         }
 
         // Send file content

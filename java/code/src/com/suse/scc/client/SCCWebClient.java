@@ -145,7 +145,7 @@ public class SCCWebClient implements SCCClient {
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 streamReader = SCCClientUtils.getLoggingReader(connection,
-                        config.getUser(), LOGGING_DIR);
+                        config.getUsername(), LOGGING_DIR);
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
