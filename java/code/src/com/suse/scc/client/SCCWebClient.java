@@ -14,44 +14,48 @@
  */
 package com.suse.scc.client;
 
-import com.google.gson.Gson;
+import com.redhat.rhn.domain.scc.SCCRepository;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import com.google.gson.Gson;
+import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCSubscription;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
 
 /**
  * Class representation of a connection to SCC for issuing API requests.
  */
-public class SCCConnection {
-
-    /** The endpoint. */
-    private String endpoint;
-
-    /** The gzip encoding string. */
-    private final String GZIP_ENCODING = "gzip";
+public class SCCWebClient implements SCCClient {
 
     /** The config object. */
     private final SCCConfig config;
 
-    /** Represents a partial result with a pointer to the next one. */
+    /**
+     *  Represents a partial result with a pointer to the next one.
+     *
+     * @param <T> the generic type
+     */
     private class PaginatedResult<T> {
+
+        /** The result. */
         private final T result;
+
+        /** The next url. */
         private final String nextUrl;
 
+        /**
+         * Instantiates a new paginated result.
+         *
+         * @param resultIn the result in
+         * @param nextUrlIn the next url in
+         */
         PaginatedResult(T resultIn, String nextUrlIn) {
             result = resultIn;
             nextUrl = nextUrlIn;
@@ -59,39 +63,55 @@ public class SCCConnection {
     }
 
     /**
-     * Init a connection to a given SCC endpoint.
-     *
-     * @param endpointIn the endpoint
-     * @param configIn the config
+     * Constructor for connecting to scc.suse.com.
+     * @param configIn the configuration object
      */
-    public SCCConnection(String endpointIn, SCCConfig configIn) {
-        endpoint = endpointIn;
+    public SCCWebClient(SCCConfig configIn) {
         config = configIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SCCRepository> listRepositories() throws SCCClientException {
+        return getList("/connect/organizations/repositories",
+                SCCRepository.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SCCProduct> listProducts() throws SCCClientException {
+        return getList(
+                "/connect/organizations/products/unscoped", SCCProduct.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SCCSubscription> listSubscriptions() throws SCCClientException {
+        return getList("/connect/organizations/subscriptions",
+                SCCSubscription.class);
     }
 
     /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
      * @param <T> the generic type
+     * @param endpoint the GET request endpoint
      * @param resultType the type of the result
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    public <T> List<T> getList(Type resultType) throws SCCClientException {
+    private <T> List<T> getList(String endpoint, Type resultType)
+        throws SCCClientException {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
-            if (SCCConnection.this.config.getLocalResourcePath() == null) {
-                partialResult = request(toListType(resultType), "GET");
-            }
-            else {
-                try {
-                    partialResult = localFSRequest(toListType(resultType));
-                }
-                catch (IOException ex) {
-                    throw new SCCClientException(ex);
-                }
-            }
+            partialResult = request(endpoint, SCCClientUtils.toListType(resultType), "GET");
             result.addAll(partialResult.result);
             endpoint = partialResult.nextUrl;
         } while (partialResult.nextUrl != null);
@@ -99,40 +119,19 @@ public class SCCConnection {
     }
 
     /**
-     * Read data from the file in the local directory.
-     * @param <T> the generic type
-     * @return object of type given by resultType
-     */
-    @SuppressWarnings({"unchecked"})
-    private <T> PaginatedResult<T> localFSRequest(Type resultType)
-            throws FileNotFoundException,
-                   IOException {
-        String filename = this.endpoint
-                .replaceAll("connect/", "/")     // Remove SCC part for APIs, no leading "/"
-                .replaceAll("/+", "/")           // Replace double slashes to single
-                .replaceAll("^/", "")            // Remove leading slash, if any
-                .replaceAll("/", "_") + ".json"; // Replace slashes with underscore, add ext
-
-        return new PaginatedResult<T>((T) new Gson().fromJson(
-                new BufferedReader(new InputStreamReader(new FileInputStream(
-                        new File(this.config.getLocalResourcePath() + "/" + filename)))),
-                resultType), null);
-    }
-
-    /**
      * Perform HTTP request and parse the result into a given result type.
      *
      * @param <T> the generic type
+     * @param endpoint the endpoint
      * @param resultType the type of the result
      * @param method the HTTP method to use
      * @return object of type given by resultType
      * @throws SCCClientException in case of a problem
      */
-    private <T> PaginatedResult<T> request(Type resultType, String method)
+    private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
         throws SCCClientException {
         HttpURLConnection connection = null;
-        InputStream inputStream = null;
-        GZIPInputStream gzipStream = null;
+        Reader streamReader = null;
         try {
             // Setup the connection
             connection = SCCRequestFactory.getInstance().initConnection(
@@ -142,18 +141,8 @@ public class SCCConnection {
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                inputStream = connection.getInputStream();
-
-                // Unzip stream if in gzip format
-                Reader inputStreamReader;
-                if (GZIP_ENCODING.equals(connection.getContentEncoding())) {
-                    gzipStream = new GZIPInputStream(inputStream);
-                    inputStreamReader = new InputStreamReader(gzipStream);
-                }
-                else {
-                    inputStreamReader = new InputStreamReader(inputStream);
-                }
-                Reader streamReader = new BufferedReader(inputStreamReader);
+                streamReader = SCCClientUtils.getLoggingReader(connection,
+                        config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
                 Gson gson = new Gson();
@@ -184,34 +173,7 @@ public class SCCConnection {
             if (connection != null) {
                 connection.disconnect();
             }
-            SCCClientUtils.closeQuietly(inputStream);
-            SCCClientUtils.closeQuietly(gzipStream);
+            SCCClientUtils.closeQuietly(streamReader);
         }
-    }
-
-    /**
-     * Returns a type which is a list of the specified type.
-     * @param elementType the element type
-     * @return the List type
-     */
-    public Type toListType(final Type elementType) {
-        Type resultListType = new ParameterizedType() {
-
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] {elementType};
-            }
-
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
-        return resultListType;
     }
 }
