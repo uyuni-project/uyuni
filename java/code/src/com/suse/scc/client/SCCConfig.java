@@ -25,7 +25,7 @@ import java.net.URL;
 public class SCCConfig {
 
     /** Default SCC URL. */
-    protected static final URL DEFAULT_URL;
+    private static final URL DEFAULT_URL;
     // Fairly complex (yet valid) initialization code for the constant
     static {
         URL temp = null;
