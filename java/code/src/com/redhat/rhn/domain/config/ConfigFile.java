@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.config;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.BaseDomainHelper;
+import org.apache.log4j.Logger;
 
 /**
  * ConfigFile - Class representation of the table rhnConfigFile.
@@ -29,6 +30,7 @@ public class ConfigFile extends BaseDomainHelper {
     private ConfigFileName configFileName;
     private ConfigFileState configFileState;
     private ConfigRevision latestConfigRevision;
+    private static final Logger log = Logger.getLogger(ConfigFile.class);
 
 
     /**
@@ -114,7 +116,13 @@ public class ConfigFile extends BaseDomainHelper {
      * @return config file size in bytes
      */
     public static int getMaxFileSize() {
-        return Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
-                                   ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
+        int maxSize = Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
+                                          ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
+        if (maxSize > 0x100000) {
+            ConfigFile.log.warn("SUSE Manager does not support config files upload bigger" +
+                    " than 1MB. Please refer to the documentation for more details.");
+        }
+
+        return maxSize;
     }
 }
