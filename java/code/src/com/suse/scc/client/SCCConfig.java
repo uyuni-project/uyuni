@@ -14,157 +14,132 @@
  */
 package com.suse.scc.client;
 
-import java.util.Properties;
+import org.apache.commons.codec.binary.Base64;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
- * SCC configuration wrapper class.
+ * SCC configuration container class.
  */
 public class SCCConfig {
 
-    // Valid keys
-    public static final String URL = "url";
-    public static final String ENCODED_CREDS = "encoded-creds";
-    public static final String UUID = "uuid";
-    public static final String RESOURCE_PATH = "resource-path";
-    public static final String USER = "user";
-
-    // Proxy settings
-    public static final String PROXY_HOSTNAME = "proxy-hostname";
-    public static final String PROXY_PORT = "proxy-port";
-    public static final String PROXY_USERNAME = "proxy-username";
-    public static final String PROXY_PASSWORD = "proxy-password";
-
-    // Default values
-    protected static final String DEFAULT_URL = "https://scc.suse.com";
-    private static final String DEFAULT_PROXY_PORT = "3128";
-
-    // The properties object
-    private final Properties properties;
-
-    /**
-     * Default constructor.
-     */
-    public SCCConfig() {
-        this.properties = new Properties();
-    }
-
-    /**
-     * Sets a preference given by key and value. Use one of the public key strings above.
-     * @param key the preference key, must not be null
-     * @param value the value, ignored if null
-     */
-    public void put(String key, String value) {
-        if (value != null) {
-            properties.setProperty(key, value);
+    /** Default SCC URL. */
+    protected static final URL DEFAULT_URL;
+    // Fairly complex (yet valid) initialization code for the constant
+    static {
+        URL temp = null;
+        try {
+            temp = new URL("https://scc.suse.com");
         }
-    }
-
-    /**
-     * Sets proxy settings
-     * @param settings Proxy settings object
-     */
-    public void put(SCCProxySettings settings) {
-        if (settings != null) {
-            if (settings.getHostname() != null) {
-                put(SCCConfig.PROXY_HOSTNAME, settings.getHostname());
-                put(SCCConfig.PROXY_PORT, String.valueOf(settings.getPort()));
-            }
-            if (settings.getUsername() != null) {
-                put(SCCConfig.PROXY_USERNAME, settings.getUsername());
-                if (settings.getPassword() != null) {
-                    put(SCCConfig.PROXY_PASSWORD, settings.getPassword());
-                }
-            }
+        catch (MalformedURLException e) {
+            // never happens
         }
+        DEFAULT_URL = temp;
+    }
+
+    /** The url. */
+    private URL url;
+
+    /** The username. */
+    private String username;
+
+    /** The password. */
+    private String password;
+
+    /** The client UUID for SCC debugging. */
+    private String uuid;
+
+    /** The local resource path for local access to SMT files. */
+    private String localResourcePath;
+
+    /** The proxy settings. */
+    private SCCProxySettings proxySettings;
+
+    /**
+     * Instantiates a new SCC config to read from a local file.
+     * @param localResourcePathIn the local resource path
+     */
+    public SCCConfig(String localResourcePathIn) {
+        this(DEFAULT_URL, null, null, null, localResourcePathIn, null);
     }
 
     /**
-     * Removes a preference given by key.
-     *
-     * @param key
+     * Full constructor.
+     * @param urlIn the url
+     * @param usernameIn the username
+     * @param passwordIn the password
+     * @param uuidIn the UUID
+     * @param localResourcePathIn the local resource path
+     * @param proxySettingsIn the proxy settings
      */
-    public void remove(String key) {
-        if (properties.containsKey(key)) {
-            properties.remove(key);
-        }
+    public SCCConfig(URL urlIn, String usernameIn, String passwordIn, String uuidIn,
+            String localResourcePathIn, SCCProxySettings proxySettingsIn) {
+        url = urlIn;
+        username = usernameIn;
+        password = passwordIn;
+        uuid = uuidIn;
+        localResourcePath = localResourcePathIn;
+        proxySettings = proxySettingsIn;
     }
 
     /**
-     * Returns the configured url or "https://scc.suse.com".
-     *
-     * @return url
+     * Gets the url.
+     * @return the url
      */
-    public String getUrl() {
-        return properties.getProperty(URL, DEFAULT_URL);
+    public URL getUrl() {
+        return url;
+    }
+
+    /**
+     * Gets the username.
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * Gets the password.
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Gets the UUID.
+     * @return the UUID
+     */
+    public String getUUID() {
+        return uuid;
+    }
+
+    /**
+     * Gets the local resource path.
+     * @return the local resource path
+     */
+    public String getLocalResourcePath() {
+        return localResourcePath;
+    }
+
+    /**
+     * Gets the proxy settings.
+     * @return the proxy settings
+     */
+    public SCCProxySettings getProxySettings() {
+        return proxySettings;
     }
 
     /**
      * Returns the encoded credentials or null.
-     *
      * @return credentials
      */
     public String getEncodedCredentials() {
-        return properties.getProperty(ENCODED_CREDS, null);
-    }
-
-    /**
-     * Returns the UUID or null.
-     *
-     * @return UUID
-     */
-    public String getUUID() {
-        return properties.getProperty(UUID, null);
-    }
-
-    /**
-     * Returns the proxy hostname or null.
-     *
-     * @return proxy hostname
-     */
-    public String getProxyHostname() {
-        return properties.getProperty(PROXY_HOSTNAME, null);
-    }
-
-     /**
-     * Returns the configured proxy port or 3128 as default
-     *
-     * @return proxy port
-     */
-    public String getProxyPort() {
-        return properties.getProperty(PROXY_PORT, DEFAULT_PROXY_PORT);
-    }
-
-    /**
-     * Returns the proxy username or null.
-     *
-     * @return proxy username
-     */
-    public String getProxyUsername() {
-        return properties.getProperty(PROXY_USERNAME, null);
-    }
-
-    /**
-     * Returns the proxy password or null.
-     *
-     * @return proxy password
-     */
-    public String getProxyPassword() {
-       return properties.getProperty(PROXY_PASSWORD, null);
-    }
-
-    /**
-     * Returns the local path of the directory for resources. Null, if is not set.
-     * @return directory path
-     */
-    public String getLocalResourcePath() {
-        return properties.getProperty(SCCConfig.RESOURCE_PATH);
-    }
-
-    /**
-     * Returns the user name or null, if is not set.
-     * @return the user
-     */
-    public String getUser() {
-        return properties.getProperty(SCCConfig.USER);
+        if (username != null && password != null) {
+            byte[] encoded = Base64.encodeBase64((username + ":" + password).getBytes());
+            return new String(encoded);
+        }
+        return null;
     }
 }

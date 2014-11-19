@@ -20,6 +20,8 @@ import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.Callable;
 
 /**
@@ -30,7 +32,18 @@ import java.util.concurrent.Callable;
 public abstract class SCCRequester<T> implements Callable<T> {
 
     /** The test URL. */
-    public static final String URL = "http://localhost:" + HttpServerMock.PORT;
+    public static final URL TEST_URL;
+    // Fairly complex (yet valid) initialization code for the constant
+    static {
+        URL temp = null;
+        try {
+            temp = new URL("http://localhost:" + HttpServerMock.PORT);
+        }
+        catch (MalformedURLException e) {
+            // never happens
+        }
+        TEST_URL = temp;
+    }
 
     /** The client instance. */
     private final SCCClient scc;
@@ -39,7 +52,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * Default constructor
      */
     public SCCRequester() {
-        scc = SCCClientFactory.getInstance(URL, "user", "pass", null, null, null);
+        scc = SCCClientFactory.getInstance(TEST_URL, "user", "pass", null, null, null);
     }
 
     /**

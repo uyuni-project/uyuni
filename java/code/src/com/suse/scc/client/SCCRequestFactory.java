@@ -62,15 +62,19 @@ public class SCCRequestFactory {
         URL url = new URL(uri);
         HttpURLConnection connection;
 
-        String proxyHost = config.getProxyHostname();
+        SCCProxySettings proxySettings = config.getProxySettings();
+        String proxyHost = null;
+        if (proxySettings != null) {
+            proxyHost = proxySettings.getHostname();
+        }
         if (!StringUtils.isEmpty(proxyHost)) {
-            int proxyPort = Integer.parseInt(config.getProxyPort());
+            int proxyPort = proxySettings.getPort();
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
                 proxyPort));
             connection = (HttpURLConnection) url.openConnection(proxy);
 
-            String proxyUsername = config.getProxyUsername();
-            String proxyPassword = config.getProxyPassword();
+            String proxyUsername = proxySettings.getUsername();
+            String proxyPassword = proxySettings.getPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
                 !StringUtils.isEmpty(proxyPassword)) {
                 try {
