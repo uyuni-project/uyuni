@@ -37,9 +37,6 @@ public class SCCWebClient implements SCCClient {
     /** The config object. */
     private final SCCConfig config;
 
-    /** Directory where to save logging files. */
-    private final String LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
-
     /**
      *  Represents a partial result with a pointer to the next one.
      *
@@ -145,7 +142,7 @@ public class SCCWebClient implements SCCClient {
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 streamReader = SCCClientUtils.getLoggingReader(connection,
-                        config.getUsername(), LOGGING_DIR);
+                        config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
                 Gson gson = new Gson();

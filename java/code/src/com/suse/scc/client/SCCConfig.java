@@ -38,6 +38,9 @@ public class SCCConfig {
         DEFAULT_URL = temp;
     }
 
+    /** Default directory where to save logging files. */
+    private static final String DEFAULT_LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
+
     /** The url. */
     private URL url;
 
@@ -53,15 +56,33 @@ public class SCCConfig {
     /** The local resource path for local access to SMT files. */
     private String localResourcePath;
 
+    /** Path to the logging directory. */
+    private String loggingDir;
+
     /** The proxy settings. */
     private SCCProxySettings proxySettings;
 
     /**
-     * Instantiates a new SCC config to read from a local file.
+     * Instantiates a new SCC config to read from a local file and default
+     * logging directory.
      * @param localResourcePathIn the local resource path
      */
     public SCCConfig(String localResourcePathIn) {
-        this(DEFAULT_URL, null, null, null, localResourcePathIn, null);
+        this(DEFAULT_URL, null, null, null, localResourcePathIn, DEFAULT_LOGGING_DIR, null);
+    }
+
+    /**
+     * Instantiates a new SCC config to read from SCC with default logging directory.
+     * @param urlIn the url
+     * @param usernameIn the username
+     * @param passwordIn the password
+     * @param uuidIn the UUID
+     * @param proxySettingsIn the proxy settings
+     */
+    public SCCConfig(URL urlIn, String usernameIn, String passwordIn, String uuidIn,
+            SCCProxySettings proxySettingsIn) {
+        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR,
+                proxySettingsIn);
     }
 
     /**
@@ -71,15 +92,18 @@ public class SCCConfig {
      * @param passwordIn the password
      * @param uuidIn the UUID
      * @param localResourcePathIn the local resource path
+     * @param loggingDirIn the logging dir
      * @param proxySettingsIn the proxy settings
      */
     public SCCConfig(URL urlIn, String usernameIn, String passwordIn, String uuidIn,
-            String localResourcePathIn, SCCProxySettings proxySettingsIn) {
+            String localResourcePathIn, String loggingDirIn,
+            SCCProxySettings proxySettingsIn) {
         url = urlIn;
         username = usernameIn;
         password = passwordIn;
         uuid = uuidIn;
         localResourcePath = localResourcePathIn;
+        loggingDir = loggingDirIn;
         proxySettings = proxySettingsIn;
     }
 
@@ -121,6 +145,14 @@ public class SCCConfig {
      */
     public String getLocalResourcePath() {
         return localResourcePath;
+    }
+
+    /**
+     * Gets the logging dir.
+     * @return the logging dir
+     */
+    public String getLoggingDir() {
+        return loggingDir;
     }
 
     /**
