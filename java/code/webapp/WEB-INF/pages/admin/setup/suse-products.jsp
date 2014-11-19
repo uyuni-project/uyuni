@@ -82,7 +82,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div class="alert alert-warning" role="alert"><bean:message key="suse-products.jsp.notISSmaster"/></div>
+                        <div class="alert alert-warning" role="alert"><bean:message key="suse-products.jsp.iss-slave"/></div>
                     </c:otherwise>
                 </c:choose>
 
