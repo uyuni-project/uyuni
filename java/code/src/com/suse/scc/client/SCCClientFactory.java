@@ -46,7 +46,7 @@ public class SCCClientFactory {
         }
         else {
             SCCConfig config = new SCCConfig(url, username, password,
-                uuid, null, proxySettings);
+                uuid, proxySettings);
             return new SCCWebClient(config);
         }
     }
