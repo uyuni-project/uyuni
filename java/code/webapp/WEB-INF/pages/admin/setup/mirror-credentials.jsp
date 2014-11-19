@@ -128,7 +128,7 @@
                             </div>
                         </c:when>
                         <c:otherwise>
-                            <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.notISSmaster"/></div>
+                            <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.iss-slave"/></div>
                         </c:otherwise>
                     </c:choose>
                 </div>
