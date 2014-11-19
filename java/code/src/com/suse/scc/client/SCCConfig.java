@@ -16,8 +16,8 @@ package com.suse.scc.client;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * SCC configuration container class.
@@ -25,14 +25,14 @@ import java.net.URL;
 public class SCCConfig {
 
     /** Default SCC URL. */
-    private static final URL DEFAULT_URL;
+    private static final URI DEFAULT_URL;
     // Fairly complex (yet valid) initialization code for the constant
     static {
-        URL temp = null;
+        URI temp = null;
         try {
-            temp = new URL("https://scc.suse.com");
+            temp = new URI("https://scc.suse.com");
         }
-        catch (MalformedURLException e) {
+        catch (URISyntaxException e) {
             // never happens
         }
         DEFAULT_URL = temp;
@@ -42,7 +42,7 @@ public class SCCConfig {
     public static final String DEFAULT_LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
 
     /** The url. */
-    private URL url;
+    private URI url;
 
     /** The username. */
     private String username;
@@ -79,7 +79,7 @@ public class SCCConfig {
      * @param uuidIn the UUID
      * @param proxySettingsIn the proxy settings
      */
-    public SCCConfig(URL urlIn, String usernameIn, String passwordIn, String uuidIn,
+    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
             SCCProxySettings proxySettingsIn) {
         this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR,
                 proxySettingsIn);
@@ -95,7 +95,7 @@ public class SCCConfig {
      * @param loggingDirIn the logging dir
      * @param proxySettingsIn the proxy settings
      */
-    public SCCConfig(URL urlIn, String usernameIn, String passwordIn, String uuidIn,
+    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
             String localResourcePathIn, String loggingDirIn,
             SCCProxySettings proxySettingsIn) {
         url = urlIn;
@@ -111,7 +111,7 @@ public class SCCConfig {
      * Gets the url.
      * @return the url
      */
-    public URL getUrl() {
+    public URI getUrl() {
         return url;
     }
 
