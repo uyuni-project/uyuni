@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  * Instantiates {@link SCCClient}
@@ -38,7 +38,7 @@ public class SCCClientFactory {
      * @param uuid the UUID or null
      * @return the new {@link SCCWebClient}
      */
-    public static SCCClient getInstance(URL url, String username, String password,
+    public static SCCClient getInstance(URI url, String username, String password,
             String resourcePath, SCCProxySettings proxySettings, String uuid) {
 
         if (resourcePath != null) {
