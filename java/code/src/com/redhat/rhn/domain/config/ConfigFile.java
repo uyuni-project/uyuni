@@ -115,6 +115,6 @@ public class ConfigFile extends BaseDomainHelper {
      */
     public static int getMaxFileSize() {
         return Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
-                ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
+                                   ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
     }
 }
