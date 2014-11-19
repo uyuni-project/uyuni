@@ -201,8 +201,7 @@ public class SCCClientTest extends TestCase {
                 "/com/suse/scc/test/connect/organizations/repositories.json"),
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
-            SCCClient scc = SCCClientFactory.getInstance(
-                    "http://localhost:" + HttpServerMock.PORT, null, null,
+            SCCClient scc = SCCClientFactory.getInstance(null, null, null,
                     tmpDir.getAbsolutePath(), null, null);
             List<SCCRepository> repos = scc.listRepositories();
 

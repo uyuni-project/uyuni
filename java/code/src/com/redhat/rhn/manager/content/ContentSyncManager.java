@@ -295,7 +295,7 @@ public class ContentSyncManager {
                 log.error("Error getting products for " +
                         c.getUsername() + ", " + e.getMessage());
             }
-            catch (URISyntaxException e1) {
+            catch (MalformedURLException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
             }
         }
@@ -613,7 +613,7 @@ public class ContentSyncManager {
                 log.error("Error getting repos for " + c.getUsername() +
                         ": " + e.getMessage());
             }
-            catch (URISyntaxException e1) {
+            catch (MalformedURLException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
             }
         }
@@ -642,7 +642,7 @@ public class ContentSyncManager {
             SCCClient scc = this.getSCCClient(user, password);
             return scc.listSubscriptions();
         }
-        catch (URISyntaxException e1) {
+        catch (MalformedURLException e1) {
             log.error("Invalid URL:" + e1.getMessage());
             return new ArrayList<SCCSubscription>();
         }
@@ -1662,16 +1662,15 @@ public class ContentSyncManager {
      *
      * @param user network credential: user
      * @param password networ credential: password
-     * @throws URISyntaxException
+     * @throws MalformedURLException if the URL in configuration file is malformed
      * @throws SCCClientException
      * @return {@link SCCWebClient}
      */
     private SCCClient getSCCClient(String user, String password)
-            throws URISyntaxException,
+            throws MalformedURLException,
                    SCCClientException {
-        // check that URL is valid. Will throw URISyntaxException otherwise
-        String rawUrl = Config.get().getString(ConfigDefaults.SCC_URL);
-        String url = new URI(rawUrl).toASCIIString();
+        // check that URL is valid
+        URL url = new URL(Config.get().getString(ConfigDefaults.SCC_URL));
 
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         String localAbsolutePath = null;
