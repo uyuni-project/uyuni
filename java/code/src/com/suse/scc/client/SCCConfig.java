@@ -39,7 +39,7 @@ public class SCCConfig {
     }
 
     /** Default directory where to save logging files. */
-    private static final String DEFAULT_LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
+    public static final String DEFAULT_LOGGING_DIR = "/var/lib/spacewalk/scc/scc-data/";
 
     /** The url. */
     private URL url;

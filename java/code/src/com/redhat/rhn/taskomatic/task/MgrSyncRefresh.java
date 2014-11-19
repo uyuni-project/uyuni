@@ -21,9 +21,14 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.scc.client.SCCConfig;
+
+import org.apache.commons.io.FileUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,6 +86,13 @@ public class MgrSyncRefresh extends RhnJavaJob {
             executeExtCmd(cmd.toArray(new String[cmd.size()]));
         }
         else {
+            // Get rid of old logging SCC data
+            try {
+                FileUtils.forceDelete(new File(SCCConfig.DEFAULT_LOGGING_DIR));
+            }
+            catch (IOException e1) {
+                // never happens
+            }
             // Perform the refresh
             try {
                 ContentSyncManager csm = new ContentSyncManager();
