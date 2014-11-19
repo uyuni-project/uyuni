@@ -14,10 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.configuration.files;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorException;
+import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
@@ -116,9 +116,7 @@ public class FileDetailsAction extends RhnAction {
             request.getSession().getAttribute("csrf_token"));
 
         request.setAttribute(MAX_SIZE,
-                StringUtil.displayFileSize(
-                        Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
-                                ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE)));
+                 StringUtil.displayFileSize(ConfigFile.getMaxFileSize()));
         request.setAttribute(MAX_EDIT_SIZE,
                 StringUtil.displayFileSize(ConfigFileForm.MAX_EDITABLE_SIZE));
         if (cr.isFile()) {
