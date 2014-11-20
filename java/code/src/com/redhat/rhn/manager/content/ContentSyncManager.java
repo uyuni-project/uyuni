@@ -291,8 +291,7 @@ public class ContentSyncManager {
                 }
             }
             catch (SCCClientException e) {
-                log.error("Error getting products for " +
-                        c.getUsername() + ", " + e.getMessage());
+                log.error("Error getting products for " + c.getUsername(), e);
             }
             catch (URISyntaxException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
@@ -607,8 +606,7 @@ public class ContentSyncManager {
                 reposList.addAll(repos);
             }
             catch (SCCClientException e) {
-                log.error("Error getting repos for " + c.getUsername() +
-                        ": " + e.getMessage());
+                log.error("Error getting repos for " + c.getUsername(), e);
             }
             catch (URISyntaxException e1) {
                 log.error("Invalid URL:" + e1.getMessage());
@@ -659,8 +657,7 @@ public class ContentSyncManager {
                 subscriptions.addAll(getSubscriptions(c.getUsername(), c.getPassword()));
             }
             catch (SCCClientException e) {
-                log.error("Error getting subscriptions for " +
-                        c.getUsername() + ", " + e.getMessage());
+                log.error("Error getting subscriptions for " + c.getUsername(), e);
             }
         }
         if (log.isDebugEnabled()) {
