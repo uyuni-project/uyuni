@@ -63,7 +63,7 @@
         rhnChannelErrata.errata_id,
         rhnErrata.advisory as errata_advisory,
         rhnErrataPackage.package_id,
-        (SELECT 1
+        (SELECT DISTINCT 1
             FROM rhnServerPackage sp, rhnPackageEVR sevr, rhnPackageUpgradeArchCompat puac
             WHERE rhnServerPackage.server_id = sp.server_id
               AND rhnServerPackage.name_id = sp.name_id
@@ -75,7 +75,7 @@
         rhnChannelErrata.channel_id,
         rhnChannel.name as channel_name,
         rhnChannel.label as channel_label,
-        (SELECT 1
+        (SELECT DISTINCT 1
             FROM rhnChannelPackage cp, rhnServerChannel csc
             WHERE cp.channel_id = csc.channel_id
               AND rhnChannelPackage.package_id = cp.package_id
