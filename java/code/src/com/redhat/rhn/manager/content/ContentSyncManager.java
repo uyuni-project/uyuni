@@ -722,6 +722,8 @@ public class ContentSyncManager {
                     c.setName(channel.getName());
                     c.setSummary(channel.getSummary());
                     c.setUpdateTag(channel.getUpdateTag());
+                    c.setChannelFamily(ChannelFamilyFactory.lookupByLabel(
+                            channel.getFamily(), null));
                     ChannelFactory.save(c);
                 }
             }
