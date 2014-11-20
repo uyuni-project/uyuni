@@ -852,6 +852,40 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Runs testMultiVersionPackage on a server bsc#903723
+     * @throws Exception if anything goes wrong
+     */
+    public void testMultiVersionPackage() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create a server with a channel, one errata
+        // and two packages (same name) which are installed
+        User user = createTestUser();
+        Errata errata = createTestErrata(user, cves);
+        Channel channel = createTestChannel(user, errata);
+        Set<Channel> channels = new HashSet<Channel>();
+        channels.add(channel);
+
+        Package p1 = createTestPackage(user, errata, channel, "noarch");
+        Package p2 = createLaterTestPackage(user, errata, channel, p1);
+
+        Server server = createTestServer(user, channels);
+        createTestInstalledPackage(p1, server);
+        createTestInstalledPackage(p2, server);
+        CVEAuditManager.populateCVEServerChannels();
+
+        // No filtering
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
