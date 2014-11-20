@@ -18,7 +18,10 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCWebClient;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
 
@@ -29,15 +32,30 @@ import java.util.concurrent.Callable;
  */
 public abstract class SCCRequester<T> implements Callable<T> {
 
+    /** The test URL. */
+    public static final URI TEST_URL;
+    // Fairly complex (yet valid) initialization code for the constant
+    static {
+        URI temp = null;
+        try {
+            temp = new URI("http://localhost:" + HttpServerMock.PORT);
+        }
+        catch (URISyntaxException e) {
+            // never happens
+        }
+        TEST_URL = temp;
+    }
+
     /** The client instance. */
-    private final SCCClient client;
+    private final SCCClient scc;
 
     /**
      * Default constructor
-     * @throws URISyntaxException
      */
-    public SCCRequester() throws URISyntaxException {
-        client = new SCCClient("http://localhost:" + HttpServerMock.PORT, "user", "pass");
+    public SCCRequester() {
+        SCCConfig config = new SCCConfig(TEST_URL, "user", "password", null, null,
+            System.getProperty("java.io.tmpdir"), null);
+        scc = new SCCWebClient(config);
     }
 
     /**
@@ -45,7 +63,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * @return the client
      */
     public SCCClient getClient() {
-        return client;
+        return scc;
     }
 
     /**
@@ -55,7 +73,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
     public T call() {
         T ret = null;
         try {
-            ret = request(client);
+            ret = request(scc);
         }
         catch (SCCClientException e) {
             // Catch it in here, we are expecting it
@@ -66,9 +84,9 @@ public abstract class SCCRequester<T> implements Callable<T> {
     /**
      * Run a request to SCC.
      *
-     * @param sccClient the SCCClient object to make the request
+     * @param clientIn the client object to make the request
      * @return a generic request result
      * @throws SCCClientException if there is a problem
      */
-    public abstract T request(SCCClient sccClient) throws SCCClientException;
+    public abstract T request(SCCClient clientIn) throws SCCClientException;
 }

@@ -19,6 +19,7 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 import com.suse.scc.model.SCCSystem;
@@ -39,19 +40,19 @@ import junit.framework.TestCase;
 public class SCCClientTest extends TestCase {
 
     /**
-     * Test for {@link SCCClient#listProducts()}.
+     * Test for {@link SCCWebClient#listProducts()}.
      */
     public void testListProducts() throws Exception {
         SCCRequester<List<SCCProduct>> requester =
                 new SCCRequester<List<SCCProduct>>() {
                     @Override
-                    public List<SCCProduct> request(SCCClient sccClient)
+                    public List<SCCProduct> request(SCCClient scc)
                             throws SCCClientException {
-                        return sccClient.listProducts();
+                        return scc.listProducts();
                     }
                 };
         List<SCCProduct> products = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getClient().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, products.size());
@@ -108,19 +109,19 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCClient#listRepositories()}.
+     * Test for {@link SCCWebClient#listRepositories()}.
      */
     public void testListRepositories() throws Exception {
         SCCRequester<List<SCCRepository>> requester =
                 new SCCRequester<List<SCCRepository>>() {
                     @Override
-                    public List<SCCRepository> request(SCCClient sccClient)
+                    public List<SCCRepository> request(SCCClient scc)
                             throws SCCClientException {
-                        return sccClient.listRepositories();
+                        return scc.listRepositories();
                     }
                 };
         List<SCCRepository> repos = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getClient().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, repos.size());
@@ -134,19 +135,19 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCClient#listSubscriptions()}.
+     * Test for {@link SCCWebClient#listSubscriptions()}.
      */
     public void testListSubscriptions() throws Exception {
         SCCRequester<List<SCCSubscription>> requester =
                 new SCCRequester<List<SCCSubscription>>() {
                     @Override
-                    public List<SCCSubscription> request(SCCClient sccClient)
+                    public List<SCCSubscription> request(SCCClient scc)
                             throws SCCClientException {
-                        return sccClient.listSubscriptions();
+                        return scc.listSubscriptions();
                     }
                 };
         List<SCCSubscription> subs = new HttpServerMock().getResult(
-                requester, new SCCServerStub(requester.getClient().getConfig()));
+                requester, new SCCServerStub());
 
         // Assertions
         assertEquals(2, subs.size());
@@ -191,7 +192,7 @@ public class SCCClientTest extends TestCase {
     }
 
     /**
-     * Test for {@link SCCClient#listRepositories()} but from the directory.
+     * Test for {@link SCCWebClient#listRepositories()} but from the directory.
      * @throws java.lang.Exception
      */
     public void testListRepositoriesFromDirectory() throws Exception {
@@ -200,9 +201,9 @@ public class SCCClientTest extends TestCase {
                 "/com/suse/scc/test/connect/organizations/repositories.json"),
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
-            SCCClient client = new SCCClient("http://localhost:" + HttpServerMock.PORT, null, null);
-            client.setLocalResourcePath(tmpDir);
-            List<SCCRepository> repos = client.listRepositories();
+            SCCClient scc = SCCClientFactory.getInstance(null, null, null,
+                    tmpDir.getAbsolutePath(), null, null);
+            List<SCCRepository> repos = scc.listRepositories();
 
             // Assertions
             assertEquals(1, repos.size());
