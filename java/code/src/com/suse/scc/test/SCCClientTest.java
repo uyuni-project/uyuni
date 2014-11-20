@@ -16,6 +16,7 @@ package com.suse.scc.test;
 
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
+import com.redhat.rhn.testing.httpservermock.Responder;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
@@ -28,10 +29,13 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import simple.http.Request;
+import simple.http.Response;
 import junit.framework.TestCase;
 
 /**
@@ -219,4 +223,39 @@ public class SCCClientTest extends TestCase {
         }
     }
 
+    /**
+     * Test for SCC error responses.
+     * @throws Exception if things go wrong
+     */
+    public void testErrorResponse() throws Exception {
+        Responder errorResponder = new Responder() {
+            @Override
+            public void respond(Request requestIn, Response responseIn) {
+                responseIn.setCode(HttpURLConnection.HTTP_INTERNAL_ERROR);
+                try {
+                    responseIn.getPrintStream().close();
+                }
+                catch (IOException e) {
+                    // never happens
+                }
+            }
+        };
+
+        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>() {
+            @Override
+            public List<SCCProduct> request(SCCClient scc) throws SCCClientException {
+                try {
+                    scc.listProducts();
+                    fail("Did not get an exception, expected error 500");
+                    return null;
+                }
+                catch (SCCClientException e) {
+                    assertTrue(e.getMessage().contains("500"));
+                    throw e;
+                }
+            }
+        };
+
+        new HttpServerMock().getResult(requester, errorResponder);
+    }
 }

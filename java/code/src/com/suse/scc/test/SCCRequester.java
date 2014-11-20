@@ -21,6 +21,8 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 
+import org.apache.log4j.Logger;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Callable;
@@ -31,6 +33,9 @@ import java.util.concurrent.Callable;
  * @param <T> a generic result type
  */
 public abstract class SCCRequester<T> implements Callable<T> {
+
+    /** Logger instance. */
+    private final Logger log = Logger.getLogger(SCCRequester.class);
 
     /** The test URL. */
     public static final URI TEST_URL;
@@ -76,7 +81,9 @@ public abstract class SCCRequester<T> implements Callable<T> {
             ret = request(scc);
         }
         catch (SCCClientException e) {
-            // Catch it in here, we are expecting it
+            // this might or might not be fatal as some tests expect exceptions
+            log.warn("Got SCCClientException while processing request, detail below");
+            log.warn(e);
         }
         return ret;
     }
