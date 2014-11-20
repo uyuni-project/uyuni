@@ -12,7 +12,7 @@ rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert 
 
 # Resolve libs and run tests
 cd /manager/java
-ant resolve-ivy
+ant init-install resolve-ivy
 
 cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml test
