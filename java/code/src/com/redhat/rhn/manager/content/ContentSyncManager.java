@@ -57,6 +57,7 @@ import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
+import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -273,8 +274,6 @@ public class ContentSyncManager {
             Credentials c = i.next();
             try {
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
-                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-                scc.setUUID(getUUID());
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -595,8 +594,6 @@ public class ContentSyncManager {
             try {
                 log.debug("Getting repos for: " + c.getUsername());
                 SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
-                scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-                scc.setUUID(getUUID());
                 List<SCCRepository> repos = scc.listRepositories();
 
                 // Add mirror credentials to all repos
@@ -640,8 +637,6 @@ public class ContentSyncManager {
             throws SCCClientException {
         try {
             SCCClient scc = this.getSCCClient(user, password);
-            scc.setProxySettings(MgrSyncUtils.getRhnProxySettings());
-            scc.setUUID(getUUID());
             return scc.listSubscriptions();
         }
         catch (URISyntaxException e1) {
@@ -1661,26 +1656,41 @@ public class ContentSyncManager {
     }
 
     /**
-     * Get an instance of {@link SCCClient} and configure it to use localpath, if
+     * Get an instance of {@link SCCWebClient} and configure it to use localpath, if
      * such is setup in /etc/rhn/rhn.conf
      *
      * @param user network credential: user
      * @param password networ credential: password
-     * @throws URISyntaxException
+     * @throws URISyntaxException if the URL in configuration file is malformed
      * @throws SCCClientException
-     * @return {@link SCCClient}
+     * @return {@link SCCWebClient}
      */
     private SCCClient getSCCClient(String user, String password)
             throws URISyntaxException,
                    SCCClientException {
-        SCCClient scc = new SCCClient(Config.get().getString(ConfigDefaults.SCC_URL),
-                user, password);
+        // check that URL is valid
+        URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+
         String localPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
+        String localAbsolutePath = null;
         if (localPath != null) {
-            scc.setLocalResourcePath(new File(localPath));
+            File localFile = new File(localPath);
+            localAbsolutePath = localFile.getAbsolutePath();
+
+            if (!localFile.canRead()) {
+                throw new SCCClientException(
+                        String.format("Unable to access resource at \"%s\" location.",
+                                localAbsolutePath));
+            }
+            else if (!localFile.isDirectory()) {
+                throw new SCCClientException(
+                        String.format("Path \"%s\" must be a directory.",
+                                localAbsolutePath));
+            }
         }
 
-        return scc;
+        return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
+                MgrSyncUtils.getRhnProxySettings(), getUUID());
     }
 
     /**
