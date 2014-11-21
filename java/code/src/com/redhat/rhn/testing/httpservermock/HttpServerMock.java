@@ -15,12 +15,15 @@
 package com.redhat.rhn.testing.httpservermock;
 
 import java.net.ServerSocket;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
 import simple.http.Request;
 import simple.http.connect.Connection;
 import simple.http.connect.ConnectionFactory;
+import simple.util.process.ProcessQueue;
 
 /**
  * Mocks a Web server allowing HTTP client classes to be tested.
@@ -28,15 +31,40 @@ import simple.http.connect.ConnectionFactory;
 public class HttpServerMock {
 
     /**
-     * Port the mock server will listen to. Try hard not to conflict with other
-     * testsuites that may be running at the same time in other processes on the same
-     * machine, making the port time-dependent and random-dependent.
+     * Port this mock server will listen to.
      */
-    public static final int PORT = (int) (
-            10000 +
-            (System.currentTimeMillis() % 100) * 100 +
-            new Random().nextInt(100)
-    );
+    private final int port;
+
+    /**
+     * Instantiates a new http server mock.
+     */
+    public HttpServerMock() {
+        /*
+         * Try hard not to conflict with other testsuites, taking into account
+         * that current version of Simple HTTP requires some seconds to kill a
+         * server instance and there is no straightforward way to "kill" one.
+         */
+        port = (int) (
+                10000 +
+                (System.currentTimeMillis() % 100) * 100 +
+                new Random().nextInt(100));
+    }
+
+    /**
+     * Gets an URI object to connect to this server.
+     *
+     * @return the uri
+     */
+    public URI getURI() {
+        URI result = null;
+        try {
+            result = new URI("http://localhost:" + port);
+        }
+        catch (URISyntaxException e) {
+            // never happens
+        }
+        return result;
+    }
 
     /**
      * Run an HTTP requester on this mock server, record the request and return
@@ -93,7 +121,7 @@ public class HttpServerMock {
         ExchangeDetails<T> exchangeDetails = new ExchangeDetails<T>();
         try {
             connection = ConnectionFactory.getConnection(engine);
-            socket = new ServerSocket(PORT);
+            socket = new ServerSocket(port);
             connection.connect(socket);
 
             try {

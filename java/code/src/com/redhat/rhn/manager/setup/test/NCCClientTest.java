@@ -22,6 +22,7 @@ import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
 import com.suse.manager.model.ncc.Subscription;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 
@@ -38,16 +39,17 @@ public class NCCClientTest extends RhnBaseTestCase {
         final MirrorCredentialsDto cred =
                 new MirrorCredentialsDto("fpp@doamin.com", "lala", "ala");
 
+        HttpServerMock serverMock = new HttpServerMock();
+        URI uri = serverMock.getURI();
         NCCRequester<List<Subscription>> requester =
-                new NCCRequester<List<Subscription>>() {
+                new NCCRequester<List<Subscription>>(uri) {
                     @Override
                     public List<Subscription> request(NCCClient nccClient)
                         throws NCCException {
                         return nccClient.downloadSubscriptions(cred);
                     }
                 };
-        List<Subscription> subs =
-                new HttpServerMock().getResult(requester, new NCCServerStub());
+        List<Subscription> subs = serverMock.getResult(requester, new NCCServerStub());
         System.out.println(cred);
         assertEquals(1, subs.size());
         Subscription s = subs.get(0);

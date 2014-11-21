@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.URI;
 import java.net.URL;
 
 import simple.http.Request;
@@ -30,6 +31,18 @@ import simple.http.Response;
  * Service that simulates the SCC API to be used in test-cases.
  */
 public class SCCServerStub implements Responder {
+
+    /** The uri. */
+    private URI uri;
+
+    /**
+     * Instantiates a new SCC server stub.
+     *
+     * @param uriIn the uri
+     */
+    public SCCServerStub(URI uriIn) {
+        uri = uriIn;
+    }
 
     /**
      * {@inheritDoc}
@@ -41,16 +54,16 @@ public class SCCServerStub implements Responder {
         long time = System.currentTimeMillis();
         response.setDate("Date", time);
         response.setDate("Last-Modified", time);
-        String uri = request.getURI();
-        if (!uri.endsWith("2")) {
+        String path = request.getURI();
+        if (!path.endsWith("2")) {
             response.set("Link",
-                    "<" + SCCRequester.TEST_URL + uri + "2>; rel=\"last\", " +
-                    "<" + SCCRequester.TEST_URL + uri + "2>; rel=\"next\"");
+                    "<" + uri + path + "2>; rel=\"last\", " +
+                    "<" + uri + path + "2>; rel=\"next\"");
         }
 
         // Send file content
         try {
-            String filename = uri.replaceFirst("/", "") + ".json";
+            String filename = path.replaceFirst("/", "") + ".json";
             URL url = TestUtils.findTestData(filename);
 
             InputStream in = url.openStream();

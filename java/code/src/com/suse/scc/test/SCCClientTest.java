@@ -30,13 +30,14 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.util.List;
 
 import javax.xml.bind.DatatypeConverter;
 
+import junit.framework.TestCase;
 import simple.http.Request;
 import simple.http.Response;
-import junit.framework.TestCase;
 
 /**
  * Tests for {@link SCCClient} methods.
@@ -47,16 +48,15 @@ public class SCCClientTest extends TestCase {
      * Test for {@link SCCWebClient#listProducts()}.
      */
     public void testListProducts() throws Exception {
-        SCCRequester<List<SCCProduct>> requester =
-                new SCCRequester<List<SCCProduct>>() {
-                    @Override
-                    public List<SCCProduct> request(SCCClient scc)
-                            throws SCCClientException {
-                        return scc.listProducts();
-                    }
-                };
-        List<SCCProduct> products = new HttpServerMock().getResult(
-                requester, new SCCServerStub());
+        HttpServerMock serverMock = new HttpServerMock();
+        URI uri = serverMock.getURI();
+        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>(uri) {
+            @Override
+            public List<SCCProduct> request(SCCClient scc) throws SCCClientException {
+                return scc.listProducts();
+            }
+        };
+        List<SCCProduct> products = serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, products.size());
@@ -116,16 +116,17 @@ public class SCCClientTest extends TestCase {
      * Test for {@link SCCWebClient#listRepositories()}.
      */
     public void testListRepositories() throws Exception {
+        HttpServerMock serverMock = new HttpServerMock();
+        URI uri = serverMock.getURI();
         SCCRequester<List<SCCRepository>> requester =
-                new SCCRequester<List<SCCRepository>>() {
+                new SCCRequester<List<SCCRepository>>(uri) {
                     @Override
                     public List<SCCRepository> request(SCCClient scc)
-                            throws SCCClientException {
+                        throws SCCClientException {
                         return scc.listRepositories();
                     }
                 };
-        List<SCCRepository> repos = new HttpServerMock().getResult(
-                requester, new SCCServerStub());
+        List<SCCRepository> repos = serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, repos.size());
@@ -142,16 +143,19 @@ public class SCCClientTest extends TestCase {
      * Test for {@link SCCWebClient#listSubscriptions()}.
      */
     public void testListSubscriptions() throws Exception {
+        HttpServerMock serverMock = new HttpServerMock();
+        URI uri = serverMock.getURI();
         SCCRequester<List<SCCSubscription>> requester =
-                new SCCRequester<List<SCCSubscription>>() {
+                new SCCRequester<List<SCCSubscription>>(uri) {
+
                     @Override
                     public List<SCCSubscription> request(SCCClient scc)
-                            throws SCCClientException {
+                        throws SCCClientException {
                         return scc.listSubscriptions();
                     }
                 };
-        List<SCCSubscription> subs = new HttpServerMock().getResult(
-                requester, new SCCServerStub());
+        List<SCCSubscription> subs =
+                serverMock.getResult(requester, new SCCServerStub(uri));
 
         // Assertions
         assertEquals(2, subs.size());
@@ -241,7 +245,9 @@ public class SCCClientTest extends TestCase {
             }
         };
 
-        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>() {
+        HttpServerMock serverMock = new HttpServerMock();
+        URI uri = serverMock.getURI();
+        SCCRequester<List<SCCProduct>> requester = new SCCRequester<List<SCCProduct>>(uri) {
             @Override
             public List<SCCProduct> request(SCCClient scc) throws SCCClientException {
                 try {
@@ -256,6 +262,6 @@ public class SCCClientTest extends TestCase {
             }
         };
 
-        new HttpServerMock().getResult(requester, errorResponder);
+        serverMock.getResult(requester, errorResponder);
     }
 }
