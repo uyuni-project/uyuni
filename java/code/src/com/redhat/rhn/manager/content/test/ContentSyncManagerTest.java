@@ -87,6 +87,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testUpdateChannels() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         try {
+            // Make sure that channel family "7261" exists
+            User admin = UserTestUtils.createUserInOrgOne();
+            ChannelFamilyTest.ensureChannelFamilyExists(admin, "7261");
+
             // Create a test channel and set a label that exists in the xml file
             String channelLabel = "sles11-sp3-pool-x86_64";
             Channel c = SUSEProductTestUtils.createTestVendorChannel();
