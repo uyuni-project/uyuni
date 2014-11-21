@@ -16,8 +16,8 @@ package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.manager.setup.NCCClient;
 import com.redhat.rhn.manager.setup.NCCException;
-import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 
+import java.net.URI;
 import java.util.concurrent.Callable;
 
 /**
@@ -26,7 +26,17 @@ import java.util.concurrent.Callable;
  * @param <T> a generic result type
  */
 public abstract class NCCRequester<T> implements Callable<T> {
+    /** The uri. */
+    private URI uri;
 
+    /**
+     * Instantiates a new NCC requester.
+     *
+     * @param uriIn the uri
+     */
+    public NCCRequester(URI uriIn) {
+        uri = uriIn;
+    }
 
     /**
      * {@inheritDoc}
@@ -35,7 +45,7 @@ public abstract class NCCRequester<T> implements Callable<T> {
     public T call() {
         T ret = null;
         try {
-            ret = request(new NCCClient("http://localhost:" + HttpServerMock.PORT));
+            ret = request(new NCCClient(uri.toString()));
         }
         catch (NCCException e) {
             // Catch it in here, we are expecting it
@@ -51,4 +61,5 @@ public abstract class NCCRequester<T> implements Callable<T> {
      * @throws NCCException if the request has an error
      */
     public abstract T request(NCCClient nccClient) throws NCCException;
+
 }
