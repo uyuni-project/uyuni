@@ -173,7 +173,7 @@ def check_disk_nevrao(abs_path, row, restore=None):
 
 def restore_file_path(file, row):
     prefix = CFG.MOUNT_POINT + '/'
-    new_path = 'redhat/' + row['org_id'] + '/' + row['checksum_prefix'] + '/' + row['name'] + '/' + row['evr'] + '/' + row['arch'] + '/' + row['checksum'] + '/' + row['basename']
+    new_path = CFG.PREPENDED_DIR + '/' + row['org_id'] + '/' + row['checksum_prefix'] + '/' + row['name'] + '/' + row['evr'] + '/' + row['arch'] + '/' + row['checksum'] + '/' + row['basename']
     query = "update rhnPackage set path=\'" + new_path + "\' where id=" + str(row['id'])
     new_path = prefix + new_path
     cleanup = True
@@ -232,7 +232,7 @@ def check_disk_vs_db(disk_content=None, db_content=None):
         report[k] = 0
     query  = package_query(options, bind_path=True)
     h = rhnSQL.prepare(query)
-    for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, 'redhat')):
+    for root, dirs, files in os.walk(os.path.join(CFG.MOUNT_POINT, CFG.PREPENDED_DIR)):
       rel_root = root[len(CFG.MOUNT_POINT)+1:]
       for f in files:
           abs_path = os.path.join(root, f)
