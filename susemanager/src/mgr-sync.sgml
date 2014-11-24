@@ -37,7 +37,7 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
 <RefSect1><Title>Options</Title>
 <variablelist>
     <varlistentry>
-        <term>--help</term>
+        <term>-h, --help</term>
         <listitem>
             <para>Display usage and exit.</para>
         </listitem>
@@ -107,11 +107,11 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
     <varlistentry>
         <term>add</term>
         <listitem>
-          <term>channel, channels CHANNEL</term>
+          <term>channel | channels CHANNEL</term>
           <para>Add and sync channel.  It will also accept multiple channels.</para>
         </listitem>
         <listitem>
-            <term>product, products PRODUCT</term>
+            <term>product | products PRODUCT</term>
             <para>Add and sync mandatory channels for a product.</para>
         </listitem>    
         <listitem>
@@ -143,6 +143,10 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
         <listitem>
             <term>--from-mirror</term>
             <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
+        </listitem>     
+        <listitem>
+            <term>--schedule</term>
+            <para>Schedule a refresh asynchronously (always enabled in case of ISS).</para>
         </listitem>     
         <listitem>
             <term>-h, --help</term>
@@ -181,7 +185,7 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
 
 <RefSect1><Title>Authors</Title>
 <simplelist>
-    <member>Flavio Castelli  <email>fcastelli@suse.de</email></member>
+    <member>Flavio Castelli  <email>fcastelli@suse.com</email></member>
 </simplelist>
 </RefSect1>
 </RefEntry>
