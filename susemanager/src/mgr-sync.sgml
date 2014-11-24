@@ -27,7 +27,7 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
 <RefSect1><Title>Description</Title>
 
 <para>
-  The (<emphasis>mgr-sync</emphasis>) is a utility that allows you to work
+  The <emphasis>mgr-sync</emphasis> command is a utility that allows you to work
   with SUSE Customer Center for adding or syncing of products and channels.
   As well as enabling and refreshing SCC data.  This tool requires that
   SCC is enabled by running "mgr-sync enable-scc".
