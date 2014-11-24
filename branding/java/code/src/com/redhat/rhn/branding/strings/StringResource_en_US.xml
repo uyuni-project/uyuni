@@ -1974,7 +1974,7 @@ tree will not be usable for autoinstalling.
         <source>Subscriptions related to these credentials</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave">
-        <source>This server is configured as ISS slave. Credentials can be managed on the ISS master only.</source>
+        <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
       </trans-unit>
 
       <!-- SUSE Products -->
@@ -2016,7 +2016,7 @@ tree will not be usable for autoinstalling.
         <source>Refreshes the product catalog from the Customer Center</source>
       </trans-unit>
       <trans-unit id="suse-products.jsp.iss-slave">
-        <source>This server is configured as ISS slave. SUSE Products can be managed on the ISS master only.</source>
+        <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. SUSE Products can only be managed on the ISS master.</source>
       </trans-unit>
       <trans-unit id="setupwizard.syncstatus.scheduled">
         <source>Scheduled</source>
