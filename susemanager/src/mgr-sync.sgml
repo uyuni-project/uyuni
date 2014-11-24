@@ -60,24 +60,6 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
             <para>Save the configuration to the local dot file.</para>
         </listitem>
     </varlistentry>
-    <varlistentry>
-        <term>-s,  --save-config</term>
-        <listitem>
-            <para>Save the configuration to the local dot file.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>-s,  --save-config</term>
-        <listitem>
-            <para>Save the configuration to the local dot file.</para>
-        </listitem>
-    </varlistentry>
-    <varlistentry>
-        <term>-s,  --save-config</term>
-        <listitem>
-            <para>Save the configuration to the local dot file.</para>
-        </listitem>
-    </varlistentry>
       #under list
     <varlistentry>
         <term>list</term>
@@ -126,11 +108,11 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
         <term>add</term>
         <listitem>
           <term>channel, channels CHANNEL</term>
-          <para>Add and sync channel.</para>
+          <para>Add and sync channel.  It will also accept multiple channels.</para>
         </listitem>
         <listitem>
             <term>product, products PRODUCT</term>
-            <para>Add and sync minimum cannels for product or products to list products.</para>
+            <para>Add and sync mandatory channels for a product.</para>
         </listitem>    
         <listitem>
             <term>credentials</term>
@@ -150,7 +132,7 @@ Management utility for adding, syncing, and enabling SUSE Customer Center channe
         </listitem>     
         <listitem>
             <term>--primary</term>
-            <para>Desginate SCC organization credentials as primary.</para>
+            <para>Designate SCC organization credentials as primary.</para>
         </listitem>     
     <varlistentry>
         <term>refresh</term>
