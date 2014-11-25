@@ -1,191 +1,355 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
 <!ENTITY RHNSAT "Spacewalk Server" >
-
 ]>
-<refentry>
+<refentry lang="en">
 
-<RefMeta>
-<RefEntryTitle>mgr-sync</RefEntryTitle><manvolnum>8</manvolnum>
-<RefMiscInfo>Version 0.1</RefMiscInfo>
-</RefMeta>
+ <refentryinfo>
+  <productname>mgr-sync</productname>
+  <authorgroup>
+   <author>
+    <contrib>Developer</contrib>
+    <firstname>Flavio</firstname>
+    <surname>Castelli</surname>
+    <email>fcastelli@suse.com</email>
+   </author>
+  </authorgroup>
+ </refentryinfo>
 
-<RefNameDiv>
-<RefName><command>mgr-sync</command></RefName>
-<RefPurpose>
-Management utility for adding, syncing, and enabling SUSE Customer Center channels.
-</RefPurpose>
-</RefNameDiv>
+ <refmeta>
+  <refentrytitle>mgr-sync</refentrytitle>
+  <manvolnum>8</manvolnum>
+  <refmiscinfo class="version">Version 0.1</refmiscinfo>
+ </refmeta>
 
-<RefSynopsisDiv>
-<Synopsis>
-    <cmdsynopsis>
-        <command>mgr-sync</command>
-    </cmdsynopsis>
-</Synopsis>
-</RefSynopsisDiv>
+ <refnamediv>
+  <refname>mgr-sync</refname>
+  <refpurpose>
+   Management utility for adding, syncing, and enabling SUSE Customer Center
+   channels.
+  </refpurpose>
+ </refnamediv>
 
-<RefSect1><Title>Description</Title>
+<!--
+ <refsynopsisdiv>
+  <synopsis>
+-->
+  <refsect1>
+   <title>Synopsis</title>
+   <cmdsynopsis>
+    <command>mgr-sync</command>
+    <arg choice="opt">
+     <replaceable>global-option(s)</replaceable>
+    </arg>
+    <arg choice="plain">&lt;command&gt;</arg>
+    <arg choice="opt">
+     <replaceable>command-option(s)</replaceable>
+    </arg>
+    <arg choice="opt">
+     <replaceable>&lt;arguments&gt;</replaceable>
+    </arg>
+   </cmdsynopsis>
+  </refsect1>
+<!--
+  </synopsis>
+ </refsynopsisdiv>
+-->
 
-<para>
-  The <emphasis>mgr-sync</emphasis> command is a utility that allows you to work
-  with SUSE Customer Center for adding or syncing of products and channels.
-  As well as enabling and refreshing SCC data.  This tool requires that
-  SCC is enabled by running "mgr-sync enable-scc".
-</para>
-</RefSect1>
+ <refsect1>
+  <title>Description</title>
+  <para>
+   The <emphasis>mgr-sync</emphasis> command is a utility that allows you to
+   work with SUSE Customer Center (SCC) for adding or syncing of products and
+   channels.  As well as enabling and refreshing SCC data.  This tool requires
+   that SCC is enabled by running <command>mgr-sync enable-scc</command>.
+  </para>
+ </refsect1>
 
-<RefSect1><Title>Options</Title>
-<variablelist>
+ <refsect1 id="global_opts">
+  <title>Global Options</title>
+  <variablelist>
+   <varlistentry>
+    <term><option>-h</option>, <option>--help</option></term>
+    <listitem>
+     <para>Display usage and exit.</para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><option>--version</option></term>
+    <listitem>
+     <para>Prints the version.</para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><option>-v</option>, <option>--verbose</option></term>
+    <listitem>
+     <para>Enable verbose output.</para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><option>-s</option>, <option>--save-config</option></term>
+    <listitem>
+     <para>Save the configuration to the local dot file.</para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+ </refsect1>
+
+ <refsect1>
+  <title>Commands</title>
+  <para>
+   mgr-sync provides a number of commands. Each command accepts the options
+   listed in <xref linkend="global_opts"/>. These options must be specified
+   before the command name. In addition, many commands have specific options,
+   which are listed in this section.  These command-specific options must be
+   specified after the name of the command and before any of the command
+   arguments.
+  </para>
+  <refsect2>
+   <title><command>enable-scc</command></title>
+   <para>Enable SCC.</para>
+  </refsect2>
+
+  <refsect2>
+   <title><command>list</command></title>
+   <cmdsynopsis>
+    <command>list</command> <arg choice="opt">option(s)</arg> <arg
+    choice="plain">channel|channels</arg>
+   </cmdsynopsis>
+   <cmdsynopsis>
+    <command>list</command> <arg choice="opt">option(s)</arg> <arg
+    choice="plain">product|products</arg>
+   </cmdsynopsis>
+   <cmdsynopsis>
+    <command>list</command> <arg choice="opt">option(s)</arg> <arg choice="plain">credentials</arg>
+   </cmdsynopsis>
+   <para>
+    List channel(s), product(s), or credentials.
+   </para>
+   <variablelist>
     <varlistentry>
-        <term>-h, --help</term>
-        <listitem>
-            <para>Display usage and exit.</para>
-        </listitem>
+     <term><option>-c</option>, <option>--compact</option></term>
+     <listitem>
+      <para>
+       Compact output.
+      </para>
+     </listitem>
     </varlistentry>
     <varlistentry>
-        <term>--version</term>
-        <listitem>
-            <para>Prints the version.</para>
-        </listitem>
+     <term><option>-e</option>, <option>--expand</option></term>
+     <listitem>
+      <para>
+       Expands all children if parent is not subsribed.
+      </para>
+     </listitem>
     </varlistentry>
     <varlistentry>
-        <term>-v, --verbose</term>
-        <listitem>
-            <para>Enable verbose output.</para>
-        </listitem>
+     <term>
+      <option>-f <replaceable>FILTER</replaceable></option>,
+      <option>--filter <replaceable>FILTER</replaceable></option>
+     </term>
+     <listitem>
+      <para>
+       Filter the ouput by what contains the filter word.
+      </para>
+     </listitem>
     </varlistentry>
     <varlistentry>
-        <term>-s,  --save-config</term>
-        <listitem>
-            <para>Save the configuration to the local dot file.</para>
-        </listitem>
-    </varlistentry>
-      #under list
-    <varlistentry>
-        <term>list</term>
-        <listitem>
-          <term>channel | channels</term>
-          <para>channel or channels to list channels.</para>
-        </listitem>
-        <listitem>
-            <term>product | products</term>
-            <para>product or products to list products.</para>
-        </listitem>    
-        <listitem>
-            <term>credentials</term>
-            <para>credentials to list credentials</para>
-        </listitem>    
-        <listitem>
-            <term>-e , --expand</term>
-            <para>Expands all children if parent is not subsribed.</para>
-        </listitem>    
-        <listitem>
-            <term>-f FILTER , --filter FILTER</term>
-            <para>Filter the ouput by what contains the filter word.</para>
-        </listitem>     
-        <listitem>
-            <term>--no-optional</term>
-            <para>Don't show optional channels.</para>
-        </listitem>     
-        <listitem>
-            <term>-c, --compatct</term>
-            <para>Compact output.</para>
-        </listitem>     
-        <listitem>
-            <term>--from-mirror</term>
-            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
-        </listitem>     
-        <listitem>
-            <term>-h, --help</term>
-            <para>Show help menu for this command.</para>
-        </listitem>     
-        <listitem>
-            <term>--primary</term>
-            <para>Desginate SCC organization credentials as primary.</para>
-        </listitem>     
+     <term><option>--from-mirror</option></term>
+     <listitem>
+      <para>
+       URL of a local mirror like SMT.  Only used for downloading RPMs.
+      </para>
+     </listitem>
     </varlistentry>
     <varlistentry>
-        <term>add</term>
-        <listitem>
-          <term>channel | channels CHANNEL</term>
-          <para>Add and sync channel.  It will also accept multiple channels.</para>
-        </listitem>
-        <listitem>
-            <term>product | products PRODUCT</term>
-            <para>Add and sync mandatory channels for a product.</para>
-        </listitem>    
-        <listitem>
-            <term>credentials</term>
-            <para>To add credentials.</para>
-        </listitem>    
-        <listitem>
-            <term>-c, --compatct</term>
-            <para>Compact output.</para>
-        </listitem>     
-        <listitem>
-            <term>--from-mirror</term>
-            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
-        </listitem>     
-        <listitem>
-            <term>-h, --help</term>
-            <para>Show help menu for this command.</para>
-        </listitem>     
-        <listitem>
-            <term>--primary</term>
-            <para>Designate SCC organization credentials as primary.</para>
-        </listitem>     
+     <term><option>-h</option>, <option>--help</option></term>
+     <listitem>
+      <para>
+       Show help menu for this command.
+      </para>
+     </listitem>
+    </varlistentry>
     <varlistentry>
-        <term>refresh</term>
-        <listitem>
-          <term>--refresh-channels</term>
-          <para>Schedule a refresh of all installed channels.</para>
-        </listitem>
-        <listitem>
-            <term>--from-mirror</term>
-            <para>URL of a local mirror like SMT.  Only used for downloading RPMs.</para>
-        </listitem>     
-        <listitem>
-            <term>--schedule</term>
-            <para>Schedule a refresh asynchronously (always enabled in case of ISS).</para>
-        </listitem>     
-        <listitem>
-            <term>-h, --help</term>
-            <para>Show help menu for this command.</para>
-        </listitem>     
-     <varlistentry>
-        <term>delete</term>
-        <listitem>
-          <term>TARGET</term>
-          <para>SCC orginization credentials to delete.</para>
-        </listitem>
-        <listitem>
-            <term>-h, --help</term>
-            <para>Show help menu for this command.</para>
-        </listitem>     
+     <term><option>--no-optional</option></term>
+     <listitem>
+      <para>
+       Don't show optional channels.
+      </para>
+     </listitem>
     </varlistentry>
+    <varlistentry>
+     <term><option>--primary</option></term>
+     <listitem>
+      <para>
+       Desginate SCC organization credentials as primary.
+      </para>
+     </listitem>
     </varlistentry>
-  </varlistentry>
-</variablelist>
-</RefSect1>
+   </variablelist>
+  </refsect2>
+  <refsect2>
+   <title><command>add</command></title>
+   <cmdsynopsis>
+    <command>add</command> <arg choice="opt">option(s)</arg> <arg
+    choice="plain">channel|channels</arg> <arg
+    choice="plain"><replaceable>CHANNEL</replaceable></arg>
+   </cmdsynopsis>
+   <cmdsynopsis>
+    <command>add</command> <arg choice="opt">option(s)</arg> <arg
+    choice="plain">product|products</arg> <arg
+    choice="plain"><replaceable>PRODUCT</replaceable></arg>
+   </cmdsynopsis>
+   <cmdsynopsis>
+    <command>add</command> <arg choice="opt">option(s)</arg> <arg choice="plain">credentials</arg>
+   </cmdsynopsis>
+   <para>
+    Add and channels or credentials. Channels will automatically be
+    synced. <option>product|products</option> will add all channels mandatory
+    for the given
+    <replaceable>PRODUCT</replaceable>.
+   </para>
+   <variablelist>
+    <varlistentry>
+     <term><option>-c</option>, <option>--compatct</option></term>
+     <listitem>
+      <para>
+       Compact output.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--from-mirror</option></term>
+     <listitem>
+      <para>
+       URL of a local mirror like SMT.  Only used for downloading RPMs.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>-h</option>, <option>--help</option></term>
+     <listitem>
+      <para>
+       Show help menu for this command.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--primary</option></term>
+     <listitem>
+      <para>
+       Desginate SCC organization credentials as primary.
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+  </refsect2>
+  <refsect2>
+   <title><command>refresh</command></title>
+   <cmdsynopsis>
+    <command>refresh</command> <arg choice="opt">option(s)</arg>
+   </cmdsynopsis>
+   <para>
+    Refresh installed channels.
+   </para>
+   <variablelist>
+    <varlistentry>
+     <term><option>--refresh-channels</option></term>
+     <listitem>
+      <para>
+       Schedule a refresh of all installed channels.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--from-mirror</option></term>
+     <listitem>
+      <para>
+       URL of a local mirror like SMT.  Only used for downloading RPMs.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>--schedule</option></term>
+     <listitem>
+      <para>
+       Schedule a refresh asynchronously (always enabled in case of ISS).
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term><option>-h</option>, <option>--help</option></term>
+     <listitem>
+      <para>
+       Show help menu for this command.
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+  </refsect2>
+  <refsect2>
+   <title><command>delete</command></title>
+   <cmdsynopsis>
+    <command>delete</command> <arg
+    choice="plain"><replaceable>TARGET</replaceable></arg>
+   </cmdsynopsis>
+   <para>
+    Delete ???what???
+   </para>
+   <variablelist>
+    <varlistentry>
+     <term><option>-h</option>, <option>--help</option></term>
+     <listitem>
+      <para>
+       Show help menu for this command.
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+  </refsect2>
+ </refsect1>
 
-<refsect1><title>Examples</title>
-<simplelist>
-  <member><command>mgr-sync enable-scc</command></member>
-  <member><command>mgr-sync channel add test-channel-name</command></member>
-  <member><command>mgr-sync list -e</command></member>
-  <member><command>mgr-sync product add --from-mirror http//smtmirror.com product-name</command></member>
- </simplelist>
-</refsect1>
+ <refsect1>
+  <title>Examples</title>
+  <variablelist>
+   <varlistentry>
+    <term>Enable SCC</term>
+    <listitem>
+     <screen>mgr-sync enable-scc</screen>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Get an expanded list of channels.</term>
+    <listitem>
+     <screen>mgr-sync list -e channels</screen>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Add all mandatory channels for <replaceable>My Product</replaceable>
+    from a local SMT server.</term>
+    <listitem>
+     <screen>mgr-sync add product --from-mirror http//smt.example.com <replaceable>"My Product"</replaceable></screen>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Add the channel <replaceable>My Channel</replaceable>from SCC.</term>
+    <listitem>
+     <screen>mgr-sync add channel <replaceable>"My Channel"</replaceable></screen>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+ </refsect1>
 
-<RefSect1><Title>See Also</Title>
-<simplelist>
-    <member>mgr-ncc-sync</member>
-</simplelist>
-</RefSect1>
+ <refsect1>
+  <title>See Also</title>
+  <para>
+   mgr-ncc-sync(8)
+  </para>
+ </refsect1>
 
-<RefSect1><Title>Authors</Title>
-<simplelist>
-    <member>Flavio Castelli  <email>fcastelli@suse.com</email></member>
-</simplelist>
-</RefSect1>
-</RefEntry>
+ <refsect1>
+  <title>Authors</title>
+  <simplelist>
+   <member>Flavio Castelli <email>fcastelli@suse.com</email></member>
+  </simplelist>
+ </refsect1>
+</refentry>
