@@ -35,7 +35,7 @@ CREATE TABLE rhnLockedPackages
 ENABLE ROW MOVEMENT
 ;
 
-CREATE UNIQUE INDEX rhn_lp_pkg_id_uq
+CREATE INDEX rhn_lp_pkg_id_idx
     ON rhnLockedPackages (pkg_id)
     TABLESPACE [[128m_tbs]]
     NOLOGGING;
