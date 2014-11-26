@@ -342,6 +342,14 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
                     mediaPath;
             }
         }
+
+        if (getServer().getHostname() != null) {
+            rec.setHostName(getServer().getHostname());
+        }
+        else if (getServer().getName() != null) {
+            rec.setHostName(getServer().getName());
+        }
+
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
         // The comment is optional
