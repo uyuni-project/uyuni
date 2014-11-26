@@ -5,7 +5,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.3.4
+Version: 2.3.5
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -116,6 +116,9 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Fri Nov 21 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.5-1
+- 1166045 - read systemid path from configuration
+
 * Fri Oct 31 2014 Stephen Herr <sherr@redhat.com> 2.3.4-1
 - Disable pylint warning so things can build
 
