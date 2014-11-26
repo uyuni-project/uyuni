@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.3.0
+Version:        2.3.1
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -96,6 +96,7 @@ install -m 0644 share/tomcat.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/tomcat6.* %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/server.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/context.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
+install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
@@ -115,6 +116,7 @@ mkdir -p $RPM_BUILD_ROOT%{_mandir}/man8
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-httpd | gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-httpd.1.gz
 /usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-sudoers| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-sudoers.1.gz
+/usr/bin/pod2man --section=1 $RPM_BUILD_ROOT/%{_bindir}/spacewalk-setup-ipa-authentication| gzip > $RPM_BUILD_ROOT%{_mandir}/man1/spacewalk-setup-ipa-authentication.1.gz
 
 
 %post
@@ -178,6 +180,7 @@ rm -rf %{buildroot}
 %{_bindir}/spacewalk-setup-cobbler
 %{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/spacewalk-setup-sudoers
+%{_bindir}/spacewalk-setup-ipa-authentication
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %{_datadir}/spacewalk
@@ -187,6 +190,12 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Nov 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.1-1
+- fix condition
+- add spacewalk-setup-ipa-authentication script to Makefile
+- Add spacewalk-setup-ipa-authentication to make the external authentication
+  easier.
+
 * Mon Aug 18 2014 Tomas Kasparek <tkasparek@redhat.com> 2.3.0-1
 - Bumping package versions for 2.3.
 

@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.73
+Version: 2.3.90
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -920,6 +920,94 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Nov 25 2014 Tomas Lestach <tlestach@redhat.com> 2.3.90-1
+- 1167753 - apidoc generator does not know #array("something")
+- 1009396 - fix js injection on /rhn/systems/Search.do page
+
+* Mon Nov 24 2014 Stephen Herr <sherr@redhat.com> 2.3.89-1
+- 920603 - fixing javascript errors
+- 1162862 - Config file url should update when you create new revision
+
+* Mon Nov 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.88-1
+- prevent ISE, when firstname a/o lastname weren't passed from IPA server
+
+* Fri Nov 21 2014 Jan Dobes 2.3.87-1
+- fix button alignment
+- impove style of Software Crash pages
+
+* Thu Nov 20 2014 Tomas Lestach <tlestach@redhat.com> 2.3.86-1
+- 1001018 - xml escape scripting language on
+  /rhn/kickstart/KickstartScriptDelete.do page
+
+* Thu Nov 20 2014 Tomas Lestach <tlestach@redhat.com> 2.3.85-1
+- 1001018 - xml escape script language on /rhn/kickstart/Scripts.do page
+
+* Wed Nov 19 2014 Jan Dobes 2.3.84-1
+- do not show expanded menu on small screens on default
+- remove redundant navbar-collapse-1 class
+- hide items on smaller screens
+
+* Wed Nov 19 2014 Tomas Lestach <tlestach@redhat.com> 2.3.83-1
+- 1024090 - user does not need to be a channel admin to manage a channel
+- Channel package compare will fail if checking two unrelated channels when ch1
+  or ch2 is NULL.
+
+* Fri Nov 14 2014 Tomas Lestach <tlestach@redhat.com> 2.3.82-1
+- 801965 - checkstuyle fix
+
+* Fri Nov 14 2014 Tomas Lestach <tlestach@redhat.com> 2.3.81-1
+- 801965 - config admin role required for the kickstart.profile.*Repositories
+  API calls
+- 801965 - introduce kickstart.profile.getAvailableRepositories API
+- 801965 - rename kickstart.profile.getAvailableRepositories to
+  kickstart.profile.getRepositories
+- 801965 - we cannot return 'null' in API
+- 801965 - remove redundant code
+
+* Thu Nov 13 2014 Grant Gainey 2.3.80-1
+- 1093669 - Fixed typo in column-names
+
+* Thu Nov 13 2014 Stephen Herr <sherr@redhat.com> 2.3.79-1
+- 796434 - refreshing should not clone activation key again
+- 1156337 - use conf channel label instead of name
+- 1136491 - listActivationKeys should return empty list if no keys visible
+- 1037974 - make API listing system events by type work
+- cannot select code from disabled textarea in Firefox, use readonly editor
+
+* Wed Nov 12 2014 Stephen Herr <sherr@redhat.com> 2.3.78-1
+- 1151183 - clean up remnants of prototype.js, convert to jQuery
+- Fix tests broken by fix to 1134879, PackageName objects should be saved
+  explicitly
+
+* Wed Nov 12 2014 Grant Gainey 2.3.77-1
+- 1152984 - Fix entitled_systems.jsp num-per-page ISE
+
+* Tue Nov 11 2014 Stephen Herr <sherr@redhat.com> 2.3.76-1
+- 1162862 - we should consider if text <> binary has changed for config files
+- 1162840 - all API methods should be able to find shared channels
+- ActionChainSaveActionTest: missing override annotation added
+- ActionChainHelperTest fix: use correct chain ordering
+- SsmErrataAction: correct logger usage
+- CreateChannelCommand imports organized
+- CreateChannelCommand imports organized
+
+* Tue Nov 11 2014 Tomas Lestach <tlestach@redhat.com> 2.3.75-1
+- remove @Override annotation from method that isn't overriden
+- remove unnecessarily nested 'else' statement
+- remove unnecessarily nested 'else' statement
+- remove unnecessarily nested 'else' statement
+- 1153010 - move verifyOrgExists method to BaseHandler as it is being called
+  from more handlers
+- Fix ActionChainSaveActionTest after Action Chains creator patch
+- 1065998 - adapt the page to adding/cloning errata
+- fix alignment and apply style class on /rhn/users/CreateUser page
+
+* Mon Nov 10 2014 Grant Gainey 2.3.74-1
+- 116206 - Removed remaining (?) support for context-sensitive-help
+- Commit 877f3308 should fix tasko OOM problems, so setting max mem to 1GB
+  and increaseing repodata workers back to 2
+- 1158750 - minor UI text updates
+
 * Fri Nov 07 2014 Tomas Lestach <tlestach@redhat.com> 2.3.73-1
 - 1134879 - we do not want to use cascade for evr and name attributes of
   PackageActionDetails

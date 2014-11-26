@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.3.13
+Version:    2.3.15
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -130,6 +130,23 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed Nov 19 2014 Jan Dobes 2.3.15-1
+- do not show expanded menu on small screens on default
+- avoid white space under footer
+- do not restrict collapsable menu height
+- remove redundant navbar-collapse-1 class
+- spread all buttons
+- make navbar-utility line 100%% wide on small screens
+- display navbar-utility items in single line even on tiny screen
+- fix color
+- shrink header images
+- remove unused responsive rule
+- hide items on smaller screens
+
+* Tue Nov 11 2014 Jan Dobes 2.3.14-1
+- remove unused styles
+- long lines are not visible (API doc)
+
 * Thu Nov 06 2014 Jan Dobes 2.3.13-1
 - changing left navigation menu colors to be darker
 - collapse class should work on all screen widths

@@ -24,7 +24,7 @@
 			box-shadow: 0px 0px 0px;
 		}
 		li.active > a, li.active > a:hover, ul li:hover, ul li a:hover {
-			color: @spacewalk-blue;
+			color: @spacewalk-aside-menu-hyperlink-active;
 			background: transparent;
 		}
 		/* first submenu */
@@ -56,7 +56,7 @@
 }
 //second logo of SPACEWALK
 .logoLetter {
-	.spacewalk-header-container a:nth-child(2) {
+	.navbar-header a:nth-child(2) {
 		display: none;
 	}
 }
@@ -73,16 +73,15 @@
 			padding-right: 0;
 		}
 	}
-	header {
-		.spacewalk-logo {
-			padding-top: .2em;
-			img#rhLogo {
-				width: 33px;
-			}
-			img#rhnLogo {
-				height: 34px
-			}
+	.navbar-brand {
+		padding: 0px !important;
+		width: auto !important;
+		img {
+			width: 66% !important;
 		}
+	}
+	.navbar-utility {
+		width: 100%;
 	}
 }
 // columns without paddings
@@ -105,7 +104,7 @@
 // buttons will go 100% width
 .buttons-full-size {
 	form {
-		.btn-success {
+		.btn {
 			width: 100%
 		}
 	}
@@ -155,10 +154,11 @@
 		}
 	}
 }
-.search-form-hide {
-	.spacewalk-header-links > form {
-		display: none;
-	}
+.navbar-utility-float {
+	.navbar-utility,
+        .navbar-utility > li {
+                float: left;
+        }
 }
 // show complete main menu bar on bigger than mobile screens
 @media (min-width: 481px) {
@@ -181,7 +181,6 @@
 	.header-responsive;
 	.columns-no-padding;
 	.legal-text-footer;
-	.search-form-hide;
 }
 //classes that will take effect only on mobiles screens
 @media (max-width: @screen-phone) {
@@ -189,6 +188,7 @@
 	.buttons-full-size;
 	.menu-toggle-hide;
 	.button-main-menu-vissible;
+	.navbar-utility-float;
 }
 
 
