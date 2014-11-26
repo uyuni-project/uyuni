@@ -1,19 +1,9 @@
-<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
 <!ENTITY RHNSAT "Spacewalk Server" >
-]>
-<refentry lang="en">
 
- <refentryinfo>
-  <productname>mgr-sync</productname>
-  <authorgroup>
-   <author>
-    <contrib>Developer</contrib>
-    <firstname>Flavio</firstname>
-    <surname>Castelli</surname>
-    <email>fcastelli@suse.com</email>
-   </author>
-  </authorgroup>
- </refentryinfo>
+]>
+
+<refentry>
 
  <refmeta>
   <refentrytitle>mgr-sync</refentrytitle>
@@ -29,30 +19,14 @@
   </refpurpose>
  </refnamediv>
 
-<!--
+
  <refsynopsisdiv>
   <synopsis>
--->
-  <refsect1>
-   <title>Synopsis</title>
    <cmdsynopsis>
-    <command>mgr-sync</command>
-    <arg choice="opt">
-     <replaceable>global-option(s)</replaceable>
-    </arg>
-    <arg choice="plain">&lt;command&gt;</arg>
-    <arg choice="opt">
-     <replaceable>command-option(s)</replaceable>
-    </arg>
-    <arg choice="opt">
-     <replaceable>&lt;arguments&gt;</replaceable>
-    </arg>
+    <command>mgr-sync</command> <arg choice="opt"><replaceable>global-option(s)</replaceable></arg> <arg choice="plain">&lt;command&gt;</arg> <arg choice="opt"><replaceable>command-option(s)</replaceable></arg> <arg choice="opt"><replaceable>&lt;arguments&gt;</replaceable></arg>
    </cmdsynopsis>
-  </refsect1>
-<!--
   </synopsis>
  </refsynopsisdiv>
--->
 
  <refsect1>
   <title>Description</title>
@@ -98,11 +72,11 @@
   <title>Commands</title>
   <para>
    mgr-sync provides a number of commands. Each command accepts the options
-   listed in <xref linkend="global_opts"/>. These options must be specified
-   before the command name. In addition, many commands have specific options,
-   which are listed in this section.  These command-specific options must be
-   specified after the name of the command and before any of the command
-   arguments.
+   listed in the <quote>Global Options</quote> section. These options must be
+   specified before the command name. In addition, many commands have specific
+   options, which are listed in this section.  These command-specific options
+   must be specified after the name of the command and before any of the
+   command arguments.
   </para>
   <refsect2>
    <title><command>enable-scc</command></title>
@@ -293,7 +267,7 @@
     choice="plain"><replaceable>TARGET</replaceable></arg>
    </cmdsynopsis>
    <para>
-    Delete ???what???
+     SCC organization credentials to delete
    </para>
    <variablelist>
     <varlistentry>
