@@ -828,12 +828,16 @@ public class ActivationKeyHandler extends BaseHandler {
      *   #array_end()
      */
     public List<ActivationKey> listActivationKeys(String sessionKey) {
-        User user = getLoggedInUser(sessionKey);
+        User loggedInUser = getLoggedInUser(sessionKey);
         List<ActivationKey> result = new ArrayList<ActivationKey>();
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
-        for (Iterator it = manager.findAll(user).iterator(); it.hasNext();) {
-            ActivationKey key = (ActivationKey)it.next();
-            manager.validateCredentials(user, null, key);
+        for (ActivationKey key : manager.findAll(loggedInUser)) {
+            try {
+                manager.validateCredentials(loggedInUser, null, key);
+            }
+            catch (LookupException e) {
+                continue; // skip keys in this org that this user can't see
+            }
             result.add(key);
         }
 

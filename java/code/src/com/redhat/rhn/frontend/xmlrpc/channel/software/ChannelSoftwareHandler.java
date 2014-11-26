@@ -2276,10 +2276,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     public Object[] mergePackages(String sessionKey, String mergeFromLabel,
             String mergeToLabel) {
-
         User loggedInUser = getLoggedInUser(sessionKey);
-        channelAdminPermCheck(loggedInUser);
-
         Channel mergeFrom = lookupChannelByLabel(loggedInUser, mergeFromLabel);
         Channel mergeTo = lookupChannelByLabel(loggedInUser, mergeToLabel);
 
