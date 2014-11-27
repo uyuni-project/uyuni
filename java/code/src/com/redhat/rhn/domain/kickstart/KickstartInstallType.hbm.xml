@@ -17,7 +17,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="KickstartInstallType.loadAll">
-        <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartInstallType]]>
+        <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartInstallType as t order by t.label desc]]>
     </query>
     <query name="KickstartInstallType.findById">
         <![CDATA[from com.redhat.rhn.domain.kickstart.KickstartInstallType as t where t.id = :id]]>
