@@ -832,7 +832,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             csm.addChannel(xmlChannel.getLabel(), null);
 
             // Check if channel has been added correctly
-            Channel c = ChannelFactory.lookupByLabel(null, xmlChannel.getLabel());
+            Channel c = ChannelFactory.lookupByLabel(admin.getOrg(), xmlChannel.getLabel());
             assertNotNull(c);
             assertEquals(MgrSyncUtils.getChannelArch(xmlChannel), c.getChannelArch());
             assertEquals("/dev/null", c.getBaseDir());
