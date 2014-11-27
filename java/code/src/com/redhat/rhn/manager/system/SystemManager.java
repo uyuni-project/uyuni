@@ -1043,15 +1043,15 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<ErrataOverview> relevantCurrencyErrata(User user,
             Long sid, String type,
-            String synopsis) {
+            String severity_label) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
-                "security_relevant_to_system_by_synopsis");
+                "security_relevant_to_system_by_severity");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user_id", user.getId());
         params.put("sid", sid);
         params.put("type", type);
-        params.put("synopsis", synopsis);
+        params.put("severity_label", severity_label);
 
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", sid);
