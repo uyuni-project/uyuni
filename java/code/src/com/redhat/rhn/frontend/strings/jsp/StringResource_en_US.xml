@@ -22128,6 +22128,21 @@ given channel.</source>
         <trans-unit id="help.credentials.jsp.logininput">
           <source>@@PRODUCT_NAME@@ Login:</source>
         </trans-unit>
+        <trans-unit id="server.runningkernel.unknown">
+          <source>Unknown running kernel</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.erratasummary">
+          <source>Errata Summary</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.packagesummary">
+          <source>Package Summary</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.totalerrata">
+          <source>Total Errata</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.totalpackages">
+          <source>Total Packages</source>
+        </trans-unit>
       </group>
     </body>
   </file>
