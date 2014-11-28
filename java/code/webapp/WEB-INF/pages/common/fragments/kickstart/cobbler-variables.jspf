@@ -18,7 +18,7 @@
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstart.variable.jsp.netboot-enabled"/>:
             </label>
-            <div class="col-lg-6">
+            <div class="col-lg-9">
                 <html:checkbox property="netbootEnabled"/>
             </div>
         </div>
@@ -27,14 +27,14 @@
         <label class="col-lg-3 control-label">
             <bean:message key="kickstart.variable.jsp.variabledetails"/>:
         </label>
-        <div class="col-lg-6">
+        <div class="col-lg-9">
             <html:textarea styleClass="form-control"
-                           rows="25" cols="60"
+                           rows="20" cols="60"
                            property="variables"/>
         </div>
     </div>
     <div class="form-group">
-        <div class="col-lg-offset-3 col-lg-6">
+        <div class="col-lg-offset-3 col-lg-9">
             <html:submit styleClass="btn btn-success">
                 <bean:message key="kickstart.variable.jsp.update"/>
             </html:submit>
