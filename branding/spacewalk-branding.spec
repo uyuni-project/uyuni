@@ -42,6 +42,12 @@ BuildRequires: httpd
 Requires:      httpd
 Requires(pre): tomcat6
 Requires:      susemanager-frontend-libs >= 2.1
+Requires:      susemanager-manuals_en
+Requires:      susemanager-client-config_en-pdf
+Requires:      susemanager-install_en-pdf
+Requires:      susemanager-proxy-quick_en-pdf
+Requires:      susemanager-user_en-pdf
+Requires:      susemanager-reference_en-pdf
 
 %description
 Spacewalk specific branding, CSS, and images.
