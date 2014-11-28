@@ -99,6 +99,7 @@ docs.quick_start=/rhn/help/quick/index.jsp
 docs.proxy_guide=/rhn/help/proxy-quick/index.jsp
 docs.reference_guide=/rhn/help/reference/index.jsp
 docs.install_guide=/rhn/help/install/index.jsp
+docs.user_guide=/rhn/help/user/index.jsp
 docs.client_config_guide=/rhn/help/client-config/index.jsp
 docs.channel_mgmt_guide=http://www.suse.com/documentation/suse_manager/
 docs.release_notes=/rhn/help/release-notes/manager/en-US/index.jsp
