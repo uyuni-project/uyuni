@@ -10,8 +10,8 @@
   </grail-canvas-replacement>
 
   <grail-canvas-template base="/templates/c.pxt" mode="main_canvas">
-    <rhn-toolbar base="h1" icon="header-system" help-url="s1-sm-monitor.jsp#s2-sm-monitor-scout">
-	Update Scout Configuration 
+    <rhn-toolbar base="h1" icon="header-system" help-url="s1-sm-monitor.jsp#s2-sm-monitor-scout" help-guide="user">
+	Update Scout Configuration
     </rhn-toolbar>
 
   <pxt-include-late file="/network/components/message_queues/local.pxi" />
@@ -27,7 +27,7 @@
 
   <column name="Config Status" label="config_status_icon" align="center" width="15%" />
   <column name="Scout Name" label="description" align="left">
-    <url>/network/monitoring/scout/details.pxt?scout_id={column:id}</url> 
+    <url>/network/monitoring/scout/details.pxt?scout_id={column:id}</url>
   </column>
 
   <column name="Last Request" label="date_submitted" align="left">
