@@ -50,7 +50,7 @@
    <varlistentry>
     <term><option>--version</option></term>
     <listitem>
-     <para>Prints the version.</para>
+     <para>Print the version.</para>
     </listitem>
    </varlistentry>
    <varlistentry>
@@ -112,7 +112,7 @@
      <term><option>-e</option>, <option>--expand</option></term>
      <listitem>
       <para>
-       Expands all children if parent is not subsribed.
+       Expands all children if parent is not subscribed.
       </para>
      </listitem>
     </varlistentry>
@@ -123,7 +123,7 @@
      </term>
      <listitem>
       <para>
-       Filter the ouput by what contains the filter word.
+       Filter the output by what contains the filter word.
       </para>
      </listitem>
     </varlistentry>
@@ -151,14 +151,6 @@
       </para>
      </listitem>
     </varlistentry>
-    <varlistentry>
-     <term><option>--primary</option></term>
-     <listitem>
-      <para>
-       Desginate SCC organization credentials as primary.
-      </para>
-     </listitem>
-    </varlistentry>
    </variablelist>
   </refsect2>
   <refsect2>
@@ -177,7 +169,7 @@
     <command>add</command> <arg choice="opt">option(s)</arg> <arg choice="plain">credentials</arg>
    </cmdsynopsis>
    <para>
-    Add and channels or credentials. Channels will automatically be
+    Add products, channels or credentials. Channels will automatically be
     synced. <option>product|products</option> will add all channels mandatory
     for the given
     <replaceable>PRODUCT</replaceable>.
@@ -211,7 +203,7 @@
      <term><option>--primary</option></term>
      <listitem>
       <para>
-       Desginate SCC organization credentials as primary.
+       Designate SCC organization credentials as primary.
       </para>
      </listitem>
     </varlistentry>
