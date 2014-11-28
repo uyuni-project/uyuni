@@ -272,10 +272,10 @@
     <rhn-tab name="Client Configuration" url="/rhn/help/dispatcher/client_config_guide">
         <rhn-tab-directory>/rhn/help/client-config/</rhn-tab-directory>
     </rhn-tab>
-<!--
     <rhn-tab name="User Guide" url="/rhn/help/dispatcher/user_guide">
-      <rhn-tab-directory>/rhn/help/user-guide</rhn-tab-directory>
+      <rhn-tab-directory>/rhn/help/user</rhn-tab-directory>
     </rhn-tab>
+<!--
     <rhn-tab name="Getting Started Guide" url="/rhn/help/dispatcher/getting_started_guide">
       <rhn-tab-directory>/rhn/help/getting-started</rhn-tab-directory>
     </rhn-tab>

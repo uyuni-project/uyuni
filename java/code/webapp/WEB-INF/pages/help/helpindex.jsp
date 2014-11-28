@@ -49,7 +49,6 @@
             <bean:message key="help.jsp.clients"/>
         </li>
 
-<!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/user_guide>
                 <bean:message key="help.jsp.user.title"/>
@@ -58,6 +57,7 @@
             <bean:message key="help.jsp.user"/>
         </li>
 
+<!--
         <li>
             <a style="font-size:12pt" href=/rhn/help/dispatcher/getting_started_guide>
                 <bean:message key="help.jsp.start.title"/>
