@@ -88,10 +88,20 @@ public class SCCClientUtils {
             throw e;
         }
 
-        FileUtils.forceMkdir(new File(logDir));
+        File logDirFile = new File(logDir);
+        if (!logDirFile.exists()) {
+            FileUtils.forceMkdir(logDirFile);
+            logDirFile.setWritable(true, false);
+        }
 
-        String path = logDir + File.separator + getLogFilename(connection.getURL(), user);
-        OutputStream fileOutputStream = new FileOutputStream(path);
+        File logFile = new File(logDir + File.separator +
+                             getLogFilename(connection.getURL(), user));
+        if (!logFile.exists()) {
+            FileUtils.touch(logFile);
+            logFile.setWritable(true, false);
+        }
+
+        OutputStream fileOutputStream = new FileOutputStream(logFile);
         TeeInputStream tis = new TeeInputStream(inputStream, fileOutputStream);
 
         Reader inputStreamReader = new InputStreamReader(tis);
