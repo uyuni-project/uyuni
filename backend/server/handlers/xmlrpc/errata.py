@@ -273,7 +273,10 @@ class Errata(rhnHandler):
         result = []
         for eid, name, update_tag in errata_list:
             if update_tag:
-                name = "%s-%s" % (update_tag, name)
+                if update_tag.startswith('SUSE-'):
+                    name = name.replace("SUSE", "SUSE-%s" % updateTag, 1)
+                else:
+                    name = "%s-%s" % (update_tag, name)
             result.append((eid, name))
         log_debug(2, self.server_id, errata_ids, result)
         return result
