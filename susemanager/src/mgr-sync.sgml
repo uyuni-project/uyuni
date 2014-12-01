@@ -162,8 +162,7 @@
    </cmdsynopsis>
    <cmdsynopsis>
     <command>add</command> <arg choice="opt">option(s)</arg> <arg
-    choice="plain">product|products</arg> <arg
-    choice="plain"><replaceable>PRODUCT</replaceable></arg>
+    choice="plain">product|products</arg>
    </cmdsynopsis>
    <cmdsynopsis>
     <command>add</command> <arg choice="opt">option(s)</arg> <arg choice="plain">credentials</arg>
@@ -172,7 +171,7 @@
     Add products, channels or credentials. Channels will automatically be
     synced. <option>product|products</option> will add all channels mandatory
     for the given
-    <replaceable>PRODUCT</replaceable>.
+    <replaceable>PRODUCT</replaceable>. `add product` is interactive.  
    </para>
    <variablelist>
     <varlistentry>
