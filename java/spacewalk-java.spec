@@ -558,6 +558,8 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs
+# touch the trigger for enabling the SCC feature
+touch $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc/default_scc
 %else
 install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
@@ -874,6 +876,7 @@ fi
 %ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
+%{_localstatedir}/lib/spacewalk/scc/default_scc
 %else
 %dir %attr(755, tomcat, root) %{_var}/spacewalk/systemlogs
 %ghost %attr(644, tomcat, root) %{_var}/spacewalk/systemlogs/audit-review.log
