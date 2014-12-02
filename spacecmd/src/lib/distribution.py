@@ -129,11 +129,11 @@ def do_distribution_create(self, args, update = False):
 ####################
 
 def help_distribution_list(self):
-    print 'distribution_list: List the available Kickstart trees'
+    print 'distribution_list: List the available autoinstall trees'
     print 'usage: distribution_list'
 
 def do_distribution_list(self, args, doreturn = False):
-    channels = self.client.kickstart.listKickstartableChannels(self.session)
+    channels = self.client.kickstart.listAutoinstallableChannels(self.session)
 
     avail_trees = []
     for c in channels:
