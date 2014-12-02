@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Dec  2 15:13:52 CET 2014 - mc@suse.de
+
+- fix call of setCustomOptions() during kickstart_importjson
+  (bsc#879904)
+
+-------------------------------------------------------------------
 Fri Nov 07 13:10:33 CET 2014 - mc@suse.de
 
 - version 2.1.25.5-1
