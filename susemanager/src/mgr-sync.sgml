@@ -61,7 +61,7 @@
    <varlistentry>
     <term><option>-s</option>, <option>--save-config</option></term>
     <listitem>
-      <para>Save the configuration to the local dot file (~/.mgr-sync).</para>
+     <para>Save the configuration to the local dot file (~/.mgr-sync).</para>
     </listitem>
    </varlistentry>
   </variablelist>
@@ -278,7 +278,7 @@
    <varlistentry>
     <term>Add all mandatory channels for products interactively.</term>
     <listitem>
-      <screen>mgr-sync add product</screen>
+     <screen>mgr-sync add product</screen>
     </listitem>
    </varlistentry>
    <varlistentry>
