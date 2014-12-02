@@ -1,5 +1,4 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
-<!ENTITY RHNSAT "Spacewalk Server" >
 
 ]>
 
@@ -62,7 +61,7 @@
    <varlistentry>
     <term><option>-s</option>, <option>--save-config</option></term>
     <listitem>
-     <para>Save the configuration to the local dot file.</para>
+      <para>Save the configuration to the local dot file (~/.mgr-sync).</para>
     </listitem>
    </varlistentry>
   </variablelist>
@@ -117,10 +116,7 @@
      </listitem>
     </varlistentry>
     <varlistentry>
-     <term>
-      <option>-f <replaceable>FILTER</replaceable></option>,
-      <option>--filter <replaceable>FILTER</replaceable></option>
-     </term>
+     <term><option>-f <replaceable>FILTER</replaceable></option>, <option>--filter <replaceable>FILTER</replaceable></option></term>
      <listitem>
       <para>
        Filter the output by what contains the filter word.
@@ -169,19 +165,10 @@
    </cmdsynopsis>
    <para>
     Add products, channels or credentials. Channels will automatically be
-    synced. <option>product|products</option> will add all channels mandatory
-    for the given
-    <replaceable>PRODUCT</replaceable>. `add product` is interactive.  
+    synced. <option>product|products</option> will add mandatory channels
+    for the given product interactively.
    </para>
    <variablelist>
-    <varlistentry>
-     <term><option>-c</option>, <option>--compatct</option></term>
-     <listitem>
-      <para>
-       Compact output.
-      </para>
-     </listitem>
-    </varlistentry>
     <varlistentry>
      <term><option>--from-mirror</option></term>
      <listitem>
@@ -289,14 +276,13 @@
     </listitem>
    </varlistentry>
    <varlistentry>
-    <term>Add all mandatory channels for <replaceable>My Product</replaceable>
-    from a local SMT server.</term>
+    <term>Add all mandatory channels for products interactively.</term>
     <listitem>
-     <screen>mgr-sync add product --from-mirror http//smt.example.com <replaceable>"My Product"</replaceable></screen>
+      <screen>mgr-sync add product</screen>
     </listitem>
    </varlistentry>
    <varlistentry>
-    <term>Add the channel <replaceable>My Channel</replaceable>from SCC.</term>
+    <term>Add the channel <replaceable>My Channel</replaceable> from SCC.</term>
     <listitem>
      <screen>mgr-sync add channel <replaceable>"My Channel"</replaceable></screen>
     </listitem>
