@@ -93,7 +93,7 @@ public class KickstartHandler extends BaseHandler {
     }
 
     /**
-     * List Autoinstallable channels for the logged in user.
+     * List autoinstallable channels for the logged in user.
      * @param sessionKey User's session key.
      * @return Array of Channel objects.
      *
@@ -104,11 +104,8 @@ public class KickstartHandler extends BaseHandler {
     public List<Channel> listAutoinstallableChannels(String sessionKey) {
         User loggedInUser = getLoggedInUser(sessionKey);
         ensureConfigAdmin(loggedInUser);
-        return  ChannelFactory
-                .getAutoinstallableChannels(loggedInUser.getOrg());
-
+        return ChannelFactory.getAutoinstallableChannels(loggedInUser.getOrg());
     }
-
 
     /**
      * Import a kickstart profile into RHN. This method will maintain the
