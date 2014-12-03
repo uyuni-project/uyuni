@@ -34,7 +34,8 @@
         </div>
 
         <select name="targetProfile" id="syncPackageSelect"
-            <c:if test="${form.targetProfileType ne 'package' or empty form.syncPackages}">disabled="true"</c:if>
+            <c:if test="${empty form.syncPackages}">hidden="true"</c:if>
+            <c:if test="${form.targetProfileType ne 'package'}">disabled="true"</c:if>
         >
             <c:forEach var="packagex" items="${form.syncPackages}">
                 <option <c:if test="${packagex.id == form.targetProfile}">selected="selected"</c:if> value='${packagex.id}'>${packagex.name}</option>
