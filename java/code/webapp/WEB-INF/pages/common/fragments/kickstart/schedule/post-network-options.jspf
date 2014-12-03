@@ -102,7 +102,6 @@
         <input type="text" name="bondOptions" id="bondingInterfaceOptions" size="10" Maxlength="125"
             value="${form.bondOptions}" class="form-control" placeholder="<bean:message key="kickstart.postnetconn.bondoptions.jsp.label" />"
             <c:if test="${form.bondType ne 'bonding'}">disabled="true"</c:if>
-
         />
     </div>
     <div class="col-sm-offset-3 col-sm-9">
