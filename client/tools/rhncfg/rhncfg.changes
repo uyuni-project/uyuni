@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:22:40 CET 2014 - mc@suse.de
+
+- version 5.10.65.9-1
+- fix compare config files by checking permissions on the
+  correct file (bsc#900498)
+
+-------------------------------------------------------------------
 Fri Nov 07 13:25:00 CET 2014 - mc@suse.de
 
 - version 5.10.65.8-1
