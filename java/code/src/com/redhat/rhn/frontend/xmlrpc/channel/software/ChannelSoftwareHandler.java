@@ -47,6 +47,7 @@ import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateChannelLabelException;
+import com.redhat.rhn.frontend.xmlrpc.DuplicateChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
@@ -1949,6 +1950,10 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
         if (ChannelFactory.lookupByLabel(loggedInUser.getOrg(), label) != null) {
             throw new DuplicateChannelLabelException(label);
+        }
+
+        if (ChannelFactory.doesChannelNameExist(name)) {
+            throw new DuplicateChannelNameException(name);
         }
 
         Channel originalChan = lookupChannelByLabel(loggedInUser.getOrg(), originalLabel);
