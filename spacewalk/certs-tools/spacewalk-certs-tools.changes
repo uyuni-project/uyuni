@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:15:42 CET 2014 - mc@suse.de
+
+- version 2.1.6.4-1
+- Modify output in case a file is not found
+- Remove duplicates from authorized_keys2 as well (bsc#885889)
+
+-------------------------------------------------------------------
 Fri Sep 12 15:44:42 CEST 2014 - mc@suse.de
 
 - version 2.1.6.3-1
