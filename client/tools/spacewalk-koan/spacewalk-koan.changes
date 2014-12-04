@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:17:40 CET 2014 - mc@suse.de
+
+- version 2.1.4.9-1
+- make spacewalk-koan work with newer cobbler/koan version
+  (bsc#908152)
+
+-------------------------------------------------------------------
 Thu Sep 04 12:18:54 CEST 2014 - mc@suse.de
 
 - version 2.1.4.8-1
