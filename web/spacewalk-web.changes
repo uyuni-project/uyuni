@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Dec 04 16:21:11 CET 2014 - mc@suse.de
+
+- version 2.1.60.11-1
+- add User Guide to online help pages
+- fix links to monitoring documentation (bsc#906887)
+- clean up remnants of prototype.js, convert to jQuery
+- fix form-field-name for create-notification
+- Remove unused clone_newest_package function
+- fix rhnChannelNewestPackage table by using
+  refresh_newest_package function again
+- improve the layout in case the exception message is large
+- setup wizard: add tooltip to refresh button
+- stop the spinner for the success task
+- link the error message with the tomcat log viewer
+- make the SCC migration/refresh dialog show steps
+- Add a refresh button to the SUSE products page
+
+-------------------------------------------------------------------
 Fri Nov 07 13:02:38 CET 2014 - mc@suse.de
 
 - version 2.1.60.10-1
