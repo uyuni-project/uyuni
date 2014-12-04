@@ -103,7 +103,7 @@ public class KickstartHandler extends BaseHandler {
     public List<Channel> listAutoinstallableChannels(String sessionKey) {
         User loggedInUser = getLoggedInUser(sessionKey);
         ensureConfigAdmin(loggedInUser);
-        return ChannelFactory.getAutoinstallableChannels(loggedInUser.getOrg());
+        return ChannelFactory.getKickstartableTreeChannels(loggedInUser.getOrg());
     }
 
     /**
