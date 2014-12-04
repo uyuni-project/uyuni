@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Thu Dec 04 16:22:57 CET 2014 - mc@suse.de
+
+- version 2.1.15-1
+- Abort setup when invalid SSL countrycode given (bnc#882468)
+- mgr-sync: add man page
+- use noRepoSync parameter always
+- Enable and allow "mgr-sync refresh" in the case of ISS
+- mgr-sync: Fixed error message on exception (bnc#905263)
+- mgr-sync: fixed add product to not trigger redundant 
+            add of base channe (bnc#901928)
+- drop unused columns in suseProducts table
+
+-------------------------------------------------------------------
 Fri Nov 07 13:07:48 CET 2014 - mc@suse.de
 
 - version 2.1.14-1
