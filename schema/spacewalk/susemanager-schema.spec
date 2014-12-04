@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.1.50.9
+Version:        2.1.50.10
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 

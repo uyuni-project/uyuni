@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Dec 04 16:27:47 CET 2014 - mc@suse.de
+
+- version 2.1.50.10-1
+- fix migration script names to fix bare-metal registration (bsc#896109)
+- add virt-host-plat entitlement mappings for new arches
+- Create regular index instead and have one migration per DB (bsc#905072)
+- Drop unique index on package ids (bsc#905072)
+- drop unused column product_list in suseProducts table
+- drop unused column channel_family_id in suseProducts
+
+-------------------------------------------------------------------
 Fri Nov 07 13:20:08 CET 2014 - mc@suse.de
 
 - version 2.1.50.9-1
