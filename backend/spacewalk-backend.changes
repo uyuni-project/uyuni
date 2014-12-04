@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Dec 04 16:31:03 CET 2014 - mc@suse.de
+
+- version 2.1.55.13-1
+- insert update tag at the correct place for SLE12 (bsc#907677)
+- different registration paths should lock tables in the same order
+  This could potentially cause deadlocks
+- spacewalk-data-fsck: use config file variable instead of hardcoded path part
+- drop unused column product_list in suseProducts table
+- sanitize db_* config values
+
+-------------------------------------------------------------------
 Mon Nov 24 13:49:38 CET 2014 - mc@suse.de
 
 - trigger generation of metadata if the repo contains no packages
