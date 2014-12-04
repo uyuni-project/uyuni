@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:23:42 CET 2014 - mc@suse.de
+
+- version 2.1.4-1
+- add Channels for Public Cloud Module (bsc#907586)
+- add new channel families SLE-WE and SLE-LP
+- add ATI and nVidia channels for SLED11-SP3 (bsc#901108)
+- add channels for IBM-DLPAR for SLE12 ppc64le
+  (FATE#316582, FATE#316583)
+
+-------------------------------------------------------------------
 Tue Oct 14 15:21:53 CEST 2014 - mc@suse.de
 
 - version 2.1.3-1
