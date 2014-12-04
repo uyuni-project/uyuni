@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu Dec 04 16:29:19 CET 2014 - mc@suse.de
+
+- version 2.1.33.9-1
+- fix link to macro documentation (bsc#895961)
+- add User Guide to online help pages
+- require online manual packages
+- fix branding in error message (bsc#902503)
+- long lines are not visible (API doc)
+- Change texts to print Inter-Server Synchronisation additionally
+  to ISS only.
+- disable credentials and products dialog on ISS slave
+- improve the layout in case the exception message is large
+- scc notification: change the link to the verb 'Migrate'
+- setup wizard: add tooltip to refresh button
+- make the SCC migration/refresh dialog show steps
+- Use the NCC/SCC acronyms together with the full name
+- Show alert message about disabling cron jobs
+
+-------------------------------------------------------------------
 Fri Nov 07 13:23:33 CET 2014 - mc@suse.de
 
 - version 2.1.33.8-1
