@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:30:20 CET 2014 - mc@suse.de
+
+- version 2.1.6.7-1
+- read systemid path from configuration
+- proxy installer should use http proxy to get version number
+
+-------------------------------------------------------------------
 Fri Nov 07 13:16:16 CET 2014 - mc@suse.de
 
 - version 2.1.6.6-1
