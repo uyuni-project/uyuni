@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Dec 04 13:27:13 CET 2014 - mc@suse.de
+
+- version 2.1.25.6-1
+- call listAutoinstallableChannels() for listing distributions
+  (bsc#887879)
+- Fix spacecmd schedule listing (bsc#902494)
+- Teach spacecmd report_errata to process all-errata in the absence
+  of further args
+
+-------------------------------------------------------------------
 Tue Dec  2 15:13:52 CET 2014 - mc@suse.de
 
 - fix call of setCustomOptions() during kickstart_importjson
