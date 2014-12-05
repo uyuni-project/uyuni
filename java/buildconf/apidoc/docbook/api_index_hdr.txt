@@ -6,8 +6,8 @@
   <bookinfo>
     <pubdate><?dbtimestamp?></pubdate>
     <productname>SUSE Manager</productname>
-    <productnumber>1.2</productnumber>
-    <bibliosource class="uri">http://www.suse.com/susemanager</bibliosource>
+    <productnumber>2.1</productnumber>
+    <bibliosource class="uri">http://www.suse.com/products/suse-manager</bibliosource>
     <abstract>
       <para>
         Welcome to the SUSE Manager API. By using the included API calls, you can easily automate many of
@@ -16,7 +16,7 @@
     </abstract>
     <legalnotice>
     <title>Legal Notice</title>
-    <para>Copyright (c) 2012 Red Hat, Inc.
+    <para>Copyright (c) 2014 Red Hat, Inc.
       This software is licensed to you under the GNU General Public License, version 2 (GPLv2). There is
       NO WARRANTY for this software, express or implied, including the implied warranties of MERCHANTABILITY
       or FITNESS FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2 along with this software;
