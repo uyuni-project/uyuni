@@ -49,6 +49,7 @@
                     </button>
                 </div>
             </div>
+            <rhn:csrf />
         </html:form>
     </c:if>
 </body>
