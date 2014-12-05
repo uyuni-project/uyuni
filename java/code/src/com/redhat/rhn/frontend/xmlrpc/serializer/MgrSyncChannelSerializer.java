@@ -28,7 +28,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * Serializer for {@link MgrSyncChannel} objects.
  *
  * @xmlrpc.doc
- *   #struct("entry")
+ *   #struct("channel")
  *     #prop_desc("string", "arch", "Architecture of the channel")
  *     #prop_desc("string", "description", "Description of the channel")
  *     #prop_desc("string", "family", "Channel family label")
