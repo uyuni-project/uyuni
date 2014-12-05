@@ -530,6 +530,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stdout.flush()
             return
 
+        # get the token here to not destroy the output of the refresh command
+        # while asking for username and password
+        token = self.auth.token()
         for operation, method in actions:
             sys.stdout.write("Refreshing %s" % operation)
             sys.stdout.flush()
@@ -538,10 +541,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                     # this is the only method which requires the mirror
                     # parameter
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token(), mirror)
+                                                token, mirror)
                 else:
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token())
+                                                token)
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
