@@ -68,9 +68,6 @@
         </rl:list>
 
         <div class="form-horizontal">
-            <p>
-                <bean:message key="installconfirm.jsp.widgetsummary" />
-            </p>
             <div class="form-group">
                 <label class="col-md-3 control-label" for="radio_use_date_now"> <bean:message
                         key="schedule.jsp.at" />:

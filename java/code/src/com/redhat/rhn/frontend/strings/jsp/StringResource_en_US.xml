@@ -7083,24 +7083,18 @@ value for this entitlement, excluding the default organization's consumption.</s
 
       <!-- Package locking -->
       <trans-unit id="pkg.lock.header">
-        <source>Request Packages Lock or Unlock</source>
+        <source>Package Locking or Unlocking</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
-
       <trans-unit id="pkg.lock.summary">
         <source>
-            &lt;p&gt;
-                You can lock or unlock packages so they will remain unmodified.
-                However, it is important to keep in mind the following rules:
-            &lt;/p&gt;
-            &lt;ul&gt;
-                &lt;li&gt;Lock (or unlock) does not happens immediately, but is a scheduled action.&lt;/li&gt;
-                &lt;li&gt;Request lock might be delayed. If package has been updated before lock took
-                    action and the package is newer, the lock will be canceled.
-                &lt;/li&gt;
-            &lt;/ul&gt;
+                You can lock packages so they will remain unmodified.
+                However, it is important to keep in mind that requesting a 
+                lock might be delayed. If a package has been updated 
+                before the lock took action and the package is newer, the
+                lock will be canceled.
         </source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
@@ -7133,13 +7127,13 @@ value for this entitlement, excluding the default organization's consumption.</s
       </trans-unit>
       
       <trans-unit id="pkg.lock.requestlock">
-        <source>Request Lock</source>
+        <source>Lock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="pkg.lock.requestunlock">
-        <source>Request Unlock</source>
+        <source>Unlock</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
