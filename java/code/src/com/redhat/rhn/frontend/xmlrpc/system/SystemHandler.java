@@ -3583,7 +3583,9 @@ public class SystemHandler extends BaseHandler {
      *          #prop_desc("string" "run_as_user" "Run as user")
      *          #prop_desc("string" "run_as_group" "Run as group")
      *          #prop_desc("int" "timeout" "Timeout in seconds")
-     *          #array_single("$ScriptResultSerializer", "result")
+     *          #array()
+     *              $ScriptResultSerializer
+     *          #array_end()
      *      #struct_end()
      */
     public Map<String, Object> getScriptActionDetails(String sessionKey, Integer actionId) {
@@ -5386,7 +5388,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *     #array()
-     *         #struct()
+     *         #struct("system")
      *             #prop_desc("int", "id", "System ID")
      *             #prop_desc("string", "name", "System profile name")
      *             #prop_desc("int", "extra_pkg_count", "Extra packages count")
