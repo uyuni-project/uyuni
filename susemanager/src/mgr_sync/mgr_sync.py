@@ -504,7 +504,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """
         Refresh the SCC data in the SUSE Manager database.
         """
-
+        token = self.auth.token(verify=True)
         actions = (
             ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
@@ -530,9 +530,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stdout.flush()
             return
 
-        # get the token here to not destroy the output of the refresh command
-        # while asking for username and password
-        token = self.auth.token()
         for operation, method in actions:
             sys.stdout.write("Refreshing %s" % operation)
             sys.stdout.flush()
