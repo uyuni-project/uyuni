@@ -136,7 +136,7 @@ public class ContentSyncManager {
 
     // Cached OES SCCRepository as returned by isMirrorable() in order
     // to avoid repeated HEAD requests
-    private static SCCRepository cachedOESRepo = null;
+    private SCCRepository cachedOESRepo = null;
 
     // Mirror URL read from rhn.conf
     public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
