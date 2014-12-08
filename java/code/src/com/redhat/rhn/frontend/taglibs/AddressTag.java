@@ -227,7 +227,6 @@ public class AddressTag extends TagSupport {
                 result.append("<div class=\"alert alert-info\">");
                 result.append(ls.getMessage("address not filled in"));
                 result.append("</div>");
-                result.append("<p>");
                 result.append("<a ")
                       .append("class=\"btn btn-default\"")
                       .append(" href=\"")
@@ -239,7 +238,6 @@ public class AddressTag extends TagSupport {
                       .append("\">")
                       .append(ls.getMessage("Fill in this address"))
                       .append("</a>");
-                result.append("</p>");
             }
 
             out.print(result);
