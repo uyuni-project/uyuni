@@ -1196,10 +1196,14 @@ public class ContentSyncManager {
                 cachedOESRepo.setUrl(channel.getSourceUrl());
                 cachedOESRepo.setCredentials(oesCreds);
             }
-            else if (log.isDebugEnabled()) {
-                log.debug("Return cached OES availablity");
+            else if (cachedOESRepo.getCredentials() != null) {
+                cachedOESRepo.setUrl(channel.getSourceUrl());
+                if (log.isDebugEnabled()) {
+                    log.debug("Return cached OES availablity");
+                }
+                return cachedOESRepo;
             }
-            return cachedOESRepo.getCredentials() != null ? cachedOESRepo : null;
+            return null;
         }
 
         return findMatchingRepo(repos, sourceUrl);
