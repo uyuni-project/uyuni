@@ -98,6 +98,7 @@ p {
 	}
 	section {
 		.make-md-column(10);
+    margin-bottom: 3em;
 	}
 }
 
@@ -908,4 +909,14 @@ input[name="cveIdentifierId"]#cveIdentifierId {
 
 .spacewalk-help-link {
 	font-size: 16px
+}
+
+// rewrite the blue colour from spacewalk
+
+.list-row-even td.sortedCol {
+  background-color: transparent;
+}
+
+.list-row-odd td.sortedCol {
+background-color: @table-bg-accent !important;
 }
