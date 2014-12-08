@@ -509,7 +509,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """
         Refresh the SCC data in the SUSE Manager database.
         """
-
+        token = self.auth.token(verify=True)
         actions = (
             ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
@@ -540,11 +540,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stdout.flush()
             try:
                 if method == "synchronizeChannels":
-                    self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                            self.auth.token(), mirror)
+                    self._execute_xmlrpc_method(self.conn.sync.content, method, token, mirror)
                 else:
-                    self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                            self.auth.token())
+                    self._execute_xmlrpc_method(self.conn.sync.content, method, token)
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
