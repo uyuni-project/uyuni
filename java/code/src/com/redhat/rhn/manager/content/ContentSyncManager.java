@@ -1197,6 +1197,7 @@ public class ContentSyncManager {
                 cachedOESRepo = new SCCRepository();
                 cachedOESRepo.setUrl(channel.getSourceUrl());
                 cachedOESRepo.setCredentials(oesCreds);
+                return cachedOESRepo;
             }
             else if (cachedOESRepo.getCredentials() != null) {
                 cachedOESRepo.setUrl(channel.getSourceUrl());
