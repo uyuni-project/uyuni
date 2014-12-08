@@ -73,6 +73,19 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             sys.exit(1)
 
+        # Only when user is trying to save the config
+        if options.saveconfig:
+            self.auth.token(verify=True)
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
+            self.config.write()
+            print("credentials has been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        if self.auth.token(connect=False):
+            self.config.token = self.auth.token(connect=False)
+            self.config.write()
+
         self.quiet = not options.verbose
         self.exit_with_error = False
 
@@ -106,17 +119,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         elif vars(options).has_key('delete_target'):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
-
-        if options.saveconfig and self.auth.has_credentials():
-            self.config.user = self.auth.user
-            self.config.password = self.auth.password
-            self.config.write()
-            print("credentials has been saved to the {0} file.".format(
-                self.config.dotfile))
-
-        if self.auth.token(connect=False):
-            self.config.token = self.auth.token(connect=False)
-            self.config.write()
 
         if self.exit_with_error:
             return 1
@@ -267,10 +269,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         :param channel: the label identifying the channel
         """
 
-        self._execute_xmlrpc_method(self.conn.channel.software,
-                                    "syncRepo",
-                                    self.auth.token(),
-                                    channel)
+        try:
+            self._execute_xmlrpc_method(self.conn.channel.software,
+                                        "syncRepo",
+                                        self.auth.token(),
+                                        channel)
+        except xmlrpclib.Fault, ex:
+            if ex.faultCode == 2802:
+                sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
+                sys.exit(1)
 
     def _select_channel_interactive_mode(self):
         """Show not installed channels prefixing a number, then reads
@@ -504,7 +511,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """
         Refresh the SCC data in the SUSE Manager database.
         """
-
+        token = self.auth.token(verify=True)
         actions = (
             ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
@@ -538,10 +545,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                     # this is the only method which requires the mirror
                     # parameter
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token(), mirror)
+                                                token, mirror)
                 else:
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                self.auth.token())
+                                                token)
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:

@@ -59,6 +59,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchChannelException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchContentSourceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
+import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoLabelException;
 import com.redhat.rhn.frontend.xmlrpc.channel.repo.InvalidRepoUrlException;
 import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
@@ -2775,8 +2776,14 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int syncRepo(String sessionKey, String channelLabel) {
         User loggedInUser = getLoggedInUser(sessionKey);
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-        new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser);
-        return 1;
+        TaskomaticApi tapi = new TaskomaticApi();
+        if (tapi.isRunning()) {
+            tapi.scheduleSingleRepoSync(chan, loggedInUser);
+            return 1;
+        }
+        else {
+            throw new TaskomaticApiException("Taskomatic is not running");
+        }
     }
 
     /**
