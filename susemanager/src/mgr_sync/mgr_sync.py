@@ -73,6 +73,19 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             sys.exit(1)
 
+        # Only when user is trying to save the config
+        if options.saveconfig:
+            self.auth.token(verify=True)
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
+            self.config.write()
+            print("credentials has been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        if self.auth.token(connect=False):
+            self.config.token = self.auth.token(connect=False)
+            self.config.write()
+
         self.quiet = not options.verbose
         self.exit_with_error = False
 
@@ -106,17 +119,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         elif vars(options).has_key('delete_target'):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
-
-        if options.saveconfig and self.auth.has_credentials():
-            self.config.user = self.auth.user
-            self.config.password = self.auth.password
-            self.config.write()
-            print("credentials has been saved to the {0} file.".format(
-                self.config.dotfile))
-
-        if self.auth.token(connect=False):
-            self.config.token = self.auth.token(connect=False)
-            self.config.write()
 
         if self.exit_with_error:
             return 1
