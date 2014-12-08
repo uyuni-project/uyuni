@@ -28,11 +28,11 @@ class Authenticator(object):
         self.user = user
         self.password = password
 
-    def token(self, connect=True):
+    def token(self, connect=True, verify=False):
         """
         Authenticate user.
         """
-        if not self._token and connect:
+        if (not self._token and connect) or verify:
             if not self.user or not self.password:
                 self._get_credentials_interactive()
             self._token = self.connection.auth.login(self.user, self.password)
