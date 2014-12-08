@@ -267,10 +267,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         :param channel: the label identifying the channel
         """
 
-        self._execute_xmlrpc_method(self.conn.channel.software,
-                                    "syncRepo",
-                                    self.auth.token(),
-                                    channel)
+        try:
+            self._execute_xmlrpc_method(self.conn.channel.software,
+                                        "syncRepo",
+                                        self.auth.token(),
+                                        channel)
+        except xmlrpclib.Fault, ex:
+            if ex.faultCode == 2802:
+                sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
+                sys.exit(1)
 
     def _select_channel_interactive_mode(self):
         """Show not installed channels prefixing a number, then reads
