@@ -136,7 +136,7 @@ public class ContentSyncManager {
 
     // Cached OES SCCRepository as returned by isMirrorable() in order
     // to avoid repeated HEAD requests
-    private static SCCRepository cachedOESRepo = null;
+    private SCCRepository cachedOESRepo = null;
 
     // Mirror URL read from rhn.conf
     public static final String MIRROR_CFG_KEY = "server.susemanager.mirror";
@@ -1197,11 +1197,16 @@ public class ContentSyncManager {
                 cachedOESRepo = new SCCRepository();
                 cachedOESRepo.setUrl(channel.getSourceUrl());
                 cachedOESRepo.setCredentials(oesCreds);
+                return cachedOESRepo;
             }
-            else if (log.isDebugEnabled()) {
-                log.debug("Return cached OES availablity");
+            else if (cachedOESRepo.getCredentials() != null) {
+                cachedOESRepo.setUrl(channel.getSourceUrl());
+                if (log.isDebugEnabled()) {
+                    log.debug("Return cached OES availablity");
+                }
+                return cachedOESRepo;
             }
-            return cachedOESRepo.getCredentials() != null ? cachedOESRepo : null;
+            return null;
         }
 
         return findMatchingRepo(repos, sourceUrl);
