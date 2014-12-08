@@ -565,6 +565,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # the cache
 %attr(755,%{apache_user},%{apache_group}) %dir %{_var}/cache/rhn
+%attr(755,root,root) %dir %{_var}/cache/rhn/satsync
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server.conf
 # main httpd config
