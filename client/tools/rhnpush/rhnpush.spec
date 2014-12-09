@@ -21,7 +21,7 @@ BuildRequires:      %{rhn_client_tools}
 %endif
 BuildRequires: docbook-utils, gettext
 BuildRequires: python-devel
-%if 0%{?fedora} > 15 || 0%{?rhel} == 5 || 0%{?suse_version} == 1110
+%if 0%{?fedora} > 15 || 0%{?rhel} == 6 || 0%{?suse_version} == 1110
 # pylint check
 BuildRequires:  spacewalk-pylint >= 0.6
 BuildRequires:  %{rhn_client_tools}
