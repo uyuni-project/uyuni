@@ -33,6 +33,8 @@ import com.redhat.rhn.frontend.events.RestartSatelliteAction;
 import com.redhat.rhn.frontend.events.RestartSatelliteEvent;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncAction;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
+import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsAction;
+import com.redhat.rhn.frontend.events.SsmChangeBaseChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsAction;
 import com.redhat.rhn.frontend.events.SsmChangeChannelSubscriptionsEvent;
 import com.redhat.rhn.frontend.events.SsmConfigFilesAction;
@@ -271,7 +273,9 @@ public class MessageQueue {
         MessageQueue.registerAction(new RestartSatelliteAction(),
                                     RestartSatelliteEvent.class);
 
-        // Used to allow SSM child channel changes to be run asynchronously
+        // Used to allow SSM channel changes to be run asynchronously
+        MessageQueue.registerAction(new SsmChangeBaseChannelSubscriptionsAction(),
+                SsmChangeBaseChannelSubscriptionsEvent.class);
         MessageQueue.registerAction(new SsmChangeChannelSubscriptionsAction(),
                                     SsmChangeChannelSubscriptionsEvent.class);
 

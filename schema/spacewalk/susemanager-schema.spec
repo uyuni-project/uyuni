@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.3.19
+Version:        2.3.21
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Dec 05 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.21-1
+- 1021057 - renamed package upgrade scripts to .sql
+
+* Fri Dec 05 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.20-1
+- 1021057 - schema upgrade scripts
+- 1021057 - fixed double-counting systems subscribed to more than one channel
+
 * Thu Nov 13 2014 Stephen Herr <sherr@redhat.com> 2.3.19-1
 - 1163977 - add virt-host-plat entitlement mappings for new arches
 

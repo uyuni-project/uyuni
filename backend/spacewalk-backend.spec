@@ -26,7 +26,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.24
+Version: 2.3.27
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -573,6 +573,7 @@ rm -f %{rhnconf}/rhnSecret.py*
 
 # the cache
 %attr(755,%{apache_user},%{apache_group}) %dir %{_var}/cache/rhn
+%attr(755,root,root) %dir %{_var}/cache/rhn/satsync
 # config files
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_server.conf
 # main httpd config
@@ -809,6 +810,13 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Mon Dec 08 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.27-1
+- 1170616 - create (and label) /var/cache/rhn/satsync
+
+* Tue Dec 02 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.25-1
+- 1021057 - fixed double-counting of systems subscribed to more than one
+  channel
+
 * Tue Nov 18 2014 Stephen Herr <sherr@redhat.com> 2.3.24-1
 - 1122626 - different registration paths should lock tables in the same order
   This could potentially cause deadlocks

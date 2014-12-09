@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.90
+Version: 2.3.101
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -923,6 +923,61 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Dec 05 2014 Stephen Herr <sherr@redhat.com> 2.3.101-1
+- Fixing merge problem in test
+
+* Fri Dec 05 2014 Stephen Herr <sherr@redhat.com> 2.3.100-1
+- Explain snapshot/rollback behavior better (bsc#808947)
+- Fix documentation search
+- New API call to list kickstartable tree channels + test
+- Don't commit when XMLRPCExceptions are thrown
+- XmlRpcServletTest: ensure a new Hibernate session is used in each test
+
+* Fri Dec 05 2014 Tomas Lestach <tlestach@redhat.com> 2.3.99-1
+- 1169741 - allow removing Cobbler System Profile on  the power management page
+- 1169752 - allow also blank power management settings
+- 1169741 - add csrf check for the power management page
+- Made text more clear for package profile sync
+
+* Thu Dec 04 2014 Jan Dobes 2.3.98-1
+- style /rhn/systems/details/kickstart/SessionStatus page
+
+* Tue Dec 02 2014 Tomas Lestach <tlestach@redhat.com> 2.3.97-1
+- remove WebList as it isn't referenced any more
+- remove SelectableWebList as it isn't referenced any more
+- remove WebRhnSet as it isn't referenced any more
+- remove WebSessionSet as it isn't referenced any more
+- adapt ListRemoveGroupsAction to the rewritten groups.jspf
+- adapt groups.jspf to the rewritten AddGroupsAction
+- rewrite AddGroupsAction
+- 1169480 - No ISE on provisioning page when no base channel
+
+* Mon Dec 01 2014 Jan Dobes 2.3.96-1
+- too big space
+- there is no need to block enter key
+- Cobbler variables page ported to Bootstrap
+
+* Fri Nov 28 2014 Tomas Lestach <tlestach@redhat.com> 2.3.95-1
+- fix hibernate.NonUniqueObjectException on errata cloning
+- Download CSV button does not export all columns ("Base Channel" missing)
+  (bnc#896238)
+- Fix install type detection on SUSE systems
+
+* Thu Nov 27 2014 Jan Dobes 2.3.94-1
+- style /rhn/channels/manage/errata/ConfirmErrataAdd page
+
+* Thu Nov 27 2014 Tomas Lestach <tlestach@redhat.com> 2.3.93-1
+- paginate before elaboration
+- remove duplicated line
+
+* Wed Nov 26 2014 Stephen Herr <sherr@redhat.com> 2.3.92-1
+- 1168328 - Make the base channel ssm action asynchronous
+- 1168292 - Commit after each system deletion to avoid deadlocks
+
+* Tue Nov 25 2014 Tomas Lestach <tlestach@redhat.com> 2.3.91-1
+- 1081124 - let system advanced search return common package nvrea
+- remove @Override annotation
+
 * Tue Nov 25 2014 Tomas Lestach <tlestach@redhat.com> 2.3.90-1
 - 1167753 - apidoc generator does not know #array("something")
 - 1009396 - fix js injection on /rhn/systems/Search.do page
