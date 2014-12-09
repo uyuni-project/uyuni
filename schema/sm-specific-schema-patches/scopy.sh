@@ -1,5 +1,10 @@
 #! /bin/bash
 
+#
+# create a template with the diff command provided by "NEED CHECK:" message
+# pipe it through "| tail -n +3" and store it in the template dir
+#
+
 nextnum=0
 dest=""
 sqlname=""
