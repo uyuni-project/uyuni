@@ -1,6 +1,7 @@
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
+%global pylint_check 0
 %if 0%{?suse_version}
 %global apacheconfd %{_sysconfdir}/apache2/conf.d
 %global apache_user wwwrun
@@ -18,7 +19,7 @@
 %endif
 %global pythonrhnroot %{python_sitelib}/spacewalk
 
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel} == 6
 %{!?pylint_check: %global pylint_check 1}
 %endif
 
@@ -72,8 +73,9 @@ BuildRequires: /usr/bin/msgfmt
 %endif
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint >= 2.2
+BuildRequires: spacewalk-pylint
 %endif
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
 BuildRequires: rhnlib >= 2.5.57
@@ -386,6 +388,10 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
+<<<<<<< HEAD
+=======
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+>>>>>>> 0e897a2... no pylint check during package build
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
