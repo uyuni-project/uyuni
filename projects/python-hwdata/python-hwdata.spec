@@ -1,7 +1,7 @@
 %if ! (0%{?fedora} || 0%{?rhel} > 5)
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %endif
-%if (0%{?fedora} || 0%{?rhel} > 6 || 0%{?suse_version} >= 1210)
+%if (0%{?fedora} || 0%{?rhel} > 7 || 0%{?suse_version} >= 1210)
 %global with_python3 1
 %{!?py3dir: %global py3dir %{_builddir}/py3dir}
 %{!?__python3: %global __python3 python3}
