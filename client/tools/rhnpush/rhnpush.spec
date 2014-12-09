@@ -21,7 +21,7 @@ BuildRequires:      %{rhn_client_tools}
 %endif
 BuildRequires: docbook-utils, gettext
 BuildRequires: python-devel
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} == 1110
+%if 0%{?fedora} > 15 || 0%{?rhel} == 5 || 0%{?suse_version} == 1110
 # pylint check
 BuildRequires:  spacewalk-pylint >= 0.6
 BuildRequires:  %{rhn_client_tools}
@@ -60,7 +60,7 @@ ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} == 1100
+%if 0%{?fedora} > 15 || 0%{?rhel} == 5 || 0%{?suse_version} == 1100
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
