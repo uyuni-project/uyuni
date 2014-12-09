@@ -1,6 +1,7 @@
 %global rhnroot %{_prefix}/share/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
+%global pylint_check 0
 %if 0%{?suse_version}
 %global apacheconfd %{_sysconfdir}/apache2/conf.d
 %global apache_user wwwrun
@@ -69,7 +70,7 @@ BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
-%if 0%{?suse_version} != 1315
+%if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
 BuildRequires: rhnlib >= 2.5.57
@@ -377,7 +378,7 @@ make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
-%if 0%{?suse_version} != 1315
+%if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{pythonrhnroot}/common \
