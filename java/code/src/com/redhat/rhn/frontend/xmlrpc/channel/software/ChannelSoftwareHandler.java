@@ -2777,11 +2777,11 @@ public class ChannelSoftwareHandler extends BaseHandler {
     public int syncRepo(User loggedInUser,
             String channelLabel, String cronExpr, Map <String, String> params) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
-	TaskomaticApi tapi = new TaskomaticApi();
-	if (!tapi.isRunning()) {
-	    tapi.scheduleSingleRepoSync(chan, loggedInUser);
-	    throw new TaskomaticApiException("Taskomatic is not running");
-	}
+        TaskomaticApi tapi = new TaskomaticApi();
+        if (!tapi.isRunning()) {
+            tapi.scheduleSingleRepoSync(chan, loggedInUser);
+            throw new TaskomaticApiException("Taskomatic is not running");
+        }
 
         if (StringUtils.isEmpty(cronExpr)) {
             tapi.unscheduleRepoSync(chan, loggedInUser);
