@@ -14,3 +14,4 @@
 <div>
   <img src="/img/susemanager/logo-footer.png" alt="<bean:message key='layout.jsp.vendor.name' />" />
 </div>
+<div class="bottom-line"></div>
