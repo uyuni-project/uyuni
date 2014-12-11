@@ -19,6 +19,7 @@ footer {
 	font-size: 0.9em;
 	height: 80px;
 	clear: both;
+  position: relative;
 
 	.make-row(0);
 
@@ -39,6 +40,22 @@ footer {
 	a:hover {
 		color: @spacewalk-footer-hover;
 	}
+
+}
+
+.bottom-line {
+  height: 16px;
+  width: 100%;
+  position: absolute;
+  background: #1fad7a; /* Old browsers */
+  background: -moz-linear-gradient(left, #1fad7a 0%, #80c235 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#1fad7a), color-stop(100%,#80c235)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* IE10+ */
+  background: linear-gradient(to right, #1fad7a 0%,#80c235 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1fad7a', endColorstr='#80c235',GradientType=1 ); /* IE6-9 */
+  bottom: 0
 }
 
 section {
