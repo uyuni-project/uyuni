@@ -38,6 +38,7 @@
            <form-property name="name" type="java.lang.String"/>
            <form-property name="description" type="java.lang.String"/>
            <form-property name="submitted" type="java.lang.Boolean"/>
+           <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
        </form-bean>
         <form-bean name="createSatelliteForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -286,6 +287,8 @@
             <form-property name="keywords" type="java.lang.String"/>
             <form-property name="refersTo" type="java.lang.String"/>
             <form-property name="notes" type="java.lang.String"/>
+            <form-property name="no_paren_scrub" type="java.lang.String"
+                           initial="topic, description, solution, notes"/>
         </form-bean>
         <form-bean name="errataEditForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -302,6 +305,8 @@
             <form-property name="keywords" type="java.lang.String"/>
             <form-property name="refersTo" type="java.lang.String"/>
             <form-property name="notes" type="java.lang.String"/>
+            <form-property name="no_paren_scrub" type="java.lang.String"
+                           initial="topic, description, solution, notes"/>
         </form-bean>
         <form-bean name="extAuthForm"
                    type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -350,6 +355,7 @@
             <form-property name="check_interval_min" type="java.lang.Long"/>
             <form-property name="contact_group_id" type="java.lang.Long"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
+            <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
         </form-bean>
 
         <form-bean name="probeCreateForm"
@@ -364,6 +370,7 @@
             <form-property name="check_interval_min" type="java.lang.Long"/>
             <form-property name="contact_group_id" type="java.lang.Long"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
+            <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
         </form-bean>
 
         <form-bean name="probeDeleteForm"
@@ -381,6 +388,7 @@
             <form-property name="description"  type="java.lang.String"/>
             <form-property name="suite_name" type="java.lang.String"/>
             <form-property name="submitted"  type="java.lang.Boolean"/>
+            <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
         </form-bean>
 
         <form-bean name="monitoringGeneralConfigForm"
@@ -401,6 +409,7 @@
             <form-property name="name" type="java.lang.String"/>
             <form-property name="description" type="java.lang.String"/>
             <form-property name="submitted" type="java.lang.Boolean"/>
+            <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
         </form-bean>
 
         <form-bean name="compareProfileForm"
@@ -954,6 +963,7 @@
       <form-property name="editing"        type="java.lang.Boolean"/>
       <form-property name="creating"       type="java.lang.Boolean"/>
       <form-property name="submitted"      type="java.lang.Boolean"/>
+      <form-property name="no_paren_scrub" type="java.lang.String" initial="cofDescription"/>
     </form-bean>
 
     <form-bean name="configFileForm"
@@ -1116,6 +1126,7 @@
       <form-property name="name" type="java.lang.String" />
       <form-property name="description" type="java.lang.String" />
       <form-property name="submitted"   type="java.lang.Boolean" />
+      <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
     </form-bean>
 
     <form-bean name="submittedForm"
