@@ -1176,6 +1176,12 @@ As a Channel Administrator, you may change the base channels your systems are su
       <trans-unit id="channel.manage.errata.packageassocmsg">
 			<source>(Recommended) With this selected only patches that contain packages that apply to this channel are shown.  Also, package architecture will match what is currently in the channel.</source>
       </trans-unit>
+      <trans-unit id="channel.manage.errata.confirm.erratasummary">
+        <source>Patch Summary</source>
+      </trans-unit>
+      <trans-unit id="channel.manage.errata.confirm.totalerrata">
+        <source>Total Patches</source>
+      </trans-unit>
       <trans-unit id="kickstart.list.jsp.orgdefault">
         <source>This is your organizations default autoinstallation profile.</source>
       </trans-unit>

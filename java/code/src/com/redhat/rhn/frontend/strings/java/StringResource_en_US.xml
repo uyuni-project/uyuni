@@ -6124,12 +6124,54 @@ Follow this url to see the full list of inactive systems:
           <context context-type="paramnotes">7 revisions were deleted successfully.</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="config_files.setFilesToRemove.success">
+        <source>{0} configuration file(s) successfully deleted.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
+          <context context-type="paramnotes">7 configuration files were successfully deleted.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config_files.setFilesToRemove.failure">
+        <source>{0} file deletion(s) failed.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
+          <context context-type="paramnotes">7 file deletions failed.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config_files.setFilesToImport.success">
+        <source>{0} configuration file(s) successfully imported.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
+          <context context-type="paramnotes">7 configuration files were successfully imported.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config_files.setFilesToImport.failure">
+        <source>{0} file import(s) failed.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/ChannelImportFiles.do</context>
+          <context context-type="paramnotes">7 file imports failed.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="config_subscribed_systems.unsubscribeSystems.failure">
+        <source>Failed to unsubscribe {0} system(s).</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
+          <context context-type="paramnotes">7 revision deletions failed.</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="config_subscribed_systems.unsubscribeSystems.success">
         <source>Successfully unsubscribed {0} system(s).</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
           <context context-type="paramnotes">Successfully copied file to 7 channels.</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="config_target_systems.subscribeSystems.failure">
+        <source>Failed to subscribe {0} system(s).</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/configuration/file/CopyFilesCentral.do</context>
+            <context context-type="paramnotes">7 revision deletions failed.</context>
+          </context-group>
       </trans-unit>
       <trans-unit id="config_target_systems.subscribeSystems.success">
         <source>Successfully subscribed {0} system(s).</source>
@@ -6682,6 +6724,18 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/kickstart/KickstartScriptEdit.do</context>
         </context-group>
+      </trans-unit>
+      <trans-unit id="file_lists.success">
+        <source>{0} File List(s) deleted.</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
+          </context-group>
+      </trans-unit>
+      <trans-unit id="file_lists.failure">
+        <source>{0} File List(s) could not be deleted.</source>
+          <context-group name="ctx">
+            <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
+          </context-group>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.poweron">
         <source>Power On</source>
@@ -8188,6 +8242,9 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="ssm.subscription.operation.label">
         <source>Channel Subscription Updates</source>
+      </trans-unit>
+      <trans-unit id="ssm.base.subscription.operation.label">
+        <source>Base Channel Subscription Updates</source>
       </trans-unit>
       <trans-unit id="kickstart.cobbler.distro.syncfail">
         <source>

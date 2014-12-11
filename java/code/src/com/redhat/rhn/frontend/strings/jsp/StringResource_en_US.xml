@@ -15669,7 +15669,10 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Unsubscribe</source>
         </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success">
-          <source>{0} configuration channels were unsubscribed</source>
+          <source>{0} configuration channel(s) were unsubscribed.</source>
+        </trans-unit>
+        <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure">
+          <source>Failed to unsubscribe {0} configuration channel(s).</source>
         </trans-unit>
       </group>
       <!-- configuration/sdc/createfile.jsp  -->
@@ -16025,12 +16028,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="ssm.overview.bootstrap.notice">
           <source>At least one system in the set is bare metal: some actions will not be available. &lt;a href="/rhn/systems/BootstrapSystemList.do"&gt;Check bare metal systems&lt;/a&gt;.</source>
-        </trans-unit>
-        <trans-unit id="">
-          <source/>
-        </trans-unit>
-        <trans-unit id="">
-          <source/>
         </trans-unit>
         <!-- SSM Remote Command Form Labels -->
         <trans-unit id="ssm.operations.provisioning.remotecommand.header">
@@ -16585,8 +16582,20 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="kickstart.powermanagement.jsp.remove.cobblerprofile">
+        <source>Remove Cobbler System Profile</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="kickstart.powermanagement.saved">
         <source>Power settings saved</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="kickstart.powermanagement.removed.cobblerprofile">
+        <source>Cobbler system profile successfully removed</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
@@ -17639,7 +17648,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <source>Total Crash Count</source>
         </trans-unit>
         <trans-unit id="exportcolumn.lastCrashReport">
-          <source>Last Crash Occurence</source>
+          <source>Last Crash Occurrence</source>
         </trans-unit>
         <trans-unit id="exportcolumn.crashCount">
           <source>Crash Count</source>
@@ -17648,7 +17657,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <source>Crash Component</source>
         </trans-unit>
         <trans-unit id="exportcolumn.lastReport">
-          <source>Last Crash Occurence</source>
+          <source>Last Crash Occurrence</source>
         </trans-unit>
       </group>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
@@ -18196,7 +18205,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.lastoccurence">
-        <source>Last Crash Occurence</source>
+        <source>Last Crash Occurrence</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
         </context-group>
@@ -19954,14 +19963,14 @@ As a Channel Administrator, you may change the base channels your systems are su
           </context-group>
         </trans-unit>
         <trans-unit id="basesub.jsp.success">
-          <source>{0} systems successfully subscribed to channel '{1}'</source>
+          <source>{0} systems queued to subscribe to channel '{1}'</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
           </context-group>
         </trans-unit>
         <trans-unit id="basesub.jsp.success-default">
-          <source>{0} systems successfully subscribed to the appropriate default base channel</source>
+          <source>{0} systems queued to subscribe to the appropriate default base channel</source>
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems successfully subscribed to the appropriate default base channel</context>
@@ -19979,20 +19988,6 @@ As a Channel Administrator, you may change the base channels your systems are su
           <context-group name="ctx">
             <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
             <context context-type="paramnotes">27 systems skipped while attempting to subscribe to the appropriate default base channel</context>
-          </context-group>
-        </trans-unit>
-        <trans-unit id="basesub.jsp.fail">
-          <source>{0} systems failed to subscribe to channel '{1}'</source>
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
-            <context context-type="paramnotes">27 systems failed to subscribe to channel 'Red Hat Enterprise Linux AS (v. 2.1 for i386)'</context>
-          </context-group>
-        </trans-unit>
-        <trans-unit id="basesub.jsp.fail-default">
-          <source>{0} systems failed to subscribe to the appropriate base channel</source>
-          <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/BaseChannelSubscribe.do</context>
-            <context context-type="paramnotes">27 systems failed to subscribe to the appropriate base channel</context>
           </context-group>
         </trans-unit>
         <trans-unit id="basesub.jsp.confirm.header">
@@ -22141,6 +22136,21 @@ given channel.</source>
         </trans-unit>
         <trans-unit id="help.credentials.jsp.logininput">
           <source>@@PRODUCT_NAME@@ Login:</source>
+        </trans-unit>
+        <trans-unit id="server.runningkernel.unknown">
+          <source>Unknown running kernel</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.erratasummary">
+          <source>Errata Summary</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.packagesummary">
+          <source>Package Summary</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.totalerrata">
+          <source>Total Errata</source>
+        </trans-unit>
+        <trans-unit id="channel.manage.errata.confirm.totalpackages">
+          <source>Total Packages</source>
         </trans-unit>
       </group>
     </body>
