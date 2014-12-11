@@ -16029,12 +16029,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="ssm.overview.bootstrap.notice">
           <source>At least one system in the set is bare metal: some actions will not be available. &lt;a href="/rhn/systems/BootstrapSystemList.do"&gt;Check bare metal systems&lt;/a&gt;.</source>
         </trans-unit>
-        <trans-unit id="">
-          <source/>
-        </trans-unit>
-        <trans-unit id="">
-          <source/>
-        </trans-unit>
         <!-- SSM Remote Command Form Labels -->
         <trans-unit id="ssm.operations.provisioning.remotecommand.header">
           <source>Schedule Remote Command</source>
