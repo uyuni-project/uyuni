@@ -38,7 +38,7 @@
            <form-property name="name" type="java.lang.String"/>
            <form-property name="description" type="java.lang.String"/>
            <form-property name="submitted" type="java.lang.Boolean"/>
-           <form-property name="no_paren_scrub" type="java.lang.String" inital="description"/>
+           <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
        </form-bean>
         <form-bean name="createSatelliteForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
@@ -409,7 +409,7 @@
             <form-property name="name" type="java.lang.String"/>
             <form-property name="description" type="java.lang.String"/>
             <form-property name="submitted" type="java.lang.Boolean"/>
-            <form-property name="no_paren_scrub" type="java.lang.String" inital="description"/>
+            <form-property name="no_paren_scrub" type="java.lang.String" initial="description"/>
         </form-bean>
 
         <form-bean name="compareProfileForm"
