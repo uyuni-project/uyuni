@@ -16,6 +16,7 @@
 package com.redhat.rhn.manager.distupgrade;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,8 @@ import org.apache.log4j.Logger;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -33,12 +36,14 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 
 /**
@@ -446,5 +451,64 @@ public class DistUpgradeManager extends BaseManager {
             }
         }
         return matchingProduct;
+    }
+
+    /**
+     * Schedule a distribution upgrade for a given server.
+     *
+     * @param user the user who is scheduling
+     * @param server the server to migrate
+     * @param targetSet set of target products (base product and addons)
+     * @param channelIDs IDs of all channels to subscribe
+     * @param dryRun perform a dry run
+     * @param earliest earliest schedule date
+     */
+    public static Long scheduleDistUpgrade(User user, Server server,
+            SUSEProductSet targetSet, List<Long> channelIDs, boolean dryRun, Date earliest) {
+        // Create action details
+        DistUpgradeActionDetails details = new DistUpgradeActionDetails();
+
+        // Init product upgrades (base/addons)
+        // Note: product upgrades are relevant for SLE 10 only!
+        SUSEProductSet installedProducts = server.getInstalledProducts();
+        SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
+                installedProducts.getBaseProduct(), targetSet.getBaseProduct());
+        details.addProductUpgrade(upgrade);
+
+        // Find matching targets for every addon
+        for (SUSEProduct addon : installedProducts.getAddonProducts()) {
+            upgrade = new SUSEProductUpgrade(addon,
+                    DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
+            details.addProductUpgrade(upgrade);
+        }
+
+        // Add individual channel tasks
+        for (Channel c : server.getChannels()) {
+            // Remove channels we already subscribed
+            if (channelIDs.contains(c.getId())) {
+                channelIDs.remove(c.getId());
+            }
+            else {
+                // Unsubscribe from this channel
+                DistUpgradeChannelTask task = new DistUpgradeChannelTask();
+                task.setChannel(c);
+                task.setTask(DistUpgradeChannelTask.UNSUBSCRIBE);
+                details.addChannelTask(task);
+            }
+        }
+        // Subscribe to all of the remaining channels
+        for (Long cid : channelIDs) {
+            DistUpgradeChannelTask task = new DistUpgradeChannelTask();
+            task.setChannel(ChannelFactory.lookupById(cid));
+            task.setTask(DistUpgradeChannelTask.SUBSCRIBE);
+            details.addChannelTask(task);
+        }
+
+        // Set additional attributes
+        details.setDryRun(dryRun ? 'Y' : 'N');
+        details.setFullUpdate('Y');
+
+        // Return the ID of the scheduled action
+        return ActionManager.scheduleDistUpgrade(user, server, details, earliest).getId();
     }
 }
