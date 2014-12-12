@@ -36,7 +36,7 @@ class MgrSync(object):
 
     def __init__(self):
         self.config = Config()
-        url = "http://%s:%s%s" % (self.config.host,
+        url = "http://{0}:{1}{2}".format(self.config.host,
                                   self.config.port,
                                   self.config.uri)
         self.conn = xmlrpclib.ServerProxy(url)
@@ -152,7 +152,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             print("No channels found.")
             return
 
-        print "Available Channels%s:\n" % (expand and " (full)" or "")
+        print "Available Channels{0}:\n".format(expand and " (full)" or "")
         print("\nStatus:")
         print("  - [I] - channel is installed")
         print("  - [ ] - channel is not installed, but is available")
@@ -175,7 +175,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                             if child.status == Channel.Status.AVAILABLE:
                                 interactive_number += 1
                                 if show_interactive_numbers:
-                                    prefix = "%.2d) " % interactive_number
+                                    prefix = "{0:02}) ".format(interactive_number)
                                 available_channels.append(child.label)
                             elif show_interactive_numbers:
                                 prefix = "    "
@@ -188,7 +188,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 if base_channel.status == Channel.Status.AVAILABLE:
                     interactive_number += 1
                     if show_interactive_numbers:
-                        prefix = "%.2d) " % interactive_number
+                        prefix = "{0:02}) ".format(interactive_number)
                     available_channels.append(base_channel.label)
                 elif show_interactive_numbers:
                     prefix = "    "
@@ -416,7 +416,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 msg=credential['user']
                 if show_interactive_numbers:
                     interactive_number += 1
-                    msg = "%.2d) " % interactive_number + msg
+                    msg = "{0:02}) {1}".format(interactive_number, msg)
                 if credential['isPrimary']:
                     msg += " (primary)"
                 print(msg)
@@ -479,9 +479,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             "deleteCredentials",
                                             self.auth.token(),
                                             user)
-                print("Successfully deleted credentials: " + user)
+
+                print("Successfully deleted credentials: {0}".format( user))
             else:
-                print("Credentials not found in database: " + user)
+                print("Credentials not found in database: {0}".format(user))
                 self.exit_with_error = True
 
     def _delete_credentials_interactive_mode(self):
@@ -532,14 +533,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             try:
                 client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
             except xmlrpclib.Fault, e:
-                sys.stderr.write("Error scheduling refresh: %s\n" % e)
+                sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return
             sys.stdout.write("Refresh successfully scheduled\n")
             sys.stdout.flush()
             return
 
         for operation, method in actions:
-            sys.stdout.write("Refreshing %s" % operation)
+            sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
             try:
                 if method == "synchronizeChannels":
@@ -551,7 +552,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             except Exception, ex:
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
-                sys.stderr.write("\tError: %s\n\n" % ex)
+                sys.stderr.write("\tError: {0}\n\n".format(ex))
                 self.exit_with_error = True
                 return False
 
