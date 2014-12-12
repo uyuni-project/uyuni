@@ -399,6 +399,12 @@ class Queue(rhnHandler):
                 log_error("Invalid action_id", action_id)
                 raise rhnFault(30, _("Invalid action value type %s (%s)") %
                     (action_id, type(action_id))), None, sys.exc_info()[2]
+        # bring message into correct format
+        try:
+            message = message.encode('utf8')
+        except UnicodeEncodeError:
+            pass
+
         # Authenticate the system certificate
         self.auth_system(system_id)
         log_debug(1, self.server_id, action_id, result)
