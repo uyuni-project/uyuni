@@ -54,7 +54,7 @@ class Product(object):
                 prefix = "     " + prefix
             else:
                 counter = interactive_data['counter']
-                prefix = "%.3d) %s" % (counter, prefix)
+                prefix = "{0:03}) {1}".format(counter, prefix)
                 interactive_data['num_prod'][counter] = self
                 interactive_data['counter'] += 1
 
