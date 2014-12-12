@@ -36,15 +36,11 @@ import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.util.DynamicComparator;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
-import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
-import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;
-import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -52,7 +48,6 @@ import com.redhat.rhn.frontend.dto.ChildChannelDto;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
-import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 
@@ -228,8 +223,8 @@ public class SPMigrationAction extends RhnAction {
             // Schedule the dist upgrade action
             Date earliest = getStrutsDelegate().readDatePicker(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE);
-            Long actionID = scheduleDistUpgrade(ctx, server, targetProductSet,
-                    channelIDs, dryRun, earliest);
+            Long actionID = DistUpgradeManager.scheduleDistUpgrade(ctx.getCurrentUser(),
+                    server, targetProductSet, channelIDs, dryRun, earliest);
 
             // Display a message to the user
             String product = targetProductSet.getBaseProduct().getFriendlyName();
@@ -368,63 +363,5 @@ public class SPMigrationAction extends RhnAction {
             channelIDs.add(c.getId());
         }
         return channelIDs;
-    }
-
-    /**
-     * Schedule a distribution upgrade action.
-     * @param ctx
-     * @param server
-     * @param targetSet
-     * @param channelIDs
-     * @param dryRun
-     */
-    private Long scheduleDistUpgrade(RequestContext ctx, Server server,
-            SUSEProductSet targetSet, List<Long> channelIDs,
-            boolean dryRun, Date earliest) {
-        // Create action details
-        DistUpgradeActionDetails details = new DistUpgradeActionDetails();
-
-        // Init product upgrades (base/addons)
-        // Note: product upgrades are relevant for SLE 10 only!
-        SUSEProductSet installedProducts = server.getInstalledProducts();
-        SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
-                installedProducts.getBaseProduct(), targetSet.getBaseProduct());
-        details.addProductUpgrade(upgrade);
-        // Find matching targets for every addon
-        for (SUSEProduct addon : installedProducts.getAddonProducts()) {
-            upgrade = new SUSEProductUpgrade(addon,
-                    DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
-            details.addProductUpgrade(upgrade);
-        }
-
-        // Add individual channel tasks
-        for (Channel c : server.getChannels()) {
-            // Remove channels we already subscribed
-            if (channelIDs.contains(c.getId())) {
-                channelIDs.remove(c.getId());
-            }
-            else {
-                // Unsubscribe from this channel
-                DistUpgradeChannelTask task = new DistUpgradeChannelTask();
-                task.setChannel(c);
-                task.setTask(DistUpgradeChannelTask.UNSUBSCRIBE);
-                details.addChannelTask(task);
-            }
-        }
-        // Subscribe to all of the remaining channels
-        for (Long cid : channelIDs) {
-            DistUpgradeChannelTask task = new DistUpgradeChannelTask();
-            task.setChannel(ChannelFactory.lookupById(cid));
-            task.setTask(DistUpgradeChannelTask.SUBSCRIBE);
-            details.addChannelTask(task);
-        }
-
-        // Set additional attributes
-        details.setDryRun(dryRun ? 'Y' : 'N');
-        details.setFullUpdate('Y');
-
-        // Return the ID of the scheduled action
-        return ActionManager.scheduleDistUpgrade(ctx.getCurrentUser(), server, details,
-                earliest).getId();
     }
 }
