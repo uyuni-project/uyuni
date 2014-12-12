@@ -37,9 +37,11 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -48,6 +50,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
@@ -118,6 +121,7 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -5561,4 +5565,109 @@ public class SystemHandler extends BaseHandler {
         return action.getId().intValue();
     }
 
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel, and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param sessionKey User's session key
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
+            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        User user = getLoggedInUser(sessionKey);
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), user);
+
+        // Check if server supports distribution upgrades
+        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
+        if (!supported) {
+            throw new FaultException(-1, "migrationNotSupported",
+                    "SP migration not supported for server: " + server.getId());
+        }
+
+        // Check if zypp-plugin-spacewalk is installed
+        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
+                "zypp-plugin-spacewalk", server) != null;
+        if (!zyppPluginInstalled) {
+            throw new FaultException(-1, "zyppPluginNotInstalled",
+                    "Package zypp-plugin-spacewalk is not installed: " + server.getId());
+        }
+
+        // Check if there is already a migration in the schedule
+        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
+            throw new FaultException(-1, "migrationScheduled",
+                    "Found a SP migration in the schedule for server: " + server.getId());
+        }
+
+        // Check optional child channels
+        List<Long> optionalChannelIDs = new ArrayList<Long>();
+        for (String label : optionalChildChannels) {
+            Channel optional = ChannelManager.lookupByLabelAndUser(label, user);
+            if (!optional.getParentChannel().getLabel().equals(baseChannelLabel)) {
+                throw new FaultException(-1, "optionalChannelIncompatible",
+                        "Optional channel has incompatible base channel: " + label);
+            }
+            optionalChannelIDs.add(optional.getId());
+        }
+
+        // Find target products for the migration
+        SUSEProductSet installedProducts = server.getInstalledProducts();
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
+                installedProducts, arch, user);
+        if (targets.size() > 0) {
+            SUSEProductSet targetProducts = targets.get(0);
+
+            // See if vendor channels are matching the given base channel
+            EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
+                    targetProducts.getBaseProduct().getId(), arch);
+            if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
+                List<Long> channelIDs = new ArrayList<Long>();
+                Long baseChannelID = baseChannel.getId();
+                channelIDs.add(baseChannelID);
+                List<EssentialChannelDto> channels =
+                        DistUpgradeManager.getRequiredChannels(targetProducts, baseChannelID);
+                for (EssentialChannelDto channel : channels) {
+                    channelIDs.add(channel.getId());
+                }
+                channelIDs.addAll(optionalChannelIDs);
+                return DistUpgradeManager.scheduleDistUpgrade(user, server, targetProducts,
+                        channelIDs, dryRun, earliest);
+            }
+
+            // Consider alternatives (cloned channel trees)
+            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.getAlternatives(
+                    targetProducts, arch, user);
+            for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
+                if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
+                    List<Long> channelIDs = new ArrayList<Long>();
+                    channelIDs.add(clonedBaseChannel.getId());
+                    channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                    channelIDs.addAll(optionalChannelIDs);
+                    return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                            targetProducts, channelIDs, dryRun, earliest);
+                }
+            }
+        }
+
+        // We didn't find target products if we are still here
+        throw new FaultException(-1, "migrationNoTargetFound",
+                "No target found for SP migration");
+    }
 }
