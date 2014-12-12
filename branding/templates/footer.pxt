@@ -9,4 +9,5 @@
 <div>
   <img src="/img/susemanager/logo-footer.png" />
 </div>
+<div class="bottom-line"></div>
 </pxt-passthrough>
