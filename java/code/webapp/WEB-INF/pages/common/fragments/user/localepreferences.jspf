@@ -20,7 +20,7 @@
     </div>
     <div class="row-0">
       <div class="col-md-offset-2 col-md-10">
-        <rhn:submit valueKey="preferences.jsp.submitvalue" styleClass="btn btn-success"/>
+        <rhn:submit valueKey="preferences.jsp.submitvalue"/>
       </div>
     </div>
   </div>
