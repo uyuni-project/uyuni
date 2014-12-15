@@ -87,16 +87,18 @@ class Product(object):
         return False
 
 
-def parse_products(data):
+def parse_products(data, log):
     """
     Parses the data returned by SUSE Manager list products API.
     Returns a list of the Products.
     """
+    log.info("Parsing products...")
 
     products = []
 
     for p in data:
+        log.debug("Found product '{0} {1}'".format(
+            Product(p).friendly_name, Product(p).arch))
         products.append(Product(p))
 
     return products
-
