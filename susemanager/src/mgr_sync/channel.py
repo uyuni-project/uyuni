@@ -15,7 +15,6 @@
 
 from enum import Enum
 
-
 class Channel(object):
 
     class Status(str, Enum):
@@ -62,7 +61,7 @@ class Channel(object):
             return "{0} {1}".format(self.short_status,  self.label)
 
 
-def parse_channels(data):
+def parse_channels(data, log):
     """
     Parses the data returned by SUSE Manager list channels API.
     Returns a dictionary where keys are the base channels labels and values
@@ -70,35 +69,42 @@ def parse_channels(data):
     "child" channels associated.
     """
 
+    log.info("Parsing channels...")
+
     channels = {}
 
     for bc in [entry for entry in data if entry['parent'] == 'BASE']:
         base_channel = Channel(bc)
+        log.debug("Found base channel '{0}'".format(base_channel.name))
         channels[base_channel.label] = base_channel
 
     for entry in data:
         if entry['parent'] == 'BASE':
             continue
         channel = Channel(entry)
+        log.debug("Found channel '{0}'".format(channel.name))
         channels[channel.parent].add_child(channel)
 
     return channels
 
 
-def find_channel_by_label(label, channels):
+def find_channel_by_label(label, channels, log):
     """ Looks for channel with label
     :param channels: a data structure returned by `parse_channels`
     :param label: the label to search
     :return: None if the channel is not found, a Channel instance otherwise
     """
 
+    log.info("Searching for channels with label '{0}'".format(label))
+
     if label in channels.keys():
+        log.debug("Found '{0}'".format(channels[label]))
         return channels[label]
 
     for bc in channels.values():
         matches = [c for c in bc.children if c.label == label]
         if len(matches) == 1:
+            log.debug("Found '{0}'".format(matches[0]))
             return matches[0]
 
     return None
-

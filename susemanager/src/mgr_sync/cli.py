@@ -38,6 +38,11 @@ def _create_parser():
                         default=False,
                         help="Save the configuration to the local dot file.")
 
+    parser.add_argument("-d", "--debug", default=1,
+                        action="store", dest="debug",
+                        choices=["1", "2", "3"],
+                        help="Log additional debug information depending on DEBUG")
+
     subparsers = parser.add_subparsers(title='Subcommands')
 
     _create_list_subparser(subparsers)
