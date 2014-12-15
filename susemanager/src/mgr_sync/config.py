@@ -37,6 +37,7 @@ class Config(object):
     PORT = K_PREF + ".port"
     URI = K_PREF + ".uri"
     TOKEN = K_PREF + ".session.token"
+    DEBUG = K_PREF + ".debug"
 
     def __init__(self):
         # Default configuration, if not specified otherwise
@@ -47,6 +48,7 @@ class Config(object):
         self._config[Config.PORT] = 80
         self._config[Config.URI] = "/rpc/api"
         self._config[Config.TOKEN] = ''
+        self._config[Config.DEBUG] = ''
         self._parse_config()
 
     def write(self):
@@ -117,3 +119,6 @@ class Config(object):
     def dotfile(self):
         return Config.DOTFILE
 
+    @property
+    def debug(self):
+        return self._config[Config.DEBUG]
