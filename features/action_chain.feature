@@ -67,7 +67,7 @@ Feature: Test action chaining
       And I click on "Confirm & Deploy to Selected Systems"
       And I check radio button "schedule-by-action-chain"
       And I click on "Deploy Files to Selected Systems"
-      And I should see a "Action has been successfully added to the Action Chain" text
+      And I should see a "3 actions are being added to Action Chain new action chain" text
 
   Scenario: I add a reboot action to the action chain
     Given I am on the Systems overview page of this client
