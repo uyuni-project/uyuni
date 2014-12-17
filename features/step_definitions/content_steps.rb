@@ -23,6 +23,17 @@ Then /^I should see a "([^"]*)" text$/ do |arg1|
 end
 
 #
+# Test for a text in the whole page using regexp
+#
+Then /^I should see a text like "([^"]*)"$/ do |arg1|
+  if not page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
+      sleep 1
+      fail if not page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
+  end
+end
+
+
+#
 # Test for a text not allowed in the whole page
 #
 Then /^I should not see a "([^"]*)" text$/ do |arg1|
