@@ -86,7 +86,7 @@ Feature: Test action chaining
       And I should see a "3. Apply patch(es) andromeda-dummy-6789 on 1 system" text
       And I should see a "4. Remove adaptec-firmware from 1 system" text
       And I should see a "5. Verify andromeda-dummy on 1 system" text
-      And I should see a text like "6. Deploy.*/etc/mgr-test-file.cnf.*to 1 system" text
+      And I should see a text like "6. Deploy.*/etc/mgr-test-file.cnf.*to 1 system"
       And I should see a "7. Reboot 1 system" text
 
   Scenario: check that different user cannot see the action chain
