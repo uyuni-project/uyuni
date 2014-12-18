@@ -468,18 +468,20 @@ public class DistUpgradeManager extends BaseManager {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
 
-        // Init product upgrades (base/addons)
+        // Add product upgrades
         // Note: product upgrades are relevant for SLE 10 only!
-        SUSEProductSet installedProducts = server.getInstalledProducts();
-        SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
-                installedProducts.getBaseProduct(), targetSet.getBaseProduct());
-        details.addProductUpgrade(upgrade);
-
-        // Find matching targets for every addon
-        for (SUSEProduct addon : installedProducts.getAddonProducts()) {
-            upgrade = new SUSEProductUpgrade(addon,
-                    DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
+        if (targetSet != null) {
+            SUSEProductSet installedProducts = server.getInstalledProducts();
+            SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
+                    installedProducts.getBaseProduct(), targetSet.getBaseProduct());
             details.addProductUpgrade(upgrade);
+
+            // Find matching targets for every addon
+            for (SUSEProduct addon : installedProducts.getAddonProducts()) {
+                upgrade = new SUSEProductUpgrade(addon,
+                        DistUpgradeManager.findMatch(addon, targetSet.getAddonProducts()));
+                details.addProductUpgrade(upgrade);
+            }
         }
 
         // Add individual channel tasks
