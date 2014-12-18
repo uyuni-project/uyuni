@@ -121,6 +121,7 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
@@ -5592,38 +5593,22 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, boolean dryRun, Date earliest) {
         User user = getLoggedInUser(sessionKey);
-        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), user);
 
-        // Check if server supports distribution upgrades
-        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
-        if (!supported) {
-            throw new FaultException(-1, "migrationNotSupported",
-                    "SP migration not supported for server: " + server.getId());
+        // Perform checks on the server
+        Server server = null;
+        try {
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+        } catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
         }
 
-        // Check if zypp-plugin-spacewalk is installed
-        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
-                "zypp-plugin-spacewalk", server) != null;
-        if (!zyppPluginInstalled) {
-            throw new FaultException(-1, "zyppPluginNotInstalled",
-                    "Package zypp-plugin-spacewalk is not installed: " + server.getId());
-        }
-
-        // Check if there is already a migration in the schedule
-        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
-            throw new FaultException(-1, "migrationScheduled",
-                    "Found a SP migration in the schedule for server: " + server.getId());
-        }
-
-        // Check optional child channels
-        List<Long> optionalChannelIDs = new ArrayList<Long>();
-        for (String label : optionalChildChannels) {
-            Channel optional = ChannelManager.lookupByLabelAndUser(label, user);
-            if (!optional.getParentChannel().getLabel().equals(baseChannelLabel)) {
-                throw new FaultException(-1, "optionalChannelIncompatible",
-                        "Optional channel has incompatible base channel: " + label);
-            }
-            optionalChannelIDs.add(optional.getId());
+        // Check validity of optional child channels and initialize list of channel IDs
+        Set<Long> channelIDs = null;
+        optionalChildChannels.add(baseChannelLabel);
+        try {
+            channelIDs = DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
+        } catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
 
         // Find target products for the migration
@@ -5638,28 +5623,21 @@ public class SystemHandler extends BaseHandler {
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
                     targetProducts.getBaseProduct().getId(), arch);
             if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
-                List<Long> channelIDs = new ArrayList<Long>();
-                Long baseChannelID = baseChannel.getId();
-                channelIDs.add(baseChannelID);
-                List<EssentialChannelDto> channels =
-                        DistUpgradeManager.getRequiredChannels(targetProducts, baseChannelID);
+                List<EssentialChannelDto> channels = DistUpgradeManager.
+                        getRequiredChannels(targetProducts, baseChannel.getId());
                 for (EssentialChannelDto channel : channels) {
                     channelIDs.add(channel.getId());
                 }
-                channelIDs.addAll(optionalChannelIDs);
-                return DistUpgradeManager.scheduleDistUpgrade(user, server, targetProducts,
-                        channelIDs, dryRun, earliest);
+                return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                        targetProducts, channelIDs, dryRun, earliest);
             }
 
             // Consider alternatives (cloned channel trees)
-            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.getAlternatives(
-                    targetProducts, arch, user);
+            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                    getAlternatives(targetProducts, arch, user);
             for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                 if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
-                    List<Long> channelIDs = new ArrayList<Long>();
-                    channelIDs.add(clonedBaseChannel.getId());
                     channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                    channelIDs.addAll(optionalChannelIDs);
                     return DistUpgradeManager.scheduleDistUpgrade(user, server,
                             targetProducts, channelIDs, dryRun, earliest);
                 }
@@ -5667,7 +5645,7 @@ public class SystemHandler extends BaseHandler {
         }
 
         // We didn't find target products if we are still here
-        throw new FaultException(-1, "migrationNoTargetFound",
+        throw new FaultException(-1, "servicePackMigrationNoTarget",
                 "No target found for SP migration");
     }
 
@@ -5681,7 +5659,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @param sessionKey User's session key
      * @param sid ID of the server
-     * @param channels labels of channel to subscribe to
+     * @param channels labels of channels to subscribe to
      * @param dryRun set to true to perform a dry run
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
@@ -5697,62 +5675,26 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleDistUpgrade(String sessionKey, Integer sid, List<String> channels,
             boolean dryRun, Date earliest) {
         User user = getLoggedInUser(sessionKey);
-        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), user);
 
-        // Check if server supports distribution upgrades
-        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
-        if (!supported) {
-            throw new FaultException(-1, "distUpgradeNotSupported",
-                    "Dist upgrade not supported for server: " + server.getId());
+        // Lookup the server and perform some checks
+        Server server = null;
+        try {
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
         }
 
-        // Check if zypp-plugin-spacewalk is installed
-        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
-                "zypp-plugin-spacewalk", server) != null;
-        if (!zyppPluginInstalled) {
-            throw new FaultException(-1, "zyppPluginNotInstalled",
-                    "Package zypp-plugin-spacewalk is not installed: " + server.getId());
+        // Perform checks on the channels (while converting to a list of IDs)
+        Set<Long> channelIDs = null;
+        try {
+            channelIDs = DistUpgradeManager.performChannelChecks(channels, user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
 
-        // Check if there is already a migration in the schedule
-        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
-            throw new FaultException(-1, "distUpgradeScheduled",
-                    "Found a dist upgrade in the schedule for server: " + server.getId());
-        }
-
-        // Make sure we have exactly one base channel
-        Channel baseChannel = null;
-        List<Channel> childChannels = new ArrayList<Channel>();
-        for (String label : channels) {
-            Channel channel = ChannelManager.lookupByLabelAndUser(label, user);
-            if (channel.isBaseChannel()) {
-                if (baseChannel != null) {
-                    throw new FaultException(-1, "distUpgradeNonUniqueBaseChannel",
-                            "More than one base channel given for dist upgrade");
-                }
-                baseChannel = channel;
-            }
-            else {
-                childChannels.add(channel);
-            }
-        }
-        if (baseChannel == null) {
-            throw new FaultException(-1, "distUpgradeNoBaseChannel",
-                    "No base channel given for dist upgrade");
-        }
-
-        // Check validity of child channels
-        List<Long> channelIDs = new ArrayList<Long>();
-        channelIDs.add(baseChannel.getId());
-        for (Channel channel : childChannels) {
-            if (!channel.getParentChannel().getLabel().equals(baseChannel.getLabel())) {
-                throw new FaultException(-1, "distUpgradeIncompatibleBaseChannel",
-                        "Channel has incompatible base channel: " + channel.getLabel());
-            }
-            channelIDs.add(channel.getId());
-        }
-
-        return DistUpgradeManager.scheduleDistUpgrade(user, server, null, channelIDs,
-                dryRun, earliest);
+        return DistUpgradeManager.scheduleDistUpgrade(user, server, null,
+                channelIDs, dryRun, earliest);
     }
 }

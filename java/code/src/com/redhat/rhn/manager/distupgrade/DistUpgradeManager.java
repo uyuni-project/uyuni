@@ -16,8 +16,10 @@
 package com.redhat.rhn.manager.distupgrade;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,6 +29,7 @@ import org.apache.log4j.Logger;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
@@ -37,6 +40,7 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChildChannelDto;
@@ -45,6 +49,7 @@ import com.redhat.rhn.frontend.dto.SUSEProductDto;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.system.SystemManager;
 
 /**
  * Business logic for performing distribution upgrades.
@@ -454,6 +459,86 @@ public class DistUpgradeManager extends BaseManager {
     }
 
     /**
+     * Perform dist upgrade related checks on a server to throw exceptions accordingly.
+     * Will return a {@link Server} object for a given ID.
+     *
+     * @param sid ID of the server to check
+     * @param user the calling user
+     * @return server object
+     * @throws DistUpgradeException
+     */
+    public static Server performServerChecks(Long sid, User user)
+            throws DistUpgradeException {
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+
+        // Check if server supports distribution upgrades
+        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
+        if (!supported) {
+            throw new DistUpgradeException(
+                    "Dist upgrade not supported for server: " + sid);
+        }
+
+        // Check if zypp-plugin-spacewalk is installed
+        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
+                "zypp-plugin-spacewalk", server) != null;
+        if (!zyppPluginInstalled) {
+            throw new DistUpgradeException(
+                    "Package zypp-plugin-spacewalk is not installed: " + sid);
+        }
+
+        // Check if there is already a migration in the schedule
+        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
+            throw new DistUpgradeException(
+                    "Another dist upgrade is in the schedule for server: " + sid);
+        }
+
+        return server;
+    }
+
+    /**
+     * Validate a given list of channel labels and convert to a list of IDs.
+     *
+     * @param channelLabels list of channel labels
+     * @param user the calling user
+     * @return list od channels IDs
+     * @throws DistUpgradeException in case of errors
+     */
+    public static Set<Long> performChannelChecks(List<String> channelLabels, User user)
+            throws DistUpgradeException {
+        // Make sure we have exactly one base channel
+        Channel baseChannel = null;
+        List<Channel> childChannels = new ArrayList<Channel>();
+        for (String label : channelLabels) {
+            Channel channel = ChannelManager.lookupByLabelAndUser(label, user);
+            if (channel.isBaseChannel()) {
+                if (baseChannel != null) {
+                    throw new DistUpgradeException(
+                            "More than one base channel given for dist upgrade");
+                }
+                baseChannel = channel;
+            }
+            else {
+                childChannels.add(channel);
+            }
+        }
+        if (baseChannel == null) {
+            throw new DistUpgradeException("No base channel given for dist upgrade");
+        }
+
+        // Check validity of child channels
+        Set<Long> channelIDs = new HashSet<Long>();
+        channelIDs.add(baseChannel.getId());
+        for (Channel channel : childChannels) {
+            if (!channel.getParentChannel().getLabel().equals(baseChannel.getLabel())) {
+                throw new DistUpgradeException(
+                        "Channel has incompatible base channel: " + channel.getLabel());
+            }
+            channelIDs.add(channel.getId());
+        }
+        return channelIDs;
+    }
+
+    /**
      * Schedule a distribution upgrade for a given server.
      *
      * @param user the user who is scheduling
@@ -464,7 +549,8 @@ public class DistUpgradeManager extends BaseManager {
      * @param earliest earliest schedule date
      */
     public static Long scheduleDistUpgrade(User user, Server server,
-            SUSEProductSet targetSet, List<Long> channelIDs, boolean dryRun, Date earliest) {
+            SUSEProductSet targetSet, Collection<Long> channelIDs,
+            boolean dryRun, Date earliest) {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
 
