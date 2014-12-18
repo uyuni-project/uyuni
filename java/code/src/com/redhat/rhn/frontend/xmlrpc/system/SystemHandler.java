@@ -5670,4 +5670,89 @@ public class SystemHandler extends BaseHandler {
         throw new FaultException(-1, "migrationNoTargetFound",
                 "No target found for SP migration");
     }
+
+    /**
+     * Schedule a dist upgrade for a system. This call takes a list of channel labels that
+     * the system will be subscribed to before performing the dist upgrade.
+     *
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and
+     * in any case do a dry run before scheduling an actual dist upgrade.
+     *
+     * @param sessionKey User's session key
+     * @param sid ID of the server
+     * @param channels labels of channel to subscribe to
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a dist upgrade for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("string", "channels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleDistUpgrade(String sessionKey, Integer sid, List<String> channels,
+            boolean dryRun, Date earliest) {
+        User user = getLoggedInUser(sessionKey);
+        Server server = SystemManager.lookupByIdAndUser(sid.longValue(), user);
+
+        // Check if server supports distribution upgrades
+        boolean supported = DistUpgradeManager.isUpgradeSupported(server, user);
+        if (!supported) {
+            throw new FaultException(-1, "distUpgradeNotSupported",
+                    "Dist upgrade not supported for server: " + server.getId());
+        }
+
+        // Check if zypp-plugin-spacewalk is installed
+        boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
+                "zypp-plugin-spacewalk", server) != null;
+        if (!zyppPluginInstalled) {
+            throw new FaultException(-1, "zyppPluginNotInstalled",
+                    "Package zypp-plugin-spacewalk is not installed: " + server.getId());
+        }
+
+        // Check if there is already a migration in the schedule
+        if (ActionFactory.isMigrationScheduledForServer(server.getId()) != null) {
+            throw new FaultException(-1, "distUpgradeScheduled",
+                    "Found a dist upgrade in the schedule for server: " + server.getId());
+        }
+
+        // Make sure we have exactly one base channel
+        Channel baseChannel = null;
+        List<Channel> childChannels = new ArrayList<Channel>();
+        for (String label : channels) {
+            Channel channel = ChannelManager.lookupByLabelAndUser(label, user);
+            if (channel.isBaseChannel()) {
+                if (baseChannel != null) {
+                    throw new FaultException(-1, "distUpgradeNonUniqueBaseChannel",
+                            "More than one base channel given for dist upgrade");
+                }
+                baseChannel = channel;
+            }
+            else {
+                childChannels.add(channel);
+            }
+        }
+        if (baseChannel == null) {
+            throw new FaultException(-1, "distUpgradeNoBaseChannel",
+                    "No base channel given for dist upgrade");
+        }
+
+        // Check validity of child channels
+        List<Long> channelIDs = new ArrayList<Long>();
+        channelIDs.add(baseChannel.getId());
+        for (Channel channel : childChannels) {
+            if (!channel.getParentChannel().getLabel().equals(baseChannel.getLabel())) {
+                throw new FaultException(-1, "distUpgradeIncompatibleBaseChannel",
+                        "Channel has incompatible base channel: " + channel.getLabel());
+            }
+            channelIDs.add(channel.getId());
+        }
+
+        return DistUpgradeManager.scheduleDistUpgrade(user, server, null, channelIDs,
+                dryRun, earliest);
+    }
 }
