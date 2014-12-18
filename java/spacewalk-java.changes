@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Thu Dec 18 13:39:37 CET 2014 - mc@suse.de
+
+- version 2.1.165.13-1
+- fix style of a lot of pages
+- Fix extra (eg.Select All) buttons display on rhn:list and
+  make it consistent with new rl:list (bnc#909724)
+- Fix List tag missing submit parameter for "Select All" and others
+  (bnc#909724)
+- Sort filelist in configfile.compare event history alphabetically
+  (bsc#910243)
+- fix setting powermanagement values
+- let system set manager csv contain add-on entitlements
+- allow filtering RHEL7 errata
+- add some missing strings
+- allow removing Cobbler System Profile on  the power management page
+- add csrf check for the power management page
+- No ISE on provisioning page when no base channel
+- Make the base channel ssm action asynchronous
+- Commit after each system deletion to avoid deadlocks
+- Allow paranthesis in input form descriptions
+- Allow paranthesis in system group description (bsc#903064)
+- Provide new API documentation in PDF format (bsc#896029)
+- Update the example scripts section (bsc#896029)
+- Fix grammar and typos in API code example descriptions
+- Fix xmlrpc.doc for sync.content namespace (bsc#896029)
+- Raise proper exception when Taskomatic is not running
+- Fixed wording issues on package lock page (bsc#880022)
+- made text more clear for package profile sync (bsc#884350)
+
+-------------------------------------------------------------------
 Mon Dec 08 13:33:20 CET 2014 - jrenner@suse.de
 
 - version 2.1.165.12-1
