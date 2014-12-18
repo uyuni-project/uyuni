@@ -192,7 +192,7 @@
 			<product_id name="RES-HA" version="7">1252</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res7-suse-manager-tools-x86_64" name="RES7 SUSE-Manager-Tools x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/" summary="SUSE-Manager-Tools" update_tag="res7ct">
+	<channel arch="x86_64" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res7-suse-manager-tools-x86_64" name="RES7 SUSE-Manager-Tools x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/" summary="SUSE-Manager-Tools" update_tag="suse-res7ct">
 		<products>
 			<product_id name="RES" version="7">1251</product_id>
 		</products>
