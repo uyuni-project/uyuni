@@ -172,6 +172,21 @@
 			<product_id name="RES">2580</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="RHEL 7 Expanded Support" family="RES-HA" is_signed="N" label="res7-ha-x86_64" name="RES7-HA for x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES-HA" product_version="7" source_url="https://nu.novell.com/repo/$RCE/RES7-HA/x86_64/" summary="RHEL 7 Expanded Support" update_tag="">
+		<products>
+			<product_id name="RES-HA">4500</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res7-suse-manager-tools-x86_64" name="RES7 SUSE-Manager-Tools x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://nu.novell.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/" summary="SUSE-Manager-Tools" update_tag="res7ct">
+		<products>
+			<product_id name="RES">4480</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="RES 7" family="RES" is_signed="N" label="res7-x86_64" name="RES7 for x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://nu.novell.com/repo/$RCE/RES7/x86_64/" summary="RES 7" update_tag="">
+		<products>
+			<product_id name="RES">4480</product_id>
+		</products>
+	</channel>
 	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="rhel-i386-as-4" name="RHEL i386 AS 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
 		<products>
 			<product_id name="RES">1321</product_id>
@@ -219,6 +234,12 @@
 			<product_id name="RES">2580</product_id>
 		</products>
 		<dist os="RHEL Server" release="6Server"/>
+	</channel>
+	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 7" family="RES" is_signed="N" label="rhel-x86_64-server-7" name="RHEL x86_64 Server 7" optional="N" parent="BASE" product_name="RES" product_version="7" source_url="" summary="Red Hat Expanded Support for RHEL 7" update_tag="">
+		<products>
+			<product_id name="RES">4480</product_id>
+		</products>
+		<dist os="RHEL Server" release="7Server"/>
 	</channel>
 	<channel arch="i586" description="SUSE Linux 10 SP3 Software Development Kit" family="SLE-SDK" is_signed="Y" label="sle10-sdk-sp3-pool-i586" name="SLE10-SDK-SP3-Pool for i586" optional="N" parent="sles10-sp3-pool-i586" product_name="SUSE-Linux-Enterprise-SDK-SP3" product_version="10" source_url="https://nu.novell.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-i586/" summary="SUSE Linux 10 SP3 Software Development Kit" update_tag="sdkp3">
 		<products>
@@ -1939,6 +1960,7 @@
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586-vmware" name="SLE11-SP2-Debuginfo-Updates for i586 VMWare" optional="Y" parent="sles11-sp1-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.2" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
 		<products>
 			<product_id name="SLES-for-VMware">3060</product_id>
+			<product_id name="SLES-for-VMware">4004</product_id>
 		</products>
 	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP2" family="SLES-X86-VMWARE" is_signed="Y" label="sle11-sp2-debuginfo-updates-i586-vmware-sp3" name="SLE11-SP2-Debuginfo-Updates for i586 VMWare-SP3" optional="Y" parent="sles11-sp3-vmware-pool-i586" product_name="SLES-for-VMware" product_version="11.3" source_url="https://nu.novell.com/repo/$RCE/SLE11-SP2-Debuginfo-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP2" update_tag="dbgsp2">
