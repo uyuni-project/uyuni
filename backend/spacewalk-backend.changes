@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Dec 18 13:38:25 CET 2014 - mc@suse.de
+
+- version 2.1.55.14-1
+- fix encoding of submit message
+- create (and label) /var/cache/rhn/satsync
+- fixed double-counting of systems subscribed to more than one
+  channel
+
+-------------------------------------------------------------------
 Thu Dec 04 16:31:03 CET 2014 - mc@suse.de
 
 - version 2.1.55.13-1
