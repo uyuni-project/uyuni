@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 18 13:32:51 CET 2014 - mc@suse.de
+
+- version 2.1.4.10-1
+- spacewalk-koan: Fix netmask calculation on SUSE systems (bnc#616195)
+
+-------------------------------------------------------------------
 Thu Dec 04 13:17:40 CET 2014 - mc@suse.de
 
 - version 2.1.4.9-1
