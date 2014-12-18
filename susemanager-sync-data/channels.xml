@@ -187,6 +187,21 @@
 			<product_id name="RES" version="6">1138</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="RHEL Expanded Support 7" family="RES-HA" is_signed="N" label="res7-ha-x86_64" name="RES7-HA for x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES-HA" product_version="7" source_url="https://updates.suse.com/repo/$RCE/RES7-HA/x86_64/" summary="RHEL Expanded Support 7" update_tag="">
+		<products>
+			<product_id name="RES-HA" version="7">1252</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE-Manager-Tools" family="RES" is_signed="Y" label="res7-suse-manager-tools-x86_64" name="RES7 SUSE-Manager-Tools x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://updates.suse.com/repo/$RCE/RES7-SUSE-Manager-Tools/x86_64/" summary="SUSE-Manager-Tools" update_tag="res7ct">
+		<products>
+			<product_id name="RES" version="7">1251</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="RES 7" family="RES" is_signed="N" label="res7-x86_64" name="RES7 for x86_64" optional="N" parent="rhel-x86_64-server-7" product_name="RES" product_version="7" source_url="https://updates.suse.com/repo/$RCE/RES7/x86_64/" summary="RES 7" update_tag="">
+		<products>
+			<product_id name="RES" version="7">1251</product_id>
+		</products>
+	</channel>
 	<channel arch="i386" description="RES 4" family="RES" is_signed="N" label="rhel-i386-as-4" name="RHEL i386 AS 4" optional="N" parent="BASE" product_name="RES" product_version="4" source_url="" summary="RES 4" update_tag="">
 		<products>
 			<product_id name="RES" version="4">1127</product_id>
@@ -234,6 +249,12 @@
 			<product_id name="RES" version="6">1138</product_id>
 		</products>
 		<dist os="RHEL Server" release="6Server"/>
+	</channel>
+	<channel arch="x86_64" description="Red Hat Expanded Support for RHEL 7" family="RES" is_signed="N" label="rhel-x86_64-server-7" name="RHEL x86_64 Server 7" optional="N" parent="BASE" product_name="RES" product_version="7" source_url="" summary="Red Hat Expanded Support for RHEL 7" update_tag="">
+		<products>
+			<product_id name="RES" version="7">1251</product_id>
+		</products>
+		<dist os="RHEL Server" release="7Server"/>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sle-12-ga-desktop-nvidia-driver-x86_64" name="SLE-12-GA-Desktop-nVidia-Driver for x86_64" optional="N" parent="sled12-pool-x86_64" product_name="SLED" product_version="12" source_url="http://download.nvidia.com/novell/sle12/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="">
 		<products>
