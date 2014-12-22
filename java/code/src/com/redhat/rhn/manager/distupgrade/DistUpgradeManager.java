@@ -132,6 +132,7 @@ public class DistUpgradeManager extends BaseManager {
      * {@link SUSEProductSet}.
      *
      * @param productSet product set
+     * @param baseChannelID the base channel id for the product set
      * @return list of channel DTOs
      */
     @SuppressWarnings("unchecked")
@@ -465,7 +466,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param sid ID of the server to check
      * @param user the calling user
      * @return server object
-     * @throws DistUpgradeException
+     * @throws DistUpgradeException in case checks fail
      */
     public static Server performServerChecks(Long sid, User user)
             throws DistUpgradeException {
@@ -547,6 +548,7 @@ public class DistUpgradeManager extends BaseManager {
      * @param channelIDs IDs of all channels to subscribe
      * @param dryRun perform a dry run
      * @param earliest earliest schedule date
+     * @return the action ID
      */
     public static Long scheduleDistUpgrade(User user, Server server,
             SUSEProductSet targetSet, Collection<Long> channelIDs,

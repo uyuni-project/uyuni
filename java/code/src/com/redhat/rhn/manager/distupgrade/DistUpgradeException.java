@@ -21,7 +21,7 @@ public class DistUpgradeException extends Exception {
 
     /**
      * Constructor expecting a custom message.
-     * @param cause the cause
+     * @param message the cause
      */
     public DistUpgradeException(String message) {
         super(message);
