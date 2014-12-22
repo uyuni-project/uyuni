@@ -5598,7 +5598,8 @@ public class SystemHandler extends BaseHandler {
         Server server = null;
         try {
             server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
-        } catch (DistUpgradeException e) {
+        }
+        catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
         }
 
@@ -5606,8 +5607,10 @@ public class SystemHandler extends BaseHandler {
         Set<Long> channelIDs = null;
         optionalChildChannels.add(baseChannelLabel);
         try {
-            channelIDs = DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
-        } catch (DistUpgradeException e) {
+            channelIDs =
+                    DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
+        }
+        catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
 
