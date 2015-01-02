@@ -13,3 +13,4 @@ BEGIN
      ) X
   where sgt.label = 'bootstrap_entitled';
 END;
+/
