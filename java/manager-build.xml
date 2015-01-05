@@ -19,12 +19,12 @@
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
   <property name="deploy.user" value="root" />  
-  
+
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
   <property name="tests.results.dir" value="test-results"/>
   <property name="tests.configuration.path" value="${basedir}/buildconf/test" />
-  
+
   <property name="branding.dir" value="${basedir}/../branding"/>
   <property name="branding.src.dir" value="${branding.dir}/java/code/src"/>
   <property name="branding.img.dir" value="${branding.dir}/img"/>
@@ -48,7 +48,7 @@
     </delete>
     <delete dir="${test.results.dir}" />
   </target>
-	
+
   <target name="refresh-branding-jar" depends="clean" description="Compiles and builds the SUSE branding jar">
     <mkdir dir="${build.dir}/java-branding" />
 
@@ -165,7 +165,7 @@
         echo "Linking the branding jar...";
         mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib;
         ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
-  
+
         echo "Linking the main jar for Taskomatic...";
         mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
         ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
