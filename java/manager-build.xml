@@ -32,6 +32,10 @@
   <property name="branding.fonts.dir" value="${branding.dir}/fonts"/>
   <property name="js.dir" value="${basedir}/../web/html/javascript"/>
 
+  <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
+  <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
+  <property name="ssh.command.args" value="${ssh.socket.option} ${deploy.user}@${deploy.host}"/>
+
   <!-- Paths -->
   <path id="libjars">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
@@ -155,25 +159,42 @@
     </replace>
   </target>
 
-  <target name="deploy" depends="webapp" description="Deploy a new copy of SUSE Manager">
-    <echo message="Copying files to remote host..." />
-    <exec executable="rsync">
-      <arg line="-a --delete ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
-    </exec>
-
-    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
-        echo "Linking the branding jar...";
-        mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib;
-        ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar;
-
-        echo "Linking the main jar for Taskomatic...";
-        mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib;
-        ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib;
-      '
-    />
+  <target name="check-ssh-socket">
+    <available file="${ssh.socket.file}" property="ssh-socket.present"/>
   </target>
 
-  <target name="deploy-static-resources" description="Deploy css/js/img/font files">
+  <target name="open-ssh-socket" depends="check-ssh-socket" unless="ssh-socket.present">
+    <exec executable="ssh">
+      <arg line="-M -f -N -C ${ssh.command.args}" />
+    </exec>
+  </target>
+
+  <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
+    <echo message="Copying files to remote host..." />
+    <exec executable="rsync">
+      <arg line="-a --delete --rsh 'ssh ${ssh.socket.option}' ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/" />
+    </exec>
+
+    <echo message="Linking the branding jar..." />
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+    </exec>
+
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
+    </exec>
+
+    <echo message="Linking the main jar for Taskomatic..."/>
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+    </exec>
+
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
+    </exec>
+  </target>
+
+  <target name="deploy-static-resources" depends="open-ssh-socket" description="Deploy css/js/img/font files">
     <condition property="spacewalk.upstream">
       <not>
         <available file="${basedir}/../susemanager" type="dir"/>
@@ -184,33 +205,31 @@
     </condition>
     <echo message="Copying css/js files to remote host...${static.files.dir}"/>
     <exec executable="rsync">
-      <arg line="-a ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.css.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/css/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.img.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/img/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${branding.fonts.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/fonts/" />
     </exec>
     <exec executable="rsync">
-      <arg line="-a ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
+      <arg line="-a --rsh 'ssh ${ssh.socket.option}' ${js.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/javascript/" />
     </exec>
   </target>
 
-  <target name="restart-tomcat" description="Restart the tomcat process">
-    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
-        echo "Launching Tomcat restart...";
-        nohup systemctl restart tomcat.service > /dev/null 2>&amp;1 &amp;
-      '
-    />
+  <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
+    <echo message="Launching Tomcat restart..."/>
+    <exec executable="ssh">
+      <arg line="${ssh.command.args} nohup rctomcat6 restart > /dev/null 2>&amp;1 &amp;"/>
+    </exec>
   </target>
 
-  <target name="restart-taskomatic" description="Restart the taskomatic process">
-    <exec command="ssh ${deploy.user}@${deploy.host}" inputstring='
-        echo "Launching Taskomatic restart...";
-        nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;
-      '
-    />
+  <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
+    <echo message="Launching Taskomatic restart..."/>
+    <exec executable="ssh">
+      <arg line="${ssh.command.args}  nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;"/>
+    </exec>
   </target>
 
   <target name="deploy-restart" depends="deploy, restart-tomcat" />
