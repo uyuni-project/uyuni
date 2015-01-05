@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -93,6 +94,12 @@ public class MgrSyncRefresh extends RhnJavaJob {
             catch (IOException e1) {
                 // never happens
             }
+
+            // This is needed in order to modify rows in auto-logging tables such
+            // as rhnServerGroup in a Taskomatic context, where SessionFilter does
+            // not apply
+            LoggingFactory.clearLogId();
+
             // Perform the refresh
             try {
                 ContentSyncManager csm = new ContentSyncManager();
