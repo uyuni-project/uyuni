@@ -3,7 +3,9 @@
 <hibernate-mapping>
     <class name="com.redhat.rhn.domain.scc.SCCRepository" table="suseSCCRepository">
         <id name="id" column="id" type="long">
-            <generator class="increment"/>
+            <generator class="sequence">
+                <param name="sequence">suse_sccrepository_id_seq</param>
+            </generator>
         </id>
         <property name="autorefresh" column="autorefresh" type="yes_no"/>
         <property name="name" column="name" type="string"/>
