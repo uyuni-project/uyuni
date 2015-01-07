@@ -73,7 +73,7 @@
   </target>
 
   <target name="compile"
-          depends="clean,refresh-branding-jar"
+          depends="clean"
           unless="precompiled"
           description="Compiles the main codebase"
   >
