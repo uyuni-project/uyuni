@@ -7,6 +7,7 @@
                 <param name="sequence">suse_sccrepository_id_seq</param>
             </generator>
         </id>
+        <property name="SCCId" column="scc_id" type="long"/>
         <property name="autorefresh" column="autorefresh" type="yes_no"/>
         <property name="name" column="name" type="string"/>
         <property name="distroTarget" column="distro_target" type="string"/>
