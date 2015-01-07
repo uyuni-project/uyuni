@@ -89,7 +89,7 @@ public class SCCCachingFactoryTest extends RhnBaseTestCase {
      */
     private SCCRepository createTestRepo(Long id) {
         SCCRepository repo = new SCCRepository();
-        repo.setId(id);
+        repo.setSCCId(id);
         repo.setDescription(TestUtils.randomString());
         repo.setDistroTarget(TestUtils.randomString());
         repo.setName(TestUtils.randomString());
