@@ -16,6 +16,7 @@
 CREATE TABLE suseSCCRepository
 (
     id             NUMBER NOT NULL PRIMARY KEY,
+    scc_id         NUMBER,
     credentials_id NUMBER
                        CONSTRAINT suse_sccrepo_credsid_fk
                        REFERENCES suseCredentials (id)
