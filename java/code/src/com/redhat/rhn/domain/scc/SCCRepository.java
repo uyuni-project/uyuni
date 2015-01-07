@@ -28,7 +28,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class SCCRepository extends BaseDomainHelper {
 
-    private long id;
+    @SerializedName("id")
+    private long sccId;
     private String name;
     @SerializedName("distro_target")
     private String distroTarget;
@@ -36,21 +37,22 @@ public class SCCRepository extends BaseDomainHelper {
     private String url;
     private boolean autorefresh;
 
-    // not in JSON
-    private Credentials credentials;
+    // ignored by gson
+    private transient Long id;
+    private transient Credentials credentials;
 
     /**
-     * @return the id
+     * @return the SCC id
      */
-    public long getId() {
-        return id;
+    public long getSCCId() {
+        return sccId;
     }
 
     /**
-     * @param idIn the id to set
+     * @param sccIdIn the SCC id to set
      */
-    public void setId(long idIn) {
-        this.id = idIn;
+    public void setSCCId(long sccIdIn) {
+        this.sccId = sccIdIn;
     }
 
     /**
@@ -124,6 +126,22 @@ public class SCCRepository extends BaseDomainHelper {
     }
 
     /**
+     * Gets the id.
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
      * Get the mirror credentials.
      * @return the credentials
      */
@@ -169,7 +187,7 @@ public class SCCRepository extends BaseDomainHelper {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-        .append("id", getId())
+        .append("sccId", getSCCId())
         .append("description", getDescription())
         .toString();
     }
