@@ -15,7 +15,7 @@ cp /root/rhn.conf /etc/rhn/rhn.conf
 rhn-satellite-activate --rhn-cert /usr/share/spacewalk/setup/spacewalk-public.cert --disconnected
 
 cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
-ant -f manager-build.xml test
+ant -f manager-build.xml refresh-branding-jar test
 
 
 /etc/init.d/oracle stop
