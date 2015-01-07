@@ -35,3 +35,4 @@ CREATE TABLE suseSCCRepository
 ENABLE ROW MOVEMENT
 ;
 
+CREATE SEQUENCE suse_sccrepository_id_seq;
