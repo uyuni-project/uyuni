@@ -12,7 +12,7 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <rhn:toolbar base="h2" icon="header-channel-configuration">
-			<bean:message key="sdc.config.subscriptions.jsp.header"/>
+                        <bean:message key="sdc.config.subscriptions.jsp.header"/>
 </rhn:toolbar>
 <h3><bean:message key="ssm.config.subscribe.jsp.step"/></h3>
 <p><bean:message key="sdc.config.subscriptions.jsp.para1" /></p>
@@ -27,11 +27,11 @@
     <rhn:csrf />
 
     <rhn:list pageList="${requestScope.pageList}"
-    		  noDataText="sdc.config.subscriptions.jsp.noChannels">
+                  noDataText="sdc.config.subscriptions.jsp.noChannels">
 
       <rhn:listdisplay  set="${requestScope.set}"
-	 filterBy = "sdc.config.subscriptions.jsp.channel"
-      	 >
+         filterBy = "sdc.config.subscriptions.jsp.channel"
+         >
         <rhn:set value="${current.id}"/>
         <rhn:column header="sdc.config.subscriptions.jsp.channel"
                       url="/rhn/configuration/ChannelOverview.do?ccid=${current.id}">
@@ -48,14 +48,14 @@
       <div class="text-right">
           <hr />
           <html:submit styleClass="btn btn-default" property="dispatch">
-	          <bean:message key="sdc.config.subscriptions.jsp.continue"/>
+                  <bean:message key="sdc.config.subscriptions.jsp.continue"/>
           </html:submit>
       </div>
     </rhn:list>
-	<rhn:noscript/>
+        <rhn:noscript/>
 
-	<rhn:submitted/>
-	</html:form>
+        <rhn:submitted/>
+        </html:form>
 </c:when>
 <c:otherwise>
     <div class="alert alert-warning">

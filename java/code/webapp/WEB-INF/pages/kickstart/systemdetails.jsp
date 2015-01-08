@@ -5,7 +5,7 @@
 <html:html >
 
 <head>
-    <script language="javascript" type="text/javascript">		
+    <script language="javascript" type="text/javascript">               
         function toggleIFText(ctl) {
             var toDisable = null;
             var toEnable = null;
@@ -15,7 +15,7 @@
             }
             else {
                 toDisable = document.getElementById("dhcpNetworkIf");
-                toEnable = document.getElementById("staticNetworkIf");		
+                toEnable = document.getElementById("staticNetworkIf");          
             }
             toDisable.disabled = true;
             toEnable.disabled = false;
@@ -33,9 +33,9 @@
     </script>
 <%
 boolean dhcpIfDisabled = Boolean.valueOf(
-	(String) request.getAttribute("dhcpIfDisabled")).booleanValue();
+        (String) request.getAttribute("dhcpIfDisabled")).booleanValue();
 boolean staticIfDisabled = Boolean.valueOf(
-	(String) request.getAttribute("staticIfDisabled")).booleanValue();
+        (String) request.getAttribute("staticIfDisabled")).booleanValue();
 %>
 <meta http-equiv="Pragma" content="no-cache" />
 </head>
