@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
@@ -917,6 +918,19 @@ public class ContentSyncManager {
                         }
                     }
                 }
+            }
+        }
+
+        // bootstrap entitlements should have INFINITE as max_members in all orgs
+        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
+                EntitlementManager.BOOTSTRAP_ENTITLED);
+        List<Org> allOrgs = OrgFactory.lookupAllOrgs();
+        for (Org org : allOrgs) {
+            EntitlementServerGroup serverGroup = ServerGroupFactory
+                    .lookupEntitled(org, sgt);
+            if (serverGroup != null) {
+                serverGroup.setMaxMembers(INFINITE);
+                ServerGroupFactory.save(serverGroup);
             }
         }
     }
