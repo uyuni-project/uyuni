@@ -851,8 +851,13 @@ public class ContentSyncManager {
                     }
                 }
                 if (satelliteOrgPrivateChannelFamily != null) {
-                    satelliteOrgPrivateChannelFamily
-                            .setMaxMembers(INFINITE - sumMaxMembers);
+                    if(sumMaxMembers > INFINITE) {
+                        satelliteOrgPrivateChannelFamily.setMaxMembers(0L);
+                    }
+                    else {
+                        satelliteOrgPrivateChannelFamily
+                                .setMaxMembers(INFINITE - sumMaxMembers);
+                    }
                     ChannelFamilyFactory.save(satelliteOrgPrivateChannelFamily);
                 }
             }
@@ -884,7 +889,12 @@ public class ContentSyncManager {
                 int maxMembers = sumMaxMembersAllNonSatelliteOrgs(sgt);
                 EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
                         OrgFactory.getSatelliteOrg(), sgt);
-                serverGroup.setMaxMembers(INFINITE - maxMembers);
+                if (maxMembers > INFINITE) {
+                    serverGroup.setMaxMembers(0L);
+                }
+                else {
+                    serverGroup.setMaxMembers(INFINITE - maxMembers);
+                }
                 ServerGroupFactory.save(serverGroup);
             }
             else {
