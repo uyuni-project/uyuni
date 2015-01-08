@@ -14,14 +14,14 @@
  */
 package com.suse.scc.client;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Helper class for setting up {@link HttpURLConnection} objects.
@@ -76,17 +76,9 @@ public class SCCRequestFactory {
             String proxyUsername = proxySettings.getUsername();
             String proxyPassword = proxySettings.getPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
-                !StringUtils.isEmpty(proxyPassword)) {
-                try {
-                    byte[] encodedBytes =
-                            Base64.encodeBase64((proxyUsername + ':' + proxyPassword)
-                                    .getBytes("UTF-8"));
-                    final String encoded = new String(encodedBytes, "iso-8859-1");
-                    connection.addRequestProperty("Proxy-Authorization", encoded);
-                }
-                catch (UnsupportedEncodingException e) {
-                    // can't happen
-                }
+                    !StringUtils.isEmpty(proxyPassword)) {
+                Authenticator.setDefault(new ProxyAuthenticator(
+                        proxyUsername, proxyPassword));
             }
         }
         else {

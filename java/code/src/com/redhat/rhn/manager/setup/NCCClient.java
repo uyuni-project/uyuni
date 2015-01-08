@@ -19,8 +19,8 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
+import com.suse.scc.client.ProxyAuthenticator;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.Serializer;
@@ -28,7 +28,7 @@ import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -171,17 +171,9 @@ public class NCCClient {
             String proxyUsername = configDefaults.getProxyUsername();
             String proxyPassword = configDefaults.getProxyPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
-                !StringUtils.isEmpty(proxyPassword)) {
-                try {
-                    byte[] encodedBytes = Base64
-                        .encodeBase64((proxyUsername + ':' + proxyPassword)
-                            .getBytes("iso-8859-1"));
-                    final String encoded = new String(encodedBytes, "iso-8859-1");
-                    result.addRequestProperty("Proxy-Authorization", encoded);
-                }
-                catch (UnsupportedEncodingException e) {
-                    // can't happen
-                }
+                    !StringUtils.isEmpty(proxyPassword)) {
+                Authenticator.setDefault(new ProxyAuthenticator(
+                        proxyUsername, proxyPassword));
             }
         }
         else {
