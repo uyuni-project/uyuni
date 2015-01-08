@@ -28,14 +28,14 @@ sub register_dobby_commands {
   my $cli = shift;
 
   $cli->register_mode(-command => "extend",
-		      -description => "Increase the SUSE Manager Database Instance tablespace",
-		      -handler => \&command_extend);
+                      -description => "Increase the SUSE Manager Database Instance tablespace",
+                      -handler => \&command_extend);
   $cli->register_mode(-command => "gather-stats",
-		      -description => "Gather statistics on SUSE Manager Database database objects",
-		      -handler => \&gather_stats);
+                      -description => "Gather statistics on SUSE Manager Database database objects",
+                      -handler => \&gather_stats);
   $cli->register_mode(-command => "shrink-segments",
-		      -description => "Shrink SUSE Manager Database database segments",
-		      -handler => \&shrink_segments);
+                      -description => "Shrink SUSE Manager Database database segments",
+                      -handler => \&shrink_segments);
 }
 
 sub command_extend {
