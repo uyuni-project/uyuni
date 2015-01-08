@@ -149,6 +149,21 @@ Z_CLIENT_REPOS_ROOT=
 #
 
 #
+# do not try to register a SUSE Manager server at itself
+#
+MYNAME=`hostname -f`
+LCMYNAME=`echo $MYNAME | tr '[:upper:]' '[:lower:]'`
+LCHOSTNAME=`echo $HOSTNAME | tr '[:upper:]' '[:lower:]'`
+
+if [ $LCMYNAME == $LCHOSTNAME ]; then
+    echo "Name of client and of SUSE Manager server are the same."
+    echo "Do not try to register a SUSE Manager server at itself!"
+    echo "Aborting."
+    exit 1
+fi
+
+
+#
 # maybe autoyast has written a tracking key for us
 #
 if [ -f "/var/adm/autoinstall/cache/SUSE_Manager_keys" ]; then
