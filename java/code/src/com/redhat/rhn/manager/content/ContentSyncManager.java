@@ -845,7 +845,7 @@ public class ContentSyncManager {
                 int sumMaxMembers = 0;
                 PrivateChannelFamily satelliteOrgPrivateChannelFamily = null;
                 for (PrivateChannelFamily pcf : privateFamilies) {
-                    if (pcf.getOrg().getId() == 1) {
+                    if (pcf.getOrg().equals(OrgFactory.getSatelliteOrg())) {
                         satelliteOrgPrivateChannelFamily = pcf;
                     }
                     else if (pcf.getOrg().getId() > 1) {
@@ -909,7 +909,7 @@ public class ContentSyncManager {
                 // Reset max_members to null for all other orgs
                 List<Org> allOrgs = OrgFactory.lookupAllOrgs();
                 for (Org org : allOrgs) {
-                    if (org.getId() != 1) {
+                    if (!org.equals(OrgFactory.getSatelliteOrg())) {
                         serverGroup = ServerGroupFactory.lookupEntitled(org, sgt);
                         if (serverGroup != null) {
                             serverGroup.setMaxMembers(null);
@@ -1404,7 +1404,7 @@ public class ContentSyncManager {
         int sum = 0;
         List<Org> allOrgs = OrgFactory.lookupAllOrgs();
         for (Org org : allOrgs) {
-            if (org.getId() != 1) {
+            if (!org.equals(OrgFactory.getSatelliteOrg())) {
                 EntitlementServerGroup serverGroup = ServerGroupFactory
                         .lookupEntitled(org, serverGroupType);
                 if (serverGroup != null) {
