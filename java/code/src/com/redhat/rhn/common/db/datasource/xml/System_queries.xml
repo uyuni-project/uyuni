@@ -1842,11 +1842,11 @@ SELECT 1
     <query params="uid, inactive_date">
         SELECT distinct S.id as id, S.name as name, lower(NI.hostname) as key, si.checkin as last_checkin,
                (select count(*)  from rhnServerInfo Si2 where  S.id = Si2.server_id and Si2.checkin &lt; :inactive_date) as inactive
-        from   rhnServer S 
+        from   rhnServer S
             inner join rhnUserServerPerms USP on S.id = USP.server_id
             inner join rhnServerNetwork NI on NI.server_id = S.id
             inner join rhnServerInfo si on si.server_id = S.id
-            inner join ( 
+            inner join (
                 Select lower(NI2.hostname) as hostname, count(NI2.server_id) as syscount
                 from   rhnServerNetwork NI2
                     inner join rhnUserServerPerms USP2 on NI2.server_id = USP2.server_id
@@ -2350,7 +2350,7 @@ SELECT channel_arch_id
   <query params="user_id, set_label, entitlement_label">
     SELECT COUNT(*) as count
       FROM rhnServerEntitlementView
-        JOIN rhnSet on rhnServerEntitlementView.server_id = rhnSet.element  
+        JOIN rhnSet on rhnServerEntitlementView.server_id = rhnSet.element
       WHERE rhnSet.user_id = :user_id AND
         rhnSet.label = :set_label AND
         rhnServerEntitlementView.label = :entitlement_label
