@@ -75,7 +75,7 @@ public class SCCRequestFactory {
             String proxyUsername = proxySettings.getUsername();
             String proxyPassword = proxySettings.getPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
-                !StringUtils.isEmpty(proxyPassword)) {
+                    !StringUtils.isEmpty(proxyPassword)) {
                 Authenticator.setDefault(new ProxyAuthenticator(
                         proxyUsername, proxyPassword));
             }
