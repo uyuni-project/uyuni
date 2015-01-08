@@ -28,12 +28,15 @@ from spacewalk.common.suseLib import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync import logger
 
 
 class ChannelOperationsTest(unittest.TestCase):
 
     def setUp(self):
         self.mgr_sync = MgrSync()
+        self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
         self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mgr_sync.conn = MagicMock()
         self.fake_auth_token = "fake_token"
@@ -48,6 +51,10 @@ class ChannelOperationsTest(unittest.TestCase):
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
         mock = patcher.start()
         mock.return_value = False
+
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
 
     def test_list_channels_no_channels(self):
         options = get_options("list channels".split())
@@ -252,7 +259,7 @@ Status:
 
         self.mgr_sync._fetch_remote_channels = MagicMock(
             return_value=parse_channels(
-                read_data_from_fixture("list_channels.data")))
+                read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -287,7 +294,7 @@ Status:
 
         self.mgr_sync._fetch_remote_channels = MagicMock(
         return_value=parse_channels(
-            read_data_from_fixture("list_channels.data")))
+            read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 	stubbed_xmlrpm_call = MagicMock()
 	self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
 	with ConsoleRecorder() as recorder:
@@ -323,7 +330,7 @@ Status:
 
         self.mgr_sync._fetch_remote_channels = MagicMock(
             return_value=parse_channels(
-                read_data_from_fixture("list_channels.data")))
+                read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -372,7 +379,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
 
         self.mgr_sync._fetch_remote_channels = MagicMock(
             return_value=parse_channels(
-                read_data_from_fixture("list_channels.data")))
+                read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         stubbed_xmlrpm_call = MagicMock()
         self.mgr_sync._execute_xmlrpc_method = stubbed_xmlrpm_call
@@ -404,7 +411,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             "add channel sles11-sp3-vmware-pool-i586".split())
         self.mgr_sync._fetch_remote_channels = MagicMock(
             return_value=parse_channels(
-                read_data_from_fixture("list_channels.data")))
+                read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
@@ -423,7 +430,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
             "add channel sle10-sdk-sp4-pool-x86_64".split())
         self.mgr_sync._fetch_remote_channels = MagicMock(
             return_value=parse_channels(
-                read_data_from_fixture("list_channels.data")))
+                read_data_from_fixture("list_channels.data"), self.mgr_sync.log))
 
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
@@ -441,7 +448,7 @@ Scheduling reposync for 'res4-es-i386' channel"""
         """
 
         channels = parse_channels(
-            read_data_from_fixture("list_channels.data"))
+            read_data_from_fixture("list_channels.data"), self.mgr_sync.log)
         parent = channels['rhel-i386-es-4']
         parent.status = Channel.Status.UNAVAILABLE
         child = 'res4-es-i386'
@@ -500,4 +507,3 @@ Scheduling reposync for 'res4-es-i386' channel"""
         ]
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
-

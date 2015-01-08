@@ -19,8 +19,12 @@ import os
 import sys
 import unittest2 as unittest
 
+from mock import MagicMock
+
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, \
     find_channel_by_label, Channel
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync import logger
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import read_data_from_fixture, path_to_fixture
@@ -28,9 +32,18 @@ from helper import read_data_from_fixture, path_to_fixture
 
 class ChannelTest(unittest.TestCase):
 
+    def setUp(self):
+        self.mgr_sync = MgrSync()
+        self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
+
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
+
     def test_parse_channels(self):
         expected_channels, expected_hierarchy = self._parse_mgr_ncc_output()
-        channels = parse_channels(read_data_from_fixture("list_channels.data"))
+        channels = parse_channels(read_data_from_fixture("list_channels.data"), self.mgr_sync.log)
 
         self.assertEqual(sorted(channels.keys()),
                          sorted(expected_hierarchy.keys()))
@@ -96,13 +109,12 @@ class ChannelTest(unittest.TestCase):
 
     def test_find_channel_by_label(self):
         channels = parse_channels(
-            read_data_from_fixture("list_channels.data"))
+            read_data_from_fixture("list_channels.data"), self.mgr_sync.log)
 
         for label in ['rhel-x86_64-es-4',
                       'sles11-sp2-updates-i586']:
-            bc = find_channel_by_label(label, channels)
+            bc = find_channel_by_label(label, channels, self.mgr_sync.log)
             self.assertIsNotNone(bc)
             self.assertEqual(label, bc.label)
 
-        self.assertIsNone(find_channel_by_label('foobar', channels))
-
+        self.assertIsNone(find_channel_by_label('foobar', channels, self.mgr_sync.log))

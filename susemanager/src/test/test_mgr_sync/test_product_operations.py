@@ -29,12 +29,15 @@ from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 from spacewalk.susemanager.mgr_sync.channel import Channel
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
+from spacewalk.susemanager.mgr_sync import logger
 
 
 class ProductOperationsTest(unittest.TestCase):
 
     def setUp(self):
         self.mgr_sync = MgrSync()
+        self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
         self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mgr_sync.conn = MagicMock()
         self.fake_auth_token = "fake_token"
@@ -49,6 +52,10 @@ class ProductOperationsTest(unittest.TestCase):
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
         mock = patcher.start()
         mock.return_value = False
+
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
 
     def test_list_emtpy_product(self):
         options = get_options("list product".split())
@@ -388,7 +395,7 @@ Status:
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product --from-mirror {0}".format(mirror_url).split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -446,7 +453,7 @@ Product successfully added"""
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -509,7 +516,7 @@ Product successfully added"""
                     and p['arch'] == 'x86_64')
 
         options = get_options("add product".split())
-        available_products = parse_products([sled])
+        available_products = parse_products([sled], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -576,7 +583,7 @@ Product successfully added"""
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -649,7 +656,7 @@ Product successfully added"""
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -686,7 +693,7 @@ All the available products have already been installed, nothing to do"""
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -726,7 +733,7 @@ All the available products have already been installed, nothing to do"""
         res4 = next(p for p in products
                     if p['friendly_name'] == 'RES 4' and p['arch'] == 'x86_64')
         options = get_options("add product".split())
-        available_products = parse_products([res4])
+        available_products = parse_products([res4], self.mgr_sync.log)
         chosen_product = available_products[0]
         self.mgr_sync._fetch_remote_products = MagicMock(
             return_value=available_products)
@@ -779,4 +786,3 @@ Product successfully added"""
                     channel.label))
 
         stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
-
