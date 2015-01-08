@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.scc.client.ProxyAuthenticator;
 import com.suse.scc.client.SCCProxySettings;
 
 import org.apache.commons.codec.binary.Base64;
@@ -30,7 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -80,15 +81,8 @@ public class MgrSyncUtils {
                 String proxyPassword = configDefaults.getProxyPassword();
                 if (!StringUtils.isBlank(proxyUsername) &&
                         !StringUtils.isBlank(proxyPassword)) {
-                    try {
-                        String creds = proxyUsername + ':' + proxyPassword;
-                        byte[] encoded = Base64.encodeBase64(creds.getBytes("iso-8859-1"));
-                        final String proxyAuth = new String(encoded, "iso-8859-1");
-                        connection.addRequestProperty("Proxy-Authorization", proxyAuth);
-                    }
-                    catch (UnsupportedEncodingException e) {
-                        // Can't happen
-                    }
+                    Authenticator.setDefault(new ProxyAuthenticator(
+                            proxyUsername, proxyPassword));
                 }
             }
             else {
