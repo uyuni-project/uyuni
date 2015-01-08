@@ -19,7 +19,11 @@ import os
 import sys
 import unittest2 as unittest
 
+from mock import MagicMock
+
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
+from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync import logger
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import read_data_from_fixture, ConsoleRecorder
@@ -28,8 +32,14 @@ from helper import read_data_from_fixture, ConsoleRecorder
 class ProductTest(unittest.TestCase):
 
     def setUp(self):
-        self.products = parse_products(read_data_from_fixture("list_products.data"))
+        self.mgr_sync = MgrSync()
+        self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
+        self.products = parse_products(read_data_from_fixture("list_products.data"), self.mgr_sync.log)
 
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
 
     def test_parse_products(self):
 
@@ -69,4 +79,3 @@ class ProductTest(unittest.TestCase):
 
         expected_output = ["[ ] RES 4 (i386)"]
         self.assertEqual(expected_output, recorder.stdout)
-

@@ -27,6 +27,7 @@ from helper import ConsoleRecorder, read_data_from_fixture
 from spacewalk.common.suseLib import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync import logger
 
 
 class MgrSyncTest(unittest.TestCase):
@@ -38,6 +39,8 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
+        self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
 
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_cc_backend')
         self.mock_current_backend = patcher.start()
@@ -45,6 +48,10 @@ class MgrSyncTest(unittest.TestCase):
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
         mock = patcher.start()
         mock.return_value = False
+
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
 
     def test_should_exit_when_ncc_is_active(self):
         """ Should exit with an error when NCC backend is active """
@@ -115,3 +122,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         expected_stderr = """Support for SUSE Customer Center (SCC) is not yet available."""
         self.assertEqual(expected_stderr.split("\n"), recorder.stderr)
         self.assertFalse(recorder.stdout)
+
+    def test_should_write_a_logfile(self):
+        """Should write a logfile when debugging is enabled"""
+
+        self.assertTrue(os.path.isfile("tmp.log"))

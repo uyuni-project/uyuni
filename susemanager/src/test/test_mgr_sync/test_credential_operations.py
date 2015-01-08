@@ -27,12 +27,15 @@ from helper import ConsoleRecorder, read_data_from_fixture
 from spacewalk.common.suseLib import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+from spacewalk.susemanager.mgr_sync import logger
 
 class CredentialOperationsTest(unittest.TestCase):
 
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
+        self.mgr_sync.log = self.mgr_sync.__init__logger = MagicMock(
+            return_value=logger.Logger(3, "tmp.log"))
         self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(
@@ -46,6 +49,10 @@ class CredentialOperationsTest(unittest.TestCase):
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
         mock = patcher.start()
         mock.return_value = False
+
+    def tearDown(self):
+        if os.path.exists("tmp.log"):
+            os.unlink("tmp.log")
 
     def test_list_credentials_no_credentials(self):
         """ Test listing credentials with none present """
