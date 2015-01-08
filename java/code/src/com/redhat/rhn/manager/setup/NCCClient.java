@@ -171,7 +171,7 @@ public class NCCClient {
             String proxyUsername = configDefaults.getProxyUsername();
             String proxyPassword = configDefaults.getProxyPassword();
             if (!StringUtils.isEmpty(proxyUsername) &&
-                !StringUtils.isEmpty(proxyPassword)) {
+                    !StringUtils.isEmpty(proxyPassword)) {
                 Authenticator.setDefault(new ProxyAuthenticator(
                         proxyUsername, proxyPassword));
             }
