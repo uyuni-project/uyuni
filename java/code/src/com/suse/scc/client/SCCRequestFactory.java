@@ -14,13 +14,14 @@
  */
 package com.suse.scc.client;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Helper class for setting up {@link HttpURLConnection} objects.
