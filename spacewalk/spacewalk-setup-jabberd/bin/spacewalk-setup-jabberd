@@ -1,123 +1,123 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2009--2012 Red Hat, Inc.
+#Copyright(c)2009--2012RedHat,Inc.
 #
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+#ThissoftwareislicensedtoyouundertheGNUGeneralPublicLicense,
+#version2(GPLv2).ThereisNOWARRANTYforthissoftware,expressor
+#implied,includingtheimpliedwarrantiesofMERCHANTABILITYorFITNESS
+#FORAPARTICULARPURPOSE.YoushouldhavereceivedacopyofGPLv2
+#alongwiththissoftware;ifnot,see
+#http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
-# Red Hat trademarks are not licensed under GPLv2. No permission is
-# granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation.
+#RedHattrademarksarenotlicensedunderGPLv2.Nopermissionis
+#grantedtouseorreplicateRedHattrademarksthatareincorporated
+#inthissoftwareoritsdocumentation.
 #
 
-use Net::Domain;
-use Getopt::Long;
+useNet::Domain;
+useGetopt::Long;
 
-use strict 'refs';
-use warnings;
+usestrict'refs';
+usewarnings;
 
-my $verbose = 0;
-my $macros = '';
-my $help = 0;
-my %macros = ('hostname' => Net::Domain::hostfqdn(),
-              'server_pem' => '/etc/pki/spacewalk/jabberd/server.pem',
-              'localhost' => '127.0.0.1',
-              'password'  => '',
-              'ipaddress' => '0.0.0.0');
+my$verbose=0;
+my$macros='';
+my$help=0;
+my%macros=('hostname'=>Net::Domain::hostfqdn(),
+'server_pem'=>'/etc/pki/spacewalk/jabberd/server.pem',
+'localhost'=>'127.0.0.1',
+'password'=>'',
+'ipaddress'=>'0.0.0.0');
 
-sub generatePassword {
-    my $length = shift;
-    my $password = "";
+subgeneratePassword{
+my$length=shift;
+my$password="";
 
-    my @pool = qw( a b c d e f g h i j k l m n o
-                   p q r s t u v w x y z - _ %
-                   A B C D E F G H I J K L M N O
-                   P Q R S T U V W X Y Z
-                   0 1 2 3 4 5 6 7 8 9 );
-    srand;
-    for (my $i=0; $i < $length ;$i++) {
-        $password .= $pool[int(rand(@pool))];
-    }
-    return $password;
+my@pool=qw(abcdefghijklmno
+pqrstuvwxyz-_%
+ABCDEFGHIJKLMNO
+PQRSTUVWXYZ
+0123456789);
+srand;
+for(my$i=0;$i<$length;$i++){
+$password.=$pool[int(rand(@pool))];
+}
+return$password;
 }
 
-$macros{'password'} = generatePassword(12);
+$macros{'password'}=generatePassword(12);
 
-# Try to guess correct path to jabberd's server.pem
-my $q = `rpm -qf /etc/jabberd/server.pem 2> /dev/null`;
-chomp $q;
-if ($q =~ /^rhn-(org-)?httpd-ssl-key-pair/) {
-	$macros{'server_pem'} = '/etc/jabberd/server.pem';
+#Trytoguesscorrectpathtojabberd'sserver.pem
+my$q=`rpm-qf/etc/jabberd/server.pem2>/dev/null`;
+chomp$q;
+if($q=~/^rhn-(org-)?httpd-ssl-key-pair/){
+	$macros{'server_pem'}='/etc/jabberd/server.pem';
 }
 
-my $ip6addr = `ip -f inet6 -o addr show scope global 2>/dev/null`;
+my$ip6addr=`ip-finet6-oaddrshowscopeglobal2>/dev/null`;
 chomp($ip6addr);
 
-if (-f "/proc/net/if_inet6" && $ip6addr ne "") {
-        $macros{'localhost'} = '::1';
-        $macros{'ipaddress'} = '::';
+if(-f"/proc/net/if_inet6"&&$ip6addrne""){
+$macros{'localhost'}='::1';
+$macros{'ipaddress'}='::';
 }
 
-my $usage = <<EOHELP;
-Usage: $0 --help | --verbose | --macros macros
+my$usage=<<EOHELP;
+Usage:$0--help|--verbose|--macrosmacros
 Options:
-  --help     Print this help message
-  --verbose  Verbose operation
-  --macros   Comma delimited list of macroname:macrovalue options
+--helpPrintthishelpmessage
+--verboseVerboseoperation
+--macrosCommadelimitedlistofmacroname:macrovalueoptions
 EOHELP
 
-GetOptions("macros:s" => \$macros, "verbose" => \$verbose, "help" => \$help) or die $usage;
-if ($help) {
-	print $usage;
-	exit 0;
+GetOptions("macros:s"=>\$macros,"verbose"=>\$verbose,"help"=>\$help)ordie$usage;
+if($help){
+	print$usage;
+	exit0;
 }
 
-if ($macros) {
-	foreach my $i (split(/,/, $macros, 0)) {
-		my ($key, $value) = split(/:/, $i, 3);
-		$macros{$key} = $value;
+if($macros){
+	foreachmy$i(split(/,/,$macros,0)){
+		my($key,$value)=split(/:/,$i,3);
+		$macros{$key}=$value;
 	}
 }
 
-foreach my $basename ('c2s', 's2s', 'sm', 'router', 'router-users') {
-	my $configfile = "/etc/jabberd/$basename.xml";
-	my $template = "/usr/share/spacewalk/setup/jabberd/$basename.xsl";
+foreachmy$basename('c2s','s2s','sm','router','router-users'){
+	my$configfile="/etc/jabberd/$basename.xml";
+	my$template="/usr/share/spacewalk/setup/jabberd/$basename.xsl";
 
 	{
-		local $/ = undef;
+		local$/=undef;
 
-		local *F;
-		open F, $configfile or die "Error opening $configfile: $!\n";
-		my $original = <F>;
-		close F;
+		local*F;
+		openF,$configfileordie"Erroropening$configfile:$!\n";
+		my$original=<F>;
+		closeF;
 
-		print "Calling /usr/bin/xsltproc $template $configfile...\n" if $verbose;
-		my $transformed = `/usr/bin/xsltproc $template $configfile`;
-		die "There was an error running xsltproc\n" if $?;
+		print"Calling/usr/bin/xsltproc$template$configfile...\n"if$verbose;
+		my$transformed=`/usr/bin/xsltproc$template$configfile`;
+		die"Therewasanerrorrunningxsltproc\n"if$?;
 
-		for my $key (keys %macros) {
-			$transformed =~ s/\@$key\@/$macros{$key}/mg;
+		formy$key(keys%macros){
+			$transformed=~s/\@$key\@/$macros{$key}/mg;
 		}
 
-		if ($transformed ne $original) {
-			print "$configfile has been backed up to $configfile-swsave\n" if $verbose;
-			system('cp', '-p', '--backup=numbered', $configfile, "$configfile-swsave");
+		if($transformedne$original){
+			print"$configfilehasbeenbackedupto$configfile-swsave\n"if$verbose;
+			system('cp','-p','--backup=numbered',$configfile,"$configfile-swsave");
 
-			my @statistics = stat($configfile);
+			my@statistics=stat($configfile);
 
-			open F, ">$configfile";
-			print F $transformed;
-			close F;
+			openF,">$configfile";
+			printF$transformed;
+			closeF;
 
-			chown $statistics[4], $statistics[5], $configfile;
-			chmod 0640, $configfile;
+			chown$statistics[4],$statistics[5],$configfile;
+			chmod0640,$configfile;
 		}
-		elsif ($verbose) {
-			print " No changes were made\n";
+		elsif($verbose){
+			print"Nochangesweremade\n";
 		}
 	}
 
@@ -125,71 +125,71 @@ foreach my $basename ('c2s', 's2s', 'sm', 'router', 'router-users') {
 
 1;
 
-=head1 NAME
+=head1NAME
 
-spacewalk-setup-jabberd - utility for configuring jabberd services to work with
-Spacewalk / Satellite
+spacewalk-setup-jabberd-utilityforconfiguringjabberdservicestoworkwith
+Spacewalk/Satellite
 
-=head1 SYNOPSIS
+=head1SYNOPSIS
 
 B<spacewalk-setup-jabberd>
 [B<--help>]
 [B<--verbose>]
-[B<--macros macro1:macro1value,macro2:macro2value...>]
+[B<--macrosmacro1:macro1value,macro2:macro2value...>]
 
-=head1 OPTIONS
+=head1OPTIONS
 
-=over 5
+=over5
 
-=item B<--macros>
+=itemB<--macros>
 
-Specify macro names and corresponding macro values that will be used for
-substitution after document transformation. You can specify multiple
-macro:value pairs which you need to delimit by commas (example:
---macros hostname:host.domain.org,server_pem:/etc/pki/spacewalk/jabberd/server.pem).
+Specifymacronamesandcorrespondingmacrovaluesthatwillbeusedfor
+substitutionafterdocumenttransformation.Youcanspecifymultiple
+macro:valuepairswhichyouneedtodelimitbycommas(example:
+--macroshostname:host.domain.org,server_pem:/etc/pki/spacewalk/jabberd/server.pem).
 
-=item B<--verbose>
+=itemB<--verbose>
 
-Verbose script operation.
+Verbosescriptoperation.
 
-=item B<--help>
+=itemB<--help>
 
-Print help message.
-
-=back
-
-=head1 DESCRIPTION
-
-B<spacewalk-setup-jabberd> is utility for configuring jabbberd services to work
-with Spacewalk / Satellite. The script uses XSL transformations to change
-existing jabberd configuration files.
-
-Ordinarily, spacewalk-setup-jabberd is called by spacewalk-setup(1) during
-initial Spacewalk / Satellite configuration or upgrade.
-
-The script workflow is:
-
-=over 5
-
-=item
-
-Using xsltproc, apply appropriate XSL stylesheet to existing jabberd configuration
-file and read the transformed document.
-
-=item
-
-Substitute macros in transformed document (marked by two @ symbols, for example:
-@hostname@) with macro values (for example: host.domain.org).
-
-=item
-
-Resulting file is written out while the original file is backed up.
+Printhelpmessage.
 
 =back
 
-=head1 FILES
+=head1DESCRIPTION
 
-XSL stylesheets used for transformation of existing jabberd configuration files:
+B<spacewalk-setup-jabberd>isutilityforconfiguringjabbberdservicestowork
+withSpacewalk/Satellite.ThescriptusesXSLtransformationstochange
+existingjabberdconfigurationfiles.
+
+Ordinarily,spacewalk-setup-jabberdiscalledbyspacewalk-setup(1)during
+initialSpacewalk/Satelliteconfigurationorupgrade.
+
+Thescriptworkflowis:
+
+=over5
+
+=item
+
+Usingxsltproc,applyappropriateXSLstylesheettoexistingjabberdconfiguration
+fileandreadthetransformeddocument.
+
+=item
+
+Substitutemacrosintransformeddocument(markedbytwo@symbols,forexample:
+@hostname@)withmacrovalues(forexample:host.domain.org).
+
+=item
+
+Resultingfileiswrittenoutwhiletheoriginalfileisbackedup.
+
+=back
+
+=head1FILES
+
+XSLstylesheetsusedfortransformationofexistingjabberdconfigurationfiles:
 
 F</usr/share/spacewalk/setup/jabberd/c2s.xsl>
 
@@ -197,7 +197,7 @@ F</usr/share/spacewalk/setup/jabberd/s2s.xsl>
 
 F</usr/share/spacewalk/setup/jabberd/sm.xsl>
 
-Jabberd configuration files modified by spacewalk-setup-jabberd:
+Jabberdconfigurationfilesmodifiedbyspacewalk-setup-jabberd:
 
 F</etc/jabberd/c2s.xsl>
 
@@ -205,16 +205,16 @@ F</etc/jabberd/s2s.xsl>
 
 F</etc/jabberd/sm.xsl>
 
-=head1 SEE ALSO
+=head1SEEALSO
 
-B<spacewalk-setup>(1) - Spacewalk setup program
+B<spacewalk-setup>(1)-Spacewalksetupprogram
 
-B<xsltproc>(1) - command line XSLT processor
+B<xsltproc>(1)-commandlineXSLTprocessor
 
-B<c2s>(8), B<router>(8), B<s2s>(8), B<sm>(8) - jabberd components
+B<c2s>(8),B<router>(8),B<s2s>(8),B<sm>(8)-jabberdcomponents
 
-=head1 AUTHORS
+=head1AUTHORS
 
-Milan Zazrivec
+MilanZazrivec
 
 =cut
