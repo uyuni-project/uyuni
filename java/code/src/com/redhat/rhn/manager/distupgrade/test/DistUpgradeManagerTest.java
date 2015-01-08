@@ -17,6 +17,10 @@ package com.redhat.rhn.manager.distupgrade.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -25,15 +29,24 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.test.SystemManagerTest;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.
  */
-public class DistUpgradeManagerTest extends RhnBaseTestCase {
+public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Verify that the correct product base channels are returned for a given
@@ -71,6 +84,74 @@ public class DistUpgradeManagerTest extends RhnBaseTestCase {
         productBaseChannel = DistUpgradeManager.getProductBaseChannelDto(product.getId(),
                 ChannelFactory.findArchByLabel("channel-s390"));
         assertNull(productBaseChannel);
+    }
+
+    /**
+     * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
+     */
+    public void testCapabilityMissing() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        try {
+            DistUpgradeManager.performServerChecks(server.getId(), user);
+            fail("Missing capability should make the server checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("Dist upgrade not supported for server: " +
+                    server.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Test for performServerChecks(): "zypp-plugin-spacewalk" is not installed.
+     */
+    public void testZyppPluginNotInstalled() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
+        try {
+            DistUpgradeManager.performServerChecks(server.getId(), user);
+            fail("Missing package zyppPluginSpacewalk should make the server checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("Package zypp-plugin-spacewalk is not installed: " +
+                    server.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Test for performServerChecks(): a dist upgrade action is already scheduled.
+     */
+    public void testDistUpgradeScheduled() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        SystemManagerTest.giveCapability(server.getId(), "distupgrade.upgrade", 1L);
+
+        // Install the zypp-plugin-spacewalk package
+        Package zyppPlugin = PackageTest.createTestPackage(user.getOrg());
+        PackageName name = PackageManager.lookupPackageName("zypp-plugin-spacewalk");
+        if (name == null) {
+            name = zyppPlugin.getPackageName();
+            name.setName("zypp-plugin-spacewalk");
+            TestUtils.saveAndFlush(name);
+        }
+        else {
+            // Handle the case that the package name exists in the DB
+            zyppPlugin.setPackageName(name);
+            TestUtils.saveAndFlush(zyppPlugin);
+        }
+        ErrataTestUtils.createTestInstalledPackage(zyppPlugin, server);
+
+        // Store a dist upgrade action for this server
+        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_DIST_UPGRADE);
+        ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
+        TestUtils.saveAndFlush(serverAction);
+
+        try {
+            DistUpgradeManager.performServerChecks(server.getId(), user);
+            fail("A scheduled dist upgrade should make the server checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("Another dist upgrade is in the schedule for server: " +
+                    server.getId(), e.getMessage());
+        }
     }
 
     /**
