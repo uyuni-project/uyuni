@@ -43,6 +43,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Tests for {@link DistUpgradeManager} methods.
  */
@@ -151,6 +154,76 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         catch (DistUpgradeException e) {
             assertEquals("Another dist upgrade is in the schedule for server: " +
                     server.getId(), e.getMessage());
+        }
+    }
+
+    /**
+     * Test for performChannelChecks(): More than one base channel given for dist upgrade
+     */
+    public void testMoreThanOneBaseChannel() throws Exception {
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+
+        // Try to upgrade with 2 base channels
+        List<String> channels = new ArrayList<String>();
+        channels.add(channel1.getLabel());
+        channels.add(channel2.getLabel());
+        try {
+            DistUpgradeManager.performChannelChecks(channels, user);
+            fail("More than one base channel should make channel checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("More than one base channel given for dist upgrade",
+                    e.getMessage());
+        }
+    }
+
+    /**
+     * Test for performChannelChecks(): No base channel given for dist upgrade
+     */
+    public void testNoBaseChannel() throws Exception {
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+
+        // Make child channels and try to upgrade with no base channel
+        channel2.setParentChannel(channel1);
+        channel3.setParentChannel(channel1);
+        List<String> channels = new ArrayList<String>();
+        channels.add(channel2.getLabel());
+        channels.add(channel3.getLabel());
+        try {
+            DistUpgradeManager.performChannelChecks(channels, user);
+            fail("No base channel should make channel checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("No base channel given for dist upgrade", e.getMessage());
+        }
+    }
+
+    /**
+     * Test for performChannelChecks(): Channel has incompatible base channel
+     */
+    public void testIncompatibleBaseChannel() throws Exception {
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel4 = ChannelFactoryTest.createTestChannel(user);
+
+        // Upgrade with child channels having different parents
+        channel2.setParentChannel(channel1);
+        channel4.setParentChannel(channel3);
+        List<String> channels = new ArrayList<String>();
+        channels.add(channel1.getLabel());
+        channels.add(channel2.getLabel());
+        channels.add(channel4.getLabel());
+        try {
+            DistUpgradeManager.performChannelChecks(channels, user);
+            fail("Incompatible base channel should make channel checks fail!");
+        }
+        catch (DistUpgradeException e) {
+            assertEquals("Channel has incompatible base channel: " +
+                    channel4.getLabel(), e.getMessage());
         }
     }
 
