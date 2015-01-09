@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.3.24
+Version:        2.3.30
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Fri Dec 19 2014 Stephen Herr <sherr@redhat.com> 2.3.30-1
+- add schema upgrade scripts to fix triggers on rhnServerNetwork
+
+* Thu Dec 18 2014 Stephen Herr <sherr@redhat.com> 2.3.29-1
+- don't add sync-probe taskomatic task, but handle upgrades that have it
+
+* Thu Dec 18 2014 Stephen Herr <sherr@redhat.com> 2.3.28-1
+- Monitoring Panes on YourRHN no longer exist, remove schema references to them
+
+* Thu Dec 18 2014 Stephen Herr <sherr@redhat.com> 2.3.27-1
+- rhn_method_types table no longer exists, don't insert data into it
+
+* Wed Dec 17 2014 Stephen Herr <sherr@redhat.com> 2.3.26-1
+- fixing oracle sha1source
+
+* Wed Dec 17 2014 Stephen Herr <sherr@redhat.com> 2.3.25-1
+- remove monitoring server group type
+- Fix upgrade schema script that drops monitoring tables
+
 * Wed Dec 17 2014 Stephen Herr <sherr@redhat.com> 2.3.24-1
 - fixing upgrade script ordering after perl-removal merge
 

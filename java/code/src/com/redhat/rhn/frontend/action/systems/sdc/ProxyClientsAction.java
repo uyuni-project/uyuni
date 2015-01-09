@@ -25,7 +25,7 @@ import org.apache.struts.action.ActionMapping;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.ServerPath;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -37,7 +37,7 @@ import com.redhat.rhn.manager.system.SystemManager;
  * SystemHardwareAction handles the interaction of the ChannelDetails page.
  * @version $Rev$
  */
-public class SystemConnectionAction extends RhnAction implements Listable<ServerPath> {
+public class ProxyClientsAction extends RhnAction implements Listable<SystemOverview> {
 
     /** {@inheritDoc} */
     public ActionForward execute(ActionMapping mapping,
@@ -61,16 +61,16 @@ public class SystemConnectionAction extends RhnAction implements Listable<Server
     }
 
     /**
-     * Get the list of server paths
+     * Get the list of client systems
      * @param context the request context
-     * @return the list of server paths
+     * @return the list of client systems
      */
     @Override
-    public List<ServerPath> getResult(RequestContext context) {
+    public List<SystemOverview> getResult(RequestContext context) {
         Long sid = context.getRequiredParam(RequestContext.SID);
-        DataResult<ServerPath> proxies = SystemManager.getConnectionPath(sid);
-        proxies.elaborate();
-        return proxies;
+        DataResult<SystemOverview> clients = SystemManager.listClientsThroughProxy(sid);
+        clients.elaborate();
+        return clients;
     }
 
 }
