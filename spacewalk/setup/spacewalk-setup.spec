@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.3.1
+Version:        2.3.4
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -181,6 +181,7 @@ rm -rf %{buildroot}
 %{_bindir}/spacewalk-setup-tomcat
 %{_bindir}/spacewalk-setup-sudoers
 %{_bindir}/spacewalk-setup-ipa-authentication
+%{_bindir}/spacewalk-setup-db-ssl-certificates
 %{_bindir}/cobbler20-setup
 %{_mandir}/man[13]/*.[13]*
 %dir %{_datadir}/spacewalk
@@ -190,6 +191,16 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Tue Dec 16 2014 Matej Kollar <mkollar@redhat.com> 2.3.4-1
+- 1020952 -- Check for existence of cert file
+
+* Mon Dec 15 2014 Jan Dobes 2.3.3-1
+- 1172541 - do not use embedded db defaults if not installing embedded db
+- 1172541 - fix filtering files with defaults
+
+* Thu Dec 11 2014 Matej Kollar <mkollar@redhat.com> 2.3.2-1
+- 1020952 - Include SSL configuration in setup
+
 * Mon Nov 24 2014 Tomas Lestach <tlestach@redhat.com> 2.3.1-1
 - fix condition
 - add spacewalk-setup-ipa-authentication script to Makefile

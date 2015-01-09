@@ -15755,7 +15755,10 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>Unsubscribe</source>
         </trans-unit>
         <trans-unit id="config_channels_to_unsubscribe.unsubscribe.success">
-          <source>{0} configuration channels were unsubscribed</source>
+          <source>{0} configuration channel(s) were unsubscribed.</source>
+        </trans-unit>
+        <trans-unit id="config_channels_to_unsubscribe.unsubscribe.failure">
+          <source>Failed to unsubscribe {0} configuration channel(s).</source>
         </trans-unit>
       </group>
       <!-- configuration/sdc/createfile.jsp  -->
@@ -16111,12 +16114,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         </trans-unit>
         <trans-unit id="ssm.overview.bootstrap.notice">
           <source>At least one system in the set is bare metal: some actions will not be available. &lt;a href="/rhn/systems/BootstrapSystemList.do"&gt;Check bare metal systems&lt;/a&gt;.</source>
-        </trans-unit>
-        <trans-unit id="">
-          <source/>
-        </trans-unit>
-        <trans-unit id="">
-          <source/>
         </trans-unit>
         <!-- SSM Remote Command Form Labels -->
         <trans-unit id="ssm.operations.provisioning.remotecommand.header">
@@ -17740,7 +17737,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <source>Total Crash Count</source>
         </trans-unit>
         <trans-unit id="exportcolumn.lastCrashReport">
-          <source>Last Crash Occurence</source>
+          <source>Last Crash Occurrence</source>
         </trans-unit>
         <trans-unit id="exportcolumn.crashCount">
           <source>Crash Count</source>
@@ -17749,7 +17746,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <source>Crash Component</source>
         </trans-unit>
         <trans-unit id="exportcolumn.lastReport">
-          <source>Last Crash Occurence</source>
+          <source>Last Crash Occurrence</source>
         </trans-unit>
       </group>
       <trans-unit id="virtualization.provision.first.jsp.no.profiles">
@@ -18297,7 +18294,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="crashes.jsp.lastoccurence">
-        <source>Last Crash Occurence</source>
+        <source>Last Crash Occurrence</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/SoftwareCrashesOverview.do</context>
         </context-group>

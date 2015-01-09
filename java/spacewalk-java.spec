@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.101
+Version: 2.3.109
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -949,6 +949,38 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Dec 16 2014 Tomas Lestach <tlestach@redhat.com> 2.3.109-1
+- 1174627 - make sure columns are named according to the dto attributes
+- Revert "don't show packages tab if activation key hasn't provisioning
+  entitlement"
+
+* Fri Dec 12 2014 Stephen Herr <sherr@redhat.com> 2.3.108-1
+- 1168328 - fix failures due to uninitialized log it
+- style java.custom_header, java.custom_footer, java.login_banner,
+  java.legal_note parameters
+
+* Fri Dec 12 2014 Tomas Lestach <tlestach@redhat.com> 2.3.107-1
+- remove empty trans-unit elements
+
+* Wed Dec 10 2014 Tomas Lestach <tlestach@redhat.com> 2.3.106-1
+- 1069155 - let system set manager csv contain add-on entitlements
+- extra space
+
+* Tue Dec 09 2014 Tomas Lestach <tlestach@redhat.com> 2.3.105-1
+- 1170704 - allow filtering RHEL7 errata
+- add some missing strings
+
+* Mon Dec 08 2014 Tomas Lestach <tlestach@redhat.com> 2.3.104-1
+- 1151931 - fix broken xml
+
+* Mon Dec 08 2014 Jan Dobes 2.3.103-1
+- slightly improve hideable menu
+
+* Mon Dec 08 2014 Tomas Lestach <tlestach@redhat.com> 2.3.102-1
+- 1169278 - fix typo: Occurence -> Occurrence
+- 1169345 - returning back removed file preservation related messages
+- 1151931 - returning back removed config related messages
+
 * Fri Dec 05 2014 Stephen Herr <sherr@redhat.com> 2.3.101-1
 - Fixing merge problem in test
 

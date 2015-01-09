@@ -5,9 +5,6 @@
 <!-- header.jsp -->
 
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
-<c:if test="${! empty custom_header}">
-    <center><p><c:out value="${custom_header}" escapeXml="false"/></p></center>
-</c:if>
 
 <div class="navbar-header">
   <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -18,6 +15,11 @@
   </button>
   <a class="navbar-brand" href="<bean:message key='layout.jsp.vendor.website'/>" title="<bean:message key='layout.jsp.vendor.title'/>">
   </a>
+  <c:if test="${! empty custom_header}">
+    <div class="custom-text">
+      <c:out value="${custom_header}" escapeXml="false"/>
+    </div>
+  </c:if>
 </div>
 
 <div class="navbar-collapse collapse">

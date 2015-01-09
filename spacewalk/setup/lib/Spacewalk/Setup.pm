@@ -143,6 +143,7 @@ sub parse_options {
             "enable-tftp:s",
             "external-oracle",
             "external-postgresql",
+            "external-postgresql-over-ssl",
             "db-only",
             "rhn-http-proxy:s",
             "rhn-http-proxy-username:s",
@@ -154,7 +155,7 @@ sub parse_options {
 
   my $usage = loc("usage: %s %s\n",
 		  $0,
-		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql ] [--ncc|--scc]" );
+		  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [ --skip-gpg-key-import ] [ --skip-ssl-cert-generation ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [ --re-register ] [ --disconnected ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-oracle | --external-postgresql [ --external-postgresql-over-ssl ] ] [--ncc|--scc]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -208,7 +209,7 @@ sub load_answer_file {
 
   my @files = ();
   foreach my $afile (glob(DEFAULT_ANSWER_FILE_GLOB)) {
-      push @files, $afile if not grep $afile, @skip;
+      push @files, $afile if not grep $_ eq $afile, @skip;
   }
   push @files, $options->{'answer-file'} if $options->{'answer-file'};
 
@@ -952,6 +953,16 @@ sub postgresql_get_database_answers {
         -answer => \$answers->{'db-password'},
         -password => 1);
 
+    if ($opts->{'external-postgresql-over-ssl'}) {
+      $answers->{'db-ssl-enabled'} = '1';
+      ask(
+         -noninteractive => $opts->{"non-interactive"},
+         -question => "Path to CA certificate for connection to database",
+         -test => sub { return (-f shift) },
+         -default => $ENV{HOME} . "/.postgresql/root.crt",
+         -answer => \$answers->{'db-ca-cert'});
+    }
+
     return;
 }
 
@@ -998,7 +1009,13 @@ sub postgresql_setup_db {
         }
     }
 
-    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password');
+    write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
+
+    if ($opts->{'external-postgresql-over-ssl'}) {
+        system("spacewalk-setup-db-ssl-certificates", $answers->{'db-ca-cert'});
+        $ENV{PGSSLMODE}="verify-full";
+    }
+
     postgresql_populate_db($opts, $answers);
 
     if (is_db_migration($opts)) {
@@ -1859,6 +1876,8 @@ sub update_monitoring_ack_enqueuer {
 }
 
 # Write subset of $answers to /etc/rhn/rhn.conf.
+# Config written here is used only for database population
+# and config will be later on replaced by one generated from templates.
 sub write_rhn_conf {
 	my $answers = shift;
 
@@ -1993,6 +2012,11 @@ Assume the Red Hat Satellite installation uses an external Oracle database (Red 
 =item B<--external-postgresql>
 
 Assume the Red Hat Satellite installation uses an external PostgreSQL database (Red Hat Satellite only).
+
+=item B<--external-postgresql-over-ssl>
+
+When used, installation will assume that external PostgreSQL server allows only connections over SSL.
+This option is supposed to be used only in conjuction with B<--external-postgresql>.
 
 =item B<--managed-db>
 
