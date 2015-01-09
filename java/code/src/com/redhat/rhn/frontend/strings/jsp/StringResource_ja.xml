@@ -657,7 +657,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              The page you requested, https://rhn.redhat.com/index.pxt, was not found.
+              The page you requested, https://rhn.redhat.com/rhn/YourRhn.do, was not found.
           </context>
         </context-group>
         <target>要求されたページ {0} は見つかりませんでした。</target>
@@ -674,7 +674,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you followed a link to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you followed a link to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               link may be incorrect or outdated.
           </context>
         </context-group>
@@ -685,7 +685,7 @@ Satellite の 組織管理者でないとユーザーを削除できません。
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you used a bookmark to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you used a bookmark to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               page may have moved
           </context>
         </context-group>
@@ -5085,8 +5085,8 @@ value for this entitlement, excluding the default organization's consumption.</s
           <target>グループ</target>
         </trans-unit>
         <trans-unit id="ssm.overview.groups.create">
-          <source>&lt;a href="/network/systems/ssm/groups/create.pxt"&gt;Create&lt;/a&gt; and &lt;a href="/network/systems/ssm/groups/index.pxt#manage"&gt;manage&lt;/a&gt; groups</source>
-          <target>グループの &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;作成&lt;/a&gt; と &lt;a href="/network/systems/ssm/groups/index.pxt#manage"&gt;管理&lt;/a&gt; を行います</target>
+          <source>&lt;a href="/rhn/groups/EditGroup.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/SystemGroupList.do"&gt;manage&lt;/a&gt; groups</source>
+          <target>グループの &lt;a href="/rhn/groups/EditGroup.do"&gt;作成&lt;/a&gt; と &lt;a href="/rhn/systems/SystemGroupList.do"&gt;管理&lt;/a&gt; を行います</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels">
           <source>Channels</source>
@@ -5128,17 +5128,13 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>Patch Clusters</source>
           <target>パッチクラスター</target>
         </trans-unit>
-        <trans-unit id="ssm.overview.patch.clusters.install">
-          <source>&lt;a href="/network/systems/ssm/patchsets/install.pxt"&gt;Install&lt;/a&gt; patch clusters</source>
-          <target>パッチクラスターを &lt;a href="/network/systems/ssm/patchsets/install.pxt"&gt;インストール&lt;/a&gt; します</target>
-        </trans-unit>
         <trans-unit id="ssm.overview.provisioning.kickstart">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Kickstart&lt;/a&gt; systems</source>
           <target>システムの &lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;キックスタート&lt;/a&gt; を行います</target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
-          <source>&lt;a href="/network/systems/ssm/provisioning/tag_systems.pxt"&gt;Tag&lt;/a&gt; systems for &lt;a href="/network/systems/ssm/provisioning/rollback.pxt"&gt;snapshot rollback&lt;/a&gt;</source>
-          <target>&lt;a href="/network/systems/ssm/provisioning/rollback.pxt"&gt;スナップショットのロールバック&lt;/a&gt; 用にシステムに &lt;a href="/network/systems/ssm/provisioning/tag_systems.pxt"&gt;タグ&lt;/a&gt; を付けます </target>
+          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
+          <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;スナップショットのロールバック&lt;/a&gt; 用にシステムに &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;タグ&lt;/a&gt; を付けます </target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
@@ -5153,8 +5149,8 @@ value for this entitlement, excluding the default organization's consumption.</s
           <target>&lt;a href="/rhn/systems/ssm/misc/Index.do#profiles"&gt;ハードウェアやパッケージプロファイル&lt;/a&gt;、&lt;a href="/rhn/systems/ssm/misc/Index.do#sysprefs"&gt;システム設定&lt;/a&gt; の更新を行います</target>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.customvalues">
-          <source>&lt;a href="/network/systems/ssm/misc/choose_value_to_set.pxt"&gt;Set&lt;/a&gt; and &lt;a href="/network/systems/ssm/misc/choose_value_to_remove.pxt"&gt;remove&lt;/a&gt; custom values for selected systems</source>
-          <target>選択したシステムのカスタム値の &lt;a href="/network/systems/ssm/misc/choose_value_to_set.pxt"&gt;設定&lt;/a&gt; および &lt;a href="/network/systems/ssm/misc/choose_value_to_remove.pxt"&gt;削除&lt;/a&gt; を行います</target>
+          <source>&lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;Set and remove&lt;/a&gt; custom values for selected systems</source>
+          <target>選択したシステムのカスタム値の &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;設定 および 削除&lt;/a&gt; を行います</target>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.entitlements">
           <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On Entitlements</source>
@@ -11854,11 +11850,11 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <target>システムグループをすべて表示</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nogroups">
-        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
+        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;このユーザーにはシステムグループがありません。&lt;/strong&gt;&lt;p&gt;システムグループは、&lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;システム &gt; システム設定マネージャー &gt; グループ &gt; 新規のグループを作成&lt;/strong&gt;&lt;/a&gt;で作成できます。&lt;/p&gt;</target>
+        <target>&lt;strong&gt;このユーザーにはシステムグループがありません。&lt;/strong&gt;&lt;p&gt;システムグループは、&lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;システム &gt; システム設定マネージャー &gt; グループ &gt; 新規のグループを作成&lt;/strong&gt;&lt;/a&gt;で作成できます。&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.scheduledactions">
         <source>Recently Scheduled Actions</source>

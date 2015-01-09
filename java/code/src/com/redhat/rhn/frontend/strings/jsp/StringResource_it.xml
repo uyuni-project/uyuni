@@ -656,7 +656,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              The page you requested, https://rhn.redhat.com/index.pxt, was not found.
+              The page you requested, https://rhn.redhat.com/rhn/YourRhn.do, was not found.
           </context>
         </context-group>
         <target>La pagina da voi richiesta, {0}, non è stata trovata.</target>
@@ -673,7 +673,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you followed a link to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you followed a link to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               link may be incorrect or outdated.
           </context>
         </context-group>
@@ -684,7 +684,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you used a bookmark to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you used a bookmark to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               page may have moved
           </context>
         </context-group>
@@ -5070,8 +5070,8 @@ value for this entitlement, excluding the default organization's consumption.</s
           <target>Gruppi</target>
         </trans-unit>
         <trans-unit id="ssm.overview.groups.create">
-          <source>&lt;a href="/network/systems/ssm/groups/create.pxt"&gt;Create&lt;/a&gt; and &lt;a href="/network/systems/ssm/groups/index.pxt#manage"&gt;manage&lt;/a&gt; groups</source>
-          <target>&lt;a href="/network/systems/ssm/groups/create.pxt"&gt;Crea&lt;/a&gt; e &lt;a href="/network/systems/ssm/groups/index.pxt#manage"&gt;gestisci&lt;/a&gt; gruppi</target>
+          <source>&lt;a href="/rhn/groups/EditGroup.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/SystemGroupList.do"&gt;manage&lt;/a&gt; groups</source>
+          <target>&lt;a href="/rhn/groups/EditGroup.do"&gt;Crea&lt;/a&gt; e &lt;a href="/rhn/systems/SystemGroupList.do"&gt;gestisci&lt;/a&gt; gruppi</target>
         </trans-unit>
         <trans-unit id="ssm.overview.channels">
           <source>Channels</source>
@@ -5113,17 +5113,13 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>Patch Clusters</source>
           <target>Cluster di patch</target>
         </trans-unit>
-        <trans-unit id="ssm.overview.patch.clusters.install">
-          <source>&lt;a href="/network/systems/ssm/patchsets/install.pxt"&gt;Install&lt;/a&gt; patch clusters</source>
-          <target>&lt;a href="/network/systems/ssm/patchsets/install.pxt"&gt;Installare&lt;/a&gt; i cluster di patch</target>
-        </trans-unit>
         <trans-unit id="ssm.overview.provisioning.kickstart">
           <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Kickstart&lt;/a&gt; systems</source>
           <target>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Kickstart&lt;/a&gt; dei sistemi</target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.rollback">
-          <source>&lt;a href="/network/systems/ssm/provisioning/tag_systems.pxt"&gt;Tag&lt;/a&gt; systems for &lt;a href="/network/systems/ssm/provisioning/rollback.pxt"&gt;snapshot rollback&lt;/a&gt;</source>
-          <target>&lt;a href="/network/systems/ssm/provisioning/tag_systems.pxt"&gt;Eseguire il tag&lt;/a&gt; dei sistemi per il &lt;a href="/network/systems/ssm/provisioning/rollback.pxt"&gt;ripristino delle snapshot&lt;/a&gt;</target>
+          <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
+          <target>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Eseguire il tag&lt;/a&gt; dei sistemi per il &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;ripristino delle snapshot&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="ssm.overview.provisioning.remotecommands">
           <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
@@ -5138,8 +5134,8 @@ value for this entitlement, excluding the default organization's consumption.</s
           <target>Aggiornare i &lt;a href="/rhn/systems/ssm/misc/Index.do#profiles"&gt;profili hardware/pacchetto&lt;/a&gt; e le &lt;a href="/rhn/systems/ssm/misc/Index.do#sysprefs"&gt;preferenze del sistema&lt;/a&gt;</target>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.customvalues">
-          <source>&lt;a href="/network/systems/ssm/misc/choose_value_to_set.pxt"&gt;Set&lt;/a&gt; and &lt;a href="/network/systems/ssm/misc/choose_value_to_remove.pxt"&gt;remove&lt;/a&gt; custom values for selected systems</source>
-          <target>&lt;a href="/network/systems/ssm/misc/choose_value_to_set.pxt"&gt;Impostare&lt;/a&gt; e &lt;a href="/network/systems/ssm/misc/choose_value_to_remove.pxt"&gt;rimuovere&lt;/a&gt; i valori personalizzati per i sistemi selezionati</target>
+          <source>&lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;Set and remove&lt;/a&gt; custom values for selected systems</source>
+          <target>&lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;Impostare e rimuovere&lt;/a&gt; i valori personalizzati per i sistemi selezionati</target>
         </trans-unit>
         <trans-unit id="ssm.overview.misc.entitlements">
           <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On Entitlements</source>
@@ -11821,11 +11817,11 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         <target>Visualizza tutti i gruppi di sistemi</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nogroups">
-        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
+        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;Non è presente alcun gruppo di sistemi.&lt;/strong&gt;&lt;p&gt;Potete crearne uno su &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;Sistemi &gt; System Set Manager &gt; Gruppi &gt; crea nuovo gruppo&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</target>
+        <target>&lt;strong&gt;Non è presente alcun gruppo di sistemi.&lt;/strong&gt;&lt;p&gt;Potete crearne uno su &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Sistemi &gt; System Set Manager &gt; Gruppi &gt; crea nuovo gruppo&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.scheduledactions">
         <source>Recently Scheduled Actions</source>

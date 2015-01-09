@@ -414,20 +414,6 @@ SELECT u.created as CREATED
   </query>
 </write-mode>
 
-<write-mode name="insert_into_time_series">
-  <query params="org_id, probe_id, probe_desc, entry_time, data">
-  INSERT INTO TIME_SERIES_DATA(ORG_ID, PROBE_ID, PROBE_DESC, ENTRY_TIME, DATA)
-      VALUES(:org_id, :probe_id, :probe_desc, :entry_time, :data)
-  </query>
-</write-mode>
-
-<write-mode name="insert_into_state_change">
-  <query params="oid, entry_time, data">
-  INSERT INTO STATE_CHANGE(O_ID, ENTRY_TIME, DATA)
-      VALUES(:oid, :entry_time, :data)
-  </query>
-</write-mode>
-
 <write-mode name="insert_into_rhnServerPackage">
   <query params="server_id, pn_id, p_epoch, p_version, p_release">
 INSERT
@@ -535,12 +521,6 @@ SELECT * FROM rhnVirtualInstance WHERE id = :id
     </query>
 </mode>
 
-<mode name="get_debug_log">
-    <query params="">
-SELECT * FROM time_series order by entry_time
-    </query>
-</mode>
-
 <mode name="get_test_users">
     <query params="">
 SELECT id from web_contact where UPPER(login) like 'TEST%'
@@ -588,7 +568,7 @@ SELECT name FROM web_customer WHERE id IN (%s) AND name = :name
 
 <mode name="select_test_time_series">
     <query params="data">
-SELECT data FROM time_series WHERE data = :data
+SELECT 1 FROM dual
     </query>
 </mode>
 

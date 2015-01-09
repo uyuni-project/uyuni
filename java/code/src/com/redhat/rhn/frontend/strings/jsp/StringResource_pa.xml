@@ -602,7 +602,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              The page you requested, https://rhn.redhat.com/index.pxt, was not found.
+              The page you requested, https://rhn.redhat.com/rhn/YourRhn.do, was not found.
           </context>
         </context-group>
         <target>ਤੁਹਾਡੇ ਰਾਹੀਂ ਮੰਗਿਆ ਸਫ਼ਾ {0} ਨਹੀਂ ਮਿਲਿਆ ਹੈ।</target>
@@ -619,7 +619,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you followed a link to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you followed a link to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               link may be incorrect or outdated.
           </context>
         </context-group>
@@ -630,7 +630,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
-              If you used a bookmark to reach 'https://rhn.redhat.com/index.pxt,' the
+              If you used a bookmark to reach 'https://rhn.redhat.com/rhn/YourRhn.do,' the
               page may have moved
           </context>
         </context-group>
@@ -10804,11 +10804,11 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <target>ਸਭ ਸਿਸਟਮ ਗਰੁੱਪ ਵੇਖੋ</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.nogroups">
-        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
+        <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create new group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target>&lt;strong&gt;ਤੁਹਾਡਾ ਕੋਈ ਸਿਸਟਮ ਗਰੁੱਪ ਨਹੀਂ।&lt;/strong&gt;&lt;p&gt;ਤੁਸੀਂ ਸਿਸਟਮ ਗਰੁੱਪ &lt;a href="/network/systems/ssm/groups/create.pxt"&gt;&lt;strong&gt;ਸਿਸਟਮ &gt; ਸਿਸਟਮ ਨਿਰਧਾਰਨ ਮੈਨੇਜਰ &gt; ਗਰੁੱਪ &gt; ਨਵਾਂ ਗਰੁੱਪ ਬਣਾਓ&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt; ਦੁਆਰਾ ਬਣਾ ਸਕਦੇ ਹੋ।</target>
+        <target>&lt;strong&gt;ਤੁਹਾਡਾ ਕੋਈ ਸਿਸਟਮ ਗਰੁੱਪ ਨਹੀਂ।&lt;/strong&gt;&lt;p&gt;ਤੁਸੀਂ ਸਿਸਟਮ ਗਰੁੱਪ &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;ਸਿਸਟਮ &gt; ਸਿਸਟਮ ਨਿਰਧਾਰਨ ਮੈਨੇਜਰ &gt; ਗਰੁੱਪ &gt; ਨਵਾਂ ਗਰੁੱਪ ਬਣਾਓ&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt; ਦੁਆਰਾ ਬਣਾ ਸਕਦੇ ਹੋ।</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.scheduledactions">
         <source>Recently Scheduled Actions</source>

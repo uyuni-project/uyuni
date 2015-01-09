@@ -421,15 +421,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(s2);
     }
 
-    /**
-     * Test server is not Solaris.
-     * @throws Exception
-     */
-    public void testNotSolarisServer() throws Exception {
-        Server s1 = createTestServer(user);
-        assertFalse(s1.isSolaris());
-    }
-
     public void testGetChildChannels() throws Exception {
         Server s1 = ServerTestUtils.createTestSystem(user);
         assertTrue(s1.getChildChannels().isEmpty());
@@ -447,10 +438,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Server s = createTestServer(user);
 
-        // Add three different entitlements.
+        // Add two different entitlements.
 
         SystemManager.entitleServer(s, EntitlementManager.PROVISIONING);
-        SystemManager.entitleServer(s, EntitlementManager.MONITORING);
         SystemManager.entitleServer(s, EntitlementManager.NONLINUX);
 
         // Check the last entitlement we added.
@@ -465,10 +455,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testServerDoesNotHaveSpecificEntitlement() throws Exception {
 
-        // The default test server should not have a monitoring entitlement.
+        // The default test server should not have a provisioning entitlement.
 
         Server s = createTestServer(user);
-        assertFalse(s.hasEntitlement(EntitlementManager.MONITORING));
+        assertFalse(s.hasEntitlement(EntitlementManager.PROVISIONING));
     }
 
     public void testFindVirtHostsExceedingGuestLimitByOrg() throws Exception {

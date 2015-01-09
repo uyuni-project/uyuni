@@ -39,23 +39,6 @@
         <div class="panel-body">
             <bean:message key="ssm.overview.packages.upgrade"/>
         </div>
-        <rhn:require acl="is(enable_solaris_support)">
-            <div class="panel-heading">
-                <rhn:icon type="header-errata" title="ssm.overview.patches" />
-                <bean:message key="ssm.overview.patches"/>
-            </div>
-            <div class="panel-body">
-                <a href="/network/systems/ssm/patches/install.pxt"><bean:message key="ssm.overview.patches.install"/></a> / <a href="/network/systems/ssm/patches/remove.pxt"><bean:message key="ssm.overview.patches.remove"/></a>
-                <bean:message key="ssm.overview.patches.patches"/>
-            </div>
-            <div class="panel-heading">
-                <rhn:icon type="header-errata-set" title="ssm.overview.patch.clusters" />
-                <bean:message key="ssm.overview.patch.clusters"/>
-            </div>
-            <div class="panel-body">
-                <bean:message key="ssm.overview.patch.clusters.install"/>
-            </div>
-        </rhn:require>
         <rhn:require acl="user_role(org_admin)">
             <div class="panel-heading">
                 <rhn:icon type="header-system-groups" title="ssm.overview.groups" />
