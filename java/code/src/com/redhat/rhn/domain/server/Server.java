@@ -1289,14 +1289,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * Checks to see if this server is Solaris
-     * @return Returns true if System is Solaris.
-     */
-    public boolean isSolaris() {
-        return this.getServerArch().getArchType().getLabel().equals("sysv-solaris");
-    }
-
-    /**
      * Returns true if this is a satellite server.
      * @return true if this is a satellite server.
      */

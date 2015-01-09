@@ -151,6 +151,7 @@
 		<div class="panel-heading">
 			<h5><bean:message key="systementitlements.jsp.addonentitlement"/></h5>
 		</div>
+<<<<<<< HEAD
     <table class="table">
     	<tr>
     		<td>
@@ -164,20 +165,6 @@
     		  </div>
     		</td>
     	</tr>
-	    <c:if test="${requestScope.showMonitoring}">
-	      <tr>
-	    		<td>
-	    		  <div class="row">
-	    		  	<div class="col-sm-3">
-	    		  		<bean:message key="monitoring_entitled"/>:
-	    		  	</div>
-	    		  	<div class="col-sm-9">
-	    		  		${requestScope.monitoringCountsMessage}
-	    		  	</div>
-	    		  </div>
-	    		</td>
-	    	</tr>
-    	</c:if>
     	<tr>
     		<td>
     		  <div class="row">
