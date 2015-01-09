@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 2f19f86e81d5a24f6703895fe7730c58c23d1e01
+-- oracle equivalent source sha1 6e264a209f8e6f4e78caf9d63ef14507dc9df3b9
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -434,14 +434,6 @@ as $$
                          'Virtualization Platforrm' end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
-
-         if type_label_in = 'monitoring_entitled' then
-           DELETE
-             FROM rhn_probe
-            WHERE recid IN (SELECT probe_id
-                              FROM rhn_check_probe
-                             WHERE host_id = server_id_in);
-         end if;
 
          if is_virt = 1 and repoll_virt_guests = 1 then
            perform rhn_entitlements.repoll_virt_guest_entitlements(server_id_in);
