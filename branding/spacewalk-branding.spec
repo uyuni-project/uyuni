@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.3.15
+Version:    2.3.18
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -137,6 +137,23 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Dec 15 2014 Jan Dobes 2.3.18-1
+- style java.custom_header, java.custom_footer, java.login_banner,
+  java.legal_note parameters
+
+* Thu Dec 11 2014 Jan Dobes 2.3.17-1
+- add style for documentation navigation
+
+* Mon Dec 08 2014 Jan Dobes 2.3.16-1
+- remove unused code
+- slightly improve hideable menu
+- revert accidentaly pushed commits
+- test toggling
+- back
+- float left menu on smaller screens
+- test not making sidenav horizontal
+- test not making aside horizontal
+
 * Wed Nov 19 2014 Jan Dobes 2.3.15-1
 - do not show expanded menu on small screens on default
 - avoid white space under footer

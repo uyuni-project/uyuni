@@ -29,7 +29,7 @@ import xmlrpclib
 
 ## common imports
 from spacewalk.common.rhnLib import parseRPMName
-from spacewalk.common.rhnLog import log_debug, log_error
+from spacewalk.common.rhnLog import log_debug
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import CFG
 from spacewalk.common import rhnRepository
@@ -96,9 +96,8 @@ class Repository(rhnRepository.Repository):
                      pkgFilename[3])
 
         if not mapping.has_key(pkgFilename):
-            log_error("Package not in mapping: %s" % pkgFilename)
-            raise NotLocalError(_("Invalid RPM package requested: %s")
-                                  % pkgFilename)
+            log_debug(3, "Package not in mapping: %s" % pkgFilename)
+            raise NotLocalError
         # A list of possible file paths. Always a list, channel mappings are
         # cleared on package upgrade so we don't have to worry about the old
         # behavior of returning a string
