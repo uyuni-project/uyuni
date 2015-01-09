@@ -208,7 +208,7 @@ class Backend:
 
     def processCVEs(self, cveHash):
         # First figure out which CVE's are already inserted
-	sql = "select id from rhnCVE where name = :name"
+        sql = "select id from rhnCVE where name = :name"
         h = self.dbmodule.prepare(sql)
         toinsert = [[], []]
 
@@ -1187,11 +1187,11 @@ class Backend:
 
     def processChannelFamilyPermissions(self, cfps):
         # Process channelFamilyPermissions
-	activate_channel_entitlements = self.dbmodule.Procedure(
-	                      'rhn_entitlements.activate_channel_entitlement')
+        activate_channel_entitlements = self.dbmodule.Procedure(
+                              'rhn_entitlements.activate_channel_entitlement')
         for cfp in cfps:
-	    if "private-channel-family" in cfp['channel_family']:
-	        # As this is a generic list of channel families
+            if "private-channel-family" in cfp['channel_family']:
+                # As this is a generic list of channel families
                 # skip private channel families from channel family
                 # perm checks, as they are specific to ui and should
                 # not be handed over for org checks through satellite-sync
@@ -1200,9 +1200,9 @@ class Backend:
                 # standard for private channel families. Hopefully we'll
                 # have a better param to filter this in future.
                 continue
-	    try:
-	        activate_channel_entitlements(cfp['org_id'],
-		               cfp['channel_family'], cfp['max_members'], cfp['max_flex'])
+            try:
+                activate_channel_entitlements(cfp['org_id'],
+                               cfp['channel_family'], cfp['max_members'], cfp['max_flex'])
             except rhnSQL.SQLError, e:
                 raise rhnFault(23, str(e[1]) + ": org_id [%s] family [%s] max [%s]" % \
                     (cfp['org_id'], cfp['channel_family'], cfp['max_members']), explain=0), None, sys.exc_info()[2]
@@ -1270,12 +1270,12 @@ class Backend:
                  (id, label, name)
               values (sequence_nextval('rhn_productname_id_seq'),
                       :product_label, :product_name)
-	""")
+        """)
 
         for channel in batch:
             if not self.lookupProductNames(channel['label']):
                 statement.execute(product_label = channel['label'],
-	                          product_name = channel['name'])
+                                  product_name = channel['name'])
 
 
     def lookupProductNames(self, label):

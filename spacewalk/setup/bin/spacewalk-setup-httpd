@@ -26,11 +26,11 @@ use Spacewalk::Setup;
 my $isSUSE = 0;
 
 sub os_fips_mode_on {
-	my $sysctl = (-x '/usr/sbin/sysctl') ? '/usr/sbin/sysctl' : '/sbin/sysctl';
-	my $ret = `$sysctl -n crypto.fips_enabled`;
-	chomp($ret);
+        my $sysctl = (-x '/usr/sbin/sysctl') ? '/usr/sbin/sysctl' : '/sbin/sysctl';
+        my $ret = `$sysctl -n crypto.fips_enabled`;
+        chomp($ret);
 
-	return $ret;
+        return $ret;
 }
 
 sub mod_ssl_fipsmode_option {
@@ -60,35 +60,35 @@ sub mod_ssl_fipsmode_option {
 }
 
 sub modify_conf_content {
-	my $conf_content = ${(shift)};
-	my $conf_files = shift;
-	local *FILE;
+        my $conf_content = ${(shift)};
+        my $conf_files = shift;
+        local *FILE;
 
-	for my $file (glob Spacewalk::Setup::SHARED_DIR . "/$conf_files.*") {
-		open FILE, $file or die "Error reading [$file]: $!\n";
-		my $regexp = <FILE>;
-		chomp $regexp;
+        for my $file (glob Spacewalk::Setup::SHARED_DIR . "/$conf_files.*") {
+                open FILE, $file or die "Error reading [$file]: $!\n";
+                my $regexp = <FILE>;
+                chomp $regexp;
 
-		my $content;
-		{
-			local $/ = undef;
-			$content = <FILE>;
-		}
-		close FILE;
+                my $content;
+                {
+                        local $/ = undef;
+                        $content = <FILE>;
+                }
+                close FILE;
 
-		$conf_content =~ s!$regexp!$content!gm or $conf_content .= $content;
-	}
-	return $conf_content;
+                $conf_content =~ s!$regexp!$content!gm or $conf_content .= $content;
+        }
+        return $conf_content;
 }
 
 sub setup_mod_ssl {
-	my $fips_mode_on = shift;
+        my $fips_mode_on = shift;
 
-	my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
-	my $sslconf_dir = '/etc/httpd/conf.d';
-	$sslconf_dir = '/etc/apache2/vhosts.d' if($isSUSE);
-	my $sslconf     = 'ssl.conf';
-	$sslconf = 'vhost-ssl.conf' if($isSUSE);
+        my ($sslconf_content, $original_sslconf_content, $pre, $vhost, $post);
+        my $sslconf_dir = '/etc/httpd/conf.d';
+        $sslconf_dir = '/etc/apache2/vhosts.d' if($isSUSE);
+        my $sslconf     = 'ssl.conf';
+        $sslconf = 'vhost-ssl.conf' if($isSUSE);
 
 	my $sslconf_path = "$sslconf_dir/$sslconf";
 	local *FILE;
@@ -96,46 +96,46 @@ sub setup_mod_ssl {
 	{
 		`cp "$sslconf_dir/vhost-ssl.template" "$sslconf_path"`;
 	}
-	die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
+        die "$sslconf_path does not exist.\n" unless (-f $sslconf_path);
 
-	{
-		open FILE, $sslconf_path or die "Error opening [$sslconf_path]: $!\n";
-		local $/ = undef;
-		$sslconf_content = <FILE>;
-		$original_sslconf_content = $sslconf_content;
-		close FILE;
-	}
+        {
+                open FILE, $sslconf_path or die "Error opening [$sslconf_path]: $!\n";
+                local $/ = undef;
+                $sslconf_content = <FILE>;
+                $original_sslconf_content = $sslconf_content;
+                close FILE;
+        }
 
-	if ($sslconf_content =~ /(.*<VirtualHost _default_:443>)(.*)(<\/VirtualHost>.*)/s) {
-		$pre = $1;
-		$vhost = $2;
-		$post = $3;
-	} else {
-		print Spacewalk::Setup::loc("Setup was unable to locate VirtualHost section " .
-			"in existing mod_ssl configuration.\n");
-		exit;
-	}
+        if ($sslconf_content =~ /(.*<VirtualHost _default_:443>)(.*)(<\/VirtualHost>.*)/s) {
+                $pre = $1;
+                $vhost = $2;
+                $post = $3;
+        } else {
+                print Spacewalk::Setup::loc("Setup was unable to locate VirtualHost section " .
+                        "in existing mod_ssl configuration.\n");
+                exit;
+        }
 
-	$vhost = modify_conf_content(\$vhost, 'mod_ssl.conf.vhost');
+        $vhost = modify_conf_content(\$vhost, 'mod_ssl.conf.vhost');
 
-	# (If requested explicitly or the OS is already switched into FIPS mode) and
-	# the particular mod_ssl being used supports SSLFIPS option
-	if (($fips_mode_on or os_fips_mode_on()) and mod_ssl_fipsmode_option()) {
-		$post = modify_conf_content(\$post, 'mod_ssl.conf.sslfips');
-	}
+        # (If requested explicitly or the OS is already switched into FIPS mode) and
+        # the particular mod_ssl being used supports SSLFIPS option
+        if (($fips_mode_on or os_fips_mode_on()) and mod_ssl_fipsmode_option()) {
+                $post = modify_conf_content(\$post, 'mod_ssl.conf.sslfips');
+        }
 
-	$sslconf_content = $pre . $vhost . $post;
+        $sslconf_content = $pre . $vhost . $post;
 
-	if ($sslconf_content ne $original_sslconf_content) {
-		Spacewalk::Setup::backup_file($sslconf_dir, $sslconf);
+        if ($sslconf_content ne $original_sslconf_content) {
+                Spacewalk::Setup::backup_file($sslconf_dir, $sslconf);
 
-		open FILE, ">$sslconf_path" or die "Error opening [$sslconf_path]: $!\n";
-		chmod 0644, $sslconf_path;
-		print FILE $pre . $vhost . $post;
-		close FILE;
-	}
+                open FILE, ">$sslconf_path" or die "Error opening [$sslconf_path]: $!\n";
+                chmod 0644, $sslconf_path;
+                print FILE $pre . $vhost . $post;
+                close FILE;
+        }
 
-	return;
+        return;
 }
 
 # main
@@ -146,18 +146,18 @@ my $fips_mode_on;
 my $usage = <<EOHELP;
 Usage: $0 --help | --fips-mode-on
 Options:
-	--help			Print this help message
-	--fips-mode-on	Turn SSL FIPS mode on (when applicable)
+        --help                  Print this help message
+        --fips-mode-on  Turn SSL FIPS mode on (when applicable)
 EOHELP
 
 GetOptions(
-	"help" => \$help,
-	"fips-mode-on" => \$fips_mode_on
-	) or die $usage;
+        "help" => \$help,
+        "fips-mode-on" => \$fips_mode_on
+        ) or die $usage;
 
 if ($help) {
-	print $usage;
-	exit 0;
+        print $usage;
+        exit 0;
 }
 
 if(-e '/etc/SuSE-release') {

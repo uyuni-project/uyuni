@@ -144,7 +144,7 @@ def readCachedLogin():
         cidVer = "ID-%s" % data['loginInfo']['X-RHN-Server-Id']
         if idVer != cidVer:
             log.log_debug("system id version changed: %s vs %s" % (idVer, cidVer))
-	    return False
+            return False
     except:
         pass
     createdTime = data['time']
