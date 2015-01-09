@@ -73,7 +73,6 @@ BuildRequires: /usr/bin/msgfmt
 %endif
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
@@ -388,10 +387,6 @@ export PYTHONPATH=%{buildroot}%{python_sitelib}:%{_datadir}/rhn
 make -f Makefile.backend unittest
 %endif
 make -f Makefile.backend test || :
-<<<<<<< HEAD
-=======
-%if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
->>>>>>> 0e897a2... no pylint check during package build
 %if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/lib/rhn:/usr/share/rhn
