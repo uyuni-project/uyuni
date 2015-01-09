@@ -19,6 +19,9 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelProduct;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.channel.Channel;
@@ -44,7 +47,9 @@ import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Tests for {@link DistUpgradeManager} methods.
@@ -224,6 +229,38 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         catch (DistUpgradeException e) {
             assertEquals("Channel has incompatible base channel: " +
                     channel4.getLabel(), e.getMessage());
+        }
+    }
+
+    /**
+     * Test for scheduleDistUpgrade().
+     */
+    public void testScheduleDistUpgrade() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+        List<Long> channelIDs = new ArrayList<Long>();
+        channelIDs.add(channel1.getId());
+        channelIDs.add(channel2.getId());
+        Date scheduleDate = new Date();
+        Long actionID = DistUpgradeManager.scheduleDistUpgrade(
+                user, server, null, channelIDs, true, scheduleDate);
+
+        // Get the scheduled action and check the contents
+        DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
+        assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
+        assertEquals(user, action.getSchedulerUser());
+        assertEquals(scheduleDate, action.getEarliestAction());
+        DistUpgradeActionDetails details = action.getDetails();
+        assertEquals('Y', details.getDryRun());
+
+        // Check channel tasks
+        Set<DistUpgradeChannelTask> channelTasks = details.getChannelTasks();
+        assertEquals(2, channelTasks.size());
+        for (DistUpgradeChannelTask task : channelTasks) {
+            assertTrue(task.getChannel().equals(channel1) ||
+                    task.getChannel().equals(channel2));
+            assertEquals('S', task.getTask());
         }
     }
 
