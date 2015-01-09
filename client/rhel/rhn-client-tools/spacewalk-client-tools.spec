@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.3.5
+Version: 2.3.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -118,7 +118,7 @@ Summary: Configure and register an Spacewalk client
 Group: System Environment/Base
 Provides: rhn-setup = %{version}-%{release}
 Obsoletes: rhn-setup < %{version}-%{release}
-%if ! 0%{?without_rhn_register}
+%if 0%{?fedora} || 0%{?rhel}
 Requires: usermode >= 1.36
 %endif
 Requires: %{name} = %{version}-%{release}
@@ -152,8 +152,8 @@ Requires: pam >= 0.72
 Requires: python-gnome python-gtk
 %else
 Requires: pygtk2 pygtk2-libglade gnome-python2 gnome-python2-canvas
-%endif
 Requires: usermode-gtk
+%endif
 %if 0%{?fedora} || 0%{?rhel} > 5
 Requires: gnome-python2-gnome gnome-python2-bonobo
 Requires: liberation-sans-fonts
@@ -240,6 +240,8 @@ rm -f $RPM_BUILD_ROOT/%{_datadir}/man/man8/rhn_register.*
 desktop-file-install --dir=${RPM_BUILD_ROOT}%{_datadir}/applications --vendor=rhn rhn_register.desktop
 %if 0%{?suse_version}
 %suse_update_desktop_file -r rhn_register "Settings;System;SystemSetup;"
+# no usermod on SUSE
+rm -f $RPM_BUILD_ROOT%{_bindir}/rhn_register
 %endif
 %endif
 
@@ -460,6 +462,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Mon Dec 22 2014 Stephen Herr <sherr@redhat.com> 2.3.6-1
+- rhn-client-tools: no usermod on SUSE
+
 * Thu Oct 09 2014 Michael Mraka <michael.mraka@redhat.com> 2.3.5-1
 - fixed translations
 
