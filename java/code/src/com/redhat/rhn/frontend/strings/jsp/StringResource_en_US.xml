@@ -18057,6 +18057,66 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/systems/details/Connection.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="sdc.details.proxy.header">
+        <source>Proxy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Proxy.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.proxy.unlicensed">
+        <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Proxy.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.proxy.licensed">
+        <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Proxy.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.proxyclients.header">
+        <source>Proxy Clients</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.proxyclients.empty">
+        <source>No clients currently connect through this Proxy.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.activation.header">
+        <source>System Activation Key</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Activation.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.activation.summary">
+        <source>With a system profile specific activation key, this system can be re-registered using the 'rhnreg_ks' command-line utility.  The system will be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Activation.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.activation.key">
+        <source>Key:</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Activation.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.activation.deletekey">
+        <source>Delete Key</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Activation.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="sdc.details.activation.generatekey">
+        <source>Generate New Key</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/systems/details/Activation.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="sdc.details.hardware.swap">
         <source>Swap:</source>
         <context-group name="ctx">

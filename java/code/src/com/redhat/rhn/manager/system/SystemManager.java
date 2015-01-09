@@ -3464,5 +3464,17 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         Map<String, Long> elabParams = new HashMap<String, Long>();
         return makeDataResult(params, elabParams, pc, m);
+
+    /**
+     * Returns list of client systems that connect through a proxy
+     * @param sid System Id of the proxy to check.
+     * @return list of SystemOverviews.
+     */
+    public static DataResult<SystemOverview> listClientsThroughProxy(Long sid) {
+        SelectMode m = ModeFactory.getMode("System_queries", "clients_through_proxy");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("sid", sid);
+        Map<String, Object> elabParams = new HashMap<String, Object>();
+        return makeDataResult(params, elabParams, null, m, SystemOverview.class);
     }
 }
