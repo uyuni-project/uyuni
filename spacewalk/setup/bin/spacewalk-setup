@@ -1002,16 +1002,7 @@ sub populate_initial_configs {
     }
 
     # Define some db specific settings:
-    my ($hibernate_dialect, $hibernate_driver, $hibernate_driver_proto);
-    if ($answers->{'db-backend'} eq 'oracle') {
-        $hibernate_dialect = "org.hibernate.dialect.Oracle10gDialect";
-        $hibernate_driver = "oracle.jdbc.driver.OracleDriver";
-        $hibernate_driver_proto = "jdbc:oracle:oci";
-    } elsif ($answers->{'db-backend'} eq 'postgresql') {
-        $hibernate_dialect = "org.hibernate.dialect.PostgreSQLDialect";
-        $hibernate_driver = "org.postgresql.Driver";
-        $hibernate_driver_proto = "jdbc:postgresql";
-    }
+    Spacewalk::Setup::set_hibernate_conf($answers);
 
   my %config_opts =
     (
@@ -1032,9 +1023,9 @@ sub populate_initial_configs {
      db_host => $answers->{'db-host'},
      db_port => $answers->{'db-port'},
      db_ssl_enabled => $answers->{'db-ssl-enabled'},
-     hibernate_dialect => $hibernate_dialect,
-     hibernate_driver => $hibernate_driver,
-     hibernate_driver_proto => $hibernate_driver_proto,
+     hibernate_dialect => $answers->{'hibernate.dialect'},
+     hibernate_driver => $answers->{'hibernate.connection.driver_class'},
+     hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
      jabberDOThostname => $answers->{hostname},
      serverDOTsatelliteDOTca_chain => '/usr/share/rhn/RHNS-CA-CERT',
@@ -1113,7 +1104,7 @@ sub populate_initial_configs {
           chmod 0640, Spacewalk::Setup::NCC_CREDENTIAL_FILE;
       }
   }
-  write_config( \%rhnopt,
+  Spacewalk::Setup::write_config( \%rhnopt,
 		'/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf' );
 
     foreach my $opt_name (qw/session_swap_secret session_secret/) {
@@ -1123,7 +1114,7 @@ sub populate_initial_configs {
     }
 
   Spacewalk::Setup::generate_satcon_dict();
-  write_config(\%config_opts, Spacewalk::Setup::DEFAULT_SATCON_DICT);
+  Spacewalk::Setup::write_config(\%config_opts, Spacewalk::Setup::DEFAULT_SATCON_DICT);
 
   Spacewalk::Setup::satcon_deploy();
 
@@ -1189,22 +1180,6 @@ EOQ
   $dbh->disconnect();
 
   return;
-}
-
-sub write_config {
-  my $options = shift;
-  my $target = shift;
-
-  my @opt_strings = map { "--option=${_}=" . $options->{$_} } grep { defined $options->{$_} } keys %{$options};
-
-  Spacewalk::Setup::system_or_exit([ "/usr/bin/rhn-config-satellite.pl",
-		   "--target=$target",
-		   @opt_strings,
-		 ],
-		 29,
-		 'There was a problem setting initial configuration.');
-
-  return 1;
 }
 
 sub setup_monitoring {
