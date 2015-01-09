@@ -23,7 +23,6 @@ import java.util.concurrent.Callable;
 import simple.http.Request;
 import simple.http.connect.Connection;
 import simple.http.connect.ConnectionFactory;
-import simple.util.process.ProcessQueue;
 
 /**
  * Mocks a Web server allowing HTTP client classes to be tested.
