@@ -3464,6 +3464,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         Map<String, Long> elabParams = new HashMap<String, Long>();
         return makeDataResult(params, elabParams, pc, m);
+    }
 
     /**
      * Returns list of client systems that connect through a proxy

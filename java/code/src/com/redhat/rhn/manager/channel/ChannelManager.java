@@ -48,6 +48,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.ssm.ChannelActionDAO;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
@@ -1810,32 +1811,28 @@ public class ChannelManager extends BaseManager {
      * For the specified server, make a best-guess effort at what its base-channel
      * SHOULD be
      * @param usr User asking the question
-     * @param s Server of interest
-     * @return Channel that could serve as a base-channel for the Server
+     * @param sid Server id of interest
+     * @return Channel id
      */
-    public static Channel guessServerBase(User usr, Server s) {
-        Long guessedId = guessServerBase(usr, s.getId());
+    public static Long guessServerBase(User usr, Long sid) {
+        Channel c = guessServerBase(usr, ServerFactory.lookupById(sid));
 
-        Channel c = null;
-        if (guessedId != null) {
-            c = ChannelFactory.lookupByIdAndUser(guessedId, usr);
-        }
-        return c;
+        return c.getId();
     }
 
     /**
      * For the specified server, make a best-guess effort at what its base-channel
      * SHOULD be
      * @param usr User asking the question
-     * @param sid Server id of interest
-     * @return Channel id
+     * @param s Server of interest
+     * @return Channel that could serve as a base-channel for the Server
      */
-    public static Long guessServerBase(User usr, Long sid) {
+    public static Channel guessServerBase(User usr, Server s) {
         // Figure out what this server's base OUGHT to be
         CallableMode sbm = ModeFactory.getCallableMode(
                 "Channel_queries", "guess_server_base");
         Map<String, Object> inParams = new HashMap<String, Object>();
-        inParams.put("server_id", sid);
+        inParams.put("server_id", s.getId());
         Map<String, Integer> outParams = new HashMap<String, Integer>();
         outParams.put("result", new Integer(Types.NUMERIC));
         Map<String, Object> result = sbm.execute(inParams, outParams);
@@ -1853,7 +1850,7 @@ public class ChannelManager extends BaseManager {
                 c = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), usr);
             }
         }
-        return c.getId();
+        return c;
     }
 
     /**
