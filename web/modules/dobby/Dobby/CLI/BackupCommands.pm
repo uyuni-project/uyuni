@@ -229,10 +229,10 @@ sub command_restore {
 
       printf " -> %s...", $tmpdst;
       if (not $missing) {
-	$digest = eval { Dobby::Files->gunzip_copy($src, $tmpdst, $uid, $gid) };
-	if (not defined $digest and $@) {
-	  $err_msg = $@;
-	}
+        $digest = eval { Dobby::Files->gunzip_copy($src, $tmpdst, $uid, $gid) };
+        if (not defined $digest and $@) {
+          $err_msg = $@;
+        }
       }
 
       $seen_files{+$dst} = 1;
@@ -257,10 +257,10 @@ sub command_restore {
     }
     else {
       if (defined $digest) {
-	print " done.  Checksum verified.\n";
+        print " done.  Checksum verified.\n";
       }
       else {
-	print "\n";
+        print "\n";
       }
     }
   }
@@ -276,7 +276,7 @@ sub command_restore {
     else {
       print "Extraction and verification complete, renaming files... ";
       for my $entry (@rename_queue) {
-	rename $entry->[0] => $entry->[1] or warn "Rename $entry->[0] => $entry->[1] error: $!";
+        rename $entry->[0] => $entry->[1] or warn "Rename $entry->[0] => $entry->[1] error: $!";
         system("/sbin/restorecon", $entry->[1]);
 
       }
@@ -289,7 +289,7 @@ sub command_restore {
       for my $ret (@existing_files) {
         next unless $ret;
         my ($file, $rel_dir) = @{$ret};
-	next if exists $seen_files{+$file};
+        next if exists $seen_files{+$file};
 
         if (-d $file) {
           rmdir $file or warn "Error removing $file: $!";

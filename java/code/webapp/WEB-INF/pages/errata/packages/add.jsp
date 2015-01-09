@@ -10,8 +10,8 @@
 </head>
 <body>
 
-<rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt">
-	           helpUrl="">
+<rhn:toolbar base="h1" icon="header-errata" iconAlt="errata.common.errataAlt"
+                   helpUrl="">
     <bean:message key="errata.edit.toolbar"/> <c:out value="${advisory}" />
   </rhn:toolbar>
 

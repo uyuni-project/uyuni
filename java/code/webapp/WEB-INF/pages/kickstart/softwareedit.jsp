@@ -42,12 +42,14 @@ function clickNewestTree() {
 </script>
 </head>
 <body>
-    <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
-    <rhn:dialogmenu mindepth="0" maxdepth="1"
-                    definition="/WEB-INF/nav/kickstart_details.xml"
-                    renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-    <h2><bean:message key="softwareedit.jsp.header2"/></h2>
-    <p><bean:message key="softwareedit.jsp.summary1"/></p>
+<%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-toolbar.jspf" %>
+
+<rhn:dialogmenu mindepth="0" maxdepth="1"
+    definition="/WEB-INF/nav/kickstart_details.xml"
+    renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
+
+<h2><bean:message key="softwareedit.jsp.header2"/></h2>
+<p><bean:message key="softwareedit.jsp.summary1"/></p>
 
     <html:form method="post"
                styleClass="form-horizontal"

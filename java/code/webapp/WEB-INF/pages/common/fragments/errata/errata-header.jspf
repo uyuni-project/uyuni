@@ -10,10 +10,10 @@
 	   <c:if test="${empty errata}">
 	 	 <decorator:getProperty property="meta.name" />
        </c:if>
- 	   <c:if test="${not empty errata}">
- 	     ${errata.advisoryName} - ${errata.advisoryType}
-	   </c:if>
-	 </rhn:toolbar>
+           <c:if test="${not empty errata}">
+             ${errata.advisoryName} - ${errata.advisoryType}
+           </c:if>
+         </rhn:toolbar>
  </c:if>
  <c:if test="${errata.bugFix}">
      <rhn:toolbar base="h1" icon="errata-bugfix"
@@ -22,10 +22,10 @@
 	   <c:if test="${empty errata}">
 	 	 <decorator:getProperty property="meta.name" />
        </c:if>
- 	   <c:if test="${not empty errata}">
- 	     ${errata.advisoryName} - ${errata.advisoryType}
-	   </c:if>
-	 </rhn:toolbar>
+           <c:if test="${not empty errata}">
+             ${errata.advisoryName} - ${errata.advisoryType}
+           </c:if>
+         </rhn:toolbar>
  </c:if>
  <c:if test="${errata.productEnhancement}">
      <rhn:toolbar base="h1" icon="errata-enhance"
@@ -34,10 +34,10 @@
 	   <c:if test="${empty errata}">
 	 	 <decorator:getProperty property="meta.name" />
        </c:if>
- 	   <c:if test="${not empty errata}">
- 	     ${errata.advisoryName} - ${errata.advisoryType}
-	   </c:if>
-	 </rhn:toolbar>
+           <c:if test="${not empty errata}">
+             ${errata.advisoryName} - ${errata.advisoryType}
+           </c:if>
+         </rhn:toolbar>
  </c:if>
 
 <rhn:dialogmenu mindepth="0" maxdepth="1" definition="/WEB-INF/nav/errata_detail.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />

@@ -13,13 +13,13 @@ my $SCHEMA_UPGRADE_LOGDIR = '/var/log/spacewalk/schema-upgrade';
 my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
 
 if (not -e $config_file) {
-    die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
+        die "The config file [$config_file] does not seem to exist. Was Spacewalk configured yet?\n";
 }
 
 my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
 if (not defined $options{db_backend}) {
-    die "Config file [$config_file] does not seem to have database backend info (db_backend) set.\n";
+        die "Config file [$config_file] does not seem to have database backend info (db_backend) set.\n";
 }
 
 $ENV{NLS_LANG} = 'AMERICAN_AMERICA.UTF8';
@@ -27,10 +27,10 @@ $ENV{NLS_NUMERIC_CHARACTERS} = '.';
 
 my $test = run_query("select '1' || '2' || '3' as testing from dual;");
 if (not defined $test) {
-    die "Connect to database was not successful.\n";
+        die "Connect to database was not successful.\n";
 }
 if ($test ne '123') {
-    die "Test select from database did not give expected results.\n";
+        die "Test select from database did not give expected results.\n";
 }
 
 my $default_tablespace;
@@ -47,15 +47,11 @@ EOF
 
 my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/schema-override 2> /dev/null`;
 if ($?) { # the directory does not exists or is not owned by any rpm
-    $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/main.sql`;
+        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' /etc/sysconfig/rhn/oracle/main.sql`;
 }
 my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
 if (not defined $my_schema_release) {
-    die "Failed to retrieve our schema package name and version.\n";
-}
-
-if ($ENV{SUMA_TEST_SCHEMA_VERSION}) {
-    $my_schema_version = $ENV{SUMA_TEST_SCHEMA_VERSION};
+        die "Failed to retrieve our schema package name and version.\n";
 }
 
 my $target_schema = join '-', $my_schema_name, $my_schema_version, $my_schema_release;
@@ -181,13 +177,13 @@ print "The path: ", (join " -> ", map "[$_]", $start_schema_norm, @path), "\n";
 mkdir "/var/log/spacewalk", 0755;
 mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
 if (not -e $SCHEMA_UPGRADE_LOGDIR) {
-    die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
+        die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
 }
 system("/sbin/restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
 
 my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
 my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
-$hour, $min, $sec;
+        $hour, $min, $sec;
 
 my $start = $start_schema_norm;
 my $migrationdir = "schema-from-$stamp";
@@ -261,17 +257,17 @@ $in = "";
 local * END;
 open END, '<', $endfile or rmdir_and_die("Error reading [$endfile]: $!\n", "$SCHEMA_UPGRADE_LOGDIR/$migrationdir");
 {
-    local $/ = undef;
-    $in .= join '', <END>;
+local $/ = undef;
+$in .= join '', <END>;
 }
 close END;
 
 $in .= <<EOF;
 insert into rhnVersionInfo
-( label, name_id, evr_id, created, modified )
-values ('schema', lookup_package_name('$my_schema_name'),
-                           lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
-                           current_timestamp, current_timestamp );
+       ( label, name_id, evr_id, created, modified )
+       values ('schema', lookup_package_name('$my_schema_name'),
+               lookup_evr(null, '$my_schema_version' , '$my_schema_release' ),
+               current_timestamp, current_timestamp );
 commit;
 EOF
 
@@ -305,9 +301,9 @@ sub run_schema_upgrade
         my $in = <STDIN>;
         chomp $in;
         if ($in ne '') {
-            goto READ_ENTER;
+                goto READ_ENTER;
         }
-    }
+}
 
     my $logfile = $SCHEMA_UPGRADE_LOGDIR . "/$logfilename";
 

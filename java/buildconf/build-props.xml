@@ -2,7 +2,7 @@
   <property name="rhn-home" location="." />
 
   <property environment="env" />
-  
+
   <property file="${user.home}/.rhn.properties" />
   <property name="custom.log4j" location="${user.home}/.log4j.properties" />
   <property name="src.dir" location="${rhn-home}/code" />
@@ -38,6 +38,7 @@
   <property name="ivy.log.resolved.revision" value="false"/>
   <property name="ivy.dep.file" value="${rhn-home}/buildconf/ivy/ivy-suse.xml" />
   <property name="ivy.settings.file" value="${rhn-home}/buildconf/ivy/ivyconf.xml" />
+
   <!-- END IVY Properties -->
 
   <property name="rhn.war" value="${build.dir}/webapp/rhnjava.war"/>
@@ -109,7 +110,7 @@
 
   <property name="test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom jta junit
-             log4j 
+             log4j
              regexp ${jmock-jars} ${jfreechart}
              postgresql-jdbc" />
 
@@ -143,7 +144,7 @@
              xml-commons-apis ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
-      value="bcel cglib commons-beanutils commons-cli commons-codec 
+      value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} javamail jdom jsch dwr google-gson
@@ -181,7 +182,7 @@
     <fileset dir="${build.lib.dir}">
       <include name="*.jar" />
     </fileset>
-	<pathelement location="${build.dir}/classes/"/>
+        <pathelement location="${build.dir}/classes/"/>
   </path>
 
   <path id="alljars">

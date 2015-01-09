@@ -5,23 +5,24 @@
 <html:html >
 
 <head>
-    <script language="javascript" type="text/javascript">		
-        function toggleIFText(ctl) {
-            var toDisable = null;
-            var toEnable = null;
-            if (ctl.id == "dhcpRadio") {
-                toDisable = document.getElementById("staticNetworkIf");
-                toEnable = document.getElementById("dhcpNetworkIf");
-            }
-            else {
-                toDisable = document.getElementById("dhcpNetworkIf");
-                toEnable = document.getElementById("staticNetworkIf");		
-            }
-            toDisable.disabled = true;
-            toEnable.disabled = false;
-            toEnable.value = toDisable.value;
-            toDisable.value = "";
-        }
+        <script language="javascript" type="text/javascript">
+
+                function toggleIFText(ctl) {
+                        var toDisable = null;
+                        var toEnable = null;
+                        if (ctl.id == "dhcpRadio") {
+                                toDisable = document.getElementById("staticNetworkIf");
+                                toEnable = document.getElementById("dhcpNetworkIf");
+                        }
+                        else {
+                                toDisable = document.getElementById("dhcpNetworkIf");
+                                toEnable = document.getElementById("staticNetworkIf");
+                        }
+                        toDisable.disabled = true;
+                        toEnable.disabled = false;
+                        toEnable.value = toDisable.value;
+                        toDisable.value = "";
+                }
 
         // Workaround for apparent Firefox bug. See Red Hat Bugzilla #459411.
         function init() {
@@ -30,12 +31,14 @@
                 static.value = "";
             }
         }
-    </script>
+
+        </script>
+
 <%
 boolean dhcpIfDisabled = Boolean.valueOf(
-	(String) request.getAttribute("dhcpIfDisabled")).booleanValue();
+        (String) request.getAttribute("dhcpIfDisabled")).booleanValue();
 boolean staticIfDisabled = Boolean.valueOf(
-	(String) request.getAttribute("staticIfDisabled")).booleanValue();
+        (String) request.getAttribute("staticIfDisabled")).booleanValue();
 %>
 <meta http-equiv="Pragma" content="no-cache" />
 </head>
