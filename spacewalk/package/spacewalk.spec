@@ -74,7 +74,7 @@ Requires:       yum-utils
 # Requires:       jabberpy
 
 # Monitoring packages
-Requires:       spacewalk-monitoring
+#Requires:       spacewalk-monitoring
 
 # Solaris
 # Requires:       rhn-solaris-bootstrap
@@ -83,7 +83,7 @@ Requires:       spacewalk-monitoring
 # SELinux
 %if 0%{?with_selinux}
 Requires:       osa-dispatcher-selinux
-Requires:       spacewalk-monitoring-selinux
+#Requires:       spacewalk-monitoring-selinux
 Requires:       spacewalk-selinux
 %else
 Requires:       osa-dispatcher
