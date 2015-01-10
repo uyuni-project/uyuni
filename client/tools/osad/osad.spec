@@ -238,7 +238,7 @@ if [ $ARG -eq 1 ] ; then
 fi
 %else
 if [ -f %{_sysconfdir}/init.d/osad ]; then
-    /sbin/chkconfig --add osad
+    /sbin/chkconfig --add osad ||:
 fi
 if [ -f %{_unitdir}/osad.service ]; then
     %systemd_post osad.service
@@ -302,7 +302,7 @@ fi
 %service_add_post osa-dispatcher.service
 %else
 if [ -f %{_sysconfdir}/init.d/osa-dispatcher ]; then
-    /sbin/chkconfig --add osa-dispatcher
+    /sbin/chkconfig --add osa-dispatcher ||:
 fi
 %endif
 
