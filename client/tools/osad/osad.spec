@@ -257,7 +257,7 @@ if [ -f %{_var}/log/osad ]; then
 fi
 if [ $ARG -eq 1 ] ; then
   # executed only in case of install
-  %{_sbindir}/service osad start ||:
+  /sbin/service osad start ||:
 fi
 %endif
 
@@ -285,7 +285,6 @@ fi
 %endif
 
 %if 0%{?suse_version} >= 1210
-%service_del_postun osad.service
 
 %pre
 %service_add_pre osad.service
