@@ -294,12 +294,11 @@
 
     <rhn-tab name="Spacewalk Configuration" acl="user_role(satellite_admin)" url="/rhn/admin/config/GeneralConfig.do">
       <rhn-tab-url>/rhn/admin/config/GeneralConfig.do</rhn-tab-url>
-       <rhn-tab name="General" acl="user_role(satellite_admin)">
+      <rhn-tab name="General" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/GeneralConfig.do</rhn-tab-url>
       </rhn-tab>
       <rhn-tab name="SUSE Customer Center" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/SCCConfig.do</rhn-tab-url>
-      </rhn-tab>
       </rhn-tab>
       <rhn-tab name="Bootstrap Script" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/config/BootstrapConfig.do</rhn-tab-url>
