@@ -131,8 +131,8 @@ Requires: spacewalk-java-oracle
 Requires: perl(DBD::Oracle)
 Requires: cx_Oracle
 Requires: spacewalk-backend-sql-oracle
-Requires: NOCpulsePlugins-Oracle
-Requires: perl-NOCpulse-Probe-Oracle
+#Requires: NOCpulsePlugins-Oracle
+#Requires: perl-NOCpulse-Probe-Oracle
 Requires: quartz-oracle
 %if 0%{?with_selinux}
 Requires: oracle-instantclient-selinux
