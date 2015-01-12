@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
@@ -845,7 +846,7 @@ public class ContentSyncManager {
                 int sumMaxMembers = 0;
                 PrivateChannelFamily satelliteOrgPrivateChannelFamily = null;
                 for (PrivateChannelFamily pcf : privateFamilies) {
-                    if (pcf.getOrg().getId() == 1) {
+                    if (pcf.getOrg().equals(OrgFactory.getSatelliteOrg())) {
                         satelliteOrgPrivateChannelFamily = pcf;
                     }
                     else if (pcf.getOrg().getId() > 1) {
@@ -853,8 +854,13 @@ public class ContentSyncManager {
                     }
                 }
                 if (satelliteOrgPrivateChannelFamily != null) {
-                    satelliteOrgPrivateChannelFamily
-                            .setMaxMembers(INFINITE - sumMaxMembers);
+                    if(sumMaxMembers > INFINITE) {
+                        satelliteOrgPrivateChannelFamily.setMaxMembers(0L);
+                    }
+                    else {
+                        satelliteOrgPrivateChannelFamily
+                                .setMaxMembers(INFINITE - sumMaxMembers);
+                    }
                     ChannelFamilyFactory.save(satelliteOrgPrivateChannelFamily);
                 }
             }
@@ -886,7 +892,12 @@ public class ContentSyncManager {
                 int maxMembers = sumMaxMembersAllNonSatelliteOrgs(sgt);
                 EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
                         OrgFactory.getSatelliteOrg(), sgt);
-                serverGroup.setMaxMembers(INFINITE - maxMembers);
+                if (maxMembers > INFINITE) {
+                    serverGroup.setMaxMembers(0L);
+                }
+                else {
+                    serverGroup.setMaxMembers(INFINITE - maxMembers);
+                }
                 ServerGroupFactory.save(serverGroup);
             }
             else {
@@ -899,7 +910,7 @@ public class ContentSyncManager {
                 // Reset max_members to null for all other orgs
                 List<Org> allOrgs = OrgFactory.lookupAllOrgs();
                 for (Org org : allOrgs) {
-                    if (org.getId() != 1) {
+                    if (!org.equals(OrgFactory.getSatelliteOrg())) {
                         serverGroup = ServerGroupFactory.lookupEntitled(org, sgt);
                         if (serverGroup != null) {
                             serverGroup.setMaxMembers(null);
@@ -907,6 +918,19 @@ public class ContentSyncManager {
                         }
                     }
                 }
+            }
+        }
+
+        // bootstrap entitlements should have INFINITE as max_members in all orgs
+        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
+                EntitlementManager.BOOTSTRAP_ENTITLED);
+        List<Org> allOrgs = OrgFactory.lookupAllOrgs();
+        for (Org org : allOrgs) {
+            EntitlementServerGroup serverGroup = ServerGroupFactory
+                    .lookupEntitled(org, sgt);
+            if (serverGroup != null) {
+                serverGroup.setMaxMembers(INFINITE);
+                ServerGroupFactory.save(serverGroup);
             }
         }
     }
@@ -1394,7 +1418,7 @@ public class ContentSyncManager {
         int sum = 0;
         List<Org> allOrgs = OrgFactory.lookupAllOrgs();
         for (Org org : allOrgs) {
-            if (org.getId() != 1) {
+            if (!org.equals(OrgFactory.getSatelliteOrg())) {
                 EntitlementServerGroup serverGroup = ServerGroupFactory
                         .lookupEntitled(org, serverGroupType);
                 if (serverGroup != null) {
