@@ -49,6 +49,7 @@ import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -238,7 +239,10 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      * Test for scheduleDistUpgrade().
      */
     public void testScheduleDistUpgrade() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Channel subscribedChannel = ChannelFactoryTest.createTestChannel(user);
+        List<Channel> subscribedChannels = new ArrayList<Channel>(
+                Arrays.asList(subscribedChannel));
+        Server server = ErrataTestUtils.createTestServer(user, subscribedChannels);
 
         // Setup product upgrade
         ChannelFamily family = createTestChannelFamily();
@@ -276,11 +280,16 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
         // Check channel tasks
         Set<DistUpgradeChannelTask> channelTasks = details.getChannelTasks();
-        assertEquals(2, channelTasks.size());
+        assertEquals(3, channelTasks.size());
         for (DistUpgradeChannelTask task : channelTasks) {
-            assertTrue(task.getChannel().equals(channel1) ||
-                    task.getChannel().equals(channel2));
-            assertEquals('S', task.getTask());
+            if (task.getChannel().equals(subscribedChannel)) {
+                assertEquals('U', task.getTask());
+            }
+            else {
+                assertTrue(task.getChannel().equals(channel1) ||
+                        task.getChannel().equals(channel2));
+                assertEquals('S', task.getTask());
+            }
         }
     }
 
