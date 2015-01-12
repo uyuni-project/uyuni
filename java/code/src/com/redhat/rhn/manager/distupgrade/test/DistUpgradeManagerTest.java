@@ -31,6 +31,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductSet;
+import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
@@ -237,6 +239,16 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     public void testScheduleDistUpgrade() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
+
+        // Setup product upgrade
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct source = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductTestUtils.installSUSEProductOnServer(source, server);
+        SUSEProduct target = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductSet targetSet = new SUSEProductSet();
+        targetSet.setBaseProduct(target);
+
+        // Setup channel tasks
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
         List<Long> channelIDs = new ArrayList<Long>();
@@ -244,7 +256,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         channelIDs.add(channel2.getId());
         Date scheduleDate = new Date();
         Long actionID = DistUpgradeManager.scheduleDistUpgrade(
-                user, server, null, channelIDs, true, scheduleDate);
+                user, server, targetSet, channelIDs, true, scheduleDate);
 
         // Get the scheduled action and check the contents
         DistUpgradeAction action = (DistUpgradeAction) ActionFactory.lookupById(actionID);
@@ -253,6 +265,14 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(scheduleDate, action.getEarliestAction());
         DistUpgradeActionDetails details = action.getDetails();
         assertEquals('Y', details.getDryRun());
+
+        // Check product upgrade
+        Set<SUSEProductUpgrade> upgrades = details.getProductUpgrades();
+        assertEquals(1, upgrades.size());
+        for (SUSEProductUpgrade upgrade : upgrades) {
+            assertEquals(source, upgrade.getFromProduct());
+            assertEquals(target, upgrade.getToProduct());
+        }
 
         // Check channel tasks
         Set<DistUpgradeChannelTask> channelTasks = details.getChannelTasks();
