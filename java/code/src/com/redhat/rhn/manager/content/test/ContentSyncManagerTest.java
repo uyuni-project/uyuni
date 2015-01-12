@@ -284,10 +284,39 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Check reset to 10
         ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
-                "bootstrap_entitled");
+                "enterprise_entitled");
         EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
                 OrgFactory.getSatelliteOrg(), sgt);
         assertEquals(new Long(10), serverGroup.getMaxMembers());
+
+        // Add subscription for product class
+        productClasses.add("SM_ENT_MGM_V");
+
+        // Update system entitlements and check max_members = 200000
+        csm.updateSystemEntitlements(productClasses);
+        serverGroup = ServerGroupFactory.lookupEntitled(
+                OrgFactory.getSatelliteOrg(), sgt);
+        assertEquals(new Long(200000), serverGroup.getMaxMembers());
+    }
+
+    /**
+     * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
+     * @throws Exception if anything goes wrong
+     */
+    public void testUpdateBootstrapEntitlement() throws Exception {
+        // Start with no subscribed product classes
+        List<String> productClasses = new ArrayList<String>();
+
+        // Update system entitlements
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSystemEntitlements(productClasses);
+
+        // Check still 200000
+        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
+                "bootstrap_entitled");
+        EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
+                OrgFactory.getSatelliteOrg(), sgt);
+        assertEquals(new Long(200000), serverGroup.getMaxMembers());
 
         // Add subscription for product class
         productClasses.add("SM_ENT_MGM_V");
