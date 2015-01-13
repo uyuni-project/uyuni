@@ -450,6 +450,7 @@ class ContainerHandler:
         self.setSuseProductChannelsContainer()
         self.setSuseUpgradePathsContainer()
         self.setSuseSubscriptionsContainer()
+        self.setClonedChannelsContainer()
 
     def __del__(self):
         self.handler.close() # kill the circular reference.
@@ -508,6 +509,8 @@ class ContainerHandler:
         self.handler.set_container(diskImportLib.SuseUpgradePathsContainer())
     def setSuseSubscriptionsContainer(self):
         self.handler.set_container(diskImportLib.SuseSubscriptionsContainer())
+    def setClonedChannelsContainer(self):
+        self.handler.set_container(diskImportLib.ClonedChannelsContainer())
 
 #
 # more containers

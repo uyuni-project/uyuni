@@ -309,6 +309,11 @@ class MetadataWireSource(BaseWireSource):
         self._prepare()
         return self._openSocketStream("dump.suse_subscriptions", (self.systemid,))
 
+    def getClonedChannelsXmlStream(self):
+        """retrieve xml stream for Cloned Channels"""
+        self._prepare()
+        return self._openSocketStream("dump.cloned_channels", (self.systemid,))
+
 class XMLRPCWireSource(BaseWireSource):
 
     "Base class for all the XMLRPC calls"
