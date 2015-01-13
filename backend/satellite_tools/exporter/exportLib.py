@@ -1312,8 +1312,12 @@ class _ErratumDumper(BaseRowDumper):
             where id = :severity_id
         """)
         h.execute(severity_id=self._row['severity_id'])
-        arr.append(SimpleDumper(self._writer, 'rhn-erratum-severity',
-            h.fetchone_dict()['label']))
+        sev = h.fetchone_dict() or None
+        if sev:
+            arr.append(SimpleDumper(self._writer, 'rhn-erratum-severity',
+                sev['label']))
+        else:
+            arr.append(SimpleDumper(self._writer, 'rhn-erratum-severity', ''))
 
         h = rhnSQL.prepare("""
             select keyword
