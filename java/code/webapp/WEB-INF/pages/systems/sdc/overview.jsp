@@ -86,7 +86,7 @@
                   <img src="/img/rhn-mini_icon-warning.gif"/>
                 </c:otherwise>
               </c:choose>
-              <a href="/rhn/systems/details/probes/ProbeDetails.do?sid=${system.id}&probe_id=${probe.id}">${probe.description}</a><br/>
+              <a href="/rhn/systems/details/probes/ProbeDetails.do?sid=${system.id}&probe_id=${probe.id}"><c:out value="${probe.description}"/></a><br/>
             </c:forEach>
           </div>
           <div class="systeminfo-clear" />
@@ -137,7 +137,7 @@
       <c:if test="${system.virtualGuest}">
         <tr>
           <th><bean:message key="sdc.details.overview.virtualization"/></th>
-          <td>${system.virtualInstance.type.name}</td>
+          <td><c:out value="${system.virtualInstance.type.name}"/></td>
         </tr>
         <tr>
           <th><bean:message key="sdc.details.overview.uuid"/></th>
@@ -301,7 +301,7 @@
           <c:otherwise>
 
             <c:forEach items="${system.entitlements}" var="entitlement">
-              [${entitlement.humanReadableLabel}]
+              [<c:out value="${entitlement.humanReadableLabel}" />]
             </c:forEach>
 
           </c:otherwise>
@@ -351,7 +351,7 @@
       </tr>
       <tr>
         <th><bean:message key="sdc.details.overview.description"/></th>
-        <td>${description}</td>
+        <td><c:out value="${description}"escapeXml="false"/></td> <!-- already html-escaped in backend -->
       </tr>
       <tr>
         <th><bean:message key="sdc.details.overview.location"/></th>
@@ -379,7 +379,7 @@
     <c:if test="${system.baseChannel != null}">
     <ul class="channel-list">
     <li>
-      <a href="/rhn/channels/ChannelDetail.do?cid=${baseChannel['id']}">${baseChannel['name']}</a>
+      <a href="/rhn/channels/ChannelDetail.do?cid=${baseChannel['id']}"><c:out value="${baseChannel['name']}" /></a>
       <c:if test="${baseChannel['is_fve'] == 'Y'}">
         &nbsp;(Flex)
       </c:if>
@@ -387,7 +387,7 @@
 
     <c:forEach items="${childChannels}" var="childChannel">
     <li class="child-channel">
-      <a href="/rhn/channels/ChannelDetail.do?cid=${childChannel['id']}">${childChannel['name']}</a>
+      <a href="/rhn/channels/ChannelDetail.do?cid=${childChannel['id']}"><c:out value="${childChannel['name']}" /></a>
       <c:if test="${childChannel['is_fve'] == 'Y'}">
         &nbsp;(Flex)
       </c:if>

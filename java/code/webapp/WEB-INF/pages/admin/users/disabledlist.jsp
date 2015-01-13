@@ -49,8 +49,8 @@
  		<%@ include file="/WEB-INF/pages/common/fragments/user/userlist_columns.jspf" %>
 
 		<rl:column
-	    	headerkey="disabledlist.jsp.disabledBy">	     	
-	     	<c:out value="${current.changedByFirstName} ${current.changedByLastName}" escapeXml="false"/>
+	    	headerkey="disabledlist.jsp.disabledBy">
+	     	<c:out value="${current.changedByFirstName} ${current.changedByLastName}" />
 	    </rl:column>
 	     	
 	    <rl:column headerkey="disabledlist.jsp.disabledOn"
