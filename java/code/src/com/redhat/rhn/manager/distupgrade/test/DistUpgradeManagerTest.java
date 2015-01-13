@@ -98,6 +98,63 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test getTargetProductSets(): No target product found.
+     * @throws Exception
+     */
+    public void testGetTargetProductSetsEmpty() throws Exception {
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProductSet sourceProducts = new SUSEProductSet(
+                sourceProduct.getId(), new ArrayList<Long>());
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                sourceProducts, arch, user);
+        assertNotNull(targetProductSets);
+        assertTrue(targetProductSets.isEmpty());
+    }
+
+    /**
+     * Test getTargetProductSets(): target products are actually found (base + addon).
+     * @throws Exception
+     */
+    public void testGetTargetProductSets() throws Exception {
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        List<Long> sourceAddons = new ArrayList<Long>();
+        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddons.add(sourceAddonProduct.getId());
+        SUSEProductSet sourceProducts = new SUSEProductSet(
+                sourceBaseProduct.getId(), sourceAddons);
+
+        // Setup migration target product + upgrade path
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel baseChannel = ErrataTestUtils.createTestChannel(user);
+        SUSEProductTestUtils.createTestSUSEProductChannel(baseChannel, targetBaseProduct);
+        SUSEProductTestUtils.createTestSUSEUpgradePath(
+                sourceBaseProduct, targetBaseProduct);
+
+        // Setup target addon product + upgrade path
+        SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel childChannel = ErrataTestUtils.createTestChannel(user, baseChannel);
+        SUSEProductTestUtils.createTestSUSEProductChannel(childChannel, targetAddonProduct);
+        SUSEProductTestUtils.createTestSUSEUpgradePath(
+                sourceAddonProduct, targetAddonProduct);
+
+        // Verify that target products are returned correctly
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                sourceProducts, arch, user);
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+        SUSEProductSet targetProducts = targetProductSets.get(0);
+        assertEquals(targetBaseProduct, targetProducts.getBaseProduct());
+        assertEquals(1, targetProducts.getAddonProducts().size());
+        assertEquals(targetAddonProduct, targetProducts.getAddonProducts().get(0));
+    }
+
+    /**
      * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
      */
     public void testCapabilityMissing() throws Exception {
