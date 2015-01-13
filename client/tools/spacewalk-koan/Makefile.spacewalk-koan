@@ -14,3 +14,17 @@ include $(TOP)/Makefile.defs
 
 # Install files as binaries
 INSTALL_DATA    = $(INSTALL_BIN)
+
+# Docker tests variables
+DOCKER_IMAGE          = suma-2.1-spacewalkkoan
+DOCKER_REGISTRY       = suma-docker-registry.cloud.suse.de
+DOCKER_RUN_EXPORT     = "PYTHONPATH=/manager/client/tools/"
+DOCKER_VOLUMES        = -v "$(CURDIR)/../../../:/manager"
+
+docker_tests ::
+	mkdir -p $(CURDIR)/reports
+	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_IMAGE) nosetests --with-xunit --xunit-file /manager/client/tools/spacewalk-koan/reports/spacewalk-koan_tests.xml -s /manager/client/tools/spacewalk-koan/test
+
+docker_shell ::
+	docker run --rm -ti -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_IMAGE) /bin/bash
+
