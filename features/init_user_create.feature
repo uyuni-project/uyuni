@@ -22,23 +22,6 @@ Feature: Create initial users
     And I click on "Create Login"
     Then I am logged-in
 
-  @second @monitoring
-  Scenario: Enable Monitoring
-    Given I am authorized as "admin" with password "admin"
-    When I go to the admin configuration page
-     And I check "is_monitoring_backend"
-     And I click on "Update"
-    Then I should see a "The SUSE Manager must be restarted to reflect these changes" text
-     And I should see "is_monitoring_backend" as checked
-
-    # Then I should see a "The Spacewalk must be restarted to reflect these changes" text
-
-  @monitoring
-  Scenario: restart spacewalk service
-    Given I am root
-    When I restart the spacewalk service
-    Then I should be able to login
-
   @third
   Scenario: Create Testing username
     Given I am authorized as "admin" with password "admin"
@@ -65,17 +48,7 @@ Feature: Create initial users
        And I check "role_channel_admin"
        And I check "role_activation_key_admin"
        And I check "role_config_admin"
-       And I check "role_monitoring_admin"
        And I click on "Update"
     Then I should see a "User information updated" text
      And I should see a "testing" text
-
-  @monitoring
-  Scenario: Activate monitoring scout
-    Given I am on the Admin page
-     When I follow "SUSE Manager Configuration"
-       And I follow "Monitoring" in the content area
-       And I check "Enable Monitoring Scout"
-       And I click on "Update Config"
-    Then I should see a "Configuration updated, Monitoring services restarted." text
 

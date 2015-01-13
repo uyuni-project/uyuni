@@ -17,7 +17,6 @@ Feature: Check client registration
      And I should see a "Non-Critical:" link
      And I should see a "Packages:" link
      And I should see a "Edit These Properties" link
-     And I should see a "[Monitoring]" text
      And I should see a "[Provisioning]" text
      And I should see a "[Management]" text
      And I should see a "Add to SSM" link
@@ -115,13 +114,6 @@ Feature: Check client registration
 # if cobbler test was running there is a profile
 #     And I should see a "No profiles found that are compatible with this System. Either you haven't created any Kickstart Profiles or this system does not have a Base Channel." text
 
-  @monitoring
-  Scenario: check tab links "Monitoring"
-    Given I am on the Systems overview page of this client
-    When I follow "Monitoring" in the content area
-    Then I should see a "Create Probe" link
-     And I should see a "Configured Monitoring Probes" text
-
   Scenario: check tab links "Groups"
     Given I am on the Systems overview page of this client
     When I follow "Groups" in the content area
@@ -172,7 +164,6 @@ Feature: Check client registration
     Then I should see a "Edit System Details" text
      And I should see a "system_name" element in "systemDetailsForm" form
      And I should see a "baseentitlement" element in "systemDetailsForm" form
-     And I should see a "monitoring_entitled" element in "systemDetailsForm" form
      And I should see a "provisioning_entitled" element in "systemDetailsForm" form
      #And I should see a "virtualization_host" element in "systemDetailsForm" form
      #And I should see a "virtualization_host_platform" element in "systemDetailsForm" form

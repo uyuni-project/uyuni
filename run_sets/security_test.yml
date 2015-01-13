@@ -18,7 +18,6 @@
 - features/test_config_channel.feature
 - features/action_chain.feature
 - features/xmlrpc_actionchain.feature
-- features/monitoring.feature
 - features/system_configuration.feature
 - features/custom_system_info.feature
 - features/create_group.feature
@@ -43,7 +42,6 @@
 - features/install_package.feature
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
-- features/monitoring2.feature
 - features/openscap_audit.feature
 - features/ncc-sync-channels.feature
 - features/systemspage2.feature

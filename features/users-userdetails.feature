@@ -17,7 +17,6 @@ Feature: Watch/edit user details
         And I should see a "Channel Permissions" link
         And I should see a "Preferences" link in the content area
         And I should see a "Addresses" link
-        And I should see a "Notification Methods" link
         And I should see a "user1" text
         And Option "Mr." is selected as "prefix"
         And I should see "Test" in field "firstNames"
@@ -36,7 +35,6 @@ Feature: Watch/edit user details
         And I check "role_channel_admin"
         And I check "role_activation_key_admin"
         And I check "role_config_admin"
-        And I check "role_monitoring_admin"
         And I click on "Update"
       Then the "role_satellite_admin" checkbox should be disabled
         And I should see a "SUSE Manager Administrator" text
@@ -50,8 +48,6 @@ Feature: Watch/edit user details
         And I should see a "Activation Key Administrator - [ Admin Access ]" text
         And the "role_config_admin" checkbox should be disabled
         And I should see a "Configuration Administrator - [ Admin Access ]" text
-        And the "role_monitoring_admin" checkbox should be disabled
-        And I should see a "Monitoring Administrator - [ Admin Access ]" text
         And I should see a "Above roles are granted via the Organization Administrator role." text
 
   Scenario: Verify User List
@@ -59,7 +55,6 @@ Feature: Watch/edit user details
       Then Table row for "user1" should contain "Organization Administrator"
         And Table row for "user1" should contain "Channel Administrator"
         And Table row for "user1" should contain "Configuration Administrator"
-        And Table row for "user1" should contain "Monitoring Administrator"
         And Table row for "user1" should contain "System Group Administrator"
         And Table row for "user1" should contain "Activation Key Administrator"
 
@@ -81,7 +76,6 @@ Feature: Watch/edit user details
        And I should see "role_channel_admin" as checked
        And I should see "role_activation_key_admin" as checked
        And I should see "role_config_admin" as checked
-       And I should see "role_monitoring_admin" as checked
 
   Scenario: Deactivate User (Succeed)
     Given I am on the Details page
