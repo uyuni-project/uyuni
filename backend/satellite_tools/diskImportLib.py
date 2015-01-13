@@ -167,3 +167,10 @@ class SuseSubscriptionsContainer(diskImportLibContainer, xmlSource.SuseSubscript
         if not self.batch:
             return
         diskImportLibContainer.endContainerCallback(self)
+
+class ClonedChannelsContainer(diskImportLibContainer, xmlSource.ClonedChannelsContainer):
+    importer_class = suseProductsImport.ClonedChannelsImport
+    def endContainerCallback(self):
+        if not self.batch:
+            return
+        diskImportLibContainer.endContainerCallback(self)

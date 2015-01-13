@@ -113,6 +113,7 @@ class Runner:
         'suse-product-channels'     : ['suse-products', 'channels'],
         'suse-upgrade-paths'        : ['suse-products'],
         'suse-subscriptions'        : ['channel-families'],
+        'cloned-channels'           : ['channels'],
         # FIXME: remove old code
         'suse-products-subscriptions' : [''],
     }
@@ -125,6 +126,7 @@ class Runner:
         'arches',
         'channels',
         'short',
+        'cloned-channels',
         'download-packages',
         'rpms',
         'packages',
@@ -426,6 +428,9 @@ class Runner:
 
     def _step_suse_subscriptions(self):
         self.syncer.import_suse_subscriptions()
+
+    def _step_cloned_channels(self):
+        self.syncer.import_cloned_channels()
 
 def sendMail(forceEmail=0):
     """ Send email summary """
@@ -1948,6 +1953,10 @@ Please contact your administrator""") % (generation, sat_cert.generation))
     def import_suse_subscriptions(self):
         """Imports Subscriptions"""
         self._process_simple("getSuseSubscriptionsXmlStream", "suse_subscriptions")
+
+    def import_cloned_channels(self):
+        """Imports Cloned Channels"""
+        self._process_simple("getClonedChannelsXmlStream", "cloned_channels")
 
 class ThreadDownload(threading.Thread):
     def __init__(self, lock, queue, out_queue, short_package_collection, package_collection, syncer,

@@ -204,6 +204,14 @@ class SuseSubscription(Information):
         'group_type'        : IntType
     }
 
+class ClonedChannel(Information):
+    attributeTypes = {
+        'orig'    : StringType,
+        'orig_id' : IntType,
+        'clone'   : StringType,
+        'id'      : IntType
+    }
+
 class ReleaseChannelMap(Information):
     attributeTypes = {
         'product'           : StringType,
