@@ -65,7 +65,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      *
      * https://bugzilla.novell.com/show_bug.cgi?id=841054.
      *
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testGetProductBaseChannelDto() throws Exception {
         // Create SUSE product and channel product
@@ -99,7 +99,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test getTargetProductSets(): No target product found.
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testGetTargetProductSetsEmpty() throws Exception {
         // Setup source products
@@ -116,7 +116,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test getTargetProductSets(): target products are actually found (base + addon).
-     * @throws Exception
+     * @throws Exception if anything goes wrong
      */
     public void testGetTargetProductSets() throws Exception {
         // Setup source products
@@ -156,6 +156,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performServerChecks(): capability "distupgrade.upgrade" is missing.
+     * @throws Exception if anything goes wrong
      */
     public void testCapabilityMissing() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
@@ -171,6 +172,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performServerChecks(): "zypp-plugin-spacewalk" is not installed.
+     * @throws Exception if anything goes wrong
      */
     public void testZyppPluginNotInstalled() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
@@ -187,6 +189,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performServerChecks(): a dist upgrade action is already scheduled.
+     * @throws Exception if anything goes wrong
      */
     public void testDistUpgradeScheduled() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user, true);
@@ -208,7 +211,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         ErrataTestUtils.createTestInstalledPackage(zyppPlugin, server);
 
         // Store a dist upgrade action for this server
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_DIST_UPGRADE);
+        Action action = ActionFactoryTest.createAction(user,
+                ActionFactory.TYPE_DIST_UPGRADE);
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
         TestUtils.saveAndFlush(serverAction);
 
@@ -224,6 +228,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performChannelChecks(): More than one base channel given for dist upgrade
+     * @throws Exception if anything goes wrong
      */
     public void testMoreThanOneBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -245,6 +250,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performChannelChecks(): No base channel given for dist upgrade
+     * @throws Exception if anything goes wrong
      */
     public void testNoBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -268,6 +274,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for performChannelChecks(): Channel has incompatible base channel
+     * @throws Exception if anything goes wrong
      */
     public void testIncompatibleBaseChannel() throws Exception {
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -294,6 +301,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Test for scheduleDistUpgrade().
+     * @throws Exception if anything goes wrong
      */
     public void testScheduleDistUpgrade() throws Exception {
         Channel subscribedChannel = ChannelFactoryTest.createTestChannel(user);
@@ -380,6 +388,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      *
      * @param channelFamily channelFamily
      * @param channelProduct channelProduct
+     * @param channelArch the channel architecture
      * @return the new vendor base channel
      * @throws Exception if anything goes wrong
      */
