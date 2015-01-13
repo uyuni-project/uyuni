@@ -14,6 +14,22 @@
  */
 package com.redhat.rhn.frontend.action.systems.sdc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -32,21 +48,6 @@ import com.redhat.rhn.manager.monitoring.MonitoringManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemOverviewAction
@@ -74,7 +75,7 @@ public class SystemOverviewAction extends RhnAction {
         String description = null;
 
         if (s.getDescription() != null) {
-            description = new String(s.getDescription()).replaceAll("\\n", "<br/>");
+            description = StringEscapeUtils.escapeHtml(s.getDescription()).replaceAll("\\n", "<br/>");
         }
 
         // System Channels
