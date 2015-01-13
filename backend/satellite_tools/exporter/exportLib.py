@@ -827,6 +827,32 @@ class SuseSubscriptionDumper(BaseQueryDumper):
         cf = _SuseSubscriptionDumper(self._writer, data)
         cf.dump()
 
+class _ClonedChannelsDumper(BaseRowDumper):
+    tag_name = 'cloned-channel'
+
+    def set_attributes(self):
+        return {
+            'orig'  : self._row['orig'],
+            'clone' : self._row['clone'],
+            }
+
+class ClonedChannelsDumper(BaseQueryDumper):
+    tag_name = 'cloned-channels'
+    iterator_query = """
+        SELECT c1.label orig,
+               c2.label clone
+          FROM rhnChannelCloned cc
+          JOIN rhnChannel c1 ON c1.id = cc.original_id
+          JOIN rhnChannel c2 ON c2.id = cc.id
+    """
+
+    def __init__(self, writer, data_iterator=None):
+        BaseDumper.__init__(self, writer, data_iterator=data_iterator)
+
+    def dump_subelement(self, data):
+        cf = _ClonedChannelsDumper(self._writer, data)
+        cf.dump()
+
 class ChannelFamiliesDumper(BaseQueryDumper):
     tag_name = 'rhn-channel-families'
     iterator_query = 'select cf.* from rhnChannelFamily'

@@ -792,6 +792,15 @@ class SuseSubscriptionItem(BaseItem):
     }
 addItem(SuseSubscriptionItem)
 
+class ClonedChannelItem(BaseItem):
+    item_name = 'cloned-channel'
+    item_class = importLib.ClonedChannel
+    tagMap = {
+        'orig'  : 'orig',
+        'clone' : 'clone'
+    }
+addItem(ClonedChannelItem)
+
 class ChannelErratumItem(BaseItem):
     item_name = 'erratum'
     item_class = importLib.ChannelErratum
@@ -1226,3 +1235,6 @@ class SuseUpgradePathsContainer(ContainerHandler):
 
 class SuseSubscriptionsContainer(ContainerHandler):
     container_name = 'suse-subscriptions'
+
+class ClonedChannelsContainer(ContainerHandler):
+    container_name = 'cloned-channels'

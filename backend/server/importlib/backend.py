@@ -1488,6 +1488,43 @@ class Backend:
         if toinsert[0]:
             insert_up.executemany(from_pdid=toinsert[0], to_pdid=toinsert[1])
 
+    def processClonedChannels(self, batch):
+        """Check if cloned channel info is already in DB.
+           If not add it.
+        """
+        insert_cc = self.dbmodule.prepare("""
+            INSERT INTO rhnChannelCloned
+                   (original_id, id)
+            VALUES (:orig_id, :id)
+            """)
+        delete_cc = self.dbmodule.prepare("""
+            DELETE FROM rhnChannelCloned
+             WHERE original_id = :orig_id
+               AND id = :id
+            """)
+        _query_cc = self.dbmodule.prepare("""
+            SELECT original_id orig_id, id FROM rhnChannelCloned
+            """)
+        _query_cc.execute()
+        existing_data = map(lambda x: "%s-%s" % (x['orig_id'], x['id']), _query_cc.fetchall_dict() or [])
+        toinsert = [[], []]
+        todelete = [[], []]
+        for item in batch:
+            ident = "%s-%s" % (item['orig_id'], item['id'])
+            if ident in existing_data:
+                existing_data.remove(ident)
+                continue
+            toinsert[0].append(item['orig_id'])
+            toinsert[1].append(item['id'])
+        for ident in existing_data:
+            fpdid, tpdid = ident.split('-', 1)
+            todelete[0].append(int(fpdid))
+            todelete[1].append(int(tpdid))
+        if todelete[0]:
+            delete_cc.executemany(orig_id=todelete[0], id=todelete[1])
+        if toinsert[0]:
+            insert_cc.executemany(orig_id=toinsert[0], id=toinsert[1])
+
     def processSuseSubscriptions(self, batch):
         """Check if the Subscriptions are already in DB.
            If yes, update it, if not add it.

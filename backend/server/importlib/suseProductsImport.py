@@ -135,3 +135,41 @@ class SuseSubscriptionsImport(GenericPackageImport):
             self.backend.rollback()
             raise
         self.backend.commit()
+
+class ClonedChannelsImport(GenericPackageImport):
+    def __init__(self, batch, backend):
+        GenericPackageImport.__init__(self, batch, backend)
+        self._cache = syncCache.ShortPackageCache()
+        self._data = []
+
+    def preprocess(self):
+        pid_trans = {}
+        for item in self.batch:
+            channel = {}
+            channel[item['orig']] = None
+            self.backend.lookupChannels(channel)
+            if channel[item['orig']]:
+                item['orig_id'] = channel[item['orig']]['id']
+            else:
+                # orig channel not synced - skip
+                continue
+            channel = {}
+            channel[item['clone']] = None
+            self.backend.lookupChannels(channel)
+            if channel[item['clone']]:
+                item['id'] = channel[item['clone']]['id']
+            else:
+                # channel not synced - skip
+                continue
+            self._data.append(item)
+
+    def fix(self):
+        pass
+
+    def submit(self):
+        try:
+            self.backend.processClonedChannels(self._data)
+        except:
+            self.backend.rollback()
+            raise
+        self.backend.commit()

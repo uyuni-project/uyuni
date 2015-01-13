@@ -319,6 +319,9 @@ class MetadataDiskSource:
     def getSuseSubscriptionsXmlStream(self):
         return SuseSubscriptionsDiskSource(self.mountpoint).load()
 
+    def getClonedChannelsXmlStream(self):
+        return ClonedChannelsDiskSource(self.mountpoint).load()
+
 class SupportInformationDiskSource(DiskSource):
     subdir = 'support_info'
 
@@ -363,6 +366,15 @@ class SuseSubscriptionsDiskSource(DiskSource):
         if create and not os.path.isdir(dirname):
             createPath(dirname)
         return "%s/suse_subscriptions.xml" % dirname
+
+class ClonedChannelsDiskSource(DiskSource):
+    subdir = 'suse_products'
+
+    def _getFile(self, create=0):
+        dirname = self._getDir(create)
+        if create and not os.path.isdir(dirname):
+            createPath(dirname)
+        return "%s/cloned_channels.xml" % dirname
 
 if __name__ == '__main__':
     # TEST CODE
