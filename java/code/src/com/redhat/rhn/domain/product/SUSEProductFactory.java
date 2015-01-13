@@ -26,11 +26,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.EmptyExpression;
-import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.DisjunctionFragment;
 
 import java.util.HashMap;
 import java.util.List;
