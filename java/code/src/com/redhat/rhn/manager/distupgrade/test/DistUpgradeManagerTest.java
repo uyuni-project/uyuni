@@ -267,6 +267,8 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         assertEquals(ActionFactory.TYPE_DIST_UPGRADE, action.getActionType());
         assertEquals(user, action.getSchedulerUser());
         assertEquals(scheduleDate, action.getEarliestAction());
+        Set<ServerAction> serverActions = action.getServerActions();
+        assertEquals(server, serverActions.iterator().next().getServer());
         DistUpgradeActionDetails details = action.getDetails();
         assertEquals('Y', details.getDryRun());
 
