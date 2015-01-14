@@ -16,8 +16,6 @@
 from spacewalk.common import rhnLog
 from spacewalk.common.rhnLog import log_debug
 
-DEFAULT_LOG_LOCATION = "/var/log/rhn/mgr-sync.log"
-
 class Logger(object):
     """
     Log mgr-sync activity.
@@ -27,8 +25,8 @@ class Logger(object):
     error: Errors
     """
 
-    def __init__(self, debug, location=DEFAULT_LOG_LOCATION):
-        rhnLog.initLOG(location, int(debug))
+    def __init__(self, debug, logfile):
+        rhnLog.initLOG(logfile, int(debug))
 
     def debug(self, msg):
         log_debug(3, msg)
