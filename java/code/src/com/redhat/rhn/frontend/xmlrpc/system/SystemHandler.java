@@ -39,9 +39,11 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryAction;
 import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -50,6 +52,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.DuplicateProfileNameException;
@@ -120,6 +123,8 @@ import com.redhat.rhn.manager.MissingCapabilityException;
 import com.redhat.rhn.manager.MissingEntitlementException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeException;
+import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.KickstartFormatter;
@@ -5473,5 +5478,140 @@ public class SystemHandler extends BaseHandler {
         }
         server.setPrimaryInterfaceWithName(interfaceName);
         return 1;
+    }
+
+    /**
+     * Schedule a Service Pack migration for a system. This call is the recommended and
+     * supported way of migrating a system to the next Service Pack. It will automatically
+     * find all mandatory product channels below a given target base channel, and subscribe
+     * the system accordingly. Any additional optional channels can be subscribed by
+     * providing their labels.
+     *
+     * @param sessionKey User's session key
+     * @param sid ID of the server
+     * @param baseChannelLabel label of the target base channel
+     * @param optionalChildChannels labels of optional child channels to subscribe
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a Service Pack migration for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #param("string", "baseChannelLabel")
+     * @xmlrpc.param #array_single("string", "optionalChildChannels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
+            List<String> optionalChildChannels, boolean dryRun, Date earliest) {
+        User user = getLoggedInUser(sessionKey);
+
+        // Perform checks on the server
+        Server server = null;
+        try {
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
+        }
+
+        // Check validity of optional child channels and initialize list of channel IDs
+        Set<Long> channelIDs = null;
+        optionalChildChannels.add(baseChannelLabel);
+        try {
+            channelIDs =
+                    DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
+        }
+
+        // Find target products for the migration
+        SUSEProductSet installedProducts = server.getInstalledProducts();
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
+                installedProducts, arch, user);
+        if (targets.size() > 0) {
+            SUSEProductSet targetProducts = targets.get(0);
+
+            // See if vendor channels are matching the given base channel
+            EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
+                    targetProducts.getBaseProduct().getId(), arch);
+            if (baseChannel != null && baseChannel.getLabel().equals(baseChannelLabel)) {
+                List<EssentialChannelDto> channels = DistUpgradeManager.
+                        getRequiredChannels(targetProducts, baseChannel.getId());
+                for (EssentialChannelDto channel : channels) {
+                    channelIDs.add(channel.getId());
+                }
+                return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                        targetProducts, channelIDs, dryRun, earliest);
+            }
+
+            // Consider alternatives (cloned channel trees)
+            Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
+                    getAlternatives(targetProducts, arch, user);
+            for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
+                if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
+                    channelIDs.addAll(alternatives.get(clonedBaseChannel));
+                    return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                            targetProducts, channelIDs, dryRun, earliest);
+                }
+            }
+        }
+
+        // We didn't find target products if we are still here
+        throw new FaultException(-1, "servicePackMigrationNoTarget",
+                "No target found for SP migration");
+    }
+
+    /**
+     * Schedule a dist upgrade for a system. This call takes a list of channel labels that
+     * the system will be subscribed to before performing the dist upgrade.
+     *
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and
+     * in any case do a dry run before scheduling an actual dist upgrade.
+     *
+     * @param sessionKey User's session key
+     * @param sid ID of the server
+     * @param channels labels of channels to subscribe to
+     * @param dryRun set to true to perform a dry run
+     * @param earliest earliest occurrence of the migration
+     * @return action id, exception thrown otherwise
+     *
+     * @xmlrpc.doc Schedule a dist upgrade for a system.
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "serverId")
+     * @xmlrpc.param #array_single("string", "channels")
+     * @xmlrpc.param #param("boolean", "dryRun")
+     * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
+     * @xmlrpc.returntype int actionId - The action id of the scheduled action
+     */
+    public Long scheduleDistUpgrade(String sessionKey, Integer sid, List<String> channels,
+            boolean dryRun, Date earliest) {
+        User user = getLoggedInUser(sessionKey);
+
+        // Lookup the server and perform some checks
+        Server server = null;
+        try {
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
+        }
+
+        // Perform checks on the channels (while converting to a list of IDs)
+        Set<Long> channelIDs = null;
+        try {
+            channelIDs = DistUpgradeManager.performChannelChecks(channels, user);
+        }
+        catch (DistUpgradeException e) {
+            throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
+        }
+
+        return DistUpgradeManager.scheduleDistUpgrade(user, server, null,
+                channelIDs, dryRun, earliest);
     }
 }
