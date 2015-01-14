@@ -22,6 +22,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.Server;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -29,6 +31,7 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +72,35 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static void save(SUSEUpgradePath upgradePath) {
         singleton.saveObject(upgradePath);
+    }
+
+    /**
+     * Delete a {@link SUSEProduct} from the database.
+     * @param product SUSE product to be deleted.
+     */
+    public static void remove(SUSEProduct product) {
+        singleton.removeObject(product);
+    }
+
+    /**
+     * Removes all products except the ones passed as parameter.
+     * @param products products to keep
+     */
+    @SuppressWarnings("unchecked")
+    public static void removeAllExcept(Collection<SUSEProduct> products) {
+        Collection<Long> ids = CollectionUtils.collect(products, new Transformer() {
+            @Override
+            public Object transform(Object arg0In) {
+                return ((SUSEProduct) arg0In).getId();
+            }
+        });
+
+        Criteria c = getSession().createCriteria(SUSEProduct.class);
+        c.add(Restrictions.not(Restrictions.in("id", ids)));
+
+        for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
+            remove(product);
+        }
     }
 
     /**
