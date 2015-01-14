@@ -942,6 +942,7 @@ public class ContentSyncManager {
      * @param products list of products
      */
     public void updateSUSEProducts(Collection<SCCProduct> products) {
+        Collection<SUSEProduct> processed = new LinkedList<SUSEProduct>();
         for (SCCProduct p : products) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
@@ -983,7 +984,10 @@ public class ContentSyncManager {
                 product.setArch(pArch);
             }
             SUSEProductFactory.save(product);
+            processed.add(product);
         }
+
+        SUSEProductFactory.removeAllExcept(processed);
     }
 
     /**
