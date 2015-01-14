@@ -26,6 +26,10 @@ class SuseProductsImport(GenericPackageImport):
                 archs[item['arch']] = None
                 self.backend.lookupPackageArches(archs)
             item['arch_type_id'] = archs[item['arch']]
+            if item['release'] == 'None':
+                item['release'] = None
+            if item['version'] == 'None':
+                item['version'] = None
             self._data.append(item)
 
     def fix(self):
@@ -59,6 +63,8 @@ class SuseProductChannelsImport(GenericPackageImport):
                 item['channel_id'] = channel[item['channel_label']]['id']
             else:
                 item['channel_id'] = None
+            if item['parent_channel_label'] == 'None':
+                item['parent_channel_label'] = None
             self._data.append(item)
 
     def fix(self):
