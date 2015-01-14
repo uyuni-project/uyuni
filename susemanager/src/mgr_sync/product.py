@@ -54,7 +54,7 @@ class Product(object):
                 prefix = "     " + prefix
             else:
                 counter = interactive_data['counter']
-                prefix = "%.3d) %s" % (counter, prefix)
+                prefix = "{0:03}) {1}".format(counter, prefix)
                 interactive_data['num_prod'][counter] = self
                 interactive_data['counter'] += 1
 
@@ -87,16 +87,18 @@ class Product(object):
         return False
 
 
-def parse_products(data):
+def parse_products(data, log):
     """
     Parses the data returned by SUSE Manager list products API.
     Returns a list of the Products.
     """
+    log.info("Parsing products...")
 
     products = []
 
     for p in data:
+        log.debug("Found product '{0} {1}'".format(
+            Product(p).friendly_name, Product(p).arch))
         products.append(Product(p))
 
     return products
-

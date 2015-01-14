@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2014 SUSE
@@ -14,26 +13,26 @@
 # granted to use or replicate SUSE trademarks that are incorporated
 # in this software or its documentation.
 
-import socket
-import sys
+from spacewalk.common import rhnLog
+from spacewalk.common.rhnLog import log_debug
 
-from spacewalk.susemanager.mgr_sync.cli import get_options
-from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
+class Logger(object):
+    """
+    Log mgr-sync activity.
 
+    debug: Additional information
+    info: General activities
+    error: Errors
+    """
 
-options = get_options()
+    def __init__(self, debug, logfile):
+        rhnLog.initLOG(logfile, int(debug))
 
-try:
-    sys.exit(MgrSync().run(options))
-except socket.error, ex:
-    sys.stderr.write("Network error: {0}\n".format(ex))
-    if options.verbose:
-        raise
-except KeyboardInterrupt, ex:
-    sys.stdout.write("\n")
-except Exception, ex:
-    sys.stderr.write("General error: {0}\n".format(ex))
-    if options.verbose:
-        raise
-    else:
-        sys.exit(1)
+    def debug(self, msg):
+        log_debug(3, msg)
+
+    def info(self, msg):
+        log_debug(2, msg)
+
+    def error(self, msg):
+        log_debug(1, msg)

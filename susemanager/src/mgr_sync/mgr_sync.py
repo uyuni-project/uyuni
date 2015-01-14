@@ -23,11 +23,14 @@ from spacewalk.susemanager.content_sync_helper import switch_to_scc
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
+from spacewalk.susemanager.mgr_sync import logger
 from spacewalk.susemanager.authenticator import Authenticator
 from spacewalk.susemanager.helpers import cli_ask
 
 # see TaskoXmlRpcHandler.java for available methods
 TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
+
+DEFAULT_LOG_LOCATION = "/var/log/rhn/mgr-sync.log"
 
 class MgrSync(object):
     """
@@ -36,7 +39,7 @@ class MgrSync(object):
 
     def __init__(self):
         self.config = Config()
-        url = "http://%s:%s%s" % (self.config.host,
+        url = "http://{0}:{1}{2}".format(self.config.host,
                                   self.config.port,
                                   self.config.uri)
         self.conn = xmlrpclib.ServerProxy(url)
@@ -44,14 +47,25 @@ class MgrSync(object):
                                   user=self.config.user,
                                   password=self.config.password,
                                   token=self.config.token)
+
         self.quiet = False
+
+    def __init__logger(self, debug_level, logfile=DEFAULT_LOG_LOCATION):
+        if debug_level == 1:
+            debug_level = self.config.debug or 1
+
+        return logger.Logger(debug_level, logfile)
 
     def run(self, options):
         """
         Run the app.
         """
+        self.log = self.__init__logger(options.debug)
+        self.log.info("Executing mgr-sync {0}".format(options))
+
         if not self._is_scc_allowed():
             msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
+            self.log.error(msg)
             sys.stderr.write(msg)
             sys.exit(1)
 
@@ -65,11 +79,13 @@ This can be done using the following commmand:
 
 Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
 """
+            self.log.error(msg)
             sys.stderr.write(msg)
             sys.exit(1)
 
         if hasISSMaster() and not (vars(options).has_key('enable_scc') or vars(options).has_key('refresh')):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
+            self.log.error(msg)
             sys.stderr.write(msg)
             sys.exit(1)
 
@@ -82,6 +98,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 self.config.password = self.auth.password
             self.config.write()
             if options.saveconfig:
+                self.log.info("Credentials have been saved to the {0} file.".format(
+                    self.config.dotfile))
                 print("Credentials has been saved to the {0} file.".format(
                         self.config.dotfile))
 
@@ -94,13 +112,16 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         if vars(options).has_key('list_target'):
             if 'channel' in options.list_target:
+                self.log.info("Listing channels...")
                 self._list_channels(expand=options.expand,
                                     filter=options.filter,
                                     no_optionals=options.no_optionals,
                                     compact=options.compact)
             elif 'credentials' in options.list_target:
+                self.log.info("Listing credentials...")
                 self._list_credentials()
             elif 'product' in options.list_target:
+                self.log.info("Listing products...")
                 self._list_products(expand=options.expand,
                                     filter=options.filter)
         elif vars(options).has_key('add_target'):
@@ -115,6 +136,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                           schedule=options.schedule)
         elif vars(options).has_key('enable_scc'):
             if current_cc_backend() == BackendType.SCC:
+                self.log.info("The SUSE Customer Center (SCC) backend is already "
+                          "active, nothing to do.")
                 print("The SUSE Customer Center (SCC) backend is already "
                       "active, nothing to do.")
             else:
@@ -149,10 +172,11 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         base_channels = self._fetch_remote_channels()
 
         if not base_channels:
+            self.log.info("No channels found.")
             print("No channels found.")
             return
 
-        print "Available Channels%s:\n" % (expand and " (full)" or "")
+        print "Available Channels{0}:\n".format(expand and " (full)" or "")
         print("\nStatus:")
         print("  - [I] - channel is installed")
         print("  - [ ] - channel is not installed, but is available")
@@ -175,7 +199,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                             if child.status == Channel.Status.AVAILABLE:
                                 interactive_number += 1
                                 if show_interactive_numbers:
-                                    prefix = "%.2d) " % interactive_number
+                                    prefix = "{0:02}) ".format(interactive_number)
                                 available_channels.append(child.label)
                             elif show_interactive_numbers:
                                 prefix = "    "
@@ -188,7 +212,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 if base_channel.status == Channel.Status.AVAILABLE:
                     interactive_number += 1
                     if show_interactive_numbers:
-                        prefix = "%.2d) " % interactive_number
+                        prefix = "{0:02}) ".format(interactive_number)
                     available_channels.append(base_channel.label)
                 elif show_interactive_numbers:
                     prefix = "    "
@@ -196,14 +220,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
                 for child_output in children_output:
                     print(child_output)
-
+        self.log.info(available_channels)
         return available_channels
 
     def _fetch_remote_channels(self):
         """ Returns the list of channels as reported by the remote server """
         return parse_channels(
             self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "listChannels", self.auth.token()))
+                                        "listChannels", self.auth.token()), self.log)
 
     def _add_channels(self, channels, mirror=""):
         """ Add a list of channels.
@@ -223,13 +247,17 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         for channel in channels:
             add_channel = True
             if enable_checks:
-                match = find_channel_by_label(channel, current_channels)
+                match = find_channel_by_label(channel, current_channels, self.log)
                 if match:
                     if match.status == Channel.Status.INSTALLED:
                         add_channel = False
+                        self.log.info("Channel '{0}' has already been added".format(
+                            channel))
                         print("Channel '{0}' has already been added".format(
                             channel))
                     elif match.status == Channel.Status.UNAVAILABLE:
+                        self.log.error("Channel '{0}' is not available, skipping".format(
+                            channel))
                         print("Channel '{0}' is not available, skipping".format(
                             channel))
                         self.exit_with_error = True
@@ -238,6 +266,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                     if not match.base_channel:
                         parent = current_channels[match.parent]
                         if parent.status == Channel.Status.UNAVAILABLE:
+                            self.log.error("Error, '{0}' depends on channel '{1}' which is not available".format(
+                                    channel, parent.label))
+                            self.log.error("'{0}' has not been added".format(channel))
                             sys.stderr.write(
                                 "Error, '{0}' depends on channel '{1}' which is not available\n".format(
                                     channel, parent.label))
@@ -246,6 +277,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                             self.exit_with_error = True
                             continue
                         if parent.status == Channel.Status.AVAILABLE:
+                            self.log.info("'{0}' depends on channel '{1}' which has not been added yet".format(
+                                channel, parent.label))
+                            self.log.info("Going to add '{0}'".format(
+                                parent.label))
                             print("'{0}' depends on channel '{1}' which has not been added yet".format(
                                 channel, parent.label))
                             print("Going to add '{0}'".format(
@@ -253,13 +288,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                             self._add_channels([parent.label])
 
             if add_channel:
+                self.log.debug("Adding channel '{0}'".format(channel))
                 print("Adding '{0}' channel".format(channel))
                 self._execute_xmlrpc_method(self.conn.sync.content,
                                             "addChannel",
                                             self.auth.token(),
                                             channel,
                                             mirror)
-                match = find_channel_by_label(channel, current_channels)
+                match = find_channel_by_label(channel, current_channels, self.log)
                 if match:
                     match.status = Channel.Status.INSTALLED
 
@@ -273,12 +309,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """
 
         try:
+            self.log.info("Scheduling reposync for '{0}' channel".format(
+                channel))
             self._execute_xmlrpc_method(self.conn.channel.software,
                                         "syncRepo",
                                         self.auth.token(),
                                         channel)
         except xmlrpclib.Fault, ex:
             if ex.faultCode == 2802:
+                self.log.error("Error, unable to schedule channel reposync: Taskomatic is not responding.")
                 sys.stderr.write("Error, unable to schedule channel reposync: Taskomatic is not responding.\n")
                 sys.exit(1)
 
@@ -297,6 +336,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             msg=("Enter channel number (1-{0})".format(len(channels))),
             validator=validator)
 
+        self.log.info("Selecting channel '{0}' from choice '{1}'".format(
+            channels[int(choice)-1], choice))
         return channels[int(choice)-1]
 
     ############################
@@ -309,7 +350,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """ Returns the list of products as reported by the remote server """
         return parse_products(
             self._execute_xmlrpc_method(self.conn.sync.content,
-                                        "listProducts", self.auth.token()))
+                                        "listProducts", self.auth.token()), self.log)
 
     def _list_products(self, filter, expand=False,
                        show_interactive_numbers=False):
@@ -331,6 +372,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         products = self._fetch_remote_products()
 
         if not products:
+            self.log.info("No products found.")
             print("No products found.")
             return
 
@@ -344,6 +386,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             product.to_stdout(filter=filter,
                               expand=expand,
                               interactive_data=interactive_data)
+            self.log.info("{0} {1}".format(product.friendly_name, product.arch))
 
         return interactive_data
 
@@ -358,6 +401,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             return
 
         if product.status == Product.Status.INSTALLED:
+            self.log.info("Product '{0}' has already been added".format(
+                product.friendly_name))
             print("Product '{0}' has already been added".format(
                 product.friendly_name))
             return
@@ -365,9 +410,12 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         mandatory_channels = [c.label for c in product.channels
                               if not c.optional]
 
+        self.log.debug("Adding channels required by '{0}' product".format(
+            product.friendly_name))
         print("Adding channels required by '{0}' product".format(
             product.friendly_name))
         self._add_channels(channels=mandatory_channels, mirror=mirror)
+        self.log.info("Product successfully added")
         print("Product successfully added")
 
     def _select_product_interactive_mode(self):
@@ -386,8 +434,14 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 msg=("Enter product number (1-{0})".format(
                     len(num_prod.keys()))),
                 validator=validator)
+
+            self.log.info("Selecting product '{0} {1}' from choice '{2}'".format(
+                num_prod[int(choice)].friendly_name, num_prod[int(choice)].arch,
+                choice))
             return num_prod[int(choice)]
         else:
+            self.log.info("All the available products have already been "
+                      "installed, nothing to do")
             print("All the available products have already been installed, "
                   "nothing to do")
             return None
@@ -414,14 +468,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             print("Credentials:")
             for credential in credentials:
                 msg=credential['user']
+                self.log.info(credential['user'])
                 if show_interactive_numbers:
                     interactive_number += 1
-                    msg = "%.2d) " % interactive_number + msg
+                    msg = "{0:02}) {1}".format(interactive_number, msg)
                 if credential['isPrimary']:
                     msg += " (primary)"
                 print(msg)
-
         else:
+            self.log.info("No credentials found")
             print("No credentials found")
 
     def _add_credentials(self, primary, credentials):
@@ -435,6 +490,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 msg=("Password to add"),
                 password=True)
             if not pw == cli_ask(msg=("Confirm password"),password=True):
+                self.log.error("Passwords do not match")
                 print("Passwords do not match")
                 self.exit_with_error = True
                 return
@@ -444,6 +500,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         saved_users = self._fetch_credentials()
         if any(user == saved_user['user'] for saved_user in saved_users):
+            self.log.error("Credentials already exist")
             print("Credentials already exist")
             self.exit_with_error = True
         else:
@@ -453,6 +510,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                         user,
                                         pw,
                                         primary)
+            self.log.info("Successfully added credentials.")
             print("Successfully added credentials.")
             print("It is now recommended to run 'mgr-sync refresh'.")
 
@@ -480,10 +538,12 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             "deleteCredentials",
                                             self.auth.token(),
                                             user)
-                print("Successfully deleted credentials: " + user)
+                self.log.info("Successfully deleted credentials: {0}".format( user))
+                print("Successfully deleted credentials: {0}".format( user))
                 print("It is now recommended to run 'mgr-sync refresh'.")
             else:
-                print("Credentials not found in database: " + user)
+                self.log.error("Credentials not found in database: {0}".format(user))
+                print("Credentials not found in database: {0}".format(user))
                 self.exit_with_error = True
 
     def _delete_credentials_interactive_mode(self):
@@ -501,6 +561,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             msg=("Enter credentials number (1-{0})".format(len(saved_credentials))),
                  validator=validator)
 
+        self.log.info("Selecting credentials '{0}' from choice '{1}'".format(
+            saved_credentials[int(number)-1]['user'], number))
         return [saved_credentials[int(number)-1]['user']]
 
 
@@ -514,6 +576,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """
         Refresh the SCC data in the SUSE Manager database.
         """
+        self.log.info("Refreshing SCC data...")
         token = self.auth.token(verify=True)
         actions = (
             ("Channels             ", "synchronizeChannels"),
@@ -532,16 +595,20 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             params['noRepoSync'] = not enable_reposync
 
             try:
+                self.log.debug("Calling Taskomatic refresh with '{0}'".format(
+                    params))
                 client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
             except xmlrpclib.Fault, e:
-                sys.stderr.write("Error scheduling refresh: %s\n" % e)
+                self.log.error("Error scheduling refresh: {0}".format(e))
+                sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
                 return
+            self.log.info("Refresh successfully scheduled")
             sys.stdout.write("Refresh successfully scheduled\n")
             sys.stdout.flush()
             return
 
         for operation, method in actions:
-            sys.stdout.write("Refreshing %s" % operation)
+            sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
             try:
                 if method == "synchronizeChannels":
@@ -552,16 +619,20 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 else:
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
                                                 token)
+                self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
+                self.log.error("Refreshing {0} failed".format(operation.rstrip()))
+                self.log.error("Error: {0}".format(ex))
                 sys.stdout.write("[FAIL]".rjust(text_width) + "\n")
                 sys.stdout.flush()
-                sys.stderr.write("\tError: %s\n\n" % ex)
+                sys.stderr.write("\tError: {0}\n\n".format(ex))
                 self.exit_with_error = True
                 return False
 
         if enable_reposync:
+            self.log.info("Scheduling refresh of all the available channels")
             print("\nScheduling refresh of all the available channels")
 
             base_channels = self._fetch_remote_channels()
@@ -571,10 +642,13 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 if bc.status != Channel.Status.INSTALLED:
                     continue
 
+                self.log.debug("Scheduling reposync for '{0}' channel".format(bc.label))
                 print("Scheduling reposync for '{0}' channel".format(bc.label))
                 self._schedule_channel_reposync(bc.label)
                 for child in bc.children:
                     if child.status == Channel.Status.INSTALLED:
+                        self.log.debug("Scheduling reposync for '{0}' channel".format(
+                            child.label))
                         print("Scheduling reposync for '{0}' channel".format(
                             child.label))
                         self._schedule_channel_reposync(child.label)
@@ -583,20 +657,25 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     def _enable_scc(self, retry_on_session_failure=True):
         """ Enable the SCC backend """
 
+        self.log.info("Enabling SCC...")
         if current_cc_backend() == BackendType.NCC:
 
             try:
                 switch_to_scc(self.conn, self.auth.token())
             except xmlrpclib.Fault, ex:
                 if retry_on_session_failure and self._check_session_fail(ex):
+                    self.log.debug("Retrying after session failure: {0}".format(ex))
                     self.auth.discard_token()
                     return self._enable_scc(retry_on_session_failure=False)
                 else:
+                    self.log.error("Error: {0}".format(ex))
                     raise ex
             if not self._refresh(enable_reposync=False):
                 sys.exit(1)
+            self.log.info("SCC backend successfully migrated.")
             print("SCC backend successfully migrated.")
         else:
+            self.log.info("SUSE Manager is already using the SCC backend.")
             print("SUSE Manager is already using the SCC backend.")
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
@@ -612,15 +691,19 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         retry_on_session_failure = opts.get("retry_on_session_failure", True)
 
         try:
+            self.log.debug("Invoking remote method {0} with auth_token {1}".format(
+                method, auth_token))
             return getattr(endoint, method)(auth_token, *params)
         except xmlrpclib.Fault, ex:
             if retry_on_session_failure and self._check_session_fail(ex):
+                self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()
                 auth_token = self.auth.token()
                 return self._execute_xmlrpc_method(
                     endoint, method, auth_token, *params,
                     retry_on_session_failure=False)
             else:
+                self.log.error("Error: {0}".format(ex))
                 raise ex
 
     def _check_session_fail(self, exception):
