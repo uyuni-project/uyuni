@@ -538,11 +538,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                             "deleteCredentials",
                                             self.auth.token(),
                                             user)
-<<<<<<< HEAD
 
-=======
                 self.log.info("Successfully deleted credentials: {0}".format( user))
->>>>>>> d6c81c8... Add logging to mgr-sync
                 print("Successfully deleted credentials: {0}".format( user))
             else:
                 self.log.error("Credentials not found in database: {0}".format(user))
