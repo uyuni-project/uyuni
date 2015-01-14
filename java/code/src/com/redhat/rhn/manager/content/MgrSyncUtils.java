@@ -22,21 +22,19 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.scc.client.ProxyAuthenticator;
 import com.suse.scc.client.SCCProxySettings;
 
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
@@ -63,57 +61,46 @@ public class MgrSyncUtils {
         if (log.isDebugEnabled()) {
             log.debug("Sending HEAD request to: " + url);
         }
-        HttpURLConnection connection = null;
         int responseCode = -1;
-        try {
-            // Setup proxy support
-            ConfigDefaults configDefaults = ConfigDefaults.get();
-            String proxyHost = configDefaults.getProxyHost();
-            if (!StringUtils.isBlank(proxyHost)) {
-                int proxyPort = configDefaults.getProxyPort();
-                Proxy proxy = new Proxy(Proxy.Type.HTTP,
-                        new InetSocketAddress(proxyHost, proxyPort));
-                connection = (HttpURLConnection) new URL(url).openConnection(proxy);
-                if (log.isDebugEnabled()) {
-                    log.debug("Sending HEAD request via proxy: " + proxyHost);
-                }
-                String proxyUsername = configDefaults.getProxyUsername();
-                String proxyPassword = configDefaults.getProxyPassword();
-                if (!StringUtils.isBlank(proxyUsername) &&
-                        !StringUtils.isBlank(proxyPassword)) {
-                    Authenticator.setDefault(new ProxyAuthenticator(
-                            proxyUsername, proxyPassword));
-                }
-            }
-            else {
-                connection = (HttpURLConnection) new URL(url).openConnection();
-            }
+        HttpClient httpClient = new HttpClient();
+        HeadMethod headMethod = new HeadMethod(url);
 
-            // Configure the request
-            connection.setRequestMethod("HEAD");
-
-            // Basic authentication
-            if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
-                byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-                String credsString = new String(credsBytes);
-                if (credsString != null) {
-                    connection.setRequestProperty("Authorization", "Basic " + credsString);
-                }
+        // Apply proxy settings
+        String proxyHost = ConfigDefaults.get().getProxyHost();
+        if (!StringUtils.isBlank(proxyHost)) {
+            if (log.isDebugEnabled()) {
+                log.debug("Sending HEAD request via proxy: " + proxyHost);
             }
+            int proxyPort = ConfigDefaults.get().getProxyPort();
+            httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
 
-            // Get the response code
-            responseCode = connection.getResponseCode();
+            String proxyUsername = ConfigDefaults.get().getProxyUsername();
+            String proxyPassword = ConfigDefaults.get().getProxyPassword();
+            if (!StringUtils.isBlank(proxyUsername) &&
+                    !StringUtils.isBlank(proxyPassword)) {
+                Credentials proxyCredentials = new UsernamePasswordCredentials(
+                        proxyUsername, proxyPassword);
+                httpClient.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
+            }
         }
-        catch (MalformedURLException e) {
+
+        // Basic authentication
+        if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
+            Credentials creds = new UsernamePasswordCredentials(username, password);
+            httpClient.getState().setCredentials(AuthScope.ANY, creds);
+        }
+
+        try {
+            responseCode = httpClient.executeMethod(headMethod);
+        }
+        catch (HttpException e) {
             throw new ContentSyncException(e);
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
         }
         finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            headMethod.releaseConnection();
         }
         return responseCode;
     }
