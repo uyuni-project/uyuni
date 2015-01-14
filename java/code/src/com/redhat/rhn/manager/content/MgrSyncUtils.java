@@ -26,7 +26,6 @@ import com.suse.scc.client.SCCProxySettings;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.HeadMethod;
@@ -92,9 +91,6 @@ public class MgrSyncUtils {
 
         try {
             responseCode = httpClient.executeMethod(headMethod);
-        }
-        catch (HttpException e) {
-            throw new ContentSyncException(e);
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
