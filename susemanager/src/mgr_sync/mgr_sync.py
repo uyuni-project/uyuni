@@ -30,6 +30,8 @@ from spacewalk.susemanager.helpers import cli_ask
 # see TaskoXmlRpcHandler.java for available methods
 TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
 
+DEFAULT_LOG_LOCATION = "/var/log/rhn/mgr-sync.log"
+
 class MgrSync(object):
     """
     App, which utilizes the XML-RPC API.
@@ -48,16 +50,17 @@ class MgrSync(object):
 
         self.quiet = False
 
+    def __init__logger(self, debug_level, logfile=DEFAULT_LOG_LOCATION):
+        if debug_level == 1:
+            debug_level = self.config.debug or 1
+
+        return logger.Logger(debug_level, logfile)
+
     def run(self, options):
         """
         Run the app.
         """
-        self.debug = options.debug
-
-        if self.debug == 1:
-            self.debug = self.config.debug or 1
-
-        self.log = logger.Logger(self.debug)
+        self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
         if not self._is_scc_allowed():
