@@ -552,6 +552,11 @@ class XML_Dumper:
         self._write_dump(exportLib.SuseSubscriptionDumper)
         return 0
 
+    def dump_cloned_channels(self):
+        log_debug(2)
+        self._write_dump(exportLib.ClonedChannelsDumper)
+        return 0
+
 class SatelliteDumper(exportLib.SatelliteDumper):
     def set_attributes(self):
         """ Overriding with our own version """

@@ -37,6 +37,7 @@ class ActionDeps:
             'suse-product-channels'     : ['suse-products', 'channels'],
             'suse-upgrade-paths'        : ['suse-products'],
             'suse-subscriptions'        : ['channel-families'],
+            'cloned-channels'           : ['channels'],
             #FIXME: remove old code - when NCC is really dead
             'suse-products-subscriptions' : [''],
         }
@@ -50,6 +51,7 @@ class ActionDeps:
             'channels',
             'blacklists',
             'short',
+            'cloned-channels',
             'rpms',
             'packages',
             'errata',
