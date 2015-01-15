@@ -160,7 +160,7 @@ public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
          catch (UnsupportedEncodingException e) {
              String msg = "Following errors were encountered " +
                      "when creating the config file.\n" + e.getMessage();
-                 throw new FaultException(1023, "ConfgFileError", msg);
+             throw new ConfigFileErrorException(msg);
         }
         helper.add(CONTENTS_ENC64, Boolean.TRUE);
         if (!rev.getConfigContent().isBinary()) {
