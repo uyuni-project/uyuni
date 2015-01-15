@@ -5483,7 +5483,7 @@ public class SystemHandler extends BaseHandler {
     /**
      * Schedule a Service Pack migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack. It will automatically
-     * find all mandatory product channels below a given target base channel, and subscribe
+     * find all mandatory product channels below a given target base channel and subscribe
      * the system accordingly. Any additional optional channels can be subscribed by
      * providing their labels.
      *
