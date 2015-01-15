@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE
+ * Copyright (c) 2014--2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -35,7 +35,7 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * Simple client for NCC subscription data
+ * Simple client for requesting NCC subscription data.
  */
 public class NCCClient {
 
@@ -44,49 +44,38 @@ public class NCCClient {
 
     private static final String NCC_URL = "https://secure-www.novell.com/center/regsvc/";
     private static final String NCC_PING_COMMAND = "?command=ping";
-    private static final String NCC_LIST_SUBSCRIPTIONS_COMMAND =
-            "?command=listsubscriptions";
+    private static final String NCC_SUBSCRIPTIONS_COMMAND = "?command=listsubscriptions";
     private static final int MAX_REDIRECTS = 10;
-
     private String nccUrl;
     private HttpClient httpClient;
 
     /**
-     * Creates a client for the NCC registration service
-     * using the default known URL
+     * Creates a client for the NCC registration service using the default known URL.
      */
     public NCCClient() {
         this(NCC_URL);
     }
 
     /**
-     * Creates a client for the NCC registration service
+     * Creates a client for the NCC registration service.
+     *
      * @param url Custom URL
      */
     public NCCClient(String url) {
-        this.nccUrl = url;
-        this.httpClient = HttpUtils.initHttpClient();
-    }
-
-    /**
-     * Sets the url for the NCC service.
-     * This method is useful if you want to do testing against
-     * a development or mock server.
-     * @param url NCC url
-     */
-    public void setNCCUrl(String url) {
-        this.nccUrl = url;
+        nccUrl = url;
+        httpClient = HttpUtils.initHttpClient();
     }
 
     /**
      * Connect to NCC and return subscriptions for a given pair of credentials.
+     *
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      * @throws NCCException in case something bad happens with NCC
      */
     public List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds)
             throws NCCException {
-        // Setup XML to send it with the request
+        // Setup data to enclose it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
@@ -97,7 +86,7 @@ public class NCCClient {
         try {
             // Follow up to MAX_REDIRECTS redirects manually. HttpClient is unable to
             // automatically handle redirects of entity enclosing methods such as POST.
-            String location = this.nccUrl + NCC_LIST_SUBSCRIPTIONS_COMMAND;
+            String location = this.nccUrl + NCC_SUBSCRIPTIONS_COMMAND;
             int result = HttpStatus.SC_MOVED_TEMPORARILY;
             int redirects = 0;
 
@@ -142,7 +131,8 @@ public class NCCClient {
     }
 
     /**
-     * Pings NCC.
+     * Ping NCC to test reachability.
+     *
      * @return true if NCC is reachable, false if it is not
      */
     public boolean ping() {
