@@ -5581,7 +5581,11 @@ public class SystemHandler extends BaseHandler {
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
-     * @xmlrpc.doc Schedule a Service Pack migration for a system.
+     * @xmlrpc.doc Schedule a Service Pack migration for a system. This call is the
+     * recommended and supported way of migrating a system to the next Service Pack. It will
+     * automatically find all mandatory product channels below a given target base channel
+     * and subscribe the system accordingly. Any additional optional channels can be
+     * subscribed by providing their labels.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param("string", "baseChannelLabel")
@@ -5667,7 +5671,11 @@ public class SystemHandler extends BaseHandler {
      * @param earliest earliest occurrence of the migration
      * @return action id, exception thrown otherwise
      *
-     * @xmlrpc.doc Schedule a dist upgrade for a system.
+     * @xmlrpc.doc Schedule a dist upgrade for a system. This call takes a list of channel
+     * labels that the system will be subscribed to before performing the dist upgrade.
+     * Note: You can seriously damage your system with this call, use it only if you really
+     * know what you are doing! Make sure that the list of channel labels is complete and in
+     * any case do a dry run before scheduling an actual dist upgrade.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("string", "channels")
