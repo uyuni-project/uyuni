@@ -614,13 +614,9 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 if method == "synchronizeChannels":
                     self._execute_xmlrpc_method(self.conn.sync.content, method, token, mirror)
                 else:
-<<<<<<< HEAD
-                    self._execute_xmlrpc_method(self.conn.sync.content, method, token)
-=======
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
                                                 token)
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
->>>>>>> d6c81c8... Add logging to mgr-sync
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
             except Exception, ex:
