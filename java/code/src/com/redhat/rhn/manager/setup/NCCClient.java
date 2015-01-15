@@ -14,22 +14,18 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.HttpUtils;
 
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
 
-import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -69,7 +65,7 @@ public class NCCClient {
      */
     public NCCClient(String url) {
         this.nccUrl = url;
-        this.httpClient = initHttpClient(null, null);
+        this.httpClient = HttpUtils.initHttpClient();
     }
 
     /**
@@ -164,43 +160,5 @@ public class NCCClient {
         finally {
             getPing.releaseConnection();
         }
-    }
-
-    /**
-     * TODO: Make this a public method to be reused by other classes.
-     * Initialize and return a {@link HttpClient} for general purpose.
-     * @param username username for basic authentication (optional)
-     * @param password password for basic authentication (optional)
-     * @return {@link HttpClient} object
-     */
-    private HttpClient initHttpClient(String username, String password) {
-        HttpClient httpClient = new HttpClient();
-
-        // Apply proxy settings
-        String proxyHost = ConfigDefaults.get().getProxyHost();
-        if (!StringUtils.isBlank(proxyHost)) {
-            int proxyPort = ConfigDefaults.get().getProxyPort();
-            httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
-            if (log.isDebugEnabled()) {
-                log.debug("Using proxy: " + proxyHost + ":" + proxyPort);
-            }
-
-            String proxyUsername = ConfigDefaults.get().getProxyUsername();
-            String proxyPassword = ConfigDefaults.get().getProxyPassword();
-            if (!StringUtils.isBlank(proxyUsername) &&
-                    !StringUtils.isBlank(proxyPassword)) {
-                Credentials proxyCredentials = new UsernamePasswordCredentials(
-                        proxyUsername, proxyPassword);
-                httpClient.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
-            }
-        }
-
-        // Basic authentication
-        if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
-            Credentials creds = new UsernamePasswordCredentials(username, password);
-            httpClient.getState().setCredentials(AuthScope.ANY, creds);
-        }
-
-        return httpClient;
     }
 }

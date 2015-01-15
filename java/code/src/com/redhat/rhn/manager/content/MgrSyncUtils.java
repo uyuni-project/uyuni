@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.HttpUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -24,12 +25,8 @@ import com.redhat.rhn.domain.channel.ProductName;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.scc.client.SCCProxySettings;
 
-import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.HeadMethod;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -61,33 +58,8 @@ public class MgrSyncUtils {
             log.debug("Sending HEAD request to: " + url);
         }
         int responseCode = -1;
-        HttpClient httpClient = new HttpClient();
+        HttpClient httpClient = HttpUtils.initHttpClient(username, password);
         HeadMethod headMethod = new HeadMethod(url);
-
-        // Apply proxy settings
-        String proxyHost = ConfigDefaults.get().getProxyHost();
-        if (!StringUtils.isBlank(proxyHost)) {
-            if (log.isDebugEnabled()) {
-                log.debug("Sending HEAD request via proxy: " + proxyHost);
-            }
-            int proxyPort = ConfigDefaults.get().getProxyPort();
-            httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
-
-            String proxyUsername = ConfigDefaults.get().getProxyUsername();
-            String proxyPassword = ConfigDefaults.get().getProxyPassword();
-            if (!StringUtils.isBlank(proxyUsername) &&
-                    !StringUtils.isBlank(proxyPassword)) {
-                Credentials proxyCredentials = new UsernamePasswordCredentials(
-                        proxyUsername, proxyPassword);
-                httpClient.getState().setProxyCredentials(AuthScope.ANY, proxyCredentials);
-            }
-        }
-
-        // Basic authentication
-        if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
-            Credentials creds = new UsernamePasswordCredentials(username, password);
-            httpClient.getState().setCredentials(AuthScope.ANY, creds);
-        }
 
         try {
             responseCode = httpClient.executeMethod(headMethod);
