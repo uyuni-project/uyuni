@@ -21,7 +21,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -47,11 +46,10 @@ public class SUSEProductTestUtils {
 
     /**
      * Create a SUSE product (which is different from a {@link com.redhat.rhn.domain.channel.ChannelProduct}).
-     * @param family the channel family
      * @return the newly created SUSE product
      * @throws Exception if anything goes wrong
      */
-    public static SUSEProduct createTestSUSEProduct(ChannelFamily family) throws Exception {
+    public static SUSEProduct createTestSUSEProduct() throws Exception {
         SUSEProduct product = new SUSEProduct();
         String name = TestUtils.randomString().toLowerCase();
         product.setName(name);

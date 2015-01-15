@@ -103,8 +103,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     public void testGetTargetProductSetsEmpty() throws Exception {
         // Setup source products
-        ChannelFamily family = createTestChannelFamily();
-        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct sourceProduct = SUSEProductTestUtils.createTestSUSEProduct();
         SUSEProductSet sourceProducts = new SUSEProductSet(
                 sourceProduct.getId(), new ArrayList<Long>());
         ChannelArch arch = ChannelFactory.findArchByLabel("channel-ia32");
@@ -120,23 +119,22 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
      */
     public void testGetTargetProductSets() throws Exception {
         // Setup source products
-        ChannelFamily family = createTestChannelFamily();
-        SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct();
         List<Long> sourceAddons = new ArrayList<Long>();
-        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct();
         sourceAddons.add(sourceAddonProduct.getId());
         SUSEProductSet sourceProducts = new SUSEProductSet(
                 sourceBaseProduct.getId(), sourceAddons);
 
         // Setup migration target product + upgrade path
-        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct();
         Channel baseChannel = ErrataTestUtils.createTestChannel(user);
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannel, targetBaseProduct);
         SUSEProductTestUtils.createTestSUSEUpgradePath(
                 sourceBaseProduct, targetBaseProduct);
 
         // Setup target addon product + upgrade path
-        SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct();
         Channel childChannel = ErrataTestUtils.createTestChannel(user, baseChannel);
         SUSEProductTestUtils.createTestSUSEProductChannel(childChannel, targetAddonProduct);
         SUSEProductTestUtils.createTestSUSEUpgradePath(
@@ -310,10 +308,9 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Server server = ErrataTestUtils.createTestServer(user, subscribedChannels);
 
         // Setup product upgrade
-        ChannelFamily family = createTestChannelFamily();
-        SUSEProduct source = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct source = SUSEProductTestUtils.createTestSUSEProduct();
         SUSEProductTestUtils.installSUSEProductOnServer(source, server);
-        SUSEProduct target = SUSEProductTestUtils.createTestSUSEProduct(family);
+        SUSEProduct target = SUSEProductTestUtils.createTestSUSEProduct();
         SUSEProductSet targetSet = new SUSEProductSet();
         targetSet.setBaseProduct(target);
 
