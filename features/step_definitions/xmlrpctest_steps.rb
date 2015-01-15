@@ -21,11 +21,11 @@ When /^I call systemVersion, I should get "([^"]*)" as result$/ do |version|
 end
 
 When /^I call getApiNamespaceCallList, I should get (\d+) available api calls$/ do |apiCount|
-  #$stderr.puts "API count #{rpcApiTester.getCountOfApiNamespaceCallList()}"
+  $stderr.puts "API count #{rpcApiTester.getCountOfApiNamespaceCallList()}"
   fail if apiCount.to_i != rpcApiTester.getCountOfApiNamespaceCallList()
 end
 
 When /^I call getApiCallList, I should get (\d+) available groups$/ do |groupCount|
-  #$stderr.puts "available groups: #{rpcApiTester.getCountOfApiCallListGroups()}"
+  $stderr.puts "available groups: #{rpcApiTester.getCountOfApiCallListGroups()}"
   fail if groupCount.to_i != rpcApiTester.getCountOfApiCallListGroups()
 end
