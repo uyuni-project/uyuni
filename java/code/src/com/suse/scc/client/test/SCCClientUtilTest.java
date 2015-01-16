@@ -18,6 +18,10 @@ import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.scc.client.SCCClientUtils;
 
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.FileUtils;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -27,9 +31,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Tests {@link SCCClientUtils}
@@ -39,18 +40,16 @@ public class SCCClientUtilTest extends MockObjectTestCase {
     private static final String TEST_USER_NAME = "t";
     private static final String TEST_FILE_NAME =
             "t_organizations_subscriptions_page_316.json";
-    private static final String TEST_URL =
+    private static final String TEST_URI =
             "https://scc.suse.com/connect/organizations/subscriptions/?page=316";
 
     /**
      * Tests {@link SCCClientUtils#getLogFilename}
-     * @throws MalformedURLException never
+     * @throws URIException never
      */
-    public void testFilenameFromURL() throws MalformedURLException {
-        URL url = new URL(TEST_URL);
-
-        String actual = SCCClientUtils.getLogFilename(url, TEST_USER_NAME);
-
+    public void testFilenameFromURI() throws URIException {
+        URI uri = new URI(TEST_URI, false);
+        String actual = SCCClientUtils.getLogFilename(uri, TEST_USER_NAME);
         assertEquals(TEST_FILE_NAME, actual);
     }
 
@@ -59,7 +58,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
      * @throws IOException if anything goes wrong
      */
     public void testGetLoggingReader() throws IOException {
-        URL url = new URL(TEST_URL);
+        URI uri = new URI(TEST_URI, false);
 
         // get fake data
         String expected = "testGetLoggingReader" + TestUtils.randomString();
@@ -67,17 +66,17 @@ public class SCCClientUtilTest extends MockObjectTestCase {
                 new ByteArrayInputStream(expected.getBytes("UTF-8"));
 
         // get fake connection to TEST_URL that returns fake data above
-        Mock mockConnection =
-                mock(HttpURLConnection.class, new Class[] {URL.class}, new Object[] {url});
-        mockConnection.expects(atLeastOnce()).method("getInputStream")
+        Mock mockRequest =
+                mock(GetMethod.class, new Class[] {String.class}, new Object[] {TEST_URI});
+        mockRequest.expects(atLeastOnce()).method("getResponseBodyAsStream")
                 .will(returnValue(expectedInputStream));
-        mockConnection.expects(atLeastOnce()).method("getContentEncoding");
-        mockConnection.expects(once()).method("getURL").will(returnValue(url));
-        HttpURLConnection connection = (HttpURLConnection) mockConnection.proxy();
+        mockRequest.expects(once()).method("getResponseHeader").withAnyArguments();
+        mockRequest.expects(once()).method("getURI").will(returnValue(uri));
+        HttpMethod request = (HttpMethod) mockRequest.proxy();
 
         // get reader
         BufferedReader reader =
-                SCCClientUtils.getLoggingReader(connection, TEST_USER_NAME,
+                SCCClientUtils.getLoggingReader(request, TEST_USER_NAME,
                         System.getProperty("java.io.tmpdir"));
 
         // expect to read fake data from reader
