@@ -907,13 +907,13 @@ public class ContentSyncManager {
                 serverGroup.setMaxMembers(RESET_ENTITLEMENT);
                 ServerGroupFactory.save(serverGroup);
 
-                // Reset max_members to null for all other orgs
+                // Reset max_members to 0 for all other orgs
                 List<Org> allOrgs = OrgFactory.lookupAllOrgs();
                 for (Org org : allOrgs) {
                     if (!org.equals(OrgFactory.getSatelliteOrg())) {
                         serverGroup = ServerGroupFactory.lookupEntitled(org, sgt);
                         if (serverGroup != null) {
-                            serverGroup.setMaxMembers(null);
+                            serverGroup.setMaxMembers(0L);
                             ServerGroupFactory.save(serverGroup);
                         }
                     }
