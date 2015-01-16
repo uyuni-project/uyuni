@@ -510,7 +510,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                                         user,
                                         pw,
                                         primary)
-            print("Successfully added credentials")
             self.log.info("Successfully added credentials.")
             print("Successfully added credentials.")
 
