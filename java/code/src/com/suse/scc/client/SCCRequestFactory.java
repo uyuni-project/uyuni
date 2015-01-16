@@ -14,17 +14,11 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.lang.StringUtils;
-
-import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
 
 /**
- * Helper class for setting up {@link HttpURLConnection} objects.
+ * Helper class for setting up HTTP Requests as {@link HttpMethod} objects.
  */
 public class SCCRequestFactory {
 
@@ -46,60 +40,31 @@ public class SCCRequestFactory {
     }
 
     /**
-     * Init a {@link HttpURLConnection} object from a given URI.
+     * Init an HTTP request to an SCC endpoint for a given config.
      *
-     * @param method the method
-     * @param endpoint the endpoint
-     * @param config the config
-     * @return connection
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @param method the HTTP method to use
+     * @param endpoint the SCC API endpoint
+     * @param config SCC client configuration
+     * @return {@link HttpMethod} object representing the request
      */
-    public HttpURLConnection initConnection(
-            String method, String endpoint, SCCConfig config) throws IOException {
-        // Init the connection
-        String uri = config.getUrl() + endpoint;
-        String encodedCredentials = config.getEncodedCredentials();
-        URL url = new URL(uri);
-        HttpURLConnection connection;
-
-        SCCProxySettings proxySettings = config.getProxySettings();
-        String proxyHost = null;
-        if (proxySettings != null) {
-            proxyHost = proxySettings.getHostname();
-        }
-        if (!StringUtils.isEmpty(proxyHost)) {
-            int proxyPort = proxySettings.getPort();
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
-                proxyPort));
-            connection = (HttpURLConnection) url.openConnection(proxy);
-
-            String proxyUsername = proxySettings.getUsername();
-            String proxyPassword = proxySettings.getPassword();
-            if (!StringUtils.isEmpty(proxyUsername) &&
-                    !StringUtils.isEmpty(proxyPassword)) {
-                Authenticator.setDefault(new ProxyAuthenticator(
-                        proxyUsername, proxyPassword));
-            }
+    public HttpMethod initRequest(String method, String endpoint, SCCConfig config)
+            throws SCCClientException {
+        HttpMethod request = null;
+        if (method.equals("GET")) {
+            request = new GetMethod(config.getUrl() + endpoint);
         }
         else {
-            connection = (HttpURLConnection) url.openConnection();
+            throw new SCCClientException("HTTP method not supported: " + method);
         }
 
-        connection.setRequestMethod(method);
-
-        // Basic authentication
-        if (encodedCredentials != null) {
-            connection.setRequestProperty("Authorization", "BASIC " + encodedCredentials);
-        }
-
-        // Set additional request headers here
-        connection.setRequestProperty("Accept", "application/vnd.scc.suse.com.v4+json");
-        connection.setRequestProperty("Accept-Encoding", "gzip, deflate");
+        // Additional request headers
+        request.setRequestHeader("Accept", "application/vnd.scc.suse.com.v4+json");
+        request.setRequestHeader("Accept-Encoding", "gzip, deflate");
 
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
-        connection.setRequestProperty("SMS", uuid != null ? uuid : "undefined");
+        request.setRequestHeader("SMS", uuid != null ? uuid : "undefined");
 
-        return connection;
+        return request;
     }
 }

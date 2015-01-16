@@ -14,6 +14,9 @@
  */
 package com.suse.scc.client;
 
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URI;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
@@ -27,8 +30,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,12 +75,14 @@ public class SCCClientUtils {
      * @return the logging reader
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static BufferedReader getLoggingReader(URLConnection connection, String user,
+    public static BufferedReader getLoggingReader(HttpMethod request, String user,
             String logDir) throws IOException {
         InputStream inputStream = null;
         try {
-            inputStream = connection.getInputStream();
-            if (GZIP_ENCODING.equals(connection.getContentEncoding())) {
+            inputStream = request.getResponseBodyAsStream();
+            Header encodingHeader = request.getResponseHeader("Content-Encoding");
+            String encoding = encodingHeader != null ? encodingHeader.getValue() : null;
+            if (GZIP_ENCODING.equals(encoding)) {
                 inputStream = new GZIPInputStream(inputStream);
             }
         }
@@ -94,8 +97,8 @@ public class SCCClientUtils {
             logDirFile.setWritable(true, false);
         }
 
-        File logFile = new File(logDir + File.separator +
-                             getLogFilename(connection.getURL(), user));
+        String logFilename = getLogFilename(request.getURI(), user);
+        File logFile = new File(logDir + File.separator + logFilename);
         if (!logFile.exists()) {
             FileUtils.touch(logFile);
             logFile.setWritable(true, false);
@@ -110,13 +113,13 @@ public class SCCClientUtils {
 
     /**
      * Returns a log file name from an SCC url.
-     * @param url the url
+     * @param uri the SCC uri
      * @param user the SCC user name
      * @return the filename
      */
-    public static String getLogFilename(URL url, String user) {
+    public static String getLogFilename(URI uri, String user) {
         Pattern pattern = Pattern.compile(".*/connect/(.*)");
-        Matcher matcher = pattern.matcher(url.toString());
+        Matcher matcher = pattern.matcher(uri.toString());
         matcher.matches();
         String urlFragment = matcher.group(1);
         String name = user + "_" + urlFragment + ".json";
