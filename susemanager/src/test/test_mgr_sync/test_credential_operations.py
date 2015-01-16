@@ -131,7 +131,7 @@ bar"""
             "foo",
             False)
 
-        self.assertEqual(recorder.stdout, ["Successfully added credentials"])
+        self.assertEqual(recorder.stdout, ["Successfully added credentials."])
 
     def test_add_credentials_non_interactive(self):
         """ Test adding credentials non-interactively """
