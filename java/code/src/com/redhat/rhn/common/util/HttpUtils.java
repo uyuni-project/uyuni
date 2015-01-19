@@ -44,25 +44,40 @@ public class HttpUtils {
 
     /**
      * Initialize and return {@link HttpClient} for performing authenticated requests.
+     * This method reads proxy settings from the configuration and applies those.
      *
      * @param username username for basic authentication
      * @param password password for basic authentication
      * @return {@link HttpClient} object
      */
     public static HttpClient initHttpClient(String username, String password) {
+        ConfigDefaults cfg = ConfigDefaults.get();
+        return initHttpClient(username, password, cfg.getProxyHost(), cfg.getProxyPort(),
+                cfg.getProxyUsername(), cfg.getProxyPassword());
+    }
+
+    /**
+     * Initialize and return {@link HttpClient} for performing authenticated requests.
+     *
+     * @param username username for basic authentication
+     * @param password password for basic authentication
+     * @param proxyHost proxy hostname
+     * @param proxyPort proxy port
+     * @param proxyUsername username for proxy authentication
+     * @param proxyPassword password for proxy authentication
+     * @return {@link HttpClient} object
+     */
+    public static HttpClient initHttpClient(String username, String password,
+            String proxyHost, int proxyPort, String proxyUsername, String proxyPassword) {
         HttpClient httpClient = new HttpClient();
 
         // Apply proxy settings
-        String proxyHost = ConfigDefaults.get().getProxyHost();
         if (!StringUtils.isBlank(proxyHost)) {
-            int proxyPort = ConfigDefaults.get().getProxyPort();
             httpClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
             if (log.isDebugEnabled()) {
                 log.debug("Using proxy: " + proxyHost + ":" + proxyPort);
             }
 
-            String proxyUsername = ConfigDefaults.get().getProxyUsername();
-            String proxyPassword = ConfigDefaults.get().getProxyPassword();
             if (!StringUtils.isBlank(proxyUsername) &&
                     !StringUtils.isBlank(proxyPassword)) {
                 Credentials proxyCredentials = new UsernamePasswordCredentials(
