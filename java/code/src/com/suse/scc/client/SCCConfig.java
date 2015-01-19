@@ -14,8 +14,6 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -161,17 +159,5 @@ public class SCCConfig {
      */
     public SCCProxySettings getProxySettings() {
         return proxySettings;
-    }
-
-    /**
-     * Returns the encoded credentials or null.
-     * @return credentials
-     */
-    public String getEncodedCredentials() {
-        if (username != null && password != null) {
-            byte[] encoded = Base64.encodeBase64((username + ":" + password).getBytes());
-            return new String(encoded);
-        }
-        return null;
     }
 }
