@@ -62,6 +62,7 @@ import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -73,7 +74,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -1483,7 +1483,7 @@ public class ContentSyncManager {
                     log.debug("OES repo response code for " +
                             creds.getUsername() + ": " + responseCode);
                 }
-                if (responseCode == HttpURLConnection.HTTP_OK) {
+                if (responseCode == HttpStatus.SC_OK) {
                     return creds;
                 }
             } catch (ContentSyncException e) {
@@ -1639,7 +1639,7 @@ public class ContentSyncManager {
                 // Verify the mirrored repo by sending a HEAD request
                 int mirrorStatus = MgrSyncUtils.sendHeadRequest(testUri.toString(),
                         username, password);
-                if (mirrorStatus == HttpURLConnection.HTTP_OK) {
+                if (mirrorStatus == HttpStatus.SC_OK) {
                     // Build URL combining the mirror and N/SCC parts
                     String[] mirrorParams = StringUtils.split(mirrorUri.getQuery(), '&');
                     String[] sourceParams = StringUtils.split(sourceUri.getQuery(), '&');
