@@ -171,7 +171,8 @@ public class SCCWebClient implements SCCClient {
             }
             else {
                 // Request was not successful
-                throw new SCCClientException("Response code: " + responseCode);
+                throw new SCCClientException("Got response code " + responseCode +
+                        " connecting to " + request.getURI());
             }
         }
         catch (IOException e) {
