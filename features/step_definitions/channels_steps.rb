@@ -14,7 +14,7 @@ end
 
 Given /^I am on the manage software channels page$/ do
   step 'I am authorized as "testing" with password "testing"'
-  within(:xpath, "//header") do
+  within(:xpath, "//*[contains(@role, 'navigation')]") do
     find_link("Channels").click
   end
   step "I follow \"Manage Software Channels\" in the left menu"
@@ -48,4 +48,3 @@ Then /^I should see a "([^"]*)" text in the "([^"]*)" column$/ do |arg1, arg2|
     find("td", :text => "#{arg1}")
   end
 end
-

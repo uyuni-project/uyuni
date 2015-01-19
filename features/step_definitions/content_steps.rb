@@ -95,7 +95,7 @@ end
 Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
+  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
   when /content area/ then "section"
   else raise "Unknown element with description '#{arg2}'"
   end
@@ -108,7 +108,7 @@ end
 Then /^I should not see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
+  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
   when /content area/ then "section"
   else raise "Unknown element with description '#{arg2}'"
   end

@@ -3,7 +3,7 @@
 
 Given /^I am on the Errata page$/ do
   step "I am authorized"
-  within(:xpath, "//header") do
+  within(:xpath, "//*[contains(@role, 'navigation')]") do
     find_link(debrand_string("Errata")).click
   end
 end

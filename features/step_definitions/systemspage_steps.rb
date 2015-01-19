@@ -3,7 +3,7 @@
 
 Given /^I am on the Systems page$/ do
   step "I am authorized"
-  within(:xpath, "//header") do
+  within(:xpath, "//*[contains(@role, 'navigation')]") do
     find_link("Systems").click
   end
 end
@@ -54,4 +54,3 @@ end
 When /I view system with id "([^"]*)"/ do |arg1|
   visit Capybara.app_host + "/rhn/systems/details/Overview.do?sid=" + arg1
 end
-

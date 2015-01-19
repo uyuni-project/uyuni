@@ -110,7 +110,7 @@ When /^I click the div "([^"]*)"$/ do |arg1|
    end
 end
 
-When /^I click element by css "([^"]*)"$/ do |arg1| 
+When /^I click element by css "([^"]*)"$/ do |arg1|
    fail if not find(arg1).click
 end
 
@@ -121,7 +121,7 @@ end
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
+  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
   when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
@@ -134,7 +134,7 @@ end
 When /^I follow first "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "header"
+  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
   when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
