@@ -76,8 +76,10 @@ public class SCCWebClient implements SCCClient {
      */
     public SCCWebClient(SCCConfig configIn) {
         config = configIn;
-        // TODO: Take proxy settings from config
-        httpClient = HttpUtils.initHttpClient(config.getUsername(), config.getPassword());
+        SCCProxySettings proxySettings = config.getProxySettings();
+        httpClient = HttpUtils.initHttpClient(config.getUsername(), config.getPassword(),
+                proxySettings.getHostname(), proxySettings.getPort(),
+                proxySettings.getUsername(), proxySettings.getPassword());
     }
 
     /**
