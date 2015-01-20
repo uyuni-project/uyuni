@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
 import com.redhat.rhn.frontend.xmlrpc.serializer.ConfigRevisionSerializer;
 import com.redhat.rhn.manager.configuration.ConfigFileBuilder;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -146,7 +147,7 @@ public class XmlRpcConfigChannelHelper {
             catch (UnsupportedEncodingException e) {
                 String msg = "Following errors were encountered " +
                     "when creating the config file.\n" + e.getMessage();
-                throw new FaultException(1023, "ConfgFileError", msg);
+                throw new ConfigFileErrorException(msg);
             }
             String startDelim = (String)data.get(ConfigRevisionSerializer.MACRO_START);
             String stopDelim = (String)data.get(ConfigRevisionSerializer.MACRO_END);
@@ -185,7 +186,7 @@ public class XmlRpcConfigChannelHelper {
         catch (ValidatorException ve) {
             String msg = "Following errors were encountered " +
                 "when creating the config file.\n" + ve.getMessage();
-            throw new FaultException(1023, "ConfgFileError", msg);
+            throw new ConfigFileErrorException(msg);
 
         }
         catch (IOException ie) {

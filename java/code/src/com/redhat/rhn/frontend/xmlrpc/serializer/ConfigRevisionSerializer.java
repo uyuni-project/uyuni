@@ -25,6 +25,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.EncodedConfigRevision;
@@ -143,6 +144,9 @@ public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
                 helper.add(CONTENTS, content);
                 helper.add(CONTENTS_ENC64, Boolean.FALSE);
             }
+            else {
+                throw new ConfigFileErrorException("The binary file was marked as text.");
+            }
             helper.add(MACRO_START, rev.getConfigContent().getDelimStart());
             helper.add(MACRO_END, rev.getConfigContent().getDelimEnd());
         }
@@ -156,7 +160,7 @@ public class ConfigRevisionSerializer extends RhnXmlRpcCustomSerializer {
          catch (UnsupportedEncodingException e) {
              String msg = "Following errors were encountered " +
                      "when creating the config file.\n" + e.getMessage();
-                 throw new FaultException(1023, "ConfgFileError", msg);
+             throw new ConfigFileErrorException(msg);
         }
         helper.add(CONTENTS_ENC64, Boolean.TRUE);
         if (!rev.getConfigContent().isBinary()) {
