@@ -86,30 +86,13 @@ public class SCCRequestFactoryTest extends TestCase {
         @Override
         public void respond(Request request, Response response) {
             try {
-                String proxyAuthData = request.getValue("Proxy-Authorization");
-                String authData = request.getValue("Authorization");
-                if (proxyAuthData == null) {
-                    // 1. A first request should be sent without proxy authorization
-                    // data, and we respond with 407 - Proxy Authorization Required
-                    response.set("Proxy-Authenticate", "Basic realm");
-                    response.setCode(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED);
-                }
-                else if (authData == null) {
-                    // 2. A second request should be sent with proper proxy auth
-                    // data, we respond with 401 - Unauthorized
-                    assertEquals(EXPECTED_PROXY_AUTH, proxyAuthData);
-                    response.set("WWW-Authenticate", "Basic realm");
-                    response.setCode(HttpStatus.SC_UNAUTHORIZED);
-                }
-                else {
-                    // 3. The third request contains both so we can verify authorization
-                    // data and other headers to respond with 201 - OK
-                    assertEquals(EXPECTED_AUTH, authData);
-                    assertEquals(EXPECTED_ACCEPT, request.getValue("Accept"));
-                    assertEquals(TEST_UUID, request.getValue("SMS"));
-                    assertEquals(TEST_HOST, request.getValue("Host"));
-                    response.setCode(HttpStatus.SC_OK);
-                }
+                // All auth headers are sent directly (preemptive authentication mode)
+                assertEquals(EXPECTED_PROXY_AUTH, request.getValue("Proxy-Authorization"));
+                assertEquals(EXPECTED_AUTH, request.getValue("Authorization"));
+                assertEquals(EXPECTED_ACCEPT, request.getValue("Accept"));
+                assertEquals(TEST_UUID, request.getValue("SMS"));
+                assertEquals(TEST_HOST, request.getValue("Host"));
+                response.setCode(HttpStatus.SC_OK);
                 response.commit();
             }
             catch (IOException e) {
