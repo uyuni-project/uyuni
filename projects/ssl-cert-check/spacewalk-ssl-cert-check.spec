@@ -4,7 +4,7 @@ Group:   Applications/System
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.3.1
+Version: 2.4
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -42,6 +42,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.4-1
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+- Purging %%changelog entries preceding Spacewalk 1.0, in active packages.
+
 * Tue Oct 30 2012 Jan Pazdziora 2.3-1
 - Update the copyright year.
 

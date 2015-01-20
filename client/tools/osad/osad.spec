@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.50
+Version: 5.11.52
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -285,7 +285,6 @@ fi
 %endif
 
 %if 0%{?suse_version} >= 1210
-
 %pre
 %service_add_pre osad.service
 
@@ -423,6 +422,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 5.11.52-1
+- move %%pre section down and eliminate an %%if
+
+* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 5.11.51-1
+- Getting rid of Tabs and trailing spaces in Python
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+
 * Fri Dec 05 2014 Stephen Herr <sherr@redhat.com> 5.11.50-1
 - fix osad postun section
 

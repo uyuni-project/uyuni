@@ -70,7 +70,8 @@ public class SystemOverviewAction extends RhnAction {
         String description = null;
 
         if (s.getDescription() != null) {
-            description = StringEscapeUtils.escapeHtml(s.getDescription()).replaceAll("\\n", "<br/>");
+            description = StringEscapeUtils.escapeHtml(s.getDescription())
+                .replaceAll("\\n", "<br/>");
         }
 
         // System Channels

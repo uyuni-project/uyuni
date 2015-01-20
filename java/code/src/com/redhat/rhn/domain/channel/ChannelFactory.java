@@ -1243,6 +1243,22 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Adds errata to channel mapping. Does nothing else
+     * @param eids List of eids to add mappings for
+     * @param cid channel id we're cloning into
+     */
+    public static void addClonedErrataToChannel(List<Long> eids, Long cid) {
+        WriteMode m = ModeFactory.getWriteMode("Channel_queries",
+                "add_cloned_erratum_to_channel");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("cid", cid);
+        for (Long eid : eids) {
+            params.put("eid", eid);
+            m.executeUpdate(params);
+        }
+    }
+
+    /**
      * List all vendor channels (org is null)
      * @return list of vendor channels
      */

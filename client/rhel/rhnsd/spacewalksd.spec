@@ -11,7 +11,7 @@ Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 5.0.14.4
+Version: 5.0.15
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -183,6 +183,9 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 5.0.15-1
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+
 * Thu Oct 10 2013 Michael Mraka <michael.mraka@redhat.com> 5.0.14-1
 - cleaning up old svn Ids
 

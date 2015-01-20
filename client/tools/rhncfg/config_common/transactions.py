@@ -303,7 +303,7 @@ class DeployTransaction:
             # 0.
             if self.dirs:
                 for directory in self.dirs:
-                    dirname = directory['path']
+                    dirname = self._normalize_path_to_root(directory['path'])
                     dirmode = directory['filemode']
                     if os.path.isfile(dirname):
                         raise cfg_exceptions.DirectoryEntryIsFile(dirname)

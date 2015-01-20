@@ -17,7 +17,7 @@ URL:            https://fedorahosted.org/spacewalk
 Source0:        https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
 
-Version:        5.4.54
+Version:        5.4.55
 Release:        1%{?dist}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
@@ -188,6 +188,9 @@ fi
 
 
 %changelog
+* Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 5.4.55-1
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+
 * Fri Jul 11 2014 Milan Zazrivec <mzazrivec@redhat.com> 5.4.54-1
 - fix copyright years
 
