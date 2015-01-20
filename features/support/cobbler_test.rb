@@ -28,7 +28,7 @@ class CobblerTest
         begin
             @token = @server.call("login", user,pass)
         rescue
-            raise "login to cobbler failed" + $!
+            raise "login to cobbler failed" + $!.to_s
         end
     end
 
@@ -56,19 +56,19 @@ class CobblerTest
         begin
             profile_id = @server.call("new_profile", @token)
         rescue
-            raise "creating profile failed." + $!
+            raise "creating profile failed." + $!.to_s
         end
         begin
             @server.call("modify_profile",profile_id, 'name',      name,     @token)
             @server.call("modify_profile",profile_id, 'distro',    distro,   @token)
             @server.call("modify_profile",profile_id, 'kickstart', location, @token)
         rescue
-            raise "modify profile failed." + $!
+            raise "modify profile failed." + $!.to_s
         end
         begin
             @server.call("save_profile",profile_id,                     @token)
         rescue
-            raise "saving profile failed." + $!
+            raise "saving profile failed." + $!.to_s
         end
         profile_id
     end
@@ -124,7 +124,7 @@ class CobblerTest
             @server.call("modify_distro",distro_id, 'breed',  breed,  @token)
             @server.call("save_distro",distro_id,                     @token)
         rescue
-            raise "creating distribution failed." + $!
+            raise "creating distribution failed." + $!.to_s
         end
         distro_id
     end
