@@ -14,13 +14,12 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.util.HttpUtils;
+import com.redhat.rhn.common.util.HttpClientAdapter;
 
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -47,7 +46,7 @@ public class NCCClient {
     private static final String NCC_SUBSCRIPTIONS_COMMAND = "?command=listsubscriptions";
     private static final int MAX_REDIRECTS = 10;
     private String nccUrl;
-    private HttpClient httpClient;
+    private HttpClientAdapter httpClient;
 
     /**
      * Creates a client for the NCC registration service using the default known URL.
@@ -63,7 +62,7 @@ public class NCCClient {
      */
     public NCCClient(String url) {
         nccUrl = url;
-        httpClient = HttpUtils.initHttpClient();
+        httpClient = new HttpClientAdapter();
     }
 
     /**
@@ -81,7 +80,7 @@ public class NCCClient {
         listsubs.setPassword(creds.getPassword());
         List<Subscription> subscriptions = null;
         Serializer serializer = new Persister();
-        PostMethod postMethod = new PostMethod();
+        PostMethod postRequest = new PostMethod();
 
         try {
             // Follow up to MAX_REDIRECTS redirects manually. HttpClient is unable to
@@ -91,30 +90,30 @@ public class NCCClient {
             int redirects = 0;
 
             while (result == HttpStatus.SC_MOVED_TEMPORARILY && redirects < MAX_REDIRECTS) {
-                postMethod = new PostMethod(location);
+                postRequest = new PostMethod(location);
 
                 // Set the XML request entity
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 serializer.write(listsubs, stream);
-                postMethod.setRequestEntity(
+                postRequest.setRequestEntity(
                         new ByteArrayRequestEntity(stream.toByteArray()));
 
                 // Execute the request and prepare redirect if necessary
-                result = httpClient.executeMethod(postMethod);
+                result = httpClient.executeRequest(postRequest);
 
                 if (result == HttpStatus.SC_MOVED_TEMPORARILY) {
-                    location = postMethod.getResponseHeader("Location").getValue();
+                    location = postRequest.getResponseHeader("Location").getValue();
                     if (log.isDebugEnabled()) {
                         log.debug("Got 302, following redirect to: " + location);
                     }
-                    postMethod.releaseConnection();
+                    postRequest.releaseConnection();
                     redirects++;
                 }
             }
 
             // Parse the response body in case of success
             if (result == HttpStatus.SC_OK) {
-                InputStream stream = postMethod.getResponseBodyAsStream();
+                InputStream stream = postRequest.getResponseBodyAsStream();
                 SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
                 subscriptions = subsList.getSubscriptions();
                 log.info("Found " + subscriptions.size() + " subscriptions");
@@ -125,7 +124,7 @@ public class NCCClient {
             throw new NCCException(e);
         }
         finally {
-            postMethod.releaseConnection();
+            postRequest.releaseConnection();
         }
         return subscriptions;
     }
@@ -138,7 +137,7 @@ public class NCCClient {
     public boolean ping() {
         GetMethod getPing = new GetMethod(nccUrl + NCC_PING_COMMAND);
         try {
-            int returnCode = httpClient.executeMethod(getPing);
+            int returnCode = httpClient.executeRequest(getPing);
             if (log.isDebugEnabled()) {
                 log.debug("NCC ping return code: " + returnCode);
             }

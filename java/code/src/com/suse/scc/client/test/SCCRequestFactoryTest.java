@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client.test;
 
-import com.redhat.rhn.common.util.HttpUtils;
+import com.redhat.rhn.common.util.HttpClientAdapter;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
@@ -22,7 +22,6 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCProxySettings;
 import com.suse.scc.client.SCCRequestFactory;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 
@@ -67,11 +66,11 @@ public class SCCRequestFactoryTest extends TestCase {
 
                 SCCRequestFactory factory = SCCRequestFactory.getInstance();
                 HttpMethod request = factory.initRequest("GET", "/test_url", config);
-                HttpClient client = HttpUtils.initHttpClient(
-                        config.getUsername(), config.getPassword(),
+                HttpClientAdapter client = new HttpClientAdapter(
                         proxySettings.getHostname(), proxySettings.getPort(),
                         proxySettings.getUsername(), proxySettings.getPassword());
-                return client.executeMethod(request);
+                return client.executeRequest(request,
+                        config.getUsername(), config.getPassword());
             }
         };
 
