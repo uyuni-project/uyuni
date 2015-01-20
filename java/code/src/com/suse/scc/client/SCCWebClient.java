@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client;
 
-import com.redhat.rhn.common.util.HttpUtils;
+import com.redhat.rhn.common.util.HttpClientAdapter;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.Gson;
@@ -22,7 +22,6 @@ import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
 
@@ -42,8 +41,8 @@ public class SCCWebClient implements SCCClient {
     /** The config object. */
     private final SCCConfig config;
 
-    /** {@link HttpClient} object. */
-    private final HttpClient httpClient;
+    /** Adapter object for handling HTTP requests. */
+    private final HttpClientAdapter httpClient;
 
     /**
      *  Represents a partial result with a pointer to the next one.
@@ -77,7 +76,7 @@ public class SCCWebClient implements SCCClient {
     public SCCWebClient(SCCConfig configIn) {
         config = configIn;
         SCCProxySettings proxySettings = config.getProxySettings();
-        httpClient = HttpUtils.initHttpClient(config.getUsername(), config.getPassword(),
+        httpClient = new HttpClientAdapter(
                 proxySettings.getHostname(), proxySettings.getPort(),
                 proxySettings.getUsername(), proxySettings.getPassword());
     }
@@ -147,7 +146,8 @@ public class SCCWebClient implements SCCClient {
                 method, endpoint, config);
         try {
             // Connect and parse the response on success
-            int responseCode = httpClient.executeMethod(request);
+            int responseCode = httpClient.executeRequest(request,
+                    config.getUsername(), config.getPassword());
             if (responseCode == HttpStatus.SC_OK) {
                 streamReader = SCCClientUtils.getLoggingReader(request,
                         config.getUsername(), config.getLoggingDir());

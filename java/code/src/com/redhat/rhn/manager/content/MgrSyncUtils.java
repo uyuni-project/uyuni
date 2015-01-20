@@ -15,7 +15,7 @@
 package com.redhat.rhn.manager.content;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.HttpUtils;
+import com.redhat.rhn.common.util.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -25,9 +25,7 @@ import com.redhat.rhn.domain.channel.ProductName;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.scc.client.SCCProxySettings;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.HeadMethod;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +34,6 @@ import java.io.IOException;
  * Utility methods to be used in {@link ContentSyncManager} related code.
  */
 public class MgrSyncUtils {
-
-    // Logger instance
-    private static final Logger log = Logger.getLogger(MgrSyncUtils.class);
 
     // This file is touched once the server has been migrated to SCC
     public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
@@ -54,23 +49,17 @@ public class MgrSyncUtils {
      */
     public static int sendHeadRequest(String url, String username, String password)
             throws ContentSyncException {
-        if (log.isDebugEnabled()) {
-            log.debug("Sending HEAD request to: " + url);
-        }
-        int responseCode = -1;
-        HttpClient httpClient = HttpUtils.initHttpClient(username, password);
-        HeadMethod headMethod = new HeadMethod(url);
-
+        HttpClientAdapter httpClient = new HttpClientAdapter();
+        HeadMethod headRequest = new HeadMethod(url);
         try {
-            responseCode = httpClient.executeMethod(headMethod);
+            return httpClient.executeRequest(headRequest, username, password);
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
         }
         finally {
-            headMethod.releaseConnection();
+            headRequest.releaseConnection();
         }
-        return responseCode;
     }
 
     /**
