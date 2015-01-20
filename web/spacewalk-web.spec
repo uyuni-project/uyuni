@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.29
+Version: 2.3.31
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -329,6 +329,18 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Jan 16 2015 Stephen Herr <sherr@redhat.com> 2.3.31-1
+- fix rhnChannelNewestPackage table by using refresh_newest_package function
+  again
+- Remove unused clone_newest_package function
+
+* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.30-1
+- Getting rid of trailing spaces in XML
+- Getting rid of trailing spaces in Perl
+- Getting rid of trailing spaces in Perl
+- Getting rid of Tabs in Perl
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+
 * Wed Dec 17 2014 Stephen Herr <sherr@redhat.com> 2.3.29-1
 - remove monitoring thing from web so we can run directly out of this branch
 

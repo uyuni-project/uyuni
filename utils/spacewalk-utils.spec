@@ -1,7 +1,7 @@
 %define rhnroot %{_prefix}/share/rhn
 
 Name:		spacewalk-utils
-Version:	2.3.24
+Version:	2.3.26
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -18,7 +18,7 @@ BuildRequires:  python
 BuildRequires: /usr/bin/pod2man
 %if 0%{?fedora} || 0%{?rhel} > 5
 # pylint check
-BuildRequires:  spacewalk-pylint
+BuildRequires:  spacewalk-pylint >= 2.2
 BuildRequires:  yum
 BuildRequires:  spacewalk-config
 BuildRequires:  spacewalk-backend >= 1.7.24
@@ -113,6 +113,13 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.26-1
+- Fix wrong package dependency using yum without priorities
+
+* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.25-1
+- Getting rid of Tabs and trailing spaces in Python
+- Getting rid of trailing spaces in Perl
+
 * Fri Dec 19 2014 Tomas Lestach <tlestach@redhat.com> 2.3.24-1
 - 1175637 - make the sql Oracle 10g compatible
 

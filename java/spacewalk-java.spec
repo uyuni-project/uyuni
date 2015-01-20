@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Spacewalk Java site packages
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.116
+Version: 2.3.124
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -949,6 +949,49 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Mon Jan 19 2015 Grant Gainey 2.3.124-1
+- 1156299, CVE-2014-7811 - Fixed reported XSS issues  *
+  /rhn/systems/details/Overview.do?sid= , Description  *
+  /rhn/groups/GroupDetail.do?sgid= , Name, Description  *
+  /rhn/users/UserList.do, /rhn/users/DisabledList.do - first/last name  *
+  /rhn/systems/details/history/Event.do?sid= , SCAP param/action
+
+* Fri Jan 16 2015 Grant Gainey 2.3.123-1
+- bnc#901927: Remove custom file size calculation
+- Need to wrap the InputStream in order to support mark/reset so the binary
+  upload won't crash anymore
+
+* Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.122-1
+- Remove "Select All" button from system currency report
+
+* Fri Jan 16 2015 Matej Kollar <mkollar@redhat.com> 2.3.121-1
+- Remove "Add Selected to SSM" from SSM system overview page
+- Remove "Add Selected to SSM" from system overview page
+
+* Thu Jan 15 2015 Tomas Lestach <tlestach@redhat.com> 2.3.120-1
+- 1158806 - fix menu structure for
+  /rhn/systems/details/history/snapshots/TagCreate.do page
+- 1158806 - fix menu structure for /rhn/systems/details/history/Event.do page
+
+* Wed Jan 14 2015 Stephen Herr <sherr@redhat.com> 2.3.119-1
+- checkstyle fixes
+
+* Wed Jan 14 2015 Stephen Herr <sherr@redhat.com> 2.3.118-1
+- migrate clone channel page from perl -> java
+- Use Hibernate-friendly equals() and hashCode() in Org
+
+* Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.117-1
+- Getting rid of trailing spaces in translations
+- Getting rid of trailing spaces in XML
+- Getting rid of Tabs and trailing spaces in Python
+- Getting rid of trailing spaces in Perl
+- Getting rid of Tabs in Java JSPF
+- Getting rid of Tabs in Java JSP
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+- allow Copyright 2015
+- clean up some type safety warnings
+- Whitespace fixes
+
 * Tue Dec 23 2014 Stephen Herr <sherr@redhat.com> 2.3.116-1
 - checkstyle fix
 - Clean up some static references to pxt pages in nav tests

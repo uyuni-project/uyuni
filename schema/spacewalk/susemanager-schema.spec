@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.3.33
+Version:        2.3.34
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jan 15 2015 Matej Kollar <mkollar@redhat.com> 2.3.34-1
+- Getting rid of Tabs and trailing spaces in Python
+- Getting rid of trailing spaces in Perl
+- Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
+
 * Thu Jan 08 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.33-1
 - arm related sutff can be present in db before upgrade
 - don't instert values that can be already present
