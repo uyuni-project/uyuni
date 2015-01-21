@@ -127,3 +127,18 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         """Should write a logfile when debugging is enabled"""
 
         self.assertTrue(os.path.isfile("tmp.log"))
+
+    def test_should_always_write_the_session_token_to_the_local_configuration(self):
+        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
+        self.mock_current_backend.return_value = BackendType.SCC
+        self.mgr_sync._enable_scc = MagicMock()
+        self.mgr_sync._process_user_request = MagicMock(return_value=0)
+        self.mgr_sync.config.token = "old token"
+
+        options = get_options("list channels".split())
+        self.assertEqual(0, self.mgr_sync.run(options))
+        self.assertEqual(self.fake_auth_token, self.mgr_sync.config.token)
+
+        self.mgr_sync.auth.token.assert_called_once()
+        self.mgr_sync.config.write.assert_called_once()
+
