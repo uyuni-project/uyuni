@@ -44,7 +44,6 @@
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
-- features/ncc-sync-channels.feature
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature
