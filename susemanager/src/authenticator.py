@@ -15,29 +15,82 @@
 
 from spacewalk.susemanager.helpers import cli_ask
 
+import xmlrpclib
+
+
+class MaximumNumberOfAuthenticationFailures(Exception):
+    pass
+
 
 class Authenticator(object):
     """
     Cache authentication, implements password-less connect.
     """
 
+    MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED = 3
+
     def __init__(self, connection, user, password, token):
         self.connection = connection
-
         self._token = token
         self.user = user
         self.password = password
-        self.fresh = False
+        self.credentials_prompts = 0
+        self.cached_credentials_used = not self.has_credentials()
 
-    def token(self, connect=True, verify=False):
+    def token(self):
         """
         Authenticate user.
+
+        This method obtains a new token when `self.token` is `None`.
+
+        The code uses the cached username/password when available.
+        These cached credentials are used just once, they are discarded if they
+        do not work.
+
+        The code asks the user to enter a new pair of username/password
+        when either the cached credentials are not available or when they have
+        been discarded.
+
+        If an interactively entered pair of credentials does not work it
+        is discarded and a new one is requested to the user. The user has a
+        limited number of attempts to enter the right username/password; then
+        the code raises a `MaximumNumberOfAuthenticationFailures` exception.
+
+        This mimics how other Unix programs handle credentials (e.g. `sudo`).
         """
-        if (not self._token and connect) or verify:
-            if not self.user or not self.password:
+
+        if not self._token:
+            if not self.has_credentials():
                 self._get_credentials_interactive()
-                self.fresh = True
-            self._token = self.connection.auth.login(self.user, self.password)
+                self.credentials_prompts += 1
+
+            try:
+                self._token = self.connection.auth.login(self.user, self.password)
+            except xmlrpclib.Fault, ex:
+                if ex.faultCode == 2950 and "Either the password or username is incorrect" in ex.faultString:
+                    if self.has_credentials() and not self.cached_credentials_used:
+                        # Try to reuse the credentials stored into the configuration file
+                        # to obtain a token. However ensure these are no longer used if
+                        # they are not valid.
+                        self.cached_credentials_used = True
+                        self._discard_credentials()
+                    elif self.credentials_prompts < Authenticator.MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED:
+                        # The cached credentials are either invalid or have
+                        # never been stored inside of the local configuration
+                        # file. Ask the user to enter new credentials
+                        self.credentials_prompts += 1
+                        self._get_credentials_interactive()
+                    else:
+                        # - The cached credentials failed or have never been
+                        #   stored into the local configuration file.
+                        # - The user has already tried to authenticate with
+                        #   new credentials but they didn't work.
+                        #   The credential prompt has been shown
+                        #   MAX_NUM_OF_CREDENTIAL_FAILURES_ALLOWED times.
+                        raise MaximumNumberOfAuthenticationFailures
+                    return self.token()
+                else:
+                    raise ex
 
         return self._token
 
@@ -51,6 +104,10 @@ class Authenticator(object):
 
         self._token = None
 
+    def _discard_credentials(self):
+        self.user = None
+        self.password = None
+
     def _get_credentials_interactive(self):
         """
         Get credentials from CLI interactively.
@@ -60,4 +117,5 @@ class Authenticator(object):
         self.user = cli_ask("Login")
         self.password = cli_ask("Password", password=True)
 
+        self.credentials_prompts += 1
 
