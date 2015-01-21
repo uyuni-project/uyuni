@@ -47,7 +47,6 @@ class MgrSync(object):
                                   user=self.config.user,
                                   password=self.config.password,
                                   token=self.config.token)
-
         self.quiet = False
 
     def __init__logger(self, debug_level, logfile=DEFAULT_LOG_LOCATION):
@@ -59,6 +58,7 @@ class MgrSync(object):
     def run(self, options):
         """
         Run the app.
+        Returns an integer with the exit status of mgr-sync.
         """
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
@@ -89,24 +89,29 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             sys.exit(1)
 
-        # Save config with the full credentials, if asked,
-        # or only cache current session ID
-        self.auth.token(connect=True, verify=options.saveconfig)
-        if options.saveconfig or self.auth.fresh:
-            if options.saveconfig:
-                self.config.user = self.auth.user
-                self.config.password = self.auth.password
-            self.config.write()
-            if options.saveconfig:
-                self.log.info("Credentials have been saved to the {0} file.".format(
-                    self.config.dotfile))
-                print("Credentials has been saved to the {0} file.".format(
-                        self.config.dotfile))
+        exit_code = self._process_user_request(options)
 
-        if self.auth.token(connect=False):
-            self.config.token = self.auth.token(connect=False)
-            self.config.write()
+        # Ensure the latest valid token is saved to the local configuration
+        self.config.token = self.auth.token()
+        if options.saveconfig and self.auth.has_credentials():
+            # Save user credentials only with explicitly asked by the user
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
 
+        self.config.write()
+        if options.saveconfig and self.auth.has_credentials():
+            print("Credentials have been saved to the {0} file.".format(
+                self.config.dotfile))
+            self.log.info("Credentials have been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        return exit_code
+
+    def _process_user_request(self, options):
+        """
+        Execute the user request.
+        Returns an integer with the exit status of mgr-sync.
+        """
         self.quiet = not options.verbose
         self.exit_with_error = False
 
