@@ -50,12 +50,10 @@ Feature: Explore the Channels page
      And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
      And I should see a "SLES11-SP3-Updates x86_64 Channel" link
-     And I should see a "openSUSE Build Service" text
-     And I should see a "SHA1sum:" text
-     And I should see a "cbd60e37142de1204964269d00fd5cc645ccd056" text
-     And I should see a "packages/1/cbd/andromeda-dummy/2.0-1.1/noarch/cbd60e37142de1204964269d00fd5cc645ccd056/andromeda-dummy-2.0-1.1.noarch.rpm" text
-     And I should see a "EULA" text
-     And I should see a "I hereby accept to sell my soul to his Highness The mseidl." text
+     And I should see a "obs://build.suse.de/Devel:Galaxy:TestsuiteRepo" text
+     And I should see a "SHA256sum:" text
+     And I should see a "6267e2f0869ccb94a81a9f677b838ac3939aca7d217c4efcfeebcec46470b973" text
+     And I should see a "packages/1/626/andromeda-dummy/2.0-1.1/noarch/6267e2f0869ccb94a81a9f677b838ac3939aca7d217c4efcfeebcec46470b973/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check Package dependencies page
     When I follow "Channels"
@@ -84,5 +82,5 @@ Feature: Explore the Channels page
      And I follow "File List"
     Then I should see a "This package contains the following files." text
      And I should see a "/usr/share/doc/packages/andromeda-dummy/COPYING" text
-     And I should see a "MD5: 94d55d512a9ba36caa9b7df079bae19f" text
+     And I should see a "md5: 94d55d512a9ba36caa9b7df079bae19f" text
 
