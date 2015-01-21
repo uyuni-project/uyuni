@@ -52,28 +52,15 @@ public class HttpClientAdapter {
      * @return {@link HttpClientAdapter} object
      */
     public HttpClientAdapter() {
-        this(ConfigDefaults.get().getProxyHost(),
-                ConfigDefaults.get().getProxyPort(),
-                ConfigDefaults.get().getProxyUsername(),
-                ConfigDefaults.get().getProxyPassword());
-    }
-
-    /**
-     * Initialize an {@link HttpClient} using proxy settings as they are passed in.
-     *
-     * @param proxyHost proxy hostname
-     * @param proxyPort proxy port
-     * @param proxyUsername username for proxy authentication
-     * @param proxyPassword password for proxy authentication
-     * @return {@link HttpClientAdapter} object
-     */
-    public HttpClientAdapter(String proxyHostname, int proxyPort,
-            String proxyUsername, String proxyPassword) {
         httpClient = new HttpClient();
 
         // Store the proxy settings
+        String proxyHostname = ConfigDefaults.get().getProxyHost();
         if (!StringUtils.isBlank(proxyHostname)) {
+            int proxyPort = ConfigDefaults.get().getProxyPort();
             proxyHost = new ProxyHost(proxyHostname, proxyPort);
+            String proxyUsername = ConfigDefaults.get().getProxyUsername();
+            String proxyPassword = ConfigDefaults.get().getProxyPassword();
             if (!StringUtils.isBlank(proxyUsername) &&
                     !StringUtils.isBlank(proxyPassword)) {
                 Credentials proxyCredentials = new UsernamePasswordCredentials(

@@ -210,7 +210,7 @@ public class SCCClientTest extends TestCase {
                 new File(tmpDir.getAbsolutePath() + "/organizations_repositories.json"));
         try {
             SCCClient scc = SCCClientFactory.getInstance(null, null, null,
-                    tmpDir.getAbsolutePath(), null, null);
+                    tmpDir.getAbsolutePath(), null);
             List<SCCRepository> repos = scc.listRepositories();
 
             // Assertions

@@ -70,15 +70,12 @@ public class SCCWebClient implements SCCClient {
     }
 
     /**
-     * Constructor for connecting to scc.suse.com.
+     * Constructor for connecting to SUSE Customer Center.
      * @param configIn the configuration object
      */
     public SCCWebClient(SCCConfig configIn) {
         config = configIn;
-        SCCProxySettings proxySettings = config.getProxySettings();
-        httpClient = new HttpClientAdapter(
-                proxySettings.getHostname(), proxySettings.getPort(),
-                proxySettings.getUsername(), proxySettings.getPassword());
+        httpClient = new HttpClientAdapter();
     }
 
     /**

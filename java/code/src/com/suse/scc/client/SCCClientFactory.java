@@ -39,14 +39,13 @@ public class SCCClientFactory {
      * @return the new {@link SCCWebClient}
      */
     public static SCCClient getInstance(URI url, String username, String password,
-            String resourcePath, SCCProxySettings proxySettings, String uuid) {
+            String resourcePath, String uuid) {
 
         if (resourcePath != null) {
             return new SCCFileClient(new SCCConfig(resourcePath));
         }
         else {
-            SCCConfig config = new SCCConfig(url, username, password,
-                uuid, proxySettings);
+            SCCConfig config = new SCCConfig(url, username, password, uuid);
             return new SCCWebClient(config);
         }
     }

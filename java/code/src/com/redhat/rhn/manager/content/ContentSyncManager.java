@@ -1716,7 +1716,7 @@ public class ContentSyncManager {
         }
 
         return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
-                MgrSyncUtils.getRhnProxySettings(), getUUID());
+                getUUID());
     }
 
     /**
