@@ -67,7 +67,7 @@ class MgrSync(object):
             msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
         if not current_cc_backend() == BackendType.SCC \
            and not vars(options).has_key('enable_scc'):
@@ -81,13 +81,13 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 """
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
         if hasISSMaster() and not (vars(options).has_key('enable_scc') or vars(options).has_key('refresh')):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
         # Now we can process the user request
         exit_code = 0
