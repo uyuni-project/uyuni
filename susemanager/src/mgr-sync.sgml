@@ -59,9 +59,10 @@
     </listitem>
    </varlistentry>
    <varlistentry>
-    <term><option>-s</option>, <option>--save-config</option></term>
+    <term><option>-s</option>, <option>--store-credentials</option></term>
     <listitem>
-     <para>Save the configuration to the local dot file (~/.mgr-sync).</para>
+     <para>Store user's credentials to the local dot file (~/.mgr-sync).</para>
+     <para>Note well: passwords are stored as plain text.</para>
     </listitem>
    </varlistentry>
    <varlistentry>

@@ -33,10 +33,10 @@ def _create_parser():
     parser.add_argument('-v', '--verbose', default=False,
                         action='store_true', help='Be verbose')
 
-    parser.add_argument("-s", "--save-config", action="store_true",
-                        dest="saveconfig",
+    parser.add_argument("-s", "--store-credentials", action="store_true",
+                        dest="store_credentials",
                         default=False,
-                        help="Save the configuration to the local dot file.")
+                        help="Store credentials to the local dot file.")
 
     parser.add_argument("-d", "--debug", default=1,
                         action="store", dest="debug",

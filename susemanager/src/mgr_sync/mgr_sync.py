@@ -101,13 +101,13 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         # Ensure the latest valid token is saved to the local configuration
         self.config.token = self.auth.token()
-        if options.saveconfig and self.auth.has_credentials():
+        if options.store_credentials and self.auth.has_credentials():
             # Save user credentials only with explicitly asked by the user
             self.config.user = self.auth.user
             self.config.password = self.auth.password
 
         self.config.write()
-        if options.saveconfig and self.auth.has_credentials():
+        if options.store_credentials and self.auth.has_credentials():
             print("Credentials have been saved to the {0} file.".format(
                 self.config.dotfile))
             self.log.info("Credentials have been saved to the {0} file.".format(
