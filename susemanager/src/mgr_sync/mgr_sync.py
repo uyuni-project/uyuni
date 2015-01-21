@@ -89,6 +89,12 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             return 1
 
+        if options.store_credentials and not self.auth.has_credentials():
+            # Ensure credentials are asked to the user, even though
+            # there's a token already store inside of the local
+            # configuration
+            self.auth.discard_token()
+
         # Now we can process the user request
         exit_code = 0
         try:
