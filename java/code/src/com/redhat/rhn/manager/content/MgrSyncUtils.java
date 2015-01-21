@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
@@ -23,7 +22,6 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.scc.client.SCCProxySettings;
 
 import org.apache.commons.httpclient.methods.HeadMethod;
 
@@ -60,20 +58,6 @@ public class MgrSyncUtils {
         finally {
             headRequest.releaseConnection();
         }
-    }
-
-    /**
-     * Return the current proxy settings as {@link SCCProxySettings}.
-     *
-     * @return the proxy settings configured in /etc/rhn/rhn.conf
-     */
-    public static SCCProxySettings getRhnProxySettings() {
-        ConfigDefaults configDefaults = ConfigDefaults.get();
-        SCCProxySettings settings = new SCCProxySettings(
-                configDefaults.getProxyHost(), configDefaults.getProxyPort());
-        settings.setUsername(configDefaults.getProxyUsername());
-        settings.setPassword(configDefaults.getProxyPassword());
-        return settings;
     }
 
     /**

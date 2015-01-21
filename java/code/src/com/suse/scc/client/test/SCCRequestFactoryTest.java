@@ -15,11 +15,12 @@
 package com.suse.scc.client.test;
 
 import com.redhat.rhn.common.util.HttpClientAdapter;
+import com.redhat.rhn.manager.setup.ProxySettingsDto;
+import com.redhat.rhn.manager.setup.test.ProxySettingsManagerTest;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
 import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCProxySettings;
 import com.suse.scc.client.SCCRequestFactory;
 
 import org.apache.commons.httpclient.HttpMethod;
@@ -58,17 +59,19 @@ public class SCCRequestFactoryTest extends TestCase {
 
             @Override
             public Integer call() throws Exception {
-                SCCProxySettings proxySettings = new SCCProxySettings(proxyUri.getHost(),
-                    proxyUri.getPort(), "test proxy username", "test proxy password");
+                ProxySettingsDto proxySettings = new ProxySettingsDto();
+                proxySettings.setHostname(proxyUri.getHost() + ":" + proxyUri.getPort());
+                proxySettings.setUsername("test proxy username");
+                proxySettings.setPassword("test proxy password");
+                ProxySettingsManagerTest.setProxySettings(proxySettings);
+
                 SCCConfig config = new SCCConfig(new URI("http://" + TEST_HOST),
                     "test server username", "test server password", TEST_UUID,
-                    null, SCCConfig.DEFAULT_LOGGING_DIR, proxySettings);
+                    null, SCCConfig.DEFAULT_LOGGING_DIR);
 
                 SCCRequestFactory factory = SCCRequestFactory.getInstance();
                 HttpMethod request = factory.initRequest("GET", "/test_url", config);
-                HttpClientAdapter client = new HttpClientAdapter(
-                        proxySettings.getHostname(), proxySettings.getPort(),
-                        proxySettings.getUsername(), proxySettings.getPassword());
+                HttpClientAdapter client = new HttpClientAdapter();
                 return client.executeRequest(request,
                         config.getUsername(), config.getPassword());
             }
