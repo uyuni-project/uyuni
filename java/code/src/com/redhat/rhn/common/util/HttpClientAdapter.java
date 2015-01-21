@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.util;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
 import org.apache.commons.httpclient.Credentials;
@@ -21,12 +22,16 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.ProxyHost;
 import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Adapter class holding an {@link HttpClient} object and offering a simple API to execute
@@ -35,8 +40,10 @@ import java.io.IOException;
 public class HttpClientAdapter {
 
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
+    private static final String NO_PROXY = "server.satellite.no_proxy";
     private ProxyHost proxyHost;
     private HttpClient httpClient;
+    private List<String> noProxyDomains;
 
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
@@ -90,7 +97,7 @@ public class HttpClientAdapter {
         }
 
         // Decide if this request should go via a proxy
-        if (proxyHost != null && useProxy(request.getURI())) {
+        if (proxyHost != null && useProxyFor(request.getURI())) {
             if (log.isDebugEnabled()) {
                 log.debug("Using proxy: " + proxyHost);
             }
@@ -142,8 +149,43 @@ public class HttpClientAdapter {
      * @param uri the URI to check
      * @return true if proxy should be used, else false
      */
-    private boolean useProxy(URI uri) {
-        // TODO: Lookup the "no_proxy" option from config
+    private boolean useProxyFor(URI uri) throws URIException {
+        if (uri.getScheme().equals("file")) {
+            return false;
+        }
+        String host = uri.getHost();
+        if (host.equals("localhost") || host.equals("127.0.0.1") || host.equals("::1")) {
+            return false;
+        }
+
+        // Read proxy exceptions from the "no_proxy" config option
+        if (noProxyDomains == null) {
+            String noProxy = Config.get().getString(NO_PROXY);
+            if (noProxy == null) {
+                return true;
+            }
+            if (noProxy.equals("*")) {
+                return false;
+            }
+
+            noProxyDomains = new ArrayList<String>(Arrays.asList(noProxy.split(",")));
+            for (String domain : noProxyDomains) {
+                domain = domain.toLowerCase().trim();
+            }
+        }
+
+        // Check for either an exact match or the previous character is a '.',
+        // so that host is within the same domain.
+        for (String domain : noProxyDomains) {
+            domain = domain.toLowerCase().trim();
+            if (domain.startsWith(".")) {
+                domain = domain.substring(1);
+            }
+            if (host.endsWith(domain) && (host.length() == domain.length() ||
+                    host.charAt(host.length() - domain.length() - 1) == '.')) {
+                return false;
+            }
+        }
         return true;
     }
 }
