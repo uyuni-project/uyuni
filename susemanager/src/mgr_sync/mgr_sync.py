@@ -24,7 +24,7 @@ from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync import logger
-from spacewalk.susemanager.authenticator import Authenticator
+from spacewalk.susemanager.authenticator import Authenticator, MaximumNumberOfAuthenticationFailures
 from spacewalk.susemanager.helpers import cli_ask
 
 # see TaskoXmlRpcHandler.java for available methods
@@ -89,7 +89,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             sys.stderr.write(msg)
             sys.exit(1)
 
-        exit_code = self._process_user_request(options)
+        # Now we can process the user request
+        exit_code = 0
+        try:
+            exit_code = self._process_user_request(options)
+        except MaximumNumberOfAuthenticationFailures:
+            msg = "mgr-sync: Authentication failure"
+            sys.stderr.write(msg + "\n")
+            self.log.error(msg)
+            return 1
 
         # Ensure the latest valid token is saved to the local configuration
         self.config.token = self.auth.token()
