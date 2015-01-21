@@ -168,8 +168,7 @@ public class HttpClientAdapter {
             if (domain.startsWith(".")) {
                 domain = domain.substring(1);
             }
-            if (host.endsWith(domain) && (host.length() == domain.length() ||
-                    host.charAt(host.length() - domain.length() - 1) == '.')) {
+            if (domain.equals(host) || host.endsWith("." + domain)) {
                 return false;
             }
         }
