@@ -172,12 +172,12 @@ public class SetupWizardSessionCache {
             else {
                 NCCClient client = new NCCClient();
                 ret = client.ping();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Proxy verification is " + ret);
-                }
             }
 
             // Put validation status in cache
+            if (logger.isDebugEnabled()) {
+                logger.debug("Proxy verification is " + ret);
+            }
             storeProxyStatus(ret, request);
         }
         else {
