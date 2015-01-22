@@ -79,12 +79,25 @@ public class HttpClientAdapter {
      * @throws IOException in case of errors
      */
     public int executeRequest(HttpMethod request) throws IOException {
+        return executeRequest(request, false);
+    }
+
+    /**
+     * Take a request as {@link HttpMethod} and execute it.
+     *
+     * @param request the {@link HttpMethod} to be executed
+     * @param ignoreNoProxy set true to ignore the "no_proxy" setting
+     * @return the return code of the request
+     * @throws IOException in case of errors
+     */
+    public int executeRequest(HttpMethod request, boolean ignoreNoProxy)
+            throws IOException {
         if (log.isDebugEnabled()) {
             log.debug(request.getName() + " " + request.getURI());
         }
 
-        // Decide if this request should go via a proxy
-        if (proxyHost != null && useProxyFor(request.getURI())) {
+        // Decide if a proxy should be used for this request
+        if (proxyHost != null && !ignoreNoProxy && useProxyFor(request.getURI())) {
             if (log.isDebugEnabled()) {
                 log.debug("Using proxy: " + proxyHost);
             }
@@ -116,6 +129,21 @@ public class HttpClientAdapter {
      */
     public int executeRequest(HttpMethod request, String username, String password)
             throws IOException {
+        return executeRequest(request, username, password, false);
+    }
+
+    /**
+     * Execute an authenticated request given as {@link HttpMethod}.
+     *
+     * @param request the request to execute
+     * @param username username for authentication
+     * @param password password for authentication
+     * @param ignoreNoProxy set true to ignore the "no_proxy" setting
+     * @return the return code of the request
+     * @throws IOException in case of errors
+     */
+    public int executeRequest(HttpMethod request, String username, String password,
+            boolean ignoreNoProxy) throws IOException {
         // Setup authentication
         if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
             Credentials creds = new UsernamePasswordCredentials(username, password);
@@ -127,7 +155,7 @@ public class HttpClientAdapter {
             httpClient.getParams().setAuthenticationPreemptive(true);
         }
 
-        return executeRequest(request);
+        return executeRequest(request, ignoreNoProxy);
     }
 
     /**
