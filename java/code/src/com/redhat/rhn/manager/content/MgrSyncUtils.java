@@ -41,16 +41,31 @@ public class MgrSyncUtils {
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
      *
      * @param url the URL to verify
-     * @param username username for authentication
-     * @param password password for authentication
+     * @param username username for authentication (pass null for unauthenticated requests)
+     * @param password password for authentication (pass null for unauthenticated requests)
      * @return the response code of the request
      */
     public static int sendHeadRequest(String url, String username, String password)
             throws ContentSyncException {
+        return sendHeadRequest(url, username, password, false);
+    }
+
+    /**
+     * Send a HEAD request to a given URL to verify accessibility with given credentials.
+     *
+     * @param url the URL to verify
+     * @param username username for authentication (pass null for unauthenticated requests)
+     * @param password password for authentication (pass null for unauthenticated requests)
+     * @param ignoreNoProxy set true to ignore the "no_proxy" setting
+     * @return the response code of the request
+     */
+    public static int sendHeadRequest(String url, String username, String password,
+            boolean ignoreNoProxy) throws ContentSyncException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
         HeadMethod headRequest = new HeadMethod(url);
         try {
-            return httpClient.executeRequest(headRequest, username, password);
+            return httpClient.executeRequest(
+                    headRequest, username, password, ignoreNoProxy);
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
