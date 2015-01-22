@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client;
 
-import com.redhat.rhn.common.util.HttpClientAdapter;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.Gson;

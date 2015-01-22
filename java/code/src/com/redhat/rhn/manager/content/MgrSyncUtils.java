@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.util.HttpClientAdapter;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
