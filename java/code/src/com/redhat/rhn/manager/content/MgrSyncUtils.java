@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
 
 import java.io.File;
@@ -51,6 +52,17 @@ public class MgrSyncUtils {
     }
 
     /**
+     * Send a HEAD request to verify a proxy server (ignoring the "no_proxy" setting).
+     *
+     * @param url the URL to use for verification
+     * @return true if return code of HTTP request is 200, otherwise false
+     * @throws ContentSyncException in case of an error
+     */
+    public static boolean verifyProxy(String url) throws ContentSyncException {
+        return sendHeadRequest(url, null, null, true) == HttpStatus.SC_OK;
+    }
+
+    /**
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
      *
      * @param url the URL to verify
@@ -59,7 +71,7 @@ public class MgrSyncUtils {
      * @param ignoreNoProxy set true to ignore the "no_proxy" setting
      * @return the response code of the request
      */
-    public static int sendHeadRequest(String url, String username, String password,
+    private static int sendHeadRequest(String url, String username, String password,
             boolean ignoreNoProxy) throws ContentSyncException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
         HeadMethod headRequest = new HeadMethod(url);
