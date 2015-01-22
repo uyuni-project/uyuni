@@ -26,7 +26,7 @@ Feature: Check the SCC Migration UI
     When I follow "SUSE Manager Configuration"
     When I follow "SUSE Customer Center" in the left menu
     Then I should see a "SUSE Manager is still connected to the Novell Customer Center." text
-    Then I should see a "Migration is an straightforward process but may take some minutes." text
+    Then I should see a "Migration is a straightforward process but may take some minutes." text
     Then I should see a "Start Migration to SUSE Customer Center" text
     Then I restore migration state
 
@@ -38,6 +38,6 @@ Feature: Check the SCC Migration UI
     When I follow "Admin"
     When I follow "SUSE Manager Configuration"
     When I follow "SUSE Customer Center" in the left menu
-    Then I should see a "Congratulations! SUSE Manager is already migrated to the SUSE Customer Center." text
+    Then I should see a "Congratulations! SUSE Manager is migrated to the SUSE Customer Center." text
     Then I restore migration state
 
