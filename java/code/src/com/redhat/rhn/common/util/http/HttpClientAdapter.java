@@ -97,7 +97,7 @@ public class HttpClientAdapter {
         }
 
         // Decide if a proxy should be used for this request
-        if (proxyHost != null && !ignoreNoProxy && useProxyFor(request.getURI())) {
+        if (proxyHost != null && (ignoreNoProxy || useProxyFor(request.getURI()))) {
             if (log.isDebugEnabled()) {
                 log.debug("Using proxy: " + proxyHost);
             }
