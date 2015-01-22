@@ -14,12 +14,10 @@ Feature: I want to verify the Setup Wizard
       Given I am on the Admin page
         And I follow "Mirror Credentials" in the content area
         And I want to add a new credential
-        And I enter "test@suse.com" as "edit-email"
         And I enter "asdf" as "edit-user"
         And I enter "asdf" as "edit-password"
         And I click on "Save"
         And I should see a "asdf" text
-        And I should see a "test@suse.com" text
         And I make the credentials primary
         And I view the primary subscription list
         And I should see a "No subscriptions available" text
@@ -29,7 +27,6 @@ Feature: I want to verify the Setup Wizard
         And I should not see a "No subscriptions available" text
         And I click on "Close"
         And I should not see a "asdf" text
-        And I should not see a "test@suse.com" text
 
    Scenario: I want to test the products page
      Given I am on the Admin page
