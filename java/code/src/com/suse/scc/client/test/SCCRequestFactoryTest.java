@@ -14,7 +14,7 @@
  */
 package com.suse.scc.client.test;
 
-import com.redhat.rhn.common.util.HttpClientAdapter;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.test.ProxySettingsManagerTest;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;

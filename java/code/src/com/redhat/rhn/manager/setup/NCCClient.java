@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.util.HttpClientAdapter;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
