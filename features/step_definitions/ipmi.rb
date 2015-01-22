@@ -1,5 +1,5 @@
 When /^I setup the ipmi network card$/ do
-    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST dhcpcd eth1 2>&1`
+    $sshout = `echo | ssh -l root -o StrictHostKeyChecking=no $TESTHOST yast lan add name=eth1 ethdevice=eth1 bootproto=dhcp  2>&1`
        if ! $?.success?
            raise "Unable to change setup network card"
        end
