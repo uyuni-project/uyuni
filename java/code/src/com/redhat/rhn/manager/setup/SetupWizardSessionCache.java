@@ -158,7 +158,8 @@ public class SetupWizardSessionCache {
                 try {
                     String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
                     ret = MgrSyncUtils.verifyProxy(url);
-                } catch (ContentSyncException e) {
+                }
+                catch (ContentSyncException e) {
                     ret = false;
                 }
             }

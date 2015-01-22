@@ -34,7 +34,6 @@ public class SCCClientFactory {
      * @param username the username
      * @param password the password
      * @param resourcePath the local path for JSON files or null
-     * @param proxySettings a proxy settings object
      * @param uuid the UUID or null
      * @return the new {@link SCCWebClient}
      */
