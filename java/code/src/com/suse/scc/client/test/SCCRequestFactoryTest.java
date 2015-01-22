@@ -39,8 +39,6 @@ import simple.http.Response;
  */
 public class SCCRequestFactoryTest extends TestCase {
     private static final String TEST_UUID = "test uuid";
-    // TODO: Make sure that custom ports work as expected!
-    // private static final String TEST_HOST = "test_host:666";
     private static final String TEST_HOST = "test_host";
     private static final String EXPECTED_ACCEPT = "application/vnd.scc.suse.com.v4+json";
     private static final String EXPECTED_AUTH =
