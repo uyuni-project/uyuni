@@ -198,7 +198,7 @@ public class SCCMirrorCredentialsManager extends MirrorCredentialsManager {
                         makeDtos(subscriptions), creds, request);
             } catch (SCCClientException e) {
                 log.error("Error getting subscriptions for " +
-                        creds.getUser() + ", " + e.getMessage());
+                        creds.getUser() + ": " + e.getMessage());
             }
         }
 
