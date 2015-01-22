@@ -21,7 +21,6 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import com.suse.manager.model.ncc.Subscription;
 
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -158,13 +157,7 @@ public class SetupWizardSessionCache {
             if (MgrSyncUtils.isMigratedToSCC()) {
                 try {
                     String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
-                    int code = MgrSyncUtils.sendHeadRequest(url, null, null, true);
-                    if (code != HttpStatus.SC_OK) {
-                        ret = false;
-                    }
-                    else {
-                        ret = true;
-                    }
+                    ret = MgrSyncUtils.verifyProxy(url);
                 } catch (ContentSyncException e) {
                     ret = false;
                 }
