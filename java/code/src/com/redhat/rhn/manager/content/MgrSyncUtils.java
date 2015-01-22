@@ -45,6 +45,7 @@ public class MgrSyncUtils {
      * @param username username for authentication (pass null for unauthenticated requests)
      * @param password password for authentication (pass null for unauthenticated requests)
      * @return the response code of the request
+     * @throws ContentSyncException in case of an error
      */
     public static int sendHeadRequest(String url, String username, String password)
             throws ContentSyncException {
@@ -70,6 +71,7 @@ public class MgrSyncUtils {
      * @param password password for authentication (pass null for unauthenticated requests)
      * @param ignoreNoProxy set true to ignore the "no_proxy" setting
      * @return the response code of the request
+     * @throws ContentSyncException in case of an error
      */
     private static int sendHeadRequest(String url, String username, String password,
             boolean ignoreNoProxy) throws ContentSyncException {

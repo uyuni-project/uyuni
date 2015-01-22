@@ -69,7 +69,7 @@ public class SCCClientUtils {
     /**
      * Returns a buffered reader for data in the connection that will also log
      * any read data to a file in path.
-     * @param connection the connection
+     * @param request the HTTP request
      * @param user the user name
      * @param logDir where to save the log file
      * @return the logging reader

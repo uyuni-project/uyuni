@@ -48,8 +48,6 @@ public class HttpClientAdapter {
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
      * be read from the configuration and applied transparently.
-     *
-     * @return {@link HttpClientAdapter} object
      */
     public HttpClientAdapter() {
         httpClient = new HttpClient();
