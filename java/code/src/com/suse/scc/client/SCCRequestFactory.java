@@ -46,6 +46,7 @@ public class SCCRequestFactory {
      * @param endpoint the SCC API endpoint
      * @param config SCC client configuration
      * @return {@link HttpMethod} object representing the request
+     * @throws SCCClientException in case of an error
      */
     public HttpMethod initRequest(String method, String endpoint, SCCConfig config)
             throws SCCClientException {
