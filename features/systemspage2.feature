@@ -14,7 +14,6 @@ Feature: Explore the main landing page
     When I follow "Systems"
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -26,7 +25,6 @@ Feature: Explore the main landing page
     When I follow "Systems" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -49,7 +47,6 @@ Feature: Explore the main landing page
     When I follow "Out of Date" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -63,7 +60,6 @@ Feature: Explore the main landing page
     When I follow "Requiring Reboot" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -86,7 +82,6 @@ Feature: Explore the main landing page
     When I follow "Unentitled" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -99,7 +94,6 @@ Feature: Explore the main landing page
     When I follow "Ungrouped" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -112,7 +106,6 @@ Feature: Explore the main landing page
     When I follow "Inactive" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
@@ -136,7 +129,6 @@ Feature: Explore the main landing page
     When I follow "Proxy" in the left menu
     Then The table should have a column named "System"
      And The table should have a column named "Updates" 
-     And The table should have a column named "Health" 
      And The table should have a column named "Patches" 
      And The table should have a column named "Packages" 
      And The table should have a column named "Configs" 
