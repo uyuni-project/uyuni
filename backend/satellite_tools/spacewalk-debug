@@ -99,7 +99,7 @@ mkdir -p $DIR/cobbler-logs
 mkdir -p $DIR/rhn-logs
 mkdir -p $DIR/config-defaults
 mkdir -p $DIR/kickstarts
-mkdir -p $DIR/database
+mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
 
@@ -267,18 +267,18 @@ echo "    * get schema statistics"
 if [ -f /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log ] ; then
 	echo "    * copying alert_rhnsat.log"
 	cp -fa /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log $DIR/database
-	ls /rhnsat/admin/rhnsat/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+	ls /rhnsat/admin/rhnsat/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 	ls /rhnsat/admin/rhnsat/logs/*.log 2>/dev/null | xargs -I file cp -fa file $DIR/database
 fi
 if [ -f /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log ]; then
     echo "    * copying alert_XE.log"
     cp -fa /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log $DIR/database
-    ls /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+    ls /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 fi
 if [ -f /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log ]; then
     echo "    * copying alert_susemanager.log"
     cp -fa /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log $DIR/database
-    ls /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+    ls /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 fi
 
 # PostgreSQL logs
