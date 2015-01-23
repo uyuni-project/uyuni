@@ -11,7 +11,7 @@
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Connection" url="/network/systems/details/connection.pxt" acl="org_has_proxies()"/>
-    <rhn-tab name="Proxy" url="/network/systems/details/proxy-clients.pxt" acl="user_role(org_admin); system_feature(ftr_proxy_capable); org_channel_family(SMP); child_channel_candidate(SMP); org_entitlement(rhn_provisioning); not system_is_satellite(); not is_solaris();system_feature(ftr_kickstart) or system_feature(ftr_snapshotting); system_is_proxy()">
+    <rhn-tab name="Proxy" url="/network/systems/details/proxy-clients.pxt" acl="user_role(org_admin); system_feature(ftr_proxy_capable) or system_is_proxy(); org_channel_family(SMP) or system_is_proxy(); child_channel_candidate(SMP) or system_is_proxy(); org_entitlement(rhn_provisioning); not system_is_satellite(); not is_solaris();system_feature(ftr_kickstart) or system_feature(ftr_snapshotting);">
 <!--
       <rhn-tab name="Activation" url="/network/systems/details/proxy.pxt" />
       <rhn-tab name="Systems Using Proxy" url="/network/systems/details/proxy-clients.pxt" acl="system_is_proxy()"/>
