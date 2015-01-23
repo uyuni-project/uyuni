@@ -40,7 +40,7 @@ import java.util.List;
 public class HttpClientAdapter {
 
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
-    private static final String NO_PROXY = "server.satellite.no_proxy";
+    public static final String NO_PROXY = "server.satellite.no_proxy";
     private ProxyHost proxyHost;
     private HttpClient httpClient;
     private List<String> noProxyDomains;
