@@ -68,6 +68,7 @@ jar -cf java-branding.jar -C java/code/src com
 
 # Compile less into css
 ln -s /srv/www/htdocs/css/bootstrap css/bootstrap
+ln -s /srv/www/htdocs/css/patternfly1 css/patternfly1
 lessc css/spacewalk.less > css/spacewalk.css
 rm -f css/bootstrap
 
