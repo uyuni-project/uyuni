@@ -44,7 +44,7 @@ if '.' not in hostname:
     hostname = socket.getfqdn()
 
 default_log_location = '/var/log/rhn/reposync/'
-relative_comps_dir   = 'rhn/comps'
+relative_comps_dir = 'rhn/comps'
 default_hash = 'sha256'
 
 # namespace prefixes for parsing SUSE patches XML files
@@ -92,6 +92,7 @@ def getChannelRepo():
 
     return items
 
+
 def getParentsChilds(b_only_custom=False):
 
     initCFG('server')
@@ -123,6 +124,7 @@ def getParentsChilds(b_only_custom=False):
 
     return d_parents
 
+
 def getCustomChannels():
 
     # with SUSE we sync also Vendor channels with reposync
@@ -135,7 +137,9 @@ def getCustomChannels():
 
     return l_custom_ch
 
+
 class RepoSync(object):
+
     def __init__(self, channel_label, repo_type, url=None, fail=False,
                  quiet=False, noninteractive=False, filters=[],
                  deep_verify=False, no_errata=False, sync_kickstart = False):
@@ -365,7 +369,7 @@ class RepoSync(object):
 
     def update_date(self):
         """ Updates the last sync time"""
-        h = rhnSQL.prepare( """update rhnChannel set LAST_SYNCED = current_timestamp
+        h = rhnSQL.prepare("""update rhnChannel set LAST_SYNCED = current_timestamp
                              where label = :channel""")
         h.execute(channel=self.channel['label'])
 
@@ -374,12 +378,12 @@ class RepoSync(object):
         if groupsfile:
             basename = os.path.basename(groupsfile)
             self.print_msg("Repo %s has comps file %s." % (url, basename))
-            relativedir =  os.path.join(relative_comps_dir, self.channel_label)
-            absdir =  os.path.join(CFG.MOUNT_POINT, relativedir)
+            relativedir = os.path.join(relative_comps_dir, self.channel_label)
+            absdir = os.path.join(CFG.MOUNT_POINT, relativedir)
             if not os.path.exists(absdir):
                 os.makedirs(absdir)
             relativepath = os.path.join(relativedir, basename)
-            abspath =  os.path.join(absdir, basename)
+            abspath = os.path.join(absdir, basename)
             for suffix in ['.gz', '.bz']:
                 if basename.endswith(suffix):
                     abspath = abspath.rstrip(suffix)
@@ -1019,10 +1023,10 @@ class RepoSync(object):
                       from rhnContentSourceFilter
                      where source_id = :source_id
                      order by sort_order """)
-            h.execute(source_id = source_id)
+            h.execute(source_id=source_id)
             filter_data = h.fetchall_dict() or []
             filters = [(row['flag'], re.split(r'[,\s]+', row['filter']))
-                                                         for row in filter_data]
+                       for row in filter_data]
         else:
             filters = self.filters
 
@@ -1058,11 +1062,11 @@ class RepoSync(object):
             self.available_packages[ident] = 1
 
             db_pack = rhnPackage.get_info_for_package(
-                   [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
-                   channel_id, self.channel['org_id'])
+                [pack.name, pack.version, pack.release, pack.epoch, pack.arch],
+                channel_id, self.channel['org_id'])
 
             to_download = True
-            to_link     = True
+            to_link = True
             if db_pack['path']:
                 # if the package exists, but under a different org_id we have to download it again
                 if self.match_package_checksum(pack, db_pack):
@@ -1087,7 +1091,7 @@ class RepoSync(object):
             return
         else:
             self.print_msg("Packages already synced:      %5d" %
-                                                  (num_passed - num_to_process))
+                           (num_passed - num_to_process))
             self.print_msg("Packages to sync:             %5d" % num_to_process)
 
         self.regen = True
@@ -1103,7 +1107,7 @@ class RepoSync(object):
             localpath = None
             # pylint: disable=W0703
             try:
-                self.print_msg("%d/%d : %s" % (index+1, num_to_process, pack.getNVREA()))
+                self.print_msg("%d/%d : %s" % (index + 1, num_to_process, pack.getNVREA()))
                 if to_download:
                     pack.path = localpath = plug.get_package(pack)
                 pack.load_checksum_from_header()
@@ -1152,8 +1156,8 @@ class RepoSync(object):
         package['arch'] = pack.arch
         package['checksum'] = pack.a_pkg.checksum
         package['checksum_type'] = pack.a_pkg.checksum_type
-        package['channels']  = [{'label':self.channel_label,
-                                 'id':self.channel['id']}]
+        package['channels'] = [{'label': self.channel_label,
+                                'id': self.channel['id']}]
         package['org_id'] = self.channel['org_id']
 
         imported = False
@@ -1237,10 +1241,10 @@ class RepoSync(object):
         channel_id = int(self.channel['id'])
 
         if rhnSQL.fetchone_dict("""
-            select id
-            from rhnKickstartableTree
-            where org_id = :org_id and channel_id = :channel_id and label = :label
-            """, org_id = self.channel['org_id'], channel_id = self.channel['id'], label = repo_label):
+                select id
+                from rhnKickstartableTree
+                where org_id = :org_id and channel_id = :channel_id and label = :label
+                """, org_id=self.channel['org_id'], channel_id=self.channel['id'], label=repo_label):
             print "Kickstartable tree %s already synced." % repo_label
             return
 
@@ -1248,7 +1252,7 @@ class RepoSync(object):
             select sequence_nextval('rhn_kstree_id_seq') as id from dual
             """)
         ks_id = row['id']
-        ks_path = 'rhn/kickstart/%s/%s' % ( self.channel['org_id'], repo_label )
+        ks_path = 'rhn/kickstart/%s/%s' % (self.channel['org_id'], repo_label)
 
         row = rhnSQL.execute("""
             insert into rhnKickstartableTree (id, org_id, label, base_path, channel_id,
@@ -1257,14 +1261,14 @@ class RepoSync(object):
                         ( select id from rhnKSTreeType where label = 'externally-managed'),
                         ( select id from rhnKSInstallType where label = 'generic_rpm'),
                         current_timestamp, current_timestamp, current_timestamp)
-            """, id = ks_id, org_id = self.channel['org_id'], label = repo_label,
-                base_path = os.path.join(CFG.MOUNT_POINT, ks_path), channel_id = self.channel['id'])
+            """, id=ks_id, org_id=self.channel['org_id'], label=repo_label,
+                             base_path=os.path.join(CFG.MOUNT_POINT, ks_path), channel_id=self.channel['id'])
 
         insert_h = rhnSQL.prepare("""
             insert into rhnKSTreeFile (kstree_id, relative_filename, checksum_id, file_size, last_modified, created, modified)
             values (:id, :path, lookup_checksum('sha256', :checksum), :st_size, epoch_seconds_to_timestamp_tz(:st_time), current_timestamp, current_timestamp)
             """)
-        dirs = [ '' ]
+        dirs = ['']
         while len(dirs) > 0:
             d = dirs.pop(0)
             v = None
@@ -1277,7 +1281,7 @@ class RepoSync(object):
 
             for s in (m.group(1) for m in re.finditer(r'(?i)<a href="(.+?)"', v)):
                 if (re.match(r'/', s) or re.search(r'\?', s) or re.search(r'\.\.', s)
-                    or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s)):
+                        or re.match(r'[a-zA-Z]+:', s) or re.search(r'\.rpm$', s)):
                     continue
                 if re.search(r'/$', s):
                     dirs.append(d + s)
@@ -1289,8 +1293,8 @@ class RepoSync(object):
                     print "Retrieving %s" % d + s
                     plug.get_file(d + s, os.path.join(CFG.MOUNT_POINT, ks_path))
                 st = os.stat(local_path)
-                insert_h.execute(id = ks_id, path = d + s, checksum = getFileChecksum('sha256', local_path),
-                                 st_size = st.st_size, st_time = st.st_mtime)
+                insert_h.execute(id=ks_id, path=d + s, checksum=getFileChecksum('sha256', local_path),
+                                 st_size=st.st_size, st_time=st.st_mtime)
 
         rhnSQL.commit()
 

@@ -55,23 +55,30 @@ from spacewalk.common import rhnLog
 # namespace prefix to parse patches.xml file
 PATCHES = '{http://novell.com/package/metadata/suse/patches}'
 
-CACHE_DIR   = '/var/cache/rhn/reposync/'
+CACHE_DIR = '/var/cache/rhn/reposync/'
 GPG_DIR     = '/var/lib/spacewalk/gpgdir'
 YUMSRC_CONF = '/etc/rhn/spacewalk-repo-sync/yum.conf'
 
+
 class YumWarnings:
+
     def __init__(self):
         self.saved_stdout = None
         self.errors = None
+
     def write(self, s):
         pass
+
     def disable(self):
         self.saved_stdout = sys.stdout
         sys.stdout = self
+
     def restore(self):
         sys.stdout = self.saved_stdout
 
+
 class YumUpdateMetadata(UpdateMetadata):
+
     """The root update metadata object supports getting all updates"""
 
 # pylint: disable=W0221
@@ -248,7 +255,7 @@ class ContentSource:
         return to_return
 
     @staticmethod
-    def _filter_packages(packages, filters, exclude_only = False):
+    def _filter_packages(packages, filters, exclude_only=False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -271,7 +278,7 @@ class ContentSource:
                 if not exclude_only:
                     # include
                     exactmatch, matched, _unmatched = yum.packages.parsePackages(
-                                                            excluded, pkg_list)
+                        excluded, pkg_list)
                     allmatched = yum.misc.unique(exactmatch + matched)
                     selected = yum.misc.unique(selected + allmatched)
                     for pkg in allmatched:
@@ -280,7 +287,7 @@ class ContentSource:
             elif sense == '-':
                 # exclude
                 exactmatch, matched, _unmatched = yum.packages.parsePackages(
-                                                        selected, pkg_list)
+                    selected, pkg_list)
                 allmatched = yum.misc.unique(exactmatch + matched)
                 for pkg in allmatched:
                     if pkg in selected:

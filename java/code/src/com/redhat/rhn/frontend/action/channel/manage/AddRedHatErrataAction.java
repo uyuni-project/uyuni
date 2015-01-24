@@ -72,6 +72,7 @@ public class AddRedHatErrataAction extends RhnListAction {
 
     private static final String SUBMITTED = "frontend.actions.channels.manager." +
             "add.submit";
+    private static final String EMPTY_KEY = "channel.manage.errata.noerrata";
 
     /**
      *
@@ -95,6 +96,7 @@ public class AddRedHatErrataAction extends RhnListAction {
         request.setAttribute("user", user);
         request.setAttribute("channel_name", currentChan.getName());
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
+        request.setAttribute("emptyKey", EMPTY_KEY);
 
         /*
         List<SelectableChannelVersion> versionList = SelectableChannelVersion.

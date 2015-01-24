@@ -38,9 +38,9 @@ verbose = 0
 options_table = [
     Option("-v", "--verbose",       action="store_true",
         help="Increase verbosity"),
-    Option(   "--debug",            action="store",
+    Option("--debug",            action="store",
         help="logs the debug information to a log file"),
-    Option(    "--clean-possible-wrong", action="store_true",
+    Option("--clean-possible-wrong", action="store_true",
         help="clean possible wrong calculated keyids"),
 ]
 
@@ -70,7 +70,6 @@ def main():
         clean_wrong()
 
     process_package_data()
-
 
 
 _get_needed_pkgs_query = """
@@ -148,8 +147,9 @@ def process_package_data():
     if not pkgs:
         # Nothing to change
         return
-    if verbose: print "Processing %s packages" % len(pkgs)
-    pb = ProgressBar(prompt='standby: ', endTag=' - Complete!', \
+    if verbose:
+        print "Processing %s packages" % len(pkgs)
+    pb = ProgressBar(prompt='standby: ', endTag=' - Complete!',
                      finalSize=len(pkgs), finalBarLength=40, stream=sys.stdout)
     pb.printAll(1)
     skip_list = []
@@ -157,10 +157,10 @@ def process_package_data():
     for pkg in pkgs:
         pb.addTo(1)
         pb.printIncrement()
-        path =  pkg['path']
+        path = pkg['path']
 
         if path is None:
-                continue
+            continue
         full_path = os.path.join(CFG.MOUNT_POINT, path)
         checksum_type = pkg['checksum_type']
         checksum = pkg['checksum']

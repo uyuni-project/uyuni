@@ -74,6 +74,10 @@
     <available file="/usr/share/java/apache-commons-validator.jar" />
   </condition>
 
+  <condition property="log4j-jars" value="log4j log4j-1" else="log4j">
+    <available file="/usr/share/java/log4j-1.jar" />
+  </condition>
+
   <property name="hibernate3.2deps" value="hibernate3"/>
 
   <property name="hibernate3.6deps" value="hibernate3/hibernate-ehcache-3 hibernate3/hibernate-c3p0-3 hibernate3/hibernate-core-3 ${hibernate-commons-annotations} slf4j/api jboss-logging javassist slf4j/log4j12 ehcache-core hibernate-jpa-2.0-api"/>
@@ -105,12 +109,12 @@
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies"
       value="junit
-             log4j
+             ${log4j-jars}
              regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom jta junit
-             log4j
+             ${log4j-jars}
              regexp ${jmock-jars} ${jfreechart}
              postgresql-jdbc" />
 
@@ -131,7 +135,7 @@
   <!-- =================== RPM build, use jpackage syntax ======================= -->
   <!-- property name="install.test.jar.dependencies"
       value="antlr checkstyle dom4j emma emma_ant jdom jta junit
-             log4j mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3
+             ${log4j-jars} mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3
              regexp ${jmock-jars} strutstest" / -->
 
   <property name="install.build.jar.dependencies"

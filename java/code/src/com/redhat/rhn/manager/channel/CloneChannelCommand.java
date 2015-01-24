@@ -84,7 +84,6 @@ public class CloneChannelCommand extends CreateChannelCommand {
         c.setGPGKeyUrl(gpgKeyUrl);
         c.setGPGKeyFp(gpgKeyFp);
         c.setAccess(access);
-        c.setGloballySubscribable(globallySubscribable, user.getOrg());
         c.setMaintainerName(maintainerName);
         c.setMaintainerEmail(maintainerEmail);
         c.setMaintainerPhone(maintainerPhone);
@@ -98,6 +97,9 @@ public class CloneChannelCommand extends CreateChannelCommand {
         // need to save before calling stored procs below
         ChannelFactory.save(c);
         c = (ClonedChannel) ChannelFactory.reload(c);
+
+        // This ends up being a mode query call so need to save first to get channel id
+        c.setGloballySubscribable(globallySubscribable, user.getOrg());
 
         if (originalState) {
             // original packages only, no errata
