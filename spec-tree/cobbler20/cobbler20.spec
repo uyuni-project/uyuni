@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 41%{?dist}
+Release: 42%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -24,6 +24,7 @@ Patch10: cobbler-findks.patch
 Patch11: cobbler-arm-arch.patch
 Patch12: cobbler-modprobe-d.patch
 Patch13: fedora_os_entry.patch
+Patch14: centos7-version.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -121,6 +122,7 @@ a XMLRPC API for integration with other applications.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p0
 
 %build
 %{__python} setup.py build 
@@ -470,6 +472,10 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Fri Jan 23 2015 Stephen Herr <sherr@redhat.com> 2.0.11-42
+- Make cobbler detect os version for CentOS 7 Taken from upstream:
+  https://github.com/cobbler/cobbler/pull/1021
+
 * Mon Jan 19 2015 Tomas Lestach <tlestach@redhat.com> 2.0.11-41
 - adapt cobbler20 for fc21
 - 1136538 - support while loop syntax for Cheetah templates

@@ -12,7 +12,7 @@ TASKOMATIC_XMLRPC_URL = 'http://localhost:2829/RPC2'
 class RepodataQueueEntry(object):
 
     def __init__(self, channel, client, reason, force=False,
-            bypass_filters=False):
+                 bypass_filters=False):
         self.channel = channel
         self.client = client
         self.reason = reason
@@ -43,11 +43,12 @@ class RepodataQueue(object):
         """)
 
         h.execute(channel=entry.channel, client=entry.client,
-            reason=entry.reason, force=self._boolean_as_char(entry.force),
-            bypass_filters=self._boolean_as_char(entry.bypass_filters))
+                  reason=entry.reason, force=self._boolean_as_char(entry.force),
+                  bypass_filters=self._boolean_as_char(entry.bypass_filters))
+
 
 def add_to_repodata_queue(channel, client, reason, force=False,
-        bypass_filters=False):
+                          bypass_filters=False):
     if reason == '':
         reason = None
     entry = RepodataQueueEntry(channel, client, reason, force, bypass_filters)
@@ -55,18 +56,21 @@ def add_to_repodata_queue(channel, client, reason, force=False,
     queue.add(entry)
 
 # XXX not the best place for this...
+
+
 def add_to_repodata_queue_for_channel_package_subscription(affected_channels,
-        batch, caller):
+                                                           batch, caller):
 
-        tmpreason = []
-        for package in batch:
-            tmpreason.append(package.short_str())
+    tmpreason = []
+    for package in batch:
+        tmpreason.append(package.short_str())
 
-        reason = " ".join(tmpreason)
+    reason = " ".join(tmpreason)
 
-        for channel in affected_channels:
-            # don't want to cause an error for the db
-            add_to_repodata_queue(channel, caller, reason[:128])
+    for channel in affected_channels:
+        # don't want to cause an error for the db
+        add_to_repodata_queue(channel, caller, reason[:128])
+
 
 
 def schedule_single_sat_repo_sync(channel_id):

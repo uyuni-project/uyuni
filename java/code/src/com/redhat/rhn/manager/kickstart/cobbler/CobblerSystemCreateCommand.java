@@ -349,7 +349,6 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
         else if (getServer().getName() != null) {
             rec.setHostName(getServer().getName());
         }
-
         rec.setKernelOptions(kernelOptions);
         rec.setKernelPostOptions(postKernelOptions);
         // The comment is optional

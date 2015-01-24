@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.31
+Version: 2.3.32
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -242,7 +242,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Package.pm
 %{perl_vendorlib}/RHN/Package/
 %{perl_vendorlib}/RHN/Profile.pm
-%{perl_vendorlib}/RHN/SCDB.pm
 %{perl_vendorlib}/RHN/SatCluster.pm
 %{perl_vendorlib}/RHN/SatInstall.pm
 %{perl_vendorlib}/RHN/SatelliteCert.pm
@@ -255,7 +254,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN/Set.pm
 %{perl_vendorlib}/RHN/StoredMessage.pm
 %{perl_vendorlib}/RHN/SystemSnapshot.pm
-%{perl_vendorlib}/RHN/TSDB.pm
 %{perl_vendorlib}/RHN/Tag.pm
 %{perl_vendorlib}/RHN/Token.pm
 %{perl_vendorlib}/RHN/User.pm
@@ -266,10 +264,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/RHN::DB::ContactMethod.3pm.gz
 %{_mandir}/man3/RHN::DB::SatCluster.3pm.gz
 %{_mandir}/man3/RHN::DB::ServerGroup.3pm.gz
-%{_mandir}/man3/RHN::SCDB.3pm.gz
 %{_mandir}/man3/RHN::SatCluster.3pm.gz
 %{_mandir}/man3/RHN::Session.3pm.gz
-%{_mandir}/man3/RHN::TSDB.3pm.gz
 
 %files -n spacewalk-base-minimal
 %defattr(644,root,root,755)
@@ -329,6 +325,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Jan 23 2015 Tomas Lestach <tlestach@redhat.com> 2.3.32-1
+- removing unused monitoring related SCDB and TSDB
+
 * Fri Jan 16 2015 Stephen Herr <sherr@redhat.com> 2.3.31-1
 - fix rhnChannelNewestPackage table by using refresh_newest_package function
   again

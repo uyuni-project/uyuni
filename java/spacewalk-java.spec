@@ -30,16 +30,17 @@
 
 
 Name: spacewalk-java
-Summary: Spacewalk Java site packages
+Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.124
+Version: 2.3.130
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:   %{name}-rpmlintrc
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+ExcludeArch: ia64
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
@@ -815,7 +816,7 @@ fi
 %{jardir}/jcommon.jar
 %{jardir}/jdom.jar
 %{jardir}/jta.jar
-%{jardir}/log4j.jar
+%{jardir}/log4j*.jar
 
 %if 0%{?fedora}
 %{jardir}/mchange-commons.jar
@@ -949,6 +950,44 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jan 23 2015 Stephen Herr <sherr@redhat.com> 2.3.130-1
+- Fix "Select All" buttons display on rhn:list, make consistent with new
+  rl:list
+- Fix missing submit parameter for "Select All"
+- Sort filelist in configfile.compare event history alphabetically
+- add getSSMPowerSettingsUpdateCommand() to keep the values on empty form data
+- fix setting powermanagement values
+- Add missing dash to docbook apidoc macro
+- Update the example scripts section for docbook output
+- Update the title page for docbook output
+- Fix xmlrpc.doc for the "system" namespace
+- Fix grammar and typos in API code example descriptions
+- Set cobbler hostname variable when calling system.createSystemRecord
+- parseDistUrl needs to return null if it can't parse the url
+- Fix NPE on GET /rhn/common/DownloadFile.do
+- Avoid NumberFormatException in case of invalid URL
+- Lookup kickstart tree only when org is found
+- Avoid ArrayIndexOutOfBoundsException with invalid URLs
+
+* Fri Jan 23 2015 Tomas Lestach <tlestach@redhat.com> 2.3.129-1
+- link log4j-1.jar if available (for fc12)
+- removing duplicate Summary and Group
+- 1179765 - directories and symlinks cannot be binary
+
+* Wed Jan 21 2015 Stephen Herr <sherr@redhat.com> 2.3.128-1
+- Port Errata Clone page from perl -> java Make nav link to java channel clone
+  and errata clone pages Also make various clone errata jsps share common list
+
+* Wed Jan 21 2015 Stephen Herr <sherr@redhat.com> 2.3.127-1
+- fixing error '...requires that an attribute name is preceded by whitespace'
+
+* Wed Jan 21 2015 Tomas Lestach <tlestach@redhat.com> 2.3.126-1
+- fixing checkstyle issue
+
+* Tue Jan 20 2015 Stephen Herr <sherr@redhat.com> 2.3.125-1
+- Fix ISE when cloning a channel that is not globally subscribable
+- Fix ISE if creating a channel that is not globally subscribable
+
 * Mon Jan 19 2015 Grant Gainey 2.3.124-1
 - 1156299, CVE-2014-7811 - Fixed reported XSS issues  *
   /rhn/systems/details/Overview.do?sid= , Description  *

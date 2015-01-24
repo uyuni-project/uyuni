@@ -26,36 +26,37 @@ from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.stringutils import to_string
 from spacewalk.server import rhnSQL, rhnChannel, taskomatic
 from importLib import Diff, Package, IncompletePackage, Erratum, \
-        AlreadyUploadedError, InvalidPackageError, TransactionError, \
-        InvalidSeverityError, SourcePackage
+    AlreadyUploadedError, InvalidPackageError, TransactionError, \
+    InvalidSeverityError, SourcePackage
 from backendLib import TableCollection, sanitizeValue, TableDelete, \
-        TableUpdate, TableLookup, addHash, TableInsert
+    TableUpdate, TableLookup, addHash, TableInsert
 
 sequences = {
-    'rhnPackageCapability'      : 'rhn_pkg_capability_id_seq',
-    'rhnPackage'                : 'rhn_package_id_seq',
-    'rhnSourceRPM'              : 'rhn_sourcerpm_id_seq',
-    'rhnPackageGroup'           : 'rhn_package_group_id_seq',
-    'rhnErrata'                 : 'rhn_errata_id_seq',
-    'rhnChannel'                : 'rhn_channel_id_seq',
-    'rhnChannelProduct'         : 'rhn_channelprod_id_seq',
-    'rhnPackageSource'          : 'rhn_package_source_id_seq',
-    'rhnChannelFamily'          : 'rhn_channel_family_id_seq',
-    'rhnCVE'                    : 'rhn_cve_id_seq',
-    'rhnChannelArch'            : 'rhn_channel_arch_id_seq',
-    'rhnPackageArch'            : 'rhn_package_arch_id_seq',
-    'rhnServerArch'             : 'rhn_server_arch_id_seq',
-    'rhnCPUArch'                : 'rhn_cpu_arch_id_seq',
-    'rhnErrataFile'             : 'rhn_erratafile_id_seq',
-    'rhnKickstartableTree'      : 'rhn_kstree_id_seq',
-    'rhnArchType'               : 'rhn_archtype_id_seq',
-    'rhnPackageChangeLogRec'    : 'rhn_pkg_cl_id_seq',
-    'rhnPackageChangeLogData'   : 'rhn_pkg_cld_id_seq',
-    'suseProductFile'           : 'suse_prod_file_id_seq',
-    'suseMdKeyword'             : 'suse_mdkeyword_id_seq',
-    'suseEula'                  : 'suse_eula_id_seq',
-    'suseProducts'              : 'suse_products_id_seq',
+    'rhnPackageCapability': 'rhn_pkg_capability_id_seq',
+    'rhnPackage': 'rhn_package_id_seq',
+    'rhnSourceRPM': 'rhn_sourcerpm_id_seq',
+    'rhnPackageGroup': 'rhn_package_group_id_seq',
+    'rhnErrata': 'rhn_errata_id_seq',
+    'rhnChannel': 'rhn_channel_id_seq',
+    'rhnChannelProduct': 'rhn_channelprod_id_seq',
+    'rhnPackageSource': 'rhn_package_source_id_seq',
+    'rhnChannelFamily': 'rhn_channel_family_id_seq',
+    'rhnCVE': 'rhn_cve_id_seq',
+    'rhnChannelArch': 'rhn_channel_arch_id_seq',
+    'rhnPackageArch': 'rhn_package_arch_id_seq',
+    'rhnServerArch': 'rhn_server_arch_id_seq',
+    'rhnCPUArch': 'rhn_cpu_arch_id_seq',
+    'rhnErrataFile': 'rhn_erratafile_id_seq',
+    'rhnKickstartableTree': 'rhn_kstree_id_seq',
+    'rhnArchType': 'rhn_archtype_id_seq',
+    'rhnPackageChangeLogRec': 'rhn_pkg_cl_id_seq',
+    'rhnPackageChangeLogData': 'rhn_pkg_cld_id_seq',
+    'suseProductFile': 'suse_prod_file_id_seq',
+    'suseMdKeyword': 'suse_mdkeyword_id_seq',
+    'suseEula': 'suse_eula_id_seq',
+    'suseProducts': 'suse_products_id_seq',
 }
+
 
 class Backend:
     # This object is initialized by the specific subclasses (e.g.
@@ -63,6 +64,7 @@ class Backend:
     tables = TableCollection()
     # TODO: Some reason why we're passing a module in here? Seems to
     # always be rhnSQL anyhow...
+
     def __init__(self, dbmodule):
         self.dbmodule = dbmodule
         self.sequences = {}
@@ -81,10 +83,10 @@ class Backend:
 
     def setDateFormat(self, format):
         sth = self.dbmodule.prepare("alter session set nls_date_format ='%s'"
-                                 % format)
+                                    % format)
         sth.execute()
         sth = self.dbmodule.prepare("alter session set nls_timestamp_format ='%s'"
-                                 % format)
+                                    % format)
         sth.execute()
 
     # Note: postgres-specific implementation overrides this in PostgresBackend
@@ -94,7 +96,7 @@ class Backend:
             ver = version
             if version is None or version == '':
                 ver = None
-            h.execute(name = name, version = ver)
+            h.execute(name=name, version=ver)
             row = h.fetchone_dict()
             capabilityHash[(name, version)] = row['id']
 
@@ -104,7 +106,7 @@ class Backend:
         toinsert = [[], [], [], []]
         for name, time, text in changelogHash.keys():
             val = {}
-            _buildExternalValue(val, { 'name' : name, 'time' : time, 'text' : text }, self.tables['rhnPackageChangeLogData'])
+            _buildExternalValue(val, {'name': name, 'time': time, 'text': text}, self.tables['rhnPackageChangeLogData'])
             h.execute(name=val['name'], time=val['time'], text=val['text'])
             row = h.fetchone_dict()
             if row:
@@ -350,7 +352,7 @@ class Backend:
 
     def createMasterOrgs(self, master, orgs):
         # Create master org records
-        insert = [[],[],[]]
+        insert = [[], [], []]
         for org in orgs:
             insert[0].append(master)
             insert[1].append(org['id'])
@@ -384,7 +386,7 @@ class Backend:
 
     def updateMasterOrgs(self, master_orgs):
         # Update the master org to local org mapping
-        insert = [[],[]]
+        insert = [[], []]
         for org in master_orgs:
             insert[0].append(org['master_id'])
             insert[1].append(org['local_id'])
@@ -423,7 +425,7 @@ class Backend:
 
     def createOrgTrusts(self, trusts):
         # Create org trusts
-        insert = [[],[]]
+        insert = [[], []]
         for trust in trusts:
             insert[0].append(trust['org_id'])
             insert[1].append(trust['trust'])
@@ -445,12 +447,12 @@ class Backend:
         h = self.dbmodule.prepare(sql)
         h.execute(master_label=master_label)
         rows = h.fetchall_dict()
-        maps = {'master-name-to-master-id':{},
-                'master-id-to-local-id':{}}
+        maps = {'master-name-to-master-id': {},
+                'master-id-to-local-id': {}}
         if not rows:
             return maps
-        mn_to_mi = {} # master org name to master org id map
-        mi_to_li = {} # master org id to local org id map
+        mn_to_mi = {}  # master org name to master org id map
+        mi_to_li = {}  # master org id to local org id map
         for org in rows:
             if ('master_org_id' in org.keys()
                     and 'master_org_name' in org.keys()
@@ -559,7 +561,7 @@ class Backend:
         else:
             return None
 
-        h.execute(severity= severity_label)
+        h.execute(severity=severity_label)
         row = h.fetchone_dict()
 
         if not row:
@@ -645,12 +647,12 @@ class Backend:
               and pk.provider_id = pp.id
         """)
         sigkeys = rhn_rpm.RPM_Header(header).signatures
-        key_id = None #_key_ids(sigkeys)[0]
+        key_id = None  # _key_ids(sigkeys)[0]
         for sig in sigkeys:
             if sig['signature_type'] == 'gpg':
                 key_id = sig['key_id']
 
-        lookup_keyid_sql.execute(key_id = key_id)
+        lookup_keyid_sql.execute(key_id=key_id)
         keyid = lookup_keyid_sql.fetchall_dict()
 
         return keyid[0]['id']
@@ -661,20 +663,20 @@ class Backend:
     def lookupPackageGroups(self, hash):
         self.__processHash('lookup_package_group', hash)
 
-    def lookupPackages(self, packages, checksums, ignore_missing = 0):
+    def lookupPackages(self, packages, checksums, ignore_missing=0):
         # If nevra is enabled use checksum as primary key
         self.validate_pks()
         for package in packages:
             if not isinstance(package, IncompletePackage):
-                raise TypeError("Expected an IncompletePackage instance, found %s" % \
+                raise TypeError("Expected an IncompletePackage instance, found %s" %
                                 str(type(package)))
         for package in packages:
             # here we need to figure out which checksum we have in the database
             not_found = None
-            for type, chksum  in package['checksums'].iteritems():
+            for type, chksum in package['checksums'].iteritems():
                 package['checksum_type'] = type
-                package['checksum']      = chksum
-                package['checksum_id']  = checksums[(type, chksum)]
+                package['checksum'] = chksum
+                package['checksum_id'] = checksums[(type, chksum)]
                 try:
                     self.__lookupObjectCollection([package], 'rhnPackage')
                     not_found = None
@@ -699,11 +701,11 @@ class Backend:
 
     def lookup_kstree_types(self, hash):
         return self._lookup_in_table('rhnKSTreeType', 'rhn_kstree_type_seq',
-            hash)
+                                     hash)
 
     def lookup_ks_install_types(self, hash):
         return self._lookup_in_table('rhnKSInstallType',
-            'rhn_ksinstalltype_id_seq', hash)
+                                     'rhn_ksinstalltype_id_seq', hash)
 
     def _lookup_in_table(self, table_name, sequence_name, hash):
         t = self.dbmodule.Table(table_name, 'label')
@@ -761,48 +763,46 @@ class Backend:
 
     def processChannelArches(self, arches):
         self.__processObjectCollection(arches, 'rhnChannelArch',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processPackageArches(self, arches):
         self.__processObjectCollection(arches, 'rhnPackageArch',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processServerArches(self, arches):
         self.__processObjectCollection(arches, 'rhnServerArch',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processCPUArches(self, arches):
         self.__processObjectCollection(arches, 'rhnCPUArch',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processMasterOrgs(self, orgs):
         self.__processObjectCollection(orgs, 'rhnISSMasterOrgs',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processOrgs(self, orgs):
         self.__processObjectCollection(orgs, 'web_customer',
-            uploadForce=4, ignoreUploaded=1, severityLimit=4)
+                                       uploadForce=4, ignoreUploaded=1, severityLimit=4)
 
     def processServerPackageArchCompatMap(self, entries):
         self.__populateTable('rhnServerPackageArchCompat', entries,
-            delete_extra=1)
-
+                             delete_extra=1)
 
     def processServerChannelArchCompatMap(self, entries):
         self.__populateTable('rhnServerChannelArchCompat', entries,
-            delete_extra=1)
-
+                             delete_extra=1)
 
     def processChannelPackageArchCompatMap(self, entries):
         self.__populateTable('rhnChannelPackageArchCompat', entries,
-            delete_extra=1)
+                             delete_extra=1)
 
     def processServerGroupServerArchCompatMap(self, entries):
         self.__populateTable('rhnServerServerGroupArchCompat', entries,
-            delete_extra=1)
+                             delete_extra=1)
 
     def processPackages(self, packages, uploadForce=0, ignoreUploaded=0,
-                forceVerify=0, transactional=0):
+                        forceVerify=0, transactional=0):
         # Insert/update the packages
         self.validate_pks()
 
@@ -813,8 +813,8 @@ class Backend:
             'rhnPackageObsoletes':  'package_id',
             'rhnPackageRecommends': 'package_id',
             'rhnPackageSuggests':   'package_id',
-            'rhnPackageSupplements':'package_id',
-            'rhnPackageEnhances'   :'package_id',
+            'rhnPackageSupplements': 'package_id',
+            'rhnPackageEnhances': 'package_id',
             'rhnPackageBreaks':     'package_id',
             'rhnPackagePredepends': 'package_id',
             'rhnPackageFile':       'package_id',
@@ -835,10 +835,10 @@ class Backend:
                 package['header_start'] = -1
                 package['header_end'] = -1
 
-            self.__processObjectCollection__([package,], 'rhnPackage', tableList,
-                uploadForce=uploadForce, forceVerify=forceVerify,
-                ignoreUploaded=ignoreUploaded, severityLimit=1,
-                transactional=transactional)
+            self.__processObjectCollection__([package, ], 'rhnPackage', tableList,
+                                             uploadForce=uploadForce, forceVerify=forceVerify,
+                                             ignoreUploaded=ignoreUploaded, severityLimit=1,
+                                             transactional=transactional)
 
     def processErrata(self, errata):
         # Insert/update the packages
@@ -857,8 +857,8 @@ class Backend:
                 raise TypeError("Expected an Erratum instance")
 
         return self.__processObjectCollection(errata, 'rhnErrata', childTables,
-            'errata_id', uploadForce=4, ignoreUploaded=1, forceVerify=1,
-            transactional=1)
+                                              'errata_id', uploadForce=4, ignoreUploaded=1, forceVerify=1,
+                                              transactional=1)
 
     def update_channels_affected_by_errata(self, dml):
 
@@ -906,7 +906,7 @@ class Backend:
             channel = rhnChannel.Channel()
             channel.load_by_id(channel_id)
             taskomatic.add_to_repodata_queue(channel.get_label(), "errata",
-                    advisory)
+                                             advisory)
 
     def processKickstartTrees(self, ks_trees):
         childTables = [
@@ -915,8 +915,8 @@ class Backend:
             #'rhnKSInstallType',
         ]
         self.__processObjectCollection(ks_trees, 'rhnKickstartableTree',
-            childTables, 'kstree_id', uploadForce=4, forceVerify=1,
-            ignoreUploaded=1, severityLimit=1, transactional=1)
+                                       childTables, 'kstree_id', uploadForce=4, forceVerify=1,
+                                       ignoreUploaded=1, severityLimit=1, transactional=1)
 
     def queue_errata(self, errata, timeout=0):
         # timeout is the numer of seconds we want the execution to be delayed
@@ -934,8 +934,8 @@ class Backend:
                     # XXX we may not want to do this for trivial changes,
                     # but not sure what trivial is
                     for cid in erratum['channels']:
-                        errata_channel_ids.append(\
-                               (erratum.id, cid['channel_id']))
+                        errata_channel_ids.append(
+                            (erratum.id, cid['channel_id']))
 
         if not errata_channel_ids:
             # Nothing to do
@@ -949,13 +949,12 @@ class Backend:
             insert into rhnErrataQueue (errata_id, channel_id, next_action)
             values (:errata_id, :channel_id, current_timestamp + numtodsinterval(:timeout, 'second'))
         """)
-        errata_ids = map(lambda x:x[0], errata_channel_ids)
-        channel_ids = map(lambda x:x[1], errata_channel_ids)
+        errata_ids = map(lambda x: x[0], errata_channel_ids)
+        channel_ids = map(lambda x: x[1], errata_channel_ids)
         timeouts = [timeout] * len(errata_ids)
         hdel.executemany(errata_id=errata_ids)
-        return h.executemany(errata_id=errata_ids, channel_id=channel_ids,\
+        return h.executemany(errata_id=errata_ids, channel_id=channel_ids,
                              timeout=timeouts)
-
 
     def processChannels(self, channels, base_channels):
         childTables = [
@@ -964,7 +963,7 @@ class Backend:
         if base_channels:
             childTables.append('rhnDistChannelMap')
         self.__processObjectCollection(channels, 'rhnChannel', childTables,
-            'channel_id', uploadForce=4, ignoreUploaded=1, forceVerify=1)
+                                       'channel_id', uploadForce=4, ignoreUploaded=1, forceVerify=1)
 
     def orgTrustExists(self, org_id, trust_id):
         sql = """
@@ -990,7 +989,7 @@ class Backend:
 
     def processChannelTrusts(self, channel_trusts):
         # Create channel trusts
-        insert = [[],[]]
+        insert = [[], []]
         for trust in channel_trusts:
             insert[0].append(trust['channel-label'])
             insert[1].append(trust['org-id'])
@@ -1005,8 +1004,8 @@ class Backend:
     def processChannelFamilies(self, channels):
         childTables = []
         self.__processObjectCollection(channels, 'rhnChannelFamily',
-            childTables, 'channel_family_id', uploadForce=4, ignoreUploaded=1,
-            forceVerify=1)
+                                       childTables, 'channel_family_id', uploadForce=4, ignoreUploaded=1,
+                                       forceVerify=1)
 
     def processChannelFamilyMembers(self, channel_families):
         # Channel families now contain channel memberships too
@@ -1070,7 +1069,7 @@ class Backend:
             if not cf.has_key('virt_sub_level_label'):
                 continue
             vsl_labels = cf['virt_sub_level_label'].split()
-            h_lookup_virtid.execute(channel_family_id = cf.id)
+            h_lookup_virtid.execute(channel_family_id=cf.id)
             row = h_lookup_virtid.fetchall_dict()
 
             if row:
@@ -1079,7 +1078,7 @@ class Backend:
                 if row and vsl_label in labels_existing:
                     continue
                 cf_ids.append(cf.id)
-                lookup_vsl.execute(label = vsl_label)
+                lookup_vsl.execute(label=vsl_label)
                 row_id = lookup_vsl.fetchone_dict()
                 if row_id:
                     vsl_ids.append(row_id['id'])
@@ -1098,7 +1097,7 @@ class Backend:
         """)
 
         # hdel.executemany(channel_family_id=cf_ids)
-        hins.executemany(vsl_id=vsl_ids,channel_family_id=cf_ids)
+        hins.executemany(vsl_id=vsl_ids, channel_family_id=cf_ids)
 
     def processVirtSubLevel(self, entries):
         h_lookup_virt = self.dbmodule.prepare("""
@@ -1131,8 +1130,8 @@ class Backend:
             values (:vsl_label, :vsl_text)
         """)
 
-        hdel.executemany(vsl_label = virt_labels)
-        hins.executemany(vsl_label=virt_labels,vsl_text=virt_text)
+        hdel.executemany(vsl_label=virt_labels)
+        hins.executemany(vsl_label=virt_labels, vsl_text=virt_text)
 
     def processSGTVirtSubLevel(self, entries):
         h_lookup_virtid = self.dbmodule.prepare("""
@@ -1158,14 +1157,14 @@ class Backend:
         for entry in entries:
             if not entry.has_key('virt-sub-level'):
                 continue
-            lookup_sgtid.execute(sgt_label = entry['server-group-type'])
+            lookup_sgtid.execute(sgt_label=entry['server-group-type'])
             row_sgt_id = lookup_sgtid.fetchone_dict()
-            h_lookup_virtid.execute(sgt_id = row_sgt_id['id'])
+            h_lookup_virtid.execute(sgt_id=row_sgt_id['id'])
             row = h_lookup_virtid.fetchone_dict()
             if row and row['label'] == entry['virt-sub-level']:
                 continue
             sgt_ids.append(row_sgt_id['id'])
-            lookup_vsl.execute(label = entry['virt-sub-level'])
+            lookup_vsl.execute(label=entry['virt-sub-level'])
             row_id = lookup_vsl.fetchone_dict()
             if row_id:
                 vsl_ids.append(row_id['id'])
@@ -1183,12 +1182,12 @@ class Backend:
         """)
 
         hdel.executemany(sgt_id=sgt_ids)
-        hins.executemany(vsl_id=vsl_ids,sgt_id=sgt_ids)
+        hins.executemany(vsl_id=vsl_ids, sgt_id=sgt_ids)
 
     def processChannelFamilyPermissions(self, cfps):
         # Process channelFamilyPermissions
         activate_channel_entitlements = self.dbmodule.Procedure(
-                              'rhn_entitlements.activate_channel_entitlement')
+            'rhn_entitlements.activate_channel_entitlement')
         for cfp in cfps:
             if "private-channel-family" in cfp['channel_family']:
                 # As this is a generic list of channel families
@@ -1202,10 +1201,10 @@ class Backend:
                 continue
             try:
                 activate_channel_entitlements(cfp['org_id'],
-                               cfp['channel_family'], cfp['max_members'], cfp['max_flex'])
+                                              cfp['channel_family'], cfp['max_members'], cfp['max_flex'])
             except rhnSQL.SQLError, e:
-                raise rhnFault(23, str(e[1]) + ": org_id [%s] family [%s] max [%s]" % \
-                    (cfp['org_id'], cfp['channel_family'], cfp['max_members']), explain=0), None, sys.exc_info()[2]
+                raise rhnFault(23, str(e[1]) + ": org_id [%s] family [%s] max [%s]" %
+                               (cfp['org_id'], cfp['channel_family'], cfp['max_members']), explain=0), None, sys.exc_info()[2]
 
         # The way we constructed the list of channel family permissions, we
         # should have (at least) all of the permissions from the database in
@@ -1258,8 +1257,8 @@ class Backend:
                 OR channel_product_id <> :channel_product_id)
         """)
 
-        statement.execute(id = channel.id,
-                          channel_product_id = channel['channel_product_id'])
+        statement.execute(id=channel.id,
+                          channel_product_id=channel['channel_product_id'])
 
     def processProductNames(self, batch):
         """ Check if ProductName for channel in batch is already in DB.
@@ -1274,9 +1273,8 @@ class Backend:
 
         for channel in batch:
             if not self.lookupProductNames(channel['label']):
-                statement.execute(product_label = channel['label'],
-                                  product_name = channel['name'])
-
+                statement.execute(product_label=channel['label'],
+                                  product_name=channel['name'])
 
     def lookupProductNames(self, label):
         """ For given label of product return its id.
@@ -1747,9 +1745,9 @@ class Backend:
                AND beta = :beta
         """)
 
-        statement.execute(product = channel['channel_product'],
-                         version = channel['channel_product_version'],
-                         beta = channel['channel_product_beta'])
+        statement.execute(product=channel['channel_product'],
+                          version=channel['channel_product_version'],
+                          beta=channel['channel_product_beta'])
 
         product = statement.fetchone_dict()
 
@@ -1768,17 +1766,17 @@ class Backend:
             VALUES (:id, :product, :version, :beta)
         """)
 
-        statement.execute(id = id,
-                          product = channel['channel_product'],
-                          version = channel['channel_product_version'],
-                          beta = channel['channel_product_beta'])
+        statement.execute(id=id,
+                          product=channel['channel_product'],
+                          version=channel['channel_product_version'],
+                          beta=channel['channel_product_beta'])
 
         return id
 
     def subscribeToChannels(self, packages, strict=0):
         hash = {
-            'package_id' : [],
-            'channel_id' : [],
+            'package_id': [],
+            'channel_id': [],
         }
         # Keep a list of packages for a channel too, so we can easily compare
         # what's extra, if strict is 1
@@ -1816,8 +1814,8 @@ class Backend:
                     # Already subscribed
                     continue
                 dict = {
-                    'package_id' : package.id,
-                    'channel_id' : channelId,
+                    'package_id': package.id,
+                    'channel_id': channelId,
                 }
                 if not affected_channels.has_key(channelId):
                     modified_packages = ([], [])
@@ -1830,8 +1828,8 @@ class Backend:
 
         # Packages we'd have to delete
         extra_cp = {
-            'package_id'    : [],
-            'channel_id'    : [],
+            'package_id': [],
+            'channel_id': [],
         }
         if strict:
             # if strict remove the extra packages from the DB
@@ -1900,7 +1898,7 @@ class Backend:
             update_channel(channel_id, invalidate_ss)
 
     def processSourcePackages(self, packages, uploadForce=0, ignoreUploaded=0,
-                forceVerify=0, transactional=0):
+                              forceVerify=0, transactional=0):
         # Insert/update the packages
 
         childTables = []
@@ -1912,10 +1910,9 @@ class Backend:
         # Process the packages
 
         self.__processObjectCollection(packages, 'rhnPackageSource', childTables,
-            'package_id', uploadForce=uploadForce, forceVerify=forceVerify,
-            ignoreUploaded=ignoreUploaded, severityLimit=1,
-            transactional=transactional)
-
+                                       'package_id', uploadForce=uploadForce, forceVerify=forceVerify,
+                                       ignoreUploaded=ignoreUploaded, severityLimit=1,
+                                       transactional=transactional)
 
     def commit(self):
         self.dbmodule.commit()
@@ -1930,7 +1927,7 @@ class Backend:
 
         h = rhnSQL.prepare("select " + lookup + "(:name) from dual")
         for k in hash.keys():
-            h.execute(name = k)
+            h.execute(name=k)
             # saving id
             hash[k] = h.fetchone_dict().popitem()[1]
 
@@ -1943,7 +1940,7 @@ class Backend:
         return childTableLookups
 
     def __processObjectCollection(self, objColl, parentTable, childTables=[],
-            colname=None, **kwargs):
+                                  colname=None, **kwargs):
         # Returns the DML object that was processed
         # This helps identify what the changes were
 
@@ -1959,7 +1956,7 @@ class Backend:
         return self.__processObjectCollection__(objColl, parentTable, childDict, **kwargs)
 
     def __processObjectCollection__(self, objColl, parentTable, childTables={},
-            **kwargs):
+                                    **kwargs):
         # Returns the DML object that was processed
         # This helps identify what the changes were
 
@@ -1973,16 +1970,16 @@ class Backend:
         # on the database
         kwparams = {
             # The 'upload force'
-            'uploadForce'       : 0,
+            'uploadForce': 0,
             # Raises exceptions when the object is already uploaded
-            'ignoreUploaded'    : 0,
+            'ignoreUploaded': 0,
             # Forces a full object verification - including the child tables
-            'forceVerify'       : 0,
+            'forceVerify': 0,
             # When the severity is below this limit, the object is not
             # updated
-            'severityLimit'     : 0,
+            'severityLimit': 0,
             # All-or-nothing
-            'transactional'     : 0,
+            'transactional': 0,
         }
 
         for k, v in kwargs.items():
@@ -2041,7 +2038,7 @@ class Backend:
                 # Object does not exist
                 id = self.sequences[parentTable].next()
                 object.id = id
-                extObject = {'id' : id}
+                extObject = {'id': id}
                 _buildExternalValue(extObject, object, parentTableObj)
                 addHash(dml.insert[parentTable], extObject)
 
@@ -2053,7 +2050,7 @@ class Backend:
                     if entry_list is None:
                         continue
                     for entry in entry_list:
-                        extObject = {childTables[tname] : id}
+                        extObject = {childTables[tname]: id}
                         seq_col = tbl.sequenceColumn
                         if seq_col:
                             # This table has to insert values in a sequenced
@@ -2085,7 +2082,7 @@ class Backend:
         # Deal with already-uploaded objects
         for objid, (object, row) in uploadedObjects.items():
             # Build the external value
-            extObject = {'id' : row['id']}
+            extObject = {'id': row['id']}
             _buildExternalValue(extObject, object, parentTableObj)
             # Build the DB value
             row = _buildDatabaseValue(row, ptFields)
@@ -2101,7 +2098,7 @@ class Backend:
                     continue
 
             localDML = self.__processUploaded(objid, object, childTables,
-                childTableLookups)
+                                              childTableLookups)
 
             if uploadForce < object.diff.level:
                 # Not enough karma
@@ -2131,14 +2128,14 @@ class Backend:
     def __processUploaded(self, objid, object, childTables, childTableLookups):
         # Store the DML operations locally
         localDML = {
-            'insert'    : {},
-            'update'    : {},
-            'delete'    : {},
+            'insert': {},
+            'update': {},
+            'delete': {},
         }
 
         # Grab the rest of the information
         childTablesInfo = self.__getChildTablesInfo(objid, childTables.keys(),
-            childTableLookups)
+                                                    childTableLookups)
 
         # Start computing deltas
         for childTableName in childTables:
@@ -2203,7 +2200,7 @@ class Backend:
                     val[sc] = ent[sc] = dbval[sc]
                 # check for updates
                 diffval = computeDiff(val, dbval, childSeverityHash,
-                        object.diff, parentattr)
+                                      object.diff, parentattr)
                 if not diffval:
                     # Same value
                     del dbside[key]
@@ -2214,7 +2211,7 @@ class Backend:
                 del dbside[key]
 
             if childTableName == 'rhnErrataPackage':
-                continue;
+                continue
 
             # Anything else should be deleted
             for key, val in dbside.items():
@@ -2297,7 +2294,7 @@ class Backend:
         updateObj.query(hash)
         return
 
-    def __lookupObjectCollection(self, objColl, tableName, ignore_missing = 0):
+    def __lookupObjectCollection(self, objColl, tableName, ignore_missing=0):
         # Looks the object up in tableName, and fills in its id
         lookup = TableLookup(self.tables[tableName], self.dbmodule)
         for object in objColl:
@@ -2410,7 +2407,7 @@ class Backend:
         updates = []
         deletes = []
         for val, valhash in uq_col_values.items():
-            params = {first_uq_col : val}
+            params = {first_uq_col: val}
             h.execute(**params)
             while 1:
                 row = h.fetchone_dict()
@@ -2475,8 +2472,11 @@ class Backend:
                 tbs.pk.remove('checksum_id')
 
 # Returns a tuple for the hash's values
+
+
 def build_key(hash, fields):
     return tuple(map(lambda x, h=hash: h[x], fields))
+
 
 def transpose(arrhash, fields):
     params = {}
@@ -2487,6 +2487,7 @@ def transpose(arrhash, fields):
             params[f].append(h[f])
     return params
 
+
 def hash2tuple(hash, fields):
     # Converts the hash into a tuple, with the fields ordered as presented in
     # the fields list
@@ -2495,7 +2496,9 @@ def hash2tuple(hash, fields):
         result.append(sanitizeValue(hash[fname], ftype))
     return tuple(result)
 
+
 class DML:
+
     def __init__(self, tables, tableHash):
         self.update = {}
         self.delete = {}
@@ -2510,6 +2513,7 @@ class DML:
                     hash[f] = []
                 dmlhash[tname] = hash
 
+
 def _buildDatabaseValue(row, fieldsHash):
     # Returns a dictionary containing the interesting values of the row,
     # sanitized
@@ -2517,6 +2521,7 @@ def _buildDatabaseValue(row, fieldsHash):
     for f, datatype in fieldsHash.items():
         dict[f] = sanitizeValue(row[f], datatype)
     return dict
+
 
 def _buildExternalValue(dict, entry, tableObj):
     # updates dict with values from entry
@@ -2531,6 +2536,7 @@ def _buildExternalValue(dict, entry, tableObj):
         if not entry.has_key(attr):
             entry[attr] = None
         dict[f] = sanitizeValue(entry[attr], datatype)
+
 
 def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
     # Compare if the key-values of hash1 are a subset of hash2's
@@ -2567,4 +2573,4 @@ def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
 
         difference = diffobj.level
 
-    return  difference
+    return difference
