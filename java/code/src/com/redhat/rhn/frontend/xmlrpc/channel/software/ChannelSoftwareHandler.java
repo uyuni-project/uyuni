@@ -2022,8 +2022,6 @@ public class ChannelSoftwareHandler extends BaseHandler {
         helper.setLabel(label);
         helper.setUser(loggedInUser);
         helper.setSummary(summary);
-        helper.setProductName(originalChan.getProductName());
-        helper.setUpdateTag(originalChan.getUpdateTag());
 
         Channel clone = helper.create();
         return clone.getId().intValue();
