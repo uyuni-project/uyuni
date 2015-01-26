@@ -148,8 +148,6 @@ public class HttpClientAdapter {
             URI uri = request.getURI();
             httpClient.getState().setCredentials(
                     new AuthScope(uri.getHost(), uri.getPort()), creds);
-
-            // Enable preemptive authentication
             httpClient.getParams().setAuthenticationPreemptive(true);
         }
 
