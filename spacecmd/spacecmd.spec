@@ -2,6 +2,7 @@
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
+%define _with_pylint 0
 
 Name:        spacecmd
 Version:     2.1.25.6
@@ -17,7 +18,9 @@ BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch: noarch
 %endif
 
+%if 0%{?_with_pylint}
 BuildRequires: spacewalk-pylint
+%endif
 BuildRequires: python
 BuildRequires: python-devel
 BuildRequires: python-simplejson
@@ -68,9 +71,11 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %clean
 %{__rm} -rf %{buildroot}
 
+%if 0%{?_with_pylint}
 %check
 PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
+%endif
 
 %files
 %defattr(-,root,root,-)
