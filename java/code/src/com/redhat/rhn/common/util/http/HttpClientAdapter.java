@@ -190,7 +190,6 @@ public class HttpClientAdapter {
         // Check for either an exact match or the previous character is a '.',
         // so that host is within the same domain.
         for (String domain : noProxyDomains) {
-            domain = domain.toLowerCase().trim();
             if (domain.startsWith(".")) {
                 domain = domain.substring(1);
             }
