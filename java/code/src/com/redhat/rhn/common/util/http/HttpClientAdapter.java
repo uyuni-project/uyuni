@@ -181,9 +181,9 @@ public class HttpClientAdapter {
                 return false;
             }
 
-            noProxyDomains = new ArrayList<String>(Arrays.asList(noProxy.split(",")));
-            for (String domain : noProxyDomains) {
-                domain = domain.toLowerCase().trim();
+            noProxyDomains = new ArrayList<String>();
+            for (String domain : Arrays.asList(noProxy.split(","))) {
+                noProxyDomains.add(domain.toLowerCase().trim());
             }
         }
 
