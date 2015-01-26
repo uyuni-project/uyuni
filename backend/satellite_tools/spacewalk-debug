@@ -26,6 +26,7 @@ fi
 BASE_DIR=/tmp
 IS_SUSE=0
 SCC=0
+MAX_LOG_AGE=10
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
 fi
@@ -41,6 +42,7 @@ usage() {
     echo "  OPTIONS:"
     echo "    --help                Display usage and exit"
     echo "    --dir                 Destination directory for the tarball ($BASE_DIR)"
+    echo "    --log-age             Set the maximum age (in days) for extracted logs ($MAX_LOG_AGE)"
     exit $1
 }
 
@@ -53,6 +55,10 @@ while [ ${#} -ne 0 ]; do
         --dir)
             shift
             BASE_DIR=$1
+            ;;
+        --log-age)
+            shift
+            MAX_LOG_AGE=$1
             ;;
         --*)
             echo "Unknown option $arg (use --help)"
@@ -99,62 +105,62 @@ mkdir -p $DIR/cobbler-logs
 mkdir -p $DIR/rhn-logs
 mkdir -p $DIR/config-defaults
 mkdir -p $DIR/kickstarts
-mkdir -p $DIR/database
+mkdir -p $DIR/database/trc
 mkdir -p $DIR/cobbler-lib
 mkdir -p $DIR/tasko
 
 echo "    * copying configuration information"
-cp -fapRd /etc/apache2/conf* $DIR/conf/httpd
+cp -fa /etc/apache2/conf* $DIR/conf/httpd
 if [ $IS_SUSE -eq 1 ]; then
-    cp -fapRd /etc/apache2/vhosts* $DIR/conf/httpd
+    cp -fa /etc/apache2/vhosts* $DIR/conf/httpd
 fi
-cp -fapRdL /etc/rhn $DIR/conf/rhn
+cp -faL /etc/rhn $DIR/conf/rhn
 sed -i 's/^server.susemanager.mirrcred_pass.*/server.susemanager.mirrcred_pass = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.secret_key.*/server.secret_key = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^session_secret_.*/session_secret_N = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^web.session_swap_secret_.*/web.session_swap_secret_N = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^db_password.*/db_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
 sed -i 's/^server.satellite.http_proxy_password.*/server.satellite.http_proxy_password = <replaced_by_debug_tool>/' "$DIR/conf/rhn/rhn/rhn.conf"
-cp -fapRd /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
+cp -fa /etc/sysconfig/rhn $DIR/conf/rhn/sysconfig
 if [ -f /etc/tnsnames.ora ] ; then
-    cp -fad /etc/tnsnames.ora $DIR/conf
+    cp -fa /etc/tnsnames.ora $DIR/conf
 fi
 
 echo "    * copying logs"
 if [ $IS_SUSE -eq 1 ]; then
-    cp -fapRd /var/log/apache2 $DIR/httpd-logs
+    cp -fa /var/log/apache2 $DIR/httpd-logs
 else
-    cp -fapRd /var/log/httpd $DIR/httpd-logs
+    cp -fa /var/log/httpd $DIR/httpd-logs
 fi
-cp -fapRd /var/log/rhn* $DIR/rhn-logs
+cp -fa /var/log/rhn* $DIR/rhn-logs
 DB_INSTALL_LOG=/var/log/rhn/rhn-database-installation.log
 if [ -f "$DB_INSTALL_LOG" ] ; then
     mkdir -p $DIR/tmp
-    cp -fapRd "$DB_INSTALL_LOG" $DIR/tmp/
+    cp -fa "$DB_INSTALL_LOG" $DIR/tmp/
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
     if [ -f /var/log/susemanager_setup.err ]; then
-        cp -f /var/log/susemanager_setup.err $DIR/rhn-logs/
+        cp -fa /var/log/susemanager_setup.err $DIR/rhn-logs/
     fi
     if [ -f /var/log/susemanager_setup.log ]; then
-        cp -f /var/log/susemanager_setup.log $DIR/rhn-logs/
+        cp -fa /var/log/susemanager_setup.log $DIR/rhn-logs/
     fi
 fi
 
 # grab jabberd info if it exists (it should)
 if [ -d /etc/jabberd ]; then
     mkdir -p $DIR/jabberd
-    cp -fapRd /etc/jabberd $DIR/jabberd
+    cp -fa /etc/jabberd $DIR/jabberd
 fi
 
 # tomcat for spacewalk 400+
 for tomcat in tomcat tomcat5 tomcat6 ; do
   if [ -d /etc/$tomcat ]; then
-    cp -fapRd /etc/$tomcat $DIR/conf/tomcat
+    cp -fa /etc/$tomcat $DIR/conf/tomcat
   fi
   if [ -d /var/log/$tomcat ]; then
-    cp -fapRd /var/log/$tomcat $DIR/tomcat-logs
+    cp -fa /var/log/$tomcat $DIR/tomcat-logs
   fi
 done
 
@@ -166,25 +172,25 @@ fi
 # copying the /usr/share/rhn/config-defaults
 echo "    * copying config-defaults files"
 if [ -d /usr/share/rhn/config-defaults ]; then
-    cp -fapRd /usr/share/rhn/config-defaults/* $DIR/config-defaults
+    cp -fa /usr/share/rhn/config-defaults/* $DIR/config-defaults
 fi
 
 #cobbler stuff
 echo "    * copying cobbler files"
 if [ -d /etc/cobbler ]; then
-    cp -fapRd /etc/cobbler/* $DIR/conf/cobbler
+    cp -fa /etc/cobbler/* $DIR/conf/cobbler
 fi
 if [ -d /var/log/cobbler ]; then
-   cp -fpRd /var/log/cobbler/* $DIR/cobbler-logs
+   cp -fa /var/log/cobbler/* $DIR/cobbler-logs
 fi
 if [ -d /var/lib/cobbler ]; then
-   cp -fpRd /var/lib/cobbler/snippets $DIR/cobbler-lib/
-   cp -fpRd /var/lib/cobbler/config $DIR/cobbler-lib/
-   cp -fpRd /var/lib/cobbler/kickstarts $DIR/cobbler-lib/
-   cp -fpRd /var/lib/cobbler/triggers $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/snippets $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/config $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/kickstarts $DIR/cobbler-lib/
+   cp -fa /var/lib/cobbler/triggers $DIR/cobbler-lib/
 fi
 if [ -d /var/lib/rhn/kickstarts ]; then
-   cp -fpRd /var/lib/rhn/kickstarts/* $DIR/kickstarts/
+   cp -fa /var/lib/rhn/kickstarts/* $DIR/kickstarts/
 fi
 
 # general monitoring moc logs
@@ -192,8 +198,8 @@ if [ -d /var/log/nocpulse ] ; then
     echo "    * copying monitoring moc logs"
     mkdir -p $DIR/mon-logs
     # try to get all subsystems logs
-    cp -fapRd /var/log/notification/*.log* $DIR/mon-logs 2> /dev/null
-    cp -fapRd /var/log/nocpulse/*.log* $DIR/mon-logs 2> /dev/null
+    cp -fa /var/log/notification/*.log* $DIR/mon-logs 2> /dev/null
+    cp -fa /var/log/nocpulse/*.log* $DIR/mon-logs 2> /dev/null
 fi
 
 # monitoring scout logs
@@ -201,7 +207,7 @@ if [ -d /var/lib/nocpulse/commands ] ; then
     echo "    * copying monitoring scout logs"
     mkdir -p $DIR/mon-logs
     # try to get all subsystems logs
-    cp -fapRd /var/lib/nocpulse/commands/*.log* $DIR/mon-logs 2> /dev/null
+    cp -fa /var/lib/nocpulse/commands/*.log* $DIR/mon-logs 2> /dev/null
 fi
 
 # ssl-build
@@ -215,7 +221,7 @@ fi
 # /etc/sudoers
 if [ -f /etc/sudoers -o -d /etc/sudoers.d ] ; then
 	echo "    * copying /etc/sudoers*"
-	cp -faRd /etc/sudoers* $DIR/conf
+	cp -fa /etc/sudoers* $DIR/conf
 fi
 
 # /etc/passwd
@@ -266,19 +272,19 @@ echo "    * get schema statistics"
 # alert.log
 if [ -f /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log ] ; then
 	echo "    * copying alert_rhnsat.log"
-	cp -fa /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log $DIR/database/
-	ls /rhnsat/admin/rhnsat/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+	cp -fa /rhnsat/admin/rhnsat/bdump/alert_rhnsat.log $DIR/database
+	ls /rhnsat/admin/rhnsat/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 	ls /rhnsat/admin/rhnsat/logs/*.log 2>/dev/null | xargs -I file cp -fa file $DIR/database
 fi
 if [ -f /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log ]; then
     echo "    * copying alert_XE.log"
-    cp -fa /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log $DIR/database/
-    ls /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+    cp -fa /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/alert_XE.log $DIR/database
+    ls /usr/lib/oracle/xe/app/oracle/admin/XE/bdump/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 fi
 if [ -f /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log ]; then
     echo "    * copying alert_susemanager.log"
-    cp -fa /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log $DIR/database/
-    ls /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database
+    cp -fa /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/alert_susemanager.log $DIR/database
+    ls /opt/apps/oracle/diag/rdbms/susemanager/susemanager/trace/*.trc 2>/dev/null | xargs -I file cp -fa file $DIR/database/trc
 fi
 
 # PostgreSQL logs
@@ -320,13 +326,32 @@ if [ $IS_SUSE -eq 1 ]; then
         mkdir -p $DIR/sccdata
         IFS=$(echo -en "\n\b")
         for i in $(ls -A /var/lib/spacewalk/scc/scc-data); do
-            cp -r /var/lib/spacewalk/scc/scc-data/$i $DIR/sccdata/
+            cp -fa /var/lib/spacewalk/scc/scc-data/$i $DIR/sccdata/
         done
     fi
 fi
 
 echo "    * timestamping"
 echo "Spacewalk debug created on $(date)" > $DIR/timestamp
+
+# Skip if MAX_LOG_AGE is not a number
+if [ "$MAX_LOG_AGE" -eq "$MAX_LOG_AGE" 2>/dev/null ]; then
+    # Remove all logs older than MAX_LOG_AGE to reduce the size of the tarball
+    find $DIR/* -regextype sed \( -iregex ".*log\.[0-9]\{1,\}.*" -or -iregex ".*[0-9]\{8\}.*" \
+        -or -iregex ".*[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}\(\.\|_[0-9]\{6\}\.\).*" \) \
+        -daystart -mtime +"$MAX_LOG_AGE" -not -ipath "*schema*" -delete
+
+        # tasko and .trc files need to be parsed separately to find old ones
+        for dir in database/trc rhn-logs/rhn/tasko tasko/sat; do
+            for file in $(find $DIR/$dir); do
+                if [ -f "$file" ]; then
+                    if [ -n "$(find $file -daystart -mtime +$MAX_LOG_AGE)" ]; then
+                        rm $file
+                    fi
+                fi
+            done
+        done
+fi
 
 echo "    * creating tarball (may take some time): $TARBALL"
 # 209620 - satellite-debug creates world readable output

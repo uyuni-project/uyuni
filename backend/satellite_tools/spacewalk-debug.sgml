@@ -48,6 +48,12 @@ Debug utility that packages log files and relevant debug information needed for 
             <para>Destination directory for the tar archive.</para>
         </listitem>
     </varlistentry>
+    <varlistentry>
+        <term>--log-age</term>
+        <listitem>
+            <para>The maximum age for log files to get extracted.</para>
+        </listitem>
+    </varlistentry>
 </variablelist>
 </RefSect1>
 
