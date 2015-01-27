@@ -596,7 +596,7 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         Refresh the SCC data in the SUSE Manager database.
         """
         self.log.info("Refreshing SCC data...")
-        token = self.auth.token(verify=True)
+        token = self.auth.token()
         actions = (
             ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
