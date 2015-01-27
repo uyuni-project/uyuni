@@ -1,5 +1,0 @@
-.pwstrength-container {position:relative;}
-.pwstrength-graybar {position:absolute; left:2px; top:30px; width:120px; height:4px; background:#DDDDDD;}
-.pwstrength-colorbar {position:absolute; left:2px; top:30px; width:0px; height:4px; background-image: url(../img/pwstrength.png);}
-.pwstrength-result {position:absolute; left:132px; top:8px; font-size:11px;}
-.pwstrength-percent {position:absolute; left:132px; top:24px; font-size:11px;}
