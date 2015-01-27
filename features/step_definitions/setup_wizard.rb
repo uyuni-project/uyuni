@@ -52,3 +52,7 @@ When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$
       fail if not find('.product-channels-btn').click
    end
 end
+
+Then /^I see verification succeeded/ do
+   find("i.text-success")
+end
