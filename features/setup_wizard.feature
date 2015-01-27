@@ -3,13 +3,6 @@
 Feature: I want to verify the Setup Wizard
 
 
-   Scenario: I want to test the proxy setup
-      Given I am on the Admin page
-        And I should see a "HTTP Proxy Hostname" text
-        And I should see a "HTTP Proxy Username" text
-        And I should see a "HTTP Proxy Password" text
-        And I click on "Save and Verify"
-
    Scenario: I want to test the credentials setup
       Given I am on the Admin page
         And I follow "Mirror Credentials" in the content area
