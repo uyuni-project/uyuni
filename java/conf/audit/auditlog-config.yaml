@@ -1124,7 +1124,7 @@
 # Action Chaining
 ###############################################################################
 
-/schedule/ActionChain.do
+/schedule/ActionChain.do:
     type: ACTION_CHANGE
     required: [dispatch]
 
