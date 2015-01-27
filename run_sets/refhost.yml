@@ -1,5 +1,6 @@
 --- # List of features for reference host
 - features/init_user_create.feature
+- features/setup_proxy.feature
 - features/running.feature
 - features/login.feature
 - features/channels_add.feature
