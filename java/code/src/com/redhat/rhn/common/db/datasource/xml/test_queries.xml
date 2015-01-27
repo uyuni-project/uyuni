@@ -521,12 +521,6 @@ SELECT * FROM rhnVirtualInstance WHERE id = :id
     </query>
 </mode>
 
-<mode name="get_debug_log">
-    <query params="">
-SELECT * FROM time_series order by entry_time
-    </query>
-</mode>
-
 <mode name="get_test_users">
     <query params="">
 SELECT id from web_contact where UPPER(login) like 'TEST%'
