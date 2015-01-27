@@ -198,8 +198,7 @@ public class HttpClientAdapterTest extends TestCase {
     }
 
     /**
-     * Whenever we have a different folder structure such that tests can reside in the same
-     * Java package as the tested class, we should make the useProxyFor() method protected.
+     * Call the private method useProxyFor() on a new {@link HttpClientAdapter}.
      *
      * @param uri the URI to call useProxyFor() with
      * @return the result of useProxyFor()
