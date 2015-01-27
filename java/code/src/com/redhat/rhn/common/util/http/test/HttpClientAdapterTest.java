@@ -42,7 +42,7 @@ import simple.http.Response;
 public class HttpClientAdapterTest extends TestCase {
 
     // Mock server for reuse
-    private static final HttpServerMock serverMock = new HttpServerMock();
+    private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
 
     // String values
     private static final String TEST_USER = "testuser";
@@ -63,17 +63,17 @@ public class HttpClientAdapterTest extends TestCase {
         Callable<Integer> requester = new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                HttpMethod request = new GetMethod(serverMock.getURI().toString());
+                HttpMethod request = new GetMethod(SERVER_MOCK.getURI().toString());
                 HttpClientAdapter client = new HttpClientAdapter();
                 return client.executeRequest(request, TEST_USER, TEST_PASSWORD);
             }
         };
 
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Host", serverMock.getURI().getAuthority());
+        headers.put("Host", SERVER_MOCK.getURI().getAuthority());
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         assertEquals((Integer) HttpStatus.SC_OK,
-                serverMock.getResult(requester, new TestResponder(headers)));
+                SERVER_MOCK.getResult(requester, new TestResponder(headers)));
     }
 
     /**
@@ -83,7 +83,7 @@ public class HttpClientAdapterTest extends TestCase {
     public void testGetRequestViaProxy() throws Exception {
         // Configure proxy
         ProxySettingsDto proxySettings = new ProxySettingsDto();
-        proxySettings.setHostname(serverMock.getURI().getAuthority());
+        proxySettings.setHostname(SERVER_MOCK.getURI().getAuthority());
         proxySettings.setUsername(PROXY_TEST_USER);
         proxySettings.setPassword(PROXY_TEST_PASSWORD);
         ProxySettingsManagerTest.setProxySettings(proxySettings);
@@ -102,7 +102,7 @@ public class HttpClientAdapterTest extends TestCase {
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         headers.put("Proxy-Authorization", EXPECTED_PROXY_AUTHORIZATION);
         assertEquals((Integer) HttpStatus.SC_OK,
-                serverMock.getResult(requester, new TestResponder(headers)));
+                SERVER_MOCK.getResult(requester, new TestResponder(headers)));
     }
 
     /**

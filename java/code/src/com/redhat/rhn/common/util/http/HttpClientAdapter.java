@@ -39,8 +39,12 @@ import java.util.List;
  */
 public class HttpClientAdapter {
 
-    private static Logger log = Logger.getLogger(HttpClientAdapter.class);
+    /**
+     * Configuration key for the proxy skip list.
+     */
     public static final String NO_PROXY = "server.satellite.no_proxy";
+
+    private static Logger log = Logger.getLogger(HttpClientAdapter.class);
     private ProxyHost proxyHost;
     private HttpClient httpClient;
     private List<String> noProxyDomains;
