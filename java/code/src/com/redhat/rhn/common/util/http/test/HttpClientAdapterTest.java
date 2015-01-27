@@ -171,6 +171,41 @@ public class HttpClientAdapterTest extends TestCase {
         assertTrue(result);
     }
 
+    /**
+     * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" contains "*".
+     * @throws Exception in case of a problem
+     */
+    public void testUseProxyForAsterisk() throws Exception {
+        // Configure "no_proxy" cotaining an asterisk
+        setNoProxy("example.com, *");
+
+        // No proxy should be used for *all* hosts, even for example.com
+        boolean result = callUseProxyFor(new URI("http://example.com", false));
+        assertFalse(result);
+
+        result = callUseProxyFor(new URI("http://foobar.com", false));
+        assertFalse(result);
+    }
+
+    /**
+     * Test the logic in HttpClientAdapter.useProxyFor(): "no_proxy" is empty.
+     * @throws Exception in case of a problem
+     */
+    public void testUseProxyForEmpty() throws Exception {
+        // Configure "no_proxy" cotaining an asterisk
+        setNoProxy("");
+
+        // Proxy should be used for *all* hosts (except localhost etc.)
+        boolean result = callUseProxyFor(new URI("http://example.com", false));
+        assertTrue(result);
+
+        result = callUseProxyFor(new URI("http://foobar.com", false));
+        assertTrue(result);
+
+        result = callUseProxyFor(new URI("http://localhost:1234", false));
+        assertFalse(result);
+    }
+
     /* (non-Javadoc)
      * @see junit.framework.TestCase#tearDown()
      */
