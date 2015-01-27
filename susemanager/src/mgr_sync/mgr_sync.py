@@ -24,7 +24,7 @@ from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
 from spacewalk.susemanager.mgr_sync import logger
-from spacewalk.susemanager.authenticator import Authenticator
+from spacewalk.susemanager.authenticator import Authenticator, MaximumNumberOfAuthenticationFailures
 from spacewalk.susemanager.helpers import cli_ask
 
 # see TaskoXmlRpcHandler.java for available methods
@@ -47,7 +47,6 @@ class MgrSync(object):
                                   user=self.config.user,
                                   password=self.config.password,
                                   token=self.config.token)
-
         self.quiet = False
 
     def __init__logger(self, debug_level, logfile=DEFAULT_LOG_LOCATION):
@@ -59,6 +58,7 @@ class MgrSync(object):
     def run(self, options):
         """
         Run the app.
+        Returns an integer with the exit status of mgr-sync.
         """
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
@@ -67,7 +67,7 @@ class MgrSync(object):
             msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
         if not current_cc_backend() == BackendType.SCC \
            and not vars(options).has_key('enable_scc'):
@@ -81,32 +81,51 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 """
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
         if hasISSMaster() and not (vars(options).has_key('enable_scc') or vars(options).has_key('refresh')):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
-            sys.exit(1)
+            return 1
 
-        # Save config with the full credentials, if asked,
-        # or only cache current session ID
-        self.auth.token(connect=True, verify=options.saveconfig)
-        if options.saveconfig or self.auth.fresh:
-            if options.saveconfig:
-                self.config.user = self.auth.user
-                self.config.password = self.auth.password
-            self.config.write()
-            if options.saveconfig:
-                self.log.info("Credentials have been saved to the {0} file.".format(
-                    self.config.dotfile))
-                print("Credentials has been saved to the {0} file.".format(
-                        self.config.dotfile))
+        if options.store_credentials and not self.auth.has_credentials():
+            # Ensure credentials are asked to the user, even though
+            # there's a token already store inside of the local
+            # configuration
+            self.auth.discard_token()
 
-        if self.auth.token(connect=False):
-            self.config.token = self.auth.token(connect=False)
-            self.config.write()
+        # Now we can process the user request
+        exit_code = 0
+        try:
+            exit_code = self._process_user_request(options)
+        except MaximumNumberOfAuthenticationFailures:
+            msg = "mgr-sync: Authentication failure"
+            sys.stderr.write(msg + "\n")
+            self.log.error(msg)
+            return 1
 
+        # Ensure the latest valid token is saved to the local configuration
+        self.config.token = self.auth.token()
+        if options.store_credentials and self.auth.has_credentials():
+            # Save user credentials only with explicitly asked by the user
+            self.config.user = self.auth.user
+            self.config.password = self.auth.password
+
+        self.config.write()
+        if options.store_credentials and self.auth.has_credentials():
+            print("Credentials have been saved to the {0} file.".format(
+                self.config.dotfile))
+            self.log.info("Credentials have been saved to the {0} file.".format(
+                self.config.dotfile))
+
+        return exit_code
+
+    def _process_user_request(self, options):
+        """
+        Execute the user request.
+        Returns an integer with the exit status of mgr-sync.
+        """
         self.quiet = not options.verbose
         self.exit_with_error = False
 
