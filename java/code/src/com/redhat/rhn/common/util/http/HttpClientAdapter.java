@@ -47,7 +47,7 @@ public class HttpClientAdapter {
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
     private ProxyHost proxyHost;
     private HttpClient httpClient;
-    private List<String> noProxyDomains;
+    private List<String> noProxyDomains = new ArrayList<String>();
 
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
@@ -69,6 +69,14 @@ public class HttpClientAdapter {
                         proxyUsername, proxyPassword);
                 httpClient.getState().setProxyCredentials(
                         new AuthScope(proxyHostname, proxyPort), proxyCredentials);
+            }
+        }
+
+        // Read proxy exceptions from the "no_proxy" config option
+        String noProxy = Config.get().getString(NO_PROXY);
+        if (noProxy != null) {
+            for (String domain : Arrays.asList(noProxy.split(","))) {
+                noProxyDomains.add(domain.toLowerCase().trim());
             }
         }
     }
@@ -173,20 +181,10 @@ public class HttpClientAdapter {
             return false;
         }
 
-        // Read proxy exceptions from the "no_proxy" config option
-        if (noProxyDomains == null) {
-            String noProxy = Config.get().getString(NO_PROXY);
-            if (noProxy == null) {
-                return true;
-            }
-            if (noProxy.equals("*")) {
-                return false;
-            }
-
-            noProxyDomains = new ArrayList<String>();
-            for (String domain : Arrays.asList(noProxy.split(","))) {
-                noProxyDomains.add(domain.toLowerCase().trim());
-            }
+        if (noProxyDomains.isEmpty()) {
+            return true;
+        } else if (noProxyDomains.contains("*")) {
+            return false;
         }
 
         // Check for either an exact match or the previous character is a '.',
