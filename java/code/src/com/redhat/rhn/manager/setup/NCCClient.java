@@ -83,8 +83,9 @@ public class NCCClient {
         PostMethod postRequest = new PostMethod();
 
         try {
-            // Follow up to MAX_REDIRECTS redirects manually. HttpClient is unable to
-            // automatically handle redirects of entity enclosing methods such as POST.
+            // Follow up to MAX_REDIRECTS redirects manually, since HttpClient will not
+            // automatically follow redirects of entity enclosing methods such as POST.
+            // NCC should actually send 307 here (Temporary Redirect) instead of 302.
             String location = this.nccUrl + NCC_SUBSCRIPTIONS_COMMAND;
             int result = HttpStatus.SC_MOVED_TEMPORARILY;
             int redirects = 0;
