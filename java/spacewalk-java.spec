@@ -112,11 +112,13 @@ BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
 %else
 %if 0%{?suse_version}
+Requires: jakarta-commons-httpclient
 Requires: struts >= 1.2.9
 Requires: pxe-default-image
 Requires(pre): tomcat >= 7
 Requires: tomcat-lib >= 7
 Requires: tomcat-servlet-3.0-api >= 7
+BuildRequires: jakarta-commons-httpclient
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
@@ -427,6 +429,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
 BuildRequires: systemd
 %{?systemd_requires}
+Requires: jakarta-commons-httpclient
 Requires: satsolver-tools
 Requires: susemanager-frontend-libs
 %else
@@ -603,9 +606,9 @@ wrapper.java.classpath.69=/usr/share/java/hibernate-jpa-2.0-api.jar" >> conf/def
 echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %if 0%{suse_version}
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
-echo "wrapper.java.classpath.64=/usr/share/java/slf4j/api.jar
-wrapper.java.classpath.65=/usr/share/java/slf4j/jcl.jar
-wrapper.java.classpath.66=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.65=/usr/share/java/slf4j/api.jar
+wrapper.java.classpath.66=/usr/share/java/slf4j/jcl.jar
+wrapper.java.classpath.67=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 %endif
@@ -786,6 +789,7 @@ fi
 %{jardir}/commons-discovery.jar
 %{jardir}/commons-el.jar
 %{jardir}/commons-fileupload.jar
+%{jardir}/commons-httpclient.jar
 %{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar

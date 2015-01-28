@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2014 SUSE
+ * Copyright (c) 2014--2015 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,30 +14,27 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
 import com.suse.manager.model.ncc.ListSubscriptions;
 import com.suse.manager.model.ncc.Subscription;
 import com.suse.manager.model.ncc.SubscriptionList;
-import com.suse.scc.client.ProxyAuthenticator;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
 import java.util.List;
 
 /**
- * Simple client for NCC subscription data
+ * Simple client for requesting NCC subscription data.
  */
 public class NCCClient {
 
@@ -46,157 +43,112 @@ public class NCCClient {
 
     private static final String NCC_URL = "https://secure-www.novell.com/center/regsvc/";
     private static final String NCC_PING_COMMAND = "?command=ping";
-    private static final String NCC_LIST_SUBSCRIPTIONS_COMMAND =
-            "?command=listsubscriptions";
+    private static final String NCC_SUBSCRIPTIONS_COMMAND = "?command=listsubscriptions";
     private static final int MAX_REDIRECTS = 10;
-
     private String nccUrl;
+    private HttpClientAdapter httpClient;
 
     /**
-     * Creates a client for the NCC registration service
-     * using the default known URL
+     * Creates a client for the NCC registration service using the default known URL.
      */
     public NCCClient() {
-        this.nccUrl = NCC_URL;
+        this(NCC_URL);
     }
 
     /**
-     * Creates a client for the NCC registration service
+     * Creates a client for the NCC registration service.
+     *
      * @param url Custom URL
      */
     public NCCClient(String url) {
-        this.nccUrl = url;
-    }
-
-    /**
-     * Sets the url for the NCC service.
-     * This method is useful if you want to do testing against
-     * a development or mock server.
-     * @param url NCC url
-     */
-    public void setNCCUrl(String url) {
-        this.nccUrl = url;
+        nccUrl = url;
+        httpClient = new HttpClientAdapter();
     }
 
     /**
      * Connect to NCC and return subscriptions for a given pair of credentials.
+     *
      * @param creds the mirror credentials to use
      * @return list of subscriptions available via the given credentials
      * @throws NCCException in case something bad happens with NCC
      */
     public List<Subscription> downloadSubscriptions(MirrorCredentialsDto creds)
-        throws NCCException {
-        // Setup XML to send it with the request
+            throws NCCException {
+        // Setup data to enclose it with the request
         ListSubscriptions listsubs = new ListSubscriptions();
         listsubs.setUser(creds.getUser());
         listsubs.setPassword(creds.getPassword());
         List<Subscription> subscriptions = null;
         Serializer serializer = new Persister();
-        HttpURLConnection connection = null;
+        PostMethod postRequest = new PostMethod();
 
         try {
-            // Perform request(s)
-            String location = this.nccUrl + NCC_LIST_SUBSCRIPTIONS_COMMAND;
-            int result = 302;
+            // Follow up to MAX_REDIRECTS redirects manually, since HttpClient will not
+            // automatically follow redirects of entity enclosing methods such as POST.
+            // NCC should actually send 307 here (Temporary Redirect) instead of 302.
+            String location = this.nccUrl + NCC_SUBSCRIPTIONS_COMMAND;
+            int result = HttpStatus.SC_MOVED_TEMPORARILY;
             int redirects = 0;
 
-            while (result == 302 && redirects < MAX_REDIRECTS) {
-                // Initialize connection
-                connection = getConnection("POST", location);
-                connection.setDoOutput(true);
-                connection.setInstanceFollowRedirects(false);
+            while (result == HttpStatus.SC_MOVED_TEMPORARILY && redirects < MAX_REDIRECTS) {
+                postRequest = new PostMethod(location);
 
-                // Serialize into XML
-                serializer.write(listsubs, connection.getOutputStream());
+                // Set the XML request entity
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                serializer.write(listsubs, stream);
+                postRequest.setRequestEntity(
+                        new ByteArrayRequestEntity(stream.toByteArray()));
 
-                // Execute the request
-                connection.connect();
-                result = connection.getResponseCode();
-                if (log.isDebugEnabled()) {
-                    log.debug("Response status code: " + result);
-                }
+                // Execute the request and prepare redirect if necessary
+                result = httpClient.executeRequest(postRequest);
 
-                if (result == 302) {
-                    // Prepare the redirect
-                    location = connection.getHeaderField("Location");
-                    log.info("Got 302, following redirect to: " + location);
-                    connection.disconnect();
+                if (result == HttpStatus.SC_MOVED_TEMPORARILY) {
+                    location = postRequest.getResponseHeader("Location").getValue();
+                    if (log.isDebugEnabled()) {
+                        log.debug("Got 302, following redirect to: " + location);
+                    }
+                    postRequest.releaseConnection();
                     redirects++;
                 }
             }
 
             // Parse the response body in case of success
-            if (result == 200) {
-                InputStream stream = connection.getInputStream();
+            if (result == HttpStatus.SC_OK) {
+                InputStream stream = postRequest.getResponseBodyAsStream();
                 SubscriptionList subsList = serializer.read(SubscriptionList.class, stream);
                 subscriptions = subsList.getSubscriptions();
                 log.info("Found " + subscriptions.size() + " subscriptions");
             }
         }
+        // Generic exception is thrown from serializer.write() and read()
         catch (Exception e) {
             throw new NCCException(e);
         }
         finally {
-            if (connection != null) {
-                log.debug("Releasing connection");
-                connection.disconnect();
-            }
+            postRequest.releaseConnection();
         }
         return subscriptions;
     }
 
     /**
-     * Returns an HTTP connection object to query NCC. Returned client has proxy
-     * configured.
-     * @param method HTTP method to use
-     * @param location URL to make requests to
-     * @return the http connection
-     * @throws IOException if network errors happen
-     * @throws MalformedURLException if location is not valid
-     */
-    public HttpURLConnection getConnection(String method, String location)
-        throws MalformedURLException, IOException {
-        ConfigDefaults configDefaults = ConfigDefaults.get();
-        String proxyHost = configDefaults.getProxyHost();
-        URL url = new URL(location);
-
-        HttpURLConnection result = null;
-        if (!StringUtils.isEmpty(proxyHost)) {
-            int proxyPort = configDefaults.getProxyPort();
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost,
-                proxyPort));
-
-            result = (HttpURLConnection) url.openConnection(proxy);
-
-            String proxyUsername = configDefaults.getProxyUsername();
-            String proxyPassword = configDefaults.getProxyPassword();
-            if (!StringUtils.isEmpty(proxyUsername) &&
-                    !StringUtils.isEmpty(proxyPassword)) {
-                Authenticator.setDefault(new ProxyAuthenticator(
-                        proxyUsername, proxyPassword));
-            }
-        }
-        else {
-            result = (HttpURLConnection) url.openConnection();
-        }
-
-        result.setRequestMethod(method);
-
-        return result;
-    }
-
-    /**
-     * Pings NCC.
+     * Ping NCC to test reachability.
+     *
      * @return true if NCC is reachable, false if it is not
      */
     public boolean ping() {
+        GetMethod getPing = new GetMethod(nccUrl + NCC_PING_COMMAND);
         try {
-            HttpURLConnection connection = getConnection("GET", nccUrl + NCC_PING_COMMAND);
-            connection.connect();
-            return connection.getResponseCode() == 200;
+            int returnCode = httpClient.executeRequest(getPing);
+            if (log.isDebugEnabled()) {
+                log.debug("NCC ping return code: " + returnCode);
+            }
+            return returnCode == HttpStatus.SC_OK;
         }
         catch (IOException e) {
             return false;
+        }
+        finally {
+            getPing.releaseConnection();
         }
     }
 }

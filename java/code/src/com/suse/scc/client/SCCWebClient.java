@@ -14,16 +14,20 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.Gson;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpStatus;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -36,6 +40,9 @@ public class SCCWebClient implements SCCClient {
 
     /** The config object. */
     private final SCCConfig config;
+
+    /** Adapter object for handling HTTP requests. */
+    private final HttpClientAdapter httpClient;
 
     /**
      *  Represents a partial result with a pointer to the next one.
@@ -63,11 +70,12 @@ public class SCCWebClient implements SCCClient {
     }
 
     /**
-     * Constructor for connecting to scc.suse.com.
+     * Constructor for connecting to SUSE Customer Center.
      * @param configIn the configuration object
      */
     public SCCWebClient(SCCConfig configIn) {
         config = configIn;
+        httpClient = new HttpClientAdapter();
     }
 
     /**
@@ -129,19 +137,16 @@ public class SCCWebClient implements SCCClient {
      * @throws SCCClientException in case of a problem
      */
     private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
-        throws SCCClientException {
-        HttpURLConnection connection = null;
+            throws SCCClientException {
         Reader streamReader = null;
+        HttpMethod request = SCCRequestFactory.getInstance().initRequest(
+                method, endpoint, config);
         try {
-            // Setup the connection
-            connection = SCCRequestFactory.getInstance().initConnection(
-                    method, endpoint, config);
-
             // Connect and parse the response on success
-            connection.connect();
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                streamReader = SCCClientUtils.getLoggingReader(connection,
+            int responseCode = httpClient.executeRequest(request,
+                    config.getUsername(), config.getPassword());
+            if (responseCode == HttpStatus.SC_OK) {
+                streamReader = SCCClientUtils.getLoggingReader(request,
                         config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
@@ -149,11 +154,12 @@ public class SCCWebClient implements SCCClient {
                 T result = gson.fromJson(streamReader, resultType);
 
                 String nextUrl = null;
-                String linkHeader = connection.getHeaderField("Link");
+                Header linkHeader = request.getResponseHeader("Link");
                 if (linkHeader != null) {
+                    String linkHeaderValue = linkHeader.getValue();
                     Matcher m = Pattern
                             .compile(".*<" + config.getUrl() + "(.*?)>; rel=\"next\".*")
-                            .matcher(linkHeader);
+                            .matcher(linkHeaderValue);
                     if (m.matches()) {
                         nextUrl = m.group(1);
                     }
@@ -162,17 +168,15 @@ public class SCCWebClient implements SCCClient {
             }
             else {
                 // Request was not successful
-                throw new SCCClientException("Response code: " + responseCode);
+                throw new SCCClientException("Got response code " + responseCode +
+                        " connecting to " + request.getURI());
             }
         }
         catch (IOException e) {
             throw new SCCClientException(e);
         }
         finally {
-            // Clean up connection and streams
-            if (connection != null) {
-                connection.disconnect();
-            }
+            request.releaseConnection();
             SCCClientUtils.closeQuietly(streamReader);
         }
     }
