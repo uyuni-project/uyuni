@@ -156,28 +156,22 @@ public class SetupWizardSessionCache {
         if (forceRefresh || ret == null) {
             if (MgrSyncUtils.isMigratedToSCC()) {
                 try {
-                    int code = MgrSyncUtils.sendHeadRequest(
-                            Config.get().getString(ConfigDefaults.SCC_URL) + "/login",
-                            null, null);
-                    if (code != 200) {
-                        ret = false;
-                    }
-                    else {
-                        ret = true;
-                    }
-                } catch (ContentSyncException e) {
+                    String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
+                    ret = MgrSyncUtils.verifyProxy(url);
+                }
+                catch (ContentSyncException e) {
                     ret = false;
                 }
             }
             else {
                 NCCClient client = new NCCClient();
                 ret = client.ping();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Proxy verification is " + ret);
-                }
             }
 
             // Put validation status in cache
+            if (logger.isDebugEnabled()) {
+                logger.debug("Proxy verification is " + ret);
+            }
             storeProxyStatus(ret, request);
         }
         else {

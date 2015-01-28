@@ -14,8 +14,6 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.codec.binary.Base64;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -59,16 +57,13 @@ public class SCCConfig {
     /** Path to the logging directory. */
     private String loggingDir;
 
-    /** The proxy settings. */
-    private SCCProxySettings proxySettings;
-
     /**
      * Instantiates a new SCC config to read from a local file and default
      * logging directory.
      * @param localResourcePathIn the local resource path
      */
     public SCCConfig(String localResourcePathIn) {
-        this(DEFAULT_URL, null, null, null, localResourcePathIn, DEFAULT_LOGGING_DIR, null);
+        this(DEFAULT_URL, null, null, null, localResourcePathIn, DEFAULT_LOGGING_DIR);
     }
 
     /**
@@ -77,12 +72,9 @@ public class SCCConfig {
      * @param usernameIn the username
      * @param passwordIn the password
      * @param uuidIn the UUID
-     * @param proxySettingsIn the proxy settings
      */
-    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
-            SCCProxySettings proxySettingsIn) {
-        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR,
-                proxySettingsIn);
+    public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn) {
+        this(urlIn, usernameIn, passwordIn, uuidIn, null, DEFAULT_LOGGING_DIR);
     }
 
     /**
@@ -93,18 +85,15 @@ public class SCCConfig {
      * @param uuidIn the UUID
      * @param localResourcePathIn the local resource path
      * @param loggingDirIn the logging dir
-     * @param proxySettingsIn the proxy settings
      */
     public SCCConfig(URI urlIn, String usernameIn, String passwordIn, String uuidIn,
-            String localResourcePathIn, String loggingDirIn,
-            SCCProxySettings proxySettingsIn) {
+            String localResourcePathIn, String loggingDirIn) {
         url = urlIn;
         username = usernameIn;
         password = passwordIn;
         uuid = uuidIn;
         localResourcePath = localResourcePathIn;
         loggingDir = loggingDirIn;
-        proxySettings = proxySettingsIn;
     }
 
     /**
@@ -153,25 +142,5 @@ public class SCCConfig {
      */
     public String getLoggingDir() {
         return loggingDir;
-    }
-
-    /**
-     * Gets the proxy settings.
-     * @return the proxy settings
-     */
-    public SCCProxySettings getProxySettings() {
-        return proxySettings;
-    }
-
-    /**
-     * Returns the encoded credentials or null.
-     * @return credentials
-     */
-    public String getEncodedCredentials() {
-        if (username != null && password != null) {
-            byte[] encoded = Base64.encodeBase64((username + ":" + password).getBytes());
-            return new String(encoded);
-        }
-        return null;
     }
 }
