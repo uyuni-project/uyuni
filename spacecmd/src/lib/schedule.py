@@ -413,5 +413,3 @@ def help_schedule_list(self):
 
 def do_schedule_list(self, args):
     return self.print_schedule_summary('all', args)
-
-# vim:ts=4:expandtab:
