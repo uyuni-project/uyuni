@@ -13,7 +13,7 @@
       margin: 0;
     }
     li {
-      display: inline-block;  
+      display: inline-block;
       border-bottom:0;
     }
     ul li:last-child, ul>ul li:last-child, ul>ul>ul li:last-child {
@@ -96,7 +96,7 @@
     div:nth-child(1) {
       .make-xs-column(12);
     }
-  } 
+  }
 }
 // buttons will go 100% width
 .buttons-full-size {
@@ -232,4 +232,11 @@
   .menu-toggle-hide;
 }
 
+/* --- changes after Pattern Fly  ---- */
 
+@media (max-width: 768px) {
+  nav .navbar-brand:nth-of-type(2) img {
+    width: 80% !important;
+    padding: 14px 26px
+  }
+}

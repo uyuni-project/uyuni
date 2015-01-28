@@ -7,9 +7,12 @@ body {
 html, body {
 	height: 100%
 }
-header {
+header, nav.navbar.navbar-default.navbar-pf {
 	width: 100%;
 	background: @spacewalk-header;
+	border: none;
+	border-radius: 0;
+	margin-bottom: 0;
 }
 footer {
 	padding: 1.2em 0;
@@ -154,7 +157,7 @@ p {
 	min-height: 100%;
 }
 
-header {
+header, nav.navbar-pf {
 	.spacewalk-header-container {
 	  margin: 0 1em;
 	}
@@ -311,6 +314,10 @@ header {
 	}
 	#bar .spacewalk-bar .badge {
 		margin-right: .5em
+	}
+
+	.navbar-brand:first-of-type {
+		padding: 16px 0;
 	}
 }
 
