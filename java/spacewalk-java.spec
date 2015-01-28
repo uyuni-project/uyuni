@@ -112,11 +112,13 @@ BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
 %else
 %if 0%{?suse_version}
+Requires: jakarta-commons-httpclient
 Requires: struts >= 1.2.9
 Requires: pxe-default-image
 Requires(pre): tomcat >= 7
 Requires: tomcat-lib >= 7
 Requires: tomcat-servlet-3.0-api >= 7
+BuildRequires: jakarta-commons-httpclient
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
@@ -427,6 +429,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
 BuildRequires: systemd
 %{?systemd_requires}
+Requires: jakarta-commons-httpclient
 Requires: satsolver-tools
 Requires: susemanager-frontend-libs
 %else
@@ -786,6 +789,7 @@ fi
 %{jardir}/commons-discovery.jar
 %{jardir}/commons-el.jar
 %{jardir}/commons-fileupload.jar
+%{jardir}/commons-httpclient.jar
 %{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
