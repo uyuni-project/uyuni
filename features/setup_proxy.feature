@@ -7,9 +7,9 @@ Feature: I want to setup the HTTP proxy
         And I should see a "HTTP Proxy Hostname" text
         And I should see a "HTTP Proxy Username" text
         And I should see a "HTTP Proxy Password" text
-       When I enter "galileo.suse.de:3128" as "HTTP Proxy Hostname"
-        And I enter "www" as "HTTP Proxy Username"
-        And I enter "gibsmir" as "HTTP Proxy Password"
+       When I enter "galaxy-proxy.suse.de:3128" as "HTTP Proxy Hostname"
+        And I enter "suma" as "HTTP Proxy Username"
+        And I enter "P4$$word" as "HTTP Proxy Password"
         And I click on "Save and Verify"
         And I wait for "5" seconds
        Then I see verification succeeded
