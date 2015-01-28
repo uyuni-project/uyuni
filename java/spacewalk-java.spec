@@ -99,6 +99,7 @@ Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
 # SUSE = 1.2 and Tomcat 6
 %if 0%{?suse_version}
+Requires: jakarta-commons-httpclient
 Requires: pxe-default-image
 Requires: struts >= 1.2.9
 %else
@@ -200,6 +201,7 @@ BuildRequires: susestudio-java-client
 %ifarch x86_64
 BuildRequires: oracle-instantclient11.2-basic
 %endif
+BuildRequires: jakarta-commons-httpclient
 BuildRequires: log4j
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
@@ -416,6 +418,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
 Requires(post): %fillup_prereq %insserv_prereq
 Requires(preun): %fillup_prereq %insserv_prereq
+Requires: jakarta-commons-httpclient
 Requires: satsolver-tools
 Requires: susemanager-frontend-libs
 %else
@@ -783,6 +786,7 @@ fi
 %{jardir}/commons-discovery.jar
 %{jardir}/commons-el.jar
 %{jardir}/commons-fileupload.jar
+%{jardir}/commons-httpclient.jar
 %{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
