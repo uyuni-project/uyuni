@@ -34,19 +34,17 @@ public class SCCClientFactory {
      * @param username the username
      * @param password the password
      * @param resourcePath the local path for JSON files or null
-     * @param proxySettings a proxy settings object
      * @param uuid the UUID or null
      * @return the new {@link SCCWebClient}
      */
     public static SCCClient getInstance(URI url, String username, String password,
-            String resourcePath, SCCProxySettings proxySettings, String uuid) {
+            String resourcePath, String uuid) {
 
         if (resourcePath != null) {
             return new SCCFileClient(new SCCConfig(resourcePath));
         }
         else {
-            SCCConfig config = new SCCConfig(url, username, password,
-                uuid, proxySettings);
+            SCCConfig config = new SCCConfig(url, username, password, uuid);
             return new SCCWebClient(config);
         }
     }

@@ -42,7 +42,7 @@ public class ProxySettingsManagerTest extends RhnBaseTestCase {
      *
      * @param proxy the new proxy settings
      */
-    private void setProxySettings(ProxySettingsDto proxy) {
+    public static void setProxySettings(ProxySettingsDto proxy) {
         Config.get().setString(ProxySettingsManager.KEY_PROXY_HOSTNAME, proxy.getHostname());
         Config.get().setString(ProxySettingsManager.KEY_PROXY_USERNAME, proxy.getUsername());
         Config.get().setString(ProxySettingsManager.KEY_PROXY_PASSWORD, proxy.getPassword());

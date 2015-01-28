@@ -43,7 +43,7 @@ public abstract class SCCRequester<T> implements Callable<T> {
      */
     public SCCRequester(URI uri) {
         SCCConfig config = new SCCConfig(uri, "user", "password", null, null,
-            System.getProperty("java.io.tmpdir"), null);
+            System.getProperty("java.io.tmpdir"));
         scc = new SCCWebClient(config);
     }
 

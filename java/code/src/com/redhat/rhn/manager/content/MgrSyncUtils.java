@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -22,29 +22,17 @@ import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.scc.client.ProxyAuthenticator;
-import com.suse.scc.client.SCCProxySettings;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.HeadMethod;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
  */
 public class MgrSyncUtils {
-
-    // Logger instance
-    private static final Logger log = Logger.getLogger(MgrSyncUtils.class);
 
     // This file is touched once the server has been migrated to SCC
     public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
@@ -54,82 +42,51 @@ public class MgrSyncUtils {
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
      *
      * @param url the URL to verify
-     * @param username username for authentication
-     * @param password password for authentication
+     * @param username username for authentication (pass null for unauthenticated requests)
+     * @param password password for authentication (pass null for unauthenticated requests)
      * @return the response code of the request
+     * @throws ContentSyncException in case of an error
      */
     public static int sendHeadRequest(String url, String username, String password)
             throws ContentSyncException {
-        if (log.isDebugEnabled()) {
-            log.debug("Sending HEAD request to: " + url);
-        }
-        HttpURLConnection connection = null;
-        int responseCode = -1;
+        return sendHeadRequest(url, username, password, false);
+    }
+
+    /**
+     * Send a HEAD request to verify a proxy server (ignoring the "no_proxy" setting).
+     *
+     * @param url the URL to use for verification
+     * @return true if return code of HTTP request is 200, otherwise false
+     * @throws ContentSyncException in case of an error
+     */
+    public static boolean verifyProxy(String url) throws ContentSyncException {
+        return sendHeadRequest(url, null, null, true) == HttpStatus.SC_OK;
+    }
+
+    /**
+     * Send a HEAD request to a given URL to verify accessibility with given credentials.
+     *
+     * @param url the URL to verify
+     * @param username username for authentication (pass null for unauthenticated requests)
+     * @param password password for authentication (pass null for unauthenticated requests)
+     * @param ignoreNoProxy set true to ignore the "no_proxy" setting
+     * @return the response code of the request
+     * @throws ContentSyncException in case of an error
+     */
+    private static int sendHeadRequest(String url, String username, String password,
+            boolean ignoreNoProxy) throws ContentSyncException {
+        HttpClientAdapter httpClient = new HttpClientAdapter();
+        HeadMethod headRequest = new HeadMethod(url);
         try {
-            // Setup proxy support
-            ConfigDefaults configDefaults = ConfigDefaults.get();
-            String proxyHost = configDefaults.getProxyHost();
-            if (!StringUtils.isBlank(proxyHost)) {
-                int proxyPort = configDefaults.getProxyPort();
-                Proxy proxy = new Proxy(Proxy.Type.HTTP,
-                        new InetSocketAddress(proxyHost, proxyPort));
-                connection = (HttpURLConnection) new URL(url).openConnection(proxy);
-                if (log.isDebugEnabled()) {
-                    log.debug("Sending HEAD request via proxy: " + proxyHost);
-                }
-                String proxyUsername = configDefaults.getProxyUsername();
-                String proxyPassword = configDefaults.getProxyPassword();
-                if (!StringUtils.isBlank(proxyUsername) &&
-                        !StringUtils.isBlank(proxyPassword)) {
-                    Authenticator.setDefault(new ProxyAuthenticator(
-                            proxyUsername, proxyPassword));
-                }
-            }
-            else {
-                connection = (HttpURLConnection) new URL(url).openConnection();
-            }
-
-            // Configure the request
-            connection.setRequestMethod("HEAD");
-
-            // Basic authentication
-            if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
-                byte[] credsBytes = Base64.encodeBase64((username + ':' + password).getBytes());
-                String credsString = new String(credsBytes);
-                if (credsString != null) {
-                    connection.setRequestProperty("Authorization", "Basic " + credsString);
-                }
-            }
-
-            // Get the response code
-            responseCode = connection.getResponseCode();
-        }
-        catch (MalformedURLException e) {
-            throw new ContentSyncException(e);
+            return httpClient.executeRequest(
+                    headRequest, username, password, ignoreNoProxy);
         }
         catch (IOException e) {
             throw new ContentSyncException(e);
         }
         finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            headRequest.releaseConnection();
         }
-        return responseCode;
-    }
-
-    /**
-     * Return the current proxy settings as {@link SCCProxySettings}.
-     *
-     * @return the proxy settings configured in /etc/rhn/rhn.conf
-     */
-    public static SCCProxySettings getRhnProxySettings() {
-        ConfigDefaults configDefaults = ConfigDefaults.get();
-        SCCProxySettings settings = new SCCProxySettings(
-                configDefaults.getProxyHost(), configDefaults.getProxyPort());
-        settings.setUsername(configDefaults.getProxyUsername());
-        settings.setPassword(configDefaults.getProxyPassword());
-        return settings;
     }
 
     /**

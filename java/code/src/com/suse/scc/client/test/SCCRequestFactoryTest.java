@@ -14,94 +14,47 @@
  */
 package com.suse.scc.client.test;
 
-import com.redhat.rhn.testing.httpservermock.HttpServerMock;
-import com.redhat.rhn.testing.httpservermock.Responder;
-
 import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCProxySettings;
 import com.suse.scc.client.SCCRequestFactory;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
+
 import java.net.URI;
-import java.util.concurrent.Callable;
 
 import junit.framework.TestCase;
-import simple.http.Request;
-import simple.http.Response;
 
 /**
  * Tests {@link SCCRequestFactory}
  */
 public class SCCRequestFactoryTest extends TestCase {
-    private static final String TEST_UUID = "test uuid";
-    private static final String TEST_HOST = "test_host:666";
+
+    // Headers to be verified
+    private static final String TEST_SCHEME = "https";
+    private static final String TEST_HOST = "test_host";
+    private static final String TEST_PATH = "/test_url";
+    private static final String TEST_UUID = "test_uuid";
     private static final String EXPECTED_ACCEPT = "application/vnd.scc.suse.com.v4+json";
-    private static final String EXPECTED_AUTH =
-            "BASIC dGVzdCBzZXJ2ZXIgdXNlcm5hbWU6dGVzdCBzZXJ2ZXIgcGFzc3dvcmQ=";
-    private static final String EXPECTED_PROXY_AUTH =
-            "Basic dGVzdCBwcm94eSB1c2VybmFtZTp0ZXN0IHByb3h5IHBhc3N3b3Jk";
+    private static final String EXPECTED_ACCEPT_ENCODING = "gzip, deflate";
 
     /**
-     * Tests initConnection().
+     * Tests initRequest(): Init a request to SCC and check it for correctness.
      * @throws Exception in case anything goes wrong
      */
-    public void testInitConnection() throws Exception {
-        HttpServerMock serverMock = new HttpServerMock();
-        final URI proxyUri = serverMock.getURI();
-        Callable<Integer> requester = new Callable<Integer>() {
-
-            @Override
-            public Integer call() throws Exception {
-                SCCProxySettings proxySettings = new SCCProxySettings(proxyUri.getHost(),
-                    proxyUri.getPort(), "test proxy username", "test proxy password");
-                SCCConfig config = new SCCConfig(new URI("http://" + TEST_HOST),
-                    "test server username", "test server password", TEST_UUID,
-                    null, SCCConfig.DEFAULT_LOGGING_DIR, proxySettings);
-                SCCRequestFactory factory = SCCRequestFactory.getInstance();
-                HttpURLConnection connection = factory.initConnection("GET", "/test_url",
-                    config);
-                connection.connect();
-                return connection.getResponseCode();
-            }
-        };
-
-        assertEquals((Integer) HttpURLConnection.HTTP_OK,
-                serverMock.getResult(requester, new TestResponder()));
-    }
-
-    /**
-     * Responds to HTTP requests coming from testInitConnection().
-     */
-    private class TestResponder implements Responder {
-
-        @Override
-        public void respond(Request request, Response response) {
-            try {
-                // 1. a first request should be sent without proxy authorization
-                // data, and we respond with 407 - Proxy Authorization Required
-                String authorizationData = request.getValue("Proxy-Authorization");
-                if (authorizationData == null) {
-                    response.set("Proxy-Authenticate", "Basic");
-                    response.setCode(HttpURLConnection.HTTP_PROXY_AUTH);
-                }
-                else {
-                    // 2. a second request should be sent with proper
-                    // authorization data, we respond with 200 - OK
-                    assertEquals(EXPECTED_PROXY_AUTH, authorizationData);
-                    assertEquals(EXPECTED_AUTH, request.getValue("Authorization"));
-                    assertEquals(EXPECTED_ACCEPT, request.getValue("Accept"));
-                    assertEquals(TEST_UUID, request.getValue("SMS"));
-                    assertEquals(TEST_HOST, request.getValue("host"));
-
-                    response.setCode(HttpURLConnection.HTTP_OK);
-                }
-                response.commit();
-            }
-            catch (IOException e) {
-                // never happens
-            }
-
-        }
+    public void testInitRequest() throws Exception {
+        SCCConfig config = new SCCConfig(new URI(TEST_SCHEME + "://" + TEST_HOST),
+                "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR);
+        SCCRequestFactory factory = SCCRequestFactory.getInstance();
+        HttpMethod request = factory.initRequest("GET", TEST_PATH, config);
+        assertTrue(request instanceof GetMethod);
+        assertEquals(TEST_SCHEME, request.getURI().getScheme());
+        assertEquals(TEST_HOST, request.getURI().getHost());
+        assertEquals(TEST_PATH, request.getURI().getPath());
+        assertEquals(EXPECTED_ACCEPT,
+                request.getRequestHeader("Accept").getValue());
+        assertEquals(EXPECTED_ACCEPT_ENCODING,
+                request.getRequestHeader("Accept-Encoding").getValue());
+        assertEquals(TEST_UUID,
+                request.getRequestHeader("SMS").getValue());
     }
 }
