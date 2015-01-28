@@ -101,6 +101,7 @@ public class HttpClientAdapterTest extends TestCase {
         headers.put("Host", TEST_AUTHORITY);
         headers.put("Authorization", EXPECTED_AUTHORIZATION);
         headers.put("Proxy-Authorization", EXPECTED_PROXY_AUTHORIZATION);
+        headers.put("Proxy-Connection", "Keep-Alive");
         assertEquals((Integer) HttpStatus.SC_OK,
                 SERVER_MOCK.getResult(requester, new TestResponder(headers)));
     }
@@ -124,10 +125,26 @@ public class HttpClientAdapterTest extends TestCase {
         @Override
         public void respond(Request request, Response response) {
             try {
-                for (String header : headers.keySet()) {
-                    assertEquals(headers.get(header), request.getValue(header));
+                String proxyAuthKey = "Proxy-Authorization";
+                String proxyAuthValue = request.getValue(proxyAuthKey);
+                String authKey = "Authorization";
+                String authValue = request.getValue(authKey);
+
+                if (headers.containsKey(proxyAuthKey) && proxyAuthValue == null) {
+                    response.set("Proxy-Authenticate", "Basic realm");
+                    response.setCode(HttpStatus.SC_PROXY_AUTHENTICATION_REQUIRED);
                 }
-                response.setCode(HttpStatus.SC_OK);
+                else if (headers.containsKey(authKey) && authValue == null) {
+                    response.set("WWW-Authenticate", "Basic realm");
+                    response.setCode(HttpStatus.SC_UNAUTHORIZED);
+                }
+                else {
+                    for (String header : headers.keySet()) {
+                        assertEquals(headers.get(header), request.getValue(header));
+                    }
+                    response.setCode(HttpStatus.SC_OK);
+                }
+
                 response.commit();
             }
             catch (IOException e) {
