@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Jan 29 15:51:44 CET 2015 - mc@suse.de
+
+- version 2.1.25.7-1
+- fix configchannel export - do not create 'contents' key for directories
+  (bsc#908849)
+- fix patch summary printing
+- code cleanup
+- add new function kickstart_getsoftwaredetails
+- Added feature to get installed packageversion of a system or systems managed
+  by ssm to spacecmd
+
+-------------------------------------------------------------------
 Thu Dec 04 13:27:13 CET 2014 - mc@suse.de
 
 - version 2.1.25.6-1
