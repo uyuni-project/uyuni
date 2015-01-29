@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class MgrSyncRefresh extends RhnJavaJob {
 
-    private static final String noRepoSyncKey = "noRepoSync";
+    private static final String NO_REPO_SYNC_KEY = "noRepoSync";
 
     /**
      * {@inheritDoc}
@@ -62,10 +62,10 @@ public class MgrSyncRefresh extends RhnJavaJob {
 
         // Get parameter
         boolean noRepoSync = false;
-        if (context.getJobDetail().getJobDataMap().containsKey(noRepoSyncKey)) {
+        if (context.getJobDetail().getJobDataMap().containsKey(NO_REPO_SYNC_KEY)) {
             try {
                 noRepoSync = context.getJobDetail().getJobDataMap().
-                        getBooleanValue(noRepoSyncKey);
+                        getBooleanValue(NO_REPO_SYNC_KEY);
             }
             catch (ClassCastException e) {
                 // if the provided value is not a bool we treat the presence of

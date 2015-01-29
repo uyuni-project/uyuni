@@ -136,86 +136,86 @@ public class SCCSubscription {
     // Setters are only for JUnit tests
 
     /**
-     * @param id the id to set
+     * @param idIn the id to set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int idIn) {
+        this.id = idIn;
     }
 
     /**
-     * @param regcode the regcode to set
+     * @param regcodeIn the regcode to set
      */
-    public void setRegcode(String regcode) {
-        this.regcode = regcode;
+    public void setRegcode(String regcodeIn) {
+        this.regcode = regcodeIn;
     }
 
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
-     * @param type the type to set
+     * @param typeIn the type to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**
-     * @param status the status to set
+     * @param statusIn the status to set
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String statusIn) {
+        this.status = statusIn;
     }
 
     /**
-     * @param startsAt the startsAt to set
+     * @param startsAtIn the startsAt to set
      */
-    public void setStartsAt(String startsAt) {
-        this.startsAt = startsAt;
+    public void setStartsAt(String startsAtIn) {
+        this.startsAt = startsAtIn;
     }
 
     /**
-     * @param expiresAt the expiresAt to set
+     * @param expiresAtIn the expiresAt to set
      */
-    public void setExpiresAt(String expiresAt) {
-        this.expiresAt = expiresAt;
+    public void setExpiresAt(String expiresAtIn) {
+        this.expiresAt = expiresAtIn;
     }
 
     /**
-     * @param systemLimit the systemLimit to set
+     * @param systemLimitIn the systemLimit to set
      */
-    public void setSystemLimit(Integer systemLimit) {
-        this.systemLimit = systemLimit;
+    public void setSystemLimit(Integer systemLimitIn) {
+        this.systemLimit = systemLimitIn;
     }
 
     /**
-     * @param systemsCount the systemsCount to set
+     * @param systemsCountIn the systemsCount to set
      */
-    public void setSystemsCount(Integer systemsCount) {
-        this.systemsCount = systemsCount;
+    public void setSystemsCount(Integer systemsCountIn) {
+        this.systemsCount = systemsCountIn;
     }
 
     /**
-     * @param virtualCount the virtualCount to set
+     * @param virtualCountIn the virtualCount to set
      */
-    public void setVirtualCount(Integer virtualCount) {
-        this.virtualCount = virtualCount;
+    public void setVirtualCount(Integer virtualCountIn) {
+        this.virtualCount = virtualCountIn;
     }
 
     /**
-     * @param productClasses the productClasses to set
+     * @param productClassesIn the productClasses to set
      */
-    public void setProductClasses(List<String> productClasses) {
-        this.productClasses = productClasses;
+    public void setProductClasses(List<String> productClassesIn) {
+        this.productClasses = productClassesIn;
     }
 
     /**
-     * @param systems the systems to set
+     * @param systemsIn the systems to set
      */
-    public void setSystems(List<SCCSystem> systems) {
-        this.systems = systems;
+    public void setSystems(List<SCCSystem> systemsIn) {
+        this.systems = systemsIn;
     }
 }
