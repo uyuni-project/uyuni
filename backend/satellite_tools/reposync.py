@@ -128,6 +128,9 @@ class RepoSync(object):
                     [channel_label], [], "server.app.yumreposync")
                 rhnSQL.commit()
                 self.error_msg("Channel has no URL associated")
+                if not self.channel['org_id']:
+                    # RES base vendor channels do not have a URL. This is not an error
+                    sys.exit(0)
                 sys.exit(1)
         else:
             self.urls = [{'id': None, 'source_url': url, 'metadata_signed' : 'N', 'label': None}]
