@@ -180,8 +180,8 @@ public class SCCProduct {
         return repositories;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -191,8 +191,8 @@ public class SCCProduct {
         return result;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {
@@ -212,28 +212,58 @@ public class SCCProduct {
         return true;
     }
 
-    /* These setters are needed for unit testing */
+    /**
+     * @param idIn the id to set
+     */
     public void setId(int idIn) {
         this.id = idIn;
     }
+
+    /**
+     * @param nameIn the name to set
+     */
     public void setName(String nameIn) {
         this.name = nameIn;
     }
+
+    /**
+     * @param friendlyNameIn the friendly name to set
+     */
     public void setFriendlyName(String friendlyNameIn) {
         this.friendlyName = friendlyNameIn;
     }
+
+    /**
+     * @param versionIn the version to set
+     */
     public void setVersion(String versionIn) {
         this.version = versionIn;
     }
+
+    /**
+     * @param releaseTypeIn the release type to set
+     */
     public void setReleaseType(String releaseTypeIn) {
         this.releaseType = releaseTypeIn;
     }
+
+    /**
+     * @param archIn the arch to set
+     */
     public void setArch(String archIn) {
         this.arch = archIn;
     }
+
+    /**
+     * @param productClassIn the product class to set
+     */
     public void setProductClass(String productClassIn) {
         this.productClass = productClassIn;
     }
+
+    /**
+     * @param identifierIn the identifier to set
+     */
     public void setIdentifier(String identifierIn) {
         this.identifier = identifierIn;
     }

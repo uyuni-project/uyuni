@@ -29,7 +29,7 @@ public class SCCClientException extends Exception {
 
     /**
      * Constructor expecting a custom message.
-     * @param cause the cause
+     * @param message the message
      */
     public SCCClientException(String message) {
         super(message);

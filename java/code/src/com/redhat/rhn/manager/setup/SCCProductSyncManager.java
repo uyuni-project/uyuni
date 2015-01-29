@@ -166,7 +166,8 @@ public class SCCProductSyncManager extends ProductSyncManager {
 
         // Setup the product that will be displayed
         Product displayProduct = new Product(productIn.getArch(), productIn.getIdent(),
-                productIn.getFriendlyName(), "", new MandatoryChannels(mandatoryChannelsOut),
+                productIn.getFriendlyName(), "",
+                new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
         // Set extensions as addon products
