@@ -37,5 +37,8 @@ do
     fi
 done
 
+plugin_command "zypper --no-refresh ls"
+plugin_command "zypper --no-refresh lr -u"
+
 plugin_command "/sbin/supportconfig-sumalog $LOG"
 
