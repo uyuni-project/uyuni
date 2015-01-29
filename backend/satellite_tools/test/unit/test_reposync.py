@@ -96,6 +96,9 @@ class RepoSyncTest(unittest.TestCase):
         _mock_rhnsql(self.reposync, False)
         self.reposync.taskomatic.add_to_repodata_queue_for_channel_package_subscription = Mock()
 
+        channel = {'org_id':'org', 'id':1, 'arch': 'arch1'}
+        self.reposync.RepoSync.load_channel = Mock(return_value=channel)
+
         self.assertRaises(SystemExit, self.reposync.RepoSync, 'WrongLabel', RTYPE)
 
         self.assertTrue(self.reposync.taskomatic.
