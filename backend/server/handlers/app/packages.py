@@ -502,7 +502,7 @@ class Packages(RPC_Base):
         h.execute(**query_args)
         row = h.fetchone_dict()
         if not row:
-	    ret = ''
+            ret = ''
         elif row.get('path'):
             filePath = os.path.join(CFG.MOUNT_POINT, row['path'])
             if os.access(filePath, os.R_OK):
