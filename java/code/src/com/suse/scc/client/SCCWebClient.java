@@ -115,7 +115,7 @@ public class SCCWebClient implements SCCClient {
      * @throws SCCClientException if the request was not successful
      */
     private <T> List<T> getList(String endpoint, Type resultType)
-        throws SCCClientException {
+            throws SCCClientException {
         List<T> result = new LinkedList<T>();
         PaginatedResult<List<T>> partialResult;
         do {
