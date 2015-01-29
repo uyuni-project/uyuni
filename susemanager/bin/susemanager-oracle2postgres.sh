@@ -244,6 +244,12 @@ if [ "$DBBACKEND" != "oracle" ]; then
     exit 1
 fi
 
+# dump repo configuration in the log
+# before and after a refresh
+zypper --no-refresh --non-interactive lr -u
+zypper --non-interactive ref -s
+zypper --no-refresh --non-interactive lr -u
+
 install_latest spacewalk-utils
 install_latest susemanager-schema
 
