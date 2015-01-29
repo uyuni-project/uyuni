@@ -335,6 +335,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                 UserGroupMembers ugm = ugmIter.next();
                 if (ugm.getUserGroup().equals(ug) && ugm.getTemporary() == temporary) {
                     UserGroupFactory.delete(ugm);
+                    ugmIter.remove();
                 }
             }
         }
