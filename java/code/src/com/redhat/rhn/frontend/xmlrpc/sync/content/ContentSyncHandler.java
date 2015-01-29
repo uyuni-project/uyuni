@@ -258,7 +258,7 @@ public class ContentSyncHandler extends BaseHandler {
      * @param password mirror credentials password
      * @param primary make this the primary credentials
      * @return Integer
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Add mirror credentials to SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
@@ -286,11 +286,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @param sessionKey user session token
      * @param username username of the credentials to be deleted
      * @return Integer
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc Delete mirror credentials from SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.param #param_desc("string", "username", "Username of the credentials to be deleted")
+     * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
      * @xmlrpc.returntype #return_int_success()
      */
     public Integer deleteCredentials(String sessionKey, String username)
@@ -313,7 +313,7 @@ public class ContentSyncHandler extends BaseHandler {
      *
      * @param sessionKey user session token
      * @return List of mirror credentials
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      *
      * @xmlrpc.doc List mirror credentials available in SUSE Manager.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")

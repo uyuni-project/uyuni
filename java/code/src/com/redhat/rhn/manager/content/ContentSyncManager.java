@@ -100,14 +100,12 @@ import java.util.regex.Pattern;
 public class ContentSyncManager {
 
     // Logger instance
-    private static final Logger log = Logger.getLogger(ContentSyncManager.class);
+    private static Logger log = Logger.getLogger(ContentSyncManager.class);
 
     // This was a guesswork and we so far *have* to stay on this value.
-    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L69
     private static final Long RESET_ENTITLEMENT = 10L;
 
     // The "limitless or endless in space" at SUSE is 200000. Of type Long.
-    // https://github.com/SUSE/spacewalk/blob/Manager/susemanager/src/mgr_ncc_sync_lib.py#L43
     public static final Long INFINITE = 200000L;
     private static final String PROVISIONAL_TYPE = "PROVISIONAL";
 
@@ -132,7 +130,8 @@ public class ContentSyncManager {
             "/usr/share/susemanager/scc/upgrade_paths.xml");
 
     // File to parse this system's UUID from
-    private static final File uuidFile = new File("/etc/zypp/credentials.d/NCCcredentials");
+    private static final File UUID_FILE =
+            new File("/etc/zypp/credentials.d/NCCcredentials");
     private static String uuid;
 
     // Cached OES SCCRepository as returned by isMirrorable() in order
@@ -334,7 +333,7 @@ public class ContentSyncManager {
             String friendlyName = product.getFriendlyName();
             List<PackageArch> archs =
                     HibernateFactory.getSession().createCriteria(PackageArch.class).list();
-            for (PackageArch arch:archs) {
+            for (PackageArch arch : archs) {
                 if (friendlyName.endsWith(" " + arch.getLabel())) {
                     friendlyName = friendlyName.substring(0, friendlyName.length() -
                         arch.getLabel().length() - 1);
@@ -632,7 +631,7 @@ public class ContentSyncManager {
      * @param user username
      * @param password password
      * @return list of subscriptions as received from SCC.
-     * @throws com.suse.scc.client.SCCClientException
+     * @throws SCCClientException in case of an error
      */
     public List<SCCSubscription> getSubscriptions(String user, String password)
             throws SCCClientException {
@@ -698,16 +697,16 @@ public class ContentSyncManager {
         }
 
         // Read contents of channels.xml into a map
-        Map<String, MgrSyncChannel> channelsXML = new HashMap<String, MgrSyncChannel>();
+        Map<String, MgrSyncChannel> channelsXMLData = new HashMap<String, MgrSyncChannel>();
         for (MgrSyncChannel c : readChannels()) {
-            channelsXML.put(c.getLabel(), c);
+            channelsXMLData.put(c.getLabel(), c);
         }
 
         // Get all vendor channels from the database
         List<Channel> channelsDB = ChannelFactory.listVendorChannels();
         for (Channel c : channelsDB) {
-            if (channelsXML.containsKey(c.getLabel())) {
-                MgrSyncChannel channel = channelsXML.get(c.getLabel());
+            if (channelsXMLData.containsKey(c.getLabel())) {
+                MgrSyncChannel channel = channelsXMLData.get(c.getLabel());
                 if (!channel.getDescription().equals(c.getDescription()) ||
                         !channel.getName().equals(c.getName()) ||
                         !channel.getSummary().equals(c.getSummary()) ||
@@ -731,8 +730,8 @@ public class ContentSyncManager {
         List<SCCRepository> repos = SCCCachingFactory.lookupRepositories();
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
-            if (channelsXML.containsKey(cs.getLabel())) {
-                MgrSyncChannel channel = channelsXML.get(cs.getLabel());
+            if (channelsXMLData.containsKey(cs.getLabel())) {
+                MgrSyncChannel channel = channelsXMLData.get(cs.getLabel());
                 SCCRepository repo = isMirrorable(channel, repos);
                 if (repo != null) {
                     String sourceURL = setupSourceURL(repo, mirrorUrl);
@@ -751,7 +750,7 @@ public class ContentSyncManager {
     /**
      * Update channel families in DB with data from the channel_families.xml file.
      * @param channelFamilies List of families.
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public void updateChannelFamilies(Collection<MgrSyncChannelFamily> channelFamilies)
             throws ContentSyncException {
@@ -788,7 +787,7 @@ public class ContentSyncManager {
      *
      * @param subscriptions subscriptions as we get them from SCC
      * @return consolidated subscriptions
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public ConsolidatedSubscriptions consolidateSubscriptions(
             Collection<SCCSubscription> subscriptions) throws ContentSyncException {
@@ -799,9 +798,9 @@ public class ContentSyncManager {
                     new Date() : subscription.getStartsAt();
             Date end = subscription.getExpiresAt();
             for (String productClass : subscription.getProductClasses()) {
-                if ((now.compareTo(start) >= 0
-                        && (end == null || now.compareTo(end) <= 0))
-                        && !subscription.getType().equals(PROVISIONAL_TYPE)) {
+                if ((now.compareTo(start) >= 0 &&
+                        (end == null || now.compareTo(end) <= 0)) &&
+                        !subscription.getType().equals(PROVISIONAL_TYPE)) {
                     // Distinguish between subscriptions and entitlements here
                     if (isEntitlement(productClass)) {
                         consolidated.addSystemEntitlement(productClass);
@@ -854,7 +853,7 @@ public class ContentSyncManager {
                     }
                 }
                 if (satelliteOrgPrivateChannelFamily != null) {
-                    if(sumMaxMembers > INFINITE) {
+                    if (sumMaxMembers > INFINITE) {
                         satelliteOrgPrivateChannelFamily.setMaxMembers(0L);
                     }
                     else {
@@ -938,7 +937,7 @@ public class ContentSyncManager {
     /**
      * Sync subscriptions from SCC to the database after consolidation.
      * @param subscriptions list of subscriptions as we get them from SCC
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
@@ -987,8 +986,8 @@ public class ContentSyncManager {
                 PackageArch pArch = PackageFactory.lookupPackageArchByLabel(p.getArch());
                 if (pArch == null && p.getArch() != null) {
                     // unsupported architecture, skip the product
-                    log.error("Unknown architecture '" + p.getArch()
-                            + "'. This may be caused by a missing database migration");
+                    log.error("Unknown architecture '" + p.getArch() +
+                            "'. This may be caused by a missing database migration");
                     continue;
                 }
 
@@ -1003,7 +1002,7 @@ public class ContentSyncManager {
      * as well as some other criteria.
      * @param allChannels List of {@link MgrSyncChannel}
      * @return list of available channels
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public List<MgrSyncChannel> getAvailableChannels(List<MgrSyncChannel> allChannels)
             throws ContentSyncException {
@@ -1048,7 +1047,7 @@ public class ContentSyncManager {
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
      * @param availableChannels List of {@link MgrSyncChannel}
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
             throws ContentSyncException {
@@ -1116,8 +1115,8 @@ public class ContentSyncManager {
     }
 
     /**
-     * Update contents of the suseUpgradePaths table with values read from upgrade_paths.xml.
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * Update contents of the suseUpgradePaths table with values from upgrade_paths.xml.
+     * @throws ContentSyncException in case of an error
      */
     public void updateUpgradePaths() throws ContentSyncException {
         // Get all paths from DB and create map that eventually will hold the ones to remove
@@ -1166,9 +1165,9 @@ public class ContentSyncManager {
 
     /**
      * Return the list of available channels with their status.
-     * @param repositories list of repos {@link SCCRepository} from SCC to match against
+     *
      * @return list of channels
-     * @throws com.redhat.rhn.manager.content.ContentSyncException
+     * @throws ContentSyncException in case of an error
      */
     public List<MgrSyncChannel> listChannels()
             throws ContentSyncException {
@@ -1258,7 +1257,6 @@ public class ContentSyncManager {
     /**
      * Add a new channel to the database.
      * @param label the label of the channel to be added.
-     * @param repositories list of repos to use for the availability check
      * @param mirrorUrl repo mirror passed by cli
      * @throws ContentSyncException in case of problems
      */
@@ -1461,7 +1459,7 @@ public class ContentSyncManager {
         // Look for local file in case of from-dir
         if (Config.get().getString(RESOURCE_PATH) != null) {
             try {
-                if (new File(URLToFSPath(OES_URL)).canRead()) {
+                if (new File(urlToFSPath(OES_URL)).canRead()) {
                     return new Credentials();
                 }
             }
@@ -1488,7 +1486,8 @@ public class ContentSyncManager {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     return creds;
                 }
-            } catch (ContentSyncException e) {
+            }
+            catch (ContentSyncException e) {
                 log.error(e.getMessage());
             }
         }
@@ -1504,7 +1503,7 @@ public class ContentSyncManager {
         if (uuid == null) {
             BufferedReader reader = null;
             try {
-                reader = new BufferedReader(new FileReader(uuidFile));
+                reader = new BufferedReader(new FileReader(UUID_FILE));
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith("username")) {
@@ -1553,9 +1552,8 @@ public class ContentSyncManager {
      * @throws MalformedURLException
      * @throws ContentSyncException
      */
-    private URI URLToFSPath(String urlString)
-            throws MalformedURLException,
-                   ContentSyncException {
+    private URI urlToFSPath(String urlString)
+            throws MalformedURLException, ContentSyncException {
         URL url = new URL(urlString);
         String sccDataPath = Config.get().getString(ContentSyncManager.RESOURCE_PATH, null);
         File dataPath = new File(sccDataPath);
@@ -1582,7 +1580,7 @@ public class ContentSyncManager {
 
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH, null) != null) {
             try {
-                return this.URLToFSPath(url).toASCIIString();
+                return this.urlToFSPath(url).toASCIIString();
             }
             catch (MalformedURLException e) {
                 log.error(e.getMessage());
@@ -1694,8 +1692,7 @@ public class ContentSyncManager {
      * @return {@link SCCWebClient}
      */
     private SCCClient getSCCClient(String user, String password)
-            throws URISyntaxException,
-                   SCCClientException {
+            throws URISyntaxException, SCCClientException {
         // check that URL is valid
         URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
 
@@ -1726,10 +1723,8 @@ public class ContentSyncManager {
      *
      * @param user user (used to the deletion of mirror credentials)
      * @throws ContentSyncException in case of an error
-     *
      */
     public void performMigration(User user) throws ContentSyncException {
-
         // Clear relevant database tables
         SUSEProductFactory.clearAllProducts();
 
