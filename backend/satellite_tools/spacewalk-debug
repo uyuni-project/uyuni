@@ -140,12 +140,7 @@ if [ -f "$DB_INSTALL_LOG" ] ; then
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
-    if [ -f /var/log/susemanager_setup.err ]; then
-        cp -fa /var/log/susemanager_setup.err $DIR/rhn-logs/
-    fi
-    if [ -f /var/log/susemanager_setup.log ]; then
-        cp -fa /var/log/susemanager_setup.log $DIR/rhn-logs/
-    fi
+    cp -fa /var/log/susemanager* $DIR/rhn-logs
 fi
 
 # grab jabberd info if it exists (it should)
