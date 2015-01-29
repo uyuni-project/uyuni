@@ -56,7 +56,7 @@ public class ConsolidatedSubscriptions {
 
     /**
      * Add a system entitlement.
-     * @param systemEntitlements the entitlement to add
+     * @param entitlement the entitlement to add
      */
     public void addSystemEntitlement(String entitlement) {
         systemEntitlements.add(entitlement);
