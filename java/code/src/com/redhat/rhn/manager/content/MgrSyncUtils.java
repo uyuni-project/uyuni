@@ -38,6 +38,10 @@ public class MgrSyncUtils {
     public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
     public static final String SCC_DEFAULT = "/var/lib/spacewalk/scc/default_scc";
 
+    // No instances should be created
+    private MgrSyncUtils() {
+    }
+
     /**
      * Send a HEAD request to a given URL to verify accessibility with given credentials.
      *
@@ -97,8 +101,8 @@ public class MgrSyncUtils {
      */
     public static ChannelArch getChannelArch(MgrSyncChannel channel) {
         String arch = channel.getArch();
-        if (arch.equals("i686") || arch.equals("i586")
-                || arch.equals("i486") || arch.equals("i386")) {
+        if (arch.equals("i686") || arch.equals("i586") ||
+                arch.equals("i486") || arch.equals("i386")) {
             arch = "ia32";
         }
         else if (arch.equals("ppc64")) {
@@ -133,7 +137,7 @@ public class MgrSyncUtils {
 
     /**
      * Find a {@link ChannelProduct} or create it if necessary and return it.
-     * @param channel
+     * @param channel channel
      * @return channel product
      */
     public static ChannelProduct findOrCreateChannelProduct(MgrSyncChannel channel) {
@@ -151,7 +155,7 @@ public class MgrSyncUtils {
 
     /**
      * Find a {@link ProductName} or create it if necessary and return it.
-     * @param channel
+     * @param channel channel
      * @return product name
      */
     public static ProductName findOrCreateProductName(MgrSyncChannel channel) {

@@ -182,7 +182,8 @@ public class HttpClientAdapter {
 
         if (noProxyDomains.isEmpty()) {
             return true;
-        } else if (noProxyDomains.contains("*")) {
+        }
+        else if (noProxyDomains.contains("*")) {
             return false;
         }
 
