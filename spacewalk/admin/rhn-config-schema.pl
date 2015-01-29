@@ -1,182 +1,182 @@
 #!/usr/bin/perl
 #
-#Copyright(c)2008--2012RedHat,Inc.
+# Copyright (c) 2008--2012 Red Hat, Inc.
 #
-#ThissoftwareislicensedtoyouundertheGNUGeneralPublicLicense,
-#version2(GPLv2).ThereisNOWARRANTYforthissoftware,expressor
-#implied,includingtheimpliedwarrantiesofMERCHANTABILITYorFITNESS
-#FORAPARTICULARPURPOSE.YoushouldhavereceivedacopyofGPLv2
-#alongwiththissoftware;ifnot,see
-#http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+# This software is licensed to you under the GNU General Public License,
+# version 2 (GPLv2). There is NO WARRANTY for this software, express or
+# implied, including the implied warranties of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+# along with this software; if not, see
+# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
-#RedHattrademarksarenotlicensedunderGPLv2.Nopermissionis
-#grantedtouseorreplicateRedHattrademarksthatareincorporated
-#inthissoftwareoritsdocumentation.
+# Red Hat trademarks are not licensed under GPLv2. No permission is
+# granted to use or replicate Red Hat trademarks that are incorporated
+# in this software or its documentation.
 #
 #
 
-usestrict;
-usewarnings;
+use strict;
+use warnings;
 
-useGetopt::Long;
-useEnglish;
+use Getopt::Long;
+use English;
 
-$ENV{PATH}='/bin:/usr/bin';
+$ENV{PATH} = '/bin:/usr/bin';
 
-my$usage="usage:$0--source=<source_file>--target=<target_file>"
-	."--tablespace-name=<tablespace>[--help]\n";
+my $usage = "usage: $0 --source=<source_file> --target=<target_file> "
+	. "--tablespace-name=<tablespace> [ --help ]\n";
 
-my$source='';
-my$target='';
-my$tablespace_name='';
-my$help='';
+my $source = '';
+my $target = '';
+my $tablespace_name = '';
+my $help = '';
 
-GetOptions("source=s"=>\$source,"target=s"=>\$target,
-		"tablespace-name=s"=>\$tablespace_name,"help"=>\$help)ordie$usage;
+GetOptions("source=s" => \$source, "target=s" => \$target,
+		 "tablespace-name=s" => \$tablespace_name, "help" => \$help) or die $usage;
 
-if($helpornot($sourceand$targetand$tablespace_name)){
-	die$usage;
+if ($help or not ($source and $target and $tablespace_name)) {
+	die $usage;
 }
 
-my$backend='oracle';
-if($source=~m!/postgres(ql)?/!){
-	$backend='postgresql';
+my $backend = 'oracle';
+if ($source =~ m!/postgres(ql)?/!) {
+	$backend = 'postgresql';
 }
 
-open(SOURCE,"<$source")ordie"Couldnotopen$source:$OS_ERROR";
-open(TARGET,">$target")ordie"Couldnotopen$targetforwriting:$OS_ERROR";
+open(SOURCE, "< $source") or die "Could not open $source: $OS_ERROR";
+open(TARGET, "> $target") or die "Could not open $target for writing: $OS_ERROR";
 
-my$subdir_name='schema-override';
-my$exception_dir;
-($exception_dir=$source)=~s!/[^/]+$!/$subdir_name!;
+my $subdir_name = 'schema-override';
+my $exception_dir;
+($exception_dir = $source) =~ s!/[^/]+$!/$subdir_name!;
 
-my%exception_files;
-my@exception_queue=('');
-while(@exception_queue){
-	my$d=shift@exception_queue;
-	if($dne''){
-		$d.='/';
+my %exception_files;
+my @exception_queue = ( '' );
+while (@exception_queue) {
+	my $d = shift @exception_queue;
+	if ($d ne '') {
+		$d .= '/';
 	}
-	my$full_path="$exception_dir/$d";
-	if(-d$full_path){
-		if(opendirDIR,$full_path){
-			for(sortreaddirDIR){
-				nextif/^\.\.?$/;
-				if(-d"$full_path$_"){
-					push@exception_queue,"$d$_";
-				}else{
-					$exception_files{"$d$_"}=1;
+	my $full_path = "$exception_dir/$d";
+	if (-d $full_path) {
+		if (opendir DIR, $full_path) {
+			for (sort readdir DIR) {
+				next if /^\.\.?$/;
+				if (-d "$full_path$_") {
+					push @exception_queue, "$d$_";
+				} else {
+					$exception_files{"$d$_"} = 1;
 				}
 			}
-			closedirDIR;
+			closedir DIR;
 		}
 	}
 }
 
-my$marker_re=qr/^--Source:(.+?)$|^select'(.+?)'sql_filefromdual;$/;
-my$line;
+my $marker_re = qr/^-- Source: (.+?)$|^select '(.+?)' sql_file from dual;$/;
+my $line;
 
-my%exception_seen;
-while($line=<SOURCE>){
-	if($line=~$marker_re){
-		my$filename=$1;
-		if(notdefined$filename){
-			$filename=$2;
-			$filename=~s!^.+/([^/]+/[^/]+)$!$1!;
+my %exception_seen;
+while ($line = <SOURCE>) {
+	if ($line =~ $marker_re) {
+		my $filename = $1;
+		if (not defined $filename) {
+			$filename = $2;
+			$filename =~ s!^.+/([^/]+/[^/]+)$!$1!;
 		}
-		my$full_file=undef;
-		if(exists$exception_files{"$filename.$backend"}){
-			$full_file="$exception_dir/$filename.$backend";
-		}elsif(exists$exception_files{$filename}){
-			$full_file="$exception_dir/$filename";
+		my $full_file = undef;
+		if (exists $exception_files{"$filename.$backend"}) {
+			$full_file = "$exception_dir/$filename.$backend";
+		} elsif (exists $exception_files{$filename}) {
+			$full_file = "$exception_dir/$filename";
 		}
-		if(defined$full_file){
-			formy$e('','.oracle','.postgresql'){
-				$exception_seen{"$filename$e"}++ifexists$exception_files{"$filename$e"};
+		if (defined $full_file) {
+			for my $e ( '', '.oracle', '.postgresql' ) {
+				$exception_seen{"$filename$e"}++ if exists $exception_files{"$filename$e"};
 			}
-			openOVERRIDE,$full_fileordie"Errorreadingfile[$full_file]:$!\n";
-			printTARGET"--Source:$subdir_name/$filename\n\n";
-			while(<OVERRIDE>){
+			open OVERRIDE, $full_file or die "Error reading file [$full_file]: $!\n";
+			print TARGET "-- Source: $subdir_name/$filename\n\n";
+			while (<OVERRIDE>) {
 				s/\[\[.*\]\]/$tablespace_name/g;
 				s/__.*__/$tablespace_name/g;
-				printTARGET$_;
+				print TARGET $_;
 			}
-			closeOVERRIDE;
-			while($line=<SOURCE>){
-				if($line=~$marker_re){
+			close OVERRIDE;
+			while ($line = <SOURCE>) {
+				if ($line =~ $marker_re) {
 					last;
 				}
 			}
-			printTARGET"\n";
+			print TARGET "\n";
 			redo;
 		}
 	}
-	$line=~s/\[\[.*\]\]/$tablespace_name/g;
-	$line=~s/__.*__/$tablespace_name/g;
+	$line =~ s/\[\[.*\]\]/$tablespace_name/g;
+	$line =~ s/__.*__/$tablespace_name/g;
 
-	printTARGET$line;
+	print TARGET $line;
 }
 
 close(SOURCE);
 close(TARGET);
 
-my$error=0;
-for(sortkeys%exception_seen){
-	if($exception_seen{$_}>1){
-		warn"Schemasource[$source]loadedoverride[$_]morethanonce.\n";
-		$error=1;
+my $error = 0;
+for (sort keys %exception_seen) {
+	if ($exception_seen{$_} > 1) {
+		warn "Schema source [$source] loaded override [$_] more than once.\n";
+		$error = 1;
 	}
 }
-for(sortkeys%exception_files){
-	if(notexists$exception_seen{$_}){
-		warn"Schemasource[$source]didnotuseoverride[$_].\n";
-		$error=1;
+for (sort keys %exception_files) {
+	if (not exists $exception_seen{$_}) {
+		warn "Schema source [$source] did not use override [$_].\n";
+		$error = 1;
 	}
 }
-exit$error;
+exit $error;
 
 =pod
 
-=head1NAME
+=head1 NAME
 
-rhn-config-schema.pl-utilitytopopulateSpacewalkdatabasetablespacee.
+rhn-config-schema.pl - utility to populate Spacewalk database tablespacee.
 
-=head2SYNOPSIS
+=head2 SYNOPSIS
 
-B<rhn-config-schema.pl>B<--source=SOURCE>B<--target=TARGET>B<--tablespace-name=TABLESPACE>
+B<rhn-config-schema.pl> B<--source=SOURCE> B<--target=TARGET> B<--tablespace-name=TABLESPACE>
 
-B<rhn-config-schema.pl>[B<--help>]
+B<rhn-config-schema.pl> [B<--help>]
 
-=head1DESCRIPTION
+=head1 DESCRIPTION
 
-ThisscriptisintendedtorunfrominsideofB<spacewalk-setup>.Youdonotwanttorun
-itdirectlyunlessyoureallyknowswhatareyoudoing.
+This script is intended to run from inside of B<spacewalk-setup>. You do not want to run
+it directly unless you really knows what are you doing.
 
-=head1OPTIONS
+=head1 OPTIONS
 
-=over5
+=over 5
 
-=itemB<--source=SOURCE>
+=item B<--source=SOURCE>
 
-Fullpathtomain.sqlfile.Usually/etc/sysconfig/rhn/I<backend>/main.sql
+Full path to main.sql file. Usually /etc/sysconfig/rhn/I<backend>/main.sql
 
-=itemB<--target=TARGET>
+=item B<--target=TARGET>
 
-Fullpathtodeploy.sql.Usually/etc/sysconfig/rhn/universe.deploy.sql
+Full path to deploy.sql. Usually /etc/sysconfig/rhn/universe.deploy.sql
 
-=itemB<--tablespace-name=TABLESPACE>
+=item B<--tablespace-name=TABLESPACE>
 
-Whichtablespacewillbepopulated.Thisdoesnothingwithdatabaseitself,
-thisscriptjustsubstitutetemplatevariableswithgivenvalueofI<TABLESPACE>.
+Which tablespace will be populated. This does nothing with database itself,
+this script just substitute template variables with given value of I<TABLESPACE>.
 
-=itemB<--help>
+=item B<--help>
 
-Displayallowedparameters.
+Display allowed parameters.
 
 =back
 
-=head1SEEALSO
+=head1 SEE ALSO
 
-B<rhn-schema-version>(8),B<satellite-debug>(8),B<send-satellite-debug>(8)
+B<rhn-schema-version>(8), B<satellite-debug>(8), B<send-satellite-debug>(8)
 
 =cut

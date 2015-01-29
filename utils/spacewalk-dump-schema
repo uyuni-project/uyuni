@@ -2,666 +2,666 @@
 
 ##########################################################################
 #
-#Thisscriptoriginallyshouldbecalledwiththefollowingshebang:
+# This script originally should be called with the following shebang:
 #
-##!/usr/bin/perl-CSAD
+#  #!/usr/bin/perl -CSAD
 #
-#UnfortunatelytheperlversionofSLES11isbuggyanddoesnotlike
-#ascriptbeingcalledthisway.Sotheparametersneedtobegiven
-#manuallylikethis:
+# Unfortunately the perl version of SLES11 is buggy and does not like
+# a script being called this way. So the parameters need to be given
+# manually like this:
 #
-#perl-CSAD/usr/bin/spacewalk-dump-schema--db=susemanager--user=susemanager--password=susemanager>/tmp/db.dump
+# perl -CSAD /usr/bin/spacewalk-dump-schema --db=susemanager --user=susemanager --password=susemanager > /tmp/db.dump
 #
-#Itisveryimportanttousethoseoptions!Ifyoufailtodoso,
-#theencodingwillbeincorrectandthedumpcannotbeimportedcorrectly
+# It is very important to use those options! If you fail to do so,
+# the encoding will be incorrect and the dump cannot be imported correctly
 #
 ##########################################################################
 
-usestrict;
-usewarningsFATAL=>'all';
+use strict;
+use warnings FATAL => 'all';
 
-useSpacewalk::Setup();
-useGetopt::Long();
-useDBI();
+use Spacewalk::Setup ();
+use Getopt::Long ();
+use DBI ();
 
-my$DATA_DIR='/etc/sysconfig/rhn/schema-dump';
-my$config_file=Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
-my%options;
-Spacewalk::Setup::read_config($config_file,\%options);
+my $DATA_DIR = '/etc/sysconfig/rhn/schema-dump';
+my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
+my %options;
+Spacewalk::Setup::read_config($config_file, \%options);
 
-my($db,$user,$password,$raw);
+my ($db, $user, $password, $raw);
 
-subusage{
-	print"$0:[--db=SID--user=USERNAME--password=PASSWORD][--help]\n";
-	if($@){
-		exitshift;
+sub usage {
+	print "$0: [--db=SID --user=USERNAME --password=PASSWORD] [ --help ]\n";
+	if ($@) {
+		exit shift;
 	}
 	exit;
 }
 
-Getopt::Long::GetOptions(
-	'db=s'=>\$db,
-	'user=s'=>\$user,
-	'password=s'=>\$password,
-	'raw'=>\$raw,
-	'help'=>\&usage,
-)orexit1;
+Getopt::Long::GetOptions (
+	'db=s' => \$db,
+	'user=s' => \$user,
+	'password=s' => \$password,
+	'raw' => \$raw,
+	'help' => \&usage,
+) or exit 1;
 
-if(grep{defined$_}$db,$user,$password){
-	#Someconnectparameterwasspecified,let'suseitasnewconnectinfo
-	@options{qw(db_namedb_userdb_password)}=($db,$user,$password);
-}else{
-	if($options{db_backend}ne'oracle'){
-		die"The$0canonlydumpOracledatabaseschema.\n";
+if (grep { defined $_ } $db, $user, $password) {
+	# Some connect parameter was specified, let's use it as new connect info
+	@options{qw( db_name db_user db_password )} = ( $db, $user, $password );
+} else {
+	if ($options{db_backend} ne 'oracle') {
+		die "The $0 can only dump Oracle database schema.\n";
 	}
 }
 
-$raw=1unless-d$DATA_DIR;
+$raw = 1 unless -d $DATA_DIR;
 
-$ENV{NLS_LANG}='AMERICAN_AMERICA.UTF8';
-$ENV{NLS_DATE_FORMAT}='YYYY-MM-DDHH24:MI:SS';
-$ENV{NLS_TIMESTAMP_FORMAT}='YYYY-MM-DDHH24:MI:SS';
-$ENV{NLS_TIMESTAMP_TZ_FORMAT}='YYYY-MM-DDHH24:MI:SSTZH:TZM';
+$ENV{NLS_LANG} = 'AMERICAN_AMERICA.UTF8';
+$ENV{NLS_DATE_FORMAT} = 'YYYY-MM-DD HH24:MI:SS';
+$ENV{NLS_TIMESTAMP_FORMAT} = 'YYYY-MM-DD HH24:MI:SS';
+$ENV{NLS_TIMESTAMP_TZ_FORMAT} = 'YYYY-MM-DD HH24:MI:SS TZH:TZM';
 
-my$dbh=DBI->connect("dbi:Oracle:$options{db_name}",$options{db_user},$options{db_password},{
-	RaiseError=>1,
-	FetchHashKeyName=>'NAME_lc',
-	LongReadLen=>20_000_000,
-	LongTruncOk=>0,
-	AutoCommit=>0,
+my $dbh = DBI->connect("dbi:Oracle:$options{db_name}", $options{db_user}, $options{db_password}, {
+	RaiseError => 1,
+	FetchHashKeyName => 'NAME_lc',
+	LongReadLen => 20_000_000,
+	LongTruncOk => 0,
+	AutoCommit => 0,
 });
 
-$SIG{'PIPE'}=sub{
-	die"SIGPIPEreceived.\n";
+$SIG{'PIPE'} = sub {
+	die "SIGPIPE received.\n";
 };
 
-process_scripts($dbh,'pre');
+process_scripts($dbh, 'pre');
 
-if($options{db_backend_target}eq'postgresql'){
-print<<'EOS';
-\setON_ERROR_STOPon
-updatepg_index
-setindisvalid=false,
-indisready=false
-whereindexrelidin(
-selectpi.indexrelid
-frompg_indexpi,
-pg_classpc,
-pg_namespacepn
-wherepi.indexrelid=pc.oidand
-pc.relnamespace=pn.oidand
-pc.relkind='i'::"char"and
-pn.nspname=current_schema()
-);
+if ($options{db_backend_target} eq 'postgresql') {
+print <<'EOS';
+\set ON_ERROR_STOP on
+update pg_index
+  set indisvalid = false,
+      indisready = false
+where indexrelid in (
+      select pi.indexrelid
+        from pg_index pi,
+             pg_class pc,
+             pg_namespace pn
+       where pi.indexrelid = pc.oid and
+             pc.relnamespace = pn.oid and
+             pc.relkind = 'i'::"char" and
+             pn.nspname = current_schema()
+      );
 EOS
-}else{
-print<<EOS;
-wheneversqlerrorexitsql.sqlcode;
-SETAUTOCOMMITOFF
+} else {
+print <<EOS;
+whenever sqlerror exit sql.sqlcode;
+SET AUTOCOMMIT OFF
 
---disableconstraints
+-- disable constraints
 BEGIN
-FORitemIN(
-selectuc.owner,uc.table_name,uc.constraint_name
-fromuser_constraintsuc,user_tablesut
-whereuc.table_name=ut.table_nameand
-uc.status='ENABLED'
-orderbydecode(uc.constraint_type,'R',1,'U',2,'P',3)
+ FOR item IN (
+select uc.owner, uc.table_name, uc.constraint_name 
+  from user_constraints uc, user_tables ut
+where uc.table_name = ut.table_name and
+      uc.status = 'ENABLED'
+order by decode ( uc.constraint_type, 'R', 1, 'U', 2, 'P', 3 )
 )
-LOOP
-executeimmediate'altertable'||item.owner||'.'||item.table_name||'disableconstraint'||item.constraint_name;
-ENDLOOP;
+ LOOP
+        execute immediate 'alter table ' || item.owner || '.' || item.table_name || ' disable constraint ' || item.constraint_name;
+ END LOOP;
 END;
 /
 
---createtemporarytables
+-- create temporary tables
 BEGIN
-EXECUTEIMMEDIATE'
-createtabletmp_migration_indexes(
-index_nameVARCHAR2(30)NOTNULL,
-table_nameVARCHAR2(30)NOTNULL,
-tablespace_nameVARCHAR2(30)NOTNULL)
-';
+ EXECUTE IMMEDIATE '
+  create table tmp_migration_indexes (
+   index_name VARCHAR2(30) NOT NULL,
+   table_name VARCHAR2(30) NOT NULL,
+   tablespace_name VARCHAR2(30) NOT NULL)
+  ';
 EXCEPTION
-WHENOTHERSTHEN
-IFSQLCODE=-955THEN
-EXECUTEIMMEDIATE'deletefromtmp_migration_indexes';
-ELSE
-RAISE;
-ENDIF;
+ WHEN OTHERS THEN
+  IF SQLCODE = -955 THEN
+   EXECUTE IMMEDIATE 'delete from tmp_migration_indexes';
+  ELSE
+   RAISE;
+  END IF;
 END;
 /
 
 BEGIN
-EXECUTEIMMEDIATE'
-createtabletmp_migration_index_columns(
-index_nameVARCHAR2(30)NOTNULL,
-column_nameVARCHAR2(4000)NOTNULL)
-';
+ EXECUTE IMMEDIATE '
+  create table tmp_migration_index_columns (
+   index_name VARCHAR2(30) NOT NULL,
+   column_name VARCHAR2(4000) NOT NULL)
+  ';
 EXCEPTION
-WHENOTHERSTHEN
-IFSQLCODE=-955THEN
-EXECUTEIMMEDIATE'tmp_migration_index_columns';
-ELSE
-RAISE;
-ENDIF;
+ WHEN OTHERS THEN
+  IF SQLCODE = -955 THEN
+   EXECUTE IMMEDIATE 'tmp_migration_index_columns';
+  ELSE
+   RAISE;
+  END IF;
 END;
 /
 
---createtemporaryfunction
-CREATEORREPLACEFUNCTIONtmp_get_index_columns(tablespace_name_inINVARCHAR,table_name_inINVARCHAR,index_name_inINVARCHAR)RETURNVARCHAR
+-- create temporary function
+CREATE OR REPLACE FUNCTION tmp_get_index_columns(tablespace_name_in IN VARCHAR, table_name_in IN VARCHAR, index_name_in IN VARCHAR) RETURN VARCHAR
 IS
-index_columnsvarchar(4000);
+    index_columns varchar(4000);
 BEGIN
-index_columns:='';
-FORrecIN(
-SELECTmic.column_name
-FROMtmp_migration_indexesmi,tmp_migration_index_columnsmic
-WHEREmi.index_name=mic.index_name
-ANDupper(mi.tablespace_name)=upper(tablespace_name_in)
-ANDupper(mi.table_name)=upper(table_name_in)
-ANDupper(mi.index_name)=upper(index_name_in)
-ORDERBYmic.column_name
-)LOOP
-index_columns:=index_columns||','||rec.column_name;
-ENDLOOP;
-RETURNLTRIM(index_columns,',');
-ENDtmp_get_index_columns;
+    index_columns := '';
+    FOR rec IN (
+        SELECT mic.column_name
+        FROM tmp_migration_indexes mi, tmp_migration_index_columns mic
+        WHERE mi.index_name = mic.index_name
+            AND upper(mi.tablespace_name) = upper(tablespace_name_in)
+            AND upper(mi.table_name) = upper(table_name_in)
+            AND upper(mi.index_name) = upper(index_name_in)
+        ORDER BY mic.column_name
+    ) LOOP
+        index_columns := index_columns || ', ' || rec.column_name;
+    END LOOP;
+    RETURN LTRIM(index_columns, ', ');
+END tmp_get_index_columns;
 /
 
---saveanddropuniqueindexes
+-- save and drop unique indexes
 BEGIN
-FORitemIN(
-selectindex_name,table_name,tablespace_name
-fromuser_indexes
-whereindex_namenotlike'SYS%'and
-index_type='NORMAL'and
-uniqueness='UNIQUE'
+ FOR item IN (
+select index_name, table_name, tablespace_name
+  from user_indexes
+where index_name not like 'SYS%' and
+      index_type = 'NORMAL' and
+      uniqueness = 'UNIQUE'
 )
-LOOP
-executeimmediate'insertintotmp_migration_indexesvalues(:index_name,:table_name,:tablespace_name)'usingitem.index_name,item.table_name,item.tablespace_name;
-executeimmediate'insertintotmp_migration_index_columnsselectindex_name,column_namefromuser_ind_columnswhereindex_name=:index_name'usingitem.index_name;
-executeimmediate'dropindex'||item.index_name;
-ENDLOOP;
+ LOOP
+    execute immediate 'insert into tmp_migration_indexes values(:index_name, :table_name, :tablespace_name)' using item.index_name, item.table_name, item.tablespace_name;
+    execute immediate 'insert into tmp_migration_index_columns select index_name, column_name from user_ind_columns where index_name = :index_name' using item.index_name;
+    execute immediate 'drop index ' || item.index_name;
+ END LOOP;
 END;
 /
 
---turnoffnonuniqueindexes
-altersessionsetSKIP_UNUSABLE_INDEXES=true;
+-- turn off nonunique indexes
+alter session set SKIP_UNUSABLE_INDEXES = true;
 BEGIN
-FORitemIN(
-selectindex_name
-fromuser_indexes
-whereindex_type='NORMAL'and
-uniqueness='NONUNIQUE'
+ FOR item IN (
+select index_name
+  from user_indexes
+where index_type = 'NORMAL' and
+      uniqueness = 'NONUNIQUE'
 )
-LOOP
-executeimmediate'alterindex'||item.index_name||'unusable';
-ENDLOOP;
+ LOOP
+    execute immediate 'alter index ' || item.index_name || ' unusable';
+ END LOOP;
 END;
 /
 
-altersessionsetNLS_DATE_FORMAT='$ENV{NLS_DATE_FORMAT}';
-altersessionsetNLS_TIMESTAMP_FORMAT='$ENV{NLS_TIMESTAMP_FORMAT}';
-altersessionsetNLS_TIMESTAMP_TZ_FORMAT='$ENV{NLS_TIMESTAMP_TZ_FORMAT}';
+alter session set NLS_DATE_FORMAT = '$ENV{NLS_DATE_FORMAT}';
+alter session set NLS_TIMESTAMP_FORMAT = '$ENV{NLS_TIMESTAMP_FORMAT}';
+alter session set NLS_TIMESTAMP_TZ_FORMAT = '$ENV{NLS_TIMESTAMP_TZ_FORMAT}';
 EOS
 }
 
-my%ROWIDS=();
-my$SEQ=1;
+my %ROWIDS = ();
+my $SEQ = 1;
 process_tables($dbh);
 process_sequences($dbh);
-if(not$raw){
-	my$dist=`rpm-qf--qf'%{release}\n'/etc/sysconfig/rhn/schema-dump`;
-	chomp$dist;
-	$dist=~s/^.+(\.[^\.]+)$/$1/;
-	formy$file(sort<$DATA_DIR/sql/*>){
-		local*FILE;
-		openFILE,'<',$fileordie"Errorreading[$file]:$!\n";
-		while(<FILE>){
+if (not $raw) {
+	my $dist = `rpm -qf --qf '%{release}\n' /etc/sysconfig/rhn/schema-dump`;
+	chomp $dist;
+	$dist =~ s/^.+(\.[^\.]+)$/$1/;
+	for my $file (sort < $DATA_DIR/sql/* >) {
+		local *FILE;
+		open FILE, '<', $file or die "Error reading [$file]: $!\n";
+		while (<FILE>) {
 			s/\@\@DIST\@\@/$dist/;
 			print;
 		}
-		closeFILE;
+		close FILE;
 	}
 }
 
-if($options{db_backend_target}eq'postgresql'){
-print<<'EOS';
-updatepg_index
-setindisvalid=true,
-indisready=true
-whereindexrelidin(
-selectpi.indexrelid
-frompg_indexpi,
-pg_classpc,
-pg_namespacepn
-wherepi.indexrelid=pc.oidand
-pc.relnamespace=pn.oidand
-pc.relkind='i'::"char"and
-pn.nspname=current_schema()
-);
-selectpg_dblink_exec('reindexdatabase"'||current_database()||'";');
+if ($options{db_backend_target} eq 'postgresql') {
+print <<'EOS';
+update pg_index
+  set indisvalid = true,
+      indisready = true
+where indexrelid in (
+      select pi.indexrelid
+        from pg_index pi,
+             pg_class pc,
+             pg_namespace pn
+       where pi.indexrelid = pc.oid and
+             pc.relnamespace = pn.oid and
+             pc.relkind = 'i'::"char" and
+             pn.nspname = current_schema()
+      );
+select pg_dblink_exec('reindex database "' || current_database() || '";');
 EOS
-}else{
-print<<'EOS';
---recreateuniqueindexes
+} else {
+print <<'EOS';
+-- recreate unique indexes
 BEGIN
-FORitemIN(
-SELECTindex_name,table_name,tablespace_name,
-tmp_get_index_columns(tablespace_name,table_name,index_name)index_columns
-FROMtmp_migration_indexes
+ FOR item IN (
+SELECT index_name, table_name, tablespace_name,
+       tmp_get_index_columns(tablespace_name, table_name, index_name) index_columns
+  FROM tmp_migration_indexes
 )
-LOOP
-executeimmediate'createuniqueindex'||item.index_name||'on'||item.table_name||'('||item.index_columns||')tablespace'||item.tablespace_name;
-ENDLOOP;
+ LOOP
+    execute immediate 'create unique index ' || item.index_name || ' on ' || item.table_name || ' ( ' || item.index_columns || ' ) tablespace ' || item.tablespace_name;
+ END LOOP;
 END;
 /
 
---droptemporaryfunxtion
-DROPFUNCTIONtmp_get_index_columns;
+-- drop temporary funxtion
+DROP FUNCTION tmp_get_index_columns;
 
---droptemporarytables
-droptabletmp_migration_indexes;
-droptabletmp_migration_index_columns;
+-- drop temporary tables
+drop table tmp_migration_indexes;
+drop table tmp_migration_index_columns;
 
---rebuildallindexes
+-- rebuild all indexes
 BEGIN
-FORitemIN(
-selectindex_name
-fromuser_indexes
-whereindex_type='NORMAL'
+ FOR item IN (
+select index_name
+  from user_indexes
+where index_type = 'NORMAL'
 )
-LOOP
-executeimmediate'alterindex'||item.index_name||'rebuild';
-ENDLOOP;
+ LOOP
+    execute immediate 'alter index ' || item.index_name || ' rebuild';
+ END LOOP;
 END;
 /
 
---enableconstraints
+-- enable constraints
 BEGIN
-FORitemIN(
-selectuc.owner,uc.table_name,uc.constraint_name
-fromuser_constraintsuc,user_tablesut
-whereuc.table_name=ut.table_nameand
-uc.status='DISABLED'
-orderbydecode(uc.constraint_type,'P',1,'U',2,'R',3)
+ FOR item IN (
+select uc.owner, uc.table_name, uc.constraint_name
+  from user_constraints uc, user_tables ut
+where uc.table_name = ut.table_name and
+      uc.status = 'DISABLED'
+order by decode ( uc.constraint_type, 'P', 1, 'U', 2, 'R', 3 )
 )
-LOOP
-executeimmediate'altertable'||item.owner||'.'||item.table_name||'enableconstraint'||item.constraint_name;
-ENDLOOP;
+ LOOP
+    execute immediate 'alter table ' || item.owner || '.' || item.table_name || ' enable constraint ' || item.constraint_name;
+ END LOOP;
 END;
 /
 EOS
 }
 
-exit0;
+exit 0;
 
-END{
-	returnif(notdefined$dbh);
+END {
+	return if (not defined $dbh);
 
-	process_scripts($dbh,'post');
+	process_scripts($dbh, 'post');
 	$dbh->disconnect();
 }
 
-subget_table_scripts{
-	my$filename=shift;
+sub get_table_scripts {
+	my $filename = shift;
 
-	returnif(not-f$filename);
+	return if (not -f $filename);
 
-	local$_;
-	local*FILE;
-	openFILE,'<',$filenameordie"Errorreading[$filename]:$!\n";
-	my$data={};
-	my$key;
-	my$text;
-	while(<FILE>){
+	local $_;
+	local *FILE;
+	open FILE, '<', $filename or die "Error reading [$filename]: $!\n";
+	my $data = {};
+	my $key;
+	my $text;
+	while (<FILE>) {
 		chomp;
-		if(/^\s*$/){
-			push@{$data->{$key}},$textif($text);
-			$text='';
-		}elsif(/^\s/){
-			$text.=$_;
-		}else{
-			$key=join',',sortsplit/,/,$_;
-			$data->{$key}=();
+		if (/^\s*$/) {
+			push @{$data->{$key}}, $text if ($text);
+			$text = '';
+		} elsif (/^\s/) {
+			$text .= $_;
+		} else {
+			$key = join ',', sort split /,/, $_;
+			$data->{$key} = ();
 		}
 	}
-	push@{$data->{$key}},$textif($text);
-	closeFILE;
-	return$data;
+	push @{$data->{$key}}, $text if ($text);
+	close FILE;
+	return $data;
 }
 
-subprocess_scripts{
-	my$dbh=shift;
-	my$stage=shift;
+sub process_scripts {
+	my $dbh = shift;
+	my $stage = shift;
 
-	returnif($rawornot-d"$DATA_DIR/$stage");
+	return if ($raw or not -d "$DATA_DIR/$stage");
 
-	my$tables=$dbh->selectall_hashref(q!
-		selectlower(table_name)table_name
-		fromuser_tables
-		wheretable_namenotin('PLAN_TABLE','PLAN_TABLE_9I')--plan_tableisnotpartofourschema
-		orderbytable_name
-	!,'table_name');
+	my $tables = $dbh->selectall_hashref(q!
+		select lower(table_name) table_name
+		from user_tables
+		where table_name not in ('PLAN_TABLE', 'PLAN_TABLE_9I') -- plan_table is not part of our schema
+		order by table_name
+	!, 'table_name');
 
-	my%scripts;
+	my %scripts;
 	{
-		local*DIR;
-		opendirDIR,"$DATA_DIR/$stage"ordie"Errorreading[$DATA_DIR/$stage]:$!\n";
-		while(defined($_=readdirDIR)){
-			nextif/^\.\.?$/ornotexists$tables->{$_};
-			$scripts{$_}=get_table_scripts("$DATA_DIR/$stage/$_");
+		local *DIR;
+		opendir DIR, "$DATA_DIR/$stage" or die "Error reading [$DATA_DIR/$stage]: $!\n";
+		while (defined($_ = readdir DIR)) {
+			next if /^\.\.?$/ or not exists $tables->{$_};
+			$scripts{$_} = get_table_scripts("$DATA_DIR/$stage/$_");
 		}
-		closedirDIR;
+		closedir DIR;
 	}
 
-	foreachmy$table(keys%scripts){
-		nextif(notdefined$tables->{$table});
+	foreach my $table (keys %scripts) {
+		next if (not defined $tables->{$table});
 
-		my$sth=eval{
-			local$dbh->{PrintError}=0;
-			$dbh->prepare("select*from$table");
+		my $sth = eval {
+			local $dbh->{PrintError} = 0;
+			$dbh->prepare("select * from $table");
 		};
 
-		my$columns;
-		if(defined$sthandnot$@){
+		my $columns;
+		if (defined $sth and not $@) {
 			$sth->execute();
-			my$row=$sth->fetchrow_arrayref();
-			$columns=join',',sort@{$sth->{NAME_lc}};
-		}else{
-			die$@if(not$DBI::err==942);
+			my $row = $sth->fetchrow_arrayref();
+			$columns = join ',', sort @{$sth->{NAME_lc}};
+		} else {
+			die $@ if (not $DBI::err == 942);
 		}
 
-		nextif(notexists$scripts{$table}{$columns});
+		next if (not exists $scripts{$table}{$columns});
 
-		foreachmy$script(@{$scripts{$table}{$columns}}){
-			$sth=$dbh->prepare($script);
+		foreach my $script (@{$scripts{$table}{$columns}}) {
+			$sth = $dbh->prepare($script);
 			$sth->execute();
 			$dbh->commit();
 		}
 	}
 }
 
-subget_sequence_exception{
-	local$_;
-	my$name=shift;
-	my$file="$DATA_DIR/sequences/$name";
-	if(not-f$file){
+sub get_sequence_exception {
+	local $_;
+	my $name = shift;
+	my $file = "$DATA_DIR/sequences/$name";
+	if (not -f $file) {
 		return;
 	}
-	local*EXCEPTION;
-	openEXCEPTION,'<',$fileordie"Errorreading[$file]:$!\n";
-	my$data='';
-	while(<EXCEPTION>){
-		if(/^skip\s*$/){
-			closeEXCEPTION;
-			return'skip';
+	local *EXCEPTION;
+	open EXCEPTION, '<', $file or die "Error reading [$file]: $!\n";
+	my $data = '';
+	while (<EXCEPTION>) {
+		if (/^skip\s*$/) {
+			close EXCEPTION;
+			return 'skip';
 		}
-		$data.=$_;
+		$data .= $_;
 	}
-	closeEXCEPTION;
-	return$data;
+	close EXCEPTION;
+	return $data;
 }
 
-subprocess_sequences{
-	my$dbh=shift;
-	my$sequences=$dbh->selectall_hashref(q!
-		selectlower(sequence_name)sequence_name,last_number
-		fromuser_sequences
-		orderbysequence_name
-	!,'sequence_name');
-	if(not$rawand-d"$DATA_DIR/sequences"){
-		local*DIR;
-		opendirDIR,"$DATA_DIR/sequences"ordie"Errorreading[$DATA_DIR/sequences]:$!\n";
-		while(defined($_=readdirDIR)){
-			nextif/^\.\.?$/;
-			$sequences->{$_}='missing'ifnotexists$sequences->{$_};
+sub process_sequences {
+	my $dbh = shift;
+	my $sequences = $dbh->selectall_hashref(q!
+		select lower(sequence_name) sequence_name, last_number
+		from user_sequences
+		order by sequence_name
+	!, 'sequence_name');
+	if (not $raw and -d "$DATA_DIR/sequences") {
+		local *DIR;
+		opendir DIR, "$DATA_DIR/sequences" or die "Error reading [$DATA_DIR/sequences]: $!\n";
+		while (defined($_ = readdir DIR)) {
+			next if /^\.\.?$/;
+			$sequences->{$_} = 'missing' if not exists $sequences->{$_};
 		}
-		closedirDIR;
+		closedir DIR;
 	}
-	for(sortkeys%$sequences){
-		my$last_number=$sequences->{$_}{last_number}ifref$sequences->{$_};;
-		if(not$raw){
-			my$exception=get_sequence_exception($_);
-			if(defined$exception){
-				if($exception=~/^missingsequence/){
-					if($sequences->{$_}eq'missing'){
-						$last_number=$SEQ;
+	for (sort keys %$sequences) {
+		my $last_number = $sequences->{$_}{last_number} if ref $sequences->{$_};;
+		if (not $raw) {
+			my $exception = get_sequence_exception($_);
+			if (defined $exception) {
+				if ($exception =~ /^missing sequence/) {
+					if ($sequences->{$_} eq 'missing') {
+						$last_number = $SEQ;
 					}
-				}elsif($exceptioneq'skip'){
-					print"--Skipping$_\n";
+				} elsif ($exception eq 'skip') {
+					print "-- Skipping $_\n";
 					next;
-				}else{
-					print"selectpg_catalog.setval('$_',($exception)::bigint);\n";
+				} else {
+					print "select pg_catalog.setval('$_', ( $exception )::bigint);\n";
 					next;
 				}
 			}
 		}
-		$last_number=1ifnotdefined$last_number;
-		print"selectpg_catalog.setval('$_',$last_number,false);\n";
+		$last_number = 1 if not defined $last_number;
+		print "select pg_catalog.setval('$_', $last_number, false);\n";
 	}
 }
 
-subget_table_exception{
-	local$_;
-	my$name=shift;
-	my$file="$DATA_DIR/tables/$name";
-	if(not-f$file){
+sub get_table_exception {
+	local $_;
+	my $name = shift;
+	my $file = "$DATA_DIR/tables/$name";
+	if (not -f $file) {
 		return;
 	}
-	local*EXCEPTION;
-	openEXCEPTION,'<',$fileordie"Errorreading[$file]:$!\n";
-	my$data={};
-	my$key;
-	while(<EXCEPTION>){
-		if(/^skip\s*$/){
-			closeEXCEPTION;
-			return'skip';
+	local *EXCEPTION;
+	open EXCEPTION, '<', $file or die "Error reading [$file]: $!\n";
+	my $data = {};
+	my $key;
+	while (<EXCEPTION>) {
+		if (/^skip\s*$/) {
+			close EXCEPTION;
+			return 'skip';
 		}
-		if(/^\s/){
-			$data->{$key}.=$_;
-		}else{
+		if (/^\s/) {
+			$data->{$key} .= $_;
+		} else {
 			chomp;
-			$key=join',',sortsplit/,/,$_;
+			$key = join ',', sort split /,/, $_;
 		}
 	}
-	closeEXCEPTION;
-	return$data;
+	close EXCEPTION;
+	return $data;
 }
 
-subprocess_tables{
-	my$dbh=shift;
-	my$tables=$dbh->selectall_hashref(q!
-		selectlower(table_name)table_name
-		fromuser_tables
-		wheretable_namenotin('PLAN_TABLE','PLAN_TABLE_9I')--plan_tableisnotpartofourschema
-		orderbytable_name
-	!,'table_name');
-	if(not$rawand-d"$DATA_DIR/tables"){
-		local*DIR;
-		opendirDIR,"$DATA_DIR/tables"ordie"Errorreading[$DATA_DIR/tables]:$!\n";
-		while(defined($_=readdirDIR)){
-			nextif/^\.\.?$/;
-			$tables->{$_}='missing'ifnotexists$tables->{$_};
+sub process_tables {
+	my $dbh = shift;
+	my $tables = $dbh->selectall_hashref(q!
+		select lower(table_name) table_name
+		from user_tables
+		where table_name not in ('PLAN_TABLE', 'PLAN_TABLE_9I') -- plan_table is not part of our schema
+		order by table_name
+	!, 'table_name');
+	if (not $raw and -d "$DATA_DIR/tables") {
+		local *DIR;
+		opendir DIR, "$DATA_DIR/tables" or die "Error reading [$DATA_DIR/tables]: $!\n";
+		while (defined($_ = readdir DIR)) {
+			next if /^\.\.?$/;
+			$tables->{$_} = 'missing' if not exists $tables->{$_};
 		}
-		closedirDIR;
+		closedir DIR;
 	}
-	my%exceptions;
-	for(sortkeys%$tables){
-		if(not$raw){
-			my$exception=get_table_exception($_);
-			if(defined$exception){
-				$exceptions{$_}=$exception;
-				if($tables->{$_}eq'missing'
-					andref$exceptions{$_}){
-					if(exists$exceptions{$_}{'missingtable'}){
-						$exceptions{$_}={'missingtable'=>$exceptions{$_}{'missingtable'}};
-					}else{
-						$exception=$exceptions{$_}='skip';
+	my %exceptions;
+	for (sort keys %$tables) {
+		if (not $raw) {
+			my $exception = get_table_exception($_);
+			if (defined $exception) {
+				$exceptions{$_} = $exception;
+				if ($tables->{$_} eq 'missing'
+					and ref $exceptions{$_}) {
+					if (exists $exceptions{$_}{'missing table'}) {
+						$exceptions{$_} = { 'missing table' => $exceptions{$_}{'missing table'} };
+					} else {
+						$exception = $exceptions{$_} = 'skip';
 					}
 				}
-				if($exceptioneq'skip'){
-					print"--Skipping$_\n";
+				if ($exception eq 'skip') {
+					print "-- Skipping $_\n";
 					next;
 				}
 			}
 		}
 
-		print"altertable$_disabletriggerall;\n";
-		print"altertable$_set(autovacuum_enabled=false);\n";
+		print "alter table $_ disable trigger all;\n";
+		print "alter table $_ set (autovacuum_enabled = false);\n";
 	}
-	for(sortkeys%$tables){
-		if(exists$exceptions{$_}and$exceptions{$_}eq'skip'){
+	for (sort keys %$tables) {
+		if (exists $exceptions{$_} and $exceptions{$_} eq 'skip') {
 			next;
 		}
-		print"deletefrom$_;\n";
+		print "delete from $_;\n";
 	}
-	for(sortkeys%$tables){
-		if(exists$exceptions{$_}and$exceptions{$_}eq'skip'){
+	for (sort keys %$tables) {
+		if (exists $exceptions{$_} and $exceptions{$_} eq 'skip') {
 			next;
 		}
-		nextif/^qrtz_/;		#skipthequartztables,theygetregeneratedanyway
-		process_table($dbh,$_,$exceptions{$_});
+		next if /^qrtz_/;		# skip the quartz tables, they get regenerated anyway
+		process_table($dbh, $_, $exceptions{$_});
 	}
-	for(sortkeys%$tables){
-		if(exists$exceptions{$_}and$exceptions{$_}eq'skip'){
+	for (sort keys %$tables) {
+		if (exists $exceptions{$_} and $exceptions{$_} eq 'skip') {
 			next;
 		}
-		print"altertable$_enabletriggerall;\n";
-		print"altertable$_set(autovacuum_enabled=true);\n";
+		print "alter table $_ enable trigger all;\n";
+		print "alter table $_ set (autovacuum_enabled = true);\n";
 	}
 }
 
-subprocess_table{
-	my($dbh,$table,$exception)=@_;
-	my($row,$names,$the_names);
-	my$sth=eval{
-		local$dbh->{PrintError}=0;
-		$dbh->prepare("select*from$table");
+sub process_table {
+	my ($dbh, $table, $exception) = @_;
+	my ($row, $names, $the_names);
+	my $sth = eval {
+		local $dbh->{PrintError} = 0;
+		$dbh->prepare("select * from $table");
 	};
-	my$sorted_the_names='';
-	if(defined$sthandnot$@){
+	my $sorted_the_names = '';
+	if (defined $sth and not $@) {
 		$sth->execute();
-		$row=$sth->fetchrow_arrayref();
-		$names=$sth->{NAME_lc};
-		$the_names=join',',@$names;
-		$sorted_the_names=join',',sort@$names;
-	}else{
-		if(not$DBI::err==942){
-			die$@;
+		$row = $sth->fetchrow_arrayref();
+		$names = $sth->{NAME_lc};
+		$the_names = join ',', @$names;
+		$sorted_the_names = join ',', sort @$names;
+	} else {
+		if (not $DBI::err == 942) {
+			die $@;
 		}
-		$sorted_the_names=$the_names='missingtable';
+		$sorted_the_names = $the_names = 'missing table';
 	}
-	if(ref$exception){
-		if(exists$exception->{$sorted_the_names}){
-			$sth=$dbh->prepare($exception->{$sorted_the_names});
+	if (ref $exception) {
+		if (exists $exception->{$sorted_the_names}) {
+			$sth = $dbh->prepare($exception->{$sorted_the_names});
 			$sth->execute();
-			$row=$sth->fetchrow_arrayref();
-			$names=$sth->{NAME_lc};
-			print"--Originalcolumnsfor$table:$the_names\n";
-			$the_names=join',',@$names;
+			$row = $sth->fetchrow_arrayref();
+			$names = $sth->{NAME_lc};
+			print "-- Original columns for $table: $the_names\n";
+			$the_names = join ',', @$names;
 		}
 	}
-	my@use_rowids=();
-	for(my$i=0;$i<@$names;$i++){
-		if($names->[$i]=~s/^rowid_//){
-			$use_rowids[$i]=1;
+	my @use_rowids = ();
+	for (my $i = 0; $i < @$names; $i++) {
+		if ($names->[$i] =~ s/^rowid_//) {
+			$use_rowids[$i] = 1;
 		}
 	}
-	if(@use_rowids){
-		$the_names=join',',@$names;
+	if (@use_rowids) {
+		$the_names = join ',', @$names;
 	}
-	my$types=$sth->{TYPE};
-	my@types;
-	for(my$i=0;$i<@$types;$i++){
-		my$type=eval{$dbh->type_info($types->[$i])->{TYPE_NAME}};
-		push@types,(defined$type?$type:'unknown');
+	my $types = $sth->{TYPE};
+	my @types;
+	for (my $i = 0; $i < @$types; $i++) {
+		my $type = eval { $dbh->type_info($types->[$i])->{TYPE_NAME} };
+		push @types, ( defined $type ? $type : 'unknown' );
 	}
-	print"--Typesfor$table:@types\n";
-	printqq!copy$table($the_names)fromstdin;\n!;
-	while($row){
-		for(my$i=0;$i<@$row;$i++){
-			print"\t"if$i;
-			if(defined$use_rowids[$i]){
-				if(notdefined$ROWIDS{$row->[$i]}){
+	print "-- Types for $table: @types\n";
+	print qq!copy $table($the_names) from stdin;\n!;
+	while ($row) {
+		for (my $i = 0; $i < @$row; $i++) {
+			print "\t" if $i;
+			if (defined $use_rowids[$i]) {
+				if (not defined $ROWIDS{$row->[$i]}) {
 					$SEQ++;
-					$ROWIDS{$row->[$i]}=$SEQ;
+					$ROWIDS{$row->[$i]} = $SEQ;
 				}
-				print$ROWIDS{$row->[$i]};
-			}elsif(defined$row->[$i]){
-				if(ref$row->[$i]andref$row->[$i]eq'ARRAY'){	#usertypes
-					nowarnings'uninitialized';
-					my@r=@{$row->[$i]};
-					map{s/,/\\\\,/g;}@r;
-					$row->[$i]="(@{[join',',@r]})";
-				}elsif($types[$i]eq'unknown'or$types[$i]eq'BLOB'){	#blobs
-					$row->[$i]=~s!(.)!sprintf"\\\\%03o",ord($1)!seg;
-				}else{
+				print $ROWIDS{$row->[$i]};
+			} elsif (defined $row->[$i]) {
+				if (ref $row->[$i] and ref $row->[$i] eq 'ARRAY') {	# user types
+					no warnings 'uninitialized';
+					my @r = @{$row->[$i]};
+					map { s/,/\\\\,/g; } @r;
+					$row->[$i] = "(@{[ join ',', @r ]})";
+				} elsif ($types[$i] eq 'unknown' or $types[$i] eq 'BLOB') {	# blobs
+					$row->[$i] =~ s!(.)! sprintf "\\\\%03o", ord($1) !seg;
+				} else {
 					utf8::encode($row->[$i]);
-					$row->[$i]=~s!([\x00-\x1f\x5c])!sprintf"\\x%02x",ord($1)!seg;
+					$row->[$i] =~ s!([\x00-\x1f\x5c])! sprintf "\\x%02x", ord($1) !seg;
 					utf8::decode($row->[$i]);
 				}
-				print$row->[$i];
-			}else{
-				print'\N';
+				print $row->[$i];
+			} else {
+				print '\N';
 			}
 		}
-		print"\n";
-		$row=$sth->fetchrow_arrayref();
+		print "\n";
+		$row = $sth->fetchrow_arrayref();
 	}
-	print"\\.\n";
+	print "\\.\n";
 }
 
 1;
 
 __END__
 
-=head1NAME
+=head1 NAME
 
 spacewalk-dump-schema
 
-=head1SYNOPSIS
+=head1 SYNOPSIS
 
-	spacewalk-dump-schema--db=SID\
-		--user=USERNAME--password=PASSWORD
+	spacewalk-dump-schema --db=SID \
+		--user=USERNAME --password=PASSWORD
 
-	spacewalk-dump-schema--help
+	spacewalk-dump-schema --help
 
-=head1DESCRIPTION
+=head1 DESCRIPTION
 
-TheB<spacewalk-dump-schema>scriptdumpsthecontentofSpacewalk's
-OracledatabaseschemainformatwhichcanbefedtoPostgreSQL's
-B<psql>.ThusitcanbeusedtoconvertSpacewalkwithOracledatabase
-backendtotheonewhichusesPostgreSQLdatabasebackend.
+The B<spacewalk-dump-schema> script dumps the content of Spacewalk's
+Oracle database schema in format which can be fed to PostgreSQL's
+B<psql>. Thus it can be used to convert Spacewalk with Oracle database
+backend to the one which uses PostgreSQL database backend.
 
-ThescriptconnectstotheOracleinstance,sothatonemustbe
-runningandaccessiblewithgivenconnectparameter.
+The script connects to the Oracle instance, so that one must be
+running and accessible with given connect parameter.
 
-Theoutputisprintedtothestandardoutput.Itcanbepipedto
-B<psql>directlyinwhichcasethePostgreSQLservermustalsobe
-running,oryoucanredirectittoafileandusethatfileas
-inputforB<psql>later.
+The output is printed to the standard output. It can be piped to
+B<psql> directly in which case the PostgreSQL server must also be
+running, or you can redirect it to a file and use that file as
+input for B<psql> later.
 
-ThedatabaseschemainPostgreSQLmustalreadyexist,createdby
-(probably)B<spacewalk-setup>.Theoutputofthisscriptdoesnot
-createanytablesorotherdatabaseobjects,itonlyemitscommands
-tosetsequencesandtablecontentsinthePostgreSQLdatabaseschema.
-AnyexistingcontentinthosePostgreSQLtablesisdiscarded,data
-isnotappended.
+The database schema in PostgreSQL must already exist, created by
+(probably) B<spacewalk-setup>. The output of this script does not
+create any tables or other database objects, it only emits commands
+to set sequences and table contents in the PostgreSQL database schema.
+Any existing content in those PostgreSQL tables is discarded, data
+is not appended.
 
-Theexitvalueis0uponsuccess,non-zerovalueuponerror.
+The exit value is 0 upon success, non-zero value upon error.
 
-=head1EXAMPLE
+=head1 EXAMPLE
 
-	spacewalk-dump-schema--db=xe\
-		--user=spacewalk--password=o9k2HInsl\
-		|PGPASSWORD=o9k2HInslpsql-hlocalhost\
-			-Uspaceuserspaceschema
+	spacewalk-dump-schema --db=xe \
+		--user=spacewalk --password=o9k2HInsl \
+		| PGPASSWORD=o9k2HInsl psql -h localhost \
+			-U spaceuser spaceschema
 
-=head1AUTHOR
+=head1 AUTHOR
 
-JanPazdziora
+Jan Pazdziora
 
 =cut
 
