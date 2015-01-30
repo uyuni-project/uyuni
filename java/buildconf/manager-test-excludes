@@ -8,3 +8,6 @@ com/redhat/rhn/manager/setup/test/ProductSyncManagerTest.class
 
 temporarily disabled tests (do not run in IBM Java):
 com/suse/scc/client/test/SCCClientUtilTest.class
+
+temporarily disabled tests (do not run in Docker):
+com/redhat/rhn/domain/user/test/UserTest.class
