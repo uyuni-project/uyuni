@@ -49,10 +49,10 @@ public class MgrSyncUtils {
      * @param username username for authentication (pass null for unauthenticated requests)
      * @param password password for authentication (pass null for unauthenticated requests)
      * @return the response code of the request
-     * @throws ContentSyncException in case of an error
+     * @throws IOException in case of an error
      */
     public static int sendHeadRequest(String url, String username, String password)
-            throws ContentSyncException {
+            throws IOException {
         return sendHeadRequest(url, username, password, false);
     }
 
@@ -61,9 +61,9 @@ public class MgrSyncUtils {
      *
      * @param url the URL to use for verification
      * @return true if return code of HTTP request is 200, otherwise false
-     * @throws ContentSyncException in case of an error
+     * @throws IOException in case of an error
      */
-    public static boolean verifyProxy(String url) throws ContentSyncException {
+    public static boolean verifyProxy(String url) throws IOException {
         return sendHeadRequest(url, null, null, true) == HttpStatus.SC_OK;
     }
 
@@ -75,18 +75,15 @@ public class MgrSyncUtils {
      * @param password password for authentication (pass null for unauthenticated requests)
      * @param ignoreNoProxy set true to ignore the "no_proxy" setting
      * @return the response code of the request
-     * @throws ContentSyncException in case of an error
+     * @throws IOException in case of an error
      */
     private static int sendHeadRequest(String url, String username, String password,
-            boolean ignoreNoProxy) throws ContentSyncException {
+            boolean ignoreNoProxy) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
         HeadMethod headRequest = new HeadMethod(url);
         try {
             return httpClient.executeRequest(
                     headRequest, username, password, ignoreNoProxy);
-        }
-        catch (IOException e) {
-            throw new ContentSyncException(e);
         }
         finally {
             headRequest.releaseConnection();

@@ -1491,7 +1491,7 @@ public class ContentSyncManager {
                     return creds;
                 }
             }
-            catch (ContentSyncException e) {
+            catch (IOException e) {
                 log.error(e.getMessage());
             }
         }
@@ -1658,7 +1658,7 @@ public class ContentSyncManager {
                     log.warn("Mirror status " + mirrorStatus + " for: " + testUri);
                 }
             }
-            catch (ContentSyncException e) {
+            catch (IOException e) {
                 log.warn(e.getMessage());
             }
             catch (URISyntaxException e) {
