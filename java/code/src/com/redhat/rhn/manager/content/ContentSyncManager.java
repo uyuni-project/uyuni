@@ -262,8 +262,9 @@ public class ContentSyncManager {
     /**
      * Returns all products available to all configured credentials.
      * @return list of all available products
+     * @throws ContentSyncException in case of an error
      */
-    public Collection<SCCProduct> getProducts() {
+    public Collection<SCCProduct> getProducts() throws ContentSyncException {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
         List<Credentials> credentials = filterCredentials(
                 CredentialsFactory.lookupSCCCredentials());
@@ -291,10 +292,10 @@ public class ContentSyncManager {
                 }
             }
             catch (SCCClientException e) {
-                log.error("Error getting products for " + c.getUsername(), e);
+                throw new ContentSyncException(e);
             }
-            catch (URISyntaxException e1) {
-                log.error("Invalid URL:" + e1.getMessage());
+            catch (URISyntaxException e) {
+                throw new ContentSyncException(e);
             }
         }
 
@@ -582,8 +583,10 @@ public class ContentSyncManager {
     /**
      * Refresh the repositories cache by reading repos from SCC for all available mirror
      * credentials, consolidating and inserting into the database.
+     *
+     * @throws ContentSyncException in case of an error
      */
-    public void refreshRepositoriesCache() {
+    public void refreshRepositoriesCache() throws ContentSyncException {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
         List<Credentials> credentials = filterCredentials(
                 CredentialsFactory.lookupSCCCredentials());
@@ -608,10 +611,10 @@ public class ContentSyncManager {
                 reposList.addAll(repos);
             }
             catch (SCCClientException e) {
-                log.error("Error getting repos for " + c.getUsername(), e);
+                throw new ContentSyncException(e);
             }
-            catch (URISyntaxException e1) {
-                log.error("Invalid URL:" + e1.getMessage());
+            catch (URISyntaxException e) {
+                throw new ContentSyncException(e);
             }
         }
 
@@ -639,8 +642,8 @@ public class ContentSyncManager {
             SCCClient scc = this.getSCCClient(user, password);
             return scc.listSubscriptions();
         }
-        catch (URISyntaxException e1) {
-            log.error("Invalid URL:" + e1.getMessage());
+        catch (URISyntaxException e) {
+            log.error("Invalid URL:" + e.getMessage());
             return new ArrayList<SCCSubscription>();
         }
     }
@@ -648,8 +651,9 @@ public class ContentSyncManager {
     /**
      * Returns all subscriptions available to all configured credentials.
      * @return list of all available subscriptions
+     * @throws ContentSyncException in case of an error
      */
-    public Collection<SCCSubscription> getSubscriptions() {
+    public Collection<SCCSubscription> getSubscriptions() throws ContentSyncException {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
         List<Credentials> credentials = filterCredentials(
                 CredentialsFactory.lookupSCCCredentials());
@@ -659,7 +663,7 @@ public class ContentSyncManager {
                 subscriptions.addAll(getSubscriptions(c.getUsername(), c.getPassword()));
             }
             catch (SCCClientException e) {
-                log.error("Error getting subscriptions for " + c.getUsername(), e);
+                throw new ContentSyncException(e);
             }
         }
         if (log.isDebugEnabled()) {
@@ -1204,9 +1208,10 @@ public class ContentSyncManager {
      * @param channel Channel
      * @param repos list of repos from SCC to match against
      * @return repository object or null if the channel is not mirrorable
+     * @throws ContentSyncException in case of an IO error while verifying OES
      */
     public SCCRepository isMirrorable(MgrSyncChannel channel,
-            Collection<SCCRepository> repos) {
+            Collection<SCCRepository> repos) throws ContentSyncException {
         // No source URL means it's mirrorable (return 0 in this case)
         String sourceUrl = channel.getSourceUrl();
         if (StringUtils.isBlank(sourceUrl)) {
@@ -1454,8 +1459,9 @@ public class ContentSyncManager {
      * customer has bought the product.
      *
      * @return mirror credentials or null if OES channels are not mirrorable
+     * @throws ContentSyncException in case of an IO error while sending HEAD request
      */
-    private Credentials verifyOESRepo() {
+    private Credentials verifyOESRepo() throws ContentSyncException {
         // Look for local file in case of from-dir
         if (Config.get().getString(RESOURCE_PATH) != null) {
             try {
@@ -1487,8 +1493,8 @@ public class ContentSyncManager {
                     return creds;
                 }
             }
-            catch (ContentSyncException e) {
-                log.error(e.getMessage());
+            catch (IOException e) {
+                throw new ContentSyncException(e);
             }
         }
         return null;
@@ -1654,7 +1660,7 @@ public class ContentSyncManager {
                     log.warn("Mirror status " + mirrorStatus + " for: " + testUri);
                 }
             }
-            catch (ContentSyncException e) {
+            catch (IOException e) {
                 log.warn(e.getMessage());
             }
             catch (URISyntaxException e) {

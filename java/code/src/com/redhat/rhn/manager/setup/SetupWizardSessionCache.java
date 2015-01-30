@@ -16,13 +16,13 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import com.suse.manager.model.ncc.Subscription;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,7 +159,7 @@ public class SetupWizardSessionCache {
                     String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
                     ret = MgrSyncUtils.verifyProxy(url);
                 }
-                catch (ContentSyncException e) {
+                catch (IOException e) {
                     ret = false;
                 }
             }
