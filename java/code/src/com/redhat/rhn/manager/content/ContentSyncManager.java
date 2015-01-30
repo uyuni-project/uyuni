@@ -294,8 +294,8 @@ public class ContentSyncManager {
             catch (SCCClientException e) {
                 throw new ContentSyncException(e);
             }
-            catch (URISyntaxException e1) {
-                throw new ContentSyncException(e1);
+            catch (URISyntaxException e) {
+                throw new ContentSyncException(e);
             }
         }
 
@@ -611,8 +611,8 @@ public class ContentSyncManager {
             catch (SCCClientException e) {
                 throw new ContentSyncException(e);
             }
-            catch (URISyntaxException e1) {
-                throw new ContentSyncException(e1);
+            catch (URISyntaxException e) {
+                throw new ContentSyncException(e);
             }
         }
 
@@ -640,8 +640,8 @@ public class ContentSyncManager {
             SCCClient scc = this.getSCCClient(user, password);
             return scc.listSubscriptions();
         }
-        catch (URISyntaxException e1) {
-            log.error("Invalid URL:" + e1.getMessage());
+        catch (URISyntaxException e) {
+            log.error("Invalid URL:" + e.getMessage());
             return new ArrayList<SCCSubscription>();
         }
     }
