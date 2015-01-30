@@ -26,16 +26,13 @@ import java.util.Set;
  * SUSE Manager system entitlements
  */
 public enum SystemEntitlement {
-    SM_ENT_MON_S("monitoring_entitled"),
     SM_ENT_PROV_S("provisioning_entitled"),
     SM_ENT_MGM_S("enterprise_entitled",
                  "bootstrap_entitled"),
     SM_ENT_MGM_V("virtualization_host_platform",
                  "enterprise_entitled",
                  "bootstrap_entitled"),
-    SM_ENT_MON_V("monitoring_entitled"),
     SM_ENT_PROV_V("provisioning_entitled"),
-    SM_ENT_MON_Z("monitoring_entitled"),
     SM_ENT_PROV_Z("provisioning_entitled"),
     SM_ENT_MGM_Z("enterprise_entitled",
                  "bootstrap_entitled");
