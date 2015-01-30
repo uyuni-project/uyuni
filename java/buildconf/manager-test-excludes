@@ -8,3 +8,6 @@ com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest
 
 abstract test classes:
 com/redhat/rhn/manager/setup/test/ProductSyncManagerTest.class
+
+temporarily disabled tests (do not run in IBM Java):
+com/suse/scc/client/test/SCCClientUtilTest
