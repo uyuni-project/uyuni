@@ -1206,9 +1206,10 @@ public class ContentSyncManager {
      * @param channel Channel
      * @param repos list of repos from SCC to match against
      * @return repository object or null if the channel is not mirrorable
+     * @throws ContentSyncException in case of an IO error while verifying OES
      */
     public SCCRepository isMirrorable(MgrSyncChannel channel,
-            Collection<SCCRepository> repos) {
+            Collection<SCCRepository> repos) throws ContentSyncException {
         // No source URL means it's mirrorable (return 0 in this case)
         String sourceUrl = channel.getSourceUrl();
         if (StringUtils.isBlank(sourceUrl)) {
@@ -1456,8 +1457,9 @@ public class ContentSyncManager {
      * customer has bought the product.
      *
      * @return mirror credentials or null if OES channels are not mirrorable
+     * @throws ContentSyncException in case of an IO error while sending HEAD request
      */
-    private Credentials verifyOESRepo() {
+    private Credentials verifyOESRepo() throws ContentSyncException {
         // Look for local file in case of from-dir
         if (Config.get().getString(RESOURCE_PATH) != null) {
             try {
@@ -1490,7 +1492,7 @@ public class ContentSyncManager {
                 }
             }
             catch (IOException e) {
-                log.error(e.getMessage());
+                throw new ContentSyncException(e);
             }
         }
         return null;
