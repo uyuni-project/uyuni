@@ -345,7 +345,7 @@ class rpmFile(File, ChangeLog):
         tm = self['mtime']
         if type(tm) in (IntType, LongType):
             # A UNIX timestamp
-            self['mtime'] = gmtime(tm)
+            self['mtime'] = localtime(tm)
         if type(self['filedigest']) == StringType:
             self['checksum'] = self['filedigest']
             del(self['filedigest'])
