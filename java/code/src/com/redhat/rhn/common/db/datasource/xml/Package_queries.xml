@@ -852,7 +852,9 @@ SELECT P.id, P.summary, PP.name as provider
   <query params="sid">
     SELECT
       rp.id AS package_id,
-      not_installed.*
+      not_installed.*,
+      lck.pending,
+      CASE WHEN lck.server_id IS NOT NULL THEN 'Y' ELSE NULL END AS locked
     FROM
       (
         SELECT
@@ -900,6 +902,10 @@ SELECT P.id, P.summary, PP.name as provider
           AND rp.package_arch_id = not_installed.arch_id
         JOIN rhnChannelPackage rcp ON rcp.package_id = rp.id
         JOIN rhnServerChannel rsc ON rsc.channel_id = rcp.channel_id
+        LEFT JOIN rhnlockedpackages lck ON lck.name_id = not_installed.name_id
+          AND lck.evr_id = not_installed.evr_id
+          AND lck.arch_id = not_installed.arch_id
+          AND lck.server_id = :sid
     WHERE rsc.server_id = :sid
     ORDER BY UPPER(name)
   </query>
