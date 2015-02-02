@@ -6,8 +6,5 @@ com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 tests that look completely broken in upstream code:
 com/redhat/rhn/frontend/action/systems/monitoring/test/ProbesListSetupActionTest.class
 
-tests that don't succeed on IBM java:
-com/suse/scc/client/test/SCCClientUtilTest.java
-
 abstract test classes:
 com/redhat/rhn/manager/setup/test/ProductSyncManagerTest.class
