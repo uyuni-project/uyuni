@@ -1,6 +1,6 @@
 $(document).on("ready", function(){
 
-  /* Menu in the left column - actions to hide submenu and create animation when a 
+  /* Menu in the left column - actions to hide submenu and create animation when a
   menu only has submenues and doesnt have a URL */
   $("#sidenav ul>ul").hide();
 
@@ -8,7 +8,7 @@ $(document).on("ready", function(){
     $(this).next("ul").show();
   });
 
-  /* Systems Selected Toolbar - actions to hide the toolbar when th Clear button is pressed or when 
+  /* Systems Selected Toolbar - actions to hide the toolbar when th Clear button is pressed or when
   no system is selected */
 
   $("#clear-btn").click(hidesystemtool);
@@ -28,7 +28,7 @@ $(document).on("ready", function(){
   // This is a function from spacewalk-checkall.js
   create_checkall_checkbox();
 
-  // Wrapping the tables in a div which will make them responsive    
+  // Wrapping the tables in a div which will make them responsive
   $(".table").wrap("<div class='table-responsive'>");
 
 });
@@ -41,41 +41,26 @@ $(window).load(function () {
 
 // On window resize
 $(window).resize(function () {
+  $(".spacewalk-main-column-layout aside").css("padding-bottom", "");
   columnHeight();
 });
 
 // Make columns 100% in height
 function columnHeight() {
-  $(".spacewalk-main-column-layout section").css("padding-bottom", "0px");
-  //Only if the screen size is higher than the max-width set up in the Variables.less under the definition @screen-md: 
-  //PLEASE: update this if you change the content of @screen-md
-  if ($(document).width() > 992) {
-    var sectionHeight = $(".spacewalk-main-column-layout section").outerHeight(true);
-    var headHeight = $("header").height();
-    var footerHeight = $("footer").outerHeight(true);
+  // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
+  if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
+    console.log("pasa")
+    var asideHeight = $(".spacewalk-main-column-layout aside").height();
+    var navbarHeight = $("nav").height();
+    var footerHeight = $("footer").height();
     var heightDoc = $(document).height();
-    // Only if there is empty space
-    var heightElements = sectionHeight + headHeight + footerHeight;
-    if (heightElements < heightDoc) {
-      var newPaddingBottom = heightDoc - heightElements;
-      // add a padding bottom to the section to make it 100% height
-      $(".spacewalk-main-column-layout section").css("padding-bottom", newPaddingBottom + "px");
-    } else {
-      $(".spacewalk-main-column-layout section").css("padding-bottom", "0px");
-    }
+    // Column heights should equal the document height minus the header height and footer height
+    // extra 10px to have scrollbar always visible
+    var newHeight = heightDoc - asideHeight - navbarHeight - footerHeight + 10 + "px";
+    $(".spacewalk-main-column-layout aside").css("padding-bottom", newHeight);
   };
-
-  var horizontalMenu = $(".spacewalk-main-nav .collapse");
-  //function to hide or show the Collapsable menues.
-  if ($(document).width()>465) {
-    horizontalMenu.addClass('in').css({
-      "height": 'auto'
-    });
-  } else {
-    horizontalMenu.removeClass('in');
-  };
-
 };
+
 
 // returns an object that can be passed to DWR renderer as a callback
 // puts rendered HTML in #divId, opens an alert with the same text if
