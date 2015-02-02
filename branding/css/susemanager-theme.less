@@ -7,9 +7,12 @@ body {
 html, body {
 	height: 100%
 }
-header {
+header, nav.navbar.navbar-default.navbar-pf {
 	width: 100%;
 	background: @spacewalk-header;
+	border: none;
+	border-radius: 0;
+	margin-bottom: 0;
 }
 footer {
 	padding: 1.2em 0;
@@ -111,7 +114,7 @@ p {
 	overflow: hidden;
 	min-height: 100%;
 	aside {
-		.make-md-column(2);			
+		.make-md-column(2);
 	}
 	section {
 		.make-md-column(10);
@@ -129,9 +132,6 @@ p {
 		border-right: 1px solid @spacewalk-aside-border;
 		height: auto;
 		min-height: 100%;
-		/* 100% height */
-		margin-bottom: -9999px;
-		padding-bottom: 9999px;
 		/* erasing the predefined paddings in the columns */
 		padding-right: 0;
 		padding-left: 0;
@@ -157,9 +157,20 @@ p {
 	min-height: 100%;
 }
 
-header {
+header, nav.navbar-pf {
+	.navbar-header {
+		float: none;
+		margin-bottom: 30px;
+	}
 	.spacewalk-header-container {
 	  margin: 0 1em;
+	}
+	.navbar-utility {
+		border-bottom: 0;
+		font-size: 12px;
+		position: absolute;
+		right: 10px;
+		top: 0;
 	}
 	/* overwrite the padding the grid columns give */
 	&#spacewalk-header {
@@ -181,7 +192,7 @@ header {
 		height: 33px;
 		color: @spacewalk-header-upper-menu-text-icons;
 		font-weight: normal;
-		letter-spacing: normal; 
+		letter-spacing: normal;
 		.shadow-text;
 		display: block;
 	}
@@ -254,9 +265,6 @@ header {
 			background: transparent;
 		}
 	}
-	form.form-inline {
-		margin-top: 8px;
-	}
 	form input[type="search"] {
 		padding: 0px 10px;
 		-webkit-box-sizing: border-box;
@@ -304,16 +312,18 @@ header {
 	}
 
 	/* Systems selector inside the main menu in the header */
-	#bar {
-		color: #fff;
-	}
-	#bar .spacewalk-bar {
-		padding: .5em 1.2em;
+	.spacewalk-bar {
+		padding: .5em .3em;
 		text-align: right;
-		display: none;
+		//display: none;
 	}
-	#bar .spacewalk-bar .badge {
-		margin-right: .5em
+	.spacewalk-bar .badge {
+		margin-right: .5em;
+		background: @spacewalk-main;
+	}
+
+	.navbar-brand:first-of-type {
+		padding: 16px 0;
 	}
 }
 
@@ -479,7 +489,7 @@ aside .nav > li > a {
 	ul > li > ul li.active a:hover {
 		background: @spacewalk-list-first-submenu-active;
 	}
-	ul > li > ul li:hover, 
+	ul > li > ul li:hover,
 	ul > li > ul li a:hover {
 		background: @spacewalk-list-first-submenu-hover;
 		color: #ffab47;
@@ -501,7 +511,7 @@ aside .nav > li > a {
 		background: @spacewalk-list-second-submenu-active;
 		.glow-text-deleted;
 	}
-	ul > li > ul > li > ul li:hover, 
+	ul > li > ul > li > ul li:hover,
 	ul > li > ul > li > ul li a:hover {
 		background: @spacewalk-list-second-submenu-hover;
 	}
@@ -592,7 +602,7 @@ h1 .fa-stack {
 /* Margins to elements */
 //margins bottom
 .margin-bottom-xs {
-	margin-bottom: .5em; 
+	margin-bottom: .5em;
 }
 .margin-bottom-sm {
 	margin-bottom: 1em;
@@ -605,7 +615,7 @@ h1 .fa-stack {
 }
 //margins top
 .margin-top-xs {
-	margin-top: .5em; 
+	margin-top: .5em;
 }
 .margin-top-sm {
 	margin-top: 1em;
@@ -877,7 +887,7 @@ ul.nav.nav-tabs:last-child {
   }
 }
 
-/* Create new Admin User form. 
+/* Create new Admin User form.
 This class will align the text inside the tables of each panel in the form with name="createSatelliteForm"
 */
 form[name="createSatelliteForm"] table {
@@ -928,4 +938,70 @@ input[name="cveIdentifierId"]#cveIdentifierId {
 	font-size: 16px
 }
 
+/* after pattern fly - fixes (more like workarounds) */
+.navbar-pf {
+	ul.navbar-primary {
+		li.active a, li.active a:hover, a, a:hover {
+		  color: #fff;
+		  text-shadow: 1px 1px 1px #333;
+		  background-color: transparent;
+		}
+		li, li.active {
+			border-bottom: 4px solid transparent;
+		}
+		li:hover {
+			border-bottom: 4px solid #7ac142;
+		}
+		.btn-group {
+			margin: 0;
+			a {
+				padding: .5em .3em;
+			}
+		}
+	}
+	ul.navbar-primary:last-of-type {
+		padding-top: 10px;
+		a {
+			padding-top: 6px;
+			padding-bottom: 6px;
+		}
+	}
+	ul.navbar-utility {
+	  a {
+		  color: #d7d7d7;
+		  text-shadow: 1px 1px 1px #333;
+		  padding-top: 5px;
+		  padding-bottom: 8px;
+		}
+		a:hover {
+      color: #fff
+		}
+		.search {
+			.form-group {
+				.btn-primary {
+					padding: 0px 8px 0 12px;
+					background: #000;
+					color: #838383;
+					border: 0;
+				}
+			}
+		}
+	}
+}
+#header_selcount {
+	&.btn-default {
+    background: transparent;
+    border: 0px;
+    color: #fff;
+    text-shadow: none
+	}
 
+}
+.spacewalk-bar .btn-group a#clear-btn .btn-danger {
+	.btn-default;
+	.btn-xs;
+}
+
+.spacewalk-bar .btn-group a .btn-primary {
+	.btn-xs;
+}
