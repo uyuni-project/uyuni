@@ -52,10 +52,11 @@ zypper in -y  cx_Oracle \
               rpm-python \
               yum
 
-# Packages required to run the python unit tests
+# Packages required to run the Java unit tests
 zypper in -y ant \
              ant-junit \
              apache-ivy \
              java-1_7_0-ibm-devel \
+             pam-modules \
              sudo \
              tar
