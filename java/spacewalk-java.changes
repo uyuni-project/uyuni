@@ -1,4 +1,39 @@
 -------------------------------------------------------------------
+Tue Feb 03 12:10:48 CET 2015 - mc@suse.de
+
+- version 2.1.165.14-1
+- Fix style of kickstart wizard
+- Fix style of Create Kickstart Profile
+- Make mgr-sync fail in case of IO errors while sending
+  HEAD requests to OES
+- Do not swallow exceptions, rethrow ContentSyncException instead
+- make config file upload on FileDetails work
+- prevent NPE on activationkeys/Edit.do page
+- directories and symlinks cannot be binary
+- fix menu structure
+- Getting rid of Tabs and trailing spaces
+- make sure columns are named according to the dto attributes
+- fix failures due to uninitialized log it
+- Fix auditlog config yaml syntax (bnc#913221)
+- Show Proxy tab if system is a proxy even when assigned to cloned
+  channels (bsc#913939)
+- consider no_proxy setting
+- fixed uncaught error which prevent correct error handling
+  (bnc#858971)
+- fix NPE by setting max_members to 0 instead of NULL (bsc#912035)
+- Use Hibernate-friendly equals() and hashCode() in Org
+- CVE-2014-7811: fix more XSS bugs (bsc#902915)
+- set bootstrap entitlements to INFINITE in all organizations
+- Fix basic authentication for HTTP proxies (bsc#912057)
+- SCCRepository: save SCC ID in the database as well
+- SCCRepository: save to database with proper sequence
+- Accept repos with same SCC ID and different URLs (bsc#911808)
+- Avoid mgr-sync-refresh failure because clear_log_id was not called
+  (bnc#911166)
+- New API call: system.scheduleDistUpgrade()
+- New API call: system.scheduleSPMigration() (FATE#314785, FATE#314340)
+
+-------------------------------------------------------------------
 Wed Jan 14 14:43:29 CET 2015 - mc@suse.de
 
 - fix XSS in system-group (CVE-2014-7812) (bsc#912886)
