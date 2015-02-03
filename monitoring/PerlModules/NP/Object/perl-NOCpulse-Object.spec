@@ -1,5 +1,5 @@
 Name:         perl-NOCpulse-Object
-Version:      1.26.13.1
+Version:      1.26.13.2
 Release:      1%{?dist}
 Summary:      NOCpulse Object abstraction for Perl
 URL:          https://fedorahosted.org/spacewalk
