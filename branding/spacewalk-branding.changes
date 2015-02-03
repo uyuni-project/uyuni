@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Feb 03 12:01:33 CET 2015 - mc@suse.de
+
+- version 2.1.33.10-1
+- Getting rid of Tabs and trailing spaces
+- install all css files
+- remove unused css files
+- minor style changes
+
+-------------------------------------------------------------------
 Thu Dec 04 16:29:19 CET 2014 - mc@suse.de
 
 - version 2.1.33.9-1
