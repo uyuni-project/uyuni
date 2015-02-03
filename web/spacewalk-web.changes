@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Feb 03 11:45:13 CET 2015 - mc@suse.de
+
+- version 2.1.60.12-1
+- Getting rid of trailing spaces
+- Remove vestige of ctxt-sensitive help, and teach PXT::HTML->link
+  not to link when there is no url
+- Show Proxy tab if system is a proxy even when assigned to cloned
+  channels (bsc#913939)
+- spacewalk-web: add Requires for used perl modules
+- fix perl context-help to notice empty help-url strings
+- s1-sm-systems.html does not exist any more
+- unify style
+
+-------------------------------------------------------------------
 Thu Dec 04 16:21:11 CET 2014 - mc@suse.de
 
 - version 2.1.60.11-1
