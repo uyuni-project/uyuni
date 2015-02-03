@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 03 12:03:24 CET 2015 - mc@suse.de
+
+- version 5.10.65.10-1
+- Normalize path sooner
+- Fix directory creation
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
 Thu Dec 04 13:22:40 CET 2014 - mc@suse.de
 
 - version 5.10.65.9-1
