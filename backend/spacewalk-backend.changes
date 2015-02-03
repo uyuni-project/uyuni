@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Feb 03 12:05:52 CET 2015 - mc@suse.de
+
+- version 2.1.55.15-1
+- convert mtime to localtime to prevent invalid times because of DST
+  (bsc#914437)
+- Do not exit with error if a vendor channel has no URL associated
+  (bsc#914260)
+- Getting rid of Tabs and trailing spaces
+- copy all SUSE Manager logfiles into spacewalk-debug
+- Update spacewalk-debug man page
+- Exclude old backup-logs from spacewalk-debug to reduce size
+- fix ISS export with unset patch severity
+- ISS export/import informations about cloned channels (FATE#317789)
+- convert empty string to null for DMI values (bsc#911272)
+
+-------------------------------------------------------------------
 Thu Dec 18 13:38:25 CET 2014 - mc@suse.de
 
 - version 2.1.55.14-1
