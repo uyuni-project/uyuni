@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Feb 03 12:08:01 CET 2015 - mc@suse.de
+
+- version 2.1.50.11-1
+- some values can be already present at the time of upgrade
+- fix NPE by setting max_members to 0 instead of NULL (bsc#912035)
+- SCCRepository: save SCC ID in the database as well
+- SCCRepository: save to database with proper sequence
+- Fix old migration for future reference (bsc#911180)
+- Avoid NPE when migrating to SCC on Oracle migrated from 1.7 (bsc#911180)
+- renamed package upgrade scripts to .sql
+- fixed double-counting systems subscribed to more than one channel
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
 Thu Dec 04 16:27:47 CET 2014 - mc@suse.de
 
 - version 2.1.50.10-1
