@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 03 11:59:55 CET 2015 - mc@suse.de
+
+- version 2.1.6.8-1
+- Added missing cli args (bnc#913941)
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
 Thu Dec 04 13:30:20 CET 2014 - mc@suse.de
 
 - version 2.1.6.7-1
