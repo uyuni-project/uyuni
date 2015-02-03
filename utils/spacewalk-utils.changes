@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Feb 03 11:58:46 CET 2015 - mc@suse.de
+
+- version 2.1.27.12-1
+- make sql queries Oracle 10g compatible
+- disable and enable indexes in Oracle, set time format and control parameters
+- added Fedora 21 channels
+
+-------------------------------------------------------------------
 Thu Dec 04 13:28:41 CET 2014 - mc@suse.de
 
 - version 2.1.27.11-1
