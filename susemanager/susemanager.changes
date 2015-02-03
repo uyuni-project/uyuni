@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Feb 03 11:49:13 CET 2015 - mc@suse.de
+
+- version 2.1.16-1
+- write repository configuration into the logfile
+- mgr-sync: ensure session token is always saved
+- Add logging to mgr-sync
+- Bring back the ability to save credentials to the configuration file
+- Raise a proper exception, in case Taskomatic is not running
+- Ask for the authentication beforehand (bnc#908317)
+- Bring back token verification availability
+
+-------------------------------------------------------------------
 Thu Dec 04 16:22:57 CET 2014 - mc@suse.de
 
 - version 2.1.15-1
