@@ -419,7 +419,6 @@ Provides: taskomatic-sat = %{version}-%{release}
 Requires(post): %fillup_prereq %insserv_prereq
 Requires(preun): %fillup_prereq %insserv_prereq
 Requires: jakarta-commons-httpclient
-Requires: satsolver-tools
 Requires: susemanager-frontend-libs
 %else
 Requires(post): chkconfig
