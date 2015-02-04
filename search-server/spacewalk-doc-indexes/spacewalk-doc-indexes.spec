@@ -6,7 +6,7 @@ Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
 Group: Applications/Internet
-License: GPLv2
+License: GPL-2.0 and Apache-2.0
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -47,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/rhn/
 %dir %{_datadir}/rhn/search
 %dir %{_datadir}/rhn/search/indexes
+%doc licenses/*
 
 %changelog
 * Wed Feb 26 2014 Matej Kollar <mkollar@redhat.com> 2.1.2-1
