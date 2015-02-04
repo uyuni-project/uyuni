@@ -12,6 +12,7 @@ REFERENCE_GUIDE = "reference"
 INSTALL_GUIDE = "install"
 CLIENT_CONFIG_GUIDE = "client-config"
 PROXY_QUICK_START = "proxy-quick"
+USER_GUIDE="user"
 #RELEASE_NOTES_MANAGER = "release-notes/manager"
 #RELEASE_NOTES_PROXY = "release-notes/proxy"
 
@@ -23,6 +24,7 @@ GUIDES = {
     INSTALL_GUIDE: LANGUAGES,
     CLIENT_CONFIG_GUIDE: LANGUAGES,
     PROXY_QUICK_START: LANGUAGES
+    USER_GUIDE: LANGUAGES
 }
 
 RELEASE_NOTES = {
