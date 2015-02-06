@@ -43,6 +43,11 @@ Syncs the content from yum repos into SUSE Manager channels.
         </group>
         <sbr>
         <group>
+        <arg>-g<replaceable>CONF_FILE</replaceable></arg>
+        <arg>--config=<replaceable>CONF_FILE</replaceable></arg>
+        </group>
+        <sbr>
+        <group>
         <arg>-t<replaceable>TYPE</replaceable></arg>
         <arg>--type=<replaceable>TYPE</replaceable></arg>
         </group>
@@ -129,19 +134,25 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>-p<replaceable>CHANNEL</replaceable>, --parent-channel=<replaceable>CHANNEL</replaceable></term>
         <listitem>
-            <para>Synchronize the parent channel and all its child channels. All must have repositories already assigned via WebUI.</para>
+            <para>Synchronize the parent channel and all its child channels. All must have repositories already assigned via WebUI or API.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>-u<replaceable>URL</replaceable>, --url=<replaceable>URL</replaceable></term>
         <listitem>
-            <para>The repository URL.  Any protocol supported by yum is supported including http://, nfs://, file://. Can be used multiple times in order more than one repository to be assigned to a channel.(Optional)</para>
+            <para>The repository URL.  Any protocol supported by yum is supported including http://, nfs://, file://. Can be used multiple times in order for more than one repository to be assigned to a channel.(Optional)</para>
         </listitem>
     </varlistentry>
     <varlistentry>
         <term>-l, --list</term>
         <listitem>
-            <para>List the custom channels with the assosiated repositories.</para>
+            <para>List the custom channels with the associated repositories.</para>
+        </listitem>
+    </varlistentry>
+    <varlistentry>
+        <term>-g, --config</term>
+        <listitem>
+            <para>Configuration file where more than one channel can be specified for synchronization. See section Examples.</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -183,7 +194,7 @@ Syncs the content from yum repos into SUSE Manager channels.
     <varlistentry>
         <term>--sync-kickstart</term>
         <listitem>
-            <para>Attempt to create kickstartable tree (distribution) if there is subdirectory images/pxeboot/ under repo's URL.</para>
+            <para>Attempt to create kickstartable tree (distribution) if there is subdirectory images/pxeboot/ under repo's URL. The option is ignored for repositories set from CLI via option [-u|--url].</para>
         </listitem>
     </varlistentry>
     <varlistentry>
@@ -209,11 +220,40 @@ Syncs the content from yum repos into SUSE Manager channels.
 
 <refsect1><title>Examples</title>
 <simplelist>
-        <member><command>spacewalk-repo-sync --channel=my-custom-channel</command></member>
-        <member><command>spacewalk-repo-sync -crepo1 --url=http://example.com/yum-repo/</command></member>
-        <member><command>spacewalk-repo-sync -crepo2 --url=file:///var/share/localrepo/</command></member>
-        <member><command>spacewalk-repo-sync -crepom --url=http://example.com/mirrorlist.xml/</command></member>
-        <member><command>spacewalk-repo-sync --type uln --channel=orcl-channel --url=uln:///ol6_x86_64_latest</command></member>
+    <member>List all custom channels and the repositories assigned to them.</member>
+    <member><command>spacewalk-repo-sync --list </command></member>
+    <member>Synchronize single channel to all repositories assigned to it via WebUI or API.</member>
+    <member><command>spacewalk-repo-sync --channel custom-channel</command></member>
+    <member>Synchronize single channel to a repository specified on the command line.</member>
+    <member><command>spacewalk-repo-sync -c custom-channel --url=http://example.com/yum-repo/</command></member>
+    <member>Synchronize single channel to a local repository specified on the command line.</member>
+    <member><command>spacewalk-repo-sync -c custom-channel --url=file:///var/share/localrepo/</command></member>
+    <member>Synchronize single channel to a repository(mirror list) specified on the command line.</member>
+    <member><command>spacewalk-repo-sync -c custom-channel --url=http://example.com/mirrorlist.xml/</command></member>
+    <member>Synchronize single channel to more than one repository specified on the command line.</member>
+    <member><command>spacewalk-repo-sync -c custom-channel --url=http://example.com/yum-repo/ --url=http://example.com/yum-repo_2/</command></member>
+    <member>Synchronize parent channel and all its child channels. All channels must have repository assigned via WebUI or API.</member>
+    <member><command>spacewalk-repo-sync -p parent-channel </command></member>
+    <member><command>spacewalk-repo-sync -c custom-channel --url=http://example.com/yum-repo/ -p parent-channel </command></member>
+    <member>Synchronize channels specified in configuration file.</member>
+    <member><command>spacewalk-repo-sync --config example.conf</command></member>
+    <member><command>spacewalk-repo-sync --config example.conf -c custom-channel --url=http://example.com/yum-repo/ -p parent-channel --fail</command></member>
+    <member>Example configuration file.</member>
+    <member>
+        <msgtext><programlisting>
+{
+ "no_errata":false,
+ "sync_kickstart":false,
+ "quiet":false,
+ "fail":true,
+ "dry_run":false,
+ "channel":{"chann_1":["http://example.com/repo1","http://example.com/repo2"],"chann_2":[]},
+ "parent_channel":["parent_1","parent_2"]
+}
+        </programlisting></msgtext>
+    </member>
+    <member>In order just to test the configuration use option --dry-run.</member>
+    <member><command>spacewalk-repo-sync --config example.conf --dry-run</command></member>
 </simplelist>
 </refsect1>
 

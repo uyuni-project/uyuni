@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.32
+Version: 2.3.38
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -811,6 +811,27 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Tue Feb 03 2015 Matej Kollar <mkollar@redhat.com> 2.3.38-1
+- Updating function names
+
+* Fri Jan 30 2015 Stephen Herr <sherr@redhat.com> 2.3.37-1
+- 1187358 - don't crash re-registrations if the original owner has been deleted
+
+* Fri Jan 30 2015 Grant Gainey 2.3.36-1
+- 1104087 - Some cleanup and tweaks
+- 1104087 - Adding option [-g|--config]
+
+* Fri Jan 30 2015 Tomas Lestach <tlestach@redhat.com> 2.3.35-1
+- Adding on the spacewalk-data-fsck man page the option --remove-mismatch
+- add funcionality on spacewalk-data-fsck to remove the RPM which does not
+  match checksum
+
+* Fri Jan 30 2015 Matej Kollar <mkollar@redhat.com> 2.3.34-1
+- 1070866 - sw-repo-sync fails to sync kickstart.
+
+* Wed Jan 28 2015 Matej Kollar <mkollar@redhat.com> 2.3.33-1
+- 1005772 - Add appropriate(?) censorship
+
 * Thu Jan 22 2015 Matej Kollar <mkollar@redhat.com> 2.3.32-1
 - More pep8
 - Some more pep8 while we are at it

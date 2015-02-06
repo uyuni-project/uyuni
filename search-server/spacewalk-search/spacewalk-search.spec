@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.3.3
+Version: 2.3.5
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -145,6 +145,9 @@ ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/rhnsearchd
 install -p -m 644 src/config/search/rhn_search.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search.conf
 install -p -m 644 src/config/search/rhn_search_daemon.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
 ln -s -f %{_prefix}/share/rhn/search/lib/spacewalk-search-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/spacewalk-search.jar
+%if 0%{?fedora} && 0%{?fedora} >= 21
+sed -i 's/log4j.jar/log4j-1.jar/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_search_daemon.conf
+%endif
 
 # add rc link
 mkdir -p  $RPM_BUILD_ROOT/%{_sbindir}/
@@ -260,6 +263,13 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Jan 29 2015 Tomas Lestach <tlestach@redhat.com> 2.3.5-1
+- fix spec condition error
+
+* Wed Jan 28 2015 Tomas Lestach <tlestach@redhat.com> 2.3.4-1
+- link the compatibility log4j jar on fc21
+- move jpackage.jars to a separate file
+
 * Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.3-1
 - Getting rid of trailing spaces in XML
 - Getting rid of trailing spaces in Java
