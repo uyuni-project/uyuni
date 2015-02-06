@@ -5,7 +5,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.3.8
+Version: 2.3.9
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -116,6 +116,9 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Tue Feb 03 2015 Stephen Herr <sherr@redhat.com> 2.3.9-1
+- 1178151 - make squid start correctly on rhel 7
+
 * Wed Jan 21 2015 Matej Kollar <mkollar@redhat.com> 2.3.8-1
 - Fix Pylint on Fedora 21
 

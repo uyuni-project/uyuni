@@ -222,10 +222,10 @@ class SpacewalkShell(Cmd):
         if cmd:
             try:
                 if type(cmdresult).__name__ == 'str':
-                   print cmdresult
+                    print cmdresult
                 else:
-                   for i in cmdresult:
-                       print i
+                    for i in cmdresult:
+                        print i
             except TypeError:
                 pass
 
@@ -233,5 +233,3 @@ class SpacewalkShell(Cmd):
     def postcmd(self, cmdresult, cmd):
         SpacewalkShell.print_result(cmdresult, cmd)
         self.prompt = re.sub('##', str(len(self.ssm)), self.prompt_template)
-
-# vim:ts=4:expandtab:

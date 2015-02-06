@@ -1596,8 +1596,8 @@ def dump_softwarechannel_errata(self, name):
     result = []
     for erratum in errata:
         result.append('%s %s' % (
-                      erratum.get('advisory_name').ljust(14),
-                      wrap(erratum.get('advisory_synopsis'), 50)[0]))
+            erratum.get('advisory_name').ljust(14),
+            wrap(erratum.get('advisory_synopsis'), 50)[0]))
     result.sort()
     return result
 
@@ -1740,7 +1740,7 @@ def do_softwarechannel_sync(self, args):
         print
 
     # check for packages only in the target channel
-    target_only = target_ids.difference(source_package_ids)
+    target_only = target_ids.difference(source_ids)
     if target_only:
         print 'packages to remove from channel "' + target_channel + '":'
         for i in target_only:
@@ -1749,10 +1749,8 @@ def do_softwarechannel_sync(self, args):
 
     if source_only or target_only:
         print "summary:"
-        print "  " + source_channel + ": " + str(len(source_ids)
-                                                 ).rjust(5), "packages"
-        print "  " + target_channel + ": " + str(len(target_ids)
-                                                 ).rjust(5), "packages"
+        print "  " + source_channel + ": " + str(len(source_ids)).rjust(5), "packages"
+        print "  " + target_channel + ": " + str(len(target_ids)).rjust(5), "packages"
         print "    add   ", str(
             len(source_only)).rjust(5), "packages to  ", target_channel
         print "    remove", str(
@@ -1813,8 +1811,8 @@ def do_softwarechannel_errata_sync(self, args):
     if not self.check_softwarechannel(target_channel):
         return
 
-    logging.info("syncing errata from softwarechannel "+source_channel +
-                 " to "+target_channel)
+    logging.info("syncing errata from softwarechannel " + source_channel +
+                 " to " + target_channel)
 
     source_errata = self.client.channel.software.listErrata(
         self.session, source_channel)
@@ -1863,10 +1861,8 @@ def do_softwarechannel_errata_sync(self, args):
 
     if source_only or target_only:
         print "summary:"
-        print "  " + source_channel + ": " + str(len(source_ids)
-                                                 ).rjust(5), "errata"
-        print "  " + target_channel + ": " + str(len(target_ids)
-                                                 ).rjust(5), "errata"
+        print "  " + source_channel + ": " + str(len(source_ids)).rjust(5), "errata"
+        print "  " + target_channel + ": " + str(len(target_ids)).rjust(5), "errata"
         print "    add   ", str(
             len(source_only)).rjust(5), "errata to  ", target_channel
         print "    remove", str(
@@ -2079,6 +2075,3 @@ def do_softwarechannel_mirrorpackages(self, args):
             except IOError:
                 logging.error("Could not fetch package %s from channel %s" %
                               (package_file, channel))
-
-
-# vim:ts=4:expandtab:

@@ -34,7 +34,7 @@ import sys
 import time
 import urlparse
 import rhnpush_confmanager
-from rhn.connections import idn_ascii_to_pune
+from rhn.connections import idn_ascii_to_puny
 
 from optparse import Option, OptionParser
 from rhn import rpclib
@@ -52,7 +52,6 @@ RPMTAG_NOSOURCE = 1051
 
 def main():
     # Initialize a command-line processing object with a table of options
-    # pylint: disable=C0301
     optionsTable = [
         Option('-v', '--verbose', action='count', help='Increase verbosity',
                default=0),
@@ -104,7 +103,6 @@ def main():
                help='If rhnpush errors while uploading a package, continue uploading the rest of the packages.'),
         Option('--ca-chain', action='store', help='alternative SSL CA Cert')
     ]
-    # pylint: enable=C0301
 
     # Having to maintain a store_true list is ugly. I'm trying to get rid of this.
     true_list = ['usage', 'test', 'source', 'header', 'nullorg', 'newest',
@@ -122,7 +120,7 @@ def main():
         sys.exit(0)
 
     if options.proxy:
-        options.proxy = idn_ascii_to_pune(options.proxy)
+        options.proxy = idn_ascii_to_puny(options.proxy)
 
     if options.list:
         if not options.channel:
@@ -181,7 +179,7 @@ class UploadClass(uploadLib.UploadClass):
         self.url_v2 = None
 
     def setURL(self):
-        server = idn_ascii_to_pune(self.options.server)
+        server = idn_ascii_to_puny(self.options.server)
         if server is None:
             self.die(1, "Required parameter --server not supplied")
         scheme, netloc, path, params, query, fragment = tupleify_urlparse(

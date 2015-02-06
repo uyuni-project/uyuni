@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.130
+Version: 2.3.139
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -540,8 +540,16 @@ rm -rf $RPM_BUILD_ROOT
 # on Fedora 19 some jars are named differently
 %if 0%{?fedora}
 mkdir -p $RPM_BUILD_ROOT%{_javadir}
-ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
+[[ -f %{_javadir}/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
+[[ -f %{_javadir}/mchange-commons/mchange-commons-java.jar ]] && ln -s -f %{_javadir}/mchange-commons/mchange-commons-java.jar $RPM_BUILD_ROOT%{_javadir}/mchange-commons.jar
 ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/jboss-logging.jar
+# create missing symlinks on fedora21
+%if 0%{?fedora} >= 21
+ ln -s -f %{_javadir}/hibernate-jpa-2.0-api/hibernate-jpa-2.0-api.jar $RPM_BUILD_ROOT%{_javadir}/hibernate-jpa-2.0-api.jar
+ ln -s -f %{_javadir}/c3p0/c3p0.jar $RPM_BUILD_ROOT%{_javadir}/c3p0.jar
+ ln -s -f %{_javadir}/concurrent/concurrent.jar $RPM_BUILD_ROOT%{_javadir}/concurrent.jar
+%endif
+
 %endif
 
 %if  0%{?rhel} && 0%{?rhel} < 6
@@ -593,6 +601,13 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 %if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
+%endif
+%if 0%{?fedora} && 0%{?fedora} >= 21
+echo "wrapper.java.classpath.28=/usr/share/java/log4j-1.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%else
+echo "wrapper.java.classpath.28=/usr/share/java/log4j.jar" >> conf/default/rhn_taskomatic_daemon.conf
+%endif
+%if 0%{?fedora}
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
 wrapper.java.classpath.62=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
 wrapper.java.classpath.63=/usr/share/java/hibernate3/hibernate-c3p0-3.jar
@@ -779,7 +794,7 @@ fi
 # and wildcards (except non-symlink velocity)
 %{jardir}/antlr.jar
 %{jardir}/bcel.jar
-%{jardir}/c3p0.jar
+%{jardir}/c3p0*.jar
 %{jardir}/cglib.jar
 %{jardir}/commons-beanutils.jar
 %{jardir}/commons-cli.jar
@@ -794,7 +809,7 @@ fi
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
 %{jardir}/*commons-validator.jar
-%{jardir}/concurrent.jar
+%{jardir}/concurrent*.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
 %{jardir}/google-gson.jar
@@ -802,10 +817,10 @@ fi
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
 %{jardir}/*_hibernate-commons-annotations.jar
-%{jardir}/hibernate-jpa-2.0-api.jar
+%{jardir}/hibernate-jpa-2.0-api*.jar
 %{jardir}/javassist.jar
 %{jardir}/slf4j_api.jar
-%{jardir}/slf4j_log4j12.jar
+%{jardir}/slf4j_log4j12*.jar
 %endif
 %if 0%{?suse_version}
 %{jardir}/ehcache.jar
@@ -814,18 +829,20 @@ fi
 %{_javadir}/mchange-commons.jar
 %{_javadir}/jboss-logging.jar
 %{jardir}/*jboss-logging.jar
+
+%if 0%{?fedora} >= 21
+%{_javadir}/c3p0.jar
+%{_javadir}/concurrent.jar
+%{_javadir}/hibernate-jpa-2.0-api.jar
+%endif
+
 %endif
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
-%{jardir}/jcommon.jar
+%{jardir}/jcommon*.jar
 %{jardir}/jdom.jar
 %{jardir}/jta.jar
 %{jardir}/log4j*.jar
-
-%if 0%{?fedora}
-%{jardir}/mchange-commons.jar
-%endif
-
 %{jardir}/oro.jar
 %{jardir}/quartz.jar
 %{jardir}/redstone-xmlrpc-client.jar
@@ -954,6 +971,55 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Feb 05 2015 Stephen Herr <sherr@redhat.com> 2.3.139-1
+- 1173731 - ErrataQueue shouldn't fail if server is subscribed to other org's
+  channel
+- New fast java errata clones need to enqueue notifications for taskomaitc
+  Without it things like auto-errata-updates never get scheduled
+- 1174652 - Don't dereference things that might be null, in SQL
+
+* Wed Feb 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.138-1
+- linking real files works much better
+- Documentation changes - fix name and refer to RFC.
+- Package_queries.xml system_available_packages: one more whitespace fix
+- Package_queries.xml system_available_packages: use comprehensible subquery
+  names
+- Package_queries.xml system_available_packages: use JOIN for join conditions,
+  WHERE for others
+- Package_queries.xml system_available_packages: normalize AS use
+- Package_queries.xml system_available_packages: fix indentation and spacing
+- Package_queries.xml system_available_packages: fix case
+
+* Fri Jan 30 2015 Stephen Herr <sherr@redhat.com> 2.3.137-1
+- 1173260 - avoid deadlock if you call mergePackages after mergeErrata
+- Make first letter uppercase as in rest of the UI
+- This is how button is called now
+
+* Wed Jan 28 2015 Tomas Lestach <tlestach@redhat.com> 2.3.136-1
+- fix wrong spec condition
+
+* Wed Jan 28 2015 Tomas Lestach <tlestach@redhat.com> 2.3.135-1
+- 1186355 - fixing typo
+- create missing jar symlinks (mainly for taskomatic)
+- let taskomatic link log4j-1.jar on fc21
+- Setting ts=4 is wrong
+
+* Wed Jan 28 2015 Tomas Lestach <tlestach@redhat.com> 2.3.134-1
+- fix mchange-commons issue on fc21
+
+* Tue Jan 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.133-1
+- fedora21 packages install the jars to custom directories
+- unify fedora specific files
+- fedora21 uses only the log4j-1 compatibility package
+
+* Mon Jan 26 2015 Stephen Herr <sherr@redhat.com> 2.3.132-1
+- 1180581 - make config file upload on FileDetails work
+
+* Mon Jan 26 2015 Tomas Lestach <tlestach@redhat.com> 2.3.131-1
+- remove nonlinux (solaris) entitlement
+- prevent NPE on activationkeys/Edit.do page
+- removing @Override annotations for methods that aren't overriden
+
 * Fri Jan 23 2015 Stephen Herr <sherr@redhat.com> 2.3.130-1
 - Fix "Select All" buttons display on rhn:list, make consistent with new
   rl:list

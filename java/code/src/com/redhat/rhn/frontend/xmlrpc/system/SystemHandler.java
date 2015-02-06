@@ -270,8 +270,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param_desc("string", "entitlementName", "One of:
      *          'enterprise_entitled', 'provisioning_entitled',
-     *          'nonlinux_entitled', 'virtualization_host', or
-     *          'virtualization_host_platform'.")
+     *          'virtualization_host', or 'virtualization_host_platform'.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int upgradeEntitlement(User loggedInUser, Integer sid, String entitlementLevel)
@@ -4573,7 +4572,7 @@ public class SystemHandler extends BaseHandler {
      * @param sid the host system id
      * @return list of VirtualSystemOverview objects
      *
-     * @xmlrpc.doc Lists the virtual guests for agiven virtual host
+     * @xmlrpc.doc Lists the virtual guests for a given virtual host
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param_desc("int", "sid", "the virtual host's id")
      * @xmlrpc.returntype

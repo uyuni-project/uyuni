@@ -374,10 +374,11 @@ def build_package_names(packages):
 def print_errata_summary(erratum):
     # Workaround - recent spacewalk lacks the "date" key
     # on some listErrata calls
-    if erratum.has_key('date'):
-        date_parts = erratum.get('date').split()
-    else:
-        date_parts = erratum.get('issue_date').split()
+    if erratum.get('date') is None:
+        erratum['date'] = erratum.get('issue_date')
+    if erratum['date'] is None:
+        erratum['date'] = "no_date"
+    date_parts = erratum['date'].split()
 
     if len(date_parts) > 1:
         erratum['date'] = date_parts[0]
@@ -748,8 +749,10 @@ def get_normalized_text(text, replacedict=None, excludes=None):
                     logging.debug("excluding line: " + line)
     return normalized_text
 
+
 def diff(source_data, target_data, source_channel, target_channel):
-    return list( unified_diff( source_data, target_data, source_channel, target_channel ) )
+    return list(unified_diff(source_data, target_data, source_channel, target_channel))
+
 
 def file_needs_b64_enc(self, contents):
     """Used to check if files (config files primarily) need base64 encoding
@@ -771,5 +774,3 @@ def file_needs_b64_enc(self, contents):
         import string
         translate_table = string.maketrans("", "")
         return float(len(contents.translate(translate_table, text_characters))) / len(contents) > 0.3
-
-# vim:ts=4:expandtab:
