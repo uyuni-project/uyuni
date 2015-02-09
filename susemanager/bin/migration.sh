@@ -8,6 +8,7 @@ WAIT_BETWEEN_STEPS=0
 MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
 MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
+MANAGER_COMPLETE_HOOK="/usr/lib/susemanager/hooks/suma_completehook.sh"
 
 SATELLITE_HOST=""
 SATELLITE_DOMAIN=""
@@ -669,7 +670,11 @@ if [ "$DO_SETUP" = "1" ]; then
     rm /tmp/changeorg.sql
 
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
-    echo "You can access SUSE Manager via https://`hostname -f`" > /etc/motd
+    if [ -f $MANAGER_COMPLETE_HOOK ]; then
+        $MANAGER_COMPLETE_HOOK
+    else
+        echo "You can access SUSE Manager via https://`hostname -f`" > /etc/motd
+    fi
 fi
 wait_step
 
