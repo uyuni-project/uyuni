@@ -28,6 +28,7 @@ BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
 BuildRequires: sm-client-tools
+Requires: susemanager-build-keys-web
 %endif
 BuildRequires: python
 Obsoletes: rhns-certs < 5.3.0
