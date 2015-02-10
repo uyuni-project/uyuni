@@ -94,6 +94,9 @@ class Authenticator(object):
 
         return self._token
 
+    def has_token(self):
+        return self._token is not None and len(self._token) > 0
+
     def has_credentials(self):
         return self.user and self.password
 

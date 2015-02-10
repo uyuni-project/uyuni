@@ -105,14 +105,22 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             self.log.error(msg)
             return 1
 
+        write_config = False
+
         # Ensure the latest valid token is saved to the local configuration
-        self.config.token = self.auth.token()
+        if self.auth.has_token():
+            self.config.token = self.auth.token()
+            write_config = True
+
         if options.store_credentials and self.auth.has_credentials():
             # Save user credentials only with explicitly asked by the user
             self.config.user = self.auth.user
             self.config.password = self.auth.password
+            write_config = True
 
-        self.config.write()
+        if write_config:
+            self.config.write()
+
         if options.store_credentials and self.auth.has_credentials():
             print("Credentials have been saved to the {0} file.".format(
                 self.config.dotfile))
@@ -151,8 +159,10 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
             elif 'product' in options.add_target:
                 self._add_products(mirror="")
         elif vars(options).has_key('refresh'):
-            self._refresh(enable_reposync=options.refresh_channels, mirror=options.mirror,
-                          schedule=options.schedule)
+            self.exit_with_error = not self._refresh(
+                enable_reposync=options.refresh_channels,
+                mirror=options.mirror,
+                schedule=options.schedule)
         elif vars(options).has_key('enable_scc'):
             if current_cc_backend() == BackendType.SCC:
                 self.log.info("The SUSE Customer Center (SCC) backend is already "
@@ -594,9 +604,11 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
     def _refresh(self, enable_reposync, mirror="", schedule=False):
         """
         Refresh the SCC data in the SUSE Manager database.
+
+        Returns True when the refresh operation completed successfully, False
+        otherwise.
         """
         self.log.info("Refreshing SCC data...")
-        token = self.auth.token()
         actions = (
             ("Channels             ", "synchronizeChannels"),
             ("Channel families     ", "synchronizeChannelFamilies"),
@@ -609,23 +621,18 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
 
         if hasISSMaster() or schedule:
-            client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
-            params = {}
-            params['noRepoSync'] = not enable_reposync
-
             try:
-                self.log.debug("Calling Taskomatic refresh with '{0}'".format(
-                    params))
-                client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
+                self._schedule_taskomatic_refresh(enable_reposync)
             except xmlrpclib.Fault, e:
                 self.log.error("Error scheduling refresh: {0}".format(e))
                 sys.stderr.write("Error scheduling refresh: {0}\n".format(e))
-                return
+                return False
             self.log.info("Refresh successfully scheduled")
             sys.stdout.write("Refresh successfully scheduled\n")
             sys.stdout.flush()
-            return
+            return True
 
+        token = self.auth.token()
         for operation, method in actions:
             sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
@@ -672,6 +679,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                             child.label))
                         self._schedule_channel_reposync(child.label)
         return True
+
+    def _schedule_taskomatic_refresh(self, enable_reposync):
+         client = xmlrpclib.Server(TASKOMATIC_XMLRPC_URL)
+         params = {}
+         params['noRepoSync'] = not enable_reposync
+
+         self.log.debug("Calling Taskomatic refresh with '{0}'".format(
+             params))
+         client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
 
     def _enable_scc(self, retry_on_session_failure=True):
         """ Enable the SCC backend """
