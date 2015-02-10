@@ -1900,11 +1900,6 @@ tree will not be usable for autoinstalling.
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;User Guide&lt;/a&gt;.</source>
       </trans-unit>
 
-      <!-- SCC Migration -->
-      <trans-unit id="message.sccmigrationavailable">
-            <source>You are currently connected to the Novell Customer Center (NCC). &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;Migrate&lt;/a&gt; to the new SUSE Customer Center (SCC) for the best customer experience.</source>
-      </trans-unit>
-
       <!-- Setup Wizard -->
       <trans-unit id="message.firstusercreated">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>

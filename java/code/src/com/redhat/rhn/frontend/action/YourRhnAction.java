@@ -30,7 +30,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 
-import com.redhat.rhn.manager.content.MgrSyncUtils;
 import org.apache.struts.action.*;
 
 import java.util.Arrays;
@@ -103,9 +102,6 @@ public class YourRhnAction extends RhnAction {
         pc.setStart(1);
         pc.setPageSize(5);
 
-        // Tell about SCC migration
-        remindSCCMigration(request);
-
         if (panes != null && panes.size() > 0) {
             anyListsSelected = true;
             for (Iterator iter = panes.keySet().iterator(); iter.hasNext();) {
@@ -117,15 +113,6 @@ public class YourRhnAction extends RhnAction {
         request.setAttribute(ANY_LISTS_SELECTED, Boolean.valueOf(anyListsSelected));
         request.setAttribute("legends", "yourrhn");
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-    }
-
-    private void remindSCCMigration(HttpServletRequest request) {
-        if (!MgrSyncUtils.isMigratedToSCC() && MgrSyncUtils.isSCCTheDefault()) {
-            ActionMessages messages = new ActionMessages();
-            messages.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("message.sccmigrationavailable"));
-            saveMessages(request, messages);
-        }
     }
 
     private String formatKey(String key) {
