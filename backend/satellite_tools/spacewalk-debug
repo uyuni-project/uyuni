@@ -25,13 +25,9 @@ fi
 
 BASE_DIR=/tmp
 IS_SUSE=0
-SCC=0
 MAX_LOG_AGE=10
 if [ -f /etc/SuSE-release ]; then
     IS_SUSE=1
-fi
-if [ -f /var/lib/spacewalk/scc/migrated ]; then
-    SCC=1
 fi
 
 usage() {
@@ -295,11 +291,7 @@ if [ -d /var/log/rhn/tasko/sat ] ; then
 fi
 
 if [ $IS_SUSE -eq 1 ]; then
-    if [ $SCC -eq 0 ]; then
-        echo "    * requesting NCC data"
-        mkdir -p $DIR/nccdata
-        /usr/sbin/mgr-ncc-sync -D $DIR/nccdata
-    elif [ -d "/var/lib/spacewalk/scc/scc-data" ]; then
+    if [ -d "/var/lib/spacewalk/scc/scc-data" ]; then
         echo  "    * copying SCC data"
         mkdir -p $DIR/sccdata
         IFS=$(echo -en "\n\b")
