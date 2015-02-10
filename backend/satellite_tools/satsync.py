@@ -47,7 +47,6 @@ from spacewalk.server.rhnSQL import SQLError, SQLSchemaError, SQLConnectError
 from spacewalk.server.rhnServer import satellite_cert
 from spacewalk.server.rhnLib import get_package_path
 from spacewalk.common import fileutils
-from spacewalk.common.suseLib import current_cc_backend, BackendType
 
 initCFG('server.satellite')
 initLOG(CFG.LOG_FILE, CFG.DEBUG)
@@ -70,10 +69,6 @@ from spacewalk.server.importlib.errataCache import schedule_errata_cache_update
 from spacewalk.server.importlib.importLib import InvalidChannelFamilyError
 from spacewalk.server.importlib.importLib import MissingParentChannelError
 from spacewalk.server.importlib.importLib import get_nevra, get_nevra_dict
-
-# pylint: disable=F0401
-# because of cycling deps we do not have this module installed
-from spacewalk.susemanager import mgr_ncc_sync_lib
 
 import satCerts
 import req_channels
@@ -115,8 +110,6 @@ class Runner:
         'suse-upgrade-paths': ['suse-products'],
         'suse-subscriptions': ['channel-families'],
         'cloned-channels': ['channels'],
-        # FIXME: remove old code
-        'suse-products-subscriptions': [''],
     }
 
     # The step hierarchy. We need access to it both for command line
@@ -143,8 +136,6 @@ class Runner:
         'suse-product-channels',
         'suse-upgrade-paths',
         'suse-subscriptions',
-        # FIXME: remove old code
-        'suse-products-subscriptions',
     ]
 
     def __init__(self):
@@ -186,14 +177,6 @@ class Runner:
         timeStart = time.time()
 
         actionDict, channels = processCommandline()
-
-        if current_cc_backend() == BackendType.SCC:
-            self.step_hierarchy.remove('suse-products-subscriptions')
-        else:
-            self.step_hierarchy.remove('suse-products')
-            self.step_hierarchy.remove('suse-product-channels')
-            self.step_hierarchy.remove('suse-upgrade-paths')
-            self.step_hierarchy.remove('suse-subscriptions')
 
         #5/24/05 wregglej - 156079 turn off an step's dependent steps if it's turned off.
         #look at self.step_precedence for a listing of how the steps are dependent on each other.
@@ -402,29 +385,6 @@ class Runner:
 
     def _step_suse_upgrade_paths(self):
         self.syncer.import_suse_upgrade_paths()
-
-    #FIXME: remove old code
-    def _step_suse_products_subscriptions(self):
-        try:
-            mountpoint = None
-            if self.syncer.mountpoint and os.path.isdir(self.syncer.mountpoint):
-                mountpoint = self.syncer.mountpoint
-            mgrsync = mgr_ncc_sync_lib.NCCSync(quiet=True, debug=CFG.DEBUG, fromdir=mountpoint)
-            log(1, ['', 'Update channel-families descriptions'])
-            mgrsync.update_channel_family_table_by_config()
-            log(1, ['', 'Update SUSE Products data'])
-            suse_products = mgrsync.get_suse_products_from_ncc()
-            mgrsync.update_suse_products_table(suse_products)
-            log(1, ['', 'Update subscriptions data'])
-            mgrsync.update_subscriptions()
-            log(1, ['', 'Linking products to channels'])
-            mgrsync.sync_suseproductchannel()
-            log(1, ['', 'Update upgrade path information'])
-            mgrsync.update_upgrade_pathes_by_config()
-        except Exception, e:
-            log(-1, ['    Failed:', "        %s" % str(e)])
-            sendMail()
-            return 1
 
     def _step_suse_subscriptions(self):
         self.syncer.import_suse_subscriptions()
