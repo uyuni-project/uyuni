@@ -40,8 +40,6 @@ class ActionDeps:
             'suse-upgrade-paths': ['suse-products'],
             'suse-subscriptions': ['channel-families'],
             'cloned-channels': ['channels'],
-            #FIXME: remove old code - when NCC is really dead
-            'suse-products-subscriptions': [''],
         }
 
         # self.step_hierarchy lists the export steps in the order they need to be run.
@@ -63,8 +61,6 @@ class ActionDeps:
             'suse-product-channels',
             'suse-upgrade-paths',
             'suse-subscriptions',
-            #FIXME: remove old code - when NCC is really dead
-            'suse-products-subscriptions'
         ]
         self.options = options
         self.action_dict = {'blacklists': 0}
