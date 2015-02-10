@@ -6,13 +6,6 @@
 
     Wizard::CreateDialog();
 
-    string customer_center = "susemanager_scc";
-    if (FileUtils::Exists ("/var/lib/spacewalk/scc/default_scc")) {
-       customer_center = "susemanager_scc";
-    } else {
-       customer_center = "susemanager_ncc";
-    }
-
     list dialog = [
 	"susemanager_reqs",
 	"susemanager_ask",
@@ -20,7 +13,7 @@
 	"susemanager_manager",
 	"susemanager_cert",
 	"susemanager_db",
-	customer_center,
+	"susemanager_scc",
 	"susemanager_write",
 	"susemanager_congratulate",
     ];
