@@ -191,6 +191,28 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
 
+    def test_refresh_never_ask_credentials_when_schedule_option_is_set(self):
+        """ Refresh with the 'schedule' option should just schedule the
+            operation. User credentials must not be asked.
+        """
+
+        options = get_options("refresh --schedule".split())
+        mock_execute_xmlrpc = MagicMock()
+        self.mgr_sync._execute_xmlrpc_method = mock_execute_xmlrpc
+        mock_reposync = MagicMock()
+        self.mgr_sync._schedule_channel_reposync = mock_reposync
+        mock_schedule_taskomatic_refresh = MagicMock()
+        self.mgr_sync._schedule_taskomatic_refresh = mock_schedule_taskomatic_refresh
+
+        with ConsoleRecorder() as recorder:
+            self.assertEqual(0, self.mgr_sync.run(options))
+
+        self.assertEqual(['Refresh successfully scheduled'], recorder.stdout)
+
+        self.assertTrue(mock_schedule_taskomatic_refresh.mock_calls)
+        self.assertFalse(mock_execute_xmlrpc.mock_calls)
+        self.assertFalse(mock_reposync.mock_calls)
+
     def test_refresh_should_not_trigger_reposync_when_there_is_an_error(self):
         """ The refresh action should not trigger a reposync when something
             went wrong during one of the refresh steps.

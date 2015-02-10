@@ -36,9 +36,14 @@ class MgrSyncTest(unittest.TestCase):
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
+
         self.fake_auth_token = "fake_token"
-        self.mgr_sync.auth.token = MagicMock(
-            return_value=self.fake_auth_token)
+        mock_connection = MagicMock()
+        mock_auth = MagicMock()
+        mock_connection.auth = mock_auth
+        mock_auth.login = MagicMock(return_value=self.fake_auth_token)
+        self.mgr_sync.auth.connection = mock_connection
+
         self.mgr_sync.config.write = MagicMock()
         self.mgr_sync.__init__logger = MagicMock(
             return_value=logger.Logger(3, "tmp.log"))
@@ -149,13 +154,15 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
         self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.mock_current_backend.return_value = BackendType.SCC
         self.mgr_sync._enable_scc = MagicMock()
-        self.mgr_sync._process_user_request = MagicMock(return_value=0)
         self.mgr_sync.config.token = "old token"
+        self.mgr_sync.auth.user = 'admin'
+        self.mgr_sync.auth.password = 'test'
+        self.mgr_sync._execute_xmlrpc_method = MagicMock(return_value=[])
 
         options = get_options("list channels".split())
-        self.assertEqual(0, self.mgr_sync.run(options))
+        with ConsoleRecorder():
+            self.assertEqual(0, self.mgr_sync.run(options))
         self.assertEqual(self.fake_auth_token, self.mgr_sync.config.token)
 
-        self.mgr_sync.auth.token.assert_called_once()
         self.mgr_sync.config.write.assert_called_once()
 
