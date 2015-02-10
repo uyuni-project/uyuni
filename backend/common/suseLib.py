@@ -33,11 +33,6 @@ from rhn.connections import idn_puny_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
 SYS_PROXY = "/etc/sysconfig/proxy"
-MASTER_SWITCH_FILE = "/var/lib/spacewalk/scc/migrated"
-
-class BackendType(str, Enum):
-    NCC = "NCC"
-    SCC = "SCC"
 
 class TransferException(Exception):
     """Transfer Error"""
@@ -145,14 +140,6 @@ def _curl_debug(mtype, text):
     else:
         log_debug(6, "%s: %s" % (mtype, text))
     return 0
-
-def current_cc_backend():
-    """ Returns an instance of `BackendType` """
-
-    if os.path.isfile(MASTER_SWITCH_FILE):
-        return BackendType.SCC
-    else:
-        return BackendType.NCC
 
 def send(url, sendData=None):
     """Connect to ncc and return the XML document as stringIO
