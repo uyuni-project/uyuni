@@ -63,12 +63,6 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if not self._is_scc_allowed():
-            msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
-            self.log.error(msg)
-            sys.stderr.write(msg)
-            return 1
-
         if hasISSMaster() and not vars(options).has_key('refresh'):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
@@ -710,5 +704,3 @@ class MgrSync(object):
 
         return False
 
-    def _is_scc_allowed(self):
-        return os.path.isfile("/var/lib/spacewalk/scc/default_scc")
