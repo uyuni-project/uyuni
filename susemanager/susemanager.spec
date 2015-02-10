@@ -40,7 +40,7 @@ setup tasks, re-installation, upgrades and managing.
 Summary:    SUSE Manager Tools
 Group:      Productivity/Other
 Requires:       suseRegisterInfo
-Requires:       sm-ncc-sync-data
+Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
