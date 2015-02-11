@@ -11,7 +11,6 @@
 #
 
 import os
-from enum import Enum
 
 try:
     from cStringIO import StringIO
