@@ -73,17 +73,6 @@ public class SCCConfigAction extends RhnAction {
         }
 
         public static void performMigration() throws SCCConfigException {
-            User user = new RequestContext(WebContextFactory.get().getHttpServletRequest())
-                    .getCurrentUser();
-            ensureSatAdmin(user);
-            ContentSyncManager manager = new ContentSyncManager();
-            try {
-                manager.performMigration(user);
-            }
-            catch (Exception e) {
-                logger.fatal(e.getMessage(), e);
-                throw new SCCConfigException(e.getLocalizedMessage());
-            }
         }
 
         public static void synchronizeChannels() throws SCCConfigException {
