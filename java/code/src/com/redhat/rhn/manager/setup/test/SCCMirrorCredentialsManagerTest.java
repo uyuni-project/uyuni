@@ -16,7 +16,6 @@ package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
-import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SCCMirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -24,7 +23,7 @@ import com.redhat.rhn.testing.TestUtils;
 import java.util.List;
 
 /**
- * Tests for {@link NCCMirrorCredentialsManager}.
+ * Tests for {@link SCCMirrorCredentialsManager}.
  */
 public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
