@@ -91,7 +91,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -318,18 +317,6 @@ public class ContentSyncManager {
     @SuppressWarnings("unchecked")
     public void addDirtyFixes(Collection<SCCProduct> products) {
         for (SCCProduct product : products) {
-            // make version numbering consistent
-            String version = product.getVersion();
-            if (version != null) {
-                Matcher spMatcher =
-                        Pattern.compile(".*SP([0-9]).*").matcher(product.getFriendlyName());
-                Matcher versionMatcher =
-                        Pattern.compile("([0-9]+)").matcher(product.getVersion());
-                if (spMatcher.matches() && versionMatcher.matches()) {
-                    product.setVersion(versionMatcher.group(1) + "." + spMatcher.group(1));
-                }
-            }
-
             // make naming consistent: strip arch or VMWARE suffix
             String friendlyName = product.getFriendlyName();
             List<PackageArch> archs =
@@ -955,6 +942,7 @@ public class ContentSyncManager {
      * @param products list of products
      */
     public void updateSUSEProducts(Collection<SCCProduct> products) {
+        Collection<SUSEProduct> processed = new LinkedList<SUSEProduct>();
         for (SCCProduct p : products) {
             // Create the channel family if it is not available
             String productClass = p.getProductClass();
@@ -996,7 +984,10 @@ public class ContentSyncManager {
                 product.setArch(pArch);
             }
             SUSEProductFactory.save(product);
+            processed.add(product);
         }
+
+        SUSEProductFactory.removeAllExcept(processed);
     }
 
     /**
