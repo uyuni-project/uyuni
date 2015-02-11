@@ -152,20 +152,14 @@ public class SetupWizardSessionCache {
         HttpSession session = request.getSession();
         Boolean ret = (Boolean) session.getAttribute(PROXY_STATUS_KEY);
 
-        // Ping NCC/SCC if refresh is enforced or status is unknown
+        // Ping SCC if refresh is enforced or status is unknown
         if (forceRefresh || ret == null) {
-            if (MgrSyncUtils.isMigratedToSCC()) {
-                try {
-                    String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
-                    ret = MgrSyncUtils.verifyProxy(url);
-                }
-                catch (IOException e) {
-                    ret = false;
-                }
+            try {
+                String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
+                ret = MgrSyncUtils.verifyProxy(url);
             }
-            else {
-                NCCClient client = new NCCClient();
-                ret = client.ping();
+            catch (IOException e) {
+                ret = false;
             }
 
             // Put validation status in cache
