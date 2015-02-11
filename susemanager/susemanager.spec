@@ -153,7 +153,6 @@ chown root.root /etc/sysconfig
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
 %attr(0755,root,root) %{_sbindir}/mgr-sync
 %{pythonsmroot}/susemanager/__init__.py*
-%{pythonsmroot}/susemanager/mgr_register.py*
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/mgr_delete_patch.py*
 %{pythonsmroot}/susemanager/authenticator.py*

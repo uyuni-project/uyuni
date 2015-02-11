@@ -8,7 +8,7 @@ TOP     = ..
 SUBDIR		= susemanager
 
 SPACEWALK_FILES		= __init__ \
-			mgr_register mgr_clean_old_patchnames \
+			mgr_clean_old_patchnames \
 			mgr_delete_patch \
 			authenticator \
 			content_sync_helper \
