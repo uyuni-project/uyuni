@@ -1,8 +1,12 @@
 # Copyright (c) 2014 SUSE
 # Licensed under the terms of the MIT license.
 
-When /^I execute ncc\-sync "([^"]*)"$/ do |arg1|
-  $command_output = sshcmd("mgr-ncc-sync #{arg1}")[:stdout]
+When /^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/ do |arg1, u, p|
+    $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
+end
+
+When /^I execute mgr\-sync "([^"]*)"$/ do |arg1|
+  $command_output = sshcmd("mgr-sync #{arg1}")[:stdout]
 end
 
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
