@@ -382,60 +382,30 @@ sub setup_cc {
   my $opts = shift;
   my $answers = shift;
 
-  if (! ($opts{"ncc"} || $opts{"scc"}))
+  if (! $opts{"scc"})
   {
     # no customer center connection wanted
-    $answers{'setup-ncc'} = 'N';
     $answers{'setup-scc'} = 'N';
     return;
   }
   $opts{disconnected} = 1;
-  if ($opts{"ncc"})
-  {
-      $answers{'setup-ncc'} = 'Y';
-      $answers{'setup-scc'} = 'N';
-      Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
-          -question => "NCC Mirror Credential Username",
-          -test => sub { my $text = shift;
-                         return $text =~ /\S+/ && length($text) <= 128 },
-          -answer => \$answers{'ncc-user'});
+  $answers{'setup-scc'} = 'Y';
+  Spacewalk::Setup::ask(
+      -noninteractive => $opts{"non-interactive"},
+      -question => "SCC Organization Credential Username",
+      -test => sub { my $text = shift;
+                     return $text =~ /\S+/ && length($text) <= 128 },
+      -answer => \$answers{'scc-user'});
 
-      Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
-          -question => "NCC Mirror Credential Password",
-          -test => sub { my $text = shift;
-                         return $text =~ /\S+/ && length($text) <= 128 },
-          -answer => \$answers{'ncc-pass'},
-          -password => 1);
-
-      Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
-          -question => "NCC Email Address",
-          -test => sub { my $text = shift;
-              valid_multiple_email($text) && length($text) <= 128 },
-          -answer => \$answers{'ncc-email'});
-  }
-  else
-  {
-      $answers{'setup-scc'} = 'Y';
-      $answers{'setup-ncc'} = 'N';
-      Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
-          -question => "SCC Mirror Credential Username",
-          -test => sub { my $text = shift;
-                         return $text =~ /\S+/ && length($text) <= 128 },
-          -answer => \$answers{'scc-user'});
-
-      Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
-          -question => "SCC Mirror Credential Password",
-          -test => sub { my $text = shift;
-                         return $text =~ /\S+/ && length($text) <= 128 },
-          -answer => \$answers{'scc-pass'},
-          -password => 1);
-  }
+  Spacewalk::Setup::ask(
+      -noninteractive => $opts{"non-interactive"},
+      -question => "SCC Organization Credential Password",
+      -test => sub { my $text = shift;
+                     return $text =~ /\S+/ && length($text) <= 128 },
+      -answer => \$answers{'scc-pass'},
+      -password => 1);
 }
+
 sub setup_sudoers {
   Spacewalk::Setup::system_or_exit(['/usr/bin/spacewalk-setup-sudoers', ''], 1,
     'Could not setup sudo for Spacewalk commands.');
@@ -1055,16 +1025,7 @@ sub populate_initial_configs {
     }
   }
 
-  if ($answers->{'setup-ncc'} && $answers->{'setup-ncc'} =~ /^[Yy]/)
-  {
-      $rhnopt{'server.susemanager.mirrcred_user'}  = $answers->{'ncc-user'};
-      $rhnopt{'server.susemanager.mirrcred_pass'}  = $answers->{'ncc-pass'};
-      $rhnopt{'server.susemanager.mirrcred_email'} = $answers->{'ncc-email'};
-      $config_opts{'serverDOTsusemanagerDOTmirrcred_email'} = $answers->{'ncc-email'};
-      $config_opts{'serverDOTsusemanagerDOTmirrcred_user'} = $answers->{'ncc-user'};
-      $config_opts{'serverDOTsusemanagerDOTmirrcred_pass'} = $answers->{'ncc-pass'};
-  }
-  elsif ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
+  if ($answers->{'setup-scc'} && $answers->{'setup-scc'} =~ /^[Yy]/)
   {
       my %mgrDefaults = ();
       if (-e Spacewalk::Setup::DEFAULT_SUSEMANAGER_CONF)
@@ -1087,9 +1048,9 @@ sub populate_initial_configs {
                                        1, "*** Setup Mirror Credentials failed.");
 
       my $apache_gid = getgrnam('www');
-      if ($apache_gid && -e Spacewalk::Setup::NCC_CREDENTIAL_FILE) {
-          chown -1, $apache_gid, Spacewalk::Setup::NCC_CREDENTIAL_FILE;
-          chmod 0640, Spacewalk::Setup::NCC_CREDENTIAL_FILE;
+      if ($apache_gid && -e Spacewalk::Setup::SCC_CREDENTIAL_FILE) {
+          chown -1, $apache_gid, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
+          chmod 0640, Spacewalk::Setup::SCC_CREDENTIAL_FILE;
       }
   }
   Spacewalk::Setup::write_config( \%rhnopt,
