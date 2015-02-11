@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 11 09:05:01 CET 2015 - mc@suse.de
+
+- version 2.1.17-1
+- mgr-sync: never ask for user credentials when scheduling a refresh
+
+-------------------------------------------------------------------
 Tue Feb 03 11:49:13 CET 2015 - mc@suse.de
 
 - version 2.1.16-1
