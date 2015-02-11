@@ -576,16 +576,10 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(self.reposync.CFG.get.called)
         self.assertEqual(url['source_url'], "http://example.com")
 
-    def test_set_repo_credentials_default_credentials(self):
+    def test_set_repo_credentials_old_default_credentials_bad(self):
         url = {'source_url': "http://example.com/?credentials=testcreds"}
         rs = self._create_mocked_reposync()
-
-        self.reposync.CFG.get.return_value = "TEST"
-        rs.set_repo_credentials(url)
-
-        self.assertEqual(self.reposync.CFG.get.call_args_list,
-                         [(('testcreds_user',), {}), (('testcreds_pass',), {})])
-        self.assertEqual(url['source_url'], "http://TEST:TEST@example.com/")
+        self.assertRaises(SystemExit, rs.set_repo_credentials, url)
 
     def test_set_repo_credentials_bad_credentials(self):
         rs = self._init_reposync()
@@ -600,14 +594,10 @@ class RepoSyncTest(unittest.TestCase):
     def test_set_repo_credentials_number_credentials(self):
         rs = self._create_mocked_reposync()
         url = {'source_url': "http://example.com/?credentials=testcreds_42"}
-        self.reposync.CFG.get.return_value = "TEST"
-
+        _mock_rhnsql(self.reposync, [{ 'username' : 'foo', 'password': 'c2VjcmV0' }])
         rs.set_repo_credentials(url)
 
-        self.assertEqual(self.reposync.CFG.get.call_args_list,
-                         [(('testcreds_user_42',), {}),
-                          (('testcreds_pass_42',), {})])
-        self.assertEqual(url['source_url'], "http://TEST:TEST@example.com/")
+        self.assertEqual(url['source_url'], "http://foo:secret@example.com/")
 
     def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
         """Initialize the RepoSync object with some mocked attrs"""
