@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.setup;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncException;
-import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import java.util.List;
 
@@ -34,8 +33,7 @@ public abstract class MirrorCredentialsManager {
      * @return instance of {@link MirrorCredentialsManager}
      */
     public static MirrorCredentialsManager createInstance() {
-        return MgrSyncUtils.isMigratedToSCC() ? new SCCMirrorCredentialsManager() :
-                new NCCMirrorCredentialsManager();
+        return new SCCMirrorCredentialsManager();
     }
 
     /**
