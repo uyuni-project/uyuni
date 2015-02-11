@@ -41,11 +41,7 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
-import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
-import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
@@ -62,7 +58,6 @@ import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1711,45 +1706,5 @@ public class ContentSyncManager {
 
         return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
                 getUUID());
-    }
-
-    /**
-     * Migrate this SUSE Manager server to work with SCC.
-     *
-     * @param user user (used to the deletion of mirror credentials)
-     * @throws ContentSyncException in case of an error
-     */
-    public void performMigration(User user) throws ContentSyncException {
-        // Clear relevant database tables
-        SUSEProductFactory.clearAllProducts();
-
-        // Migrate mirror credentials into the DB
-        MirrorCredentialsManager credsManager = new NCCMirrorCredentialsManager();
-        int id = 0;
-        for (MirrorCredentialsDto dto : credsManager.findMirrorCredentials()) {
-            // If we are an ISS slave, only remove the credentials
-            if (IssFactory.getCurrentMaster() == null) {
-                Credentials c = CredentialsFactory.createSCCCredentials();
-                c.setUsername(dto.getUser());
-                c.setPassword(dto.getPassword());
-                //  We identify the primary credentials by setting a URL
-                if (id == 0) {
-                    c.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
-                }
-                CredentialsFactory.storeCredentials(c);
-            }
-            id++;
-        }
-        for (long i = --id; id >= 0; id--) {
-            credsManager.deleteMirrorCredentials(i, user, null);
-        }
-
-        // Touch file to indicate that server has been migrated
-        try {
-            FileUtils.touch(new File(MgrSyncUtils.SCC_MIGRATED));
-        }
-        catch (IOException e) {
-            throw new ContentSyncException(e);
-        }
     }
 }
