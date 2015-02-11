@@ -36,14 +36,13 @@
 - features/regressions.feature
 - features/check_support_data.feature
 - features/check_registration.feature
-- features/sp_migration.feature
 - features/erratapage.feature
 - features/lock_packages_on_client.feature
 - features/install_package.feature
 - features/install_errata-npn.feature
 - features/clone_channel-npn.feature
 - features/openscap_audit.feature
-- features/ncc-sync-channels.feature
+- features/scc-sync-channels.feature
 - features/systemspage2.feature
 - features/xmlrpc_system.feature
 - features/nagios.feature

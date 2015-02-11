@@ -11,7 +11,7 @@
 - features/system_configuration.feature
 - features/configuration.feature
 - features/add_system_to_conf.feature
-- features/ncc-sync-channels.feature
+- features/scc-sync-channels.feature
 - features/channels.feature
 - features/check_registration.feature
 - features/install_package.feature
