@@ -24,7 +24,6 @@ public class MirrorCredentialsDto extends BaseDto {
     private Long id;
     private String user;
     private String password;
-    private String email;
     private boolean primary = false;
 
     /**
@@ -36,24 +35,12 @@ public class MirrorCredentialsDto extends BaseDto {
     /**
      * Instantiates a new mirror credentials DTO.
      *
-     * @param emailIn the email
-     * @param userIn the user
-     * @param passwordIn the password
-     */
-    public MirrorCredentialsDto(String emailIn, String userIn, String passwordIn) {
-        this.setEmail(emailIn);
-        this.setUser(userIn);
-        this.setPassword(passwordIn);
-    }
-
-    /**
-     * Instantiates a new mirror credentials DTO without email address.
-     *
      * @param userIn the user
      * @param passwordIn the password
      */
     public MirrorCredentialsDto(String userIn, String passwordIn) {
-        this(null, userIn, passwordIn);
+        this.setUser(userIn);
+        this.setPassword(passwordIn);
     }
 
     /**
@@ -101,20 +88,6 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param emailIn the email to set
-     */
-    public void setEmail(String emailIn) {
-        this.email = emailIn;
-    }
-
-    /**
      * @return the primary
      */
     public boolean isPrimary() {
@@ -135,7 +108,6 @@ public class MirrorCredentialsDto extends BaseDto {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((password == null) ? 0 : password.hashCode());
         result = prime * result + ((user == null) ? 0 : user.hashCode());
         return result;
@@ -156,14 +128,6 @@ public class MirrorCredentialsDto extends BaseDto {
             return false;
         }
         MirrorCredentialsDto other = (MirrorCredentialsDto) obj;
-        if (email == null) {
-            if (other.email != null) {
-                return false;
-            }
-        }
-        else if (!email.equals(other.email)) {
-            return false;
-        }
         if (password == null) {
             if (other.password != null) {
                 return false;

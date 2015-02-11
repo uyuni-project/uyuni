@@ -6,19 +6,17 @@ var deleteId;
 var subscriptionsId;
 
 // Init modal to edit credentials
-function initEdit(id, email, user) {
+function initEdit(id, user) {
   console.log("initEdit(): " + id);
   editId = id;
-  $('#edit-email').val(email);
   $('#edit-user').val(user);
   $('#edit-password').val("");
 }
 
 // Init modal to delete credentials
-function initDelete(id, email, user) {
+function initDelete(id, user) {
   console.log("initDelete(): " + id);
   deleteId = id;
-  $('#delete-email').text(email);
   $('#delete-user').text(user);
 }
 
@@ -40,11 +38,10 @@ function hideModal() {
 // Save credentials from edit dialog
 function saveCredentials() {
   console.log("Saving credentials: " + editId);
-  var email = $('#edit-email').val();
   var user = $('#edit-user').val();
   var password = $('#edit-password').val();
   showSpinner("edit-credentials-spinner");
-  MirrorCredentialsRenderer.saveCredentials(editId, email, user, password,
+  MirrorCredentialsRenderer.saveCredentials(editId, user, password,
       makeRendererHandler("listset-container", false));
 }
 
@@ -73,7 +70,7 @@ function verifyCredentials(id, refresh) {
 $(document).ready(function() {
   // Clear input fields whenever the edit modal is hidden
   $('#modal-edit-credentials').on('hidden.bs.modal', function() {
-    initEdit("", "", "");
+    initEdit("", "");
   });
 
   // Load subscriptions when modal is shown

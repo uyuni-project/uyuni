@@ -22,12 +22,6 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
-                            <div class="form-group <c:if test="${migratedToSCC}">hidden</c:if>">
-                                <label for="modal-email" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
-                                <div class="col-sm-10">
-                                    <input type="email" class="form-control" autocomplete="off" id="edit-email" placeholder="Email">
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
@@ -61,12 +55,6 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.email" />:</label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-static" id="delete-email"></p>
-                                </div>
-                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
