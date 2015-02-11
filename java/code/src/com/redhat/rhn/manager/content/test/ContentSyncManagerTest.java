@@ -421,12 +421,14 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testUpdateSUSEProductChannels() throws Exception {
         // Setup a product in the database
         Channel channel = SUSEProductTestUtils.createTestVendorChannel();
-        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct();
+        ChannelFamily family = channel.getChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
         MgrSyncProduct mgrSyncProduct = new MgrSyncProduct();
         mgrSyncProduct.setId(product.getProductId());
 
         // Create a channel belonging to that product and assume it's available
         MgrSyncChannel c1 = new MgrSyncChannel();
+        c1.setFamily(family.getLabel());
         c1.setLabel(channel.getLabel());
         List<MgrSyncProduct> productList = new ArrayList<MgrSyncProduct>();
         productList.add(mgrSyncProduct);
@@ -536,34 +538,35 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // Prepare products since they will be looked up
+            ChannelFamily family = ChannelFamilyFactoryTest.createTestChannelFamily();
             SUSEProduct p;
             if (SUSEProductFactory.lookupByProductId(690) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(690);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(814) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(814);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(1001) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(1001);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(1119) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(1119);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(1193) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(1193);
                 TestUtils.saveAndFlush(p);
             }
             if (SUSEProductFactory.lookupByProductId(1198) == null) {
-                p = SUSEProductTestUtils.createTestSUSEProduct();
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
                 p.setProductId(1198);
                 TestUtils.saveAndFlush(p);
             }
@@ -649,7 +652,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         ChannelFamily availableChannelFamily = availableDBChannel.getChannelFamily();
         availableChannelFamily.setOrg(null);
         final SUSEProduct availableDBProduct =
-                SUSEProductTestUtils.createTestSUSEProduct();
+                SUSEProductTestUtils.createTestSUSEProduct(availableChannelFamily);
 
         // create one available product in channel.xml format
         final MgrSyncChannel availableChannel = new MgrSyncChannel();
@@ -673,7 +676,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             pcf.setMaxMembers(0L);
         }
         final SUSEProduct unavailableDBProduct =
-                SUSEProductTestUtils.createTestSUSEProduct();
+                SUSEProductTestUtils.createTestSUSEProduct(unavailableChannelFamily);
 
         // create one unavailable product in channel.xml format
         final MgrSyncChannel unavailableChannel = new MgrSyncChannel();
@@ -719,7 +722,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel installedDBChannel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily installedChannelFamily = installedDBChannel.getChannelFamily();
         installedChannelFamily.setOrg(null);
-        final SUSEProduct installedDBProduct = SUSEProductTestUtils.createTestSUSEProduct();
+        final SUSEProduct installedDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(installedChannelFamily);
 
         // create one installed product in channel.xml format
         final MgrSyncChannel installedChannel = new MgrSyncChannel();
@@ -737,7 +741,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         ChannelFamily availableChannelFamily =
                 ChannelFamilyFactoryTest.createTestChannelFamily();
         availableChannelFamily.setOrg(null);
-        final SUSEProduct availableDBProduct = SUSEProductTestUtils.createTestSUSEProduct();
+        final SUSEProduct availableDBProduct =
+                SUSEProductTestUtils.createTestSUSEProduct(availableChannelFamily);
 
         // create one available product in channel.xml format
         final MgrSyncChannel availableChannel = new MgrSyncChannel();
