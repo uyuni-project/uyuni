@@ -538,8 +538,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/server/rhnUser.py*
 %{pythonrhnroot}/server/rhnVirtualization.py*
 %{pythonrhnroot}/server/taskomatic.py*
-%{pythonrhnroot}/server/mgrSync.py*
-%{pythonrhnroot}/server/repoindexHandler.py*
 %{pythonrhnroot}/server/suseEula.py*
 %dir %{pythonrhnroot}/server/rhnServer
 %{pythonrhnroot}/server/rhnServer/*
