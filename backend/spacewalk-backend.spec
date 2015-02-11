@@ -44,7 +44,6 @@ BuildRequires: python-mock
 BuildRequires: python-unittest2
 %endif
 BuildRequires: yum
-BuildRequires: suseRegisterInfo
 
 %else
 BuildRequires: python-hashlib
