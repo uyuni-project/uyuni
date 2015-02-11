@@ -190,7 +190,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     public void testFindSUSEProductChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProduct();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
         ChannelProduct channelProduct1 = createTestChannelProduct();
         ChannelProduct channelProduct2 = createTestChannelProduct();
         // Create channels
@@ -239,7 +239,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     public void testUnsyncedProductChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProduct();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
         ChannelProduct channelProduct1 = createTestChannelProduct();
         // Create channels
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct1);
@@ -260,11 +260,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      */
     public void testFindAllSourceProducts() throws Exception {
         // Create test products
-        SUSEProduct sles10sp2 = createTestSUSEProduct();
-        SUSEProduct sles10sp3 = createTestSUSEProduct();
-        SUSEProduct sles10sp4 = createTestSUSEProduct();
-        SUSEProduct sles11sp1 = createTestSUSEProduct();
-        SUSEProduct sles11sp2 = createTestSUSEProduct();
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct sles10sp2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles10sp3 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles10sp4 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles11sp1 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles11sp2 = createTestSUSEProduct(channelFamily);
         createTestSUSEUpgradePath(sles10sp2, sles10sp3);
         createTestSUSEUpgradePath(sles10sp3, sles10sp4);
         createTestSUSEUpgradePath(sles11sp1, sles11sp2);
@@ -299,11 +300,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
      */
     public void testFindAllTargetProducts() throws Exception {
         // Create test products
-        SUSEProduct sles10sp2 = createTestSUSEProduct();
-        SUSEProduct sles10sp3 = createTestSUSEProduct();
-        SUSEProduct sles10sp4 = createTestSUSEProduct();
-        SUSEProduct sles11sp1 = createTestSUSEProduct();
-        SUSEProduct sles11sp2 = createTestSUSEProduct();
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct sles10sp2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles10sp3 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles10sp4 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles11sp1 = createTestSUSEProduct(channelFamily);
+        SUSEProduct sles11sp2 = createTestSUSEProduct(channelFamily);
         createTestSUSEUpgradePath(sles10sp2, sles10sp3);
         createTestSUSEUpgradePath(sles10sp3, sles10sp4);
         createTestSUSEUpgradePath(sles11sp1, sles11sp2);
@@ -363,7 +365,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     public void testPopulateCVEServerChannels() throws Exception {
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProduct();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
         ChannelProduct channelProduct = createTestChannelProduct();
         // Create channels
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct);
@@ -375,7 +377,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEProductChannel(childChannel2, product);
 
         // Setup a next SP product for verifying SP migrations
-        SUSEProduct productNextSP = createTestSUSEProduct();
+        SUSEProduct productNextSP = createTestSUSEProduct(channelFamily);
         createTestSUSEUpgradePath(product, productNextSP);
         // Create channels
         ChannelProduct channelProductNextSP = createTestChannelProduct();
@@ -388,7 +390,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEProductChannel(childChannelNextSP, productNextSP);
 
         // Setup a previous SP of the installed product
-        SUSEProduct productPrevSP = createTestSUSEProduct();
+        SUSEProduct productPrevSP = createTestSUSEProduct(channelFamily);
         createTestSUSEUpgradePath(productPrevSP, product);
         // Create channels
         ChannelProduct channelProductPrevSP = createTestChannelProduct();
@@ -615,7 +617,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         // Create a product
         ChannelFamily channelFamily = createTestChannelFamily();
-        SUSEProduct product = createTestSUSEProduct();
+        SUSEProduct product = createTestSUSEProduct(channelFamily);
         ChannelProduct channelProduct = createTestChannelProduct();
         // Create channels for the product
         Channel baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct);
