@@ -37,7 +37,7 @@ public class NCCClientTest extends RhnBaseTestCase {
      */
     public void testDownloadSubscriptions() throws Exception {
         final MirrorCredentialsDto cred =
-                new MirrorCredentialsDto("fpp@doamin.com", "lala", "ala");
+                new MirrorCredentialsDto("lala", "ala");
 
         HttpServerMock serverMock = new HttpServerMock();
         URI uri = serverMock.getURI();

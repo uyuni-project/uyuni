@@ -1939,9 +1939,6 @@ tree will not be usable for autoinstalling.
       <trans-unit id="mirror-credentials.jsp.password">
         <source>Password</source>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.email">
-        <source>Email</source>
-      </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions">
         <source>Actions</source>
       </trans-unit>

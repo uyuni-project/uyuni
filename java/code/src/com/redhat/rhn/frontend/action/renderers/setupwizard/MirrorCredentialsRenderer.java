@@ -22,6 +22,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.SubscriptionDto;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
@@ -58,40 +59,37 @@ public class MirrorCredentialsRenderer {
     /**
      * Add or edit pair of credentials and re-render the whole list.
      * @param id ID of the credential to edit or null for new mirror credential
-     * @param email email address to set
      * @param user username for new credentials
      * @param password password for new credentials
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
      */
-    public String saveCredentials(Long id, String email, String user, String password)
+    public String saveCredentials(Long id, String user, String password)
         throws ServletException, IOException, ContentSyncException {
         // Find the current user
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
         RequestContext rhnContext = new RequestContext(request);
         User webUser = rhnContext.getCurrentUser();
-        // TODO: Handle expired sessions here, i.e. check if that user is logged in.
-        // Otherwise get the current user in SetupWizardManager.
 
         MirrorCredentialsDto creds;
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
         if (id != null) {
             // Save an existing pair of credentials
             creds = credsManager.findMirrorCredentials(id);
-            creds.setEmail(email);
+
             // User and password are mandatory, but can be left unchanged
-            if (user != null && !user.isEmpty()) {
+            if (!StringUtils.isBlank(user)) {
                 creds.setUser(user);
             }
-            if (password != null && !password.isEmpty()) {
+            if (!StringUtils.isBlank(password)) {
                 creds.setPassword(password);
             }
         }
         else {
             // Add a new pair of credentials
-            creds = new MirrorCredentialsDto(email, user, password);
+            creds = new MirrorCredentialsDto(user, password);
         }
 
         if (logger.isDebugEnabled()) {
