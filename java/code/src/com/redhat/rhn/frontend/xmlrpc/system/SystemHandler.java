@@ -4942,7 +4942,7 @@ public class SystemHandler extends BaseHandler {
 
     /**
      * Creates a cobbler system record for a system that is not (yet) registered.
-     * @param sessionKey session
+     * @param loggedInUser the currently logged in user
      * @param sysName server name
      * @param ksLabel kickstart profile label
      * @param kOptions kernel options
@@ -4966,10 +4966,9 @@ public class SystemHandler extends BaseHandler {
      *      #array_end()
      * @xmlrpc.returntype #return_int_success()
      */
-    public int createSystemRecord(String sessionKey, String sysName, String ksLabel,
+    public int createSystemRecord(User loggedInUser, String sysName, String ksLabel,
             String kOptions, String comment, List<HashMap<String, String>> netDevices) {
         // Determine the user and lookup the kickstart profile
-        User loggedInUser = getLoggedInUser(sessionKey);
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
 
         // Create a server object
@@ -5572,7 +5571,7 @@ public class SystemHandler extends BaseHandler {
      * the system accordingly. Any additional optional channels can be subscribed by
      * providing their labels.
      *
-     * @param sessionKey User's session key
+     * @param loggedInUser the currently logged in user
      * @param sid ID of the server
      * @param baseChannelLabel label of the target base channel
      * @param optionalChildChannels labels of optional child channels to subscribe
@@ -5593,14 +5592,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public Long scheduleSPMigration(String sessionKey, Integer sid, String baseChannelLabel,
+    public Long scheduleSPMigration(User loggedInUser, Integer sid, String baseChannelLabel,
             List<String> optionalChildChannels, boolean dryRun, Date earliest) {
-        User user = getLoggedInUser(sessionKey);
-
         // Perform checks on the server
         Server server = null;
         try {
-            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), loggedInUser);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
@@ -5611,7 +5608,7 @@ public class SystemHandler extends BaseHandler {
         optionalChildChannels.add(baseChannelLabel);
         try {
             channelIDs =
-                    DistUpgradeManager.performChannelChecks(optionalChildChannels, user);
+              DistUpgradeManager.performChannelChecks(optionalChildChannels, loggedInUser);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
@@ -5621,7 +5618,7 @@ public class SystemHandler extends BaseHandler {
         SUSEProductSet installedProducts = server.getInstalledProducts();
         ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
         List<SUSEProductSet> targets = DistUpgradeManager.getTargetProductSets(
-                installedProducts, arch, user);
+                installedProducts, arch, loggedInUser);
         if (targets.size() > 0) {
             SUSEProductSet targetProducts = targets.get(0);
 
@@ -5634,17 +5631,17 @@ public class SystemHandler extends BaseHandler {
                 for (EssentialChannelDto channel : channels) {
                     channelIDs.add(channel.getId());
                 }
-                return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
                         targetProducts, channelIDs, dryRun, earliest);
             }
 
             // Consider alternatives (cloned channel trees)
             Map<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.
-                    getAlternatives(targetProducts, arch, user);
+                    getAlternatives(targetProducts, arch, loggedInUser);
             for (ClonedChannel clonedBaseChannel : alternatives.keySet()) {
                 if (clonedBaseChannel.getLabel().equals(baseChannelLabel)) {
                     channelIDs.addAll(alternatives.get(clonedBaseChannel));
-                    return DistUpgradeManager.scheduleDistUpgrade(user, server,
+                    return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server,
                             targetProducts, channelIDs, dryRun, earliest);
                 }
             }
@@ -5663,7 +5660,7 @@ public class SystemHandler extends BaseHandler {
      * know what you are doing! Make sure that the list of channel labels is complete and
      * in any case do a dry run before scheduling an actual dist upgrade.
      *
-     * @param sessionKey User's session key
+     * @param loggedInUser the currently logged in user
      * @param sid ID of the server
      * @param channels labels of channels to subscribe to
      * @param dryRun set to true to perform a dry run
@@ -5682,14 +5679,12 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("dateTime.iso8601",  "earliest")
      * @xmlrpc.returntype int actionId - The action id of the scheduled action
      */
-    public Long scheduleDistUpgrade(String sessionKey, Integer sid, List<String> channels,
+    public Long scheduleDistUpgrade(User loggedInUser, Integer sid, List<String> channels,
             boolean dryRun, Date earliest) {
-        User user = getLoggedInUser(sessionKey);
-
         // Lookup the server and perform some checks
         Server server = null;
         try {
-            server = DistUpgradeManager.performServerChecks(sid.longValue(), user);
+            server = DistUpgradeManager.performServerChecks(sid.longValue(), loggedInUser);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeServerError", e.getMessage());
@@ -5698,13 +5693,13 @@ public class SystemHandler extends BaseHandler {
         // Perform checks on the channels (while converting to a list of IDs)
         Set<Long> channelIDs = null;
         try {
-            channelIDs = DistUpgradeManager.performChannelChecks(channels, user);
+            channelIDs = DistUpgradeManager.performChannelChecks(channels, loggedInUser);
         }
         catch (DistUpgradeException e) {
             throw new FaultException(-1, "distUpgradeChannelError", e.getMessage());
         }
 
-        return DistUpgradeManager.scheduleDistUpgrade(user, server, null,
+        return DistUpgradeManager.scheduleDistUpgrade(loggedInUser, server, null,
                 channelIDs, dryRun, earliest);
     }
 }
