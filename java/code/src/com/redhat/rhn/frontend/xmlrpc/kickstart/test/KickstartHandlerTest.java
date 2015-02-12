@@ -60,7 +60,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
                 KickstartInstallType.SUSE);
-        List<Channel> ksChannels = handler.listAutoinstallableChannels(adminKey);
+        List<Channel> ksChannels = handler.listAutoinstallableChannels(admin);
         assertTrue(ksChannels.size() > 0);
         assertTrue(ksChannels.contains(baseChan));
     }

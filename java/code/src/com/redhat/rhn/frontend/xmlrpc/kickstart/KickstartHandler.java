@@ -93,15 +93,14 @@ public class KickstartHandler extends BaseHandler {
 
     /**
      * List autoinstallable channels for the logged in user.
-     * @param sessionKey User's session key.
+     * @param loggedInUser The current user
      * @return Array of Channel objects.
      *
      * @xmlrpc.doc List autoinstallable channels for the logged in user.
      * @xmlrpc.param #session_key()
      * @xmlrpc.returntype #array() $ChannelSerializer #array_end()
      */
-    public List<Channel> listAutoinstallableChannels(String sessionKey) {
-        User loggedInUser = getLoggedInUser(sessionKey);
+    public List<Channel> listAutoinstallableChannels(User loggedInUser) {
         ensureConfigAdmin(loggedInUser);
         return ChannelFactory.getKickstartableTreeChannels(loggedInUser.getOrg());
     }

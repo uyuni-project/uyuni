@@ -41,7 +41,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * List all accessible products.
      *
-     * @param sessionKey Session token.
+     * @param loggedInUser the currently logged in user
      * @return List of products with their extensions (add-ons).
      * @throws ContentSyncException in case of an error
      *
@@ -51,9 +51,9 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $ListedProductSerializer
      *                    #array_end()
      */
-    public Collection<ListedProduct> listProducts(String sessionKey)
+    public Collection<ListedProduct> listProducts(User loggedInUser)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listProducts(csm.listChannels());
     }
@@ -61,7 +61,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * List all accessible channels.
      *
-     * @param sessionKey Session Key
+     * @param loggedInUser the currently logged in user
      * @return List of channels.
      * @throws ContentSyncException in case of an error
      *
@@ -71,9 +71,9 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MgrSyncChannelSerializer
      *                    #array_end()
      */
-    public List<MgrSyncChannel> listChannels(String sessionKey)
+    public List<MgrSyncChannel> listChannels(User loggedInUser)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listChannels();
     }
@@ -82,7 +82,7 @@ public class ContentSyncHandler extends BaseHandler {
      * Synchronize channels between the Customer Center and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @param mirrorUrl optional mirror URL
      * @return Integer
      * @throws ContentSyncException in case of an error
@@ -93,9 +93,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeChannels(String sessionKey, String mirrorUrl)
+    public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannels(mirrorUrl);
         return BaseHandler.VALID;
@@ -106,7 +106,7 @@ public class ContentSyncHandler extends BaseHandler {
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -115,9 +115,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeChannelFamilies(String sessionKey)
+    public Integer synchronizeChannelFamilies(User loggedInUser)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateChannelFamilies(csm.readChannelFamilies());
         return BaseHandler.VALID;
@@ -127,7 +127,7 @@ public class ContentSyncHandler extends BaseHandler {
      * Synchronize SUSE products between the Customer Center and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -136,8 +136,8 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProducts(String sessionKey) throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+    public Integer synchronizeProducts(User loggedInUser) throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProducts(csm.getProducts());
         return BaseHandler.VALID;
@@ -148,7 +148,7 @@ public class ContentSyncHandler extends BaseHandler {
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -157,9 +157,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeProductChannels(String sessionKey)
+    public Integer synchronizeProductChannels(User loggedInUser)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
         return BaseHandler.VALID;
@@ -170,7 +170,7 @@ public class ContentSyncHandler extends BaseHandler {
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -179,8 +179,8 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+    public Integer synchronizeUpgradePaths(User loggedInUser) throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
         new ContentSyncManager().updateUpgradePaths();
         return BaseHandler.VALID;
     }
@@ -190,7 +190,7 @@ public class ContentSyncHandler extends BaseHandler {
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
      *
-     * @param sessionKey User session token.
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -199,8 +199,8 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer synchronizeSubscriptions(String sessionKey) throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+    public Integer synchronizeSubscriptions(User loggedInUser) throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.updateSubscriptions(csm.getSubscriptions());
         return BaseHandler.VALID;
@@ -209,7 +209,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * Add a new channel to the SUSE Manager database.
      *
-     * @param sessionKey user session token
+     * @param loggedInUser the currently logged in user
      * @param channelLabel label of the channel to add
      * @param mirrorUrl optional mirror URL
      * @return Integer
@@ -221,9 +221,9 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer addChannel(String sessionKey, String channelLabel, String mirrorUrl)
+    public Integer addChannel(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         csm.addChannel(channelLabel, mirrorUrl);
         return BaseHandler.VALID;
@@ -232,7 +232,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * Migrate this SUSE Manager server to work with SCC.
      *
-     * @param sessionKey user session token
+     * @param loggedInUser the currently logged in user
      * @return Integer
      * @throws ContentSyncException in case of an error
      *
@@ -240,12 +240,11 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer performMigration(String sessionKey) throws ContentSyncException {
-        User user = getLoggedInUser(sessionKey);
-        ensureSatAdmin(user);
+    public Integer performMigration(User loggedInUser) throws ContentSyncException {
+        ensureSatAdmin(loggedInUser);
 
         ContentSyncManager manager = new ContentSyncManager();
-        manager.performMigration(user);
+        manager.performMigration(loggedInUser);
 
         return BaseHandler.VALID;
     }
@@ -253,7 +252,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * Add mirror credentials to SUSE Manager.
      *
-     * @param sessionKey user session token
+     * @param loggedInUser the currently logged in user
      * @param username mirror credentials username
      * @param password mirror credentials password
      * @param primary make this the primary credentials
@@ -267,15 +266,14 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("boolean", "primary", "Make this the primary credentials")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer addCredentials(String sessionKey, String username, String password,
+    public Integer addCredentials(User loggedInUser, String username, String password,
             boolean primary) throws ContentSyncException {
-        User user = getLoggedInUser(sessionKey);
-        ensureSatAdmin(user);
+        ensureSatAdmin(loggedInUser);
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
         MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
-        long id = credsManager.storeMirrorCredentials(creds, user, null);
+        long id = credsManager.storeMirrorCredentials(creds, loggedInUser, null);
         if (primary) {
-            credsManager.makePrimaryCredentials(id, user, null);
+            credsManager.makePrimaryCredentials(id, loggedInUser, null);
         }
         return BaseHandler.VALID;
     }
@@ -283,7 +281,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * Delete mirror credentials from SUSE Manager.
      *
-     * @param sessionKey user session token
+     * @param loggedInUser the currently logged in user
      * @param username username of the credentials to be deleted
      * @return Integer
      * @throws ContentSyncException in case of an error
@@ -293,15 +291,14 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "username", "Username of credentials to delete")
      * @xmlrpc.returntype #return_int_success()
      */
-    public Integer deleteCredentials(String sessionKey, String username)
+    public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
-        User user = getLoggedInUser(sessionKey);
-        ensureSatAdmin(user);
+        ensureSatAdmin(loggedInUser);
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 MirrorCredentialsManager credsManager =
                         MirrorCredentialsManager.createInstance();
-                credsManager.deleteMirrorCredentials(c.getId(), user, null);
+                credsManager.deleteMirrorCredentials(c.getId(), loggedInUser, null);
                 break;
             }
         }
@@ -311,7 +308,7 @@ public class ContentSyncHandler extends BaseHandler {
     /**
      * List mirror credentials available in SUSE Manager.
      *
-     * @param sessionKey user session token
+     * @param loggedInUser the currently logged in user
      * @return List of mirror credentials
      * @throws ContentSyncException in case of an error
      *
@@ -321,9 +318,9 @@ public class ContentSyncHandler extends BaseHandler {
      *                       $MirrorCredentialsDtoSerializer
      *                    #array_end()
      */
-    public List<MirrorCredentialsDto> listCredentials(String sessionKey)
+    public List<MirrorCredentialsDto> listCredentials(User loggedInUser)
             throws ContentSyncException {
-        ensureSatAdmin(getLoggedInUser(sessionKey));
+        ensureSatAdmin(loggedInUser);
         MirrorCredentialsManager credsManager =
                 MirrorCredentialsManager.createInstance();
         return credsManager.findMirrorCredentials();
