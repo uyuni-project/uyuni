@@ -17,7 +17,7 @@ When /^I call getVersion, I should get "([^"]*)" as result$/ do |version|
 end
 
 When /^I call systemVersion, I should get "([^"]*)" as result$/ do |version|
-  fail if not rpcApiTester.systemVersion() == version
+  fail if not rpcApiTester.systemVersion().include? version
 end
 
 When /^I call getApiNamespaceCallList, I should get (\d+) available api calls$/ do |apiCount|
