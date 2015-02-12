@@ -67,12 +67,6 @@
       }
     }
 
-    if (customer_center == "susemanager_scc") {
-        SCR::Execute (.target.bash,
-                      sformat ("/usr/bin/touch %1; /bin/chmod 0644 %1;", "/var/lib/spacewalk/scc/migrated")
-        );
-    }
-
     Wizard::CloseDialog();
     return result;
 }
