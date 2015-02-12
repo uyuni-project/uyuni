@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import os
+import json
 import sys
 import unittest2 as unittest
 
@@ -42,8 +43,15 @@ class ChannelTest(unittest.TestCase):
             os.unlink("tmp.log")
 
     def test_parse_channels(self):
-        expected_channels, expected_hierarchy = self._parse_mgr_ncc_output()
-        channels = parse_channels(read_data_from_fixture("list_channels.data"), self.mgr_sync.log)
+        with open(path_to_fixture("expected_channels.json"), "r") as file:
+            expected_channels = json.load(file)
+
+        with open(path_to_fixture("expected_hierarchy.json"), "r") as file:
+            expected_hierarchy = json.load(file)
+
+        channels = parse_channels(
+            read_data_from_fixture("list_channels.data"),
+            self.mgr_sync.log)
 
         self.assertEqual(sorted(channels.keys()),
                          sorted(expected_hierarchy.keys()))
@@ -51,8 +59,7 @@ class ChannelTest(unittest.TestCase):
             self.assertEqual(label, bc.label)
             self.assertEqual(
                 bc.status,
-                self._mgr_ncc_status_to_new_status(
-                    expected_channels[bc.label]))
+                expected_channels[bc.label])
 
             if bc.children and bc.status == Channel.Status.INSTALLED:
                 children = sorted([c.label for c in bc.children])
@@ -60,52 +67,6 @@ class ChannelTest(unittest.TestCase):
                                  sorted(expected_hierarchy[bc.label]))
             else:
                 self.assertEqual(0, len(expected_hierarchy[bc.label]))
-
-    def _mgr_ncc_status_to_new_status(self, status):
-        status = status[1]
-        if status == 'P':
-            return Channel.Status.INSTALLED
-        elif status == 'X':
-            return Channel.Status.UNAVAILABLE
-        elif status == '.':
-            return Channel.Status.AVAILABLE
-        else:
-            raise Exception('Type unknown')
-
-    def _parse_mgr_ncc_output(self):
-        """
-        Parse the output of mgr-ncc-sync and returns a tuple with
-        two dictionaries.
-
-        The first one contains all the channels and has the following
-        structure:
-            * key: channel label
-            * value: status
-
-        The second one contains only the base channels and has the following
-        structure:
-            * key: base channel labels
-            * value: list of children labels
-        """
-
-        channels = {}
-        channels_hierarcy = {}
-
-        with open(path_to_fixture("mgr-ncc-sync.output"), "r") as file:
-            latest_base_product = None
-            for line in file.readlines():
-                base_product = line.startswith("[")
-                status, label = filter(None, line.strip().split(" "))
-
-                if base_product:
-                    latest_base_product = label
-                    channels_hierarcy[label] = []
-                else:
-                    channels_hierarcy[latest_base_product].append(label)
-
-                channels[label] = status
-
-        return (channels, channels_hierarcy)
 
     def test_find_channel_by_label(self):
         channels = parse_channels(
