@@ -31,10 +31,16 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String RHEL_6 = "rhel_6";
     public static final String RHEL_7 = "rhel_7";
     public static final String FEDORA = "fedora";
-    public static final String GENERIC = "generic";
-    public static final String SUSE = "sles";
+    public static final String GENERIC_BREED = "generic";
+    // generic_rpm is sent from webform
+    public static final String GENERIC_RPM = "generic_rpm";
+    // Distro signature for generic OSes
+    public static final String GENERIC_DISTRO = "generic26";
+    // Distro signatures start with SLES_PREFIX
+    public static final String SLES_PREFIX = "sles";
     public static final String SUSE_BREED = "suse";
-    public static final String REDHAT = "redhat";
+    public static final String REDHAT_BREED = "redhat";
+
 
     private Long id;
     private String label;
@@ -123,14 +129,15 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return true if the installer type is generic.
      */
     public boolean isGeneric() {
-        return GENERIC.equals(getLabel());
+        return getLabel().startsWith(GENERIC_BREED);
     }
 
     /**
      * @return true if the installer type is suse.
      */
     public boolean isSUSE() {
-        return SUSE.startsWith(getLabel());
+        // We could get "suse" from the form
+        return getLabel().startsWith(SLES_PREFIX) || getLabel().equals(SUSE_BREED);
     }
 
     /**
@@ -203,12 +210,12 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler breed compatible string
      */
     public String getCobblerBreed() {
-        String breed = REDHAT;
-
-        if (getLabel().equals("generic_rpm")) {
-            breed = GENERIC;
+        String breed = REDHAT_BREED;
+        
+        if (getLabel().equals(GENERIC_RPM)) {
+            breed = GENERIC_BREED;
         }
-        else if (getLabel().startsWith(SUSE)) {
+        else if (isSUSE()) {
             breed = SUSE_BREED;
         }
 
@@ -220,14 +227,14 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return cobbler os_version compatible string
      */
     public String getCobblerOsVersion() {
-        if (this.getCobblerBreed().equals(REDHAT) && !this.isFedora()) {
+        if (this.getCobblerBreed().equals(REDHAT_BREED) && !this.isFedora()) {
             return this.getLabel().replace("_", "");
         }
         else if (isFedora() || isSUSE()) {
             return this.getLabel();
         }
         else {
-            return "generic26";
+            return GENERIC_DISTRO;
         }
     }
 
