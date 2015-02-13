@@ -51,8 +51,24 @@ insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'generic_rpm','Generic RPM'
         );
+
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'suse','SUSE Linux'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'sles10generic','SUSE Enterprise Linux 10'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'sles11generic','SUSE Enterprise Linux 11'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'sles12generic','SUSE Enterprise Linux 12'
         );
 commit;
