@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.setup.ProductSyncException;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
-import com.redhat.rhn.manager.setup.ProductSyncCommandException;
 
 import org.apache.log4j.Logger;
 import org.directwebremoting.WebContextFactory;
