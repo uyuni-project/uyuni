@@ -32,7 +32,8 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String RHEL_7 = "rhel_7";
     public static final String FEDORA = "fedora";
     public static final String GENERIC = "generic";
-    public static final String SUSE = "suse";
+    public static final String SUSE = "sles";
+    public static final String SUSE_BREED = "suse";
     public static final String REDHAT = "redhat";
 
     private Long id;
@@ -129,7 +130,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return true if the installer type is suse.
      */
     public boolean isSUSE() {
-        return SUSE.equals(getLabel());
+        return SUSE.startsWith(getLabel());
     }
 
     /**
@@ -207,8 +208,8 @@ public class KickstartInstallType extends BaseDomainHelper {
         if (getLabel().equals("generic_rpm")) {
             breed = GENERIC;
         }
-        else if (getLabel().equals(SUSE)) {
-            breed = SUSE;
+        else if (getLabel().startsWith(SUSE)) {
+            breed = SUSE_BREED;
         }
 
         return breed;
@@ -222,7 +223,12 @@ public class KickstartInstallType extends BaseDomainHelper {
         if (this.getCobblerBreed().equals(REDHAT) && !this.isFedora()) {
             return this.getLabel().replace("_", "");
         }
-        return "generic26";
+        else if (isFedora() || isSUSE()) {
+            return this.getLabel();
+        }
+        else {
+            return "generic26";
+        }
     }
 
 }
