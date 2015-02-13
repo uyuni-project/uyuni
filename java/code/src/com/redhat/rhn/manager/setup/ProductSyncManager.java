@@ -18,8 +18,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.manager.content.MgrSyncUtils;
-import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
@@ -46,22 +44,11 @@ public abstract class ProductSyncManager {
     protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
 
     /**
-     * Create {@link ProductSyncManager} instance for a given {@link Executor}.
-     * @param executorIn instance of {@link Executor}
-     * @return instance of {@link ProductSyncManager}
-     */
-    public static ProductSyncManager createInstance(Executor executorIn) {
-        return MgrSyncUtils.isMigratedToSCC() ? new SCCProductSyncManager() :
-                new NCCProductSyncManager(executorIn);
-    }
-
-    /**
      * Create {@link ProductSyncManager} instance.
      * @return instance of {@link ProductSyncManager}
      */
     public static ProductSyncManager createInstance() {
-        return MgrSyncUtils.isMigratedToSCC() ? new SCCProductSyncManager() :
-            new NCCProductSyncManager();
+        return new SCCProductSyncManager();
     }
 
     /**
