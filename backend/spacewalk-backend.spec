@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.38
+Version: 2.3.43
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -66,6 +66,9 @@ Requires: rhnlib >= 2.5.74
 # for Debian support
 Requires: python-debian
 Requires: %{name}-libs >= 1.1.16-1
+%if 0%{?rhel} > 5 || 0%{?suse_version} >= 1315
+Requires: pyliblzma
+%endif
 %if 0%{?suse_version}
 BuildRequires: gettext
 %else
@@ -74,7 +77,7 @@ BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?pylint_check}
-BuildRequires: spacewalk-pylint
+BuildRequires: spacewalk-pylint >= 2.2
 %endif
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version}
 BuildRequires: rhnlib >= 2.5.74
@@ -811,6 +814,21 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Feb 13 2015 Stephen Herr <sherr@redhat.com> 2.3.43-1
+- 1192608 - disable pylint warning
+
+* Fri Feb 13 2015 Stephen Herr <sherr@redhat.com> 2.3.42-1
+- 1192608 - moving import to be more local to make builders happy
+
+* Fri Feb 13 2015 Stephen Herr <sherr@redhat.com> 2.3.41-1
+- 1192608 - add support for lzma compressed yum metadata files
+
+* Fri Feb 13 2015 Matej Kollar <mkollar@redhat.com> 2.3.40-1
+- Bump also also BuildRequires for consistency
+
+* Fri Feb 13 2015 Matej Kollar <mkollar@redhat.com> 2.3.39-1
+- Bumping required version of rhnlib
+
 * Tue Feb 03 2015 Matej Kollar <mkollar@redhat.com> 2.3.38-1
 - Updating function names
 

@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.53
+Version: 5.11.54
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -436,6 +436,9 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Mon Feb 09 2015 Matej Kollar <mkollar@redhat.com> 5.11.54-1
+- Updating function names
+
 * Fri Jan 30 2015 Stephen Herr <sherr@redhat.com> 5.11.53-1
 - Apply needed SElinux fix for RHEL7 and make use of systemd unit files
 
