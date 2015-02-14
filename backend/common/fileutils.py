@@ -478,6 +478,10 @@ def decompress_open(filename, mode='r'):
         file_obj = gzip.open(filename, mode)
     elif filename.endswith('.bz2'):
         file_obj = bz2.BZ2File(filename, mode)
+    elif filename.endswith('.xz'):
+        # pylint: disable=F0401
+        import lzma
+        file_obj = lzma.LZMAFile(filename, mode)
     else:
         file_obj = open(filename, mode)
     return file_obj
