@@ -15,12 +15,12 @@ When /^I call system\.listSystems\(\), I should get a list of them\.$/ do
 end
 
 When /^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/ do
-  fail if (rabbit == nil or !systest.getSysInfo(rabbit))
+  fail unless rabbit
+  systest.getSysInfo(rabbit)
 end
 
 When /^I call system\.createSystemRecord\(\) with sysName "([^"]*)", ksLabel "([^"]*)", ip "([^"]*)", mac "([^"]*)"$/ do |sysName, ksLabel, ip, mac|
-  result = systest.createSystemRecord(sysName, ksLabel, ip, mac)
-  fail if !result
+  systest.createSystemRecord(sysName, ksLabel, ip, mac)
 end
 
 Then /^there is a system record in cobbler named "([^"]*)"$/ do |sysName|
