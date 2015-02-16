@@ -14,6 +14,5 @@ Feature: Check users page/tab
         And I should see a "Active" link in the left menu
         And I should see a "Deactivated" link in the left menu
         And I should see a "All" link in the left menu
-        #And I should see a "admin" link in "td" "first-column "
-        And I should see 3 "admin" links
+	And I should see a "admin" link in the table first column
         And I should see a "Download CSV" link

@@ -92,7 +92,21 @@ Then /^I should see a "([^"]*)" link in "([^"]*)" "([^"]*)"$/ do |arg1, arg2, ar
   fail if not page.has_xpath?("//#{arg2}[@id='#{arg3}' or @class='#{arg3}']/a[text()='#{debrand_string(arg1)}']")
 end
 
-Then /^I should see a "([^"]*)" link in the (.+)$/ do |arg1, arg2|
+Then /^I should see a "([^"]*)" link in the table (.*) column$/ do |link, column|
+  idx = ['first', 'second', 'third', 'fourth'].index(column)
+  unless idx
+    # try column by name
+    # unquote if neeeded
+    colname = column.gsub(/\A['"]+|['"]+\Z/, '')
+    cols = page.all(:xpath, '//table//thead/tr[1]/th').map(&:text)
+    idx = cols.index(colname)
+  end
+  fail("Unknown column '#{column}'") unless idx
+  #find(:xpath, "//table//thead//tr/td[#{idx + 1}]/a[text()='#{link}']")
+  fail unless page.has_xpath?("//table//tr/td[#{idx + 1}]//a[text()='#{link}']")
+end
+
+Then /^I should see a "([^"]*)" link in the (left menu|tab bar|tabs|content area)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
   when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
