@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.nav.NavNode;
 import com.redhat.rhn.frontend.nav.NavTree;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
-import com.redhat.rhn.manager.content.MgrSyncUtils;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -46,7 +45,6 @@ public class SetupWizardAction extends RhnAction {
     private static final String TOTAL_STEPS_ATTRIBUTE = "totalSteps";
     private static final String CURRENT_STEP_ATTRIBUTE = "currentStep";
     private static final String REFRESH_NEEDED = "refreshNeeded";
-    private static final String MIGRATED_TO_SCC = "migratedToSCC";
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
@@ -94,11 +92,7 @@ public class SetupWizardAction extends RhnAction {
 
         request.setAttribute(SCCConfigAction.ISS_MASTER,
                 IssFactory.getCurrentMaster() == null);
-
-        boolean migratedToScc = MgrSyncUtils.isMigratedToSCC();
-        request.setAttribute(MIGRATED_TO_SCC, migratedToScc);
-        request.setAttribute(REFRESH_NEEDED,
-                migratedToScc && SCCCachingFactory.refreshNeeded());
+        request.setAttribute(REFRESH_NEEDED, SCCCachingFactory.refreshNeeded());
     }
 
     /**
