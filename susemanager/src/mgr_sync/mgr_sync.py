@@ -224,7 +224,8 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                     prefix = ""
                     if base_channel.status == Channel.Status.INSTALLED or expand:
                         output = child.to_ascii_row(compact)
-                        if not filter or filter in output.lower():
+                        if (not filter or filter in output.lower()) and \
+                           (not no_optionals or not child.optional):
                             if child.status == Channel.Status.AVAILABLE:
                                 interactive_number += 1
                                 if show_interactive_numbers:
