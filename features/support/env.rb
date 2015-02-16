@@ -130,6 +130,9 @@ After do |scenario|
       page.driver.render(path)
       embed("data:image/png;base64,#{Base64.encode64(File.read(path))}", 'image/png')
     end
+    if ENV['EXIT_ON_FAILURE']
+      Cucumber.wants_to_quit = true
+    end
   end
 end
 
