@@ -140,7 +140,7 @@ Then /^I wont get "([^"]*)"$/ do |arg1|
   found = false
   $command_output.each_line() do |line|
     if line.include?(arg1)
-      found = strue
+      found = true
       break
     end
   end
