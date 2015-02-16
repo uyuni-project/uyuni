@@ -104,7 +104,7 @@ def __init__DB2(backend, host, port, username, password, database, sslmode, sslr
 
 
 def initDB(backend=None, host=None, port=None, username=None,
-           password=None, database=None, sslmode=None, sslrootcert=None):
+           password=None, database=None, sslmode=None, sslrootcert=None, initsecond=False):
     """
     Initialize the database.
 
@@ -137,18 +137,17 @@ def initDB(backend=None, host=None, port=None, username=None,
     # Hide the password
     add_to_seclist(password)
     try:
-        __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert)
-        __init__DB2(backend, host, port, username, password, database, sslmode, sslrootcert)
+        if initsecond == False:
+            __init__DB(backend, host, port, username, password, database, sslmode, sslrootcert)
+        else:
+            __init__DB2(backend, host, port, username, password, database, sslmode, sslrootcert)
 #    except (rhnException, SQLError):
 #        raise  # pass on, we know those ones
 #    except (KeyboardInterrupt, SystemExit):
 #        raise
     except SQLConnectError, e:
         try:
-            global __DB
-            global __DB2
-            del __DB
-            del __DB2
+            closeDB()
         except NameError:
             pass
         raise e
@@ -210,7 +209,12 @@ def __test_DB2():
     try:
         return __DB2
     except NameError:
-        raise SystemError("Not connected to secondary database!"), None, sys.exc_info()[2]
+        # try open the connection
+        try:
+            initDB(initsecond=True)
+            return __DB2
+        except NameError:
+            raise SystemError("Not connected to secondary database!"), None, sys.exc_info()[2]
 
 # wrapper for a Procedure callable class
 
