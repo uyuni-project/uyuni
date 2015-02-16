@@ -2,14 +2,13 @@ systest = XMLRPCSystemTest.new(ENV['TESTHOST'])
 servers = []
 rabbit = nil
 
-
 Given /^I am logged in via XML\-RPC\/system as user "([^"]*)" and password "([^"]*)"$/ do |luser, password|
   systest.login(luser, password)
 end
 
 When /^I call system\.listSystems\(\), I should get a list of them\.$/ do
   # This also assumes the test is called *after* the regular test.
-  servers = systest.listSystems()
+  servers = systest.listSystems
   fail if servers.length < 1
   rabbit = servers[0]
 end
@@ -24,15 +23,15 @@ When /^I call system\.createSystemRecord\(\) with sysName "([^"]*)", ksLabel "([
 end
 
 Then /^there is a system record in cobbler named "([^"]*)"$/ do |sysName|
-  ct = CobblerTest.new()
-  if !ct.is_running
-    raise "cobblerd is not running"
+  ct = CobblerTest.new
+  unless ct.is_running
+    fail 'cobblerd is not running'
   end
-  if !ct.system_exists(sysName)
-    raise "cobbler system record does not exist: " + sysName
+  unless ct.system_exists(sysName)
+    fail 'cobbler system record does not exist: ' + sysName
   end
 end
 
 Then /^I logout from XML\-RPC\/system\.$/ do
-  systest.logout()
+  systest.logout
 end
