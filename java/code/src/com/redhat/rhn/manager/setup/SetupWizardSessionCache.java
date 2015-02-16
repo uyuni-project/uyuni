@@ -18,8 +18,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
-import com.suse.manager.model.ncc.Subscription;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -79,8 +77,8 @@ public class SetupWizardSessionCache {
             HttpServletRequest request) {
         boolean ret = true;
         HttpSession session = request.getSession();
-        Map<String, List<Subscription>> subsMap =
-                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        Map<String, List<SubscriptionDto>> subsMap = (Map<String, List<SubscriptionDto>>)
+                session.getAttribute(SUBSCRIPTIONS_KEY);
         if (subsMap != null && subsMap.containsKey(creds.getUser())) {
             ret = false;
         }
