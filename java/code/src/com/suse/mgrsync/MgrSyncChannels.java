@@ -26,8 +26,8 @@ public class MgrSyncChannels {
     private List<MgrSyncChannel> channels;
 
     /**
-     * Return the list of {@link Subscription} objects.
-     * @return subscriptions
+     * Return the list of {@link MgrSyncChannel} objects.
+     * @return channels
      */
     public List<MgrSyncChannel> getChannels() {
         if (this.channels == null) {
