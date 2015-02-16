@@ -125,7 +125,7 @@ public class ContentSyncManager {
 
     // File to parse this system's UUID from
     private static final File UUID_FILE =
-            new File("/etc/zypp/credentials.d/NCCcredentials");
+            new File("/etc/zypp/credentials.d/SCCcredentials");
     private static String uuid;
 
     // Cached OES SCCRepository as returned by isMirrorable() in order
