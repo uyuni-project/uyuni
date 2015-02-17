@@ -24,6 +24,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 public class KickstartInstallType extends BaseDomainHelper {
 
+    // Spacewalk's install type strings. Those may or may not correspond
+    // to Cobbler's OS versions, see getCobblerOsVersion()
     public static final String RHEL_21 = "rhel_2.1";
     public static final String RHEL_3 = "rhel_3";
     public static final String RHEL_4 = "rhel_4";
@@ -31,16 +33,16 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String RHEL_6 = "rhel_6";
     public static final String RHEL_7 = "rhel_7";
     public static final String FEDORA = "fedora";
-    public static final String GENERIC_BREED = "generic";
-    // generic_rpm is sent from webform
     public static final String GENERIC_RPM = "generic_rpm";
-    // Distro signature for generic OSes
-    public static final String GENERIC_DISTRO = "generic26";
-    // Distro signatures start with SLES_PREFIX
     public static final String SLES_PREFIX = "sles";
+
+    // Cobbler's OS versions
+    public static final String GENERIC_OS_VERSION = "generic26";
+
+    // Cobbler's breeds
+    public static final String GENERIC_BREED = "generic";
     public static final String SUSE_BREED = "suse";
     public static final String REDHAT_BREED = "redhat";
-
 
     private Long id;
     private String label;
@@ -211,7 +213,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      */
     public String getCobblerBreed() {
         String breed = REDHAT_BREED;
-        
+
         if (getLabel().equals(GENERIC_RPM)) {
             breed = GENERIC_BREED;
         }
@@ -234,7 +236,7 @@ public class KickstartInstallType extends BaseDomainHelper {
             return this.getLabel();
         }
         else {
-            return GENERIC_DISTRO;
+            return GENERIC_OS_VERSION;
         }
     }
 
