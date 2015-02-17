@@ -111,6 +111,9 @@ def initDB(backend=None, host=None, port=None, username=None,
     Either we get backend and all parameter which means the caller
     knows what they are doing, or we populate everything from the
     config files.
+
+    initsecond: If set to True it initialize a second DB connection.
+                By default only one DB connection is needed.
     """
 
     if backend is None:

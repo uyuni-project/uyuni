@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.3.8
+Version:        2.3.10
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -100,8 +100,6 @@ install -m 0644 share/server-external-authentication.xml.xsl %{buildroot}/%{_dat
 install -m 0644 share/web.xml.patch %{buildroot}/%{_datadir}/spacewalk/setup/
 install -m 0644 share/old-jvm-list %{buildroot}/%{_datadir}/spacewalk/setup/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
-install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/upgrade
-install -m 0755 share/upgrade/* %{buildroot}/%{_datadir}/spacewalk/setup/upgrade
 install -m 0644 share/defaults.d/defaults.conf %{buildroot}/%{_datadir}/spacewalk/setup/defaults.d/
 install -d -m 755 %{buildroot}/%{_datadir}/spacewalk/setup/cobbler
 install -m 0644 share/cobbler/* %{buildroot}/%{_datadir}/spacewalk/setup/cobbler/
@@ -191,6 +189,12 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.10-1
+- spacewalk-setup upgrade dir no longer exists after monitoring removal
+
+* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.9-1
+- remove setup of dropped monitoring feature
+
 * Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.8-1
 - Fix configuration of tomcat-service for CentOS7. Tomcat7 on CentOS7 uses
   /etc/tomcat/server.xml. Adjust regex to match.
