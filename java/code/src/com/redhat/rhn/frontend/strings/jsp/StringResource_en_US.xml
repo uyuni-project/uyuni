@@ -8881,7 +8881,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Channels using {0} repository</source>
       </trans-unit>
       <trans-unit id="repos.jsp.channelSummary">
-        <source>Bellow are channels with {0} repository attached to them.</source>
+        <source>Below are channels with {0} repository attached to them.</source>
       </trans-unit>
       <trans-unit id="repos.jsp.noChannels">
         <source>This repository is not linked to any channel.</source>
