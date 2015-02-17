@@ -9,9 +9,11 @@ Given /^I am testing configuration$/ do
   step "I follow \"Configuration\""
 end
 
-When /^I change the local file "([^"]*)" to "([^"]*)"$/ do |file, content|
-    fail if not File.exists?(file)
-    fail if File.open(file, "w").write(content) <= 0
+When /^I change the local file "([^"]*)" to "([^"]*)"$/ do |filename, content|
+    fail unless File.exists?(filename)
+    File.open(filename, 'w') do |f|
+      f.write(content)
+    end
 end
 
 Then /^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/ do |arg1, arg2, arg3|
