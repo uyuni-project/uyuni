@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SERVICES="squid apache2 jabberd MonitoringScout"
+SERVICES="squid apache2 jabberd"
 
 test -s /etc/rc.status && . /etc/rc.status && rc_reset
 

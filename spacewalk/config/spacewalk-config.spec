@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.3.3
+Version: 2.3.5
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -108,8 +108,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/rhn/satellite-httpd/conf/rhn/rhn_monitoring.conf
-%config(noreplace) %{apacheconfdir}/conf.d/zz-spacewalk-www.conf
 %attr(400,root,root) %config(noreplace) %{_sysconfdir}/rhn/spacewalk-repo-sync/uln.conf
 %config(noreplace) %{_sysconfdir}/webapp-keyring.gpg
 %dir %{_var}/lib/cobbler/
@@ -119,10 +117,6 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_var}/lib/cobbler/kickstarts/spacewalk-sample.ks
 %config(noreplace) %{_var}/lib/cobbler/snippets/spacewalk_file_preservation
 %attr(0750,root,%{apache_group}) %dir %{_sysconfdir}/rhn
-%dir %{_sysconfdir}/rhn/satellite-httpd
-%dir %{_sysconfdir}/rhn/satellite-httpd/conf
-%dir %{_sysconfdir}/rhn/satellite-httpd/conf/rhn
-%ghost %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/cluster.ini
 %attr(0640,root,%{apache_group}) %config(missingok,noreplace) %verify(not md5 size mtime) %{_sysconfdir}/rhn/rhn.conf
 %attr(644,root,%{apache_group}) %{rhnconfigdefaults}/rhn_audit.conf
 
@@ -142,10 +136,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_var}/lib/rhn/rhn-satellite-prep
 %dir %attr(0755,root,root) %{_var}/lib/rhn/rhn-satellite-prep/etc
 %attr(0750,root,%{apache_group}) %dir %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn
-%attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/cluster.ini
 %attr(0640,root,%{apache_group}) %{_var}/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 %dir %{_prefix}/share/rhn
-%attr(0755,root,root) %{_prefix}/share/rhn/satidmap.pl
 %attr(0755,root,root) %{_prefix}/share/rhn/startup.pl
 %doc LICENSE
 %doc %{_mandir}/man5/rhn.conf.5*
@@ -162,11 +154,10 @@ if [ -f /etc/init.d/satellite-httpd ] ; then
 fi
 
 # Set the group to allow Apache to access the conf files ...
-chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf /etc/rhn/cluster.ini 2> /dev/null || :
+chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
 # the past.
-chmod o-rwx /etc/rhn/rhn.conf* /etc/rhn/cluster.ini* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
-chmod 755 /var/lib/rhn/rhn-satellite-prep/etc || :
+chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
 
 %if 0%{?suse_version}
 %post
@@ -182,6 +173,13 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.5-1
+- spacewalk-config etc/rhn-satellite-httpd dir no longer exists after
+  monitoring removal
+
+* Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.4-1
+- remove monitoring artefacts from spacewalk-config
+
 * Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 2.3.3-1
 - Getting rid of trailing spaces in Perl
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
