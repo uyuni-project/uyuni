@@ -684,7 +684,6 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     fi
     setup_dobby
     if [ -n "$SCC_USER" ]; then
-        touch /var/lib/spacewalk/scc/migrated
         # wait for taskomatic port is open
         RETRIES=10
         while [ $RETRIES -gt 0 ]
