@@ -50,7 +50,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     public void testListKickstartableChannels() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
-                KickstartInstallType.FEDORA);
+                KickstartInstallType.FEDORA + "18");
         List<Channel> ksChannels = handler.listKickstartableChannels(admin);
         assertTrue(ksChannels.size() > 0);
         assertTrue(ksChannels.contains(baseChan));
@@ -59,7 +59,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     public void testListAutoinstallableChannels() throws Exception {
         Channel baseChan = ChannelFactoryTest.createTestChannel(admin);
         KickstartableTreeTest.createTestKickstartableTree(baseChan,
-                KickstartInstallType.SUSE);
+                KickstartInstallType.SLES_PREFIX + "12generic");
         List<Channel> ksChannels = handler.listAutoinstallableChannels(admin);
         assertTrue(ksChannels.size() > 0);
         assertTrue(ksChannels.contains(baseChan));

@@ -267,11 +267,11 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // c2 is kickstartable
         Channel c2 = createTestChannel(user);
         KickstartableTreeTest.createTestKickstartableTree(c2,
-                KickstartInstallType.FEDORA);
+                KickstartInstallType.FEDORA + "18");
         // c3 is not kickstartable
         Channel c3 = createTestChannel(user);
         KickstartableTreeTest.createTestKickstartableTree(c3,
-                KickstartInstallType.SUSE);
+                KickstartInstallType.SLES_PREFIX + "11generic");
         // c4 is not kickstartable
         createTestChannel(user);
 
