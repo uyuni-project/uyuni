@@ -56,7 +56,7 @@ $(function() {
   }
 
   // Show the dialog and perform migration and/or refresh
-  function refreshContent(title, migration, refresh, onSuccess) {
+  function refreshContent(title, refresh, onSuccess) {
     // Prepare the dialog and show
     $("#scc-refresh-dialog-title").html(title);
     var dialogCloseBtn = $('#scc-migrate-dialog-close-btn');
@@ -66,16 +66,13 @@ $(function() {
 
     // Compile the list of tasks to be executed
     tasks = [];
-    if (migration) {
-      tasks.push({"task" : SCCConfigAjax.performMigration, "messageKey" : "#sccconfig\\.jsp\\.switchingtoscc"});
-    }
     if (refresh) {
-      tasks.push({"task" : SCCConfigAjax.synchronizeChannels, "messageKey" : "#sccconfig\\.jsp\\.channels"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeChannelFamilies, "messageKey" : "#sccconfig\\.jsp\\.channelfamilies"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeChannels, "messageKey" : "#sccconfig\\.jsp\\.channels"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeChannelFamilies, "messageKey" : "#sccconfig\\.jsp\\.channelfamilies"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
+      tasks.push({"task" : MgrSyncAJAX.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
     }
     // A task to perform in case of success
     function successTask() {

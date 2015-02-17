@@ -45,6 +45,7 @@ public class SetupWizardAction extends RhnAction {
     private static final String TOTAL_STEPS_ATTRIBUTE = "totalSteps";
     private static final String CURRENT_STEP_ATTRIBUTE = "currentStep";
     private static final String REFRESH_NEEDED = "refreshNeeded";
+    private static final String ISS_MASTER = "issMaster";
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SetupWizardAction.class);
@@ -90,8 +91,7 @@ public class SetupWizardAction extends RhnAction {
                 nodeIndex == (totalSteps - 1) ? null : nodes.get(nodeIndex + 1).getURLs()
                         .get(0));
 
-        request.setAttribute(SCCConfigAction.ISS_MASTER,
-                IssFactory.getCurrentMaster() == null);
+        request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
         request.setAttribute(REFRESH_NEEDED, SCCCachingFactory.refreshNeeded());
     }
 

@@ -6,7 +6,7 @@ $(function() {
   if ($("#products-content").data("refresh-needed")) {
     var refresh = $("#iss-master").data("iss-master");
     document.getElementById("scc-migration-dialog").refreshContent(
-        $("#sccconfig\\.jsp\\.refresh").html(), false, refresh, function() {
+        $("#sccconfig\\.jsp\\.refresh").html(), refresh, function() {
       showProducts();
     });
   } else {
@@ -73,7 +73,7 @@ $(function() {
     button.prop('disabled', true);
     var refresh = $("#iss-master").data("iss-master");
     document.getElementById("scc-migration-dialog").refreshContent(
-        $("#sccconfig\\.jsp\\.refresh").html(), false, refresh, function() {
+        $("#sccconfig\\.jsp\\.refresh").html(), refresh, function() {
       button.prop('disabled', false);
       clearProducts();
       showProducts();
@@ -116,7 +116,7 @@ $(function() {
     $('button.product-retry-btn').prop('disabled', true);
 
     // Trigger product sync server side
-    ProductSyncAction.syncProducts(idents, makeAjaxHandler(function() {
+    MgrSyncAJAX.syncProducts(idents, makeAjaxHandler(function() {
       $.each(checkboxes, function() {
         $(this).prop("checked", true);
         $(this).prop("disabled", true).trigger("change");
