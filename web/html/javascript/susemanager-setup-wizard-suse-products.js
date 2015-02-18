@@ -174,8 +174,6 @@ $(function() {
         $('.table').hide();
         if (exception.javaClassName.indexOf("InvalidMirrorCredentialException") > 0) {
           $("#invalid-credentials-alert-popup").show();
-        } else if (exception.javaClassName.indexOf("ConnectionException") > 0) {
-          $("#no-connection-alert-popup").show();
         } else {
           showFatalError();
         }
