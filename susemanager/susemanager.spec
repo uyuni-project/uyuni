@@ -156,7 +156,6 @@ chown root.root /etc/sysconfig
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/mgr_delete_patch.py*
 %{pythonsmroot}/susemanager/authenticator.py*
-%{pythonsmroot}/susemanager/content_sync_helper.py*
 %{pythonsmroot}/susemanager/errata_helper.py*
 %{pythonsmroot}/susemanager/helpers.py*
 %{pythonsmroot}/susemanager/package_helper.py*
