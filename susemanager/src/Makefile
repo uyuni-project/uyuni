@@ -11,7 +11,6 @@ SPACEWALK_FILES		= __init__ \
 			mgr_clean_old_patchnames \
 			mgr_delete_patch \
 			authenticator \
-			content_sync_helper \
 			helpers \
 			simpleproduct errata_helper package_helper\
 			mgr_sync/__init__ \

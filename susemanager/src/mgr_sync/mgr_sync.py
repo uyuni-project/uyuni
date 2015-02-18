@@ -19,7 +19,6 @@ import os.path
 import xmlrpclib
 
 from spacewalk.common.suseLib import hasISSMaster
-from spacewalk.susemanager.content_sync_helper import switch_to_scc
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
