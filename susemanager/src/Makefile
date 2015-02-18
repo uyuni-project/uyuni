@@ -12,7 +12,7 @@ SPACEWALK_FILES		= __init__ \
 			mgr_delete_patch \
 			authenticator \
 			helpers \
-			simpleproduct errata_helper package_helper\
+			errata_helper package_helper\
 			mgr_sync/__init__ \
 			mgr_sync/cli \
 			mgr_sync/channel \
