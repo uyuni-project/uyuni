@@ -20,7 +20,6 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -90,12 +89,11 @@ public class MirrorCredentialsManager {
      * Store mirror credentials given as {@link MirrorCredentialsDto}.
      *
      * @param creds the mirror credentials to store
-     * @param user the current user
      * @param request the current HTTP request object (used for session caching)
      * @return id of the stored mirror credentials
      * @throws ContentSyncException in case of errors
      */
-    public long storeMirrorCredentials(MirrorCredentialsDto creds, User userIn,
+    public long storeMirrorCredentials(MirrorCredentialsDto creds,
             HttpServletRequest request) throws ContentSyncException {
         if (creds.getUser() == null || creds.getPassword() == null) {
             throw new ContentSyncException("User or password is empty");
@@ -123,7 +121,7 @@ public class MirrorCredentialsManager {
 
         // Make this the primary pair of credentials if it's the only one
         if (CredentialsFactory.lookupSCCCredentials().size() == 1) {
-            makePrimaryCredentials(c.getId(), userIn, request);
+            makePrimaryCredentials(c.getId());
         }
         return c.getId();
     }
@@ -132,12 +130,10 @@ public class MirrorCredentialsManager {
      * Delete credentials given by ID.
      *
      * @param id the id of credentials to be deleted
-     * @param user the current user
      * @param request the current HTTP request object (used for session caching)
      * @return list of validation errors or null in case of success
      */
-    public ValidatorError[] deleteMirrorCredentials(Long id, User user,
-            HttpServletRequest request) {
+    public ValidatorError[] deleteMirrorCredentials(Long id, HttpServletRequest request) {
         // Store credentials to empty cache later
         MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
@@ -149,7 +145,7 @@ public class MirrorCredentialsManager {
         if (credentials.isPrimary()) {
             List<Credentials> credsList = CredentialsFactory.lookupSCCCredentials();
             if (credsList != null && !credsList.isEmpty()) {
-                makePrimaryCredentials(credsList.get(0).getId(), user, request);
+                makePrimaryCredentials(credsList.get(0).getId());
             }
         }
 
@@ -164,12 +160,9 @@ public class MirrorCredentialsManager {
      * Make primary credentials for a given credentials ID.
      *
      * @param id the id of credentials to make the primary creds
-     * @param user the current user
-     * @param request the current HTTP request
      * @return list of validation errors or null in case of success
      */
-    public ValidatorError[] makePrimaryCredentials(Long id, User userIn,
-            HttpServletRequest request) {
+    public ValidatorError[] makePrimaryCredentials(Long id) {
         ValidatorError[] errors = null;
 
         // Check if future primary credentials exist
