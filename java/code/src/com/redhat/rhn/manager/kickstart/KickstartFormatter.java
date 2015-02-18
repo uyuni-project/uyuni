@@ -482,10 +482,10 @@ public class KickstartFormatter {
         }
 
         if (ip6 != null && ip6.length() > 0 &&
-            (KickstartInstallType.FEDORA.equals(ksDistro) ||
+            (KickstartInstallType.FEDORA_PREFIX.equals(ksDistro) ||
              KickstartInstallType.RHEL_6.equals(ksDistro))) {
             if (nm6 == null || nm6.length() == 0 ||
-                !KickstartInstallType.FEDORA.equals(ksDistro)) {
+                !KickstartInstallType.FEDORA_PREFIX.equals(ksDistro)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }
             else {

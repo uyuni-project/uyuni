@@ -32,8 +32,11 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String RHEL_5 = "rhel_5";
     public static final String RHEL_6 = "rhel_6";
     public static final String RHEL_7 = "rhel_7";
-    public static final String FEDORA = "fedora";
     public static final String GENERIC_RPM = "generic_rpm";
+
+    // Spacewalk's install type prefixes for some multi-version
+    // distros
+    public static final String FEDORA_PREFIX = "fedora";
     public static final String SLES_PREFIX = "sles";
 
     // Cobbler's OS versions
@@ -124,7 +127,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return true if the installer type is Fedora
      */
     public boolean isFedora() {
-        return getLabel().startsWith(FEDORA);
+        return getLabel().startsWith(FEDORA_PREFIX);
     }
 
     /**
