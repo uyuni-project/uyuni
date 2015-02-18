@@ -41,10 +41,10 @@ When /^I wait until it has finished$/ do
 end
 
 When /^I verify the products were added$/ do 
-  output = sshcmd('mgr-ncc-sync -l', ignore_err: true)
-   fail if not output[:stdout].include? '[P] sles11-sp3-vmware-pool-x86_64'
-   fail if not output[:stdout].include? '[P] sle11-sp2-webyast-1.3-pool-x86_64-vmware-sp3'
-   fail if not output[:stdout].include? '[P] sle11-sp2-webyast-1.3-updates-x86_64-vmware-sp3'
+  output = sshcmd('echo -e "admin\nadmin\n" | mgr-sync list channels', ignore_err: true)
+   fail if not output[:stdout].include? '[I] SLES12-Pool for x86_64 SUSE Linux Enterprise Server 12 x86_64 [sles12-pool-x86_64]'
+   fail if not output[:stdout].include? '[I] SLE-Manager-Tools12-Pool x86_64 SUSE Manager Tools [sle-manager-tools12-pool-x86_64]'
+   fail if not output[:stdout].include? '[I] SLE-Module-Legacy12-Updates for x86_64 Legacy Module 12 x86_64 [sle-module-legacy12-updates-x86_64]'
 end
 
 When(/^I click the channel list of product "(.*?)" for the "(.*?)" architecture$/) do |product, architecture|
