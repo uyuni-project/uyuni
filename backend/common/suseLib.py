@@ -138,12 +138,12 @@ def _curl_debug(mtype, text):
     return 0
 
 def send(url, sendData=None):
-    """Connect to ncc and return the XML document as stringIO
+    """Connect to url and return the result as stringIO
 
     :arg url: the url where the request will be sent
     :kwarg sendData: do a post-request when "sendData" is given.
 
-    Returns the XML document as stringIO object.
+    Returns the result as stringIO object.
 
     """
     connect_retries = 10
