@@ -57,7 +57,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         storeTestCredentials();
 
         // Make one of them the primary
-        credsManager.makePrimaryCredentials(primaryCreds.getId(), user, null);
+        credsManager.makePrimaryCredentials(primaryCreds.getId());
         List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
 
         // Remember the ID of the last iteration
@@ -97,7 +97,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         MirrorCredentialsDto creds1 = storeTestCredentials();
         int size = credsManager.findMirrorCredentials().size();
         assertTrue(size >= 2);
-        credsManager.deleteMirrorCredentials(creds0.getId(), user, request);
+        credsManager.deleteMirrorCredentials(creds0.getId(), request);
         List<MirrorCredentialsDto> creds = credsManager.findMirrorCredentials();
         assertEquals(size - 1, creds.size());
         assertFalse(creds.contains(creds0));
@@ -113,17 +113,17 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         MirrorCredentialsDto creds1 = storeTestCredentials();
         MirrorCredentialsDto creds2 = storeTestCredentials();
 
-        credsManager.makePrimaryCredentials(creds0.getId(), user, request);
+        credsManager.makePrimaryCredentials(creds0.getId());
         assertTrue(credsManager.findMirrorCredentials(creds0.getId()).isPrimary());
         assertFalse(credsManager.findMirrorCredentials(creds1.getId()).isPrimary());
         assertFalse(credsManager.findMirrorCredentials(creds2.getId()).isPrimary());
 
-        credsManager.makePrimaryCredentials(creds1.getId(), user, request);
+        credsManager.makePrimaryCredentials(creds1.getId());
         assertFalse(credsManager.findMirrorCredentials(creds0.getId()).isPrimary());
         assertTrue(credsManager.findMirrorCredentials(creds1.getId()).isPrimary());
         assertFalse(credsManager.findMirrorCredentials(creds2.getId()).isPrimary());
 
-        credsManager.makePrimaryCredentials(creds2.getId(), user, request);
+        credsManager.makePrimaryCredentials(creds2.getId());
         assertFalse(credsManager.findMirrorCredentials(creds0.getId()).isPrimary());
         assertFalse(credsManager.findMirrorCredentials(creds1.getId()).isPrimary());
         assertTrue(credsManager.findMirrorCredentials(creds2.getId()).isPrimary());
@@ -158,7 +158,7 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
         MirrorCredentialsDto creds = new MirrorCredentialsDto();
         creds.setUser("testuser-" + TestUtils.randomString());
         creds.setPassword("testpass-" + TestUtils.randomString());
-        long dbId = credsManager.storeMirrorCredentials(creds, user, request);
+        long dbId = credsManager.storeMirrorCredentials(creds, request);
         creds.setId(dbId);
         return creds;
     }
