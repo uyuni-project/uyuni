@@ -311,13 +311,6 @@
  </refsect1>
 
  <refsect1>
-  <title>See Also</title>
-  <para>
-   mgr-ncc-sync(8)
-  </para>
- </refsect1>
-
- <refsect1>
   <title>Authors</title>
   <simplelist>
    <member>Flavio Castelli <email>fcastelli@suse.com</email></member>

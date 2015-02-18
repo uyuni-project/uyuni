@@ -11,7 +11,6 @@
 #
 
 import os
-from enum import Enum
 
 try:
     from cStringIO import StringIO
@@ -22,9 +21,6 @@ import urlparse
 
 import pycurl
 
-# prevent build dependency cycles
-# pylint: disable=W0611
-from suseRegister.info import getProductProfile
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
@@ -33,11 +29,6 @@ from rhn.connections import idn_puny_to_unicode
 
 YAST_PROXY = "/root/.curlrc"
 SYS_PROXY = "/etc/sysconfig/proxy"
-MASTER_SWITCH_FILE = "/var/lib/spacewalk/scc/migrated"
-
-class BackendType(str, Enum):
-    NCC = "NCC"
-    SCC = "SCC"
 
 class TransferException(Exception):
     """Transfer Error"""
@@ -146,21 +137,13 @@ def _curl_debug(mtype, text):
         log_debug(6, "%s: %s" % (mtype, text))
     return 0
 
-def current_cc_backend():
-    """ Returns an instance of `BackendType` """
-
-    if os.path.isfile(MASTER_SWITCH_FILE):
-        return BackendType.SCC
-    else:
-        return BackendType.NCC
-
 def send(url, sendData=None):
-    """Connect to ncc and return the XML document as stringIO
+    """Connect to url and return the result as stringIO
 
     :arg url: the url where the request will be sent
     :kwarg sendData: do a post-request when "sendData" is given.
 
-    Returns the XML document as stringIO object.
+    Returns the result as stringIO object.
 
     """
     connect_retries = 10

@@ -284,7 +284,7 @@ public class TaskoXmlRpcHandler {
      * Schedule a one-time repo sync of a satellite (not
      * organizational/custom) channel ASAP.
      * This is needed for SUSE channels which are made by merging multiple
-     * Novell Customer Center repositories.
+     * SCC repositories.
      *
      * @param channelId database id of the channel to sync
      * @return start date of the newly created job

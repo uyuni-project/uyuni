@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.BaseFragmentRenderer;
@@ -52,12 +51,8 @@ public class ProductsRenderer extends BaseFragmentRenderer {
         }
 
         try {
-            ProductSyncManager productSyncManager = ProductSyncManager.createInstance();
-            productSyncManager.refreshProducts();
-            // Flush the session after the refresh so we can lookup the products
-            HibernateFactory.getSession().flush();
             request.setAttribute(ATTRIB_BASE_PRODUCTS_MAP,
-                    productSyncManager.getBaseProducts());
+                    new ProductSyncManager().getBaseProducts());
         }
         catch (Exception e) {
             logger.error("Exception while rendering products: " + e.getMessage());

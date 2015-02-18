@@ -1900,11 +1900,6 @@ tree will not be usable for autoinstalling.
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; A full listing of the available macros is listed in the &lt;a href="{0}"&gt;User Guide&lt;/a&gt;.</source>
       </trans-unit>
 
-      <!-- SCC Migration -->
-      <trans-unit id="message.sccmigrationavailable">
-            <source>You are currently connected to the Novell Customer Center (NCC). &lt;a href="/rhn/admin/config/SCCConfig.do"&gt;Migrate&lt;/a&gt; to the new SUSE Customer Center (SCC) for the best customer experience.</source>
-      </trans-unit>
-
       <!-- Setup Wizard -->
       <trans-unit id="message.firstusercreated">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
@@ -1943,9 +1938,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.password">
         <source>Password</source>
-      </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.email">
-        <source>Email</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions">
         <source>Actions</source>
@@ -1988,13 +1980,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- SUSE Products -->
-      <trans-unit id="suse-products.jsp.invalid-credentials-alert-message">
-        <source>There was an error listing the products for the given credentials, please go &lt;a href='/rhn/admin/setup/MirrorCredentials.do'&gt;back&lt;/a&gt; to make sure that all configured mirror credentials are valid!</source>
-      </trans-unit>
-      <trans-unit id="suse-products.jsp.no-connection-alert-message">
-        <source>There was an error refreshing the products list, connection could not be established. Please check that the &lt;a href='/rhn/admin/setup/ProxySettings.do'&gt;HTTP proxy&lt;/a&gt; details are correct - if they are, NCC might be experiencing a temporary downtime.
-        </source>
-      </trans-unit>
       <trans-unit id="suse-products.jsp.add-products">
         <source>Add products</source>
       </trans-unit>
@@ -2050,31 +2035,7 @@ tree will not be usable for autoinstalling.
         <source>Repository synchronization is in progress.</source>
       </trans-unit>
 
-      <!--  SCC Setup and migration -->
-      <trans-unit id="sccconfig.jsp.notyetavailable">
-        <source>The SUSE Customer Center is not yet available.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.migrated">
-        <source>Congratulations! SUSE Manager is migrated to the SUSE Customer Center.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.stillncc">
-        <source>SUSE Manager is still connected to the Novell Customer Center.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.migrationinfo">
-        <source>Migration is a straightforward process but may take some minutes.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.migrationinfosmt">
-        <source>SUSE Manager is configured to mirror packages from a local mirror. If you are using the Subscription Management Tool (SMT) with SUSE Manager make sure you also migrate it to the SUSE Customer Center.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.disablecronjobs">
-        <source>After this migration regular channel synchronization will be done via a taskomatic job. Please remove any existing cron jobs calling &lt;b&gt;mgr-ncc-sync&lt;/b&gt; or &lt;b&gt;mgr-inter-sync&lt;/b&gt; accordingly.</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.migrate">
-        <source>Start Migration to SUSE Customer Center</source>
-      </trans-unit>
-      <trans-unit id="sccconfig.jsp.switchingtoscc">
-        <source>Switching to SUSE Customer Center</source>
-      </trans-unit>
+      <!--  SCC refresh -->
       <trans-unit id="sccconfig.jsp.refresh">
         <source>Refreshing data from SUSE Customer Center</source>
       </trans-unit>
@@ -2110,12 +2071,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="sccconfig.jsp.failed.details.link">
         <source>Details</source>
-      </trans-unit>
-      <trans-unit id="SUSE Customer Center">
-        <source>SUSE Customer Center</source>
-          <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
       </trans-unit>
     </body>
   </file>

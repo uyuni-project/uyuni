@@ -140,40 +140,8 @@ upgrade_schema() {
     spacewalk-schema-upgrade -y || exit 1
 }
 
-upgrade_config() {
-    local allowed_iss_slaves=`read_value allowed_iss_slaves`
-    local iss_parent=`read_value iss_parent`
-    local iss_ca_chain=`read_value iss_ca_chain`
-    local timestamp=`date "+%Y%m%d%H%M%S"`
-    local rhnconf="/etc/rhn/rhn.conf"
-    local bak="/etc/rhn/rhn.conf.$timestamp"
-
-    if [ -n "$iss_parent" -a -n "$iss_ca_chain" ]; then
-        cp "$rhnconf" "$bak"
-        echo "Convert slave configuration to database"
-        echo "
-        INSERT INTO rhnIssMaster (id, label, is_current_master, ca_cert)
-        VALUES (sequence_nextval('rhn_issmaster_seq'), '$iss_parent', 'Y', '$iss_ca_chain');
-        " | spacewalk-sql -
-        sed -i 's/^iss_parent.*//' $rhnconf
-    fi
-    if [ -n "$allowed_iss_slaves" ]; then
-        if [ ! -e $bak ]; then
-            cp "$rhnconf" "$bak"
-        fi
-
-        echo "Convert master configuration to database"
-        IFS=', '
-        for SLAVE in $allowed_iss_slaves; do
-            echo "
-            INSERT INTO rhnISSSlave (id, slave)
-            VALUES (sequence_nextval('rhn_issslave_seq'), '$SLAVE');
-            " | spacewalk-sql -
-        done
-        sed -i 's/^allowed_iss_slaves.*//' $rhnconf
-    fi
-    /usr/bin/spacewalk-setup-tomcat
-    /usr/bin/spacewalk-setup-sudoers
+upgrade_post_db() {
+    sed -i '/.*\/usr\/sbin\/mgr-ncc-sync,\\.*/d' /etc/sudoers
 }
 
 DBBACKEND=`read_value db_backend`
@@ -209,6 +177,6 @@ fi
 
 upgrade_schema
 
-upgrade_config
+upgrade_post_db
 
 spacewalk-service start

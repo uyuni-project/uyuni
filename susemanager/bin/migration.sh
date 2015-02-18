@@ -311,20 +311,14 @@ db-port=$MANAGER_DB_PORT
 db-protocol=$MANAGER_DB_PROTOCOL
 enable-tftp=$MANAGER_ENABLE_TFTP
 " > /root/spacewalk-answers
-if [ -n "$NCC_USER" ]; then
-    echo "ncc-user = $NCC_USER
-ncc-pass = $NCC_PASS
-ncc-email = $NCC_EMAIL
-" >> /root/spacewalk-answers
-PARAM_CC="--ncc"
-elif [ -n "$SCC_USER" ]; then
-    echo "scc-user = $SCC_USER
+    if [ -n "$SCC_USER" ]; then
+        echo "scc-user = $SCC_USER
 scc-pass = $SCC_PASS
 " >> /root/spacewalk-answers
-PARAM_CC="--scc"
-elif [ -n "$ISS_PARENT" ]; then
-PARAM_CC="--disconnected"
-fi
+        PARAM_CC="--scc"
+    elif [ -n "$ISS_PARENT" ]; then
+        PARAM_CC="--disconnected"
+    fi
 
     if [ "$DB_BACKEND" = "oracle" ]; then
             PARAM_DB="--external-oracle"
@@ -549,9 +543,6 @@ do_setup() {
         echo -n "MANAGER_ENABLE_TFTP="; read MANAGER_ENABLE_TFTP
         echo -n "SCC_USER="           ; read SCC_USER
         echo -n "SCC_PASS="           ; read SCC_PASS
-        echo -n "NCC_USER="           ; read NCC_USER
-        echo -n "NCC_PASS="           ; read NCC_PASS
-        echo -n "NCC_EMAIL="          ; read NCC_EMAIL
         echo -n "ISS_PARENT="         ; read ISS_PARENT
         echo -n "ACTIVATE_SLP="       ; read ACTIVATE_SLP
     fi;
@@ -692,11 +683,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/sbin/spacewalk-service restart
     fi
     setup_dobby
-    if [ -n "$NCC_USER" ]; then
-        # Finaly call mgr-ncc-sync
-        /usr/sbin/mgr-ncc-sync --refresh
-    elif [ -n "$SCC_USER" ]; then
-        touch /var/lib/spacewalk/scc/migrated
+    if [ -n "$SCC_USER" ]; then
         # wait for taskomatic port is open
         RETRIES=10
         while [ $RETRIES -gt 0 ]

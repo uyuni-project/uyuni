@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.scc.client.SCCConfig;
@@ -49,12 +48,6 @@ public class MgrSyncRefresh extends RhnJavaJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         if (log.isDebugEnabled()) {
             log.debug("Refreshing mgr-sync data");
-        }
-
-        // Do nothing if this server has not been migrated yet
-        if (!MgrSyncUtils.isMigratedToSCC()) {
-            log.warn("No need to refresh, this server has not been migrated to SCC yet.");
-            return;
         }
 
         // Measure time to calculate the total duration

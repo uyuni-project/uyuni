@@ -76,7 +76,7 @@ public class ProxySettingsRenderer {
     }
 
     /**
-     * Verify the configured proxy settings with NCC.
+     * Verify the configured proxy settings with SUSE Customer Center.
      * @param refreshCache used to force a cache refresh
      * @return true if the proxy works, false otherwise.
      */

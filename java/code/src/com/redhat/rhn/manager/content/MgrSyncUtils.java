@@ -26,17 +26,12 @@ import com.suse.mgrsync.MgrSyncChannel;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
  * Utility methods to be used in {@link ContentSyncManager} related code.
  */
 public class MgrSyncUtils {
-
-    // This file is touched once the server has been migrated to SCC
-    public static final String SCC_MIGRATED = "/var/lib/spacewalk/scc/migrated";
-    public static final String SCC_DEFAULT = "/var/lib/spacewalk/scc/default_scc";
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -165,21 +160,5 @@ public class MgrSyncUtils {
             ChannelFactory.save(productName);
         }
         return productName;
-    }
-
-    /**
-     * Check if this server has been migrated to an SCC backend yet.
-     * @return true if provider is migrated from NCC to SCC.
-     */
-    public static boolean isMigratedToSCC() {
-        return new File(MgrSyncUtils.SCC_MIGRATED).exists();
-    }
-
-    /**
-     * @return true if SCC is the default backend to be used, no matter
-     * if the customer has migrated yet or not.
-     */
-    public static boolean isSCCTheDefault() {
-        return new File(MgrSyncUtils.SCC_DEFAULT).exists();
     }
 }

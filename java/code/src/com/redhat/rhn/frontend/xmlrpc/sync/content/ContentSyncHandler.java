@@ -230,26 +230,6 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Migrate this SUSE Manager server to work with SCC.
-     *
-     * @param loggedInUser the currently logged in user
-     * @return Integer
-     * @throws ContentSyncException in case of an error
-     *
-     * @xmlrpc.doc Migrate this SUSE Manager server to work with SCC.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    public Integer performMigration(User loggedInUser) throws ContentSyncException {
-        ensureSatAdmin(loggedInUser);
-
-        ContentSyncManager manager = new ContentSyncManager();
-        manager.performMigration(loggedInUser);
-
-        return BaseHandler.VALID;
-    }
-
-    /**
      * Add mirror credentials to SUSE Manager.
      *
      * @param loggedInUser the currently logged in user
@@ -270,7 +250,7 @@ public class ContentSyncHandler extends BaseHandler {
             boolean primary) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         long id = credsManager.storeMirrorCredentials(creds, loggedInUser, null);
         if (primary) {
             credsManager.makePrimaryCredentials(id, loggedInUser, null);
@@ -296,8 +276,7 @@ public class ContentSyncHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             if (c.getUsername().equals(username)) {
-                MirrorCredentialsManager credsManager =
-                        MirrorCredentialsManager.createInstance();
+                MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
                 credsManager.deleteMirrorCredentials(c.getId(), loggedInUser, null);
                 break;
             }
@@ -321,8 +300,6 @@ public class ContentSyncHandler extends BaseHandler {
     public List<MirrorCredentialsDto> listCredentials(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        MirrorCredentialsManager credsManager =
-                MirrorCredentialsManager.createInstance();
-        return credsManager.findMirrorCredentials();
+        return new MirrorCredentialsManager().findMirrorCredentials();
     }
 }

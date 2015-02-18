@@ -125,7 +125,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
      * @return the test credentials
      */
     private MirrorCredentialsDto getTestCredentials() {
-        return new MirrorCredentialsDto("foo", "foo", "foo");
+        return new MirrorCredentialsDto("foo", "foo");
     }
 
     /**
@@ -134,7 +134,7 @@ public class SetupWizardSessionCacheTest extends RhnMockStrutsTestCase {
      * @return the test credentials2
      */
     private MirrorCredentialsDto getTestCredentials2() {
-        return new MirrorCredentialsDto("bar", "bar", "bar");
+        return new MirrorCredentialsDto("bar", "bar");
     }
 
     /**

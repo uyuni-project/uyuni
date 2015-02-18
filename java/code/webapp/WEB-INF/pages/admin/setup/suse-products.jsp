@@ -7,8 +7,7 @@
 <html>
 <head>
     <script type="text/javascript" src="/rhn/dwr/interface/ProductsRenderer.js"></script>
-    <script type="text/javascript" src="/rhn/dwr/interface/ProductSyncAction.js"></script>
-    <script type="text/javascript" src="/rhn/dwr/interface/SCCConfigAjax.js"></script>
+    <script type="text/javascript" src="/rhn/dwr/interface/MgrSyncAJAX.js"></script>
     <script type="text/javascript" src="/rhn/dwr/engine.js"></script>
     <script type="text/javascript" src="/javascript/responsive-tab.js"></script>
     <script type="text/javascript" src="/javascript/susemanager-scc-refresh-dialog.js"></script>
@@ -29,12 +28,6 @@
                     <c:when test='${issMaster}'>
                         <div class="row" id="suse-products">
                             <div class="col-sm-9">
-                                <div class="alert alert-danger" id="invalid-credentials-alert-popup" hidden>
-                                    <bean:message key="suse-products.jsp.invalid-credentials-alert-message" />
-                                </div>
-                                <div class="alert alert-danger" id="no-connection-alert-popup" hidden>
-                                    <bean:message key="suse-products.jsp.no-connection-alert-message" />
-                                </div>
                                 <table class="table table-rounded">
                                     <thead>
                                         <tr>
@@ -63,7 +56,7 @@
                                                 <button class="btn btn-success" id="synchronize">
                                                     <i class="fa fa-plus"></i> <bean:message key='suse-products.jsp.add-products' />
                                                 </button>
-                                                <button class="btn btn-default <c:if test="${not migratedToSCC}">hidden</c:if>"
+                                                <button class="btn btn-default"
                                                   id="refresh" data-toggle="tooltip" title="<bean:message key='suse-products.jsp.refresh.help' />">
                                                     <i class="fa fa-refresh"></i> <bean:message key='suse-products.jsp.refresh' />
                                                 </button>
