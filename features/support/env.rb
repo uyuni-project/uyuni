@@ -22,6 +22,8 @@ browser = ( ENV['BROWSER'] ? ENV['BROWSER'].to_sym : nil ) || :firefox
 host = ENV['TESTHOST'] || 'andromeda.suse.de'
 proxy = ENV['ZAP_PROXY'].to_s || nil
 
+require 'minitest/unit'
+World(MiniTest::Assertions)
 
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
