@@ -28,9 +28,6 @@
                     <c:when test='${issMaster}'>
                         <div class="row" id="suse-products">
                             <div class="col-sm-9">
-                                <div class="alert alert-danger" id="invalid-credentials-alert-popup" hidden>
-                                    <bean:message key="suse-products.jsp.invalid-credentials-alert-message" />
-                                </div>
                                 <table class="table table-rounded">
                                     <thead>
                                         <tr>

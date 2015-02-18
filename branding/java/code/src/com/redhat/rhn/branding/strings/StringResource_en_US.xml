@@ -1980,9 +1980,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- SUSE Products -->
-      <trans-unit id="suse-products.jsp.invalid-credentials-alert-message">
-        <source>There was an error listing the products for the given credentials, please go &lt;a href='/rhn/admin/setup/MirrorCredentials.do'&gt;back&lt;/a&gt; to make sure that all configured mirror credentials are valid!</source>
-      </trans-unit>
       <trans-unit id="suse-products.jsp.add-products">
         <source>Add products</source>
       </trans-unit>
