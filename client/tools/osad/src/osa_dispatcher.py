@@ -331,6 +331,7 @@ class UpstreamServer(SocketServer.TCPServer):
 
     def get_running_clients(self):
         log_debug(3)
+        # only with contact_method = default. SSH Push has its own value
         h = rhnSQL.prepare(self._query_get_running_clients)
         h.execute()
         row = h.fetchone_dict()
@@ -424,9 +425,12 @@ class UpstreamServer(SocketServer.TCPServer):
     """)
 
     _query_get_running_clients = rhnSQL.Statement("""
-        select count(distinct server_id) clients
-          from rhnServerAction
-         where status = 1 -- picked up
+        select count(distinct sa.server_id) clients
+          from rhnServerAction sa
+          join rhnServer s ON sa.server_id = s.id
+          join suseServerContactMethod sscm ON sscm.id = s.contact_method_id
+         where sscm.label = 'default'
+           and sa.status = 1 -- picked up
     """)
 
 def bind_server(start_port=1290):
