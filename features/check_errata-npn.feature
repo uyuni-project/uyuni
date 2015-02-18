@@ -29,7 +29,7 @@ Feature: Check errata
      When I follow "Packages"
      Then I should see a "SLES11-SP3-Updates x86_64 Channel" link
       And I should see a "SLES11-SP3-Updates i586 Channel" link
-      And I should see a "sha1:cbd60e37142de1204964269d00fd5cc645ccd056" text
+      And I should see a "sha256:6267e2f0869ccb94a81a9f677b838ac3939aca7d217c4efcfeebcec46470b973" text
       And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: check relevant errata for this client
