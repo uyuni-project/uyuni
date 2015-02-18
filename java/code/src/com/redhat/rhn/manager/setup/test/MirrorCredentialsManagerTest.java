@@ -16,19 +16,19 @@ package com.redhat.rhn.manager.setup.test;
 
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
-import com.redhat.rhn.manager.setup.SCCMirrorCredentialsManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.util.List;
 
 /**
- * Tests for {@link SCCMirrorCredentialsManager}.
+ * Tests for {@link MirrorCredentialsManager}.
  */
-public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
+public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
 
     // Manager class instance
-    private SCCMirrorCredentialsManager credsManager;
+    private MirrorCredentialsManager credsManager;
 
     /**
      * Test findMirrorCredentials().
@@ -135,7 +135,7 @@ public class SCCMirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        credsManager = new SCCMirrorCredentialsManager();
+        credsManager = new MirrorCredentialsManager();
     }
 
     /**

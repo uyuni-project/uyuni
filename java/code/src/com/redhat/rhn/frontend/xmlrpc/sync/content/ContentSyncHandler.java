@@ -250,7 +250,7 @@ public class ContentSyncHandler extends BaseHandler {
             boolean primary) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
-        MirrorCredentialsManager credsManager = MirrorCredentialsManager.createInstance();
+        MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         long id = credsManager.storeMirrorCredentials(creds, loggedInUser, null);
         if (primary) {
             credsManager.makePrimaryCredentials(id, loggedInUser, null);
@@ -276,8 +276,7 @@ public class ContentSyncHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         for (Credentials c : CredentialsFactory.lookupSCCCredentials()) {
             if (c.getUsername().equals(username)) {
-                MirrorCredentialsManager credsManager =
-                        MirrorCredentialsManager.createInstance();
+                MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
                 credsManager.deleteMirrorCredentials(c.getId(), loggedInUser, null);
                 break;
             }
@@ -301,8 +300,6 @@ public class ContentSyncHandler extends BaseHandler {
     public List<MirrorCredentialsDto> listCredentials(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        MirrorCredentialsManager credsManager =
-                MirrorCredentialsManager.createInstance();
-        return credsManager.findMirrorCredentials();
+        return new MirrorCredentialsManager().findMirrorCredentials();
     }
 }
