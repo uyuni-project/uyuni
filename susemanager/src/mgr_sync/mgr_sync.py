@@ -18,8 +18,7 @@ import sys
 import os.path
 import xmlrpclib
 
-from spacewalk.common.suseLib import current_cc_backend, BackendType, hasISSMaster
-from spacewalk.susemanager.content_sync_helper import switch_to_scc
+from spacewalk.common.suseLib import hasISSMaster
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -63,27 +62,7 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if not self._is_scc_allowed():
-            msg = """Support for SUSE Customer Center (SCC) is not yet available.\n"""
-            self.log.error(msg)
-            sys.stderr.write(msg)
-            return 1
-
-        if not current_cc_backend() == BackendType.SCC \
-           and not vars(options).has_key('enable_scc'):
-            msg = """Error: the Novell Customer Center (NCC) backend is currently in use.
-mgr-sync requires the SUSE Customer Center (SCC) backend to be activated.
-
-This can be done using the following commmand:
-    mgr-sync enable-scc
-
-Note: there is no way to revert the migration from Novell Customer Center (NCC) to SUSE Customer Center (SCC).
-"""
-            self.log.error(msg)
-            sys.stderr.write(msg)
-            return 1
-
-        if hasISSMaster() and not (vars(options).has_key('enable_scc') or vars(options).has_key('refresh')):
+        if hasISSMaster() and not vars(options).has_key('refresh'):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -163,14 +142,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
                 enable_reposync=options.refresh_channels,
                 mirror=options.mirror,
                 schedule=options.schedule)
-        elif vars(options).has_key('enable_scc'):
-            if current_cc_backend() == BackendType.SCC:
-                self.log.info("The SUSE Customer Center (SCC) backend is already "
-                          "active, nothing to do.")
-                print("The SUSE Customer Center (SCC) backend is already "
-                      "active, nothing to do.")
-            else:
-                self._enable_scc()
         elif vars(options).has_key('delete_target'):
             if 'credentials' in options.delete_target:
                 self._delete_credentials(options.target)
@@ -686,29 +657,6 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
              params))
          client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
 
-    def _enable_scc(self, retry_on_session_failure=True):
-        """ Enable the SCC backend """
-
-        self.log.info("Enabling SCC...")
-        if current_cc_backend() == BackendType.NCC:
-
-            try:
-                switch_to_scc(self.conn, self.auth.token())
-            except xmlrpclib.Fault, ex:
-                if retry_on_session_failure and self._check_session_fail(ex):
-                    self.log.debug("Retrying after session failure: {0}".format(ex))
-                    self.auth.discard_token()
-                    return self._enable_scc(retry_on_session_failure=False)
-                else:
-                    self.log.error("Error: {0}".format(ex))
-                    raise ex
-            if not self._refresh(enable_reposync=False):
-                sys.exit(1)
-            self.log.info("SCC backend successfully migrated.")
-            print("SCC backend successfully migrated.")
-        else:
-            self.log.info("SUSE Manager is already using the SCC backend.")
-            print("SUSE Manager is already using the SCC backend.")
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """
@@ -755,5 +703,3 @@ Note: there is no way to revert the migration from Novell Customer Center (NCC) 
 
         return False
 
-    def _is_scc_allowed(self):
-        return os.path.isfile("/var/lib/spacewalk/scc/default_scc")

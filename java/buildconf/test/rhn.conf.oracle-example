@@ -111,7 +111,7 @@ web.enable_solaris_support = 0
 web.product_name = SUSE Manager
 web.vendor_name = SUSE
 web.enterprise_linux_name = SUSE Linux Enterprise
-web.vendor_service_name = Novell Customer Center
+web.vendor_service_name = SUSE Customer Center
 
 # Maximum number of actions displayed on schedule/actions pages
 web.actions_display_limit = 10000

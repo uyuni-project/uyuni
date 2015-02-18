@@ -82,7 +82,7 @@ def schedule_single_sat_repo_sync(channel_id):
             xmlrpcclient.tasko.scheduleSingleBunchRun(
                 org_id, 'repo-sync-bunch', {'channel_id':channel_id}).
         SUSE however needs to create its default non-organizational channels
-        out of multiple NCC repos when doing sm-ncc-sync, thus the repo sync
+        out of multiple SCC repos when doing mgr-sync, thus the repo sync
         task for the default channels must be executed without an org_id (as
         a satellite task). Special XMLRPC method was created for this:
             xmlrpcclient.tasko.scheduleSingleSatRepoSync(channel_id)

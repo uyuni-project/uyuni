@@ -131,23 +131,23 @@ def _getActivationError(e):
         # possible future error message?
         errorString = ("no Provisioning entitlements available. There must "
                        "be at least one free Management/Provisioning slot "
-                       "available in your NCC account.")
+                       "available in your SCC account.")
         errorCode = 3
     elif e.faultString.find('proxy_no_management_entitlements') != -1:
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
-                       "available in your NCC account.")
+                       "available in your SCC account.")
         errorCode = 4
     elif e.faultString.find('proxy_no_enterprise_entitlements') != -1:
         # legacy error message
         errorString = ("no Management entitlements available. There must be "
                        "at least one free Management/Provisioning slot "
-                       "available in your NCC account.")
+                       "available in your SCC account.")
         errorCode = 5
     elif e.faultString.find('proxy_no_channel_entitlements') != -1:
         errorString = ("no SUSE Manager Proxy entitlements available. There must be "
                        "at least one free SUSE Manager Proxy entitlement "
-                       "available in your NCC account.")
+                       "available in your SCC account.")
         errorCode = 6
     elif e.faultString.find('proxy_no_proxy_child_channel') != -1:
         errorString = ("no SUSE Manager Proxy entitlements available for this "

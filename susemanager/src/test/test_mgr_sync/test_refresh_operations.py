@@ -24,7 +24,6 @@ from mock import MagicMock, call, patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from helper import ConsoleRecorder, read_data_from_fixture
 
-from spacewalk.common.suseLib import BackendType
 from spacewalk.susemanager.mgr_sync.cli import get_options
 from spacewalk.susemanager.mgr_sync.mgr_sync import MgrSync
 
@@ -34,15 +33,10 @@ class RefreshOperationsTest(unittest.TestCase):
     def setUp(self):
         self.mgr_sync = MgrSync()
         self.mgr_sync.conn = MagicMock()
-        self.mgr_sync._is_scc_allowed = MagicMock(return_value=True)
         self.fake_auth_token = "fake_token"
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
-
-        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.current_cc_backend')
-        mock = patcher.start()
-        mock.return_value = BackendType.SCC
 
         patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
         mock = patcher.start()

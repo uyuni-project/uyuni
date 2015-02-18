@@ -26,16 +26,16 @@ public class MirrorCredentialsTest extends RhnBaseTestCase {
      * Tests MirrorCredentialsDto.equals()
      */
     public void testEquality() {
-        MirrorCredentialsDto mc1 =
-                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
-        MirrorCredentialsDto mc2 =
-                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc1 = new MirrorCredentialsDto("user1", "pw1");
+        MirrorCredentialsDto mc2 = new MirrorCredentialsDto("user1", "pw1");
         assertEquals(mc1, mc2);
 
-        MirrorCredentialsDto mc3 =
-                new MirrorCredentialsDto("fake@domain.com", "user1", "pw1");
-        MirrorCredentialsDto mc4 =
-                new MirrorCredentialsDto("false@domain.com", "user1", "pw1");
+        MirrorCredentialsDto mc3 = new MirrorCredentialsDto("user1", "pw1");
+        MirrorCredentialsDto mc4 = new MirrorCredentialsDto("user2", "pw1");
         assertFalse(mc3.equals(mc4));
+
+        MirrorCredentialsDto mc5 = new MirrorCredentialsDto("user1", "pw1");
+        MirrorCredentialsDto mc6 = new MirrorCredentialsDto("user1", "pw2");
+        assertFalse(mc5.equals(mc6));
     }
 }

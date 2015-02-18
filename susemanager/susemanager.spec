@@ -40,7 +40,7 @@ setup tasks, re-installation, upgrades and managing.
 Summary:    SUSE Manager Tools
 Group:      Productivity/Other
 Requires:       suseRegisterInfo
-Requires:       sm-ncc-sync-data
+Requires:       susemanager-build-keys
 Requires:       susemanager-sync-data
 Requires:       spacewalk-backend >= 2.1.55.11
 Requires:       spacewalk-backend-sql
@@ -148,22 +148,17 @@ chown root.root /etc/sysconfig
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_prefix}/share/rhn/config-defaults/rhn_*.conf
 %attr(0755,root,root) %{_sbindir}/mgr-register
-%attr(0755,root,root) %{_sbindir}/mgr-ncc-sync
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
 %attr(0755,root,root) %{_sbindir}/mgr-sync
 %{pythonsmroot}/susemanager/__init__.py*
-%{pythonsmroot}/susemanager/mgr_register.py*
-%{pythonsmroot}/susemanager/mgr_ncc_sync_lib.py*
 %{pythonsmroot}/susemanager/mgr_clean_old_patchnames.py*
 %{pythonsmroot}/susemanager/mgr_delete_patch.py*
 %{pythonsmroot}/susemanager/authenticator.py*
-%{pythonsmroot}/susemanager/content_sync_helper.py*
 %{pythonsmroot}/susemanager/errata_helper.py*
 %{pythonsmroot}/susemanager/helpers.py*
 %{pythonsmroot}/susemanager/package_helper.py*
-%{pythonsmroot}/susemanager/simpleproduct.py*
 %{pythonsmroot}/susemanager/mgr_sync
 %{_datadir}/susemanager/mgr_bootstrap_data.py*
 %{_mandir}/man8/mgr-sync.8*

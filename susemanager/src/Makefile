@@ -7,22 +7,21 @@ TOP     = ..
 # Specific stuff
 SUBDIR		= susemanager
 
-SPACEWALK_FILES		= mgr_ncc_sync_lib __init__ \
-										mgr_register mgr_clean_old_patchnames \
-										mgr_delete_patch \
-										authenticator \
-										content_sync_helper \
-										helpers \
-										simpleproduct errata_helper package_helper\
-										mgr_sync/__init__ \
-										mgr_sync/cli \
-										mgr_sync/channel \
-										mgr_sync/config \
-										mgr_sync/mgr_sync \
-										mgr_sync/product \
-										mgr_sync/version \
-										mgr_sync/logger
-SCRIPTS  = mgr-ncc-sync mgr-register mgr-clean-old-patchnames \
+SPACEWALK_FILES		= __init__ \
+			mgr_clean_old_patchnames \
+			mgr_delete_patch \
+			authenticator \
+			helpers \
+			errata_helper package_helper\
+			mgr_sync/__init__ \
+			mgr_sync/cli \
+			mgr_sync/channel \
+			mgr_sync/config \
+			mgr_sync/mgr_sync \
+			mgr_sync/product \
+			mgr_sync/version \
+			mgr_sync/logger
+SCRIPTS  = mgr-register mgr-clean-old-patchnames \
 	   mgr-create-bootstrap-repo mgr-delete-patch mgr-sync
 
 SUMA_DATA_FILES = mgr_bootstrap_data

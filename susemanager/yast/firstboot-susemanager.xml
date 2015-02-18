@@ -108,39 +108,6 @@
                     <enable_back>no</enable_back>
                     <enable_next>no</enable_next>
                 </module>
-
-<!-- We let the user run manually the SUSE Manager setup part
-because he may want to do a migration instead -->
-
-<!--
-                <module>
-                    <label>SUSE Manager</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_manager</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Certificates</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_cert</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Database</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_db</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: NCC</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_ncc</name>
-                </module>
-                <module>
-                    <label>SUSE Manager: Write Settings</label>
-                    <enabled config:type="boolean">true</enabled>
-                    <name>susemanager_write</name>
-                </module>
-
--->
-
                 <module>
                     <label>Finish Setup</label>
                     <name>inst_congratulate</name>

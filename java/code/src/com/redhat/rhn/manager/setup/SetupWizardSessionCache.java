@@ -18,8 +18,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 
-import com.suse.manager.model.ncc.Subscription;
-
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -79,8 +77,8 @@ public class SetupWizardSessionCache {
             HttpServletRequest request) {
         boolean ret = true;
         HttpSession session = request.getSession();
-        Map<String, List<Subscription>> subsMap =
-                (Map<String, List<Subscription>>) session.getAttribute(SUBSCRIPTIONS_KEY);
+        Map<String, List<SubscriptionDto>> subsMap = (Map<String, List<SubscriptionDto>>)
+                session.getAttribute(SUBSCRIPTIONS_KEY);
         if (subsMap != null && subsMap.containsKey(creds.getUser())) {
             ret = false;
         }
@@ -152,20 +150,14 @@ public class SetupWizardSessionCache {
         HttpSession session = request.getSession();
         Boolean ret = (Boolean) session.getAttribute(PROXY_STATUS_KEY);
 
-        // Ping NCC/SCC if refresh is enforced or status is unknown
+        // Ping SCC if refresh is enforced or status is unknown
         if (forceRefresh || ret == null) {
-            if (MgrSyncUtils.isMigratedToSCC()) {
-                try {
-                    String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
-                    ret = MgrSyncUtils.verifyProxy(url);
-                }
-                catch (IOException e) {
-                    ret = false;
-                }
+            try {
+                String url = Config.get().getString(ConfigDefaults.SCC_URL) + "/login";
+                ret = MgrSyncUtils.verifyProxy(url);
             }
-            else {
-                NCCClient client = new NCCClient();
-                ret = client.ping();
+            catch (IOException e) {
+                ret = false;
             }
 
             // Put validation status in cache
