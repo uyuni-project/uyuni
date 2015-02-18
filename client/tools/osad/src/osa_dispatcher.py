@@ -346,7 +346,8 @@ class UpstreamServer(SocketServer.TCPServer):
         notify_count = 0
         if self._notify_threshold:
             notify_count = self._notify_threshold - running_clients
-        log_debug(4, "notify_threshold: %s running_clients: %s notify_count: %s" % (self._notify_threshold, running_clients, notify_count))
+        log_debug(4, "notify_threshold: %s running_clients: %s notify_count: %s" %
+                (self._notify_threshold, running_clients, notify_count))
 
         h = rhnSQL.prepare(self._query_get_pending_clients)
         h.execute()
