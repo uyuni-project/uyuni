@@ -160,7 +160,7 @@ public class MgrSyncAJAXEndpoint {
             if (log.isDebugEnabled()) {
                 log.debug("Add/Sync products: " + productIdents);
             }
-            ProductSyncManager.createInstance().addProducts(productIdents);
+            new ProductSyncManager().addProducts(productIdents);
         }
         catch (ProductSyncException e) {
             log.error(e);
