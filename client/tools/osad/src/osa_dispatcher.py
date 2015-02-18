@@ -348,11 +348,11 @@ class UpstreamServer(SocketServer.TCPServer):
     def notify_jabber_nodes(self):
         log_debug(3)
         running_clients = self.get_running_clients()
-        notify_count = 0
+        free_slots = 0
         if self._notify_threshold:
-            notify_count = self._notify_threshold - running_clients
-        log_debug(4, "notify_threshold: %s running_clients: %s notify_count: %s" %
-                (self._notify_threshold, running_clients, notify_count))
+             free_slots = self._notify_threshold - running_clients
+        log_debug(4, "notify_threshold: %s running_clients: %s free_slots: %s" %
+                (self._notify_threshold, running_clients, free_slots))
 
         h = rhnSQL.prepare(self._query_get_pending_clients)
         h.execute()
@@ -360,7 +360,7 @@ class UpstreamServer(SocketServer.TCPServer):
         notified = []
 
         while 1:
-            if self._notify_threshold and notify_count <= 0:
+            if self._notify_threshold and free_slots <= 0:
                 # End of loop
                 log_debug(4, "max running clients reached; stop notifying")
                 break
@@ -401,7 +401,7 @@ class UpstreamServer(SocketServer.TCPServer):
             self.jabber_connection.send_message(jabber_id,
                 jabber_lib.NS_RHN_MESSAGE_REQUEST_CHECKIN)
             if jabber_id not in notified:
-                notify_count = notify_count - 1
+                free_slots -= 1
                 notified.append(jabber_id)
         rhnSQL.commit()
 
