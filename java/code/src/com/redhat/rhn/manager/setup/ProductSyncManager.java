@@ -16,20 +16,33 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import com.suse.manager.model.products.Channel;
+import com.suse.manager.model.products.MandatoryChannels;
+import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.manager.model.products.Product.SyncStatus;
+import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.MgrSyncStatus;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,25 +51,46 @@ import java.util.Map;
 /**
  * Manager class for interacting with SUSE products.
  */
-public abstract class ProductSyncManager {
+public class ProductSyncManager {
 
     /** The logger. */
     protected static Logger logger = Logger.getLogger(ProductSyncManager.class);
-
-    /**
-     * Create {@link ProductSyncManager} instance.
-     * @return instance of {@link ProductSyncManager}
-     */
-    public static ProductSyncManager createInstance() {
-        return new SCCProductSyncManager();
-    }
 
     /**
      * Returns a list of base products.
      * @return the products list
      * @throws ProductSyncException if an error occurred
      */
-    public abstract List<Product> getBaseProducts() throws ProductSyncException;
+    public List<Product> getBaseProducts() throws ProductSyncException {
+        ContentSyncManager csm = new ContentSyncManager();
+        try {
+            // Convert the listed products to objects we can display
+            Collection<ListedProduct> products = csm.listProducts(csm.listChannels());
+            List<Product> result = convertProducts(products);
+
+            // Determine their product sync status separately
+            for (Product p : result) {
+                if (p.isProvided()) {
+                    p.setSyncStatus(getProductSyncStatus(p));
+                }
+                else {
+                    p.setStatusNotMirrored();
+                }
+                for (Product addon : p.getAddonProducts()) {
+                    if (addon.isProvided()) {
+                        addon.setSyncStatus(getProductSyncStatus(addon));
+                    }
+                    else {
+                        addon.setStatusNotMirrored();
+                    }
+                }
+            }
+            return result;
+        }
+        catch (ContentSyncException e) {
+            throw new ProductSyncException(e);
+        }
+    }
 
     /**
      * Adds multiple products.
@@ -74,17 +108,35 @@ public abstract class ProductSyncManager {
      * @param productIdent the product ident
      * @throws ProductSyncException if an error occurred
      */
-    public abstract void addProduct(String productIdent) throws ProductSyncException;
+    public void addProduct(String productIdent) throws ProductSyncException {
+        Product product = findProductByIdent(productIdent);
+        if (product != null) {
+            try {
+                // Add the channels first
+                ContentSyncManager csm = new ContentSyncManager();
+                for (Channel channel : product.getMandatoryChannels()) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Add channel: " + channel.getLabel());
+                    }
+                    csm.addChannel(channel.getLabel(), null);
+                }
 
-    /**
-     * Refresh product, channel and subscription information without triggering
-     * any reposysnc.
-     * @throws ProductSyncException if the refresh failed
-     * @throws InvalidMirrorCredentialException if mirror credentials are not valid
-     * @throws ConnectionException if a connection to NCC was not possible
-     */
-    public abstract void refreshProducts() throws ProductSyncException,
-            InvalidMirrorCredentialException, ConnectionException;
+                // Trigger sync of those channels
+                for (Channel channel : product.getMandatoryChannels()) {
+                    ScheduleRepoSyncEvent event =
+                            new ScheduleRepoSyncEvent(channel.getLabel());
+                    MessageQueue.publish(event);
+                }
+            }
+            catch (ContentSyncException ex) {
+                throw new ProductSyncException(ex.getMessage());
+            }
+        }
+        else {
+            String msg = String.format("Product %s cannot be found.", productIdent);
+            throw new ProductSyncException(msg);
+        }
+    }
 
     /**
      * Get the synchronization status for a given product.
@@ -277,5 +329,92 @@ public abstract class ProductSyncManager {
             logger.error(e.getMessage());
         }
         return ret;
+    }
+
+    /**
+     * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
+     * for further display.
+     *
+     * @param products collection of {@link ListedProduct}
+     * @return List of {@link Product}
+     */
+    private List<Product> convertProducts(Collection<ListedProduct> products) {
+        List<Product> displayProducts = new ArrayList<Product>();
+        for (ListedProduct p : products) {
+            if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
+                Product displayProduct = convertProduct(p);
+                displayProducts.add(displayProduct);
+            }
+        }
+        return displayProducts;
+    }
+
+    /**
+     * Convert a given {@link ListedProduct} to a {@link Product} for further display.
+     *
+     * @param productIn instance of {@link ListedProduct}
+     * @return instance of {@link Product}
+     */
+    private Product convertProduct(final ListedProduct productIn) {
+        // Sort product channels (mandatory/optional)
+        List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
+        List<Channel> optionalChannelsOut = new ArrayList<Channel>();
+        for (MgrSyncChannel channelIn : productIn.getChannels()) {
+            MgrSyncStatus statusIn = channelIn.getStatus();
+            String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
+                    Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;
+            Channel channelOut = new Channel(channelIn.getLabel(), statusOut);
+            if (channelIn.isOptional()) {
+                optionalChannelsOut.add(channelOut);
+            }
+            else {
+                mandatoryChannelsOut.add(channelOut);
+            }
+        }
+
+        // Add base channel on top of everything else so it can be added first.
+        Collections.sort(mandatoryChannelsOut, new Comparator<Channel>() {
+            public int compare(Channel a, Channel b) {
+                return a.getLabel().equals(productIn.getBaseChannel().getLabel()) ? -1 :
+                        b.getLabel().equals(productIn.getBaseChannel().getLabel()) ? 1 : 0;
+            }
+        });
+
+        // Setup the product that will be displayed
+        Product displayProduct = new Product(productIn.getArch(), productIn.getIdent(),
+                productIn.getFriendlyName(), "",
+                new MandatoryChannels(mandatoryChannelsOut),
+                new OptionalChannels(optionalChannelsOut));
+
+        // Set extensions as addon products
+        for (ListedProduct extension : productIn.getExtensions()) {
+            Product ext = convertProduct(extension);
+            ext.setBaseProduct(displayProduct);
+            displayProduct.getAddonProducts().add(ext);
+            ext.setBaseProductIdent(displayProduct.getIdent());
+        }
+
+        return displayProduct;
+    }
+
+    /**
+     * Find a product for any given ident by looking through base and their addons.
+     *
+     * @param ident ident of a product
+     * @return the {@link Product}
+     * @throws ProductSyncException in case of an error
+     */
+    private Product findProductByIdent(String ident) throws ProductSyncException {
+        for (Product p : getBaseProducts()) {
+            if (p.getIdent().equals(ident)) {
+                return p;
+            }
+            for (Product addon : p.getAddonProducts()) {
+                if (addon.getIdent().equals(ident)) {
+                    return addon;
+                }
+            }
+        }
+        return null;
     }
 }
