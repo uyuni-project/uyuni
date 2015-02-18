@@ -32,7 +32,7 @@ ADD spacewalk-public.cert /usr/share/spacewalk/setup/spacewalk-public.cert
 ADD gnupg /.gnupg
 ADD webapp-keyring.gpg /etc/webapp-keyring.gpg
 
-ENV PYTHONPATH /manager/client/rhel/rhnlib/:/manager/suseRegisterInfo:/manager/client/rhel/rhn-client-tools/src
+ENV PYTHONPATH /manager/client/rhel/rhnlib/:/manager/client/rhel/rhn-client-tools/src
 ENV PERLLIB /manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 ENV PATH /manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
