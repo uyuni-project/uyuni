@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.setup;
 import com.redhat.rhn.frontend.dto.BaseDto;
 
 /**
- * Representation of a pair of mirror credentials (for either NCC or SCC).
+ * Representation of a pair of credentials for SUSE Customer Center.
  */
 public class MirrorCredentialsDto extends BaseDto {
 
