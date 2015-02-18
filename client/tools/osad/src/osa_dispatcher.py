@@ -339,11 +339,8 @@ class UpstreamServer(SocketServer.TCPServer):
         # only with contact_method = default. SSH Push has its own value
         h = rhnSQL.prepare(self._query_get_running_clients)
         h.execute()
-        row = h.fetchone_dict()
-        running_clients = 0
-        if row and 'clients' in row:
-            running_clients = int(row['clients'])
-        return running_clients
+        row = h.fetchone_dict() or {}
+        return int(row.get("clients"), 0)
 
     def notify_jabber_nodes(self):
         log_debug(3)
