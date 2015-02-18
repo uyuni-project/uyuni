@@ -590,8 +590,6 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{rhnroot}/wsgi/sat.py*
 %{rhnroot}/wsgi/sat_dump.py*
 %{rhnroot}/wsgi/xmlrpc.py*
-%{rhnroot}/wsgi/mgr.py*
-%{rhnroot}/wsgi/repoindex.py*
 
 # logs and other stuff
 %config(noreplace) %{_sysconfdir}/logrotate.d/spacewalk-backend-server
