@@ -481,11 +481,11 @@ public class KickstartFormatter {
             command += " --noipv4";
         }
 
-        if (ip6 != null && ip6.length() > 0 &&
-            (KickstartInstallType.FEDORA_PREFIX.equals(ksDistro) ||
-             KickstartInstallType.RHEL_6.equals(ksDistro))) {
+        if (ip6 != null && ip6.length() > 0 && ksDistro != null &&
+            (ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX) ||
+             ksDistro.equals(KickstartInstallType.RHEL_6))) {
             if (nm6 == null || nm6.length() == 0 ||
-                !KickstartInstallType.FEDORA_PREFIX.equals(ksDistro)) {
+                !ksDistro.startsWith(KickstartInstallType.FEDORA_PREFIX)) {
                 command += String.format(STATIC_NETWORK_COMMAND2, ip6);
             }
             else {
