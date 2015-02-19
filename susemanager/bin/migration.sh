@@ -241,29 +241,6 @@ quit
     rm /tmp/dbsetup.sql
 }
 
-setup_dobby() {
-    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "oracle" ]; then
-        # currently only supported for oracle
-        return
-    fi
-    echo "###########################
-# Dobby configuration
-###########################
-dobby.sid = susemanager
-dobby.sysdba_username = sys
-dobby.sysdba_password = $SYS_DB_PASS
-dobby.normal_username = $MANAGER_USER
-dobby.normal_password = $MANAGER_PASS
-dobby.remote_dsn =
-dobby.oracle_home = /opt/apps/oracle/product/11gR2/dbhome_1
-dobby.data_dir_format = /opt/apps/oracle/oradata/susemanager
-dobby.hot_backup_dir_format =
-dobby.archive_dir_format = /opt/apps/oracle/flash_recovery_area/susemanager
-dobby.oracle_user = oracle
-###########################" >> /etc/rhn/rhn.conf
-
-}
-
 setup_db_postgres() {
     if ! chkconfig -c postgresql ; then
         insserv postgresql
@@ -682,7 +659,6 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         fi
         /usr/sbin/spacewalk-service restart
     fi
-    setup_dobby
     if [ -n "$SCC_USER" -o -n "$ISS_PARENT" ]; then
         # wait for taskomatic port is open
         sleep 1
