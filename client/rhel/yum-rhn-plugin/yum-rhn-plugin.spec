@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.3.1
+Version: 2.3.2
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,10 @@ fi
 
 
 %changelog
+* Wed Feb 18 2015 Matej Kollar <mkollar@redhat.com> 2.3.2-1
+- 729913 - typo
+- 729913 - rhnplugin.conf man page clarification
+
 * Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.1-1
 - Getting rid of Tabs and trailing spaces in Python
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
