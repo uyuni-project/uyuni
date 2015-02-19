@@ -683,21 +683,12 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
         /usr/sbin/spacewalk-service restart
     fi
     setup_dobby
-    if [ -n "$SCC_USER" ]; then
+    if [ -n "$SCC_USER" -o -n "$ISS_PARENT" ]; then
         # wait for taskomatic port is open
-        RETRIES=10
-        while [ $RETRIES -gt 0 ]
-        do
-            /usr/bin/lsof -t -i :2829 > /dev/null && break
-            ((RETRIES--))
-            sleep 0.5
-        done
+        sleep 1
+        /usr/sbin/spacewalk-startup-helper wait-for-taskomatic
         # schedule refresh
         mgr-sync refresh --schedule
-    fi
-    if [ -n "$ISS_PARENT" ]; then
-        # call inter-sync list - this updates the org data
-        /usr/bin/mgr-inter-sync -l
     fi
     # we cannot do this for SCC - the Java API requires a first user
     # which does not exist yet.
