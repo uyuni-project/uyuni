@@ -59,6 +59,22 @@ else
 fi
 }
 
+wait_for_taskomatic() {
+if [ -x $LSOF ]; then
+    echo "Waiting for taskomatic to be ready ..."
+    RETRIES=30
+    while [ $RETRIES -gt 0 ]
+    do
+        $LSOF -t -i TCP:2829 > /dev/null && break
+        ((RETRIES--))
+        sleep 1
+    done
+else
+    echo "No lsof found, not waiting for taskomatic."
+fi
+}
+
+
 ensure_httpd_down() {
     COUNT=0
     LIMIT=10
@@ -82,4 +98,5 @@ case $1 in
         wait-for-jabberd) wait_for_jabberd;;
         wait-for-tomcat) wait_for_tomcat;;
         wait-for-database) wait_for_database;;
+        wait-for-taskomatic) wait_for_taskomatic;;
 esac

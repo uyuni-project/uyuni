@@ -92,6 +92,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
 %{_unitdir}/spacewalk-wait-for-jabberd.service
+%{_unitdir}/spacewalk-wait-for-taskomatic.service
 %endif
 %if 0%{?suse_version}
 %attr(0750,root,www) %dir %{_sysconfdir}/rhn
