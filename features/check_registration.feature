@@ -125,7 +125,10 @@ Feature: Check client registration
      And I should see a "Events" link in the content area
      And I should see a "List / Leave" link in the content area
      And I should see a "Join" link in row 2 of the content menu
-     And I should see a "Join" link in element "page-summary"
+     And I should see a "Join" link in the text
+       """
+       No System Groups. To add System Groups this system, please visit the Join tab
+       """
      And I should see a "System Groups" text
      #And I should see a "Virtualization" link in the content area
 

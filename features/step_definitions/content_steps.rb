@@ -66,6 +66,12 @@ Then /^I should see a "([^"]*)" button$/ do |arg1|
   fail if not find_button(arg1).visible?
 end
 
+Then(/^I should see a "(.*?)" link in the text$/) do |linktext, text|
+  within(:xpath, "//p/strong[contains(normalize-space(string(.)), '#{text}')]") do
+    assert has_xpath?("//a[text() = '#{linktext}']")
+  end
+end
+
 #
 # Test for a visible link inside of a <div> with the attribute
 # "class" or "id" of the given name
