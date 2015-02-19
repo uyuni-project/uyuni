@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.3.8
+Version: 2.3.9
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -462,6 +462,9 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Wed Feb 18 2015 Matej Kollar <mkollar@redhat.com> 2.3.9-1
+- 916597 - More helpful message
+
 * Thu Feb 05 2015 Matej Kollar <mkollar@redhat.com> 2.3.8-1
 - Updating function names
 - Documentation changes - fix name and refer to RFC.
