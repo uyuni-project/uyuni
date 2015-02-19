@@ -101,8 +101,10 @@ public class MirrorCredentialsRenderer {
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
+     * @throws ContentSyncException in case of problems making new primary creds
      */
-    public String deleteCredentials(long id) throws ServletException, IOException {
+    public String deleteCredentials(long id) throws ServletException, IOException,
+            ContentSyncException {
         // Find the current request
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
@@ -122,8 +124,10 @@ public class MirrorCredentialsRenderer {
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
+     * @throws ContentSyncException in case the credentials cannot be found
      */
-    public String makePrimaryCredentials(long id) throws ServletException, IOException {
+    public String makePrimaryCredentials(long id) throws ServletException, IOException,
+            ContentSyncException {
         // Make primary credentials
         if (logger.isDebugEnabled()) {
             logger.debug("Make primary credentials: " + id);
