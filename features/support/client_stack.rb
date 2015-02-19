@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 # Copyright (c) 2010-2011 Novell, Inc.
 # Licensed under the terms of the MIT license.
+require 'nokogiri'
 
 def client_is_zypp?
   File.stat("/usr/bin/zypper").executable?
@@ -24,4 +25,13 @@ def client_raw_repodata_dir( channel )
   else
     return "/var/cache/yum/#{channel}"
   end
+end
+
+def client_system_id
+  xml = Nokogiri::XML(File.read('/etc/sysconfig/rhn/systemid'))
+  xml.xpath('/params/param/value/struct/member[name="system_id"]/value').text
+end
+
+def client_system_id_to_i
+  client_system_id.gsub(/ID-/, '').to_i
 end
