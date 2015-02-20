@@ -16,11 +16,9 @@ package com.redhat.rhn.manager.setup;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
@@ -90,12 +88,11 @@ public class MirrorCredentialsManager {
      * Store mirror credentials given as {@link MirrorCredentialsDto}.
      *
      * @param creds the mirror credentials to store
-     * @param user the current user
      * @param request the current HTTP request object (used for session caching)
      * @return id of the stored mirror credentials
      * @throws ContentSyncException in case of errors
      */
-    public long storeMirrorCredentials(MirrorCredentialsDto creds, User userIn,
+    public long storeMirrorCredentials(MirrorCredentialsDto creds,
             HttpServletRequest request) throws ContentSyncException {
         if (creds.getUser() == null || creds.getPassword() == null) {
             throw new ContentSyncException("User or password is empty");
@@ -123,7 +120,7 @@ public class MirrorCredentialsManager {
 
         // Make this the primary pair of credentials if it's the only one
         if (CredentialsFactory.lookupSCCCredentials().size() == 1) {
-            makePrimaryCredentials(c.getId(), userIn, request);
+            makePrimaryCredentials(c.getId());
         }
         return c.getId();
     }
@@ -132,12 +129,11 @@ public class MirrorCredentialsManager {
      * Delete credentials given by ID.
      *
      * @param id the id of credentials to be deleted
-     * @param user the current user
      * @param request the current HTTP request object (used for session caching)
-     * @return list of validation errors or null in case of success
+     * @throws ContentSyncException in case of problems making new primary creds
      */
-    public ValidatorError[] deleteMirrorCredentials(Long id, User user,
-            HttpServletRequest request) {
+    public void deleteMirrorCredentials(Long id, HttpServletRequest request)
+            throws ContentSyncException {
         // Store credentials to empty cache later
         MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
@@ -149,7 +145,7 @@ public class MirrorCredentialsManager {
         if (credentials.isPrimary()) {
             List<Credentials> credsList = CredentialsFactory.lookupSCCCredentials();
             if (credsList != null && !credsList.isEmpty()) {
-                makePrimaryCredentials(credsList.get(0).getId(), user, request);
+                makePrimaryCredentials(credsList.get(0).getId());
             }
         }
 
@@ -157,42 +153,30 @@ public class MirrorCredentialsManager {
         if (request != null) {
             SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
-        return null;
     }
 
     /**
      * Make primary credentials for a given credentials ID.
      *
      * @param id the id of credentials to make the primary creds
-     * @param user the current user
-     * @param request the current HTTP request
-     * @return list of validation errors or null in case of success
+     * @throws ContentSyncException in case the credentials cannot be found
      */
-    public ValidatorError[] makePrimaryCredentials(Long id, User userIn,
-            HttpServletRequest request) {
-        ValidatorError[] errors = null;
+    public void makePrimaryCredentials(Long id) throws ContentSyncException {
+        if (CredentialsFactory.lookupCredentialsById(id) == null) {
+            throw new ContentSyncException("Credentials not found: " + id);
+        }
 
-        // Check if future primary credentials exist
-        if (CredentialsFactory.lookupCredentialsById(id) != null) {
-            for (MirrorCredentialsDto c : findMirrorCredentials()) {
-                Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
-                if (dbCreds.getId().equals(id)) {
-                    dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
-                    CredentialsFactory.storeCredentials(dbCreds);
-                }
-                else if (dbCreds.getUrl() != null) {
-                    dbCreds.setUrl(null);
-                    CredentialsFactory.storeCredentials(dbCreds);
-                }
+        for (MirrorCredentialsDto c : findMirrorCredentials()) {
+            Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
+            if (dbCreds.getId().equals(id)) {
+                dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
+                CredentialsFactory.storeCredentials(dbCreds);
+            }
+            else if (dbCreds.getUrl() != null) {
+                dbCreds.setUrl(null);
+                CredentialsFactory.storeCredentials(dbCreds);
             }
         }
-        else {
-            // FIXME: We should really return something else from here
-            errors = new ValidatorError[1];
-            errors[0] = new ValidatorError("config.storeconfig.error",
-                    Integer.toString(-1));
-        }
-        return errors;
     }
 
     /**
