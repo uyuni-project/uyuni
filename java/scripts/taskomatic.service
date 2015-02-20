@@ -1,6 +1,6 @@
 [Unit]
 Description=Taskomatic
-After=local-fs.target cobblerd.service sendmail.service tomcat.service spacewalk-wait-for-tomcat.service
+After=local-fs.target cobblerd.service sendmail.service apache2.service
 
 [Service]
 Type=forking
