@@ -67,8 +67,11 @@ if [ -x $LSOF ]; then
     do
         $LSOF -t -i TCP:2829 > /dev/null && break
         ((RETRIES--))
-        sleep 1
+        sleep 3
     done
+    if [ $RETRIES -eq 0 ]; then
+        echo "taskomatic still not up and running" >&2
+    fi
 else
     echo "No lsof found, not waiting for taskomatic."
 fi
