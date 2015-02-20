@@ -80,6 +80,7 @@ BuildRequires: jakarta-oro
 %else
 BuildRequires: oro
 %endif
+BuildRequires: zip
 #BuildRequires: lucene
 BuildRequires: quartz
 BuildRequires: redstone-xmlrpc
@@ -134,6 +135,10 @@ install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
 install -p -m 644 dist/%{name}-%{version}.jar $RPM_BUILD_ROOT%{_prefix}/share/rhn/search/lib/
 # using install -m does not preserve the symlinks
 cp -d lib/* $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib
+# bnc#918852 hadoop hardcodes the log4j adapter for commons-logging
+# which we don't have
+zip -d $RPM_BUILD_ROOT/%{_prefix}/share/rhn/search/lib/hadoop-0.18.1-core.jar commons-logging.properties
+
 install -p -m 644 src/config/etc/logrotate.d/rhn-search $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn-search
 install -p -m 755 src/config/rhn-search $RPM_BUILD_ROOT%{_sbindir}
 %if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version} >= 1210
