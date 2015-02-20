@@ -130,11 +130,10 @@ public class MirrorCredentialsManager {
      *
      * @param id the id of credentials to be deleted
      * @param request the current HTTP request object (used for session caching)
-     * @return the deleted credentials
      * @throws ContentSyncException in case of problems making new primary creds
      */
-    public MirrorCredentialsDto deleteMirrorCredentials(Long id,
-            HttpServletRequest request) throws ContentSyncException {
+    public void deleteMirrorCredentials(Long id, HttpServletRequest request)
+            throws ContentSyncException {
         // Store credentials to empty cache later
         MirrorCredentialsDto credentials = findMirrorCredentials(id);
 
@@ -154,27 +153,22 @@ public class MirrorCredentialsManager {
         if (request != null) {
             SetupWizardSessionCache.clearSubscriptions(credentials, request);
         }
-        return credentials;
     }
 
     /**
      * Make primary credentials for a given credentials ID.
      *
      * @param id the id of credentials to make the primary creds
-     * @return the primary credentials
      * @throws ContentSyncException in case the credentials cannot be found
      */
-    public MirrorCredentialsDto makePrimaryCredentials(Long id)
-            throws ContentSyncException {
+    public void makePrimaryCredentials(Long id) throws ContentSyncException {
         if (CredentialsFactory.lookupCredentialsById(id) == null) {
             throw new ContentSyncException("Credentials not found: " + id);
         }
 
-        MirrorCredentialsDto primaryCreds = null;
         for (MirrorCredentialsDto c : findMirrorCredentials()) {
             Credentials dbCreds = CredentialsFactory.lookupCredentialsById(c.getId());
             if (dbCreds.getId().equals(id)) {
-                primaryCreds = c;
                 dbCreds.setUrl(Config.get().getString(ConfigDefaults.SCC_URL));
                 CredentialsFactory.storeCredentials(dbCreds);
             }
@@ -183,7 +177,6 @@ public class MirrorCredentialsManager {
                 CredentialsFactory.storeCredentials(dbCreds);
             }
         }
-        return primaryCreds;
     }
 
     /**
