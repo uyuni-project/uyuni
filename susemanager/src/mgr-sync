@@ -29,6 +29,8 @@ except socket.error, ex:
     sys.stderr.write("Network error: {0}\n".format(ex))
     if options.verbose:
         raise
+    else:
+        sys.exit(1)
 except KeyboardInterrupt, ex:
     sys.stdout.write("\n")
 except Exception, ex:
