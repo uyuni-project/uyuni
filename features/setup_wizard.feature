@@ -50,7 +50,7 @@ Feature: I want to verify the Setup Wizard
        # connection if next requests arrive concurrently with the AJAX request. Might be removed
        # in future versions
        And I wait for "30" seconds
-       When I click the channel list of product "SUSE Linux Enterprise Server 11 SP2 for SAP Applications" for the "x86_64" architecture
+       When I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" for the "x86_64" architecture
        Then I should see a "Product Channels" text
        And I should see a "Mandatory Channels" text
        And I should see a "Optional Channels" text
