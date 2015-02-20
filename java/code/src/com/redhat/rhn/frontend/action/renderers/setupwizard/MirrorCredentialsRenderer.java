@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.frontend.action.renderers.setupwizard;
 
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.renderers.RendererHelper;
-import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -67,11 +65,9 @@ public class MirrorCredentialsRenderer {
      */
     public String saveCredentials(Long id, String user, String password)
         throws ServletException, IOException, ContentSyncException {
-        // Find the current user
+        // Find the current request
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
-        RequestContext rhnContext = new RequestContext(request);
-        User webUser = rhnContext.getCurrentUser();
 
         MirrorCredentialsDto creds;
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
@@ -95,7 +91,7 @@ public class MirrorCredentialsRenderer {
         if (logger.isDebugEnabled()) {
             logger.debug("Saving credentials: " + user + ":" + password);
         }
-        credsManager.storeMirrorCredentials(creds, webUser, request);
+        credsManager.storeMirrorCredentials(creds, request);
         return renderCredentials();
     }
 
@@ -105,20 +101,20 @@ public class MirrorCredentialsRenderer {
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
+     * @throws ContentSyncException in case of problems making new primary creds
      */
-    public String deleteCredentials(long id) throws ServletException, IOException {
-        // Find the current user
+    public String deleteCredentials(long id) throws ServletException, IOException,
+            ContentSyncException {
+        // Find the current request
         WebContext webContext = WebContextFactory.get();
         HttpServletRequest request = webContext.getHttpServletRequest();
-        RequestContext rhnContext = new RequestContext(request);
-        User webUser = rhnContext.getCurrentUser();
 
         // Delete the credentials
         if (logger.isDebugEnabled()) {
             logger.debug("Deleting credentials: " + id);
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
-        credsManager.deleteMirrorCredentials(id, webUser, request);
+        credsManager.deleteMirrorCredentials(id, request);
         return renderCredentials();
     }
 
@@ -128,20 +124,16 @@ public class MirrorCredentialsRenderer {
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
+     * @throws ContentSyncException in case the credentials cannot be found
      */
-    public String makePrimaryCredentials(long id) throws ServletException, IOException {
-        // Find the current user
-        WebContext webContext = WebContextFactory.get();
-        HttpServletRequest request = webContext.getHttpServletRequest();
-        RequestContext rhnContext = new RequestContext(request);
-        User webUser = rhnContext.getCurrentUser();
-
+    public String makePrimaryCredentials(long id) throws ServletException, IOException,
+            ContentSyncException {
         // Make primary credentials
         if (logger.isDebugEnabled()) {
             logger.debug("Make primary credentials: " + id);
         }
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
-        credsManager.makePrimaryCredentials(id, webUser, request);
+        credsManager.makePrimaryCredentials(id);
         return renderCredentials();
     }
 
