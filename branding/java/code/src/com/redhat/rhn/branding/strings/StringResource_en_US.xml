@@ -1330,6 +1330,12 @@ As a Channel Administrator, you may change the base channels your systems are su
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.clone.original">
+        <source>Original state of the channel (no patches)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.clone.original.summary">
         <source>The new channel will be a clone of the original state of the target channel. This is done by cloning all of the packages from the target channel which do not have a patch associated with them. No patch will be cloned into your organization.</source>
         <context-group name="ctx">
@@ -1376,6 +1382,9 @@ As a Channel Administrator, you may change the base channels your systems are su
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.button">
         <source>Clone Patches</source>
+      </trans-unit>
+      <trans-unit id="message.cloneselect">
+        <source>You may now wish to clone the patches associated with &lt;strong&gt;{0}&lt;/strong&gt;.</source>
       </trans-unit>
 
       <!-- code/src/com/redhat/rhn/frontend/strings/java/StringResource_en_US.xml -->
