@@ -29,6 +29,7 @@ Feature: I want to verify the Setup Wizard
        # connection if next requests arrive concurrently with the AJAX request. Might be removed
        # in future versions
        And I wait for "120" seconds
+       And I click on "Close"
        And I should see a "Available Products Below" text
        And I should see a "Architecture" text
        And I should see a "Channels" text
