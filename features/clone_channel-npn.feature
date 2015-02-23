@@ -78,7 +78,7 @@ Feature: Clone a Channel
       And I follow "CL-hoag-dummy-7890"
      Then I should see a "CL-hoag-dummy-7890 - Security Advisory" text
       And I should see a "mcalmer" text
-      And I should see a "https://bugzilla.novell.com/show_bug.cgi?id=704608" link
+      And I should see a "https://bugzilla.suse.com/show_bug.cgi?id=704608" link
 
   Scenario: check CM-virgo-dummy-3456 errata
     Given I am on the errata page
