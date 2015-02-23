@@ -58,7 +58,7 @@ Feature: Clone a Channel
      And I check the row with the "virgo-dummy-3456" link
      And I click on "Clone Errata"
      And I click on "Confirm"
-     And I follow "List/Remove Errata"
+     And I follow "List/Remove"
     Then I should see a "CL-hoag-dummy-7890" link
      And I should see a "CL-virgo-dummy-3456" link
 
