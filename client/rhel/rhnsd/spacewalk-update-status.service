@@ -1,0 +1,11 @@
+[Unit]
+Description=Update status
+After=syslog.target network.target auditd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/rhn-update-status
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
