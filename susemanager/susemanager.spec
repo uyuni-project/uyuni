@@ -64,6 +64,7 @@ This package contains SUSE Manager tools
 
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
+mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/hooks/
 install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
@@ -127,6 +128,7 @@ chown root.root /etc/sysconfig
 %doc COPYING
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
+%dir %{_prefix}/lib/susemanager/hooks/
 %dir /etc/YaST2
 %dir %{_datadir}/YaST2
 %dir %{_datadir}/YaST2/clients
