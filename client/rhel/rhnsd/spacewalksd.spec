@@ -67,10 +67,11 @@ install -m 0755 rhnsd.init.SUSE $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 # add rclink
 ln -sf ../../etc/init.d/rhnsd $RPM_BUILD_ROOT/%{_sbindir}/rcrhnsd
 %endif
-%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?rhel} >= 7
 rm $RPM_BUILD_ROOT/%{_initrddir}/rhnsd
 mkdir -p $RPM_BUILD_ROOT/%{_unitdir}
 install -m 0644 rhnsd.service $RPM_BUILD_ROOT/%{_unitdir}/
+install -m 0644 spacewalk-update-status.service $RPM_BUILD_ROOT/%{_unitdir}/
 %endif
 %if 0%{?suse_version}
 # remove all unsupported translations
@@ -97,12 +98,14 @@ ln -s %{_sbindir}/service %{buildroot}%{_sbindir}/rcrhnsd
 %if 0%{?suse_version} >= 1210
 %pre
 %service_add_pre rhnsd.service
+%service_add_pre spacewalk-update-status.service
 %endif
 
 %post
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_add_post rhnsd.service
+%service_add_post spacewalk-update-status.service
 %else
 %{fillup_and_insserv rhnsd}
 %endif
@@ -112,6 +115,7 @@ if [ -f /etc/init.d/rhnsd ]; then
 fi
 if [ -f %{_unitdir}/rhnsd.service ]; then
     %systemd_post rhnsd.service
+    %systemd_post spacewalk-update-status.service
     if [ "$1" = "2" ]; then
         # upgrade from old init.d
         if [ -L /etc/rc2.d/S97rhnsd ]; then
@@ -121,19 +125,26 @@ if [ -f %{_unitdir}/rhnsd.service ]; then
     fi
 fi
 %endif
+if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
+    # take care that this is always enabled if it exists
+    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
+fi
+
 
 %preun
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_del_preun rhnsd.service
+%service_del_preun spacewalk-update-status.service
 %else
 %stop_on_removal rhnsd
 exit 0
 %endif
 %else
 if [ $1 = 0 ] ; then
-    %if 0%{?fedora}
+    %if 0%{?fedora} || 0%{?rhel} >= 7
         %systemd_preun rhnsd.service
+        %systemd_preun spacewalk-update-status.service
     %else
     service rhnsd stop >/dev/null 2>&1
     %endif
@@ -147,14 +158,16 @@ fi
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1210
 %service_del_postun rhnsd.service
+%service_del_postun spacewalk-update-status.service
 %else
 %restart_on_update rhnsd
 %endif
 %{insserv_cleanup}
 %else
 if [ "$1" -ge "1" ]; then
-    %if 0%{?fedora}
+    %if 0%{?fedora} || 0%{?rhel} >= 7
     %systemd_postun_with_restart rhnsd.service
+    %systemd_postun_with_restart spacewalk-update-status.service
     %else
     service rhnsd condrestart >/dev/null 2>&1 || :
     %endif
@@ -170,8 +183,9 @@ rm -fr $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/sysconfig/rhn
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/rhnsd
 %{_sbindir}/rhnsd
-%if 0%{?fedora} || 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?suse_version} >= 1210 || 0%{?rhel} >= 7
 %{_unitdir}/rhnsd.service
+%{_unitdir}/spacewalk-update-status.service
 %else
 %{_initrddir}/rhnsd
 %endif
