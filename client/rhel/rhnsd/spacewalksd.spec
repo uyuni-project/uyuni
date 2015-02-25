@@ -128,7 +128,7 @@ fi
 %endif
 if [ -f %{_unitdir}/spacewalk-update-status.service ]; then
     # take care that this is always enabled if it exists
-    /usr/bin/systemctl enable spacewalk-update-status.service >/dev/null 2>&1 ||:
+    /usr/bin/systemctl --quiet enable spacewalk-update-status.service 2>&1 ||:
 fi
 
 
