@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.3.5
+Version: 2.3.6
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -268,6 +268,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Feb 26 2015 Tomas Lestach <tlestach@redhat.com> 2.3.6-1
+- missing value PIDFile for systemd
+
 * Thu Jan 29 2015 Tomas Lestach <tlestach@redhat.com> 2.3.5-1
 - fix spec condition error
 

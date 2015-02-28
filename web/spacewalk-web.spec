@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.34
+Version: 2.3.37
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -325,6 +325,56 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.37-1
+- removing unknown_package.pxt as it's not referenced anymore
+- removing unused tags in Sniglets/Packages.pm
+- removing errata_list/all.pxt as it isn't referenced anymore
+- removing errata_list/relevant.pxt as it isn't referenced anymore
+- removing system_list/potentially_in_channel_family.pxt as it isn't referenced
+  anymore
+- removing system_list/proxy.pxt as it isn't referenced anymore
+- removing system_list/inactive.pxt as it isn't referenced anymore
+- removing system_list/ungrouped.pxt as it isn't referenced anymore
+- removing system_list/unentitled.pxt as it isn't referenced anymore
+- removing system_list/out_of_date.pxt as it isn't referenced anymore
+- removing system_list/visible_to_user.pxt as it isn't referenced anymore
+- removing unused schedule_action-interface.pxi
+- removing unused reschedule_action_form.pxi
+- removing unused Sniglets/ServerActions.pm
+- remove unused raw_script_output.txt
+
+* Wed Feb 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.36-1
+- removing ssm schedule remote command as it was ported to java
+- removing package pages as they were ported to java
+- removing package_map.pxt as it was solaris related
+- removing ssm system preferences as they were ported to java
+- removing ssm handling custom values as it was ported to java
+- removing solaris related package pages
+- removing ssm provisioning pages as they were ported to java
+- removing ssm apply_errata_conf.pxt as it's no longer referenced
+- removing ssm solaris patchsets related pages
+- removing ssm solaris patches related pages
+- removing subscribers.pxt as it was ported to java
+- removing errata_cache_update.pxi and manage_channels_header.pxi
+- removing solaris patchsets related pages, as solaris support has been dropped
+- removing solaris patches related pages, as solaris support has been dropped
+- removing system details edit.pxt as it was ported to java
+- removing channel clone.pxt as the page was ported to java
+
+* Tue Feb 24 2015 Tomas Lestach <tlestach@redhat.com> 2.3.35-1
+- removing errata_channel_intersection.pxt as it was ported to java
+- removing unused iso download jsp
+- removing unused legends
+- removing scout pages as monitoring was removed
+- removing subscribers.pxt as it was ported to java
+- removing errata clone.pxt as it was ported to java
+- removing system_detail.xml and system_details_toolbar.pxi
+- removing system details history pxt files
+- removing proxy.pxt and proxy-clients.pxt as they were ported to java
+- removing connection.pxt as it was ported to java
+- removing activation.pxt as it was ported to java
+- removing monitoring notification methods
+
 * Wed Feb 18 2015 Tomas Lestach <tlestach@redhat.com> 2.3.34-1
 - 1190235 - Restore missing { to BackupCommands.pm
 

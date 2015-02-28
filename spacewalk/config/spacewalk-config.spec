@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.3.5
+Version: 2.3.8
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -175,6 +175,16 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.8-1
+- removing system_list/proxy.pxt as it isn't referenced anymore
+- remove unused raw_script_output.txt
+
+* Wed Feb 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.7-1
+- removing subscribers.pxt as it was ported to java
+
+* Tue Feb 24 2015 Tomas Lestach <tlestach@redhat.com> 2.3.6-1
+- removing activation.pxt as it was ported to java
+
 * Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.5-1
 - spacewalk-config etc/rhn-satellite-httpd dir no longer exists after
   monitoring removal
