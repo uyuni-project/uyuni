@@ -210,17 +210,8 @@ sub navi_empty_set {
 }
 
 my %pinfo_modes = (
-          system => {'/visible_to_user.pxt' => {mode => 'visible_to_user', name => 'Systems'},
-                     '/out_of_date.pxt' => {mode => 'out_of_date', name => 'Out of Date Systems'},
-                     '/unentitled.pxt' => {mode => 'unentitled', name => 'Unentitled Systems'},
-                     '/ungrouped.pxt' => {mode => 'ungrouped', name => 'Ungrouped Systems'},
-                     '/inactive.pxt' => {mode => 'inactive', name => 'Inactive Systems'},
-                     '/proxy.pxt' => {mode => 'proxy_servers', name => 'Proxy Servers'},
-                     '/potentially_in_channel_family.pxt' => {mode => 'systems_potentially_in_channel_family', name => 'Subscribable Systems'},
-                    },
-          errata => {'/relevant.pxt' => {mode => 'relevant_errata', name => 'Patches Relevant to Your Systems'},
-                     '/all.pxt' => {mode => 'all_errata', name => 'All Patches'},
-                    },
+          system => { },
+          errata => { },
    manage_errata => {'/published.pxt' => {mode => 'published_owned_errata', name => 'Published Patches',
                                           label => 'published' },
                      '/unpublished.pxt' => {mode => 'unpublished_owned_errata', name => 'Unpublished Patches',

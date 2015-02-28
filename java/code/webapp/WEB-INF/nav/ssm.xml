@@ -24,14 +24,13 @@
             </rhn-tab>
    </rhn-tab>
 
-<!-- FIXME: check in SUSE Manager if Groups exists -->
-	<rhn-tab name="Groups" acl="user_role(org_admin); no_bootstrap_systems_in_set()">
-		<rhn-tab-url>/network/systems/ssm/groups/index.pxt</rhn-tab-url>
-		<rhn-tab-url>/network/systems/ssm/groups/alter_membership_conf.pxt</rhn-tab-url>
-                <rhn-tab-url>/network/systems/ssm/groups/create.pxt</rhn-tab-url>
-	</rhn-tab>
+    <rhn-tab name="Groups" acl="user_role(org_admin); no_bootstrap_systems_in_set()">
+        <rhn-tab-url>/network/systems/ssm/groups/index.pxt</rhn-tab-url>
+        <rhn-tab-url>/network/systems/ssm/groups/alter_membership_conf.pxt</rhn-tab-url>
+        <rhn-tab-url>/network/systems/ssm/groups/create.pxt</rhn-tab-url>
+    </rhn-tab>
 
-	<rhn-tab name="Channels" acl="no_bootstrap_systems_in_set()">
+        <rhn-tab name="Channels">
             <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
             <rhn-tab name="Base Channels">
                 <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>

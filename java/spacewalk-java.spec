@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.144
+Version: 2.3.154
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -967,6 +967,65 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.154-1
+- removing system_list/out_of_date.pxt as it isn't referenced anymore
+- removing system_list/visible_to_user.pxt as it isn't referenced anymore
+
+* Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.153-1
+- rewriting raw_script_output.txt to java
+- Refresh errata cache asynchronously when subscribing server to channel
+
+* Thu Feb 26 2015 Tomas Lestach <tlestach@redhat.com> 2.3.152-1
+- Catch NumberFormatException and send error to the client instead
+
+* Wed Feb 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.151-1
+- removing system details edit.pxt as it was ported to java
+
+* Tue Feb 24 2015 Grant Gainey 2.3.150-1
+- Make checkstyle happy
+
+* Tue Feb 24 2015 Grant Gainey 2.3.149-1
+- CloneErrataActionTest: missing query added
+- RhnSetDeclTest: use a decl with correct cleanup operation
+- UserExternalHandlerTest: monitoring entitlement was removed, update counters
+- ActivationKeyHandlerTest: virtualization host entitlement was removed, update
+  counters
+- ServerTest: don't count monitoring entitlement any more
+- CloneErrataActionTest: adapt to new behavior in ChannelRepodataDriver, remove
+  stale code
+- ErrataHandler.create: restore backwards-compatible method signature and fix
+  tests
+- Server Hibernate mapping: don't use {S.*} notation as it will generate
+  incorrect SQL with joined-subclass
+- ServerFactoryTest: create a 32-byte secret to play nice with
+  ClientCertificate
+- PxtAuthenticationServiceTest: adjust expectations to updated code
+- KickstartPartitionActionTest: expect warning message as well
+- UserImpl: keep local collection in sync (fixes RoleTest failure)
+- KickstartDataTest: do not fail by using correct constant
+- KickstartBuilderTest: update to post-SHA256 code
+- Fedora KS install type is 'fedora18' now, adapt code accordingly
+- sitenav.xml: use full sign in URL to make NavTest happy
+- UserTest: use SHA1 instead of MD5
+- UserTest: save Role before use, a non-null id is required
+- UserEditSetupActionTest: number of roles has diminished by one with removal
+  of monitoring
+- AccessTest: ftr_kickstart should be present in provisioning entitled servers
+- ChannelFactoryTest: channel labels always need to be lower case
+- TestFactoryWrapperTest: use a different query, table does not exist anymore
+
+* Tue Feb 24 2015 Tomas Lestach <tlestach@redhat.com> 2.3.148-1
+- removing unused iso download jsp
+
+* Tue Feb 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.147-1
+- fix malformed @@PRODUCT_NAME@@ macro
+
+* Mon Feb 23 2015 Stephen Herr <sherr@redhat.com> 2.3.146-1
+- 1191071 - fix java acls for ProxyClients.do
+
+* Mon Feb 23 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.145-1
+- update translation strings
+
 * Fri Feb 20 2015 Tomas Lestach <tlestach@redhat.com> 2.3.144-1
 - enable 'Remove Errata' button on the
   /rhn/channels/manage/errata/ListRemove.do page

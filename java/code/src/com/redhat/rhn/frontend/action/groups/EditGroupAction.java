@@ -15,14 +15,21 @@
 
 package com.redhat.rhn.frontend.action.groups;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
+import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
@@ -92,7 +99,6 @@ public class EditGroupAction extends RhnAction {
                     "systemgroups.edit.successmessage", daForm.getString("name"));
         }
 
-
         return getStrutsDelegate().forwardParams(
                 mapping.findForward("success"), params);
     }
@@ -119,6 +125,16 @@ public class EditGroupAction extends RhnAction {
             ServerGroupManager manager = ServerGroupManager.getInstance();
             ManagedServerGroup sg = manager.create(ctx.getCurrentUser(),
                     form.getString("name"), form.getString("description"));
+
+            if (form.get("is_ssm") != null && (Boolean)form.get("is_ssm")) {
+                List<SystemOverview> systems = SystemManager.inSet(ctx.getCurrentUser(),
+                        RhnSetDecl.SYSTEMS.getLabel());
+                List<Server> hibernateServers = new ArrayList<Server>();
+                for (SystemOverview system : systems) {
+                    hibernateServers.add(ServerFactory.lookupById(system.getId()));
+                }
+                manager.addServers(sg, hibernateServers, ctx.getCurrentUser());
+            }
 
             return sg.getId();
         }
