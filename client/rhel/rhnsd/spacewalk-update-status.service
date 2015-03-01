@@ -4,7 +4,7 @@ After=syslog.target network.target auditd.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/rhn-update-status
+ExecStart=/usr/sbin/mgr-update-status
 RemainAfterExit=yes
 
 [Install]
