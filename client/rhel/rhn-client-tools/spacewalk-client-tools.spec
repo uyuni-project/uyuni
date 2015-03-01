@@ -247,7 +247,7 @@ rm -f $RPM_BUILD_ROOT%{_bindir}/rhn_register
 
 # create mgr_check symlink
 ln -sf rhn_check $RPM_BUILD_ROOT/%{_sbindir}/mgr_check
-ln -sf rhn-update-status $RPM_BUILD_ROOT/%{_sbindir}/mgr-update-status
+ln -sf spacewalk-update-status $RPM_BUILD_ROOT/%{_sbindir}/mgr-update-status
 
 # remove all unsupported translations
 cd $RPM_BUILD_ROOT
@@ -356,7 +356,7 @@ make -f Makefile.rhn-client-tools test
 
 %{_sbindir}/rhn_check
 %{_sbindir}/mgr_check
-%{_sbindir}/rhn-update-status
+%{_sbindir}/spacewalk-update-status
 %{_sbindir}/mgr-update-status
 
 %{_datadir}/rhn/up2date_client/getMethod.*

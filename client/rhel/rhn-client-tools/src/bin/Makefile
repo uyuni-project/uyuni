@@ -29,7 +29,7 @@ install:: all $(DIRS)
 	$(INSTALL_BIN) rhn-profile-sync.py $(SBIN_DIR)/rhn-profile-sync
 	$(INSTALL_BIN) rhn_check.py $(SBIN_DIR)/rhn_check
 	$(INSTALL_BIN) spacewalk-channel.py $(SBIN_DIR)/spacewalk-channel
-	$(INSTALL_BIN) rhn-update-status.py $(SBIN_DIR)/rhn-update-status
+	$(INSTALL_BIN) spacewalk-update-status.py $(SBIN_DIR)/spacewalk-update-status
 
 	ln -sf consolehelper $(BIN_DIR)/rhn_register
 	ln -s spacewalk-channel $(SBIN_DIR)/rhn-channel
