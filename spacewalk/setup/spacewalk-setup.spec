@@ -163,6 +163,10 @@ if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
     chown g+r /etc/zypp/credentials.d/NCCcredentials
 fi
+if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
+    chgrp www /etc/zypp/credentials.d/SCCcredentials
+    chown g+r /etc/zypp/credentials.d/SCCcredentials
+fi
 
 %check
 make test
