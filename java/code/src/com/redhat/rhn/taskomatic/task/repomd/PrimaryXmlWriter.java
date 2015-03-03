@@ -108,7 +108,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
 
                 if (xml != null) {
-                    handler.addCharactersPlain(xml);
+                    handler.addCharacters(xml);
                     return;
                 }
             }
@@ -130,7 +130,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
 
             String pkg =  st.toString();
             PackageManager.updateRepoPrimary(pkgDto.getId(), pkg);
-            handler.addCharactersPlain(pkg);
+            handler.addCharacters(pkg);
 
         }
         catch (SAXException e) {

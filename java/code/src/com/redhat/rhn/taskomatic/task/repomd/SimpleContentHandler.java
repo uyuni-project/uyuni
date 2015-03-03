@@ -95,22 +95,13 @@ public class SimpleContentHandler {
     }
 
     /**
-     * Adds characters to the xml handler.
-     * Is doing XML escaping of text
+     * Adds characters to the xml handler
      * @param text text for adding characters
      * @throws SAXException SAX exception
      */
     public void addCharacters(String text) throws SAXException {
-        addCharactersPlain(StringEscapeUtils.escapeXml(text));
-    }
-
-    /**
-     * Adds characters plain to the xml handler
-     * @param text text for adding characters
-     * @throws SAXException SAX exception
-     */
-    public void addCharactersPlain(String text) throws SAXException {
-        handler.characters(text.toCharArray(), 0, text.length());
+        String esc = StringEscapeUtils.escapeXml(text);
+        handler.characters(esc.toCharArray(), 0, esc.length());
     }
 
     /**
