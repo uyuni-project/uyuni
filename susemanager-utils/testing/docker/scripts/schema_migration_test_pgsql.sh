@@ -16,6 +16,8 @@ echo Going to reset pgsql database
 echo $PATH
 echo $PERLLIB
 
+/sbin/sysctl -w kernel.shmmax=4067832832
+
 rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
