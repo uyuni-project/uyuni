@@ -1,3 +1,4 @@
+-- oracle equivalent source sha1 3e207b5203c8b8c0b51cd8c1d88e1d2f6b34e0c7
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -16,19 +17,21 @@
 --
 --
 
-create or replace
-package body rhn_server
-is
-    function system_service_level(
-    	server_id_in in number,
-	service_level_in in varchar2
-    ) return number is
+-- create schema rhn_server;
 
-    cursor ents is 
+--update pg_setting
+update pg_settings set setting = 'rhn_server,' || setting where name = 'search_path';
+
+    create or replace function system_service_level(
+    	server_id_in in numeric,
+	service_level_in in varchar
+    ) returns numeric as $$
+    declare
+    ents cursor is 
       select label from rhnServerEntitlementView
       where server_id = server_id_in;
 
-    retval number := 0;
+    retval numeric := 0;
 
     begin
          for ent in ents loop
@@ -40,13 +43,14 @@ is
 
          return retval;
 
-    end system_service_level;
+    end$$ language plpgsql;
 
         
-    function can_change_base_channel(server_id_in IN NUMBER)
-    return number
-    is
-    	throwaway number;
+    create or replace function can_change_base_channel(server_id_in IN NUMERIC)
+    returns numeric
+    as $$
+    declare
+    	throwaway numeric;
     begin
     	-- the idea: if we get past this query, the server is
 	-- neither sat nor proxy, so base channel is changeable
@@ -56,23 +60,25 @@ is
 	 where S.id = server_id_in
 	   and not exists (select 1 from rhnSatelliteInfo SI where SI.server_id = S.id)
 	   and not exists (select 1 from rhnProxyInfo PI where PI.server_id = S.id);
+
+        if not found then
+	    return 0;
+        end if;
 	   
 	return 1;
-    exception
-    	when no_data_found
-	    then
-	    return 0;
-    end can_change_base_channel;
+    end$$ language plpgsql;
 	        
-    procedure set_custom_value(
-    	server_id_in in number,
-	user_id_in in number,
-	key_label_in in varchar2,
-	value_in in varchar2
-    ) is
-    	key_id_val number;
+    create or replace function set_custom_value(
+    	server_id_in in numeric,
+	user_id_in in numeric,
+	key_label_in in varchar,
+	value_in in varchar
+    ) returns void
+    as $$
+    declare
+    	key_id_val numeric;
     begin
-    	select CDK.id into key_id_val
+    	select CDK.id into strict key_id_val
 	  from rhnCustomDataKey CDK,
 	       rhnServer S
 	 where S.id = server_id_in
@@ -83,7 +89,7 @@ is
 	    insert into rhnServerCustomDataValue (server_id, key_id, value, created_by, last_modified_by)
 	    values (server_id_in, key_id_val, value_in, user_id_in, user_id_in);
 	exception
-	    when DUP_VAL_ON_INDEX
+	    when UNIQUE_VIOLATION
 	    	then
 		update rhnServerCustomDataValue
 		   set value = value_in,
@@ -92,17 +98,19 @@ is
 		   and key_id = key_id_val;		   
 	end;
 	
-    end set_custom_value;
+    end$$ language plpgsql;
     
-    function bulk_set_custom_value(
-    	key_label_in in varchar2,
-	value_in in varchar2,
-	set_label_in in varchar2,
-	set_uid_in in number
+    create or replace function bulk_set_custom_value(
+    	key_label_in in varchar,
+	value_in in varchar,
+	set_label_in in varchar,
+	set_uid_in in numeric
     )
-    return integer
-    is
-    i integer := 0;
+    returns integer
+    as $$
+    declare
+        i integer;
+        server record;
     begin
         i := 0;
         for server in (
@@ -112,20 +120,23 @@ is
 	      AND user_id = set_uid_in
 	) loop
 	    if rhn_server.system_service_level(server.element, 'provisioning') = 1 then
-	    	rhn_server.set_custom_value(server.element, set_uid_in, key_label_in, value_in);
+	    	perform rhn_server.set_custom_value(server.element, set_uid_in, key_label_in, value_in);
             i := i + 1;
 	    end if;
-	end loop server;
+	end loop;
     return i;
-    end bulk_set_custom_value;
+    end$$ language plpgsql;
 
-    procedure bulk_snapshot_tag(
-    	org_id_in in number,
-        tagname_in in varchar2,
-	set_label_in in varchar2,
-	set_uid_in in number
-    ) is
-    	snapshot_id number;
+    create or replace function bulk_snapshot_tag(
+    	org_id_in in numeric,
+        tagname_in in varchar,
+	set_label_in in varchar,
+	set_uid_in in numeric
+    ) returns void
+    as $$
+    declare
+        server record;
+    	snapshot_id numeric;
     begin
         for server in (
            SELECT user_id, label, element, element_two
@@ -134,41 +145,42 @@ is
 	      AND user_id = set_uid_in
 	    ) loop
 	    if rhn_server.system_service_level(server.element, 'provisioning') = 1 then
-	    	begin
 	    	    select max(id) into snapshot_id
 	    	    from rhnSnapshot
 	    	    where server_id = server.element;
-	    	exception
-	    	    when NO_DATA_FOUND then
-		    	rhn_server.snapshot_server(server.element, 'tagging system:  ' || tagname_in);
+
+	    	    if snapshot_id is null then
+		    	perform rhn_server.snapshot_server(server.element, 'tagging system:  ' || tagname_in);
 			
 			select max(id) into snapshot_id
 			from rhnSnapshot
 			where server_id = server.element;
-		end;
+		    end if;
 		 
 		-- now have a snapshot_id to work with...
 		begin
-		    rhn_server.tag_snapshot(snapshot_id, org_id_in, tagname_in);
+		    perform rhn_server.tag_snapshot(snapshot_id, org_id_in, tagname_in);
 		exception
-		    when DUP_VAL_ON_INDEX
+		    when UNIQUE_VIOLATION
 		    	then
 			-- do nothing, be forgiving...
 			null;
 		end;
 	    end if;
-	end loop server;    
-    end bulk_snapshot_tag;
+	end loop;    
+    end$$ language plpgsql;
 
-    procedure tag_delete(
-    	server_id_in in number,
-	tag_id_in in number
-    ) is
-    	cursor snapshots is
+    create or replace function tag_delete(
+    	server_id_in in numeric,
+	tag_id_in in numeric
+    ) returns void
+    as $$
+    declare
+    	snapshots cursor is
 		select	snapshot_id
 		from	rhnSnapshotTag
 		where	tag_id = tag_id_in;
-	tag_id_tmp number;
+	tag_id_tmp numeric;
     begin
     	select	id into tag_id_tmp
 	from	rhnTag
@@ -185,25 +197,29 @@ is
 	delete
 		from rhnTag
 		where id = tag_id_in;
-    end tag_delete;
+    end$$ language plpgsql;
 
-    procedure tag_snapshot(
-        snapshot_id_in in number,
-	org_id_in in number,
-	tagname_in in varchar2
-    ) is
+    create or replace function tag_snapshot(
+        snapshot_id_in in numeric,
+	org_id_in in numeric,
+	tagname_in in varchar
+    ) returns void
+    as $$
     begin
     	insert into rhnSnapshotTag (snapshot_id, server_id, tag_id)
 	select snapshot_id_in, server_id, lookup_tag(org_id_in, tagname_in)
 	from rhnSnapshot
 	where id = snapshot_id_in;
-    end tag_snapshot;
+    end$$ language plpgsql;
 
-    procedure bulk_snapshot(
-    	reason_in in varchar2,
-	set_label_in in varchar2,
-	set_uid_in in number
-    ) is
+    create or replace function bulk_snapshot(
+    	reason_in in varchar,
+	set_label_in in varchar,
+	set_uid_in in numeric
+    ) returns void
+    as $$
+    declare
+        server record;
     begin
         for server in (
            SELECT user_id, label, element, element_two
@@ -212,17 +228,19 @@ is
 	      AND user_id = set_uid_in
 	    ) loop
     	    if rhn_server.system_service_level(server.element, 'provisioning') = 1 then
-	    	rhn_server.snapshot_server(server.element, reason_in);
+	    	perform rhn_server.snapshot_server(server.element, reason_in);
 	    end if;
-	end loop server;
-    end bulk_snapshot;
+	end loop;
+    end$$ language plpgsql;
 
-    procedure snapshot_server(
-    	server_id_in in number,
-	reason_in in varchar2
-    ) is
-    	snapshot_id number;
-	cursor revisions is
+    create or replace function snapshot_server(
+    	server_id_in in numeric,
+	reason_in in varchar
+    ) returns void
+    as $$
+    declare
+    	snapshot_id_v numeric;
+	revisions cursor is
 		select distinct
 			cr.id
 		from	rhnConfigRevision	cr,
@@ -240,10 +258,10 @@ is
 			and cf.id = lookup_first_matching_cf(scc.server_id, cfn.path);
 	locked integer;
     begin
-    	select rhn_snapshot_id_seq.nextval into snapshot_id from dual;
+    	select nextval('rhn_snapshot_id_seq') into snapshot_id_v;
 
 	insert into rhnSnapshot (id, org_id, server_id, reason) (
-		select	snapshot_id,
+		select	snapshot_id_v,
 			s.org_id,
 			server_id_in,
 			reason_in
@@ -251,20 +269,21 @@ is
 		where	s.id = server_id_in
 	);
 	insert into rhnSnapshotChannel (snapshot_id, channel_id) (
-		select	snapshot_id, sc.channel_id
+		select	snapshot_id_v, sc.channel_id
 		from	rhnServerChannel sc
 		where	sc.server_id = server_id_in
 	);
 	insert into rhnSnapshotServerGroup (snapshot_id, server_group_id) (
-		select	snapshot_id, sgm.server_group_id
+		select	snapshot_id_v, sgm.server_group_id
 		from	rhnServerGroupMembers sgm
 		where	sgm.server_id = server_id_in
 	);
         locked := 0;
+        <<iloop>>
         while true loop
             begin
                 insert into rhnPackageNEVRA (id, name_id, evr_id, package_arch_id)
-                select rhn_pkgnevra_id_seq.nextval, sp.name_id, sp.evr_id, sp.package_arch_id
+                select nextval('rhn_pkgnevra_id_seq'), sp.name_id, sp.evr_id, sp.package_arch_id
                 from rhnServerPackage sp
                 where sp.server_id = server_id_in
                         and not exists
@@ -275,8 +294,8 @@ is
                                         and (nevra.package_arch_id = sp.package_arch_id
                                             or (nevra.package_arch_id is null
                                                 and sp.package_arch_id is null)));
-                exit;
-            exception when dup_val_on_index then
+                exit iloop;
+            exception when unique_violation then
                 if locked = 1 then
                     raise;
                 else
@@ -286,7 +305,7 @@ is
             end;
         end loop;
 	insert into rhnSnapshotPackage (snapshot_id, nevra_id) (
-                select distinct snapshot_id, nevra.id
+                select distinct snapshot_id_v, nevra.id
                 from    rhnServerPackage sp, rhnPackageNEVRA nevra
                 where   sp.server_id = server_id_in
                         and nevra.name_id = sp.name_id
@@ -297,7 +316,7 @@ is
 	);
 
 	insert into rhnSnapshotConfigChannel ( snapshot_id, config_channel_id ) (
-		select	snapshot_id, scc.config_channel_id
+		select	snapshot_id_v, scc.config_channel_id
 		from	rhnServerConfigChannel scc
 		where	server_id = server_id_in
 	);
@@ -306,27 +325,35 @@ is
 		insert into rhnSnapshotConfigRevision (
 				snapshot_id, config_revision_id
 			) values (
-				snapshot_id, revision.id
+				snapshot_id_v, revision.id
 			);
 	end loop;
-    end snapshot_server;
+    end$$ language plpgsql;
 
-    procedure remove_action(
-    	server_id_in in number,
-	action_id_in in number
-    ) is
+    create or replace function remove_action(
+    	server_id_in in numeric,
+	action_id_in in numeric
+    ) returns void
+    as $$
+    declare
     	-- this really wants "nulls last", but 8.1.7.3.0 sucks ass.
 	-- instead, we make a local table that holds our
 	-- list of ids with null prereqs.  There's surely a better way
 	-- (an array instead of a table maybe?  who knows...)
 	-- but I've got code to do this handy that I can look at ;)
-    	cursor chained_actions is
-		select	id, prerequisite
-		from	rhnAction
-		start with id = action_id_in
-		connect by prior id = prerequisite
+    	chained_actions cursor is
+                with recursive r(id, prerequisite) as (
+			select	id, prerequisite
+			from	rhnAction
+			where id = action_id_in
+		union all
+			select	r1.id, r1.prerequisite
+			from	rhnAction r1, r
+			where r.id = r1.prerequisite
+		)
+		select * from r
 		order by prerequisite desc;
-	cursor sessions is
+	sessions cursor is
 		select	s.id
 		from	rhnKickstartSession s
 		where	server_id_in in (s.old_server_id, s.new_server_id)
@@ -337,10 +364,9 @@ is
 				where	ss.id = s.state_id
 					and ss.label in ('failed','complete')
 			);
-	type chain_end_type is table of number index by binary_integer;
-	chain_ends chain_end_type;
-	i number;
-	prereq number := 1;
+	chain_ends numeric[];
+	i numeric;
+	prereq numeric := 1;
     begin
 	select	prerequisite
 	into	prereq
@@ -348,13 +374,14 @@ is
 	where	id = action_id_in;
 
 	if prereq is not null then
-		rhn_exception.raise_exception('action_is_child');
+		perform rhn_exception.raise_exception('action_is_child');
 	end if;
 
-	i := 0;
+        chain_ends := '{}';
+	i := 1;
 	for action in chained_actions loop
 		if action.prerequisite is null then
-			chain_ends(i) := action.id;
+			chain_ends[i] := action.id;
 			i := i + 1;
 		else
 			delete from rhnServerAction
@@ -362,13 +389,11 @@ is
 				and action_id = action.id;
 		end if;
 	end loop;
-	i := chain_ends.first;
-	while i is not null loop
-		delete from rhnServerAction
-			where server_id = server_id_in
-			and action_id = chain_ends(i);
-		i := chain_ends.next(i);
-	end loop;
+
+	delete from rhnServerAction
+		where server_id = server_id_in
+		and action_id = any(chain_ends);
+
 	for s in sessions loop
 		update rhnKickstartSession
 			set 	state_id = (
@@ -378,14 +403,15 @@ is
 				),
 				action_id = null
 			where	id = s.id;
-		set_ks_session_history_message(s.id, 'failed', 'Kickstart cancelled due to action removal');
+		perform set_ks_session_history_message(s.id, 'failed', 'Kickstart cancelled due to action removal');
 	end loop;
-    end remove_action;
+    end$$ language plpgsql;
    
-    function check_user_access(server_id_in in number, user_id_in in number)
-    return number
-    is
-    	has_access number;
+    create or replace function check_user_access(server_id_in in numeric, user_id_in in numeric)
+    returns numeric
+    as $$
+    declare
+    	has_access numeric;
     begin
     	-- first check; if this returns no rows, then the server/user are in different orgs, and we bail
         select 1 into has_access
@@ -394,6 +420,10 @@ is
 	 where wc.org_id = s.org_id
 	   and s.id = server_id_in
 	   and wc.id = user_id_in;
+
+        if not found then
+          return 0;
+        end if;
 
 	-- okay, so they're in the same org.  if we have an org admin, they get a free pass
     	if rhn_user.check_role(user_id_in, 'org_admin') = 1
@@ -406,15 +436,14 @@ is
 	       rhnUserServerGroupPerms USG
 	 where SGM.server_group_id = USG.server_group_id
 	   and SGM.server_id = server_id_in
-	   and USG.user_id = user_id_in
-	   and rownum = 1;
+	   and USG.user_id = user_id_in;
+
+        if not found then
+          return 0;
+        end if;
 	   
 	return 1;
-    exception
-    	when no_data_found
-	    then
-	    return 0;
-    end check_user_access;
+    end$$ language plpgsql;
 
     -- *******************************************************************
     -- FUNCTION: can_server_consume_virt_slot
@@ -422,13 +451,12 @@ is
     --   else returns 0.
     -- Called by: insert_into_servergroup, delete_from_servergroup
     -- *******************************************************************
-    function can_server_consume_virt_slot(server_id_in in number,
-                                           group_type_in in
-                                           rhnServerGroupType.label%TYPE)
-    return number                                           
-    is
-
-        cursor server_virt_slots is
+    create or replace function can_server_consume_virt_slot(server_id_in in numeric,
+                                           group_type_in in varchar)
+    returns numeric                                           
+    as $$
+    declare
+        server_virt_slots cursor is
             select vi.VIRTUAL_SYSTEM_ID
             from
                 rhnVirtualInstance vi
@@ -452,26 +480,28 @@ is
             return 1;
         end loop;
         return 0;
-    end can_server_consume_virt_slot;
+    end$$ language plpgsql;
 
 
-    procedure insert_into_servergroup (
-		server_id_in in number,
-		server_group_id_in in number
-    ) is
-		used_slots number;
-		max_slots number;
-		org_id number;
-		mgmt_available number;
-		mgmt_upgrade number;
-		mgmt_sgid number;
-		prov_available number;
-		prov_upgrade number;
-		prov_sgid number;
-		group_label rhnServerGroupType.label%TYPE;
-		group_type number;
+    create or replace function insert_into_servergroup (
+		server_id_in in numeric,
+		server_group_id_in in numeric
+    ) returns void
+    as $$
+    declare
+		used_slots numeric;
+		max_slots numeric;
+		org_id numeric;
+		mgmt_available numeric;
+		mgmt_upgrade numeric;
+		mgmt_sgid numeric;
+		prov_available numeric;
+		prov_upgrade numeric;
+		prov_sgid numeric;
+		group_label varchar;
+		group_type numeric;
 	begin
-		-- frist, group_type = null, because it's easy...
+		-- first, group_type = null, because it's easy...
 
 		-- this will rowlock the servergroup we're trying to change;
 		-- we probably need to lock the other one, but I think the chances
@@ -480,11 +510,11 @@ is
 		into	group_type, org_id, used_slots, max_slots
 		from	rhnServerGroup sg
 		where	sg.id = server_group_id_in
-		for update of sg.current_members;
+		for update of sg;
 
 		if group_type is null then
 			if used_slots >= max_slots then
-				rhn_exception.raise_exception('servergroup_max_members');
+				perform rhn_exception.raise_exception('servergroup_max_members');
 			end if;
 
 			insert into rhnServerGroupMembers(
@@ -496,7 +526,7 @@ is
 				set current_members = current_members + 1
 				where id = server_group_id_in;
 
-			rhn_cache.update_perms_for_server_group(server_group_id_in);
+			perform rhn_cache.update_perms_for_server_group(server_group_id_in);
 			return;
 		end if;
 
@@ -516,9 +546,9 @@ is
                            'virtualization_host',
                            'virtualization_host_platform') then
 			if used_slots >= max_slots and 
-               (can_server_consume_virt_slot(server_id_in, group_label) != 1) 
+               (rhn_server.can_server_consume_virt_slot(server_id_in, group_label) != 1) 
                then
-				rhn_exception.raise_exception('servergroup_max_members');
+				perform rhn_exception.raise_exception('servergroup_max_members');
 			end if;
 
 			insert into rhnServerGroupMembers(
@@ -529,7 +559,7 @@ is
 
             -- Only update current members if the system in consuming a 
             -- physical slot.
-            if can_server_consume_virt_slot(server_id_in, group_label) = 0 then
+            if rhn_server.can_server_consume_virt_slot(server_id_in, group_label) = 0 then
                 update rhnServerGroup
                 set current_members = current_members + 1
                 where id = server_group_id_in;
@@ -537,14 +567,15 @@ is
 
 			return;
 		end if;
-	end;
+	end$$ language plpgsql;
 
-	function insert_into_servergroup_maybe (
-		server_id_in in number,
-		server_group_id_in in number
-	) return number is 
-		retval number := 0;
-		cursor servergroups is
+	create or replace function insert_into_servergroup_maybe (
+		server_id_in in numeric,
+		server_group_id_in in numeric
+	) returns numeric as $$ 
+    declare
+		retval numeric := 0;
+		servergroups cursor is
 			select	s.id	server_id,
 					sg.id	server_group_id
 			from	rhnServerGroup	sg,
@@ -560,18 +591,20 @@ is
 				);
 	begin
 		for sgm in servergroups loop
-			rhn_server.insert_into_servergroup(sgm.server_id, sgm.server_group_id);
+			perform rhn_server.insert_into_servergroup(sgm.server_id, sgm.server_group_id);
 			retval := retval + 1;
 		end loop;
 		return retval;
-	end insert_into_servergroup_maybe;
+	end$$ language plpgsql;
 
-	procedure insert_set_into_servergroup (
-		server_group_id_in in number,
-		user_id_in in number,
-		set_label_in in varchar2
-	) is
-		cursor servers is
+	create or replace function insert_set_into_servergroup (
+		server_group_id_in in numeric,
+		user_id_in in numeric,
+		set_label_in in varchar
+	) returns void
+        as $$
+    declare
+		servers cursor is
 			select	st.element	id
 			from	rhnSet		st
 			where	st.user_id = user_id_in
@@ -590,26 +623,27 @@ is
 				);
 	begin
 		for s in servers loop
-			rhn_server.insert_into_servergroup(s.id, server_group_id_in);
+			perform rhn_server.insert_into_servergroup(s.id, server_group_id_in);
 		end loop;
-	end insert_set_into_servergroup;
+	end$$ language plpgsql;
 		
-    procedure delete_from_servergroup (
-    	server_id_in in number,
-		server_group_id_in in number
-    ) is
-        cursor server_virt_groups is
+    create or replace function delete_from_servergroup (
+    	server_id_in in numeric,
+		server_group_id_in in numeric
+    ) returns void
+    as $$
+    declare
+        server_virt_groups cursor is
             select 1
             from rhnServerEntitlementVirtual sev
             where sev.server_id = server_id_in
             and sev.server_group_id = server_group_id_in;
 
-		oid number;
-		mgmt_sgid number;
-		label rhnServerGroupType.label%TYPE;
-		group_type number;
+		oid numeric;
+		mgmt_sgid numeric;
+		label varchar;
+		group_type numeric;
 	begin
-		begin
 			select	sg.group_type, sg.org_id
 			into	group_type,	oid
 			from	rhnServerGroupMembers	sgm,
@@ -617,11 +651,11 @@ is
 			where	sg.id = server_group_id_in
 				and sg.id = sgm.server_group_id
 				and sgm.server_id = server_id_in
-			for update of sg.current_members;
-		exception
-			when no_data_found then
-				rhn_exception.raise_exception('server_not_in_group');
-		end;
+			for update of sg;
+
+			if not found then
+				perform rhn_exception.raise_exception('server_not_in_group');
+			end if;
 
 		-- do group_type is null first
 		if group_type is null then
@@ -631,7 +665,7 @@ is
 			update rhnServerGroup
 				set current_members = current_members - 1
 				where id = server_group_id_in;
-			rhn_cache.update_perms_for_server_group(server_group_id_in);
+			perform rhn_cache.update_perms_for_server_group(server_group_id_in);
 			return;
 		end if;
 
@@ -641,7 +675,7 @@ is
 		where	sgt.id = group_type;
 
 		if label in ('sw_mgr_entitled',
-                     'enterprise_entitled',
+                     'enterprise_entitled', 
                      'bootstrap_entitled',
                      'provisioning_entitled', 
                      'monitoring_entitled',
@@ -666,14 +700,16 @@ is
             where id = server_group_id_in;
  
 		end if;
-	end;
+	end$$ language plpgsql;
 
-	procedure delete_set_from_servergroup (
-		server_group_id_in in number,
-		user_id_in in number,
-		set_label_in in varchar2
-	) is
-		cursor servergroups is
+	create or replace function delete_set_from_servergroup (
+		server_group_id_in in numeric,
+		user_id_in in numeric,
+		set_label_in in varchar
+	) returns void
+        as $$	
+        declare
+		servergroups cursor is
 			select	sgm.server_id, sgm.server_group_id
 			from	rhnSet st,
 					rhnServerGroupMembers sgm
@@ -689,27 +725,31 @@ is
 				);
 	begin
 		for sgm in servergroups loop
-			rhn_server.delete_from_servergroup(sgm.server_id, server_group_id_in);
+			perform rhn_server.delete_from_servergroup(sgm.server_id, server_group_id_in);
 		end loop;
-	end delete_set_from_servergroup;
+	end$$ language plpgsql;
 
-	procedure clear_servergroup (
-		server_group_id_in in number
-	) is
-		cursor servers is
+	create or replace function clear_servergroup (
+		server_group_id_in in numeric
+	) returns void
+        as $$
+        declare
+		servers cursor is
 			select	sgm.server_id	id
 			from	rhnServerGroupMembers sgm
 			where	sgm.server_group_id = server_group_id_in;
 	begin
 		for s in servers loop
-			rhn_server.delete_from_servergroup(s.id, server_group_id_in);
+			perform rhn_server.delete_from_servergroup(s.id, server_group_id_in);
 		end loop;
-	end clear_servergroup;
+	end$$ language plpgsql;
 
-	procedure delete_from_org_servergroups (
-		server_id_in in number
-	) is
-		cursor servergroups is
+	create or replace function delete_from_org_servergroups (
+		server_id_in in numeric
+	) returns void
+        as $$
+        declare
+		servergroups cursor is
 			select	sgm.server_group_id id
 			from	rhnServerGroup sg,
 					rhnServerGroupMembers sgm
@@ -718,21 +758,22 @@ is
 				and sg.group_type is null;
 	begin
 		for sg in servergroups loop
-			rhn_server.delete_from_servergroup(server_id_in, sg.id);
+			perform rhn_server.delete_from_servergroup(server_id_in, sg.id);
 		end loop;
-	end delete_from_org_servergroups;
+	end$$ language plpgsql;
 
-	function get_ip_address (
-		server_id_in in number
-	) return varchar2 is
-		cursor interfaces is
+	create or replace function get_ip_address (
+		server_id_in in numeric
+	) returns varchar as $$
+        declare
+		interfaces cursor is
 			select	ni.name as name, na4.address as address
 			from	rhnServerNetInterface ni,
-                    rhnServerNetAddress4 na4
-			where	ni.server_id = server_id_in
+			        rhnServerNetAddress4 na4
+			where	server_id = server_id_in
                 and ni.id = na4.interface_id
 				and na4.address != '127.0.0.1';
-		cursor addresses is
+		addresses cursor is
 			select	ipaddr ip_addr
 			from	rhnServerNetwork
 			where	server_id = server_id_in
@@ -745,44 +786,42 @@ is
 			return iface.address;
 		end loop;
 		return NULL;
-	end get_ip_address;
+	end$$ language plpgsql;
 
-        procedure update_needed_cache(server_id_in in number)
-        is
-          update_lock number;
-        begin
-          select id into update_lock from rhnServer where id = server_id_in for update;
-          delete from rhnServerNeededCache
-           where server_id = server_id_in;
-          insert into rhnServerNeededCache
-                 (server_id, errata_id, package_id, channel_id)
-            (select distinct sp.server_id, x.errata_id, p.id, x.channel_id
-               FROM (SELECT sp_sp.server_id, sp_sp.name_id,
-                            sp_sp.package_arch_id, max(sp_pe.evr) AS max_evr
-                       FROM rhnServerPackage sp_sp
-                       join rhnPackageEvr sp_pe ON sp_pe.id = sp_sp.evr_id
-                      GROUP BY sp_sp.server_id, sp_sp.name_id, sp_sp.package_arch_id) sp
-               join rhnPackage p ON p.name_id = sp.name_id
-               join rhnPackageEvr pe ON pe.id = p.evr_id
-                        AND sp.max_evr < pe.evr
-               join rhnPackageUpgradeArchCompat puac
-                        ON puac.package_arch_id = sp.package_arch_id
-                        AND puac.package_upgrade_arch_id = p.package_arch_id
-               join rhnServerChannel sc ON sc.server_id = sp.server_id
-               join rhnChannelPackage cp ON cp.package_id = p.id
-                        AND cp.channel_id = sc.channel_id
-               left join (SELECT ep.errata_id, ce.channel_id, ep.package_id
-                            FROM rhnChannelErrata ce
-                            join rhnErrataPackage ep
-                                     ON ep.errata_id = ce.errata_id
-                            join rhnServerChannel sc_sc
-                                     ON sc_sc.channel_id = ce.channel_id
-                           WHERE sc_sc.server_id = server_id_in) x
-                 ON x.channel_id = sc.channel_id
-                        AND x.package_id = cp.package_id
-              where sp.server_id = server_id_in);
-        end update_needed_cache;
-
-end rhn_server;
-/
-SHOW ERRORS
+    create or replace function update_needed_cache(
+        server_id_in in numeric
+	) returns void as $$
+    declare
+      update_lock numeric;
+    begin
+      select id into update_lock from rhnServer where id = server_id_in for update;
+      delete from rhnServerNeededCache
+        where server_id = server_id_in;
+      insert into rhnServerNeededCache
+             (server_id, errata_id, package_id, channel_id)
+        (select distinct sp.server_id, x.errata_id, p.id, x.channel_id
+           FROM (SELECT sp_sp.server_id, sp_sp.name_id,
+		        sp_sp.package_arch_id, max(sp_pe.evr) AS max_evr
+                   FROM rhnServerPackage sp_sp
+                   join rhnPackageEvr sp_pe ON sp_pe.id = sp_sp.evr_id
+                  GROUP BY sp_sp.server_id, sp_sp.name_id, sp_sp.package_arch_id) sp
+           join rhnPackage p ON p.name_id = sp.name_id
+           join rhnPackageEvr pe ON pe.id = p.evr_id AND sp.max_evr < pe.evr
+           join rhnPackageUpgradeArchCompat puac
+	            ON puac.package_arch_id = sp.package_arch_id
+		    AND puac.package_upgrade_arch_id = p.package_arch_id
+           join rhnServerChannel sc ON sc.server_id = sp.server_id
+           join rhnChannelPackage cp ON cp.package_id = p.id
+	            AND cp.channel_id = sc.channel_id
+           left join (SELECT ep.errata_id, ce.channel_id, ep.package_id
+                        FROM rhnChannelErrata ce
+                        join rhnErrataPackage ep
+			         ON ep.errata_id = ce.errata_id
+			join rhnServerChannel sc_sc
+			         ON sc_sc.channel_id = ce.channel_id
+		       WHERE sc_sc.server_id = server_id_in) x
+             ON x.channel_id = sc.channel_id AND x.package_id = cp.package_id
+          where sp.server_id = server_id_in);
+	end$$ language plpgsql;
+-- restore the original setting
+update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_server')+1) ) where name = 'search_path';
