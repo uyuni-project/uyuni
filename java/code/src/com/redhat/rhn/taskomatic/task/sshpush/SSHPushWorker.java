@@ -217,6 +217,9 @@ public class SSHPushWorker implements QueueWorker {
                 log.error("stdout:\n" + IOUtils.toString(stdout));
                 log.error("stderr:\n" + IOUtils.toString(stderr));
             }
+            else {
+                log.debug("Exit status: " + exitStatus + " [" + client + "]");
+            }
         }
         catch (JSchException e) {
             Throwable cause = e.getCause();
