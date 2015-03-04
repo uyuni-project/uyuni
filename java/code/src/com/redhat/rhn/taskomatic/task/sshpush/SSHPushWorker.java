@@ -22,6 +22,7 @@ import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.ChannelExec;
@@ -199,36 +200,22 @@ public class SSHPushWorker implements QueueWorker {
                 session.setPortForwardingR(remotePort, localhost, SSL_PORT);
             }
 
-            // Open channel
+            // Init channel and streams
             channel = (ChannelExec) session.openChannel("exec");
             channel.setCommand(getCommand());
-
-            // Init streams
             channel.setInputStream(null);
-            InputStream in = channel.getInputStream();
+            InputStream stdout = channel.getInputStream();
+            InputStream stderr = channel.getErrStream();
 
-            // Connect and read STDOUT
+            // Connect and wait for the exit status
             channel.connect();
-            StringBuilder sb = new StringBuilder();
-            byte[] tmp = new byte[0x800];
-            int exitStatus;
-            while (true) {
-                while (in.available() > 0) {
-                    int i = in.read(tmp, 0, tmp.length);
-                    if (i < 0) {
-                        break;
-                    }
-                    sb.append(new String(tmp, 0, i));
-                }
-                if (channel.isClosed()) {
-                    exitStatus = channel.getExitStatus();
-                    break;
-                }
-            }
-            // Check exit status for errors
+            waitForChannelClosed(channel);
+            int exitStatus = channel.getExitStatus();
+
             if (exitStatus != 0 || log.isTraceEnabled()) {
                 log.error("Exit status: " + exitStatus + " [" + client + "]");
-                log.error("stdout:\n" + sb.toString());
+                log.error("stdout:\n" + IOUtils.toString(stdout));
+                log.error("stderr:\n" + IOUtils.toString(stderr));
             }
         }
         catch (JSchException e) {
@@ -289,5 +276,20 @@ public class SSHPushWorker implements QueueWorker {
             log.debug("Command: " + cmd);
         }
         return cmd;
+    }
+
+    /**
+     * Wait for a given {@link ChannelExec} to be closed.
+     * @param channel the channel
+     */
+    private void waitForChannelClosed(ChannelExec channel) {
+        while (!channel.isClosed()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+                // Should not happen
+            }
+        }
     }
 }
