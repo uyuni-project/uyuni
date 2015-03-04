@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -x
+
+/sbin/sysctl -w kernel.shmmax=4067832832
+
 # Database schema creation
 cd /manager/susemanager-utils/testing/docker/scripts/
 ./reset_pgsql_database.sh
@@ -7,7 +11,6 @@ cd /manager/susemanager-utils/testing/docker/scripts/
 cp /manager/java/scripts/rhn.conf.pgsql /etc/rhn/rhn.conf
 
 # SUSE Manager initialization
-sysctl -w kernel.shmmax=18446744073709551615
 smdba system-check autotuning
 rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
 
