@@ -136,7 +136,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
             tmpHandler.endDocument();
 
             String pkg =  st.toString();
-            handler.addCharactersPlain(pkg);
+            handler.addCharacters(pkg);
         }
         catch (SAXException e) {
             throw new RepomdRuntimeException(e);

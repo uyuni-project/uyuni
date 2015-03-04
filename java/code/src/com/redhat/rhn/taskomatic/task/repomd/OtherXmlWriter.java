@@ -107,7 +107,7 @@ public class OtherXmlWriter extends RepomdWriter {
             String xml = pkgDto.getOtherXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
                 if (xml != null) {
-                    handler.addCharactersPlain(xml);
+                    handler.addCharacters(xml);
                     return;
                 }
             }
@@ -123,7 +123,7 @@ public class OtherXmlWriter extends RepomdWriter {
 
             String pkg =  st.toString();
             PackageManager.updateRepoOther(pkgDto.getId(), pkg);
-            handler.addCharactersPlain(pkg);
+            handler.addCharacters(pkg);
 
         }
         catch (SAXException e) {
