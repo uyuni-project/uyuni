@@ -58,16 +58,16 @@ These painful steps are going to disappear once docker's build system supports p
 ## Custom registry
 
 All the containers used by CI are stored inside of our personal docker registry
-which runs on `suma-docker-registry.cloud.suse.de`.
+which runs on `suma-docker-registry.suse.de`.
 
 ### Push containers to our registry
 
 First you need to tag the local images:
 ```
-docker tag suma-<branch>-<base|pgsql|ora> suma-docker-registry.cloud.suse.de/suma-<branch>-<base|pgsql|ora>
+docker tag suma-<branch>-<base|pgsql|ora> suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>
 ```
 
 Then you can push the local image:
 ```
-docker push suma-docker-registry.cloud.suse.de/suma-<branch>-<base|pgsql|ora>
+docker push suma-docker-registry.suse.de/suma-<branch>-<base|pgsql|ora>
 ```
