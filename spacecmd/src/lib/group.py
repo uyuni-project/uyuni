@@ -412,5 +412,3 @@ def do_group_details(self, args, short=False):
             print 'Members'
             print '-------'
             print '\n'.join(sorted(systems))
-
-# vim:ts=4:expandtab:

@@ -353,5 +353,3 @@ def do_package_listdependencies(self, args):
         for dep in pkgdeps:
             print 'Dependency: %s Type: %s Modifier: %s' % \
                   (dep['dependency'], dep['dependency_type'], dep['dependency_modifier'])
-
-# vim:ts=4:expandtab:

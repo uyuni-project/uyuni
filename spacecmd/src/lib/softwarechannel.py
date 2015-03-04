@@ -1730,5 +1730,3 @@ def do_softwarechannel_listrepos(self, args):
 
     if len(repos):
         print '\n'.join(sorted(repos))
-
-# vim:ts=4:expandtab:

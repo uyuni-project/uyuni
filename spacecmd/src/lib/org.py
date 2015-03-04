@@ -501,5 +501,3 @@ def do_org_setsystementitlements(self, args):
         return
 
     self.client.org.setSystemEntitlements(self.session, org_id, label, value)
-
-# vim:ts=4:expandtab:

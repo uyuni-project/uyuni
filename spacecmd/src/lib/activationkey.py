@@ -1536,5 +1536,3 @@ def do_activationkey_setdescription(self, args):
     details = { 'description' : description }
 
     self.client.activationkey.setDetails(self.session, akey, details)
-
-# vim:ts=4:expandtab:

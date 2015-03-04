@@ -1064,6 +1064,8 @@ def import_configchannel_fromdetails(self, ccdetails):
             else:
                 if filedetails['type'] == 'directory':
                     isdir = True
+                    if 'contents' in filedetails:
+                        del filedetails['contents']
                 else:
                     isdir = False
                     # If binary files (or those containing characters which are
@@ -1415,5 +1417,3 @@ def do_configchannel_sync(self, args, doreturn = False):
     if target_only:
         #self.do_configchannel_removefiles( target_channel + " " + "/.metainfo" + " ".join(target_only) )
         self.do_configchannel_removefiles( target_channel + " " + " ".join(target_only) )
-
-# vim:ts=4:expandtab:
