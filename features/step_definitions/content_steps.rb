@@ -22,6 +22,11 @@ Then /^I should see a "([^"]*)" text$/ do |arg1|
   end
 end
 
+Then /^I should see that this system has been deleted$/ do
+  system_id = client_system_id_to_i
+  step "I should see a \"System profile #{system_id} has been deleted.\" text"
+end
+
 #
 # Test for a text in the whole page using regexp
 #
