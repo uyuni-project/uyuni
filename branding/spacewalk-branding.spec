@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.3.19
+Version:    2.3.21
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -88,7 +88,6 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
-cp -pR templates %{buildroot}%{_datadir}/spacewalk/web/
 cp -pR styles %{buildroot}%{_datadir}/spacewalk/web/nav/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
@@ -138,6 +137,15 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Thu Mar 05 2015 Tomas Lestach <tlestach@redhat.com> 2.3.21-1
+- templates dir was removed completelly from branding
+
+* Wed Mar 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.20-1
+- removing templates/profile.pxt as it isn't used anymore
+- removing templates/footer.pxt as it isn't used anymore
+- removing templates/header.pxt as it isn't used anymore
+- removing templates/c.pxt as it isn't used anymore
+
 * Mon Jan 12 2015 Matej Kollar <mkollar@redhat.com> 2.3.19-1
 - Getting rid of trailing spaces in Java
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files

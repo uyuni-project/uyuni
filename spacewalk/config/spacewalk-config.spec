@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.3.8
+Version: 2.3.10
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -175,6 +175,14 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Wed Mar 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.10-1
+- removing unused pxt error pages
+- removing packages/package_map_raw as it isn't referenced
+- removing packages/view_readme as it isn't referenced
+
+* Tue Mar 03 2015 Tomas Lestach <tlestach@redhat.com> 2.3.9-1
+- start using the jsp error pages
+
 * Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.8-1
 - removing system_list/proxy.pxt as it isn't referenced anymore
 - remove unused raw_script_output.txt
