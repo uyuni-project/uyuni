@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.3.10
+Version: 2.3.12
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -462,6 +462,26 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Mon Mar 02 2015 Grant Gainey 2.3.12-1
+- Use plural for lists
+- Refactoring
+- Sanitize input
+- Fix grammar
+- Extract listing of available channels
+- Extract listing of base channel
+- Extract channels listing
+- Extract channel removal
+- Extract channel addition
+- Extract logging function
+- Cleanup
+- Pylint/Pep8
+- Get rid of unused global variable
+
+* Mon Mar 02 2015 Matej Kollar <mkollar@redhat.com> 2.3.11-1
+- 1147425 - we might be registered also via rhsm
+- 1147425 - avoid "list index out of range"
+- Make indentation more PEP8
+
 * Fri Feb 20 2015 Matej Kollar <mkollar@redhat.com> 2.3.10-1
 - Localize error messages
 - Typo

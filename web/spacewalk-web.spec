@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.37
+Version: 2.3.40
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -325,6 +325,37 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Wed Mar 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.40-1
+- removing message_queues/local.pxi as it isn't used anymore
+- removing unused styles
+- removing status_bar/ssm.pxi as it isn't used anymore
+- removing status_bar/main.pxi as it isn't used anymore
+- removing message_queues/site.pxi as it isn't used anymore
+- removing the permission.pxt dependency on c.pxt
+- removing legends/system-list-legend.pxi as it isn't referenced anymore
+- removing unused callbacks from Sniglets/ChannelEditor.pm
+- removing unused pxt error pages
+- we use /rhn/errors/404.jsp as 404 ErrorDocument
+- removing unused tags from Sniglets/ChannelEditor.pm
+- removing unused tags from Sniglets/Errata.pm
+- removing the old solaris stuff
+- removing packages/package_map_raw as it isn't referenced
+- removing packages/view_readme as it isn't referenced
+- removing unused systems/system_list
+
+* Tue Mar 03 2015 Tomas Lestach <tlestach@redhat.com> 2.3.39-1
+- removing misc/landing.pxt as it's not referenced anymore
+- removing ssm groups pages as they were ported to java
+- removing /help/about.pxt as it isn't referenced anymore
+- we use /rhn/help/index.do instead of /help/about.pxt
+- removing original error pages
+
+* Mon Mar 02 2015 Tomas Lestach <tlestach@redhat.com> 2.3.38-1
+- remove unused Sniglets/Packages.pm callbacks
+- removing left Sniglets/Servers.pm callbacks
+- removing unused Sniglets/Servers.pm callbacks
+- removing unused Sniglets/Servers.pm tags
+
 * Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.37-1
 - removing unknown_package.pxt as it's not referenced anymore
 - removing unused tags in Sniglets/Packages.pm

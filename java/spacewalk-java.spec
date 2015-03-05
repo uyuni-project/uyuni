@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.154
+Version: 2.3.158
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -780,6 +780,7 @@ fi
 %{appdir}/rhn/schedule/
 %{appdir}/rhn/systems/
 %{appdir}/rhn/users/
+%{appdir}/rhn/errors/
 %{appdir}/rhn/*.jsp
 %{appdir}/rhn/WEB-INF/classes
 %{appdir}/rhn/WEB-INF/decorators
@@ -967,6 +968,32 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Mar 03 2015 Tomas Lestach <tlestach@redhat.com> 2.3.158-1
+- we use /rhn/help/index.do instead of /help/about.pxt
+
+* Tue Mar 03 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.157-1
+- create globallySubscribeable default value
+- adapt 404.jsp
+- do not decorate java error pages
+- removing html taglib from error jsp pages as it isn't used
+- make the error pages accessible from apache
+- removing nosuchpkg.jsp as it's not referenced any more
+
+* Tue Mar 03 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.156-1
+- 1128989 - allow users to set taskomatic mail preferences - change query of
+  user emails
+- 1128989 - allow users to set taskomatic mail preferences - allow setting of
+  tasko_notify flag
+- 1128989 - allow users to set taskomatic mail preferences - updated User clasS
+
+* Mon Mar 02 2015 Stephen Herr <sherr@redhat.com> 2.3.155-1
+- Finish porting SSM Group pages to java
+- Moving SSM Group Create to its own jsp to fix changing nav contexts when form
+  doesn't validate
+- Port SSM Group Create page to java TODO: port ssm group landing /
+  confirmation page, update links
+- Add back in SSM Groups tab that was accidentally deleted in 93b7d1a9
+
 * Fri Feb 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.154-1
 - removing system_list/out_of_date.pxt as it isn't referenced anymore
 - removing system_list/visible_to_user.pxt as it isn't referenced anymore
