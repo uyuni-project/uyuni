@@ -14,16 +14,21 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.products.Channel;
+import com.suse.manager.model.products.MandatoryChannels;
+import com.suse.manager.model.products.OptionalChannels;
 import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 
 /**
  * Tests for ProductSyncManager.
@@ -86,5 +91,67 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         for (Channel c: addonOut.getOptionalChannels()) {
             assertEquals(".", c.getStatus());
         }
+    }
+
+    /**
+     * Verify product sync status for a given product: NOT_MIRRORED
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusNotMirrored() throws Exception {
+        // All channels are not mirrored
+        Product product = createFakeProduct("...");
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: FAILED
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusFailed() throws Exception {
+        // All channels are mirrore, but nothing has happened and no schedule
+        Product product = createFakeProduct("PPP");
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+    }
+
+    /**
+     * Create fake product with channels as described in channelDesc, e.g. "P..P".
+     * For every "P" (= provided) a real channel will be created in the database.
+     *
+     * @param channelDesc description of a set of channels and their status
+     * @return {@link Product} fake product
+     * @throws Exception if something goes wrong
+     */
+    private Product createFakeProduct(String channelDesc) throws Exception {
+        String ident = "product-" + TestUtils.randomString();
+        Product p = new Product("x86_64", ident, "Product " + ident, "",
+                new MandatoryChannels(), new OptionalChannels());
+
+        for (int k = 0; k < channelDesc.length(); k++) {
+            char descChar = channelDesc.charAt(k);
+            Channel channel = new Channel();
+            if (!(descChar == '.' || descChar == 'P')) {
+                throw new IllegalArgumentException(
+                        "Ilegal channel description char " + descChar);
+            }
+            channel.setStatus(String.valueOf(descChar));
+            p.getMandatoryChannels().add(channel);
+
+            // If the channel is "Provided" create a real channel in the database
+            if (channel.isProvided()) {
+                com.redhat.rhn.domain.channel.Channel dbChannel =
+                        ChannelFactoryTest.createTestChannel(user);
+                channel.setLabel(dbChannel.getLabel());
+                dbChannel.setLastSynced(new Date());
+            }
+            else {
+                channel.setLabel(p.getIdent() + "-channel-" + k);
+            }
+        }
+
+        return p;
     }
 }
