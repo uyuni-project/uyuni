@@ -314,7 +314,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/Sniglets/
 
 %files -n spacewalk-html
-<<<<<<< HEAD
 %defattr(644,root,root,755)
 %{www_path}/www/htdocs/*
 %doc LICENSE
