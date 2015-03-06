@@ -103,6 +103,11 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         Product product = createFakeProduct("...");
         Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
         assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
+
+        // Repeat test with another product with only one channel not mirrored
+        product = createFakeProduct("PP.");
+        status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
     }
 
     /**
