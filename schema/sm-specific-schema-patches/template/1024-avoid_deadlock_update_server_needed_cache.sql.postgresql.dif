@@ -1,0 +1,22 @@
+@@ -1,4 +1,4 @@
+--- oracle equivalent source sha1 843d37699e7b2d93630cc2758577be5fa31ce3e0
++-- oracle equivalent source sha1 9d3a6c54f08d4c4541a58c702396f966a0debc65
+ --
+ -- Copyright (c) 2008--2014 Red Hat, Inc.
+ --
+@@ -540,6 +540,7 @@
+ 		-- the naive easy path that gets hit most often and has to be quickest.
+ 		if group_label in ('sw_mgr_entitled',
+                            'enterprise_entitled',
++                           'bootstrap_entitled',
+                            'monitoring_entitled',
+                            'provisioning_entitled',
+                            'virtualization_host',
+@@ -675,6 +676,7 @@
+ 
+ 		if label in ('sw_mgr_entitled',
+                      'enterprise_entitled', 
++                     'bootstrap_entitled',
+                      'provisioning_entitled', 
+                      'monitoring_entitled',
+                      'virtualization_host',
