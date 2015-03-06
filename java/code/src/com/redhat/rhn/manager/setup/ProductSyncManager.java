@@ -143,7 +143,7 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    public SyncStatus getProductSyncStatus(Product product) {
+    private SyncStatus getProductSyncStatus(Product product) {
         // Compute statistics about channels
         int notMirroredCounter = 0;
         int finishedCounter = 0;
