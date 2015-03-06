@@ -114,13 +114,13 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      */
     public void testGetProductSyncStatusNotMirrored() throws Exception {
         Product product = createFakeProduct("...");
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
 
         // Repeat test with another product with only one channel not mirrored
         product = createFakeProduct("PP.");
         status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
+        assertEquals(SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
     }
 
     /**
@@ -131,8 +131,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      */
     public void testGetProductSyncStatusFailed() throws Exception {
         Product product = createFakeProduct("PPP");
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.FAILED, status.getStage());
     }
 
     /**
@@ -145,8 +145,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         Product product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.FAILED, status.getStage());
     }
 
     /**
@@ -158,8 +158,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     public void testGetProductSyncStatusFailedNoMetadata() throws Exception {
         Product product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.FAILED, status.getStage());
     }
 
     /**
@@ -171,8 +171,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     public void testGetProductSyncStatusInProgressScheduled() throws Exception {
         Product product = createFakeProduct("PPP");
         productInsertTaskoSchedule(product);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
     }
 
     /**
@@ -186,8 +186,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         Product product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
         productInsertTaskoSchedule(product);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
     }
 
     /**
@@ -199,8 +199,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     public void testGetProductSyncStatusInProgressReady() throws Exception {
         Product product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_READY_TO_RUN);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
     }
 
     /**
@@ -213,8 +213,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         Product product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
         productInsertTaskoRun(product, TaskoRun.STATUS_RUNNING);
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
     }
 
     /**
@@ -238,8 +238,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         generateFakeMetadataForProduct(product);
 
         // Check the product sync status
-        Product.SyncStatus status = getProductSyncStatus(product);
-        assertEquals(Product.SyncStatus.SyncStage.FINISHED, status.getStage());
+        SyncStatus status = getProductSyncStatus(product);
+        assertEquals(SyncStatus.SyncStage.FINISHED, status.getStage());
         assertNotNull((status.getLastSyncDate()));
 
         // Restore old cache path
