@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.40
+Version: 2.3.43
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -176,7 +176,6 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 rm -rf $RPM_BUILD_ROOT
 make -C modules install DESTDIR=$RPM_BUILD_ROOT PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 make -C html install PREFIX=$RPM_BUILD_ROOT
-make -C include install PREFIX=$RPM_BUILD_ROOT
 
 find $RPM_BUILD_ROOT -type f -name perllocal.pod -exec rm -f {} \;
 find $RPM_BUILD_ROOT -type f -name .packlist -exec rm -f {} \;
@@ -315,16 +314,26 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/Sniglets/
 
 %files -n spacewalk-html
+<<<<<<< HEAD
 %defattr(644,root,root,755)
-%dir %{_datadir}/spacewalk
-%if !0%{?suse_version}
-%dir %{www_path}/www/htdocs
-%endif
 %{www_path}/www/htdocs/*
-%{_datadir}/spacewalk/web
 %doc LICENSE
 
 %changelog
+* Fri Mar 06 2015 Tomas Lestach <tlestach@redhat.com> 2.3.43-1
+- fixing failed spacewalk-web build
+
+* Fri Mar 06 2015 Tomas Lestach <tlestach@redhat.com> 2.3.42-1
+- include directory was already removed
+
+* Thu Mar 05 2015 Tomas Lestach <tlestach@redhat.com> 2.3.41-1
+- removing unused help/index.html
+- removing unused Makefile
+- removing unused nav xmls
+- removing unused tags from Sniglets/Navi.pm
+- deleting unused nav xmls
+- remove unused Perl code
+
 * Wed Mar 04 2015 Tomas Lestach <tlestach@redhat.com> 2.3.40-1
 - removing message_queues/local.pxi as it isn't used anymore
 - removing unused styles
