@@ -14,9 +14,15 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.manager.content.ListedProduct;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
+import com.redhat.rhn.taskomatic.TaskoBunch;
+import com.redhat.rhn.taskomatic.TaskoFactory;
+import com.redhat.rhn.taskomatic.TaskoRun;
+import com.redhat.rhn.taskomatic.TaskoSchedule;
+import com.redhat.rhn.taskomatic.TaskoTemplate;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -29,6 +35,8 @@ import com.suse.mgrsync.MgrSyncStatus;
 
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Tests for ProductSyncManager.
@@ -123,6 +131,88 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Verify product sync status for a given product: FAILED
+     * A product is FAILED if there is FAILED tasko runs (even after FINISHED).
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusFailedTasko() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
+        productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: FAILED
+     * A product is FAILED if there is FINISHED tasko runs, but no metadata.
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusFailedNoMetadata() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: IN_PROGRESS
+     * A product is IN_PROGRESS if there is schedules for all mandatory channels.
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusInProgressScheduled() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoSchedule(product);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: IN_PROGRESS
+     * A product is IN_PROGRESS if there is schedules for all mandatory channels, even
+     * after a previous STATUS_FAILED.
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusInProgressRescheduled() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
+        productInsertTaskoSchedule(product);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: IN_PROGRESS
+     * A product is IN_PROGRESS if there is STATUS_READY_TO_RUN tasko runs.
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusInProgressReady() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoRun(product, TaskoRun.STATUS_READY_TO_RUN);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+    }
+
+    /**
+     * Verify product sync status for a given product: IN_PROGRESS
+     * A product is IN_PROGRESS if there is STATUS_RUNNING tasko runs (even after FAILED).
+     *
+     * @throws Exception if something goes wrong
+     */
+    public void testGetProductSyncStatusInProgressRunning() throws Exception {
+        Product product = createFakeProduct("PPP");
+        productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
+        productInsertTaskoRun(product, TaskoRun.STATUS_RUNNING);
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
+    }
+
+    /**
      * Create fake product with channels as described in channelDesc, e.g. "P..P".
      * For every "P" (= provided) a real channel will be created in the database.
      *
@@ -158,5 +248,98 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         }
 
         return p;
+    }
+
+    /**
+     * Insert a {@link TaskoSchedule} rows for a product. Will create schedules for all
+     * mandatory product channels.
+     *
+     * @param product the product
+     */
+    private void productInsertTaskoSchedule(Product product) {
+        for (Channel channel : product.getMandatoryChannels()) {
+            insertTaskoSchedule(channel);
+        }
+    }
+
+    /**
+     * Insert a {@link TaskoSchedule} for a given {@link Channel}.
+     *
+     * @param channel the channel
+     */
+    private void insertTaskoSchedule(Channel channel) {
+        if (channel.isProvided()) {
+            com.redhat.rhn.domain.channel.Channel chObj =
+                    ChannelFactory.lookupByLabel(channel.getLabel());
+            insertTaskoSchedule(chObj);
+        }
+    }
+
+    /**
+     * Insert a {@link TaskoSchedule} for a {@link com.redhat.rhn.domain.channel.Channel}.
+     *
+     * @param dbChannel the channel
+     */
+    private TaskoSchedule insertTaskoSchedule(
+            com.redhat.rhn.domain.channel.Channel dbChannel) {
+        String bunchName = "repo-sync-bunch";
+        Integer orgId = user.getOrg().getId().intValue();
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("channel_id", dbChannel.getId().toString());
+        TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
+        String jobLabel = dbChannel.getLabel() + "-job-" + TestUtils.randomString();
+        TaskoSchedule schedule = new TaskoSchedule(
+                orgId, bunch, jobLabel, params, new Date(), null, null);
+        TaskoFactory.save(schedule);
+        return schedule;
+    }
+
+    /**
+    * Insert {@link TaskoRun} rows for a given product and status. This will create runs
+    * and schedules for all mandatory channels.
+    *
+    * @param product the product
+    * @param status the status
+    */
+    private void productInsertTaskoRun(Product product, String status) {
+        for (Channel channel : product.getMandatoryChannels()) {
+            insertTaskoRun(channel, status);
+        }
+    }
+
+    /**
+     * Insert a {@link TaskoRun} for a given {@link Channel}.
+     *
+     * @param channel the channel
+     * @param status the tasko run status
+     */
+    private void insertTaskoRun(Channel channel, String status) {
+        if (channel.isProvided()) {
+            com.redhat.rhn.domain.channel.Channel dbChannel =
+                    ChannelFactory.lookupByLabel(channel.getLabel());
+            insertTaskoRun(dbChannel, status);
+        }
+    }
+
+    /**
+     * Insert a {@link TaskoRun} for a given {@link com.redhat.rhn.domain.channel.Channel}.
+     *
+     * @param dbChannel the channel
+     * @param status the tasko run status
+     */
+    private void insertTaskoRun(com.redhat.rhn.domain.channel.Channel dbChannel,
+            String status) {
+        TaskoSchedule schedule = insertTaskoSchedule(dbChannel);
+        TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
+        assertNotNull(template);
+        TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, schedule.getId());
+        taskRun.setStatus(status);
+        if (status.equals(TaskoRun.STATUS_FAILED) ||
+                status.equals(TaskoRun.STATUS_FINISHED) ||
+                status.equals(TaskoRun.STATUS_INTERRUPTED) ||
+                status.equals(TaskoRun.STATUS_SKIPPED)) {
+            taskRun.setEndTime(new Date());
+        }
+        TaskoFactory.save(taskRun);
     }
 }
