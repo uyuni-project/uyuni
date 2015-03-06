@@ -108,17 +108,14 @@ end
 
 When /^I execute spacewalk\-channel and pass "([^"]*)"$/ do |arg1|
   $command_output = `spacewalk-channel #{arg1} 2>&1`
-  $command_status = $?
-end
-
-Then /^it should succeed$/ do
-  if ! $command_status.success?
-    raise "Executed command failed: #{$command_status}"
+  if ! $?.success?
+    raise "spacewalk-channel with #{arg1} command failed #{$command_output}"
   end
 end
 
-Then /^it should fail with exit code "([^"]*)"$/ do |arg1|
-  if $command_status.success? || $command_status.exitstatus != arg1.to_i
+When /^spacewalk\-channel fails with "([^"]*)"$/ do |arg1|
+  $command_output = `spacewalk-channel #{arg1} 2>&1`
+  if $?.success? #|| $command_status.exitstatus != arg1.to_i
     raise "Executed command was successful: #{$status}"
   end
 end
