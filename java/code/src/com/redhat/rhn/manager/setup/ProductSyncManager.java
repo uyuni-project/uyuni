@@ -145,6 +145,7 @@ public class ProductSyncManager {
      */
     protected SyncStatus getProductSyncStatus(Product product) {
         // Compute statistics about channels
+        int notMirroredCounter = 0;
         int finishedCounter = 0;
         int failedCounter = 0;
         SyncStatus syncStatus;
@@ -158,7 +159,11 @@ public class ProductSyncManager {
                 debugDetails.append(channelStatus.getDetails());
             }
 
-            if (channelStatus.isFinished()) {
+            if (channelStatus.isNotMirrored()) {
+                logger.debug("Channel not mirrored: " + c.getLabel());
+                notMirroredCounter++;
+            }
+            else if (channelStatus.isFinished()) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
@@ -177,8 +182,12 @@ public class ProductSyncManager {
             }
         }
 
+        // Return NOT_MIRRORED if at least one mandatory channel is not mirrored
+        if (notMirroredCounter > 0) {
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
+        }
         // Set FINISHED if all mandatory channels have metadata
-        if (finishedCounter == product.getMandatoryChannels().size()) {
+        else if (finishedCounter == product.getMandatoryChannels().size()) {
             syncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             syncStatus.setLastSyncDate(maxLastSyncDate);
         }
