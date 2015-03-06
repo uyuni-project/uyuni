@@ -210,13 +210,10 @@ public class ProductSyncManager {
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
 
-        // the XML data may say P, but if the channel is not in the database
-        // we assume the XML data is wrong
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
         }
-
-        if (ChannelManager.getRepoLastBuild(c) != null) {
+        else if (ChannelManager.getRepoLastBuild(c) != null) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             channelSyncStatus.setLastSyncDate(c.getLastSynced());
             return channelSyncStatus;
