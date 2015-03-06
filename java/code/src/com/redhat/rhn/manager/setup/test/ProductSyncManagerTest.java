@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.setup.test;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.manager.content.ListedProduct;
@@ -33,6 +35,8 @@ import com.suse.manager.model.products.Product;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
@@ -213,6 +217,35 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Verify product sync status for a given product: FINISHED
+     * Product is FINISHED if metadata is available for all mandatory channels.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testGetProductSyncStatusFinished() throws Exception {
+        // Change default mount point for temporary repodata directory
+        String oldMountPoint = Config.get().getString(
+                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        File tempMountPoint = File.createTempFile("folder-name", "");
+        tempMountPoint.delete();
+        tempMountPoint.mkdir();
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
+                tempMountPoint.getAbsolutePath());
+
+        // Download finished and metadata available
+        Product product = createFakeProduct("PPP");
+        generateFakeMetadataForProduct(product);
+
+        // Check the product sync status
+        Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
+        assertEquals(Product.SyncStatus.SyncStage.FINISHED, status.getStage());
+        assertNotNull((status.getLastSyncDate()));
+
+        // Restore old cache path
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
+    }
+
+    /**
      * Create fake product with channels as described in channelDesc, e.g. "P..P".
      * For every "P" (= provided) a real channel will be created in the database.
      *
@@ -341,5 +374,57 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             taskRun.setEndTime(new Date());
         }
         TaskoFactory.save(taskRun);
+    }
+
+    /**
+     * Generate fake metadata for a given product.
+     *
+     * @param prodIdent ident of a product
+     * @throws java.io.IOException
+     */
+    private void generateFakeMetadataForProduct(Product product) throws IOException {
+        for (Channel channel : product.getMandatoryChannels()) {
+            generateFakeMetadataForChannel(channel);
+        }
+    }
+
+    /**
+     * Generate fake metadata for a given {@link Channel}.
+     *
+     * @param channel the channel
+     * @throws IOException if something goes wrong
+     */
+    private void generateFakeMetadataForChannel(Channel channel) throws IOException {
+        if (channel.isProvided()) {
+            com.redhat.rhn.domain.channel.Channel dbChannel =
+                    ChannelFactory.lookupByLabel(channel.getLabel());
+            if (dbChannel == null) {
+                throw new IllegalArgumentException(
+                        "Channel not found: " + channel.getLabel());
+            }
+            generateFakeMetadataForChannelLabel(dbChannel.getLabel());
+        }
+    }
+
+    /**
+     * Generate fake metadata for a given channel label.
+     *
+     * @param channelLabel the channel label
+     * @throws IOException if something goes wrong
+     */
+    private void generateFakeMetadataForChannelLabel(String channelLabel)
+            throws IOException {
+        String prefix = Config.get().getString(
+                ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
+        String mountPoint = Config.get().getString(
+                ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        File repoPath = new File(mountPoint + File.separator + prefix +
+                File.separator + channelLabel);
+        if (!repoPath.mkdirs()) {
+            throw new IOException("Can't create directories for " +
+                    repoPath.getAbsolutePath());
+        }
+        File repomd = new File(repoPath, "repomd.xml");
+        repomd.createNewFile();
     }
 }
