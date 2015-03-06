@@ -147,6 +147,7 @@ public class ProductSyncManager {
         // Compute statistics about channels
         int finishedCounter = 0;
         int failedCounter = 0;
+        SyncStatus syncStatus;
         Date maxLastSyncDate = null;
         StringBuilder debugDetails = new StringBuilder();
 
@@ -178,23 +179,22 @@ public class ProductSyncManager {
 
         // Set FINISHED if all mandatory channels have metadata
         if (finishedCounter == product.getMandatoryChannels().size()) {
-            SyncStatus result = new SyncStatus(SyncStatus.SyncStage.FINISHED);
-            result.setLastSyncDate(maxLastSyncDate);
-            return result;
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
+            syncStatus.setLastSyncDate(maxLastSyncDate);
         }
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
-            SyncStatus failedResult = new SyncStatus(SyncStatus.SyncStage.FAILED);
-            failedResult.setDetails(debugDetails.toString());
-            return failedResult;
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
+            syncStatus.setDetails(debugDetails.toString());
         }
         // Otherwise return IN_PROGRESS
         else {
-            SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             int totalChannels = product.getMandatoryChannels().size();
-            status.setSyncProgress((finishedCounter * 100) / totalChannels);
-            return status;
+            syncStatus.setSyncProgress((finishedCounter * 100) / totalChannels);
         }
+
+        return syncStatus;
     }
 
     /**
