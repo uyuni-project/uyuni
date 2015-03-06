@@ -95,11 +95,11 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Verify product sync status for a given product: NOT_MIRRORED
+     * Product is NOT_MIRRORED if any of the channels is not mirrored (= exists in the DB).
      *
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusNotMirrored() throws Exception {
-        // All channels are not mirrored
         Product product = createFakeProduct("...");
         Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
         assertEquals(Product.SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
@@ -107,11 +107,11 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
 
     /**
      * Verify product sync status for a given product: FAILED
+     * All channels are mirrored, but no metadata is there yet and no schedule either.
      *
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusFailed() throws Exception {
-        // All channels are mirrore, but nothing has happened and no schedule
         Product product = createFakeProduct("PPP");
         Product.SyncStatus status = new ProductSyncManager().getProductSyncStatus(product);
         assertEquals(Product.SyncStatus.SyncStage.FAILED, status.getStage());
