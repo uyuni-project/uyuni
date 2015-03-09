@@ -39,7 +39,7 @@ Feature: I want to verify the Setup Wizard
        And I should see a "Legacy Module 12" text
        And I select "Legacy Module 12" as a product for the "x86_64" architecture
        And I click the Add Product button
-       And I wait until it has finished
+       And I wait for "20" seconds
        And I verify the products were added
 
    @lolol
