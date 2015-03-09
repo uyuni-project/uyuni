@@ -36,6 +36,8 @@ import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -227,23 +229,27 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         // Change default mount point for temporary repodata directory
         String oldMountPoint = Config.get().getString(
                 ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
-        File tempMountPoint = File.createTempFile("folder-name", "");
+        File tempMountPoint = File.createTempFile("repomd-test", "");
         tempMountPoint.delete();
         tempMountPoint.mkdir();
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
-                tempMountPoint.getAbsolutePath());
+        try {
+            Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT,
+                    tempMountPoint.getAbsolutePath());
 
-        // Download finished and metadata available
-        Product product = createFakeProduct("PPP");
-        generateFakeMetadataForProduct(product);
+            // Download finished and metadata available
+            Product product = createFakeProduct("PPP");
+            generateFakeMetadataForProduct(product);
 
-        // Check the product sync status
-        SyncStatus status = getProductSyncStatus(product);
-        assertEquals(SyncStatus.SyncStage.FINISHED, status.getStage());
-        assertNotNull((status.getLastSyncDate()));
-
-        // Restore old cache path
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
+            // Check the product sync status
+            SyncStatus status = getProductSyncStatus(product);
+            assertEquals(SyncStatus.SyncStage.FINISHED, status.getStage());
+            assertNotNull((status.getLastSyncDate()));
+        }
+        finally {
+            // Clean up and restore the old cache path
+            FileUtils.deleteDirectory(tempMountPoint);
+            Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, oldMountPoint);
+        }
     }
 
     /**
