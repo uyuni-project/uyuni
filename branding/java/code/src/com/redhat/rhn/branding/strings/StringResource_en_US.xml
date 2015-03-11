@@ -522,7 +522,7 @@ Thank you for using @@PRODUCT_NAME@@.
         <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
       </trans-unit>
       <trans-unit id="ssm.errata.message.queued">
-        <source>Patch updates have been added to the Action Chain &lt;a href="https://s21pg/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
+        <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.kickstart">
         <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
