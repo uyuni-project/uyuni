@@ -5157,6 +5157,14 @@ value for this entitlement, excluding the default organization's consumption.</s
           <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
           <target>使用 OpenSCAP &lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;审计&lt;/a&gt; 系统</target>
         </trans-unit>
+        <trans-unit id="ssm.errata.message.scheduled">
+          <source>Errata updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
+          <target>在 {0} 中 &lt;a href="/rhn/schedule/PendingActions.do"&gt;调度&lt;/a&gt;  勘误更新。</target>
+        </trans-unit>
+        <trans-unit id="ssm.errata.message.queued">
+          <source>Errata updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
+          <target>在动作链 &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt; 中添加勘误更新。</target>
+        </trans-unit>
       </group>
       <!-- SSM System List -->
       <group>

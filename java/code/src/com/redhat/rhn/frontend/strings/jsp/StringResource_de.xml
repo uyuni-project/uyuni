@@ -5158,6 +5158,14 @@ für diese Berechtigung, mit Ausnahme des Verbrauchs der Standardorganisation.</
           <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
           <target>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Prüfen&lt;/a&gt; von Systemen mit OpenSCAP</target>
         </trans-unit>
+        <trans-unit id="ssm.errata.message.scheduled">
+          <source>Errata updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
+          <target>Errata Updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;geplant&lt;/a&gt; um {0}.</target>
+        </trans-unit>
+        <trans-unit id="ssm.errata.message.queued">
+          <source>Errata updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
+          <target>Errata-Updates wurden der Aktionskette &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt; hinzugefügt.</target>
+        </trans-unit>
       </group>
       <!-- SSM System List -->
       <group>
