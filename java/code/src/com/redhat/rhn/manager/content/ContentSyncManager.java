@@ -786,7 +786,7 @@ public class ContentSyncManager {
         Date now = new Date();
         for (SCCSubscription subscription : subscriptions) {
             Date start = subscription.getStartsAt() == null ?
-                    new Date() : subscription.getStartsAt();
+                    now : subscription.getStartsAt();
             Date end = subscription.getExpiresAt();
             for (String productClass : subscription.getProductClasses()) {
                 if ((now.compareTo(start) >= 0 &&
