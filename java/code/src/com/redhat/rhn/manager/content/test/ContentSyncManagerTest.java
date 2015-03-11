@@ -271,6 +271,48 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
+     * Test for {@link ContentSyncManager#consolidateSubscriptions(java.util.Collection)}.
+     * Subscriptions with startsAt == null are always started.
+     * @throws Exception if anything goes wrong
+     */
+    public void testConsolidateSubscriptionsStartAtNull() throws Exception {
+        List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
+
+        List<String> productClasses = new ArrayList<String>();
+        productClasses.add("RES");
+        productClasses.add("7261");
+        productClasses.add("7260");
+        productClasses.add("SMP");
+        productClasses.add("SMS");
+        for (String pc : productClasses) {
+            SCCSubscription subscription = new SCCSubscription();
+            List<String> pcs = new ArrayList<String>();
+            pcs.add(pc);
+            subscription.setProductClasses(pcs);
+            subscription.setType("full");
+            subscription.setStartsAt(null);
+            subscription.setExpiresAt("2100-12-12T00:00:00.000Z");
+            subscriptions.add(subscription);
+        }
+
+        // Check the consolidated product classes
+        ContentSyncManager csm = new ContentSyncManager();
+        File channelFamiliesXML = new File(
+                TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
+        csm.setChannelFamiliesXML(channelFamiliesXML);
+        ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
+        List<String> channelSubscriptions = result.getChannelSubscriptions();
+        assertTrue(channelSubscriptions.contains("RES"));
+        assertTrue(channelSubscriptions.contains("7261"));
+        assertTrue(channelSubscriptions.contains("7260"));
+        assertTrue(channelSubscriptions.contains("SMP"));
+        assertTrue(channelSubscriptions.contains("SMS"));
+
+        // Delete temp file
+        SUSEProductTestUtils.deleteIfTempFile(channelFamiliesXML);
+    }
+
+    /**
      * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
      * @throws Exception if anything goes wrong
      */
