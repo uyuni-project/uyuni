@@ -14,17 +14,9 @@
  */
 package com.redhat.rhn.domain.kickstart.test;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.RandomStringUtils;
-import org.cobbler.Distro;
-import org.hibernate.Session;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.FileUtils;
@@ -44,6 +36,15 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.cobbler.Distro;
+import org.hibernate.Session;
+
+import java.io.File;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * KickstartableTreeTest
@@ -127,7 +128,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartableTree k = createTestKickstartableTree();
         String expected = "/ks/dist/org/" + k.getOrg().getId() + "/" +
                                 k.getLabel();
-        assertEquals(expected, k.getDefaultDownloadLocation("localhost"));
+        assertEquals(expected, k.getDefaultDownloadLocation());
     }
 
     public void testKsDataByTree() throws Exception {

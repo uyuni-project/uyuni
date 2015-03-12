@@ -10,7 +10,7 @@
 %endif
 
 Name:           spacewalk
-Version:        2.3.1
+Version:        2.3.2
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -42,9 +42,7 @@ Requires:       spacewalk-search
 # Perl
 Requires:       spacewalk-html
 Requires:       spacewalk-base
-Requires:       spacewalk-grail
 Requires:       spacewalk-pxt
-Requires:       spacewalk-sniglets
 
 # Python
 Requires:       spacewalk-certs-tools
@@ -198,6 +196,10 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.2-1
+- removing spacewalk-grail as they are not needed any more
+- removing spacewalk-sniglets as they are not needed any more
+
 * Fri Jan 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.1-1
 - remove Monitoring and Solaris dependencies
 - Bumping package versions for 2.3.

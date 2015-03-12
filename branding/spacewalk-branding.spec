@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.3.21
+Version:    2.3.22
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -78,7 +78,6 @@ install -d -m 755 %{buildroot}/%{wwwdocroot}
 install -d -m 755 %{buildroot}/%{wwwdocroot}/css
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk
 install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
-install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web/nav
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
@@ -88,7 +87,6 @@ cp -pR img %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
 # one in source:
 cp -p img/favicon.ico %{buildroot}/%{wwwdocroot}/
-cp -pR styles %{buildroot}%{_datadir}/spacewalk/web/nav/
 cp -pR setup  %{buildroot}%{_datadir}/spacewalk/
 cp -pR java-branding.jar %{buildroot}%{_datadir}/rhn/lib/
 ln -s %{_datadir}/rhn/lib/java-branding.jar %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/java-branding.jar
@@ -137,6 +135,9 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.22-1
+- removing unused navbar_top_sat.txt
+
 * Thu Mar 05 2015 Tomas Lestach <tlestach@redhat.com> 2.3.21-1
 - templates dir was removed completelly from branding
 

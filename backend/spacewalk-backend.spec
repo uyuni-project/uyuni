@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.46
+Version: 2.3.48
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -809,6 +809,12 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Tue Mar 10 2015 Tomas Lestach <tlestach@redhat.com> 2.3.48-1
+- removing unused backend perl tests
+
+* Mon Mar 09 2015 Jan Dobes 2.3.47-1
+- 1197765 - support postgresql92 from software collections
+
 * Thu Mar 05 2015 Stephen Herr <sherr@redhat.com> 2.3.46-1
 - backend: check for reboot type only
 
