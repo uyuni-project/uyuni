@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.43
+Version: 2.3.47
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -113,17 +113,6 @@ Dobby is collection of Perl modules and scripts to administer an Oracle
 database.
 
 
-%package -n spacewalk-grail
-Summary: Grail, a component framework for Spacewalk
-Requires: spacewalk-base
-Group: Applications/Internet
-Obsoletes: rhn-grail < 5.3.0
-Provides: rhn-grail = 5.3.0
-
-%description -n spacewalk-grail
-A component framework for Spacewalk.
-
-
 %package -n spacewalk-pxt
 Summary: The PXT library for web page templating
 Group: Applications/Internet
@@ -150,20 +139,6 @@ Requires:  perl(URI)
 This package is the core software of the new Spacewalk site.  It is responsible
 for HTML, XML, WML, HDML, and SOAP output of data.  It is more or less
 equivalent to things like Apache::ASP and Mason.
-
-
-%package -n spacewalk-sniglets
-Group: Applications/Internet
-Summary: PXT Tag handlers
-Obsoletes: rhn-sniglets < 5.3.0
-Provides:  rhn-sniglets = 5.3.0
-Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:  perl(Params::Validate)
-Requires:  perl(Mail::RFC822::Address)
-Requires:  perl(URI)
-Requires:  perl(XML::LibXML)
-%description -n spacewalk-sniglets
-This package contains the tag handlers for the PXT templates.
 
 
 %prep
@@ -208,69 +183,17 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN.pm
-%{perl_vendorlib}/RHN/Access.pm
-%{perl_vendorlib}/RHN/Access/
-%{perl_vendorlib}/RHN/Action.pm
 %{perl_vendorlib}/RHN/Cache/
 %{perl_vendorlib}/RHN/Cert.pm
-%{perl_vendorlib}/RHN/Channel.pm
-%{perl_vendorlib}/RHN/ChannelEditor.pm
-%{perl_vendorlib}/RHN/Cleansers.pm
-%{perl_vendorlib}/RHN/ConfigChannel.pm
-%{perl_vendorlib}/RHN/ConfigRevision.pm
-%{perl_vendorlib}/RHN/ContactGroup.pm
-%{perl_vendorlib}/RHN/ContactMethod.pm
-%{perl_vendorlib}/RHN/CustomInfoKey.pm
 %{perl_vendorlib}/RHN/DB/
 %{perl_vendorlib}/RHN/DataSource.pm
 %{perl_vendorlib}/RHN/DataSource/
-%{perl_vendorlib}/RHN/Date.pm
-%{perl_vendorlib}/RHN/Entitlements.pm
-%{perl_vendorlib}/RHN/Errata.pm
-%{perl_vendorlib}/RHN/ErrataEditor.pm
-%{perl_vendorlib}/RHN/ErrataTmp.pm
-%{perl_vendorlib}/RHN/FileList.pm
-%{perl_vendorlib}/RHN/Form.pm
-%{perl_vendorlib}/RHN/Form/
-%{perl_vendorlib}/RHN/I18N.pm
-%{perl_vendorlib}/RHN/KSTree.pm
-%{perl_vendorlib}/RHN/Kickstart.pm
-%{perl_vendorlib}/RHN/Kickstart/
-%{perl_vendorlib}/RHN/Mail.pm
-%{perl_vendorlib}/RHN/Org.pm
-%{perl_vendorlib}/RHN/Package.pm
-%{perl_vendorlib}/RHN/Package/
-%{perl_vendorlib}/RHN/Profile.pm
-%{perl_vendorlib}/RHN/SatCluster.pm
-%{perl_vendorlib}/RHN/SatInstall.pm
 %{perl_vendorlib}/RHN/SatelliteCert.pm
-%{perl_vendorlib}/RHN/Scheduler.pm
-%{perl_vendorlib}/RHN/SearchTypes.pm
-%{perl_vendorlib}/RHN/Server.pm
-%{perl_vendorlib}/RHN/ServerActions.pm
-%{perl_vendorlib}/RHN/ServerGroup.pm
-%{perl_vendorlib}/RHN/Session.pm
-%{perl_vendorlib}/RHN/Set.pm
-%{perl_vendorlib}/RHN/StoredMessage.pm
-%{perl_vendorlib}/RHN/SystemSnapshot.pm
-%{perl_vendorlib}/RHN/Tag.pm
-%{perl_vendorlib}/RHN/Token.pm
-%{perl_vendorlib}/RHN/User.pm
-%{perl_vendorlib}/RHN/Utils.pm
-%{_mandir}/man3/RHN::ContactGroup.3pm.gz
-%{_mandir}/man3/RHN::ContactMethod.3pm.gz
-%{_mandir}/man3/RHN::DB::ContactGroup.3pm.gz
-%{_mandir}/man3/RHN::DB::ContactMethod.3pm.gz
-%{_mandir}/man3/RHN::DB::SatCluster.3pm.gz
-%{_mandir}/man3/RHN::DB::ServerGroup.3pm.gz
-%{_mandir}/man3/RHN::SatCluster.3pm.gz
-%{_mandir}/man3/RHN::Session.3pm.gz
 
 %files -n spacewalk-base-minimal
 %defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
 %dir %{perl_vendorlib}/PXT
-%{perl_vendorlib}/RHN/SessionSwap.pm
 %{perl_vendorlib}/RHN/SimpleStruct.pm
 %{perl_vendorlib}/RHN/Exception.pm
 %{perl_vendorlib}/RHN/DB.pm
@@ -296,22 +219,11 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_prefix}/share/rhn
 %dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
-%files -n spacewalk-grail
-%defattr(644,root,root,755)
-%{perl_vendorlib}/Grail.pm
-%{perl_vendorlib}/Grail/
-
 %files -n spacewalk-pxt
 %defattr(644,root,root,755)
 %{perl_vendorlib}/PXT.pm
 %{perl_vendorlib}/PXT/
 %exclude %{perl_vendorlib}/PXT/Config.pm
-%{_mandir}/man3/PXT::ApacheHandler.3pm.gz
-
-%files -n spacewalk-sniglets
-%defattr(644,root,root,755)
-%{perl_vendorlib}/Sniglets.pm
-%{perl_vendorlib}/Sniglets/
 
 %files -n spacewalk-html
 %defattr(644,root,root,755)
@@ -319,6 +231,74 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.47-1
+- removing unused DataSource queries
+- removing unused RHN::DataSource classes
+- removing unused RHN DB JoinClass and TableClass
+- removing unused RHN Action related stuff
+- removing SatInstall and Session related stuff
+- removing SatCluster related stuff
+- removing unused RHN::DataSource::General
+- removing unused RHN::DB::Entitlements
+- removing unused DataSource sources
+- removing unused RHN::Date
+- removing unused RHN::Entitlements
+- removing unused RHN::Mail
+- removing RHN Errata related classes
+- removing RHN Channel related
+- removing RHN KSTree stuff
+- removing various unused stuff
+- removing unused RHN User stuff
+- removing RHN Scheduler stuff
+- removing RHN::Cleansers
+- removing RHN Kickstart stuff
+- deleting RHN Package stuff
+- removing unused RHN classes
+- removing rest of PXT classes
+- removing RHN::Access and PXT::ACL
+- removing PXT::ApacheAuth as it isn't referenced anymore
+- removing PXT::Apache24Config as it isn't referenced anymore
+
+* Tue Mar 10 2015 Tomas Lestach <tlestach@redhat.com> 2.3.46-1
+- removing RHN::DB::Token as it isn't referenced anymore
+- removing RHN::Token as it isn't referenced anymore
+- removing RHN::Utils as it isn't referenced anymore
+
+* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.45-1
+- update spec file
+- removing RHN::DB::ContactGroup as it isn't referenced anymore
+- removing RHN::ContactGroup as it isn't referenced anymore
+- removing RHN::DataSource::ContactMethod as it isn't referenced anymore
+- removing RHN::DB::ContactMethod as it isn't referenced anymore
+- removing RHN::Set as it isn't referenced anymore
+- removing RHN::DB::ServerGroup as it isn't referenced anymore
+- removing RHN::ContactMethod as it isn't referenced anymore
+- removing RHN::ServerGroup as it isn't referenced anymore
+- removing RHN::DB::Kickstart::Session as it isn't referenced anymore
+- removing RHN::DB::ServerActions as it isn't referenced anymore
+- removing RHN::Kickstart::Session as it isn't referenced anymore
+- removing RHN::Access::Action as it isn't referenced anymore
+- removing RHN::Access::Channel as it isn't referenced anymore
+- removing RHN::Access::Package as it isn't referenced anymore
+- removing RHN::Access::System as it isn't referenced anymore
+- removing RHN::Access::Token as it isn't referenced anymore
+- removing RHN::DataSource::CustomInfo as it isn't referenced anymore
+- removing RHN::DataSource::Probe as it isn't referenced anymore
+- removing RHN::DataSource::Scout as it isn't referenced anymore
+- removing RHN::DataSource::User as it isn't referenced anymore
+- removing RHN::SearchTypes as it isn't referenced anymore
+- removing RHN::ServerActions as it isn't referenced anymore
+- removing unused RHN::Form
+- removing unused RHN::Access handlers
+
+* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.44-1
+- removing spacewalk-grail as they are not needed any more
+- removing spacewalk-sniglets as they are not needed any more
+- removing unused tags from Sniglets/Users.pm
+- stop using permission.pxt error document
+- errata pages were ported to java long time ago
+- probe pages were ported to java long time ago
+
 * Fri Mar 06 2015 Tomas Lestach <tlestach@redhat.com> 2.3.43-1
 - fixing failed spacewalk-web build
 

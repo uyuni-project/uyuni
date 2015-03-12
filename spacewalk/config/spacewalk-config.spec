@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.3.11
+Version: 2.3.13
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -175,6 +175,15 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.13-1
+- removing RHN::Cleansers
+- removing RHN::Access and PXT::ACL
+- remove apache PXT configuration
+- no more pxt pages
+
+* Mon Mar 09 2015 Tomas Lestach <tlestach@redhat.com> 2.3.12-1
+- stop using permission.pxt error document
+
 * Thu Mar 05 2015 Tomas Lestach <tlestach@redhat.com> 2.3.11-1
 - we do not have /var/www/html/network anymore
 
