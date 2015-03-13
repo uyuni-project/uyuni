@@ -143,10 +143,12 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    protected SyncStatus getProductSyncStatus(Product product) {
+    private SyncStatus getProductSyncStatus(Product product) {
         // Compute statistics about channels
+        int notMirroredCounter = 0;
         int finishedCounter = 0;
         int failedCounter = 0;
+        SyncStatus syncStatus;
         Date maxLastSyncDate = null;
         StringBuilder debugDetails = new StringBuilder();
 
@@ -157,7 +159,11 @@ public class ProductSyncManager {
                 debugDetails.append(channelStatus.getDetails());
             }
 
-            if (channelStatus.isFinished()) {
+            if (channelStatus.isNotMirrored()) {
+                logger.debug("Channel not mirrored: " + c.getLabel());
+                notMirroredCounter++;
+            }
+            else if (channelStatus.isFinished()) {
                 logger.debug("Channel finished: " + c.getLabel());
                 finishedCounter++;
             }
@@ -176,25 +182,28 @@ public class ProductSyncManager {
             }
         }
 
+        // Return NOT_MIRRORED if at least one mandatory channel is not mirrored
+        if (notMirroredCounter > 0) {
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
+        }
         // Set FINISHED if all mandatory channels have metadata
-        if (finishedCounter == product.getMandatoryChannels().size()) {
-            SyncStatus result = new SyncStatus(SyncStatus.SyncStage.FINISHED);
-            result.setLastSyncDate(maxLastSyncDate);
-            return result;
+        else if (finishedCounter == product.getMandatoryChannels().size()) {
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
+            syncStatus.setLastSyncDate(maxLastSyncDate);
         }
         // Status is FAILED if at least one channel has failed
         else if (failedCounter > 0) {
-            SyncStatus failedResult = new SyncStatus(SyncStatus.SyncStage.FAILED);
-            failedResult.setDetails(debugDetails.toString());
-            return failedResult;
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.FAILED);
+            syncStatus.setDetails(debugDetails.toString());
         }
         // Otherwise return IN_PROGRESS
         else {
-            SyncStatus status = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
+            syncStatus = new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS);
             int totalChannels = product.getMandatoryChannels().size();
-            status.setSyncProgress((finishedCounter * 100) / totalChannels);
-            return status;
+            syncStatus.setSyncProgress((finishedCounter * 100) / totalChannels);
         }
+
+        return syncStatus;
     }
 
     /**
@@ -210,13 +219,10 @@ public class ProductSyncManager {
         com.redhat.rhn.domain.channel.Channel c =
                 ChannelFactory.lookupByLabel(channel.getLabel());
 
-        // the XML data may say P, but if the channel is not in the database
-        // we assume the XML data is wrong
         if (c == null) {
             return new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED);
         }
-
-        if (ChannelManager.getRepoLastBuild(c) != null) {
+        else if (ChannelManager.getRepoLastBuild(c) != null) {
             channelSyncStatus = new SyncStatus(SyncStatus.SyncStage.FINISHED);
             channelSyncStatus.setLastSyncDate(c.getLastSynced());
             return channelSyncStatus;
