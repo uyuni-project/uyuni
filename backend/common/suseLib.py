@@ -30,8 +30,11 @@ from rhn.connections import idn_puny_to_unicode
 YAST_PROXY = "/root/.curlrc"
 SYS_PROXY = "/etc/sysconfig/proxy"
 
+
 class TransferException(Exception):
+
     """Transfer Error"""
+
     def __init__(self, value=None):
         Exception.__init__(self)
         self.value = value
@@ -42,9 +45,12 @@ class TransferException(Exception):
     def __unicode__(self):
         return '%s' % unicode(self.value, "utf-8")
 
+
 class URL(object):
+
     """URL class that allows modifying the various attributes of a URL"""
     # pylint: disable=R0902
+
     def __init__(self, url, username=None, password=None):
         u = urlparse.urlsplit(url)
         # pylint can't see inside the SplitResult class
@@ -107,7 +113,7 @@ class URL(object):
             netloc = '%s:%s' % (netloc, self.password)
         elif self.password and stripPw:
             netloc = '%s:%s' % (netloc, '<secret>')
-        if self.host and netloc :
+        if self.host and netloc:
             netloc = '%s@%s' % (netloc, self.host)
         elif self.host:
             netloc = self.host
@@ -117,6 +123,7 @@ class URL(object):
 
         return urlparse.urlunsplit((self.scheme, netloc, self.path,
                                     self.query, self.fragment))
+
 
 def _curl_debug(mtype, text):
     if mtype == 0:
@@ -136,6 +143,7 @@ def _curl_debug(mtype, text):
     else:
         log_debug(6, "%s: %s" % (mtype, text))
     return 0
+
 
 def send(url, sendData=None):
     """Connect to url and return the result as stringIO
@@ -164,8 +172,8 @@ def send(url, sendData=None):
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
         if (CFG.is_initialized() and
-            CFG.has_key('DISABLE_EXPECT') and
-            CFG.DISABLE_EXPECT):
+                CFG.has_key('DISABLE_EXPECT') and
+                CFG.DISABLE_EXPECT):
             # disable Expect header
             curl.setopt(pycurl.HTTPHEADER, ['Expect:'])
 
@@ -183,7 +191,7 @@ def send(url, sendData=None):
         try:
             curl.perform()
         except pycurl.error, e:
-            if e[0] == 56: # Proxy requires authentication
+            if e[0] == 56:  # Proxy requires authentication
                 log_debug(2, e[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
@@ -205,7 +213,7 @@ def send(url, sendData=None):
         if status == 200 or (URL(url).scheme == "file" and status == 0):
             # OK or file
             break
-        elif status in (301, 302): # redirects
+        elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
             log_debug(2, "Got redirect to %s" % url)
             curl.setopt(pycurl.URL, url)
@@ -255,7 +263,7 @@ def accessible(url):
         try:
             curl.perform()
         except pycurl.error, e:
-            if e[0] == 56: # Proxy requires authentication
+            if e[0] == 56:  # Proxy requires authentication
                 log_debug(2, e[1])
                 if not (proxy_user and proxy_pass):
                     raise TransferException("Proxy requires authentication, "
@@ -267,9 +275,10 @@ def accessible(url):
                 break
 
         status = curl.getinfo(pycurl.HTTP_CODE)
-        if status == 200 or (URL(url).scheme == "file" and status == 0): # OK or file
+        # OK or file
+        if status == 200 or (URL(url).scheme == "file" and status == 0):
             return True
-        elif status in (301, 302): # redirects
+        elif status in (301, 302):  # redirects
             url = curl.getinfo(pycurl.REDIRECT_URL)
             log_debug(2, "Got redirect to %s" % url)
             curl.setopt(pycurl.URL, url)
@@ -301,11 +310,10 @@ def get_proxy(url=None):
     return (None, None, None)
 
 
-
 def findProduct(product):
     q_version = ""
     q_release = ""
-    q_arch    = ""
+    q_arch = ""
     product_id = None
     product_lower = {}
     product_lower['name'] = product['name'].lower()
@@ -346,8 +354,8 @@ def findProduct(product):
         # search for an exact match or take the first
         for p in rs:
             if (p['version'] == product['version'] and
-                p['release'] == product['release'] and
-                p['arch'] == product['arch']):
+                    p['release'] == product['release'] and
+                    p['arch'] == product['arch']):
                 product_id = p['id']
                 break
 
@@ -370,11 +378,11 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         return None
 
     vals = {
-        'pid'      : product_id,
-        'ostarget' : ostarget,
-        'org_id'   : org_id,
-        'user_id'  : user_id
-        }
+        'pid': product_id,
+        'ostarget': ostarget,
+        'org_id': org_id,
+        'user_id': user_id
+    }
     parent_statement = " IS NULL "
     if parent_id:
         parent_statement = " = :parent_id "
@@ -415,7 +423,8 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
             continue
 
         ret.append(channel)
-        log_debug(1, "Found channel %s with id %d" % (channel['label'], channel['id']))
+        log_debug(1, "Found channel %s with id %d" %
+                  (channel['label'], channel['id']))
 
     if ret == []:
         ret = None
@@ -470,10 +479,11 @@ def get_mirror_credentials():
 def isAllowedSlave(hostname):
     rhnSQL.initDB()
     if not rhnSQL.fetchone_dict("select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
-        hostname = idn_puny_to_unicode(hostname)):
+                                hostname=idn_puny_to_unicode(hostname)):
         log_error('Server "%s" is not enabled for ISS.' % hostname)
         return False
     return True
+
 
 def hasISSSlaves():
     rhnSQL.initDB()
@@ -481,18 +491,22 @@ def hasISSSlaves():
         return True
     return False
 
+
 def hasISSMaster():
     rhnSQL.initDB()
     if rhnSQL.fetchone_dict("select 1 from rhnISSMaster where is_current_master = 'Y'"):
         return True
     return False
 
+
 def getISSCurrentMaster():
     rhnSQL.initDB()
-    master = rhnSQL.fetchone_dict("select label from rhnISSMaster where is_current_master = 'Y'")
+    master = rhnSQL.fetchone_dict(
+        "select label from rhnISSMaster where is_current_master = 'Y'")
     if not master:
         return None
     return master['label']
+
 
 def _parse_curl_proxy_credentials(text):
     """Parse proxy credentials from the string :text:
@@ -566,6 +580,8 @@ def _get_proxy_from_rhn_conf():
 
 # pylint complains because this method has too many return statements.
 # pylint: disable=R0911
+
+
 def _useProxyFor(url):
     """Return True if a proxy should be used for given url, otherwise False.
 
@@ -611,8 +627,7 @@ def _useProxyFor(url):
         if domain[0] == '.':
             domain = domain[1:]
         if hostname.endswith(domain) and \
-               (len(hostname) == len(domain) or \
-                hostname[len(hostname)-len(domain)-1] == '.'):
+            (len(hostname) == len(domain) or
+                hostname[len(hostname) - len(domain) - 1] == '.'):
             return False
     return True
-
