@@ -155,11 +155,6 @@ install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{bu
 rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/PXT/Apache24Config.pm
 %endif
 
-%post -n spacewalk-pxt
-%if 0%{?suse_version}
-sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES apreq
-%endif
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
