@@ -113,13 +113,6 @@ database.
 Summary: The PXT library for web page templating
 Group: Applications/Internet
 Requires: spacewalk(spacewalk-base-minimal-config)
-%if 0%{?suse_version}
-Requires:  perl-Apache2-Request
-Requires:  perl-auditlog-keeper-client
-Requires:  perl-BSD-Resource
-Requires:  perl-Cache-Cache
-Requires:  perl-YAML-Syck
-%endif
 Requires: httpd
 Obsoletes: rhn-pxt < 5.3.0
 Provides:  rhn-pxt = 5.3.0
