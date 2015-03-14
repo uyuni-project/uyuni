@@ -10,7 +10,7 @@ Source0:	https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:	noarch
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?suse_version} >= 1315
 Requires:	pylint > 1.1
 %else
 %if 0%{?rhel} > 6
