@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.47
+Version: 2.3.49
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -57,15 +57,12 @@ Requires: susemanager-frontend-libs
 %endif
 Requires: sudo
 Requires: httpd
-Requires: perl(Digest::SHA)
-Requires: perl(DateTime)
-Requires: perl(Frontier::Client)
-Requires: perl(LWP::UserAgent)
-Requires: perl(Mail::RFC822::Address)
 Requires: perl(Params::Validate)
 Requires: perl(URI)
 Requires: perl(XML::LibXML)
 Obsoletes: rhn-base < 5.3.0
+Obsoletes: spacewalk-grail < %{version}
+Obsoletes: spacewalk-sniglets < %{version}
 Provides: rhn-base = 5.3.0
 
 
@@ -82,7 +79,6 @@ Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
 Requires: perl(DBI)
 Requires: perl(Params::Validate)
-Requires: perl(Digest::HMAC_SHA1)
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
@@ -128,11 +124,7 @@ Requires: httpd
 Obsoletes: rhn-pxt < 5.3.0
 Provides:  rhn-pxt = 5.3.0
 Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:  perl(Apache2::Request)
-Requires:  perl(BSD::Resource)
 Requires:  perl(Cache::FileCache)
-Requires:  perl(Date::Parse)
-Requires:  perl(HTML::Entities)
 Requires:  perl(Params::Validate)
 Requires:  perl(URI)
 %description -n spacewalk-pxt
@@ -185,9 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_vendorlib}/RHN.pm
 %{perl_vendorlib}/RHN/Cache/
 %{perl_vendorlib}/RHN/Cert.pm
-%{perl_vendorlib}/RHN/DB/
-%{perl_vendorlib}/RHN/DataSource.pm
-%{perl_vendorlib}/RHN/DataSource/
 %{perl_vendorlib}/RHN/SatelliteCert.pm
 
 %files -n spacewalk-base-minimal
@@ -231,6 +220,20 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Fri Mar 13 2015 Jan Dobes 2.3.49-1
+- removing no longer used references
+- removing RHN::DB::DataSource as it isn't referenced anymore
+- removing RHN::DataSource as it isn't referenced anymore
+- removing RHN::DataSource::Channel as it isn't referenced anymore
+- removing unused Channel_queries
+- web Require cleanup
+- Fix upgrade path by obsoleting spacewalk-grail and spacewalk-sniglets
+- removing unused Channel_queries
+
+* Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.48-1
+- removing unused rhn_web.conf options
+- let's remove the MANIFESTS
+
 * Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.47-1
 - removing unused DataSource queries
 - removing unused RHN::DataSource classes
