@@ -10,8 +10,6 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
-import os
-
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -22,7 +20,6 @@ import urlparse
 import pycurl
 
 from spacewalk.common.rhnLog import log_debug, log_error
-from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnConfig import initCFG, CFG, ConfigParserError
 from spacewalk.server import rhnSQL
 from rhn.connections import idn_puny_to_unicode
@@ -515,6 +512,7 @@ def _parse_curl_proxy_credentials(text):
 
     """
     try:
+        # pylint: disable=W1401
         user_pass = re.search('^[\s-]+proxy-user\s*=?\s*"([^:]+:.+)"\s*$',
                               text, re.M).group(1)
     except AttributeError:
@@ -525,6 +523,7 @@ def _parse_curl_proxy_credentials(text):
 
 def _parse_curl_proxy_url(text):
     try:
+        # pylint: disable=W1401
         return re.search('^[\s-]+proxy\s*=?\s*"(.+)"\s*$',
                          text, re.M).group(1)
     except AttributeError:
@@ -628,6 +627,6 @@ def _useProxyFor(url):
             domain = domain[1:]
         if hostname.endswith(domain) and \
             (len(hostname) == len(domain) or
-                hostname[len(hostname) - len(domain) - 1] == '.'):
+             hostname[len(hostname) - len(domain) - 1] == '.'):
             return False
     return True
