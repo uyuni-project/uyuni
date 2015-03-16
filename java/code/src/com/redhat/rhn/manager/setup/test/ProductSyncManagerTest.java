@@ -20,7 +20,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.frontend.dto.ProductDto;
 import com.redhat.rhn.frontend.dto.ProductDto.SyncStatus;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProduct;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -62,8 +62,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         baseChannel.setArch("x86_64");
         baseChannel.setLabel("baseChannel");
         baseChannel.setStatus(MgrSyncStatus.INSTALLED);
-        ListedProduct baseProduct =
-                new ListedProduct("baseProduct", 100, "11", baseChannel);
+        MgrSyncProduct baseProduct =
+                new MgrSyncProduct("baseProduct", 100, "11", baseChannel);
         baseProduct.addChannel(baseChannel);
 
         // Setup an addon
@@ -72,14 +72,14 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         childChannel.setLabel("childChannel");
         childChannel.setOptional(true);
         childChannel.setStatus(MgrSyncStatus.AVAILABLE);
-        ListedProduct extension =
-                new ListedProduct("extensionProduct", 200, "12", baseChannel);
+        MgrSyncProduct extension =
+                new MgrSyncProduct("extensionProduct", 200, "12", baseChannel);
         extension.addChannel(childChannel);
         baseProduct.addExtension(extension);
 
         // Call the private method
         Method method = ProductSyncManager.class.getDeclaredMethod(
-                "convertProduct", ListedProduct.class);
+                "convertProduct", MgrSyncProduct.class);
         method.setAccessible(true);
         ProductDto productOut = (ProductDto) method.invoke(
                 new ProductSyncManager(), baseProduct);

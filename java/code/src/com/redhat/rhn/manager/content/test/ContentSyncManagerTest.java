@@ -44,7 +44,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProduct;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -738,11 +738,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             { { add(availableChannel); add(unavailableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<ListedProduct> products =
+        Collection<MgrSyncProduct> products =
                 csm.listProducts(csm.getAvailableChannels(allChannels));
 
         boolean found = false;
-        for (ListedProduct product : products) {
+        for (MgrSyncProduct product : products) {
             if (product.getFriendlyName().equals(availableDBProduct.getFriendlyName())) {
                 found = true;
             }
@@ -801,9 +801,9 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             { { add(installedChannel); add(availableChannel); } };
 
         ContentSyncManager csm = new ContentSyncManager();
-        Collection<ListedProduct> products = csm.listProducts(allChannels);
+        Collection<MgrSyncProduct> products = csm.listProducts(allChannels);
 
-        for (ListedProduct product : products) {
+        for (MgrSyncProduct product : products) {
             if (product.getId().equals(installedDBProduct.getProductId())) {
                 assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
             }
