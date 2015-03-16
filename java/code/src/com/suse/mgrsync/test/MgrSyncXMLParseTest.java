@@ -24,8 +24,8 @@ import com.suse.mgrsync.XMLChannelFamilies;
 import com.suse.mgrsync.XMLChannelFamily;
 import com.suse.mgrsync.XMLChannels;
 import com.suse.mgrsync.XMLProduct;
-import com.suse.mgrsync.MgrSyncUpgradePath;
-import com.suse.mgrsync.MgrSyncUpgradePaths;
+import com.suse.mgrsync.XMLUpgradePath;
+import com.suse.mgrsync.XMLUpgradePaths;
 
 import org.simpleframework.xml.core.Persister;
 
@@ -82,10 +82,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncUpgradePath> readUpgradePaths() throws Exception {
+    private List<XMLUpgradePath> readUpgradePaths() throws Exception {
         File source = new File(TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
-        List<MgrSyncUpgradePath> data = persister.read(
-                MgrSyncUpgradePaths.class, source).getPaths();
+        List<XMLUpgradePath> data = persister.read(
+                XMLUpgradePaths.class, source).getPaths();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -141,7 +141,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadUpgradePaths() throws Exception {
-        List<MgrSyncUpgradePath> paths = readUpgradePaths();
+        List<XMLUpgradePath> paths = readUpgradePaths();
         assertEquals(79, paths.size());
     }
 }

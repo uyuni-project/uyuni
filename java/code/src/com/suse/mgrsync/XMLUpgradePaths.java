@@ -24,16 +24,16 @@ import java.util.List;
  * Container for list of upgrade paths.
  */
 @Root(strict = false)
-public class MgrSyncUpgradePaths {
+public class XMLUpgradePaths {
 
     @ElementList(inline = true, required = false, empty = false)
-    private List<MgrSyncUpgradePath> paths;
+    private List<XMLUpgradePath> paths;
 
     /**
      * Return the list of {@link XMLChannelFamily} objects.
      * @return subscriptions
      */
-    public List<MgrSyncUpgradePath> getPaths() {
+    public List<XMLUpgradePath> getPaths() {
         return this.paths;
     }
 }
