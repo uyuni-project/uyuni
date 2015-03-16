@@ -1,6 +1,6 @@
 package com.redhat.rhn.manager.content.test;
 
-import com.redhat.rhn.manager.content.MgrSyncProduct;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 
 import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -8,12 +8,12 @@ import com.suse.mgrsync.MgrSyncStatus;
 import junit.framework.TestCase;
 
 /**
- * Tests ListedProduct.
+ * Tests {@link MgrSyncProductDto}.
  */
-public class ListedProductTest extends TestCase {
+public class MgrSyncProductDtoTest extends TestCase {
 
-    /** The listed product under test. */
-    private MgrSyncProduct listedProduct;
+    /** The product under test. */
+    private MgrSyncProductDto product;
 
     /**
      * {@inheritDoc}
@@ -22,8 +22,8 @@ public class ListedProductTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        listedProduct =
-                new MgrSyncProduct("friendlyName", 0, "version", new XMLChannel());
+        product =
+                new MgrSyncProductDto("friendlyName", 0, "version", new XMLChannel());
     }
 
     /**
@@ -32,7 +32,7 @@ public class ListedProductTest extends TestCase {
      * @throws Exception if anything goes bad
      */
     public void testGetStatus() throws Exception {
-        assertEquals(MgrSyncStatus.INSTALLED, listedProduct.getStatus());
+        assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
 
         XMLChannel installedChannel = new XMLChannel();
         installedChannel.setLabel("installed");
@@ -40,22 +40,22 @@ public class ListedProductTest extends TestCase {
         installedChannel.setOptional(false);
 
         for (int i = 0; i < 3; i++) {
-            listedProduct.addChannel(installedChannel);
-            assertEquals(MgrSyncStatus.INSTALLED, listedProduct.getStatus());
+            product.addChannel(installedChannel);
+            assertEquals(MgrSyncStatus.INSTALLED, product.getStatus());
         }
 
         XMLChannel availableChannel = new XMLChannel();
         availableChannel.setLabel("available");
         availableChannel.setStatus(MgrSyncStatus.AVAILABLE);
         availableChannel.setOptional(false);
-        listedProduct.addChannel(availableChannel);
-        assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
+        product.addChannel(availableChannel);
+        assertEquals(MgrSyncStatus.AVAILABLE, product.getStatus());
 
         XMLChannel unavailableChannel = new XMLChannel();
         unavailableChannel.setLabel("unavailable");
         unavailableChannel.setStatus(MgrSyncStatus.UNAVAILABLE);
         unavailableChannel.setOptional(false);
-        listedProduct.addChannel(unavailableChannel);
-        assertEquals(MgrSyncStatus.UNAVAILABLE, listedProduct.getStatus());
+        product.addChannel(unavailableChannel);
+        assertEquals(MgrSyncStatus.UNAVAILABLE, product.getStatus());
     }
 }

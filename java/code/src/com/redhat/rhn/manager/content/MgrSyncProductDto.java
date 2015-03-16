@@ -14,8 +14,13 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.suse.mgrsync.XMLChannel;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
+
 import com.suse.mgrsync.MgrSyncStatus;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLProduct;
+import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -30,12 +35,12 @@ import java.util.TreeSet;
 
 /**
  * A product, as listed by mgr-sync. This is conceptually different from:
- * SCCProduct, a deserialized version of how SCC represents a product,
- * XMLProduct, a deserialized version of how channels.xml encodes a product,
- * SUSEProduct, which is a deserialization of what we have in DB table suseProducts and
- * ProductDto, which is how the WebUI represents a product.
+ * {@link SCCProduct}, a deserialized version of how SCC represents a product,
+ * {@link XMLProduct}, a deserialized version of how channels.xml encodes a product,
+ * {@link SUSEProduct}, which is a deserialization of what we have in DB table suseProducts,
+ * {@link SetupWizardProductDto}, which is how the WebUI represents a product.
  */
-public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
+public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
 
     /** The friendly name. */
     private String friendlyName;
@@ -53,7 +58,7 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
     private Set<XMLChannel> channels;
 
     /** The extensions products of this product. */
-    private SortedSet<MgrSyncProduct> extensions;
+    private SortedSet<MgrSyncProductDto> extensions;
 
     /**
      * Instantiates a new listed product.
@@ -63,14 +68,14 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
      * @param versionIn the version
      * @param baseChannelIn the base channel
      */
-    public MgrSyncProduct(String friendlyNameIn, Integer idIn, String versionIn,
+    public MgrSyncProductDto(String friendlyNameIn, Integer idIn, String versionIn,
             XMLChannel baseChannelIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
         channels = new HashSet<XMLChannel>();
-        extensions = new TreeSet<MgrSyncProduct>();
+        extensions = new TreeSet<MgrSyncProductDto>();
     }
 
     /**
@@ -128,7 +133,7 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
      * Gets the extensions.
      * @return the extensions
      */
-    public SortedSet<MgrSyncProduct> getExtensions() {
+    public SortedSet<MgrSyncProductDto> getExtensions() {
         return extensions;
     }
 
@@ -137,7 +142,7 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
      *
      * @param extension the extension product
      */
-    public void addExtension(MgrSyncProduct extension) {
+    public void addExtension(MgrSyncProductDto extension) {
         extensions.add(extension);
     }
 
@@ -191,7 +196,7 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(MgrSyncProduct other) {
+    public int compareTo(MgrSyncProductDto other) {
         return new CompareToBuilder()
         .append(getNormalizedName(), other.getNormalizedName())
         .append(getVersion(), other.getVersion())
@@ -215,16 +220,16 @@ public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MgrSyncProduct)) {
+        if (!(other instanceof MgrSyncProductDto)) {
             return false;
         }
-        MgrSyncProduct otherListedProduct = (MgrSyncProduct) other;
+        MgrSyncProductDto otherProduct = (MgrSyncProductDto) other;
         return new EqualsBuilder()
-                .append(getNormalizedName(), otherListedProduct.getNormalizedName())
-                .append(getVersion(), otherListedProduct.getVersion())
-                .append(getId(), otherListedProduct.getId())
+                .append(getNormalizedName(), otherProduct.getNormalizedName())
+                .append(getVersion(), otherProduct.getVersion())
+                .append(getId(), otherProduct.getId())
                 .append(getBaseChannel().getLabel(),
-                        otherListedProduct.getBaseChannel().getLabel())
+                        otherProduct.getBaseChannel().getLabel())
                  .isEquals();
     }
 

@@ -18,9 +18,9 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.frontend.dto.ProductDto;
-import com.redhat.rhn.frontend.dto.ProductDto.SyncStatus;
-import com.redhat.rhn.manager.content.MgrSyncProduct;
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.ProductSyncManager;
 import com.redhat.rhn.taskomatic.TaskoBunch;
 import com.redhat.rhn.taskomatic.TaskoFactory;
@@ -62,8 +62,8 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         baseChannel.setArch("x86_64");
         baseChannel.setLabel("baseChannel");
         baseChannel.setStatus(MgrSyncStatus.INSTALLED);
-        MgrSyncProduct baseProduct =
-                new MgrSyncProduct("baseProduct", 100, "11", baseChannel);
+        MgrSyncProductDto baseProduct =
+                new MgrSyncProductDto("baseProduct", 100, "11", baseChannel);
         baseProduct.addChannel(baseChannel);
 
         // Setup an addon
@@ -72,16 +72,16 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         childChannel.setLabel("childChannel");
         childChannel.setOptional(true);
         childChannel.setStatus(MgrSyncStatus.AVAILABLE);
-        MgrSyncProduct extension =
-                new MgrSyncProduct("extensionProduct", 200, "12", baseChannel);
+        MgrSyncProductDto extension =
+                new MgrSyncProductDto("extensionProduct", 200, "12", baseChannel);
         extension.addChannel(childChannel);
         baseProduct.addExtension(extension);
 
         // Call the private method
         Method method = ProductSyncManager.class.getDeclaredMethod(
-                "convertProduct", MgrSyncProduct.class);
+                "convertProduct", MgrSyncProductDto.class);
         method.setAccessible(true);
-        ProductDto productOut = (ProductDto) method.invoke(
+        SetupWizardProductDto productOut = (SetupWizardProductDto) method.invoke(
                 new ProductSyncManager(), baseProduct);
 
         // Verify the base product attributes
@@ -97,7 +97,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         assertNotEmpty(productOut.getAddonProducts());
 
         // Verify the addon product
-        ProductDto addonOut = productOut.getAddonProducts().get(0);
+        SetupWizardProductDto addonOut = productOut.getAddonProducts().get(0);
         assertEquals("x86_64", addonOut.getArch());
         assertEquals("extensionProduct", addonOut.getName());
         assertEquals("200-baseChannel", addonOut.getIdent());
@@ -115,7 +115,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusNotMirrored() throws Exception {
-        ProductDto product = createFakeProduct("...");
+        SetupWizardProductDto product = createFakeProduct("...");
         SyncStatus status = getProductSyncStatus(product);
         assertEquals(SyncStatus.SyncStage.NOT_MIRRORED, status.getStage());
 
@@ -132,7 +132,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusFailed() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         SyncStatus status = getProductSyncStatus(product);
         assertEquals(SyncStatus.SyncStage.FAILED, status.getStage());
     }
@@ -144,7 +144,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusFailedTasko() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
         SyncStatus status = getProductSyncStatus(product);
@@ -158,7 +158,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusFailedNoMetadata() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FINISHED);
         SyncStatus status = getProductSyncStatus(product);
         assertEquals(SyncStatus.SyncStage.FAILED, status.getStage());
@@ -171,7 +171,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusInProgressScheduled() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoSchedule(product);
         SyncStatus status = getProductSyncStatus(product);
         assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
@@ -185,7 +185,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusInProgressRescheduled() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
         productInsertTaskoSchedule(product);
         SyncStatus status = getProductSyncStatus(product);
@@ -199,7 +199,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusInProgressReady() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_READY_TO_RUN);
         SyncStatus status = getProductSyncStatus(product);
         assertEquals(SyncStatus.SyncStage.IN_PROGRESS, status.getStage());
@@ -212,7 +212,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if something goes wrong
      */
     public void testGetProductSyncStatusInProgressRunning() throws Exception {
-        ProductDto product = createFakeProduct("PPP");
+        SetupWizardProductDto product = createFakeProduct("PPP");
         productInsertTaskoRun(product, TaskoRun.STATUS_FAILED);
         productInsertTaskoRun(product, TaskoRun.STATUS_RUNNING);
         SyncStatus status = getProductSyncStatus(product);
@@ -237,7 +237,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
                     tempMountPoint.getAbsolutePath());
 
             // Download finished and metadata available
-            ProductDto product = createFakeProduct("PPP");
+            SetupWizardProductDto product = createFakeProduct("PPP");
             generateFakeMetadataForProduct(product);
 
             // Check the product sync status
@@ -257,12 +257,12 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * For every "P" (= provided) a real channel will be created in the database.
      *
      * @param channelDesc description of a set of channels and their status
-     * @return {@link ProductDto} fake product
+     * @return {@link SetupWizardProductDto} fake product
      * @throws Exception if something goes wrong
      */
-    private ProductDto createFakeProduct(String channelDesc) throws Exception {
+    private SetupWizardProductDto createFakeProduct(String channelDesc) throws Exception {
         String ident = "product-" + TestUtils.randomString();
-        ProductDto p = new ProductDto("x86_64", ident, "Product " + ident, "",
+        SetupWizardProductDto p = new SetupWizardProductDto("x86_64", ident, "Product " + ident, "",
                 new MandatoryChannels(), new OptionalChannels());
 
         for (int k = 0; k < channelDesc.length(); k++) {
@@ -296,7 +296,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @param product the product
      */
-    private void productInsertTaskoSchedule(ProductDto product) {
+    private void productInsertTaskoSchedule(SetupWizardProductDto product) {
         for (Channel channel : product.getMandatoryChannels()) {
             insertTaskoSchedule(channel);
         }
@@ -341,7 +341,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     * @param product the product
     * @param status the status
     */
-    private void productInsertTaskoRun(ProductDto product, String status) {
+    private void productInsertTaskoRun(SetupWizardProductDto product, String status) {
         for (Channel channel : product.getMandatoryChannels()) {
             insertTaskoRun(channel, status);
         }
@@ -389,7 +389,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      * @param prodIdent ident of a product
      * @throws java.io.IOException
      */
-    private void generateFakeMetadataForProduct(ProductDto product) throws IOException {
+    private void generateFakeMetadataForProduct(SetupWizardProductDto product) throws IOException {
         for (Channel channel : product.getMandatoryChannels()) {
             generateFakeMetadataForChannel(channel);
         }
@@ -436,14 +436,14 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Call the private method {@link ProductSyncManager#getProductSyncStatus(ProductDto)}.
+     * Call the private method {@link ProductSyncManager#getProductSyncStatus(SetupWizardProductDto)}.
      *
      * @param product the product
      * @return syncStatus the sync status of the product
      */
-    private SyncStatus getProductSyncStatus(ProductDto product) throws Exception {
+    private SyncStatus getProductSyncStatus(SetupWizardProductDto product) throws Exception {
         Method method = ProductSyncManager.class.getDeclaredMethod(
-                "getProductSyncStatus", ProductDto.class);
+                "getProductSyncStatus", SetupWizardProductDto.class);
         method.setAccessible(true);
         return (SyncStatus) method.invoke(new ProductSyncManager(), product);
     }
