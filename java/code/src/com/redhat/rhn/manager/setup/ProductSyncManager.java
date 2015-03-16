@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProduct;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
 import com.redhat.rhn.taskomatic.TaskoSchedule;
@@ -65,7 +65,7 @@ public class ProductSyncManager {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             // Convert the listed products to objects we can display
-            Collection<ListedProduct> products = csm.listProducts(csm.listChannels());
+            Collection<MgrSyncProduct> products = csm.listProducts(csm.listChannels());
             List<ProductDto> result = convertProducts(products);
 
             // Determine their product sync status separately
@@ -338,15 +338,15 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a collection of {@link ListedProduct} to a collection of {@link ProductDto}
+     * Convert a collection of {@link MgrSyncProduct} to a collection of {@link ProductDto}
      * for further display.
      *
-     * @param products collection of {@link ListedProduct}
+     * @param products collection of {@link MgrSyncProduct}
      * @return List of {@link ProductDto}
      */
-    private List<ProductDto> convertProducts(Collection<ListedProduct> products) {
+    private List<ProductDto> convertProducts(Collection<MgrSyncProduct> products) {
         List<ProductDto> displayProducts = new ArrayList<ProductDto>();
-        for (ListedProduct p : products) {
+        for (MgrSyncProduct p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 ProductDto displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
@@ -356,12 +356,12 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a given {@link ListedProduct} to a {@link ProductDto} for further display.
+     * Convert a given {@link MgrSyncProduct} to a {@link ProductDto} for further display.
      *
-     * @param productIn instance of {@link ListedProduct}
+     * @param productIn instance of {@link MgrSyncProduct}
      * @return instance of {@link ProductDto}
      */
-    private ProductDto convertProduct(final ListedProduct productIn) {
+    private ProductDto convertProduct(final MgrSyncProduct productIn) {
         // Sort product channels (mandatory/optional)
         List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
         List<Channel> optionalChannelsOut = new ArrayList<Channel>();
@@ -393,7 +393,7 @@ public class ProductSyncManager {
                 new OptionalChannels(optionalChannelsOut));
 
         // Set extensions as addon products
-        for (ListedProduct extension : productIn.getExtensions()) {
+        for (MgrSyncProduct extension : productIn.getExtensions()) {
             ProductDto ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
             displayProduct.getAddonProducts().add(ext);

@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProduct;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -115,12 +115,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             csm.addDirtyFixes(sccProducts);
 
             csm.updateSUSEProducts(sccProducts);
-            Collection<ListedProduct> products =
+            Collection<MgrSyncProduct> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
-            Iterator<ListedProduct> i = products.iterator();
-            ListedProduct base = null;
-            Iterator<ListedProduct> j = IteratorUtils.EMPTY_ITERATOR;
+            Iterator<MgrSyncProduct> i = products.iterator();
+            MgrSyncProduct base = null;
+            Iterator<MgrSyncProduct> j = IteratorUtils.EMPTY_ITERATOR;
             for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
@@ -149,7 +149,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         fail("Base product " + base.toString()
                                 + " should have an extension named " + friendlyName);
                     }
-                    ListedProduct extension = j.next();
+                    MgrSyncProduct extension = j.next();
 
                     assertProductMatches(friendlyName, version, arch, channelLabels,
                             extension);
@@ -207,7 +207,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * @param product the actual product
      */
     public void assertProductMatches(String friendlyName, String version, String arch,
-            SortedSet<String> channelLabels, ListedProduct product) {
+            SortedSet<String> channelLabels, MgrSyncProduct product) {
         System.out.println("Checking product " + product.getId() + " (" + friendlyName
                 + ", " + arch + ")");
         assertEquals(friendlyName, product.getFriendlyName());

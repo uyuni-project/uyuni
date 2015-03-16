@@ -29,13 +29,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * A product, as listed by mgr-sync. This is conceptually different from
- * SCCProduct, which is a deserialized version of how SCC represents a product,
- * XMLProduct, which is a deserialized version of how channels.xml encodes a
- * product, and SUSEProduct, which is a deserialization of what we have in the
- * database table suseProducts.
+ * A product, as listed by mgr-sync. This is conceptually different from:
+ * SCCProduct, a deserialized version of how SCC represents a product,
+ * XMLProduct, a deserialized version of how channels.xml encodes a product,
+ * SUSEProduct, which is a deserialization of what we have in DB table suseProducts and
+ * ProductDto, which is how the WebUI represents a product.
  */
-public class ListedProduct implements Comparable<ListedProduct> {
+public class MgrSyncProduct implements Comparable<MgrSyncProduct> {
 
     /** The friendly name. */
     private String friendlyName;
@@ -53,7 +53,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
     private Set<XMLChannel> channels;
 
     /** The extensions products of this product. */
-    private SortedSet<ListedProduct> extensions;
+    private SortedSet<MgrSyncProduct> extensions;
 
     /**
      * Instantiates a new listed product.
@@ -63,14 +63,14 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @param versionIn the version
      * @param baseChannelIn the base channel
      */
-    public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
+    public MgrSyncProduct(String friendlyNameIn, Integer idIn, String versionIn,
             XMLChannel baseChannelIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
         channels = new HashSet<XMLChannel>();
-        extensions = new TreeSet<ListedProduct>();
+        extensions = new TreeSet<MgrSyncProduct>();
     }
 
     /**
@@ -128,7 +128,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * Gets the extensions.
      * @return the extensions
      */
-    public SortedSet<ListedProduct> getExtensions() {
+    public SortedSet<MgrSyncProduct> getExtensions() {
         return extensions;
     }
 
@@ -137,7 +137,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      *
      * @param extension the extension product
      */
-    public void addExtension(ListedProduct extension) {
+    public void addExtension(MgrSyncProduct extension) {
         extensions.add(extension);
     }
 
@@ -191,7 +191,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(ListedProduct other) {
+    public int compareTo(MgrSyncProduct other) {
         return new CompareToBuilder()
         .append(getNormalizedName(), other.getNormalizedName())
         .append(getVersion(), other.getVersion())
@@ -215,10 +215,10 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ListedProduct)) {
+        if (!(other instanceof MgrSyncProduct)) {
             return false;
         }
-        ListedProduct otherListedProduct = (ListedProduct) other;
+        MgrSyncProduct otherListedProduct = (MgrSyncProduct) other;
         return new EqualsBuilder()
                 .append(getNormalizedName(), otherListedProduct.getNormalizedName())
                 .append(getVersion(), otherListedProduct.getVersion())

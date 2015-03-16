@@ -349,7 +349,7 @@ public class ContentSyncManager {
      * @return list of all available products
      * @throws ContentSyncException in case of an error
      */
-    public Collection<ListedProduct> listProducts(List<XMLChannel> availableChannels)
+    public Collection<MgrSyncProduct> listProducts(List<XMLChannel> availableChannels)
         throws ContentSyncException {
         // get all products in the DB
         Collection<XMLProduct> dbProducts = new HashSet<XMLProduct>();
@@ -375,13 +375,13 @@ public class ContentSyncManager {
 
     /**
      * Converts a list of {@link XMLProduct} to a collection of
-     * {@link ListedProduct} objects.
+     * {@link MgrSyncProduct} objects.
      *
      * @param products the products
      * @param productToChannelMap the product to channel map
      * @return the sorted set
      */
-    private Collection<ListedProduct> toListedProductList(
+    private Collection<MgrSyncProduct> toListedProductList(
             Collection<XMLProduct> products,
             Map<XMLProduct, Set<XMLChannel>> productToChannelMap) {
 
@@ -406,15 +406,15 @@ public class ContentSyncManager {
         }
 
         // convert every XMLProduct to ListedProducts objects (one per base channel)
-        SortedSet<ListedProduct> all = new TreeSet<ListedProduct>();
+        SortedSet<MgrSyncProduct> all = new TreeSet<MgrSyncProduct>();
         for (XMLProduct product : products) {
             Set<XMLChannel> channels = productToChannelMap.get(product);
-            Map<XMLChannel, ListedProduct> baseMap =
-                    new HashMap<XMLChannel, ListedProduct>();
+            Map<XMLChannel, MgrSyncProduct> baseMap =
+                    new HashMap<XMLChannel, MgrSyncProduct>();
             for (XMLChannel channel : channels) {
                 XMLChannel base = baseChannels.get(channel);
 
-                ListedProduct listedProduct = baseMap.get(base);
+                MgrSyncProduct listedProduct = baseMap.get(base);
                 // if this is a new product
                 if (listedProduct == null) {
                     SUSEProduct dbProduct =
@@ -424,7 +424,7 @@ public class ContentSyncManager {
                     if (arch == null || arch.getName().equals(base.getArch())) {
                         // add it to the product map
                         listedProduct =
-                                new ListedProduct(product.getName(), product.getId(),
+                                new MgrSyncProduct(product.getName(), product.getId(),
                                         product.getVersion(), base);
                         listedProduct.addChannel(channel);
                         baseMap.put(base, listedProduct);
@@ -438,9 +438,9 @@ public class ContentSyncManager {
         }
 
         // divide base from extension products
-        Collection<ListedProduct> bases = new LinkedList<ListedProduct>();
-        Collection<ListedProduct> extensions = new LinkedList<ListedProduct>();
-        for (ListedProduct product : all) {
+        Collection<MgrSyncProduct> bases = new LinkedList<MgrSyncProduct>();
+        Collection<MgrSyncProduct> extensions = new LinkedList<MgrSyncProduct>();
+        for (MgrSyncProduct product : all) {
             boolean isBase = false;
             for (XMLChannel channel : product.getChannels()) {
                 if (channel.getParent().equals(BASE_CHANNEL)) {
@@ -457,8 +457,8 @@ public class ContentSyncManager {
         }
 
         // add base-extension relationships
-        for (ListedProduct base : bases) {
-            for (ListedProduct extension : extensions) {
+        for (MgrSyncProduct base : bases) {
+            for (MgrSyncProduct extension : extensions) {
                 for (XMLChannel baseChannel : base.getChannels()) {
                     for (XMLChannel extensionChannel : extension.getChannels()) {
                         if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
@@ -482,15 +482,15 @@ public class ContentSyncManager {
      * @param all all the products
      * @param bases base products
      */
-    private void addDirtyFixes(Collection<ListedProduct> all,
-            Collection<ListedProduct> bases) {
+    private void addDirtyFixes(Collection<MgrSyncProduct> all,
+            Collection<MgrSyncProduct> bases) {
 
         // remove SP1 extensions from SP2 base products and vice versa
-        for (ListedProduct product : bases) {
+        for (MgrSyncProduct product : bases) {
             String productVersion = product.getVersion();
             if (productVersion.startsWith("11.")) {
-                Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProduct> wrongSP = new LinkedList<MgrSyncProduct>();
+                for (MgrSyncProduct extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
                     if (extension.getFriendlyName().startsWith("SUSE") &&
                         extensionVersion.startsWith("11.") &&
@@ -503,11 +503,11 @@ public class ContentSyncManager {
         }
 
         // remove SP2 only extensions from SP1 base products
-        for (ListedProduct product : bases) {
+        for (MgrSyncProduct product : bases) {
             if (product.getVersion().equals("11.1")) {
-                Collection<ListedProduct> sp2ProductsInSp1 =
-                        new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProduct> sp2ProductsInSp1 =
+                        new LinkedList<MgrSyncProduct>();
+                for (MgrSyncProduct extension : product.getExtensions()) {
                     String friendlyName = extension.getFriendlyName();
                     if (friendlyName.equals("SUSE Cloud 1.0") ||
                         friendlyName.equals("SUSE Lifecycle Management Server 1.3") ||
@@ -521,11 +521,11 @@ public class ContentSyncManager {
         }
 
         // remove SP2 only extensions from SP1 base products
-        for (ListedProduct product : bases) {
+        for (MgrSyncProduct product : bases) {
             if (product.getVersion().equals("11.2")) {
-                Collection<ListedProduct> sp1ProductsInSp2 =
-                        new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProduct> sp1ProductsInSp2 =
+                        new LinkedList<MgrSyncProduct>();
+                for (MgrSyncProduct extension : product.getExtensions()) {
                     String friendlyName = extension.getFriendlyName();
                     if (friendlyName.equals("Novell Open Enterprise Server 2 11") ||
                         friendlyName.equals(

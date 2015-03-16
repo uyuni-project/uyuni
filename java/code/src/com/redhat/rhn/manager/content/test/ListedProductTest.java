@@ -1,6 +1,6 @@
 package com.redhat.rhn.manager.content.test;
 
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProduct;
 
 import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 public class ListedProductTest extends TestCase {
 
     /** The listed product under test. */
-    private ListedProduct listedProduct;
+    private MgrSyncProduct listedProduct;
 
     /**
      * {@inheritDoc}
@@ -23,7 +23,7 @@ public class ListedProductTest extends TestCase {
         super.setUp();
 
         listedProduct =
-                new ListedProduct("friendlyName", 0, "version", new XMLChannel());
+                new MgrSyncProduct("friendlyName", 0, "version", new XMLChannel());
     }
 
     /**
