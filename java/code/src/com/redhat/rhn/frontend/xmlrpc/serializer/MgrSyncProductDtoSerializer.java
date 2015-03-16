@@ -16,7 +16,7 @@
 package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
-import com.redhat.rhn.manager.content.MgrSyncProduct;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -25,7 +25,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
- * Serializes ListedProducts.
+ * Serializes {@link MgrSyncProductDto}.
  *
  * @xmlrpc.doc
  *   #struct("product")
@@ -47,20 +47,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #array_end()
  *   #struct_end()
  */
-public class ListedProductSerializer extends RhnXmlRpcCustomSerializer {
+public class MgrSyncProductDtoSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<MgrSyncProduct> getSupportedClass() {
-        return MgrSyncProduct.class;
+    public Class<MgrSyncProductDto> getSupportedClass() {
+        return MgrSyncProductDto.class;
     }
 
     @Override
     protected void doSerialize(Object obj, Writer output, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        MgrSyncProduct product = (MgrSyncProduct) obj;
+        MgrSyncProductDto product = (MgrSyncProductDto) obj;
         SerializerHelper helper = new SerializerHelper(serializer);
 
         helper.add("friendly_name", product.getFriendlyName());

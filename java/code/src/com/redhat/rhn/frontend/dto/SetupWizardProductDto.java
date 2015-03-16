@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * A SUSE Product as it is shown in the Setup Wizard UI.
  */
-public class ProductDto implements Selectable, Comparable<ProductDto> {
+public class SetupWizardProductDto implements Selectable, Comparable<SetupWizardProductDto> {
     /**
      * Aggregated product sync status.
      */
@@ -182,7 +182,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is not mirrored
-         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isNotMirrored() {
             return equals(SyncStage.NOT_MIRRORED);
@@ -191,7 +191,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is in progress
-         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isInProgress() {
             return equals(SyncStage.IN_PROGRESS);
@@ -200,7 +200,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is failed
-         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isFailed() {
             return equals(SyncStage.FAILED);
@@ -209,7 +209,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is finished
-         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isFinished() {
             return equals(SyncStatus.SyncStage.FINISHED);
@@ -238,10 +238,10 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     private boolean selected = false;
 
     /** Base product or null. */
-    private ProductDto baseProduct = null;
+    private SetupWizardProductDto baseProduct = null;
 
     /** Addon products. */
-    private List<ProductDto> addonProducts = new LinkedList<ProductDto>();
+    private List<SetupWizardProductDto> addonProducts = new LinkedList<SetupWizardProductDto>();
 
     /** Aggregated product sync status. */
     private SyncStatus syncStatus;
@@ -249,7 +249,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Default constructor.
      */
-    public ProductDto() {
+    public SetupWizardProductDto() {
         // required by Simple XML
     }
 
@@ -264,7 +264,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      * @param mandatoryChannelsIn the mandatory channels in
      * @param optionalChannelsIn the optional channels in
      */
-    public ProductDto(String archIn, String identIn, String nameIn, String baseProductIdent,
+    public SetupWizardProductDto(String archIn, String identIn, String nameIn, String baseProductIdent,
             MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
         arch = archIn;
         ident = identIn;
@@ -349,7 +349,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(ProductDto other) {
+    public int compareTo(SetupWizardProductDto other) {
         return new CompareToBuilder()
         // base products first
         .append(!isBase(), !other.isBase())
@@ -364,10 +364,10 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ProductDto)) {
+        if (!(other instanceof SetupWizardProductDto)) {
             return false;
         }
-        ProductDto otherProduct = (ProductDto) other;
+        SetupWizardProductDto otherProduct = (SetupWizardProductDto) other;
         return new EqualsBuilder()
             .append(getIdent(), otherProduct.getIdent())
             .isEquals();
@@ -431,7 +431,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      * Gets the base product.
      * @return the base product
      */
-    public ProductDto getBaseProduct() {
+    public SetupWizardProductDto getBaseProduct() {
         return baseProduct;
     }
 
@@ -439,7 +439,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      * Sets the base product.
      * @param baseProductIn the new base product
      */
-    public void setBaseProduct(ProductDto baseProductIn) {
+    public void setBaseProduct(SetupWizardProductDto baseProductIn) {
         baseProduct = baseProductIn;
     }
 
@@ -447,7 +447,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
      * Gets the addon products.
      * @return the addon products
      */
-    public List<ProductDto> getAddonProducts() {
+    public List<SetupWizardProductDto> getAddonProducts() {
         return addonProducts;
     }
 
@@ -502,7 +502,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is not mirrored
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusNotMirrored() {
         return getSyncStatus().equals(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -510,7 +510,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
 
     /**
      * Convenience method to set the sync status to not mirrored
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public void setStatusNotMirrored() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED));
@@ -519,7 +519,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is in progress
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusInProgress() {
         return getSyncStatus().equals(SyncStatus.SyncStage.IN_PROGRESS);
@@ -527,7 +527,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
 
     /**
      * Convenience method to set the sync status to in progress
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public void setStatusInProgress() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS));
@@ -536,7 +536,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is finished
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusFinished() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FINISHED);
@@ -544,7 +544,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
 
     /**
      * Convenience method to set the sync status to finished
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public void setStatusFinished() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FINISHED));
@@ -553,7 +553,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is failed
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusFailed() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FAILED);
@@ -561,7 +561,7 @@ public class ProductDto implements Selectable, Comparable<ProductDto> {
 
     /**
      * Convenience method to set the sync status to failed
-     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
      */
     public void setStatusFailed() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FAILED));
