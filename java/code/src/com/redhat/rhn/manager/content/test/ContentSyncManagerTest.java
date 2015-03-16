@@ -52,7 +52,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncProduct;
+import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
@@ -465,15 +465,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel channel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily family = channel.getChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
-        MgrSyncProduct mgrSyncProduct = new MgrSyncProduct();
-        mgrSyncProduct.setId(product.getProductId());
+        XMLProduct xmlProduct = new XMLProduct();
+        xmlProduct.setId(product.getProductId());
 
         // Create a channel belonging to that product and assume it's available
         MgrSyncChannel c1 = new MgrSyncChannel();
         c1.setFamily(family.getLabel());
         c1.setLabel(channel.getLabel());
-        List<MgrSyncProduct> productList = new ArrayList<MgrSyncProduct>();
-        productList.add(mgrSyncProduct);
+        List<XMLProduct> productList = new ArrayList<XMLProduct>();
+        productList.add(xmlProduct);
         c1.setProducts(productList);
 
         // Create a product channel that we can verify
@@ -702,10 +702,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setLabel(availableDBChannel.getLabel());
         availableChannel.setParent("BASE");
         availableChannel.setArch("x86_64");
-        final MgrSyncProduct availableProduct =
-                new MgrSyncProduct(availableDBProduct.getName(),
+        final XMLProduct availableProduct =
+                new XMLProduct(availableDBProduct.getName(),
                         availableDBProduct.getProductId(), availableDBProduct.getVersion());
-        availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+        availableChannel.setProducts(new LinkedList<XMLProduct>()
                 { { add(availableProduct); } });
 
         // create one unavailable product in the DB
@@ -726,11 +726,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         unavailableChannel.setLabel(unavailableDBChannel.getLabel());
         unavailableChannel.setParent(TestUtils.randomString());
         unavailableChannel.setArch("x86_64");
-        final MgrSyncProduct unavailableProduct =
-                new MgrSyncProduct(unavailableDBProduct.getName(),
+        final XMLProduct unavailableProduct =
+                new XMLProduct(unavailableDBProduct.getName(),
                         unavailableDBProduct.getProductId(),
                         unavailableDBProduct.getVersion());
-        unavailableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+        unavailableChannel.setProducts(new LinkedList<XMLProduct>()
                 { { add(unavailableProduct); } });
 
 
@@ -773,10 +773,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         installedChannel.setLabel(installedDBChannel.getLabel());
         installedChannel.setParent("BASE");
         installedChannel.setOptional(false);
-        final MgrSyncProduct installedProduct =
-                new MgrSyncProduct(installedDBProduct.getName(),
+        final XMLProduct installedProduct =
+                new XMLProduct(installedDBProduct.getName(),
                         installedDBProduct.getProductId(), installedDBProduct.getVersion());
-        installedChannel.setProducts(new LinkedList<MgrSyncProduct>()
+        installedChannel.setProducts(new LinkedList<XMLProduct>()
                 { { add(installedProduct); } });
 
         // create one available product in the DB
@@ -791,10 +791,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         availableChannel.setFamily(availableChannelFamily.getLabel());
         availableChannel.setParent("BASE");
         availableChannel.setOptional(false);
-        final MgrSyncProduct availableProduct =
-                new MgrSyncProduct(availableDBProduct.getName(),
+        final XMLProduct availableProduct =
+                new XMLProduct(availableDBProduct.getName(),
                         availableDBProduct.getProductId(), availableDBProduct.getVersion());
-        availableChannel.setProducts(new LinkedList<MgrSyncProduct>()
+        availableChannel.setProducts(new LinkedList<XMLProduct>()
                 { { add(availableProduct); } });
 
         List<MgrSyncChannel> allChannels = new LinkedList<MgrSyncChannel>()
@@ -871,11 +871,11 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             xmlChannel.setUpdateTag("slessp3");
 
             // Setup product
-            MgrSyncProduct product = new MgrSyncProduct();
+            XMLProduct product = new XMLProduct();
             product.setId(814);
             product.setName("SUSE_SLES");
             product.setVersion("11.3");
-            List<MgrSyncProduct> products = new ArrayList<MgrSyncProduct>();
+            List<XMLProduct> products = new ArrayList<XMLProduct>();
             products.add(product);
             xmlChannel.setProducts(products);
             // Make sure that this product exists in the database

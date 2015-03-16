@@ -71,7 +71,7 @@ public class MgrSyncChannel {
     private String updateTag;
 
     @ElementList(empty= false)
-    private List<MgrSyncProduct> products;
+    private List<XMLProduct> products;
 
     @Element(name = "dist", required = false)
     private MgrSyncDistribution distribution;
@@ -83,7 +83,7 @@ public class MgrSyncChannel {
      * Get the list of products.
      * @return list of products
      */
-    public List<MgrSyncProduct> getProducts() {
+    public List<XMLProduct> getProducts() {
         if (products != null) {
             return Collections.unmodifiableList(products);
         }
@@ -96,7 +96,7 @@ public class MgrSyncChannel {
      * Set the list of products.
      * @param the list of products
      */
-    public void setProducts(List<MgrSyncProduct> products) {
+    public void setProducts(List<XMLProduct> products) {
         this.products = products;
     }
 

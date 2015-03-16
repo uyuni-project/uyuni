@@ -31,7 +31,7 @@ import java.util.TreeSet;
 /**
  * A product, as listed by mgr-sync. This is conceptually different from
  * SCCProduct, which is a deserialized version of how SCC represents a product,
- * MgrSyncProduct, which is a deserialized version of how channels.xml encodes a
+ * XMLProduct, which is a deserialized version of how channels.xml encodes a
  * product, and SUSEProduct, which is a deserialization of what we have in the
  * database table suseProducts.
  */

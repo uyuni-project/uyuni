@@ -23,7 +23,7 @@ import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
-import com.suse.mgrsync.MgrSyncProduct;
+import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
 
@@ -107,21 +107,21 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
         assertFalse(c.isOptional());
 
         // Verify the products inside
-        List<MgrSyncProduct> products = c.getProducts();
+        List<XMLProduct> products = c.getProducts();
         assertEquals(4, products.size());
-        MgrSyncProduct p0 = products.get(0);
+        XMLProduct p0 = products.get(0);
         assertEquals(new Integer(879), p0.getId());
         assertEquals("SUSE_SLED", p0.getName());
         assertEquals("11.2", p0.getVersion());
-        MgrSyncProduct p1 = products.get(1);
+        XMLProduct p1 = products.get(1);
         assertEquals(new Integer(844), p1.getId());
         assertEquals("SUSE_SLED", p1.getName());
         assertEquals("11.2", p1.getVersion());
-        MgrSyncProduct p2 = products.get(2);
+        XMLProduct p2 = products.get(2);
         assertEquals(new Integer(843), p2.getId());
         assertEquals("SUSE_SLED", p2.getName());
         assertEquals("11.2", p2.getVersion());
-        MgrSyncProduct p3 = products.get(3);
+        XMLProduct p3 = products.get(3);
         assertEquals(new Integer(868), p3.getId());
         assertEquals("SUSE_SLED", p3.getName());
         assertEquals("11.2", p3.getVersion());

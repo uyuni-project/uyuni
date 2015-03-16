@@ -48,7 +48,7 @@ import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncChannels;
 import com.suse.mgrsync.MgrSyncDistribution;
-import com.suse.mgrsync.MgrSyncProduct;
+import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
@@ -352,19 +352,19 @@ public class ContentSyncManager {
     public Collection<ListedProduct> listProducts(List<MgrSyncChannel> availableChannels)
         throws ContentSyncException {
         // get all products in the DB
-        Collection<MgrSyncProduct> dbProducts = new HashSet<MgrSyncProduct>();
+        Collection<XMLProduct> dbProducts = new HashSet<XMLProduct>();
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            dbProducts.add(new MgrSyncProduct(product.getFriendlyName(), product
+            dbProducts.add(new XMLProduct(product.getFriendlyName(), product
                     .getProductId(), product.getVersion()));
         }
 
         // get all the channels we have an entitlement for
-        Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap =
+        Map<XMLProduct, Set<MgrSyncChannel>> productToChannelMap =
                 getProductToChannelMap(availableChannels);
 
         // get all the products we have an entitlement for based on the assumption:
         // at least one channel is entitled -> corresponding product is entitled
-        Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
+        Collection<XMLProduct> availableProducts = productToChannelMap.keySet();
 
         // filter result with only available products
         dbProducts.retainAll(availableProducts);
@@ -374,15 +374,16 @@ public class ContentSyncManager {
     }
 
     /**
-     * Converts a list of MgrSyncProduct to a collection of ListedProduct objects.
+     * Converts a list of {@link XMLProduct} to a collection of
+     * {@link ListedProduct} objects.
      *
      * @param products the products
      * @param productToChannelMap the product to channel map
      * @return the sorted set
      */
     private Collection<ListedProduct> toListedProductList(
-            Collection<MgrSyncProduct> products,
-            Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
+            Collection<XMLProduct> products,
+            Map<XMLProduct, Set<MgrSyncChannel>> productToChannelMap) {
 
         // get a map from channel labels to channels
         Map<String, MgrSyncChannel> labelsTochannels =
@@ -404,9 +405,9 @@ public class ContentSyncManager {
             baseChannels.put(channel, parent);
         }
 
-        // convert every MgrSyncProduct to ListedProducts objects (one per base channel)
+        // convert every XMLProduct to ListedProducts objects (one per base channel)
         SortedSet<ListedProduct> all = new TreeSet<ListedProduct>();
-        for (MgrSyncProduct product : products) {
+        for (XMLProduct product : products) {
             Set<MgrSyncChannel> channels = productToChannelMap.get(product);
             Map<MgrSyncChannel, ListedProduct> baseMap =
                     new HashMap<MgrSyncChannel, ListedProduct>();
@@ -543,13 +544,13 @@ public class ContentSyncManager {
      * @param channels the channels
      * @return the product to channel map
      */
-    private Map<MgrSyncProduct, Set<MgrSyncChannel>> getProductToChannelMap(
+    private Map<XMLProduct, Set<MgrSyncChannel>> getProductToChannelMap(
             Collection<MgrSyncChannel> channels) {
-        Map<MgrSyncProduct, Set<MgrSyncChannel>> result =
-                new HashMap<MgrSyncProduct, Set<MgrSyncChannel>>();
+        Map<XMLProduct, Set<MgrSyncChannel>> result =
+                new HashMap<XMLProduct, Set<MgrSyncChannel>>();
 
         for (final MgrSyncChannel channel : channels) {
-            for (MgrSyncProduct product : channel.getProducts()) {
+            for (XMLProduct product : channel.getProducts()) {
                 if (result.containsKey(product)) {
                     result.get(product).add(channel);
                 }
@@ -1063,7 +1064,7 @@ public class ContentSyncManager {
             }
 
             // Lookup every product and insert/update relationships accordingly
-            for (MgrSyncProduct p : availableChannel.getProducts()) {
+            for (XMLProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
                 // Product can be null, because previously it was skipped due to broken
                 // data in the SCC. In this case we skip them all.
@@ -1280,7 +1281,7 @@ public class ContentSyncManager {
 
         // Lookup all related products
         List<SUSEProduct> products = new ArrayList<SUSEProduct>();
-        for (MgrSyncProduct p : channel.getProducts()) {
+        for (XMLProduct p : channel.getProducts()) {
             SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
             if (product == null) {
                 throw new ContentSyncException("Related product (" + p.getId() +
