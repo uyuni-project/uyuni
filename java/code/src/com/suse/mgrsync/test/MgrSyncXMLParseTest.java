@@ -19,10 +19,10 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannelFamilies;
-import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannelFamilies;
+import com.suse.mgrsync.XMLChannelFamily;
+import com.suse.mgrsync.XMLChannels;
 import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncUpgradePath;
 import com.suse.mgrsync.MgrSyncUpgradePaths;
@@ -54,10 +54,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncChannel> readChannels() throws Exception {
+    private List<XMLChannel> readChannels() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        List<MgrSyncChannel> data = persister.read(
-                MgrSyncChannels.class, source).getChannels();
+        List<XMLChannel> data = persister.read(
+                XMLChannels.class, source).getChannels();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -68,10 +68,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncChannelFamily> readFamilies() throws Exception {
+    private List<XMLChannelFamily> readFamilies() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
-        List<MgrSyncChannelFamily> data = persister.read(
-                MgrSyncChannelFamilies.class, source).getFamilies();
+        List<XMLChannelFamily> data = persister.read(
+                XMLChannelFamilies.class, source).getFamilies();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -95,11 +95,11 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadChannels() throws Exception {
-        List<MgrSyncChannel> channels = readChannels();
+        List<XMLChannel> channels = readChannels();
         assertEquals(845, channels.size());
 
         // Verify the first channel
-        MgrSyncChannel c = channels.get(0);
+        XMLChannel c = channels.get(0);
         assertEquals("ati-driver-sle11-sp2-i586", c.getLabel());
         assertEquals("i586", c.getArch());
         assertEquals("7260", c.getFamily());
@@ -132,7 +132,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadFamilies() throws Exception {
-        List<MgrSyncChannelFamily> families = readFamilies();
+        List<XMLChannelFamily> families = readFamilies();
         assertEquals(51, families.size());
     }
 

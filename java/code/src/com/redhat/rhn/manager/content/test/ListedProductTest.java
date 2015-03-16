@@ -2,7 +2,7 @@ package com.redhat.rhn.manager.content.test;
 
 import com.redhat.rhn.manager.content.ListedProduct;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import junit.framework.TestCase;
@@ -23,7 +23,7 @@ public class ListedProductTest extends TestCase {
         super.setUp();
 
         listedProduct =
-                new ListedProduct("friendlyName", 0, "version", new MgrSyncChannel());
+                new ListedProduct("friendlyName", 0, "version", new XMLChannel());
     }
 
     /**
@@ -34,7 +34,7 @@ public class ListedProductTest extends TestCase {
     public void testGetStatus() throws Exception {
         assertEquals(MgrSyncStatus.INSTALLED, listedProduct.getStatus());
 
-        MgrSyncChannel installedChannel = new MgrSyncChannel();
+        XMLChannel installedChannel = new XMLChannel();
         installedChannel.setLabel("installed");
         installedChannel.setStatus(MgrSyncStatus.INSTALLED);
         installedChannel.setOptional(false);
@@ -44,14 +44,14 @@ public class ListedProductTest extends TestCase {
             assertEquals(MgrSyncStatus.INSTALLED, listedProduct.getStatus());
         }
 
-        MgrSyncChannel availableChannel = new MgrSyncChannel();
+        XMLChannel availableChannel = new XMLChannel();
         availableChannel.setLabel("available");
         availableChannel.setStatus(MgrSyncStatus.AVAILABLE);
         availableChannel.setOptional(false);
         listedProduct.addChannel(availableChannel);
         assertEquals(MgrSyncStatus.AVAILABLE, listedProduct.getStatus());
 
-        MgrSyncChannel unavailableChannel = new MgrSyncChannel();
+        XMLChannel unavailableChannel = new XMLChannel();
         unavailableChannel.setLabel("unavailable");
         unavailableChannel.setStatus(MgrSyncStatus.UNAVAILABLE);
         unavailableChannel.setOptional(false);

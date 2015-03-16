@@ -30,7 +30,7 @@ import java.util.List;
  * A channel as we parse it from the channels.xml file.
  */
 @Root(name = "channel", strict = false)
-public class MgrSyncChannel {
+public class XMLChannel {
     @Attribute
     private String arch;
 
@@ -352,10 +352,10 @@ public class MgrSyncChannel {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MgrSyncChannel)) {
+        if (!(obj instanceof XMLChannel)) {
             return false;
         }
-        MgrSyncChannel other = (MgrSyncChannel) obj;
+        XMLChannel other = (XMLChannel) obj;
         return new EqualsBuilder().append(label, other.label).isEquals();
     }
 

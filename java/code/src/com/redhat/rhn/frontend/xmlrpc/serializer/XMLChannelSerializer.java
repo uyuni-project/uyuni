@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.serializer;
 
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -25,7 +25,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
- * Serializer for {@link MgrSyncChannel} objects.
+ * Serializer for {@link XMLChannel} objects.
  *
  * @xmlrpc.doc
  *   #struct("channel")
@@ -45,20 +45,20 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "update_tag", "Update tag")
  *   #struct_end()
  */
-public class MgrSyncChannelSerializer extends RhnXmlRpcCustomSerializer {
+public class XMLChannelSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Class<MgrSyncChannel> getSupportedClass() {
-        return MgrSyncChannel.class;
+    public Class<XMLChannel> getSupportedClass() {
+        return XMLChannel.class;
     }
 
     @Override
     protected void doSerialize(Object obj, Writer writer, XmlRpcSerializer serializer)
             throws XmlRpcException, IOException {
-        MgrSyncChannel channel = (MgrSyncChannel) obj;
+        XMLChannel channel = (XMLChannel) obj;
         SerializerHelper helper = new SerializerHelper(serializer);
         helper.add("arch", channel.getArch());
         helper.add("description", channel.getDescription());

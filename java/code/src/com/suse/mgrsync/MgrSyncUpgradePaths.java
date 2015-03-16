@@ -30,7 +30,7 @@ public class MgrSyncUpgradePaths {
     private List<MgrSyncUpgradePath> paths;
 
     /**
-     * Return the list of {@link MgrSyncChannelFamily} objects.
+     * Return the list of {@link XMLChannelFamily} objects.
      * @return subscriptions
      */
     public List<MgrSyncUpgradePath> getPaths() {

@@ -21,17 +21,17 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name = "channels", strict = false)
-public class MgrSyncChannels {
+public class XMLChannels {
     @ElementList(name = "channel", inline = true, required = false)
-    private List<MgrSyncChannel> channels;
+    private List<XMLChannel> channels;
 
     /**
-     * Return the list of {@link MgrSyncChannel} objects.
+     * Return the list of {@link XMLChannel} objects.
      * @return channels
      */
-    public List<MgrSyncChannel> getChannels() {
+    public List<XMLChannel> getChannels() {
         if (this.channels == null) {
-            this.channels = new ArrayList<MgrSyncChannel>();
+            this.channels = new ArrayList<XMLChannel>();
         }
 
         return this.channels;
