@@ -50,8 +50,8 @@ import com.suse.mgrsync.XMLChannels;
 import com.suse.mgrsync.XMLDistribution;
 import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.mgrsync.MgrSyncUpgradePath;
-import com.suse.mgrsync.MgrSyncUpgradePaths;
+import com.suse.mgrsync.XMLUpgradePath;
+import com.suse.mgrsync.XMLUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
@@ -218,11 +218,11 @@ public class ContentSyncManager {
      * @return List of upgrade paths
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncUpgradePath> readUpgradePaths() throws ContentSyncException {
+    public List<XMLUpgradePath> readUpgradePaths() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            List<MgrSyncUpgradePath> upgradePaths = persister.read(
-                    MgrSyncUpgradePaths.class, upgradePathsXML).getPaths();
+            List<XMLUpgradePath> upgradePaths = persister.read(
+                    XMLUpgradePaths.class, upgradePathsXML).getPaths();
             if (log.isDebugEnabled()) {
                 log.debug("Read " + upgradePaths.size() + " upgrade paths from " +
                         upgradePathsXML.getAbsolutePath());
@@ -1119,7 +1119,7 @@ public class ContentSyncManager {
         }
 
         // Iterate through all paths in the XML file and lookup both products first
-        for (MgrSyncUpgradePath path : readUpgradePaths()) {
+        for (XMLUpgradePath path : readUpgradePaths()) {
             SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
