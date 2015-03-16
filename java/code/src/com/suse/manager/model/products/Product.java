@@ -21,9 +21,6 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -32,7 +29,6 @@ import java.util.List;
 /**
  * A SUSE Product.
  */
-@Root(strict = false)
 public class Product implements Selectable, Comparable<Product> {
     /**
      * Aggregated product sync status.
@@ -217,27 +213,21 @@ public class Product implements Selectable, Comparable<Product> {
     };
 
     /** The architecture. */
-    @Attribute
     private String arch;
 
     /** The ident ID. */
-    @Attribute
     private String ident;
 
     /** The product readable name. */
-    @Attribute
     private String name;
 
     /** The ident ID of the base product or an empty string. */
-    @Attribute(name = "parent_product")
     private String parentProduct;
 
     /** The mandatory channels. */
-    @Element(name = "mandatory_channels")
     private MandatoryChannels mandatoryChannels;
 
     /** The optional channels. */
-    @Element(name = "optional_channels")
     private OptionalChannels optionalChannels;
 
     /** True if this product has been selected in the GUI. */
