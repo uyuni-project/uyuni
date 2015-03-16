@@ -33,7 +33,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import org.apache.commons.lang.StringUtils;
@@ -365,7 +365,7 @@ public class ProductSyncManager {
         // Sort product channels (mandatory/optional)
         List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
         List<Channel> optionalChannelsOut = new ArrayList<Channel>();
-        for (MgrSyncChannel channelIn : productIn.getChannels()) {
+        for (XMLChannel channelIn : productIn.getChannels()) {
             MgrSyncStatus statusIn = channelIn.getStatus();
             String statusOut = statusIn.equals(MgrSyncStatus.INSTALLED) ?
                     Channel.STATUS_PROVIDED : Channel.STATUS_NOT_PROVIDED;

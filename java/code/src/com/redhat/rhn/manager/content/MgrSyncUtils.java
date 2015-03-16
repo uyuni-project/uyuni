@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.HeadMethod;
@@ -91,7 +91,7 @@ public class MgrSyncUtils {
      * @param channel channel that we want to get the arch from
      * @return channel arch object
      */
-    public static ChannelArch getChannelArch(MgrSyncChannel channel) {
+    public static ChannelArch getChannelArch(XMLChannel channel) {
         String arch = channel.getArch();
         if (arch.equals("i686") || arch.equals("i586") ||
                 arch.equals("i486") || arch.equals("i386")) {
@@ -104,14 +104,14 @@ public class MgrSyncUtils {
     }
 
     /**
-     * Get the parent channel of a given {@link MgrSyncChannel} by looking it up
+     * Get the parent channel of a given {@link XMLChannel} by looking it up
      * via the given label. Return null if the given channel is a base channel.
      *
      * @param channel to look up its parent
      * @return the parent channel
      * @throws ContentSyncException if the parent channel is not installed
      */
-    public static Channel getParentChannel(MgrSyncChannel channel)
+    public static Channel getParentChannel(XMLChannel channel)
             throws ContentSyncException {
         String parent = channel.getParent();
         if (ContentSyncManager.BASE_CHANNEL.equals(parent)) {
@@ -132,7 +132,7 @@ public class MgrSyncUtils {
      * @param channel channel
      * @return channel product
      */
-    public static ChannelProduct findOrCreateChannelProduct(MgrSyncChannel channel) {
+    public static ChannelProduct findOrCreateChannelProduct(XMLChannel channel) {
         ChannelProduct product = ChannelFactory.findChannelProduct(
                 channel.getProductName(), channel.getProductVersion());
         if (product == null) {
@@ -150,7 +150,7 @@ public class MgrSyncUtils {
      * @param channel channel
      * @return product name
      */
-    public static ProductName findOrCreateProductName(MgrSyncChannel channel) {
+    public static ProductName findOrCreateProductName(XMLChannel channel) {
         ProductName productName = ChannelFactory.lookupProductNameByLabel(
                 channel.getProductName());
         if (productName == null) {

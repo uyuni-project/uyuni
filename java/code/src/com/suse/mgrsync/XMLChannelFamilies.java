@@ -23,17 +23,17 @@ import org.simpleframework.xml.ElementList;
  *
  * @author bo
  */
-public class MgrSyncChannelFamilies {
+public class XMLChannelFamilies {
     @ElementList(name = "channelfamilies", inline = true, required = false)
-    private List<MgrSyncChannelFamily> families;
+    private List<XMLChannelFamily> families;
 
     /**
-     * Return the list of {@link MgrSyncChannelFamily} objects.
+     * Return the list of {@link XMLChannelFamily} objects.
      * @return subscriptions
      */
-    public List<MgrSyncChannelFamily> getFamilies() {
+    public List<XMLChannelFamily> getFamilies() {
         if (this.families == null) {
-            this.families = new ArrayList<MgrSyncChannelFamily>();
+            this.families = new ArrayList<XMLChannelFamily>();
         }
         return this.families;
     }

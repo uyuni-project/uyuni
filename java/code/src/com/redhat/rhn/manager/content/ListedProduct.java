@@ -14,7 +14,7 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -47,10 +47,10 @@ public class ListedProduct implements Comparable<ListedProduct> {
     private String version;
 
     /** The base channel for this product. */
-    private MgrSyncChannel baseChannel;
+    private XMLChannel baseChannel;
 
     /** The channels that make up this product. */
-    private Set<MgrSyncChannel> channels;
+    private Set<XMLChannel> channels;
 
     /** The extensions products of this product. */
     private SortedSet<ListedProduct> extensions;
@@ -64,12 +64,12 @@ public class ListedProduct implements Comparable<ListedProduct> {
      * @param baseChannelIn the base channel
      */
     public ListedProduct(String friendlyNameIn, Integer idIn, String versionIn,
-            MgrSyncChannel baseChannelIn) {
+            XMLChannel baseChannelIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
         version = versionIn;
         baseChannel = baseChannelIn;
-        channels = new HashSet<MgrSyncChannel>();
+        channels = new HashSet<XMLChannel>();
         extensions = new TreeSet<ListedProduct>();
     }
 
@@ -102,7 +102,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      *
      * @return the base channel
      */
-    public MgrSyncChannel getBaseChannel() {
+    public XMLChannel getBaseChannel() {
         return baseChannel;
     }
 
@@ -111,7 +111,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      *
      * @return the channels
      */
-    public Set<MgrSyncChannel> getChannels() {
+    public Set<XMLChannel> getChannels() {
         return channels;
     }
 
@@ -120,7 +120,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      *
      * @param channel the channel
      */
-    public void addChannel(MgrSyncChannel channel) {
+    public void addChannel(XMLChannel channel) {
         channels.add(channel);
     }
 
@@ -162,7 +162,7 @@ public class ListedProduct implements Comparable<ListedProduct> {
      */
     public MgrSyncStatus getStatus() {
         MgrSyncStatus result = MgrSyncStatus.INSTALLED;
-        for (MgrSyncChannel channel : channels) {
+        for (XMLChannel channel : channels) {
             if (!channel.isOptional()) {
                 if (channel.getStatus() == MgrSyncStatus.UNAVAILABLE) {
                     return MgrSyncStatus.UNAVAILABLE;

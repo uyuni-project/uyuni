@@ -33,7 +33,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *     #prop_desc("string", "arch", "Architecture")
  *     #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
  *     #array()
- *       $MgrSyncChannelSerializer
+ *       $XMLChannelSerializer
  *     #array_end()
  *     #array()
  *       #struct("extension product")
@@ -41,7 +41,7 @@ import redstone.xmlrpc.XmlRpcSerializer;
  *         #prop_desc("string", "arch", "Architecture")
  *         #prop_desc("string", "status", "'available', 'unavailable' or 'installed'")
  *         #array()
- *           $MgrSyncChannelSerializer
+ *           $XMLChannelSerializer
  *         #array_end()
  *       #struct_end()
  *     #array_end()

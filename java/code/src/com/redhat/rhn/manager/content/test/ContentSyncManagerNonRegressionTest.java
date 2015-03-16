@@ -28,8 +28,8 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannels;
 import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -101,8 +101,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 HibernateFactory.getSession().flush();
             }
 
-            List<MgrSyncChannel> allChannels =
-                    new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
+            List<XMLChannel> allChannels =
+                    new Persister().read(XMLChannels.class, channelsXML).getChannels();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
@@ -214,7 +214,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         assertEquals(version, product.getVersion());
         assertEquals(arch, product.getArch());
         SortedSet<String> actualChannelLabels = new TreeSet<String>();
-        for (MgrSyncChannel channel : product.getChannels()) {
+        for (XMLChannel channel : product.getChannels()) {
             String actualLabel = channel.getLabel();
             // mandatory channels have a trailing * in the CSV file
             if (!channel.isOptional()) {

@@ -33,7 +33,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import org.apache.commons.io.FileUtils;
@@ -58,7 +58,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      */
     public void testConvertProduct() throws Exception {
         // Setup some test data
-        MgrSyncChannel baseChannel = new MgrSyncChannel();
+        XMLChannel baseChannel = new XMLChannel();
         baseChannel.setArch("x86_64");
         baseChannel.setLabel("baseChannel");
         baseChannel.setStatus(MgrSyncStatus.INSTALLED);
@@ -67,7 +67,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         baseProduct.addChannel(baseChannel);
 
         // Setup an addon
-        MgrSyncChannel childChannel = new MgrSyncChannel();
+        XMLChannel childChannel = new XMLChannel();
         childChannel.setArch("x86_64");
         childChannel.setLabel("childChannel");
         childChannel.setOptional(true);

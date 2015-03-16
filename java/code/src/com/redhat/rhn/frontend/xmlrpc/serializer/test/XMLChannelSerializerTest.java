@@ -14,9 +14,9 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.serializer.test;
 
-import com.redhat.rhn.frontend.xmlrpc.serializer.MgrSyncChannelSerializer;
+import com.redhat.rhn.frontend.xmlrpc.serializer.XMLChannelSerializer;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
 import java.io.IOException;
@@ -28,13 +28,13 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 /**
- * Test class to verify {@link MgrSyncChannelSerializer} functionality.
+ * Test class to verify {@link XMLChannelSerializer} functionality.
  */
-public class MgrSyncChannelSerializerTest extends TestCase {
+public class XMLChannelSerializerTest extends TestCase {
 
     public void testSerialize() throws XmlRpcException, IOException {
         // Setup a channel
-        MgrSyncChannel channel = new MgrSyncChannel();
+        XMLChannel channel = new XMLChannel();
         channel.setArch("arch");
         channel.setDescription("description");
         channel.setFamily("family");
@@ -51,7 +51,7 @@ public class MgrSyncChannelSerializerTest extends TestCase {
         channel.setUpdateTag("updateTag");
 
         // Serialize it
-        MgrSyncChannelSerializer serializer = new MgrSyncChannelSerializer();
+        XMLChannelSerializer serializer = new XMLChannelSerializer();
         Writer output = new StringWriter();
         serializer.serialize(channel, output, new XmlRpcSerializer());
 
