@@ -13,9 +13,13 @@
  * in this software or its documentation.
  */
 
-package com.suse.manager.model.products;
+package com.redhat.rhn.frontend.dto;
 
 import com.redhat.rhn.frontend.struts.Selectable;
+
+import com.suse.manager.model.products.Channel;
+import com.suse.manager.model.products.MandatoryChannels;
+import com.suse.manager.model.products.OptionalChannels;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -27,9 +31,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A SUSE Product.
+ * A SUSE Product as it is shown in the Setup Wizard UI.
  */
-public class Product implements Selectable, Comparable<Product> {
+public class ProductDto implements Selectable, Comparable<ProductDto> {
     /**
      * Aggregated product sync status.
      */
@@ -178,7 +182,7 @@ public class Product implements Selectable, Comparable<Product> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is not mirrored
-         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
          */
         public boolean isNotMirrored() {
             return equals(SyncStage.NOT_MIRRORED);
@@ -187,7 +191,7 @@ public class Product implements Selectable, Comparable<Product> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is in progress
-         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
          */
         public boolean isInProgress() {
             return equals(SyncStage.IN_PROGRESS);
@@ -196,7 +200,7 @@ public class Product implements Selectable, Comparable<Product> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is failed
-         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
          */
         public boolean isFailed() {
             return equals(SyncStage.FAILED);
@@ -205,7 +209,7 @@ public class Product implements Selectable, Comparable<Product> {
         /**
          * Convenience method to query the stage
          * @return true if the stage is finished
-         * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+         * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
          */
         public boolean isFinished() {
             return equals(SyncStatus.SyncStage.FINISHED);
@@ -234,10 +238,10 @@ public class Product implements Selectable, Comparable<Product> {
     private boolean selected = false;
 
     /** Base product or null. */
-    private Product baseProduct = null;
+    private ProductDto baseProduct = null;
 
     /** Addon products. */
-    private List<Product> addonProducts = new LinkedList<Product>();
+    private List<ProductDto> addonProducts = new LinkedList<ProductDto>();
 
     /** Aggregated product sync status. */
     private SyncStatus syncStatus;
@@ -245,7 +249,7 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Default constructor.
      */
-    public Product() {
+    public ProductDto() {
         // required by Simple XML
     }
 
@@ -260,7 +264,7 @@ public class Product implements Selectable, Comparable<Product> {
      * @param mandatoryChannelsIn the mandatory channels in
      * @param optionalChannelsIn the optional channels in
      */
-    public Product(String archIn, String identIn, String nameIn, String baseProductIdent,
+    public ProductDto(String archIn, String identIn, String nameIn, String baseProductIdent,
             MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
         arch = archIn;
         ident = identIn;
@@ -345,7 +349,7 @@ public class Product implements Selectable, Comparable<Product> {
      * {@inheritDoc}
      */
     @Override
-    public int compareTo(Product other) {
+    public int compareTo(ProductDto other) {
         return new CompareToBuilder()
         // base products first
         .append(!isBase(), !other.isBase())
@@ -360,10 +364,10 @@ public class Product implements Selectable, Comparable<Product> {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Product)) {
+        if (!(other instanceof ProductDto)) {
             return false;
         }
-        Product otherProduct = (Product) other;
+        ProductDto otherProduct = (ProductDto) other;
         return new EqualsBuilder()
             .append(getIdent(), otherProduct.getIdent())
             .isEquals();
@@ -427,7 +431,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Gets the base product.
      * @return the base product
      */
-    public Product getBaseProduct() {
+    public ProductDto getBaseProduct() {
         return baseProduct;
     }
 
@@ -435,7 +439,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Sets the base product.
      * @param baseProductIn the new base product
      */
-    public void setBaseProduct(Product baseProductIn) {
+    public void setBaseProduct(ProductDto baseProductIn) {
         baseProduct = baseProductIn;
     }
 
@@ -443,7 +447,7 @@ public class Product implements Selectable, Comparable<Product> {
      * Gets the addon products.
      * @return the addon products
      */
-    public List<Product> getAddonProducts() {
+    public List<ProductDto> getAddonProducts() {
         return addonProducts;
     }
 
@@ -498,7 +502,7 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is not mirrored
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusNotMirrored() {
         return getSyncStatus().equals(SyncStatus.SyncStage.NOT_MIRRORED);
@@ -506,7 +510,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Convenience method to set the sync status to not mirrored
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public void setStatusNotMirrored() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.NOT_MIRRORED));
@@ -515,7 +519,7 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is in progress
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusInProgress() {
         return getSyncStatus().equals(SyncStatus.SyncStage.IN_PROGRESS);
@@ -523,7 +527,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Convenience method to set the sync status to in progress
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public void setStatusInProgress() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.IN_PROGRESS));
@@ -532,7 +536,7 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is finished
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusFinished() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FINISHED);
@@ -540,7 +544,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Convenience method to set the sync status to finished
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public void setStatusFinished() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FINISHED));
@@ -549,7 +553,7 @@ public class Product implements Selectable, Comparable<Product> {
     /**
      * Convenience method to query the sync status
      * @return true if the product status is failed
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public boolean isStatusFailed() {
         return getSyncStatus().equals(SyncStatus.SyncStage.FAILED);
@@ -557,7 +561,7 @@ public class Product implements Selectable, Comparable<Product> {
 
     /**
      * Convenience method to set the sync status to failed
-     * @see {@link com.suse.manager.model.products.Product.SyncStatus.SyncStage}
+     * @see {@link com.redhat.rhn.frontend.dto.ProductDto.SyncStatus.SyncStage}
      */
     public void setStatusFailed() {
         setSyncStatus(new SyncStatus(SyncStatus.SyncStage.FAILED));
