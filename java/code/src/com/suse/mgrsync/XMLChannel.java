@@ -74,7 +74,7 @@ public class XMLChannel {
     private List<XMLProduct> products;
 
     @Element(name = "dist", required = false)
-    private MgrSyncDistribution distribution;
+    private XMLDistribution distribution;
 
     // Channel status (not an attribute of the xml file)
     private MgrSyncStatus status;
@@ -103,7 +103,7 @@ public class XMLChannel {
     /**
      * @return the distribution
      */
-    public MgrSyncDistribution getDistribution() {
+    public XMLDistribution getDistribution() {
         return distribution;
     }
 

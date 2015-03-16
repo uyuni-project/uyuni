@@ -47,7 +47,7 @@ import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.XMLChannelFamilies;
 import com.suse.mgrsync.XMLChannelFamily;
 import com.suse.mgrsync.XMLChannels;
-import com.suse.mgrsync.MgrSyncDistribution;
+import com.suse.mgrsync.XMLDistribution;
 import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.MgrSyncUpgradePath;
@@ -1353,7 +1353,7 @@ public class ContentSyncManager {
         }
 
         // Create DistChannelMap if channels.xml contains a distribution
-        MgrSyncDistribution dist = channel.getDistribution();
+        XMLDistribution dist = channel.getDistribution();
         if (dist != null) {
             DistChannelMap dcm = new DistChannelMap(null, dist.getOs(), dist.getRelease(),
                     dbChannel.getChannelArch(), dbChannel);
