@@ -23,7 +23,7 @@ import org.simpleframework.xml.Root;
  * @author bo
  */
 @Root(name = "dist")
-public class MgrSyncDistribution {
+public class XMLDistribution {
     @Attribute
     private String os;
 
