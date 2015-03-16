@@ -18,6 +18,8 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.frontend.dto.ProductDto;
+import com.redhat.rhn.frontend.dto.ProductDto.SyncStatus;
 import com.redhat.rhn.frontend.events.ScheduleRepoSyncEvent;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -31,8 +33,6 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.manager.model.products.Product;
-import com.suse.manager.model.products.Product.SyncStatus;
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncStatus;
 
@@ -61,22 +61,22 @@ public class ProductSyncManager {
      * @return the products list
      * @throws ProductSyncException if an error occurred
      */
-    public List<Product> getBaseProducts() throws ProductSyncException {
+    public List<ProductDto> getBaseProducts() throws ProductSyncException {
         ContentSyncManager csm = new ContentSyncManager();
         try {
             // Convert the listed products to objects we can display
             Collection<ListedProduct> products = csm.listProducts(csm.listChannels());
-            List<Product> result = convertProducts(products);
+            List<ProductDto> result = convertProducts(products);
 
             // Determine their product sync status separately
-            for (Product p : result) {
+            for (ProductDto p : result) {
                 if (p.isProvided()) {
                     p.setSyncStatus(getProductSyncStatus(p));
                 }
                 else {
                     p.setStatusNotMirrored();
                 }
-                for (Product addon : p.getAddonProducts()) {
+                for (ProductDto addon : p.getAddonProducts()) {
                     if (addon.isProvided()) {
                         addon.setSyncStatus(getProductSyncStatus(addon));
                     }
@@ -109,7 +109,7 @@ public class ProductSyncManager {
      * @throws ProductSyncException if an error occurred
      */
     public void addProduct(String productIdent) throws ProductSyncException {
-        Product product = findProductByIdent(productIdent);
+        ProductDto product = findProductByIdent(productIdent);
         if (product != null) {
             try {
                 // Add the channels first
@@ -143,7 +143,7 @@ public class ProductSyncManager {
      * @param product product
      * @return sync status as string
      */
-    private SyncStatus getProductSyncStatus(Product product) {
+    private SyncStatus getProductSyncStatus(ProductDto product) {
         // Compute statistics about channels
         int notMirroredCounter = 0;
         int finishedCounter = 0;
@@ -338,17 +338,17 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a collection of {@link ListedProduct} to a collection of {@link Product}
+     * Convert a collection of {@link ListedProduct} to a collection of {@link ProductDto}
      * for further display.
      *
      * @param products collection of {@link ListedProduct}
-     * @return List of {@link Product}
+     * @return List of {@link ProductDto}
      */
-    private List<Product> convertProducts(Collection<ListedProduct> products) {
-        List<Product> displayProducts = new ArrayList<Product>();
+    private List<ProductDto> convertProducts(Collection<ListedProduct> products) {
+        List<ProductDto> displayProducts = new ArrayList<ProductDto>();
         for (ListedProduct p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
-                Product displayProduct = convertProduct(p);
+                ProductDto displayProduct = convertProduct(p);
                 displayProducts.add(displayProduct);
             }
         }
@@ -356,12 +356,12 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a given {@link ListedProduct} to a {@link Product} for further display.
+     * Convert a given {@link ListedProduct} to a {@link ProductDto} for further display.
      *
      * @param productIn instance of {@link ListedProduct}
-     * @return instance of {@link Product}
+     * @return instance of {@link ProductDto}
      */
-    private Product convertProduct(final ListedProduct productIn) {
+    private ProductDto convertProduct(final ListedProduct productIn) {
         // Sort product channels (mandatory/optional)
         List<Channel> mandatoryChannelsOut = new ArrayList<Channel>();
         List<Channel> optionalChannelsOut = new ArrayList<Channel>();
@@ -387,14 +387,14 @@ public class ProductSyncManager {
         });
 
         // Setup the product that will be displayed
-        Product displayProduct = new Product(productIn.getArch(), productIn.getIdent(),
+        ProductDto displayProduct = new ProductDto(productIn.getArch(), productIn.getIdent(),
                 productIn.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
         // Set extensions as addon products
         for (ListedProduct extension : productIn.getExtensions()) {
-            Product ext = convertProduct(extension);
+            ProductDto ext = convertProduct(extension);
             ext.setBaseProduct(displayProduct);
             displayProduct.getAddonProducts().add(ext);
             ext.setBaseProductIdent(displayProduct.getIdent());
@@ -407,15 +407,15 @@ public class ProductSyncManager {
      * Find a product for any given ident by looking through base and their addons.
      *
      * @param ident ident of a product
-     * @return the {@link Product}
+     * @return the {@link ProductDto}
      * @throws ProductSyncException in case of an error
      */
-    private Product findProductByIdent(String ident) throws ProductSyncException {
-        for (Product p : getBaseProducts()) {
+    private ProductDto findProductByIdent(String ident) throws ProductSyncException {
+        for (ProductDto p : getBaseProducts()) {
             if (p.getIdent().equals(ident)) {
                 return p;
             }
-            for (Product addon : p.getAddonProducts()) {
+            for (ProductDto addon : p.getAddonProducts()) {
                 if (addon.getIdent().equals(ident)) {
                     return addon;
                 }
