@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! $UID -eq 0 ]; then
+    echo "You need to be superuser (root) to run this script!"
+    exit 1
+fi
+
 DO_MIGRATION=0
 DO_SETUP=0
 LOGFILE=0
@@ -661,6 +666,7 @@ if [ "$DO_SETUP" = "1" ]; then
 	exit 1
     fi
 
+    echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     do_setup
 
     # rename the default org
@@ -669,7 +675,6 @@ if [ "$DO_SETUP" = "1" ]; then
     /usr/bin/spacewalk-sql --select-mode-direct /tmp/changeorg.sql
     rm /tmp/changeorg.sql
 
-    echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     if [ -f $MANAGER_COMPLETE_HOOK ]; then
         $MANAGER_COMPLETE_HOOK
     else
