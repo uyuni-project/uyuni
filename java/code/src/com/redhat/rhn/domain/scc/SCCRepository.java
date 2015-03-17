@@ -29,7 +29,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 public class SCCRepository extends BaseDomainHelper {
 
     @SerializedName("id")
-    private long sccId;
+    private Long sccId;
     private String name;
     @SerializedName("distro_target")
     private String distroTarget;
@@ -44,14 +44,14 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the SCC id
      */
-    public long getSCCId() {
+    public Long getSCCId() {
         return sccId;
     }
 
     /**
      * @param sccIdIn the SCC id to set
      */
-    public void setSCCId(long sccIdIn) {
+    public void setSCCId(Long sccIdIn) {
         this.sccId = sccIdIn;
     }
 
