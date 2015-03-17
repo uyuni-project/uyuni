@@ -23,10 +23,9 @@ import org.simpleframework.xml.Text;
 
 /**
  * Represents a product in channels.xml format (element product_id).
- * @author bo
  */
 @Root(name = "product_id", strict = false)
-public class MgrSyncProduct {
+public class XMLProduct {
 
     /** The name. */
     @Attribute
@@ -42,7 +41,7 @@ public class MgrSyncProduct {
     /**
      * Default constructor for bean compatibility.
      */
-    public MgrSyncProduct() {
+    public XMLProduct() {
     }
 
     /**
@@ -52,7 +51,7 @@ public class MgrSyncProduct {
      * @param idIn the id
      * @param versionIn the version
      */
-    public MgrSyncProduct(String nameIn, Integer idIn, String versionIn) {
+    public XMLProduct(String nameIn, Integer idIn, String versionIn) {
         name = nameIn;
         id = idIn;
         version = versionIn;
@@ -86,7 +85,7 @@ public class MgrSyncProduct {
 
     /**
      * Set the name.
-     * @param nameIn
+     * @param nameIn the name
      */
     public void setName(String nameIn) {
         this.name = nameIn;
@@ -102,7 +101,7 @@ public class MgrSyncProduct {
 
     /**
      * Set the version.
-     * @param versionIn
+     * @param versionIn the version
      */
     public void setVersion(String versionIn) {
         this.version = versionIn;
@@ -121,10 +120,10 @@ public class MgrSyncProduct {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MgrSyncProduct)) {
+        if (!(obj instanceof XMLProduct)) {
             return false;
         }
-        MgrSyncProduct other = (MgrSyncProduct) obj;
+        XMLProduct other = (XMLProduct) obj;
         return new EqualsBuilder().append(id, other.id).isEquals();
     }
 
@@ -133,6 +132,6 @@ public class MgrSyncProduct {
      */
     @Override
     public String toString() {
-        return "MgrSyncProduct [name=" + name + ", id=" + id + ", version=" + version + "]";
+        return "XMLProduct [name=" + name + ", id=" + id + ", version=" + version + "]";
     }
 }

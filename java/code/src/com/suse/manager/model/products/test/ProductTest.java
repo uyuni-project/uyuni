@@ -14,10 +14,11 @@
  */
 package com.suse.manager.model.products.test;
 
+import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
+
 import com.suse.manager.model.products.Channel;
 import com.suse.manager.model.products.MandatoryChannels;
 import com.suse.manager.model.products.OptionalChannels;
-import com.suse.manager.model.products.Product;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ public class ProductTest extends TestCase {
      * Tests the method isProvided().
      */
     public void testIsProvided() {
-        Product nonSynchronizingProduct = new Product(
+        SetupWizardProductDto nonSynchronizingProduct = new SetupWizardProductDto(
                 "x86_46",
                 "test",
                 "test product",
@@ -53,7 +54,7 @@ public class ProductTest extends TestCase {
 
        assertEquals(false, nonSynchronizingProduct.isProvided());
 
-       Product synchronizingProduct = new Product(
+       SetupWizardProductDto synchronizingProduct = new SetupWizardProductDto(
                "x86_46",
                "test",
                "test product",
@@ -77,9 +78,9 @@ public class ProductTest extends TestCase {
      * Test compareTo().
      */
     public void testCompareTo() {
-        List<Product> products = new LinkedList<Product>();
+        List<SetupWizardProductDto> products = new LinkedList<SetupWizardProductDto>();
 
-        Product prodAs390 = new Product(
+        SetupWizardProductDto prodAs390 = new SetupWizardProductDto(
             "s390",
             "product_a_s390",
             "Product A",
@@ -87,7 +88,7 @@ public class ProductTest extends TestCase {
             new MandatoryChannels(new LinkedList<Channel>()),
             new OptionalChannels(new LinkedList<Channel>())
         );
-        Product prodAx64 = new Product(
+        SetupWizardProductDto prodAx64 = new SetupWizardProductDto(
             "x86_46",
             "product_a_x86_64",
             "Product A",
@@ -95,7 +96,7 @@ public class ProductTest extends TestCase {
             new MandatoryChannels(new LinkedList<Channel>()),
             new OptionalChannels(new LinkedList<Channel>())
         );
-        Product prodA1s390 = new Product(
+        SetupWizardProductDto prodA1s390 = new SetupWizardProductDto(
             "s390",
             "product_a1",
             "Product A1",
@@ -103,7 +104,7 @@ public class ProductTest extends TestCase {
             new MandatoryChannels(new LinkedList<Channel>()),
             new OptionalChannels(new LinkedList<Channel>())
         );
-        Product prodA2s390 = new Product(
+        SetupWizardProductDto prodA2s390 = new SetupWizardProductDto(
             "s390",
             "product_a2",
             "Product A2",

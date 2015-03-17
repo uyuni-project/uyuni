@@ -21,11 +21,11 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
-import com.suse.mgrsync.MgrSyncChannel;
+import com.suse.mgrsync.XMLChannel;
 
 import java.util.Collection;
 import java.util.List;
@@ -48,10 +48,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all accessible products.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                       $ListedProductSerializer
+     *                       $MgrSyncProductDtoSerializer
      *                    #array_end()
      */
-    public Collection<ListedProduct> listProducts(User loggedInUser)
+    public Collection<MgrSyncProductDto> listProducts(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
@@ -68,10 +68,10 @@ public class ContentSyncHandler extends BaseHandler {
      * @xmlrpc.doc List all accessible channels.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array()
-     *                       $MgrSyncChannelSerializer
+     *                       $XMLChannelSerializer
      *                    #array_end()
      */
-    public List<MgrSyncChannel> listChannels(User loggedInUser)
+    public List<XMLChannel> listChannels(User loggedInUser)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();

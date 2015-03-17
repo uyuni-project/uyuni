@@ -43,15 +43,15 @@ import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannelFamilies;
-import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncChannels;
-import com.suse.mgrsync.MgrSyncDistribution;
-import com.suse.mgrsync.MgrSyncProduct;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannelFamilies;
+import com.suse.mgrsync.XMLChannelFamily;
+import com.suse.mgrsync.XMLChannels;
+import com.suse.mgrsync.XMLDistribution;
+import com.suse.mgrsync.XMLProduct;
 import com.suse.mgrsync.MgrSyncStatus;
-import com.suse.mgrsync.MgrSyncUpgradePath;
-import com.suse.mgrsync.MgrSyncUpgradePaths;
+import com.suse.mgrsync.XMLUpgradePath;
+import com.suse.mgrsync.XMLUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
@@ -174,11 +174,11 @@ public class ContentSyncManager {
      * @return List of parsed channels
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncChannel> readChannels() throws ContentSyncException {
+    public List<XMLChannel> readChannels() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            List<MgrSyncChannel> channels = persister.read(
-                    MgrSyncChannels.class, channelsXML).getChannels();
+            List<XMLChannel> channels = persister.read(
+                    XMLChannels.class, channelsXML).getChannels();
             if (log.isDebugEnabled()) {
                 log.debug("Read " + channels.size() + " channels from " +
                         channelsXML.getAbsolutePath());
@@ -196,11 +196,11 @@ public class ContentSyncManager {
      * @return List of parsed channel families
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncChannelFamily> readChannelFamilies() throws ContentSyncException {
+    public List<XMLChannelFamily> readChannelFamilies() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            List<MgrSyncChannelFamily> channelFamilies = persister.read(
-                    MgrSyncChannelFamilies.class, channelFamiliesXML).getFamilies();
+            List<XMLChannelFamily> channelFamilies = persister.read(
+                    XMLChannelFamilies.class, channelFamiliesXML).getFamilies();
             if (log.isDebugEnabled()) {
                 log.debug("Read " + channelFamilies.size() + " channel families from " +
                         channelFamiliesXML.getAbsolutePath());
@@ -218,11 +218,11 @@ public class ContentSyncManager {
      * @return List of upgrade paths
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncUpgradePath> readUpgradePaths() throws ContentSyncException {
+    public List<XMLUpgradePath> readUpgradePaths() throws ContentSyncException {
         try {
             Persister persister = new Persister();
-            List<MgrSyncUpgradePath> upgradePaths = persister.read(
-                    MgrSyncUpgradePaths.class, upgradePathsXML).getPaths();
+            List<XMLUpgradePath> upgradePaths = persister.read(
+                    XMLUpgradePaths.class, upgradePathsXML).getPaths();
             if (log.isDebugEnabled()) {
                 log.debug("Read " + upgradePaths.size() + " upgrade paths from " +
                         upgradePathsXML.getAbsolutePath());
@@ -349,99 +349,100 @@ public class ContentSyncManager {
      * @return list of all available products
      * @throws ContentSyncException in case of an error
      */
-    public Collection<ListedProduct> listProducts(List<MgrSyncChannel> availableChannels)
+    public Collection<MgrSyncProductDto> listProducts(List<XMLChannel> availableChannels)
         throws ContentSyncException {
         // get all products in the DB
-        Collection<MgrSyncProduct> dbProducts = new HashSet<MgrSyncProduct>();
+        Collection<XMLProduct> dbProducts = new HashSet<XMLProduct>();
         for (SUSEProduct product : SUSEProductFactory.findAllSUSEProducts()) {
-            dbProducts.add(new MgrSyncProduct(product.getFriendlyName(), product
+            dbProducts.add(new XMLProduct(product.getFriendlyName(), product
                     .getProductId(), product.getVersion()));
         }
 
         // get all the channels we have an entitlement for
-        Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap =
+        Map<XMLProduct, Set<XMLChannel>> productToChannelMap =
                 getProductToChannelMap(availableChannels);
 
         // get all the products we have an entitlement for based on the assumption:
         // at least one channel is entitled -> corresponding product is entitled
-        Collection<MgrSyncProduct> availableProducts = productToChannelMap.keySet();
+        Collection<XMLProduct> availableProducts = productToChannelMap.keySet();
 
         // filter result with only available products
         dbProducts.retainAll(availableProducts);
 
-        // convert to Collection<ListedProduct> and return
-        return toListedProductList(dbProducts, productToChannelMap);
+        // convert to Collection<MgrSyncProductDto> and return
+        return toDtoList(dbProducts, productToChannelMap);
     }
 
     /**
-     * Converts a list of MgrSyncProduct to a collection of ListedProduct objects.
+     * Converts a list of {@link XMLProduct} to a collection of
+     * {@link MgrSyncProductDto} objects.
      *
      * @param products the products
      * @param productToChannelMap the product to channel map
      * @return the sorted set
      */
-    private Collection<ListedProduct> toListedProductList(
-            Collection<MgrSyncProduct> products,
-            Map<MgrSyncProduct, Set<MgrSyncChannel>> productToChannelMap) {
+    private Collection<MgrSyncProductDto> toDtoList(
+            Collection<XMLProduct> products,
+            Map<XMLProduct, Set<XMLChannel>> productToChannelMap) {
 
         // get a map from channel labels to channels
-        Map<String, MgrSyncChannel> labelsTochannels =
-                new HashMap<String, MgrSyncChannel>();
-        for (Set<MgrSyncChannel> channels : productToChannelMap.values()) {
-            for (MgrSyncChannel channel : channels) {
+        Map<String, XMLChannel> labelsTochannels =
+                new HashMap<String, XMLChannel>();
+        for (Set<XMLChannel> channels : productToChannelMap.values()) {
+            for (XMLChannel channel : channels) {
                 labelsTochannels.put(channel.getLabel(), channel);
             }
         }
 
         // get a map from every channel to its base channel
-        Map<MgrSyncChannel, MgrSyncChannel> baseChannels =
-                new HashMap<MgrSyncChannel, MgrSyncChannel>();
-        for (MgrSyncChannel channel : labelsTochannels.values()) {
-            MgrSyncChannel parent = channel;
+        Map<XMLChannel, XMLChannel> baseChannels =
+                new HashMap<XMLChannel, XMLChannel>();
+        for (XMLChannel channel : labelsTochannels.values()) {
+            XMLChannel parent = channel;
             while (!parent.getParent().equals("BASE")) {
                 parent = labelsTochannels.get(parent.getParent());
             }
             baseChannels.put(channel, parent);
         }
 
-        // convert every MgrSyncProduct to ListedProducts objects (one per base channel)
-        SortedSet<ListedProduct> all = new TreeSet<ListedProduct>();
-        for (MgrSyncProduct product : products) {
-            Set<MgrSyncChannel> channels = productToChannelMap.get(product);
-            Map<MgrSyncChannel, ListedProduct> baseMap =
-                    new HashMap<MgrSyncChannel, ListedProduct>();
-            for (MgrSyncChannel channel : channels) {
-                MgrSyncChannel base = baseChannels.get(channel);
+        // convert every XMLProduct to dto objects (one per base channel)
+        SortedSet<MgrSyncProductDto> all = new TreeSet<MgrSyncProductDto>();
+        for (XMLProduct product : products) {
+            Set<XMLChannel> channels = productToChannelMap.get(product);
+            Map<XMLChannel, MgrSyncProductDto> baseMap =
+                    new HashMap<XMLChannel, MgrSyncProductDto>();
+            for (XMLChannel channel : channels) {
+                XMLChannel base = baseChannels.get(channel);
 
-                ListedProduct listedProduct = baseMap.get(base);
+                MgrSyncProductDto productDto = baseMap.get(base);
                 // if this is a new product
-                if (listedProduct == null) {
+                if (productDto == null) {
                     SUSEProduct dbProduct =
                             SUSEProductFactory.lookupByProductId(product.getId());
                     PackageArch arch = dbProduct.getArch();
                     // and if the base channel arch matches the product arch
                     if (arch == null || arch.getName().equals(base.getArch())) {
                         // add it to the product map
-                        listedProduct =
-                                new ListedProduct(product.getName(), product.getId(),
+                        productDto =
+                                new MgrSyncProductDto(product.getName(), product.getId(),
                                         product.getVersion(), base);
-                        listedProduct.addChannel(channel);
-                        baseMap.put(base, listedProduct);
+                        productDto.addChannel(channel);
+                        baseMap.put(base, productDto);
                     }
                 }
                 else {
-                    listedProduct.addChannel(channel);
+                    productDto.addChannel(channel);
                 }
             }
             all.addAll(baseMap.values());
         }
 
         // divide base from extension products
-        Collection<ListedProduct> bases = new LinkedList<ListedProduct>();
-        Collection<ListedProduct> extensions = new LinkedList<ListedProduct>();
-        for (ListedProduct product : all) {
+        Collection<MgrSyncProductDto> bases = new LinkedList<MgrSyncProductDto>();
+        Collection<MgrSyncProductDto> extensions = new LinkedList<MgrSyncProductDto>();
+        for (MgrSyncProductDto product : all) {
             boolean isBase = false;
-            for (MgrSyncChannel channel : product.getChannels()) {
+            for (XMLChannel channel : product.getChannels()) {
                 if (channel.getParent().equals(BASE_CHANNEL)) {
                     isBase = true;
                     break;
@@ -456,10 +457,10 @@ public class ContentSyncManager {
         }
 
         // add base-extension relationships
-        for (ListedProduct base : bases) {
-            for (ListedProduct extension : extensions) {
-                for (MgrSyncChannel baseChannel : base.getChannels()) {
-                    for (MgrSyncChannel extensionChannel : extension.getChannels()) {
+        for (MgrSyncProductDto base : bases) {
+            for (MgrSyncProductDto extension : extensions) {
+                for (XMLChannel baseChannel : base.getChannels()) {
+                    for (XMLChannel extensionChannel : extension.getChannels()) {
                         if (extensionChannel.getParent().equals(baseChannel.getLabel())) {
                             base.addExtension(extension);
                         }
@@ -481,15 +482,15 @@ public class ContentSyncManager {
      * @param all all the products
      * @param bases base products
      */
-    private void addDirtyFixes(Collection<ListedProduct> all,
-            Collection<ListedProduct> bases) {
+    private void addDirtyFixes(Collection<MgrSyncProductDto> all,
+            Collection<MgrSyncProductDto> bases) {
 
         // remove SP1 extensions from SP2 base products and vice versa
-        for (ListedProduct product : bases) {
+        for (MgrSyncProductDto product : bases) {
             String productVersion = product.getVersion();
             if (productVersion.startsWith("11.")) {
-                Collection<ListedProduct> wrongSP = new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProductDto> wrongSP = new LinkedList<MgrSyncProductDto>();
+                for (MgrSyncProductDto extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
                     if (extension.getFriendlyName().startsWith("SUSE") &&
                         extensionVersion.startsWith("11.") &&
@@ -502,11 +503,11 @@ public class ContentSyncManager {
         }
 
         // remove SP2 only extensions from SP1 base products
-        for (ListedProduct product : bases) {
+        for (MgrSyncProductDto product : bases) {
             if (product.getVersion().equals("11.1")) {
-                Collection<ListedProduct> sp2ProductsInSp1 =
-                        new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProductDto> sp2ProductsInSp1 =
+                        new LinkedList<MgrSyncProductDto>();
+                for (MgrSyncProductDto extension : product.getExtensions()) {
                     String friendlyName = extension.getFriendlyName();
                     if (friendlyName.equals("SUSE Cloud 1.0") ||
                         friendlyName.equals("SUSE Lifecycle Management Server 1.3") ||
@@ -520,11 +521,11 @@ public class ContentSyncManager {
         }
 
         // remove SP2 only extensions from SP1 base products
-        for (ListedProduct product : bases) {
+        for (MgrSyncProductDto product : bases) {
             if (product.getVersion().equals("11.2")) {
-                Collection<ListedProduct> sp1ProductsInSp2 =
-                        new LinkedList<ListedProduct>();
-                for (ListedProduct extension : product.getExtensions()) {
+                Collection<MgrSyncProductDto> sp1ProductsInSp2 =
+                        new LinkedList<MgrSyncProductDto>();
+                for (MgrSyncProductDto extension : product.getExtensions()) {
                     String friendlyName = extension.getFriendlyName();
                     if (friendlyName.equals("Novell Open Enterprise Server 2 11") ||
                         friendlyName.equals(
@@ -543,19 +544,19 @@ public class ContentSyncManager {
      * @param channels the channels
      * @return the product to channel map
      */
-    private Map<MgrSyncProduct, Set<MgrSyncChannel>> getProductToChannelMap(
-            Collection<MgrSyncChannel> channels) {
-        Map<MgrSyncProduct, Set<MgrSyncChannel>> result =
-                new HashMap<MgrSyncProduct, Set<MgrSyncChannel>>();
+    private Map<XMLProduct, Set<XMLChannel>> getProductToChannelMap(
+            Collection<XMLChannel> channels) {
+        Map<XMLProduct, Set<XMLChannel>> result =
+                new HashMap<XMLProduct, Set<XMLChannel>>();
 
-        for (final MgrSyncChannel channel : channels) {
-            for (MgrSyncProduct product : channel.getProducts()) {
+        for (final XMLChannel channel : channels) {
+            for (XMLProduct product : channel.getProducts()) {
                 if (result.containsKey(product)) {
                     result.get(product).add(channel);
                 }
                 else {
                     result.put(product,
-                            new HashSet<MgrSyncChannel>() { { add(channel); } });
+                            new HashSet<XMLChannel>() { { add(channel); } });
                 }
             }
         }
@@ -681,8 +682,8 @@ public class ContentSyncManager {
         }
 
         // Read contents of channels.xml into a map
-        Map<String, MgrSyncChannel> channelsXMLData = new HashMap<String, MgrSyncChannel>();
-        for (MgrSyncChannel c : readChannels()) {
+        Map<String, XMLChannel> channelsXMLData = new HashMap<String, XMLChannel>();
+        for (XMLChannel c : readChannels()) {
             channelsXMLData.put(c.getLabel(), c);
         }
 
@@ -690,7 +691,7 @@ public class ContentSyncManager {
         List<Channel> channelsDB = ChannelFactory.listVendorChannels();
         for (Channel c : channelsDB) {
             if (channelsXMLData.containsKey(c.getLabel())) {
-                MgrSyncChannel channel = channelsXMLData.get(c.getLabel());
+                XMLChannel channel = channelsXMLData.get(c.getLabel());
                 if (!channel.getDescription().equals(c.getDescription()) ||
                         !channel.getName().equals(c.getName()) ||
                         !channel.getSummary().equals(c.getSummary()) ||
@@ -715,7 +716,7 @@ public class ContentSyncManager {
         List<ContentSource> contentSources = ChannelFactory.listVendorContentSources();
         for (ContentSource cs : contentSources) {
             if (channelsXMLData.containsKey(cs.getLabel())) {
-                MgrSyncChannel channel = channelsXMLData.get(cs.getLabel());
+                XMLChannel channel = channelsXMLData.get(cs.getLabel());
                 SCCRepository repo = isMirrorable(channel, repos);
                 if (repo != null) {
                     String sourceURL = setupSourceURL(repo, mirrorUrl);
@@ -736,9 +737,9 @@ public class ContentSyncManager {
      * @param channelFamilies List of families.
      * @throws ContentSyncException in case of an error
      */
-    public void updateChannelFamilies(Collection<MgrSyncChannelFamily> channelFamilies)
+    public void updateChannelFamilies(Collection<XMLChannelFamily> channelFamilies)
             throws ContentSyncException {
-        for (MgrSyncChannelFamily channelFamily : channelFamilies) {
+        for (XMLChannelFamily channelFamily : channelFamilies) {
             ChannelFamily family = createOrUpdateChannelFamily(
                     channelFamily.getLabel(), channelFamily.getName());
             // Create rhnPrivateChannelFamily entry if it doesn't exist
@@ -797,7 +798,7 @@ public class ContentSyncManager {
         }
 
         // Add free product classes (default_node_count = -1) as subscriptions
-        for (MgrSyncChannelFamily family : readChannelFamilies()) {
+        for (XMLChannelFamily family : readChannelFamilies()) {
             if (family.getDefaultNodeCount() < 0) {
                 consolidated.addChannelSubscription(family.getLabel());
             }
@@ -988,19 +989,19 @@ public class ContentSyncManager {
     /**
      * Get a list of all actually available channels based on available channel families
      * as well as some other criteria.
-     * @param allChannels List of {@link MgrSyncChannel}
+     * @param allChannels List of {@link XMLChannel}
      * @return list of available channels
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncChannel> getAvailableChannels(List<MgrSyncChannel> allChannels)
+    public List<XMLChannel> getAvailableChannels(List<XMLChannel> allChannels)
             throws ContentSyncException {
         // Get all channels from channels.xml and filter
-        List<MgrSyncChannel> availableChannels = new ArrayList<MgrSyncChannel>();
+        List<XMLChannel> availableChannels = new ArrayList<XMLChannel>();
 
         // Filter in all channels where channel families are available
         List<String> availableChannelFamilies =
                 ChannelFamilyFactory.getAvailableChannelFamilyLabels();
-        for (MgrSyncChannel c : allChannels) {
+        for (XMLChannel c : allChannels) {
             if (availableChannelFamilies.contains(c.getFamily())) {
                 availableChannels.add(c);
             }
@@ -1008,16 +1009,16 @@ public class ContentSyncManager {
 
         // Reassign lists to variables to continue the filtering
         allChannels = availableChannels;
-        availableChannels = new ArrayList<MgrSyncChannel>();
+        availableChannels = new ArrayList<XMLChannel>();
 
         // Remember channel labels in a list for convenient lookup
         List<String> availableChannelLabels = new ArrayList<String>();
-        for (MgrSyncChannel c : allChannels) {
+        for (XMLChannel c : allChannels) {
             availableChannelLabels.add(c.getLabel());
         }
 
         // Filter in channels with available parents only (or base channels)
-        for (MgrSyncChannel c : allChannels) {
+        for (XMLChannel c : allChannels) {
             String parent = c.getParent();
             if (parent.equals(BASE_CHANNEL) || availableChannelLabels.contains(parent)) {
                 availableChannels.add(c);
@@ -1034,10 +1035,10 @@ public class ContentSyncManager {
 
     /**
      * Synchronization of the {@link SUSEProductChannel} relationships.
-     * @param availableChannels List of {@link MgrSyncChannel}
+     * @param availableChannels List of {@link XMLChannel}
      * @throws ContentSyncException in case of an error
      */
-    public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
+    public void updateSUSEProductChannels(List<XMLChannel> availableChannels)
             throws ContentSyncException {
         // Get all currently existing product channel relations
         List<SUSEProductChannel> existingProductChannels =
@@ -1050,7 +1051,7 @@ public class ContentSyncManager {
         }
 
         // Get all available channels and iterate
-        for (MgrSyncChannel availableChannel : availableChannels) {
+        for (XMLChannel availableChannel : availableChannels) {
             // We store relationships only for mandatory channels
             if (availableChannel.isOptional()) {
                 continue;
@@ -1063,7 +1064,7 @@ public class ContentSyncManager {
             }
 
             // Lookup every product and insert/update relationships accordingly
-            for (MgrSyncProduct p : availableChannel.getProducts()) {
+            for (XMLProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
                 // Product can be null, because previously it was skipped due to broken
                 // data in the SCC. In this case we skip them all.
@@ -1118,7 +1119,7 @@ public class ContentSyncManager {
         }
 
         // Iterate through all paths in the XML file and lookup both products first
-        for (MgrSyncUpgradePath path : readUpgradePaths()) {
+        for (XMLUpgradePath path : readUpgradePaths()) {
             SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
@@ -1157,10 +1158,10 @@ public class ContentSyncManager {
      * @return list of channels
      * @throws ContentSyncException in case of an error
      */
-    public List<MgrSyncChannel> listChannels()
+    public List<XMLChannel> listChannels()
             throws ContentSyncException {
         // This list will be returned
-        List<MgrSyncChannel> channels = new ArrayList<MgrSyncChannel>();
+        List<XMLChannel> channels = new ArrayList<XMLChannel>();
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
         // Reset the cached OES credentials (OES will be queried only once)
@@ -1170,7 +1171,7 @@ public class ContentSyncManager {
         List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
 
         // Determine the channel status
-        for (MgrSyncChannel c : getAvailableChannels(readChannels())) {
+        for (XMLChannel c : getAvailableChannels(readChannels())) {
             if (installedChannelLabels.contains(c.getLabel())) {
                 c.setStatus(MgrSyncStatus.INSTALLED);
             }
@@ -1194,7 +1195,7 @@ public class ContentSyncManager {
      * @return repository object or null if the channel is not mirrorable
      * @throws ContentSyncException in case of an IO error while verifying OES
      */
-    public SCCRepository isMirrorable(MgrSyncChannel channel,
+    public SCCRepository isMirrorable(XMLChannel channel,
             Collection<SCCRepository> repos) throws ContentSyncException {
         // No source URL means it's mirrorable (return 0 in this case)
         String sourceUrl = channel.getSourceUrl();
@@ -1260,9 +1261,9 @@ public class ContentSyncManager {
         }
 
         // Lookup the channel in available channels
-        MgrSyncChannel channel = null;
-        List<MgrSyncChannel> channels = getAvailableChannels(readChannels());
-        for (MgrSyncChannel c : channels) {
+        XMLChannel channel = null;
+        List<XMLChannel> channels = getAvailableChannels(readChannels());
+        for (XMLChannel c : channels) {
             if (c.getLabel().equals(label)) {
                 channel = c;
                 break;
@@ -1280,7 +1281,7 @@ public class ContentSyncManager {
 
         // Lookup all related products
         List<SUSEProduct> products = new ArrayList<SUSEProduct>();
-        for (MgrSyncProduct p : channel.getProducts()) {
+        for (XMLProduct p : channel.getProducts()) {
             SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
             if (product == null) {
                 throw new ContentSyncException("Related product (" + p.getId() +
@@ -1352,7 +1353,7 @@ public class ContentSyncManager {
         }
 
         // Create DistChannelMap if channels.xml contains a distribution
-        MgrSyncDistribution dist = channel.getDistribution();
+        XMLDistribution dist = channel.getDistribution();
         if (dist != null) {
             DistChannelMap dcm = new DistChannelMap(null, dist.getOs(), dist.getRelease(),
                     dbChannel.getChannelArch(), dbChannel);

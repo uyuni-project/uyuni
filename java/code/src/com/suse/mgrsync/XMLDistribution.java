@@ -19,35 +19,27 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 /**
- * Upgrade path element.
+ * A distribution as parsed from channels.xml.
  */
-@Root(name = "upgrade", strict = false)
-public class MgrSyncUpgradePath {
-    @Attribute(name = "from_pdid")
-    private Integer fromProductId;
+@Root(name = "dist")
+public class XMLDistribution {
+    @Attribute
+    private String os;
 
-    @Attribute(name = "from_product")
-    private String fromProduct;
+    @Attribute
+    private String release;
 
-    @Attribute(name = "to_pdid")
-    private Integer toProductId;
-
-    @Attribute(name = "to_product")
-    private String toProduct;
-
-    public String getFromProduct() {
-        return fromProduct;
+    /**
+     * @return the os
+     */
+    public String getOs() {
+        return os;
     }
 
-    public Integer getFromProductId() {
-        return fromProductId;
-    }
-
-    public String getToProduct() {
-        return toProduct;
-    }
-
-    public Integer getToProductId() {
-        return toProductId;
+    /**
+     * @return the release
+     */
+    public String getRelease() {
+        return release;
     }
 }

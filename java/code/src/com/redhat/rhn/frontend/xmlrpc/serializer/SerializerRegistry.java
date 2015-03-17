@@ -126,8 +126,8 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(CVEAuditSystemSerializer.class);
         SERIALIZER_CLASSES.add(UserExtGroupSerializer.class);
         SERIALIZER_CLASSES.add(OrgUserExtGroupSerializer.class);
-        SERIALIZER_CLASSES.add(ListedProductSerializer.class);
-        SERIALIZER_CLASSES.add(MgrSyncChannelSerializer.class);
+        SERIALIZER_CLASSES.add(MgrSyncProductDtoSerializer.class);
+        SERIALIZER_CLASSES.add(XMLChannelSerializer.class);
         SERIALIZER_CLASSES.add(MirrorCredentialsDtoSerializer.class);
     }
 

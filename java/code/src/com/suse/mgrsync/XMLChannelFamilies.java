@@ -18,22 +18,23 @@ package com.suse.mgrsync;
 import java.util.ArrayList;
 import java.util.List;
 import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
 
-@Root(name = "channels", strict = false)
-public class MgrSyncChannels {
-    @ElementList(name = "channel", inline = true, required = false)
-    private List<MgrSyncChannel> channels;
+/**
+ *
+ * @author bo
+ */
+public class XMLChannelFamilies {
+    @ElementList(name = "channelfamilies", inline = true, required = false)
+    private List<XMLChannelFamily> families;
 
     /**
-     * Return the list of {@link MgrSyncChannel} objects.
-     * @return channels
+     * Return the list of {@link XMLChannelFamily} objects.
+     * @return subscriptions
      */
-    public List<MgrSyncChannel> getChannels() {
-        if (this.channels == null) {
-            this.channels = new ArrayList<MgrSyncChannel>();
+    public List<XMLChannelFamily> getFamilies() {
+        if (this.families == null) {
+            this.families = new ArrayList<XMLChannelFamily>();
         }
-
-        return this.channels;
+        return this.families;
     }
 }

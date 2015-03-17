@@ -21,15 +21,15 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
-import com.redhat.rhn.manager.content.ListedProduct;
+import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannels;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannels;
 import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.collections.IteratorUtils;
@@ -101,8 +101,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 HibernateFactory.getSession().flush();
             }
 
-            List<MgrSyncChannel> allChannels =
-                    new Persister().read(MgrSyncChannels.class, channelsXML).getChannels();
+            List<XMLChannel> allChannels =
+                    new Persister().read(XMLChannels.class, channelsXML).getChannels();
 
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
@@ -115,12 +115,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             csm.addDirtyFixes(sccProducts);
 
             csm.updateSUSEProducts(sccProducts);
-            Collection<ListedProduct> products =
+            Collection<MgrSyncProductDto> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
-            Iterator<ListedProduct> i = products.iterator();
-            ListedProduct base = null;
-            Iterator<ListedProduct> j = IteratorUtils.EMPTY_ITERATOR;
+            Iterator<MgrSyncProductDto> i = products.iterator();
+            MgrSyncProductDto base = null;
+            Iterator<MgrSyncProductDto> j = IteratorUtils.EMPTY_ITERATOR;
             for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
@@ -149,7 +149,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                         fail("Base product " + base.toString()
                                 + " should have an extension named " + friendlyName);
                     }
-                    ListedProduct extension = j.next();
+                    MgrSyncProductDto extension = j.next();
 
                     assertProductMatches(friendlyName, version, arch, channelLabels,
                             extension);
@@ -207,14 +207,14 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * @param product the actual product
      */
     public void assertProductMatches(String friendlyName, String version, String arch,
-            SortedSet<String> channelLabels, ListedProduct product) {
+            SortedSet<String> channelLabels, MgrSyncProductDto product) {
         System.out.println("Checking product " + product.getId() + " (" + friendlyName
                 + ", " + arch + ")");
         assertEquals(friendlyName, product.getFriendlyName());
         assertEquals(version, product.getVersion());
         assertEquals(arch, product.getArch());
         SortedSet<String> actualChannelLabels = new TreeSet<String>();
-        for (MgrSyncChannel channel : product.getChannels()) {
+        for (XMLChannel channel : product.getChannels()) {
             String actualLabel = channel.getLabel();
             // mandatory channels have a trailing * in the CSV file
             if (!channel.isOptional()) {
