@@ -31,34 +31,37 @@ public class SubscriptionDto {
     /**
      * Constructor.
      *
-     * @param productClass
-     * @param consumed
-     * @param name
-     * @param startDate
-     * @param endDate
+     * @param nameIn the name
+     * @param productClassIn the product class
+     * @param consumedIn consumed
+     * @param startDateIn the start date
+     * @param endDateIn the end date
      */
-    public SubscriptionDto(String name, String productClass, Integer consumed,
-            Date startDate, Date endDate) {
-        this.productClass = productClass;
-        this.consumed = consumed;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public SubscriptionDto(String nameIn, String productClassIn, Integer consumedIn,
+            Date startDateIn, Date endDateIn) {
+        this.productClass = productClassIn;
+        this.consumed = consumedIn;
+        this.name = nameIn;
+        this.startDate = startDateIn;
+        this.endDate = endDateIn;
     }
 
-    public SubscriptionDto() {}
+    /**
+     * Constructor
+     */
+    public SubscriptionDto() { }
 
     /**
      * Set consumed.
-     * @param consumed
+     * @param consumedIn consumed
      */
-    public void setConsumed(Integer consumed) {
-        this.consumed = consumed;
+    public void setConsumed(Integer consumedIn) {
+        this.consumed = consumedIn;
     }
 
     /**
      * Get consumed.
-     * @return
+     * @return number of consumed
      */
     public Integer getConsumed() {
         return consumed;
@@ -66,15 +69,15 @@ public class SubscriptionDto {
 
     /**
      * Set node count.
-     * @param nodeCount
+     * @param nodeCountIn the node count
      */
-    public void setNodeCount(Long nodeCount) {
-        this.nodeCount = nodeCount;
+    public void setNodeCount(Long nodeCountIn) {
+        this.nodeCount = nodeCountIn;
     }
 
     /**
      * Get node count.
-     * @return
+     * @return the node count
      */
     public Long getNodeCount() {
         return nodeCount;
@@ -82,15 +85,15 @@ public class SubscriptionDto {
 
     /**
      * Set product class.
-     * @param productClass
+     * @param productClassIn the product class
      */
-    public void setProductClass(String productClass) {
-        this.productClass = productClass;
+    public void setProductClass(String productClassIn) {
+        this.productClass = productClassIn;
     }
 
     /**
      * Get product class.
-     * @return
+     * @return the product class
      */
     public String getProductClass() {
         return productClass;

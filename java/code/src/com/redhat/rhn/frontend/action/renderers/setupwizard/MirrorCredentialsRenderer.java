@@ -62,6 +62,7 @@ public class MirrorCredentialsRenderer {
      * @return the rendered fragment
      * @throws ServletException in case of rendering errors
      * @throws IOException in case something really bad happens
+     * @throws ContentSyncException in case of problems storing the credentials
      */
     public String saveCredentials(Long id, String user, String password)
         throws ServletException, IOException, ContentSyncException {

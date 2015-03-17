@@ -40,6 +40,9 @@ public class MgrSyncAJAXEndpoint {
      * can be handled on the client side.
      */
     public static class MgrSyncException extends Exception {
+        /**
+         * @param message the message
+         */
         public MgrSyncException(String message) {
             super(message);
         }

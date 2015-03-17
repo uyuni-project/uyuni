@@ -37,10 +37,10 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param product the product to set
+     * @param productIn the product to set
      */
-    public void setProduct(SUSEProduct product) {
-        this.product = product;
+    public void setProduct(SUSEProduct productIn) {
+        this.product = productIn;
     }
 
     /**
@@ -51,10 +51,10 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param channel the channel to set
+     * @param channelIn the channel to set
      */
-    public void setChannel(Channel channel) {
-        this.channel = channel;
+    public void setChannel(Channel channelIn) {
+        this.channel = channelIn;
     }
 
     /**
@@ -65,10 +65,10 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param channelLabel the channelLabel to set
+     * @param channelLabelIn the channelLabel to set
      */
-    public void setChannelLabel(String channelLabel) {
-        this.channelLabel = channelLabel;
+    public void setChannelLabel(String channelLabelIn) {
+        this.channelLabel = channelLabelIn;
     }
 
     /**
@@ -79,14 +79,14 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param parentChannelLabel the parentChannelLabel to set
+     * @param parentChannelLabelIn the parentChannelLabel to set
      */
-    public void setParentChannelLabel(String parentChannelLabel) {
-        this.parentChannelLabel = parentChannelLabel;
+    public void setParentChannelLabel(String parentChannelLabelIn) {
+        this.parentChannelLabel = parentChannelLabelIn;
     }
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
@@ -97,9 +97,10 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
         return result;
     }
 
-    /* (non-Javadoc)
+    /**
      * This implements equality based on channel label and product.
-     * @see java.lang.Object#equals(java.lang.Object)
+     *
+     * {@inheritDoc}
      */
     @Override
     public boolean equals(Object obj) {

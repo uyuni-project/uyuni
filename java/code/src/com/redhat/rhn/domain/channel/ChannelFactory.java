@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -28,7 +27,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.channel.ChannelManager;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -1296,8 +1294,8 @@ public class ChannelFactory extends HibernateFactory {
 
     /**
      * Find a {@link ChannelProduct} for given name and version.
-     * @param name name
-     * @param version
+     * @param product the product
+     * @param version the version
      * @return channel product
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
