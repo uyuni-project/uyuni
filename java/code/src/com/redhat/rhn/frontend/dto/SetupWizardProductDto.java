@@ -33,7 +33,8 @@ import java.util.List;
 /**
  * A SUSE Product as it is shown in the Setup Wizard UI.
  */
-public class SetupWizardProductDto implements Selectable, Comparable<SetupWizardProductDto> {
+public class SetupWizardProductDto implements Selectable,
+        Comparable<SetupWizardProductDto> {
     /**
      * Aggregated product sync status.
      */
@@ -100,19 +101,19 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
         }
 
         /**
-         * Convenience equals with an Stage
-         * @param stage
+         * Convenience method to check equality with a given SyncStage.
+         * @param stageIn the stage to compare to
          * @return whether the stages are equal
          */
-        boolean equals(SyncStage stage) {
-            return getStage().equals(stage);
+        boolean equals(SyncStage stageIn) {
+            return getStage().equals(stageIn);
         }
 
         /**
-         * @param stage of the synchronization
+         * @param stageIn of the synchronization
          */
-        public void setStage(SyncStage stage) {
-            this.stage = stage;
+        public void setStage(SyncStage stageIn) {
+            this.stage = stageIn;
         }
 
         /**
@@ -182,7 +183,6 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
         /**
          * Convenience method to query the stage
          * @return true if the stage is not mirrored
-         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isNotMirrored() {
             return equals(SyncStage.NOT_MIRRORED);
@@ -191,7 +191,6 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
         /**
          * Convenience method to query the stage
          * @return true if the stage is in progress
-         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isInProgress() {
             return equals(SyncStage.IN_PROGRESS);
@@ -200,7 +199,6 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
         /**
          * Convenience method to query the stage
          * @return true if the stage is failed
-         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isFailed() {
             return equals(SyncStage.FAILED);
@@ -209,7 +207,6 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
         /**
          * Convenience method to query the stage
          * @return true if the stage is finished
-         * @see {@link com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage}
          */
         public boolean isFinished() {
             return equals(SyncStatus.SyncStage.FINISHED);
@@ -241,7 +238,8 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
     private SetupWizardProductDto baseProduct = null;
 
     /** Addon products. */
-    private List<SetupWizardProductDto> addonProducts = new LinkedList<SetupWizardProductDto>();
+    private List<SetupWizardProductDto> addonProducts =
+            new LinkedList<SetupWizardProductDto>();
 
     /** Aggregated product sync status. */
     private SyncStatus syncStatus;
@@ -264,8 +262,9 @@ public class SetupWizardProductDto implements Selectable, Comparable<SetupWizard
      * @param mandatoryChannelsIn the mandatory channels in
      * @param optionalChannelsIn the optional channels in
      */
-    public SetupWizardProductDto(String archIn, String identIn, String nameIn, String baseProductIdent,
-            MandatoryChannels mandatoryChannelsIn, OptionalChannels optionalChannelsIn) {
+    public SetupWizardProductDto(String archIn, String identIn, String nameIn,
+            String baseProductIdent, MandatoryChannels mandatoryChannelsIn,
+            OptionalChannels optionalChannelsIn) {
         arch = archIn;
         ident = identIn;
         name = nameIn;

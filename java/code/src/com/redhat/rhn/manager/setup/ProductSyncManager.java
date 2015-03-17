@@ -338,14 +338,16 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a collection of {@link MgrSyncProductDto} to a collection of {@link SetupWizardProductDto}
-     * for further display.
+     * Convert a collection of {@link MgrSyncProductDto} to a collection of
+     * {@link SetupWizardProductDto} for further display.
      *
      * @param products collection of {@link MgrSyncProductDto}
      * @return List of {@link SetupWizardProductDto}
      */
-    private List<SetupWizardProductDto> convertProducts(Collection<MgrSyncProductDto> products) {
-        List<SetupWizardProductDto> displayProducts = new ArrayList<SetupWizardProductDto>();
+    private List<SetupWizardProductDto> convertProducts(
+            Collection<MgrSyncProductDto> products) {
+        List<SetupWizardProductDto> displayProducts =
+                new ArrayList<SetupWizardProductDto>();
         for (MgrSyncProductDto p : products) {
             if (!p.getStatus().equals(MgrSyncStatus.UNAVAILABLE)) {
                 SetupWizardProductDto displayProduct = convertProduct(p);
@@ -356,7 +358,8 @@ public class ProductSyncManager {
     }
 
     /**
-     * Convert a given {@link MgrSyncProductDto} to a {@link SetupWizardProductDto} for further display.
+     * Convert a given {@link MgrSyncProductDto} to a {@link SetupWizardProductDto} for
+     * further display.
      *
      * @param productIn instance of {@link MgrSyncProductDto}
      * @return instance of {@link SetupWizardProductDto}
@@ -387,8 +390,8 @@ public class ProductSyncManager {
         });
 
         // Setup the product that will be displayed
-        SetupWizardProductDto displayProduct = new SetupWizardProductDto(productIn.getArch(), productIn.getIdent(),
-                productIn.getFriendlyName(), "",
+        SetupWizardProductDto displayProduct = new SetupWizardProductDto(
+                productIn.getArch(), productIn.getIdent(), productIn.getFriendlyName(), "",
                 new MandatoryChannels(mandatoryChannelsOut),
                 new OptionalChannels(optionalChannelsOut));
 
@@ -410,7 +413,8 @@ public class ProductSyncManager {
      * @return the {@link SetupWizardProductDto}
      * @throws ProductSyncException in case of an error
      */
-    private SetupWizardProductDto findProductByIdent(String ident) throws ProductSyncException {
+    private SetupWizardProductDto findProductByIdent(String ident)
+            throws ProductSyncException {
         for (SetupWizardProductDto p : getBaseProducts()) {
             if (p.getIdent().equals(ident)) {
                 return p;
