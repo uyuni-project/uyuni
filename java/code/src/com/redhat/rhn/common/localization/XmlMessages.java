@@ -247,16 +247,16 @@ public final class XmlMessages {
         String pattern = StringEscapeUtils.unescapeHtml(bundle.getString(key));
 
         pattern = pattern.replaceAll(PRODUCT_NAME_MACRO,
-                Config.get().getString("web.product_name"));
+                Config.get().getString("product_name"));
 
         pattern = pattern.replaceAll(VENDOR_NAME_MACRO,
-                Config.get().getString("web.vendor_name"));
+                Config.get().getString("java.vendor_name"));
 
         pattern = pattern.replaceAll(ENTERPRISE_LINUX_NAME_MACRO,
-                Config.get().getString("web.enterprise_linux_name"));
+                Config.get().getString("java.enterprise_linux_name"));
 
         pattern = pattern.replaceAll(VENDOR_SERVICE_NAME_MACRO,
-                Config.get().getString("web.vendor_service_name"));
+                Config.get().getString("java.vendor_service_name"));
 
         if (args == null || args.length == 0) {
             return pattern;
