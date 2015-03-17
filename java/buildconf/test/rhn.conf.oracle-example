@@ -108,10 +108,10 @@ java.supported_locales = bn_IN,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt_BR,ru,ta,zh_C
 web.enable_solaris_support = 0
 
 # Naming settings
-web.product_name = SUSE Manager
-web.vendor_name = SUSE
-web.enterprise_linux_name = SUSE Linux Enterprise
-web.vendor_service_name = SUSE Customer Center
+product_name = SUSE Manager
+java.vendor_name = SUSE
+java.enterprise_linux_name = SUSE Linux Enterprise
+java.vendor_service_name = SUSE Customer Center
 
 # Maximum number of actions displayed on schedule/actions pages
 web.actions_display_limit = 10000

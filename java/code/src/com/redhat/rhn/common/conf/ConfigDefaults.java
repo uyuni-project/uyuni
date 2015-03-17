@@ -80,10 +80,10 @@ public class ConfigDefaults {
 
     public static final String FORCE_UNENTITLEMENT = "web.force_unentitlement";
 
-    public static final String PRODUCT_NAME = "web.product_name";
-    public static final String VENDOR_NAME = "web.vendor_name";
-    public static final String ENTERPRISE_LINUX_NAME = "web.enterprise_linux_name";
-    public static final String VENDOR_SERVICE_NAME = "web.vendor_service_name";
+    public static final String PRODUCT_NAME = "product_name";
+    public static final String VENDOR_NAME = "java.vendor_name";
+    public static final String ENTERPRISE_LINUX_NAME = "java.enterprise_linux_name";
+    public static final String VENDOR_SERVICE_NAME = "java.vendor_service_name";
 
     public static final String COBBLER_AUTOMATED_USER = "java.taskomatic_cobbler_user";
 
