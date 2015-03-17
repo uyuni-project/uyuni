@@ -56,7 +56,7 @@
         </button>
         <jsp:include page="/WEB-INF/pages/common/fragments/setup/suse-product-channel-list.jspf" />
     </td>
-    <c:set var="allSyncStages" value="<%=com.suse.manager.model.products.Product.SyncStatus.SyncStage.values()%>"/>
+    <c:set var="allSyncStages" value="<%=com.redhat.rhn.frontend.dto.SetupWizardProductDto.SyncStatus.SyncStage.values()%>"/>
     <td>
         <c:forEach var="syncStage" items="${allSyncStages}">
             <div
