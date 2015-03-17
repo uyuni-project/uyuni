@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.165
+Version: 2.3.167
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -178,11 +178,8 @@ BuildRequires: apache-commons-lang
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
 Requires: cglib < 0:2.2
-# we dont want jfreechart from EPEL because it has different symlinks
-Requires: jfreechart < 1.0.13
 %else
 Requires: cglib
-Requires: jfreechart >= 1.0.9
 %endif
 
 BuildRequires: perl
@@ -211,7 +208,6 @@ BuildRequires: jakarta-taglibs-standard
 BuildRequires: java-devel >= 1.6.0
 BuildRequires: jcommon
 BuildRequires: jdom
-BuildRequires: jfreechart >= 1.0.9
 %if 0%{?suse_version}
 BuildRequires: pam-modules
 %else
@@ -368,11 +364,8 @@ Group: Applications/Internet
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
 Requires: cglib < 2.2
-# we dont want jfreechart from EPEL because it has different symlinks
-Requires: jfreechart < 1.0.13
 %else
 Requires: cglib
-Requires: jfreechart >= 1.0.9
 %endif
 
 Requires: bcel
@@ -606,14 +599,14 @@ echo "wrapper.java.classpath.28=/usr/share/java/log4j.jar" >> conf/default/rhn_t
 %endif
 %if 0%{?fedora}
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3/hibernate-core-3.jar
+wrapper.java.classpath.61=/usr/share/java/hibernate-jpa-2.0-api.jar
 wrapper.java.classpath.62=/usr/share/java/hibernate3/hibernate-ehcache-3.jar
 wrapper.java.classpath.63=/usr/share/java/hibernate3/hibernate-c3p0-3.jar
 wrapper.java.classpath.64=/usr/share/java/hibernate*/hibernate-commons-annotations.jar
 wrapper.java.classpath.65=/usr/share/java/slf4j/api.jar
 wrapper.java.classpath.66=/usr/share/java/jboss-logging.jar
 wrapper.java.classpath.67=/usr/share/java/javassist.jar
-wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar
-wrapper.java.classpath.69=/usr/share/java/hibernate-jpa-2.0-api.jar" >> conf/default/rhn_taskomatic_daemon.conf
+wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %if 0%{suse_version}
@@ -871,18 +864,6 @@ fi
 #%{jardir}/asmasm-xml.jar
 #%{jardir}/asmkasm.jar
 
-%if 0%{?fedora}
-# jfreechart-1.0.10-4.fc13.noarch (F13)
-# jfreechart-1.0.13-1.fc14.noarch (F14)
-%{jardir}/jfreechart_jfreechart.jar
-%endif
-
-%if (0%{?rhel} && 0%{?rhel} >= 5) || 0%{?suse_version}
-# jfreechart-1.0.10-1.el5.noarch (EL5)
-# jfreechart-1.0.9-4.jpp5.noarch (EL6)
-%{jardir}/jfreechart.jar
-%endif
-
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6 || 0%{suse_version}
 %{jardir}/struts.jar
@@ -968,6 +949,14 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Tue Mar 17 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.167-1
+- properly set taskomatic wrapper.java.classpath.4 option
+- fix Documentation link
+
+* Mon Mar 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.166-1
+- fixing typo: sync-kickstars -> sync-kickstart
+- we do not need jfreechart anymore
+
 * Thu Mar 12 2015 Tomas Lestach <tlestach@redhat.com> 2.3.165-1
 - removing unused rhn_web.conf options
 - simplify getDefaultDownloadLocation() method
