@@ -57,15 +57,15 @@ public class PackageListItem extends IdComboDto {
     private Date installTime;
     private String locked = null; // Assuming package is free to operate by default.
     private String pending; // Either PackageManager.PKG_PENDING_LOCK for "to be locked"
-                                 // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
+                            // or PackageManager.PKG_PENDING_UNLOCK for "to be unlocked"
 
     /**
      * Set locked status.
      *
-     * @param locked Not null for unlocked and null for locked. Usually "Y".
+     * @param lockedIn Not null for unlocked and null for locked. Usually "Y".
      */
-    public void setLocked(String locked) {
-        this.locked = locked;
+    public void setLocked(String lockedIn) {
+        this.locked = lockedIn;
     }
 
     /**
@@ -82,7 +82,7 @@ public class PackageListItem extends IdComboDto {
      * or value of PackageManager.PKG_PENDING_UNLOCK for "to be unlocked".
      *
      * @param lockedStatus "L" or "U" for pending status direction.
-     * @throws java.lang.Exception
+     * @throws java.lang.Exception in case of an unknown lock status
      */
     public void setPending(String lockedStatus) throws Exception {
         if (lockedStatus != null && lockedStatus.isEmpty()) {

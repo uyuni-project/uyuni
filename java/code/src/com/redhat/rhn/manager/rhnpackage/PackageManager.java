@@ -606,7 +606,8 @@ public class PackageManager extends BaseManager {
      * @param pc Page control object.
      * @return  DataResult containing locked packages data.
      */
-    public static DataResult<PackageListItem> systemLockedPackages(Long sid, PageControl pc) {
+    public static DataResult<PackageListItem> systemLockedPackages(
+            Long sid, PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries", "system_locked_packages");
         Map params = new HashMap();
         params.put("sid", sid);
@@ -631,7 +632,8 @@ public class PackageManager extends BaseManager {
             params.put("aid", pkg.getPackageArch().getId());
             params.put("pending",
                        pkg.isLockPending() ? PackageManager.PKG_PENDING_LOCK : null);
-            ModeFactory.getWriteMode("Package_queries", "lock_package").executeUpdate(params);
+            ModeFactory.getWriteMode("Package_queries", "lock_package").
+                    executeUpdate(params);
         }
     }
 
@@ -657,7 +659,7 @@ public class PackageManager extends BaseManager {
      * @param sid System ID
      * @param actionId Action ID
      * @param pending Pending value. If null or empty, then all packages gets sync'ed.
-     * @throws java.lang.Exception
+     * @throws java.lang.Exception in case of unknown pending status
      */
     public static void syncLockedPackages(Long sid, Long actionId, String pending)
             throws Exception {
@@ -700,8 +702,8 @@ public class PackageManager extends BaseManager {
      * Sets the pending status on locked package. If parameter "pendingStatus" is null,
      * the package is considered locked.
      *
-     * @param pkgId
-     * @param pendingStatus
+     * @param pkgId the package id
+     * @param pendingStatus the pending status
      */
     public static void setPendingStatusOnLockedPackage(Long pkgId, String pendingStatus) {
         if (pendingStatus != null && pendingStatus.isEmpty()) {
