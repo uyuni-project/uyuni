@@ -181,7 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n spacewalk-base-minimal-config
 %defattr(644,root,root,755)
 %dir %{_prefix}/share/rhn
-%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
+%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 %attr(644,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults/rhn_web.conf
 
 %files -n spacewalk-dobby
@@ -194,7 +194,7 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/susemanager-database
 %{perl_vendorlib}/Dobby/
 %dir %{_prefix}/share/rhn
-%dir %attr(750,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
+%dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
 %files -n spacewalk-pxt
 %defattr(644,root,root,755)
