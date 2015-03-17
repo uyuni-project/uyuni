@@ -122,10 +122,10 @@ public class MirrorCredentialsDto extends BaseDto {
     }
 
     /**
-     * @param primary the primary to set
+     * @param primaryIn the primary to set
      */
-    public void setPrimary(boolean primary) {
-        this.primary = primary;
+    public void setPrimary(boolean primaryIn) {
+        this.primary = primaryIn;
     }
 
     /**
