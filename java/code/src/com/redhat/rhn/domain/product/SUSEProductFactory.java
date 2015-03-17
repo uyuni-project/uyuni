@@ -221,6 +221,7 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Lookup a {@link SUSEProduct} object for given productId.
+     * @param productId the product
      * @return SUSE product for given productId
      */
     public static SUSEProduct lookupByProductId(int productId) {

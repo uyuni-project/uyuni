@@ -150,6 +150,7 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Find credentials by ID.
+     * @param id the id
      * @return credentials object or null
      */
     public static Credentials lookupCredentialsById(long id) {
