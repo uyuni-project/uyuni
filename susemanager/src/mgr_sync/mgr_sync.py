@@ -603,16 +603,18 @@ class MgrSync(object):
             sys.stdout.flush()
             return True
 
-        token = self.auth.token()
         for operation, method in actions:
             sys.stdout.write("Refreshing {0}".format(operation))
             sys.stdout.flush()
             try:
                 if method == "synchronizeChannels":
-                    self._execute_xmlrpc_method(self.conn.sync.content, method, token, mirror)
+                    # this is the only method which requires the mirror
+                    # parameter
+                    self._execute_xmlrpc_method(self.conn.sync.content, method,
+                                                self.auth.token(), mirror)
                 else:
                     self._execute_xmlrpc_method(self.conn.sync.content, method,
-                                                token)
+                                                self.auth.token())
                 self.log.info("Refreshing {0} succeeded".format(operation.rstrip()))
                 sys.stdout.write("[DONE]".rjust(text_width) + "\n")
                 sys.stdout.flush()
