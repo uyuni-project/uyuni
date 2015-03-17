@@ -19,13 +19,13 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.mgrsync.MgrSyncChannel;
-import com.suse.mgrsync.MgrSyncChannelFamilies;
-import com.suse.mgrsync.MgrSyncChannelFamily;
-import com.suse.mgrsync.MgrSyncChannels;
-import com.suse.mgrsync.MgrSyncProduct;
-import com.suse.mgrsync.MgrSyncUpgradePath;
-import com.suse.mgrsync.MgrSyncUpgradePaths;
+import com.suse.mgrsync.XMLChannel;
+import com.suse.mgrsync.XMLChannelFamilies;
+import com.suse.mgrsync.XMLChannelFamily;
+import com.suse.mgrsync.XMLChannels;
+import com.suse.mgrsync.XMLProduct;
+import com.suse.mgrsync.XMLUpgradePath;
+import com.suse.mgrsync.XMLUpgradePaths;
 
 import org.simpleframework.xml.core.Persister;
 
@@ -54,10 +54,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncChannel> readChannels() throws Exception {
+    private List<XMLChannel> readChannels() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        List<MgrSyncChannel> data = persister.read(
-                MgrSyncChannels.class, source).getChannels();
+        List<XMLChannel> data = persister.read(
+                XMLChannels.class, source).getChannels();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -68,10 +68,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncChannelFamily> readFamilies() throws Exception {
+    private List<XMLChannelFamily> readFamilies() throws Exception {
         File source = new File(TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
-        List<MgrSyncChannelFamily> data = persister.read(
-                MgrSyncChannelFamilies.class, source).getFamilies();
+        List<XMLChannelFamily> data = persister.read(
+                XMLChannelFamilies.class, source).getFamilies();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -82,10 +82,10 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @return
      * @throws Exception
      */
-    private List<MgrSyncUpgradePath> readUpgradePaths() throws Exception {
+    private List<XMLUpgradePath> readUpgradePaths() throws Exception {
         File source = new File(TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
-        List<MgrSyncUpgradePath> data = persister.read(
-                MgrSyncUpgradePaths.class, source).getPaths();
+        List<XMLUpgradePath> data = persister.read(
+                XMLUpgradePaths.class, source).getPaths();
         SUSEProductTestUtils.deleteIfTempFile(source);
         return data;
     }
@@ -95,11 +95,11 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadChannels() throws Exception {
-        List<MgrSyncChannel> channels = readChannels();
+        List<XMLChannel> channels = readChannels();
         assertEquals(845, channels.size());
 
         // Verify the first channel
-        MgrSyncChannel c = channels.get(0);
+        XMLChannel c = channels.get(0);
         assertEquals("ati-driver-sle11-sp2-i586", c.getLabel());
         assertEquals("i586", c.getArch());
         assertEquals("7260", c.getFamily());
@@ -107,21 +107,21 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
         assertFalse(c.isOptional());
 
         // Verify the products inside
-        List<MgrSyncProduct> products = c.getProducts();
+        List<XMLProduct> products = c.getProducts();
         assertEquals(4, products.size());
-        MgrSyncProduct p0 = products.get(0);
+        XMLProduct p0 = products.get(0);
         assertEquals(new Integer(879), p0.getId());
         assertEquals("SUSE_SLED", p0.getName());
         assertEquals("11.2", p0.getVersion());
-        MgrSyncProduct p1 = products.get(1);
+        XMLProduct p1 = products.get(1);
         assertEquals(new Integer(844), p1.getId());
         assertEquals("SUSE_SLED", p1.getName());
         assertEquals("11.2", p1.getVersion());
-        MgrSyncProduct p2 = products.get(2);
+        XMLProduct p2 = products.get(2);
         assertEquals(new Integer(843), p2.getId());
         assertEquals("SUSE_SLED", p2.getName());
         assertEquals("11.2", p2.getVersion());
-        MgrSyncProduct p3 = products.get(3);
+        XMLProduct p3 = products.get(3);
         assertEquals(new Integer(868), p3.getId());
         assertEquals("SUSE_SLED", p3.getName());
         assertEquals("11.2", p3.getVersion());
@@ -132,7 +132,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadFamilies() throws Exception {
-        List<MgrSyncChannelFamily> families = readFamilies();
+        List<XMLChannelFamily> families = readFamilies();
         assertEquals(51, families.size());
     }
 
@@ -141,7 +141,7 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      * @throws Exception
      */
     public void testReadUpgradePaths() throws Exception {
-        List<MgrSyncUpgradePath> paths = readUpgradePaths();
+        List<XMLUpgradePath> paths = readUpgradePaths();
         assertEquals(79, paths.size());
     }
 }

@@ -30,7 +30,7 @@ import java.util.List;
  * A channel as we parse it from the channels.xml file.
  */
 @Root(name = "channel", strict = false)
-public class MgrSyncChannel {
+public class XMLChannel {
     @Attribute
     private String arch;
 
@@ -70,11 +70,11 @@ public class MgrSyncChannel {
     @Attribute(name = "update_tag")
     private String updateTag;
 
-    @ElementList(empty= false)
-    private List<MgrSyncProduct> products;
+    @ElementList(empty = false)
+    private List<XMLProduct> products;
 
     @Element(name = "dist", required = false)
-    private MgrSyncDistribution distribution;
+    private XMLDistribution distribution;
 
     // Channel status (not an attribute of the xml file)
     private MgrSyncStatus status;
@@ -83,7 +83,7 @@ public class MgrSyncChannel {
      * Get the list of products.
      * @return list of products
      */
-    public List<MgrSyncProduct> getProducts() {
+    public List<XMLProduct> getProducts() {
         if (products != null) {
             return Collections.unmodifiableList(products);
         }
@@ -94,16 +94,16 @@ public class MgrSyncChannel {
 
     /**
      * Set the list of products.
-     * @param the list of products
+     * @param productsIn the list of products
      */
-    public void setProducts(List<MgrSyncProduct> products) {
-        this.products = products;
+    public void setProducts(List<XMLProduct> productsIn) {
+        this.products = productsIn;
     }
 
     /**
      * @return the distribution
      */
-    public MgrSyncDistribution getDistribution() {
+    public XMLDistribution getDistribution() {
         return distribution;
     }
 
@@ -116,7 +116,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the architecture.
-     * @param archIn
+     * @param archIn the architecture
      */
     public void setArch(String archIn) {
         this.arch = archIn;
@@ -131,7 +131,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the description.
-     * @param descriptionIn
+     * @param descriptionIn the description
      */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
@@ -161,7 +161,7 @@ public class MgrSyncChannel {
 
     /**
      * Setter for isSigned.
-     * @param signedIn
+     * @param signedIn signed in
      */
     public void setSigned(boolean signedIn) {
         if (signedIn) {
@@ -220,7 +220,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the name.
-     * @param nameIn
+     * @param nameIn the name
      */
     public void setName(String nameIn) {
         this.name = nameIn;
@@ -302,7 +302,7 @@ public class MgrSyncChannel {
 
     /**
      * Set the summary.
-     * @param summary
+     * @param summaryIn the summary
      */
     public void setSummary(String summaryIn) {
         this.summary = summaryIn;
@@ -352,10 +352,10 @@ public class MgrSyncChannel {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MgrSyncChannel)) {
+        if (!(obj instanceof XMLChannel)) {
             return false;
         }
-        MgrSyncChannel other = (MgrSyncChannel) obj;
+        XMLChannel other = (XMLChannel) obj;
         return new EqualsBuilder().append(label, other.label).isEquals();
     }
 

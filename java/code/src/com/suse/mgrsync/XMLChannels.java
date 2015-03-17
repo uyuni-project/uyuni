@@ -15,26 +15,28 @@
 
 package com.suse.mgrsync;
 
-import org.simpleframework.xml.Attribute;
+import java.util.ArrayList;
+import java.util.List;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 /**
- *
- * @author bo
+ * Container for a list of channels.
  */
-@Root(name = "dist")
-public class MgrSyncDistribution {
-    @Attribute
-    private String os;
+@Root(name = "channels", strict = false)
+public class XMLChannels {
+    @ElementList(name = "channel", inline = true, required = false)
+    private List<XMLChannel> channels;
 
-    @Attribute
-    private String release;
+    /**
+     * Return the list of {@link XMLChannel} objects.
+     * @return channels
+     */
+    public List<XMLChannel> getChannels() {
+        if (this.channels == null) {
+            this.channels = new ArrayList<XMLChannel>();
+        }
 
-    public String getOs() {
-        return os;
-    }
-
-    public String getRelease() {
-        return release;
+        return this.channels;
     }
 }
