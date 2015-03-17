@@ -35,18 +35,30 @@ public class XMLUpgradePath {
     @Attribute(name = "to_product")
     private String toProduct;
 
+    /**
+     * @return the "from" product
+     */
     public String getFromProduct() {
         return fromProduct;
     }
 
+    /**
+     * @return the "from" product id
+     */
     public Integer getFromProductId() {
         return fromProductId;
     }
 
+    /**
+     * @return the "to" product
+     */
     public String getToProduct() {
         return toProduct;
     }
 
+    /**
+     * @return the "to" product id
+     */
     public Integer getToProductId() {
         return toProductId;
     }

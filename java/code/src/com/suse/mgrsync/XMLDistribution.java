@@ -19,8 +19,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 /**
- *
- * @author bo
+ * A distribution as parsed from channels.xml.
  */
 @Root(name = "dist")
 public class XMLDistribution {
@@ -30,10 +29,16 @@ public class XMLDistribution {
     @Attribute
     private String release;
 
+    /**
+     * @return the os
+     */
     public String getOs() {
         return os;
     }
 
+    /**
+     * @return the release
+     */
     public String getRelease() {
         return release;
     }

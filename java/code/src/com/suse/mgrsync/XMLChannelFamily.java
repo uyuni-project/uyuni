@@ -42,10 +42,10 @@ public class XMLChannelFamily {
 
     /**
      * Set the default node count.
-     * @param defaultNodeCount the defaultNodeCount to set
+     * @param defaultNodeCountIn the defaultNodeCount to set
      */
-    public void setDefaultNodeCount(Integer defaultNodeCount) {
-        this.defaultNodeCount = defaultNodeCount;
+    public void setDefaultNodeCount(Integer defaultNodeCountIn) {
+        this.defaultNodeCount = defaultNodeCountIn;
     }
 
     /**
@@ -58,10 +58,10 @@ public class XMLChannelFamily {
 
     /**
      * Set the label.
-     * @param label the label to set
+     * @param labelIn the label to set
      */
-    public void setLabel(String label) {
-        this.label = label;
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
     }
 
     /**
@@ -74,9 +74,9 @@ public class XMLChannelFamily {
 
     /**
      * Set the name.
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 }
