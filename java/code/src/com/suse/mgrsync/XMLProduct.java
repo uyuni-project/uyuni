@@ -23,7 +23,6 @@ import org.simpleframework.xml.Text;
 
 /**
  * Represents a product in channels.xml format (element product_id).
- * @author bo
  */
 @Root(name = "product_id", strict = false)
 public class XMLProduct {
@@ -86,7 +85,7 @@ public class XMLProduct {
 
     /**
      * Set the name.
-     * @param nameIn
+     * @param nameIn the name
      */
     public void setName(String nameIn) {
         this.name = nameIn;
@@ -102,7 +101,7 @@ public class XMLProduct {
 
     /**
      * Set the version.
-     * @param versionIn
+     * @param versionIn the version
      */
     public void setVersion(String versionIn) {
         this.version = versionIn;

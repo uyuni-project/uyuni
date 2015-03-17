@@ -70,7 +70,7 @@ public class XMLChannel {
     @Attribute(name = "update_tag")
     private String updateTag;
 
-    @ElementList(empty= false)
+    @ElementList(empty = false)
     private List<XMLProduct> products;
 
     @Element(name = "dist", required = false)
@@ -94,10 +94,10 @@ public class XMLChannel {
 
     /**
      * Set the list of products.
-     * @param the list of products
+     * @param productsIn the list of products
      */
-    public void setProducts(List<XMLProduct> products) {
-        this.products = products;
+    public void setProducts(List<XMLProduct> productsIn) {
+        this.products = productsIn;
     }
 
     /**
@@ -116,7 +116,7 @@ public class XMLChannel {
 
     /**
      * Set the architecture.
-     * @param archIn
+     * @param archIn the architecture
      */
     public void setArch(String archIn) {
         this.arch = archIn;
@@ -131,7 +131,7 @@ public class XMLChannel {
 
     /**
      * Set the description.
-     * @param descriptionIn
+     * @param descriptionIn the description
      */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
@@ -161,7 +161,7 @@ public class XMLChannel {
 
     /**
      * Setter for isSigned.
-     * @param signedIn
+     * @param signedIn signed in
      */
     public void setSigned(boolean signedIn) {
         if (signedIn) {
@@ -220,7 +220,7 @@ public class XMLChannel {
 
     /**
      * Set the name.
-     * @param nameIn
+     * @param nameIn the name
      */
     public void setName(String nameIn) {
         this.name = nameIn;
@@ -302,7 +302,7 @@ public class XMLChannel {
 
     /**
      * Set the summary.
-     * @param summary
+     * @param summaryIn the summary
      */
     public void setSummary(String summaryIn) {
         this.summary = summaryIn;

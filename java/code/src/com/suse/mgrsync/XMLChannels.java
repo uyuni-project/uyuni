@@ -20,6 +20,9 @@ import java.util.List;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+/**
+ * Container for a list of channels.
+ */
 @Root(name = "channels", strict = false)
 public class XMLChannels {
     @ElementList(name = "channel", inline = true, required = false)
