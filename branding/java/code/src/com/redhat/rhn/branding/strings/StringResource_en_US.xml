@@ -1236,7 +1236,7 @@ As a Channel Administrator, you may change the base channels your systems are su
            related to the channel will no longer be related to the channel, and may be
            orphaned. If the channel has child channels, it cannot be deleted; the child
            channels must be deleted first. If the channel has autoinstallable distributions
-           associated to it, it cannot be deleted; the autoinstallable distributions must be
+           associated to it, it cannot be deleted; the distributions must be
            dissociated from the channel or deleted first.
          </source>
       </trans-unit>
@@ -1352,20 +1352,6 @@ As a Channel Administrator, you may change the base channels your systems are su
         <source>The original state of the target channel will be cloned into the new channel. You will then have the option to select the patches you wish to import into the new channel. Importing a patch will bring the packages from the target channel referred to by the patch into the new channel. Selecting all of the patches from the list of potential patches is the same as cloning the current state of the channel. Selecting none of the patches is the same as cloning the original state of the channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Clone.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="channel.delete.jsp.introparagraph">
-        <source>Are you sure you wish to delete this channel? Packages in the channel will
-           be removed from the channel, but will remain on the server. You will be
-           given the option to delete them after the channel has been deleted. Patches
-           related to the channel will no longer be related to the channel, and may be
-           orphaned. If the channel has child channels, it cannot be deleted; the child
-           channels must be deleted first. If the channel has autoinstallation distributions
-           associated to it, it cannot be deleted; the distributions must be
-           dissociated from the channel or deleted first.
-         </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.clone.title">
