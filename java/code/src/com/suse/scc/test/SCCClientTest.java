@@ -105,7 +105,7 @@ public class SCCClientTest extends TestCase {
         List<SCCRepository> repos = p.getRepositories();
         assertEquals(1, repos.size());
         SCCRepository r = repos.get(0);
-        assertEquals(1357, r.getSCCId());
+        assertEquals(new Long(1357), r.getSCCId());
 
         // API v4 support (paging)
         SCCProduct p2 = products.get(1);
@@ -131,7 +131,7 @@ public class SCCClientTest extends TestCase {
         // Assertions
         assertEquals(2, repos.size());
         SCCRepository r = repos.get(0);
-        assertEquals(1358, r.getSCCId());
+        assertEquals(new Long(1358), r.getSCCId());
         assertEquals("SLE10-SDK-SP4-Online", r.getName());
         assertEquals("sles-10-i586", r.getDistroTarget());
         assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
@@ -216,7 +216,7 @@ public class SCCClientTest extends TestCase {
             // Assertions
             assertEquals(1, repos.size());
             SCCRepository r = repos.get(0);
-            assertEquals(1358, r.getSCCId());
+            assertEquals(new Long(1358), r.getSCCId());
             assertEquals("SLE10-SDK-SP4-Online", r.getName());
             assertEquals("sles-10-i586", r.getDistroTarget());
             assertEquals("SLE10-SDK-SP4-Online for sles-10-i586", r.getDescription());
