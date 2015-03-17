@@ -50,8 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
- * @author bo
+ * LockPackageAction
  */
 public class LockPackageAction extends BaseSystemPackagesAction {
     private static final String LIST_NAME = "packageList";
@@ -65,7 +64,9 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         return result;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm actionForm,
@@ -77,7 +78,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         Server server = SystemManager.lookupByIdAndUser(sid, user);
-        Set<String> pkgsToSelect = SessionSetHelper.lookupAndBind(request, this.getDecl(sid));
+        Set<String> pkgsToSelect = SessionSetHelper.lookupAndBind(
+                request, this.getDecl(sid));
         ActionMessages infoMessages = new ActionMessages();
         ActionErrors errorMessages = new ActionErrors();
         Set<Package> pkgsAlreadyLocked = new HashSet<Package>();
@@ -86,7 +88,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             pkgsToSelect.clear();
         }
 
-        DataResult<PackageListItem> lockedPackagesResult = PackageManager.systemLockedPackages(sid, null);
+        DataResult<PackageListItem> lockedPackagesResult =
+                PackageManager.systemLockedPackages(sid, null);
         for (PackageListItem pkg : lockedPackagesResult) {
             if (!context.isSubmitted()) {
                 // pre-select locked

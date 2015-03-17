@@ -89,7 +89,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * ActionManager - the singleton class used to provide Business Operations
@@ -1182,10 +1181,10 @@ public class ActionManager extends BaseManager {
 
     /**
      * Schedules one or more package lock actions for the given server.
-     * @param scheduler
-     * @param server
-     * @param packages
-     * @param earliest
+     * @param scheduler the scheduler
+     * @param server the server
+     * @param packages set of packages
+     * @param earliest earliest occurrence of this action
      * @return Currently scheduled PackageAction
      */
     public static Action schedulePackageLock(User scheduler,

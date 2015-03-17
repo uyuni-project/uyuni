@@ -24,12 +24,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author bo
+ * PackageLockAction
  */
 public class PackageLockAction extends PackageAction {
     public static final String PARAM_PENDING = "pending";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onCancelAction(Map params) {
         if (params == null) {
@@ -40,8 +42,10 @@ public class PackageLockAction extends PackageAction {
             try {
                 PackageManager.syncLockedPackages(action.getServer().getId(),
                     this.getId(), (String) params.get(PackageLockAction.PARAM_PENDING));
-            } catch (Exception e) {
-                Logger.getLogger(PackageLockAction.class.getName()).log(Level.SEVERE, null, e);
+            }
+            catch (Exception e) {
+                Logger.getLogger(PackageLockAction.class.getName()).log(
+                        Level.SEVERE, null, e);
             }
         }
 

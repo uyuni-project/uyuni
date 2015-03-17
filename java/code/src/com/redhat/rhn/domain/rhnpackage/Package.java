@@ -80,10 +80,10 @@ public class Package extends BaseDomainHelper {
     private Set<PackageConflicts> conflicts = new HashSet();
 
     /**
-     * @param lockPending Set pending status. Default is False.
+     * @param lockPendingIn Set pending status. Default is False.
      */
-    public void setLockPending(Boolean lockPending) {
-        this.lockPending = lockPending;
+    public void setLockPending(Boolean lockPendingIn) {
+        this.lockPending = lockPendingIn;
     }
 
     /**
