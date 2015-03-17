@@ -68,7 +68,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 %doc answers.txt COPYING README
 %dir /srv/www/tftpsync
 %dir /%{_datadir}/rhn
-%dir /%{_datadir}/rhn/config-defaults
+%attr(755,root,www) %dir %{_datadir}/rhn/config-defaults
 /srv/www/tftpsync/add
 /srv/www/tftpsync/delete
 %{_sbindir}/configure-tftpsync.sh
