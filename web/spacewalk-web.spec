@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.49
+Version: 2.3.51
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -50,7 +50,6 @@ This package contains the HTML files for the Spacewalk web site.
 %package -n spacewalk-base
 Group: Applications/Internet
 Summary: Programs needed to be installed on the RHN Web base classes
-Requires: spacewalk-pxt
 Provides: spacewalk(spacewalk-base) = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: susemanager-frontend-libs
@@ -62,6 +61,7 @@ Requires: perl(URI)
 Requires: perl(XML::LibXML)
 Obsoletes: rhn-base < 5.3.0
 Obsoletes: spacewalk-grail < %{version}
+Obsoletes: spacewalk-pxt < %{version}
 Obsoletes: spacewalk-sniglets < %{version}
 Provides: rhn-base = 5.3.0
 
@@ -79,6 +79,7 @@ Obsoletes: rhn-base-minimal < 5.3.0
 Provides: rhn-base-minimal = 5.3.0
 Requires: perl(DBI)
 Requires: perl(Params::Validate)
+Requires: spacewalk-base-minimal-config
 
 %description -n spacewalk-base-minimal
 Independent Perl modules in the RHN:: name-space.
@@ -109,23 +110,6 @@ Dobby is collection of Perl modules and scripts to administer an Oracle
 database.
 
 
-%package -n spacewalk-pxt
-Summary: The PXT library for web page templating
-Group: Applications/Internet
-Requires: spacewalk(spacewalk-base-minimal-config)
-Requires: httpd
-Obsoletes: rhn-pxt < 5.3.0
-Provides:  rhn-pxt = 5.3.0
-Requires:  perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:  perl(Cache::FileCache)
-Requires:  perl(Params::Validate)
-Requires:  perl(URI)
-%description -n spacewalk-pxt
-This package is the core software of the new Spacewalk site.  It is responsible
-for HTML, XML, WML, HDML, and SOAP output of data.  It is more or less
-equivalent to things like Apache::ASP and Mason.
-
-
 %prep
 %setup -q
 
@@ -151,9 +135,6 @@ install -m 644 conf/rhn_web.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defa
 install -m 644 conf/rhn_dobby.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 755 modules/dobby/scripts/check-database-space-usage.sh $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 install -m 0644 etc/sysconfig/SuSEfirewall2.d/services/susemanager-database %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/
-%if 0%{?rhel} && 0%{?rhel} < 7 || 0%{?suse_version} && 0%{?suse_version} < 1310
-rm -f $RPM_BUILD_ROOT%{perl_vendorlib}/PXT/Apache24Config.pm
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -161,9 +142,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -n spacewalk-base
 %defattr(644,root,root,755)
 %dir %{perl_vendorlib}/RHN
-%dir %{perl_vendorlib}/PXT
 %{perl_vendorlib}/RHN.pm
-%{perl_vendorlib}/RHN/Cache/
 %{perl_vendorlib}/RHN/Cert.pm
 %{perl_vendorlib}/RHN/SatelliteCert.pm
 
@@ -196,18 +175,20 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_prefix}/share/rhn
 %dir %attr(755,root,%{apache_group}) %{_prefix}/share/rhn/config-defaults
 
-%files -n spacewalk-pxt
-%defattr(644,root,root,755)
-%{perl_vendorlib}/PXT.pm
-%{perl_vendorlib}/PXT/
-%exclude %{perl_vendorlib}/PXT/Config.pm
-
 %files -n spacewalk-html
 %defattr(644,root,root,755)
 %{www_path}/www/htdocs/*
 %doc LICENSE
 
 %changelog
+* Tue Mar 17 2015 Tomas Lestach <tlestach@redhat.com> 2.3.51-1
+- let spacewalk-base-minimal require spacewalk-base-minimal-config
+
+* Mon Mar 16 2015 Tomas Lestach <tlestach@redhat.com> 2.3.50-1
+- removing RHN::Cache::File as it isn't referenced anymore
+- Apache24Config.pm has already been removed
+- removing spacewalk-pxt completelly
+
 * Fri Mar 13 2015 Jan Dobes 2.3.49-1
 - removing no longer used references
 - removing RHN::DB::DataSource as it isn't referenced anymore
