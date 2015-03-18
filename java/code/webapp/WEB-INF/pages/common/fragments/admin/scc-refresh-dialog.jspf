@@ -1,6 +1,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
-<div id="scc-migration-dialog" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="<bean:message key='SUSE Customer Center'/>" aria-hidden="true">
+<div id="scc-migration-dialog" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="scc-refresh-dialog-title" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
