@@ -95,7 +95,6 @@
                 name="groupList"
                 exportColumns="id, name, groupAdmins, serverCount" />
 <div class="pull-left">
-  <hr />
         <input class="btn btn-default" type="submit" name="union" value="${rhn:localize('grouplist.jsp.union')}" />
         <input class="btn btn-default" type="submit" name="intersection" value="${rhn:localize('grouplist.jsp.intersection')}" />
 </div>

@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 # Copyright 2013 Aron Parsons <aronparsons@gmail.com>
-# Copyright (c) 2011--2014 Red Hat, Inc.
+# Copyright (c) 2011--2015 Red Hat, Inc.
 #
 
 # NOTE: the 'self' variable is an instance of SpacewalkShell
@@ -1974,6 +1974,10 @@ def help_softwarechannel_setsyncschedule(self):
     print 'Sets the repo sync schedule for a software channel'
     print
     print 'usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>'
+    print
+    print 'The schedule is specified in Quartz CronTrigger format without enclosing quotes.'
+    print 'For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?'
+    print
 
 
 def complete_softwarechannel_setsyncschedule(self, text, line, beg, end):

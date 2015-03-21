@@ -5,7 +5,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.3.10
+Version: 2.3.12
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -114,6 +114,12 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Thu Mar 19 2015 Grant Gainey 2.3.12-1
+- Updating copyright info for 2015
+
+* Wed Mar 18 2015 Stephen Herr <sherr@redhat.com> 2.3.11-1
+- 1191253 - update squid directives to use if-modified-since header
+
 * Mon Feb 16 2015 Stephen Herr <sherr@redhat.com> 2.3.10-1
 - drop monitoring from proxy setup
 

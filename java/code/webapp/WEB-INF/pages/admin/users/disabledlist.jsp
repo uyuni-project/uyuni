@@ -57,7 +57,7 @@
                 sortattr="changeDate"/>
 
         </rl:list>
-        <div class="row-0">
+        <div class="row">
                 <div class="col-xs-6 text-left">
                         <input type="submit" class="btn btn-success" name="dispatch" value="<bean:message key='disabledlist.jsp.reactivate'/>" />
                 </div>

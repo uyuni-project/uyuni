@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008--2014 Red Hat, Inc.
+# Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -243,6 +243,12 @@ class apacheRequest:
 
         success_response = apache.OK
         response_size = file_size
+
+        # Respond to if-modified-since requests
+        if (self.req.headers_in.has_key("If-Modified-Since") and
+                rhnFlags.get("outputTransportOptions").has_key("Last-Modified") and
+                rhnFlags.get("outputTransportOptions")['Last-Modified'] == self.req.headers_in['If-Modified-Since']):
+            return apache.HTTP_NOT_MODIFIED
 
         # Serve up the requested byte range
         if self.req.headers_in.has_key("Range"):

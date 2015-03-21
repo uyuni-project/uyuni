@@ -13,7 +13,7 @@ Name: spacewalk-web
 Summary: Spacewalk Web site - Perl modules
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.51
+Version: 2.3.52
 Release: 1%{?dist}
 URL:          https://fedorahosted.org/spacewalk/
 Source0:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -57,7 +57,6 @@ Requires: susemanager-frontend-libs
 Requires: sudo
 Requires: httpd
 Requires: perl(Params::Validate)
-Requires: perl(URI)
 Requires: perl(XML::LibXML)
 Obsoletes: rhn-base < 5.3.0
 Obsoletes: spacewalk-grail < %{version}
@@ -181,6 +180,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu Mar 19 2015 Tomas Lestach <tlestach@redhat.com> 2.3.52-1
+- drop requires for perl-URI - seems to be unused
+- Updating copyright info for 2015
+
 * Tue Mar 17 2015 Tomas Lestach <tlestach@redhat.com> 2.3.51-1
 - let spacewalk-base-minimal require spacewalk-base-minimal-config
 

@@ -94,7 +94,7 @@
         </c:when>
    <c:otherwise>
                 <div class="alert alert-info">
-		         <bean:message key="activation-keys.jsp.no-universal-default"/>
+                        <bean:message key="activation-keys.jsp.no-universal-default"/>
                 </div>
    </c:otherwise>
 </c:choose>
