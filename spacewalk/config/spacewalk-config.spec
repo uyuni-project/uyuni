@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.3.16
+Version: 2.3.17
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -24,7 +24,6 @@ Group: Applications/System
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Buildarch: noarch
 Requires: perl(Satcon)
-Requires: perl(Apache::DBI)
 Obsoletes: rhn-satellite-config < 5.3.0
 Provides: rhn-satellite-config = 5.3.0
 %if 0%{?suse_version}
@@ -175,6 +174,9 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Thu Mar 19 2015 Grant Gainey 2.3.17-1
+- remove unused dependency
+
 * Fri Mar 13 2015 Tomas Lestach <tlestach@redhat.com> 2.3.16-1
 - preparations for mod_perl removal
 

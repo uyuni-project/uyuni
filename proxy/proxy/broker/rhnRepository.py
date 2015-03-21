@@ -2,7 +2,7 @@
 #-------------------------------------------------------------------------------
 # This module contains the functionality for providing local packages.
 #
-# Copyright (c) 2008--2014 Red Hat, Inc.
+# Copyright (c) 2008--2015 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
 # version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -78,7 +78,7 @@ class Repository(rhnRepository.Repository):
         log_debug(3, pkgFilename)
         mappingName = "package_mapping:%s:" % self.channelName
         mapping = self._cacheObj(mappingName, self.channelVersion,
-                                        self.__channelPackageMapping, ())
+                                 self.__channelPackageMapping, ())
 
         # If the file name has parameters, it's a different kind of package.
         # Determine the architecture requested so we can construct an
@@ -180,7 +180,7 @@ class Repository(rhnRepository.Repository):
                 f.close()
                 stringObject = cPickle.loads(data)
                 return stringObject
-            except Exception: # corrupted cache file
+            except (IOError, cPickle.UnpicklingError): # corrupted cache file
                 pass # do nothing, we'll fetch / write it again
 
         # The file's not there; query the DB or whatever dataproducer used.
@@ -297,9 +297,8 @@ class KickstartRepository(Repository):
                 f = open(filePath, "r")
                 mapping = cPickle.loads(f.read())
                 f.close()
-            except Exception: # corrupt cached file, delete it
-                os.unlink(filePath)
-                mapping = None
+            except (IOError, cPickle.UnpicklingError): # corrupt cached file
+                mapping = None # ignore it, we'll get and write it again
 
         now = int(time.time())
         if not mapping or mapping['expires'] < now:

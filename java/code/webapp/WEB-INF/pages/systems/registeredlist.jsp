@@ -36,7 +36,6 @@
   </html:submit>
   <hr>
 <rhn:submitted/>
-
         <rl:list
                 dataset="pageList"
                 name="systemList"
