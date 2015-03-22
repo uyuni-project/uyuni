@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 When /^I execute mgr\-sync "([^"]*)" with user "([^"]*)" and password "([^"]*)"$/ do |arg1, u, p|
-    $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
+  $command_output = sshcmd("echo -e '#{u}\n#{p}\n' | mgr-sync #{arg1}", ignore_err: true)[:stdout]
 end
 
 When /^I execute mgr\-sync "([^"]*)"$/ do |arg1|
@@ -87,7 +87,7 @@ When /^I copy to server "([^"]*)"$/ do |arg1|
 end
 
 Then /^the pxe-default-profile should be enabled$/ do
-  step "file \"/srv/tftpboot/pxelinux.cfg/default\" contains \"ONTIMEOUT\\ pxe-default-profile\""
+  step %[file "/srv/tftpboot/pxelinux.cfg/default" contains "ONTIMEOUT\\ pxe-default-profile"]
 end
 
 Then /^the pxe-default-profile should be disabled$/ do
@@ -145,4 +145,3 @@ Then /^I wont get "([^"]*)"$/ do |arg1|
     raise "'#{arg1}' found in output '#{$command_output}'"
   end
 end
-
