@@ -1,3 +1,5 @@
+# COPYRIGHT 2015 SUSE LLC
+
 rpcApiTester = XMLRPCApiTest.new(ENV["TESTHOST"])
 
 #
