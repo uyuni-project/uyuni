@@ -2,11 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 Given /^I am on the groups page$/ do
-    step "I am on the Systems page"
-    step "I follow \"System Groups\" in the left menu"
+  steps %[
+    Given I am on the Systems page
+    And I follow "System Groups" in the left menu
+  ]
 end
 
 When /^I check this client$/ do
-  step 'I check "' + $myhostname + '" in the list'
+  step %[I check "#{$myhostname}" in the list]
 end
 
