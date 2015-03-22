@@ -1,3 +1,5 @@
+# COPYRIGHT 2015 SUSE LLC
+
 require_relative 'xmlrpctest'
 
 class XMLRPCSystemTest < XMLRPCBaseTest
