@@ -1,10 +1,10 @@
+# COPYRIGHT 2015 SUSE LLC
 rpctest = XMLRPCActivationKeyTest.new(ENV["TESTHOST"])
 key = nil
 
 Given /^I am logged in via XML\-RPC\/activationkey as user "([^"]*)" and password "([^"]*)"$/ do |luser, password|
   fail if not rpctest.login(luser, password)
 end
-
 
 When /^I create an AK with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/ do |id, dscr, limit|
   key = rpctest.createKey(id, dscr, limit)
@@ -53,7 +53,6 @@ end
 Then /^I have to see them by calling activationkey\.getDetails\(\)$/ do
   fail if not rpctest.getDetails(key)
 end
-
 
 # ToDO
 #   Scenario: Channels
