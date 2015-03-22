@@ -40,7 +40,7 @@ Then /^The package scheduled is "(.*?)"$/ do |pkg|
 end
 
 Then /^The action status is "(.*?)"$/ do |status|
-  step "I should see a \"This action's status is: #{status}\" text"
+  step %[I should see a "This action's status is: #{status}" text]
 end
 
 Then /^Package "(.*?)" is reported as pending to be locked$/ do |pkg|
@@ -93,16 +93,14 @@ end
 
 When /^I select all the packages$/ do
   within(:xpath, "//section") do
-      # use div/div/div for cve audit which has two tables
-      top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"
+    # use div/div/div for cve audit which has two tables
+    top_level_xpath_query = "//div[@class='table-responsive']/table/thead/tr[.//input[@type='checkbox']]"
+    row = first(:xpath, top_level_xpath_query)
+    if row.nil?
+      sleep 1
+      $stderr.puts "ERROR - try again"
       row = first(:xpath, top_level_xpath_query)
-      if row.nil?
-          sleep 1
-          $stderr.puts "ERROR - try again"
-          row = first(:xpath, top_level_xpath_query)
-      end
-      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
+    end
+    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(true)
   end
-
 end
-
