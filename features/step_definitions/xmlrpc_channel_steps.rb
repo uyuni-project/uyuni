@@ -58,4 +58,3 @@ Then /^channel "([^"]*)" should not have attribute "([^"]*)"$/ do |label, attr|
   fail if not ret
   fail if ret.has_key?(attr)
 end 
-
