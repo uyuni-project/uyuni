@@ -2,7 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Given /^I am on the Admin page$/ do
-  step 'I am authorized as "admin" with password "admin"'
-  step 'I follow "Admin"'
+  steps %[
+    When I am authorized as "admin" with password "admin"
+    And I follow "Admin
+  ]
 end
 
