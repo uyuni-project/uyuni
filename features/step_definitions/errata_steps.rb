@@ -2,16 +2,18 @@
 # Licensed under the terms of the MIT license.
 
 Given /^I am on the errata page$/ do
-  step "I am authorized"
+  step %[I am authorized]
   within(:xpath, "//*[contains(@role, 'navigation')]") do
     find_link(debrand_string("Errata")).click
   end
 end
 
 Given /^I am on the "([^"]*)" errata Details page$/ do |arg1|
-  step "I am on the errata page"
-    step "I follow \"All\" in the left menu"
-    step "I follow \"#{arg1}\""
+  steps %[
+    Given I am on the errata page
+    And I follow "All" in the left menu
+    And I follow "#{arg1}"
+  ]
 end
 
 Then /^I should see an update in the list$/ do
