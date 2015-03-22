@@ -2,18 +2,18 @@
 # Licensed under the terms of the MIT license.
 
 When /^I perform a nagios check patches$/ do
-    command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_patches #{$myhostname}"
-    output = `#{command} > /tmp/nagios.out`
+  command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_patches #{$myhostname}"
+  output = `#{command} > /tmp/nagios.out`
 end
 
 When /^I perform a nagios check last event$/ do
-    command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_lastevent #{$myhostname}"
-    output = `#{command} > /tmp/nagios.out`
+  command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_lastevent #{$myhostname}"
+  output = `#{command} > /tmp/nagios.out`
 end
 
 When /^I perform an invalid nagios check patches$/ do
-    command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_patches does.not.exist"
-    output = `#{command} > /tmp/nagios.out`
+  command = "ssh -o StrictHostKeyChecking=no #{ENV['TESTHOST']} /usr/lib/nagios/plugins/check_suma_patches does.not.exist"
+  output = `#{command} > /tmp/nagios.out`
 end
 
 Then /^I should see WARNING: 1 patch pending$/ do
@@ -39,4 +39,3 @@ Then /^I should see an unknown system message$/ do
     raise "Nagios check patches for nonexisting system failed '#{command}' #{$!}: #{output}"
   end
 end
-
