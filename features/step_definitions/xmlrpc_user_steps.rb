@@ -1,8 +1,9 @@
+# COPYRIGHT 2015 SUSE LLC
+
 rpctest = XMLRPCUserTest.new(ENV["TESTHOST"])
 users = nil
 roles = nil
 password = "die gurke"
-
 
 Given /^I am logged in via XML\-RPC\/user as user "([^"]*)" and password "([^"]*)"$/ do |luser, password|
   rpctest.login(luser, password)
@@ -63,7 +64,6 @@ Then /^I should see "([^"]*)" when I call user\.listRoles\(\) with "([^"]*)"$/ d
   end
   fail if not passed
 end
-
 
 Then /^I logout from XML\-RPC\/user namespace\.$/ do
   fail if not rpctest.logout()
