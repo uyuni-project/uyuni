@@ -2,14 +2,16 @@
 # Licensed under the terms of the MIT license.
 
 Then /^I should see something$/ do
-    step 'I should see a "Sign In" text'
-    step 'I should see a "About" text'
+  steps %[
+    Given I should see a "Sign In" text
+    And I should see a "About" text
+  ]
 end
 
 Then /^I should see "([^"]*)" systems selected for SSM$/ do |arg|
-    within(:xpath, "//span[@id=\"spacewalk-set-system_list-counter\"]") do
-       fail if not has_content?(arg)
-    end
+  within(:xpath, "//span[@id=\"spacewalk-set-system_list-counter\"]") do
+    fail if not has_content?(arg)
+  end
 end
 
 #
@@ -17,14 +19,14 @@ end
 #
 Then /^I should see a "([^"]*)" text$/ do |arg1|
   if not page.has_content?(debrand_string(arg1))
-      sleep 1
-      fail if not page.has_content?(debrand_string(arg1))
+    sleep 1
+    fail if not page.has_content?(debrand_string(arg1))
   end
 end
 
 Then /^I should see that this system has been deleted$/ do
   system_id = client_system_id_to_i
-  step "I should see a \"System profile #{system_id} has been deleted.\" text"
+  step %[I should see a "System profile #{system_id} has been deleted." text]
 end
 
 #
@@ -32,8 +34,8 @@ end
 #
 Then /^I should see a text like "([^"]*)"$/ do |arg1|
   if not page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
-      sleep 1
-      fail if not page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
+    sleep 1
+    fail if not page.has_content?(Regexp.new("#{debrand_string(arg1)}"))
   end
 end
 
@@ -146,7 +148,7 @@ end
 Then /^I should see a "([^"]*)" link in row ([0-9]+) of the content menu$/ do |arg1, arg2|
   within(:xpath, "//section") do
     within(:xpath, "//div[@class=\"spacewalk-content-nav\"]/ul[#{arg2}]") do
-      step "I should see a \"#{arg1}\" link"
+      step %[I should see a "#{arg1}" link]
     end
   end
 end
@@ -223,7 +225,7 @@ Then /^I should see "([^"]*)" in field "([^"]*)"$/ do |arg1, arg2|
 end
 
 Then /^I should see a "([^"]*)" element in "([^"]*)" form$/ do |arg1, arg2|
-   within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
+  within(:xpath, "//form[@id=\"#{arg2}\"] | //form[@name=\"#{arg2}\"]") do
     fail if not find_field(arg1, :match => :first).visible?
   end
 end
@@ -236,14 +238,14 @@ Then /^I should see a "([^"]*)" editor in "([^"]*)" form$/ do |arg1, arg2|
 end
 
 Then /^"([^"]*)" is installed$/ do |package|
-   output = `rpm -q #{package} 2>&1`
-   if ! $?.success?
-       raise "exec rpm failed (Code #{$?}): #{$!}: #{output}"
-   end
+  output = `rpm -q #{package} 2>&1`
+  if ! $?.success?
+    raise "exec rpm failed (Code #{$?}): #{$!}: #{output}"
+  end
 end
 
 Then /^I should see a Sign Out link$/ do
-    fail if not has_xpath?("//a[@href='/rhn/Logout.do']")
+  fail if not has_xpath?("//a[@href='/rhn/Logout.do']")
 end
 
 When /^I check "([^"]*)" in the list$/ do |arg1|
@@ -261,15 +263,15 @@ end
 
 When /^I uncheck "([^"]*)" in the list$/ do |arg1|
   within(:xpath, "//section") do
-      # use div/div/div for cve audit which has two tables
-      top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
+    # use div/div/div for cve audit which has two tables
+    top_level_xpath_query = "//div[@class='table-responsive']/table/tbody/tr[.//td[contains(.,'#{arg1}')] and .//input[@type='checkbox' and @checked]]"
+    row = first(:xpath, top_level_xpath_query)
+    if row.nil?
+      sleep 1
+      $stderr.puts "ERROR - try again"
       row = first(:xpath, top_level_xpath_query)
-      if row.nil?
-          sleep 1
-          $stderr.puts "ERROR - try again"
-          row = first(:xpath, top_level_xpath_query)
-      end
-      row.first(:xpath, ".//input[@type=\"checkbox\"]").set(false)
+    end
+    row.first(:xpath, ".//input[@type=\"checkbox\"]").set(false)
   end
 end
 
