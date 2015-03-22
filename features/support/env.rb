@@ -79,23 +79,23 @@ Capybara.default_wait_time = 10
 # Register different browsers
 case browser
 when :chrome
-    Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
-    end
+  Capybara.register_driver :selenium do |app|
+    Capybara::Selenium::Driver.new(app, :browser => :chrome, :switches => ['--ignore-certificate-errors'])
+  end
 when :firefox
-    Capybara.register_driver :selenium do |app|
-      profile = Selenium::WebDriver::Firefox::Profile.new
-      if proxy
-          profile["network.proxy.type"] = 1
-          profile["network.proxy.http"] = proxy
-          profile["network.proxy.http_port"] = 8080
-          profile["network.proxy.ssl"] = proxy
-          profile["network.proxy.ssl_port"] = 8080
-      end
-      driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile=> profile)
-      driver.browser.manage.window.resize_to(1280, 1024)
-      driver
+  Capybara.register_driver :selenium do |app|
+    profile = Selenium::WebDriver::Firefox::Profile.new
+    if proxy
+      profile["network.proxy.type"] = 1
+      profile["network.proxy.http"] = proxy
+      profile["network.proxy.http_port"] = 8080
+      profile["network.proxy.ssl"] = proxy
+      profile["network.proxy.ssl_port"] = 8080
     end
+    driver = Capybara::Selenium::Driver.new(app, :browser => :firefox,:profile=> profile)
+    driver.browser.manage.window.resize_to(1280, 1024)
+    driver
+  end
 end
 
 case browser
@@ -118,7 +118,6 @@ Capybara.run_server = false
 
 # screenshots
 After do |scenario|
-
   if scenario.failed?
     case page.driver
     when Capybara::Selenium::Driver
