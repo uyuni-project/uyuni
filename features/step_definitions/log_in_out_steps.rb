@@ -6,13 +6,12 @@ Given /^I am authorized as "([^"]*)" with password "([^"]*)"$/ do |arg1,arg2|
   fill_in "username", :with => arg1
   fill_in "password", :with => arg2
   click_button "Sign In"
-  step "I should be logged in"
+  step %[I should be logged in]
 end
 
 Given /^I am authorized$/ do
-  step "I am authorized as \"testing\" with password \"testing\""
+  step %[I am authorized as "testing" with password "testing"]
 end
-
 
 When /^I sign out$/ do
   page.find(:xpath, "//a[@href='/rhn/Logout.do']").click
@@ -43,4 +42,3 @@ end
 When /^I go to the configuration page$/ do
   find_link("Configuration").click
 end
-
