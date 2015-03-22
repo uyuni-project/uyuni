@@ -24,4 +24,3 @@ When /^I register this client for SSH push via tunnel$/ do
   FileUtils.mv('/etc/hosts.BACKUP', '/etc/hosts')
   FileUtils.mv('/etc/sysconfig/rhn/up2date.BACKUP', '/etc/sysconfig/rhn/up2date')
 end
-
