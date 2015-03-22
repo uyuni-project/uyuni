@@ -1,4 +1,4 @@
-#!/usr/ruby
+# COPYRIGHT 2015 SUSE LLC
 
 require 'xmlrpc/client'
 
