@@ -8302,6 +8302,11 @@
         <forward name="default" path="/WEB-INF/pages/help/about.jsp"/>
     </action>
 
+    <action path="/help/Copyright"
+        scope="request"
+        type="com.redhat.rhn.frontend.action.help.ChatAction">
+        <forward name="default" path="/WEB-INF/pages/help/copyright.jsp"/>
+    </action>
     <!-- SSM Operations Log -->
     <action path="/ssm/ViewLog"
             type="com.redhat.rhn.frontend.action.ssm.ViewLogAction">
