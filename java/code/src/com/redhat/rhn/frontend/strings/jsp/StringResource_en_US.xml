@@ -1590,7 +1590,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="usercreate.jsp.pam.reference">
-        <source>To set up SUSE Manager to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
+        <source>To set up @@PRODUCT_NAME@@ to authenticate against LDAP, Kerberos, or other network-based authentication systems, visit the &lt;a href="/rhn/help/satellite/en-US/s1-maintenance-pam-auth.jsp"&gt;Installation guide&lt;/a&gt; for instructions on how to set up PAM.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser.do</context>
         </context-group>
