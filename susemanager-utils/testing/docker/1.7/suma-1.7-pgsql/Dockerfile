@@ -18,5 +18,5 @@ RUN sh /root/setup-db-postgres.sh
 # needs of the test suites. A high value causes more memory to be requested by
 # PostgreSQL on startup, leading to memory issues when two pgsql containers are
 # are executed at the same time.
-RUN sed -i 's/^max_connections =.*$/max_connections = 20/g' /var/lib/pgsql/data/postgresql.conf
+RUN sed -i 's/^max_connections =.*$/max_connections = 40/g' /var/lib/pgsql/data/postgresql.conf
 
