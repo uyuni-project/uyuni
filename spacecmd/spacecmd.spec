@@ -3,8 +3,12 @@
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 %endif
 
+%if 0%{?fedora}
+%{!?pylint_check: %global pylint_check 1}
+%endif
+
 Name:        spacecmd
-Version:     2.3.19
+Version:     2.3.20
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -15,7 +19,7 @@ Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:   noarch
 
-%if ! 0%{?suse_version}
+%if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
 BuildRequires: python
@@ -65,7 +69,7 @@ touch %{buildroot}/%{python_sitelib}/spacecmd/__init__.py
 %{__rm} -rf %{buildroot}
 
 %check
-%if ! 0%{?suse_version}
+%if 0%{?pylint_check}
 PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 	spacewalk-pylint $RPM_BUILD_ROOT%{python_sitelib}/spacecmd
 %endif
@@ -81,6 +85,9 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Mon Mar 23 2015 Grant Gainey 2.3.20-1
+- Standardize pylint-check to only happen on Fedora
+
 * Thu Mar 19 2015 Grant Gainey 2.3.19-1
 - Updating copyright info for 2015
 - Added a bit more documentation to softwarechannel_setsyncschedule to make it
@@ -934,7 +941,7 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 * Tue Jul 06 2010 Paul Morgan <pmorgan@redhat.com> - 0.4.1-1
 - ADD: support for builds via tito
 - CHANGE: x.y.z versioning (better for tito)
-- tagged man page as doc 
+- tagged man page as doc
 
 * Thu Jul 01 2010 Aron Parsons <aparsons@redhat.com> - 0.4-1
 - version bump
