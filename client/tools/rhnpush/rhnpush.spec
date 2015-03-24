@@ -2,11 +2,15 @@
 %define rhn_client_tools spacewalk-client-tools
 %define rhnroot %{_datadir}/rhn
 
+%if 0%{?fedora}
+%{!?pylint_check: %global pylint_check 1}
+%endif
+
 Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.87
+Version:       5.5.88
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -16,15 +20,17 @@ Requires:      rpm-python
 Requires:      rhnlib >= 2.5.74
 Requires:      spacewalk-backend-libs >= 1.7.17
 Requires:      %{rhn_client_tools}
+%if 0%{?pylint_check}
+BuildRequires:  spacewalk-pylint >= 0.6
+%endif
 %if 0%{?suse_version}
 # provides rhn directories for filelist check in OBS
 BuildRequires:      %{rhn_client_tools}
 %endif
 BuildRequires: docbook-utils, gettext
 BuildRequires: python-devel
-%if 0%{?fedora} || 0%{?rhel} == 6 || 0%{?suse_version} == 1110
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} == 1110
 # pylint check
-BuildRequires:  spacewalk-pylint >= 0.6
 BuildRequires:  %{rhn_client_tools}
 BuildRequires:  spacewalk-backend-libs > 1.8.33
 %endif
@@ -61,7 +67,7 @@ ln -s rhnpush $RPM_BUILD_ROOT/%{_bindir}/mgrpush
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} || 0%{?rhel} == 6 || 0%{?suse_version} == 1100
+%if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
@@ -87,6 +93,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Mon Mar 23 2015 Grant Gainey 5.5.88-1
+- Standardize pylint-check to only happen on Fedora
+
 * Thu Mar 19 2015 Grant Gainey 5.5.87-1
 - Updating copyright info for 2015
 

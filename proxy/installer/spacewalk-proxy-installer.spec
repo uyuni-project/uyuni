@@ -1,11 +1,14 @@
 
 #!BuildIgnore:  udev-mini libudev-mini1
+%if 0%{?fedora}
+%{!?pylint_check: %global pylint_check 1}
+%endif
 
 Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.3.12
+Version: 2.3.13
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -27,10 +30,11 @@ Requires: chkconfig
 %endif
 Requires: libxslt
 Requires: spacewalk-certs-tools >= 1.6.4
+%if 0%{?pylint_check}
+BuildRequires: spacewalk-pylint
+%endif
 BuildRequires: /usr/bin/docbook2man
 %if 0%{?fedora} || 0%{?rhel} > 5
-# pylint check
-BuildRequires: spacewalk-pylint
 BuildRequires: rhnlib
 BuildRequires: rhn-client-tools
 %endif
@@ -88,7 +92,7 @@ install -m 640 jabberd/sm.xml jabberd/c2s.xml $RPM_BUILD_ROOT%{_usr}/share/rhn/i
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
@@ -114,6 +118,9 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Mon Mar 23 2015 Grant Gainey 2.3.13-1
+- Standardize pylint-check to only happen on Fedora
+
 * Thu Mar 19 2015 Grant Gainey 2.3.12-1
 - Updating copyright info for 2015
 

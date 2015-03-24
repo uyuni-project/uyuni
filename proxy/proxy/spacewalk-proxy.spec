@@ -1,10 +1,14 @@
+%if 0%{?fedora}
+%{!?pylint_check: %global pylint_check 1}
+%endif
+
 Name: spacewalk-proxy
 Summary: Spacewalk Proxy Server
 Group:   Applications/Internet
 License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
-Version: 2.3.19
+Version: 2.3.20
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: python
@@ -13,9 +17,10 @@ BuildRequires: apache2
 %endif
 BuildArch: noarch
 Requires: httpd
-%if 0%{?fedora} || 0%{?rhel} > 5
-# pylint check
+%if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
+%endif
+%if 0%{?fedora} || 0%{?rhel} > 5
 BuildRequires: rhnpush >= 5.5.74
 BuildRequires: spacewalk-backend-libs >= 1.7.24
 BuildRequires: spacewalk-backend >= 1.7.24
@@ -202,7 +207,7 @@ popd
 rm -rf $RPM_BUILD_ROOT
 
 %check
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?pylint_check}
 # check coding style
 export PYTHONPATH=$RPM_BUILD_ROOT/usr/share/rhn:$RPM_BUILD_ROOT%{python_sitelib}:/usr/share/rhn
 spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
@@ -401,6 +406,9 @@ fi
 
 
 %changelog
+* Mon Mar 23 2015 Grant Gainey 2.3.20-1
+- Standardize pylint-check to only happen on Fedora
+
 * Thu Mar 19 2015 Grant Gainey 2.3.19-1
 - Updating copyright info for 2015
 
