@@ -4,6 +4,6 @@
 <html>
     <body>
         <h1><rhn:icon type="header-info" /><bean:message key="help.jsp.eula.title"/></h1>
-        <bean:message key="eula.jsp.body"/>
+        ${requestScope.EulaText}
     </body>
 </html>
