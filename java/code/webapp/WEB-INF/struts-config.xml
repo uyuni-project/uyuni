@@ -8310,7 +8310,7 @@
 
     <action path="/help/Eula"
         scope="request"
-        type="com.redhat.rhn.frontend.action.help.ChatAction">
+        type="com.redhat.rhn.frontend.action.help.EulaAction">
         <forward name="default" path="/WEB-INF/pages/help/eula.jsp"/>
     </action>
 
