@@ -31,8 +31,6 @@ import java.util.logging.Logger;
 
 /**
  * EULA action page.
- *
- * @author Lukas Zapletal
  */
 public class EulaAction extends org.apache.struts.action.Action {
     private static final File EULA_PATH = new File("/srv/www/htdocs/help/eula.html");
