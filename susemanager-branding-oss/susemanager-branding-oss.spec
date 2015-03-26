@@ -39,7 +39,7 @@ rm -rf %{buildroot}
 %dir %_defaultdocdir/susemanager
 %_defaultdocdir/susemanager/license.txt
 %dir /srv/www/htdocs/help
-/srv/www/htdocs/help/eula.pxt
+/srv/www/htdocs/help/eula.html
 
 %changelog
 
