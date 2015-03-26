@@ -285,6 +285,8 @@ class RepoSync(object):
                 initCFG('server.satellite')
             else:
                 # SCC - read credentials from DB
+                if creds_no == "":
+                    cred_no = 0
                 h = rhnSQL.prepare("""SELECT username, password FROM suseCredentials WHERE id = :id""");
                 h.execute(id=creds_no);
                 credentials = h.fetchone_dict() or None;
