@@ -2127,6 +2127,37 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.failed.details.link">
         <source>Details</source>
       </trans-unit>
+      <trans-unit id="copyright.jsp.title">
+        <source>Copyright (c) 2011 - 2015 SUSE LLC.</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.urlagreement">
+        <source>&lt;a href=&quot;/rhn/help/Eula.do&quot;&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+      </trans-unit>
+      <trans-unit id="copyright.jsp.body">
+        <source>
+&lt;p&gt;
+    This software is a modular operating system comprised of numerous components
+    that may be accompanied by separate license terms. The software is a
+    collective work of SUSE; although SUSE does not own the copyright to every
+    component of the software, SUSE owns the collective work copyright for the
+    software.
+&lt;/p&gt;
+&lt;p&gt;
+    This SUSE product includes materials licensed to SUSE under the GNU
+    General Public License (GPL). The GPL requires that SUSE makes available
+    certain source code that corresponds to the GPL-licensed material. The source
+    code is available for download at
+    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    Also, for up to three years from SUSE&#39;s distribution of the SUSE product, upon
+    request SUSE will mail a copy of the source code. Requests should be sent by
+    e-mail to
+    &lt;a href=&quot;mailto:sle_source_request@suse.com&quot;&gt;sle_source_request@suse.com&lt;/a&gt;
+    or as otherwise instructed at
+    &lt;a href=&quot;https://www.suse.com/download-linux/source-code.html/&quot;&gt;https://www.suse.com/download-linux/source-code.html&lt;/a&gt;.
+    SUSE may charge a fee to recover its reasonable costs of distribution
+&lt;/p&gt;
+        </source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
