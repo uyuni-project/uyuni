@@ -32,6 +32,10 @@ Debug utility that packages log files and relevant debug information needed for 
     debug utility that packages log files, and relevant debug information
     needed for full diagnosis of &RHNSAT; issues.
 </para>
+<para>
+    For a better understanding of the whole environment, spacewalk-debug
+    put also an inventory report and a channel report into the tar archive.
+</para>
 </RefSect1>
 
 <RefSect1><Title>Options</Title>
@@ -66,6 +70,7 @@ Debug utility that packages log files and relevant debug information needed for 
     <member>rhn-schema-version(8)</member>
     <member>rhn-ssl-dbstore(8)</member>
     <member>satellite-sync(8)</member>
+    <member>spacewalk-report(8)</member>
 </simplelist>
 </RefSect1>
 
