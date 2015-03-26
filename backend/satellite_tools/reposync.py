@@ -338,7 +338,7 @@ class RepoSync(object):
         creds = url.get_query_param('credentials')
         if creds:
             namespace = creds.split("_")[0]
-            creds_no = ""
+            creds_no = 0
             try:
                 creds_no = int(creds.split("_")[1])
             except (ValueError, IndexError):
