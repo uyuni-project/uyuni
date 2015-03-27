@@ -1030,59 +1030,47 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         Server hostServer = getHostServer();
-        List<Long> channelIds = new ArrayList<Long>();
         Set<Long> serverChannelIds = new HashSet<Long>();
         Iterator<Channel> i = hostServer.getChannels().iterator();
         while (i.hasNext()) {
             Channel c = i.next();
             serverChannelIds.add(c.getId());
         }
-        // first add channels, the system is currently subscribed to
-        channelIds.addAll(serverChannelIds);
-        // then add all the other subscribable channels
-        channelIds.addAll(SystemManager.subscribableChannelIds(hostServer.getId(),
-                this.user.getId(), hostServer.getBaseChannel().getId()));
 
-        Iterator<Long> i2 = channelIds.iterator();
-        while (i2.hasNext()) {
-            Long cid = i2.next();
-            log.debug("    Checking on:" + cid + " for: " +
-                    getKickstartPackageName());
-            List<Map<String, Object>> result =
-                    ChannelManager.listLatestPackagesEqual(cid,
-                    getKickstartPackageName());
-            log.debug("    size: " + result.size());
+        // check for package among channels the server is subscribed to.
+        // If one is found, return
+        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(
+                hostServer, serverChannelIds);
+        if (pkgToInstall != null) {
+            this.packagesToInstall.add(pkgToInstall);
+            log.debug("    packagesToInstall: " + packagesToInstall);
+            return null;
+        }
 
-            if (result.size() > 0) {
-                Map<String, Object> row = result.get(0);
-                log.debug("    Found the package: " + row);
-                Map<String, Object> pkgToInstall = new HashMap<String, Object>();
-                pkgToInstall.put("name_id", row.get("name_id"));
-                pkgToInstall.put("evr_id", row.get("evr_id"));
-                pkgToInstall.put("arch_id", row.get("package_arch_id"));
-                this.packagesToInstall.add(pkgToInstall);
-                log.debug("    packagesToInstall: " + packagesToInstall);
+        // otherwise search in channels that can be subscribed.
+        // If one is found, subscribe channel and return
+        Set<Long> subscribableChannelIds = SystemManager.subscribableChannelIds(
+                hostServer.getId(), this.user.getId(), hostServer.getBaseChannel().getId());
+        pkgToInstall = findKickstartPackageToInstall(hostServer, subscribableChannelIds);
 
-                // this.kickstartPackageId = ;
-                if (!serverChannelIds.contains(cid)) {
-                    log.debug("    Subscribing to: " + cid);
-                    Channel c = ChannelFactory.lookupById(cid);
-                    try {
-                        SystemManager.subscribeServerToChannel(this.user, hostServer, c);
-                        log.debug("    Subscribed: " + cid);
-                    }
-                    catch (PermissionException pe) {
-                        return new ValidatorError("kickstart.schedule.cantsubscribe",
-                            hostServer.getName());
-                    }
-                    catch (Exception e) {
-                        return new ValidatorError(
-                            "kickstart.schedule.cantsubscribe.channel", c.getName(),
-                            hostServer.getName());
-                    }
-                }
-                return null;
+        if (pkgToInstall != null) {
+            this.packagesToInstall.add(pkgToInstall);
+            log.debug("    packagesToInstall: " + packagesToInstall);
+            Long cid = pkgToInstall.get("channel_id");
+            log.debug("    Subscribing to: " + cid);
+            Channel c = ChannelFactory.lookupById(cid);
+            try {
+                SystemManager.subscribeServerToChannel(this.user, server, c);
+                log.debug("    Subscribed: " + cid);
             }
+            catch (PermissionException pe) {
+                return new ValidatorError("kickstart.schedule.cantsubscribe");
+            }
+            catch (Exception e) {
+                return new ValidatorError("kickstart.schedule.cantsubscribe.channel",
+                        c.getName(), server.getName());
+            }
+            return null;
         }
 
         return new ValidatorError("kickstart.schedule.nopackage",
@@ -1121,6 +1109,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         if (!results.isEmpty()) {
             return Collections.max(results, new Comparator<Map<String, Long>>() {
+                @Override
                 public int compare(Map<String, Long> o1In, Map<String, Long> o2In) {
                     PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
                             o1In.get("evr_id"));
