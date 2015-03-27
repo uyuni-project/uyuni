@@ -1039,6 +1039,19 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         channelIds.addAll(SystemManager.subscribableChannelIds(hostServer.getId(),
                 this.user.getId(), hostServer.getBaseChannel().getId()));
 
+        return ensureKickstartPackageIsInstalled(hostServer, serverChannelIds, channelIds);
+    }
+
+    /**
+     * Looks for the package name among the specified channels and, if it is found,
+     * it adds it to packagesToInstall for server
+     *
+     * @param server the server
+     * @param serverChannelIds channels the server is subscribed to
+     * @param channelIds channels the server could be subscribed to
+     * @return a ValidationError or null
+     */
+    public ValidatorError ensureKickstartPackageIsInstalled(Server server, Set<Long> serverChannelIds, List<Long> channelIds) {
         for (Long cid : channelIds) {
             log.debug("    Checking on:" + cid + " for: " +
                     getKickstartPackageName());
@@ -1062,17 +1075,17 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
                     log.debug("    Subscribing to: " + cid);
                     Channel c = ChannelFactory.lookupById(cid);
                     try {
-                        SystemManager.subscribeServerToChannel(this.user, hostServer, c);
+                        SystemManager.subscribeServerToChannel(this.user, server, c);
                         log.debug("    Subscribed: " + cid);
                     }
                     catch (PermissionException pe) {
                         return new ValidatorError("kickstart.schedule.cantsubscribe",
-                            hostServer.getName());
+                            server.getName());
                     }
                     catch (Exception e) {
                         return new ValidatorError(
                             "kickstart.schedule.cantsubscribe.channel", c.getName(),
-                            hostServer.getName());
+                            server.getName());
                     }
                 }
                 return null;
