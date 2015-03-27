@@ -1035,7 +1035,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         }
 
         // check for package among channels the server is subscribed to. If one is found, return
-        Map<String, Object> pkgToInstall = findKickstartPackageToInstall(hostServer, serverChannelIds);
+        Map<String, Long> pkgToInstall = findKickstartPackageToInstall(hostServer, serverChannelIds);
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
             log.debug("    packagesToInstall: " + packagesToInstall);
@@ -1050,7 +1050,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         if (pkgToInstall != null) {
             this.packagesToInstall.add(pkgToInstall);
             log.debug("    packagesToInstall: " + packagesToInstall);
-            Long cid = (Long) pkgToInstall.get("channel_id");
+            Long cid = pkgToInstall.get("channel_id");
             log.debug("    Subscribing to: " + cid);
             Channel c = ChannelFactory.lookupById(cid);
             try {
@@ -1078,7 +1078,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      * @param channelIds channels the server could be subscribed to
      * @return a ValidationError or null
      */
-    public Map<String, Object> findKickstartPackageToInstall(Server server, Collection<Long> channelIds) {
+    public Map<String, Long> findKickstartPackageToInstall(Server server, Collection<Long> channelIds) {
         for (Long cid : channelIds) {
             log.debug("    Checking on:" + cid + " for: " +
                     getKickstartPackageName());
@@ -1090,10 +1090,10 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             if (result.size() > 0) {
                 Map<String, Object> row = result.get(0);
                 log.debug("    Found the package: " + row);
-                Map<String, Object> pkgToInstall = new HashMap<String, Object>();
-                pkgToInstall.put("name_id", row.get("name_id"));
-                pkgToInstall.put("evr_id", row.get("evr_id"));
-                pkgToInstall.put("arch_id", row.get("package_arch_id"));
+                Map<String, Long> pkgToInstall = new HashMap<String, Long>();
+                pkgToInstall.put("name_id", (Long)row.get("name_id"));
+                pkgToInstall.put("evr_id", (Long)row.get("evr_id"));
+                pkgToInstall.put("arch_id", (Long)row.get("package_arch_id"));
                 pkgToInstall.put("channel_id", cid);
 
                 return pkgToInstall;
