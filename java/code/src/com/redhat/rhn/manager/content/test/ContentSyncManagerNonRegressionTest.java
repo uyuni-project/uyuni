@@ -135,7 +135,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 if (isBase) {
                     if (j.hasNext()) {
                         fail("Base product " + base.toString()
-                                + " should not have extension " + j.next().toString());
+                                + " should have an extension named " + j.next().toString());
                     }
 
                     base = i.next();
@@ -147,7 +147,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 else {
                     if (!j.hasNext()) {
                         fail("Base product " + base.toString()
-                                + " should have an extension named " + friendlyName);
+                                + " should not have an extension named " + friendlyName);
                     }
                     MgrSyncProductDto extension = j.next();
 
