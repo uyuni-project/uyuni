@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:33:25 CEST 2015 - mc@suse.de
+
+- version 2.1.18-1
+- Copyright texts updated to SUSE LLC
+- mgr-sync: do not keep using expired tokens during refresh (bsc#922312)
+- add tool to update the spacewalk public cert in the DB
+- prevent setup from being run twice when substantial configuration
+  has been done
+- check for root user
+- Add hook at the end of the setup process
+- exit with error on Network errors
+- fix mgr-sync --no-optional option
+
+-------------------------------------------------------------------
 Wed Feb 11 09:05:01 CET 2015 - mc@suse.de
 
 - version 2.1.17-1
