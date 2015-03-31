@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:35:53 CEST 2015 - mc@suse.de
+
+- version 2.1.4.12-1
+- make file preservation work again with new upstream koan
+
+-------------------------------------------------------------------
 Tue Feb 03 11:51:59 CET 2015 - mc@suse.de
 
 - version 2.1.4.11-1
