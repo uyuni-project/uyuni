@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:31:24 CEST 2015 - mc@suse.de
+
+- version 2.1.14.10-1
+- add read permissions for tomcat to the NCCcredentials file
+
+-------------------------------------------------------------------
 Tue Feb 03 13:19:29 CET 2015 - mc@suse.de
 
 - version 2.1.14.9-1
