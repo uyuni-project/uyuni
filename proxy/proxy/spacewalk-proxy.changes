@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:36:41 CEST 2015 - mc@suse.de
+
+- version 2.1.15.6-1
+- wsgi.input is only guaranteed to be readable once.
+  Prevent to read it twice
+- prevent squid 3.2 from detecting forwarding loops
+
+-------------------------------------------------------------------
 Thu Dec 04 13:25:58 CET 2014 - mc@suse.de
 
 - version 2.1.15.5-1
