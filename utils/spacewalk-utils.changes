@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:39:32 CEST 2015 - mc@suse.de
+
+- version 2.1.27.13-1
+- spacewalk-manage-channel-lifecycle: Fix automatic assumption of
+  first phase (bsc#922294)
+
+-------------------------------------------------------------------
 Tue Feb 03 11:58:46 CET 2015 - mc@suse.de
 
 - version 2.1.27.12-1
