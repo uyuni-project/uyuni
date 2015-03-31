@@ -2,7 +2,7 @@
 #
 # Tool to update the uptime and kernel version
 # Adapted from wrapper.py
-# Copyright (c) 2012 Novell Inc.  Distributed under GPLv2.
+# Copyright (c) 2012 SUSE LLC
 #
 # Authors:
 #       Michael Calmer <mc@suse.de>
