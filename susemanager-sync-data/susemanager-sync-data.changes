@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:48:59 CEST 2015 - mc@suse.de
+
+- version 2.1.6-1
+- add SAP-Updates and AMD and NVidia channels to WE-SAP
+- add SLE12-SAP product (bsc#922744)
+- add SUSE Enterprise Storage 1 (bsc#910332)
+- add SUSE Cloud 5 (bsc#915133)
+- add Advanced Systems Managemenet Module for s390x and ppc64le
+
+-------------------------------------------------------------------
 Tue Feb 03 11:55:45 CET 2015 - mc@suse.de
 
 - version 2.1.5-1
