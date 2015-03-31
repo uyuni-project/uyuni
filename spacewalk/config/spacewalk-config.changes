@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:52:40 CEST 2015 - mc@suse.de
+
+- version 2.1.5.5-1
+- Disable Cache-Control headers for non dynamic content. (bnc#916220)
+
+-------------------------------------------------------------------
 Tue Feb 03 13:21:34 CET 2015 - mc@suse.de
 
 - version 2.1.5.4-1
