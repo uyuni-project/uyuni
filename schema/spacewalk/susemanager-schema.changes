@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:43:34 CEST 2015 - mc@suse.de
+
+- version 2.1.50.12-1
+- Fix ORA-01403: no data found in update_needed_cache during re-registrations
+- Avoid a deadlock when changing channel assignments (bsc#918549)
+- update adding aarch64 support to fix 1.7 to 2.1 update (bsc#922468)
+- delete cached metadata and regenerate them (bsc#920400)
+
+-------------------------------------------------------------------
 Tue Feb 03 12:08:01 CET 2015 - mc@suse.de
 
 - version 2.1.50.11-1
