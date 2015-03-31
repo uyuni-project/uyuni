@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:32:18 CEST 2015 - mc@suse.de
+
+- version 5.11.33.8-1
+- Apply needed SElinux fix for RHEL7 and make use of systemd unit files
+- introduce notify_threshold for osa-dispatcher (bsc#915581)
+- really check for action type reboot
+
+-------------------------------------------------------------------
 Tue Feb 03 13:14:54 CET 2015 - mc@suse.de
 
 - version 5.11.33.7-1
