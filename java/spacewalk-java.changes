@@ -1,4 +1,39 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:57:06 CEST 2015 - mc@suse.de
+
+- version 2.1.165.15-1
+- Copyright texts updated to SUSE LLC
+- add SLE12-SAP product (bsc#922744)
+- SCCRepository: Only NOT NULL database columns can be mapped to primitive
+  types in Hibernate (bsc#922313)
+- change evr parsing for repodata primary.xml dependencies
+- Create only one errata cache worker per server (bsc#918994)
+- findKickstartPackageToInstall: in case multiple packages are available, pick
+  the most recent (bsc#924118)
+- update properly necessary cobbler fields when changing ks tree
+- close auto errata update timing hole
+- fixing typo: sync-kickstars -> sync-kickstart
+- IE11/WinServer2008/CompatMode fix
+- Missing refactored SQL query for system available packages (bsc#913400)
+- fixing weird path to action chain page (bsc#921720)
+- fix subscription check in case of an unset start date (bsc#918220)
+- Avoid high CPU loads with SSH push (bsc#920687)
+- Refresh errata cache asynchronously when subscribing server to channel
+- ErrataQueue shouldn't fail if server is subscribed to other org's
+  channel
+- Documentation changes - fix name and refer to RFC.
+- avoid deadlock if you call mergePackages after mergeErrata
+- Fix malformed repo metadata (bsc#920400)
+- update sles_register snippets to fix trusting the CA certificate on SLE12
+- hasPreflag(): improve documentation about which rpm flags are evaluated
+- fix generating pre-equires (pre="1" in metadata)
+- fix typo in Web UI (bsc#918151)
+- Revert fixing of versions, those should be regarded as historically correct
+  rather than inconsistent (bsc#910509)
+- Catch NumberFormatException and send error to the client (bsc#916177)
+- Do not generate solv files
+
+-------------------------------------------------------------------
 Tue Feb 03 12:10:48 CET 2015 - mc@suse.de
 
 - version 2.1.165.14-1
