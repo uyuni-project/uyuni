@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:55:31 CEST 2015 - mc@suse.de
+
+- version 2.1.55.16-1
+- Copyright texts updated to SUSE LLC
+- package inventory and channel report into spacewalk-debug
+- Adding on the spacewalk-data-fsck man page the option --remove-mismatch
+- add funcionality on spacewalk-data-fsck to remove the RPM which does not
+  match checksum
+- Fix the primary key definition for rhnPackageFile
+- don't crash re-registrations if the original owner has been deleted
+- sw-repo-sync fix to sync kickstart.
+- init the second DB connection only when needed (inspired by bsc#915581)
+- check for reboot type only (inspired by bsc#915581)
+
+-------------------------------------------------------------------
 Tue Feb 03 12:05:52 CET 2015 - mc@suse.de
 
 - version 2.1.55.15-1
