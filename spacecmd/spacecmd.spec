@@ -5,7 +5,7 @@
 %define _with_pylint 0
 
 Name:        spacecmd
-Version:     2.1.25.7
+Version:     2.1.25.8
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
