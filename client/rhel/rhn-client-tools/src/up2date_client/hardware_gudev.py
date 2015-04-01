@@ -11,14 +11,23 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
+from platform import dist
 
-try:
-    from gi.repository import GUdev
-    gi_gudev = True
-except ImportError:
+if dist()[0] == 'SuSE':
+    # import gi.repository.GUdev fail and
+    # make the import gudev after it fail too
+    # so we have to import gudev only
     import gudev
     import glib
     gi_gudev = False
+else:
+    try:
+        from gi.repository import GUdev
+        gi_gudev = True
+    except ImportError:
+        import gudev
+        import glib
+        gi_gudev = False
 
 import os
 import re
