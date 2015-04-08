@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Apr 08 11:20:10 CEST 2015 - mc@suse.de
+
+- version 2.1.165.16-1
+- HttpClientAdapter: fall-back to Basic auth from NTLM when both
+  are supported (bsc#926319)
+
+-------------------------------------------------------------------
 Tue Mar 31 14:57:06 CEST 2015 - mc@suse.de
 
 - version 2.1.165.15-1
