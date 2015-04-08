@@ -24,6 +24,7 @@ import org.apache.commons.httpclient.ProxyHost;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthPolicy;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -70,6 +71,13 @@ public class HttpClientAdapter {
                 httpClient.getState().setProxyCredentials(
                         new AuthScope(proxyHostname, proxyPort), proxyCredentials);
             }
+
+            // Explicitly exclude the NTLM authentication scheme
+            ArrayList<String> authPrefs = new ArrayList<String>() {{
+                add(AuthPolicy.DIGEST);
+                add(AuthPolicy.BASIC);
+            }};
+            httpClient.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);
         }
 
         // Read proxy exceptions from the "no_proxy" config option
