@@ -161,7 +161,7 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
 fi
 if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
-    chown g+r /etc/zypp/credentials.d/NCCcredentials
+    chmod g+r /etc/zypp/credentials.d/NCCcredentials
 fi
 if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
