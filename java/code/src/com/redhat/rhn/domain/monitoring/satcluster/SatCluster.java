@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.monitoring.satcluster;
 
 import com.redhat.rhn.domain.org.Org;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
@@ -165,7 +166,8 @@ public class SatCluster {
      * @param vip6In to set
     */
     public void setVip6(String vip6In) {
-        this.vip6 = vip6In;
+        // strip out ipv6 zone id
+        this.vip6 = StringUtils.substringBefore(vip6In, "%");
     }
 
     /**
