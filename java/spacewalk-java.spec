@@ -88,6 +88,7 @@ Requires: hibernate3 = 0:3.2.4
 BuildRequires: hibernate3 = 0:3.2.4
 %endif
 %if 0%{?suse_version}
+Requires: gnu-jaf
 Requires: ehcache
 BuildRequires: ehcache
 BuildRequires: sitemesh
