@@ -8,6 +8,7 @@ Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.
 URL:     https://fedorahosted.org/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
+BuildRequires: python-devel
 
 Requires: dnf >= 0.5.3
 Requires: rhn-client-tools >= 1.10.3-1
@@ -49,6 +50,11 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/dnf-plugins/*
 #%{_datadir}/rhn/actions/*
 %dir /var/lib/up2date
+%if 0%{?suse_version}
+%dir %{python_sitelib}/dnf-plugins
+%dir %{_sysconfdir}/dnf
+%dir %{_sysconfdir}/dnf/plugins
+%endif
 
 %changelog
 * Thu Apr 16 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.1-1
