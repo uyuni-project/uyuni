@@ -431,6 +431,7 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %files -n osa-common
+%defattr(-,root,root)
 %{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/rhn_log.py*
