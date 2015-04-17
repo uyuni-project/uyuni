@@ -10,7 +10,7 @@
 %endif
 
 Name:           spacewalk
-Version:        2.3.3
+Version:        2.4.0
 Release:        1%{?dist}
 Summary:        Spacewalk Systems Management Application
 URL:            https://fedorahosted.org/spacewalk
@@ -69,11 +69,13 @@ Requires:       yum-utils
 
 # Requires:       osa-dispatcher
 # Requires:       jabberpy
+Obsoletes:      spacewalk-monitoring < 2.3
 
 # SELinux
 %if 0%{?with_selinux}
 Requires:       osa-dispatcher-selinux
 Requires:       spacewalk-selinux
+Obsoletes:      spacewalk-monitoring-selinux < 2.3
 %else
 Requires:       osa-dispatcher
 %endif
@@ -195,6 +197,10 @@ rm -rf %{buildroot}
 %{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
 
 %changelog
+* Wed Mar 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.4-1
+- 1205113 - obsoleting spacewalk-monitoring and spacewalk-monitoring-selinux
+  packages
+
 * Tue Mar 17 2015 Tomas Lestach <tlestach@redhat.com> 2.3.3-1
 - removing spacewalk-pxt completelly
 

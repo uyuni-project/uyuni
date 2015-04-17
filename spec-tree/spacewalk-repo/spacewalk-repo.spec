@@ -1,6 +1,6 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
-Version: 2.3
+Version: 2.4
 Release: 2%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo
 
 %changelog
+* Fri Mar 27 2015 Grant Gainey 2.4-2
+- Update for Spacewalk 2.4
+
 * Thu Jul 31 2014 Michael Mraka <michael.mraka@redhat.com> 2.3-2
 - New signing key for 2014-2016
 
@@ -128,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 - replace legacy name of Tagger with new one
 
 * Mon Mar 04 2013 Stephen Herr <sherr@redhat.com> 1.10-1
-- 
+-
 
 * Wed Oct 31 2012 Jan Pazdziora 1.9-1
 - Bumping up version.

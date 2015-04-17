@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.3.40
+Version:        2.4.2
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Apr 02 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
+- Oracle alter table xxx add column syntax differs from PostgreSQL one
+
+* Wed Apr 01 2015 Jan Dobes 2.4.1-1
+- 1205328 - do not ignore errata with same package version
+- Bumping package versions for 2.4.
+
+* Fri Mar 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.41-1
+- Fix ORA-01403: no data found in update_needed_cache during re-registrations
+
 * Thu Mar 19 2015 Grant Gainey 2.3.40-1
 - Automatic commit of package [osad] release [5.11.56-1].
 - Updating copyright info for 2015

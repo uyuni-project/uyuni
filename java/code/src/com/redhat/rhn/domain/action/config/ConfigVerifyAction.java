@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.action.config;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
 /**
@@ -28,7 +29,7 @@ public class ConfigVerifyAction extends ConfigAction {
      * {@inheritDoc}
      */
     @Override
-    public String getHistoryDetails(Server server) {
+    public String getHistoryDetails(Server server, User currentUser) {
         LocalizationService ls = LocalizationService.getInstance();
         StringBuilder retval = new StringBuilder();
         retval.append("</br>");
