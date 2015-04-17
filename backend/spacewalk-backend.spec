@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.51
+Version: 2.4.0
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -809,6 +809,10 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Mar 27 2015 Stephen Herr <sherr@redhat.com> 2.3.52-1
+- 1206350 - Add API to Satellite for Proxy to check client token validity
+- 1206350 - send error headers even on 404 response
+
 * Mon Mar 23 2015 Grant Gainey 2.3.51-1
 - Standardize pylint-check to only happen on Fedora
 - Import topic, summary and collected references from updateinfo.xml on

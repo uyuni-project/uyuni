@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.173
+Version: 2.4.5
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -948,6 +948,51 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Wed Apr 15 2015 Jan Dobes 2.4.5-1
+- 1096263 - force taskomatic to use UTF-8
+
+* Wed Apr 15 2015 Jan Dobes 2.4.4-1
+- fixing alphabar and pagination rendering on some pages
+- 1202233 - include missing taglib
+
+* Thu Apr 02 2015 Jan Dobes 2.4.3-1
+- remove query errata_list_in_set as it is not used anymore
+- use another method as lookupErrataListFromSet does not exist anymore
+- change method to get selected errata relevant to system set
+
+* Thu Apr 02 2015 Stephen Herr <sherr@redhat.com> 2.4.2-1
+- 1204246 - re-deleting the commit lines after commit 0a54057de3 re-added them
+
+* Wed Apr 01 2015 Jan Dobes 2.4.1-1
+- 1205328 - do not ignore errata with same package version
+- allow only Red Hat, Inc. and SUSE LLC in the checkstyle preferences
+- Copyright texts updated to SUSE LLC
+- to create .project file for eclipse, 'ant make-eclipse-project' should be run
+- Bumping package versions for 2.4.
+
+* Fri Mar 27 2015 Grant Gainey 2.3.178-1
+- Copyrights 2015, redux
+
+* Fri Mar 27 2015 Tomas Lestach <tlestach@redhat.com> 2.3.177-1
+- change evr parsing for repodata primary.xml dependencies
+- expand checkstyle copyright regexp
+- Add a test for getCandidates() in ErrataCacheDriver
+- Fix parameter names for "insert_into_task_queue"
+- Create only one errata cache worker per server
+- Add type parameters throughout getCandidates()
+
+* Thu Mar 26 2015 Jan Dobes 2.3.176-1
+- 1200162 - reduce number of system lookups
+- 1188954 - also get errata scheduling out of cycle to make stackUpdates sense
+- 1188954 - schedule only one errata action for each errata
+
+* Wed Mar 25 2015 Grant Gainey 2.3.175-1
+- Updating copyright info for 2015
+
+* Wed Mar 25 2015 Tomas Lestach <tlestach@redhat.com> 2.3.174-1
+- 1205108 - extend getHistoryDetails() method by the User argument and unify
+  this interface
+
 * Tue Mar 24 2015 Tomas Lestach <tlestach@redhat.com> 2.3.173-1
 - set kickstart timezone according to the user locale, who creates it
 

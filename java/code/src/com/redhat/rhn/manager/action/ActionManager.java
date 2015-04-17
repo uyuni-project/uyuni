@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -336,6 +336,15 @@ public class ActionManager extends BaseManager {
      */
     public static void addServerToAction(Long sid, Action action) {
         ActionFactory.addServerToAction(sid, action);
+    }
+
+    /**
+     * Adds a server to an action
+     * @param server The server
+     * @param action The parent action
+     */
+    public static void addServerToAction(Server server, Action action) {
+        ActionFactory.addServerToAction(server, action);
     }
 
     /**

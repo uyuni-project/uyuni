@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 42%{?dist}
+Release: 43%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -25,6 +25,7 @@ Patch11: cobbler-arm-arch.patch
 Patch12: cobbler-modprobe-d.patch
 Patch13: fedora_os_entry.patch
 Patch14: centos7-version.patch
+Patch15: unicode-scripts.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -123,6 +124,7 @@ a XMLRPC API for integration with other applications.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p0
+%patch15 -p1
 
 %build
 %{__python} setup.py build 
@@ -472,6 +474,9 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Wed Apr 15 2015 Jan Dobes 2.0.11-43
+- 1096263 - specify unicode encoding for Cheetah
+
 * Fri Jan 23 2015 Stephen Herr <sherr@redhat.com> 2.0.11-42
 - Make cobbler detect os version for CentOS 7 Taken from upstream:
   https://github.com/cobbler/cobbler/pull/1021

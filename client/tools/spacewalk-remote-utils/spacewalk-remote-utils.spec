@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     2.3.7
+Version:     2.4.2
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -15,11 +15,7 @@ Source:      https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.
 BuildRoot:   %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:   noarch
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-Requires: rhnlib >= 2.5.22-6
-%else
-Requires: rhnlib >= 2.5.22-10
-%endif
+Requires: rhnlib >= 2.5.74
 BuildRequires: python-devel
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
@@ -66,6 +62,14 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Mon Apr 13 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
+- channel definitions for rhel 7.1
+- update channel definitions
+
+* Thu Apr 02 2015 Jan Dobes 2.4.1-1
+- require more recent rhnlib
+- Bumping package versions for 2.4.
+
 * Wed Feb 18 2015 Matej Kollar <mkollar@redhat.com> 2.3.7-1
 - Updating function names
 - Setting ts=4 is wrong

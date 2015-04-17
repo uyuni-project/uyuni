@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -52,6 +52,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
     /**
      * end xml metadata generation
      */
+    @Override
     public void end() {
         try {
             handler.endElement("metadata");
@@ -66,6 +67,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
      * Start xml metadata generation
      * @param channel channel data
      */
+    @Override
     public void begin(Channel channel) {
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/common");
@@ -324,7 +326,7 @@ public class PrimaryXmlWriter extends RepomdWriter {
                 vr = parts[0];
             }
 
-            int dash = vr.lastIndexOf('-');
+            int dash = vr.indexOf('-');
 
             if (dash == -1) {
                 map.put("version", vr);

@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.56
+Version: 5.11.58
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -26,6 +26,7 @@ BuildRequires: python-devel
 Requires: python
 Requires: rhnlib >= 1.8-3
 Requires: jabberpy
+Requires: osa-common = %{version}
 %if 0%{?rhel} && 0%{?rhel} < 6
 Requires: rhn-client-tools >= 0.4.20-66
 %else
@@ -79,12 +80,23 @@ commands are instantly executed.
 This package effectively replaces the behavior of rhnsd/rhn_check that
 only poll the Spacewalk Server from time to time.
 
+%package -n osa-common
+Summary: OSA common files
+Group:    System Environment/Daemons
+Requires: jabberpy
+Conflicts: %{name} < %{version}-%{release}
+Conflicts: %{name} > %{version}-%{release}
+
+%description -n osa-common
+Common files needed by osad and osa-dispatcher
+
 %package -n osa-dispatcher
 Summary: OSA dispatcher
 Group:    System Environment/Daemons
 Requires: spacewalk-backend-server >= 1.2.32
 Requires: jabberpy
 Requires: lsof
+Requires: osa-common = %{version}
 Conflicts: %{name} < %{version}-%{release}
 Conflicts: %{name} > %{version}-%{release}
 %if 0%{?suse_version} >= 1210
@@ -366,13 +378,10 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %defattr(-,root,root)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osad
-%{rhnroot}/osad/__init__.py*
 %{rhnroot}/osad/_ConfigParser.py*
-%{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/osad.py*
 %{rhnroot}/osad/osad_client.py*
 %{rhnroot}/osad/osad_config.py*
-%{rhnroot}/osad/rhn_log.py*
 %config(noreplace) %{_sysconfdir}/sysconfig/rhn/osad.conf
 %config(noreplace) %attr(600,root,root) %{_sysconfdir}/sysconfig/rhn/osad-auth.conf
 %config(noreplace) %{client_caps_dir}/*
@@ -396,11 +405,8 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %defattr(0644,root,root,0755)
 %dir %{rhnroot}/osad
 %attr(755,root,root) %{_sbindir}/osa-dispatcher
-%{rhnroot}/osad/__init__.py*
-%{rhnroot}/osad/jabber_lib.py*
 %{rhnroot}/osad/osa_dispatcher.py*
 %{rhnroot}/osad/dispatcher_client.py*
-%{rhnroot}/osad/rhn_log.py*
 %config(noreplace) %{_sysconfdir}/sysconfig/osa-dispatcher
 %config(noreplace) %{_sysconfdir}/logrotate.d/osa-dispatcher
 %{rhnroot}/config-defaults/rhn_osa-dispatcher.conf
@@ -424,6 +430,11 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
 %endif
 
+%files -n osa-common
+%{rhnroot}/osad/__init__.py*
+%{rhnroot}/osad/jabber_lib.py*
+%{rhnroot}/osad/rhn_log.py*
+
 %if 0%{?include_selinux_package}
 %files -n osa-dispatcher-selinux
 %doc osa-dispatcher-selinux/%{modulename}.fc
@@ -436,6 +447,13 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Fri Apr 10 2015 Matej Kollar <mkollar@redhat.com> 5.11.58-1
+- Improve osad's handling of the rhn_check process.
+
+* Wed Mar 25 2015 Grant Gainey 5.11.57-1
+- Move common files shared between osad and osa-dispatcher its own package.
+  This allows osad and osa-dispatcher to coexist.
+
 * Thu Mar 19 2015 Grant Gainey 5.11.56-1
 - Updating copyright info for 2015
 

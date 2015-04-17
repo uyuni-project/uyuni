@@ -11,7 +11,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 2.3.2
+Version: 2.4.0
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -108,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Mar 27 2015 Grant Gainey 2.3.3-1
+- tuple assignment should be list in client_config_update.py
+
 * Thu Mar 19 2015 Grant Gainey 2.3.2-1
 - Updating copyright info for 2015
 

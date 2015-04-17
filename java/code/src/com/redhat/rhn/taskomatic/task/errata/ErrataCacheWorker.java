@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -56,7 +56,7 @@ class ErrataCacheWorker implements QueueWorker {
     public void run() {
         try {
             Date d = new Date(System.currentTimeMillis());
-            removeTask();
+            removeTask(task);
             parentQueue.workerStarting();
             UpdateErrataCacheCommand uecc = new UpdateErrataCacheCommand();
             if (ErrataCacheWorker.FOR_SERVER.equals(task.getName())) {
@@ -89,10 +89,15 @@ class ErrataCacheWorker implements QueueWorker {
         parentQueue = queue;
     }
 
-    private void removeTask() {
+    /**
+     * Remove a given task from the database via mode query.
+     *
+     * @param task task to remove
+     */
+    protected static void removeTask(Task task) {
         WriteMode mode = ModeFactory.getWriteMode("Task_queries", "delete_task");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("org_id", orgId);
+        params.put("org_id", task.getOrg().getId());
         params.put("name", task.getName());
         params.put("task_data", task.getData());
         params.put("priority", new Integer(task.getPriority()));
