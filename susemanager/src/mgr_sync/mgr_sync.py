@@ -656,7 +656,7 @@ class MgrSync(object):
              params))
          client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
 
-    def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
+    def _execute_xmlrpc_method(self, endpoint, method, auth_token, *params, **opts):
         """
         Invokes the remote method specified by the user. Repeats the operation
         once if there's a failure caused by the expiration of the sessions
@@ -671,14 +671,14 @@ class MgrSync(object):
         try:
             self.log.debug("Invoking remote method {0} with auth_token {1}".format(
                 method, auth_token))
-            return getattr(endoint, method)(auth_token, *params)
+            return getattr(endpoint, method)(auth_token, *params)
         except xmlrpclib.Fault, ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()
                 auth_token = self.auth.token()
                 return self._execute_xmlrpc_method(
-                    endoint, method, auth_token, *params,
+                    endpoint, method, auth_token, *params,
                     retry_on_session_failure=False)
             else:
                 self.log.error("Error: {0}".format(ex))
