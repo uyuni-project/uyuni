@@ -17,7 +17,6 @@ import re
 import sys
 import xmlrpclib
 
-from spacewalk.common.suseLib import hasISSMaster
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -61,7 +60,7 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if hasISSMaster() and not vars(options).has_key('refresh'):
+        if self.conn.sync.master.hasMaster() and not vars(options).has_key('refresh'):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -590,7 +589,7 @@ class MgrSync(object):
         text_width = len("Refreshing ") + 8 + \
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
 
-        if hasISSMaster() or schedule:
+        if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
             except xmlrpclib.Fault, e:
