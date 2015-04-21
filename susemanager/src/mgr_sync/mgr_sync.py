@@ -235,7 +235,7 @@ class MgrSync(object):
         """
 
         enable_checks = True
-        current_channels = []
+        current_channels = list()
 
         if not channels:
             channels = [self._select_channel_interactive_mode()]
