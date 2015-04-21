@@ -563,7 +563,6 @@ class MgrSync(object):
             saved_credentials[int(number)-1]['user'], number))
         return [saved_credentials[int(number)-1]['user']]
 
-
     #################
     #               #
     # Other methods #
@@ -656,7 +655,6 @@ class MgrSync(object):
          self.log.debug("Calling Taskomatic refresh with '{0}'".format(
              params))
          client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
-
 
     def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
         """
