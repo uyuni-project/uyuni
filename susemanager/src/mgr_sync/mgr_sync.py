@@ -15,7 +15,6 @@
 
 import re
 import sys
-import os.path
 import xmlrpclib
 
 from spacewalk.common.suseLib import hasISSMaster
