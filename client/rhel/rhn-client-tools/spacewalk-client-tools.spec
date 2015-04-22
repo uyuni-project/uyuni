@@ -194,7 +194,7 @@ install 50-spacewalk-client.preset $RPM_BUILD_ROOT/%{_presetdir}
 rm -f $RPM_BUILD_ROOT%{_datadir}/rhn/actions/errata.py*
 %endif
 
-%if 0%{?fedora} || 0%{?rhel} > 5
+%if 0%{?fedora} || 0%{?rhel} > 5 || 0%{?suse_version} >= 1140
 rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_hal.*
 %else
 rm $RPM_BUILD_ROOT%{_datadir}/rhn/up2date_client/hardware_gudev.*
