@@ -157,6 +157,17 @@ public class MasterHandler extends BaseHandler {
     }
 
     /**
+     * Check if this host is reading configuration from an ISS master.
+     * @return boolean if there is ISS master.
+     *
+     * @xmlrpc.doc Check if this host is reading configuration from an ISS master.
+     * @xmlrpc.returntype boolean - True if has an ISS master, false otherwise.
+     */
+    public boolean hasMaster() {
+        return IssFactory.getCurrentMaster() != null;
+    }
+
+    /**
      * Make this slave have no default Master for satellite-sync
      * @param loggedInUser The current user
      * @return 1 on success, exception otherwise
