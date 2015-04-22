@@ -961,6 +961,55 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Test the SDK scenario: one errata with two packages in different channels.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSDK() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create one errata that spreads over two different channels
+        User user = createTestUser();
+        Errata erratum = createTestErrata(user, cves);
+        ChannelFamily channelFamily = createTestChannelFamily();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel childChannelSDK = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+        baseChannelSP3.addErrata(erratum);
+        childChannelSDK.addErrata(erratum);
+
+        // Create two unpatched packages where both have patched packages in their
+        // respective channels, all in the same erratum!
+        Package unpatchedSDK = createTestPackage(user, childChannelSDK, "noarch");
+        Package unpatched = createTestPackage(user, baseChannelSP3, "noarch");
+        createLaterTestPackage(user, erratum, childChannelSDK, unpatchedSDK);
+        Package patched = createLaterTestPackage(user, erratum, baseChannelSP3, unpatched);
+
+        // server1: SDK channel not assigned, patched package not installed
+        // -> AFFECTED_PATCH_APPLICABLE
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(baseChannelSP3);
+        Server server1 = createTestServer(user, serverChannels);
+        createTestInstalledPackage(unpatched, server1);
+
+        // server2: SDK channel not assigned, patched package installed
+        // -> PATCHED
+        Server server2 = createTestServer(user, serverChannels);
+        createTestInstalledPackage(patched, server2);
+
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+        assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
