@@ -15,10 +15,8 @@
 
 import re
 import sys
-import os.path
 import xmlrpclib
 
-from spacewalk.common.suseLib import hasISSMaster
 from spacewalk.susemanager.mgr_sync.channel import parse_channels, Channel, find_channel_by_label
 from spacewalk.susemanager.mgr_sync.product import parse_products, Product
 from spacewalk.susemanager.mgr_sync.config import Config
@@ -62,7 +60,7 @@ class MgrSync(object):
         self.log = self.__init__logger(options.debug)
         self.log.info("Executing mgr-sync {0}".format(options))
 
-        if hasISSMaster() and not vars(options).has_key('refresh'):
+        if self.conn.sync.master.hasMaster() and not vars(options).has_key('refresh'):
             msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
@@ -237,7 +235,7 @@ class MgrSync(object):
         """
 
         enable_checks = True
-        current_channels = []
+        current_channels = list()
 
         if not channels:
             channels = [self._select_channel_interactive_mode()]
@@ -565,7 +563,6 @@ class MgrSync(object):
             saved_credentials[int(number)-1]['user'], number))
         return [saved_credentials[int(number)-1]['user']]
 
-
     #################
     #               #
     # Other methods #
@@ -591,7 +588,7 @@ class MgrSync(object):
         text_width = len("Refreshing ") + 8 + \
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
 
-        if hasISSMaster() or schedule:
+        if self.conn.sync.master.hasMaster() or schedule:
             try:
                 self._schedule_taskomatic_refresh(enable_reposync)
             except xmlrpclib.Fault, e:
@@ -659,8 +656,7 @@ class MgrSync(object):
              params))
          client.tasko.scheduleSingleSatBunchRun('mgr-sync-refresh-bunch', params)
 
-
-    def _execute_xmlrpc_method(self, endoint, method, auth_token, *params, **opts):
+    def _execute_xmlrpc_method(self, endpoint, method, auth_token, *params, **opts):
         """
         Invokes the remote method specified by the user. Repeats the operation
         once if there's a failure caused by the expiration of the sessions
@@ -675,14 +671,14 @@ class MgrSync(object):
         try:
             self.log.debug("Invoking remote method {0} with auth_token {1}".format(
                 method, auth_token))
-            return getattr(endoint, method)(auth_token, *params)
+            return getattr(endpoint, method)(auth_token, *params)
         except xmlrpclib.Fault, ex:
             if retry_on_session_failure and self._check_session_fail(ex):
                 self.log.info("Retrying after session failure: {0}".format(ex))
                 self.auth.discard_token()
                 auth_token = self.auth.token()
                 return self._execute_xmlrpc_method(
-                    endoint, method, auth_token, *params,
+                    endpoint, method, auth_token, *params,
                     retry_on_session_failure=False)
             else:
                 self.log.error("Error: {0}".format(ex))
