@@ -535,6 +535,7 @@ public class CVEAuditManager {
                     atLeastOneErrataInstalled |= allPackagesForCurrentErrataInstalled;
                     setPatchStatus(currentSystem, atLeastOneErrataInstalled,
                             allChannelsForOneErrataAssigned, hasErrata);
+
                     // Check if the patch status is contained in the filter
                     if (patchStatuses.contains(currentSystem.getPatchStatus())) {
                         ret.add(currentSystem);
@@ -616,6 +617,7 @@ public class CVEAuditManager {
             atLeastOneErrataInstalled |= allPackagesForCurrentErrataInstalled;
             setPatchStatus(currentSystem, atLeastOneErrataInstalled,
                     allChannelsForOneErrataAssigned, hasErrata);
+
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(currentSystem.getPatchStatus())) {
                 ret.add(currentSystem);
