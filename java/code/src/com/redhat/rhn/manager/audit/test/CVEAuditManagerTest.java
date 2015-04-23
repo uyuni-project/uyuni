@@ -886,6 +886,130 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Verify that a system is PATCHED as soon as at least one patch is installed, even
+     * though there is another patch available in the next Service Pack (bsc#926146).
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testLTSS() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel ltssChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products (LTSS channel is *not* part of the product!)
+        createTestSUSEProductChannel(baseChannelSP2, productSP2);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+
+        // Create two errata: one in the LTSS channel and one in SP3 updates
+        User user = createTestUser();
+        Package unpatched = createTestPackage(user, baseChannelSP2, "noarch");
+
+        Errata errataLTSS = createTestErrata(user, cves);
+        ltssChannelSP2.addErrata(errataLTSS);
+        TestUtils.saveAndFlush(ltssChannelSP2);
+        Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, unpatched);
+
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+        createLaterTestPackage(user, errataSP3, updateChannelSP3, patchedLTSS);
+
+        // Setup SP2 channels
+        Set<Channel> channelsSP2 = new HashSet<Channel>();
+        channelsSP2.add(baseChannelSP2);
+        channelsSP2.add(ltssChannelSP2);
+
+        // Create server1: SP2 channels, only unpatched package installed (APPLICABLE)
+        Server server1 = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(unpatched, server1);
+
+        // Create server2: SP2 channels, patched package installed (PATCHED)
+        Server server2 = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(patchedLTSS, server2);
+
+        // Create server3: SP2 channels with LTSS patch installed + SP3 patch available,
+        // should still return as PATCHED!
+        Server server3 = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(patchedLTSS, server3);
+        installSUSEProductOnServer(productSP2, server3);
+
+        CVEAuditManager.populateCVEServerChannels();
+
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+        assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
+        assertSystemPatchStatus(server3, PatchStatus.PATCHED, results);
+    }
+
+    /**
+     * Test the SDK scenario: one errata with two packages in different channels.
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testSDK() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create one errata that spreads over two different channels
+        User user = createTestUser();
+        Errata erratum = createTestErrata(user, cves);
+        ChannelFamily channelFamily = createTestChannelFamily();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel childChannelSDK = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+        baseChannelSP3.addErrata(erratum);
+        childChannelSDK.addErrata(erratum);
+
+        // Create two unpatched packages where both have patched packages in their
+        // respective channels, all in the same erratum!
+        Package unpatchedSDK = createTestPackage(user, childChannelSDK, "noarch");
+        Package unpatched = createTestPackage(user, baseChannelSP3, "noarch");
+        createLaterTestPackage(user, erratum, childChannelSDK, unpatchedSDK);
+        Package patched = createLaterTestPackage(user, erratum, baseChannelSP3, unpatched);
+
+        // server1: SDK channel not assigned, patched package not installed
+        // -> AFFECTED_PATCH_APPLICABLE
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(baseChannelSP3);
+        Server server1 = createTestServer(user, serverChannels);
+        createTestInstalledPackage(unpatched, server1);
+
+        // server2: SDK channel not assigned, patched package installed
+        // -> PATCHED
+        Server server2 = createTestServer(user, serverChannels);
+        createTestInstalledPackage(patched, server2);
+
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server1, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
+        assertSystemPatchStatus(server2, PatchStatus.PATCHED, results);
+    }
+
+    /**
      * Find record for a given server in a list as returned by
      * listSystemsByPatchStatus().
      * @param server
