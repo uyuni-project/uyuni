@@ -10,15 +10,17 @@ Given /^I am logged in via XML\-RPC\/api as user "([^"]*)" and password "([^"]*)
 end
 
 When /^I call getApiNamespaces, I should get (\d+) namespaces$/ do |apiCount|
-  #$stderr.puts "namespaces #{rpcApiTester.getCountOfApiNamespaces()}"
+  $stderr.puts "namespaces #{rpcApiTester.getCountOfApiNamespaces()}"
   fail if apiCount.to_i != rpcApiTester.getCountOfApiNamespaces()
 end
 
 When /^I call getVersion, I should get "([^"]*)" as result$/ do |version|
+  $stderr.puts "version is #{rpcApiTester.getVersion()}"
   fail if not rpcApiTester.getVersion() == version
 end
 
 When /^I call systemVersion, I should get "([^"]*)" as result$/ do |version|
+  $stderr.puts "systemVersion is #{rpcApiTester.systemVersion()}"
   fail if not rpcApiTester.systemVersion().include? version
 end
 
