@@ -139,5 +139,8 @@ public class TokenSerializer extends RhnXmlRpcCustomSerializer {
        Boolean universalDefault =  Boolean.valueOf(token.isOrgDefault());
        helper.add("universal_default", universalDefault);
        helper.add("disabled", Boolean.valueOf(token.isTokenDisabled()));
+
+       // Return the contact method label (e.g. 'ssh-push')
+       helper.add("contact_method", token.getContactMethod().getLabel());
    }
 }
