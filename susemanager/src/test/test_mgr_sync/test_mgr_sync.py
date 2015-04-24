@@ -46,10 +46,7 @@ class MgrSyncTest(unittest.TestCase):
         self.mgr_sync.config.write = MagicMock()
         self.mgr_sync.__init__logger = MagicMock(
             return_value=logger.Logger(3, "tmp.log"))
-
-        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
-        mock = patcher.start()
-        mock.return_value = False
+        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def tearDown(self):
         if os.path.exists("tmp.log"):
