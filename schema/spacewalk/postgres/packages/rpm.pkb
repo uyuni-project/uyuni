@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 52a44608fce36681842b9254788f66fef73ff54f
+-- oracle equivalent source sha1 a30c7592853e5fe784686baed4014586e742cd7f
 -- create schema rpm;
 
 --update pg_setting
