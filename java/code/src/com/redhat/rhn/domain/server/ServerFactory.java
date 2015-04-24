@@ -33,8 +33,10 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -951,5 +953,17 @@ public class ServerFactory extends HibernateFactory {
         params.put("id", id);
         return (ContactMethod) singleton.lookupObjectByNamedQuery(
                 "ContactMethod.findById", params, true);
+    }
+
+    /**
+     * Find contact method type by a given label.
+     * @param label label of the contact method
+     * @return contact method with the given label
+     */
+    public static ContactMethod findContactMethodByLabel(String label) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(ContactMethod.class);
+        criteria.add(Restrictions.eq("label", label));
+        return (ContactMethod) criteria.uniqueResult();
     }
 }
