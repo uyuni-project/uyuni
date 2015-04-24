@@ -37,10 +37,7 @@ class RefreshOperationsTest(unittest.TestCase):
         self.mgr_sync.auth.token = MagicMock(
             return_value=self.fake_auth_token)
         self.mgr_sync.config.write = MagicMock()
-
-        patcher = patch('spacewalk.susemanager.mgr_sync.mgr_sync.hasISSMaster')
-        mock = patcher.start()
-        mock.return_value = False
+        self.mgr_sync.conn.sync.master.hasMaster = MagicMock(return_value=False)
 
     def test_refresh_from_mirror(self):
         """ Test the refresh action """
