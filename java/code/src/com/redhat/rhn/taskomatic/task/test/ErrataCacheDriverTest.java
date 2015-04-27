@@ -18,7 +18,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
-import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.errata.ErrataCacheDriver;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -27,7 +26,6 @@ import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,18 +45,10 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
         insertErrataCacheTask(server);
         insertErrataCacheTask(server);
 
-        // Get candidates and verify that this server is included only once
+        // Get the candidates and verify
         ErrataCacheDriver driver = new ErrataCacheDriver();
         driver.setLogger(Logger.getLogger(ErrataCacheDriverTest.class));
-        List<Map<String, Object>> candidates = driver.getCandidates();
-        int counter = 0;
-        for (Map<String, Object> candidate : candidates) {
-            Task task = (Task) candidate.get("task");
-            if (server.getId().equals(task.getData())) {
-                counter++;
-            }
-        }
-        assertEquals(1, counter);
+        assertEquals(1, driver.getCandidates().size());
     }
 
     /**
