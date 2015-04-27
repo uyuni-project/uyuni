@@ -188,6 +188,9 @@ public class ServerSerializer extends RhnXmlRpcCustomSerializer {
             }
         }
 
+        // Contact method
+        helper.add("contact_method", server.getContactMethod().getLabel());
+
         helper.writeTo(output);
     }
 }
