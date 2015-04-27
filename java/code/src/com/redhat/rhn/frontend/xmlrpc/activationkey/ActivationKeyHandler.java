@@ -25,8 +25,10 @@ import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -303,6 +305,8 @@ public class ActivationKeyHandler extends BaseHandler {
      *   for unlimited usage and to override usage_limit")
      *   #prop_desc("boolean", "universal_default", "optional")
      *   #prop_desc("boolean", "disabled", "optional")
+     *   #prop_desc("string", "contact_method", "optional - 'default', 'ssh-push'
+     *   or 'ssh-push-tunnel'")
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
@@ -317,6 +321,7 @@ public class ActivationKeyHandler extends BaseHandler {
         validKeys.add("unlimited_usage_limit");
         validKeys.add("universal_default");
         validKeys.add("disabled");
+        validKeys.add("contact_method");
         validateMap(validKeys, details);
 
         ActivationKeyManager manager = ActivationKeyManager.getInstance();
@@ -373,6 +378,18 @@ public class ActivationKeyHandler extends BaseHandler {
 
         if (details.containsKey("disabled")) {
             aKey.setDisabled((Boolean)details.get("disabled"));
+        }
+
+        if (details.containsKey("contact_method")) {
+            ContactMethod contactMethod = ServerFactory.findContactMethodByLabel(
+                    (String) details.get("contact_method"));
+            if (contactMethod != null) {
+                aKey.setContactMethod(contactMethod);
+            }
+            else {
+                throw new FaultException(-1, "invalidContactMethod",
+                        "Invalid contact method: " + details.get("contact_method"));
+            }
         }
 
         manager.update(aKey, description, baseChannel);
