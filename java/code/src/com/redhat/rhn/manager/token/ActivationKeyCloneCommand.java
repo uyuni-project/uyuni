@@ -111,6 +111,9 @@ public class ActivationKeyCloneCommand {
         Set<ServerGroup> cloneServerGroups = new HashSet<ServerGroup>();
         cloneServerGroups.addAll(ak.getServerGroups());
         cak.setServerGroups(cloneServerGroups);
+
+        // Contact method
+        cak.setContactMethod(ak.getContactMethod());
     }
 
     /**
