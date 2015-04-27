@@ -1637,6 +1637,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         String building = "building";
         String room = "room";
         String rack = "rack";
+        String contactMethod = "ssh-push";
 
         details.put("profile_name", profileName);
         details.put("base_entitlement", "enterprise_entitled");
@@ -1650,6 +1651,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         details.put("building", building);
         details.put("room", room);
         details.put("rack", rack);
+        details.put("contact_method", contactMethod);
 
         handler.setDetails(admin, new Integer(server.getId().intValue()), details);
         TestUtils.saveAndFlush(server);
@@ -1667,6 +1669,23 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(building, server.getLocation().getBuilding());
         assertEquals(room, server.getLocation().getRoom());
         assertEquals(rack, server.getLocation().getRack());
+        assertEquals(contactMethod, server.getContactMethod().getLabel());
+    }
+
+    public void testSetDetailsContactMethodInvalid() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        SystemManager.removeAllServerEntitlements(server.getId());
+
+        Map details = new HashMap();
+        details.put("contact_method", "foobar");
+        try {
+            handler.setDetails(admin, new Integer(server.getId().intValue()), details);
+            fail("Setting invalid contact method should throw exception!");
+        }
+        catch (FaultException e) {
+            // expected
+        }
     }
 
     public void testSetLockStatus() throws Exception {
