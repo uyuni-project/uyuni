@@ -43,14 +43,16 @@ public class RpmVersionComparatorTest extends TestCase {
         assertCompareSymm(0, "1-a.1", "1.a-1");
         assertCompareSymm(0, "", "");
 
-        // Some asymmetry .. not really a total ordering
-        assertCompareAsym(-1, "-", ".");
-        assertCompareAsym(-1, "--", "-");
-        assertCompareAsym(-1, "1-1-", "1-1.");
+        // all not alphanum signs are treated as the same
+        assertCompareSymm(0, "-", ".");
+        assertCompareSymm(0, "--", "-");
+        assertCompareSymm(0, "1-1-", "1-1.");
 
+        // Some asymmetry .. not really a total ordering
         assertCompareSymm(1, "1.1", "1a");
         assertCompareSymm(-1, "9", "10");
         assertCompareSymm(-1, "00009", "0010");
+        assertCompareSymm(-1, "1.1", "1.1.PTF");
     }
 
     public void testBugzilla50977() {
