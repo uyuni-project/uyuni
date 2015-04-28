@@ -46,10 +46,24 @@ public class RpmVersionComparator implements Comparator {
         int b2 = 0;
 
         /* loop through each version segment of str1 and str2 and compare them */
-        while (b1 < str1.length() && b2 < str2.length()) {
+        while (true) {
             b1 = skipNonAlnum(str1, b1);
             b2 = skipNonAlnum(str2, b2);
 
+            if (xchar(str1, b1) == '~' || xchar(str2, b2) == '~') {
+                if (xchar(str1, b1) == '\0' || xchar(str1, b1) != '~') {
+                    return 1;
+                }
+                if (xchar(str2, b2) == '\0' || xchar(str2, b2) != '~') {
+                    return -1;
+                }
+                b1++;
+                b2++;
+                continue;
+            }
+            if(b1 >= str1.length() || b2 >= str2.length()) {
+                break;
+            }
             /* grab first completely alpha or completely numeric segment */
             /* str1.substring(b1, e1) and str2.substring(b2, e2) will */
             /* contain the segments */
@@ -138,7 +152,7 @@ public class RpmVersionComparator implements Comparator {
     }
 
     private int skipNonAlnum(String s, int i) {
-        while (i < s.length() && !xisalnum(xchar(s, i))) {
+        while (i < s.length() && xchar(s, i) != '~' && !xisalnum(xchar(s, i))) {
             i++;
         }
         return i;
