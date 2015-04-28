@@ -70,6 +70,12 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
  *           False indicates that the system is unlocked.")
  *          #prop_desc("string", "virtualization", "Virtualization type -
  *           for virtual guests only (optional)")
+ *          #prop_desc("string", "contact_method", "One of the following:")
+ *            #options()
+ *              #item("default")
+ *              #item("ssh-push")
+ *              #item("ssh-push-tunnel")
+ *            #options_end()
  *  #struct_end()
  */
 public class ServerSerializer extends RhnXmlRpcCustomSerializer {

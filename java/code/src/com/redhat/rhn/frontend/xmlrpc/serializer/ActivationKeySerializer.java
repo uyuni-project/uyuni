@@ -46,6 +46,12 @@ import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
  *     #prop_array_end()
  *     #prop("boolean", "universal_default")
  *     #prop("boolean", "disabled")
+ *     #prop_desc("string", "contact_method", "One of the following:")
+ *       #options()
+ *         #item("default")
+ *         #item("ssh-push")
+ *         #item("ssh-push-tunnel")
+ *       #options_end()
  *   #struct_end()
  */
 public class ActivationKeySerializer extends RhnXmlRpcCustomSerializer {
