@@ -3705,8 +3705,12 @@ public class SystemHandler extends BaseHandler {
      *           #prop("string", "building")
      *           #prop("string", "room")
      *           #prop("string", "rack")
-     *           #prop_desc("string", "contact_method", "'default', 'ssh-push' or
-     *                   'ssh-push-tunnel'")
+     *           #prop_desc("string", "contact_method", "One of the following:")
+     *             #options()
+     *               #item("default")
+     *               #item("ssh-push")
+     *               #item("ssh-push-tunnel")
+     *             #options_end()
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
