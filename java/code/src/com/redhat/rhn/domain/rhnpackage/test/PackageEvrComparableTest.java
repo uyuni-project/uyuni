@@ -44,6 +44,14 @@ public class PackageEvrComparableTest extends RhnBaseTestCase {
         compare(-1, "1-5-7", "2-5-7");
         compare(-1, "1-1-7", "1-5-7");
         compare(1, "1-1-7", "1-1-6");
+        compare(1, "1-10-7", "1-9-6");
+        compare(-1, "1-9-7", "1-11-6");
+        compare(-1, "1-1-7", "1-1-7.PTF");
+        compare(1, "1-1-7.PTF", "1-1-7");
+        compare(1, "1-2-1", "1-2~beta1-1");
+        compare(-1, "1-2~beta2-1", "1-2-1");
+        compare(1, "1-2~beta2-1", "1-2~beta1-1");
+        compare(-1, "1-2~beta2-1", "1-2~beta3-1");
     }
 
     // On Postgres, we don't get as far as the specific errors - the DB kicks us out
