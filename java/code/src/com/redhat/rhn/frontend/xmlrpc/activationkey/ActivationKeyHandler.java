@@ -305,8 +305,12 @@ public class ActivationKeyHandler extends BaseHandler {
      *   for unlimited usage and to override usage_limit")
      *   #prop_desc("boolean", "universal_default", "optional")
      *   #prop_desc("boolean", "disabled", "optional")
-     *   #prop_desc("string", "contact_method", "optional - 'default', 'ssh-push'
-     *   or 'ssh-push-tunnel'")
+     *   #prop_desc("string", "contact_method", "One of the following:")
+     *     #options()
+     *       #item("default")
+     *       #item("ssh-push")
+     *       #item("ssh-push-tunnel")
+     *     #options_end()
      * #struct_end()
      * @xmlrpc.returntype #return_int_success()
      */
