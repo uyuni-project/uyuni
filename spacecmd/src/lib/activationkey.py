@@ -1545,15 +1545,17 @@ def do_activationkey_setdescription(self, args):
 def help_activationkey_setcontactmethod(self):
     print 'activationkey_setcontactmethod: Set the contact method to use for ' \
           'systems registered with this key.'
-    print 'Valid options are "default", "ssh-push" and "ssh-push-tunnel".'
+    print 'Available contact methods: ' + str(self.CONTACT_METHODS)
     print 'usage: activationkey_setcontactmethod KEY CONTACT_METHOD'
 
 
 def complete_activationkey_setcontactmethod(self, text, line, beg, end):
     parts = line.split(' ')
 
-    if len(parts) <= 2:
+    if len(parts) == 2:
         return tab_completer(self.do_activationkey_list('', True), text)
+    else:
+        return tab_completer(self.CONTACT_METHODS, text)
 
 
 def do_activationkey_setcontactmethod(self, args):
