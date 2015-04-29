@@ -3268,3 +3268,46 @@ def do_system_show_packageversion(self, args):
             if  pkg.get('name') == searchpkg:
                 print "%s\t%s\t%s\t%s\t%s\t%s" % ( pkg.get('name'), pkg.get('version'), pkg.get('release'),
                         pkg.get('epoch'), pkg.get('arch_label'), system)
+
+####################
+
+
+def help_system_setcontactmethod(self):
+    print 'system_setcontactmethod: Set the contact method for given system(s).'
+    print 'Available contact methods: ' + str(self.CONTACT_METHODS)
+    print 'usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>'
+    print
+    print self.HELP_SYSTEM_OPTS
+
+
+def complete_system_setcontactmethod(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return self.tab_complete_systems(text)
+    else:
+        return tab_completer(self.CONTACT_METHODS, text)
+
+
+def do_system_setcontactmethod(self, args):
+    (args, _options) = parse_arguments(args)
+
+    if len(args) < 2:
+        self.help_system_setcontactmethod()
+        return
+
+    contact_method = args.pop()
+    details = {'contact_method': contact_method}
+
+    # use the systems listed in the SSM
+    if re.match('ssm', args[0], re.I):
+        systems = self.ssm.keys()
+    else:
+        systems = self.expand_systems(args)
+
+    for system in sorted(systems):
+        system_id = self.get_system_id(system)
+        if not system_id:
+            continue
+
+        self.client.system.setDetails(self.session, system_id, details)
