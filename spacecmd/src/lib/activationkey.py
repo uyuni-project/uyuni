@@ -801,6 +801,8 @@ def do_activationkey_details(self, args):
         result.append( 'Universal Default:      %s' % details.get('universal_default') )
         result.append( 'Usage Limit:            %s' % details.get('usage_limit') )
         result.append( 'Deploy Config Channels: %s' % config_channel_deploy )
+        if 'contact_method' in details:
+            result.append('Contact Method:         %s' % details.get('contact_method'))
 
         result.append( '' )
         result.append( 'Software Channels' )
