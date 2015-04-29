@@ -62,6 +62,9 @@ public class TaskConstants {
     public static final String TASK_QUERY_ERRATA_QUEUE_FIND_CANDIDATES =
         "errataqueue_find_candidates";
 
+    public static final String TASK_QUERY_AUTO_ERRATA_CANDIDATES =
+        "auto_errata_candidates";
+
     public static final String TASK_QUERY_ERRATA_QUEUE_ENQUEUE_SAT_ERRATA =
         "errataqueue_enqueue_sat_errata";
 
@@ -91,9 +94,6 @@ public class TaskConstants {
 
     public static final String TASK_QUERY_REPOMOD_CLEAR_IN_PROGRESS =
         "repomd_clear_in_progress";
-
-    public static final String TASK_QUERY_ERRATA_QUEUE_FIND_AUTOUPDATE_SERVERS =
-        "errataqueue_find_autoupdate_servers";
 
     public static final String TASK_QUERY_SUMMARYPOP_AWOL_SERVER_IN_ORGS =
         "summarypop_awol_server_in_orgs2";
