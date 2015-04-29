@@ -1538,3 +1538,34 @@ def do_activationkey_setdescription(self, args):
     details = { 'description' : description }
 
     self.client.activationkey.setDetails(self.session, akey, details)
+
+####################
+
+
+def help_activationkey_setcontactmethod(self):
+    print 'activationkey_setcontactmethod: Set the contact method to use for ' \
+          'systems registered with this key.'
+    print 'Valid options are "default", "ssh-push" and "ssh-push-tunnel".'
+    print 'usage: activationkey_setcontactmethod KEY CONTACT_METHOD'
+
+
+def complete_activationkey_setcontactmethod(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) <= 2:
+        return tab_completer(self.do_activationkey_list('', True), text)
+
+
+def do_activationkey_setcontactmethod(self, args):
+    (args, _options) = parse_arguments(args)
+
+    if not len(args) >= 2:
+        self.help_activationkey_setcontactmethod()
+        return
+
+    akey = args.pop(0)
+    contact_method = ' '.join(args)
+
+    details = {'contact_method': contact_method}
+
+    self.client.activationkey.setDetails(self.session, akey, details)
