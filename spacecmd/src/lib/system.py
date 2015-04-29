@@ -2361,6 +2361,8 @@ def do_system_details(self, args, short=False):
         print 'Last Checkin:  %s' % last_checkin
         print 'OSA Status:    %s' % details.get('osa_status')
         print 'Last Boot:     %s' % details.get('last_boot')
+        if 'contact_method' in details:
+            print 'Contact Method:%s' % details.get('contact_method')
 
         # only print basic information if requested
         if short:
