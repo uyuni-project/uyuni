@@ -1671,8 +1671,7 @@ def do_activationkey_setcontactmethod(self, args):
         self.help_activationkey_setcontactmethod()
         return
 
-    akey = args.pop(0)
-    contact_method = ' '.join(args)
-    details = {'contact_method': contact_method}
+    details = {'contact_method': args.pop()}
+    akey = args.pop()
 
     self.client.activationkey.setDetails(self.session, akey, details)
