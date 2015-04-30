@@ -1561,13 +1561,12 @@ def complete_activationkey_setcontactmethod(self, text, line, beg, end):
 def do_activationkey_setcontactmethod(self, args):
     (args, _options) = parse_arguments(args)
 
-    if not len(args) >= 2:
+    if not len(args) == 2:
         self.help_activationkey_setcontactmethod()
         return
 
     akey = args.pop(0)
     contact_method = ' '.join(args)
-
     details = {'contact_method': contact_method}
 
     self.client.activationkey.setDetails(self.session, akey, details)
