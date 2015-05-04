@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -242,6 +243,47 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertNull(activationKey.getUsageLimit());
     }
 
+    public void testSetDetailsContactMethod() throws Exception {
+        String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
+                KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
+
+        // Set 'ssh-push'
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("contact_method", "ssh-push");
+        keyHandler.setDetails(admin, key, details);
+        ActivationKey activationKey = ActivationKeyManager.getInstance().
+                lookupByKey(key, admin);
+        assertEquals(ServerFactory.findContactMethodByLabel("ssh-push"),
+                activationKey.getContactMethod());
+
+        // Set 'ssh-push-tunnel'
+        details.put("contact_method", "ssh-push-tunnel");
+        keyHandler.setDetails(admin, key, details);
+        activationKey = ActivationKeyManager.getInstance().
+                lookupByKey(key, admin);
+        assertEquals(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"),
+                activationKey.getContactMethod());
+    }
+
+    public void testSetDetailsContactMethodInvalid() throws Exception {
+        String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
+                KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
+
+        Map<String, Object> details = new HashMap<String, Object>();
+        details.put("contact_method", "foobar");
+        try {
+            keyHandler.setDetails(admin, key, details);
+            fail("Setting invalid contact method should throw exception!");
+        }
+        catch (FaultException e) {
+            // expected
+        }
+        ActivationKey activationKey = ActivationKeyManager.getInstance().
+                lookupByKey(key, admin);
+        assertEquals(ServerFactory.findContactMethodByLabel("default"),
+                activationKey.getContactMethod());
+    }
+
     public void testGetDetails() throws Exception {
         String newKey = keyHandler.create(adminKey, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.FALSE);
@@ -277,6 +319,10 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         assertTrue(finalResult.indexOf(newName.getName()) >= 0);
         assertTrue(finalResult.indexOf(newName2.getName()) >= 0);
         assertTrue(finalResult.indexOf(newName3.getName()) >= 0);
+
+        // Verify that the contact method is returned
+        assertTrue(finalResult.indexOf("<member><name>contact_method</name>" +
+                "<value><string>default</string></value></member>") >= 0);
     }
 
     public void testSetAddOnEntitlement() throws Exception {

@@ -60,6 +60,7 @@ import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
@@ -3713,6 +3714,12 @@ public class SystemHandler extends BaseHandler {
      *           #prop("string", "building")
      *           #prop("string", "room")
      *           #prop("string", "rack")
+     *           #prop_desc("string", "contact_method", "One of the following:")
+     *             #options()
+     *               #item("default")
+     *               #item("ssh-push")
+     *               #item("ssh-push-tunnel")
+     *             #options_end()
      *     #struct_end()
      *
      *  @xmlrpc.returntype #return_int_success()
@@ -3734,6 +3741,7 @@ public class SystemHandler extends BaseHandler {
         validKeys.add("room");
         validKeys.add("rack");
         validKeys.add("description");
+        validKeys.add("contact_method");
         validateMap(validKeys, details);
 
         User loggedInUser = getLoggedInUser(sessionKey);
@@ -3825,6 +3833,18 @@ public class SystemHandler extends BaseHandler {
         }
         if (details.containsKey("rack")) {
             server.getLocation().setRack((String)details.get("rack"));
+        }
+
+        if (details.containsKey("contact_method")) {
+            ContactMethod contactMethod = ServerFactory.findContactMethodByLabel(
+                    (String) details.get("contact_method"));
+            if (contactMethod != null) {
+                server.setContactMethod(contactMethod);
+            }
+            else {
+                throw new FaultException(-1, "invalidContactMethod",
+                        "Invalid contact method: " + details.get("contact_method"));
+            }
         }
 
         return 1;
