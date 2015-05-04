@@ -1026,16 +1026,61 @@ class Registration(rhnHandler):
         log_debug(5, system_id, hwlist)
         server = self.auth_system(system_id)
         self.__add_hw_profile_no_auth(server, hwlist)
+        # set primary interface to the one that is used to reach the server
+        sid = server.getid()
+        h = rhnSQL.prepare("""
+            select * from rhnServerNetwork where server_id = :server_id
+        """)
+        h.execute(server_id=sid)
+        row = h.fetchone_dict()
+        if row:
+            ipaddr=row['ipaddr']
+            ip6addr=row['ip6addr']
+            if ipaddr:
+                h = rhnSQL.prepare("""
+                    select interface_id from rhnServerNetAddress4 where address = :address
+                """)
+                h.execute(address=ipaddr)
+                row = h.fetchone_dict()
+                if row:
+                    primif=row['interface_id']
+            elif ip6addr:
+                h = rhnSQL.prepare("""
+                    select interface_id from rhnServerNetAddress6 where address = :address
+                """)
+                h.execute(address=ip6addr)
+                row = h.fetchone_dict()
+                if row:
+                    primif=row['interface_id']
+            if primif:
+                h = rhnSQL.prepare("""
+                    update rhnservernetinterface set is_primary = 'Y' where id = :id
+                """)
+                h.execute(id=primif)
+                rhnSQL.commit()
         return 0
 
     def refresh_hw_profile(self, system_id, hwlist):
         """ Recreate the server HW profile """
         log_debug(5, system_id, hwlist)
         server = self.auth_system(system_id)
+        sid = server.getid()
         # clear out the existing list first
         # the only difference between add_hw_profile and refresh_hw_profile
+        # make sure primary network interface does not get reset
+        h = rhnSQL.prepare("""
+            select name from rhnservernetinterface where server_id = :server_id AND is_primary ='Y'
+        """)
+        h.execute(server_id=sid)
+        row = h.fetchone_dict()
         server.delete_hardware()
         self.__add_hw_profile_no_auth(server, hwlist)
+        if row:
+            h = rhnSQL.prepare("""
+                update rhnservernetinterface set is_primary = 'Y' where server_id = :server_id AND name = :name
+            """)
+            h.execute(server_id=sid, name=row['name'])
+            rhnSQL.commit()
         return 0
 
     def welcome_message(self, lang = None):
