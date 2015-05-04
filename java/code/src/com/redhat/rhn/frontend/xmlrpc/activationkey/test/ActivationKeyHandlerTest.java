@@ -244,13 +244,13 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetDetailsContactMethod() throws Exception {
-        String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
+        String key = keyHandler.create(adminKey, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
         // Set 'ssh-push'
         Map<String, Object> details = new HashMap<String, Object>();
         details.put("contact_method", "ssh-push");
-        keyHandler.setDetails(admin, key, details);
+        keyHandler.setDetails(adminKey, key, details);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                 lookupByKey(key, admin);
         assertEquals(ServerFactory.findContactMethodByLabel("ssh-push"),
@@ -258,7 +258,7 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
 
         // Set 'ssh-push-tunnel'
         details.put("contact_method", "ssh-push-tunnel");
-        keyHandler.setDetails(admin, key, details);
+        keyHandler.setDetails(adminKey, key, details);
         activationKey = ActivationKeyManager.getInstance().
                 lookupByKey(key, admin);
         assertEquals(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"),
@@ -266,13 +266,13 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     }
 
     public void testSetDetailsContactMethodInvalid() throws Exception {
-        String key = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
+        String key = keyHandler.create(adminKey, KEY, KEY_DESCRIPTION, baseChannelLabel,
                 KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.TRUE);
 
         Map<String, Object> details = new HashMap<String, Object>();
         details.put("contact_method", "foobar");
         try {
-            keyHandler.setDetails(admin, key, details);
+            keyHandler.setDetails(adminKey, key, details);
             fail("Setting invalid contact method should throw exception!");
         }
         catch (FaultException e) {

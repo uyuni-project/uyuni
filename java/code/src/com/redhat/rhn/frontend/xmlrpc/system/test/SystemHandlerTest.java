@@ -1680,7 +1680,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Map details = new HashMap();
         details.put("contact_method", "foobar");
         try {
-            handler.setDetails(admin, new Integer(server.getId().intValue()), details);
+            handler.setDetails(adminKey, new Integer(server.getId().intValue()), details);
             fail("Setting invalid contact method should throw exception!");
         }
         catch (FaultException e) {
