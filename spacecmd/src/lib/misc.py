@@ -89,6 +89,8 @@ ENTITLEMENTS = ['provisioning_entitled',
 SYSTEM_SEARCH_FIELDS = ['id', 'name', 'ip', 'hostname',
                         'device', 'vendor', 'driver', 'uuid']
 
+CONTACT_METHODS = ['default', 'ssh-push', 'ssh-push-tunnel']
+
 ####################
 
 
