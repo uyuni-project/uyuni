@@ -801,6 +801,8 @@ def do_activationkey_details(self, args):
         result.append( 'Universal Default:      %s' % details.get('universal_default') )
         result.append( 'Usage Limit:            %s' % details.get('usage_limit') )
         result.append( 'Deploy Config Channels: %s' % config_channel_deploy )
+        if 'contact_method' in details:
+            result.append('Contact Method:         %s' % details.get('contact_method'))
 
         result.append( '' )
         result.append( 'Software Channels' )
@@ -1534,5 +1536,36 @@ def do_activationkey_setdescription(self, args):
     description = ' '.join(args)
 
     details = { 'description' : description }
+
+    self.client.activationkey.setDetails(self.session, akey, details)
+
+####################
+
+
+def help_activationkey_setcontactmethod(self):
+    print 'activationkey_setcontactmethod: Set the contact method to use for ' \
+          'systems registered with this key.'
+    print 'Available contact methods: ' + str(self.CONTACT_METHODS)
+    print 'usage: activationkey_setcontactmethod KEY CONTACT_METHOD'
+
+
+def complete_activationkey_setcontactmethod(self, text, line, beg, end):
+    parts = line.split(' ')
+
+    if len(parts) == 2:
+        return tab_completer(self.do_activationkey_list('', True), text)
+    else:
+        return tab_completer(self.CONTACT_METHODS, text)
+
+
+def do_activationkey_setcontactmethod(self, args):
+    (args, _options) = parse_arguments(args)
+
+    if not len(args) == 2:
+        self.help_activationkey_setcontactmethod()
+        return
+
+    details = {'contact_method': args.pop()}
+    akey = args.pop()
 
     self.client.activationkey.setDetails(self.session, akey, details)
