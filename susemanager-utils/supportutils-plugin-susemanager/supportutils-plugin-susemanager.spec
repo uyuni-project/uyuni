@@ -41,14 +41,19 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
 install -d $RPM_BUILD_ROOT/usr/share/man/man8
 install -d $RPM_BUILD_ROOT/sbin
+install -d $RPM_BUILD_ROOT/usr/lib/susemanager/bin/
 install -m 0544 supportconfig-sumalog $RPM_BUILD_ROOT/sbin
+install -m 0544 susemanager-connection-check.pl $RPM_BUILD_ROOT/usr/lib/susemanager/bin/susemanager-connection-check
 install -m 0544 susemanager $RPM_BUILD_ROOT/usr/lib/supportconfig/plugins
 install -m 0644 susemanager-plugin.8.gz $RPM_BUILD_ROOT/usr/share/man/man8/susemanager-plugin.8.gz
 
 %files
 %defattr(-,root,root)
 %doc COPYING.GPLv2
+%dir /usr/lib/susemanager
+%dir /usr/lib/susemanager/bin
 /sbin/supportconfig-sumalog
+/usr/lib/susemanager/bin/susemanager-connection-check
 /usr/lib/supportconfig
 /usr/lib/supportconfig/plugins
 /usr/lib/supportconfig/plugins/susemanager
