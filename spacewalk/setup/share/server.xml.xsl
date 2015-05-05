@@ -14,6 +14,8 @@
     <xsl:copy-of select="@*" />
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">127.0.0.1</xsl:attribute>
+    <xsl:attribute name="maxThreads">200</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
   </xsl:element>
   <xsl:if test="not(../Connector[@port='8009' and @address='::1'])">
   <xsl:copy-of select="preceding-sibling::node()[last()][self::text()]" />
@@ -21,6 +23,8 @@
     <xsl:copy-of select="@*" />
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">::1</xsl:attribute>
+    <xsl:attribute name="maxThreads">200</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
   </xsl:element>
   </xsl:if>
 </xsl:template>
@@ -30,6 +34,8 @@
     <xsl:copy-of select="@*" />
     <xsl:attribute name="URIEncoding">UTF-8</xsl:attribute>
     <xsl:attribute name="address">::1</xsl:attribute>
+    <xsl:attribute name="maxThreads">200</xsl:attribute>
+    <xsl:attribute name="connectionTimeout">20000</xsl:attribute>
   </xsl:element>
 </xsl:template>
 
