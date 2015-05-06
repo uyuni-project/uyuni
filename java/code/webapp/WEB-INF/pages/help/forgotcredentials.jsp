@@ -10,7 +10,7 @@
 <script type="text/javascript" src="/javascript/highlander.js"></script>
 </head>
 <body>
-  <rhn:toolbar base="h1" img="header-search"
+  <rhn:toolbar base="h1" icon="header-search"
                helpUrl="/rhn/help/user/en-US/s1-sm-your-rhn.jsp#s1-sm-forgot-creds">
     <bean:message key="help.credentials.jsp.logininfo"/>
   </rhn:toolbar>
