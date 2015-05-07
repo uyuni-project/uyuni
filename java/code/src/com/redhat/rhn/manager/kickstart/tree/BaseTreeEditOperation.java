@@ -34,7 +34,6 @@ import org.cobbler.XmlRpcException;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,7 +96,9 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
             Distro xenDistro = Distro.lookupById(CobblerXMLRPCHelper.getConnection(
                     this.getUser()), tree.getCobblerXenId());
 
-            Map kOpts = distro.getKernelOptions();
+            if (distro == null) {
+                return new ValidatorError("tree.edit.missingcobblerentry");
+            }
             distro.setKernelOptions(getKernelOptions());
             distro.setKernelPostOptions(getPostKernelOptions());
             distro.save();
