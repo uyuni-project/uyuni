@@ -488,12 +488,12 @@ public class ContentSyncManager {
         // remove SP1 extensions from SP2 base products and vice versa
         for (MgrSyncProductDto product : bases) {
             String productVersion = product.getVersion();
-            if (productVersion.startsWith("11.")) {
+            if (productVersion.matches("^11.[12]")) {
                 Collection<MgrSyncProductDto> wrongSP = new LinkedList<MgrSyncProductDto>();
                 for (MgrSyncProductDto extension : product.getExtensions()) {
                     String extensionVersion = extension.getVersion();
                     if (extension.getFriendlyName().startsWith("SUSE") &&
-                        extensionVersion.startsWith("11.") &&
+                        extensionVersion.matches("^11.[12]") &&
                         !extensionVersion.equals(productVersion)) {
                         wrongSP.add(extension);
                     }
