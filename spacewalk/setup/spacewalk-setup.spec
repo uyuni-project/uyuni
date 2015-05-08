@@ -50,6 +50,7 @@ Requires:       cobbler >= 2.0.0
 Requires:       PyYAML
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
+Requires:       spacewalk-java-lib > 2.1.165.16
 Requires:       curl
 
 %description
@@ -152,6 +153,10 @@ if [ -e /etc/zypp/credentials.d/NCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/NCCcredentials
     chmod g+r /etc/zypp/credentials.d/NCCcredentials
 fi
+for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
+  test -f $name \
+  && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
+done
 
 %check
 make test
