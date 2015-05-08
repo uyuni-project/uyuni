@@ -50,6 +50,7 @@ Requires:       cobbler >= 2.0.0
 Requires:       PyYAML
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
+Requires:       spacewalk-java-lib >= 1.7.54.34
 Requires:       perl(LWP::Protocol::https)
 
 %description
@@ -154,6 +155,10 @@ if [ $1 = 2 -a -e /etc/tomcat6/tomcat6.conf ]; then
         echo 'module = manage_in_tftpd'                     >> /etc/cobbler/modules.conf
     fi
 fi
+for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
+  test -f $name \
+  && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
+done
 
 %check
 make test
