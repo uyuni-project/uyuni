@@ -55,6 +55,7 @@ Requires:       PyYAML
 %endif
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
+Requires:       spacewalk-java-lib > 2.4.6
 Requires:       curl
 
 %description
@@ -167,6 +168,10 @@ if [ -e /etc/zypp/credentials.d/SCCcredentials ]; then
     chgrp www /etc/zypp/credentials.d/SCCcredentials
     chown g+r /etc/zypp/credentials.d/SCCcredentials
 fi
+for name in /etc/sysconfig/tomcat{5,6,} /etc/tomcat*/tomcat*.conf; do
+  test -f $name \
+  && sed -i 's/\(-Dorg.xml.sax.driver\)=org.apache.xerces.parsers.SAXParser\>/\1=com.redhat.rhn.frontend.xmlrpc.util.RhnSAXParser/g' $name
+done
 
 %check
 make test
