@@ -221,7 +221,7 @@
   <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
     <echo message="Launching Tomcat restart..."/>
     <exec executable="ssh">
-      <arg line="${ssh.command.args} nohup rctomcat6 restart > /dev/null 2>&amp;1 &amp;"/>
+      <arg line="${ssh.command.args} nohup rctomcat restart > /dev/null 2>&amp;1 &amp;"/>
     </exec>
   </target>
 
