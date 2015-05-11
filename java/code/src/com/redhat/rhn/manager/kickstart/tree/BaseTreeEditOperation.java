@@ -89,7 +89,11 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
         // Sync to cobbler
         try {
             CobblerCommand command = getCobblerCommand();
-            command.store();
+            ValidatorError error = command.store();
+
+            if (error != null) {
+                return error;
+            }
 
             Distro distro = Distro.lookupById(CobblerXMLRPCHelper.getConnection(
                     this.getUser()), tree.getCobblerId());
