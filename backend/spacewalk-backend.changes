@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon May 11 15:44:51 CEST 2015 - mc@suse.de
+
+- version 1.7.38.34-1
+- fix encoding of submit message
+- trigger generation of metadata if the repo contains no
+  packages (bsc#870159)
+
+-------------------------------------------------------------------
 Wed Aug 20 15:17:44 CEST 2014 - mc@suse.de
 
 - version 1.7.38.33-1
