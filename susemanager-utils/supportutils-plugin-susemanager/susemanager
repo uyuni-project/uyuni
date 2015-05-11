@@ -39,6 +39,6 @@ done
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
+plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"
-
