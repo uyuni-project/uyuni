@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 11 17:49:00 CEST 2015 - mc@suse.de
+
+- version 1.7.30-1
+- add tool to update the spacewalk public cert in the DB
+- fix the test for the mirror credentials (bnc#864246)
+
+-------------------------------------------------------------------
 Wed Aug 20 14:52:25 CEST 2014 - mc@suse.de
 
 - version 1.7.29-1
