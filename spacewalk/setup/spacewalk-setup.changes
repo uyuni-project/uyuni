@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon May 11 17:49:52 CEST 2015 - mc@suse.de
+
+- version 1.7.9.12-1
+- fix XML RPC API External Entities file disclosur
+  CVE-2014-8162 (bsc#922525)
+- no activation if db population should be skipped (bsc#900956)
+
+-------------------------------------------------------------------
 Wed Jun 12 13:36:03 CEST 2013 - mc@suse.de
 
 - version 1.7.9.11-1
