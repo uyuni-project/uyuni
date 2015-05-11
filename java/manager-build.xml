@@ -18,7 +18,7 @@
   <!-- Other properties -->
   <property name="deploy.host" value="deployhost" />
   <property name="deploy.dir" value="/srv/tomcat/webapps/rhn" />
-  <property name="deploy.user" value="root" />  
+  <property name="deploy.user" value="root" />
 
   <property name="tests.includes" value="buildconf/manager-test-includes" />
   <property name="tests.excludes" value="buildconf/manager-test-excludes" />
