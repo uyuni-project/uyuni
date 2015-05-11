@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon May 11 14:48:00 CEST 2015 - mc@suse.de
+
+- version 1.7.54.34-1
+- Introduce more proper parser for xmlrpc CVE-2014-8162 (bsc#922525)
+- CVE-2014-7811: more XSS bugs (bsc#902915)
+- fix CVE audit in case of multiversion package installed and patch in multi
+  channels (bsc#903723)
+- fix automatic configuration file deployment via snippet (bsc#898426)
+- Download CSV button does not export all columns ("Base Channel" missing)
+  (bnc#896238)
+
+-------------------------------------------------------------------
 Wed Jan 14 14:45:33 CET 2015 - mc@suse.de
 
 - fix XSS in system-group (CVE-2014-7812) (bsc#912886)
