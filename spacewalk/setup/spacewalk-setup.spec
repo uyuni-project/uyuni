@@ -55,7 +55,7 @@ Requires:       PyYAML
 %endif
 Requires:       /usr/bin/gpg
 Requires:       spacewalk-setup-jabberd
-Requires:       spacewalk-java-lib > 2.4.6
+Requires:       spacewalk-java-lib >= 2.4.5
 Requires:       curl
 
 %description
