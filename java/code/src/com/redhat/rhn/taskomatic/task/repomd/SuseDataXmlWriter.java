@@ -14,18 +14,16 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.rhnpackage.Eula;
-import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.dto.PackageDto;
+import com.redhat.rhn.manager.EulaManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Writer;
-import java.util.Set;
+import java.util.List;
 
 /**
  * susedata.xml writer class
@@ -83,8 +81,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     public void addPackage(PackageDto pkgDto) {
         long pkgId = pkgDto.getId().longValue();
-        Set<Eula> eulas = ((Package) HibernateFactory.getSession()
-                .load(Package.class, pkgId)).getEulas();
+        List<String> eulas = new EulaManager().getEulasForPackage(pkgId);
 
         if (!keywordIterator.hasNextForPackage(pkgId) &&
             eulas.isEmpty()) {
@@ -143,15 +140,15 @@ public class SuseDataXmlWriter extends RepomdWriter {
     /**
      * Adds the specified EULA strings to the package
      * @param pkgId ID of the package
-     * @param eulas EULA objects
+     * @param eulas EULA strings
      * @param localHandler SAX helper
      * @throws SAXException if anything goes wrong
      */
-    private void addEulas(long pkgId, Set<Eula> eulas,
-            SimpleContentHandler localHandler) throws SAXException {
-        for (Eula eula : eulas) {
+    private void addEulas(long pkgId, List<String> eulas, SimpleContentHandler localHandler)
+        throws SAXException {
+        for (String eula : eulas) {
             localHandler.startElement("eula");
-            localHandler.addCharacters(sanitize(pkgId, eula.getTextString()));
+            localHandler.addCharacters(sanitize(pkgId, eula));
             localHandler.endElement("eula");
         }
     }
