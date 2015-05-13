@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Eula;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.dto.PackageDto;
-import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.xml.sax.SAXException;
@@ -43,24 +42,6 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     public SuseDataXmlWriter(Writer writer) {
         super(writer, false);
-    }
-
-    /**
-     *
-     * @param channel channel info
-     * @return susedataXml for the given channel
-     * @throws Exception exception
-     */
-    public String getSuseDataXml(Channel channel) throws Exception {
-        begin(channel);
-
-        for (PackageDto pkgDto : TaskManager.getChannelPackageDtos(channel)) {
-            addPackage(pkgDto);
-        }
-
-        end();
-
-        return "";
     }
 
     /**
