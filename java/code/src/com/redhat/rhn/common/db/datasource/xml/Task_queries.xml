@@ -643,7 +643,7 @@ where snc.errata_id = :errata_id
 <mode name="repomdgenerator_package_eulas">
    <query params="package_id">
   SELECT se.text
-    FROM suseEulas se
+    FROM suseEula se
     JOIN susePackageEula spe ON se.id = spe.eula_id
     WHERE
        spe.package_id = :package_id
