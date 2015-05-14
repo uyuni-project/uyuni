@@ -17,6 +17,7 @@
 
   <!-- Other properties -->
   <property name="deploy.host" value="deployhost" />
+  <property name="deploy.port" value="22" />
   <property name="deploy.dir" value="/var/lib/tomcat6/webapps/rhn" />
   <property name="deploy.user" value="root" />
 
@@ -34,7 +35,7 @@
 
   <property name="ssh.socket.file" value="${user.home}/.ssh/manager-build-tunnel-${deploy.host}-${deploy.user}"/>
   <property name="ssh.socket.option" value="-o ControlPath=${ssh.socket.file}"/>
-  <property name="ssh.command.args" value="${ssh.socket.option} ${deploy.user}@${deploy.host}"/>
+  <property name="ssh.command.args" value="${ssh.socket.option} -p ${deploy.port} ${deploy.user}@${deploy.host}"/>
 
   <!-- Paths -->
   <path id="libjars">
