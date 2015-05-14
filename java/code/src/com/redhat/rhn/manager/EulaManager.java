@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
-import java.sql.Blob;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +46,7 @@ public class EulaManager {
 
         List<String> result = new LinkedList<String>();
         for (Map<String, Object> row: dataResult) {
-            result.add(HibernateFactory.blobToString((Blob) row.get("text")));
+            result.add(HibernateFactory.getBlobContents(row.get("text")));
         }
 
         return result;
