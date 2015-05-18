@@ -1573,6 +1573,63 @@
 			<product_id name="sle-pos" version="11.3">1073</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3 i686" family="7261" is_signed="Y" label="sle11-public-cloud-module-i586" name="SLE11-Public-Cloud-Module for i586" optional="Y" parent="sles11-sp3-pool-i586" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3 i686" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">725</product_id>
+			<product_id name="SUSE_SLES" version="11.3">793</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Server 11 SP3 i686" family="7261" is_signed="Y" label="sle11-public-cloud-module-i586-sles-sp4" name="SLE11-Public-Cloud-Module for i586 SLES-SP4" optional="Y" parent="sles11-sp4-pool-i586" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-i586/" summary="SUSE Linux Enterprise Server 11 SP3 i686" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.4">1298</product_id>
+			<product_id name="SUSE_SLES" version="11.4">1299</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP3 ia64" family="SLES-IA" is_signed="Y" label="sle11-public-cloud-module-ia64" name="SLE11-Public-Cloud-Module for ia64" optional="Y" parent="sles11-sp3-pool-ia64" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP3 ia64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">1037</product_id>
+		</products>
+	</channel>
+	<channel arch="ia64" description="SUSE Linux Enterprise Server 11 SP3 ia64" family="SLES-IA" is_signed="Y" label="sle11-public-cloud-module-ia64-sles-sp4" name="SLE11-Public-Cloud-Module for ia64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-ia64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-ia64/" summary="SUSE Linux Enterprise Server 11 SP3 ia64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.4">1302</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP3 ppc64" family="SLES-PPC" is_signed="Y" label="sle11-public-cloud-module-ppc64" name="SLE11-Public-Cloud-Module for ppc64" optional="Y" parent="sles11-sp3-pool-ppc64" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP3 ppc64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">949</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64" description="SUSE Linux Enterprise Server 11 SP3 ppc64" family="SLES-PPC" is_signed="Y" label="sle11-public-cloud-module-ppc64-sles-sp4" name="SLE11-Public-Cloud-Module for ppc64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-ppc64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-ppc64/" summary="SUSE Linux Enterprise Server 11 SP3 ppc64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.4">1301</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3 s390x" family="SLES-Z" is_signed="Y" label="sle11-public-cloud-module-s390x" name="SLE11-Public-Cloud-Module for s390x" optional="Y" parent="sles11-sp3-pool-s390x" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3 s390x" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">693</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise Server 11 SP3 s390x" family="SLES-Z" is_signed="Y" label="sle11-public-cloud-module-s390x-sles-sp4" name="SLE11-Public-Cloud-Module for s390x SLES-SP4" optional="Y" parent="sles11-sp4-pool-s390x" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-s390x/" summary="SUSE Linux Enterprise Server 11 SP3 s390x" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.4">1303</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="7261" is_signed="Y" label="sle11-public-cloud-module-x86_64" name="SLE11-Public-Cloud-Module for x86_64" optional="Y" parent="sles11-sp3-pool-x86_64" product_name="SUSE_SLES" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.3">814</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="AiO" is_signed="Y" label="sle11-public-cloud-module-x86_64-sap-sp3" name="SLE11-Public-Cloud-Module for x86_64 SAP-SP3" optional="Y" parent="sle11-sp3-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES_SAP" version="11.3">1131</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server 11 SP3 x86_64" family="7261" is_signed="Y" label="sle11-public-cloud-module-x86_64-sles-sp4" name="SLE11-Public-Cloud-Module for x86_64 SLES-SP4" optional="Y" parent="sles11-sp4-pool-x86_64" product_name="SUSE_SLES" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-Public-Cloud-Module/sle-11-x86_64/" summary="SUSE Linux Enterprise Server 11 SP3 x86_64" update_tag="pubclsp3">
+		<products>
+			<product_id name="SUSE_SLES" version="11.4">1300</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Software Development Kit 11 SP1" family="SLE-SDK" is_signed="Y" label="sle11-sdk-sp1-pool-i586" name="SLE11-SDK-SP1-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-sdk" product_version="11.1" source_url="https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Software Development Kit 11 SP1" update_tag="sdksp1">
 		<products>
 			<product_id name="sle-sdk" version="11.1">1159</product_id>
