@@ -118,48 +118,49 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             Collection<MgrSyncProductDto> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
-            Iterator<MgrSyncProductDto> i = products.iterator();
-            MgrSyncProductDto base = null;
-            Iterator<MgrSyncProductDto> j = IteratorUtils.EMPTY_ITERATOR;
+            Iterator<MgrSyncProductDto> actualProducts = products.iterator();
+            MgrSyncProductDto actualBase = null;
+            Iterator<MgrSyncProductDto> actualExtensions = IteratorUtils.EMPTY_ITERATOR;
             for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
                 String version = expected.next();
                 String arch = expected.next();
-                boolean isBase = expected.next().equals("base");
+                boolean baseExpected = expected.next().equals("base");
                 SortedSet<String> channelLabels = new TreeSet<String>();
                 while (expected.hasNext()) {
                     channelLabels.add(expected.next());
                 }
 
-                if (isBase) {
-                    if (j.hasNext()) {
-                        fail("Base product " + base.toString()
-                                + " should not have extension " + j.next().toString());
+                if (baseExpected) {
+                    if (actualExtensions.hasNext()) {
+                        fail("Base product " + actualBase.toString()
+                                + " should not have extension " + actualExtensions.next().toString());
                     }
 
-                    base = i.next();
+                    actualBase = actualProducts.next();
 
-                    assertProductMatches(friendlyName, version, arch, channelLabels, base);
+                    assertProductMatches(friendlyName, version, arch, channelLabels, actualBase);
 
-                    j = base.getExtensions().iterator();
+                    actualExtensions = actualBase.getExtensions().iterator();
                 }
                 else {
-                    if (!j.hasNext()) {
-                        fail("Base product " + base.toString()
+                    if (!actualExtensions.hasNext()) {
+                        fail("Base product " + actualBase.toString()
                                 + " should have an extension named " + friendlyName);
                     }
-                    MgrSyncProductDto extension = j.next();
+
+                    MgrSyncProductDto extension = actualExtensions.next();
 
                     assertProductMatches(friendlyName, version, arch, channelLabels,
                             extension);
                 }
             }
-            if (i.hasNext()) {
-                fail("Unexpected base product " + i.next().toString());
+            if (actualProducts.hasNext()) {
+                fail("Unexpected base product " + actualProducts.next().toString());
             }
-            if (j.hasNext()) {
-                fail("Unexpected extension product " + j.next().toString());
+            if (actualExtensions.hasNext()) {
+                fail("Unexpected extension product " + actualExtensions.next().toString());
             }
         }
         finally {
