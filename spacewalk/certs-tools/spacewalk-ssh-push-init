@@ -154,6 +154,8 @@ SSH_IDENTITY=~/.ssh/id_susemanager
 
 # Logfile for this script
 LOGFILE=/var/log/rhn/${ME}.log
+# set -x
+exec > >(tee -a $LOGFILE) 2>&1
 
 # Run key generation if key doesn't exist
 if [ ! -f "${SSH_IDENTITY}" ]; then
@@ -182,7 +184,7 @@ fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
 echo "* Pushing SSH key to '${CLIENT}', please login as root:"
-ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub root@${CLIENT} >> LOGFILE 2>&1
+ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub root@${CLIENT} 2>&1
 exit_in_case_of_error
 
 # Remove duplicate entries from authorized keys
