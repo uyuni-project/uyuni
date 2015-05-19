@@ -96,7 +96,6 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
      */
     public void testReadChannels() throws Exception {
         List<MgrSyncChannel> channels = readChannels();
-        assertEquals(993, channels.size());
 
         // Verify the first channel
         MgrSyncChannel c = channels.get(0);
