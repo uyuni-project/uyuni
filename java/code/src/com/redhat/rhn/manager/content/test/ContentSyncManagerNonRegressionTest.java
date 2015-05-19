@@ -34,6 +34,7 @@ import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
@@ -74,6 +75,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
         add("SLE-WE");
     } };
+
+    /** Logger instance. */
+    private static Logger logger = Logger.getLogger(ContentSyncManagerNonRegressionTest.class);
+
+    /** The failure strings. */
+    private List<String> failures = new LinkedList<>();
 
     /**
      * Tests listProducts() against known correct output (originally from
@@ -133,40 +140,47 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
 
                 if (baseExpected) {
-                    if (actualExtensions.hasNext()) {
-                        fail("Base product " + actualBase.toString()
-                                + " should not have extension " + actualExtensions.next().toString());
+                    while (actualExtensions.hasNext()) {
+                        failures.add("Base product " + actualBase.toString() + " found to have extension " + actualExtensions.next().toString()
+                                + " which was not expected");
                     }
 
                     actualBase = actualProducts.next();
 
-                    assertProductMatches(friendlyName, version, arch, channelLabels, actualBase);
+                    checkProductMatches(friendlyName, version, arch, channelLabels, actualBase);
 
                     actualExtensions = actualBase.getExtensions().iterator();
                 }
                 else {
                     if (!actualExtensions.hasNext()) {
-                        fail("Base product " + actualBase.toString()
-                                + " should have an extension named " + friendlyName);
+                        failures.add("Base product " + actualBase.toString() + " does not have an expected extension named " + friendlyName);
                     }
+                    else {
+                        MgrSyncProductDto extension = actualExtensions.next();
 
-                    MgrSyncProductDto extension = actualExtensions.next();
-
-                    assertProductMatches(friendlyName, version, arch, channelLabels,
-                            extension);
+                        checkProductMatches(friendlyName, version, arch, channelLabels,
+                                extension);
+                    }
                 }
             }
-            if (actualProducts.hasNext()) {
-                fail("Unexpected base product " + actualProducts.next().toString());
+            while (actualProducts.hasNext()) {
+                failures.add("Found an unexpected base product " + actualProducts.next().toString());
             }
-            if (actualExtensions.hasNext()) {
-                fail("Unexpected extension product " + actualExtensions.next().toString());
+            while (actualExtensions.hasNext()) {
+                failures.add("Found an unexpected extension product " + actualExtensions.next().toString());
             }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(expectedProductsCSV);
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+
+        if (!failures.isEmpty()) {
+            for (String string : failures) {
+                logger.error(string);
+            }
+            fail("See log for output");
         }
     }
 
@@ -207,13 +221,13 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * @param channelLabels the expected channel labels
      * @param product the actual product
      */
-    public void assertProductMatches(String friendlyName, String version, String arch,
+    public void checkProductMatches(String friendlyName, String version, String arch,
             SortedSet<String> channelLabels, MgrSyncProductDto product) {
-        System.out.println("Checking product " + product.getId() + " (" + friendlyName
-                + ", " + arch + ")");
-        assertEquals(friendlyName, product.getFriendlyName());
-        assertEquals(version, product.getVersion());
-        assertEquals(arch, product.getArch());
+        String preamble = "Product " + product.getId() + " (" + friendlyName
+                + ", " + arch + ") ";
+        checkEquals(preamble + "friendly name", friendlyName, product.getFriendlyName());
+        checkEquals(preamble + "version", version, product.getVersion());
+        checkEquals(preamble + "arch", arch, product.getArch());
         SortedSet<String> actualChannelLabels = new TreeSet<String>();
         for (XMLChannel channel : product.getChannels()) {
             String actualLabel = channel.getLabel();
@@ -223,6 +237,30 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             }
             actualChannelLabels.add(actualLabel);
         }
-        assertEquals(channelLabels.toString(), actualChannelLabels.toString());
+
+        for (String string : channelLabels) {
+            if (!actualChannelLabels.contains(string)){
+                failures.add(preamble+" does not have channel " + string);
+            }
+        }
+
+        for (String string : actualChannelLabels) {
+            if (!channelLabels.contains(string)){
+                failures.add(preamble+" has unexpected channel " + string);
+            }
+        }
+    }
+
+    /**
+     * Checks that two strings are equal, and adds to a messaget failures if they are not.
+     *
+     * @param message the message
+     * @param expected the expected string
+     * @param actual the actual string
+     */
+    private void checkEquals(String message, String expected, String actual) {
+        if (!expected.equals(actual)) {
+            failures.add(message + ": expected \"" + expected + "\", actual \"" + actual + "\"");
+        }
     }
 }
