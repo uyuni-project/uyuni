@@ -34,6 +34,7 @@ import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.simpleframework.xml.core.Persister;
 
 import java.io.File;
@@ -74,6 +75,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
         add("SLE-WE");
     } };
+
+    /** Logger instance. */
+    private static Logger logger = Logger.getLogger(ContentSyncManagerNonRegressionTest.class);
+
+    /** The failure strings. */
+    private List<String> failures = new LinkedList<>();
 
     /**
      * Tests listProducts() against known correct output (originally from
@@ -118,54 +125,62 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             Collection<MgrSyncProductDto> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
 
-            Iterator<MgrSyncProductDto> i = products.iterator();
-            MgrSyncProductDto base = null;
-            Iterator<MgrSyncProductDto> j = IteratorUtils.EMPTY_ITERATOR;
+            Iterator<MgrSyncProductDto> actualProducts = products.iterator();
+            MgrSyncProductDto actualBase = null;
+            Iterator<MgrSyncProductDto> actualExtensions = IteratorUtils.EMPTY_ITERATOR;
             for (String line : (List<String>) FileUtils.readLines(expectedProductsCSV)) {
                 Iterator<String> expected = Arrays.asList(line.split(",")).iterator();
                 String friendlyName = expected.next();
                 String version = expected.next();
                 String arch = expected.next();
-                boolean isBase = expected.next().equals("base");
+                boolean baseExpected = expected.next().equals("base");
                 SortedSet<String> channelLabels = new TreeSet<String>();
                 while (expected.hasNext()) {
                     channelLabels.add(expected.next());
                 }
 
-                if (isBase) {
-                    if (j.hasNext()) {
-                        fail("Base product " + base.toString()
-                                + " should have an extension named " + j.next().toString());
+                if (baseExpected) {
+                    while (actualExtensions.hasNext()) {
+                        failures.add("Base product " + actualBase.toString() + " found to have extension " + actualExtensions.next().toString()
+                                + " which was not expected");
                     }
 
-                    base = i.next();
+                    actualBase = actualProducts.next();
 
-                    assertProductMatches(friendlyName, version, arch, channelLabels, base);
+                    checkProductMatches(friendlyName, version, arch, channelLabels, actualBase);
 
-                    j = base.getExtensions().iterator();
+                    actualExtensions = actualBase.getExtensions().iterator();
                 }
                 else {
-                    if (!j.hasNext()) {
-                        fail("Base product " + base.toString()
-                                + " should not have an extension named " + friendlyName);
+                    if (!actualExtensions.hasNext()) {
+                        failures.add("Base product " + actualBase.toString() + " does not have an expected extension named " + friendlyName);
                     }
-                    MgrSyncProductDto extension = j.next();
+                    else {
+                        MgrSyncProductDto extension = actualExtensions.next();
 
-                    assertProductMatches(friendlyName, version, arch, channelLabels,
-                            extension);
+                        checkProductMatches(friendlyName, version, arch, channelLabels,
+                                extension);
+                    }
                 }
             }
-            if (i.hasNext()) {
-                fail("Unexpected base product " + i.next().toString());
+            while (actualProducts.hasNext()) {
+                failures.add("Found an unexpected base product " + actualProducts.next().toString());
             }
-            if (j.hasNext()) {
-                fail("Unexpected extension product " + j.next().toString());
+            while (actualExtensions.hasNext()) {
+                failures.add("Found an unexpected extension product " + actualExtensions.next().toString());
             }
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(expectedProductsCSV);
             SUSEProductTestUtils.deleteIfTempFile(productsJSON);
             SUSEProductTestUtils.deleteIfTempFile(channelsXML);
+        }
+
+        if (!failures.isEmpty()) {
+            for (String string : failures) {
+                logger.error(string);
+            }
+            fail("See log for output");
         }
     }
 
@@ -206,13 +221,13 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      * @param channelLabels the expected channel labels
      * @param product the actual product
      */
-    public void assertProductMatches(String friendlyName, String version, String arch,
+    public void checkProductMatches(String friendlyName, String version, String arch,
             SortedSet<String> channelLabels, MgrSyncProductDto product) {
-        System.out.println("Checking product " + product.getId() + " (" + friendlyName
-                + ", " + arch + ")");
-        assertEquals(friendlyName, product.getFriendlyName());
-        assertEquals(version, product.getVersion());
-        assertEquals(arch, product.getArch());
+        String preamble = "Product " + product.getId() + " (" + friendlyName
+                + ", " + arch + ") ";
+        checkEquals(preamble + "friendly name", friendlyName, product.getFriendlyName());
+        checkEquals(preamble + "version", version, product.getVersion());
+        checkEquals(preamble + "arch", arch, product.getArch());
         SortedSet<String> actualChannelLabels = new TreeSet<String>();
         for (XMLChannel channel : product.getChannels()) {
             String actualLabel = channel.getLabel();
@@ -222,6 +237,30 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             }
             actualChannelLabels.add(actualLabel);
         }
-        assertEquals(channelLabels.toString(), actualChannelLabels.toString());
+
+        for (String string : channelLabels) {
+            if (!actualChannelLabels.contains(string)){
+                failures.add(preamble+" does not have channel " + string);
+            }
+        }
+
+        for (String string : actualChannelLabels) {
+            if (!channelLabels.contains(string)){
+                failures.add(preamble+" has unexpected channel " + string);
+            }
+        }
+    }
+
+    /**
+     * Checks that two strings are equal, and adds to a messaget failures if they are not.
+     *
+     * @param message the message
+     * @param expected the expected string
+     * @param actual the actual string
+     */
+    private void checkEquals(String message, String expected, String actual) {
+        if (!expected.equals(actual)) {
+            failures.add(message + ": expected \"" + expected + "\", actual \"" + actual + "\"");
+        }
     }
 }
