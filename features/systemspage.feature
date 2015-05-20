@@ -356,7 +356,7 @@ Feature: Explore the main landing page
       And I follow "Upload Kickstart File"
     When I enter "fedora_kickstart_profile_upload" as "kickstartLabel"
       And I attach the file "/example.ks" to "fileUpload"
-      And I click on "Upload File"
+      And I click on "Create"
     Then I should see a "Kickstart: fedora_kickstart_profile_upload" text
      And I should see a "Kickstart Details" text
 
