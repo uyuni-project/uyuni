@@ -445,9 +445,6 @@ public class RpmRepositoryWriter extends RepositoryWriter {
         catch (NoSuchAlgorithmException e) {
             throw new RepomdRuntimeException(e);
         }
-        catch (IOException e) {
-            throw new RepomdRuntimeException(e);
-        }
         BufferedWriter productsBufferedWriter = new BufferedWriter(
                 new OutputStreamWriter(productsFile));
         SuseProductWriter products = new SuseProductWriter(
