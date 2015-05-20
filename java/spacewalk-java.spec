@@ -206,7 +206,7 @@ BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: java-devel >= 1.6.0
+BuildRequires: java-devel >= 1.7.0
 BuildRequires: jcommon
 BuildRequires: jdom
 %if 0%{?suse_version}
@@ -379,7 +379,7 @@ Requires: jcommon
 %if 0%{?suse_version}
 Requires: pam-modules
 %else
-Requires: java-devel >= 0:1.6.0
+Requires: java-devel >= 0:1.7.0
 Requires: jpam
 %endif
 Requires: log4j
@@ -528,6 +528,7 @@ cd build/reports/apidocs/docbook
 cd $RPM_BUILD_ROOT
 
 %install
+export NO_BRP_CHECK_BYTECODE_VERSION=true
 rm -rf $RPM_BUILD_ROOT
 
 # on Fedora 19 some jars are named differently
