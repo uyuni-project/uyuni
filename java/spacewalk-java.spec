@@ -144,7 +144,7 @@ Requires:       jakarta-commons-logging
 %endif
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
-BuildRequires: java-devel >= 1.6.0
+BuildRequires: java-devel >= 1.7.0
 BuildRequires: ant-junit
 BuildRequires: antlr >= 2.7.6
 BuildRequires: tanukiwrapper
@@ -523,6 +523,7 @@ cd build/reports/apidocs/docbook
 cd $RPM_BUILD_ROOT
 
 %install
+export NO_BRP_CHECK_BYTECODE_VERSION=true
 rm -rf $RPM_BUILD_ROOT
 %if 0%{?fedora} && 0%{?fedora} < 18
 mkdir -p $RPM_BUILD_ROOT%{_javadir}/hibernate3
