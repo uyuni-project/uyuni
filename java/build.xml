@@ -430,8 +430,6 @@
     <javac destdir="${build.dir}/playpen/classes"
            optimize="off"
            debug="on"
-           source="1.5"
-           target="1.5"
            nowarn="on">
       <classpath>
           <path refid="buildjars" />
@@ -458,8 +456,6 @@
            deprecation="${deprecation}"
            nowarn="${nowarn}"
            srcdir="code/internal/src"
-           source="1.5"
-           target="1.5"
            classpathref="buildjars"
            includeantruntime="true" >
     </javac>
@@ -473,8 +469,6 @@
     <javac destdir="${build.dir}/classes"
            optimize="off"
            debug="on"
-           source="1.5"
-           target="1.5"
            deprecation="${deprecation}"
            nowarn="${nowarn}"
            encoding="utf-8"
@@ -517,8 +511,6 @@
     <javac destdir="${build.dir}/classes"
            optimize="off"
            debug="on"
-           source="1.5"
-           target="1.5"
            deprecation="${deprecation}"
            nowarn="${nowarn}"
            encoding="utf-8"
@@ -649,8 +641,6 @@ delete from rhnChannel where label like 'ChannelLabel%';
         outputDir="${build.dir}/apidoc-temp" />
     <javac destdir="${build.dir}/webapp/rhnjava/WEB-INF/classes"
            debug="off" optimize="on"
-           source="1.5"
-           target="1.5"
            deprecation="${deprecation}"
            fork="yes"
            memoryMaximumSize="512m"
@@ -792,8 +782,6 @@ delete from rhnChannel where label like 'ChannelLabel%';
            optimize="off"
            debug="on"
            nowarn="on"
-           source="1.5"
-           target="1.5"
            classpathref="playpen.tests.buildpath" >
       <src>
         <path location="code/playpen/src" />
