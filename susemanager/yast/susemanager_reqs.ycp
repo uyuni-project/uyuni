@@ -58,7 +58,7 @@
     y2milestone ("check_disk_space.sh call: %1", m);
     free_disk_space = tointeger (m["stdout"]:"0");
     if (free_disk_space < 100 * 1024 * 1024) {
-        message = sformat (_("Not enough disk space (%1 KBytes free)"), free_disk_space);
+        message = sformat (_("    Not enough disk space (only %1G free)"), free_disk_space / (1024 * 1024));
         if ( !Popup::AnyQuestionRichText(message, _("SUSE Manager requires 100G of free disk space in /var/spacewalk to be installed. If you continue the product will not function correctly."), 46, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
         {
             if (Popup::ConfirmAbort(`incomplete)) {
@@ -70,7 +70,7 @@
     y2milestone ("check_disk_space.sh call: %1", m);
     free_disk_space = tointeger (m["stdout"]:"0");
     if (free_disk_space < 30 * 1024 * 1024) {
-        message = sformat (_("Not enough disk space (%1 KBytes free)"), free_disk_space);
+        message = sformat (_("    Not enough disk space (only %1G free)"), free_disk_space / (1024 * 1024));
         if ( !Popup::AnyQuestionRichText(message, _("SUSE Manager requires 30G of free disk space in /var/lib/pgsql to be installed. If you continue the product will not function correctly."), 46, 10, _("Continue anyway"), _("Exit installation"), `focus_no) )
         {
             if (Popup::ConfirmAbort(`incomplete)) {
