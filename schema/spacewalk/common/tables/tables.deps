@@ -226,6 +226,9 @@ suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 suseUpgradePath                :: suseProducts
+suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
+suseVHMConfig                  :: suseVirtualHostManager
+suseVirtualHostManager         :: web_customer suseCredentials rhnServerGroup
 web_contact                    :: web_customer
 web_contact_all                :: web_contact
 web_user_contact_permission    :: web_contact
