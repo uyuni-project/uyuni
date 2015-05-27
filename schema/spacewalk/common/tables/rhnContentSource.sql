@@ -28,7 +28,7 @@ rhnContentSource
                         constraint rhn_cs_type_fk
                                 references rhnContentSourceType(id),
         source_url      varchar2(2048) NOT NULL,
-        label           varchar2(64) NOT NULL,
+        label           varchar2(128) NOT NULL,
         metadata_signed CHAR(1)
                             DEFAULT ('Y') NOT NULL
                             CONSTRAINT rhn_cs_ms_ck

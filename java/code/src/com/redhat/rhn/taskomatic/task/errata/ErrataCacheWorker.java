@@ -32,7 +32,7 @@ import java.util.Map;
  * Performs errata cache recalc for a given server or channel
  * @version $Rev $
  */
-class ErrataCacheWorker implements QueueWorker {
+public class ErrataCacheWorker implements QueueWorker {
 
     public static final String BY_CHANNEL = "update_errata_cache_by_channel";
     public static final String FOR_SERVER = "update_server_errata_cache";
@@ -43,6 +43,11 @@ class ErrataCacheWorker implements QueueWorker {
     private Logger logger;
     private TaskQueue parentQueue;
 
+    /**
+     * Constructor
+     * @param items list of items to work on
+     * @param parentLogger logger to use
+     */
     public ErrataCacheWorker(Map items, Logger parentLogger) {
         task = (Task) items.get("task");
         orgId = (Long) items.get("orgId");
@@ -64,7 +69,7 @@ class ErrataCacheWorker implements QueueWorker {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Updating errata cache for sid [" + sid + "]");
                 }
-                uecc.updateErrataCacheForServer(sid, orgId, false);
+                uecc.updateErrataCacheForServer(sid, false);
             }
             else if (ErrataCacheWorker.BY_CHANNEL.equals(task.getName())) {
                 Long cid = task.getData();
@@ -85,6 +90,10 @@ class ErrataCacheWorker implements QueueWorker {
         }
     }
 
+    /**
+     * Set the parent so we can tell it when we're done
+     * @param queue the parent queue
+     */
     public void setParentQueue(TaskQueue queue) {
         parentQueue = queue;
     }

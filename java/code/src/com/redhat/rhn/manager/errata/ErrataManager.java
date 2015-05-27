@@ -42,6 +42,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.channel.manage.PublishErrataHelper;
 import com.redhat.rhn.frontend.dto.ChannelOverview;
@@ -1529,12 +1530,19 @@ public class ErrataManager extends BaseManager {
     private static List<Long> applyErrata(User user, List errataIds, Date earliest,
         ActionChain actionChain, List<Long> serverIds, boolean onlyRelevant) {
 
-        // not all errata applies to all systems, so we will group actions per systems
-        // having the same sets of errata
-        // We can't do a Set<Errata> because AbstractErrata equals/hashCode does not use Id.
-        // System Id -> Errata Ids
-        Map<Long, Set<Long>> relevantErrataForServer = new HashMap<Long, Set<Long>>();
+        // not all errata applies to all systems, so we will filter them
+        Map<Long, List<Server>> serversForErrata = new HashMap<Long, List<Server>>();
 
+        // Prepare empty list of systems for each errata
+        for (Object errataIdObject : errataIds) {
+            // HACK: ugly conversion needed because in some cases errataIds contains
+            // Integers, in other cases Longs
+            Long errataId = ((Number) errataIdObject).longValue();
+            List<Server> serverList = new ArrayList<Server>();
+            serversForErrata.put(errataId, serverList);
+        }
+
+        // Filter only relevant errata for servers
         for (Long serverId : serverIds) {
             List<Errata> relevantErrata =
                     SystemManager.unscheduledErrata(user, serverId, null);
@@ -1543,13 +1551,12 @@ public class ErrataManager extends BaseManager {
                 relevantErrataIds.add(e.getId());
             }
 
-            Set<Long> effectiveErrataIds = new HashSet<Long>();
-            for (Object errataIdObject : errataIds) {
-                // HACK: ugly conversion needed because in some cases errataIds contains
-                // Integers, in other cases Longs
-                Long errataId = ((Number) errataIdObject).longValue();
+            Server server = SystemManager.lookupByIdAndOrg(serverId, user.getOrg());
+
+            for (Long errataId : serversForErrata.keySet()) {
                 if (relevantErrataIds.contains(errataId)) {
-                    effectiveErrataIds.add(errataId);
+                    List<Server> serverList = serversForErrata.get(errataId);
+                    serverList.add(server);
                 }
                 else {
                     if (!onlyRelevant) {
@@ -1557,66 +1564,45 @@ public class ErrataManager extends BaseManager {
                     }
                 }
             }
-
-            relevantErrataForServer.put(serverId, effectiveErrataIds);
         }
 
-        Map<Set<Long>, List<Long>> serversForErrataSet =
-                new HashMap<Set<Long>, List<Long>>();
-        for (Long serverId : relevantErrataForServer.keySet()) {
-            Set<Long> errataSet = relevantErrataForServer.get(serverId);
-            List<Long> serverList = serversForErrataSet.get(errataSet);
-            if (serverList == null) {
-                serverList = new ArrayList<Long>();
-                serversForErrataSet.put(errataSet, serverList);
+        // Divide stack updates from regular errata
+        List<Errata> stackUpdates = new ArrayList<Errata>();
+        List<Errata> errata = new ArrayList<Errata>();
+        for (Long errataId : serversForErrata.keySet()) {
+            Errata erratum = ErrataManager.lookupErrata(errataId, user);
+            if (erratum.hasKeyword("restart_suggested")) {
+                stackUpdates.add(erratum);
             }
-            serverList.add(serverId);
+            else {
+                errata.add(erratum);
+            }
         }
 
+        // Schedule updates to the software update stack first
         List<Long> actionIds = new ArrayList<Long>();
-        for (Set<Long> relevantErrataIds : serversForErrataSet.keySet()) {
-
-            List<Long> affectedServers = serversForErrataSet.get(relevantErrataIds);
-
-            // Schedule updates to the software update stack first
-            List<ErrataAction> stackUpdates = null;
-            List<Errata> errata = new ArrayList<Errata>();
-            for (Long eid : relevantErrataIds) {
-                Errata erratum = ErrataManager.lookupErrata(eid, user);
-                if (erratum.hasKeyword("restart_suggested")) {
-                    if (stackUpdates == null) {
-                        stackUpdates = createErrataActions(user, erratum,
-                                earliest, actionChain, affectedServers);
-                    }
-                    else {
-                        for (ErrataAction stackUpdate : stackUpdates) {
-                            stackUpdate.addErrata(erratum);
-                        }
-                    }
-                }
-                else {
-                    errata.add(erratum);
-                }
-            }
-            if (stackUpdates != null) {
-                for (ErrataAction stackUpdate : stackUpdates) {
-                    Object[] args = new Object[]{stackUpdate.getErrata().size()};
-                    stackUpdate.setName(LocalizationService.getInstance().getMessage(
-                            "errata.swstack", args));
-                    ActionManager.storeAction(stackUpdate);
-                }
-            }
-
-            // Schedule remaining errata actions
-            for (Errata e : errata) {
-                List<ErrataAction> errataActions = createErrataActions(user, e, earliest,
-                        actionChain, affectedServers);
-                for (ErrataAction errataAction : errataActions) {
-                    Action action = ActionManager.storeAction(errataAction);
-                    actionIds.add(action.getId());
-                }
+        for (Errata stackUpdate : stackUpdates) {
+            List<ErrataAction> errataActions =
+                    createErrataActions(user, stackUpdate, earliest, actionChain, serversForErrata.get(stackUpdate.getId()));
+            for (ErrataAction errataAction : errataActions) {
+                Object[] args = new Object[] {errataAction.getErrata().size()};
+                errataAction.setName(LocalizationService.getInstance().getMessage("errata.swstack", args));
+                Action action = ActionManager.storeAction(errataAction);
+                actionIds.add(action.getId());
+                ActionManager.storeAction(errataAction);
             }
         }
+
+        // Schedule remaining errata actions
+        for (Errata e : errata) {
+            List<ErrataAction> errataActions = createErrataActions(user, e, earliest,
+                    actionChain, serversForErrata.get(e.getId()));
+            for (ErrataAction errataAction : errataActions) {
+                Action action = ActionManager.storeAction(errataAction);
+                actionIds.add(action.getId());
+            }
+        }
+
         return actionIds;
     }
 
@@ -1626,11 +1612,11 @@ public class ErrataManager extends BaseManager {
      * @param erratum the erratum
      * @param earliest the earliest
      * @param actionChain the action chain to add the actions to or null
-     * @param serverIds the server ids
+     * @param servers the servers
      * @return the list
      */
     private static List<ErrataAction> createErrataActions(User user, Errata erratum,
-        Date earliest, ActionChain actionChain, List<Long> serverIds) {
+        Date earliest, ActionChain actionChain, List<Server> servers) {
 
         List<ErrataAction> result = new LinkedList<ErrataAction>();
         if (actionChain == null) {
@@ -1639,21 +1625,21 @@ public class ErrataManager extends BaseManager {
             if (earliest != null) {
                 errataAction.setEarliestAction(earliest);
             }
-            for (Long serverId : serverIds) {
-                ActionManager.addServerToAction(serverId, errataAction);
+            for (Server server : servers) {
+                ActionManager.addServerToAction(server, errataAction);
             }
             result.add(errataAction);
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-            for (Long serverId : serverIds) {
+            for (Server server : servers) {
                 ErrataAction errataAction = (ErrataAction) ActionManager.createErrataAction(
                     user, erratum);
                 if (earliest != null) {
                     errataAction.setEarliestAction(earliest);
                 }
                 ActionChainFactory.queueActionChainEntry(errataAction, actionChain,
-                    serverId, sortOrder);
+                    server, sortOrder);
 
                 result.add(errataAction);
             }

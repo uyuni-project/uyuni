@@ -30,6 +30,9 @@ Requires: %{rhn_client_tools}
 Requires: tar
 Requires: spacewalk-backend-libs >= 0.8.28
 Requires: sudo
+%if 0%{?rhel} && 0%{?rhel} <= 5
+Requires: python-hashlib
+%endif
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
