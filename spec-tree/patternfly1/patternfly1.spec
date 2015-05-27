@@ -11,11 +11,12 @@
 Name:		patternfly1
 Summary:	PatternFly open interface project and its dependencies
 Version:	1.0.5
-Release:	6%{?release_suffix}%{?dist}
+Release:	8%{?release_suffix}%{?dist}
 License:	ASL 2.0
 Group:      Applications/Internet
 URL:		https://github.com/patternfly/patternfly
 Source:		patternfly-1.0.5.tar.gz
+Patch0:   fix_paths.patch
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
@@ -25,6 +26,7 @@ PatternFly open interface project, with dependencies bundled
 
 %prep
 %setup -q -n patternfly-1.0.5
+%patch0 -p1
 
 %build
 make %{?_smp_mflags} %{make_common_opts}
@@ -38,6 +40,12 @@ cp -pR less/ %{buildroot}%{_datadir}/%{name}/resources/less
 %{_datadir}/%{name}/
 
 %changelog
+* Wed May 20 2015 Tomas Kasparek <tkasparek@redhat.com> 1.0.5-8
+- font awesome lives in different directory
+
+* Wed May 20 2015 Tomas Kasparek <tkasparek@redhat.com> 1.0.5-7
+- fix fonts paths for usage in Spacewalk
+
 * Fri Sep 26 2014 Tomas Kasparek <tkasparek@redhat.com> 1.0.5-6
 - move less files into resources directory
 

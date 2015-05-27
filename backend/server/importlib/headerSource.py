@@ -169,11 +169,11 @@ class rpmBinaryPackage(Package, rpmPackage):
 
     def _populateDependencyInformation(self, header):
         mapping = {
-            'provides': rpmProvides,
-            'requires': rpmRequires,
-            'conflicts': rpmConflicts,
-            'obsoletes': rpmObsoletes,
-            'breaks': rpmBreaks,
+            'provides'  : rpmProvides,
+            'requires'  : rpmRequires,
+            'conflicts' : rpmConflicts,
+            'obsoletes' : rpmObsoletes,
+            'breaks'    : rpmBreaks,
             'predepends': rpmPredepends,
         }
 
@@ -408,7 +408,6 @@ class rpmOldSupplements(Dependency):
         'flags'     : 1161, #'supplementsflags',
     }
 
-
 class rpmSupplements(Dependency):
     # More mappings
     tagMap = {
@@ -425,7 +424,6 @@ class rpmOldEnhances(Dependency):
         'flags'     : 1161, #'enhancesflags',
     }
 
-
 class rpmEnhances(Dependency):
     # More mappings
     tagMap = {
@@ -433,7 +431,6 @@ class rpmEnhances(Dependency):
         'version'   : 5056, #'enhancesversion',
         'flags'     : 5057, #'enhancesflags',
     }
-
 
 class rpmConflicts(Dependency):
     # More mappings

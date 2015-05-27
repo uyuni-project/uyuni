@@ -11,7 +11,7 @@ Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhnsd-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
 Name: spacewalksd
-Version: 5.0.15
+Version: 5.0.16
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -57,7 +57,7 @@ your machine, and runs any actions.
 %setup -q
 
 %build
-make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="%{optflags}"
+make -f Makefile.rhnsd %{?_smp_mflags} CFLAGS="-pie -fPIE -Wl,-z,relro,-z,now %{optflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -197,6 +197,9 @@ rm -fr $RPM_BUILD_ROOT
 %doc LICENSE
 
 %changelog
+* Thu May 21 2015 Matej Kollar <mkollar@redhat.com> 5.0.16-1
+- 1092518 - PIE+RELRO for rhnsd
+
 * Tue Jan 13 2015 Matej Kollar <mkollar@redhat.com> 5.0.15-1
 - Getting rid of Tabs and trailing spaces in LICENSE, COPYING, and README files
 

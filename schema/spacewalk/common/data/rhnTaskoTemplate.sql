@@ -136,7 +136,7 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
                         (SELECT id FROM rhnTaskoBunch WHERE name='cleanup-data-bunch'),
-                        (SELECT id FROM rhnTaskoTask WHERE name='cleanup-timeseries-data'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='cleanup-packagechangelog-data'),
                         0,
                         null);
 
@@ -149,9 +149,9 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
-                        (SELECT id FROM rhnTaskoBunch WHERE name='cleanup-data-bunch'),
-                        (SELECT id FROM rhnTaskoTask WHERE name='cleanup-packagechangelog-data'),
-                        1,
+                        (SELECT id FROM rhnTaskoBunch WHERE name='reboot-action-cleanup-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='reboot-action-cleanup'),
+                        0,
                         null);
 
 INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
@@ -172,6 +172,11 @@ INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
              VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
                         (SELECT id FROM rhnTaskoBunch WHERE name='reboot-action-cleanup-bunch'),
                         (SELECT id FROM rhnTaskoTask WHERE name='reboot-action-cleanup'),
+
+INSERT INTO rhnTaskoTemplate (id, bunch_id, task_id, ordering, start_if)
+             VALUES (sequence_nextval('rhn_tasko_template_id_seq'),
+                        (SELECT id FROM rhnTaskoBunch WHERE name='auto-errata-bunch'),
+                        (SELECT id FROM rhnTaskoTask WHERE name='auto-errata'),
                         0,
                         null);
 

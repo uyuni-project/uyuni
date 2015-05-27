@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.4.2
+Version:        2.4.11
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,34 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu May 21 2015 Tomas Lestach <tlestach@redhat.com> 2.4.11-1
+- extend label in rhnContentSource table
+
+* Mon May 18 2015 Tomas Lestach <tlestach@redhat.com> 2.4.10-1
+- we need to run cleanup-packagechangelog-data as the 1st task of the template
+
+* Fri May 15 2015 Stephen Herr <sherr@redhat.com> 2.4.9-1
+- Remove monitoring cleanup taskomatic task - monitoring longer exists
+
+* Wed May 13 2015 Stephen Herr <sherr@redhat.com> 2.4.8-1
+- Add spacewalk-2015 and Fedora 23 gpg key fingerprints
+- Add package key for Spacewalk 2014 (RPM-GPG-KEY-spacewalk-2014)
+
+* Tue May 12 2015 Grant Gainey 2.4.7-1
+- 1220361 - clean up upgrade with empty .sql.oracle file
+
+* Mon May 11 2015 Grant Gainey 2.4.6-1
+- 1220361 - Use GREATEST to insure LIMIT is >= 0
+
+* Wed Apr 29 2015 Stephen Herr <sherr@redhat.com> 2.4.5-1
+- 1215671 - move auto-errata updates into separate taskomatic task
+
+* Mon Apr 27 2015 Grant Gainey 2.4.4-1
+- Update 021 postgres to new oracle sha1
+
+* Mon Apr 27 2015 Grant Gainey 2.4.3-1
+- 1215151 - Update 021-rhnServerNetwork-trigger.sql.oracle
+
 * Thu Apr 02 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
 - Oracle alter table xxx add column syntax differs from PostgreSQL one
 

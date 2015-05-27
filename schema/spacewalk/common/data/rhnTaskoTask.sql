@@ -66,9 +66,6 @@ INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'clear-log-history', 'com.redhat.rhn.taskomatic.task.ClearLogHistory');
 
 INSERT INTO rhnTaskoTask (id, name, class)
-         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'cleanup-timeseries-data', 'com.redhat.rhn.taskomatic.task.TimeSeriesCleanUp');
-
-INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-register', 'com.redhat.rhn.taskomatic.task.NccRegisterTask');
 
 INSERT INTO rhnTaskoTask (id, name, class)
@@ -85,5 +82,8 @@ INSERT INTO rhnTaskoTask (id, name, class)
 
 INSERT INTO rhnTaskoTask (id, name, class)
          VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'mgr-sync-refresh', 'com.redhat.rhn.taskomatic.task.MgrSyncRefresh');
+
+INSERT INTO rhnTaskoTask (id, name, class)
+         VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'auto-errata', 'com.redhat.rhn.taskomatic.task.AutoErrataTask');
 
 commit;

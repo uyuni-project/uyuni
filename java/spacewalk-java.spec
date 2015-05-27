@@ -19,8 +19,7 @@
 %endif
 %endif
 
-%if 0%{?rhel} && 0%{?rhel} >= 6
-# checkstyle is broken on Fedoras - we skip for now
+%if 0%{?fedora} || 0%{?rhel} >= 6
 # RHEL5 checkstyle4 is incompatible with checkstyle5
 %define run_checkstyle  1
 %endif
@@ -33,7 +32,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.5
+Version: 2.4.20
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -485,7 +484,7 @@ ant -Dprefix=$RPM_BUILD_ROOT init-install compile
 %if 0%{?run_checkstyle}
 echo "Running checkstyle on java main sources"
 export CLASSPATH="build/classes:build/build-lib/*"
-export BASE_OPTIONS="-Djavadoc.method.scope=public \
+export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=public \
 -Djavadoc.type.scope=package \
 -Djavadoc.var.scope=package \
 -Dcheckstyle.cache.file=build/checkstyle.cache.src \
@@ -495,7 +494,7 @@ find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
 xargs checkstyle -c buildconf/checkstyle.xml ||:
 
 echo "Running checkstyle on java test sources"
-export BASE_OPTIONS="-Djavadoc.method.scope=nothing \
+export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
 -Djavadoc.type.scope=nothing \
 -Djavadoc.var.scope=nothing \
 -Dcheckstyle.cache.file=build/checkstyle.cache.test \
@@ -949,6 +948,59 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri May 22 2015 Tomas Lestach <tlestach@redhat.com> 2.4.20-1
+- expect a Number instead of an Integer
+
+* Fri May 22 2015 Jan Dobes 2.4.19-1
+- 1201719 - wait for current transaction end
+- SystemHandler cleanup
+- fix checkstyle issue
+- Extract utility method in HibernateFactory
+- ErrataManagerTest: correct comment to agree with code
+
+* Mon May 18 2015 Tomas Lestach <tlestach@redhat.com> 2.4.18-1
+- enhance task creation logging
+- removing @Override annotation for method that isn't overriden
+
+* Mon May 18 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.17-1
+- 1221224 - display schema upgrade required message on CreateFirstUser page
+
+* Thu May 14 2015 Stephen Herr <sherr@redhat.com> 2.4.16-1
+- Kickstart: install the latest available koan package, not first found
+
+* Thu May 14 2015 Grant Gainey 2.4.15-1
+- 1221739 - EXISTS is an Oracle keyword, don't use it casually
+
+* Wed May 13 2015 Stephen Herr <sherr@redhat.com> 2.4.14-1
+- Change Activation Key Child Channels from multiple select to checkboxes
+
+* Tue May 12 2015 Stephen Herr <sherr@redhat.com> 2.4.13-1
+- hasPreflag(): improve documentation about which rpm flags are evaluated
+- fix generating pre-equires (pre="1" in metadata)
+
+* Thu May 07 2015 Jan Dobes <jdobes@redhat.com> 2.4.12-1
+- make checkstyle compatible with newer versions and enable on fedora
+
+* Wed May 06 2015 Tomas Lestach <tlestach@redhat.com> 2.4.11-1
+- 1218705 - allow read-only user to call find* APIs
+
+* Thu Apr 30 2015 Stephen Herr <sherr@redhat.com> 2.4.10-1
+- 1215271 - Scheduling remote command for large system sets is slow
+
+* Wed Apr 29 2015 Stephen Herr <sherr@redhat.com> 2.4.9-1
+- 1215671 - move auto-errata updates into separate taskomatic task
+- 1215671 - Magic strings should only be defined in one place
+- ErrataCacheDriverTest: make condition robust to pre-existing Tasks
+
+* Fri Apr 24 2015 Stephen Herr <sherr@redhat.com> 2.4.8-1
+- 1207816 - You should be able to clone channels shared from other orgs
+
+* Wed Apr 22 2015 Stephen Herr <sherr@redhat.com> 2.4.7-1
+- 1214437 - improve system overview list performance
+
+* Tue Apr 21 2015 Stephen Herr <sherr@redhat.com> 2.4.6-1
+- 1214034 - Implement a "default" kickstart script name for edit link
+
 * Wed Apr 15 2015 Jan Dobes 2.4.5-1
 - 1096263 - force taskomatic to use UTF-8
 

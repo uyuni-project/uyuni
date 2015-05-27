@@ -32,34 +32,30 @@ import sys
 sys.path = sys.path[1:] + sys.path[:1]
 
 if getPlatform() == 'deb' or dist()[0] == 'SuSE':
-    class YumBaseError(Exception):
-        """
-        Base Yum Error. All other Errors thrown should inherit from
-        this.
-        """
-        def __init__(self, value=None):
-            Exception.__init__(self)
-            self.value = value
-        def __str__(self):
-            return "%s" %(self.value,)
-
-        def __unicode__(self):
-            ret = self.value
-            if isinstance(ret, basestring):
-                if not isinstance(ret, unicode):
-                    ret = unicode(ret, 'utf-8', 'replace')
-            return "%s" %(ret,)
-
+    class PmBaseError(Exception):
+        def __init__(self, errmsg):
+            self.value = errmsg
+        def __getattr__(self, name):
+            raise AttributeError(_("class %s has no attribute '%s'") % (self.__class__.__name__, name))
+        def __setattr__(self, name, value):
+            if name in ['errmsg', 'value']:
+                self.__dict__['value'] = value
+            else:
+                self.__dict__[name] = value
 else:
-    from yum.Errors import YumBaseError
+    try:
+        from yum.Errors import YumBaseError as PmBaseError
+    except ImportError:
+        from dnf.exceptions import Error as PmBaseError
 
-class Error(YumBaseError):
+
+class Error(PmBaseError):
     """base class for errors"""
     premsg = ''
     def __init__(self, errmsg):
         if not isinstance(errmsg, unicode):
             errmsg = unicode(errmsg, 'utf-8')
-        YumBaseError.__init__(self, errmsg)
+        PmBaseError.__init__(self, errmsg)
         self.value = 'rhn-plugin: ' + self.premsg + errmsg
         self.log = up2dateLog.initLog()
 
@@ -72,9 +68,9 @@ class Error(YumBaseError):
         if name == 'errmsg':
             return self.value
         else:
-            if hasattr(YumBaseError, '__getattr__'):
+            if hasattr(PmBaseError, '__getattr__'):
                 # rhel5 has no __getattribute__()
-                return YumBaseError.__getattr__(self, name)
+                return PmBaseError.__getattr__(self, name)
             else:
                 if name in self.__dict__:
                     return self.__dict__[name]
@@ -86,9 +82,9 @@ class Error(YumBaseError):
         if name == 'errmsg':
             self.__dict__['value'] = value
         else:
-            if hasattr(YumBaseError, '__setattr__'):
+            if hasattr(PmBaseError, '__setattr__'):
                 # rhel5 has no __setattr__()
-                YumBaseError.__setattr__(self, name, value)
+                PmBaseError.__setattr__(self, name, value)
             else:
                 self.__dict__[name] = value
 
@@ -98,7 +94,10 @@ class DebAndSuseRepoError(Error):
 if getPlatform() == 'deb' or dist()[0] == 'SuSE':
     RepoError = DebAndSuseRepoError
 else:
-    from yum.Errors import RepoError
+    try:
+        from yum.Errors import RepoError
+    except ImportError:
+        from dnf.exceptions import RepoError
 
 class RpmError(Error):
     """rpm itself raised an error condition"""
