@@ -1,7 +1,7 @@
 Summary: Spacewalk packages yum repository configuration
 Name: spacewalk-repo
 Version: 2.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2
 Group: System Environment/Base
 # This src.rpm is cannonical upstream
@@ -41,7 +41,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk.repo <<REPO
 [spacewalk]
 name=Spacewalk
 baseurl=http://yum.spacewalkproject.org/%{version}/%{reposubdir}/\$basearch/
-gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2014
+gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2015
 enabled=1
 gpgcheck=1
 REPO
@@ -50,7 +50,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-client.repo <<REPO
 [spacewalk-client]
 name=Spacewalk Client Tools
 baseurl=http://yum.spacewalkproject.org/%{version}-client/%{reposubdir}/\$basearch/
-gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2014
+gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2015
 enabled=1
 gpgcheck=1
 REPO
@@ -59,7 +59,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-source.repo <<REPO
 [spacewalk-source]
 name=Spacewalk SRPMS
 baseurl=http://yum.spacewalkproject.org/%{version}/%{reposubdir}/source/
-gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2014
+gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2015
 enabled=0
 gpgcheck=1
 REPO
@@ -68,7 +68,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-nightly.repo <<REPO
 [spacewalk-nightly]
 name=Spacewalk nightly
 baseurl=http://yum.spacewalkproject.org/nightly/%{reposubdir}/\$basearch/
-gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2014
+gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2015
 enabled=0
 gpgcheck=0
 REPO
@@ -77,7 +77,7 @@ cat >>$RPM_BUILD_ROOT%{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo <<
 [spacewalk-client-nightly]
 name=Spacewalk Client Tools nightly
 baseurl=http://yum.spacewalkproject.org/nightly-client/%{reposubdir}/\$basearch/
-gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2014
+gpgkey=http://yum.spacewalkproject.org/RPM-GPG-KEY-spacewalk-2015
 enabled=0
 gpgcheck=0
 REPO
@@ -99,6 +99,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/yum.repos.d/spacewalk-client-nightly.repo
 
 %changelog
+* Wed May 06 2015 Tomas Lestach <tlestach@redhat.com> 2.4-3
+- Update spacewalk-repo to use 2015 RPM-GPG-KEY
+
 * Fri Mar 27 2015 Grant Gainey 2.4-2
 - Update for Spacewalk 2.4
 

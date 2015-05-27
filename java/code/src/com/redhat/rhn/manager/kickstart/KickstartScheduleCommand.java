@@ -35,6 +35,8 @@ import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.RegistrationType;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
@@ -64,8 +66,9 @@ import org.apache.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1083,6 +1086,52 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         return new ValidatorError("kickstart.schedule.nopackage",
                 this.getKsdata().getChannel().getName());
+    }
+
+    /**
+     * Looks for the package name among the specified channels and, if it is found,
+     * it returns the highest available version in Map form.
+     *
+     * @param server the server
+     * @param channelIds channels the server could be subscribed to
+     * @return a ValidationError or null
+     */
+    public Map<String, Long> findKickstartPackageToInstall(Server server,
+            Collection<Long> channelIds) {
+        List<Map<String, Long>> results = new LinkedList<Map<String, Long>>();
+
+        for (Long chnnelId : channelIds) {
+            log.debug("    Checking on:" + chnnelId + " for: " + getKickstartPackageName());
+            List<Map<String, Object>> packages = ChannelManager.listLatestPackagesEqual(
+                    chnnelId, getKickstartPackageName());
+            log.debug("    size: " + packages.size());
+
+            for (Map<String, Object> aPackage : packages) {
+                log.debug("    Found the package: " + aPackage);
+                Map<String, Long> result = new HashMap<String, Long>();
+                result.put("name_id", (Long)aPackage.get("name_id"));
+                result.put("evr_id", (Long)aPackage.get("evr_id"));
+                result.put("arch_id", (Long)aPackage.get("package_arch_id"));
+                result.put("channel_id", chnnelId);
+
+                results.add(result);
+            }
+        }
+
+        if (!results.isEmpty()) {
+            return Collections.max(results, new Comparator<Map<String, Long>>() {
+                public int compare(Map<String, Long> o1In, Map<String, Long> o2In) {
+                    PackageEvr evr1 = PackageEvrFactory.lookupPackageEvrById(
+                            o1In.get("evr_id"));
+                    PackageEvr evr2 = PackageEvrFactory.lookupPackageEvrById(
+                            o2In.get("evr_id"));
+                    return evr1.compareTo(evr2);
+                }
+            });
+        }
+        else {
+            return null;
+        }
     }
 
     /**

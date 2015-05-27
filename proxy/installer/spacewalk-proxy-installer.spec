@@ -8,7 +8,7 @@ Name: spacewalk-proxy-installer
 Summary: Spacewalk Proxy Server Installer
 Group:   Applications/Internet
 License: GPLv2
-Version: 2.4.0
+Version: 2.4.3
 Release: 1%{?dist}
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -118,6 +118,16 @@ spacewalk-pylint $RPM_BUILD_ROOT/usr/share/rhn
 %dir %{_usr}/share/rhn/installer/jabberd
 
 %changelog
+* Mon May 11 2015 Stephen Herr <sherr@redhat.com> 2.4.3-1
+- 1220531 - don't cache debian Packages.gz repodata file for a year
+
+* Thu Apr 30 2015 Stephen Herr <sherr@redhat.com> 2.4.2-1
+- 1216100 - proxy config channels have extra space at the end
+
+* Fri Apr 24 2015 Matej Kollar <mkollar@redhat.com> 2.4.1-1
+- remove whitespace from .sgml files
+- Bumping package versions for 2.4.
+
 * Mon Mar 23 2015 Grant Gainey 2.3.13-1
 - Standardize pylint-check to only happen on Fedora
 

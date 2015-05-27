@@ -6,7 +6,7 @@
 #
 Summary: Spacewalk support for yum
 Name: yum-rhn-plugin
-Version: 2.4.1
+Version: 2.4.4
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -96,6 +96,19 @@ fi
 
 
 %changelog
+* Fri May 08 2015 Stephen Herr <sherr@redhat.com> 2.4.4-1
+- 1172288 - bug in yum api; PackageEVR.__eq__ not correctly defined for    evrs
+  with None values
+- Revert "Revert "1172288 - One more occurrence of bad epoch interpretation""
+
+* Fri May 08 2015 Stephen Herr <sherr@redhat.com> 2.4.3-1
+- Revert "1172288 - One more occurrence of bad epoch interpretation"
+  Unspecified epoch is supposed to be '0' here, thanks to yum. See comment 12
+  in bug.
+
+* Tue Apr 28 2015 Matej Kollar <mkollar@redhat.com> 2.4.2-1
+- 1172288 - One more occurrence of bad epoch interpretation
+
 * Thu Apr 16 2015 Matej Kollar <mkollar@redhat.com> 2.4.1-1
 - 1172288 - Unspecified epoch is not epoch = '0'
 - Bumping package versions for 2.4.

@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.4.0
+Version:    2.4.2
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -135,6 +135,13 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Wed May 20 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
+- Rebuild package due to BZ#1223240
+
+* Tue Apr 28 2015 Grant Gainey 2.4.1-1
+- 1189354 - restore missing cfg-diff CSS
+- Bumping package versions for 2.4.
+
 * Mon Mar 23 2015 Grant Gainey 2.3.25-1
 - inline input class
 - spacewalk-theme.less: bottom-margin to section tag

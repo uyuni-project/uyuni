@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.4.0
+Version: 2.4.6
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -64,7 +64,11 @@ Requires: suseRegisterInfo
 %if 0%{?suse_version}
 Requires: zypper
 %else
+%if 0%{?fedora} >= 22
+Requires: dnf
+%else
 Requires: yum
+%endif
 %endif
 
 Conflicts: up2date < 5.0.0
@@ -81,6 +85,11 @@ BuildRequires: desktop-file-utils
 
 %if 0%{?fedora}
 BuildRequires: fedora-logos
+%if 0%{?fedora} >= 22
+BuildRequires: dnf
+%else
+BuildRequires: yum
+%endif
 %endif
 %if 0%{?rhel}
 BuildRequires: redhat-logos
@@ -106,7 +115,11 @@ Requires: %{name} = %{version}-%{release}
 %if 0%{?suse_version}
 Requires: zypp-plugin-spacewalk >= 0.4
 %else
+%if 0%{?fedora} >= 22
+Requires: dnf-plugin-spacewalk >= 2.4.0
+%else
 Requires: yum-rhn-plugin >= 1.6.4-1
+%endif
 %endif
 
 %description -n spacewalk-check
@@ -380,7 +393,7 @@ make -f Makefile.rhn-client-tools test
 %{_sbindir}/rhn-channel
 
 %{_datadir}/rhn/up2date_client/rhnreg.*
-%{_datadir}/rhn/up2date_client/yumPlugin.*
+%{_datadir}/rhn/up2date_client/pmPlugin.*
 %{_datadir}/rhn/up2date_client/tui.*
 %{_datadir}/rhn/up2date_client/rhnreg_constants.*
 
@@ -462,6 +475,22 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Thu May 21 2015 Matej Kollar <mkollar@redhat.com> 2.4.6-1
+- dnf is default on fedora22, so require it instead of yum-rhn-plugin
+- Dependencies on rhnlib
+
+* Tue May 19 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.5-1
+- dnf is default on fedora22, so require it instead of yum
+
+* Fri Apr 24 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.4-1
+- make code python 2.4 to 3.3 compatible
+
+* Thu Apr 23 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.2-1
+- allow rhn-client-tool use yum or dnf
+
+* Mon Apr 20 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.1-1
+- missing buildrequires for F23
+
 * Thu Mar 19 2015 Grant Gainey 2.3.16-1
 - Updating copyright info for 2015
 - Revert "allow building rhn-client-tools package on rhel5"

@@ -337,20 +337,20 @@ def update(package_list, cache_only=None):
             pkgkeys['arch'] = None
 
         if pkgkeys['epoch'] == '':
-            pkgkeys['epoch'] = '0'
+            pkgkeys['epoch'] = None
 
         pkgs = yum_base.rpmdb.searchNevra(name=pkgkeys['name'], arch=pkgkeys['arch'])
         evr  = yum.packages.PackageEVR(pkgkeys['epoch'], pkgkeys['version'], pkgkeys['release'])
 
         found = False
         for pkg in pkgs:
-            if pkg.returnEVR() == evr:
+            if pkg.returnEVR().compare(evr) == 0:
                 log.log_debug('Package %s already installed' \
                     % _yum_package_tup(package))
                 package_list.remove(package)
                 found = True
                 break
-            elif pkg.returnEVR() > evr:
+            elif pkg.returnEVR().compare(evr) > 0:
                 log.log_debug('More recent version of package %s is already installed' \
                     % _yum_package_tup(package))
                 package_list.remove(package)

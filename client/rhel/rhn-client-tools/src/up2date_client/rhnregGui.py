@@ -73,6 +73,7 @@ import up2dateLog
 from rhn import rpclib
 from rhn.connections import idn_puny_to_unicode
 import rhnreg_constants
+from pmPlugin import PM_PLUGIN_NAME, PM_PLUGIN_CONF
 
 cfg = config.initUp2dateConfig()
 log = up2dateLog.initLog()
@@ -147,25 +148,25 @@ class ReviewLog:
         self.addText(rhnreg_constants.ACTIVATION_KEY % (keys))
         self.addText('') # adds newline
 
-    def yum_plugin_warning(self):
-        """ Add to review screen warning that yum-rhn-plugin is not installed """
+    def pm_plugin_warning(self):
+        """ Add to review screen warning that plugin is not installed """
         # prepending -> reverse order
         self.prependText('') # adds newline
-        self.prependText(rhnreg_constants.YUM_PLUGIN_WARNING)
+        self.prependText(rhnreg_constants.PM_PLUGIN_WARNING)
         self.prependBoldText(_("Warning"))
 
-    def yum_plugin_conf_changed(self):
-        """ Add to review screen warning that yum-rhn-plugin config file has been changed """
+    def pm_plugin_conf_changed(self):
+        """ Add to review screen warning that plugin config file has been changed """
         # prepending -> reverse order
         self.prependText('') # adds newline
-        self.prependText(rhnreg_constants.YUM_PLUGIN_CONF_CHANGED)
+        self.prependText(rhnreg_constants.PM_PLUGIN_CONF_CHANGED)
         self.prependBoldText(_("Notice"))
 
-    def yum_plugin_conf_error(self):
-        """ Add to review screen warning that yum-rhn-plugin config file can not be open """
+    def pm_plugin_conf_error(self):
+        """ Add to review screen warning that plugin config file can not be open """
         # prepending -> reverse order
         self.prependText('') # adds newline
-        self.prependText(rhnreg_constants.YUM_PLUGIN_CONF_ERROR)
+        self.prependText(rhnreg_constants.PM_PLUGIN_CONF_ERROR)
         self.prependBoldText(_("Warning"))
 
     def channels(self, subscribedChannels, failedChannels):
@@ -444,7 +445,8 @@ class LoginPage:
             self.alreadyRegistered = 1
             self.alreadyRegistered = rhnreg.reserveUser(self.loginUname.get_text(),
                                                         self.loginPw.get_text())
-        except up2dateErrors.ValidationError, e:
+        except up2dateErrors.ValidationError:
+            e = sys.exc_info()[1]
             setArrowCursor()
             self.alreadyRegistered = 0
             log.log_me("An exception was raised causing login to fail. This is "
@@ -452,7 +454,8 @@ class LoginPage:
             log.log_exception(*sys.exc_info())
             errorWindow(e.errmsg)
             return True
-        except up2dateErrors.CommunicationError, e:
+        except up2dateErrors.CommunicationError:
+            e = sys.exc_info()[1]
             setArrowCursor()
             print e.errmsg
             self.fatalError(_("There was an error communicating with the registration server.  The message was:\n") + e.errmsg)
@@ -720,26 +723,30 @@ class CreateProfilePage:
             reviewLog.channels(reg_info.getChannels(), reg_info.getFailedChannels())
             reviewLog.systemSlots(reg_info.getSystemSlotDescriptions(),
                                   reg_info.getFailedSystemSlotDescriptions())
-        except up2dateErrors.CommunicationError, e:
+        except up2dateErrors.CommunicationError:
+            e = sys.exc_info()[1]
             pwin.hide()
             self.fatalError(_("Problem registering system:\n") + e.errmsg)
             return True # fatalError in firstboot will return to here
-        except up2dateErrors.RhnUuidUniquenessError, e:
+        except up2dateErrors.RhnUuidUniquenessError:
+            e = sys.exc_info()[1]
             pwin.hide()
             self.fatalError(_("Problem registering system:\n") + e.errmsg)
             return True # fatalError in firstboot will return to here
-        except up2dateErrors.InsuffMgmntEntsError, e:
+        except up2dateErrors.InsuffMgmntEntsError:
+            e = sys.exc_info()[1]
             pwin.hide()
             self.fatalError(_("Problem registering system:\n") + e.errmsg)
-        except up2dateErrors.RegistrationDeniedError, e:
+        except up2dateErrors.RegistrationDeniedError:
+            e = sys.exc_info()[1]
             pwin.hide()
             self.fatalError(_("Problem registering system:\n") + e.errmsg)
-        except up2dateErrors.InvalidProductRegistrationError, e:
+        except up2dateErrors.InvalidProductRegistrationError:
             pwin.hide()
             errorWindow(_("The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it." %
                                               other['registration_number']))
             return True
-        except up2dateErrors.ActivationKeyUsageLimitError, e:
+        except up2dateErrors.ActivationKeyUsageLimitError:
             pwin.hide()
             self.fatalError(rhnreg_constants.ACT_KEY_USAGE_LIMIT_ERROR)
             return True # fatalError in firstboot will return to here
@@ -819,11 +826,11 @@ class CreateProfilePage:
         li = None
         try:
             li = up2dateAuth.updateLoginInfo()
-        except up2dateErrors.InsuffMgmntEntsError, e:
+        except up2dateErrors.InsuffMgmntEntsError:
             self.serviceNotEnabled = 1
-            self.fatalError(str(e), wrap=0)
-        except up2dateErrors.RhnServerException, e:
-            self.fatalError(str(e), wrap=0)
+            self.fatalError(str(sys.exc_info()[1]), wrap=0)
+        except up2dateErrors.RhnServerException:
+            self.fatalError(str(sys.exc_info()[1]), wrap=0)
             return True # fatalError in firstboot will return to here
 
         if li:
@@ -832,16 +839,17 @@ class CreateProfilePage:
                 # no channels subscribe
                 self.noChannels = 1
 
-        # enable yum-rhn-plugin
+        # enable yum-rhn-plugin / dnf-plugin-spacewalk
         try:
             present, conf_changed = rhnreg.pluginEnable()
             if not present:
-                reviewLog.yum_plugin_warning()
+                reviewLog.pm_plugin_warning()
             if conf_changed:
-                reviewLog.yum_plugin_conf_changed()
-        except IOError, e:
-            errorWindow(_("Could not open /etc/yum/pluginconf.d/rhnplugin.conf\nyum-rhn-plugin is not enabled.\n") + e.errmsg)
-            reviewLog.yum_plugin_conf_error()
+                reviewLog.pm_lugin_conf_changed()
+        except IOError:
+            e = sys.exc_info()[1]
+            errorWindow(_("Could not open %s\n%s is not enabled.\n") % (PM_PLUGIN_CONF, PM_PLUGIN_NAME) + e.errmsg)
+            reviewLog.pm_plugin_conf_error()
         rhnreg.spawnRhnCheckForUI()
         pwin.setProgress(6,6)
         pwin.hide()
@@ -955,7 +963,8 @@ class ProvideCertificatePage:
 
             return CERT_INSTALLED
 
-        except IOError, e:
+        except IOError:
+            e = sys.exc_info()[1]
             # TODO Provide better messages
             message = _("Something went wrong while installing the new certificate:\n")
             message = message + e.strerror
@@ -1072,9 +1081,9 @@ class ConfirmQuitDialog:
         if self.rc == 1:
             try:
                 rhnreg.createSystemRegisterRemindFile()
-            except (OSError, IOError), error:
+            except (OSError, IOError):
                 log.log_me("Reminder file couldn't be written. Details: %s" %
-                           error)
+                           sys.exc_info()[1])
         self.dialog.destroy()
 
 class MoreInfoDialog:
@@ -1150,7 +1159,8 @@ class HardwareDialog:
         label = self.hwXml.get_widget("versionLabel")
         try:
             distversion = up2dateUtils.getVersion()
-        except up2dateErrors.RpmError, e:
+        except up2dateErrors.RpmError:
+            e = sys.exc_info()[1]
             # TODO Do something similar during registration if the same
             # situation can happen. Even better, factor out the code to get the
             # hardware.

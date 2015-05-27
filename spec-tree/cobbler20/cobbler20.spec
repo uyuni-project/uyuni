@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 43%{?dist}
+Release: 45%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -26,6 +26,8 @@ Patch12: cobbler-modprobe-d.patch
 Patch13: fedora_os_entry.patch
 Patch14: centos7-version.patch
 Patch15: unicode-scripts.patch
+Patch16: cobbler-bz1214458.patch
+Patch17: whitelist.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -125,6 +127,8 @@ a XMLRPC API for integration with other applications.
 %patch13 -p1
 %patch14 -p0
 %patch15 -p1
+%patch16 -p1
+%patch17 -p1
 
 %build
 %{__python} setup.py build 
@@ -474,6 +478,13 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Mon May 11 2015 Jan Dobes 2.0.11-45
+- enabling patch
+- adding keyword also into config file
+
+* Wed Apr 22 2015 Stephen Herr <sherr@redhat.com> 2.0.11-44
+- 1214458 - fix cobbler timing window that can mess up pxe file permissions
+
 * Wed Apr 15 2015 Jan Dobes 2.0.11-43
 - 1096263 - specify unicode encoding for Cheetah
 

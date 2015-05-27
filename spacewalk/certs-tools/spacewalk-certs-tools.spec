@@ -11,7 +11,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.0
+Version: 2.4.2
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -24,6 +24,9 @@ Requires: %{rhn_client_tools}
 Requires: tar
 Requires: spacewalk-backend-libs >= 0.8.28
 Requires: sudo
+%if 0%{?rhel} && 0%{?rhel} <= 5
+Requires: python-hashlib
+%endif
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
@@ -108,6 +111,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri May 08 2015 Stephen Herr <sherr@redhat.com> 2.4.2-1
+- 1219946 - We need python-hashlib for doing sha256 on RHEL 5
+- 1219946 - Make rhn-ssl-tool use sha256 by default for crt / csr signatures
+
+* Fri Apr 24 2015 Matej Kollar <mkollar@redhat.com> 2.4.1-1
+- remove whitespace from .sgml files
+- Bumping package versions for 2.4.
+
 * Fri Mar 27 2015 Grant Gainey 2.3.3-1
 - tuple assignment should be list in client_config_update.py
 

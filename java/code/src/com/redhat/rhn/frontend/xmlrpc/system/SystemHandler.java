@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.xmlrpc.system;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.client.ClientCertificate;
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -80,8 +79,8 @@ import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.ChannelFamilySystemGroup;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
+import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.ProfileOverviewDto;
 import com.redhat.rhn.frontend.dto.ServerPath;
 import com.redhat.rhn.frontend.dto.SystemCurrency;
@@ -90,9 +89,9 @@ import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidActionTypeException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelListException;
-import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
@@ -155,7 +154,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -181,6 +179,7 @@ public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
 
+    @Override
     protected boolean availableInRestrictedPeriod() {
         return true;
     }
@@ -2261,16 +2260,8 @@ public class SystemHandler extends BaseHandler {
                     else {
                         // if there wasn't an error, check to see if there was a difference
                         // detected...
-                        String diffString = "";
-                        Object diff = file.get("diff");
-                        if (diff instanceof byte[]) {
-                            diffString = HibernateFactory.getByteArrayContents(
-                                    (byte[]) file.get("diff"));
-                        }
-                        else {
-                            diffString = HibernateFactory.blobToString(
-                                    (Blob) file.get("diff"));
-                        }
+                        String diffString = HibernateFactory.getBlobContents(
+                                file.get("diff"));
                         if (diffString != null) {
                             info.put("result", diffString);
                         }
@@ -2599,20 +2590,6 @@ public class SystemHandler extends BaseHandler {
      */
     private Server lookupServer(User user, Integer sid) throws NoSuchSystemException {
         return XmlRpcSystemHelper.getInstance().lookupServer(user, sid);
-    }
-
-    /**
-     * Private helper method to determine if a server is inactive.
-     * @param so SystemOverview object representing system to inspect.
-     * @return Returns true if system is inactive, false if system is active.
-     */
-    private boolean isSystemInactive(SystemOverview so) {
-        Long threshold = new Long(Config.get().getInt(
-                ConfigDefaults.SYSTEM_CHECKIN_THRESHOLD, 1));
-        if (so.getLastCheckinDaysAgo().compareTo(threshold) == 1) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -3471,10 +3448,8 @@ public class SystemHandler extends BaseHandler {
         for (Iterator<Integer> sysIter = systemIds.iterator(); sysIter.hasNext();) {
             Integer sidAsInt = sysIter.next();
             Long sid = new Long(sidAsInt.longValue());
-            Server server = null;
-
             try {
-                server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
+                SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
                         loggedInUser);
                 servers.add(sid);
             }
