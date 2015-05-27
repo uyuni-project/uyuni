@@ -314,7 +314,7 @@ public class AdvancedModeDetailsAction extends RhnAction {
 
         FormFile file = (FormFile) form.get(FILE_UPLOAD);
         String contents = form.getString(CONTENTS);
-        if(!file.getFileName().equals("") && !contents.equals("")) {
+        if (!file.getFileName().equals("") && !contents.equals("")) {
             ValidatorException.raiseException("kickstart.details.duplicatefile");
         }
 
@@ -338,9 +338,11 @@ public class AdvancedModeDetailsAction extends RhnAction {
         if (!file.getFileName().equals("")) {
             StrutsDelegate delegate = getStrutsDelegate();
             return delegate.extractString(file);
-        } else if(!contents.equals("")) {
+        }
+        else if (!contents.equals("")) {
             return StringUtil.webToLinux(contents);
-        } else {
+        }
+        else {
             return null;
         }
     }
