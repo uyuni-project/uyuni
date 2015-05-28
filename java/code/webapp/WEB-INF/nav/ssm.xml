@@ -30,7 +30,7 @@
         <rhn-tab-url>/rhn/systems/ssm/groups/Create.do</rhn-tab-url>
     </rhn-tab>
 
-        <rhn-tab name="Channels">
+        <rhn-tab name="Channels" acl="no_bootstrap_systems_in_set()">
             <rhn-tab-url>/rhn/channel/ssm/ChildSubscriptions.do</rhn-tab-url>
             <rhn-tab name="Base Channels">
                 <rhn-tab-url>/rhn/channel/ssm/BaseChannelSubscribe.do</rhn-tab-url>
