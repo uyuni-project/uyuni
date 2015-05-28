@@ -44,10 +44,6 @@ install -m 644 spacewalk.conf %{buildroot}%{_sysconfdir}/dnf/plugins/
 install -m 644 man/spacewalk.conf.5 %{buildroot}%{_mandir}/man5/
 install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 
-%if 0%{?suse_version}
-install -d %{buildroot}/usr/share/licenses
-%endif
-
 %pre
 
 %post
@@ -67,9 +63,6 @@ install -d %{buildroot}/usr/share/licenses
 %dir %{python_sitelib}/dnf-plugins
 %dir %{_sysconfdir}/dnf
 %dir %{_sysconfdir}/dnf/plugins
-%dir /usr/share/licenses
-%dir /usr/share/rhn
-%dir /usr/share/rhn/actions
 %endif
 
 %changelog
