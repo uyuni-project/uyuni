@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu May 28 07:43:14 UTC 2015 - smoioli@suse.com
+
+- disable pylint which is not compatible with upstream's version.
+ We run it independently in Jenkins anyway
+
+-------------------------------------------------------------------
 Tue Mar 31 14:36:41 CEST 2015 - mc@suse.de
 
 - version 2.1.15.6-1
