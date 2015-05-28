@@ -553,11 +553,7 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         // we are scheduling a new one
         if (!cobblerOnly) {
             kickstartSession = this.setupKickstartSession(packageAction);
-            KickstartData data = getKsdata();
-            // always create a tracking regkey (bnc#659093)
-            //if (!data.isRawData()) {
-                storeActivationKeyInfo();
-            //}
+            storeActivationKeyInfo();
         }
         Action kickstartAction = this.scheduleKickstartAction(packageAction);
         ActionFactory.save(packageAction);
