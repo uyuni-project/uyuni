@@ -15,10 +15,14 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+try:
+    import unittest2 as unittest
+except ImportError:
+    import unittest
+
 import mock
 import os
 import re
-import unittest2 as unittest
 import sys
 
 from spacewalk.susemanager.helpers import cli_ask
