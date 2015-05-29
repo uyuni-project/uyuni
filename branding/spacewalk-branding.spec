@@ -52,6 +52,15 @@ Requires:      susemanager-reference_en-pdf
 %description
 Spacewalk specific branding, CSS, and images.
 
+%package devel
+Requires:       %{name} = %{version}-%{release}
+Summary:        Spacewalk LESS source files for development use
+Group:          Applications/Internet
+
+%description devel
+This package contains LESS source files corresponding to Spacewalk's
+CSS files.
+
 %prep
 %setup -q
 
@@ -80,7 +89,7 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web/nav
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}%{_var}/lib/%{tomcat}/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
-cp -p css/*.css %{buildroot}/%{wwwdocroot}/css
+cp -p css/* %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
@@ -115,7 +124,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %dir /%{wwwdocroot}/css
-/%{wwwdocroot}/css/*
+/%{wwwdocroot}/css/*.css
 %dir /%{wwwdocroot}/img
 /%{wwwdocroot}/img/*
 %dir /%{wwwdocroot}/fonts
@@ -135,6 +144,10 @@ rm -rf %{buildroot}
 %attr(0775,tomcat,tomcat) %dir /var/lib/tomcat6/webapps/rhn/WEB-INF/lib
 
 %doc LICENSE
+
+%files devel
+%defattr(-,root,root)
+/%{wwwdocroot}/css/*.less
 
 %changelog
 * Tue Feb 18 2014 Matej Kollar <mkollar@redhat.com> 2.1.33-1
