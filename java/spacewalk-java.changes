@@ -1,7 +1,9 @@
 -------------------------------------------------------------------
-Wed May 20 13:34:23 UTC 2015 - smoioli@suse.com
+Mon May 11 10:30:28 CEST 2015 - mc@suse.de
 
-- compile with JDK7 to match runtime version
+- version 2.1.165.16.1-1
+- fix XML RPC API External Entities file disclosure
+  CVE-2014-8162 (bsc#922525)
 
 -------------------------------------------------------------------
 Wed Apr 08 11:20:10 CEST 2015 - mc@suse.de
