@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Fri May 29 10:35:46 CEST 2015 - mc@suse.de
+
+- version 2.1.165.17-1
+- wait for current transaction end
+- EXISTS is an Oracle keyword, don't use it casually
+- Scheduling remote command for large system sets is slow
+- move auto-errata updates into separate taskomatic task
+- improve system overview list performance
+- Implement a "default" kickstart script name for edit link
+- do not ignore errata with same package version
+- reduce number of system lookups
+- Get rid of IE7 compatibility mode enforcement
+- Unify profile creation/update with one submit button instead of two
+- Fix file input control alignment issue with form-control (bsc#873203)
+- Update specfile to compile with Java 7
+- add SLE11-Public-Cloud-Module (bsc#914606)
+- Change Activation Key Child Channels from select to checkboxes (bsc#859645)
+- Fix NPEx when updating distribution and missing cobbler entry (bsc#919722)
+- Provide channels and upgrade paths for SLE11 SP4 products (FATE#318261)
+- Fix broken icon in rhn/help/ForgotCredentials.do (bsc#915122)
+- Allow setting the contact method for systems via API (FATE#314858)
+- Make system.getDetails() return the contact method
+- Add support for setting contact_method on activation keys (FATE#314858)
+- implement tilde compare in java code
+- Return PATCHED if at least one patch is installed (bsc#926146)
+- SatCluster: strip ipv6 zone id from vip6 attribute
+
+-------------------------------------------------------------------
 Mon May 11 10:30:28 CEST 2015 - mc@suse.de
 
 - version 2.1.165.16.1-1
