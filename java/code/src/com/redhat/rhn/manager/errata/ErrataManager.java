@@ -1589,7 +1589,6 @@ public class ErrataManager extends BaseManager {
                 errataAction.setName(LocalizationService.getInstance().getMessage("errata.swstack", args));
                 Action action = ActionManager.storeAction(errataAction);
                 actionIds.add(action.getId());
-                ActionManager.storeAction(errataAction);
             }
         }
 
