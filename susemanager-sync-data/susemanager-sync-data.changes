@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jun 02 16:08:13 CEST 2015 - mc@suse.de
+
+- version 2.1.7-1
+- add SLE11-Public-Cloud-Module (bsc#914606)
+- Provide channels and upgrade paths for SLE11 SP4 products
+  (FATE#318261) (bsc#931873)
+
+-------------------------------------------------------------------
 Tue Mar 31 14:48:59 CEST 2015 - mc@suse.de
 
 - version 2.1.6-1
