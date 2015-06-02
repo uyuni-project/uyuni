@@ -49,6 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %{htmldir}/_rhn_proxy/*.ico
 %{htmldir}/_rhn_proxy/*.png
 %doc LICENSE
+%dir /srv/www/htdocs/pub
 /srv/www/htdocs/pub/*.key
 
 %changelog
