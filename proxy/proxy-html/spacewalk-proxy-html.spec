@@ -33,6 +33,11 @@ rm -rf $RPM_BUILD_ROOT
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}
 install -m 755 -d $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy
 install -m 644 _rhn_proxy/* $RPM_BUILD_ROOT%{htmldir}/_rhn_proxy/
+mkdir -p                             $RPM_BUILD_ROOT%{htmldir}/pub
+install -m 0644 res.key              $RPM_BUILD_ROOT%{htmldir}/pub
+install -m 0644 suse-307E3D54.key    $RPM_BUILD_ROOT%{htmldir}/pub
+install -m 0644 suse-9C800ACA.key    $RPM_BUILD_ROOT%{htmldir}/pub
+install -m 0644 suse-39DB7C82.key    $RPM_BUILD_ROOT%{htmldir}/pub
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,6 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %{htmldir}/_rhn_proxy/*.ico
 %{htmldir}/_rhn_proxy/*.png
 %doc LICENSE
+/srv/www/htdocs/pub/*.key
 
 %changelog
 * Wed Jul 17 2013 Tomas Kasparek <tkasparek@redhat.com> 2.0.1-1
