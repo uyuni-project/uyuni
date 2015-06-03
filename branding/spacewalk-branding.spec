@@ -90,7 +90,7 @@ install -d -m 755 %{buildroot}%{_datadir}/spacewalk/web
 install -d -m 755 %{buildroot}%{_datadir}/rhn/lib/
 install -d -m 755 %{buildroot}/srv/tomcat/webapps/rhn/WEB-INF/lib/
 install -d -m 755 %{buildroot}/%{_prefix}/share/rhn/config-defaults
-cp -p css/* %{buildroot}/%{wwwdocroot}/css
+cp -pR css/* %{buildroot}/%{wwwdocroot}/css
 cp -pR fonts %{buildroot}/%{wwwdocroot}/
 cp -pR img %{buildroot}/%{wwwdocroot}/
 # Appplication expects two favicon's for some reason, copy it so there's just
