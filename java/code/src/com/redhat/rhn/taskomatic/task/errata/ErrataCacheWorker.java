@@ -24,7 +24,6 @@ import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
 import org.apache.log4j.Logger;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,31 +36,26 @@ public class ErrataCacheWorker implements QueueWorker {
     public static final String BY_CHANNEL = "update_errata_cache_by_channel";
     public static final String FOR_SERVER = "update_server_errata_cache";
 
-
     private Task task;
-    private Long orgId;
     private Logger logger;
     private TaskQueue parentQueue;
 
     /**
      * Constructor
-     * @param items list of items to work on
+     * @param taskIn the task to work on
      * @param parentLogger logger to use
      */
-    public ErrataCacheWorker(Map items, Logger parentLogger) {
-        task = (Task) items.get("task");
-        orgId = (Long) items.get("orgId");
+    public ErrataCacheWorker(Task taskIn, Logger parentLogger) {
+        task = taskIn;
         logger = parentLogger;
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     public void run() {
         try {
-            Date d = new Date(System.currentTimeMillis());
-            removeTask(task);
+            removeTask();
             parentQueue.workerStarting();
             UpdateErrataCacheCommand uecc = new UpdateErrataCacheCommand();
             if (ErrataCacheWorker.FOR_SERVER.equals(task.getName())) {
@@ -99,11 +93,9 @@ public class ErrataCacheWorker implements QueueWorker {
     }
 
     /**
-     * Remove a given task from the database via mode query.
-     *
-     * @param task task to remove
+     * Remove the task related to this worker from the DB via mode query.
      */
-    protected static void removeTask(Task task) {
+    private void removeTask() {
         WriteMode mode = ModeFactory.getWriteMode("Task_queries", "delete_task");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", task.getOrg().getId());
@@ -112,5 +104,4 @@ public class ErrataCacheWorker implements QueueWorker {
         params.put("priority", new Integer(task.getPriority()));
         mode.executeUpdate(params);
     }
-
 }
