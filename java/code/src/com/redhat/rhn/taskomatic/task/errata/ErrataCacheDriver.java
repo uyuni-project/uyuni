@@ -23,11 +23,8 @@ import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -39,7 +36,6 @@ public class ErrataCacheDriver implements QueueDriver {
     private Logger logger = null;
 
     /**
-     *
      * {@inheritDoc}
      */
     public boolean canContinue() {
@@ -47,25 +43,16 @@ public class ErrataCacheDriver implements QueueDriver {
     }
 
     /**
-     *
      * {@inheritDoc}
      */
-    public List<Map<String, Object>> getCandidates() {
+    public List<Task> getCandidates() {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
         tasks.addAll(consolidateTasks(
                 TaskFactory.getTaskListByNameLike(ErrataCacheWorker.FOR_SERVER)));
-        List<Map<String, Object>> retval = new LinkedList<Map<String, Object>>();
-        for (Task current : tasks) {
-            Map<String, Object> item = new HashMap<String, Object>();
-            item.put("task", current);
-            item.put("orgId", current.getOrg().getId());
-            retval.add(item);
-        }
-        return retval;
+        return tasks;
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     public Logger getLogger() {
@@ -75,13 +62,11 @@ public class ErrataCacheDriver implements QueueDriver {
     /**
      * {@inheritDoc}
      */
-
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     public int getMaxWorkers() {
@@ -89,18 +74,16 @@ public class ErrataCacheDriver implements QueueDriver {
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     public QueueWorker makeWorker(Object workItem) {
-        Map item = (Map) workItem;
-        return new ErrataCacheWorker(item, logger);
+        Task task = (Task) workItem;
+        return new ErrataCacheWorker(task, logger);
     }
 
     /**
-    *
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
     public void initialize() {
         // empty
     }
@@ -118,13 +101,6 @@ public class ErrataCacheDriver implements QueueDriver {
         for (Task task : tasks) {
             if (uniqueTaskData.add(task.getData())) {
                 consolidated.add(task);
-            }
-            else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Removing task for consolidation: " + task.getName() +
-                            " (" + task.getData() + ")");
-                }
-                ErrataCacheWorker.removeTask(task);
             }
         }
         return consolidated;
