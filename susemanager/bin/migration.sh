@@ -707,12 +707,12 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     elif [ -n "$SCC_USER" ]; then
         touch /var/lib/spacewalk/scc/migrated
         # wait for taskomatic port is open
-        RETRIES=10
+        RETRIES=30
         while [ $RETRIES -gt 0 ]
         do
             /usr/bin/lsof -t -i :2829 > /dev/null && break
             ((RETRIES--))
-            sleep 0.5
+            sleep 3
         done
         # schedule refresh
         mgr-sync refresh --schedule
