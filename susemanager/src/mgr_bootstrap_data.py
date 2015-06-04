@@ -219,5 +219,9 @@ DATA = {
                           'PDID' : {'NCC' : 0 , 'SCC' : 1117}, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
+    'SLES4SAP-12-x86_64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1319}, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
+                        },
 }
 
