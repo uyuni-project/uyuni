@@ -28,7 +28,6 @@ import java.util.List;
 
 /**
  * susedata.xml writer class
- * @version $Rev $
  *
  */
 public class SuseDataXmlWriter extends RepomdWriter {
@@ -94,22 +93,8 @@ public class SuseDataXmlWriter extends RepomdWriter {
             ByteArrayOutputStream st = new ByteArrayOutputStream();
             SimpleContentHandler tmpHandler = getTemporaryHandler(st);
 
-            SimpleAttributesImpl attr = new SimpleAttributesImpl();
-            attr.addAttribute("pkgid", sanitize(pkgId, pkgDto.getChecksum()));
-            attr.addAttribute("name", sanitize(pkgId, pkgDto.getName()));
-            attr.addAttribute("arch", sanitize(pkgId, pkgDto.getArchLabel()));
             tmpHandler.startDocument();
-
-            tmpHandler.startElement("package", attr);
-
-            attr.clear();
-            attr.addAttribute("ver", sanitize(pkgId, pkgDto.getVersion()));
-            attr.addAttribute("rel", sanitize(pkgId, pkgDto.getRelease()));
-            attr.addAttribute("epoch", sanitize(pkgId, getPackageEpoch(pkgDto
-                .getEpoch())));
-            tmpHandler.startElement("version", attr);
-            tmpHandler.endElement("version");
-
+            addPackageBoilerplate(tmpHandler, pkgDto);
             addEulas(pkgId, eulas, tmpHandler);
             addKeywords(pkgId, keywords, tmpHandler);
             tmpHandler.endElement("package");
