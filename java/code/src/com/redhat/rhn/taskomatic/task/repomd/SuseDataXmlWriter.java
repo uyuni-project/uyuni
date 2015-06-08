@@ -17,12 +17,13 @@ package com.redhat.rhn.taskomatic.task.repomd;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.EulaManager;
-import com.redhat.rhn.taskomatic.task.TaskConstants;
+import com.redhat.rhn.manager.task.TaskManager;
 
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ import java.util.List;
  */
 public class SuseDataXmlWriter extends RepomdWriter {
 
-    private KeywordIterator keywordIterator;
+    private Long channelId;
 
     /**
      *
@@ -60,8 +61,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      * @param channel channel data
      */
     public void begin(Channel channel) {
-        keywordIterator = new KeywordIterator(channel,
-                TaskConstants.TASK_QUERY_REPOMD_GENERATOR_KEYWORDS);
+        channelId = channel.getId();
         SimpleAttributesImpl attr = new SimpleAttributesImpl();
         attr.addAttribute("xmlns", "http://linux.duke.edu/metadata/common");
         attr.addAttribute("xmlns:rpm", "http://linux.duke.edu/metadata/rpm");
@@ -83,8 +83,10 @@ public class SuseDataXmlWriter extends RepomdWriter {
         long pkgId = pkgDto.getId().longValue();
         List<String> eulas = new EulaManager().getEulasForPackage(pkgId);
 
-        if (!keywordIterator.hasNextForPackage(pkgId) &&
-            eulas.isEmpty()) {
+        Collection<String> keywords = TaskManager
+                .getChannelPackageKeywords(channelId, pkgId);
+
+        if (keywords.isEmpty() && eulas.isEmpty()) {
             // this package has no keywords and no EULA
             return;
         }
@@ -109,7 +111,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
             tmpHandler.endElement("version");
 
             addEulas(pkgId, eulas, tmpHandler);
-            addKeywords(pkgDto, tmpHandler);
+            addKeywords(pkgId, keywords, tmpHandler);
             tmpHandler.endElement("package");
             tmpHandler.endDocument();
 
@@ -123,16 +125,16 @@ public class SuseDataXmlWriter extends RepomdWriter {
 
     /**
      *
-     * @param pkgDto pkg info to add to xml
+     * @param pkgId pkg id
+     * @param keywords list of keywords for this package
+     * @param localHandler SAX helper
      * @throws SAXException
      */
-    private void addKeywords(PackageDto pkgDto,
+    private void addKeywords(long pkgId, Collection<String> keywords,
             SimpleContentHandler localHandler) throws SAXException {
-        long pkgId = pkgDto.getId().longValue();
-        while (keywordIterator.hasNextForPackage(pkgId)) {
+        for(String keyword : keywords) {
             localHandler.startElement("keyword");
-            localHandler.addCharacters(sanitize(pkgId,
-                    keywordIterator.getString("keyword")));
+            localHandler.addCharacters(sanitize(pkgId, keyword));
             localHandler.endElement("keyword");
         }
     }
