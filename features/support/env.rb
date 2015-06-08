@@ -89,6 +89,7 @@ when :phantomjs
                                       :debug => false)
   end
   Capybara.default_driver = :poltergeist
+  Capybara.javascript_driver = :poltergeist
   Capybara.app_host = host
 when :firefox
   require 'selenium-webdriver'
