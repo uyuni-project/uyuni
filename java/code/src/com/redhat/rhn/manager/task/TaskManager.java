@@ -97,7 +97,7 @@ public class TaskManager {
         params.put("package_id", packageId);
         DataResult<Map<String, Object>> dataResult = m.execute(params);
 
-        List<String> result = new LinkedList<String>();
+        List<String> result = new LinkedList<>();
         for (Map<String, Object> row: dataResult) {
             result.add((String)row.get("label"));
         }
