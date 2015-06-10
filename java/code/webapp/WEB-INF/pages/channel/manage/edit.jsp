@@ -7,6 +7,9 @@
     <body>
         <script type="text/javascript">
             $(document).ready(function() {
+                var defaultArch = $('#parentarch option:selected').val();
+                var defaultChecksum = $('#checksum option:selected').val();
+
                 function setChildChannelArchChecksum() {
                     var baseChannelArches = {};
                     <c:forEach items="${parentChannelArches}" var="parentChannel">
@@ -16,8 +19,18 @@
                     <c:forEach items="${parentChannelChecksums}" var="parentChannel">
                     baseChannelChecksums["<c:out value="${parentChannel.key}" />"] = "<c:out value="${parentChannel.value}"/>";
                     </c:forEach>
-                    document.getElementById("parentarch").value = baseChannelArches[document.getElementById("parent").value];
-                    document.getElementById("checksum").value = baseChannelChecksums[document.getElementById("parent").value];
+
+                    var parentArch = baseChannelArches[$('#parent').val()];
+                    if (typeof parentArch === 'undefined') {
+                        parentArch = defaultArch;
+                    }
+                    var checksum = baseChannelChecksums[$('#parent').val()];
+                    if (typeof checksum === 'undefined') {
+                        checksum = defaultChecksum
+                    }
+
+                    $('#parentarch').val(parentArch);
+                    $('#checksum').val(checksum);
                 }
 
                 $('#parent').change(function() {
