@@ -128,7 +128,7 @@ DATA = {
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-ppc64' : {
-                          'PDID' : {'NCC' : 3011 , 'SCC' : 964}, 'PKGLIST' : PKGLIST11,
+                          'PDID' : {'NCC' : 3011 , 'SCC' : 946}, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/2/bootstrap/'
                         },
     'SLE-11-SP2-s390x' : {
