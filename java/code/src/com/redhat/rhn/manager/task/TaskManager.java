@@ -25,6 +25,8 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,6 +80,28 @@ public class TaskManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("package_id", packageId);
         return m.execute(params);
+    }
+
+    /**
+     * Get keyword labels for a particular package in a channel
+     * @param channelId the channel's id
+     * @param packageId the package's id
+     * @return a collection of keywords
+     */
+    public static Collection<String> getChannelPackageKeywords(
+            Long channelId, Long packageId) {
+        SelectMode m = ModeFactory.getMode(TaskConstants.MODE_NAME,
+                TaskConstants.TASK_QUERY_REPOMD_PACKAGE_KEYWORDS);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("channel_id", channelId);
+        params.put("package_id", packageId);
+        DataResult<Map<String, Object>> dataResult = m.execute(params);
+
+        List<String> result = new LinkedList<>();
+        for (Map<String, Object> row: dataResult) {
+            result.add((String)row.get("label"));
+        }
+        return result;
     }
 
     /**

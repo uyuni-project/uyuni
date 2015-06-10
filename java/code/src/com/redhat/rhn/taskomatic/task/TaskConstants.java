@@ -168,8 +168,8 @@ public class TaskConstants {
 
     public static final String MODE_NAME = "Task_queries";
 
-    public static final String TASK_QUERY_REPOMD_GENERATOR_KEYWORDS =
-        "repomdgenerator_package_keywords";
+    public static final String TASK_QUERY_REPOMD_PACKAGE_KEYWORDS =
+        "repomdgenerator_channel_package_keywords";
 
     public static final String TASK_QUERY_REPOMD_GENERATOR_EULAS =
         "repomdgenerator_package_eulas";
