@@ -1046,9 +1046,11 @@ public class ContentSyncManager {
      */
     public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
             throws ContentSyncException {
-        // Get all currently existing product channel relations
-        List<SUSEProductChannel> existingProductChannels =
-                SUSEProductFactory.findAllSUSEProductChannels();
+        // Drop all existing product channel relations
+        for (SUSEProductChannel spc : SUSEProductFactory.findAllSUSEProductChannels()) {
+            SUSEProductFactory.remove(spc);
+        }
+        HibernateFactory.getSession().flush();
 
         // Create a map containing all installed vendor channels
         Map<String, Channel> installedChannels = new HashMap<String, Channel>();
@@ -1069,7 +1071,7 @@ public class ContentSyncManager {
                 parentChannelLabel = null;
             }
 
-            // Lookup every product and insert/update relationships accordingly
+            // Lookup every product and insert relationships accordingly
             for (MgrSyncProduct p : availableChannel.getProducts()) {
                 SUSEProduct product = SUSEProductFactory.lookupByProductId(p.getId());
                 // Product can be null, because previously it was skipped due to broken
@@ -1084,28 +1086,14 @@ public class ContentSyncManager {
                     channel = installedChannels.get(availableChannel.getLabel());
                 }
 
-                // Update or insert the product/channel relationship
-                SUSEProductChannel spc = SUSEProductFactory.lookupSUSEProductChannel(
-                        availableChannel.getLabel(), product.getProductId());
-                if (spc == null) {
-                    spc = new SUSEProductChannel();
-                    spc.setChannelLabel(availableChannel.getLabel());
-                }
+                // Insert the product/channel relationship
+                SUSEProductChannel spc = new SUSEProductChannel();
+                spc.setChannelLabel(availableChannel.getLabel());
                 spc.setProduct(product);
                 spc.setParentChannelLabel(parentChannelLabel);
                 spc.setChannel(channel);
                 SUSEProductFactory.save(spc);
-
-                // Remove from the list of existing relations
-                if (existingProductChannels.contains(spc)) {
-                    existingProductChannels.remove(spc);
-                }
             }
-        }
-
-        // Drop the remaining ones (existing but not updated)
-        for (SUSEProductChannel spc : existingProductChannels) {
-            SUSEProductFactory.remove(spc);
         }
     }
 
