@@ -23,14 +23,23 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import java.io.Serializable;
 
 /**
- * Object representation of a SUSE product channel relationship.
+ * POJO for a suseProductChannel row.
  */
 public class SUSEProductChannel extends BaseDomainHelper implements Serializable {
 
+    /** The id. */
     private Long id;
+
+    /** The product. */
     private SUSEProduct product;
+
+    /** The channel. */
     private Channel channel;
+
+    /** The channel label. */
     private String channelLabel;
+
+    /** The parent channel label. */
     private String parentChannelLabel;
 
     /**
@@ -50,6 +59,8 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
+     * Gets the product.
+     *
      * @return the product
      */
     public SUSEProduct getProduct() {
@@ -57,13 +68,15 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param productIn the product to set
+     * Sets the product.
+     * @param productIn the new product
      */
     public void setProduct(SUSEProduct productIn) {
-        this.product = productIn;
+        product = productIn;
     }
 
     /**
+     * Gets the channel.
      * @return the channel
      */
     public Channel getChannel() {
@@ -71,38 +84,45 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param channelIn the channel to set
+     * Sets the channel.
+     * @param channelIn the new channel
      */
     public void setChannel(Channel channelIn) {
-        this.channel = channelIn;
+        channel = channelIn;
     }
 
     /**
-     * @return the channelLabel
+     * Gets the channel label.
+     * @return the channel label
      */
     public String getChannelLabel() {
         return channelLabel;
     }
 
     /**
-     * @param channelLabelIn the channelLabel to set
+     * Sets the channel label.
+     * @param channelLabelIn the new channel label
      */
     public void setChannelLabel(String channelLabelIn) {
-        this.channelLabel = channelLabelIn;
+        channelLabel = channelLabelIn;
     }
 
     /**
-     * @return the parentChannelLabel
+     * Gets the parent channel label.
+     *
+     * @return the parent channel label
      */
     public String getParentChannelLabel() {
         return parentChannelLabel;
     }
 
     /**
-     * @param parentChannelLabelIn the parentChannelLabel to set
+     * Sets the parent channel label.
+     *
+     * @param parentChannelLabelIn the new parent channel label
      */
     public void setParentChannelLabel(String parentChannelLabelIn) {
-        this.parentChannelLabel = parentChannelLabelIn;
+        parentChannelLabel = parentChannelLabelIn;
     }
 
     /**
