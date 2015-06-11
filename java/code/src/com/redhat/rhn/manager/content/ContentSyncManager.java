@@ -1047,10 +1047,8 @@ public class ContentSyncManager {
     public void updateSUSEProductChannels(List<MgrSyncChannel> availableChannels)
             throws ContentSyncException {
         // Drop all existing product channel relations
-        for (SUSEProductChannel spc : SUSEProductFactory.findAllSUSEProductChannels()) {
-            SUSEProductFactory.remove(spc);
-        }
-        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().getNamedQuery(
+                "SUSEProductChannel.clear").executeUpdate();
 
         // Create a map containing all installed vendor channels
         Map<String, Channel> installedChannels = new HashMap<String, Channel>();
