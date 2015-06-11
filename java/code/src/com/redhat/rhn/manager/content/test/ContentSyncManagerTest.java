@@ -872,7 +872,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Setup product
             XMLProduct product = new XMLProduct();
-            product.setId(814);
+            product.setId(814L);
             product.setName("SUSE_SLES");
             product.setVersion("11.3");
             List<XMLProduct> products = new ArrayList<XMLProduct>();

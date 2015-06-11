@@ -224,7 +224,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param productId the product
      * @return SUSE product for given productId
      */
-    public static SUSEProduct lookupByProductId(int productId) {
+    public static SUSEProduct lookupByProductId(long productId) {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
@@ -249,7 +249,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE Product Channel if it is there.
      */
     public static SUSEProductChannel lookupSUSEProductChannel(
-            String channelLabel, int productId) {
+            String channelLabel, Long productId) {
         Criteria c = HibernateFactory.getSession().createCriteria(SUSEProductChannel.class);
         c.add(Restrictions.eq("channelLabel", channelLabel));
         @SuppressWarnings("unchecked")
