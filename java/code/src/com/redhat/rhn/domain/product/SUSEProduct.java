@@ -32,7 +32,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private String release;
     private PackageArch arch;
     private String friendlyName;
-    private int productId;
+    private long productId;
 
     /**
      * @return the id
@@ -121,14 +121,14 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     /**
      * @return the productId
      */
-    public int getProductId() {
+    public long getProductId() {
         return productId;
     }
 
     /**
      * @param productIdIn the productId to set
      */
-    public void setProductId(int productIdIn) {
+    public void setProductId(long productIdIn) {
         this.productId = productIdIn;
     }
 }

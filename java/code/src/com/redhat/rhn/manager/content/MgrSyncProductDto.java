@@ -46,7 +46,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
     private String friendlyName;
 
     /** The id. */
-    private Integer id;
+    private Long id;
 
     /** The version. */
     private String version;
@@ -68,7 +68,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * @param versionIn the version
      * @param baseChannelIn the base channel
      */
-    public MgrSyncProductDto(String friendlyNameIn, Integer idIn, String versionIn,
+    public MgrSyncProductDto(String friendlyNameIn, Long idIn, String versionIn,
             XMLChannel baseChannelIn) {
         friendlyName = friendlyNameIn;
         id = idIn;
@@ -90,7 +90,7 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      * Gets the id.
      * @return the id
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

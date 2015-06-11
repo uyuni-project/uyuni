@@ -18,7 +18,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     <property name="version" column="version" type="string" />
     <property name="friendlyName" column="friendly_name" type="string" />
     <property name="release" column="release" type="string" />
-    <property name="productId" column="product_id" type="int" />
+    <property name="productId" column="product_id" type="long" />
   </class>
 
   <query name="SUSEProduct.clear">

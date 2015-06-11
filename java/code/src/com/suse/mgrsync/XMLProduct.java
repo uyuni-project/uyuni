@@ -32,7 +32,7 @@ public class XMLProduct {
     private String name;
 
     /** The id. */
-    private Integer id;
+    private Long id;
 
     /** The version. */
     @Attribute(required = false) // Sometimes can be absent for unknown reasons
@@ -51,7 +51,7 @@ public class XMLProduct {
      * @param idIn the id
      * @param versionIn the version
      */
-    public XMLProduct(String nameIn, Integer idIn, String versionIn) {
+    public XMLProduct(String nameIn, Long idIn, String versionIn) {
         name = nameIn;
         id = idIn;
         version = versionIn;
@@ -62,7 +62,7 @@ public class XMLProduct {
      * @return the id
      */
     @Text
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -71,7 +71,7 @@ public class XMLProduct {
      * @param idIn the new id
      */
     @Text
-    public void setId(Integer idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
