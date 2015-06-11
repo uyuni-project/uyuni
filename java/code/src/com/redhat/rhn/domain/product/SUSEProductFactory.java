@@ -26,6 +26,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
@@ -250,17 +251,15 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static SUSEProductChannel lookupSUSEProductChannel(
             String channelLabel, Long productId) {
-        Criteria c = HibernateFactory.getSession().createCriteria(SUSEProductChannel.class);
-        c.add(Restrictions.eq("channelLabel", channelLabel));
-        @SuppressWarnings("unchecked")
-        List<SUSEProductChannel> channels = c.list();
-        for (SUSEProductChannel channel : channels) {
-            if (channel.getProduct().getProductId() == productId) {
-                return channel;
-            }
-        }
 
-        return null;
+        Criteria c = HibernateFactory.getSession()
+            .createCriteria(SUSEProductChannel.class)
+            .add(Restrictions.eq("channelLabel", channelLabel))
+            .createCriteria("channel")
+            .add(Restrictions.eq("id", productId))
+            .setFetchMode("channel", FetchMode.SELECT);
+
+        return (SUSEProductChannel) c.uniqueResult();
     }
 
     /**
