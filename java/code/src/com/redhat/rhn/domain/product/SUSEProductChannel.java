@@ -24,10 +24,27 @@ import java.io.Serializable;
  */
 public class SUSEProductChannel extends BaseDomainHelper implements Serializable {
 
+    private Long id;
     private SUSEProduct product;
     private Channel channel;
     private String channelLabel;
     private String parentChannelLabel;
+
+    /**
+     * Gets the id.
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * @return the product
