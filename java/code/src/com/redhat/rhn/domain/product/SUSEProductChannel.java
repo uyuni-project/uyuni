@@ -17,6 +17,9 @@ package com.redhat.rhn.domain.product;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -106,47 +109,25 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
      * {@inheritDoc}
      */
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((channelLabel == null) ? 0 : channelLabel.hashCode());
-        result = prime * result + ((product == null) ? 0 : product.hashCode());
-        return result;
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof SUSEProductChannel)) {
+            return false;
+        }
+        SUSEProductChannel other = (SUSEProductChannel) otherObject;
+        return new EqualsBuilder()
+            .append(getProduct(), other.getProduct())
+            .append(getChannelLabel(), other.getChannelLabel())
+            .isEquals();
     }
 
     /**
-     * This implements equality based on channel label and product.
-     *
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SUSEProductChannel other = (SUSEProductChannel) obj;
-        if (channelLabel == null) {
-            if (other.channelLabel != null) {
-                return false;
-            }
-        }
-        else if (!channelLabel.equals(other.channelLabel)) {
-            return false;
-        }
-        if (product == null) {
-            if (other.product != null) {
-                return false;
-            }
-        }
-        else if (!product.equals(other.product)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getProduct())
+            .append(getChannelLabel())
+            .toHashCode();
     }
 }
