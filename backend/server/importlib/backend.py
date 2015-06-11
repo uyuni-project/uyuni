@@ -55,6 +55,7 @@ sequences = {
     'suseMdKeyword': 'suse_mdkeyword_id_seq',
     'suseEula': 'suse_eula_id_seq',
     'suseProducts': 'suse_products_id_seq',
+    'suseProductChannel': 'suse_product_channel_id_seq',
 }
 
 
@@ -1400,8 +1401,8 @@ class Backend:
         """
         insert_pc = self.dbmodule.prepare("""
             INSERT INTO suseProductChannel
-                   (product_id, channel_id, channel_label, parent_channel_label)
-            VALUES (:pid, :cid, :clabel, :pclabel)
+                   (id, product_id, channel_id, channel_label, parent_channel_label)
+            VALUES (:id, :pid, :cid, :clabel, :pclabel)
             """)
         delete_pc = self.dbmodule.prepare("""
             DELETE FROM suseProductChannel
@@ -1432,10 +1433,11 @@ class Backend:
                 toupdate[2].append(item['product_id'])
                 toupdate[3].append(item['channel_label'])
                 continue
-            toinsert[0].append(item['product_id'])
-            toinsert[1].append(item['channel_id'])
-            toinsert[2].append(item['channel_label'])
-            toinsert[3].append(item['parent_channel_label'])
+            toinsert[0].append(self.sequences['suseProductChannel'].next())
+            toinsert[1].append(item['product_id'])
+            toinsert[2].append(item['channel_id'])
+            toinsert[3].append(item['channel_label'])
+            toinsert[4].append(item['parent_channel_label'])
         for ident in existing_data:
             pid, clabel = ident.split('-', 1)
             todelete[0].append(int(pid))
