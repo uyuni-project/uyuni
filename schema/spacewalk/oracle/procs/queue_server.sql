@@ -34,9 +34,16 @@ BEGIN
 	  INSERT
             INTO rhnTaskQueue
                  (org_id, task_name, task_data)
-          VALUES (org_id_tmp, 
-                  'update_server_errata_cache',
-                  server_id_in);
+          SELECT org_id_tmp, 
+                 'update_server_errata_cache',
+                 server_id_in
+          FROM DUAL
+          WHERE NOT EXISTS
+            (SELECT 1 FROM rhnTaskQueue
+               WHERE org_id = org_id_tmp
+               AND task_name = 'update_server_errata_cache'
+               AND task_data = server_id_in
+            );
     END IF;
 END queue_server;
 /
