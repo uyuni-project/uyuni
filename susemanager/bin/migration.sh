@@ -303,10 +303,6 @@ ssl-set-city = $CERT_CITY
 ssl-set-state = $CERT_STATE
 ssl-set-country = $CERT_COUNTRY
 ssl-password = $CERT_PASS
-ssl-use-existing-certs = $USE_EXISTING_CERTS
-ssl-ca-cert = $CA_CERT
-ssl-server-cert = $SERVER_CERT
-ssl-server-key = $SERVER_KEY
 ssl-set-email = $CERT_EMAIL
 ssl-config-sslvhost = Y
 ssl-ca-cert-expiration = 10
@@ -334,6 +330,14 @@ PARAM_CC="--scc"
 elif [ -n "$ISS_PARENT" ]; then
 PARAM_CC="--disconnected"
 fi
+    if [ -n "$CA_CERT" -a -n "$SERVER_CERT" -a -n "$SERVER_KEY" ]; then
+        echo "ssl-use-existing-certs = Y
+ssl-ca-cert = $CA_CERT
+ssl-server-cert = $SERVER_CERT
+ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
+    else
+        echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
+    fi
 
     if [ "$DB_BACKEND" = "oracle" ]; then
             PARAM_DB="--external-oracle"
