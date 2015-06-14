@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Add systems of a group to the System Set Manager (SSM)
@@ -8,10 +8,7 @@ Feature: Add systems of a group to the System Set Manager (SSM)
 
   Scenario: add newgroup to SSM
     Given I am on the groups page
-    #And I should see a "No systems selected" text
-    When I click on "Use in SSM" for "newgroup"
-    Then I should see a "system selected" text
-     And I should see a "Selected Systems List" text
-     And I should see this client as link
-
-
+    And I click on "Use in SSM" for "newgroup"
+    And I should see a "system selected" text
+    And I should see a "Selected Systems List" text
+    Then I should see this client as link
