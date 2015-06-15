@@ -253,11 +253,11 @@ public class SUSEProductFactory extends HibernateFactory {
             String channelLabel, Long productId) {
 
         Criteria c = HibernateFactory.getSession()
-            .createCriteria(SUSEProductChannel.class)
-            .add(Restrictions.eq("channelLabel", channelLabel))
-            .createCriteria("channel")
-            .add(Restrictions.eq("id", productId))
-            .setFetchMode("channel", FetchMode.SELECT);
+                .createCriteria(SUSEProductChannel.class)
+                .add(Restrictions.eq("channelLabel", channelLabel))
+                .createCriteria("channel")
+                .add(Restrictions.eq("id", productId))
+                .setFetchMode("channel", FetchMode.SELECT);
 
         return (SUSEProductChannel) c.uniqueResult();
     }
