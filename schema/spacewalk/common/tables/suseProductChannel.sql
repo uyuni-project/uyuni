@@ -13,6 +13,8 @@
 create table
 suseProductChannel
 (
+    id NUMBER NOT NULL
+        CONSTRAINT suse_product_channel_id_pk PRIMARY KEY,
     product_id number        not null
                              CONSTRAINT spc_pid_fk
                              REFERENCES suseProducts (id)
@@ -27,6 +29,8 @@ suseProductChannel
     modified  timestamp with local time zone
                   DEFAULT (current_timestamp) NOT NULL
 );
+
+CREATE SEQUENCE suse_product_channel_id_seq;
 
 CREATE UNIQUE INDEX suse_prd_chan_label_uq
     ON suseProductChannel (product_id, channel_label)

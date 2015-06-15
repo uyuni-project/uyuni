@@ -63,7 +63,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         baseChannel.setLabel("baseChannel");
         baseChannel.setStatus(MgrSyncStatus.INSTALLED);
         MgrSyncProductDto baseProduct =
-                new MgrSyncProductDto("baseProduct", 100, "11", baseChannel);
+                new MgrSyncProductDto("baseProduct", 100L, "11", baseChannel);
         baseProduct.addChannel(baseChannel);
 
         // Setup an addon
@@ -73,7 +73,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         childChannel.setOptional(true);
         childChannel.setStatus(MgrSyncStatus.AVAILABLE);
         MgrSyncProductDto extension =
-                new MgrSyncProductDto("extensionProduct", 200, "12", baseChannel);
+                new MgrSyncProductDto("extensionProduct", 200L, "12", baseChannel);
         extension.addChannel(childChannel);
         baseProduct.addExtension(extension);
 

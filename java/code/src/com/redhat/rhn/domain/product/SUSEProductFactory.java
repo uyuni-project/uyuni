@@ -26,6 +26,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
@@ -224,7 +225,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param productId the product
      * @return SUSE product for given productId
      */
-    public static SUSEProduct lookupByProductId(int productId) {
+    public static SUSEProduct lookupByProductId(long productId) {
         Session session = getSession();
         Criteria c = session.createCriteria(SUSEProduct.class);
         c.add(Restrictions.eq("productId", productId));
@@ -249,18 +250,16 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE Product Channel if it is there.
      */
     public static SUSEProductChannel lookupSUSEProductChannel(
-            String channelLabel, int productId) {
-        Criteria c = HibernateFactory.getSession().createCriteria(SUSEProductChannel.class);
-        c.add(Restrictions.eq("channelLabel", channelLabel));
-        @SuppressWarnings("unchecked")
-        List<SUSEProductChannel> channels = c.list();
-        for (SUSEProductChannel channel : channels) {
-            if (channel.getProduct().getProductId() == productId) {
-                return channel;
-            }
-        }
+            String channelLabel, Long productId) {
 
-        return null;
+        Criteria c = HibernateFactory.getSession()
+                .createCriteria(SUSEProductChannel.class)
+                .add(Restrictions.eq("channelLabel", channelLabel))
+                .createCriteria("channel")
+                .add(Restrictions.eq("id", productId))
+                .setFetchMode("channel", FetchMode.SELECT);
+
+        return (SUSEProductChannel) c.uniqueResult();
     }
 
     /**

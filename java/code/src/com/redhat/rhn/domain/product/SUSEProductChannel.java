@@ -17,19 +17,50 @@ package com.redhat.rhn.domain.product;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import java.io.Serializable;
 
 /**
- * Object representation of a SUSE product channel relationship.
+ * POJO for a suseProductChannel row.
  */
 public class SUSEProductChannel extends BaseDomainHelper implements Serializable {
 
+    /** The id. */
+    private Long id;
+
+    /** The product. */
     private SUSEProduct product;
+
+    /** The channel. */
     private Channel channel;
+
+    /** The channel label. */
     private String channelLabel;
+
+    /** The parent channel label. */
     private String parentChannelLabel;
 
     /**
+     * Gets the id.
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id.
+     * @param idIn the new id
+     */
+    public void setId(Long idIn) {
+        id = idIn;
+    }
+
+    /**
+     * Gets the product.
+     *
      * @return the product
      */
     public SUSEProduct getProduct() {
@@ -37,13 +68,15 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param productIn the product to set
+     * Sets the product.
+     * @param productIn the new product
      */
     public void setProduct(SUSEProduct productIn) {
-        this.product = productIn;
+        product = productIn;
     }
 
     /**
+     * Gets the channel.
      * @return the channel
      */
     public Channel getChannel() {
@@ -51,38 +84,60 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
     }
 
     /**
-     * @param channelIn the channel to set
+     * Sets the channel.
+     * @param channelIn the new channel
      */
     public void setChannel(Channel channelIn) {
-        this.channel = channelIn;
+        channel = channelIn;
     }
 
     /**
-     * @return the channelLabel
+     * Gets the channel label.
+     * @return the channel label
      */
     public String getChannelLabel() {
         return channelLabel;
     }
 
     /**
-     * @param channelLabelIn the channelLabel to set
+     * Sets the channel label.
+     * @param channelLabelIn the new channel label
      */
     public void setChannelLabel(String channelLabelIn) {
-        this.channelLabel = channelLabelIn;
+        channelLabel = channelLabelIn;
     }
 
     /**
-     * @return the parentChannelLabel
+     * Gets the parent channel label.
+     *
+     * @return the parent channel label
      */
     public String getParentChannelLabel() {
         return parentChannelLabel;
     }
 
     /**
-     * @param parentChannelLabelIn the parentChannelLabel to set
+     * Sets the parent channel label.
+     *
+     * @param parentChannelLabelIn the new parent channel label
      */
     public void setParentChannelLabel(String parentChannelLabelIn) {
-        this.parentChannelLabel = parentChannelLabelIn;
+        parentChannelLabel = parentChannelLabelIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof SUSEProductChannel)) {
+            return false;
+        }
+        SUSEProductChannel other = (SUSEProductChannel) otherObject;
+        return new EqualsBuilder()
+            .append(getProduct(), other.getProduct())
+            .append(getChannelLabel(), other.getChannelLabel())
+            .isEquals();
     }
 
     /**
@@ -90,46 +145,9 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((channelLabel == null) ? 0 : channelLabel.hashCode());
-        result = prime * result + ((product == null) ? 0 : product.hashCode());
-        return result;
-    }
-
-    /**
-     * This implements equality based on channel label and product.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        SUSEProductChannel other = (SUSEProductChannel) obj;
-        if (channelLabel == null) {
-            if (other.channelLabel != null) {
-                return false;
-            }
-        }
-        else if (!channelLabel.equals(other.channelLabel)) {
-            return false;
-        }
-        if (product == null) {
-            if (other.product != null) {
-                return false;
-            }
-        }
-        else if (!product.equals(other.product)) {
-            return false;
-        }
-        return true;
+        return new HashCodeBuilder()
+            .append(getProduct())
+            .append(getChannelLabel())
+            .toHashCode();
     }
 }
