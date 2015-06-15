@@ -14,27 +14,42 @@
  */
 package com.redhat.rhn.domain.product;
 
-import java.io.Serializable;
-
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import java.io.Serializable;
+
 /**
- * Class representation of a SUSE product.
+ * POJO for a suseProducts row.
  */
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
-    private static final long serialVersionUID = 7814344915621295270L;
-
+    /** The id. */
     private long id;
+
+    /** The name. */
     private String name;
+
+    /** The version. */
     private String version;
+
+    /** The release. */
     private String release;
+
+    /** The arch. */
     private PackageArch arch;
+
+    /** The friendly name. */
     private String friendlyName;
-    private int productId;
+
+    /** The product id. */
+    private long productId;
 
     /**
+     * Gets the id.
      * @return the id
      */
     public long getId() {
@@ -42,13 +57,15 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @param idIn the id to set
+     * Sets the id.
+     * @param idIn the new id
      */
     public void setId(long idIn) {
-       this.id = idIn;
+       id = idIn;
     }
 
     /**
+     * Gets the name.
      * @return the name
      */
     public String getName() {
@@ -56,13 +73,15 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @param nameIn the name to set
+     * Sets the name.
+     * @param nameIn the new name
      */
     public void setName(String nameIn) {
-        this.name = nameIn;
+        name = nameIn;
     }
 
     /**
+     * Gets the version.
      * @return the version
      */
     public String getVersion() {
@@ -70,13 +89,15 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @param versionIn the version to set
+     * Sets the version.
+     * @param versionIn the new version
      */
     public void setVersion(String versionIn) {
-        this.version = versionIn;
+        version = versionIn;
     }
 
     /**
+     * Gets the release.
      * @return the release
      */
     public String getRelease() {
@@ -84,13 +105,15 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @param releaseIn the release to set
+     * Sets the release.
+     * @param releaseIn the new release
      */
     public void setRelease(String releaseIn) {
-        this.release = releaseIn;
+        release = releaseIn;
     }
 
     /**
+     * Gets the arch.
      * @return the arch
      */
     public PackageArch getArch() {
@@ -98,37 +121,72 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @param archIn the arch to set
+     * Sets the arch.
+     * @param archIn the new arch
      */
     public void setArch(PackageArch archIn) {
-        this.arch = archIn;
+        arch = archIn;
     }
 
     /**
-     * @return the friendlyName
+     * Gets the friendly name.
+     * @return the friendly name
      */
     public String getFriendlyName() {
         return friendlyName;
     }
 
     /**
-     * @param friendlyNameIn the friendlyName to set
+     * Sets the friendly name.
+     * @param friendlyNameIn the new friendly name
      */
     public void setFriendlyName(String friendlyNameIn) {
-        this.friendlyName = friendlyNameIn;
+        friendlyName = friendlyNameIn;
     }
 
     /**
-     * @return the productId
+     * Gets the product id.
+     * @return the product id
      */
-    public int getProductId() {
+    public long getProductId() {
         return productId;
     }
 
     /**
-     * @param productIdIn the productId to set
+     * Sets the product id.
+     * @param productIdIn the new product id
      */
-    public void setProductId(int productIdIn) {
-        this.productId = productIdIn;
+    public void setProductId(long productIdIn) {
+        productId = productIdIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof SUSEProduct)) {
+            return false;
+        }
+        SUSEProduct other = (SUSEProduct) otherObject;
+        return new EqualsBuilder()
+            .append(getName(), other.getName())
+            .append(getVersion(), other.getVersion())
+            .append(getRelease(), other.getRelease())
+            .append(getArch(), other.getArch())
+            .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+            .append(getName())
+            .append(getVersion())
+            .append(getRelease())
+            .append(getArch())
+            .toHashCode();
     }
 }

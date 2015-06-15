@@ -1400,8 +1400,8 @@ class Backend:
         """
         insert_pc = self.dbmodule.prepare("""
             INSERT INTO suseProductChannel
-                   (product_id, channel_id, channel_label, parent_channel_label)
-            VALUES (:pid, :cid, :clabel, :pclabel)
+                   (id, product_id, channel_id, channel_label, parent_channel_label)
+            VALUES (sequence_nextval('suse_product_channel_id_seq'), :pid, :cid, :clabel, :pclabel)
             """)
         delete_pc = self.dbmodule.prepare("""
             DELETE FROM suseProductChannel

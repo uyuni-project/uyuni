@@ -23,7 +23,7 @@ public class MgrSyncProductDtoTest extends TestCase {
         super.setUp();
 
         product =
-                new MgrSyncProductDto("friendlyName", 0, "version", new XMLChannel());
+                new MgrSyncProductDto("friendlyName", 0L, "version", new XMLChannel());
     }
 
     /**

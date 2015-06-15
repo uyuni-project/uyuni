@@ -872,7 +872,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Setup product
             XMLProduct product = new XMLProduct();
-            product.setId(814);
+            product.setId(814L);
             product.setName("SUSE_SLES");
             product.setVersion("11.3");
             List<XMLProduct> products = new ArrayList<XMLProduct>();
@@ -1030,6 +1030,42 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 findMatchingRepo(repos, base + "/product///");
         assertEquals(alternateGood, result);
 }
+
+    /**
+     * Tests that the SUSEProductChannel class behaves correctly with Hibernate
+     * (ensures there is no regression wrt bsc#932052).
+     * @throws Exception if something goes wrong
+     */
+    public void testSUSEProductChannelUpdates() throws Exception {
+        // Setup two products
+        Channel channel = SUSEProductTestUtils.createTestVendorChannel();
+        ChannelFamily family = channel.getChannelFamily();
+        SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(family);
+
+        Channel channel2 = SUSEProductTestUtils.createTestVendorChannel();
+        ChannelFamily family2 = channel2.getChannelFamily();
+        SUSEProduct product2 = SUSEProductTestUtils.createTestSUSEProduct(family2);
+
+        // Create a product channel
+        SUSEProductChannel spc = new SUSEProductChannel();
+        spc.setChannel(channel);
+        spc.setChannelLabel(channel.getLabel());
+        spc.setProduct(product);
+
+        SUSEProductFactory.save(spc);
+        HibernateFactory.getSession().flush();
+
+        // change the product
+        spc.setProduct(product2);
+        SUSEProductFactory.save(spc);
+        HibernateFactory.getSession().flush();
+
+        // removes the changed product
+        SUSEProductFactory.remove(spc);
+
+        // flushes again, used to fail with exception in bsc#932052
+        HibernateFactory.getSession().flush();
+    }
 
     /**
      * Create credentials for testing given an ID.
