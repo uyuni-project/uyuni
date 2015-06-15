@@ -27,9 +27,6 @@ import java.io.Serializable;
  */
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 7814344915621295270L;
-
     /** The id. */
     private long id;
 
