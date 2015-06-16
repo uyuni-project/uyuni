@@ -575,12 +575,14 @@ SELECT 1 FROM dual
 <write-mode name="insert_into_suseproductchannel">
   <query params="product_id, channel_id, channel_label, parent_channel_label">
     INSERT INTO suseproductchannel (
+      id,
       product_id,
       channel_id,
       channel_label,
       parent_channel_label
     )
     VALUES  (
+      sequence_nextval('suse_product_channel_id_seq'),
       :product_id,
       :channel_id,
       :channel_label,
