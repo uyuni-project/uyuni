@@ -109,19 +109,19 @@ public class MgrSyncXMLParseTest extends RhnBaseTestCase {
         List<XMLProduct> products = c.getProducts();
         assertEquals(4, products.size());
         XMLProduct p0 = products.get(0);
-        assertEquals(new Integer(879), p0.getId());
+        assertEquals(new Long(879), p0.getId());
         assertEquals("SUSE_SLED", p0.getName());
         assertEquals("11.2", p0.getVersion());
         XMLProduct p1 = products.get(1);
-        assertEquals(new Integer(844), p1.getId());
+        assertEquals(new Long(844), p1.getId());
         assertEquals("SUSE_SLED", p1.getName());
         assertEquals("11.2", p1.getVersion());
         XMLProduct p2 = products.get(2);
-        assertEquals(new Integer(843), p2.getId());
+        assertEquals(new Long(843), p2.getId());
         assertEquals("SUSE_SLED", p2.getName());
         assertEquals("11.2", p2.getVersion());
         XMLProduct p3 = products.get(3);
-        assertEquals(new Integer(868), p3.getId());
+        assertEquals(new Long(868), p3.getId());
         assertEquals("SUSE_SLED", p3.getName());
         assertEquals("11.2", p3.getVersion());
     }
