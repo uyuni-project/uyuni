@@ -2259,7 +2259,7 @@ def subscribe_to_tools_channel(server_id):
     tools_channel = None
     for channel in child_channels:
         if channel.has_key('label'):
-            if 'rhn-tools' in channel['label']:
+            if 'rhn-tools' in channel['label'] or 'manager-tools' in channel['label']:
                 tools_channel = channel
 
     if tools_channel is None:
