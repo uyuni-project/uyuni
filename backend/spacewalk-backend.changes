@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:15:43 CEST 2015 - jrenner@suse.de
+
+- version 2.1.55.17-1
+- detect SUSE Manager Tools channel as well (bsc#935433)
+- import RPMs which vendor is an empty string (bsc#934124)
+- set primary interface during registration (bnc#929058)
+- do not reset primary network interface at hardware refresh (bnc#895071)
+
+-------------------------------------------------------------------
 Tue Mar 31 14:55:31 CEST 2015 - mc@suse.de
 
 - version 2.1.55.16-1
