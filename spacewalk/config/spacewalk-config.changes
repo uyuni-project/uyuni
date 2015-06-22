@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:23:17 CEST 2015 - jrenner@suse.de
+
+- version 2.1.5.6-1
+- Remove obsolete WebKit-CSP tag: it breaks older browsers and it is ignored on
+  newer ones.
+
+-------------------------------------------------------------------
 Tue Mar 31 14:52:40 CEST 2015 - mc@suse.de
 
 - version 2.1.5.5-1
