@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:50:57 CEST 2015 - jrenner@suse.de
+
+- version 2.1.6.6-1
+- Write logfile for mgr-ssh-push-init to correct location (bsc#918082)
+- rhn-ssl-tool: add arguments to import custom CA file and server
+  key/certificate files
+
+-------------------------------------------------------------------
 Tue Feb 03 11:48:10 CET 2015 - mc@suse.de
 
 - version 2.1.6.5-1
