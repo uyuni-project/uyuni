@@ -55,7 +55,7 @@ class ChannelException(Exception):
         self.channel_id = channel_id
         self.channel = None
 
-
+# FIXME SC: remove after cleanup of the stored proceedure
 class SubscriptionCountExceeded(ChannelException):
     pass
 
@@ -772,8 +772,7 @@ def base_channel_for_rel_arch(release, server_arch, org_id=-1,
                c.name,
                c.summary,
                c.description,
-               to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
-               rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions
+               to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnChannel c,
                rhnChannelArch ca
         where c.channel_arch_id = ca.id
@@ -1019,8 +1018,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
         -- If user_id is null, then the channel is subscribable
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe')
-            subscribable,
-        rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions
+            subscribable
     from
         rhnChannelPermissions cp,
         rhnOrgDistChannelMap odcm,
@@ -1790,6 +1788,7 @@ def _subscribe_sql(server_id, channel_id, commit=1):
         # don't run the EC yet
         subscribe_channel(server_id, channel_id, 0)
     except rhnSQL.SQLSchemaError, e:
+        # FIXME SC: remove after cleanup of the stored proceedure
         if e.errno == 20235:  # channel_family_no_subscriptions
             raise SubscriptionCountExceeded(channel_id=channel_id), None, sys.exc_info()[2]
         if e.errno == 20102:  # channel_server_one_base
@@ -1814,6 +1813,7 @@ def subscribe_sql(server_id, channel_id, commit=1):
     try:
         _subscribe_sql(server_id, channel_id, commit=commit)
     except SubscriptionCountExceeded:
+        # FIXME SC: remove after cleanup of the stored proceedure
         log_error("Subscription count exceeded for channel id %s" %
                   channel_id)
         raise rhnFault(70, "Subscription count for the target channel exceeded"), None, sys.exc_info()[2]
@@ -2032,6 +2032,7 @@ def subscribe_server_channels(server, user_id=None, none_ok=0):
         try:
             _subscribe_sql(s.id, c["id"], 0)
         except SubscriptionCountExceeded, e:
+            # FIXME SC: remove after cleanup of the stored proceedure
             rhnSQL.rollback('subscribe_server_channels')
             # Re-raise the exception
             e.channel = c
@@ -2314,8 +2315,3 @@ no_entitlement_message = _("""
   %(entitlement_url)s
 """)
 
-subscription_count_exceeded_title = _("System Registered but Inactive")
-subscription_count_exceeded_message = _("""
-  This system has been successfully registered, but the channel subscriptions
-  were exhausted
-""")
