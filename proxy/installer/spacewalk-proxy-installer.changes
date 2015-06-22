@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:14:33 CEST 2015 - jrenner@suse.de
+
+- version 2.1.6.9-1
+- Set USE_EXISTING_CERTS=N in the answers.txt example file.
+- 'Bring your own certificate': update documentation for configure-proxy.sh
+- configure-proxy.sh: 'Bring your own certificate' feature
+
+-------------------------------------------------------------------
 Tue Feb 03 11:59:55 CET 2015 - mc@suse.de
 
 - version 2.1.6.8-1
