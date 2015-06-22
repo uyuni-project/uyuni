@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:57:11 CEST 2015 - jrenner@suse.de
+
+- version 2.1.25.9-1
+- do not escape spacecmd command arguments
+- do not return one package multiple times
+- add system_setcontactmethod (FATE#314858)
+- add activationkey_setcontactmethod (FATE#314858)
+- show contact method with activationkey_details and system_details
+- clone config files without loosing trailing new lines (bsc#926318)
+
+-------------------------------------------------------------------
 Tue Mar 31 14:38:08 CEST 2015 - mc@suse.de
 
 - version 2.1.25.8-1
