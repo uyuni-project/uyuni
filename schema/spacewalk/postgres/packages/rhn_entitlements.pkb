@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 f4b56200224908344d0bf8304477747359da5acf
+-- oracle equivalent source sha1 c33240d5b163f1bfd22c4c3a8d55d8c8aed9a999
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -1313,8 +1313,6 @@ as $$
             perform rhn_entitlements.set_server_group_count(org_id_in,
                                              group_type,
                                              quantity_in);
-            -- bulk update family counts
-            perform rhn_channel.update_group_family_counts(group_label_in, org_id_in);
         end if;
 
     end$$
