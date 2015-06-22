@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:35:09 CEST 2015 - jrenner@suse.de
+
+- version 2.1.33.12-1
+- Fix file input control alignment issue with form-control (bsc#873203)
+- Restore missing cfg-diff CSS
+
+-------------------------------------------------------------------
 Tue Mar 31 14:50:30 CEST 2015 - mc@suse.de
 
 - version 2.1.33.11-1
