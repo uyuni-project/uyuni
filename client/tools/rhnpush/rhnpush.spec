@@ -14,7 +14,7 @@ BuildArch:     noarch
 Requires:      rpm-python
 Requires:      rhnlib
 Requires:      spacewalk-backend-libs >= 1.7.17
-Requires:      %{rhn_client_tools}
+Requires:      %{rhn_client_tools} >= 2.1.16.8
 %if 0%{?suse_version}
 # provides rhn directories for filelist check in OBS
 BuildRequires:      %{rhn_client_tools}
@@ -24,7 +24,7 @@ BuildRequires: python-devel
 %if 0%{?fedora} > 15 || 0%{?rhel} == 6 || 0%{?suse_version} == 1110
 # pylint check
 BuildRequires:  spacewalk-pylint >= 0.6
-BuildRequires:  %{rhn_client_tools}
+BuildRequires:  %{rhn_client_tools} >= 2.1.16.8
 BuildRequires:  spacewalk-backend-libs > 1.8.33
 %endif
 
