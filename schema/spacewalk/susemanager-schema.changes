@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:40:54 CEST 2015 - jrenner@suse.de
+
+- version 2.1.50.13-1
+- Fix rpm version compare in DB (bsc#927940)
+- Prevent from inserting duplicate update_server_errata_cache tasks
+- Move auto-errata updates into separate taskomatic task
+- Do not ignore errata with same package version
+
+-------------------------------------------------------------------
 Tue Mar 31 14:43:34 CEST 2015 - mc@suse.de
 
 - version 2.1.50.12-1
