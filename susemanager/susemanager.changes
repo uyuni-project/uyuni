@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:45:58 CEST 2015 - jrenner@suse.de
+
+- version 2.1.19-1
+- fix mgr-create-bootstrap-repo for SLES11 SP3 ppc64 (bsc#933942)
+- mgr_bootstrap_data: add SLES12 for SAP data (bsc#933587)
+- give taskomatic more time to start up (bsc#933275)
+- check for sufficient diskspace during setup (bnc#926234)
+- make output of free disk space in error message more human readable
+- set ssl-use-existing-certs depending on ca, cert and key is set or not
+- introduce variables to import own certificates on setup
+
+-------------------------------------------------------------------
 Tue Mar 31 14:33:25 CEST 2015 - mc@suse.de
 
 - version 2.1.18-1
