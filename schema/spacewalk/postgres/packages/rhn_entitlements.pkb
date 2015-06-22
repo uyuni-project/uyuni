@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 6e264a209f8e6f4e78caf9d63ef14507dc9df3b9
+-- oracle equivalent source sha1 f4b56200224908344d0bf8304477747359da5acf
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -690,19 +690,6 @@ as $$
 
            end if;
 
-            -- update current_members for the family.  This will set the value
-            -- to reflect adding/removing the entitlement.
-            --
-            -- what's the difference of doing this vs the unavoidable set_family_count above?
-            perform rhn_channel.update_family_counts(family.channel_family_id,
-                                             org_id_val);
-
-            -- It is possible that the guests belong  to a different org than the host
-            -- so we are going to update the family counts in the guests orgs also
-            for org in virt_guest_orgs loop
-                    perform rhn_channel.update_family_counts(family.channel_family_id,
-                                             org.org_id);
-            end loop;
         end loop;
 
         for a_group_type in group_types loop
@@ -986,8 +973,7 @@ language plpgsql;
     -- *******************************************************************
     create or replace function prune_group (
         group_id_in in numeric,
-        quantity_in in numeric,
-        update_family_countsYN in numeric default 1
+        quantity_in in numeric
     ) returns void
 as $$
     declare
@@ -1027,7 +1013,7 @@ as $$
             -- if we're removing a base ent, then be sure to
             -- remove the server's channel subscriptions.
             if ( type_is_base = 'Y' ) then
-                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, 0, update_family_countsYN);
+                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, 0);
             end if;
 
             end loop;
@@ -1326,8 +1312,7 @@ as $$
             -- will do bulk update afterwards
             perform rhn_entitlements.set_server_group_count(org_id_in,
                                              group_type,
-                                             quantity_in,
-                                             0);
+                                             quantity_in);
             -- bulk update family counts
             perform rhn_channel.update_group_family_counts(group_label_in, org_id_in);
         end if;
@@ -1488,8 +1473,7 @@ language plpgsql;
     create or replace function set_server_group_count (
         customer_id_in in numeric,  -- customer_id
         group_type_in in numeric,   -- rhn[User|Server]GroupType.id
-        quantity_in in numeric,      -- quantity
-                update_family_countsYN in numeric default 1
+        quantity_in in numeric      -- quantity
     ) returns void
 as $$
     declare
@@ -1517,8 +1501,7 @@ as $$
 
         perform rhn_entitlements.prune_group(
             group_id,
-            quantity,
-                        update_family_countsYN
+            quantity
         );
 
         if not wasfound then
@@ -1592,16 +1575,13 @@ as $$
         end if;
 
         for sc in serverchannels(quantity_in, 'N') loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
-                                                   1, 1, 0, 0);
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0);
         end loop;
 
         for sc in serverchannels(flex_in, 'Y') loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
-                                                   1, 1, 0, 0);
+            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0);
         end loop;
 
-        perform rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
     end$$
 language plpgsql;
 
