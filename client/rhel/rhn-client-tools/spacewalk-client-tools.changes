@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:26:53 CEST 2015 - jrenner@suse.de
+
+- version 2.1.16.8-1
+- fix --ca-chain option for rhnpush (bsc#931503, bsc#895869)
+- use hardware_gudev.py instead of hardware_hal.py on SLES12
+
+-------------------------------------------------------------------
 Tue Mar 31 14:53:38 CEST 2015 - mc@suse.de
 
 - version 2.1.16.7-1
