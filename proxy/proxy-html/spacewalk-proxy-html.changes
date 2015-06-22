@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:25:23 CEST 2015 - jrenner@suse.de
+
+- version 2.1.0.3-1
+- add PGP keys also to proxy (bsc#930227)
+
+-------------------------------------------------------------------
 Tue Jun  2 13:52:33 CEST 2015 - mantel@suse.de
 
 - add PGP keys also to proxy (snc#930227)
