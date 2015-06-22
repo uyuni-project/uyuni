@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:00:35 CEST 2015 - jrenner@suse.de
+
+- version 2.1.165.18-1
+- Avoid deadlock in CompareConfigFilesTask when a
+  rhn_channel.update_needed_cache is in progress (bsc#932845)
+- add missing country code
+- Restore the default checksum and architecture when the parent channel is set
+  to None
+- Drop all product/channel relations before populating (bsc#932052)
+- Replace keyword iterator to fix writing support information (bsc#933675)
+- TaskoXmlRpcHandler: dead code removed
+- products.json updated from latest SCC version
+- Deserialize BLOBs correctly across databases
+- Revert "Java Eula database classes moved to Hibernate, fixes BLOB issue"
+  (bsc#930686)
+- Do not remove tasks from the database during getCandidates() (bsc#932052)
+- force taskomatic to use UTF-8 (bsc#932652)
+
+-------------------------------------------------------------------
 Fri May 29 10:35:46 CEST 2015 - mc@suse.de
 
 - version 2.1.165.17-1
