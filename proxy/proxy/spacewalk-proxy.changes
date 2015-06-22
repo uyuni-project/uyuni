@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:19:47 CEST 2015 - jrenner@suse.de
+
+- version 2.1.15.7-1
+- disable WebUI redirecting (bsc#922923)
+- make proxy able to understand (bad) requests from ubuntu clients
+
+-------------------------------------------------------------------
 Thu May 28 07:43:14 UTC 2015 - smoioli@suse.com
 
 - disable pylint which is not compatible with upstream's version.
