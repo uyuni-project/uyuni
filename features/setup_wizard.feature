@@ -12,12 +12,11 @@ Feature: I want to verify the Setup Wizard
         And I click on "Save"
         And I should see a "asdf" text
         And I make the credentials primary
-        And I view the primary subscription list
+        And I view the primary subscription list for asdf
         And I should see a "No subscriptions available" text
         And I click on "Close"
         And I delete the primary credentials
         And I view the primary subscription list
-        And I should not see a "No subscriptions available" text
         And I click on "Close"
         And I should not see a "asdf" text
 

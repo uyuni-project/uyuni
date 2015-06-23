@@ -13,6 +13,12 @@ When /^I view the primary subscription list$/ do
   fail if not find('i.fa-th-list', :match => :first).click
 end
 
+When /^I view the primary subscription list for asdf$/ do
+  within(:xpath, "//h3[contains(text(), 'asdf')]/../..") do
+    fail if not find('i.fa-th-list', :match => :first).click
+  end
+end
+
 When /^I click on "([^"]*)" link in the setup wizard$/ do |arg1|
   tag = case arg1
   when /Edit/ then "i.fa-pencil"
