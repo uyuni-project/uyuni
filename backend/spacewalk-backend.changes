@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 23 11:12:57 CEST 2015 - jrenner@suse.de
+
+- version 2.1.55.18-1
+- Require pyliblzma to enable sync of EPEL repos (bsc#934417)
+
+-------------------------------------------------------------------
 Mon Jun 22 16:15:43 CEST 2015 - jrenner@suse.de
 
 - version 2.1.55.17-1
