@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Log in and out of the host
@@ -6,6 +6,7 @@ Feature: Log in and out of the host
   As a non-authorized user
   I want to log in
   Then I should be an authorized user
+
   Scenario: Log into the host
     Given I am not authorized
     When I go to the home page
@@ -13,6 +14,7 @@ Feature: Log in and out of the host
     And I enter "testing" as "password"
     And I click on "Sign In"
     Then I should be logged in
+
   Scenario: Log out of the host
     Given I am authorized
     When I sign out
