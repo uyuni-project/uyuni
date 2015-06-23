@@ -1,8 +1,9 @@
-# Copyright (c) 2014 SUSE
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Since an advanced setup is needed for doing SP migration we test
 # only the alert warning message here for now.
+
 Feature: Check the SP Migration feature
   In order to test the SP Migration feature
   As the testing user
@@ -13,4 +14,3 @@ Feature: Check the SP Migration feature
     When I follow "Software" in the content area
     When I follow "SP Migration" in the content area
     Then I should see a "There is currently no migration available for this system. Either the latest Service Pack is already installed or possible target products are not available." text
-
