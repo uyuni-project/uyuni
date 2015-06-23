@@ -1,7 +1,5 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
-
-# feature/nagios.feature
 
 Feature: Check nagios plugins
   In order to check nagios probes for a host
@@ -20,4 +18,3 @@ Feature: Check nagios plugins
   Scenario: Check status of last action
     Given I perform a nagios check last event
     Then I should see Completed: OpenSCAP xccdf scanning scheduled by testing
-
