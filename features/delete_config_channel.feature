@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Delete a configuration channel
@@ -9,9 +9,8 @@ Feature: Delete a configuration channel
   Scenario: Delete configuration channel labeled "testchannel"
     Given I am testing configuration
     When I follow "Configuration Channels"
-     And I follow "Test Channel"
-     And I follow "delete channel"
-     And I click on "Delete Config Channel"
+    And I follow "Test Channel"
+    And I follow "delete channel"
+    And I click on "Delete Config Channel"
     Then I should see a "Centrally Managed Configuration Channels" text
-     And I should see a "Create Config Channel" link
-
+    And I should see a "Create Config Channel" link
