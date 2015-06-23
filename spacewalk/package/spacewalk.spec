@@ -156,6 +156,9 @@ Requires: postgresql-pltcl >= 9.1
 %endif
 Requires: postgresql >= 9.1
 Conflicts: postgresql94
+Conflicts: postgresql94-contrib
+Conflicts: postgresql94-pltcl
+Conflicts: postgresql94-server
 Requires: pgtune
 
 %description postgresql
