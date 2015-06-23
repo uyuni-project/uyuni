@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2012 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create external system or API credentials
@@ -29,7 +29,7 @@ Feature: Create external system or API credentials
     And I enter "foobar-key" as "studio_key"
     And I click on "Update Credentials"
     Then I should see a "Your credentials were successfully updated." text
-  
+
   Scenario: Delete credentials
     Given I am on the Credentials page
     When I follow "delete credentials"
@@ -38,4 +38,3 @@ Feature: Create external system or API credentials
     And I should see a "https://susestudio.com" text
     When I click on "Delete Credentials"
     Then I should see a "Your credentials were successfully deleted." text
-
