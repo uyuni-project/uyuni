@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test SUSE Manager generated metadata
@@ -8,11 +8,10 @@ Feature: Test SUSE Manager generated metadata
 
   Scenario: Check pre requires
     Given I am root
-     When I refresh the metadata
-     Then I should have 'pre="1"' in the metadata
+    When I refresh the metadata
+    Then I should have 'pre="1"' in the metadata
 
-    Scenario: Check for empty epoch
-        Given I am root
-        When I refresh the metadata
-        Then I should not have 'epoch=""' in the metadata
-
+  Scenario: Check for empty epoch
+    Given I am root
+    When I refresh the metadata
+    Then I should not have 'epoch=""' in the metadata
