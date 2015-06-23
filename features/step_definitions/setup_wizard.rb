@@ -33,7 +33,7 @@ end
 
 When /^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/ do |product, architecture|
   within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
-    fail if not find("input[type='checkbox']").click
+    fail if not find("button.product-add-btn").click
   end
 end
 
