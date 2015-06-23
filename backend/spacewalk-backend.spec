@@ -70,6 +70,7 @@ BuildRequires: /usr/bin/msgfmt
 BuildRequires: /usr/bin/docbook2man
 BuildRequires: docbook-utils
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5 || 0%{?suse_version} >= 1100
+Requires: pyliblzma
 %if 0%{?pylint_check}
 BuildRequires: spacewalk-pylint
 %endif
