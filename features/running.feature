@@ -1,7 +1,6 @@
-# Copyright (c) 2010-2012 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# features/running.feature
 Feature: The host is running
   In order to see if the host is running
   As an unauthorized user
