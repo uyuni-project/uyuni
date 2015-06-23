@@ -74,6 +74,7 @@ Feature: Test Bare-metal discovery
     Scenario: check SSM with bare-metal system
         Given I am on the Systems page
          When I check this client
+          And I wait for "30" seconds
           And I follow "System Set Manager" in the left menu
          Then I should see a "At least one system in the set is bare metal: some actions will not be available. Check bare metal systems." text
 
