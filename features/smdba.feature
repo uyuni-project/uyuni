@@ -1,7 +1,6 @@
-# Copyright (c) 2013 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# features/smdba.feature
 Feature: Verify SMDBA infrastructure
   In order to operate embedded database with SMDBA tool
   As the testing user
@@ -32,7 +31,6 @@ Feature: Verify SMDBA infrastructure
     Then I start database with the command "smdba db-start"
     And when I issue command "smdba db-status"
     Then I want to see if the database is "online"
-    
     And when I check internally configuration for "wal_level" option
     Then I expect to see the configuration is set to "hot_standby"
     Then I issue command "smdba system-check"
@@ -86,4 +84,3 @@ Feature: Verify SMDBA infrastructure
     Given database "susemanager" has no table "dummy"
     Then I disable backup in the directory "/smdba-backup-test" 
     Then I remove backup directory "/smdba-backup-test"
-
