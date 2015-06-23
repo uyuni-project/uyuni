@@ -1,7 +1,6 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# feature/init_user_create.feature
 @javascript @init_once
 Feature: Create initial users
   In Order to run the tests
@@ -26,29 +25,28 @@ Feature: Create initial users
   Scenario: Create Testing username
     Given I am authorized as "admin" with password "admin"
     When I go to the users page
-     And I follow "Create User"
-     And I enter "testing" as "login"
-     And I enter "testing" as "desiredpassword"
-     And I enter "testing" as "desiredpasswordConfirm"
-     And I select "Mr." from "prefix"
-     And I enter "Test" as "firstNames"
-     And I enter "User" as "lastName"
-     And I enter "galaxy-noise@suse.de" as "email"
-     And I click on "Create Login"
+    And I follow "Create User"
+    And I enter "testing" as "login"
+    And I enter "testing" as "desiredpassword"
+    And I enter "testing" as "desiredpasswordConfirm"
+    And I select "Mr." from "prefix"
+    And I enter "Test" as "firstNames"
+    And I enter "User" as "lastName"
+    And I enter "galaxy-noise@suse.de" as "email"
+    And I click on "Create Login"
     Then I should see a "Account testing created, login information sent to galaxy-noise@suse.de" text
-     And I should see a "testing" link
+    And I should see a "testing" link
 
   @fourth
   Scenario: Grant Testing user admin priviledges
     Given I am authorized as "admin" with password "admin"
-      When I go to the users page
-       And I follow "testing"
-       And I check "role_org_admin"
-       And I check "role_system_group_admin"
-       And I check "role_channel_admin"
-       And I check "role_activation_key_admin"
-       And I check "role_config_admin"
-       And I click on "Update"
+    When I go to the users page
+    And I follow "testing"
+    And I check "role_org_admin"
+    And I check "role_system_group_admin"
+    And I check "role_channel_admin"
+    And I check "role_activation_key_admin"
+    And I check "role_config_admin"
+    And I click on "Update"
     Then I should see a "User information updated" text
-     And I should see a "testing" text
-
+    And I should see a "testing" text
