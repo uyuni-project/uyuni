@@ -1,13 +1,11 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-#
-# Explore the main landing page
-#
 Feature: Explore the main landing page
   In Order to validate completeness of the landing page
   As a authorized user
   I want to see all the options and preferences
+
   Scenario: Completeness of the toplevel bar
     Given I am authorized
     When I go to the home page
@@ -46,4 +44,3 @@ Feature: Explore the main landing page
     And I should see a "Relevant Security Errata" text
     And I should see a "System Group Name" text
     And I should see a "Recently Registered Systems" text
-
