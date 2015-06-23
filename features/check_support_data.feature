@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test support data available in the repos
@@ -11,6 +11,5 @@ Feature: Test support data available in the repos
 
   Scenario: Check local metdata for susedata.xml
     Given I am root
-     When I refresh the metadata
-     Then "susedata.xml.gz" should exists in the metadata
-
+    When I refresh the metadata
+    Then "susedata.xml.gz" should exists in the metadata
