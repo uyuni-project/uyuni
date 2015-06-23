@@ -1,9 +1,5 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
-
-#
-# Explore the systems page
-#
 
 Feature: Explore the Errata page
   In Order to validate completeness of the errata page
@@ -15,28 +11,28 @@ Feature: Explore the Errata page
     Given I am authorized
     When I follow "Errata"
     Then I should see a "Errata Relevant to Your Systems" text
-     And I should see a "Relevant" link in the left menu
-     And I should see a "All" link in the left menu
-     And I should see a "Advanced Search" link in the left menu
-     And I should see a "Manage Errata" link in the left menu
-     And I should see a "Clone Errata" link in the left menu
-     And I should see a "Bugfix Errata" link
-     And I should see a "Enhancement Errata" link
-     And I should see a "Security Errata" link
-     And I should see a Sign Out link
+    And I should see a "Relevant" link in the left menu
+    And I should see a "All" link in the left menu
+    And I should see a "Advanced Search" link in the left menu
+    And I should see a "Manage Errata" link in the left menu
+    And I should see a "Clone Errata" link in the left menu
+    And I should see a "Bugfix Errata" link
+    And I should see a "Enhancement Errata" link
+    And I should see a "Security Errata" link
+    And I should see a Sign Out link
 
   @errata
   Scenario: Completeness of the main navigation bar
     Given I am authorized
     When I follow "Errata"
     Then I should see a "Overview" link in the tab bar
-     And I should see a "Systems" link in the tab bar
-     And I should see a "Errata" link in the tab bar
-     And I should see a "Channels" link in the tab bar
-     And I should see a "Configuration" link in the tab bar
-     And I should see a "Schedule" link in the tab bar
-     And I should see a "Users" link in the tab bar
-     And I should see a "Help" link in the tab bar
+    And I should see a "Systems" link in the tab bar
+    And I should see a "Errata" link in the tab bar
+    And I should see a "Channels" link in the tab bar
+    And I should see a "Configuration" link in the tab bar
+    And I should see a "Schedule" link in the tab bar
+    And I should see a "Users" link in the tab bar
+    And I should see a "Help" link in the tab bar
 
   @errata
   Scenario: Create new bugfix erratum with bnc URL
@@ -101,13 +97,6 @@ Feature: Explore the Errata page
     Then I should see a "All Types" text
     And I should see a "Test Erratum" text
 
-#  @errata
-#  Scenario: Search erratum
-#    Given I am on the Errata page
-#    And I follow "Advanced Search" in the left menu
-#    And I search for "Test"
-#    Then I should see a "Test Erratum" text
-
   @errata
   Scenario: View bugfix errata
     Given I am on the Errata page
@@ -147,4 +136,3 @@ Feature: Explore the Errata page
     And I click on "Delete Errata"
     And I click on "Confirm"
     Then I should see a "Successfully deleted 1 errata." text
-
