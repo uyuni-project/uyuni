@@ -1,4 +1,4 @@
-# Copyright (c) 2014 SUSE LLC
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Check the SCC Migration UI
@@ -40,4 +40,3 @@ Feature: Check the SCC Migration UI
     When I follow "SUSE Customer Center" in the left menu
     Then I should see a "Congratulations! SUSE Manager is migrated to the SUSE Customer Center." text
     Then I restore migration state
-
