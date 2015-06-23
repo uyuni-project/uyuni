@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Check errata
@@ -8,38 +8,37 @@ Feature: Check errata
 
   Scenario: check all errata exists
     Given I am on the errata page
-     When I follow "Relevant" in the left menu
-     Then I should see an update in the list
-      And I should see a "virgo-dummy-3456" link
+    When I follow "Relevant" in the left menu
+    Then I should see an update in the list
+    And I should see a "virgo-dummy-3456" link
 
   Scenario: check sles-release-6789 errata
     Given I am on the errata page
-     When I follow "All" in the left menu
-     When I follow "andromeda-dummy-6789"
-     Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
-      And I should see a "Test update for andromeda-dummy" text
-      And I should see a "SLES11-SP3-Updates x86_64 Channel" link
-      And I should see a "SLES11-SP3-Updates i586 Channel" link
-      And I should see a "reboot_suggested" text
+    When I follow "All" in the left menu
+    When I follow "andromeda-dummy-6789"
+    Then I should see a "andromeda-dummy-6789 - Bug Fix Advisory" text
+    And I should see a "Test update for andromeda-dummy" text
+    And I should see a "SLES11-SP3-Updates x86_64 Channel" link
+    And I should see a "SLES11-SP3-Updates i586 Channel" link
+    And I should see a "reboot_suggested" text
 
   Scenario: check sles-release-6789 errata packages
     Given I am on the errata page
-     When I follow "All" in the left menu
-     When I follow "andromeda-dummy-6789"
-     When I follow "Packages"
-     Then I should see a "SLES11-SP3-Updates x86_64 Channel" link
-      And I should see a "SLES11-SP3-Updates i586 Channel" link
-      And I should see a "sha256:631f37496202385e0cb7ab83c59accf70e21c24f14f5201ac26a42c0ec501bb9" text
-      And I should see a "andromeda-dummy-2.0-1.2-noarch" link
+    When I follow "All" in the left menu
+    When I follow "andromeda-dummy-6789"
+    When I follow "Packages"
+    Then I should see a "SLES11-SP3-Updates x86_64 Channel" link
+    And I should see a "SLES11-SP3-Updates i586 Channel" link
+    And I should see a "sha256:631f37496202385e0cb7ab83c59accf70e21c24f14f5201ac26a42c0ec501bb9" text
+    And I should see a "andromeda-dummy-2.0-1.2-noarch" link
 
   Scenario: check relevant errata for this client
     Given I am on the Systems overview page of this client
-     When I follow "Software" in the content area
-     When I follow "Errata" in the content area
-     Then I should see a "Relevant Errata" text
-      And I should see a "Test update for virgo-dummy" text
+    When I follow "Software" in the content area
+    When I follow "Errata" in the content area
+    Then I should see a "Relevant Errata" text
+    And I should see a "Test update for virgo-dummy" text
 
   Scenario: regenerate search index for later tests
     Given I am root
-     Then I clean the search index on the server
-
+    Then I clean the search index on the server
