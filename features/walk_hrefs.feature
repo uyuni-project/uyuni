@@ -1,7 +1,6 @@
-# Copyright (c) 2010-2011 Novell, Inc.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# features/walk_hrefs.feature
 @big
 Feature: All HREFs are accessible
   In Order to verify that there are no broken links
