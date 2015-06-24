@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 SUSE Linux Products GmbH.
+# Copyright (c) 2015 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Test XML-RPC "api" namespace.
@@ -10,4 +10,3 @@ Feature: Test XML-RPC "api" namespace.
     When I call getApiNamespaces, I should get 46 namespaces
     When I call getApiNamespaceCallList, I should get 660 available api calls
     When I call getApiCallList, I should get 46 available groups
-
