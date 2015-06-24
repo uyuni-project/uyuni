@@ -155,6 +155,8 @@ Requires: postgresql91-contrib
 Requires: postgresql91-pltcl
 %endif
 Requires: postgresql91
+Conflicts: postgresql94
+Conflicts: postgresql94-server
 Requires: pgtune
 
 %description postgresql
