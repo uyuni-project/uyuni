@@ -51,7 +51,7 @@ Requires: google-gson >= 2.2.4
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
 Requires: jakarta-taglibs-standard
-Requires: java >= 1.7.0
+Requires: java-ibm >= 1.8.0
 Requires: jcommon
 Requires: jdom
 Requires: jta
