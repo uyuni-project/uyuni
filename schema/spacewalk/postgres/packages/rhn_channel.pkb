@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 4cf7d71c4e1692992398af3ff508dd288eecb99e
+-- oracle equivalent source sha1 1420645b641fb8adcb675005f73f54bd93dc172a
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -8,10 +8,10 @@
 -- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
+--
 -- Red Hat trademarks are not licensed under GPLv2. No permission is
 -- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
+-- in this software or its documentation.
 --
 --
 --
@@ -80,10 +80,10 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         SELECT parent_channel INTO channel_parent_val FROM rhnChannel WHERE id = channel_id_in;
 
         IF channel_parent_val IS NOT NULL
-        THEN    
+        THEN
             -- child channel; if attempting to cross-subscribe a child to the wrong base, silently ignore
             parent_subscribed := rhn_channel.check_server_subscription(server_id_in, channel_parent_val);
-        
+
             IF NOT parent_subscribed
             THEN
                 RETURN;
@@ -91,7 +91,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         ELSE
             -- base channel
             server_has_base_chan := rhn_channel.server_base_subscriptions(server_id_in);
-            
+
             IF server_has_base_chan
             THEN
                 perform rhn_exception.raise_exception('channel_server_one_base');
@@ -99,12 +99,12 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         END IF;
 
         server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
-    
+
         IF server_already_in_chan
         THEN
             RETURN;
         END IF;
-        
+
         channel_family_id_val := rhn_channel.family_for_channel(channel_id_in);
         IF channel_family_id_val IS NULL
         THEN
@@ -119,7 +119,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           INTO server_org_id_val
           FROM rhnChannel
          WHERE id = channel_id_in;
-         
+
         begin
             perform rhn_channel.obtain_read_lock(channel_family_id_val, server_org_id_val);
         exception
@@ -129,8 +129,8 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
         available_subscriptions := rhn_channel.available_family_subscriptions(channel_family_id_val, server_org_id_val);
         available_fve_subs := rhn_channel.available_fve_family_subs(channel_family_id_val, server_org_id_val);
-        
-        IF available_subscriptions IS NULL OR 
+
+        IF available_subscriptions IS NULL OR
            available_subscriptions > 0 or
            rhn_channel.can_server_consume_virt_channl(server_id_in, channel_family_id_val) = 1 OR
            (available_fve_subs > 0 AND rhn_channel.can_server_consume_fve(server_id_in) = 1) OR
@@ -159,7 +159,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         ELSE
             perform rhn_exception.raise_exception('channel_family_no_subscriptions');
         END IF;
-            
+
     END$$ language plpgsql;
 
 
@@ -235,7 +235,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         END IF;
 
     END$$ language plpgsql;
-    
+
     create or replace function can_server_consume_virt_channl(
         server_id_in in numeric,
         family_id_in in numeric )
@@ -249,7 +249,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                 rhnSGTypeVirtSubLevel sgtvsl,
                 rhnVirtualInstance vi
             where
-                vi.virtual_system_id = server_id_in 
+                vi.virtual_system_id = server_id_in
                 and sgtvsl.virt_sub_level_id = cfvsl.virt_sub_level_id
                 and cfvsl.channel_family_id = family_id_in
                 and exists (
@@ -310,7 +310,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     begin
         for s in server_cursor loop
             for channel in base_channel_cursor(s.release,
-                s.server_arch_id, s.org_id) 
+                s.server_arch_id, s.org_id)
             loop
                 return channel.id;
             end loop;
@@ -338,7 +338,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     end$$ language plpgsql;
 
     --
-    -- Raises: 
+    -- Raises:
     --   server_arch_not_found
     --   no_subscribe_permissions
     create or replace function base_channel_for_release_arch(
@@ -427,11 +427,11 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             if channel_subscribable = 1 then
                 return c.id;
             end if;
-                
+
             -- Base channel exists, but is not subscribable; keep trying
             denied_channel_id := c.id;
         end loop;
-        
+
         if denied_channel_id is not null then
             perform rhn_exception.raise_exception('no_subscribe_permissions');
         end if;
@@ -466,7 +466,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     declare
         channel_family_id_val   NUMERIC;
         server_org_id_val       NUMERIC;
-        available_subscriptions NUMERIC; 
+        available_subscriptions NUMERIC;
         server_already_in_chan  BOOLEAN;
         channel_family_is_proxy cursor(channel_family_id_in numeric) for
                 select  1
@@ -500,15 +500,15 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                 perform rhn_exception.raise_exception('channel_unsubscribe_child_exists');
             end if;
         END LOOP;
-        
+
         server_already_in_chan := rhn_channel.check_server_subscription(server_id_in, channel_id_in);
-    
+
         IF NOT server_already_in_chan
         THEN
             RETURN;
         END IF;
-        
-   if deleting_server = 0 then 
+
+   if deleting_server = 0 then
       insert into rhnServerHistory (id,server_id,summary,details) (
           select  nextval('rhn_event_id_seq'),
                 server_id_in,
@@ -518,10 +518,10 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           where   c.id = channel_id_in
       );
    end if;
-        
+
    DELETE FROM rhnServerChannel WHERE server_id = server_id_in AND channel_id = channel_id_in;
 
-   if deleting_server = 0 then 
+   if deleting_server = 0 then
         perform queue_server(server_id_in, immediate_in);
 
         update rhnServer
@@ -561,7 +561,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         IF NOT FOUND THEN
           RETURN NULL;
         END IF;
-         
+
         RETURN channel_family_id_val;
     END$$ language plpgsql;
 
@@ -621,22 +621,22 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
         -- not found: either the channel fam doesn't have an entry in cfp, or the org doesn't have access to it.
         -- either way, there are no available subscriptions
-        
+
         IF found IS NULL
         THEN
             RETURN 0;
         END IF;
 
-        -- null max members?  in that case, pass it on; NULL means infinite                     
+        -- null max members?  in that case, pass it on; NULL means infinite
         IF fve_max_members_val IS NULL
         THEN
             RETURN NULL;
         END IF;
 
-        -- otherwise, return the delta  
+        -- otherwise, return the delta
         RETURN fve_max_members_val - fve_current_members_val;
     END$$ language plpgsql;
-    
+
     -- *******************************************************************
     -- FUNCTION: channel_family_current_members
     -- Calculates and returns the actual count of systems consuming
@@ -659,7 +659,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         return current_members_count;
     end$$ language plpgsql;
 
-    CREATE OR REPLACE FUNCTION available_chan_subscriptions(channel_id_in IN NUMERIC, 
+    CREATE OR REPLACE FUNCTION available_chan_subscriptions(channel_id_in IN NUMERIC,
                                           org_id_in IN NUMERIC)
     RETURNS NUMERIC
     AS $$
@@ -669,7 +669,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         SELECT channel_family_id INTO STRICT channel_family_id_val
             FROM rhnChannelFamilyMembers
             WHERE channel_id = channel_id_in;
-         
+
             RETURN rhn_channel.available_family_subscriptions(
                            channel_family_id_val, org_id_in);
     END$$ language plpgsql;
@@ -689,7 +689,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                            channel_family_id_val, org_id_in);
     END$$ language plpgsql;
 
-    create or replace function unsubscribe_server_from_family(server_id_in in numeric, 
+    create or replace function unsubscribe_server_from_family(server_id_in in numeric,
                                              channel_family_id_in in numeric)
     returns void
     as $$
@@ -712,10 +712,10 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         select org_id into strict org_id_out
             from rhnChannel
             where id = channel_id_in;
-         
+
             return org_id_out;
     end$$ language plpgsql;
-    
+
     create or replace function get_cfam_org_access(cfam_id_in in numeric, org_id_in in numeric)
     returns numeric
     as $$
@@ -735,7 +735,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     returns integer
     as $$
     begin
-        -- the idea: if we get past this query, 
+        -- the idea: if we get past this query,
         -- the org has access to the channel, else not
         if exists(
         select 1
@@ -751,11 +751,11 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
           return 0;
         end if;
     end$$ language plpgsql;
-    
+
     -- check if a user has a given role, or if such a role is inferrable
     -- returns NULL if OK, error message otherwise
-    create or replace function user_role_check_debug(channel_id_in in numeric, 
-                                   user_id_in in numeric, 
+    create or replace function user_role_check_debug(channel_id_in in numeric,
+                                   user_id_in in numeric,
                                    role_in in varchar)
     returns varchar
     as $$
@@ -769,41 +769,41 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
            rhn_channel.shared_user_role_check(channel_id_in, user_id_in, role_in) = 1 then
             return NULL;
         end if;
-        
-        if role_in = 'manage' and 
+
+        if role_in = 'manage' and
            COALESCE(rhn_channel.get_org_id(channel_id_in), -1) <> org_id then
                return 'channel_not_owned';
         end if;
-        
-        if role_in = 'subscribe' and 
+
+        if role_in = 'subscribe' and
            rhn_channel.get_org_access(channel_id_in, org_id) = 0 then
                 return 'channel_not_available';
         end if;
-        
+
         -- channel admins have all roles
         if rhn_user.check_role_implied(user_id_in, 'channel_admin') = 1 then
             return NULL;
         end if;
 
-        -- the subscribe permission is inferred 
+        -- the subscribe permission is inferred
         -- UNLESS the not_globally_subscribable flag is set
         if role_in = 'subscribe'
         then
-            if rhn_channel.org_channel_setting(channel_id_in, 
+            if rhn_channel.org_channel_setting(channel_id_in,
                        org_id,
                        'not_globally_subscribable') = 0 then
                 return NULL;
             end if;
         end if;
-        
-        -- all other roles (manage right now) are explicitly granted    
+
+        -- all other roles (manage right now) are explicitly granted
         if rhn_channel.direct_user_role_check(channel_id_in,
                                               user_id_in, role_in) = 1 then
             return NULL;
         end if;
         return 'direct_permission';
     end$$ language plpgsql;
-    
+
     -- same as above, but with 1/0 output; useful in views, etc
     create or replace function user_role_check(channel_id_in in numeric, user_id_in in numeric, role_in in varchar)
     returns numeric
@@ -851,7 +851,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         end if;
         return rhn_channel.user_role_check(channel_id_in, user_id_in, role_in);
     end$$ language plpgsql;
-    
+
     -- directly checks the table, no inferred permissions
     create or replace function direct_user_role_check(channel_id_in in numeric, user_id_in in numeric, role_in in varchar)
     returns numeric
@@ -871,10 +871,10 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       if not found then
         return 0;
       end if;
-           
+
       return 1;
     end$$ language plpgsql;
-    
+
     -- check if an org has a certain setting
     create or replace function org_channel_setting(channel_id_in in numeric, org_id_in in numeric, setting_in in varchar)
     returns numeric
@@ -897,8 +897,8 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
       return 1;
     end$$ language plpgsql;
-    
-    CREATE OR REPLACE FUNCTION channel_priority(channel_id_in IN numeric) 
+
+    CREATE OR REPLACE FUNCTION channel_priority(channel_id_in IN numeric)
     RETURNS numeric
     AS $$
     declare
@@ -942,7 +942,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
               when (channel_name like '%Desktop%' and channel_name not like '%Extras%') then 20
               when channel_name like '%Extras%' then 10
               else 0
-            end; 
+            end;
 
           priority := priority +
             case
@@ -963,7 +963,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             if channel_name not like '%Beta%' then
                priority := priority + 50;
             end if;
- 
+
           priority := priority +
             case
               when channel_name like '%v. 4%' then 40
@@ -972,7 +972,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
               when channel_name like '%v. 1%' then 10
               else 0
             end;
-            
+
           priority := priority +
             case
               when channel_name like '%32-bit x86%' then 4
@@ -980,13 +980,13 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
               when channel_name like '%64-bit AMD64/Intel EM64T%' then 2
               else 0
             end;
-         
+
         elsif org_id_val is not null then
           priority := 600;
         else
           priority := 500;
         end if;
-      
+
       return -priority;
 
     end$$ language plpgsql;
@@ -1023,7 +1023,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                         -- system's host has a virt ent
                         and sev.label in ('virtualization_host',
                                           'virtualization_host_platform')
-                        and sev.server_group_type_id = 
+                        and sev.server_group_type_id =
                             sgtvsl.server_group_type_id
                         -- the host's virt ent grants a cf virt sub level
                         and sgtvsl.virt_sub_level_id = cfvsl.virt_sub_level_id
@@ -1064,7 +1064,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
          where id = channel_id_in;
     end$$ language plpgsql;
 
-   create or replace function update_channel ( channel_id_in in numeric, invalidate_ss in numeric default 0, 
+   create or replace function update_channel ( channel_id_in in numeric, invalidate_ss in numeric default 0,
                               date_to_use in timestamptz default current_timestamp ) returns void
    as $$
    declare
@@ -1082,7 +1082,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       into channel_last_modified
       from rhnChannel
       where id = channel_id_in;
-  
+
       last_modified_value := date_to_use;
 
       if last_modified_value <= channel_last_modified then
@@ -1092,7 +1092,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       update rhnChannel set last_modified = last_modified_value
       where id = channel_id_in;
 
-      if invalidate_ss = 1 then 
+      if invalidate_ss = 1 then
         for snapshot in snapshots loop
             update rhnSnapshot
             set invalid = lookup_snapshot_invalid_reason('channel_modified')
@@ -1119,7 +1119,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
       end loop;
    end$$ language plpgsql;
 
-   
+
    create or replace function update_channels_by_errata ( errata_id_in numeric, date_to_use in timestamptz default current_timestamp ) returns void
    as $$
    declare
@@ -1176,8 +1176,8 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         values (sequence_nextval('rhn_channelcomps_id_seq'), channel_id_in, path_in, to_timestamp(timestamp_in, 'YYYYMMDDHH24MISS'), current_timestamp, current_timestamp);
     end$$ language plpgsql;
 
-CREATE OR REPLACE FUNCTION server_has_family_subscription(server_id_in DECIMAL, 
-                                                          channel_family_id_in DECIMAL) 
+CREATE OR REPLACE FUNCTION server_has_family_subscription(server_id_in DECIMAL,
+                                                          channel_family_id_in DECIMAL)
           RETURNS INTEGER AS $$
   DECLARE
     fam_entry RECORD;
