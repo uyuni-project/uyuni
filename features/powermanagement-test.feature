@@ -49,6 +49,7 @@ Feature: Test Powermanagement
   Scenario: check powermanagement in SSM
     Given I am on the Systems page
     When I check this client
+    And I wait for "15" seconds
     And I follow "System Set Manager" in the left menu
     Then I should see a "Configure power management" link in the content area
     And I should see a "power management operations" link in the content area
