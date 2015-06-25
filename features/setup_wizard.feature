@@ -23,20 +23,18 @@ Feature: I want to verify the Setup Wizard
   Scenario: I want to test the products page
     Given I am on the Admin page
     And I follow "Admin" in the tab bar
+    And I refresh scc
     And I follow "SUSE Products" in the content area
     # HACK: this should not be needed at all, but Capybara 2.1.0/WebDriver loses browser
     # connection if next requests arrive concurrently with the AJAX request. Might be removed
     # in future versions
-    And I wait for "120" seconds
     And I click on "Close"
     And I should see a "Available Products Below" text
     And I should see a "Architecture" text
     And I should see a "Channels" text
     And I should see a "Status" text
-    And I wait for "30" seconds
     And I should not see a "WebYaST 1.3" text
     And I select "SUSE Linux Enterprise Server 12" as a product for the "x86_64" architecture
-    And I wait for "30" seconds
     And I should see a "Legacy Module 12" text
     And I select "Legacy Module 12" as a product for the "x86_64" architecture
     And I click the Add Product button
