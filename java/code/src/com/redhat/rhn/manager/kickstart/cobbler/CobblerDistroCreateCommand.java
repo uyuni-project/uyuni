@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.log4j.Logger;
-import org.cobbler.Distro;
 
 import java.util.List;
 
@@ -75,22 +74,15 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
     public ValidatorError store() {
         log.debug("Token : [" + xmlRpcToken + "]");
 
-        Distro distro = CobblerDistroHelper.getInstance().createDistroFromTree(
+        CobblerDistroHelper.getInstance().createDistroFromTree(
                 CobblerXMLRPCHelper.getConnection(user),
-                this.tree);
-
-        // todo this will be removed in follow-up cleanup
-        String archName = CobblerDistroHelper.getInstance().getAdjustedArchName(tree);
-        distro.setArch(archName);
-        distro.save();
+                tree);
         invokeCobblerUpdate();
 
         if (tree.doesParaVirt()) {
-            Distro xenDistro = CobblerDistroHelper.getInstance().createXenDistroFromTree(
+            CobblerDistroHelper.getInstance().createXenDistroFromTree(
                     CobblerXMLRPCHelper.getConnection(user),
                     tree);
-            xenDistro.setArch(archName); // todo this will be removed in follow-up cleanup
-            xenDistro.save();
         }
 
         if (syncProfiles) {

@@ -94,9 +94,7 @@ public class CobblerDistroHelper {
      */
      public void updateDistroFromTree(Distro distro, KickstartableTree tree) {
         Map<String, String> ksmeta = createKsMetadataFromTree(tree);
-        String archName = getAdjustedArchName(tree);
 
-        distro.setArch(archName);
         distro.setInitrd(tree.getInitrdPath());
         distro.setKernel(tree.getKernelPath());
         distro.setBreed(tree.getInstallType().getCobblerBreed());
@@ -114,9 +112,7 @@ public class CobblerDistroHelper {
      */
     public void updateXenDistroFromTree(Distro distro, KickstartableTree tree) {
         Map<String, String> ksmeta = createKsMetadataFromTree(tree);
-        String archName = getAdjustedArchName(tree);
 
-        distro.setArch(archName);
         distro.setKernel(tree.getKernelXenPath());
         distro.setInitrd(tree.getInitrdXenPath());
         distro.setBreed(tree.getInstallType().getCobblerBreed());
@@ -142,18 +138,5 @@ public class CobblerDistroHelper {
         }
 
         return ksmeta;
-    }
-
-    /**
-     * todo: this is redundant and will be removed in a follow up patch
-     * @param tree tree
-     * @return archName
-     */
-    public String getAdjustedArchName(KickstartableTree tree) {
-        String archName = tree.getChannel().getChannelArch().getName();
-        if (archName.equals("IA-32")) {
-            archName = "i386";
-        }
-        return archName;
     }
 }
