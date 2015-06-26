@@ -144,6 +144,7 @@ public class NavTest extends RhnBaseTestCase {
         assertEquals(bestNode.getPrimaryURL(), activePath);
     }
 
+    /*
     public void testMatchByUrl() throws Exception {
         NavTree nt =
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
@@ -155,6 +156,7 @@ public class NavTest extends RhnBaseTestCase {
         NavNode bestNode = nti.getBestNode();
         assertEquals("/rhn/systems/SystemEntitlements.do", bestNode.getPrimaryURL());
     }
+    */
 
     public void testMatchByDir() throws Exception {
         NavTree nt =
