@@ -59,7 +59,6 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.MultiOrgEntitlementsDto;
 import com.redhat.rhn.frontend.dto.OrgChannelFamily;
-import com.redhat.rhn.frontend.dto.OrgSoftwareEntitlementDto;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.PackageOverview;
