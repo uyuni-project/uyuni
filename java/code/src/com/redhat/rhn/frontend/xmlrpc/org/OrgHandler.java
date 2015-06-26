@@ -56,7 +56,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.org.CreateOrgCommand;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.org.OrgManager;
-import com.redhat.rhn.manager.org.UpdateOrgSoftwareEntitlementsCommand;
 import com.redhat.rhn.manager.org.UpdateOrgSystemEntitlementsCommand;
 
 import org.apache.commons.lang.StringUtils;
