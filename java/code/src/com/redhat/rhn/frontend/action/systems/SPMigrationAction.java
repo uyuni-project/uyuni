@@ -293,16 +293,7 @@ public class SPMigrationAction extends RhnAction {
             ChildChannelDto childChannel = new ChildChannelDto(child.getId(),
                     child.getName(),
                     s.isSubscribed(child),
-                    ChannelManager.isChannelFreeForSubscription(s.getId(), child),
                     child.isSubscribable(user.getOrg(), s));
-
-            childChannel.setAvailableSubscriptions(
-                    ChannelManager.getAvailableEntitlements(
-                    user.getOrg(), child));
-
-            childChannel.setAvailableFveSubscriptions(
-                    ChannelManager.getAvailableFveEntitlements(
-                    user.getOrg(), child));
 
             // Mark required channels as mandatory
             childChannel.setMandatory(requiredChannels.contains(childChannel.getId()));
