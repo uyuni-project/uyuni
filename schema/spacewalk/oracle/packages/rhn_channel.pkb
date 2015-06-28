@@ -1068,24 +1068,6 @@ IS
         values (sequence_nextval('rhn_channelcomps_id_seq'), channel_id_in, path_in, to_date(timestamp_in, 'YYYYMMDDHH24MISS'), current_timestamp, current_timestamp);
     end set_comps;
 
-   -- return true if the given server has a subs to a channel of channel_family_id_in
-   FUNCTION server_has_family_subscription(server_id_in IN NUMBER, channel_family_id_in IN NUMBER)
-   RETURN NUMBER
-   IS
-      CURSOR fam_entries IS
-         SELECT DISTINCT cfm.channel_family_id
-           FROM rhnchannelfamilymembers cfm
-           JOIN rhnserverchannel sc on sc.channel_id = cfm.channel_id
-          WHERE sc.server_id =  server_id_in
-            AND cfm.channel_family_id = channel_family_id_in;
-      fam_count NUMBER;
-   BEGIN
-      FOR fam_entry IN fam_entries LOOP
-         RETURN 1;
-      END LOOP;
-      RETURN 0;
-   END server_has_family_subscription;
-
 END rhn_channel;
 /
 SHOW ERRORS
