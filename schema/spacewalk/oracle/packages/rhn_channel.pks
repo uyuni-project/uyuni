@@ -134,8 +134,6 @@ IS
 
     procedure set_comps(channel_id_in in number, path_in in varchar2, timestamp_in in varchar2);
 
-    FUNCTION server_has_family_subscription(server_id_in IN NUMBER, channel_family_id_in IN NUMBER) RETURN NUMBER;
-
 END rhn_channel;
 /
 SHOW ERRORS

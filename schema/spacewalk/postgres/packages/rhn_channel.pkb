@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 990c92017bb683d46f92e6f816e812f6c1ea0190
+-- oracle equivalent source sha1 6957566ee3aa828959caf2f366b878dfe4d1abb8
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -1084,25 +1084,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         insert into rhnChannelComps (id, channel_id, relative_filename, last_modified, created, modified)
         values (sequence_nextval('rhn_channelcomps_id_seq'), channel_id_in, path_in, to_timestamp(timestamp_in, 'YYYYMMDDHH24MISS'), current_timestamp, current_timestamp);
     end$$ language plpgsql;
-
-CREATE OR REPLACE FUNCTION server_has_family_subscription(server_id_in DECIMAL,
-                                                          channel_family_id_in DECIMAL)
-          RETURNS INTEGER AS $$
-  DECLARE
-    fam_entry RECORD;
-
-  BEGIN
-    FOR fam_entry IN SELECT DISTINCT cfm.channel_family_id
-                       FROM rhnchannelfamilymembers AS cfm
-                       JOIN rhnserverchannel AS sc ON sc.channel_id = cfm.channel_id
-                      WHERE sc.server_id = server_id_in
-                        AND cfm.channel_family_id = channel_family_id_in
-    LOOP
-      return 1;
-    END LOOP;
-    RETURN 0;
-  END;
-$$ LANGUAGE plpgsql;
 
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_channel')+1) ) where name = 'search_path';
