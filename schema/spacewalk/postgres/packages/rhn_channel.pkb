@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 bf0f0da67b5cbb2ed5c6b63feffdab8a064d7f50
+-- oracle equivalent source sha1 987b959621257954c08bbc214cf39465b35619b3
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -466,41 +466,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         RETURN max_members_val - current_members_val;
     END$$ language plpgsql;
 
-    CREATE OR REPLACE FUNCTION available_fve_family_subs(channel_family_id_in IN NUMERIC, org_id_in IN NUMERIC)
-    RETURNS NUMERIC
-    AS $$
-    declare
-        cfp record;
-        fve_current_members_val NUMERIC;
-        fve_max_members_val     NUMERIC;
-        found               NUMERIC;
-    BEGIN
-        for cfp in SELECT * FROM rhnOrgChannelFamilyPermissions
-	    WHERE channel_family_id = channel_family_id_in
-	      AND org_id = org_id_in
-        LOOP
-            found := 1;
-            fve_current_members_val := cfp.fve_current_members;
-            fve_max_members_val := cfp.fve_max_members;
-        END LOOP;
-
-        -- not found: either the channel fam doesn't have an entry in cfp, or the org doesn't have access to it.
-        -- either way, there are no available subscriptions
-
-        IF found IS NULL
-        THEN
-            RETURN 0;
-        END IF;
-
-        -- null max members?  in that case, pass it on; NULL means infinite
-        IF fve_max_members_val IS NULL
-        THEN
-            RETURN NULL;
-        END IF;
-
-        -- otherwise, return the delta
-        RETURN fve_max_members_val - fve_current_members_val;
-    END$$ language plpgsql;
 
     -- *******************************************************************
     -- FUNCTION: channel_family_current_members
