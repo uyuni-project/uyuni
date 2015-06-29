@@ -130,7 +130,6 @@ class SuseSubscriptionsImport(GenericPackageImport):
                 self._sub_data.append(item)
 
     def fix(self):
-        self.backend.calcSubMaxMembers(self._sub_data)
         self.backend.calcEntMaxMembers(self._ent_data)
 
     def submit(self):

@@ -1496,40 +1496,24 @@ class Backend:
         insert_pcf = self.dbmodule.prepare("""
             INSERT INTO rhnPrivateChannelFamily
                    (channel_family_id, org_id, max_members)
-            VALUES (:cfid, :org_id, :max_members)
+            VALUES (:cfid, :org_id, 0)
             """)
-        update_pcf = self.dbmodule.prepare("""
-            UPDATE rhnPrivateChannelFamily
-               SET max_members = :max_members
-             WHERE channel_family_id = :cfid
-               AND org_id = :org_id
-             """)
         _query_pcf = self.dbmodule.prepare("""
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
             """)
         _query_pcf.execute()
         existing_data = map(lambda x: "%s-%s" % (x['channel_family_id'], x['org_id']), _query_pcf.fetchall_dict() or [])
-        toinsert = [[], [], []]
-        toupdate = [[], [], []]
+        toinsert = [[], []]
         for item in batch:
             ident = "%s-%s" % (item['channel_family_id'], item['org_id'])
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['max_members'])
-                toupdate[1].append(item['channel_family_id'])
-                toupdate[2].append(item['org_id'])
                 continue
             toinsert[0].append(item['channel_family_id'])
             toinsert[1].append(item['org_id'])
-            toinsert[2].append(item['max_members'])
         if toinsert[0]:
             insert_pcf.executemany(cfid=toinsert[0],
-                                   org_id=toinsert[1],
-                                   max_members=toinsert[2])
-        if toupdate[0]:
-            update_pcf.executemany(max_members=toupdate[0],
-                                   cfid=toupdate[1],
-                                   org_id=toupdate[2])
+                                   org_id=toinsert[1])
 
     def processSuseEntitlements(self, batch):
         """Check if the System Entitlements are already in DB.
@@ -1573,27 +1557,6 @@ class Backend:
         for item in (sql.fetchall_dict() or []):
             result[item['label']] = item['id']
         return result
-
-    def calcSubMaxMembers(self, subs):
-        """SUM max_members of org_id > 1 and set
-           new max_members = max_members - SUM(max_members of org > 1)
-        """
-        _query = self.dbmodule.prepare("""
-            SELECT pcf.channel_family_id, SUM(pcf.max_members) AS giveaway
-              FROM rhnPrivateChannelFamily pcf
-             WHERE pcf.org_id > 1
-          GROUP BY pcf.channel_family_id
-        """)
-        _query.execute()
-        existing_counts = {}
-        for entry in (_query.fetchall_dict() or []):
-            existing_counts[entry['channel_family_id']] = 0
-            if entry['giveaway'] and int(entry['giveaway']) > 0:
-                existing_counts[entry['channel_family_id']] = int(entry['giveaway'])
-
-        for item in subs:
-            if item['channel_family_id'] in existing_counts:
-                item['max_members'] = item['max_members'] - existing_counts[item['channel_family_id']]
 
     def calcEntMaxMembers(self, ents):
         """SUM max_members of org_id > 1 and set
