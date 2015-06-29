@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 064b9555ee2bf3bda434ea1374bbbc92eee3c446
+-- oracle equivalent source sha1 4934d12479dce12ad16665cd9373b7be8376c9b3
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -429,28 +429,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
         RETURN channel_family_id_val;
     END$$ language plpgsql;
-
-    -- *******************************************************************
-    -- FUNCTION: channel_family_current_members
-    -- Calculates and returns the actual count of systems consuming
-    --   physical channel subscriptions.
-    -- Called by:
-    --            rhn_entitlements.repoll_virt_guest_entitlements
-    -- *******************************************************************
-    create or replace function channel_family_current_members(channel_family_id_in IN NUMERIC,
-                                            org_id_in IN NUMERIC)
-    returns numeric
-    as $$
-    declare
-        current_members_count numeric := 0;
-    begin
-        select  count(distinct server_id)
-        into    current_members_count
-          from  rhnChannelFamilyServerPhysical cfsp
-         where  cfsp.channel_family_id = channel_family_id_in
-           and  cfsp.customer_id = org_id_in;
-        return current_members_count;
-    end$$ language plpgsql;
 
     create or replace function unsubscribe_server_from_family(server_id_in in numeric,
                                              channel_family_id_in in numeric)
