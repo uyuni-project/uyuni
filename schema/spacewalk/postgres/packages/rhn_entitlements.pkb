@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 58c1f8ed0e734433108e8e69c3aee2784fd0aa3d
+-- oracle equivalent source sha1 f6b510004b6eaebeb423228c1c738cdc2bb761f5
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -1208,7 +1208,7 @@ as $$
             if channel_id is not null then
                 begin
                     perform rhn_channel.subscribe_server(server.id, channel_id);
-                -- exception is really channel_family_no_subscriptions
+                -- exception is really channel_subscribe_no_family
                 exception
                     when others then
                         null;

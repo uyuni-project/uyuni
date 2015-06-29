@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 4934d12479dce12ad16665cd9373b7be8376c9b3
+-- oracle equivalent source sha1 6c89984c513e889bdbd6987b758c7f8453478037
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -124,7 +124,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             perform rhn_channel.obtain_read_lock(channel_family_id_val, server_org_id_val);
         exception
             when no_data_found then
-                perform rhn_exception.raise_exception('channel_family_no_subscriptions');
+                perform rhn_exception.raise_exception('channel_subscribe_no_family');
         end;
 
         insert into rhnServerHistory (id,server_id,summary,details) (
