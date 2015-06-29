@@ -371,35 +371,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateChannelSubscriptions(List)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testUpdateChannelSubscriptions() throws Exception {
-        // Start with no subscribed product classes
-        List<String> productClasses = new ArrayList<String>();
-
-        // Update channel subscriptions
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannelSubscriptions(productClasses);
-
-        // Check reset to 0
-        User admin = UserTestUtils.createUserInOrgOne();
-        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                admin, "SMS");
-        ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, 0L);
-
-        // Add subscription for a product class
-        productClasses.add("SMS");
-
-        // Update subscriptions and check max_members = 200000
-        csm.updateChannelSubscriptions(productClasses);
-        cf = ChannelFamilyFactory.lookupByLabel("SMS", null);
-        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
-            assertEquals(new Long(MANY_MEMBERS), pcf.getMaxMembers());
-        }
-    }
-
-    /**
      * Test for {@link ContentSyncManager#getAvailableChannels}.
      * @throws Exception if anything goes wrong
      */
@@ -529,8 +500,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, family.getPrivateChannelFamilies().size());
             for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
                 assertEquals(new Long(1), pcf.getOrg().getId());
-                assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
-                        (long) pcf.getMaxMembers());
             }
         }
     }
@@ -565,8 +534,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, family.getPrivateChannelFamilies().size());
             for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
                 assertEquals(new Long(1), pcf.getOrg().getId());
-                assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
-                        (long) pcf.getMaxMembers());
             }
         }
     }
@@ -810,42 +777,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             if (product.getId().equals(availableDBProduct.getProductId())) {
                 assertEquals(MgrSyncStatus.AVAILABLE, product.getStatus());
             }
-        }
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#addChannel} checking failure because
-     * of missing subscriptions.
-     * @throws Exception if anything goes wrong
-     */
-    public void testAddChannelNoSubscriptions() throws Exception {
-        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(channelsXML);
-        try {
-            // Reset all channel subscriptions
-            List<String> productClasses = new ArrayList<String>();
-            csm.updateChannelSubscriptions(productClasses);
-            HibernateFactory.getSession().flush();
-
-            // Manually create SCC repository to match against
-            SCCRepository repo = new SCCRepository();
-            repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
-            SCCCachingFactory.saveRepository(repo);
-
-            // Add the channel by label and check the exception message
-            String label = "sles11-sp3-pool-x86_64";
-            try {
-                csm.addChannel(label, null);
-                fail("Missing subscriptions should make addChannel() fail!");
-            }
-            catch (ContentSyncException e) {
-                String message = "Channel is unknown: " + label;
-                assertEquals(message, e.getMessage());
-            }
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
         }
     }
 

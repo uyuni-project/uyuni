@@ -813,52 +813,6 @@ public class ContentSyncManager {
     }
 
     /**
-     * Updates max_members for channel subscriptions given a list of product classes.
-     * @param productClasses list of product classes we have a subscription for.
-     */
-    public void updateChannelSubscriptions(List<String> productClasses) {
-        // These are product classes we have a subscription for
-        List<ChannelFamily> allChannelFamilies =
-                ChannelFamilyFactory.getAllChannelFamilies();
-        for (ChannelFamily channelFamily : allChannelFamilies) {
-            Set<PrivateChannelFamily> privateFamilies =
-                    channelFamily.getPrivateChannelFamilies();
-
-            // Match with subscribed product classes
-            if (productClasses.contains(channelFamily.getLabel())) {
-                // We have a subscription
-                int sumMaxMembers = 0;
-                PrivateChannelFamily satelliteOrgPrivateChannelFamily = null;
-                for (PrivateChannelFamily pcf : privateFamilies) {
-                    if (pcf.getOrg().equals(OrgFactory.getSatelliteOrg())) {
-                        satelliteOrgPrivateChannelFamily = pcf;
-                    }
-                    else if (pcf.getOrg().getId() > 1) {
-                        sumMaxMembers += pcf.getMaxMembers();
-                    }
-                }
-                if (satelliteOrgPrivateChannelFamily != null) {
-                    if (sumMaxMembers > INFINITE) {
-                        satelliteOrgPrivateChannelFamily.setMaxMembers(0L);
-                    }
-                    else {
-                        satelliteOrgPrivateChannelFamily
-                                .setMaxMembers(INFINITE - sumMaxMembers);
-                    }
-                    ChannelFamilyFactory.save(satelliteOrgPrivateChannelFamily);
-                }
-            }
-            else if (!channelFamily.getLabel().startsWith("private-channel-family")) {
-                // No subscription, reset to 0
-                for (PrivateChannelFamily pcf : privateFamilies) {
-                    pcf.setMaxMembers(0L);
-                    ChannelFamilyFactory.save(pcf);
-                }
-            }
-        }
-    }
-
-    /**
      * Updates max_members for all relevant system entitlements.
      * @param productClasses list of product classes we have a subscription for.
      */
@@ -928,7 +882,6 @@ public class ContentSyncManager {
             throws ContentSyncException {
         ConsolidatedSubscriptions consolidated = consolidateSubscriptions(subscriptions);
         updateSystemEntitlements(consolidated.getSystemEntitlements());
-        updateChannelSubscriptions(consolidated.getChannelSubscriptions());
     }
 
     /**
