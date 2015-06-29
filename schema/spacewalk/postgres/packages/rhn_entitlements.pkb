@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 f8ba31a1233b48f5b8e81ea95702efc6837de01f
+-- oracle equivalent source sha1 b1ff72394f332963a54fcfda4a14d8526a8d1748
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -1139,7 +1139,6 @@ language plpgsql;
     -- PROCEDURE: prune_family
     -- Unsubscribes servers consuming physical slots from the channel family
     --   that are over the org's limit.
-    -- Called by: set_family_count
     -- *******************************************************************
     create or replace function prune_family (
         customer_id_in in numeric,
@@ -1197,97 +1196,6 @@ as $$
             perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id, 1, 1, 0);
         end loop;
 
-    end$$
-language plpgsql;
-
-    create or replace function set_family_count (
-        customer_id_in in numeric,      -- customer_id
-        channel_family_id_in in numeric,    -- 246
-        quantity_in in numeric,          -- 3
-        flex_in in numeric
-    ) returns void
-as $$
-    declare
-        privperms cursor for
-            select  1
-            from    rhnPrivateChannelFamily
-            where   org_id = customer_id_in
-                and channel_family_id = channel_family_id_in;
-        pubperms cursor for
-            select  o.id org_id
-            from    web_customer o,
-                    rhnPublicChannelFamily pcf
-            where   pcf.channel_family_id = channel_family_id_in;
-        quantity numeric;
-        done numeric := 0;
-        flex numeric;
-    begin
-        quantity := quantity_in;
-        if quantity is not null and quantity < 0 then
-            quantity := 0;
-        end if;
-        flex := flex_in;
-        if flex is not null and flex < 0 then
-            flex := 0;
-        end if;
-
-        if customer_id_in is not null then
-            for perm in privperms loop
-                perform rhn_entitlements.prune_family(
-                    customer_id_in,
-                    channel_family_id_in,
-                    quantity,
-                    flex
-                );
-
-                if quantity is null and flex is null then
-                    delete from rhnPrivateChannelFamily
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-                 else
-                    update rhnPrivateChannelFamily
-                        set max_members = quantity
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-
-                   update rhnPrivateChannelFamily
-                        set fve_max_members = flex
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-                end if;
-                return;
-            end loop;
-
-            insert into rhnPrivateChannelFamily (
-                    channel_family_id, org_id, max_members, current_members, fve_max_members, fve_current_members
-                ) values (
-                    channel_family_id_in, customer_id_in, quantity, 0, flex, 0 );
-            return;
-        end if;
-
-        for perm in pubperms loop
-            if quantity = 0 then
-                perform rhn_entitlements.prune_family(
-                    perm.org_id,
-                    channel_family_id_in,
-                    quantity,
-                    flex
-                );
-                if done = 0 then
-                    delete from rhnPublicChannelFamily
-                        where channel_family_id = channel_family_id_in;
-                end if;
-            end if;
-            done := 1;
-        end loop;
-        -- if done's not 1, then we don't have any entitlements
-        if done != 1 then
-            insert into rhnPublicChannelFamily (
-                    channel_family_id
-                ) values (
-                    channel_family_id_in
-                );
-        end if;
     end$$
 language plpgsql;
 
