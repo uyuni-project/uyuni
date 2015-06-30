@@ -390,26 +390,47 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
         TestUtils.saveAndFlush(channelFamily2);
 
+        Credentials cred = CredentialsFactory.createSCCCredentials();
+        cred.setUsername("user1");
+        cred.setPassword("pw1");
+        CredentialsFactory.storeCredentials(cred);
+
+        SCCRepository r1 = new SCCRepository();
+        r1.setUrl("http://scc.domain.top/c1?abcdefg");
+        r1.setCredentials(cred);
+        r1.setAutorefresh(false);
+        SCCCachingFactory.saveRepository(r1);
+
+        SCCRepository r2 = new SCCRepository();
+        r2.setUrl("http://scc.domain.top/c2?123456");
+        r2.setCredentials(cred);
+        r2.setAutorefresh(false);
+        SCCCachingFactory.saveRepository(r2);
+
         // Create c1 as a base channel and c2 as a child of it
         XMLChannel c1 = new XMLChannel();
         c1.setFamily(channelFamily1.getLabel());
         String baseChannelLabel = TestUtils.randomString();
         c1.setLabel(baseChannelLabel);
         c1.setParent("BASE");
+        c1.setSourceUrl("http://scc.domain.top/c1");
         XMLChannel c2 = new XMLChannel();
         c2.setFamily(channelFamily1.getLabel());
         c2.setLabel(TestUtils.randomString());
         c2.setParent(baseChannelLabel);
+        c2.setSourceUrl("http://scc.domain.top/c2");
 
         // Create c3 to test no availability
         XMLChannel c3 = new XMLChannel();
         c3.setFamily(channelFamily2.getLabel());
         c3.setLabel(TestUtils.randomString());
+        c3.setSourceUrl("http://scc.domain.top/c3");
 
         // Create c4 with unknown channel family
         XMLChannel c4 = new XMLChannel();
         c4.setFamily(TestUtils.randomString());
         c4.setLabel(TestUtils.randomString());
+        c4.setSourceUrl("http://scc.domain.top/c4");
 
         // Put all channels together to a list
         List<XMLChannel> allChannels = new ArrayList<XMLChannel>();
