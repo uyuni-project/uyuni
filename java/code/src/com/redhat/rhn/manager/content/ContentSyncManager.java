@@ -948,11 +948,11 @@ public class ContentSyncManager {
         // Get all channels from channels.xml and filter
         List<XMLChannel> availableChannels = new ArrayList<XMLChannel>();
 
-        // Filter in all channels where channel families are available
-        List<String> availableChannelFamilies =
-                ChannelFamilyFactory.getAvailableChannelFamilyLabels();
+        List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
+
+        // Filter in all channels which we can mirror
         for (XMLChannel c : allChannels) {
-            if (availableChannelFamilies.contains(c.getFamily())) {
+            if (isMirrorable(c, repositories) != null) {
                 availableChannels.add(c);
             }
         }
