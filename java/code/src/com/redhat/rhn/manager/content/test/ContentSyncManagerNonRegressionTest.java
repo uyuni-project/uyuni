@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
@@ -96,6 +98,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         try {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
+            SCCCachingFactory.clearRepositories();
 
             // ensure all needed channel families have enough entitlements, so
             // that channels are available later
@@ -121,6 +124,15 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             // to be removed when SCC team fixes this
             csm.addDirtyFixes(sccProducts);
 
+            for(SCCProduct p : sccProducts) {
+                List<SCCRepository> repoList = p.getRepositories();
+                if(repoList == null) {
+                    continue;
+                }
+                for(SCCRepository r : repoList) {
+                    SCCCachingFactory.saveRepository(r);
+                }
+            }
             csm.updateSUSEProducts(sccProducts);
             Collection<MgrSyncProductDto> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
