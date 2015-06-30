@@ -113,7 +113,7 @@ def upgrade(serverId, actionId, dry_run=0):
             # channel is already subscribed, ignore it
             pass
         else:
-            raise InvalidAction(str(e)), None, sys.exc_info()[2]
+            raise InvalidAction(str(f)), None, sys.exc_info()[2]
     except Exception, e:
         raise InvalidAction(str(e)), None, sys.exc_info()[2]
 
