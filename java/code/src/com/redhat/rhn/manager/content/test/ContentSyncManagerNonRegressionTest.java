@@ -190,6 +190,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
         if (!failures.isEmpty()) {
             for (String string : failures) {
+                java.lang.System.out.println(string);
                 logger.error(string);
             }
             fail("See log for output");
