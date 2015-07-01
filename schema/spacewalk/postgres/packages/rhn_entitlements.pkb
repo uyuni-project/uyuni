@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 e68779a3342b01da80e042e0829d6af4f1027e60
+-- oracle equivalent source sha1 9d7eede5249b731955fc4861cc290536ef5cc52b
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -78,14 +78,6 @@ as $$
         where group_type is not null
           and org_id = org_id_in;
 
-        channel_subs cursor for
-        select pcf.channel_family_id, pcf.max_members
-        from rhnChannelFamily cf,
-             rhnPrivateChannelFamily pcf
-        where pcf.org_id = org_id_in
-          and pcf.channel_family_id = cf.id
-          and cf.org_id is null;
-
     begin
 
         for system_ent in system_ents loop
@@ -96,17 +88,6 @@ as $$
         end loop;
 
         update rhnServerGroup
-        set max_members = 0
-        where org_id = org_id_in;
-
-        for channel_sub in channel_subs loop
-            update rhnPrivateChannelFamily
-            set max_members = max_members + channel_sub.max_members
-            where org_id = 1
-              and channel_family_id = channel_sub.channel_family_id;
-        end loop;
-
-        update rhnPrivateChannelFamily
         set max_members = 0
         where org_id = org_id_in;
 
