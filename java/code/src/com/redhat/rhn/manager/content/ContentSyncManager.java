@@ -746,10 +746,6 @@ public class ContentSyncManager {
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pcf = new PrivateChannelFamily();
                 pcf.setCreated(new Date());
-                pcf.setCurrentMembers(0L);
-                pcf.setMaxMembers(0L);
-                pcf.setCurrentFlex(0L);
-                pcf.setMaxFlex(0L);
                 // Set the default organization (id = 1)
                 pcf.setOrg(OrgFactory.getSatelliteOrg());
                 // Set INFINITE max_members if default_nodecount = -1
