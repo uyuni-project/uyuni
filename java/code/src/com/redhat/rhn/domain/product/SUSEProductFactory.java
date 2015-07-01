@@ -255,9 +255,9 @@ public class SUSEProductFactory extends HibernateFactory {
         Criteria c = HibernateFactory.getSession()
                 .createCriteria(SUSEProductChannel.class)
                 .add(Restrictions.eq("channelLabel", channelLabel))
-                .createCriteria("channel")
-                .add(Restrictions.eq("id", productId))
-                .setFetchMode("channel", FetchMode.SELECT);
+                .createCriteria("product")
+                .add(Restrictions.eq("productId", productId))
+                .setFetchMode("product", FetchMode.SELECT);
 
         return (SUSEProductChannel) c.uniqueResult();
     }
