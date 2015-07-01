@@ -1495,8 +1495,8 @@ class Backend:
         """
         insert_pcf = self.dbmodule.prepare("""
             INSERT INTO rhnPrivateChannelFamily
-                   (channel_family_id, org_id, max_members)
-            VALUES (:cfid, :org_id, 0)
+                   (channel_family_id, org_id)
+            VALUES (:cfid, :org_id)
             """)
         _query_pcf = self.dbmodule.prepare("""
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
