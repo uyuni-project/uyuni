@@ -232,15 +232,4 @@ public class ChannelFamilyFactory extends HibernateFactory {
         Criteria c = session.createCriteria(ChannelFamily.class);
         return c.list();
     }
-
-    /**
-     * Get the labels of channel families that are "available" in terms of either
-     * max_members is > 0 or fve_max_members is > 0.
-     * @return List of {@link ChannelFamily} objects
-     */
-    @SuppressWarnings("unchecked")
-    public static List<String> getAvailableChannelFamilyLabels() {
-        return singleton.listObjectsByNamedQuery(
-                "ChannelFamily.getAvailableChannelFamilyLabels", null);
-    }
 }

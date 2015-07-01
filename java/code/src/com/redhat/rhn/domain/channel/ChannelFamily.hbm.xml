@@ -56,11 +56,4 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <![CDATA[select name from rhnChannelFamily where label = :label]]>
         </sql-query>
 
-        <sql-query name="ChannelFamily.getAvailableChannelFamilyLabels">
-                <![CDATA[select distinct fam.label
-                           from rhnChannelFamily fam
-                           join rhnprivatechannelfamily priv on fam.id = priv.channel_family_id
-                          where (priv.max_members > 0 or priv.fve_max_members > 0)
-                            and fam.org_id is null]]>
-        </sql-query>
 </hibernate-mapping>
