@@ -77,9 +77,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
-    /** Maximum members for SUSE Manager. */
-    public static final long MANY_MEMBERS = 200000L;
-
     /**
      * Test for {@link ContentSyncManager#updateChannels}.
      * @throws Exception if anything goes wrong
@@ -383,11 +380,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Create channel family with no availability
         ChannelFamily channelFamily2 = ChannelFamilyFactoryTest.createTestChannelFamily();
         channelFamily2.setOrg(null);
-        for (PrivateChannelFamily pcf : channelFamily2.getPrivateChannelFamilies()) {
-            pcf.setMaxMembers(0L);
-            pcf.setMaxFlex(0L);
-            TestUtils.saveAndFlush(pcf);
-        }
         TestUtils.saveAndFlush(channelFamily2);
 
         Credentials cred = CredentialsFactory.createSCCCredentials();
@@ -700,11 +692,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel unavailableDBChannel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily unavailableChannelFamily = unavailableDBChannel.getChannelFamily();
         unavailableChannelFamily.setOrg(null);
-        for (PrivateChannelFamily pcf : unavailableChannelFamily
-                .getPrivateChannelFamilies()) {
-            pcf.setMaxFlex(0L);
-            pcf.setMaxMembers(0L);
-        }
         final SUSEProduct unavailableDBProduct =
                 SUSEProductTestUtils.createTestSUSEProduct(unavailableChannelFamily);
 
@@ -848,7 +835,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             User admin = UserTestUtils.createUserInOrgOne();
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
                     admin, "7261");
-            ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, MANY_MEMBERS);
+            ChannelFamilyTest.ensurePrivateChannelFamilyExists(admin, cf);
             HibernateFactory.getSession().flush();
 
             // Add the channel by label

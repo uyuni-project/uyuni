@@ -106,8 +106,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             for (String label : ENTITLED_LABELS) {
                 ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
                         admin, label);
-                ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf,
-                        ContentSyncManagerTest.MANY_MEMBERS);
+                ChannelFamilyTest.ensurePrivateChannelFamilyExists(admin, cf);
                 HibernateFactory.getSession().flush();
             }
 
