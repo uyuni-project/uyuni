@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 5701365f838ac55aa2a067f398aba82176e307db
+-- oracle equivalent source sha1 9dcb5ff14c3dd87fd3d013490b0db2062bfdde20
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -60,11 +60,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
         server_already_in_chan  BOOLEAN;
         channel_family_id_val   NUMERIC;
         server_org_id_val       NUMERIC;
-        available_subscriptions NUMERIC;
-        available_fve_subs      numeric;
-        consenting_user         NUMERIC;
         allowed                 numeric;
-        is_fve_char             char(1) := 'N';
     BEGIN
         if user_id_in is not null then
             allowed := rhn_channel.user_role_check(channel_id_in, user_id_in, 'subscribe');
@@ -136,7 +132,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             where   c.id = channel_id_in
         );
 
-        INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, is_fve_char);
+        INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, 'N');
 
         perform queue_server(server_id_in, immediate_in);
 
@@ -331,7 +327,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
     declare
         channel_family_id_val   NUMERIC;
         server_org_id_val       NUMERIC;
-        available_subscriptions NUMERIC;
         server_already_in_chan  BOOLEAN;
         channel_family_is_proxy cursor(channel_family_id_in numeric) for
                 select  1
@@ -485,7 +480,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
          where cfp.org_id = org_id_in
            and CFM.channel_family_id = CFP.channel_family_id
            and CFM.channel_id = channel_id_in
-           and (CFP.max_members > 0 or CFP.max_members is null or CFP.fve_max_members > 0 or CFP.fve_max_members is null or CFP.org_id = 1) )
         then
           return 1;
         else
@@ -730,48 +724,6 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
 
       return -priority;
 
-    end$$ language plpgsql;
-
-    -- right now this only does the accounting changes; the cascade
-    -- actually does the rhnServerChannel delete.
-    create or replace function delete_server_channels(server_id_in in numeric) returns void
-    as $$
-    begin
-        update  rhnPrivateChannelFamily
-        set     current_members = current_members -1
-        where   org_id in (
-                        select  org_id
-                        from    rhnServer
-                        where   id = server_id_in
-                )
-                and channel_family_id in (
-                        select  rcfm.channel_family_id
-                        from    rhnChannelFamilyMembers rcfm,
-                                rhnServerChannel rsc
-                        where   rsc.server_id = server_id_in
-                                and rsc.channel_id = rcfm.channel_id
-                and not exists (
-                    select 1
-                    from
-                        rhnChannelFamilyVirtSubLevel cfvsl,
-                        rhnSGTypeVirtSubLevel sgtvsl,
-                        rhnServerEntitlementView sev,
-                        rhnVirtualInstance vi
-                    where
-                        -- system is a virtual instance
-                        vi.virtual_system_id = server_id_in
-                        and vi.host_system_id = sev.server_id
-                        -- system's host has a virt ent
-                        and sev.label in ('virtualization_host',
-                                          'virtualization_host_platform')
-                        and sev.server_group_type_id =
-                            sgtvsl.server_group_type_id
-                        -- the host's virt ent grants a cf virt sub level
-                        and sgtvsl.virt_sub_level_id = cfvsl.virt_sub_level_id
-                        -- the cf is in that virt sub level
-                        and cfvsl.channel_family_id = rcfm.channel_family_id
-                    )
-                );
     end$$ language plpgsql;
 
     -- this could certainly be optimized to do updates if needs be
