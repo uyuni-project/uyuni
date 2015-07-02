@@ -599,6 +599,30 @@ class RepoSyncTest(unittest.TestCase):
 
         self.assertEqual(url['source_url'], "http://foo:secret@example.com/")
 
+    def test_is_old_style(self):
+        """
+        Test for _is_old_suse_style
+        """
+        notice = {'from': 'maint-coord@suse.de',
+                  'version': '1111',
+                  'update_id': 'sles-kernel-default'}
+        self.assertTrue(self.reposync._is_old_suse_style(notice))
+
+        notice = {'from': 'maint-coord@suse.de',
+                  'version': '7',
+                  'update_id': 'res5ct-kernel-default'}
+        self.assertTrue(self.reposync._is_old_suse_style(notice))
+
+        notice = {'from': 'maint-coord@suse.de',
+                  'version': '1',
+                  'update_id': 'sles-kernel-default'}
+        self.assertFalse(self.reposync._is_old_suse_style(notice))
+
+        notice = {'from': 'maint-coord@suse.de',
+                  'version': '6',
+                  'update_id': 'res5ct-kernel-default'}
+        self.assertFalse(self.reposync._is_old_suse_style(notice))
+
     def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
         """Initialize the RepoSync object with some mocked attrs"""
         self.reposync.get_compatible_arches = Mock(
