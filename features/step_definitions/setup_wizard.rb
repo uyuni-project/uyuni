@@ -5,8 +5,7 @@ When /^I make the credentials primary$/ do
 end
 
 When /^I refresh scc$/ do
-  cmd = 'mgr-sync refresh'
-  sshcmd(cmd, ignore_err: true)
+  sshcmd('echo -e "admin\nadmin\n" | mgr-sync refresh', ignore_err: true)
 end
 
 When /^I delete the primary credentials$/ do

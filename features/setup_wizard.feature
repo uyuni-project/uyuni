@@ -28,7 +28,6 @@ Feature: I want to verify the Setup Wizard
     # HACK: this should not be needed at all, but Capybara 2.1.0/WebDriver loses browser
     # connection if next requests arrive concurrently with the AJAX request. Might be removed
     # in future versions
-    And I click on "Close"
     And I should see a "Available Products Below" text
     And I should see a "Architecture" text
     And I should see a "Channels" text
