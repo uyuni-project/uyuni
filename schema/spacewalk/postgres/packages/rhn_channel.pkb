@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 590de34eafe060ae8587da32a3bcbd2e45e6c807
+-- oracle equivalent source sha1 016e5e553621f27e40a1ad38b2541c54e415c631
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -132,7 +132,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
             where   c.id = channel_id_in
         );
 
-        INSERT INTO rhnServerChannel (server_id, channel_id, is_fve) VALUES (server_id_in, channel_id_in, 'N');
+        INSERT INTO rhnServerChannel (server_id, channel_id) VALUES (server_id_in, channel_id_in);
 
         perform queue_server(server_id_in, immediate_in);
 
