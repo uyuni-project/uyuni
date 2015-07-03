@@ -17,6 +17,9 @@
 -- tricky view.  it explodes to a full cartesian product when
 -- not queried via org_id, so DO NOT DO THAT :)
 
+drop view if exists rhnOrgErrata;
+drop view if exists rhnAvailableChannels;
+
 create or replace view
 rhnAvailableChannels
 (
@@ -61,3 +64,21 @@ from
      rhnSharedChannelTreeView CT
 ;
 
+create or replace view
+rhnOrgErrata
+(
+        org_id,
+        errata_id,
+        channel_id
+)
+as
+select
+    ac.org_id,
+    ce.errata_id,
+    ac.channel_id
+from
+    rhnChannelErrata ce,
+    rhnAvailableChannels ac
+where
+    ce.channel_id = ac.channel_id
+;
