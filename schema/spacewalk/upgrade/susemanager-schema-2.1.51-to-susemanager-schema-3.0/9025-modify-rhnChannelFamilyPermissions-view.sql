@@ -16,6 +16,8 @@
 --
 --
 
+drop view rhnChannelFamilyPermissions;
+
 create or replace view rhnChannelFamilyPermissions as
 	select	channel_family_id,
 		to_number(null, null) as org_id,

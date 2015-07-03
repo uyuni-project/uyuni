@@ -16,6 +16,11 @@
 --
 --
 
+drop view rhnOrgErrata;
+drop view rhnAvailableChannels;
+drop view rhnOrgChannelTreeView;
+drop view rhnOrgChannelFamilyPermissions;
+
 create or replace view rhnOrgChannelFamilyPermissions as
 	select	pcf.channel_family_id,
 		u.org_id as org_id,
@@ -29,4 +34,137 @@ create or replace view rhnOrgChannelFamilyPermissions as
 		created,
 		modified
 	from	rhnPrivateChannelFamily;
+
+CREATE OR REPLACE VIEW rhnOrgChannelTreeView
+(
+        org_id,
+        id,
+        depth,
+        name,
+        padded_name,
+        channel_arch_id,
+        last_modified,
+        label,
+        parent_or_self_label,
+        parent_or_self_id,
+        end_of_life
+)
+AS
+select * from (
+        select  cfp.org_id              as org_id,
+                c.id                    as id,
+                1                       as depth,
+                c.name                  as name,
+                '  ' || c.name          as padded_name,
+                c.channel_arch_id       as channel_arch_id,
+                c.last_modified         as last_modified,
+                c.label                 as label,
+                c.label                 as parent_or_self_label,
+                c.id                    as parent_or_self_id,
+                c.end_of_life           as end_of_life
+        from    rhnChannel              c,
+                rhnChannelFamilyMembers cfm,
+                rhnOrgChannelFamilyPermissions cfp
+        where   cfp.channel_family_id = cfm.channel_family_id
+                and cfm.channel_id = c.id
+                and c.parent_channel is null
+        union
+        select  cfp.org_id              as org_id,
+                c.id                    as id,
+                2                       as depth,
+                c.name                  as name,
+                '' || c.name            as padded_name,
+                c.channel_arch_id       as channel_arch_id,
+                c.last_modified         as last_modified,
+                c.label                 as label,
+                pc.label                as parent_or_self_label,
+                pc.id                   as parent_or_self_id,
+                c.end_of_life           as end_of_life
+         from    rhnChannel              pc,
+                rhnChannel              c,
+                rhnChannelFamilyMembers cfm,
+                rhnOrgChannelFamilyPermissions cfp
+        where   cfp.channel_family_id = cfm.channel_family_id
+                and cfm.channel_id = c.id
+                and c.parent_channel = pc.id
+) s order by parent_or_self_label, parent_or_self_id;
+
+create or replace view
+rhnAvailableChannels
+(
+        org_id,
+        channel_id,
+        channel_depth,
+        channel_name,
+        channel_arch_id,
+        padded_name,
+        current_members,
+        available_members,
+        last_modified,
+        channel_label,
+        parent_or_self_label,
+        parent_or_self_id·
+)
+as
+select
+     ct.org_id,
+     ct.id,
+     CT.depth,
+     CT.name,
+     CT.channel_arch_id,
+     CT.padded_name,
+    (SELECT COUNT(1)
+     FROM rhnServer S
+     INNER JOIN rhnServerChannel SC
+       ON SC.server_id = S.id
+     WHERE SC.channel_id = CT.id AND
+           S.org_id = CT.org_id),
+     rhn_channel.available_chan_subscriptions(ct.id, ct.org_id),
+     CT.last_modified,
+     CT.label,
+     CT.parent_or_self_label,
+     CT.parent_or_self_id
+from
+     rhnOrgChannelTreeView CT
+UNION ALL
+select
+     ct.org_id,
+     ct.id,
+     CT.depth,
+     CT.name,
+     CT.channel_arch_id,
+     CT.padded_name,
+    (SELECT COUNT(1)
+     FROM rhnServer S
+     INNER JOIN rhnServerChannel SC
+       ON SC.server_id = S.id
+     WHERE SC.channel_id = CT.id AND
+           S.org_id = CT.org_id),
+     NULL,
+     CT.last_modified,
+     CT.label,
+     CT.parent_or_self_label,
+     CT.parent_or_self_id
+from
+     rhnSharedChannelTreeView CT
+;
+
+create or replace view
+rhnOrgErrata
+(
+        org_id,
+        errata_id,
+        channel_id
+)
+as
+select
+    ac.org_id,
+    ce.errata_id,
+    ac.channel_id
+from
+    rhnChannelErrata ce,
+    rhnAvailableChannels ac
+where
+    ce.channel_id = ac.channel_id
+;
 
