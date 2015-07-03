@@ -1,2 +1,2 @@
-CREATE INDEX wupi_user_id_idx
-    ON web_user_personal_info (web_user_id);
+-- This file is intentionally left empty.
+-- already applied in Manager-2.1
