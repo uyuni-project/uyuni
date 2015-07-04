@@ -11,6 +11,7 @@
     <description>Spacewalk Client Packages</description>
     <uservisible>true</uservisible>
     <packagelist>
+       <packagereq type="default">dnf-plugin-spacewalk</packagereq>
        <packagereq type="default">osa-common</packagereq>
        <packagereq type="default">osad</packagereq>
        <packagereq type="default">rhncfg-actions</packagereq>
@@ -33,7 +34,6 @@
        <packagereq type="default">spacewalk-client-repo</packagereq>
        <packagereq type="default">spacewalk-koan</packagereq>
        <packagereq type="default">spacewalk-oscap</packagereq>
-       <packagereq type="default">yum-rhn-plugin</packagereq>
     </packagelist>
   </group>
 </comps>

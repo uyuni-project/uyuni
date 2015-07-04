@@ -10,7 +10,7 @@ Name:          rhnpush
 Group:         Applications/System
 License:       GPLv2
 URL:           http://fedorahosted.org/spacewalk
-Version:       5.5.88
+Version:       5.5.89
 Release:       1%{?dist}
 Source0:       https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1:       %{name}-rpmlintrc
@@ -93,6 +93,9 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING
 
 %changelog
+* Wed May 27 2015 Tomas Kasparek <tkasparek@redhat.com> 5.5.89-1
+- fix pylint warning on Fedora 22
+
 * Mon Mar 23 2015 Grant Gainey 5.5.88-1
 - Standardize pylint-check to only happen on Fedora
 

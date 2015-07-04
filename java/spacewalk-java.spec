@@ -32,7 +32,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.20
+Version: 2.4.29
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -45,6 +45,9 @@ Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
 Requires: cobbler >= 2.0.0
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires: dojo
 Requires: dwr >= 3
 Requires: google-gson >= 2.2.4
@@ -371,6 +374,9 @@ Requires: cglib
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: cobbler >= 2.0.0
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires: concurrent
 Requires: jakarta-taglibs-standard
 Requires: java >= 0:1.6.0
@@ -948,6 +954,58 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jul 03 2015 Jan Dobes 2.4.29-1
+- removing dead code
+- fixing system.listUngroupedSystems API
+
+* Fri Jul 03 2015 Jan Dobes 2.4.28-1
+- removing obsolete file
+- configure ivy resolver
+
+* Fri Jul 03 2015 Matej Kollar <mkollar@redhat.com> 2.4.27-1
+- Unify profile creation/update with one submit button instead of two.
+- Fix file input control alignment issue with form-control (bsc#873203)
+
+* Mon Jun 29 2015 Jan Dobes 2.4.26-1
+- checksum type None is no longer available
+- Make arch x86_64 the default when creating new channels.
+- Remove checksum type None. It prevents metadata generation.
+- do not recreate the option tags, just change visibility
+- New Channel: Fix setting the default architecture/checksum when selecting
+  back Parent: None
+
+* Fri Jun 26 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.25-1
+- Avoid deadlock in CompareConfigFilesTask when a
+  rhn_channel.update_needed_cache is in progress
+- Server.listConfigDiffEnabledSystems: fix indentation
+- Recommend cobbler20 with all packages requiring cobbler on Fedora 22
+
+* Fri Jun 12 2015 Jan Dobes 2.4.24-1
+- 1227700 - add missing country code
+- 1227700 - removing invalid title
+- TaskoXmlRpcHandler: dead code removed
+
+* Tue Jun 09 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.23-1
+- Fix adding roles: make sure that ORG admin is last
+- Fix javadoc and remove some superfluous newlines
+- Simplify getCandidates() to return a list of task objects
+- Remove unused Date variable
+- Do not remove tasks from DB during getCandidates() (bsc#932052)
+- Verify forward path and query ignoring the order of parameters
+
+* Fri May 29 2015 Jan Dobes 2.4.22-1
+- Get rid of IE7 compatibility mode enforcement
+- ErrataManager: fix stack update case
+- fixing message
+- removing unused import
+- KickstartScheduleCommand: always use activation key data
+- KickstartScheduleCommand: dead code removed
+
+* Thu May 28 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.21-1
+- remove redundant abstract modifier
+- fix checkstyle issues on Fedora 22
+- ErrataManagerTest: correct assertion message
+
 * Fri May 22 2015 Tomas Lestach <tlestach@redhat.com> 2.4.20-1
 - expect a Number instead of an Integer
 

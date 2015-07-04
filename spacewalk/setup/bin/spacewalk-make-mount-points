@@ -36,9 +36,9 @@ for my $dir (sort { length $a <=> length $b } keys %dirs) {
                 # the target as well
                 push @paths, "$paths[0]/.";
         }
-	if (Spacewalk::Setup::have_selinux()) {
+        if (Spacewalk::Setup::have_selinux()) {
                 for my $path (@paths) {
-                        my $type = `ls -d --scontext -- $path`;
+                        my $type = `ls -d -Z -- $path`;
                         if (defined $type
                                 and $type =~ /^.+?:.+?:(.+?)(:|\s)/
                                 and $1 eq 'nfs_t') {

@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.4.3
+Version:	2.4.5
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -32,6 +32,9 @@ BuildRequires:  spacewalk-backend-tools >= 1.7.24
 
 Requires:       bash
 Requires:       cobbler
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires:       coreutils
 %if ! 0%{?suse_version}
 Requires:       initscripts
@@ -117,6 +120,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Jun 26 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.5-1
+- Recommend cobbler20 with all packages requiring cobbler on Fedora 22
+
+* Wed May 27 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.4-1
+- fix pylint warning on Fedora 22
+
 * Fri Apr 24 2015 Matej Kollar <mkollar@redhat.com> 2.4.3-1
 - remove whitespace from .sgml files
 

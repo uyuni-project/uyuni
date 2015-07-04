@@ -4076,8 +4076,12 @@ public class SystemHandler extends BaseHandler {
                         if (header == null) {
                             header = line.split(",");
                             for (int i = 0; i < header.length; i++) {
-                                if (header[i].equals(csvUuid)) { uuidPos = i; }
-                                if (header[i].equals(csvSystemId)) { systemIdPos = i; }
+                                if (header[i].equals(csvUuid)) {
+                                    uuidPos = i;
+                                }
+                                if (header[i].equals(csvSystemId)) {
+                                    systemIdPos = i;
+                                }
                             }
                             if (uuidPos == null || systemIdPos == null) {
                                 log.warn("Unexpected format of mapping file " +
@@ -4378,22 +4382,11 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
      *      #array()
-     *      #struct("system")
-     *          #prop_desc("int", "id", "server id")
-     *          #prop("string", "name")
-     *          #prop("dateTime.iso8601", "last_checkin", "Last time server successfully
-     *                      checked in.")
-     *      #struct_end()
+     *          $SystemOverviewSerializer
      *      #array_end()
      */
-    public Object[] listUngroupedSystems(User loggedInUser) {
-        List <Server> servers = ServerFactory.listUngroupedSystems(loggedInUser);
-        List<Map<String, Object>> serverMaps = new ArrayList<Map<String, Object>>();
-        XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        for (Server server : servers) {
-            serverMaps.add(helper.format(server));
-        }
-        return serverMaps.toArray();
+    public List<SystemOverview> listUngroupedSystems(User loggedInUser) {
+        return SystemManager.ungroupedList(loggedInUser, null);
     }
 
 

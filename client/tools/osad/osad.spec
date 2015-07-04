@@ -18,7 +18,7 @@ License: GPLv2
 URL:     https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 5.11.59
+Version: 5.11.62
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -448,6 +448,18 @@ rpm -ql osa-dispatcher | xargs -n 1 /sbin/restorecon -rvi {}
 %endif
 
 %changelog
+* Tue Jun 23 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.62-1
+- allow exexmem to osa-dispatcher
+
+* Fri Jun 19 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.61-1
+- auto-healing for duplicate jabber ids
+
+* Fri Jun 05 2015 Tomas Kasparek <tkasparek@redhat.com> 5.11.60-1
+- Add logging of error stanzas
+- Add error logging to debug log
+- Refactoring: inline method used only once
+- Refactoring: remove modification to unused variable
+
 * Thu May 14 2015 Stephen Herr <sherr@redhat.com> 5.11.59-1
 - define the order of pending clients
 - explain the new notify_threshold param
