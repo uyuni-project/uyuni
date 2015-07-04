@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 18b8ed266c9578575bc1856f9e3c5bf475b879c2
+-- oracle equivalent source sha1 016e5e553621f27e40a1ad38b2541c54e415c631
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -844,7 +844,7 @@ update pg_settings set setting = 'rhn_channel,' || setting where name = 'search_
                  where sc.channel_id = channel_id_in
                  order by id asc
       ) loop
-         perform rhn_server.update_needed_cache(server.id);
+         perform queue_server(server.id, 0); -- NOT IMMEDIATE
       end loop;
    end$$ language plpgsql;
 
