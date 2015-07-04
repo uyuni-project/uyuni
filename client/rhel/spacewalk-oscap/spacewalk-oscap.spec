@@ -1,5 +1,5 @@
 Name:		spacewalk-oscap
-Version:	2.4.0
+Version:	2.4.1
 Release:	1%{?dist}
 Summary:	OpenSCAP plug-in for rhn-check
 
@@ -13,14 +13,10 @@ BuildArch:	noarch
 BuildRequires:	python-devel
 BuildRequires:	rhnlib
 BuildRequires:  libxslt
-%if 0%{?rhel} && 0%{?rhel} < 6
-Requires:	openscap-utils >= 0.8.0
+%if 0%{?fedora} || 0%{?rhel} > 6
+Requires:	openscap-scanner
 %else
-%if 0%{?suse_version} && 0%{?suse_version} <= 1230
-Requires:	openscap-utils >= 0.8.0
-%else
-Requires:	openscap-utils >= 0.9.2
-%endif
+Requires:	openscap-utils
 %endif
 Requires:	libxslt
 Requires:       rhnlib
@@ -60,6 +56,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 19 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.1-1
+- rhbz#1232596: Require just openscap-scanner package everywhere
+- Bumping package versions for 2.4.
+
 * Mon Sep 22 2014 Matej Kollar <mkollar@redhat.com> 2.3.1-1
 - 1107841 - Avoid creating profile with empty id
 - Typo

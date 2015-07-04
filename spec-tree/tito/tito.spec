@@ -2,7 +2,7 @@
 
 Name: tito
 Version: 0.4.18
-Release: 1.6%{?dist}
+Release: 1.7%{?dist}
 Summary: A tool for managing rpm based git projects
 
 Group: Development/Tools
@@ -13,6 +13,7 @@ Patch0:  0001-support-local-releasers.conf-overwrite.patch
 Patch1:  0001-fixed-building-third-party-packages.patch
 Patch2:  0001-fixed-changelog-formating.patch
 Patch3:  0002-fixed-no-source-spec-issue.patch
+Patch4:  git-quick-build.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch: noarch
@@ -42,6 +43,7 @@ git.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__python} setup.py build
@@ -86,6 +88,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 26 2015 Tomas Kasparek <tkasparek@redhat.com> 0.4.18-1.7
+- enable building without prompting with git builders
+
 * Wed Aug 06 2014 Michael Mraka <michael.mraka@redhat.com> 0.4.18-1.6
 - actually it's good to apply patches as well
 

@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.4
+Version: 2.4.8
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -324,6 +324,9 @@ Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
 Requires: cobbler >= 2.0.0
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires: rhnlib  >= 2.5.57
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
@@ -809,6 +812,18 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Jun 26 2015 Jan Dobes 2.4.8-1
+- 1235827 - there is no such restriction for user names
+
+* Thu Jun 11 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.7-1
+- Recommends is not ignored on older systems
+
+* Wed Jun 10 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.6-1
+- add weak dependency on cobbler20
+
+* Wed May 27 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.5-1
+- fix pylint warnings on Fedora 22
+
 * Thu May 21 2015 Matej Kollar <mkollar@redhat.com> 2.4.4-1
 - 1175516 - Typos in rhn-entitlement-report output
 

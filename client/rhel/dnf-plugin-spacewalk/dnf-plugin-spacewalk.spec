@@ -1,6 +1,6 @@
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.4.7
+Version: 2.4.12
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -9,6 +9,7 @@ URL:     https://fedorahosted.org/spacewalk
 BuildArch: noarch
 BuildRequires: python-devel
 
+BuildRequires: python-devel
 %if 0%{?fedora}
 BuildRequires: python3-devel
 %endif
@@ -27,15 +28,15 @@ This DNF plugin provides access to a Spacewalk server for software updates.
 
 
 %install
-install -d %{buildroot}%{python_sitelib}/dnf-plugins/
+install -d %{buildroot}%{python2_sitelib}/dnf-plugins/
 install -d %{buildroot}%{_sysconfdir}/dnf/plugins/
 install -d %{buildroot}/usr/share/rhn/actions
 install -d %{buildroot}/var/lib/up2date
 install -d %{buildroot}%{_mandir}/man{5,8}
-install -m 644 spacewalk.py %{buildroot}%{python_sitelib}/dnf-plugins/
+install -m 644 spacewalk.py %{buildroot}%{python2_sitelib}/dnf-plugins/
 %if 0%{?fedora}
 install -d %{buildroot}%{python3_sitelib}/dnf-plugins/
-ln -s %{python_sitelib}/dnf-plugins/spacewalk.py \
+ln -s %{python2_sitelib}/dnf-plugins/spacewalk.py \
         %{buildroot}%{python3_sitelib}/dnf-plugins/spacewalk.py
 %endif
 install -m 644 actions/packages.py %{buildroot}/usr/share/rhn/actions/
@@ -53,7 +54,7 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %license LICENSE
 %dir /var/lib/up2date
 %{_mandir}/man*/*
-%{python_sitelib}/dnf-plugins/*
+%{python2_sitelib}/dnf-plugins/*
 %if 0%{?fedora}
 %{python3_sitelib}/dnf-plugins/*
 %endif
@@ -66,6 +67,19 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %changelog
+* Thu Jun 11 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.12-1
+- bz1230251: do nothing if enabled=0
+- bz1226986: accept options from plugin configuration file
+
+* Mon Jun 01 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.11-1
+- global name 'CHANNELS_DISABLED' is not defined
+
+* Fri May 29 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.10-1
+- fixed variable asignment
+
+* Fri May 29 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.9-1
+- koji does not define python_sitelib
+
 * Mon May 25 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.7-1
 - added license
 - be consistent in using macros vs. shell variables
