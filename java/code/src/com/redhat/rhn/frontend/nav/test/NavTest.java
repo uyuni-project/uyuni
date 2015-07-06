@@ -144,19 +144,17 @@ public class NavTest extends RhnBaseTestCase {
         assertEquals(bestNode.getPrimaryURL(), activePath);
     }
 
-    /*
     public void testMatchByUrl() throws Exception {
         NavTree nt =
             NavDigester.buildTree(TestUtils.findTestData("sitenav.xml"));
 
         NavTreeIndex nti = new NavTreeIndex(nt);
-        String lastPath = "/rhn/systems/SystemGroupList.do";
-        String curPath = "/rhn/systems/entitlements/GuestUnlimitedHosts.do";
+        String lastPath = "/rhn/help/dispatcher/release_notes";
+        String curPath = "/rhn/help/dispatcher/reference_guide";
         nti.computeActiveNodes(curPath, lastPath);
         NavNode bestNode = nti.getBestNode();
-        assertEquals("/rhn/systems/SystemEntitlements.do", bestNode.getPrimaryURL());
+        assertEquals("/rhn/help/about.do", bestNode.getPrimaryURL());
     }
-    */
 
     public void testMatchByDir() throws Exception {
         NavTree nt =
