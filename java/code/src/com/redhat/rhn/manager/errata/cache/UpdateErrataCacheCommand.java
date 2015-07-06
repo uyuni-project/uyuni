@@ -100,30 +100,23 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
      * Updates the errata cache for the given server.
      * @param serverId Server id which needs to get updated.
      * @param commit commit the database transaction when complete
-     * @return Map of results formatted like so:
-     * Key: 'errata'   Value: list of erratas added
-     * Key: 'packages' Value: list of packages added
      */
-    public Map updateErrataCacheForServer(Long serverId, boolean commit) {
+    public void updateErrataCacheForServer(Long serverId, boolean commit) {
         log.info("Updating errata cache for server [" + serverId + "]");
-        Map changes = null;
         try {
             processServer(serverId);
         }
         catch (Exception e) {
             log.error("Problem updating cache for server", e);
             HibernateFactory.rollbackTransaction();
-
         }
         finally {
             if (commit) {
                 handleTransaction();
             }
         }
-        log.info("Finished with servers in channel [" + serverId + "]");
-        return changes;
+        log.info("Finished errata cache for server [" + serverId + "]");
     }
-
 
     /**
      * Updates the needed cache for particular packages within a channel
@@ -159,7 +152,6 @@ public class UpdateErrataCacheCommand extends BaseTransactionCommand {
         log.info("Finished with servers in channel [" + cid + "] " +
                 "and errata [" + eid + "]" + " with pids [" + pids + "]");
     }
-
 
     /**
      * Updates the errata cache for all the servers in the given channel.
