@@ -20,7 +20,6 @@ import EDU.oswego.cs.dl.util.concurrent.PooledExecutor;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.TaskoRun;
-import com.redhat.rhn.taskomatic.task.RhnQueueJob;
 
 import java.util.List;
 
@@ -104,14 +103,13 @@ public class TaskQueue {
     }
 
     /**
-     * {@inheritDoc}
-     * @param runIn
-     * @param jobIn
+     * Create workers for all current candidates or set the current job run to FINISHED in
+     * case there is no new candidates and workers are all done.
      */
-    public void run(RhnQueueJob jobIn) {
+    public void run() {
         setupQueue();
         List candidates = queueDriver.getCandidates();
-        queueSize = candidates.size();
+        queueSize += candidates.size();
         if (queueSize > 0) {
             queueDriver.getLogger().info("In the queue: " + queueSize);
         }
