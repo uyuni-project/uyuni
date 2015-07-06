@@ -631,6 +631,15 @@ class RepoSyncTest(unittest.TestCase):
                   'update_id': 'res5ct-kernel-default'}
         self.assertFalse(self.reposync._is_old_suse_style(notice))
 
+    def test_to_db_date(self):
+        """
+        Test for _to_db_date
+        """
+        self.assertEqual(self.reposync._to_db_date('2015-01-02 01:02:03'), '2015-01-02 01:02:03')
+        self.assertEqual(self.reposync._to_db_date('1420160523'), '2015-01-02 01:02:03')
+        self.assertEqual(self.reposync._to_db_date('2015-01-02'), '2015-01-02 00:00:00')
+        self.assertRaises(ValueError, self.reposync._to_db_date, '2015-01-02T01:02:03+0100')
+
     def _init_reposync(self, label="Label", repo_type=RTYPE, **kwargs):
         """Initialize the RepoSync object with some mocked attrs"""
         self.reposync.get_compatible_arches = Mock(
