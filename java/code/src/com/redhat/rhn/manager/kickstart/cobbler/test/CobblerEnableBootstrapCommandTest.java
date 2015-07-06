@@ -46,8 +46,12 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
         // create a pre-existing system, profile and distro to test they have
         // been replaced
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
-        Distro distro = Distro.create(connection, Distro.BOOTSTRAP_NAME, "test-kernel",
-            "test-initrd", new HashMap<Object, Object>(), null, null, null);
+        Distro distro = new Distro.Builder()
+                .setName(Distro.BOOTSTRAP_NAME)
+                .setKernel("test-kernel")
+                .setInitrd("test-initrd")
+                .setKsmeta(new HashMap<>())
+                .build(connection);
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
         SystemRecord system = SystemRecord.create(connection, SystemRecord.BOOTSTRAP_NAME,
             profile);
