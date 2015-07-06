@@ -1114,9 +1114,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
 <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
       </trans-unit>
-      <trans-unit id="guestlimited.jsp.para1">
-        <source>The following is a list of host systems with the 'Virtualization' entitlement. You may wish to consider upgrading systems that have exceeded the 4-guest limit to an 'Unlimited Virtualization' entitlement to make the most of your subscriptions and stay in compliance with your service level agreements with @@VENDOR_NAME@@.</source>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
       </trans-unit>
