@@ -124,8 +124,10 @@ public abstract class RhnQueueJob implements RhnJob {
         }
         int maxWorkItems = Config.get().getInt("taskomatic." + queueName +
                 "_max_work_items", defaultItems);
-        if (queue.getQueueSize() < maxWorkItems) {
-            queue.run(this);
+        int queueSize = queue.getQueueSize();
+        getLogger().debug("Queue size (before run): " + queueSize);
+        if (queueSize < maxWorkItems) {
+            queue.run();
         }
         else {
             getLogger().debug("Maximum number of workers already put ... skipping.");
