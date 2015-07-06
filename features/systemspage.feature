@@ -410,7 +410,7 @@ Feature: Explore the main landing page
     And I follow "Autoinstallation" in the left menu
     And I follow "Autoinstallation Snippets" in the left menu
     And I follow "Default Snippets"
-    And I wait for "1" seconds
+    #And I wait for "1" seconds
     And I click on "Next Page"
     And I follow "spacewalk/sles_no_signature_checks"
     Then I should see a "<signature-handling>" text

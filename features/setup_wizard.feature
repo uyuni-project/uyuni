@@ -48,7 +48,7 @@ Feature: I want to verify the Setup Wizard
     # HACK: this should not be needed at all, but Capybara 2.1.0/WebDriver loses browser
     # connection if next requests arrive concurrently with the AJAX request. Might be removed
     # in future versions
-    And I wait for "30" seconds
+#    And I wait for "30" seconds
     When I click the channel list of product "SUSE Linux Enterprise Server for SAP All-in-One 11 SP2" for the "x86_64" architecture
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text

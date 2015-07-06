@@ -21,13 +21,13 @@ Feature: Explore the main landing page
     And I follow "Software" in the content area
     And I follow "Errata" in the content area
     When I check "andromeda-dummy-6789" in the list
-    And I wait for "2" seconds
+#    And I wait for "2" seconds
     And I click on "Apply Errata"
-    And I wait for "2" seconds
+#    And I wait for "2" seconds
     And I click on "Confirm"
-    And I wait for "5" seconds
+#    And I wait for "5" seconds
     And I run rhn_check on this client
-    And I wait for "5" seconds
+#    And I wait for "5" seconds
     And I follow "Systems" in the left menu
     And I follow this client link
     Then I should see a "The system requires a reboot" text

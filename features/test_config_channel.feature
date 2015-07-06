@@ -86,7 +86,7 @@ Feature: Create a configuration channel
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
     When I run rhn_check on this client
-    And I wait for "2" seconds
+    #And I wait for "2" seconds
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link
@@ -106,7 +106,7 @@ Feature: Create a configuration channel
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
     When I run rhn_check on this client
-    And I wait for "2" seconds
+    #And I wait for "2" seconds
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -122,7 +122,7 @@ Feature: Create a configuration channel
     And I click on "Confirm"
     Then I should see a "1 files scheduled for upload." text
     When I run rhn_check on this client
-    And I wait for "2" seconds
+    #And I wait for "2" seconds
     And I follow "Configuration" in the content area
     And I follow "View/Modify Files" in the content area
     And I follow "Local Sandbox" in the content area
@@ -171,7 +171,7 @@ Feature: Create a configuration channel
     And I click on "Schedule Compare"
     Then I should see a "3 files scheduled for comparison." text
     When I run rhn_check on this client
-    And I wait for "2" seconds
+    #And I wait for "2" seconds
     And I follow "Events" in the content area
     And I follow "History" in the content area
     Then I should see a "Show differences between profiled config files and deployed config files scheduled by testing" link

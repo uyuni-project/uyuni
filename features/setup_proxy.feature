@@ -12,5 +12,5 @@ Feature: I want to setup the HTTP proxy
     And I enter "suma" as "HTTP Proxy Username"
     And I enter "P4$$word" as "HTTP Proxy Password"
     And I click on "Save and Verify"
-    And I wait for "5" seconds
+#    And I wait for "5" seconds
     Then I see verification succeeded
