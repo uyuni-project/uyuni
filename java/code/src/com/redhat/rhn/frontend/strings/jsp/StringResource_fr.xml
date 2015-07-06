@@ -11856,7 +11856,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
         </context-group>
         <target>Icône Logiciel</target>
       </trans-unit>
@@ -11907,7 +11906,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
         </context-group>
         <target>Aucun canal trouvé.</target>
       </trans-unit>
@@ -11916,7 +11914,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
         </context-group>
         <target>Afficher tous les canaux enfants</target>
       </trans-unit>
@@ -11925,7 +11922,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
         </context-group>
         <target>Cacher tous les canaux enfants</target>
       </trans-unit>
@@ -11934,7 +11930,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>Bouton canaux parents</target>
@@ -11944,7 +11939,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/software/channels/All.do</context>
           <context context-type="sourcefile">/rhn/software/channels/Retired.do</context>
-          <context context-type="sourcefile">/rhn/software/channels/ChannelFamilyTree.do</context>
         </context-group>
         <target>Canal enfant</target>
       </trans-unit>
