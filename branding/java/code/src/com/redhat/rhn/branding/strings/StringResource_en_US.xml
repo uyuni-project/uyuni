@@ -1117,9 +1117,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="guestlimited.jsp.para1">
         <source>The following is a list of host systems with the 'Virtualization' entitlement. You may wish to consider upgrading systems that have exceeded the 4-guest limit to an 'Unlimited Virtualization' entitlement to make the most of your subscriptions and stay in compliance with your service level agreements with @@VENDOR_NAME@@.</source>
       </trans-unit>
-      <trans-unit id="physicalhosts.jsp.guestsofnonredhat">
-<source>Guests of Non-@@VENDOR_NAME@@ Virtualization Hosts</source>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
       </trans-unit>
