@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot;
 
-import com.redhat.rhn.common.db.WrappedSQLException;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.PackageNevra;
@@ -25,7 +24,6 @@ import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotLookupException;
-import com.redhat.rhn.frontend.xmlrpc.SnapshotRollbackException;
 import com.redhat.rhn.frontend.xmlrpc.SnapshotTagAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
