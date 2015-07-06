@@ -887,7 +887,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.header1">
-        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization &lt;a href=&quot;/rhn/channels/software/Entitlements.do&quot;&gt; is entitled to &lt;/a&gt;but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
+        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.verboseup2date">
         <source>Enable debugging in up2date/yum or yast</source>
