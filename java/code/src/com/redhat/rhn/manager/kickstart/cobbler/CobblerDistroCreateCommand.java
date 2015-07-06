@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.cobbler.Distro;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * KickstartCobblerCommand - class to contain logic to communicate with cobbler
@@ -76,41 +75,22 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
     public ValidatorError store() {
         log.debug("Token : [" + xmlRpcToken + "]");
 
-        Map<String, String> ksmeta = createKsMetadataFromTree(this.tree);
+        Distro distro = CobblerDistroHelper.getInstance().createDistroFromTree(
+                CobblerXMLRPCHelper.getConnection(user),
+                this.tree);
 
-        Distro distro =
-                Distro.create(CobblerXMLRPCHelper.getConnection(user),
-                        tree.getCobblerDistroName(), tree.getKernelPath(),
-                        tree.getInitrdPath(), ksmeta,
-                        tree.getInstallType().getCobblerBreed(),
-                        tree.getInstallType().getCobblerOsVersion(),
-                        tree.getChannel().getChannelArch().cobblerArch());
-        // Setup the kickstart metadata so the URLs and activation key are setup
-
-        // set architecture (fix 32bit vm's on a 64bit system)
-        // especially for SUSE where the kernel+initrd is under a path that contains
-        // the $arch
-        String archName = tree.getChannel().getChannelArch().getName();
-        if (archName.equals("IA-32")) {
-            archName = "i386";
-        }
+        // todo this will be removed in follow-up cleanup
+        String archName = CobblerDistroHelper.getInstance().getAdjustedArchName(tree);
         distro.setArch(archName);
         distro.save();
-
-        tree.setCobblerId(distro.getUid());
         invokeCobblerUpdate();
 
         if (tree.doesParaVirt()) {
-            Distro distroXen =
-                    Distro.create(CobblerXMLRPCHelper.getConnection(user),
-                            tree.getCobblerXenDistroName(),
-                            tree.getKernelXenPath(), tree.getInitrdXenPath(),
-                            ksmeta, tree.getInstallType().getCobblerBreed(),
-                            tree.getInstallType().getCobblerOsVersion(),
-                            tree.getChannel().getChannelArch().cobblerArch());
-            tree.setCobblerXenId(distroXen.getUid());
-            distroXen.setArch(archName);
-            distroXen.save();
+            Distro xenDistro = CobblerDistroHelper.getInstance().createXenDistroFromTree(
+                    CobblerXMLRPCHelper.getConnection(user),
+                    tree);
+            xenDistro.setArch(archName); // todo this will be removed in follow-up cleanup
+            xenDistro.save();
         }
 
         if (syncProfiles) {
