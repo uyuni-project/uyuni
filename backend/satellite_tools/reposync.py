@@ -1427,7 +1427,15 @@ def _to_db_date(date):
         ret = datetime.fromtimestamp(float(date)).isoformat(' ')
     else:
         # we expect to get ISO formated date
-        ret = date
+        try:
+            datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+            ret = date[:19]
+        except ValueError:
+            try:
+                datetime.strptime(date, '%Y-%m-%d')
+                ret = date[:10] + ' 00:00:00'
+            except ValueError:
+                raise ValueError("Not a valid date")
     return ret[:19] #return 1st 19 letters of date, therefore preventing ORA-01830 caused by fractions of seconds
 
 def _update_keywords(notice):
