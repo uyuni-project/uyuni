@@ -171,9 +171,6 @@
     type: ACTION_CREATE
     required: [submitted]
 
-/systems/SystemEntitlementsSubmit.do:
-    type: ACTION_CHANGE
-
 /systems/details/packages/Packages.do:
     type: ACTION_CREATE
     required: [submitted]
@@ -629,14 +626,6 @@
     required: [submitted]
 
 /admin/multiorg/OrgSystemSubscriptions.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/admin/multiorg/OrgSoftwareSubscriptions.do:
-    type: ACTION_CHANGE
-    required: [dispatch]
-
-/admin/multiorg/SoftwareEntitlementSubscriptions.do:
     type: ACTION_CHANGE
     required: [submitted]
 
