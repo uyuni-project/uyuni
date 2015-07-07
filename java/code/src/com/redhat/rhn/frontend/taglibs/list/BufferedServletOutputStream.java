@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * Buffers servlet output rather than streaming it to the client
@@ -51,5 +52,21 @@ class BufferedServletOutputStream extends ServletOutputStream {
      */
     public String getBufferedContent() throws UnsupportedEncodingException {
         return new String(buffer.toByteArray(), "UTF-8");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWriteListener(WriteListener arg0) {
+        // Do nothing
     }
 }

@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * Caches all content written to it to be retrieved
@@ -42,5 +43,21 @@ public class CachingOutputStream extends ServletOutputStream {
      */
     public String getCachedContent() {
         return buffer.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWriteListener(WriteListener arg0) {
+        // Do nothing
     }
 }
