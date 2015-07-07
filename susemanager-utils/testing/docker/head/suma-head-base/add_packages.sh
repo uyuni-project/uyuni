@@ -5,7 +5,7 @@ set -e
 zypper --non-interactive --gpg-auto-import-keys ref
 
 # Packages required to run spacewalk-setup inside of the container
-zypper in -y perl \
+zypper --non-interactive in perl \
              perl-Params-Validate \
              perl-Mail-RFC822-Address \
              perl-XML-LibXML \
@@ -20,7 +20,7 @@ zypper in -y perl \
              timezone
 
 # Packages required to run the python unit tests
-zypper in -y  cx_Oracle \
+zypper --non-interactive in  cx_Oracle \
               make \
               python \
               python-argparse \
@@ -46,17 +46,20 @@ zypper in -y  cx_Oracle \
               python-pylint \
               python-selinux \
               python-setools \
-              python-unittest2 \
               python-urlgrabber \
               python-xml \
               rpm-python \
               yum
 
 # Packages required to run the Java unit tests
-zypper in -y ant \
+zypper --non-interactive in ant \
              ant-junit \
              apache-ivy \
              java-1_7_0-ibm-devel \
              pam-modules \
              sudo \
              tar
+
+# Packages for easier debugging
+zypper --non-interactive in vim less
+
