@@ -145,6 +145,7 @@
         <exclude name="**/tomcat*-servlet*" />
         <exclude name="**/jspapi*" />
         <exclude name="**/websocket-api*" />
+        <exclude name="**/checkstyle*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
