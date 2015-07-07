@@ -78,7 +78,7 @@
         <dependency org="suse" name="taglibs-standard" rev="1.1.1" />
         <dependency org="suse" name="tanukiwrapper" rev="3.2.3" />
         <dependency org="suse" name="tomcat-juli" rev="6.0.18" />
-        <dependency org="suse" name="tomcat6-servlet-2.5-api" rev="6.0.18" />
+        <dependency org="suse" name="tomcat-servlet-3.1-api" rev="8.0.23" />
         <!-- dependency org="suse" name="tyrex" rev="1.0" /-->
         <dependency org="suse" name="velocity" rev="1.5" />
         <dependency org="suse" name="xalan-j2" rev="2.7.0" />
