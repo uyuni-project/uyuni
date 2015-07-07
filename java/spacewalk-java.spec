@@ -118,13 +118,13 @@ BuildRequires: tomcat-lib >= 7
 Requires: jakarta-commons-httpclient
 Requires: struts >= 1.2.9
 Requires: pxe-default-image
-Requires(pre): tomcat >= 7
-Requires: tomcat-lib >= 7
-Requires: tomcat-servlet-3.0-api >= 7
+Requires(pre): tomcat >= 8
+Requires: tomcat-lib >= 8
+Requires: tomcat-servlet-3.1-api >= 8
 BuildRequires: jakarta-commons-httpclient
 BuildRequires: struts >= 1.2.9
-BuildRequires: tomcat >= 7
-BuildRequires: tomcat-lib >= 7
+BuildRequires: tomcat >= 8
+BuildRequires: tomcat-lib >= 8
 %else
 Requires: struts >= 0:1.3.0
 Requires: struts-taglib >= 0:1.3.0
