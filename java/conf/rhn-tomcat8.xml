@@ -1,20 +1,6 @@
 <!--
   This is a Tomcat 8 Context file.  For more information see:
     https://tomcat.apache.org/tomcat-8.0-doc/config/context.html
-
-  path - is the url path you specify after http://hostname:8080/.  To
-    take over the root, you leave it empty.
-
-  docBase - should the fully qualified path where your
-    rhnwebapp is located.
-    i.e. /home/devel/username/rhn-java/rhnwebapp
-
-  debug - higher number produces more output.
-
-  reloadable - indicates to Tomcat that the webapp should be reloaded
-    when a change occurs.
-
-  allowLinking - true to allow Tomcat to follow symlinks.
 -->
 
 <Context path="/rhn" reloadable="false">
