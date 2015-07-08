@@ -19,5 +19,5 @@
 
 <Context path="/rhn" docBase="/srv/tomcat/webapps/rhn/"
          debug="0" reloadable="false">
-  <Resource allowLinking="true" />
+  <Resources allowLinking="true" />
 </Context>
