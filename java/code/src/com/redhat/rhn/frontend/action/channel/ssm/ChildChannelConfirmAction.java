@@ -101,7 +101,8 @@ public class ChildChannelConfirmAction extends RhnAction implements Listable {
 
             // Fire the request off asynchronously
             SsmChangeChannelSubscriptionsEvent event =
-                new SsmChangeChannelSubscriptionsEvent(user, sysSubList.values(), operationId);
+                    new SsmChangeChannelSubscriptionsEvent(user, sysSubList.values(),
+                            operationId);
             MessageQueue.publish(event);
 
             result = mapping.findForward("success");
