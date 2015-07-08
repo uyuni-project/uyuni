@@ -15,7 +15,6 @@
 package com.redhat.rhn.internal.jasper2;
 
 import java.io.File;
-import org.apache.jasper.JasperException;
 import org.apache.jasper.JspC;
 
 /**
@@ -35,10 +34,9 @@ public class JspfC extends JspC {
      * fragment files.
      *
      * @param file file being added
-     * @throws JasperException on error (see parent for more info)
      */
     @Override
-    public void scanFiles(File file) throws JasperException {
+    public void scanFiles(File file) {
         addExtension("jsp");
         addExtension("jspf");
         addExtension("jspx");
