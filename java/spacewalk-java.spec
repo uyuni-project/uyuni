@@ -483,10 +483,6 @@ find . -name 'StringResource_*.xml' |      while read i ;
 done
 %endif
 
-if rpm -q tomcat >/dev/null && [ `rpm -q --qf "%%{version}" tomcat | cut -b 1` == "8" ]; then
-    sed -i 's/throws JasperException//' code/internal/src/com/redhat/rhn/internal/jasper2/JspfC.java
-fi
-
 %build
 # compile only java sources (no packing here)
 ant -Dprefix=$RPM_BUILD_ROOT init-install compile
