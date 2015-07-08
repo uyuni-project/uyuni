@@ -15,15 +15,8 @@ hibernate.connection.driver_proto = jdbc:oracle:thin
 # Uncomment to log all SQL statements issued by Hibernate
 # hibernate.show_sql = true
 
-hibernate.connection.provider_class = org.hibernate.connection.C3P0ConnectionProvider
 hibernate.use_outer_join = true
 hibernate.jdbc.batch_size = 0
-hibernate.c3p0.min_size = 5
-hibernate.c3p0.max_size = 20
-hibernate.c3p0.timeout = 300
-hibernate.c3p0.max_statements = 0
-hibernate.c3p0.idle_test_period = 300
-hibernate.c3p0.testConnectionOnCheckout = true
 hibernate.cache.provider_class = org.hibernate.cache.OSCacheProvider
 hibernate.cache.use_query_cache = true
 hibernate.bytecode.use_reflection_optimizer = false
