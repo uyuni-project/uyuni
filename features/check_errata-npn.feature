@@ -29,8 +29,8 @@ Feature: Check errata
     When I follow "Packages"
     Then I should see a "SLES11-SP3-Updates x86_64 Channel" link
     And I should see a "SLES11-SP3-Updates i586 Channel" link
-    And I should see a "sha256:631f37496202385e0cb7ab83c59accf70e21c24f14f5201ac26a42c0ec501bb9" text
-    And I should see a "andromeda-dummy-2.0-1.2-noarch" link
+    And I should see a "sha256:3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
+    And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: check relevant errata for this client
     Given I am on the Systems overview page of this client

@@ -13,7 +13,7 @@ Feature: Test weak dependencies
     When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
-    And I follow "virgo-dummy-2.0-1.2.noarch"
+    And I follow "virgo-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
     Then I should see a "Recommends" text
     And I should see a "Suggests" text
@@ -24,7 +24,7 @@ Feature: Test weak dependencies
     When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
-    And I follow "milkyway-dummy-2.0-1.2.x86_64"
+    And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
     Then I should see a "Recommends" text
     And I should see a "Suggests" text
@@ -35,7 +35,7 @@ Feature: Test weak dependencies
     When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
-    And I follow "milkyway-dummy-2.0-1.2.x86_64"
+    And I follow "milkyway-dummy-2.0-1.1.x86_64"
     And I follow "Dependencies"
     Then I should see a "Recommends" text
     And I should see a "Suggests" text
@@ -46,7 +46,7 @@ Feature: Test weak dependencies
     When I follow "Channels"
     And I follow "SLES11-SP3-Updates x86_64 Channel"
     And I follow "Packages"
-    And I follow "orion-dummy-1.1-1.2.x86_64"
+    And I follow "orion-dummy-1.1-1.1.x86_64"
     And I follow "Dependencies"
     Then I should see a "Enhances" text
     And I should see a "foobar" text

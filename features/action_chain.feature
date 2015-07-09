@@ -7,7 +7,7 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
     And I follow "Install New Packages" in the content area
-    And I check "hoag-dummy-1.1-2.2" in the list
+    And I check "hoag-dummy-1.1-2.1" in the list
     And I click on "Install Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
@@ -49,7 +49,7 @@ Feature: Test action chaining
     Given I am on the Systems overview page of this client
     When I follow "Software" in the content area
     And I follow "Verify" in the content area
-    And I check "andromeda-dummy-1.0-4.28" in the list
+    And I check "andromeda-dummy-1.0-4.1" in the list
     And I click on "Verify Selected Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"

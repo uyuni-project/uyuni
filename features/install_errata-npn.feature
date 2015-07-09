@@ -15,4 +15,4 @@ Feature: Install an erratum to the client
 #    And I wait for "5" seconds
     And I run rhn_check on this client
     Then I should see a "1 errata update has been scheduled for" text
-    And "virgo-dummy-2.0-1.2" is installed
+    And "virgo-dummy-2.0-1.1" is installed
