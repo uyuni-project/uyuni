@@ -52,7 +52,7 @@ Feature: Explore the Channels page
     And I should see a "SLES11-SP3-Updates x86_64 Channel" link
     And I should see a "openSUSE Build Service" text
     And I should see a "SHA256sum:" text
-    And I should see a "631f37496202385e0cb7ab83c59accf70e21c24f14f5201ac26a42c0ec501bb9" text
+    And I should see a "3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30" text
     And I should see a "packages/1/3bb/andromeda-dummy/2.0-1.1/noarch/3bb3a56e6654f14300ab815c3f6e2af848874c829541b4e1b342262bb2f72d30/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check Package dependencies page
@@ -63,7 +63,7 @@ Feature: Explore the Channels page
     And I follow "Dependencies"
     Then I should see a "pam" text
     And I should see a "rpmlib(PayloadIsLzma) <= 4.4.6-1" text
-    And I should see a "andromeda-dummy = 2.0-1.2" text
+    And I should see a "andromeda-dummy = 2.0-1.1" text
 
   Scenario: Check Package Changelog page
     When I follow "Channels"
