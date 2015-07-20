@@ -100,9 +100,14 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
         // add new records
         CobblerConnection connection = getCobblerConnection();
 
-        Distro distro = Distro.create(connection, Distro.BOOTSTRAP_NAME, kernelPath,
-            initrdPath, new HashMap<Object, Object>(),
-            config.getCobblerBootstrapBreed(), null, config.getCobblerBootstrapArch());
+        Distro distro = new Distro.Builder()
+                .setName(Distro.BOOTSTRAP_NAME)
+                .setKernel(kernelPath)
+                .setInitrd(initrdPath)
+                .setKsmeta(new HashMap<String, Object>())
+                .setBreed(config.getCobblerBootstrapBreed())
+                .setArch(config.getCobblerBootstrapArch())
+                .build(connection);
         log.debug("Distro added");
 
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);

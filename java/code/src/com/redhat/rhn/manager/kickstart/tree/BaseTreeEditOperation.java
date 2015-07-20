@@ -47,8 +47,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     protected KickstartableTree tree;
     private static final String EMPTY_STRING = "";
     public static final String KICKSTART_CAPABILITY = "rhn.kickstart.boot_image";
-    private String postKernelOptions = "";
-    private String kernelOptions = "";
 
     /**
      * Constructor
@@ -104,11 +102,11 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
                 return new ValidatorError("tree.edit.missingcobblerentry");
             }
             distro.setKernelOptions(getKernelOptions());
-            distro.setKernelPostOptions(getPostKernelOptions());
+            distro.setKernelOptionsPost(getKernelOptionsPost());
             distro.save();
             if (xenDistro != null) {
                 xenDistro.setKernelOptions(getKernelOptions());
-                xenDistro.setKernelPostOptions(getPostKernelOptions());
+                xenDistro.setKernelOptionsPost(getKernelOptionsPost());
                 xenDistro.save();
             }
         }
@@ -241,18 +239,18 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
 
 
     /**
-     * @return Returns the postKernelOptions.
+     * @return Returns the kernelOptionsPost.
      */
-    public String getPostKernelOptions() {
-        return postKernelOptions;
+    public String getKernelOptionsPost() {
+        return tree.getKernelOptionsPost();
     }
 
 
     /**
-     * @param postKernelOptionsIn The postKernelOptions to set.
+     * @param kernelOptionsPostIn The kernelOptionsPost to set.
      */
-    public void setPostKernelOptions(String postKernelOptionsIn) {
-        postKernelOptions = postKernelOptionsIn;
+    public void setKernelOptionsPost(String kernelOptionsPostIn) {
+        tree.setKernelOptionsPost(kernelOptionsPostIn);
     }
 
 
@@ -260,7 +258,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      * @return Returns the kernelOptions.
      */
     public String getKernelOptions() {
-        return kernelOptions;
+        return tree.getKernelOptions();
     }
 
 
@@ -268,6 +266,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
      * @param kernelOptionsIn The kernelOptions to set.
      */
     public void setKernelOptions(String kernelOptionsIn) {
-        kernelOptions = kernelOptionsIn;
+        tree.setKernelOptions(kernelOptionsIn);
     }
 }
