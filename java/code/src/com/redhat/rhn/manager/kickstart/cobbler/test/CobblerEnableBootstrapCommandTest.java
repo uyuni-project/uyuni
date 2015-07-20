@@ -50,7 +50,7 @@ public class CobblerEnableBootstrapCommandTest extends BaseTestCaseWithUser {
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel("test-kernel")
                 .setInitrd("test-initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(new HashMap<String, Object>())
                 .build(connection);
         Profile profile = Profile.create(connection, Profile.BOOTSTRAP_NAME, distro);
         SystemRecord system = SystemRecord.create(connection, SystemRecord.BOOTSTRAP_NAME,

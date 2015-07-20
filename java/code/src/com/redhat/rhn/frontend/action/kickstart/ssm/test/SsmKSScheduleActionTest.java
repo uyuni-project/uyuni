@@ -76,7 +76,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .setName("test-distro")
                 .setKernel("kernel")
                 .setInitrd("initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(new HashMap<String, Object>())
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
         Server server1 = ServerTestUtils.createTestSystem(user,
@@ -192,7 +192,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .setName("test-distro")
                 .setKernel("kernel")
                 .setInitrd("initrd")
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(new HashMap<String, Object>())
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
 
