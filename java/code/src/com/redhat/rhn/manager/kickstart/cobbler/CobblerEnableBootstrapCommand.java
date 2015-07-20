@@ -104,7 +104,7 @@ public class CobblerEnableBootstrapCommand extends CobblerCommand {
                 .setName(Distro.BOOTSTRAP_NAME)
                 .setKernel(kernelPath)
                 .setInitrd(initrdPath)
-                .setKsmeta(new HashMap<>())
+                .setKsmeta(new HashMap<String, Object>())
                 .setBreed(config.getCobblerBootstrapBreed())
                 .setArch(config.getCobblerBootstrapArch())
                 .build(connection);
