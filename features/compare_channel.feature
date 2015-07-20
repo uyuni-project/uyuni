@@ -14,5 +14,5 @@ Feature: Compare Channels
     And I select "Clone 3 of SLES11-SP3-Updates x86_64 Channel" from "selected_channel"
     And I click on "View Packages"
     Then I should see a "andromeda-dummy" text
-    And I should see a "2.0-1.2" link
+    And I should see a "2.0-1.1" link
     And I should see a "This channel only" text
