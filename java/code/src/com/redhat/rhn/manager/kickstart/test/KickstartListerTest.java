@@ -147,8 +147,12 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
 
     public void testListCobblerProfiles() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
-        Distro distro = Distro.create(connection, "test-distro",
-            "test-kernel", "test-initrd", new HashMap(), null, null, null);
+        Distro distro = new Distro.Builder()
+                .setName("test-distro")
+                .setKernel("test-kernel")
+                .setInitrd("test-initrd")
+                .setKsmeta(new HashMap<String, Object>())
+                .build(connection);
         Profile.create(connection, "test-profile", distro);
         KickstartLister kickstartLister = KickstartLister.getInstance();
         List<CobblerProfileDto> profiles = kickstartLister.listCobblerProfiles(user);

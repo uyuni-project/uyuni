@@ -204,19 +204,26 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         k.setInstallType(installtype);
         k.setTreeType(treetype);
         k.setChannel(treeChannel);
+        k.setKernelOptions("");
+        k.setKernelOptionsPost("");
 
         createKickstartTreeItems(k);
 
-        Distro d = Distro.create(CobblerXMLRPCHelper.getConnection("test"), k.getLabel(),
-                k.getDefaultKernelPaths()[0], k.getDefaultInitrdPaths()[0], new HashMap(),
-                k.getInstallType().getCobblerBreed(),
-                k.getInstallType().getCobblerOsVersion(),
-                k.getChannel().getChannelArch().cobblerArch());
-        Distro xend = Distro.create(CobblerXMLRPCHelper.getConnection("test"),
-                k.getLabel(), k.getDefaultKernelPaths()[0], k.getDefaultInitrdPaths()[0],
-                new HashMap(), k.getInstallType().getCobblerBreed(),
-                k.getInstallType().getCobblerOsVersion(),
-                k.getChannel().getChannelArch().cobblerArch());
+        Distro.Builder builder = new Distro.Builder();
+
+        Distro d = builder.setName(k.getLabel())
+                .setKernel(k.getDefaultKernelPaths()[0])
+                .setInitrd(k.getDefaultInitrdPaths()[0])
+                .setKsmeta(new HashMap<String, Object>())
+                .setBreed(k.getInstallType().getCobblerBreed())
+                .setOsVersion(k.getInstallType().getCobblerOsVersion())
+                .setArch(k.getChannel().getChannelArch().cobblerArch())
+                .setKernelOptions(k.getKernelOptions())
+                .setKernelOptionsPost(k.getKernelOptionsPost())
+                .build(CobblerXMLRPCHelper.getConnection("test"));
+
+        Distro xend = builder.setKsmeta(new HashMap<String, Object>())
+                .build(CobblerXMLRPCHelper.getConnection("test"));
 
         k.setCobblerId(d.getUid());
         k.setCobblerXenId(xend.getUid());
