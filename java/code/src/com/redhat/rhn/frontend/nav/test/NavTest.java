@@ -153,7 +153,7 @@ public class NavTest extends RhnBaseTestCase {
         String curPath = "/rhn/help/dispatcher/reference_guide";
         nti.computeActiveNodes(curPath, lastPath);
         NavNode bestNode = nti.getBestNode();
-        assertEquals("/rhn/help/about.do", bestNode.getPrimaryURL());
+        assertEquals("/rhn/help/dispatcher/reference_guide", bestNode.getPrimaryURL());
     }
 
     public void testMatchByDir() throws Exception {
