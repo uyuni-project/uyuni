@@ -69,6 +69,9 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   PORT_HTTP_KEY=ssh_push_port_http
   PORT_HTTPS_KEY=ssh_push_port_https
 
+  # ssh-push sudo user
+  SUDO_USER_KEY=ssh_push_sudo_user
+
   # Read tunnel ports from configuration
   PATH_RHN_CONF=/etc/rhn/rhn.conf
   PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
@@ -93,6 +96,12 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   if [ -z "${PORT_HTTPS}" ]; then
     PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+  fi
+
+  # Same for sudo user 
+  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+  if [ -z "${PORT_HTTPS}" ]; then
+    SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   fi
 
   # Exit if we still don't have the ports
@@ -225,4 +234,3 @@ elif [ -n "${BOOTSTRAP}" ]; then
   ssh -i ${SSH_IDENTITY} root@${CLIENT} 'bash bootstrap.sh'
   exit_in_case_of_error
 fi
-
