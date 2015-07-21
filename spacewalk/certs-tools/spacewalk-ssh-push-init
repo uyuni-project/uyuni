@@ -202,9 +202,15 @@ if [ -f ~/.ssh/known_hosts ];then
 fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
-echo "* Pushing SSH key to '${CLIENT}', please login as root:"
+echo "* Pushing SSH key to '${CLIENT}', please login as ${user}:"
 ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
+
+# Check if sudo exists or if user has sudo access
+# Will fail if sudo isn't installed or user doesn't have sudo access
+ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} 'sudo -v'
+exit_in_case_of_error
+
 
 # Remove duplicate entries from authorized keys
 echo "* Removing duplicate host keys remotely"
