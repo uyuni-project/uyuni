@@ -45,7 +45,7 @@ Requires: jakarta-oro
 Requires: oro
 %endif
 #Requires: lucene
-%if 0%{?fedora} || 0%{?rhel} >=7
+%if 0%{?fedora} || 0%{?rhel} >=7 || 0%{?suse_version}
 Requires: mchange-commons
 Requires: objectweb-asm
 %else
