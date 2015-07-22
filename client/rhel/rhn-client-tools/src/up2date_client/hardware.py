@@ -35,7 +35,14 @@ t = gettext.translation('rhn-client-tools', fallback=True)
 _ = t.ugettext
 
 import dbus
-import dmidecode
+import platform
+
+if platform.processor() not in ['s390', 's390x']:
+    import dmidecode
+    _dmi_not_available = 0
+else:
+    _dmi_not_available = 1
+
 import up2dateLog
 
 try: # F13 and EL6
@@ -60,16 +67,18 @@ except ImportError:
 
 # this does not change, we can cache it
 _dmi_data           = None
-_dmi_not_available  = 0
 
 def dmi_warnings():
+    if _dmi_not_available:
+        return None
+
     if not hasattr(dmidecode, 'get_warnings'):
         return None
 
     return dmidecode.get_warnings()
 
 dmi_warn = dmi_warnings()
-if dmi_warn:
+if dmi_warn and not _dmi_not_available:
     dmidecode.clear_warnings()
     log = up2dateLog.initLog()
     log.log_debug("Warnings collected during dmidecode import: %s" % dmi_warn)
