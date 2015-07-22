@@ -682,12 +682,6 @@ is
                 ents_to_process.extend;
                 ents_to_process(ents_to_process.count) := 'sw_mgr_enterprise';
             end if;
-        elsif service_label_in = 'monitoring' then
-            ents_to_process.extend;
-            ents_to_process(ents_to_process.count) := 'rhn_monitor';
-
-            roles_to_process.extend;
-            roles_to_process(roles_to_process.count) := 'monitoring_admin';
         elsif service_label_in = 'virtualization' then
             ents_to_process.extend;
             ents_to_process(ents_to_process.count) := 'rhn_virtualization';
