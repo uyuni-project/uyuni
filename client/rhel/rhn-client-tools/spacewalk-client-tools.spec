@@ -58,7 +58,9 @@ Requires: newt
 Requires: newt-python
 %endif
 Requires: logrotate
+%ifnarch s390 s390x
 Requires: python-dmidecode
+%endif
 Requires: suseRegisterInfo
 %if 0%{?suse_version}
 Requires: zypper
