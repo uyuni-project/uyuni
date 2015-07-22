@@ -1,0 +1,9 @@
+[Unit]
+Description=Make sure that salt-master is started before httpd
+After=salt-master.service
+Before=httpd.service
+
+[Service]
+ExecStart=/bin/true
+Type=oneshot
+RemainAfterExit=yes
