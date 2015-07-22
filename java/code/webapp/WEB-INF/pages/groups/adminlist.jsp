@@ -49,7 +49,7 @@
          <rl:column sortable="false"
             bound="false"
             headerkey="realname.displayname" >
-            ${current.userLastName}, ${current.userFirstName}
+            <c:out escapeXml="true" value="${current.userLastName},${current.userFirstName}" />
          </rl:column>
 
          <rl:column sortable="true"
