@@ -690,10 +690,6 @@ as $$
             if enable_in = 'Y' then
                 ents_to_process := array_append(ents_to_process, 'sw_mgr_enterprise');
             end if;
-        elsif service_label_in = 'monitoring' then
-            ents_to_process := array_append(ents_to_process, 'rhn_monitor');
-
-            roles_to_process := array_append(roles_to_process, 'monitoring_admin');
         elsif service_label_in = 'virtualization' then
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization');
 
