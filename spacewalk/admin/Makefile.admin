@@ -43,7 +43,7 @@ CONF_FILES = service-list
 
 GPGKEY_FILES = RHN-GPG-KEY
 
-SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt-master.service \
+SYSTEMD_FILES = spacewalk.target spacewalk-wait-for-tomcat.service spacewalk-wait-for-salt.service \
 		spacewalk-wait-for-jabberd.service spacewalk-wait-for-taskomatic.service
 
 BIN_INSTALL    = install -m 755

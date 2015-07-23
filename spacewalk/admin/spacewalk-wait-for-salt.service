@@ -1,6 +1,7 @@
 [Unit]
-Description=Make sure that salt-master is started before httpd
+Description=Make sure that salt is started before httpd
 After=salt-master.service
+After=salt-api.service
 Before=httpd.service
 
 [Service]

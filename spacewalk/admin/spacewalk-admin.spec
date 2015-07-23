@@ -91,7 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %if 0%{?fedora} || 0%{?suse_version}
 %{_unitdir}/spacewalk.target
 %{_unitdir}/spacewalk-wait-for-tomcat.service
-%{_unitdir}/spacewalk-wait-for-salt-master.service
+%{_unitdir}/spacewalk-wait-for-salt.service
 %{_unitdir}/spacewalk-wait-for-jabberd.service
 %{_unitdir}/spacewalk-wait-for-taskomatic.service
 %endif
