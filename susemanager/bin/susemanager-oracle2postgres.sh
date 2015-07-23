@@ -257,6 +257,8 @@ upgrade_schema
 
 spacewalk-service stop
 
+change_value db_backend_target postgresql
+
 dump_schema
 
 switch_oracle2postgres
