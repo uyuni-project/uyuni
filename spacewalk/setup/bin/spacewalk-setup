@@ -157,6 +157,9 @@ final_db_config(\%opts, \%answers);
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
 
+print Spacewalk::Setup::loc("* Setting up Salt Master.\n");
+setup_salt_master(\%opts);
+
 if ($opts{'upgrade'}) {
   Spacewalk::Setup::postgresql_start() if (Spacewalk::Setup::is_embedded_db(\%opts));
 
@@ -316,6 +319,30 @@ sub setup_cobbler {
         system("chkconfig atftpd on");
       }
   }
+}
+
+sub setup_salt_master {
+    my $opts = shift;
+    # We might need port and host from the options/YaST answer file in a future.
+    my $salt_master = '/etc/salt/master';
+    open(SALT_MASTER, '>>', $salt_master) || die "Unable to open $salt_master file!";
+
+    # Setup cherrypy
+    print SALT_MASTER "rest_cherrypy:\n";
+    print SALT_MASTER "  port: 9080\n";
+    print SALT_MASTER "  host: 127.0.0.1\n";
+    print SALT_MASTER "  collect_stats: true\n";
+    print SALT_MASTER "  disable_ssl: true\n";
+    print SALT_MASTER "  ssl_crt: /etc/apache2/ssl.crt/spacewalk.crt\n";
+    print SALT_MASTER "  ssl_key: /etc/apache2/ssl.key/spacewalk.key\n";
+
+    # Setup API authentication
+    print SALT_MASTER "external_auth:\n";
+    print SALT_MASTER "  auto:\n";
+    print SALT_MASTER "    admin:\n";
+    print SALT_MASTER "      - .*\n";
+
+    close(SALT_MASTER);
 }
 
 sub setup_admin_email {
