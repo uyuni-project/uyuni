@@ -238,7 +238,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} '${SUDO_CMD} bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
@@ -247,6 +247,6 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} '${SUDO_CMD} bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
   exit_in_case_of_error
 fi
