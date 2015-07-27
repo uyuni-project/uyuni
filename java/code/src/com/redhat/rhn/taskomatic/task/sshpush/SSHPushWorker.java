@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.ChannelExec;
@@ -162,11 +163,10 @@ public class SSHPushWorker implements QueueWorker {
                 client = server.getIpAddress();
             }
 
-            String cfgSudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
-            if (cfgSudoUser != "" || cfgSudoUser != null) {
-                sudoUser = cfgSudoUser;
-            } else {
+            if (StringUtils.isEmpty(Config.get().getString(CONFIG_KEY_SUDO_USER))) {
                 sudoUser = null;
+            } else {
+                sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
             }
 
             if (log.isDebugEnabled()) {
