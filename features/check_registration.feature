@@ -10,7 +10,6 @@ Feature: Check client registration
     Given I update the profile of this client
     And I am on the Systems page
     And I follow "Systems" in the left menu
-    And I wait for "10" seconds
     When I follow this client link
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text

@@ -20,7 +20,6 @@ Feature: Test Powermanagement
     And I enter "admin" as "powerUsername"
     And I enter "admin" as "powerPassword"
     And I click on "Save"
-    And I wait for "60" seconds
     Then I should see a "Power settings saved" text
     And the cobbler report contains "Power Management Address       : 192.168.0.5"
     And the cobbler report contains "Power Management Password      : admin"
