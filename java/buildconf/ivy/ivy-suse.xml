@@ -21,10 +21,13 @@
         <dependency org="suse" name="commons-fileupload" rev="1.1.1" />
         <dependency org="suse" name="commons-httpclient" rev="3.1" />
         <dependency org="suse" name="commons-io" rev="1.3.2" />
+        <dependency org="suse" name="commons-jexl" rev="2.1.1" />
         <dependency org="suse" name="commons-lang" rev="2.6" />
+        <dependency org="suse" name="commons-lang3" rev="3.1" />
         <dependency org="suse" name="commons-logging" rev="1.1.3" />
         <dependency org="suse" name="commons-validator" rev="1.1.4" />
         <dependency org="suse" name="concurrent" rev="1.3.4" />
+        <dependency org="suse" name="concurrentlinkedhashmap-lru" rev="1.3.1" />
         <dependency org="suse" name="dom4j" rev="1.6.1" />
         <dependency org="suse" name="dwr" rev="3.0rc2+svn4059" />
         <dependency org="suse" name="ehcache" rev="1.2.3" />
@@ -33,7 +36,10 @@
         <dependency org="suse" name="google-gson" rev="2.3.1" />
         <dependency org="suse" name="gsbase" rev="2.0.1" />
         <dependency org="suse" name="hibernate3" rev="3.2.4" />
+        <dependency org="suse" name="httpclient" rev="4.5" />
+        <dependency org="suse" name="httpcore" rev="4.4.1" />
         <!-- dependency org="suse" name="imap" rev="1.3.1" /-->
+        <dependency org="suse" name="jade4j" rev="0.4.4-SNAPSHOT" />
         <dependency org="suse" name="jaf" rev="1.0.2" />
         <dependency org="suse" name="jasper" rev="8.0.23" />
         <dependency org="suse" name="jasper-el" rev="8.0.23" />
@@ -61,13 +67,16 @@
         <dependency org="suse" name="redstone-xmlrpc" rev="1.1_20071120" />
         <dependency org="suse" name="redstone-xmlrpc-client" rev="1.1_20071120" />
         <dependency org="suse" name="regexp" rev="1.4" />
+        <dependency org="suse" name="saltstack-netapi-client" rev="0.3.0" />
         <dependency org="suse" name="sitemesh" rev="2.1" />
         <dependency org="suse" name="simple-core" rev="3.1.3" />
         <dependency org="suse" name="simple-xml" rev="2.6.2" />
-        <!-- dependency org="suse" name="slf4j-api" rev="1.6.1" /-->
-        <!-- dependency org="suse" name="slf4j-log4j12" rev="1.5.10" /-->
+        <dependency org="suse" name="slf4j-api" rev="1.6.1" />
+        <dependency org="suse" name="slf4j-log4j12" rev="1.6.1" />
         <!-- dependency org="suse" name="smtp" rev="1.3.1" /-->
         <dependency org="suse" name="snakeyaml" rev="1.10" />
+        <dependency org="suse" name="spark-core" rev="2.2" />
+        <dependency org="suse" name="spark-template-jade" rev="1.0.0" />
         <dependency org="suse" name="stringtree-json" rev="2.0.9" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="strutstest" rev="2.1.3" />
