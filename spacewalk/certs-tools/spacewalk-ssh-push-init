@@ -100,7 +100,7 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
 
   # Same for sudo user 
   SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-  if [ -z "${PORT_HTTPS}" ]; then
+  if [ -z "${SUDO_USER}" ]; then
     SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   fi
 
