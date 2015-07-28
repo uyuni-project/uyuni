@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Jul 28 16:12:42 CEST 2015 - mc@suse.de
+
+- version 2.1.20-1
+- add bootstrap data for SLES11 SP4 (bsc#939707)
+- add bootstrap data for SLES4SAP-11-SP4 (bsc#939699)
+- correctly initialize db_backend_target before db dump (bsc#937943)
+
+-------------------------------------------------------------------
 Mon Jun 22 15:45:58 CEST 2015 - jrenner@suse.de
 
 - version 2.1.19-1
