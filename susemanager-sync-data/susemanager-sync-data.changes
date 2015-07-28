@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jul 28 16:13:40 CEST 2015 - mc@suse.de
+
+- version 2.1.8-1
+- add channels for SLES for SAP 11 SP4 (bsc#939699)
+- Add support for Container Module (bsc#936071)
+
+-------------------------------------------------------------------
 Tue Jun 02 16:08:13 CEST 2015 - mc@suse.de
 
 - version 2.1.7-1
