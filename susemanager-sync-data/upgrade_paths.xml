@@ -89,6 +89,7 @@
 	<upgrade from_pdid="1107" from_product="sle-haegeo-11.3-None.x86_64" to_pdid="1286" to_product="sle-haegeo-11.4-None.x86_64"/>
 	<upgrade from_pdid="1110" from_product="sle-haegeo-11.3-None.s390x" to_pdid="1287" to_product="sle-haegeo-11.4-None.s390x"/>
 	<upgrade from_pdid="1130" from_product="SUSE_SLES_SAP-11.2-None.None" to_pdid="1131" to_product="SUSE_SLES_SAP-11.3-None.None"/>
+	<upgrade from_pdid="1131" from_product="SUSE_SLES_SAP-11.3-None.None" to_pdid="1329" to_product="SUSE_SLES_SAP-11.4-None.x86_64"/>
 	<upgrade from_pdid="1159" from_product="sle-sdk-11.1-None.None" to_pdid="1160" to_product="sle-sdk-11.2-None.None"/>
 	<upgrade from_pdid="1160" from_product="sle-sdk-11.2-None.None" to_pdid="1161" to_product="sle-sdk-11.3-None.None"/>
 	<upgrade from_pdid="1161" from_product="sle-sdk-11.3-None.None" to_pdid="1320" to_product="sle-sdk-11.4-None.None"/>
