@@ -159,6 +159,26 @@ DATA = {
                           'PDID' : 814, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
+    'SLE-11-SP4-i586' : {
+                          'PDID' : {'NCC' : 4660 , 'SCC' : 1299}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
+    'SLE-11-SP4-ia64' : {
+                          'PDID' : {'NCC' : 4664 , 'SCC' : 1302}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
+    'SLE-11-SP4-ppc64' : {
+                          'PDID' : {'NCC' : 4663 , 'SCC' : 1301}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
+    'SLE-11-SP4-s390x' : {
+                          'PDID' : {'NCC' : 4665 , 'SCC' : 1303}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
+    'SLE-11-SP4-x86_64' : {
+                          'PDID' : {'NCC' : 4662 , 'SCC' : 1300}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
     'SLE-10-SP3-i586' : {
                           'PDID' : 785, 'PKGLIST' : PKGLIST10,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/10/3/bootstrap/'
