@@ -1,7 +1,14 @@
 #!/bin/bash
 
-# Database schema creation
+
 cd /manager/susemanager-utils/testing/docker/scripts/
+# Move Postgres database to tmpfs to speed initialization and testing up
+if [ ! -z $PG_TMPFS_DIR ]; then
+    trap "umount $PG_TMPFS_DIR" EXIT INT TERM
+    ./docker-testing-pgsql-move-data-to-tmpfs.sh $PG_TMPFS_DIR
+fi
+
+# Database schema creation
 ./reset_pgsql_database.sh
 
 # SUSE Manager initialization
@@ -18,4 +25,3 @@ ant -f manager-build.xml refresh-branding-jar test
 
 # Postgres shutdown (avoid stale memory by shmget())
 rcpostgresql stop ||:
-
