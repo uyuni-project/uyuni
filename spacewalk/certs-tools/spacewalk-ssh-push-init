@@ -63,18 +63,15 @@ if [ ${?} -ne '0' ]; then
   exit 1
 fi
 
+# Read tunnel ports from configuration
+PATH_RHN_CONF=/etc/rhn/rhn.conf
+PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
+
 # Init tunnel setup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   # Tunnel port config keys
   PORT_HTTP_KEY=ssh_push_port_http
   PORT_HTTPS_KEY=ssh_push_port_https
-
-  # ssh-push sudo user
-  SUDO_USER_KEY=ssh_push_sudo_user
-
-  # Read tunnel ports from configuration
-  PATH_RHN_CONF=/etc/rhn/rhn.conf
-  PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
 
   # Check config files existence
   if [ ! -f "${PATH_RHN_CONF}" ]; then
@@ -98,26 +95,10 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
     PORT_HTTPS=$( grep -E -m1 "^${PORT_HTTPS_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${PORT_HTTPS_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
   fi
 
-  # Same for sudo user 
-  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-  if [ -z "${SUDO_USER}" ]; then
-    SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
-  fi
-
   # Exit if we still don't have the ports
   if [ -z "${PORT_HTTP}" -o -z "${PORT_HTTPS}" ]; then
     echo "ERROR: Server push configuration not found, please update."
     exit 1
-  fi
-
-  # Set the sudo command, it'll be blank if no sudo user was set
-  # Set the user variable, defaults to root if no sudo user is set
-  if [ -z "${SUDO_USER}" ]; then
-    SUDO_CMD=
-    USER=root
-  else
-    SUDO_CMD=sudo
-    USER=${SUDO_USER}
   fi
 
   # Generating the enablement script
@@ -152,6 +133,25 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   sed -i "s/\(proxyPassword=\).*/\1/" ${PATH_OVERRIDES}
   sed -i "s/\(proxyUser=\).*/\1/" ${PATH_OVERRIDES}
   sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
+fi
+
+# ssh-push sudo user
+SUDO_USER_KEY=ssh_push_sudo_user
+
+# Same for sudo user
+SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Set the sudo command, it'll be blank if no sudo user was set
+# Set the user variable, defaults to root if no sudo user is set
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_CMD=
+  USER=root
+else
+  SUDO_CMD=sudo
+  USER=${SUDO_USER}
 fi
 
 # Prepare the bootstrap script used for registration
