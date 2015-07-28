@@ -4,6 +4,12 @@ set -e
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 
+# Move Postgres database to tmpfs to speed initialization and testing up
+if [ ! -z $PG_TMPFS_DIR ]; then
+    trap "umount $PG_TMPFS_DIR" EXIT INT TERM
+    ./docker-testing-pgsql-move-data-to-tmpfs.sh $PG_TMPFS_DIR
+fi
+
 # Database schema creation
 
 rpm -ivh /root/susemanager-schema-2.1.50.5-0.7.1.noarch.rpm
