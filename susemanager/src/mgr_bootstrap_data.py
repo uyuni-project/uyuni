@@ -207,6 +207,14 @@ DATA = {
                           'PDID' : 1131, 'PKGLIST' : PKGLIST11,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/3/bootstrap/'
                         },
+    'SLES4SAP-11-SP4-x86_64' : {
+                          'PDID' : {'NCC' : 4880 , 'SCC' : 1329}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
+    'SLES4SAP-11-SP4-ppc64' : {
+                          'PDID' : {'NCC' : 4881 , 'SCC' : 1331}, 'PKGLIST' : PKGLIST11,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/11/4/bootstrap/'
+                        },
     'SLE-12-ppc64le' : {
                           'PDID' : 1116, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
