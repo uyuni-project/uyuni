@@ -247,6 +247,11 @@ class Runner(jabber_lib.Runner):
             config = self.read_config()
             raise jabber_lib.NeedRestart
 
+        # make sure that dispatchers are not stuck in state [none + ask] or [from + ask]
+        # for too long. This can happen, for example, if a "subscribe" presence stanza
+        # gets lost - in that case re-send it
+        client.unstick_contacts(self._dispatchers)
+
         client.process(timeout=180)
 
     def read_config(self):
