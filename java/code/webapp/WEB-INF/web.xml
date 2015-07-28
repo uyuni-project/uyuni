@@ -78,6 +78,15 @@
     </init-param>
   </filter>
 
+  <filter>
+    <filter-name>SparkFilter</filter-name>
+    <filter-class>spark.servlet.SparkFilter</filter-class>
+    <init-param>
+      <param-name>applicationClass</param-name>
+      <param-value>com.suse.manager.webui.Router</param-value>
+    </init-param>
+  </filter>
+
   <!--
    =======================================
               FILTER MAPPINGS
@@ -149,6 +158,11 @@
   <filter-mapping>
     <filter-name>RedirectFilter</filter-name>
     <url-pattern>/Redirect/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>SparkFilter</filter-name>
+    <url-pattern>/manager/*</url-pattern>
   </filter-mapping>
 
   <!--
