@@ -312,7 +312,7 @@ def build_channel_labels(source):
         date_string = time.strftime('%Y%m%d', time.gmtime())
         destination = 'archive{dlm}{date}{dlm}{src}'.format(dlm=options.delimiter, date=date_string, src=source)
     elif options.init:
-        destination = '%s%s%s' % (phases[0],options.delimiter,source)
+        destination = '{phase}{dlm}{src}'.format(phase=phases[0], dlm=options.delimiter, src=source)
 
         if channel_exists(destination, quiet=True):
             logging.error('%s already exists.  Use --promote instead.'
@@ -329,7 +329,7 @@ def build_channel_labels(source):
                                  '%s' % next_phase,
                                  source)
         else:
-            destination = '%s%s%s' % (phases[0],options.delimiter,source)
+            destination = '{phase}{dlm}{src}'.format(phase=phases[0], dlm=options.delimiter, src=source)
     elif options.rollback:
         # strip off the archive prefix when rolling back
         destination = re.sub('archive-\d{8}-', '', source)
