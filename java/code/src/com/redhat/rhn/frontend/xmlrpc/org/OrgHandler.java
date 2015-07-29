@@ -90,6 +90,7 @@ public class OrgHandler extends BaseHandler {
     private static final String FREE_KEY = "free";
     private static Logger log = Logger.getLogger(OrgHandler.class);
 
+    @Override
     protected boolean availableInRestrictedPeriod() {
         return true;
     }
@@ -194,7 +195,9 @@ public class OrgHandler extends BaseHandler {
      * @xmlrpc.doc Returns the list of organizations.
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.returntype
-     * $OrgDtoSerializer
+     *   #array()
+     *     $OrgDtoSerializer
+     *   #array_end()
      */
     public List<OrgDto> listOrgs(User loggedInUser) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
@@ -1159,6 +1162,118 @@ public class OrgHandler extends BaseHandler {
                 orgConfig.setScapRetentionPeriodDays(retentionPeriod);
             }
         }
+        return 1;
+    }
+
+    /**
+     * Returns whether Organization Administrator is able to manage his organization
+     * configuration. This organization configuration may have a high impact on the whole
+     * Spacewalk/Satellite performance
+     *
+     * @param loggedInUser The current user
+     * @param orgId affected organization
+     * @return Returns the status org admin management setting
+     *
+     * @xmlrpc.doc Returns whether Organization Administrator is able to manage his
+     * organization configuration. This organization configuration may have a high impact
+     * on the whole Spacewalk/Satellite performance
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype boolean - Returns the status org admin management setting
+     */
+    public boolean isOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId) {
+        verifyManagesOrgConfig(loggedInUser, orgId);
+        Org org = verifyOrgExists(orgId);
+        return org.getOrgAdminMgmt().isEnabled();
+    }
+
+    /**
+     * Sets whether Organization Administrator can manage his organization configuration
+     *
+     * @param loggedInUser The current user
+     * @param orgId affected organization id
+     * @param enable boolean to indicate permissions of Organization Administrator to manage
+     * organization configuration
+     * @return Returns 1 for successful change, exception otherwise
+     *
+     * @xmlrpc.doc Sets whether Organization Administrator can manage his organization
+     * configuration. This organization configuration may have a high impact
+     * on the whole Spacewalk/Satellite performance
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer setOrgConfigManagedByOrgAdmin(User loggedInUser, Integer orgId,
+                                      Boolean enable) {
+        ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
+        Org org = verifyOrgExists(orgId);
+        org.getOrgAdminMgmt().setEnabled(enable);
+
+        return 1;
+    }
+
+    /**
+     * verifies the user can manage org configuration
+     * - either he's a sat admin
+     * - or he's an org admin and OrgAdminManagement is set for the org
+     */
+    private boolean verifyManagesOrgConfig(User user, Integer orgId)
+            throws PermissionCheckFailureException {
+        Org org = verifyOrgExists(orgId);
+        if (user.hasRole(RoleFactory.SAT_ADMIN) ||
+                user.hasRole(RoleFactory.ORG_ADMIN) && org.getOrgAdminMgmt().isEnabled()) {
+            return true;
+        }
+        throw new PermissionCheckFailureException();
+    }
+
+    /**
+     * Returns whether errata e-mail notifications are enabled for the organization
+     *
+     * @param loggedInUser The current user
+     * @param orgId affected organization
+     * @return Returns the status of the errata e-mail notification setting
+     * for the organization
+     *
+     * @xmlrpc.doc Returns whether errata e-mail notifications are enabled
+     * for the organization
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.returntype boolean - Returns the status of the errata e-mail notification
+     * setting for the organization
+     */
+    public boolean isErrataEmailNotifsForOrg(User loggedInUser, Integer orgId) {
+        verifyManagesOrgConfig(loggedInUser, orgId);
+        Org org = verifyOrgExists(orgId);
+        return org.getOrgConfig().isErrataEmailsEnabled();
+    }
+
+    /**
+     * Dis/enables errata e-mail notifications for the organization
+     *
+     * @param loggedInUser The current user
+     * @param orgId affected organization id
+     * @param enable boolean to indicate errata e-mail notifications are enabled
+     * for the organization
+     * @return Returns 1 for successful change, exception otherwise
+     *
+     * @xmlrpc.doc Dis/enables errata e-mail notifications for the organization
+     *
+     * @xmlrpc.param #param("string", "sessionKey")
+     * @xmlrpc.param #param("int", "orgId")
+     * @xmlrpc.param #param_desc("boolean", "enable", "Use true/false to enable/disable")
+     * @xmlrpc.returntype #return_int_success()
+     */
+    public Integer setErrataEmailNotifsForOrg(User loggedInUser, Integer orgId,
+                                      Boolean enable) {
+        verifyManagesOrgConfig(loggedInUser, orgId);
+        Org org = verifyOrgExists(orgId);
+        org.getOrgConfig().setErrataEmailsEnabled(enable);
+
         return 1;
     }
 }

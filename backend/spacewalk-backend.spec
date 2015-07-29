@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.8
+Version: 2.4.10
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -323,10 +323,7 @@ Requires: pyliblzma
 Requires: mod_ssl
 %endif
 Requires: %{name}-xml-export-libs
-Requires: cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
-%endif
+Requires: cobbler20
 Requires: rhnlib  >= 2.5.57
 Obsoletes: rhns-satellite-tools < 5.3.0
 Obsoletes: spacewalk-backend-satellite-tools <= 0.2.7
@@ -812,6 +809,17 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.10-1
+- require cobbler20 - Spacewalk is not working with upstream cobbler anyway
+- remove un-intentional changes
+- 1181152 - XSS when altering user details and going somewhere where you are
+  choosing user         - Escaped tags in real names
+
+* Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.9-1
+- remove Except KeyboardInterrupt from imports
+- remove Except KeyboardInterrupt from imports
+- remove un-necessary try-except construct
+
 * Fri Jun 26 2015 Jan Dobes 2.4.8-1
 - 1235827 - there is no such restriction for user names
 

@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.4.5
+Version:	2.4.10
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -31,10 +31,7 @@ BuildRequires:  spacewalk-backend-tools >= 1.7.24
 %endif
 
 Requires:       bash
-Requires:       cobbler
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
-%endif
+Requires:       cobbler20
 Requires:       coreutils
 %if ! 0%{?suse_version}
 Requires:       initscripts
@@ -120,6 +117,24 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Jul 28 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.10-1
+- prevent infinte recursion cycles in spacewalk-clone-by-date
+- remove unused variable
+
+* Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.9-1
+- require cobbler20 - Spacewalk is not working with upstream cobbler anyway
+
+
+* Tue Jul 14 2015 Jiri Dostal <jdostal@redhat.com> 2.4.8-1
+- Bug 1077770 - Added error messages and fixed error codes
+
+* Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.7-1
+- satisfy pylint
+
+* Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.6-1
+- remove Except KeyboardInterrupt from imports
+- don't add newer errata when processing dependencies
+
 * Fri Jun 26 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.5-1
 - Recommend cobbler20 with all packages requiring cobbler on Fedora 22
 

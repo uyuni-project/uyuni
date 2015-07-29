@@ -330,7 +330,7 @@ def registerSystemAddProductProfile( server, data ):
 	data["suse_products"] = getProductProfile()
 
 def registerSystem(username = None, password = None,
-                   profileName = None, packages = None,
+                   profileName = None,
                    token = None, other = None):
     """Wrapper for the old xmlrpc to register a system. Activates subscriptions
     if a reg num is given.
@@ -355,11 +355,7 @@ def registerSystem(username = None, password = None,
 
     s = rhnserver.RhnServer()
     registerSystemAddProductProfile( s, auth_dict )
-
-    if packages == None:
-        ret = s.registration.new_system(auth_dict)
-    else:
-        ret = s.registration.new_system(auth_dict, packages)
+    ret = s.registration.new_system(auth_dict)
 
     return ret
 

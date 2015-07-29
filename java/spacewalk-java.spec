@@ -32,7 +32,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.29
+Version: 2.4.42
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -44,10 +44,7 @@ ExcludeArch: ia64
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
-Requires: cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
-%endif
+Requires: cobbler20
 Requires: dojo
 Requires: dwr >= 3
 Requires: google-gson >= 2.2.4
@@ -373,10 +370,7 @@ Requires: cglib
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
-Requires: cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
-%endif
+Requires: cobbler20
 Requires: concurrent
 Requires: jakarta-taglibs-standard
 Requires: java >= 0:1.6.0
@@ -954,6 +948,68 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Fri Jul 24 2015 Jan Dobes 2.4.42-1
+- adding link to reposync logs
+- adding progress bar showing sync status
+- disable sync button and show message if reposync is in progress
+- Sort api list
+- Remove test handler from API
+
+* Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.41-1
+- require cobbler20 - Spacewalk is not working with upstream cobbler anyway
+
+* Wed Jul 22 2015 Jiri Dostal <jdostal@redhat.com> 2.4.40-1
+- 1181152 - XSS when altering user details and going somewhere where you are
+  choosing user         - Escaped tags in real names
+- Make RhnServletListenerTest not extend RhnBaseTestCase
+
+* Tue Jul 21 2015 Tomas Lestach <tlestach@redhat.com> 2.4.39-1
+- introduce org.setErrataEmailNotifsForOrg and org.isErrataEmailNotifsForOrg
+  API calls
+
+* Mon Jul 20 2015 Tomas Lestach <tlestach@redhat.com> 2.4.38-1
+- introduce org.setOrgConfigManagedByOrgAdmin and
+  org.isOrgConfigManagedByOrgAdmin API calls
+
+* Mon Jul 20 2015 Tomas Lestach <tlestach@redhat.com> 2.4.37-1
+- update organization configuration description
+- spacewalk/satellite admin may allow org admin to manage org configuration
+- re-use same org config jsp code
+- introduce errata_emails_enabled per org
+- make the Organization Configuration pages available also to org amin
+- Fix docs
+
+* Wed Jul 15 2015 Jan Dobes 2.4.36-1
+- prevent ISE if taskomatic is not running
+- get files only for correct channel
+
+* Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.35-1
+- allow to change 1st organization name
+
+* Mon Jul 13 2015 Jan Dobes 2.4.34-1
+- properly close 'a' tag
+- removing dead code
+- do not try to translate certain messages several times
+
+* Mon Jul 13 2015 Matej Kollar <mkollar@redhat.com> 2.4.33-1
+- Grammar fix
+
+* Fri Jul 10 2015 Tomas Lestach <tlestach@redhat.com> 2.4.32-1
+- 1235955 - fix detection of systems requiring reboot
+
+* Thu Jul 09 2015 Jiri Dostal <jdostal@redhat.com> 2.4.31-1
+- Bug 1098804 - fixed broken link, labels
+
+* Thu Jul 09 2015 Tomas Lestach <tlestach@redhat.com> 2.4.30-1
+- log debug messages only if debug is enabled
+- Fix queue size: consider possible remainders from last run
+- Log message when finished errata cache for a server or channel
+- Remove some duplicated empty lines
+- Remove unused return value that was always null
+- Remove unused parameter to TaskQueue.run()
+- Log the current queue size before every job run (DEBUG)
+- Fix log message when finished with server
+
 * Fri Jul 03 2015 Jan Dobes 2.4.29-1
 - removing dead code
 - fixing system.listUngroupedSystems API

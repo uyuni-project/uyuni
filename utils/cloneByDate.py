@@ -318,6 +318,7 @@ class ChannelTreeCloner:
         self.use_update_date = use_update_date
         self.no_errata_sync = no_errata_sync
         self.solver = None
+        self.visited = {}
 
         self.validate_source_channels()
         for from_label in self.ordered_labels():
@@ -504,9 +505,13 @@ class ChannelTreeCloner:
         self.process_deps(dep_results)
 
     def process_deps(self, deps):
+        list_to_set = lambda x: set(map(lambda y: tuple(y), x))
         needed_list = dict((channel[0], [])
                            for channel in self.channel_map.values())
-        unsolved_deps = []
+        for cloner in self.cloners:
+            if not cloner.dest_label() in self.visited:
+                self.visited[cloner.dest_label()] = list_to_set(needed_list[cloner.dest_label()])
+            self.visited[cloner.dest_label()] |= list_to_set(needed_list[cloner.dest_label()])
 
         print('Processing Dependencies:')
         pb = ProgressBar(prompt="", endTag=' - complete',
@@ -519,21 +524,19 @@ class ChannelTreeCloner:
             pb.addTo(1)
             pb.printIncrement()
             for solved_list in pkg.values():
-                found = False
                 for cloner in self.cloners:
-                    exists_from = cloner.src_pkg_exist(solved_list)
-                    exists_to = cloner.dest_pkg_exist(solved_list)
-                    if exists_from and not exists_to:
+                    if cloner.src_pkg_exist(solved_list) and not cloner.dest_pkg_exist(solved_list):
                         #grab oldest package
                         needed_list[cloner.dest_label()].append(solved_list[0])
-                    elif exists_from:
-                        found = True
-                if not found:
-                    unsolved_deps.append((pkg))
 
         added_nevras = []
         for cloner in self.cloners:
             needed = needed_list[cloner.dest_label()]
+            needed_str = list_to_set(needed)
+            for needed_pkg in needed_str:
+                if needed_pkg in self.visited[cloner.dest_label()]:
+                    needed.remove(list[needed_pkg])
+            self.visited[cloner.dest_label()] |= needed_str
             if len(needed) > 0:
                 added_nevras = added_nevras + cloner.process_deps(needed)
 
@@ -622,14 +625,11 @@ class ChannelCloner:
     def process_deps(self, needed_pkgs):
         needed_ids = []
         needed_names = []
-        unsolved_deps = []
         for pkg in needed_pkgs:
             found = self.src_pkg_exist([pkg])
             if found:
                 needed_ids.append(found['id'])
                 needed_names.append(found['nvrea'])
-            else:
-                unsolved_deps.append(pkg)
 
         needed_errata = []
         still_needed_pids = []
@@ -638,9 +638,10 @@ class ChannelCloner:
                 errata_list = self.remote_api.list_providing_errata(pid)
                 for erratum in errata_list:
                     if erratum['advisory'] in self.original_errata:
-                        self.original_pid_errata_map[pid] = \
-                            erratum['advisory']
-                        break
+                        if not self.to_date or (self.to_date and \
+    datetime.datetime.strptime(erratum[self.use_update_date], '%Y-%m-%d %H:%M:%S').date() <= self.to_date.date()):
+                            self.original_pid_errata_map[pid] = erratum['advisory']
+                            break
                 else:  # no match found, store so we don't repeat search
                     self.original_pid_errata_map[pid] = None
             if self.original_pid_errata_map[pid] != None:

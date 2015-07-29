@@ -4,7 +4,7 @@ Name:           susemanager-schema
 Group:          Applications/Internet
 Summary:        Oracle SQL schema for Spacewalk server
 
-Version:        2.4.15
+Version:        2.4.18
 Release:        1%{?dist}
 Source0:        %{name}-%{version}.tar.gz
 Source1:        %{name}-rpmlintrc
@@ -78,6 +78,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Thu Jul 23 2015 Tomas Lestach <tlestach@redhat.com> 2.4.18-1
+- unify schema comment message
+
+* Wed Jul 22 2015 Tomas Lestach <tlestach@redhat.com> 2.4.17-1
+- update the oracle equivalent sha1s
+- removing outdated revision information for schema files
+
+* Mon Jul 20 2015 Tomas Lestach <tlestach@redhat.com> 2.4.16-1
+- ensure appropriate table entries are avaialble for newly created
+  organizations
+- introduce rhnOrgAdminManagement table
+- add errata_emails_enabled column to the rhnOrgConfiguration table
+
 * Tue Jun 30 2015 Grant Gainey 2.4.15-1
 - 1234604 - teach oracle to do update_needed_cache async as well
 

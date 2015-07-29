@@ -46,147 +46,52 @@ function modifyUploadCheckbox(checkbox) {
 
     <rhn:dialogmenu mindepth="0" maxdepth="2" definition="/WEB-INF/nav/org_tabs.xml" renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4><bean:message key="orgconfig.jsp.header"/></h4>
+    <form method="post"
+      class="form-horizontal"
+      action="/rhn/admin/multiorg/OrgConfigDetails.do">
+      <rhn:csrf />
+      <rhn:submitted/>
+      <input type="hidden" name="oid" value="${param.oid}"/>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4><bean:message key="satconfig.jsp.header"/></h4>
+        </div>
+        <div class="panel-body">
+          <p><bean:message key="satconfig.jsp.description"/></p>
+          <hr />
+          <div class="form-group">
+            <label class="col-lg-3 control-label">
+              <bean:message key="org-config.orgadm-mgmt.jsp"/>
+            </label>
+            <div class="col-lg-6">
+              <div class="checkbox">
+                <input type="checkbox" name="org_admin_mgmt"
+                  value="enabled" id="org_admin_mgmt"
+                <c:if test = "${org.orgAdminMgmt.enabled}">
+                  checked="checked"
+                </c:if>/>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-        <p><bean:message key="orgconfig.jsp.description"/></p>
-        <hr />
-          <form method="post"
-          class="form-horizontal"
-          action="/rhn/admin/multiorg/OrgConfigDetails.do">
-            <rhn:csrf />
-            <rhn:submitted/>
-            <input type="hidden" name="oid" value="${param.oid}"/>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.staging-content.jsp"/>
-                </label>
-                <div class="col-lg-6">
-                    <div class="checkbox">
-                        <input type="checkbox" name="staging_content_enabled"
-                               value="enabled" id="staging_content_enabled"
-                               <c:if test = "${org.orgConfig.stagingContentEnabled}">
-                                   checked="checked"
-                               </c:if>/>
-                    </div>
-                </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4><bean:message key="orgconfig.jsp.header"/></h4>
+        </div>
+        <div class="panel-body">
+          <p><bean:message key="orgconfig.jsp.description"/></p>
+          <hr />
+	  <%@ include file="/WEB-INF/pages/common/fragments/org-config.jspf" %>
+          <div class="form-group">
+            <div class="col-lg-offset-3 col-lg-6">
+              <html:submit styleClass="btn btn-success">
+                <bean:message key="orgdetails.jsp.submit"/>
+              </html:submit>
             </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.crash-reporting.jsp"/>
-                </label>
-                <div class="col-lg-6">
-                    <div class="checkbox">
-                        <input type="checkbox"
-                               name="crash_reporting_enabled"
-                               value="enabled"
-                               id="crash_reporting_enabled"
-                               onChange="modifyUploadCheckbox(this)"
-                               <c:if test = "${org.orgConfig.crashReportingEnabled}">
-                                   checked="checked"
-                               </c:if>/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.crashfile-upload.jsp"/>
-                </label>
-                <div class="col-lg-6">
-                    <div class="checkbox">
-                        <input type="checkbox"
-                               name="crashfile_upload_enabled"
-                               value="enabled"
-                               id="crashfile_upload_enabled"
-                               <c:if test = "${not org.orgConfig.crashReportingEnabled}">
-                                   disabled="true"
-                               </c:if>
-                               <c:if test = "${org.orgConfig.crashfileUploadEnabled}">
-                                   checked="checked"
-                               </c:if>/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.crashfile-sizelimit.jsp"/>:
-                </label>
-                <div class="col-lg-2">
-                    <input type="number"
-                           class="form-control"
-                           name="crashfile_sizelimit"
-                           value="${org.orgConfig.crashFileSizelimit}"
-                           id="crashfile_sizelimit" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.scapfile-upload.jsp"/>
-                </label>
-                <div class="col-lg-6">
-                    <div class="checkbox">
-                        <input type="checkbox"
-                               name="scapfile_upload_enabled"
-                               value="enabled"
-                               id="scapfile_upload_enabled"
-                               <c:if test = "${org.orgConfig.scapfileUploadEnabled}">
-                                   checked="checked"
-                               </c:if>/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.scapfile-sizelimit.jsp"/>:
-                </label>
-                <div class="col-lg-2">
-                    <input type="number"
-                           class="form-control"
-                           name="scapfile_sizelimit"
-                           value="${org.orgConfig.scapFileSizelimit}"
-                           id="scapfile_sizelimit" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.scap-retention"/>
-                </label>
-                <div class="col-lg-6">
-                    <div class="checkbox">
-                        <input type="checkbox"
-                               name="scap_retention_set"
-                               value="on"
-                               id="scap_retention_set"
-                               onChange="modifyTrVisibility('tr_scap_retention')"
-                               <c:if test = "${org.orgConfig.scapRetentionPeriodDays != null}">
-                                   checked="checked"
-                               </c:if>/>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-lg-3 control-label">
-                    <bean:message key="org-config.scap-retention-period"/>:
-                </label>
-                <div class="col-lg-2">
-                    <input type="number"
-                           class="form-control"
-                           name="scap_retention_period"
-                           value="${org.orgConfig.scapRetentionPeriodDays == null ? 90 : org.orgConfig.scapRetentionPeriodDays}"
-                           id="scap_retention_period" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-offset-3 col-lg-6">
-                    <html:submit styleClass="btn btn-success">
-                        <bean:message key="orgdetails.jsp.submit"/>
-                    </html:submit>
-                </div>
-            </div>
-        </form>
+          </div>
+        </div>
       </div>
-    </div>
+    </form>
 </body>
 </html:html>
