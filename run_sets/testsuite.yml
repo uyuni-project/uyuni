@@ -1,4 +1,5 @@
 --- # List of features for a full test run
+- features/salt.feature
 - features/init_user_create.feature
 - features/setup_proxy.feature
 - features/running.feature
