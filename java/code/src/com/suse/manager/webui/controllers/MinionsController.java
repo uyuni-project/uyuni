@@ -44,7 +44,7 @@ public class MinionsController {
             client = new SaltStackClient(new URI(saltMasterURI));
             client.login(user.getLogin(), user.getPassword(), AuthModule.AUTO);
             Keys keys = client.keys();
-            client.logout();
+            client.logoutAsync();
             return keys;
         } catch (URISyntaxException | SaltStackException e) {
             throw new RuntimeException(e);
