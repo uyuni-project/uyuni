@@ -21,13 +21,16 @@ import javax.servlet.http.HttpSession;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
 
+/**
+ * Central class providing generic methods to handle requests.
+ */
 public final class Spark {
 
     // Define the template root
     private static final String templateRoot = "com/suse/manager/webui/templates";
 
     /**
-     * Responds to a GET with a jade template
+     * Respond to a GET request with a jade template.
      *
      * @param path the path
      * @param route the route

@@ -25,7 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * MinionsController class defining backend methods for the minions page.
+ * Controller class providing backend code for the minions page.
  */
 public class MinionsController {
 
@@ -33,7 +33,7 @@ public class MinionsController {
     private String saltMasterURI = "http://localhost:9080";
 
     /**
-     * Get salt keys with their status.
+     * Get the minion keys from salt-api with their respective status.
      *
      * @param user the user to use for connecting to salt-api
      * @return the keys with their respective status as returned from salt-api
