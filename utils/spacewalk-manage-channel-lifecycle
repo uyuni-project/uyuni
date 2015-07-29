@@ -334,7 +334,7 @@ def build_channel_labels(source):
         # strip off the archive prefix when rolling back
         destination = re.sub('archive-\d{8}-', '', source)
 
-    return (source, destination)
+    return source, destination
 
 ##############################################################################
 
