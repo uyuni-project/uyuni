@@ -309,9 +309,9 @@ def build_channel_labels(source):
     if options.archive:
         # prefix the existing channel with 'archive-YYYYMMDD-'
         date_string = time.strftime('%Y%m%d', time.gmtime())
-        destination = 'archive-%s-%s' % (date_string, source)
+        destination = 'archive-%s%s%s' % (date_string, options.delimiter, source)
     elif options.init:
-        destination = '%s-%s' % (phases[0], source)
+        destination = '%s%s%s' % (phases[0],options.delimiter,source)
 
         if channel_exists(destination, quiet=True):
             logging.error('%s already exists.  Use --promote instead.'
@@ -328,7 +328,7 @@ def build_channel_labels(source):
                                  '%s' % next_phase,
                                  source)
         else:
-            destination = '%s-%s' % (phases[0], source)
+            destination = '%s%s%s' % (phases[0],options.delimiter,source)
     elif options.rollback:
         # strip off the archive prefix when rolling back
         destination = re.sub('archive-\d{8}-', '', source)
@@ -361,6 +361,8 @@ option_list = [
     Option('', '--init', help='initialize a development channel',
            action='store_true'),
     Option('-w', '--workflow', help='use configured workflow', default=""),
+    Option('-D', '--delimiter', type='choice', choices=['-', '_',],
+           help='delimiter used between workflowe and channel name', default="-"),
     Option('-f', '--list-workflows', help='list configured workflows', default=False,
            action='store_true'),
     Option('', '--promote', help='promote a channel to the next phase',
