@@ -17,7 +17,7 @@ package com.suse.manager.webui;
 import static com.suse.manager.webui.Spark.get;
 import static spark.Spark.exception;
 
-import com.suse.manager.controllers.MinionsController;
+import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import org.apache.log4j.Logger;

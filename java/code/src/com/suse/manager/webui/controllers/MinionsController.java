@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.controllers;
+package com.suse.manager.webui.controllers;
 
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
