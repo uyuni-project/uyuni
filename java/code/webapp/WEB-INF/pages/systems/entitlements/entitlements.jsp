@@ -111,86 +111,45 @@
      </c:if>
 
 <!--  Entitlement Counts Section -->
-  <h2><bean:message key="systementitlements.jsp.entitlement_counts" /></h2>
+       <h2><bean:message key="systementitlements.jsp.entitlement_counts" /></h2>
 
 <!--  Base Entitlement Counts Section -->
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h5><bean:message key="systementitlements.jsp.base_entitlements"/></h5>
-		</div>
-		<table class="table">
-    	<tr>
-    		<td>
-    		  <div class="row">
-    		  	<div class="col-sm-3">
-    		  		<bean:message key="Spacewalk Update Entitled Servers"/>:
-    		  	</div>
-    		  	<div class="col-sm-9">
-    		  		${requestScope.updateCountsMessage}
-    		  	</div>
-    		  </div>
-    		</td>
-    	</tr>
-    	<tr>
-    		<td>
-    		  <div class="row">
-    		  	<div class="col-sm-3">
-    		  		<bean:message key="Spacewalk Management Entitled Servers"/>:
-    		  	</div>
-    		  	<div class="col-sm-9">
-    		  		${requestScope.managementCountsMessage}
-    		  	</div>
-    		  </div>
-    		</td>
-    	</tr>
-    </table>
-	</div>
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                        <h5><bean:message key="systementitlements.jsp.base_entitlements"/></h5>
+                </div>
+                <table class="table">
+                <tr>
+                    <td><bean:message key="Spacewalk Update Entitled Servers"/>:</td>
+                        <td>${requestScope.updateCountsMessage}</td>
+                </tr>
+                <tr>
+                <td><bean:message key="Spacewalk Management Entitled Servers"/>:</td>
+                <td>${requestScope.managementCountsMessage}</td>
+                </tr>
+       </table>
+        </div>
 
 <!--  Add - On Entitlement Counts Section -->
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h5><bean:message key="systementitlements.jsp.addonentitlement"/></h5>
-		</div>
-<<<<<<< HEAD
-    <table class="table">
-    	<tr>
-    		<td>
-    		  <div class="row">
-    		  	<div class="col-sm-3">
-    		  		<bean:message key="provisioning_entitled"/>:
-    		  	</div>
-    		  	<div class="col-sm-9">
-    		  		${requestScope.provisioningCountsMessage}
-    		  	</div>
-    		  </div>
-    		</td>
-    	</tr>
-    	<tr>
-    		<td>
-    		  <div class="row">
-    		  	<div class="col-sm-3">
-    		  		<bean:message key="virtualization_host"/>:
-    		  	</div>
-    		  	<div class="col-sm-9">
-    		  		${requestScope.virtualizationCountsMessage}
-    		  	</div>
-    		  </div>
-    		</td>
-    	</tr>
-    	<tr>
-    		<td>
-    		  <div class="row">
-    		  	<div class="col-sm-3">
-    		  		<bean:message key="virtualization_host_platform"/>:
-    		  	</div>
-    		  	<div class="col-sm-9">
-    		  		${requestScope.virtualizationPlatformCountsMessage}
-    		  	</div>
-    		  </div>
-    		</td>
-    	</tr>
-    </table>
-	</div>
+        <div class="panel panel-default">
+                <div class="panel-heading">
+                        <h5><bean:message key="systementitlements.jsp.addonentitlement"/></h5>
+                </div>
+       <table class="table">
+                <tr>
+                      <td><bean:message key="provisioning_entitled"/>:</td>
+                          <td>${requestScope.provisioningCountsMessage}</td>
+                </tr>
+                <tr>
+                        <td><bean:message key="virtualization_host"/>:</td>
+                        <td>${requestScope.virtualizationCountsMessage}</td>
+                </tr>
+                <tr>
+                        <td><bean:message key="virtualization_host_platform"/>:</td>
+                        <td>${requestScope.virtualizationPlatformCountsMessage}</td>
+                </tr>
+       </table>
+        </div>
 
 <!--  Foot Note -->
 
