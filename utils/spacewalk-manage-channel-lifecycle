@@ -309,7 +309,7 @@ def build_channel_labels(source):
     if options.archive:
         # prefix the existing channel with 'archive-YYYYMMDD-'
         date_string = time.strftime('%Y%m%d', time.gmtime())
-        destination = 'archive-%s%s%s' % (date_string, options.delimiter, source)
+        destination = 'archive-%s-%s' % (date_string, source)
     elif options.init:
         destination = '%s%s%s' % (phases[0],options.delimiter,source)
 
