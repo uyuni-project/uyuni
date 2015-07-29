@@ -44,7 +44,10 @@ ExcludeArch: ia64
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
-Requires: cobbler20
+Requires: cobbler >= 2.0.0
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires: dojo
 Requires: dwr >= 3
 Requires: google-gson >= 2.2.4
@@ -370,7 +373,10 @@ Requires: cglib
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
-Requires: cobbler20
+Requires: cobbler >= 2.0.0
+%if 0%{?fedora} >= 22
+Recommends: cobbler20
+%endif
 Requires: concurrent
 Requires: jakarta-taglibs-standard
 Requires: java >= 0:1.6.0
