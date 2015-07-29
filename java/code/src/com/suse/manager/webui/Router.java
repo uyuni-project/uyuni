@@ -17,6 +17,9 @@ package com.suse.manager.webui;
 import static com.suse.manager.webui.Spark.get;
 import static spark.Spark.exception;
 
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.struts.RequestContext;
+
 import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
@@ -40,8 +43,8 @@ public class Router implements SparkApplication {
 
         // List all minions
         get("/manager/minions", (request, response) -> {
-            MinionsController controller = new MinionsController();
-            Keys keys = controller.getKeys();
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            Keys keys = new MinionsController().getKeys(user);
             Map<String, Object> data = new HashMap<String, Object>() {{
                 put("minions", keys.getMinions());
                 put("unaccepted_minions", keys.getUnacceptedMinions());
