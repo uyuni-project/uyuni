@@ -325,7 +325,7 @@ def build_channel_labels(source):
             next_phase = get_next_phase(current_phase)
 
             # replace the name of the phase in the destination label
-            destination = re.sub('^%s' % current_phase, '%s' % next_phase, source)
+            destination = re.sub('^%s' % current_phase, next_phase, source)
         else:
             destination = '{phase}{dlm}{src}'.format(phase=phases[0], dlm=options.delimiter, src=source)
     elif options.rollback:
