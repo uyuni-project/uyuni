@@ -23,6 +23,9 @@ import spark.template.jade.JadeTemplateEngine;
 
 public final class Spark {
 
+    // Define the template root
+    private static final String templateRoot = "com/suse/manager/webui/templates";
+
     /**
      * Responds to a GET with a jade template
      *
@@ -35,6 +38,6 @@ public final class Spark {
             request.attribute("csrf_token", CSRFTokenValidator.getToken(session));
             response.type("text/html");
             return route.handle(request, response);
-        }, new JadeTemplateEngine("com/suse/templates"));
+        }, new JadeTemplateEngine(templateRoot));
     }
 }
