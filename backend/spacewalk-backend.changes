@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Jul 29 14:53:27 CEST 2015 - mc@suse.de
+
+- version 2.1.55.19-1
+- Enhance date only in patches to full ISO datetime (bsc#937029)
+- Fix UnboundLocalError on rhnFault in dist upgrade (bsc#936182)
+- detect new and old SUSE patch style (bsc#936869)
+
+-------------------------------------------------------------------
 Tue Jun 23 11:12:57 CEST 2015 - jrenner@suse.de
 
 - version 2.1.55.18-1
