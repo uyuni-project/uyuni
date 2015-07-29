@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.user.User;
+
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.datatypes.Keys;
@@ -33,13 +35,14 @@ public class MinionsController {
     /**
      * Get salt keys with their status.
      *
-     * @return informaton about the keys from salt master
+     * @param user the user to use for connecting to salt-api
+     * @return the keys with their respective status as returned from salt-api
      */
-    public Keys getKeys() {
+    public Keys getKeys(User user) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(new URI(saltMasterURI));
-            client.login("admin", "admin", AuthModule.AUTO);
+            client.login(user.getLogin(), user.getPassword(), AuthModule.AUTO);
             Keys keys = client.keys();
             client.logout();
             return keys;
