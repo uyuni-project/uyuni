@@ -312,6 +312,9 @@ public class LoginHelper {
     public static Boolean isSchemaUpgradeRequired() {
         String rpmSchemaVersion = getRpmSchemaVersion("satellite-schema");
         if (rpmSchemaVersion == null) {
+            rpmSchemaVersion = getRpmSchemaVersion("susemanager-schema");
+        }
+        if (rpmSchemaVersion == null) {
             rpmSchemaVersion = getRpmSchemaVersion("spacewalk-schema");
         }
 
