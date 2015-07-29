@@ -1,6 +1,6 @@
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.4.12
+Version: 2.4.13
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -14,6 +14,7 @@ BuildRequires: python-devel
 BuildRequires: python3-devel
 %endif
 Requires: dnf >= 0.5.3
+Requires: dnf-plugins-core
 Requires: librepo >= 1.7.15
 Requires: rhn-client-tools >= 1.10.3-1
 Conflicts: yum-rhn-plugin
@@ -67,6 +68,9 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %changelog
+* Mon Jul 13 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.13-1
+- require on dnf-plugins-core is needed for docker images
+
 * Thu Jun 11 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.12-1
 - bz1230251: do nothing if enabled=0
 - bz1226986: accept options from plugin configuration file

@@ -14,15 +14,16 @@
  */
 package com.redhat.rhn.frontend.action.multiorg;
 
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -48,10 +49,23 @@ public class OrgConfigAction extends RhnAction {
             HttpServletRequest request, HttpServletResponse response)
     throws Exception {
         RequestContext ctx = new RequestContext(request);
-        Org org = ctx.lookupAndBindOrg();
+        Org org = ctx.getCurrentUser().getOrg();
+        if (!ctx.getCurrentUser().hasRole(RoleFactory.ORG_ADMIN)) {
+            throw new PermissionException("Organization Administrator role is required.");
+        }
+        request.setAttribute(RequestContext.ORG, org);
+        request.setAttribute("edit_disabled", !org.getOrgAdminMgmt().isEnabled());
+        return process(mapping, request, ctx, org);
+    }
+
+    protected ActionForward process(ActionMapping mapping, HttpServletRequest request,
+            RequestContext ctx, Org org) {
         if (ctx.isSubmitted()) {
             org.getOrgConfig().setStagingContentEnabled(request.
                     getParameter("staging_content_enabled") != null);
+            org.getOrgConfig().setErrataEmailsEnabled(request.
+                    getParameter("errata_emails_enabled") != null);
+
 
             if (request.getParameter("crash_reporting_enabled") == null) {
                 org.getOrgConfig().setCrashReportingEnabled(false);
@@ -71,12 +85,12 @@ public class OrgConfigAction extends RhnAction {
             Long newScapRetentionPeriod = null;
             try {
                 newCrashLimit = Long.parseLong(
-                           request.getParameter("crashfile_sizelimit").trim());
+                           request.getParameter("crashfile_sizelimit"));
 
                 newScapLimit = Long.parseLong(
-                           request.getParameter("scapfile_sizelimit").trim());
+                           request.getParameter("scapfile_sizelimit"));
                 newScapRetentionPeriod = Long.parseLong(
-                           request.getParameter(SCAP_RETENTION_PERIOD).trim());
+                           request.getParameter(SCAP_RETENTION_PERIOD));
 
                 if (newCrashLimit < 0 || newScapLimit < 0 || newScapRetentionPeriod < 0) {
                     throw new IllegalArgumentException();

@@ -4197,13 +4197,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>Configuration de l'organisation</target>
       </trans-unit>
-      <trans-unit id="orgconfig.jsp.description">
-        <source>Below you configure your organization to use staging content and set up software crash reporting. Crash file upload limit is a non negative number, zero means no limit.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
-        </context-group>
-        <target>Vous pouvez configurer votre organisation de manière à utiliser le contenu de pré-production et pour installer le rapport d'incidents logiciel ci-dessus. La limite de téléversement de fichier d'incident est un nombre non-négatif, zéro signifie aucun limite.</target>
-      </trans-unit>
       <trans-unit id="org.name.jsp">
         <source>Organization Name</source>
         <context-group name="ctx">
@@ -18339,7 +18332,7 @@ pour ces versions seront également supprimées, ainsi que tous les historiques 
           <target>Le script ne contient pas de définition de shell.</target>
         </trans-unit>
         <trans-unit id="stringutil.scriptcheck.error.noscript">
-          <source>Script does not seem doing anything.</source>
+          <source>Script does not seem to be doing anything.</source>
           <target>Le script ne semble pas être en train de faire quoi que ce soit.</target>
         </trans-unit>
         <!-- Errata -->

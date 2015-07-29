@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.4.6
+Version: 2.4.7
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -477,6 +477,10 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.7-1
+- merge if into into one registerSystem call
+- remove dead code
+
 * Thu May 21 2015 Matej Kollar <mkollar@redhat.com> 2.4.6-1
 - dnf is default on fedora22, so require it instead of yum-rhn-plugin
 - Dependencies on rhnlib

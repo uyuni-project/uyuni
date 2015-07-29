@@ -12,6 +12,22 @@
 
         <h2><rhn:icon type="header-package" /> <bean:message key="repos.jsp.channel.repos"/></h2>
 
+        <c:if test='${not empty last_sync}'>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><bean:message key="channel.edit.jsp.lastsynced"/></h4>
+                </div>
+                <div class="panel-body">
+                    <c:if test='${not empty log_url}'>
+                        <a class="btn btn-info" href='${log_url}'><c:out value='${last_sync}'/></a>
+                    </c:if>
+                    <c:if test='${empty log_url}'>
+                        <c:out value='${last_sync}'/>
+                    </c:if>
+                </div>
+            </div>
+        </c:if>
+
         <rl:listset name="packageSet">
             <rhn:csrf />
 
@@ -33,6 +49,27 @@
                            >
 
                     <a href="/rhn/channels/manage/repos/RepoEdit.do?id=${current.id}">${current.label}</a>
+                </rl:column>
+
+                <rl:column sortable="false"
+                           bound="false"
+                           headerkey="repos.jsp.channel.status"
+                           >
+                    <c:set var="repoKey" value="${current.sourceUrl}"/>
+                    <c:set var="progress" value="${status[repoKey]['progress']}"/>
+                    <c:set var="title" value="${status[repoKey]['title']}"/>
+
+                    <c:if test="${status[repoKey]['finished']}">
+                        <c:set var="barStyle" value="progress-bar-success"/>
+                    </c:if>
+
+                    <c:if test="${status[repoKey]['failed']}">
+                        <c:set var="barStyle" value="progress-bar-danger"/>
+                    </c:if>
+
+                    <div class="progress progress-sm" title="${title}">
+                        <div class="progress-bar ${barStyle}" role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${progress}%;"></div>
+                    </div>
                 </rl:column>
 
             </rl:list>
@@ -62,7 +99,7 @@
                 <hr />
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-sync'/>"
                         class="btn btn-success"
-                        <c:if test="${inactive}">disabled="disabled"</c:if>>
+                        <c:if test="${in_progress || inactive}">disabled="disabled"</c:if>>
                     <rhn:icon type="repo-sync"/>
                     <bean:message key='repos.jsp.button-sync'/>
                 </button>

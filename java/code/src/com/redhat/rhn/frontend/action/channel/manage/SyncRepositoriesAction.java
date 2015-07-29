@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.action.channel.manage;
 
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -25,6 +27,9 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.helper.Listable;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
+import com.redhat.rhn.manager.channel.ChannelManager;
+import com.redhat.rhn.manager.download.DownloadManager;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -49,6 +54,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SyncRepositoriesAction extends RhnAction implements Listable {
 
+    private static final String REPOSYNC_LOCKFILE = "/var/run/spacewalk-repo-sync.pid";
+
   /**
    *
    * {@inheritDoc}
@@ -67,6 +74,28 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
         request.setAttribute("channel_name", chan.getName());
         request.setAttribute("cid",  chan.getId());
 
+        boolean inProgress = isSyncInProgress(chan);
+        if (inProgress) {
+            addMessage(request, "message.syncinprogress");
+            request.setAttribute("in_progress", true);
+        }
+
+        request.setAttribute("status", parseSyncLog(chan, inProgress));
+
+        if (!chan.getSources().isEmpty()) {
+            String lastSync = LocalizationService.getInstance().getMessage(
+                    "channel.edit.repo.neversynced");
+            if (chan.getLastSynced() != null) {
+                lastSync = LocalizationService.getInstance().formatCustomDate(
+                        chan.getLastSynced());
+            }
+            request.setAttribute("last_sync", lastSync);
+            if (!ChannelManager.getLatestSyncLogFiles(chan).isEmpty()) {
+                request.setAttribute("log_url",
+                        DownloadManager.getChannelSyncLogDownloadPath(chan,
+                                context.getCurrentUser()));
+            }
+        }
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(RequestContext.CID, chan.getId().toString());
@@ -76,7 +105,7 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
 
 
         TaskomaticApi taskomatic = new TaskomaticApi();
-        String oldCronExpr;
+        String oldCronExpr = null;
         try {
             oldCronExpr = taskomatic.getRepoSyncSchedule(chan, user);
         }
@@ -85,8 +114,6 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
             request.setAttribute("inactive", true);
             createErrorMessage(request,
                     "repos.jsp.message.taskomaticdown", null);
-            return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
-
         }
 
         RecurringEventPicker picker = RecurringEventPicker.prepopulatePicker(
@@ -163,8 +190,85 @@ public class SyncRepositoriesAction extends RhnAction implements Listable {
         return mapping.findForward(RhnHelper.DEFAULT_FORWARD);
     }
 
+    private boolean isSyncInProgress(Channel chan) {
+        String pid;
+        try {
+            pid = FileUtils.readStringFromFile(REPOSYNC_LOCKFILE).trim();
+        }
+        catch (RuntimeException e) {
+            return false;
+        }
 
+        // Is this PID running?
+        String[] cmd = {"ps", "-o", "args", "-p", pid};
+        SystemCommandExecutor ce = new SystemCommandExecutor();
+        ce.execute(cmd);
+        return ce.getLastCommandOutput().contains(" " + chan.getLabel() + " ");
+    }
 
+    private String getLastSyncLog(Channel chan) {
+        List<String> files = ChannelManager.getLatestSyncLogFiles(chan);
+        String lastLog = "";
+        if (!files.isEmpty()) {
+            // Most recent file only
+            String allLogs = FileUtils.readStringFromFile(files.get(0));
+            int lastLogStart = allLogs.lastIndexOf("Sync started:");
+            if (lastLogStart > -1) {
+                lastLog = allLogs.substring(lastLogStart);
+            }
+        }
+        return lastLog;
+    }
+
+    private Map<String, Map<String, Object>> parseSyncLog(
+            Channel chan, boolean inProgress) {
+
+        String log = getLastSyncLog(chan);
+
+        Map<String, Map<String, Object>> repositories =
+                new HashMap<String, Map<String, Object>>();
+
+        String[] allRepoLog = log.split("Repo URL: ");
+
+        for (String repoLog : allRepoLog) {
+            Map<String, Object> syncingRepo = new HashMap<String, Object>();
+            String[] lines = repoLog.split("\\n");
+
+            String lastLine = lines[lines.length - 1];
+            // Downloading packages
+            if (lastLine.matches("\\d+/\\d+ : .+")) {
+                String[] progress = lastLine.split(" : ")[0].split("/");
+                int done = Integer.parseInt(progress[0]);
+                int total = Integer.parseInt(progress[1]);
+                int percentage = done * 100 / total;
+                syncingRepo.put("progress", String.valueOf(percentage));
+                syncingRepo.put("title", lastLine);
+                // Mark as failed if reposync stopped running
+                syncingRepo.put("failed", !inProgress);
+            }
+            else {
+                for (String line : lines) {
+                    // Packages are downloaded
+                    if (line.equals("No new packages to sync.") ||
+                            (line.equals("Linking packages to channel."))) {
+                        syncingRepo.put("progress", "100");
+                        // Mark as finished when all repos are synced
+                        syncingRepo.put("finished", !inProgress);
+                    }
+                    else if (line.startsWith("ERROR: ")) {
+                        syncingRepo.put("failed", true);
+                        syncingRepo.put("title", line);
+                        break;
+                    }
+                }
+            }
+
+            // Using URL as a key
+            repositories.put(lines[0], syncingRepo);
+        }
+
+        return repositories;
+    }
 
         /**
          *
