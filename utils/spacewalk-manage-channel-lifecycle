@@ -306,6 +306,7 @@ def get_current_phase(source):
 
 
 def build_channel_labels(source):
+    destination = None
     if options.archive:
         # prefix the existing channel with 'archive-YYYYMMDD-'
         date_string = time.strftime('%Y%m%d', time.gmtime())
