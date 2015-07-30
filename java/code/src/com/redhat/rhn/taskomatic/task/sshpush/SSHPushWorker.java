@@ -163,9 +163,7 @@ public class SSHPushWorker implements QueueWorker {
                 client = server.getIpAddress();
             }
 
-            if (StringUtils.isEmpty(Config.get().getString(CONFIG_KEY_SUDO_USER))) {
-                sudoUser = null;
-            } else {
+            if (!StringUtils.isEmpty(Config.get().getString(CONFIG_KEY_SUDO_USER))) {
                 sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
             }
 
