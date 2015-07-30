@@ -5,7 +5,7 @@ Given /^I am logged in via XML\-RPC\/cve audit as user "([^"]*)" and password "(
 end
 
 Given /^channel data has already been updated$/ do
-  fail if @rpctest.populateCVEServerChannels() != 1
+  assert_equals(@rpctest.populateCVEServerChannels(), 1)
 end
 
 When /^I call audit.listSystemsByPatchStatus with CVE identifier "([^\"]*)"$/ do |cve_identifier|
@@ -32,14 +32,14 @@ Then /^I should get the sles11-sp3-updates channel$/ do
     channel = "sles11-sp3-updates-x86_64-channel"
   end
   $stderr.puts "result: #{@result}"
-  fail if @result["channel_labels"].include?(channel) == false
+  assert(@result["channel_labels"].include?(channel))
 end
 
 Then /^I should get the "([^"]*)" patch$/ do |patch|
   $stderr.puts "result: #{@result}"
-  fail if @result["errata_advisories"].include?(patch) == false
+  assert(@result["errata_advisories"].include?(patch))
 end
 
 Then /^I logout from XML\-RPC\/cve audit namespace\.$/ do
-  fail if not @rpctest.logout()
+  assert(@rpctest.logout())
 end
