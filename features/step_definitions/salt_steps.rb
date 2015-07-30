@@ -10,7 +10,7 @@ When(/^I issue local command "(.*?)"$/) do |command|
   $output = {:stdout => $local_output}
 end
 
-When(/^I delete key of the testsuite hostname$/) do
+When(/^I delete key of this client$/) do
   sshcmd("yes | salt-key -d #{$testsuite_hostname}")
   `rcsalt-minion restart`
 

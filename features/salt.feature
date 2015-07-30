@@ -35,6 +35,6 @@ Feature: Check if SaltStack Master is configured and running
     Then it should contain "SLES" text
 
   Scenario: Cleaning up for the general testsuite
-    When I delete key of the testsuite hostname
+    When I delete key of this client
     And when I issue command "salt-key --list unaccepted"
     Then it should contain testsuite hostname
