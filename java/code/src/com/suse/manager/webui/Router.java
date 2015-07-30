@@ -24,8 +24,6 @@ import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.manager.webui.util.Localizer;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
-import org.apache.log4j.Logger;
-
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
 
@@ -37,11 +35,8 @@ import java.util.Map;
  */
 public class Router implements SparkApplication {
 
-    private static Logger logger = Logger.getLogger(Router.class);
-
     @Override
     public void init() {
-
         // List all minions
         get("/manager/minions", (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
