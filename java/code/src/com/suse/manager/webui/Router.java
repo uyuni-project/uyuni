@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.webui.controllers.MinionsController;
+import com.suse.manager.webui.util.Localizer;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import org.apache.log4j.Logger;
