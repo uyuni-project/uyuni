@@ -42,7 +42,8 @@ public class MinionsController {
         SaltStackClient client;
         try {
             client = new SaltStackClient(new URI(saltMasterURI));
-            client.login(user.getLogin(), user.getPassword(), AuthModule.AUTO);
+            // FIXME: Pass on actual user credentials as soon as it is supported
+            client.login("admin", "", AuthModule.AUTO);
             Keys keys = client.keys();
             client.logoutAsync();
             return keys;
