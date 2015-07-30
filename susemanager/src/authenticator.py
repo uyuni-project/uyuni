@@ -14,6 +14,7 @@
 # in this software or its documentation.
 
 from spacewalk.susemanager.helpers import cli_ask
+from spacewalk.susemanager.helpers import timeout
 
 import xmlrpclib
 
@@ -111,6 +112,7 @@ class Authenticator(object):
         self.user = None
         self.password = None
 
+    @timeout(60, "Timeout. No user input for 60 seconds. Exiting...")
     def _get_credentials_interactive(self):
         """
         Get credentials from CLI interactively.
