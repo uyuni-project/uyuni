@@ -14,7 +14,7 @@ When /^I call getApiNamespaces, I should get (\d+) namespaces$/ do |apiCount|
 end
 
 When /^I call getVersion, I should get "([^"]*)" as result$/ do |version|
-  fail if not rpcApiTester.getVersion().include? version
+  assert(rpcApiTester.getVersion().include? version)
 end
 
 When /^I call systemVersion, I should get "([^"]*)" as result$/ do |version|
