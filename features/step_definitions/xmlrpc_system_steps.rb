@@ -11,12 +11,12 @@ end
 When /^I call system\.listSystems\(\), I should get a list of them\.$/ do
   # This also assumes the test is called *after* the regular test.
   servers = systest.listSystems
-  fail if servers.length < 1
+  assert_equal(0, servers.length)
   rabbit = servers[0]
 end
 
 When /^I check a sysinfo by a number of XML\-RPC calls, it just works\. :\-\)$/ do
-  fail unless rabbit
+  assert(rabbit)
   systest.getSysInfo(rabbit)
 end
 
@@ -26,12 +26,8 @@ end
 
 Then /^there is a system record in cobbler named "([^"]*)"$/ do |sysName|
   ct = CobblerTest.new
-  unless ct.is_running
-    fail 'cobblerd is not running'
-  end
-  unless ct.system_exists(sysName)
-    fail 'cobbler system record does not exist: ' + sysName
-  end
+  assert(ct.is_running, msg: 'cobblerd is not running')
+  assert(ct.system_exists(sysName), msg: 'cobbler system record does not exist: ' + sysName)
 end
 
 Then /^I logout from XML\-RPC\/system\.$/ do
