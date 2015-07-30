@@ -34,3 +34,11 @@ end
 Then(/^it should contain testsuite hostname$/) do
   fail if not $output[:stdout].include? $testsuite_hostname
 end
+
+Then(/^the Salt rest\-api should be listening on local port (\d+)$/) do |port|
+  fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "127.0.0.1:#{port}"
+end
+
+Then(/^the salt\-master should be listening on public port (\d+)$/) do |port|
+  fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "*:#{port}"
+end

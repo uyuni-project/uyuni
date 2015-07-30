@@ -13,8 +13,9 @@ Feature: Check if SaltStack Master is configured and running
     And it should contain "external_auth:" text
 
   Scenario: Check SaltStack Master is properly configured
-    When I issue command "ss -nta | grep 9080"
-    Then it should contain "127.0.0.1:9080" text
+    Then the Salt rest-api should be listening on local port 9080
+    And the salt-master should be listening on public port 4505
+    And the salt-master should be listening on public port 4506
 
   Scenario: Check SaltStack Minion is running
     When I issue local command "rcsalt-minion status | grep Active"
