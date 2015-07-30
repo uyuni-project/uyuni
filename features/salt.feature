@@ -7,6 +7,7 @@ Feature: Check if SaltStack Master is configured and running
   I want to check if SaltStack Master is installed and running
 
   Scenario: Check SaltStack Master is installed
+    Given this client hostname
     When I get a content of a file "/etc/salt/master"
     Then it should contain "rest_cherrypy:" text
     And it should contain "port: 9080" text
@@ -18,23 +19,26 @@ Feature: Check if SaltStack Master is configured and running
     And the salt-master should be listening on public port 4506
 
   Scenario: Check SaltStack Minion is running
-    When I issue local command "rcsalt-minion status | grep Active"
-    Then it should contain "active (running) since" text
+    When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
+    And when I restart Salt Minion
+    Then the Salt Minion should be running
 
   Scenario: Check SaltStack Minion can be registered
-    When I issue command "salt-key --list unaccepted"
-    Then it should contain testsuite hostname
-    When I issue command "yes | salt-key -A"
-    And when I issue command "salt-key --list accepted"
-    Then it should contain testsuite hostname
+    Given this client hostname
+    When I list unaccepted keys at Salt Master
+    Then the list of the keys should contain this client hostname
+    When I accept all Salt unaccepted keys
+    When I list accepted keys at Salt Master
+    Then the list of the keys should contain this client hostname
 
   Scenario: Check if SaltStack Minion communicates with the Master
-    When I ping client machine from the Master
-    Then it should contain testsuite hostname
+    Given this client hostname
+    Then the Salt Minion should be running
     When I get OS information of the client machine from the Master
     Then it should contain "SLES" text
 
   Scenario: Cleaning up for the general testsuite
+    Given this client hostname
     When I delete key of this client
-    And when I issue command "salt-key --list unaccepted"
+    When I list unaccepted keys at Salt Master
     Then it should contain testsuite hostname
