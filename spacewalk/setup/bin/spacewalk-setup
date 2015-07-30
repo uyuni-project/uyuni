@@ -331,7 +331,7 @@ sub setup_salt_master {
     print SALT_MASTER "rest_cherrypy:\n";
     print SALT_MASTER "  port: 9080\n";
     print SALT_MASTER "  host: 127.0.0.1\n";
-    print SALT_MASTER "  collect_stats: true\n";
+    print SALT_MASTER "  collect_stats: false\n";
     print SALT_MASTER "  disable_ssl: true\n";
     print SALT_MASTER "  ssl_crt: /etc/apache2/ssl.crt/spacewalk.crt\n";
     print SALT_MASTER "  ssl_key: /etc/apache2/ssl.key/spacewalk.key\n";
