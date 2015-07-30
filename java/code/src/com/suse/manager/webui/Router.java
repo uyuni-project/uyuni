@@ -54,10 +54,9 @@ public class Router implements SparkApplication {
             return new ModelAndView(data, "minions.jade");
         });
 
+        // RuntimeException will be passed on (resulting in status code 500)
         exception(RuntimeException.class, (e, request, response) -> {
-            logger.error(e.getMessage(), e);
-            response.status(500);
-            response.body("<h1>Internal Server Error</h1>");
+            throw (RuntimeException) e;
         });
     }
 }
