@@ -133,8 +133,7 @@ on this system."),
 
     # 70-80: channel subscription errors
     70: _("""
-     All available subscriptions for the requested channel have been exhausted.
-     Please contact a SUSE sales representative.
+     No matching base channel found for your system.
      """),
     71: _("""
      You do not have subscription permission to the designated channel.
