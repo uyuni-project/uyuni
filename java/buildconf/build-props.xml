@@ -134,6 +134,13 @@
              ${log4j-jars} mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3
              regexp ${jmock-jars} strutstest" / -->
 
+  <!-- SUSE extra dependencies: build and runtime -->
+  <property name="suse-common-jars" value="saltstack-netapi-client spark-core spark-template-jade" />
+
+  <!-- SUSE extra dependencies: runtime only -->
+  <property name="suse-runtime-jars" value="commons-jexl commons-lang3 concurrentlinkedhashmap-lru
+      httpclient httpcore jade4j slf4j/api slf4j/log4j12" />
+
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
       ${install.common.jar.dependencies} tanukiwrapper" />
@@ -151,6 +158,7 @@
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
              taglibs-core quartz
+             ${suse-common-jars}
              concurrent simple-core snakeyaml simple-xml susestudio-java-client" />
 
   <property name="dist.jar.dependencies"
@@ -163,6 +171,7 @@
              ${tomcat-jars} log4j redstone-xmlrpc-client redstone-xmlrpc
              oro quartz stringtree-json sitemesh ${struts-jars} taglibs-core
              taglibs-standard tanukiwrapper postgresql-jdbc snakeyaml simple-xml susestudio-java-client
+             ${suse-common-jars} ${suse-runtime-jars}
              xalan-j2 xerces-j2 xml-commons-apis simple-core ehcache" />
 
   <path id="bootjars">
