@@ -208,7 +208,7 @@ BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: java-devel >= 1.7.0
+BuildRequires: java-devel-ibm >= 1.8.0
 BuildRequires: jcommon
 BuildRequires: jdom
 %if 0%{?suse_version}
@@ -225,6 +225,9 @@ BuildRequires: simple-core
 BuildRequires: simple-xml
 BuildRequires: snakeyaml
 BuildRequires: stringtree-json
+BuildRequires: saltstack-netapi-client-java
+BuildRequires: spark
+BuildRequires: spark-template-jade
 BuildRequires: susestudio-java-client
 BuildRequires: tanukiwrapper
 %if 0%{?run_checkstyle}
@@ -875,6 +878,21 @@ fi
 %else
 %{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
+%endif
+
+# SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
+%if 0%{?suse_version}
+%{jardir}/commons-jexl.jar
+%{jardir}/commons-lang3.jar
+%{jardir}/concurrentlinkedhashmap-lru.jar
+%{jardir}/httpclient.jar
+%{jardir}/httpcore.jar
+%{jardir}/jade4j.jar
+%{jardir}/saltstack-netapi-client.jar
+%{jardir}/slf4j_api.jar
+%{jardir}/slf4j_log4j12*.jar
+%{jardir}/spark-core.jar
+%{jardir}/spark-template-jade.jar
 %endif
 
 %dir %{cobprofdir}
