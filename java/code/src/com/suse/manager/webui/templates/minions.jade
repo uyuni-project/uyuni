@@ -1,0 +1,27 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.fa-desktop
+    | All Minions
+
+.panel.panel-default
+  .panel-body
+    h2 Minions
+    ul
+      for minion in minions
+        li: b #{minion}
+      else
+        li Sorry, no minion keys have been accepted so far!
+
+    h2 Unaccepted Minions
+    ul
+      for minion in unaccepted_minions
+        li: b #{minion}
+      else
+        li No unaccepted minions
+
+    h2 Rejected Minions
+    ul
+      for minion in rejected_minions
+        li: b #{minion}
+      else
+        li No rejected minions

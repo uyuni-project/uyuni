@@ -2158,6 +2158,11 @@ tree will not be usable for autoinstalling.
 &lt;/p&gt;
         </source>
       </trans-unit>
+
+      <!-- Salt -->
+      <trans-unit id="Minions">
+        <source>Minions</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
