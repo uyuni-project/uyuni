@@ -341,7 +341,7 @@ sub setup_salt_master {
     print SALT_MASTER "  auto:\n";
     print SALT_MASTER "    admin:\n";
     print SALT_MASTER "      - .*\n";
-    print SALT_MASTER "      - '@wheel'\n";
+    print SALT_MASTER "      - '\@wheel'\n";
 
     close(SALT_MASTER);
 }
