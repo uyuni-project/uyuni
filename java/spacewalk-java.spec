@@ -71,6 +71,9 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-java-lib
 Requires: stringtree-json
+Requires: saltstack-netapi-client-java
+Requires: spark
+Requires: spark-template-jade
 Requires: susestudio-java-client
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
