@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.ChannelExec;
@@ -54,13 +55,15 @@ public class SSHPushWorker implements QueueWorker {
     // Message text used for error detection
     private static final String PORT_FORWARDING_FAILED = "remote port forwarding failed";
 
-    // Config key
+    // Config keys
     private static final String CONFIG_KEY_USE_HOSTNAME = "ssh_push_use_hostname";
+    private static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
 
     // Client and proxy hostnames
     private String proxy;
     private String client;
 
+    private String sudoUser;
     private Logger log;
     private SSHPushSystem system;
     private int remotePort;
@@ -160,6 +163,10 @@ public class SSHPushWorker implements QueueWorker {
                 client = server.getIpAddress();
             }
 
+            if (!StringUtils.isEmpty(Config.get().getString(CONFIG_KEY_SUDO_USER))) {
+                sudoUser = Config.get().getString(CONFIG_KEY_SUDO_USER);
+            }
+
             if (log.isDebugEnabled()) {
                 log.debug("Running 'rhn_check' for: " + client);
             }
@@ -192,7 +199,8 @@ public class SSHPushWorker implements QueueWorker {
         ChannelExec channel = null;
         try {
             // Setup session
-            session = ssh.getSession(REMOTE_USER, proxy != null ? proxy : client);
+            session = ssh.getSession(sudoUser != null ? sudoUser : REMOTE_USER,
+                    proxy != null ? proxy : client);
             session.connect();
 
             // Setup port forwarding if needed
@@ -259,6 +267,10 @@ public class SSHPushWorker implements QueueWorker {
         String cmd = RHN_CHECK;
         if (proxy != null) {
             StringBuilder sb = new StringBuilder("ssh");
+            if (sudoUser != null) {
+                sb.append(" -l  ");
+                sb.append(sudoUser);
+            }
             sb.append(" -i ");
             sb.append(PRIVATE_KEY);
             sb.append(" ");
@@ -272,6 +284,9 @@ public class SSHPushWorker implements QueueWorker {
                 sb.append(SSL_PORT);
             }
             sb.append(" ");
+            if (sudoUser != null) {
+                sb.append("sudo ");
+            }
             sb.append(RHN_CHECK);
             cmd = sb.toString();
         }
