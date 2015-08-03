@@ -9,6 +9,14 @@ When /^I execute mgr\-sync "([^"]*)"$/ do |arg1|
   $command_output = sshcmd("mgr-sync #{arg1}")[:stdout]
 end
 
+When /^I remove the mgr\-sync cache file$/ do
+  $command_output = sshcmd("rm -f ~/.mgr-sync")[:stdout]
+end
+
+When /^I execute mgr\-sync refresh$/ do
+  $command_output = `ssh $TESTHOST mgr-sync refresh 2>&1`
+end
+
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
   arch=`uname -m`
   arch.chomp!

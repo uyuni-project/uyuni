@@ -47,3 +47,8 @@ Feature: mgr-sync channel listing and enablement
     And I execute mgr-sync "list channels"
     Then I want to get "[I] SLES11-SP3-Pool for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-pool-x86_64]"
     And I want to get "    [I] SLES11-SP3-Updates for x86_64 SUSE Linux Enterprise Server 11 SP3 x86_64 [sles11-sp3-updates-x86_64]"
+
+  Scenario: let mgr-sync time out
+    When I remove the mgr-sync cache file
+    And I execute mgr-sync refresh
+    Then I want to get "Timeout. No user input for 60 seconds. Exiting..."
