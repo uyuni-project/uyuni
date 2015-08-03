@@ -63,15 +63,15 @@ if [ ${?} -ne '0' ]; then
   exit 1
 fi
 
+# Read tunnel ports from configuration
+PATH_RHN_CONF=/etc/rhn/rhn.conf
+PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
+
 # Init tunnel setup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   # Tunnel port config keys
   PORT_HTTP_KEY=ssh_push_port_http
   PORT_HTTPS_KEY=ssh_push_port_https
-
-  # Read tunnel ports from configuration
-  PATH_RHN_CONF=/etc/rhn/rhn.conf
-  PATH_RHN_DEFAULTS=/usr/share/rhn/config-defaults/rhn_web.conf
 
   # Check config files existence
   if [ ! -f "${PATH_RHN_CONF}" ]; then
@@ -135,6 +135,25 @@ if [ "${USE_TUNNEL}" = "Y" ]; then
   sed -i "s/\(serverURL=\).*/\1https:\/\/${HOSTNAME}:${PORT_HTTPS}\/XMLRPC/" ${PATH_OVERRIDES}
 fi
 
+# ssh-push sudo user
+SUDO_USER_KEY=ssh_push_sudo_user
+
+# Same for sudo user
+SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_CONF} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_USER=$( grep -E -m1 "^${SUDO_USER_KEY}[[:space:]]*=" ${PATH_RHN_DEFAULTS} | sed "s/^${SUDO_USER_KEY}[[:space:]]*=[[:space:]]*\(.*\)/\1/" || echo "" )
+fi
+
+# Set the sudo command, it'll be blank if no sudo user was set
+# Set the user variable, defaults to root if no sudo user is set
+if [ -z "${SUDO_USER}" ]; then
+  SUDO_CMD=
+  USER=root
+else
+  SUDO_CMD=sudo
+  USER=${SUDO_USER}
+fi
+
 # Prepare the bootstrap script used for registration
 if [ "${USE_TUNNEL}" = "Y" ]; then
   BOOTSTRAP=`mktemp`
@@ -183,46 +202,51 @@ if [ -f ~/.ssh/known_hosts ];then
 fi
 
 # Copy public key to the client, require 'ssh-rsa' as host key algorithm
-echo "* Pushing SSH key to '${CLIENT}', please login as root:"
-ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub root@${CLIENT} 2>&1
+echo "* Pushing SSH key to '${CLIENT}', please login as ${user}:"
+ssh-copy-id -o HostKeyAlgorithms=ssh-rsa -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
+
+# Check if sudo exists or if user has sudo access
+# Will fail if sudo isn't installed or user doesn't have sudo access
+ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} 'sudo -v'
+exit_in_case_of_error
+
 
 # Remove duplicate entries from authorized keys
 echo "* Removing duplicate host keys remotely"
 AUTH_KEYS=~/.ssh/authorized_keys
 AUTH_KEYS2=~/.ssh/authorized_keys2
-ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
-ssh -i ${SSH_IDENTITY} root@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
+ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS} && echo 'Cleaned: ${AUTH_KEYS}' || echo 'Skipping: ${AUTH_KEYS} (not found)'"
+ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "[ -f ${AUTH_KEYS2} ] && sed -i \"\\\$!{/${SSH_KEY_COMMENT}/d;}\" ${AUTH_KEYS2} && echo 'Cleaned: ${AUTH_KEYS2}' || echo 'Skipping: ${AUTH_KEYS2} (not found)'"
 exit_in_case_of_error
 
 # Copy scripts to the client
 if [ -n "${BOOTSTRAP}" ]; then
   echo "* Pushing scripts to the client"
   if [ "${USE_TUNNEL}" = "Y" ]; then
-    scp -i ${SSH_IDENTITY} ${ENABLE} root@${CLIENT}:enable.sh
+    scp -i ${SSH_IDENTITY} ${ENABLE} ${USER}@${CLIENT}:enable.sh
     exit_in_case_of_error
   fi
-  scp -i ${SSH_IDENTITY} ${BOOTSTRAP} root@${CLIENT}:bootstrap.sh
+  scp -i ${SSH_IDENTITY} ${BOOTSTRAP} ${USER}@${CLIENT}:bootstrap.sh
   exit_in_case_of_error
 fi
 
 # Enablement, registration and cleanup
 if [ "${USE_TUNNEL}" = "Y" ]; then
   echo "* Enabling client for SSH Push via tunnel"
-  ssh -i ${SSH_IDENTITY} root@${CLIENT} "bash enable.sh"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash enable.sh"
   exit_in_case_of_error
 
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 root@${CLIENT} 'bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} -R ${PORT_HTTP}:${HOSTNAME}:80 -R ${PORT_HTTPS}:${HOSTNAME}:443 ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
   exit_in_case_of_error
 
   echo "* Cleaning up temporary files"
-  ssh -i ${SSH_IDENTITY} root@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "rm -f enable.sh bootstrap.sh client-config-overrides-tunnel.txt client_config_update.py"
   rm -fv ${ENABLE} ${BOOTSTRAP}
 elif [ -n "${BOOTSTRAP}" ]; then
   # Simple registration with given bootstrap script
   echo "* Registering client with SUSE Manager: ${CLIENT}"
-  ssh -i ${SSH_IDENTITY} root@${CLIENT} 'bash bootstrap.sh'
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} "${SUDO_CMD} bash bootstrap.sh"
   exit_in_case_of_error
 fi
-
