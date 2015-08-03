@@ -14,7 +14,7 @@ When /^I remove the mgr\-sync cache file$/ do
 end
 
 When /^I execute mgr\-sync refresh$/ do
-  $command_output = `ssh $TESTHOST mgr-sync refresh 2>&1`
+  $command_output = sshcmd("mgr-sync refresh", ignore_err: true)[:stderr]
 end
 
 When /^I execute mgr\-bootstrap "([^"]*)"$/ do |arg1|
