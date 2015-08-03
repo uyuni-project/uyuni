@@ -40,7 +40,6 @@ import java.util.List;
 
 /**
  * TokenTest
- * @version $Rev$
  */
 public class TokenTest extends RhnBaseTestCase {
 
@@ -63,7 +62,7 @@ public class TokenTest extends RhnBaseTestCase {
         assertFalse(token1.isTokenDisabled());
         token1.disable();
         assertTrue(token1.isTokenDisabled());
-        assertEquals(2, token1.getEntitlements().size());
+        assertEquals(1, token1.getEntitlements().size());
         assertEquals(token1.getEntitlements().size(), token2.getEntitlements().size());
     }
 
@@ -96,7 +95,6 @@ public class TokenTest extends RhnBaseTestCase {
     public void testConfigChannels() throws Exception {
         Token t = createTestToken();
         User user = UserTestUtils.createUser("testuser1", t.getOrg().getId());
-        UserTestUtils.addProvisioning(user.getOrg());
         UserTestUtils.addUserRole(user, RoleFactory.CONFIG_ADMIN);
 
         // Create a global channel
@@ -140,7 +138,6 @@ public class TokenTest extends RhnBaseTestCase {
         token.setContactMethod(ServerFactory.findContactMethodById(0L));
 
         token.addEntitlement(ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        token.addEntitlement(ServerConstants.getServerGroupTypeProvisioningEntitled());
 
         assertNull(token.getId());
         TestUtils.saveAndFlush(token);
