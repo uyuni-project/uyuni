@@ -199,7 +199,8 @@ public class SSHPushWorker implements QueueWorker {
         ChannelExec channel = null;
         try {
             // Setup session
-            session = ssh.getSession(sudoUser != null ? sudoUser : REMOTE_USER, proxy != null ? proxy : client);
+            session = ssh.getSession(sudoUser != null ? sudoUser : REMOTE_USER,
+                    proxy != null ? proxy : client);
             session.connect();
 
             // Setup port forwarding if needed
