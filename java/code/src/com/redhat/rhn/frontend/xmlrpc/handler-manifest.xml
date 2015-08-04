@@ -34,7 +34,6 @@
   <template name="sync.content" classname="com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler" />
   <template name="system" classname="com.redhat.rhn.frontend.xmlrpc.system.SystemHandler" />
   <template name="system.config" classname="com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler"/>
-  <template name="system.config" classname="com.redhat.rhn.frontend.xmlrpc.system.config.ServerConfigHandler"/>
   <template name="system.crash" classname="com.redhat.rhn.frontend.xmlrpc.system.crash.CrashHandler"/>
   <template name="system.custominfo" classname="com.redhat.rhn.frontend.xmlrpc.system.custominfo.CustomInfoHandler"/>
   <template name="system.provisioning.snapshot" classname="com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler"/>
