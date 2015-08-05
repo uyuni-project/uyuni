@@ -169,10 +169,6 @@
             <form-property name="entName" type="java.lang.String"/>
             <form-property name="submitted" type="java.lang.Boolean"/>
         </form-bean>
-        <form-bean name="softwareEntitlementSubsForm"
-            type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-            <form-property name="submitted" type="java.lang.Boolean" />
-        </form-bean>
         <form-bean name="userPrefForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="uid" type="java.lang.Long"/>
@@ -2657,14 +2653,6 @@
                  path="/WEB-INF/pages/channel/retired.jsp" />
     </action>
 
-    <action path="/software/channels/ChannelFamilyTree"
-        scope="request"
-        input="/WEB-INF/pages/channel/channel_family_tree.jsp"
-        type="com.redhat.rhn.frontend.action.channel.ChannelFamilyTreeAction">
-        <forward name="default"
-                 path="/WEB-INF/pages/channel/channel_family_tree.jsp" />
-    </action>
-
     <action path="/multiorg/channels/Consumed"
         scope="request"
         input="/WEB-INF/pages/multiorg/channels/consumed.jsp"
@@ -2680,38 +2668,6 @@
         <forward name="default"
                  path="/WEB-INF/pages/multiorg/channels/provided.jsp" />
     </action>
-
-    <action path="/channels/software/Entitlements"
-        scope="request"
-        input="/WEB-INF/pages/channel/entitlements.jsp"
-        type="com.redhat.rhn.frontend.action.channel.ChannelEntitlementSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="user_role(org_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/channel/entitlements.jsp"/>
-    </action>
-
-    <action path="/channels/software/EntitledSystems"
-        scope="request"
-        input="/WEB-INF/pages/channel/entitled-systems.jsp"
-        type="com.redhat.rhn.frontend.action.channel.EntitledSystemsSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(org_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/channel/entitled-systems.jsp"/>
-    </action>
-
-     <action path="/channels/software/EntitlementsSubmit"
-         scope="request"
-         input="/WEB-INF/pages/channel/entitlements.jsp"
-         type="com.redhat.rhn.frontend.action.channel.ChannelEntitlementAction"
-         parameter="dispatch"
-         className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-         <set-property property="postRequired" value="true" />
-         <forward name="default"
-                  path="/channels/software/Entitlements.do" redirect="true" />
-     </action>
 
     <action path="/channels/software/Search"
         scope="request"
@@ -5708,61 +5664,6 @@
                path="/admin/multiorg/OrgSystemSubscriptions.do" redirect="true" />
     </action>
 
-    <action path="/admin/multiorg/OrgSoftwareSubscriptions"
-        name="submittedForm"
-        scope="request"
-        input="/WEB-INF/pages/admin/multiorg/orgsoftwaresubs.jsp"
-        type="com.redhat.rhn.frontend.action.multiorg.OrgSoftwareSubscriptionsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(satellite_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/multiorg/orgsoftwaresubs.jsp"/>
-        <forward name="success"
-               path="/admin/multiorg/OrgSoftwareSubscriptions.do" redirect="true" />
-        <forward name="error"
-               path="/WEB-INF/pages/admin/multiorg/orgsoftwaresubs.jsp"/>
-    </action>
-
-    <action path="/admin/multiorg/SoftwareEntitlements"
-        scope="request"
-        input="/WEB-INF/pages/admin/multiorg/softwareentitlements.jsp"
-        type="com.redhat.rhn.frontend.action.multiorg.SoftwareEntitlementsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(satellite_admin)"/>
-        <forward name="default"
-            path="/WEB-INF/pages/admin/multiorg/softwareentitlements.jsp"/>
-    </action>
-
-    <action path="/admin/multiorg/SoftwareEntitlementDetails"
-        scope="request"
-        input="/WEB-INF/pages/admin/multiorg/softwareentitlementdetails.jsp"
-        type="com.redhat.rhn.frontend.action.multiorg.SoftwareEntitlementDetailsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(satellite_admin)"/>
-        <forward name="default"
-            path="/WEB-INF/pages/admin/multiorg/softwareentitlementdetails.jsp"/>
-    </action>
-
-    <action path="/admin/multiorg/SoftwareEntitlementSubscriptions"
-        name="softwareEntitlementSubsForm"
-        scope="request"
-        input="/WEB-INF/pages/admin/multiorg/softwareentitlementsubs.jsp"
-        type="com.redhat.rhn.frontend.action.multiorg.SoftwareEntitlementSubscriptionsAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="postRequiredIfSubmitted" value="true" />
-        <set-property property="acls" value="user_role(satellite_admin)"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/admin/multiorg/softwareentitlementsubs.jsp"/>
-        <forward name="success"
-               path="/admin/multiorg/SoftwareEntitlementSubscriptions.do" redirect="true" />
-        <forward name="unlimited"
-               path="/admin/multiorg/SoftwareEntitlements.do" redirect="true" />
-    </action>
-
-
     <action path="/admin/multiorg/SystemEntitlements"
         scope="request"
         input="/WEB-INF/pages/admin/multiorg/sys_entitlements.jsp"
@@ -7646,55 +7547,6 @@
                  path="/WEB-INF/pages/configuration/files/deployconfirm.jsp"/>
     </action>
     <!-- ===== END CONFIGURATION ===== -->
-
-     <action path="/systems/entitlements/GuestLimitedHosts"
-             scope="request"
-             type="com.redhat.rhn.frontend.action.systems.entitlements.VirtualizationEntitlementsAction"
-             parameter="listGuestLimited"
-             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="postRequiredIfSubmitted" value="true" />
-       <set-property property="acls" value="user_role(org_admin)"/>
-       <forward name="success" path="/WEB-INF/pages/systems/entitlements/guestlimited.jsp"/>
-     </action>
-
-     <action path="/systems/entitlements/GuestUnlimitedHosts"
-             scope="request"
-             type="com.redhat.rhn.frontend.action.systems.entitlements.VirtualizationEntitlementsAction"
-             parameter="listGuestUnlimited"
-             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="postRequiredIfSubmitted" value="true" />
-       <set-property property="acls" value="user_role(org_admin)"/>
-       <forward name="success" path="/WEB-INF/pages/systems/entitlements/guestunlimited.jsp"/>
-     </action>
-
-     <action path="/systems/entitlements/PhysicalHosts"
-             scope="request"
-             type="com.redhat.rhn.frontend.action.systems.entitlements.VirtualizationEntitlementsAction"
-             parameter="listPhysicalHosts"
-             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="postRequiredIfSubmitted" value="true" />
-       <set-property property="acls" value="user_role(org_admin)"/>
-       <forward name="success" path="/WEB-INF/pages/systems/entitlements/physicalhosts.jsp"/>
-     </action>
-
-     <action path="/systems/entitlements/FlexGuests"
-             scope="request"
-             type="com.redhat.rhn.frontend.action.systems.entitlements.FlexGuestAction"
-             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="postRequiredIfSubmitted" value="true" />
-       <set-property property="acls" value="user_role(org_admin)"/>
-       <forward name="default" path="/WEB-INF/pages/systems/entitlements/flexguests.jsp"/>
-     </action>
-
-     <action path="/systems/entitlements/EligibleFlexGuests"
-             scope="request"
-             type="com.redhat.rhn.frontend.action.systems.entitlements.EligibleFlexGuestAction"
-             className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-       <set-property property="postRequiredIfSubmitted" value="true" />
-       <set-property property="acls" value="user_role(org_admin)"/>
-       <forward name="default" path="/WEB-INF/pages/systems/entitlements/flexguests.jsp"/>
-       <forward name="success" path="/systems/entitlements/EligibleFlexGuests.do" redirect="true"/>
-     </action>
 
     <action path="/channels/manage/errata/Add"
         scope="request"

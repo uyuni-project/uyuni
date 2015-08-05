@@ -418,13 +418,6 @@
         </context-group>
         <target>Software-Channel erstellen</target>
       </trans-unit>
-      <trans-unit id="Software Channel Entitlements">
-        <source>Software Channel Entitlements</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">Navigation Menu</context>
-        </context-group>
-        <target>Software-Channel- Berechtigungen</target>
-      </trans-unit>
       <trans-unit id="Audit">
         <source>Audit</source>
         <context-group name="ctx">
@@ -8261,13 +8254,6 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
         </context-group>
         <target>Die Modifizierung der Berechtigung muss eine gültige Zahl sein für {0}.</target>
       </trans-unit>
-      <trans-unit id="orgsoftwaresubs.invalid">
-        <source>Entitlement modification must be a valid number for {0}.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSoftwareSubscriptions.do</context>
-        </context-group>
-        <target>Die Modifizierung der Berechtigung muss eine gültige Zahl sein für {0}.</target>
-      </trans-unit>
       <trans-unit id="message.ext_auth_disable">
         <source>No default organization</source>
         <context-group name="ctx">
@@ -8439,13 +8425,6 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
         <target>Es standen keine weiteren {0} Systemberechtigungen zur Verfügung.</target>
-      </trans-unit>
-      <trans-unit id="system.channel.nochannelslots">
-        <source>There are no more channel entitlements available.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
-        </context-group>
-        <target>Keine weiteren Channel-Berechtigungen mehr verfügbar.</target>
       </trans-unit>
       <trans-unit id="system.entitle.no-add.solaris-slots">
         <source>{0} entitlements cannot be added to solaris machines</source>
@@ -8712,14 +8691,6 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
       <trans-unit id="org.entitlements.syssoft.success">
         <source>Entitlements successfully updated.</source>
         <target>Die Berechtigungen wurden erfolgreich aktualisiert.</target>
-      </trans-unit>
-      <trans-unit id="org.entitlements.software.not_in_range">
-        <source>You attempted to give {0} too many {1} entitlements.  Please enter a value between {2} and {3}</source>
-        <target>Sie versuchten, {0} zu viele {1} Berechtigungen zu geben. Bitte geben Sie einen Wert zwischen {2} und {3} ein.</target>
-      </trans-unit>
-      <trans-unit id="org.entitlements.software.not_in_range.flex">
-        <source>You attempted to give {0} too many {1} flex entitlements.  Please enter a value between {2} and {3}</source>
-        <target>Sie versuchten, {0} zu viele {1} Flex-Berechtigungen zu geben. Bitte geben Sie einen Wert zwischen {2} und {3} ein.</target>
       </trans-unit>
       <trans-unit id="org.entitlements.software.proposedwarning">
         <source>Warning: Your Proposed {0} allocation provides less entitlements than are currently in use in the {1} organization. Please adjust your proposed allocation to no less then the amount of entitlements currently in use.</source>

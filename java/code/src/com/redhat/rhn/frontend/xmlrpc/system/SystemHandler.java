@@ -38,8 +38,6 @@ import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.NoBaseChannelFoundException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
@@ -76,7 +74,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
-import com.redhat.rhn.frontend.dto.ChannelFamilySystemGroup;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -130,8 +127,8 @@ import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.ProvisionVirtualInstanceCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerUnregisteredSystemCreateCommand.CobblerNetworkInterface;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
@@ -141,7 +138,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
-import com.redhat.rhn.manager.system.VirtualizationEntitlementsManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.manager.user.UserManager;
 
@@ -5201,75 +5197,6 @@ public class SystemHandler extends BaseHandler {
         List<DuplicateSystemGrouping> list =
                 SystemManager.listDuplicatesByHostname(loggedInUser, 0L);
         return transformDuplicate(list, "hostname");
-    }
-
-
-    /**
-     * List flex guests accessible to the user
-     * @param loggedInUser The current user
-     * @return List of Flex guests
-     *
-     *
-     * @xmlrpc.doc  List flex guests accessible to the user
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype
-     *          #array()
-     *              $ChannelFamilySystemGroupSerializer
-     *          #array_end()
-     **/
-    public List<ChannelFamilySystemGroup> listFlexGuests(User loggedInUser) {
-        return VirtualizationEntitlementsManager.getInstance().listFlexGuests(loggedInUser);
-    }
-
-    /**
-     * List eligible flex guests accessible to the user
-     * @param loggedInUser The current user
-     * @return List of Flex guests
-     *
-     *
-     * @xmlrpc.doc  List eligible flex guests accessible to the user
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.returntype
-     *          #array()
-     *              $ChannelFamilySystemGroupSerializer
-     *          #array_end()
-     **/
-    public List<ChannelFamilySystemGroup> listEligibleFlexGuests(
-            User loggedInUser) {
-        return VirtualizationEntitlementsManager.
-                getInstance().listEligibleFlexGuests(loggedInUser);
-    }
-
-    /**
-     * Converts the given list of systems to use the flex entitlement.
-     * @param loggedInUser The current user
-     * @param serverIds list of server ids whom
-     *      you want to get converted to flex entitlement
-     * @param channelFamilyLabel the channel family label of the channel
-     * @return the total the number of systems that were converted to use flex entitlement.
-     *
-     * @xmlrpc.doc Converts the given list of systems for a given channel family
-     *   to use the flex entitlement.
-     * @xmlrpc.param #param("string", "sessionKey")
-     * @xmlrpc.param #array_single("int", "serverId")
-     * @xmlrpc.param #param("string", "channelFamilyLabel")
-     * @xmlrpc.returntype int - the total the number of systems
-     *                  that were converted to use flex entitlement.
-     */
-    public int convertToFlexEntitlement(User loggedInUser,
-            List<Integer> serverIds, String channelFamilyLabel) {
-        ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(
-                channelFamilyLabel, loggedInUser.getOrg());
-        if (cf == null) {
-            throw new InvalidEntitlementException();
-        }
-        // we need long values to pass
-        List<Long> longServerIds = new ArrayList<Long>();
-        for (Iterator<Integer> it = serverIds.iterator(); it.hasNext();) {
-            longServerIds.add(new Long(it.next()));
-        }
-        return VirtualizationEntitlementsManager.getInstance().
-                convertToFlex(longServerIds, cf.getId(), loggedInUser).size();
     }
 
     /**

@@ -33,7 +33,6 @@ insert into rhnException values (-20232, 'no_org_admin_group', 'Organization has
 insert into rhnException values (-20233, 'sg_delete_typed', 'Special server groups (non-null group_type) cannot be deleted');
 insert into rhnException values (-20234, 'ug_delete_typed', 'Special user groups (non-null group_type) cannot be deleted');
 
-insert into rhnException values (-20235, 'channel_family_no_subscriptions', 'Channel family subscription count cannot exceed maximum membership');
 insert into rhnException values (-20236, 'channel_subscribe_no_family', 'Attempt to subscribe to a channel with no family');
 
 insert into rhnException values (-20237, 'invalid_enterprise_flag','Enterprise flag must be Y or N');
@@ -56,7 +55,6 @@ insert into rhnException values (-20247, 'null_email_address','A user must have 
 insert into rhnException values (-20248, 'invalid_item_code','The specified item does not exist');
 insert into rhnException values (-20249, 'invalid_server_group','The specified server group does not exist');
 
-insert into rhnException values (-20250, 'invalid_channel_family','The specified channel family does not exist');
 insert into rhnException values (-20251, 'invalid_state','The specified state does not exist');
 insert into rhnException values (-20253, 'invalid_state_transition','The specified transition is not allowed');
 insert into rhnException values (-20254, 'ep_error','Entitlement Proxy error');
@@ -112,12 +110,6 @@ values (-20291,
 insert into rhnException values (-20292, 'package_provider_not_found', 'The specified package provider could not be found.');
 
 insert into rhnException values (-20293, 'package_key_type_not_found', 'The specified package key type could not be found.');
-insert into rhnException values (-20294, 'not_enough_flex_entitlements_in_base_org', 'You do not have enough entitlements in the base org.');
-
-insert into rhnException values (-20295, 'server_cannot_convert_to_flex', 'The given server cannot be converted to a flex entitlement.');
-
-insert into rhnException values (-20296, 'not_enough_flex_entitlements', 'You do not have enough entitlements in your org..');
-
 
 commit;
 

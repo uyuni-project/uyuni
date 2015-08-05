@@ -67,8 +67,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -460,55 +458,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Server s = createTestServer(user);
         assertFalse(s.hasEntitlement(EntitlementManager.PROVISIONING));
-    }
-
-    public void testFindVirtHostsExceedingGuestLimitByOrg() throws Exception {
-        HostBuilder builder = new HostBuilder(user);
-        List expectedViews = new ArrayList();
-
-        expectedViews.add(builder.createVirtHost().withGuests(10).build()
-                .asHostAndGuestCountView());
-        expectedViews.add(builder.createVirtHost().withGuests(6).build()
-                .asHostAndGuestCountView());
-        expectedViews.add(builder.createVirtHost().withGuests(1).build()
-                .asHostAndGuestCountView());
-
-        builder.createVirtHost().withUnregisteredGuests(2);
-
-        builder.createVirtPlatformHost().withGuests(5).build();
-        builder.createVirtPlatformHost().withGuests(2).build();
-
-        builder.createNonVirtHost().withGuests(2).build();
-        builder.createNonVirtHost().withGuests(5).build();
-
-        List actualViews = ServerFactory.findVirtHostsExceedingGuestLimitByOrg(
-                user.getOrg());
-
-        assertTrue(CollectionUtils.isEqualCollection(expectedViews, actualViews));
-    }
-
-    public void testFindVirtPlatformHostsByOrg() throws Exception {
-        HostBuilder builder = new HostBuilder(user);
-        List expectedViews = new ArrayList();
-
-        expectedViews.add(builder.createVirtPlatformHost().withGuests(1).build()
-                .asHostAndGuestCountView());
-        expectedViews.add(builder.createVirtPlatformHost().withGuests(3).build()
-                .asHostAndGuestCountView());
-        expectedViews.add(builder.createVirtPlatformHost().withGuests(8).build()
-                .asHostAndGuestCountView());
-
-        builder.createVirtPlatformHost().withUnregisteredGuests(2);
-
-        builder.createVirtHost().withGuests(2).build();
-        builder.createVirtHost().withGuests(6).build();
-
-        builder.createNonVirtHost().withGuests(3).build();
-        builder.createNonVirtHost().withGuests(5).build();
-
-        List actualViews = ServerFactory.findVirtPlatformHostsByOrg(user.getOrg());
-
-        assertTrue(CollectionUtils.isEqualCollection(expectedViews, actualViews));
     }
 
     /**

@@ -94,29 +94,18 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
     /**
      * Utility method that ensures that a channel family has maximum members.
      * @param channelFamily the channel family
-     * @param memberCount the number of maximum members
      */
-    public static void ensureChannelFamilyHasMembers(User user, ChannelFamily channelFamily,
-            Long memberCount) {
+    public static void ensurePrivateChannelFamilyExists(User user, ChannelFamily channelFamily) {
         Set<PrivateChannelFamily> families = channelFamily.getPrivateChannelFamilies();
 
         if (families.size() == 0) {
             PrivateChannelFamily privateChannelFamily = new PrivateChannelFamily();
             privateChannelFamily.setOrg(user.getOrg());
             privateChannelFamily.setChannelFamily(channelFamily);
-            privateChannelFamily.setCurrentMembers(new Long(0));
-            privateChannelFamily.setMaxMembers(memberCount);
-            privateChannelFamily.setCurrentFlex(0L);
-            privateChannelFamily.setMaxFlex(0L);
             channelFamily.addPrivateChannelFamily(privateChannelFamily);
 
             HibernateFactory.getSession().save(privateChannelFamily);
 
-        }
-        else {
-            for (PrivateChannelFamily pcf : channelFamily.getPrivateChannelFamilies()) {
-                pcf.setMaxMembers(memberCount);
-            }
         }
     }
 }

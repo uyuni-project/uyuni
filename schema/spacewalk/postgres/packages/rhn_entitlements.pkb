@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 6e264a209f8e6f4e78caf9d63ef14507dc9df3b9
+-- oracle equivalent source sha1 64a0a047a2cd1372942e2f20c74f30c878215aad
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -78,14 +78,6 @@ as $$
         where group_type is not null
           and org_id = org_id_in;
 
-        channel_subs cursor for
-        select pcf.channel_family_id, pcf.max_members
-        from rhnChannelFamily cf,
-             rhnPrivateChannelFamily pcf
-        where pcf.org_id = org_id_in
-          and pcf.channel_family_id = cf.id
-          and cf.org_id is null;
-
     begin
 
         for system_ent in system_ents loop
@@ -96,17 +88,6 @@ as $$
         end loop;
 
         update rhnServerGroup
-        set max_members = 0
-        where org_id = org_id_in;
-
-        for channel_sub in channel_subs loop
-            update rhnPrivateChannelFamily
-            set max_members = max_members + channel_sub.max_members
-            where org_id = 1
-              and channel_family_id = channel_sub.channel_family_id;
-        end loop;
-
-        update rhnPrivateChannelFamily
         set max_members = 0
         where org_id = org_id_in;
 
@@ -130,10 +111,6 @@ as $$
                 return 1;
             else
                 return 0;
-            end if;
-        elsif service_level_in = 'monitoring' then
-            if entitlement_in = 'monitoring_entitled' then
-                return 1;
             end if;
         elsif service_level_in = 'updates' then
             return 1;
@@ -358,7 +335,6 @@ as $$
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'sw_mgr_entitled' then 'Update'
                        when 'provisioning_entitled' then 'Provisioning'
-                       when 'monitoring_entitled' then 'Monitoring'
                        when 'virtualization_host' then 'Virtualization'
                        when 'virtualization_host_platform' then
                             'Virtualization Platform' end  );
@@ -428,7 +404,6 @@ as $$
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
                     when 'provisioning_entitled' then 'Provisioning'
-                    when 'monitoring_entitled' then 'Monitoring'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platforrm' end  );
@@ -483,7 +458,6 @@ as $$
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
                     when 'provisioning_entitled' then 'Provisioning'
-                    when 'monitoring_entitled' then 'Monitoring'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platform' end  );
@@ -520,16 +494,6 @@ language plpgsql;
     ) returns void
 as $$
     declare
-        -- All channel families associated with the guests of server_id_in
-        families cursor for
-            select distinct cfs.channel_family_id
-            from
-                rhnChannelFamilyServers cfs,
-                rhnVirtualInstance vi
-            where
-                vi.host_system_id = server_id_in
-                and vi.virtual_system_id = cfs.server_id;
-
         -- All of server group types associated with the guests of
         -- server_id_in
         group_types cursor for
@@ -546,22 +510,6 @@ as $$
                 and sg.group_type = sgt.id;
 
         -- Virtual servers from a certain family belonging to a specific
-        -- host that are consuming physical channel slots over the limit.
-        virt_servers_cfam cursor(family_id_in numeric, quantity_in numeric) for
-                select vi.virtual_system_id
-                from
-                    rhnChannelFamilyMembers cfm,
-                    rhnServerChannel sc,
-                    rhnVirtualInstance vi
-                where
-                    vi.host_system_id = server_id_in
-                    and vi.virtual_system_id = sc.server_id
-                    and sc.channel_id = cfm.channel_id
-                    and cfm.channel_family_id = family_id_in
-                order by sc.modified desc
-                limit quantity_in;
-
-        -- Virtual servers from a certain family belonging to a specific
         -- host that are consuming physical system slots over the limit.
         virt_servers_sgt cursor(group_type_in numeric, quantity_in numeric) for
                 select vi.virtual_system_id
@@ -576,16 +524,6 @@ as $$
                     and sg.group_type = group_type_in
                 order by sgm.modified desc
                 limit quantity_in;
-
-        -- Get the orgs of Virtual guests
-        -- Since they may belong to different orgs
-        virt_guest_orgs cursor for
-                select  distinct (s.org_id)
-                from rhnServer s
-                    inner join  rhnVirtualInstance vi on vi.virtual_system_id = s.id
-                where
-                    vi.host_system_id = server_id_in
-                    and s.org_id <> (select s1.org_id from rhnServer s1 where s1.id = vi.host_system_id) ;
 
         org_id_val numeric;
         max_members_val numeric;
@@ -608,102 +546,6 @@ as $$
         into org_id_val
         from rhnServer
         where id = server_id_in;
-
-        -- deal w/ channel entitlements first ...
-        for family in families loop
-            if is_virt = 0 then
-            -- if the host_server does not have virt
-            --- find all possible flex slots
-            -- and set each of the flex eligible guests to Y
-                select GREATEST(sfc.max_members - sfc.current_members, 0)
-                  into free_slots
-                  from rhnServerFveCapable sfc
-                 where sfc.channel_family_id = family.channel_family_id;
-                UPDATE rhnServerChannel sc set is_fve = 'Y'
-                where sc.server_id in (
-                            select vi.virtual_system_id
-                            from rhnServerFveCapable sfc
-                                inner join rhnVirtualInstance vi on vi.virtual_system_id = sfc.server_id
-                            where vi.host_system_id = server_id_in
-                                  and sfc.channel_family_id = family.channel_family_id
-                              order by vi.modified desc
-                            limit free_slots
-                );
-            else
-            -- if the host_server has virt
-            -- set all its flex guests to N
-                UPDATE rhnServerChannel sc set is_fve = 'N'
-                where
-                    sc.channel_id in (select cfm.channel_id from rhnChannelFamilyMembers cfm
-                                      where cfm.CHANNEL_FAMILY_ID = family.channel_family_id)
-                    and sc.is_fve = 'Y'
-                    and sc.server_id in
-                            (select vi.virtual_system_id  from rhnVirtualInstance vi
-                                    where vi.host_system_id = server_id_in);
-            end if;
-
-            -- get the current (physical) members of the family
-            current_members_calc :=
-                rhn_channel.channel_family_current_members(family.channel_family_id,
-                                                           org_id_val); -- fixed transposed args
-
-            -- get the max members of the family
-            select max_members
-            into max_members_val
-            from rhnPrivateChannelFamily
-            where channel_family_id = family.channel_family_id
-            and org_id = org_id_val;
-
-            select fve_max_members
-            into max_flex_val
-            from rhnPrivateChannelFamily
-            where channel_family_id = family.channel_family_id
-            and org_id = org_id_val;
-
-            if current_members_calc > max_members_val then
-                -- A virtualization_host* ent must have been removed, so we'll
-                -- unsubscribe guests from the host first.
-
-                -- hm, i don't think max_members - current_members_calc yielding a negative number
-                -- will work w/ rownum, swaping 'em in the body of this if...
-                for virt_server in virt_servers_cfam(family.channel_family_id,
-                                current_members_calc - max_members_val) loop
-
-                    perform rhn_channel.unsubscribe_server_from_family(
-                                virt_server.virtual_system_id,
-                                family.channel_family_id);
-                end loop;
-
-                -- if we're still over the limit, which would be odd,
-                -- just prune the group to max_members
-                --
-                -- er... wouldn't we actually have to refresh the values of
-                -- current_members_calc and max_members_val to actually ever
-                -- *skip this??
-                if current_members_calc > max_members_val then
-                    -- argh, transposed again?!
-                    perform rhn_entitlements.set_family_count(org_id_val,
-                                     family.channel_family_id,
-                                     max_members_val, max_flex_val);
-                    --TODO calculate this correctly
-                end if;
-
-           end if;
-
-            -- update current_members for the family.  This will set the value
-            -- to reflect adding/removing the entitlement.
-            --
-            -- what's the difference of doing this vs the unavoidable set_family_count above?
-            perform rhn_channel.update_family_counts(family.channel_family_id,
-                                             org_id_val);
-
-            -- It is possible that the guests belong  to a different org than the host
-            -- so we are going to update the family counts in the guests orgs also
-            for org in virt_guest_orgs loop
-                    perform rhn_channel.update_family_counts(family.channel_family_id,
-                                             org.org_id);
-            end loop;
-        end loop;
 
         for a_group_type in group_types loop
           -- get the current *physical* members of the system entitlement type for the org...
@@ -762,8 +604,7 @@ as $$
                 and sgt.label in (
                     'sw_mgr_entitled','enterprise_entitled', 'bootstrap_entitled',
                     'provisioning_entitled', 'nonlinux_entitled',
-                    'monitoring_entitled', 'virtualization_host',
-                                        'virtualization_host_platform'
+                    'virtualization_host', 'virtualization_host_platform'
                     );
 
          ent_array varchar[];
@@ -841,10 +682,6 @@ as $$
             if enable_in = 'Y' then
                 ents_to_process := array_append(ents_to_process, 'sw_mgr_enterprise');
             end if;
-        elsif service_label_in = 'monitoring' then
-            ents_to_process := array_append(ents_to_process, 'rhn_monitor');
-
-            roles_to_process := array_append(roles_to_process, 'monitoring_admin');
         elsif service_label_in = 'virtualization' then
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization');
 
@@ -924,15 +761,6 @@ as $$
     end$$
 language plpgsql;
 
-    create or replace function set_customer_monitoring (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'monitoring', 'Y');
-    end$$
-language plpgsql;
-
     create or replace function set_customer_nonlinux (
         customer_id_in in numeric
     ) returns void
@@ -960,15 +788,6 @@ as $$
     end$$
 language plpgsql;
 
-    create or replace function unset_customer_monitoring (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'monitoring', 'N');
-    end$$
-language plpgsql;
-
     create or replace function unset_customer_nonlinux (
         customer_id_in in numeric
     ) returns void
@@ -986,8 +805,7 @@ language plpgsql;
     -- *******************************************************************
     create or replace function prune_group (
         group_id_in in numeric,
-        quantity_in in numeric,
-        update_family_countsYN in numeric default 1
+        quantity_in in numeric
     ) returns void
 as $$
     declare
@@ -1027,7 +845,7 @@ as $$
             -- if we're removing a base ent, then be sure to
             -- remove the server's channel subscriptions.
             if ( type_is_base = 'Y' ) then
-                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, 0, update_family_countsYN);
+                   perform rhn_channel.clear_subscriptions(sgrecord.server_id, 0);
             end if;
 
             end loop;
@@ -1130,139 +948,6 @@ as $$
             end if;
         end if;
 
-        if group_label_in = 'monitoring_entitled' then
-            if new_quantity > 0 then
-                perform rhn_entitlements.set_customer_monitoring(to_org_id_in);
-            else
-                perform rhn_entitlements.unset_customer_monitoring(to_org_id_in);
-            end if;
-        end if;
-
-    end$$
-language plpgsql;
-
-    -- *******************************************************************
-    -- PROCEDURE: assign_channel_entitlement
-    --
-    -- Moves channel entitlements from from_org_id_in to to_org_id_in.
-    -- Can raise not_enough_entitlements_in_base_org if from_org_id_in
-    -- does not have enough entitlements to cover the move.
-    -- Takes care of unentitling systems if necessary by calling
-    -- set_family_count
-    -- *******************************************************************
-    create or replace function assign_channel_entitlement(
-        channel_family_label_in in varchar,
-        from_org_id_in in numeric,
-        to_org_id_in in numeric,
-        quantity_in in numeric,
-        flex_in in numeric
-    ) returns void
-as $$
-    declare
-        from_org_prev_ent_count numeric;
-        from_org_prev_ent_count_flex numeric;
-        new_ent_count numeric;
-        new_ent_count_flex numeric;
-        to_org_prev_ent_count numeric;
-        to_org_prev_ent_count_flex numeric;
-        new_quantity numeric;
-        new_flex numeric;
-        cfam_id       numeric;
-    begin
-
-            select max_members
-            into from_org_prev_ent_count
-            from rhnChannelFamily cf,
-                 rhnPrivateChannelFamily pcf
-            where pcf.org_id = from_org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                perform rhn_exception.raise_exception(
-                              'not_enough_entitlements_in_base_org');
-            end if;
-
-            select max_members
-            into to_org_prev_ent_count
-            from rhnChannelFamily cf,
-                 rhnPrivateChannelFamily pcf
-            where pcf.org_id = to_org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                to_org_prev_ent_count := 0;
-            end if;
-
-            select fve_max_members
-            into from_org_prev_ent_count_flex
-            from rhnChannelFamily cf,
-                rhnPrivateChannelFamily pcf
-            where pcf.org_id = from_org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                perform rhn_exception.raise_exception(
-                              'not_enough_flex_entitlements_in_base_org');
-            end if;
-
-            select fve_max_members
-            into to_org_prev_ent_count_flex
-            from rhnChannelFamily cf,
-                 rhnPrivateChannelFamily pcf
-            where pcf.org_id = to_org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                to_org_prev_ent_count_flex := 0;
-            end if;
-
-            select id
-            into cfam_id
-            from rhnChannelFamily
-            where label = channel_family_label_in;
-
-            if not found then
-                perform rhn_exception.raise_exception(
-                              'invalid_channel_family');
-            end if;
-
-        new_ent_count := from_org_prev_ent_count - quantity_in;
-        new_ent_count_flex := from_org_prev_ent_count_flex - flex_in;
-
-        if from_org_prev_ent_count >= new_ent_count then
-            new_quantity := to_org_prev_ent_count + quantity_in;
-        end if;
-
-        if from_org_prev_ent_count_flex >= new_ent_count_flex then
-            new_flex := to_org_prev_ent_count_flex + flex_in;
-        end if;
-
-        if new_ent_count < 0 then
-            perform rhn_exception.raise_exception(
-                          'not_enough_entitlements_in_base_org');
-        end if;
-
-        if new_ent_count_flex < 0 then
-            perform rhn_exception.raise_exception(
-                          'not_enough_flex_entitlements_in_base_org');
-        end if;
-
-
-
-        perform rhn_entitlements.set_family_count(from_org_id_in,
-                                          cfam_id,
-                                          new_ent_count,
-                                          new_ent_count_flex);
-
-        perform rhn_entitlements.set_family_count(to_org_id_in,
-                                          cfam_id,
-                                          new_quantity,
-                                          new_flex);
-
     end$$
 language plpgsql;
 
@@ -1326,170 +1011,17 @@ as $$
             -- will do bulk update afterwards
             perform rhn_entitlements.set_server_group_count(org_id_in,
                                              group_type,
-                                             quantity_in,
-                                             0);
-            -- bulk update family counts
-            perform rhn_channel.update_group_family_counts(group_label_in, org_id_in);
+                                             quantity_in);
         end if;
 
     end$$
 language plpgsql;
 
-    -- *******************************************************************
-    -- PROCEDURE: activate_channel_entitlement
-    --
-    -- Calls: set_family_count to update, prune, or create the family
-    --        permission bucket.
-    -- Called by: the code that activates a satellite cert.
-    --
-    -- Raises not_enough_entitlements_in_base_org if there are not enough
-    -- entitlements in the org to cover the difference when you are
-    -- descreasing the number of entitlements.
-    --
-    -- The backend code in Python is expected to do whatever arithmetics
-    -- is needed.
-    -- *******************************************************************
-    create or replace function activate_channel_entitlement(
-        org_id_in in numeric,
-        channel_family_label_in in varchar,
-        quantity_in in numeric,
-        flex_in in numeric
-    ) returns void
-as $$
-    declare
-        prev_ent_count numeric;
-        prev_flex_count numeric;
-        prev_ent_count_sum numeric;
-        cfam_id numeric;
-        reduce_quantity numeric;
-        total_flex_capable numeric;
-        to_convert_reg cursor (channel_family_id_val numeric, org_id_in numeric, quantity numeric) for
-                     select SC.server_id
-                     from rhnServerChannel SC inner join
-                          rhnServer S on S.id = SC.server_id
-                     where
-                         is_fve = 'Y'
-                         and S.org_id = org_id_in
-                         and SC.channel_id in
-                         (select cfm.channel_id from rhnChannelFamilyMembers cfm
-                             where cfm.CHANNEL_FAMILY_ID = channel_family_id_val)
-                         limit quantity;
-         to_convert_flex cursor (channel_family_id_val numeric, org_id_in numeric, quantity numeric) for
-                   select server_id
-                   from rhnServerFveCapable
-                       where SERVER_ORG_ID = org_id_in and
-                             channel_family_id = cfam_id
-                       limit quantity;
-
-    begin
-
-        -- Fetch the current entitlement count for the org
-        -- into prev_ent_count
-            select current_members
-            into prev_ent_count
-            from rhnChannelFamily cf,
-                 rhnPrivateChannelFamily pcf
-            where pcf.org_id = org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                prev_ent_count := 0;
-            end if;
-
-            select pcf.fve_current_members
-            into prev_flex_count
-            from rhnChannelFamily cf,
-                 rhnPrivateChannelFamily pcf
-            where pcf.org_id = org_id_in
-              and pcf.channel_family_id = cf.id
-              and cf.label = channel_family_label_in;
-
-            if not found then
-                prev_flex_count := 0;
-            end if;
-
-            select id
-            into cfam_id
-            from rhnChannelFamily
-            where label = channel_family_label_in;
-
-            if not found then
-                perform rhn_exception.raise_exception(
-                              'invalid_channel_family');
-            end if;
-
-        -- if there are too few flex entitlements
-        if flex_in < prev_flex_count then
-            -- and if the extra we need is less than or equal to our extra regular entitlements
-            if prev_flex_count - flex_in <= quantity_in - prev_ent_count then
-                   reduce_quantity := prev_flex_count - flex_in;
-                   -- We need to convert some systems from flex guest to regular
-                   for system in to_convert_reg(cfam_id, org_id_in, reduce_quantity) loop
-                      --rhn_channel.convert_to_regular(system.server_id, cfam_id);
-                      UPDATE rhnServerChannel sc set is_fve = 'N'
-                           where sc.server_id = system.server_id
-                                 and sc.channel_id in (select cfm.channel_id
-                                                          from rhnChannelFamilyMembers cfm
-                                                          where cfm.channel_family_id = cfam_id);
-                   end loop;
-
-                   --reset previous counts
-                   prev_ent_count := prev_ent_count + reduce_quantity;
-                   prev_flex_count := prev_flex_count - reduce_quantity;
-            else
-                perform rhn_exception.raise_exception(
-                          'not_enough_flex_entitlements_in_base_org');
-            end if;
-        end if;
-
-        -- if there are too few regular entitlements, and extra flex entitlements
-        if quantity_in < prev_ent_count and prev_flex_count < flex_in then
-                -- how many flex-capable systems (that aren't using flex) do we have
-                select count(*)
-                   into total_flex_capable
-                   from rhnServerFveCapable
-                       where SERVER_ORG_ID = org_id_in and
-                             channel_family_id = cfam_id;
-                -- if we have enough flex capable machines that is at least
-                --   as many as what we are over on
-                if total_flex_capable >= prev_ent_count - quantity_in then
-                    reduce_quantity := prev_ent_count - quantity_in;
-                    for system in to_convert_flex(cfam_id, org_id_in, reduce_quantity) loop
---                          rhn_channel.convert_to_fve(system.server_id, cfam_id);
-                        UPDATE rhnServerChannel sc set is_fve = 'Y'
-                           where sc.server_id = system.server_id
-                                 and sc.channel_id in (select cfm.channel_id
-                                                          from rhnChannelFamilyMembers cfm
-                                                          where cfm.channel_family_id = cfam_id);
-                    end loop;
-                    prev_ent_count := prev_ent_count - reduce_quantity;
-                    prev_flex_count := prev_flex_count + reduce_quantity;
-                end if;
-        end if;
-
-        -- If we're setting the total entitlemnt count to a lower value,
-        -- and that value is less than the count in that one org,
-        -- we need to raise an exception.
-        if quantity_in < prev_ent_count then
-            perform rhn_exception.raise_exception(
-                          'not_enough_entitlements_in_base_org');
-        else
-            -- even if we've manually converted systems to/from flex above
-            -- set_family_count should call update_family_counts, to reset
-            -- current used slots
-            perform rhn_entitlements.set_family_count(org_id_in, cfam_id,
-                                              quantity_in, flex_in);
-        end if;
-
-    end$$
-language plpgsql;
 
     create or replace function set_server_group_count (
         customer_id_in in numeric,  -- customer_id
         group_type_in in numeric,   -- rhn[User|Server]GroupType.id
-        quantity_in in numeric,      -- quantity
-                update_family_countsYN in numeric default 1
+        quantity_in in numeric      -- quantity
     ) returns void
 as $$
     declare
@@ -1517,8 +1049,7 @@ as $$
 
         perform rhn_entitlements.prune_group(
             group_id,
-            quantity,
-                        update_family_countsYN
+            quantity
         );
 
         if not wasfound then
@@ -1534,165 +1065,6 @@ as $$
             );
         end if;
 
-    end$$
-language plpgsql;
-
-    -- *******************************************************************
-    -- PROCEDURE: prune_family
-    -- Unsubscribes servers consuming physical slots from the channel family
-    --   that are over the org's limit.
-    -- Called by: set_family_count
-    -- *******************************************************************
-    create or replace function prune_family (
-        customer_id_in in numeric,
-        channel_family_id_in in numeric,
-        quantity_in in numeric,
-        flex_in in numeric
-    ) returns void
-as $$
-    declare
-        serverchannels cursor(tmp_quantity numeric, is_fve_in char) for
-            select  sc.server_id,
-                    sc.channel_id
-            from    rhnServerChannel sc,
-                    rhnChannelFamilyMembers cfm
-            where   1=1
-                and cfm.channel_family_id = channel_family_id_in
-                and cfm.channel_id = sc.channel_id
-                and server_id in (
-                       select server_id from (
-                            select  distinct rs.id as server_id
-                            from
-                                    rhnServerChannel        rsc,
-                                    rhnChannelFamilyMembers rcfm,
-                                    rhnServer               rs
-                            where   1=1
-                                and rs.org_id = customer_id_in
-                                and rs.id = rsc.server_id
-                                and rsc.channel_id = rcfm.channel_id
-                                and rcfm.channel_family_id =  channel_family_id_in
-                                and rsc.is_fve = is_fve_in
-                                -- we only want to grab servers consuming
-                                -- physical slots.
-                                and exists (
-                                    select 1
-                                    from rhnChannelFamilyServerPhysical cfsp
-                                    where cfsp.server_id = rs.id
-                                    and cfsp.channel_family_id =
-                                        channel_family_id_in
-                                    )
-                            ) Q
-                        order by server_id asc
-                        offset quantity_in
-                        );
-    begin
-        -- if we get a null customer_id, this is completely bogus.
-        if customer_id_in is null then
-            return;
-        end if;
-
-        for sc in serverchannels(quantity_in, 'N') loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
-                                                   1, 1, 0, 0);
-        end loop;
-
-        for sc in serverchannels(flex_in, 'Y') loop
-            perform rhn_channel.unsubscribe_server(sc.server_id, sc.channel_id,
-                                                   1, 1, 0, 0);
-        end loop;
-
-        perform rhn_channel.update_family_counts(channel_family_id_in, customer_id_in);
-    end$$
-language plpgsql;
-
-    create or replace function set_family_count (
-        customer_id_in in numeric,      -- customer_id
-        channel_family_id_in in numeric,    -- 246
-        quantity_in in numeric,          -- 3
-        flex_in in numeric
-    ) returns void
-as $$
-    declare
-        privperms cursor for
-            select  1
-            from    rhnPrivateChannelFamily
-            where   org_id = customer_id_in
-                and channel_family_id = channel_family_id_in;
-        pubperms cursor for
-            select  o.id org_id
-            from    web_customer o,
-                    rhnPublicChannelFamily pcf
-            where   pcf.channel_family_id = channel_family_id_in;
-        quantity numeric;
-        done numeric := 0;
-        flex numeric;
-    begin
-        quantity := quantity_in;
-        if quantity is not null and quantity < 0 then
-            quantity := 0;
-        end if;
-        flex := flex_in;
-        if flex is not null and flex < 0 then
-            flex := 0;
-        end if;
-
-        if customer_id_in is not null then
-            for perm in privperms loop
-                perform rhn_entitlements.prune_family(
-                    customer_id_in,
-                    channel_family_id_in,
-                    quantity,
-                    flex
-                );
-
-                if quantity is null and flex is null then
-                    delete from rhnPrivateChannelFamily
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-                 else
-                    update rhnPrivateChannelFamily
-                        set max_members = quantity
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-
-                   update rhnPrivateChannelFamily
-                        set fve_max_members = flex
-                        where org_id = customer_id_in
-                            and channel_family_id = channel_family_id_in;
-                end if;
-                return;
-            end loop;
-
-            insert into rhnPrivateChannelFamily (
-                    channel_family_id, org_id, max_members, current_members, fve_max_members, fve_current_members
-                ) values (
-                    channel_family_id_in, customer_id_in, quantity, 0, flex, 0 );
-            return;
-        end if;
-
-        for perm in pubperms loop
-            if quantity = 0 then
-                perform rhn_entitlements.prune_family(
-                    perm.org_id,
-                    channel_family_id_in,
-                    quantity,
-                    flex
-                );
-                if done = 0 then
-                    delete from rhnPublicChannelFamily
-                        where channel_family_id = channel_family_id_in;
-                end if;
-            end if;
-            done := 1;
-        end loop;
-        -- if done's not 1, then we don't have any entitlements
-        if done != 1 then
-            insert into rhnPublicChannelFamily (
-                    channel_family_id
-                ) values (
-                    channel_family_id_in
-                );
-        end if;
     end$$
 language plpgsql;
 
@@ -1736,49 +1108,6 @@ as $$
         end loop;
     end$$
 language plpgsql;
-
-    create or replace function subscribe_newest_servers (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    declare
-        -- find servers without base channels
-        servers cursor(cid_in numeric) for
-            select  s.id
-            from    rhnServer           s
-            where   1=1
-                and s.org_id = cid_in
-                and not exists (
-                        select 1
-                        from    rhnChannel          c,
-                                rhnServerChannel    sc
-                        where   sc.server_id = s.id
-                            and sc.channel_id = c.id
-                            and c.parent_channel is null
-                    )
-                and not exists (
-                        select 1
-                        from rhnVirtualInstance vi
-                        where vi.virtual_system_id = s.id
-                    )
-            order by s.modified desc;
-        channel_id numeric;
-    begin
-        for server in servers(customer_id_in) loop
-            channel_id := rhn_channel.guess_server_base(server.id);
-            if channel_id is not null then
-                begin
-                    perform rhn_channel.subscribe_server(server.id, channel_id);
-                -- exception is really channel_family_no_subscriptions
-                exception
-                    when others then
-                        null;
-                end;
-            end if;
-        end loop;
-    end$$
-language plpgsql;
-
 
 -- restore the original setting
 update pg_settings set setting = overlay( setting placing '' from 1 for (length('rhn_entitlements')+1) ) where name = 'search_path';

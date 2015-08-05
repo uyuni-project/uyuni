@@ -1184,40 +1184,6 @@ class Backend:
         hdel.executemany(sgt_id=sgt_ids)
         hins.executemany(vsl_id=vsl_ids, sgt_id=sgt_ids)
 
-    def processChannelFamilyPermissions(self, cfps):
-        # Process channelFamilyPermissions
-        activate_channel_entitlements = self.dbmodule.Procedure(
-            'rhn_entitlements.activate_channel_entitlement')
-        for cfp in cfps:
-            if "private-channel-family" in cfp['channel_family']:
-                # As this is a generic list of channel families
-                # skip private channel families from channel family
-                # perm checks, as they are specific to ui and should
-                # not be handed over for org checks through satellite-sync
-                # or activate to pl/sql. As there is no unique way to
-                # identify these, filter based on name which is a
-                # standard for private channel families. Hopefully we'll
-                # have a better param to filter this in future.
-                continue
-            try:
-                activate_channel_entitlements(cfp['org_id'],
-                                              cfp['channel_family'], cfp['max_members'], cfp['max_flex'])
-            except rhnSQL.SQLError, e:
-                raise rhnFault(23, str(e[1]) + ": org_id [%s] family [%s] max [%s]" %
-                               (cfp['org_id'], cfp['channel_family'], cfp['max_members']), explain=0), None, sys.exc_info()[2]
-
-        # The way we constructed the list of channel family permissions, we
-        # should have (at least) all of the permissions from the database in
-        # the cfps list, so no need to prune channel entitlements outside of
-        # the set_family_count call
-
-        # Now subscribe the newest servers
-        # bug 146395: apparently this is an undesired 'nicety'
-#        org_id = self.lookupOrg()
-#        subscribe_newest_servers = self.dbmodule.Procedure(
-#            'rhn_entitlements.subscribe_newest_servers')
-#        subscribe_newest_servers(org_id)
-
     def processDistChannelMap(self, dcms):
         dcmTable = self.tables['rhnDistChannelMap']
         lookup = TableLookup(dcmTable, self.dbmodule)
@@ -1529,41 +1495,25 @@ class Backend:
         """
         insert_pcf = self.dbmodule.prepare("""
             INSERT INTO rhnPrivateChannelFamily
-                   (channel_family_id, org_id, max_members)
-            VALUES (:cfid, :org_id, :max_members)
+                   (channel_family_id, org_id)
+            VALUES (:cfid, :org_id)
             """)
-        update_pcf = self.dbmodule.prepare("""
-            UPDATE rhnPrivateChannelFamily
-               SET max_members = :max_members
-             WHERE channel_family_id = :cfid
-               AND org_id = :org_id
-             """)
         _query_pcf = self.dbmodule.prepare("""
             SELECT channel_family_id, org_id FROM rhnPrivateChannelFamily
             """)
         _query_pcf.execute()
         existing_data = map(lambda x: "%s-%s" % (x['channel_family_id'], x['org_id']), _query_pcf.fetchall_dict() or [])
-        toinsert = [[], [], []]
-        toupdate = [[], [], []]
+        toinsert = [[], []]
         for item in batch:
             ident = "%s-%s" % (item['channel_family_id'], item['org_id'])
             if ident in existing_data:
                 existing_data.remove(ident)
-                toupdate[0].append(item['max_members'])
-                toupdate[1].append(item['channel_family_id'])
-                toupdate[2].append(item['org_id'])
                 continue
             toinsert[0].append(item['channel_family_id'])
             toinsert[1].append(item['org_id'])
-            toinsert[2].append(item['max_members'])
         if toinsert[0]:
             insert_pcf.executemany(cfid=toinsert[0],
-                                   org_id=toinsert[1],
-                                   max_members=toinsert[2])
-        if toupdate[0]:
-            update_pcf.executemany(max_members=toupdate[0],
-                                   cfid=toupdate[1],
-                                   org_id=toupdate[2])
+                                   org_id=toinsert[1])
 
     def processSuseEntitlements(self, batch):
         """Check if the System Entitlements are already in DB.
@@ -1607,27 +1557,6 @@ class Backend:
         for item in (sql.fetchall_dict() or []):
             result[item['label']] = item['id']
         return result
-
-    def calcSubMaxMembers(self, subs):
-        """SUM max_members of org_id > 1 and set
-           new max_members = max_members - SUM(max_members of org > 1)
-        """
-        _query = self.dbmodule.prepare("""
-            SELECT pcf.channel_family_id, SUM(pcf.max_members) AS giveaway
-              FROM rhnPrivateChannelFamily pcf
-             WHERE pcf.org_id > 1
-          GROUP BY pcf.channel_family_id
-        """)
-        _query.execute()
-        existing_counts = {}
-        for entry in (_query.fetchall_dict() or []):
-            existing_counts[entry['channel_family_id']] = 0
-            if entry['giveaway'] and int(entry['giveaway']) > 0:
-                existing_counts[entry['channel_family_id']] = int(entry['giveaway'])
-
-        for item in subs:
-            if item['channel_family_id'] in existing_counts:
-                item['max_members'] = item['max_members'] - existing_counts[item['channel_family_id']]
 
     def calcEntMaxMembers(self, ents):
         """SUM max_members of org_id > 1 and set

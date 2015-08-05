@@ -395,7 +395,6 @@ def channelForProduct(product, ostarget, parent_id=None, org_id=None,
         c.summary,
         c.description,
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
-        rhn_channel.available_chan_subscriptions(c.id, :org_id) available_subscriptions,
         -- If user_id is null, then the channel is subscribable
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe') subscribable
         FROM rhnChannel c

@@ -835,11 +835,10 @@ class _SuseSubscriptionDumper(BaseRowDumper):
 class SuseSubscriptionDumper(BaseQueryDumper):
     tag_name = 'suse-subscriptions'
     iterator_query = """
-        SELECT cf.label, pcf.max_members, 0 AS system_entitlement
+        SELECT cf.label, 0, 0 AS system_entitlement
           FROM rhnPrivateChannelFamily pcf
           JOIN rhnChannelFamily cf ON pcf.channel_family_id = cf.id
          WHERE pcf.org_id = 1
-           AND max_members > 0
          UNION
         SELECT sgt.label, sg.max_members, 1 AS system_entitlement
           FROM rhnServerGroup sg

@@ -279,35 +279,6 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Returns a list of systems consuming given channel family entitlement
-     *
-     * @param cfId Channel family ID to list the entitled systems for
-     * @param user User to list the entitled systems for
-     * @param entitlementType regular, flex or all
-     * @param pc Page control
-     * @return list of SystemOverviews.
-     */
-    public static DataResult<SystemOverview> getEntitledSystems(Long cfId, User user,
-                                                String entitlementType, PageControl pc) {
-        SelectMode m = ModeFactory.getMode("System_queries", "systems_in_channel_family");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("cfamid", cfId);
-        params.put("userid", user.getId());
-        params.put("orgid", user.getOrg().getId());
-        params.put("isfve", "All");
-
-        if (entitlementType.equals("regular")) {
-            params.put("isfve", "N");
-        }
-        else if (entitlementType.equals("flex")) {
-            params.put("isfve", "Y");
-        }
-
-        return makeDataResult(params, new HashMap<String, Object>(), pc, m,
-                SystemOverview.class);
-    }
-
-    /**
      * Gets the latest upgradable packages for a system
      * @param sid The id for the system we want packages for
      * @return Returns a list of the latest upgradable packages for a system
@@ -2180,88 +2151,6 @@ public class SystemManager extends BaseManager {
                 reason);
 
         server.setLock(sl);
-    }
-
-
-    /**
-     * Check if a given Server is FVE eligible
-     * @param serverIn to check
-     * @return true if Server is FVE eligible, false otherwise
-     */
-    public static boolean isServerFveEligible(Server serverIn) {
-        return isServerIdFveEligible(serverIn.getId());
-    }
-
-    /**
-     * Check if a given ServerId is FVE eligible
-     * @param serverIdIn to check
-     * @return true if Server is FVE eligible, false otherwise
-     */
-    public static boolean isServerIdFveEligible(Long serverIdIn) {
-        SelectMode m = ModeFactory.getMode("System_queries", "is_server_fve_eligible");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sid", serverIdIn);
-
-        return (m.execute(params).size() >= 1);
-    }
-
-
-    /**
-     * Check to see if an attempt to subscribe the passed in server to the
-     * passed in channel will succeed.  Checks available slots, if the channel is
-     * 'free' and the Server is virtual.
-     *
-     * @param orgIn of caller
-     * @param serverIn to check
-     * @param channelIn to check
-     * @return boolean if it will succeed.
-     */
-    public static boolean canServerSubscribeToChannel(Org orgIn, Server serverIn,
-            Channel channelIn) {
-        if (serverIn.isSubscribed(channelIn)) {
-            return true;
-        }
-
-        // If channel is free for this guest, dont check avail subs
-        if (ChannelManager.isChannelFreeForSubscription(serverIn.getId(), channelIn)) {
-            return true;
-        }
-
-        // Not free.  Check to see if we're a guest, and there are FVEs available.
-        // Note that for FVEs, NULL == NOT FOUND
-        if (isServerFveEligible(serverIn)) {
-            Long availableFVEs = ChannelManager.getAvailableFveEntitlements(orgIn,
-                    channelIn);
-            if (availableFVEs != null && (availableFVEs.longValue() > 0)) {
-                return true;
-            }
-        }
-
-        // Finally, check available physical subs
-        // Note that for PHYS SUBS, NULL == UNLIMITED
-        Long availableSubs = ChannelManager.getAvailableEntitlements(orgIn, channelIn);
-        if ((availableSubs == null) || (availableSubs.longValue() > 0)) {
-            return true;
-        }
-        else {
-            log.debug("avail subscriptions is to small : " + availableSubs);
-
-            // Return true if serverIn has subs to a channel of channelIn's family
-            ChannelFamily family = channelIn.getChannelFamily();
-            if (family == null) {
-                return false;
-            }
-            else {
-                Set<Channel> channels = serverIn.getChannels();
-                for (Channel c : channels) {
-                    ChannelFamily f = c.getChannelFamily();
-                    if (f != null && f.equals(family)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
     }
 
     /**

@@ -887,7 +887,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         <source>The software channels listed below are @@VENDOR_NAME@@ channels or child channels of @@VENDOR_NAME@@ Channels.</source>
       </trans-unit>
       <trans-unit id="channels.retired.jsp.header1">
-        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization &lt;a href=&quot;/rhn/channels/software/Entitlements.do&quot;&gt; is entitled to &lt;/a&gt;but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
+        <source>The software channels listed below are &lt;strong&gt;retired channels&lt;/strong&gt; that your organization is entitled to but are no longer supported by @@VENDOR_NAME@@ because they have reached their 'end-of-life' date.</source>
       </trans-unit>
       <trans-unit id="kickstart.troubleshooting.jsp.verboseup2date">
         <source>Enable debugging in up2date/yum or yast</source>
@@ -1113,12 +1113,6 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="sdc.channels.edit.virtsubwarning_nohost">
 <source>&lt;strong&gt;NOTE:&lt;/strong&gt; These channels are not part of the @@ENTERPRISE_LINUX_NAME@@ subscription for this guest's host. Subscribing to them will consume additional software entitlements. Applying a different virtual system entitlement to the host system will affect which channels have this mark.</source>
-      </trans-unit>
-      <trans-unit id="guestlimited.jsp.para1">
-        <source>The following is a list of host systems with the 'Virtualization' entitlement. You may wish to consider upgrading systems that have exceeded the 4-guest limit to an 'Unlimited Virtualization' entitlement to make the most of your subscriptions and stay in compliance with your service level agreements with @@VENDOR_NAME@@.</source>
-      </trans-unit>
-      <trans-unit id="physicalhosts.jsp.guestsofnonredhat">
-<source>Guests of Non-@@VENDOR_NAME@@ Virtualization Hosts</source>
       </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.provis_tip">
         <source>Allows various advanced functionality such as autoinstallation and configuration file provisioning.</source>
