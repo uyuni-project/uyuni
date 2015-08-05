@@ -55,30 +55,28 @@
         <div class="panel-body">
             <ul>
                 <li><bean:message key="ssm.overview.channels.memberships"/></li>
-                <rhn:require acl="org_entitlement(rhn_provisioning); user_role(config_admin)">
+                <rhn:require acl="user_role(config_admin)">
                   <li><bean:message key="ssm.overview.channels.subscriptions"/></li>
                   <li><bean:message key="ssm.overview.channels.deploy"/></li>
                 </rhn:require>
             </ul>
         </div>
     </rhn:require>
-    <rhn:require acl="org_entitlement(rhn_provisioning);">
-        <div class="panel-heading">
-            <rhn:icon type="header-kickstart" title="ssm.overview.provisioning" />
-            <bean:message key="ssm.overview.provisioning"/>
-        </div>
-        <div class="panel-body">
-            <ul>
-                <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
-                <rhn:require acl="no_bootstrap_systems_in_set()">
-                    <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
-                    <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
-                </rhn:require>
-                <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
-                <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
-            </ul>
-        </div>
-    </rhn:require>
+    <div class="panel-heading">
+        <rhn:icon type="header-kickstart" title="ssm.overview.provisioning" />
+        <bean:message key="ssm.overview.provisioning"/>
+    </div>
+    <div class="panel-body">
+        <ul>
+            <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
+            <rhn:require acl="no_bootstrap_systems_in_set()">
+                <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
+                <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
+            </rhn:require>
+            <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
+            <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
+        </ul>
+    </div>
     <div class="panel-heading">
         <rhn:icon type="header-event-history" title="ssm.overview.misc" />
         <bean:message key="ssm.overview.misc"/>
@@ -88,10 +86,10 @@
             <rhn:require acl="no_bootstrap_systems_in_set()">
                 <li><bean:message key="ssm.overview.misc.updateprofiles"/></li>
             </rhn:require>
-            <rhn:require acl="org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()">
+            <rhn:require acl="no_bootstrap_systems_in_set()">
                 <li><bean:message key="ssm.overview.misc.customvalues"/></li>
             </rhn:require>
-            <rhn:require acl="user_role(org_admin);org_entitlement(rhn_provisioning); no_bootstrap_systems_in_set()">
+            <rhn:require acl="user_role(org_admin); no_bootstrap_systems_in_set()">
                 <li><bean:message key="ssm.overview.misc.entitlements"/></li>
             </rhn:require>
             <li><bean:message key="ssm.overview.misc.delete"/></li>
