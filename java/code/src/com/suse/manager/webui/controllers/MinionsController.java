@@ -16,39 +16,35 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.domain.user.User;
 
-import com.suse.saltstack.netapi.AuthModule;
-import com.suse.saltstack.netapi.client.SaltStackClient;
+import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.datatypes.Keys;
-import com.suse.saltstack.netapi.exception.SaltStackException;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controller class providing backend code for the minions page.
  */
 public class MinionsController {
 
-    // The salt URI as string
-    private String saltMasterURI = "http://localhost:9080";
+    private MinionsController() { }
 
     /**
-     * Get the minion keys from salt-api with their respective status.
-     *
-     * @param user the user to use for connecting to salt-api
-     * @return the keys with their respective status as returned from salt-api
+     * Handler for the minions page
+     * @param request  The request object providing information about the HTTP request
+     * @param response The response object providing functionality for modifying the response
+     * @param user The user associated with this request
+     * @return The ModelAndView to render the page.
      */
-    public Keys getKeys(User user) {
-        SaltStackClient client;
-        try {
-            client = new SaltStackClient(new URI(saltMasterURI));
-            // FIXME: Pass on actual user credentials as soon as it is supported
-            client.login("admin", "", AuthModule.AUTO);
-            Keys keys = client.keys();
-            client.logoutAsync();
-            return keys;
-        } catch (URISyntaxException | SaltStackException e) {
-            throw new RuntimeException(e);
-        }
+    public static ModelAndView listMinions(Request request, Response response, User user) {
+        Keys keys = MinionsModel.getKeys(user);
+        Map<String, Object> data = new HashMap<>();
+        data.put("minions", keys.getMinions());
+        data.put("unaccepted_minions", keys.getUnacceptedMinions());
+        data.put("rejected_minions", keys.getRejectedMinions());
+        return new ModelAndView(data, "minions.jade");
     }
 }
