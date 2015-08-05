@@ -1,0 +1,21 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.fa-desktop
+    a(href="/rhn/manager/minions") Minions
+    |  / #{key}
+
+
+.panel.panel-default
+  .panel-body
+    table(class="table table-striped")
+      for value, grain in grains
+        tr
+          td
+            b #{grain}
+          td
+            b #{value}
+
+      else
+        tr
+          td No data available
+

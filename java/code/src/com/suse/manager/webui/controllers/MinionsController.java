@@ -49,4 +49,31 @@ public class MinionsController {
         data.put("rejected_minions", keys.getRejectedMinions());
         return new ModelAndView(data, "minions.jade");
     }
+
+    public static ModelAndView minionDetails(Request request, Response response) {
+        String key = request.params("key");
+        Map<String, Object> grains = MinionsModel.grains(key);
+        Map<String, Object> data = new HashMap<>();
+        data.put("key", key);
+        data.put("grains", grains);
+        return new ModelAndView(data, "minion.jade");
+    }
+
+    public static Object acceptMinion(Request request, Response response) {
+        MinionsModel.accept(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
+    }
+
+    public static Object deleteMinion(Request request, Response response) {
+        MinionsModel.delete(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
+    }
+
+    public static Object rejectMinion(Request request, Response response) {
+        MinionsModel.reject(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
+    }
 }
