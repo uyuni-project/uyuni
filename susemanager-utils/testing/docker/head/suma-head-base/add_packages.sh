@@ -55,7 +55,7 @@ zypper --non-interactive in  cx_Oracle \
 zypper --non-interactive in ant \
              ant-junit \
              apache-ivy \
-             java-1_7_0-ibm-devel \
+             java-1_8_0-ibm-devel \
              pam-modules \
              sudo \
              tar
