@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 a5653a565b9a355929e323793e7f472878462f19
+-- oracle equivalent source sha1 ea8d4fb292a817ea17d9ff4a87b5dd0564c5f37f
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -47,9 +47,6 @@ declare
 
     is_virt boolean;
 begin
-        perform rhn_channel.delete_server_channels(server_id_in);
-        -- rhn_channel.clear_subscriptions(server_id_in);
-
         -- filelists
         delete from rhnFileList where id in (
 	select	spfl.file_list_id
@@ -102,7 +99,7 @@ begin
                 where old_server_id = server_id_in
                    or new_server_id = server_id_in;
 
-        perform rhn_channel.clear_subscriptions(server_id_in, 1, 1);
+        perform rhn_channel.clear_subscriptions(server_id_in, 1);
 
         -- A little complicated here, but the goal is to
         -- delete records from rhnVirtualInstace only if we don't

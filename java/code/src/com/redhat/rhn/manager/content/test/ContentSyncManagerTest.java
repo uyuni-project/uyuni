@@ -77,9 +77,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
-    /** Maximum members for SUSE Manager. */
-    public static final long MANY_MEMBERS = 200000L;
-
     /**
      * Test for {@link ContentSyncManager#updateChannels}.
      * @throws Exception if anything goes wrong
@@ -371,35 +368,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#updateChannelSubscriptions(List)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testUpdateChannelSubscriptions() throws Exception {
-        // Start with no subscribed product classes
-        List<String> productClasses = new ArrayList<String>();
-
-        // Update channel subscriptions
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateChannelSubscriptions(productClasses);
-
-        // Check reset to 0
-        User admin = UserTestUtils.createUserInOrgOne();
-        ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
-                admin, "SMS");
-        ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, 0L);
-
-        // Add subscription for a product class
-        productClasses.add("SMS");
-
-        // Update subscriptions and check max_members = 200000
-        csm.updateChannelSubscriptions(productClasses);
-        cf = ChannelFamilyFactory.lookupByLabel("SMS", null);
-        for (PrivateChannelFamily pcf : cf.getPrivateChannelFamilies()) {
-            assertEquals(new Long(MANY_MEMBERS), pcf.getMaxMembers());
-        }
-    }
-
-    /**
      * Test for {@link ContentSyncManager#getAvailableChannels}.
      * @throws Exception if anything goes wrong
      */
@@ -412,12 +380,24 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Create channel family with no availability
         ChannelFamily channelFamily2 = ChannelFamilyFactoryTest.createTestChannelFamily();
         channelFamily2.setOrg(null);
-        for (PrivateChannelFamily pcf : channelFamily2.getPrivateChannelFamilies()) {
-            pcf.setMaxMembers(0L);
-            pcf.setMaxFlex(0L);
-            TestUtils.saveAndFlush(pcf);
-        }
         TestUtils.saveAndFlush(channelFamily2);
+
+        Credentials cred = CredentialsFactory.createSCCCredentials();
+        cred.setUsername("user1");
+        cred.setPassword("pw1");
+        CredentialsFactory.storeCredentials(cred);
+
+        SCCRepository r1 = new SCCRepository();
+        r1.setUrl("http://scc.domain.top/c1?abcdefg");
+        r1.setCredentials(cred);
+        r1.setAutorefresh(false);
+        SCCCachingFactory.saveRepository(r1);
+
+        SCCRepository r2 = new SCCRepository();
+        r2.setUrl("http://scc.domain.top/c2?123456");
+        r2.setCredentials(cred);
+        r2.setAutorefresh(false);
+        SCCCachingFactory.saveRepository(r2);
 
         // Create c1 as a base channel and c2 as a child of it
         XMLChannel c1 = new XMLChannel();
@@ -425,20 +405,24 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         String baseChannelLabel = TestUtils.randomString();
         c1.setLabel(baseChannelLabel);
         c1.setParent("BASE");
+        c1.setSourceUrl("http://scc.domain.top/c1");
         XMLChannel c2 = new XMLChannel();
         c2.setFamily(channelFamily1.getLabel());
         c2.setLabel(TestUtils.randomString());
         c2.setParent(baseChannelLabel);
+        c2.setSourceUrl("http://scc.domain.top/c2");
 
         // Create c3 to test no availability
         XMLChannel c3 = new XMLChannel();
         c3.setFamily(channelFamily2.getLabel());
         c3.setLabel(TestUtils.randomString());
+        c3.setSourceUrl("http://scc.domain.top/c3");
 
         // Create c4 with unknown channel family
         XMLChannel c4 = new XMLChannel();
         c4.setFamily(TestUtils.randomString());
         c4.setLabel(TestUtils.randomString());
+        c4.setSourceUrl("http://scc.domain.top/c4");
 
         // Put all channels together to a list
         List<XMLChannel> allChannels = new ArrayList<XMLChannel>();
@@ -529,8 +513,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, family.getPrivateChannelFamilies().size());
             for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
                 assertEquals(new Long(1), pcf.getOrg().getId());
-                assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
-                        (long) pcf.getMaxMembers());
             }
         }
     }
@@ -565,8 +547,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             assertEquals(1, family.getPrivateChannelFamilies().size());
             for (PrivateChannelFamily pcf : family.getPrivateChannelFamilies()) {
                 assertEquals(new Long(1), pcf.getOrg().getId());
-                assertEquals(cf.getDefaultNodeCount() < 0 ? 200000L : 0L,
-                        (long) pcf.getMaxMembers());
             }
         }
     }
@@ -712,11 +692,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         Channel unavailableDBChannel = SUSEProductTestUtils.createTestVendorChannel();
         ChannelFamily unavailableChannelFamily = unavailableDBChannel.getChannelFamily();
         unavailableChannelFamily.setOrg(null);
-        for (PrivateChannelFamily pcf : unavailableChannelFamily
-                .getPrivateChannelFamilies()) {
-            pcf.setMaxFlex(0L);
-            pcf.setMaxMembers(0L);
-        }
         final SUSEProduct unavailableDBProduct =
                 SUSEProductTestUtils.createTestSUSEProduct(unavailableChannelFamily);
 
@@ -814,42 +789,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Test for {@link ContentSyncManager#addChannel} checking failure because
-     * of missing subscriptions.
-     * @throws Exception if anything goes wrong
-     */
-    public void testAddChannelNoSubscriptions() throws Exception {
-        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(channelsXML);
-        try {
-            // Reset all channel subscriptions
-            List<String> productClasses = new ArrayList<String>();
-            csm.updateChannelSubscriptions(productClasses);
-            HibernateFactory.getSession().flush();
-
-            // Manually create SCC repository to match against
-            SCCRepository repo = new SCCRepository();
-            repo.setUrl("https://updates.suse.com/repo/$RCE/SLES11-SP3-Pool/sle-11-x86_64");
-            SCCCachingFactory.saveRepository(repo);
-
-            // Add the channel by label and check the exception message
-            String label = "sles11-sp3-pool-x86_64";
-            try {
-                csm.addChannel(label, null);
-                fail("Missing subscriptions should make addChannel() fail!");
-            }
-            catch (ContentSyncException e) {
-                String message = "Channel is unknown: " + label;
-                assertEquals(message, e.getMessage());
-            }
-        }
-        finally {
-            SUSEProductTestUtils.deleteIfTempFile(channelsXML);
-        }
-    }
-
-    /**
      * Test for {@link ContentSyncManager#addChannel}.
      * @throws Exception if anything goes wrong
      */
@@ -896,7 +835,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             User admin = UserTestUtils.createUserInOrgOne();
             ChannelFamily cf = ChannelFamilyTest.ensureChannelFamilyExists(
                     admin, "7261");
-            ChannelFamilyTest.ensureChannelFamilyHasMembers(admin, cf, MANY_MEMBERS);
+            ChannelFamilyTest.ensurePrivateChannelFamilyExists(admin, cf);
             HibernateFactory.getSession().flush();
 
             // Add the channel by label

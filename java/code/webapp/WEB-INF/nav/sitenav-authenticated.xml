@@ -26,15 +26,6 @@
     </rhn-tab>
     <rhn-tab name="Subscription Management" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" >
       <rhn-tab name="System Entitlements" url="/rhn/systems/SystemEntitlements.do" acl="user_role(org_admin)" />
-      <rhn-tab name="virtualization.entitlements" url="/rhn/systems/entitlements/GuestLimitedHosts.do" acl="user_role(org_admin)">
-        <rhn-tab-url>/rhn/systems/entitlements/GuestUnlimitedHosts.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/systems/entitlements/PhysicalHosts.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/systems/entitlements/FlexGuests.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/systems/entitlements/EligibleFlexGuests.do</rhn-tab-url>
-      </rhn-tab>
-      <rhn-tab name="Software Channel Entitlements" url="/rhn/channels/software/Entitlements.do" acl="user_role(org_admin)">
-        <rhn-tab-url>/rhn/channels/software/EntitledSystems.do</rhn-tab-url>
-      </rhn-tab>
     </rhn-tab>
   </rhn-tab>
   <rhn-tab name="Systems" url="/rhn/systems/Overview.do">
@@ -262,17 +253,11 @@
         <rhn-tab-url>/rhn/admin/multiorg/OrgUsers.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/DeleteOrg.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgSystemSubscriptions.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/OrgSoftwareSubscriptions.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgCreate.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="Subscriptions" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/SoftwareEntitlements.do">
+    <rhn-tab name="Subscriptions" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/SystemEntitlements.do">
 
-      <rhn-tab name="Software Channel Entitlements" acl="user_role(satellite_admin)">
-        <rhn-tab-url>/rhn/admin/multiorg/SoftwareEntitlements.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/SoftwareEntitlementDetails.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/SoftwareEntitlementSubscriptions.do</rhn-tab-url>
-      </rhn-tab>
       <rhn-tab name="System Entitlements" acl="user_role(satellite_admin)">
         <rhn-tab-url>/rhn/admin/multiorg/SystemEntitlements.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/EntitlementOrgs.do</rhn-tab-url>

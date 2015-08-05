@@ -77,10 +77,6 @@ web.maximum_config_file_size = 131072
 web.version = 2.4
 java.apiversion = 16
 
-# Monitoring settings
-web.is_monitoring_backend = 1
-web.is_monitoring_scout = 0
-
 # Satellite Installer settings
 server.satellite.rhn_parent =
 server.satellite.http_proxy =

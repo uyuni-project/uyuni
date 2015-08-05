@@ -511,7 +511,6 @@ is
 		if group_label in ('sw_mgr_entitled',
                            'enterprise_entitled',
                            'bootstrap_entitled',
-                           'monitoring_entitled',
                            'provisioning_entitled',
                            'virtualization_host',
                            'virtualization_host_platform') then
@@ -644,7 +643,6 @@ is
                      'enterprise_entitled',
                      'bootstrap_entitled',
                      'provisioning_entitled', 
-                     'monitoring_entitled',
                      'virtualization_host',
                      'virtualization_host_platform') then
 

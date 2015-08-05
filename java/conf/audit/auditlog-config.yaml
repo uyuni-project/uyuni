@@ -171,9 +171,6 @@
     type: ACTION_CREATE
     required: [submitted]
 
-/systems/SystemEntitlementsSubmit.do:
-    type: ACTION_CHANGE
-
 /systems/details/packages/Packages.do:
     type: ACTION_CREATE
     required: [submitted]
@@ -341,80 +338,6 @@
 
 /systems/details/virtualization/VirtualGuestsConfirmSubmit.do:
     type: ACTION_CREATE
-
-###############################################################################
-# Monitoring
-###############################################################################
-
-/admin/config/MonitoringConfig.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/monitoring/config/notification/FiltersSubmit.do:
-    type: ACTION_CHANGE
-    required: [items_selected]
-
-/monitoring/config/notification/FilterCreate.do:
-    type: ACTION_CREATE
-    required: [submitted]
-
-/monitoring/config/notification/FilterEdit.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/monitoring/config/ProbeSuites.do:
-    type: ACTION_DELETE
-    required: [dispatch]
-
-/monitoring/config/ProbeSuitesRemoveConfirmSubmit.do:
-    type: ACTION_DELETE
-
-/monitoring/config/ProbeSuiteListProbes.do:
-    type: ACTION_CHANGE
-    required: [dispatch]
-
-/monitoring/config/ProbeSuiteProbeCreate.do:
-    type: ACTION_CREATE
-    required: [submitted]
-
-/monitoring/config/ProbeSuiteProbeEdit.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/monitoring/config/ProbeSuiteSystemsEditSubmit.do:
-    type: ACTION_CHANGE
-    required: [items_selected]
-
-/monitoring/config/ProbeSuiteSystemsSubmit.do:
-    type: ACTION_CHANGE
-
-/monitoring/config/ProbeSuiteEdit.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/monitoring/config/ProbeSuiteCreate.do:
-    type: ACTION_CREATE
-    required: [submitted]
-
-/systems/details/probes/ProbeEdit.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/systems/details/probes/ProbeCreate.do:
-    type: ACTION_CREATE
-    required: [submitted]
-
-/systems/details/probes/ProbeDelete.do:
-    type: ACTION_DELETE
-    required: [submitted]
-
-/monitoring/config/notification/MethodCreate.do:
-    type: ACTION_CREATE
-    required: [submitted]
-
-/monitoring/config/notification/MethodEdit.do:
-    type: ACTION_CHANGE
-    required: [submitted]
 
 ###############################################################################
 # Package Profiles
@@ -629,14 +552,6 @@
     required: [submitted]
 
 /admin/multiorg/OrgSystemSubscriptions.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/admin/multiorg/OrgSoftwareSubscriptions.do:
-    type: ACTION_CHANGE
-    required: [dispatch]
-
-/admin/multiorg/SoftwareEntitlementSubscriptions.do:
     type: ACTION_CHANGE
     required: [submitted]
 
@@ -896,10 +811,6 @@
     type: ACTION_DELETE
     required: [submitted]
 
-/monitoring/ProbeList.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
 ###############################################################################
 # Configuration Channels
 ###############################################################################
@@ -1155,10 +1066,6 @@
 /network/systems/ssm/groups/alter_membership_conf.pxt:
     type: ACTION_CHANGE
     required: [confirm]
-
-/network/monitoring/scout/index.pxt:
-    type: ACTION_CHANGE
-    required: [list_action_label_push_config]
 
 /network/users/details/contact_methods/create.pxt:
     type: ACTION_CREATE

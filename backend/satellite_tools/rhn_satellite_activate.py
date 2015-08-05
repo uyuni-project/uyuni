@@ -39,7 +39,6 @@ from spacewalk.server.rhnServer import satellite_cert
 import tempfile
 
 # local imports
-import sync_handlers
 import satCerts
 
 
@@ -227,17 +226,6 @@ def activateSatellite_local(options):
             '%s' % rhnTB.fetchTraceback()), None, sys.exc_info()[2]
 
     return 0
-
-
-def localUpdateChannels():
-    cert = open(DEFAULT_RHN_CERT_LOCATION).read()
-
-    sat_cert = satellite_cert.SatelliteCert()
-    sat_cert.load(cert)
-
-    sync_handlers.populate_channel_family_permissions(sat_cert)
-    sync_handlers.purge_extra_channel_families()
-    sync_handlers.update_channel_family_counts()
 
 
 class RHNCertRemoteActivationException(Exception):
@@ -670,10 +658,6 @@ def main():
             except PopulateChannelFamiliesException, e:
                 writeError(e)
                 return 40
-        else:
-            # We're disconnected so we'll only update the channels we
-            # already know about.
-            localUpdateChannels()
 
     return 0
 

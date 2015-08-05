@@ -746,16 +746,9 @@ public class ContentSyncManager {
             if (family != null && family.getPrivateChannelFamilies().isEmpty()) {
                 PrivateChannelFamily pcf = new PrivateChannelFamily();
                 pcf.setCreated(new Date());
-                pcf.setCurrentMembers(0L);
-                pcf.setMaxMembers(0L);
-                pcf.setCurrentFlex(0L);
-                pcf.setMaxFlex(0L);
                 // Set the default organization (id = 1)
                 pcf.setOrg(OrgFactory.getSatelliteOrg());
                 // Set INFINITE max_members if default_nodecount = -1
-                if (channelFamily.getDefaultNodeCount() < 0) {
-                    pcf.setMaxMembers(ContentSyncManager.INFINITE);
-                }
                 pcf.setChannelFamily(family);
                 ChannelFamilyFactory.save(pcf);
 
@@ -810,52 +803,6 @@ public class ContentSyncManager {
         }
 
         return consolidated;
-    }
-
-    /**
-     * Updates max_members for channel subscriptions given a list of product classes.
-     * @param productClasses list of product classes we have a subscription for.
-     */
-    public void updateChannelSubscriptions(List<String> productClasses) {
-        // These are product classes we have a subscription for
-        List<ChannelFamily> allChannelFamilies =
-                ChannelFamilyFactory.getAllChannelFamilies();
-        for (ChannelFamily channelFamily : allChannelFamilies) {
-            Set<PrivateChannelFamily> privateFamilies =
-                    channelFamily.getPrivateChannelFamilies();
-
-            // Match with subscribed product classes
-            if (productClasses.contains(channelFamily.getLabel())) {
-                // We have a subscription
-                int sumMaxMembers = 0;
-                PrivateChannelFamily satelliteOrgPrivateChannelFamily = null;
-                for (PrivateChannelFamily pcf : privateFamilies) {
-                    if (pcf.getOrg().equals(OrgFactory.getSatelliteOrg())) {
-                        satelliteOrgPrivateChannelFamily = pcf;
-                    }
-                    else if (pcf.getOrg().getId() > 1) {
-                        sumMaxMembers += pcf.getMaxMembers();
-                    }
-                }
-                if (satelliteOrgPrivateChannelFamily != null) {
-                    if (sumMaxMembers > INFINITE) {
-                        satelliteOrgPrivateChannelFamily.setMaxMembers(0L);
-                    }
-                    else {
-                        satelliteOrgPrivateChannelFamily
-                                .setMaxMembers(INFINITE - sumMaxMembers);
-                    }
-                    ChannelFamilyFactory.save(satelliteOrgPrivateChannelFamily);
-                }
-            }
-            else if (!channelFamily.getLabel().startsWith("private-channel-family")) {
-                // No subscription, reset to 0
-                for (PrivateChannelFamily pcf : privateFamilies) {
-                    pcf.setMaxMembers(0L);
-                    ChannelFamilyFactory.save(pcf);
-                }
-            }
-        }
     }
 
     /**
@@ -928,7 +875,6 @@ public class ContentSyncManager {
             throws ContentSyncException {
         ConsolidatedSubscriptions consolidated = consolidateSubscriptions(subscriptions);
         updateSystemEntitlements(consolidated.getSystemEntitlements());
-        updateChannelSubscriptions(consolidated.getChannelSubscriptions());
     }
 
     /**
@@ -998,11 +944,11 @@ public class ContentSyncManager {
         // Get all channels from channels.xml and filter
         List<XMLChannel> availableChannels = new ArrayList<XMLChannel>();
 
-        // Filter in all channels where channel families are available
-        List<String> availableChannelFamilies =
-                ChannelFamilyFactory.getAvailableChannelFamilyLabels();
+        List<SCCRepository> repositories = SCCCachingFactory.lookupRepositories();
+
+        // Filter in all channels which we can mirror
         for (XMLChannel c : allChannels) {
-            if (availableChannelFamilies.contains(c.getFamily())) {
+            if (isMirrorable(c, repositories) != null) {
                 availableChannels.add(c);
             }
         }
