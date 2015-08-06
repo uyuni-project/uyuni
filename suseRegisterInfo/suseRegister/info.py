@@ -63,7 +63,7 @@ def getSUSEInstalledProducts():
        return a list of products
     """
     my_env = os.environ
-    my_env["ZYPP_READONLY_HACK"] = 1
+    my_env["ZYPP_READONLY_HACK"] = "1"
     productProfileFile = ""
     try:
         productProfile = Popen(['zypper', '-x', '--no-refresh', '--quiet', '--non-interactive', 'products', '--installed-only'],
