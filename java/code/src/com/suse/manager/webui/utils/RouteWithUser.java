@@ -33,5 +33,4 @@ public interface RouteWithUser {
      * @return the content to be set in the response
      */
     ModelAndView handle(Request request, Response response, User user);
-
 }
