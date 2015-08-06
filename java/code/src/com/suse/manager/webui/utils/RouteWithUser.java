@@ -25,12 +25,12 @@ import spark.Response;
 public interface RouteWithUser {
 
     /**
-     * Invoked when a request is made on this route's corresponding path e.g. '/hello'
+     * Invoked when a request is made on this route's corresponding path.
      *
-     * @param request  The request object providing information about the HTTP request
-     * @param response The response object providing functionality for modifying the response
-     * @param user The user associated with this request
-     * @return The content to be set in the response
+     * @param request the request object
+     * @param response the response object
+     * @param user the user associated with this request
+     * @return the content to be set in the response
      */
     ModelAndView handle(Request request, Response response, User user);
 

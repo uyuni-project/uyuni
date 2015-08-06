@@ -41,6 +41,9 @@ public class Router implements SparkApplication {
         };
     }
 
+    /**
+     * Invoked from the SparkFilter. Add routes here.
+     */
     @Override
     public void init() {
         // handler for crosscutting concerns relevant to all pages
