@@ -98,13 +98,7 @@ is
         service_level_in in varchar2
     ) return number    is
     begin
-        if service_level_in = 'provisioning' then
-            if entitlement_in = 'provisioning_entitled' then
-                return 1;
-            else
-                return 0;
-            end if;
-        elsif service_level_in = 'management' then
+        if service_level_in = 'management' then
             if entitlement_in = 'enterprise_entitled' then
                 return 1;
             else
@@ -316,7 +310,6 @@ is
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'sw_mgr_entitled' then 'Update'
-                       when 'provisioning_entitled' then 'Provisioning'
                        when 'virtualization_host' then 'Virtualization'
                        when 'virtualization_host_platform' then
                             'Virtualization Platform' end  );
@@ -383,7 +376,6 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
-                    when 'provisioning_entitled' then 'Provisioning'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platforrm' end  );
@@ -440,7 +432,6 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
-                    when 'provisioning_entitled' then 'Provisioning'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platform' end  );
@@ -585,8 +576,8 @@ is
                 and sgt.id = sg.group_type
                 and sgt.label in (
                     'sw_mgr_entitled','enterprise_entitled', 'bootstrap_entitled',
-                    'provisioning_entitled', 'nonlinux_entitled',
-                    'virtualization_host', 'virtualization_host_platform'
+                    'nonlinux_entitled','virtualization_host',
+                    'virtualization_host_platform'
                     );
 
          ent_array ents_array;
@@ -657,23 +648,6 @@ is
 
             roles_to_process.extend;
             roles_to_process(roles_to_process.count) := 'activation_key_admin';
-        elsif service_label_in = 'provisioning' then
-            ents_to_process.extend;
-            ents_to_process(ents_to_process.count) := 'rhn_provisioning';
-
-            roles_to_process.extend;
-            roles_to_process(roles_to_process.count) := 'system_group_admin';
-
-            roles_to_process.extend;
-            roles_to_process(roles_to_process.count) := 'activation_key_admin';
-
-            roles_to_process.extend;
-            roles_to_process(roles_to_process.count) := 'config_admin';
-            -- another nasty special case...
-            if enable_in = 'Y' then
-                ents_to_process.extend;
-                ents_to_process(ents_to_process.count) := 'sw_mgr_enterprise';
-            end if;
         elsif service_label_in = 'virtualization' then
             ents_to_process.extend;
             ents_to_process(ents_to_process.count) := 'rhn_virtualization';
@@ -747,13 +721,6 @@ is
         modify_org_service(customer_id_in, 'enterprise', 'Y');
     end set_customer_enterprise;
 
-    procedure set_customer_provisioning (
-        customer_id_in in number
-    ) is
-    begin
-        modify_org_service(customer_id_in, 'provisioning', 'Y');
-    end set_customer_provisioning;
-
     procedure set_customer_nonlinux (
         customer_id_in in number
     ) is
@@ -767,13 +734,6 @@ is
     begin
         modify_org_service(customer_id_in, 'enterprise', 'N');
     end unset_customer_enterprise;
-
-    procedure unset_customer_provisioning (
-        customer_id_in in number
-    ) is
-    begin
-        modify_org_service(customer_id_in, 'provisioning', 'N');
-    end unset_customer_provisioning;
 
     procedure unset_customer_nonlinux (
         customer_id_in in number
@@ -967,14 +927,6 @@ is
                 set_customer_enterprise(to_org_id_in);
             else
                 unset_customer_enterprise(to_org_id_in);
-            end if;
-        end if;
-
-        if group_label_in = 'provisioning_entitled' then
-            if new_quantity > 0 then
-                set_customer_provisioning(to_org_id_in);
-            else
-                unset_customer_provisioning(to_org_id_in);
             end if;
         end if;
 

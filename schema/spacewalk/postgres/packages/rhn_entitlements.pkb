@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 64a0a047a2cd1372942e2f20c74f30c878215aad
+-- oracle equivalent source sha1 5903a304a84951d2413e4d25f17a09fda92f04ec
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -100,13 +100,7 @@ language plpgsql;
     ) returns numeric
 as $$
     begin
-        if service_level_in = 'provisioning' then
-            if entitlement_in = 'provisioning_entitled' then
-                return 1;
-            else
-                return 0;
-            end if;
-        elsif service_level_in = 'management' then
+        if service_level_in = 'management' then
             if entitlement_in = 'enterprise_entitled' then
                 return 1;
             else
@@ -334,7 +328,6 @@ as $$
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'sw_mgr_entitled' then 'Update'
-                       when 'provisioning_entitled' then 'Provisioning'
                        when 'virtualization_host' then 'Virtualization'
                        when 'virtualization_host_platform' then
                             'Virtualization Platform' end  );
@@ -403,7 +396,6 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
-                    when 'provisioning_entitled' then 'Provisioning'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platforrm' end  );
@@ -457,7 +449,6 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'sw_mgr_entitled' then 'Update'
-                    when 'provisioning_entitled' then 'Provisioning'
                     when 'virtualization_host' then 'Virtualization'
                     when 'virtualization_host_platform' then
                          'Virtualization Platform' end  );
@@ -603,8 +594,8 @@ as $$
                 and sgt.id = sg.group_type
                 and sgt.label in (
                     'sw_mgr_entitled','enterprise_entitled', 'bootstrap_entitled',
-                    'provisioning_entitled', 'nonlinux_entitled',
-                    'virtualization_host', 'virtualization_host_platform'
+                    'nonlinux_entitled','virtualization_host',
+                    'virtualization_host_platform'
                     );
 
          ent_array varchar[];
@@ -670,18 +661,6 @@ as $$
             roles_to_process := array_append(roles_to_process, 'system_group_admin');
 
             roles_to_process := array_append(roles_to_process, 'activation_key_admin');
-        elsif service_label_in = 'provisioning' then
-            ents_to_process := array_append(ents_to_process, 'rhn_provisioning');
-
-            roles_to_process := array_append(roles_to_process, 'system_group_admin');
-
-            roles_to_process := array_append(roles_to_process, 'activation_key_admin');
-
-            roles_to_process := array_append(roles_to_process, 'config_admin');
-            -- another nasty special case...
-            if enable_in = 'Y' then
-                ents_to_process := array_append(ents_to_process, 'sw_mgr_enterprise');
-            end if;
         elsif service_label_in = 'virtualization' then
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization');
 
@@ -752,15 +731,6 @@ as $$
     end$$
 language plpgsql;
 
-    create or replace function set_customer_provisioning (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'provisioning', 'Y');
-    end$$
-language plpgsql;
-
     create or replace function set_customer_nonlinux (
         customer_id_in in numeric
     ) returns void
@@ -776,15 +746,6 @@ language plpgsql;
 as $$
     begin
         perform rhn_entitlements.modify_org_service(customer_id_in, 'enterprise', 'N');
-    end$$
-language plpgsql;
-
-    create or replace function unset_customer_provisioning (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'provisioning', 'N');
     end$$
 language plpgsql;
 
@@ -937,14 +898,6 @@ as $$
                 perform rhn_entitlements.set_customer_enterprise(to_org_id_in);
             else
                 perform rhn_entitlements.unset_customer_enterprise(to_org_id_in);
-            end if;
-        end if;
-
-        if group_label_in = 'provisioning_entitled' then
-            if new_quantity > 0 then
-                perform rhn_entitlements.set_customer_provisioning(to_org_id_in);
-            else
-                perform rhn_entitlements.unset_customer_provisioning(to_org_id_in);
             end if;
         end if;
 
