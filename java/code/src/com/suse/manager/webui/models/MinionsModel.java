@@ -23,7 +23,7 @@ import com.suse.saltstack.netapi.exception.SaltStackException;
 import java.net.URI;
 
 /**
- * Class containing functions for accessing data needed by MinionsController
+ * Class containing functions for accessing data needed by MinionsController.
  */
 public class MinionsModel {
 
