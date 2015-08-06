@@ -265,6 +265,9 @@ public class SSHPushWorker implements QueueWorker {
      */
     private String getCommand() {
         String cmd = RHN_CHECK;
+        if (sudoUser != null) {
+            cmd = "sudo " + cmd;
+        }
         if (proxy != null) {
             StringBuilder sb = new StringBuilder("ssh");
             if (sudoUser != null) {
@@ -284,10 +287,7 @@ public class SSHPushWorker implements QueueWorker {
                 sb.append(SSL_PORT);
             }
             sb.append(" ");
-            if (sudoUser != null) {
-                sb.append("sudo ");
-            }
-            sb.append(RHN_CHECK);
+            sb.append(cmd);
             cmd = sb.toString();
         }
         if (log.isDebugEnabled()) {
