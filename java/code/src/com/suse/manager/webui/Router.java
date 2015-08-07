@@ -14,11 +14,12 @@
  */
 package com.suse.manager.webui;
 
+import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.suse.manager.webui.utils.RouteWithUser;
+
 import com.suse.manager.webui.controllers.MinionsController;
+import com.suse.manager.webui.utils.RouteWithUser;
 
 import spark.Session;
 import spark.Spark;

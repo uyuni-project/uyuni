@@ -15,6 +15,7 @@
 package com.suse.manager.webui.models;
 
 import com.redhat.rhn.domain.user.User;
+
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.datatypes.Keys;
