@@ -14,42 +14,51 @@
  */
 package com.suse.manager.webui;
 
-import static com.suse.manager.webui.Spark.get;
-import static spark.Spark.exception;
-
+import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.webui.controllers.MinionsController;
-import com.suse.saltstack.netapi.datatypes.Keys;
+import com.suse.manager.webui.utils.RouteWithUser;
 
-import spark.ModelAndView;
+import spark.Session;
+import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.servlet.SparkApplication;
-
-import java.util.HashMap;
-import java.util.Map;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Router class defining the web UI routes.
  */
 public class Router implements SparkApplication {
 
+    private final String templateRoot = "com/suse/manager/webui/templates";
+    private final JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
+
+    private TemplateViewRoute withUser(RouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Invoked from the SparkFilter. Add routes here.
+     */
     @Override
     public void init() {
-        // List all minions
-        get("/manager/minions", (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            Keys keys = new MinionsController().getKeys(user);
-            Map<String, Object> data = new HashMap<String, Object>() {{
-                put("minions", keys.getMinions());
-                put("unaccepted_minions", keys.getUnacceptedMinions());
-                put("rejected_minions", keys.getRejectedMinions());
-            }};
-            return new ModelAndView(data, "minions.jade");
+        // handler for crosscutting concerns relevant to all pages
+        Spark.before((request, response) -> {
+            Session session = request.session(true);
+            CSRFTokenValidator.getToken(session.raw());
+            response.type("text/html");
         });
 
+        // List all minions
+        Spark.get("/manager/minions", withUser(MinionsController::listMinions), jade);
+
         // RuntimeException will be passed on (resulting in status code 500)
-        exception(RuntimeException.class, (e, request, response) -> {
+        Spark.exception(RuntimeException.class, (e, request, response) -> {
             throw (RuntimeException) e;
         });
     }

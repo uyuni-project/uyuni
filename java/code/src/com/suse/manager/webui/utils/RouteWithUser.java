@@ -12,41 +12,26 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.controllers;
+package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.domain.user.User;
-
-import com.suse.manager.webui.models.MinionsModel;
-import com.suse.saltstack.netapi.datatypes.Keys;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
 /**
- * Controller class providing backend code for the minions page.
+ * A route that gets the user in addition to the request and response.
  */
-public class MinionsController {
-
-    private MinionsController() { }
+public interface RouteWithUser {
 
     /**
-     * Handler for the minions page.
+     * Invoked when a request is made on this route's corresponding path.
      *
      * @param request the request object
      * @param response the response object
      * @param user the user associated with this request
-     * @return the ModelAndView object to render the page
+     * @return the content to be set in the response
      */
-    public static ModelAndView listMinions(Request request, Response response, User user) {
-        Keys keys = MinionsModel.getKeys(user);
-        Map<String, Object> data = new HashMap<>();
-        data.put("minions", keys.getMinions());
-        data.put("unaccepted_minions", keys.getUnacceptedMinions());
-        data.put("rejected_minions", keys.getRejectedMinions());
-        return new ModelAndView(data, "minions.jade");
-    }
+    ModelAndView handle(Request request, Response response, User user);
 }
