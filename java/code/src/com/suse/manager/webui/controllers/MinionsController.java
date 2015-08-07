@@ -18,12 +18,13 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.datatypes.Keys;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
 
 /**
  * Controller class providing backend code for the minions page.

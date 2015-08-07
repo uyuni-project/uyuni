@@ -15,6 +15,7 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.domain.user.User;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
