@@ -8,7 +8,7 @@ class XMLRPCActivationKeyTest < XMLRPCBaseTest
   def createKey(id, descr, limit)
     key = nil
     begin
-      key = @connection.call("activationkey.create", @sid, id, descr, "", limit.to_i, ['provisioning_entitled'], false)
+      key = @connection.call("activationkey.create", @sid, id, descr, "", limit.to_i, [], false)
     rescue Exception => ex
       puts "Something went wrong: " + ex
     end

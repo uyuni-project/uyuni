@@ -12,7 +12,6 @@ Feature: Register a system to be managed via SSH push
     And I follow "Create Key"
     When I enter "SSH push key" as "description"
     And I enter "ssh-push" as "key"
-    And I check "provisioning_entitled"
     And I select "Push via SSH" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SSH push key has been created." text
@@ -23,7 +22,6 @@ Feature: Register a system to be managed via SSH push
     And I follow "Create Key"
     When I enter "SSH push via tunnel key" as "description"
     And I enter "ssh-push-tunnel" as "key"
-    And I check "provisioning_entitled"
     And I select "Push via SSH tunnel" from "contact-method"
     And I click on "Create Activation Key"
     Then I should see a "Activation key SSH push via tunnel key has been created." text
