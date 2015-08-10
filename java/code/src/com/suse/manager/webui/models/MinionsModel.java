@@ -89,6 +89,20 @@ public class MinionsModel {
         }
     }
 
+    public static List<String> present() {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(saltMasterURI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            // FIXME: Pass on actual user credentials as soon as it is supported
+            List<String> present = client.callSync(Manage.present(), "admin", "", AuthModule.AUTO);
+            return present;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Map<String, List<String>> packages(String minionKey) {
         SaltStackClient client;
         try {

@@ -20,6 +20,7 @@ import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -43,10 +44,12 @@ public class MinionsController {
      */
     public static ModelAndView listMinions(Request request, Response response, User user) {
         Keys keys = MinionsModel.getKeys(user);
+        List<String> present = MinionsModel.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
         data.put("rejected_minions", keys.getRejectedMinions());
+        data.put("present", present);
         return new ModelAndView(data, "minions.jade");
     }
 
