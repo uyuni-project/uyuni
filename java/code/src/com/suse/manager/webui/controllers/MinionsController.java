@@ -53,9 +53,11 @@ public class MinionsController {
     public static ModelAndView minionDetails(Request request, Response response) {
         String key = request.params("key");
         Map<String, Object> grains = MinionsModel.grains(key);
+        Map<String, List<String>> packages = MinionsModel.packages(key);
         Map<String, Object> data = new HashMap<>();
         data.put("key", key);
         data.put("grains", grains);
+        data.put("packages", packages);
         return new ModelAndView(data, "minion.jade");
     }
 
