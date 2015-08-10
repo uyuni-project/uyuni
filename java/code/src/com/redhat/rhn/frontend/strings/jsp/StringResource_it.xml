@@ -12379,10 +12379,6 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
           <source> Deploy configuration files to systems when they are registered with this activation key.</source>
           <target>Implementa i file di configurazione sui sistemi quando gli stessi sono registrati con questa chiave di attivazione.</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.disabled-config-auto-deploy-tooltip">
-          <source> Configuration File Deployment is currently disabled. Select "&lt;strong&gt;{0}&lt;/strong&gt;" under "&lt;strong&gt;{1}&lt;/strong&gt;"  to enable configuration management facilities for this activation key.</source>
-          <target>L'implementazione del file di configurazione è attualmente disabilitata. Selezionare &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; sotto &quot;&lt;strong&gt;{1}&lt;/strong&gt;&quot; per abilitare le funzioni di gestione della configurazione per questa chiave di attivazione.</target>
-        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -13874,14 +13870,6 @@ cancellati.{0}
           <source>Actions needed for configuration capabilities.</source>
           <target>Azioni necessarie per le capacità di configurazione.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.orgadmin">
-          <source>Requires organization administrator</source>
-          <target>Richiede uno stato di amministratore di organizzazione</target>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.addprovisioning">
-          <source>Add provisioning entitlement</source>
-          <target>Aggiungi entitlement di provisioning</target>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
           <source>Subscribe to RHN Tools channel</source>
           <target>Sottoscrivi al canale RHN Tool</target>
@@ -13951,14 +13939,6 @@ cancellati.{0}
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source>
           <target>Nessun Errore.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.orgadmin">
-          <source>Remaining actions require organization administrator.</source>
-          <target>Le azioni restanti richiedono uno stato di organization administrator.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.provision">
-          <source>Could not grant provisioning entitlement.</source>
-          <target>Impossibile conferire l'entitlement di provisioning.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
           <source>Could not subscribe to the RHN Tools channel.</source>
@@ -21662,13 +21642,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         </context-group>
         <target>Abilita il controllo dei dati del monitoring per un sistema.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Abilita diverse funzionalità avanzate come kickstart ed il provisioning del file di configurazione.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.virt_tip">
         <source>Applied to a host system, enables management for up to 4 guests.</source>
         <context-group name="ctx">
@@ -21768,13 +21741,6 @@ come riportato in questo certificato @@PRODUCT_NAME@@.</target>
         </context-group>
         <target> Management (Base)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.provisioning_entitled">
-        <source> Provisioning (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> Provisioning (Aggiuntivo)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.virtualization_host">
         <source> Virtualization (Add-On)</source>
         <context-group name="ctx">
@@ -21837,13 +21803,6 @@ come riportato in questo certificato @@PRODUCT_NAME@@.</target>
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>È necessario un entitlement (di base) di Management singolo per tutti i sistemi registrati al satellite</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Un entitlement (aggiuntivo) singolo di Provisioning abilita diverse funzionalità avanzate come kickstart ed il provisioning del file di configurazione.</target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
         <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>

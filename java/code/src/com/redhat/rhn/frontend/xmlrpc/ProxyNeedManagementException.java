@@ -12,43 +12,21 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.entitlement;
 
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
+package com.redhat.rhn.frontend.xmlrpc;
+
+import com.redhat.rhn.FaultException;
 
 /**
- * ProvisioningEntitlement
- * @version $Rev$
+ * Proxy needs management entitlement in order to be activated, this Exception
+ * is thrown otherwise.
  */
-public class ProvisioningEntitlement extends Entitlement {
+public class ProxyNeedManagementException extends FaultException {
 
     /**
-     * Default Ctor
+     * Default constructor
      */
-    public ProvisioningEntitlement() {
-        super(EntitlementManager.PROVISIONING_ENTITLED);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isPermanent() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBase() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSatelliteEntitlement() {
-        return true;
+    public ProxyNeedManagementException() {
+        super(1047, "proxyNeedManagement", "Proxy need management entitlement.");
     }
 }

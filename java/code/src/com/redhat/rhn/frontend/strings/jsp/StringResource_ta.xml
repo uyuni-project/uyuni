@@ -11855,10 +11855,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source> Deploy configuration files to systems when they are registered with this activation key.</source>
           <target>இந்த செயல்படுத்தல் விசையுடன் பதிவு செய்யப்படும் போது கட்டமைப்பு கோப்புகளை கணினிகளுக்கு வரிசைப்படுத்தவும்.</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.disabled-config-auto-deploy-tooltip">
-          <source> Configuration File Deployment is currently disabled. Select "&lt;strong&gt;{0}&lt;/strong&gt;" under "&lt;strong&gt;{1}&lt;/strong&gt;"  to enable configuration management facilities for this activation key.</source>
-          <target>பரவலாக நடப்பிலுள்ள கட்டமைப்பு கோப்பு செயல்படுத்த முடியவில்லை. Select &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; under &quot;&lt;strong&gt;{1}&lt;/strong&gt;&quot;  இந்த செயல்பாட்டு விசையை மேலாண்மைபடுத்திகட்டமைக்க முடிகிறது.</target>
-        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -13082,14 +13078,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Actions needed for configuration capabilities.</source>
           <target>கட்டமைப்பு செயல்திறன்களுக்கு செயல்கள் தேவைப்படுகிறது.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.orgadmin">
-          <source>Requires organization administrator</source>
-          <target>நிறுவன நிர்வாக தேவைப்படுகிறார்</target>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.addprovisioning">
-          <source>Add provisioning entitlement</source>
-          <target>வாய்ப்பளித்தல் உரிமத்தை சேர்த்தல்</target>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
           <source>Subscribe to RHN Tools channel</source>
           <target>RHN கருவிகள் தடத்துடன் சந்தாப்படுத்தவும்</target>
@@ -13159,14 +13147,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source>
           <target>பிழை இல்லை.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.orgadmin">
-          <source>Remaining actions require organization administrator.</source>
-          <target>மீதமுள்ள செயல்களுக்கு நிறுவன நிர்வாகி தேவைப்படுகிறது.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.provision">
-          <source>Could not grant provisioning entitlement.</source>
-          <target>வாய்ப்பளித்தல் உரிமத்தைக் கொடுக்க முடியாது.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
           <source>Could not subscribe to the RHN Tools channel.</source>
@@ -20593,13 +20573,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>ஒரு கணினிக்கு கண்காணித்தல் தரவுகளை தேட செயல்படுத்தப்பட்டுள்ளது.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>கூடுதல் செயல்பாடுகளான கிக்ஸ்டார்ட் மற்றும் கட்டமைப்பு கோப்பு வாய்ப்பளித்தலை அனுமதிக்கிறது.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.virt_tip">
         <source>Applied to a host system, enables management for up to 4 guests.</source>
         <context-group name="ctx">
@@ -20699,13 +20672,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>மேலாண்மை (அடிப்படை)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.provisioning_entitled">
-        <source> Provisioning (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>வாய்ப்பளித்தல் (கூடுதல்)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.virtualization_host">
         <source> Virtualization (Add-On)</source>
         <context-group name="ctx">
@@ -20767,13 +20733,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>சேட்டிலைட்டில் பதிவு செய்யப்பட்ட அனைத்து கணினிகளுக்கும் ஒரு ஒற்றை மேலாண்மை (அடிப்படை) உரிமம் தேவைப்படுகிறது</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>ஒரு ஒற்றை வாய்ப்பளித்தல் (கூடுதல்) உரிமம் கிக்ஸ்டார்ட் மற்றும் கட்டமைப்பு கோப்பு வாய்ப்பளித்தல் போன்ற பல்வேறு கூடுதல் செயல்பாடுகளை அனுமதிக்கிறது.</target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
         <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>

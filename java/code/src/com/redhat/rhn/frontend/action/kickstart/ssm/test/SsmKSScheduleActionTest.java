@@ -18,11 +18,7 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartIpTest;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgEntitlementType;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.frontend.action.kickstart.ssm.SsmKSScheduleAction;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
@@ -42,29 +38,11 @@ import servletunit.HttpServletRequestSimulator;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Tests SsmKSScheduleAction.
  */
 public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
-
-    /**
-     * Sets up a request.
-     * @throws Exception if things go wrong
-     * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void setUp() throws Exception {
-        super.setUp();
-        Org org = user.getOrg();
-
-        Set entitlements = org.getEntitlements();
-        OrgEntitlementType type = OrgFactory.lookupEntitlementByLabel("rhn_provisioning");
-        entitlements.add(type);
-        org.setEntitlements(entitlements);
-        OrgFactory.save(org);
-    }
 
     /**
      * Tests creating Cobbler system records with a chosen profile from SSM.
@@ -79,10 +57,8 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .setKsmeta(new HashMap<String, Object>())
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
-        Server server1 = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
-        Server server2 = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
+        Server server1 = ServerTestUtils.createTestSystem(user);
+        Server server2 = ServerTestUtils.createTestSystem(user);
         ServerTestUtils.addServersToSsm(user, server1.getId());
         ServerTestUtils.addServersToSsm(user, server2.getId());
 
@@ -118,14 +94,12 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
 
         Profile profile = Profile.lookupById(connection, kickstartData.getCobblerId());
 
-        Server server1 = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
+        Server server1 = ServerTestUtils.createTestSystem(user);
         // this is comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server1, "server1", "192.168.2.2",
             "deadbeef");
 
-        Server server2 = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
+        Server server2 = ServerTestUtils.createTestSystem(user);
         // this is not comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server2, "server2", "192.178.2.2",
             "deadbeef");
@@ -159,8 +133,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
      */
     public void testCreateSystemRecordsWithoutProfile() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
-        Server server = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
+        Server server = ServerTestUtils.createTestSystem(user);
         ServerTestUtils.addServersToSsm(user, server.getId());
 
         String listUniqueName = TagHelper.generateUniqueName(ListHelper.LIST);
@@ -196,8 +169,7 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
                 .build(connection);
         Profile profile = Profile.create(connection, "test-profile", distro);
 
-        Server server = ServerTestUtils.createTestSystem(user,
-            ServerConstants.getServerGroupTypeProvisioningEntitled());
+        Server server = ServerTestUtils.createTestSystem(user);
         // this is comprised in ranges added by addIpRangesToKickstart()
         NetworkInterfaceTest.createTestNetworkInterface(server, "server1", "192.168.2.2",
             "deadbeef");

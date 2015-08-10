@@ -117,7 +117,7 @@ public class PowerManagementOperationsAction extends RhnAction implements
             new LinkedList<String>() {
                 {
                     add(EntitlementManager.BOOTSTRAP_ENTITLED);
-                    add(EntitlementManager.PROVISIONING_ENTITLED);
+                    add(EntitlementManager.ENTERPRISE_ENTITLED);
                 }
             });
     }
