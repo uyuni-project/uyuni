@@ -121,7 +121,7 @@ public class PowerManagementConfigurationAction extends RhnAction implements Lis
             new LinkedList<String>() {
                 {
                     add(EntitlementManager.BOOTSTRAP_ENTITLED);
-                    add(EntitlementManager.PROVISIONING_ENTITLED);
+                    add(EntitlementManager.ENTERPRISE_ENTITLED);
                 }
             });
     }

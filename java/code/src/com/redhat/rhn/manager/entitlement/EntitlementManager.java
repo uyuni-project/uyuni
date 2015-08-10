@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
-import com.redhat.rhn.domain.entitlement.ProvisioningEntitlement;
 import com.redhat.rhn.domain.entitlement.UpdateEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationPlatformEntitlement;
@@ -53,7 +52,6 @@ public class EntitlementManager extends BaseManager {
     //  ENTITLEMENTS
     public static final Entitlement UPDATE = new UpdateEntitlement();
     public static final Entitlement MANAGEMENT = new ManagementEntitlement();
-    public static final Entitlement PROVISIONING = new ProvisioningEntitlement();
     public static final Entitlement VIRTUALIZATION = new VirtualizationEntitlement();
     public static final Entitlement VIRTUALIZATION_PLATFORM =
         new VirtualizationPlatformEntitlement();
@@ -62,7 +60,6 @@ public class EntitlementManager extends BaseManager {
     public static final String UNENTITLED = "unentitled";
     public static final String SW_MGR_ENTITLED = "sw_mgr_entitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
-    public static final String PROVISIONING_ENTITLED = "provisioning_entitled";
     public static final String VIRTUALIZATION_ENTITLED = "virtualization_host";
     public static final String VIRTUALIZATION_PLATFORM_ENTITLED
         = "virtualization_host_platform";
@@ -72,7 +69,6 @@ public class EntitlementManager extends BaseManager {
     private static final Set <Entitlement> BASE_ENTITLEMENTS;
     static {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
-        ADDON_ENTITLEMENTS.add(PROVISIONING);
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION_PLATFORM);
 
@@ -91,9 +87,6 @@ public class EntitlementManager extends BaseManager {
         }
         else if (ENTERPRISE_ENTITLED.equals(name)) {
             return MANAGEMENT;
-        }
-        else if (PROVISIONING_ENTITLED.equals(name)) {
-            return PROVISIONING;
         }
         else if (VIRTUALIZATION_ENTITLED.equals(name)) {
             return VIRTUALIZATION;

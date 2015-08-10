@@ -11855,10 +11855,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source> Deploy configuration files to systems when they are registered with this activation key.</source>
           <target> विन्यास फाइल को सिस्टम में तैनात करें जब वे इस सक्रियकरण कुंजी से पंजीकृत किए जाते हैं.</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.disabled-config-auto-deploy-tooltip">
-          <source> Configuration File Deployment is currently disabled. Select "&lt;strong&gt;{0}&lt;/strong&gt;" under "&lt;strong&gt;{1}&lt;/strong&gt;"  to enable configuration management facilities for this activation key.</source>
-          <target> विन्यास फाइल तैनाती को अभी निष्क्रिय किया गया है. &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; को &quot;&lt;strong&gt;{1}&lt;/strong&gt;&quot; के अंतर्गत विन्यास प्रबंधन सुविधा को सक्रिय करने के लिए चुनें इस सक्रियकरण कुंजी के लिए.</target>
-        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -13082,14 +13078,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Actions needed for configuration capabilities.</source>
           <target>विन्यास क्षमता के लिए क्रिया जरूरी.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.orgadmin">
-          <source>Requires organization administrator</source>
-          <target>संगठन प्रशासक जरूरी</target>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.addprovisioning">
-          <source>Add provisioning entitlement</source>
-          <target>प्रोविजनिंग एंटाइटेलमेंट जोड़ें</target>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
           <source>Subscribe to RHN Tools channel</source>
           <target>RHN औजार चैनल की सदस्यता लें</target>
@@ -13159,14 +13147,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source>
           <target>कोई त्रुटि नहीं.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.orgadmin">
-          <source>Remaining actions require organization administrator.</source>
-          <target>शेष क्रिया के लिए संगठन प्रशासक जरूरी है.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.provision">
-          <source>Could not grant provisioning entitlement.</source>
-          <target>प्रोविजनिंग एंटाइटेलमेंट नहीं दे सकता है.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
           <source>Could not subscribe to the RHN Tools channel.</source>
@@ -20593,13 +20573,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>सिस्टम के लिए आंकड़ा निरीक्षण के ट्रैकिंग को सक्रिय करता है.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>किकस्टार्ट व बिन्यास फाइल प्रोविजनिंग जैसे विविध उन्नत कार्यशीलता को स्वीकार करता है.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.virt_tip">
         <source>Applied to a host system, enables management for up to 4 guests.</source>
         <context-group name="ctx">
@@ -20699,13 +20672,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target> प्रबंधन (Base)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.provisioning_entitled">
-        <source> Provisioning (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> प्रोविजनिंग (Add-On)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.virtualization_host">
         <source> Virtualization (Add-On)</source>
         <context-group name="ctx">
@@ -20767,13 +20733,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>एकल प्रबंधन (बेस) एंटाइटेलमेंट सैटेलाइट में पंजीकृत सभी सिस्टम के लिए जरूरी है</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>एकल प्रोविजनिंग (एड ऑन) एंटाइटेलमेंट विभिन्न उन्नत कार्यशीलता को अनुमति देता है जैसा कि किकस्टार्ट और बिन्यास फाइल प्रोविजनिंग. </target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
         <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>

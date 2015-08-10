@@ -12190,10 +12190,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source> Deploy configuration files to systems when they are registered with this activation key.</source>
           <target>설정 파일이 활성 키에 등록하였을 경우 이를 시스템에 배치합니다.     </target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.disabled-config-auto-deploy-tooltip">
-          <source> Configuration File Deployment is currently disabled. Select "&lt;strong&gt;{0}&lt;/strong&gt;" under "&lt;strong&gt;{1}&lt;/strong&gt;"  to enable configuration management facilities for this activation key.</source>
-          <target>현재 설정 파일 배치는 비활성화되어 있습니다. &quot;&lt;strong&gt;{1}&lt;/strong&gt;&quot; 하의 &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot;을 선택하여 활성키에 해당하는 설정 관리 기능을 활성화합니다.   </target>
-        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -13526,14 +13522,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Actions needed for configuration capabilities.</source>
           <target>설정 기능에 필요한 작업</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.orgadmin">
-          <source>Requires organization administrator</source>
-          <target>조직 관리자 필요</target>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.addprovisioning">
-          <source>Add provisioning entitlement</source>
-          <target>프로비저닝 (Provisioning) 인타이틀먼트 추가</target>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
           <source>Subscribe to RHN Tools channel</source>
           <target>RHN 도구 채널에 등록</target>
@@ -13603,14 +13591,6 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source>
           <target>오류 없음</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.orgadmin">
-          <source>Remaining actions require organization administrator.</source>
-          <target>나머지 작업에서는 조직 관리자가 필요합니다.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.provision">
-          <source>Could not grant provisioning entitlement.</source>
-          <target>프로비저닝 (Provisioning) 인타이틀먼트를 승인할 수 없음</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
           <source>Could not subscribe to the RHN Tools channel.</source>
@@ -21238,13 +21218,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>시스템 용 모니터링 데이터 추적을 활성화합니다. </target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>킥스타트와 설정 파일 프로비저닝과 같은 여러 고급 기능을 허용합니다. </target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.virt_tip">
         <source>Applied to a host system, enables management for up to 4 guests.</source>
         <context-group name="ctx">
@@ -21344,13 +21317,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target> 관리 (기본)   </target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.provisioning_entitled">
-        <source> Provisioning (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> 프로비저닝 (애드온)  </target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.virtualization_host">
         <source> Virtualization (Add-On)</source>
         <context-group name="ctx">
@@ -21413,13 +21379,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>단일 관리 (기본) 인타이틀먼트는 satellite에 등록된 모든 시스템에 필요합니다 </target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>단일 프로비저닝 (애드온) 인타이틀먼트로 킥스타트 및 설정 파일 프로비저닝과 같은 여러 고급 기능을 사용할 수 있습니다. </target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
         <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>

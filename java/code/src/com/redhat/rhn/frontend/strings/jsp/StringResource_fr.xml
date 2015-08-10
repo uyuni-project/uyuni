@@ -12395,10 +12395,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
           <source> Deploy configuration files to systems when they are registered with this activation key.</source>
           <target>Déployer les fichiers de configuration sur des systèmes enregistrés avec cette clé d'activation.</target>
         </trans-unit>
-        <trans-unit id="activation-key.jsp.disabled-config-auto-deploy-tooltip">
-          <source> Configuration File Deployment is currently disabled. Select "&lt;strong&gt;{0}&lt;/strong&gt;" under "&lt;strong&gt;{1}&lt;/strong&gt;"  to enable configuration management facilities for this activation key.</source>
-          <target>Le  déploiement de fichiers de configuration est actuellement désactivé. Sélectionnez &quot;&lt;strong&gt;{0}&lt;/strong&gt;&quot; sous &quot;&lt;strong&gt;{1}&lt;/strong&gt;&quot; afin d'activer les fonctions de gestion de la configuration pour cette clé d'activation.</target>
-        </trans-unit>
       </group>
       <group>
         <context-group name="ctx">
@@ -13887,14 +13883,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
           <source>Actions needed for configuration capabilities.</source>
           <target>Actions nécessaires pour activer les capacités de configuration.</target>
         </trans-unit>
-        <trans-unit id="targetsystems.jsp.orgadmin">
-          <source>Requires organization administrator</source>
-          <target>Requiert un administrateur d'organisation</target>
-        </trans-unit>
-        <trans-unit id="targetsystems.jsp.addprovisioning">
-          <source>Add provisioning entitlement</source>
-          <target>Ajouter un droit d'accès au module Provisioning</target>
-        </trans-unit>
         <trans-unit id="targetsystems.jsp.subscribetools">
           <source>Subscribe to RHN Tools channel</source>
           <target>S'abonner au canal RHN Tools</target>
@@ -13964,14 +13952,6 @@ Le script post non-chroot sera ensuite exécuté et le script post sera enfin ex
         <trans-unit id="summary.jsp.noerror">
           <source>No Error.</source>
           <target>Aucune erreur.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.orgadmin">
-          <source>Remaining actions require organization administrator.</source>
-          <target>Les actions restantes requièrent l'administrateur de configuration.</target>
-        </trans-unit>
-        <trans-unit id="summary.jsp.provision">
-          <source>Could not grant provisioning entitlement.</source>
-          <target>Impossible d'accorder le droit d'accès Provisioning.</target>
         </trans-unit>
         <trans-unit id="summary.jsp.rhntools">
           <source>Could not subscribe to the RHN Tools channel.</source>
@@ -21685,13 +21665,6 @@ Le chemin d'arborescence, le RPM Kickstart, le canal de base, et la génération
         </context-group>
         <target>Active le suivi d'analyse de données pour un système.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.provis_tip">
-        <source>Allows various advanced functionality such as kickstart and configuration file provisioning.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Autorise plusieurs fonctionnalités avancées telles que le dimensionnement de fichiers de configuration et fichiers kickstart.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.virt_tip">
         <source>Applied to a host system, enables management for up to 4 guests.</source>
         <context-group name="ctx">
@@ -21791,13 +21764,6 @@ comme défini dans le certificat de ce @@PRODUCT_NAME@@.</target>
         </context-group>
         <target> Gestion (Base)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.provisioning_entitled">
-        <source> Provisioning (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> Provisioning (Supplémentaire)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.virtualization_host">
         <source> Virtualization (Add-On)</source>
         <context-group name="ctx">
@@ -21860,13 +21826,6 @@ comme défini dans le certificat de ce @@PRODUCT_NAME@@.</target>
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>Un droit d'accès Gestion unique (Base) est requis pour tous les systèmes enregistrés au Satellite</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.provisioning_entitled">
-        <source>A single Provisioning (Add-On) entitlement allows various advanced functionality such as kickstart and configuration file provisioning. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Un droit d'accès Provisioning unique (Supplémentaire) offre plusieurs fonctionnalités avancées telles que le dimensionnement de fichiers de configuration ou fichiers kickstart.</target>
       </trans-unit>
       <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
         <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>

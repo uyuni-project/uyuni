@@ -265,8 +265,8 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param_desc("string", "entitlementName", "One of:
-     *          'enterprise_entitled', 'provisioning_entitled',
-     *          'virtualization_host', or 'virtualization_host_platform'.")
+     *          'enterprise_entitled', 'virtualization_host', or
+     *          'virtualization_host_platform'.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int upgradeEntitlement(User loggedInUser, Integer sid, String entitlementLevel)
@@ -2393,9 +2393,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement");
+                    "System does not have management entitlement");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -2446,9 +2446,9 @@ public class SystemHandler extends BaseHandler {
 
         // Lookup the server so we can validate it exists and throw error if not.
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement");
+                    "System cannot be provisioned");
         }
 
         KickstartData ksdata = KickstartFactory.
@@ -3871,8 +3871,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("string", "entitlementLabel - one of following:
-     * provisioning_entitled, virtualization_host,
-     * virtualization_host_platform, enterprise_entitled")
+     * virtualization_host, virtualization_host_platform, enterprise_entitled")
      * @xmlrpc.returntype #return_int_success()
      */
     public int addEntitlements(User loggedInUser, Integer serverId,
@@ -4911,9 +4910,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement");
+                    "System cannot be provisioned");
         }
 
         KickstartData ksData = lookupKsData(ksLabel, loggedInUser.getOrg());
@@ -5035,9 +5034,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement");
+                    "System cannot be provisioned");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -5096,9 +5095,9 @@ public class SystemHandler extends BaseHandler {
             throw new NoSuchSystemException();
         }
 
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement");
+                    "System cannot be provisioned");
         }
 
         SystemRecord rec = SystemRecord.lookupById(
@@ -5298,9 +5297,9 @@ public class SystemHandler extends BaseHandler {
      */
     public int tagLatestSnapshot(User loggedInUser, Integer serverId, String tagName) {
         Server server = lookupServer(loggedInUser, serverId);
-        if (!(server.hasEntitlement(EntitlementManager.PROVISIONING))) {
+        if (!(server.hasEntitlement(EntitlementManager.MANAGEMENT))) {
             throw new FaultException(-2, "provisionError",
-                    "System does not have provisioning entitlement: " + server.getId());
+                    "System cannot be provisioned");
         }
         List<ServerSnapshot> snps = ServerFactory.listSnapshots(loggedInUser.getOrg(),
                 server, null, null);
