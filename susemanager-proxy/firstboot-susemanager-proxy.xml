@@ -161,7 +161,7 @@
         <label>
 			&lt;p&gt;The installation of SUSE Manager Proxy has completed successfully.&lt;/p&gt;
 			&lt;p&gt;Click Finish to log in as 'root'.  Then register the proxy system with
-			a SUSE Manger server using a bootstrap script. Finally execute
+			a SUSE Manager server using a bootstrap script. Finally execute
 			'configure-proxy.sh' on the proxy system.&lt;/p&gt;
 			&lt;p&gt;Please visit us at http://www.suse.com/.&lt;/p&gt;
         </label>
