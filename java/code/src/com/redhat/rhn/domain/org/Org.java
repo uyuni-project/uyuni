@@ -468,9 +468,8 @@ public class Org extends BaseDomainHelper {
         while (i.hasNext()) {
             ServerGroupType sgt = i.next().getGroupType();
 
-            // Filter out the update and bootstrap entitlements
+            // Filter out the bootstrap entitlement
             if (sgt.isBase() &&
-                !sgt.getLabel().equals(EntitlementManager.UPDATE.getLabel()) &&
                 !sgt.getLabel().equals(EntitlementManager.BOOTSTRAP.getLabel())) {
                 baseEntitlements.add(EntitlementManager.getByName(sgt
                         .getLabel()));
