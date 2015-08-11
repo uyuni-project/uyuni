@@ -23,7 +23,6 @@ Feature: Test Bare-metal discovery
     Given I am on the Systems overview page of this client
     Then I should see a "System Info" text
     And I should see a "Edit These Properties" link
-    And I should not see a "[Provisioning]" text
     And I should not see a "[Management]" text
 
   Scenario: see the client in Bare metal specific system list

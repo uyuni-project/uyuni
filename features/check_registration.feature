@@ -17,7 +17,6 @@ Feature: Check client registration
     And I should see a "Non-Critical:" link
     And I should see a "Packages:" link
     And I should see a "Edit These Properties" link
-    And I should see a "[Provisioning]" text
     And I should see a "[Management]" text
     And I should see a "Add to SSM" link
     And I should see a "Delete System" link
