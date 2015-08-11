@@ -15,9 +15,6 @@
 package com.redhat.rhn.frontend.action.user.test;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.CreateUserAction;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;

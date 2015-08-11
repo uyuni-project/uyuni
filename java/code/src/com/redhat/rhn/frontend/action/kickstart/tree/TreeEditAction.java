@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 
 import org.apache.struts.action.DynaActionForm;
-import org.cobbler.Distro;
 
 import javax.servlet.http.HttpServletRequest;
 
