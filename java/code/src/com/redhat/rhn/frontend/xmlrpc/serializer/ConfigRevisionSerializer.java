@@ -24,7 +24,6 @@ import org.apache.commons.codec.binary.Base64;
 import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
-import com.redhat.rhn.FaultException;
 import com.redhat.rhn.frontend.xmlrpc.ConfigFileErrorException;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.config.ConfigRevision;
