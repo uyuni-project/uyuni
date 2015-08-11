@@ -107,7 +107,7 @@
 	    if (UI::WidgetExists (`id ("MANAGER_ADMIN_EMAIL")))
 	    {
 		string email	= (string) UI::QueryWidget (`id ("MANAGER_ADMIN_EMAIL"), `Value);
-		if (!issubstring (email, "@"))
+		if (!issubstring (email, "@") || find (email, "@") == 0 || find (email, "@") == size (email) - 1)
 		{
 		    Popup::Error (_("The Administrator E-mail Address is not valid."));
 		    UI::SetFocus (`id ("MANAGER_ADMIN_EMAIL"));
