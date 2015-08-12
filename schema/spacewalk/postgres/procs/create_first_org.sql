@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 cca03e7fc0787d2a3ee19f6425e716d3bcaf9979
+-- oracle equivalent source sha1 b6168cec502f909f02ab3a4b514fe885bfec16c6
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -124,12 +124,6 @@ begin
 
 	-- there aren't any users yet, so we don't need to update
 	-- rhnUserServerPerms
-        insert into rhnServerGroup 
-		( id, name, description, max_members, group_type, org_id )
-		select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name, 
-			0, sgt.id, 1
-		from rhnServerGroupType sgt
-		where sgt.label = 'sw_mgr_entitled';
 
         insert into rhnServerGroup
                 ( id, name, description, max_members, group_type, org_id )
