@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 e1467ca5210e031e6053801319899beb5b5212db
+-- oracle equivalent source sha1 e5915bcdc16a198cda3947b8aa5f24996c2ea92e
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -538,7 +538,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 		where	sgt.id = group_type;
 
 		-- the naive easy path that gets hit most often and has to be quickest.
-		if group_label in ('sw_mgr_entitled',
+		if group_label in (
                            'enterprise_entitled',
                            'bootstrap_entitled',
                            'virtualization_host',
@@ -672,7 +672,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 		from	rhnServerGroupType sgt
 		where	sgt.id = group_type;
 
-		if label in ('sw_mgr_entitled',
+		if label in (
                      'enterprise_entitled', 
                      'bootstrap_entitled',
                      'virtualization_host',
