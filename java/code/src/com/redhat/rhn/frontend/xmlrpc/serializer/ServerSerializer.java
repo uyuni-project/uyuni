@@ -29,7 +29,6 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.frontend.xmlrpc.serializer.util.SerializerHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
