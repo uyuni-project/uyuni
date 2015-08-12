@@ -28,8 +28,7 @@ import java.util.Set;
 public enum SystemEntitlement {
     SM_ENT_MGM_S("enterprise_entitled",
                  "bootstrap_entitled"),
-    SM_ENT_MGM_V("virtualization_host_platform",
-                 "enterprise_entitled",
+    SM_ENT_MGM_V("enterprise_entitled",
                  "bootstrap_entitled"),
     SM_ENT_MGM_Z("enterprise_entitled",
                  "bootstrap_entitled");
