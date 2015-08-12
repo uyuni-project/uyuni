@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 aa8247035599fe91667832c0fe9553542601ea59
+-- oracle equivalent source sha1 515c0899421848efa1c1b79c7f5c52a5cdb9370f
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -541,8 +541,9 @@ as $$
                 and sg.id = sgm.server_group_id
                 and sgt.id = sg.group_type
                 and sgt.label in (
-                    'enterprise_entitled', 'bootstrap_entitled',
-                    'nonlinux_entitled','virtualization_host',
+                    'enterprise_entitled',
+                    'bootstrap_entitled',
+                    'virtualization_host',
                     'virtualization_host_platform'
                     );
 
@@ -616,9 +617,6 @@ as $$
         elsif service_label_in = 'virtualization_platform' then
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization_platform');
             roles_to_process := array_append(roles_to_process, 'config_admin');
-    elsif service_label_in = 'nonlinux' then
-            ents_to_process := array_append(ents_to_process, 'rhn_nonlinux');
-            roles_to_process := array_append(roles_to_process, 'config_admin');
         end if;
 
         if enable_in = 'Y' then
@@ -679,30 +677,12 @@ as $$
     end$$
 language plpgsql;
 
-    create or replace function set_customer_nonlinux (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'nonlinux', 'Y');
-    end$$
-language plpgsql;
-
     create or replace function unset_customer_enterprise (
         customer_id_in in numeric
     ) returns void
 as $$
     begin
         perform rhn_entitlements.modify_org_service(customer_id_in, 'enterprise', 'N');
-    end$$
-language plpgsql;
-
-    create or replace function unset_customer_nonlinux (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'nonlinux', 'N');
     end$$
 language plpgsql;
 
