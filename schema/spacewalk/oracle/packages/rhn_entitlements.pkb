@@ -367,7 +367,7 @@ is
         select 1 into is_virt
           from rhnServerEntitlementView
          where server_id = server_id_in
-           and label in = 'virtualization_host';
+           and label = 'virtualization_host';
       exception
         when no_data_found then
           is_virt := 0;
@@ -381,6 +381,7 @@ is
                    case servergroup.label
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
+                    when 'virtualization_host' then 'Virtualization'
                    end  );
 
          rhn_server.delete_from_servergroup(server_id_in,
