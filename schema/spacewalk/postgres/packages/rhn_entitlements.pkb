@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 515c0899421848efa1c1b79c7f5c52a5cdb9370f
+-- oracle equivalent source sha1 02f757e68cdc9d5fa00eea498e1b282e77bc7942
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -255,15 +255,13 @@ as $$
       select 1 into is_virt
         from rhnServerEntitlementView
         where server_id = server_id_in
-          and label in ('virtualization_host', 'virtualization_host_platform');
+          and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
       end if;
 
-      if is_virt = 0 and (type_label_in = 'virtualization_host' or
-                          type_label_in = 'virtualization_host_platform') then
-
+      if is_virt = 0 and type_label_in = 'virtualization_host' then
         is_virt := 1;
       end if;
 
@@ -279,8 +277,7 @@ as $$
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'virtualization_host' then 'Virtualization'
-                       when 'virtualization_host_platform' then
-                            'Virtualization Platform' end  );
+                      end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
 
@@ -312,7 +309,7 @@ as $$
         select 1 into is_virt
           from rhnServerEntitlementView
           where server_id = server_id_in
-            and label in ('virtualization_host', 'virtualization_host_platform');
+            and label = 'virtualization_host';
         if not found then
             is_virt := 0;
         end if;
@@ -346,8 +343,7 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'virtualization_host_platform' then
-                         'Virtualization Platforrm' end  );
+                   end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
 
@@ -383,7 +379,7 @@ as $$
       select 1 into is_virt
         from rhnServerEntitlementView
         where server_id = server_id_in
-         and label in ('virtualization_host', 'virtualization_host_platform');
+         and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
@@ -398,8 +394,7 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'virtualization_host_platform' then
-                         'Virtualization Platform' end  );
+                   end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in,
                                             servergroup.server_group_id );
@@ -475,7 +470,7 @@ as $$
           select 1 into is_virt
                 from rhnServerEntitlementView
            where server_id = server_id_in
-                 and label in ('virtualization_host', 'virtualization_host_platform');
+                 and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
@@ -543,8 +538,7 @@ as $$
                 and sgt.label in (
                     'enterprise_entitled',
                     'bootstrap_entitled',
-                    'virtualization_host',
-                    'virtualization_host_platform'
+                    'virtualization_host'
                     );
 
          ent_array varchar[];
@@ -613,9 +607,6 @@ as $$
         elsif service_label_in = 'virtualization' then
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization');
 
-            roles_to_process := array_append(roles_to_process, 'config_admin');
-        elsif service_label_in = 'virtualization_platform' then
-            ents_to_process := array_append(ents_to_process, 'rhn_virtualization_platform');
             roles_to_process := array_append(roles_to_process, 'config_admin');
         end if;
 
