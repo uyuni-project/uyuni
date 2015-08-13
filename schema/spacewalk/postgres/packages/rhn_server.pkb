@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 e5915bcdc16a198cda3947b8aa5f24996c2ea92e
+-- oracle equivalent source sha1 837d1f5f077865149832b5d5537bee790162ea76
 --
 -- Copyright (c) 2008--2014 Red Hat, Inc.
 --
@@ -467,8 +467,7 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
                 and exists ( select 1
                      from rhnServerEntitlementView sev
                  where vi.HOST_SYSTEM_ID = sev.server_id
-                 and sev.label in ('virtualization_host',
-                                   'virtualization_host_platform') )
+                 and sev.label = 'virtualization_host' )
                 -- server id's host also has the ent we want
                 and exists ( select 1
                      from rhnServerEntitlementView sev2
@@ -541,8 +540,8 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 		if group_label in (
                            'enterprise_entitled',
                            'bootstrap_entitled',
-                           'virtualization_host',
-                           'virtualization_host_platform') then
+                           'virtualization_host'
+                      ) then
 			if used_slots >= max_slots and 
                (rhn_server.can_server_consume_virt_slot(server_id_in, group_label) != 1) 
                then
@@ -675,8 +674,8 @@ update pg_settings set setting = 'rhn_server,' || setting where name = 'search_p
 		if label in (
                      'enterprise_entitled', 
                      'bootstrap_entitled',
-                     'virtualization_host',
-                     'virtualization_host_platform') then
+                     'virtualization_host'
+                ) then
 
             -- Only update current members if the system is consuming
             -- a physical slot.

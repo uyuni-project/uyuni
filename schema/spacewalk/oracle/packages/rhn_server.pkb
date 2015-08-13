@@ -439,8 +439,7 @@ is
                 and exists ( select 1
                      from rhnServerEntitlementView sev
                  where vi.HOST_SYSTEM_ID = sev.server_id
-                 and sev.label in ('virtualization_host',
-                                   'virtualization_host_platform') )
+                 and sev.label = 'virtualization_host' )
                 -- server id's host also has the ent we want
                 and exists ( select 1
                      from rhnServerEntitlementView sev2
@@ -511,8 +510,8 @@ is
 		if group_label in (
                            'enterprise_entitled',
                            'bootstrap_entitled',
-                           'virtualization_host',
-                           'virtualization_host_platform') then
+                           'virtualization_host'
+                      ) then
 			if used_slots >= max_slots and 
                (can_server_consume_virt_slot(server_id_in, group_label) != 1) 
                then
@@ -641,8 +640,8 @@ is
 		if label in (
                      'enterprise_entitled',
                      'bootstrap_entitled',
-                     'virtualization_host',
-                     'virtualization_host_platform') then
+                     'virtualization_host'
+                ) then
 
             -- Only update current members if the system is consuming
             -- a physical slot.
