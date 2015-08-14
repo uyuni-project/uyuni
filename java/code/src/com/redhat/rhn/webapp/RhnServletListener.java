@@ -18,6 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 
+import com.suse.manager.reactor.SaltReactor;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -116,6 +118,9 @@ public class RhnServletListener implements ServletContextListener {
         startHibernate();
         logStart("Hibernate");
 
+        SaltReactor.start();
+        logStart("Salt reactor");
+
         log.debug("Starting upgrade check");
         executeUpgradeStep();
     }
@@ -130,6 +135,9 @@ public class RhnServletListener implements ServletContextListener {
 
     /** {@inheritDoc} */
     public void contextDestroyed(ServletContextEvent sce) {
+        SaltReactor.stop();
+        logStop("Salt reactor");
+
         stopMessaging();
         logStop("Messaging");
 
