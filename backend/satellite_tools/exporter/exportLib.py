@@ -1690,12 +1690,7 @@ class ServerGroupTypeServerArchCompatDumper(RestrictedArchCompatDumper):
 
     _query_rpm_arch_type_only = """
         select sgt.label "server-group-type",
-               sa.label "server-arch",
-               (select vsl.label "virt-sub-level"
-                from rhnSGTypeVirtSubLevel sgtvsl,
-                     rhnVirtSubLevel vsl
-                where sgtvsl.server_group_type_id = sgt.id
-                  AND vsl.id = sgtvsl.virt_sub_level_id) as virt_sub_level
+               sa.label "server-arch"
           from rhnServerGroupType sgt,
                rhnServerArch sa,
                rhnArchType aas,
@@ -1710,12 +1705,7 @@ class ServerGroupTypeServerArchCompatDumper(RestrictedArchCompatDumper):
     #_query_arch_type_all = rhnSQL.Statement("""
     _query_arch_type_all = """
         select sgt.label "server-group-type",
-               sa.label "server-arch",
-               (select vsl.label "virt-sub-level"
-                from rhnSGTypeVirtSubLevel sgtvsl,
-                     rhnVirtSubLevel vsl
-                where sgtvsl.server_group_type_id = sgt.id
-                  AND vsl.id = sgtvsl.virt_sub_level_id) as virt_sub_level
+               sa.label "server-arch"
           from rhnServerGroupType sgt,
                rhnServerArch sa,
                rhnServerServerGroupArchCompat ssgac
