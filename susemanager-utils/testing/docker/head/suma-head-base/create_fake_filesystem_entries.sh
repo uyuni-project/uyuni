@@ -27,7 +27,6 @@ ln -s /manager/backend/rhn-conf/{rhn.conf,rhn_server.conf,rhn_server_satellite.c
 ln -s /manager/backend/satellite_tools/rhn-satellite-activate /usr/sbin
 ln -s /manager/web/conf/rhn_web.conf /usr/share/rhn/config-defaults/
 ln -s /manager/backend /usr/lib64/python2.7/site-packages/spacewalk
-ln -s /manager/spacewalk/admin/validate-sat-cert.pl /usr/bin/
 ln -s /manager/web/modules/rhn/RHN.pm /usr/lib/perl5/5.18.2/
 ln -s /manager/web/modules/rhn/RHN /usr/lib/perl5/5.18.2
 
