@@ -1,5 +1,4 @@
 tests that are not relevant in SUSE Manager:
-com/redhat/rhn/taskomatic/task/test/SatelliteCertificateCheckTest.class
 com/redhat/rhn/frontend/xmlrpc/test/SatScrubberTest.class
 
 abstract test classes:
