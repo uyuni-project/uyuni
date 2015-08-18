@@ -508,10 +508,6 @@
     type: ACTION_CHANGE
     required: [submitted]
 
-/admin/config/CertificateConfig.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
 /admin/config/Restart.do:
     type: ACTION_CHANGE
     required: [submitted]
