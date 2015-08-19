@@ -12,8 +12,6 @@ ant resolve-ivy
 
 cp /root/rhn.conf /etc/rhn/rhn.conf
 
-rhn-satellite-activate --rhn-cert /manager/branding/setup/spacewalk-public.cert --disconnected
-
 cp buildconf/test/rhn.conf.oracle-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar test
 
