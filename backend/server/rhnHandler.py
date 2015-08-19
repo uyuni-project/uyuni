@@ -66,10 +66,6 @@ class rhnHandler(RPC_Base):
         if self.update_checkin:
             server.checkin()
 
-        if not server.validateSatCert():
-            log_error("SUSE Manager Certificate has expired")
-            raise rhnFault(3006, "SUSE Manager Certificate has expired")
-
         # is the server entitled?
         if self.check_entitlement:
             entitlements = server.check_entitlement()
