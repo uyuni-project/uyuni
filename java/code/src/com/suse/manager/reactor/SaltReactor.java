@@ -17,6 +17,7 @@ package com.suse.manager.reactor;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
+import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.datatypes.Token;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
@@ -52,8 +53,9 @@ public class SaltReactor {
             eventStream = client.events();
             eventStream.addEventListener(new EventListener() {
                 @Override
-                public void notify(String event) {
-                    logger.debug(event);
+                public void notify(Event event) {
+                    logger.debug("Event tag: " + event.getTag());
+                    logger.debug("Event data: " + event.getData());
                 }
 
                 @Override
