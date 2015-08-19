@@ -7,7 +7,7 @@ SUBDIR	= server/rhnServer
 SPACEWALK_FILES	= __init__ server_certificate server_hardware \
 	  server_packages server_history server_class \
 	  server_class server_wrapper server_lib server_route server_token \
-          satellite_cert server_kickstart search_notify \
+          server_kickstart search_notify \
           server_suse
 
 include $(TOP)/Makefile.defs
