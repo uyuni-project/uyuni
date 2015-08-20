@@ -71,11 +71,6 @@
                         <tr>
                           <th><bean:message key="systementitlements.jsp.baseentitlement" /></th>
                           <td class="text-right">
-                                          <c:if test="${requestScope.showUpdateAspects}">
-                                                        <html:submit styleClass="btn btn-default" property="dispatch">
-                                                          <bean:message key="systementitlements.jsp.set_to_update_entitled" />
-                                                        </html:submit>
-                                                  </c:if>
                                           <c:if test="${requestScope.showManagementAspects}">
                                                         <html:submit styleClass="btn btn-default" property="dispatch">
                                                         <bean:message key="systementitlements.jsp.set_to_manage_entitled" />
@@ -120,10 +115,6 @@
                 </div>
                 <table class="table">
                 <tr>
-                    <td><bean:message key="Spacewalk Update Entitled Servers"/>:</td>
-                        <td>${requestScope.updateCountsMessage}</td>
-                </tr>
-                <tr>
                 <td><bean:message key="Spacewalk Management Entitled Servers"/>:</td>
                 <td>${requestScope.managementCountsMessage}</td>
                 </tr>
@@ -139,10 +130,6 @@
                 <tr>
                         <td><bean:message key="virtualization_host"/>:</td>
                         <td>${requestScope.virtualizationCountsMessage}</td>
-                </tr>
-                <tr>
-                        <td><bean:message key="virtualization_host_platform"/>:</td>
-                        <td>${requestScope.virtualizationPlatformCountsMessage}</td>
                 </tr>
        </table>
         </div>

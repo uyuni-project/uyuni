@@ -396,10 +396,7 @@ class Server(ServerWrapper):
     # Auto-entitlement: attempt to entitle this server to the highest
     # entitlement that is available
     def autoentitle(self):
-        # misa: as of 2005-05-27 nonlinux does not get a special treatment
-        # anymore (this is in connection to feature 145440 - entitlement model
-        # changes
-        entitlement_hierarchy = ['enterprise_entitled', 'sw_mgr_entitled', 'bootstrap_entitled']
+        entitlement_hierarchy = ['enterprise_entitled', 'bootstrap_entitled']
 
         any_base_entitlements = 0
 

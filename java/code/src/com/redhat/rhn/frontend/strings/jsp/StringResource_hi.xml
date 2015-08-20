@@ -6228,13 +6228,6 @@ deducted from the default organization.</source>
         </context-group>
         <target>अतिरिक्त एंटाइटेलमेंट</target>
       </trans-unit>
-      <trans-unit id="systementitlements.jsp.set_to_update_entitled">
-        <source>Set to Update Entitled</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SystemEntitlements</context>
-        </context-group>
-        <target>एंटाइटेल अद्यतन के लिये सेट</target>
-      </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
         <source>Set to Management Entitled</source>
         <context-group name="ctx">
@@ -6363,26 +6356,6 @@ deducted from the default organization.</source>
         <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
           <target>&lt;strong&gt;वर्चुअलाइजेशन&lt;/strong&gt; एंटाइटेलमेंट &lt;strong&gt;{0}&lt;/strong&gt; सिस्टम के लिए विफल रहा क्योंकि वर्चुअलाइजेशन Solaris सिस्टम पर समर्थित नहीं है.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization Platform.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization it has been upgraded to Virtualization Platform. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; सिस्टम &lt;strong&gt;वर्चुअलाइजेशन प्लैटफ़ार्म&lt;/strong&gt; पर सेट.  &lt;br/&gt; &lt;strong&gt;नोट: &lt;/strong&gt;अगर सिस्टम पहले वर्चुअलाइजेशन रखता है इसे वर्चुअलाइजेशन प्लैटफॉर्म में उन्नत किया जा रहा है. </target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-          <target>&lt;strong&gt;वर्चुअलाइजेशन&lt;/strong&gt; को &lt;strong&gt;{0}&lt;/strong&gt; सिस्टम से हटाया चुने मेजबान से जुड़े किसी अतिथि का कारण बनेगा भौतिक चैनल व सिस्टम एंटाइटेलमें की खपत करने के लिए.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; सिस्टम सफलतापूर्वक &lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; एंटाइटेलमेंट में सेट किया है, लेकिन शेष &lt;strong&gt;{1}&lt;/strong&gt; सिस्टम के लिये आपके पास पर्याप्त &lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; एंटाइटेलमेंट नहीं है. आप अतिरिक्त &lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; एंटाइटेलमेंट &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ भंडार&lt;/strong&gt;&lt;/a&gt; पर खरीद सकते हैं. आपके पास अतिरिक्त &lt;strong&gt;वर्चुअलाइजेशन प्लेटफॉर्म&lt;/strong&gt; एंटाइटेलमेंट के बाद, आप इन सिस्टम के उन्नयन में समर्थ होंगे. &lt;br/&gt;&lt;strong&gt;नोट: &lt;/strong&gt;यदि कोई सिस्टम पहले वर्चुअलाइजेशन प्लेटफॉर्म रखता है, इसे वर्चुअलाइजेशन प्लेटफार्म में पदावनत किया जायेगा.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noManagement">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement to these system(s).</source>
-          <target>&lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; एंटाइटेलमेंट &lt;strong&gt;{0}&lt;/strong&gt; सिस्टम के लिये विफल रहा क्योंकि उनके पास &lt;strong&gt;प्रबंधन&lt;/strong&gt; बेस एंटाइटेलमेंट नहीं है. विफल सिस्टम अबभी नीचे चयनित किया गया. अगर आप पहले &lt;strong&gt;प्रबंधन एंटाइटेल में सेट&lt;/strong&gt; बटन पर नीचे क्लिक करते हैं, तब &lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; मद लटकती मेनू में &lt;strong&gt;अतिरिक्त एंटाइटेलमेंट खंड&lt;/strong&gt; में से चुनें और तब नीचे &lt;strong&gt;एंटाइटेलमेंट जोड़ें&lt;/strong&gt; बटन पर क्लिक करें, आप इन सिस्टम में &lt;strong&gt;वर्चुअलाइजेशन प्लेटफार्म&lt;/strong&gt; एंटाइटेलमेंट जोड़ने में समर्थ होंगे.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noSolarisSupport">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; सिस्टम के लिए &lt;strong&gt;वर्चुअलाइजेशन प्लैटफ़ार्म&lt;/strong&gt; विफल क्योंकि वर्चुअलाइजेशन Solaris सिस्टम पर समर्थित नहीं है. </target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
@@ -20580,13 +20553,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>एक मेजबान सिस्टम के लिए लागू, 4 अतिथि तक के प्रबंधन को सक्रिय करता है.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_plat_tip">
-        <source>Applied to a host system, enables management for unlimited guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>एक मेजबान सिस्टम के लिए लागू, असीमित अतिथि तक के प्रबंधन को सक्रिय करता है.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.possible_vals">
         <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -20679,13 +20645,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target> वर्चुअलाइजेशन (Add-On)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host_platform">
-        <source> Virtualization Platform (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> वर्चुअलाइजेशन प्लेटफॉर्म (एड आन)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.add_on">
         <source>(Add-On)</source>
         <context-group name="ctx">
@@ -20740,12 +20699,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>एकल वर्चुअलाइजेशन (एड ऑन) एंटाइटेलमेंट एक मेजबान सिस्टम में लागू है, 4 अतिथि तक के प्रबंधन को सक्रिय करता है. </target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host_platform">
-        <source>A single Virtualization Platform (Add-On) entitlement applied to a host system, enabled management for unlimited guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="entitlementorgs.orgname">
         <source>Organization Name</source>

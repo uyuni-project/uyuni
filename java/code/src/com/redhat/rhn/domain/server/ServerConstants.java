@@ -53,27 +53,11 @@ public class ServerConstants {
     }
 
     /**
-     * Static representing the update_entiteled ServerGroup
-     * @return ServerGroupType
-     */
-    public static final ServerGroupType getServerGroupTypeUpdateEntitled() {
-        return ServerFactory.lookupServerGroupTypeByLabel("sw_mgr_entitled");
-    }
-
-    /**
      * Static representing the provisioning entitled server group type
      * @return ServerGroupType
      */
     public static final ServerGroupType getServerGroupTypeVirtualizationEntitled() {
         return ServerFactory.lookupServerGroupTypeByLabel("virtualization_host");
-    }
-
-    /**
-     * Static representing the provisioning entitled server group type
-     * @return ServerGroupType
-     */
-    public static final ServerGroupType getServerGroupTypeVirtualizationPlatformEntitled() {
-        return ServerFactory.lookupServerGroupTypeByLabel("virtualization_host_platform");
     }
 
     /**

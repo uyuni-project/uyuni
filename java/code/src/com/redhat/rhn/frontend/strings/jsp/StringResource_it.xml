@@ -6552,13 +6552,6 @@ presi dall'organizzazione predefinita.</target>
         </context-group>
         <target>Entitlement aggiuntivi</target>
       </trans-unit>
-      <trans-unit id="systementitlements.jsp.set_to_update_entitled">
-        <source>Set to Update Entitled</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SystemEntitlements</context>
-        </context-group>
-        <target>Imposta su Autorizzato aggiornamento</target>
-      </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
         <source>Set to Management Entitled</source>
         <context-group name="ctx">
@@ -6692,26 +6685,6 @@ presi dall'organizzazione predefinita.</target>
         <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
           <target>Entitlement di &lt;strong&gt;Virtualizzazione&lt;/strong&gt; fallito per &lt;strong&gt;{0}&lt;/strong&gt; sistemi poichè la Virtualizzazione non è supportata sui sistemi Solaris.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization Platform.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization it has been upgraded to Virtualization Platform. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistemi impostati per la &lt;strong&gt;Virtualization Platform&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTA BENE: &lt;/strong&gt;Se il sistema in questione precedentemente presentava la Virtualizzazione, ora lo stesso verrà aggiornato a Piattaforma di Virtualizzazione. </target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-          <target>&lt;strong&gt;Virtualizzazione&lt;/strong&gt; rimossa da &lt;strong&gt;{0}&lt;/strong&gt; sistema(i)  Ciò causerà ad ogni guest associato all'host selezionato, un consumo di entitlement del sistema e di canali fisici.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistemi sono stati impostati con successo per un entitlement di &lt;strong&gt;Virtualization Platform&lt;/strong&gt;, ma non siete in possesso di un numero sufficiente di entitlement di &lt;strong&gt;Virtualization Platform&lt;/strong&gt; per i &lt;strong&gt;{1}&lt;/strong&gt; sistemi restanti. È possibile acquistare entitlement di &lt;strong&gt;Virtualization Platform&lt;/strong&gt; aggiuntivi su &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. Dopo aver ottenuto gli entitlement aggiuntivi di &lt;strong&gt;Virtualization Platform&lt;/strong&gt;, sarete in grado di aggiornare i sistemi in questione. &lt;br/&gt; &lt;strong&gt;NOTA BENE: &lt;/strong&gt;Se il sistema in questione presentava una Virtualization Platform, ora lo stesso è stato declassato a Virtualizzazione. </target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noManagement">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement to these system(s).</source>
-          <target>Entitlement di &lt;strong&gt;Virtualization Platform&lt;/strong&gt; fallito per &lt;strong&gt;{0}&lt;/strong&gt; sistema(i), poichè esso(i) non è(erano) in possesso di alcun entitlement di &lt;strong&gt;Management&lt;/strong&gt; di base. I sistemi in questione risultano ancora selezionati. Se fate clic sul pulsante &lt;strong&gt;Imposta su autorizzati al Management&lt;/strong&gt;, e successivamente su &lt;strong&gt;Virtualization Platform&lt;/strong&gt; nell'elenco a tendina situato nella &lt;strong&gt;Sezione entitlement aggiuntivi&lt;/strong&gt;, e poi &lt;strong&gt;Aggiungi entitlement&lt;/strong&gt;, sarete in grado di aggiungere l'entitlement di &lt;strong&gt;Virtualization Platform&lt;/strong&gt; sul sistema in questione.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noSolarisSupport">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-          <target>L'entitlement &lt;strong&gt;Virtualization Platform&lt;/strong&gt; per i sistemi &lt;strong&gt;{0}&lt;/strong&gt; è fallito poichè la Virtualizzazione non è supportata sui sistemi Solaris.</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
@@ -21649,13 +21622,6 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         </context-group>
         <target>Applicato ad un sistema host, abilita il management fino a 4 guest.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_plat_tip">
-        <source>Applied to a host system, enables management for unlimited guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Applicato ad un sistema host, abilita il management per un numero di guest illimitato.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.possible_vals">
         <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -21748,13 +21714,6 @@ come riportato in questo certificato @@PRODUCT_NAME@@.</target>
         </context-group>
         <target> Virtualizzazione (Aggiuntivo)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host_platform">
-        <source> Virtualization Platform (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> Virtualization Platform (Aggiuntivo)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.add_on">
         <source>(Add-On)</source>
         <context-group name="ctx">
@@ -21810,13 +21769,6 @@ come riportato in questo certificato @@PRODUCT_NAME@@.</target>
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>Un entitlement (aggiuntivo) singolo di Virtualizzazione applicato ad un sistema host, abilita il management fino a 4 guest.</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host_platform">
-        <source>A single Virtualization Platform (Add-On) entitlement applied to a host system, enabled management for unlimited guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Un entitlement singolo di Piattaforma di virtualizzazione (Add-On) applicato ad un sistema host permette una gestione per un numero di guest illimitati.</target>
       </trans-unit>
       <trans-unit id="entitlementorgs.orgname">
         <source>Organization Name</source>

@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2008--2010 Red Hat, Inc.
+-- Copyright (c) 2008 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,18 +13,33 @@
 -- in this software or its documentation. 
 --
 --
--- 
+--
 --
 
-insert into rhnSGTypeVirtSubLevel
-values(lookup_sg_type('virtualization_host'),
-       lookup_virt_sub_level('virtualization_free'),
-       current_timestamp, current_timestamp);
-
-insert into rhnSGTypeVirtSubLevel
-values(lookup_sg_type('virtualization_host_platform'),
-       lookup_virt_sub_level('virtualization_platform_free'),
-       current_timestamp, current_timestamp);
-
-commit;
+create or replace view
+rhnEntitledServers
+as
+select distinct
+    S.id,
+    S.org_id,
+    S.digital_server_id,
+    S.server_arch_id,
+    S.os,
+    S.release,
+    S.name,
+    S.description,
+    S.info,
+    S.secret
+from
+    rhnServerGroup SG,
+    rhnServerGroupType SGT,
+    rhnServerGroupMembers SGM,
+    rhnServer S
+where
+    S.id = SGM.server_id
+and SG.id = SGM.server_group_id
+and SGT.label IN ('enterprise_entitled', 'bootstrap_entitled')
+and SG.group_type = SGT.id
+and SG.org_id = S.org_id
+;
 
