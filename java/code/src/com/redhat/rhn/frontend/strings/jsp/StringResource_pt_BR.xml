@@ -6552,13 +6552,6 @@ serviços de uma organização não-padrão, eles serão deduzidos da organizaç
         </context-group>
         <target>Direito a Serviços Adicionais</target>
       </trans-unit>
-      <trans-unit id="systementitlements.jsp.set_to_update_entitled">
-        <source>Set to Update Entitled</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SystemEntitlements</context>
-        </context-group>
-        <target>Configurado para Direito a Serviços Update</target>
-      </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
         <source>Set to Management Entitled</source>
         <context-group name="ctx">
@@ -6692,26 +6685,6 @@ serviços de uma organização não-padrão, eles serão deduzidos da organizaç
         <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
           <target>O serviço de &lt;strong&gt;Virtualização&lt;/strong&gt; falhou no(s) sistema(s) &lt;strong&gt;{0}&lt;/strong&gt; porque Virtualização não é suportado nos sistemas Solaris.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization Platform.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization it has been upgraded to Virtualization Platform. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistema(s) configurado(s) para &lt;strong&gt;Virtualização Ilimitada.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTA: &lt;/strong&gt;Se anteriormete o sistema estava configurado como 'Virtualização', ele foi atualizado para 'Virtualização Ilimitada'. </target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-          <target>O serviço de &lt;strong&gt;Virtualização&lt;/strong&gt; foi removido do(s) sistema(s) &lt;strong&gt;{0}&lt;/strong&gt;. Isto fará com que qualquer sistema virtual associado à máquina selecionada consuma Direitos a Serviços de Sistema físico.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistema(s) foram configurados para direitos a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; com sucesso, mas você não possui direitos a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; suficientes para &lt;strong&gt;{1}&lt;/strong&gt; sistema(s) restantes. Você pode adquirir direitos a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; adicionais na &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. Após obter direitos a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; adicionais, você poderá fazer o upgrade destes sistemas.&lt;br/&gt;&lt;strong&gt;NOTA: &lt;/strong&gt; Se anteriormente o sistema estava configurado como 'Virtualização Ilimitada', ele recebeu um downgrade para Virtualização.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noManagement">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement to these system(s).</source>
-          <target>A associação de direitos a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; falhou para &lt;strong&gt;{0}&lt;/strong&gt; sistema(s) porque eles não possuem os direitos a serviços básicos de &lt;strong&gt;Gerenciamento&lt;/strong&gt;. Os sistemas que falharam ainda estão selecionados abaixo. Se você primeiro clicar no botão &lt;strong&gt;Mudar para Direitos a Serviços de Gerenciamento&lt;/strong&gt; abaixo e selecionar o item &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; na lista suspensa localizada na &lt;strong&gt;seção direitos a Serviços Complementares&lt;/strong&gt; e então clicar no botão &lt;strong&gt;Adicionar Direito a Serviço&lt;/strong&gt; abaixo, você poderá adicionar o direito a serviços de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; a estes sistema(s).</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noSolarisSupport">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-          <target>O serviço de &lt;strong&gt;Virtualização Ilimitada&lt;/strong&gt; falhou nos sistemas &lt;strong&gt;{0}&lt;/strong&gt; porque não é suportado nos sistemas Solaris. </target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
@@ -21670,13 +21643,6 @@ O Caminho de Árvore, Kickstart RPM, Canal de Base e a Geração do Instalador d
         </context-group>
         <target>Aplicado à um sistema hóspede (host), habilitando o gerenciamento para até 4 sistemas virtuais.</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_plat_tip">
-        <source>Applied to a host system, enables management for unlimited guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Aplicado à um sistema hóspede (host), habilitand o gerenciamento para sistemas virtuais ilimitados.</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.possible_vals">
         <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -21769,13 +21735,6 @@ como refletido neste certificado do @@PRODUCT_NAME@@. </target>
         </context-group>
         <target>Virtualização (Adicionar)</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host_platform">
-        <source> Virtualization Platform (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Plataforma de Virtualização (Adicionar)</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.add_on">
         <source>(Add-On)</source>
         <context-group name="ctx">
@@ -21831,13 +21790,6 @@ como refletido neste certificado do @@PRODUCT_NAME@@. </target>
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>Um único serviço de Virtualização (Complementar) em um sistema host, permite o gerenciamento de até 4 convidados.</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host_platform">
-        <source>A single Virtualization Platform (Add-On) entitlement applied to a host system, enabled management for unlimited guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Uma única Plataforma de Virtualização (Complementar) aplicada em um sistema host, habilitou gerenciamento para um número ilimitado de convidados.</target>
       </trans-unit>
       <trans-unit id="entitlementorgs.orgname">
         <source>Organization Name</source>

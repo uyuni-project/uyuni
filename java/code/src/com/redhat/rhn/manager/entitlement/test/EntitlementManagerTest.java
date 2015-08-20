@@ -21,7 +21,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 
 /**
  * EntitlementManagerTest
- * @version $Rev$
  */
 public class EntitlementManagerTest extends RhnBaseTestCase {
 
@@ -30,27 +29,18 @@ public class EntitlementManagerTest extends RhnBaseTestCase {
         assertNull(EntitlementManager.getByName("foo"));
 
         Entitlement ent = EntitlementManager.getByName(
-                    EntitlementManager.SW_MGR_ENTITLED);
+                    EntitlementManager.ENTERPRISE_ENTITLED);
         assertNotNull(ent);
-        assertEquals(EntitlementManager.UPDATE, ent);
+        assertEquals(EntitlementManager.MANAGEMENT, ent);
 
         ent = EntitlementManager.getByName("enterprise_entitled");
         assertNotNull(ent);
         assertEquals(EntitlementManager.MANAGEMENT, ent);
 
-    }
-
-    public void testGetVirtEnt() {
-        Entitlement ent = EntitlementManager.getByName(
+        ent = EntitlementManager.getByName(
                 EntitlementManager.VIRTUALIZATION_ENTITLED);
         assertNotNull(ent);
         assertEquals(EntitlementManager.VIRTUALIZATION, ent);
-
-        Entitlement entplat = EntitlementManager.getByName(
-                EntitlementManager.VIRTUALIZATION_PLATFORM_ENTITLED);
-        assertNotNull(entplat);
-        assertEquals(EntitlementManager.VIRTUALIZATION_PLATFORM, entplat);
-
     }
 
     public void testGetUsedEntitlements() {

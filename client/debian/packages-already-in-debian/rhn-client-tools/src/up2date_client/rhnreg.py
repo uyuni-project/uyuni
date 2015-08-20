@@ -297,7 +297,7 @@ class RegistrationResult:
         return len(self._channels) > 0 and len(self._systemSlots) > 0
 
     def _getFailedSlotDescription(self, slot):
-        if slot in ['virtualization_host', 'virtualization_host_platform']:
+        if slot == 'virtualization_host':
             return rhnreg_constants.VIRT + " " + rhnreg_constants.VIRT_FAILED
         else:
             return self._getSlotDescription(slot)
@@ -305,12 +305,8 @@ class RegistrationResult:
     def _getSlotDescription(self, slot):
         if slot == 'enterprise_entitled':
             return rhnreg_constants.MANAGEMENT
-        elif slot == 'sw_mgr_entitled':
-            return rhnreg_constants.UPDATES
         elif slot == 'virtualization_host':
             return rhnreg_constants.VIRT
-        elif slot == 'virtualization_host_platform':
-            return rhnreg_constants.VIRT_PLATFORM
         else:
             return slot
 

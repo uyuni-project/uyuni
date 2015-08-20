@@ -45,7 +45,6 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * SystemEntitlementsSetupAction
- * @version $Rev$
  */
 public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
@@ -54,7 +53,6 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
     public static final String SHOW_COMMANDS = "showCommands";
 
     public static final String SHOW_MANAGEMENT_ASPECTS = "showManagementAspects";
-    public static final String SHOW_UPDATE_ASPECTS = "showUpdateAspects";
 
     public static final String SHOW_UNENTITLED = "showUnentitled";
 
@@ -63,12 +61,9 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
     public static final String ADDON_ENTITLEMENTS = "addOnEntitlements";
     public static final String ADDON_ENTITLEMENT = "addOnEntitlement";
 
-    public static final String UPDATE_COUNTS_MESSAGE = "updateCountsMessage";
     public static final String MANAGEMENT_COUNTS_MESSAGE = "managementCountsMessage";
     public static final String VIRTUALIZATION_COUNTS_MESSAGE =
         "virtualizationCountsMessage";
-    public static final String VIRTUALIZATION_PLATFORM_COUNTS_MESSAGE =
-        "virtualizationPlatformCountsMessage";
 
     /**
      * {@inheritDoc}
@@ -119,14 +114,6 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
                     EntitlementManager.VIRTUALIZATION_ENTITLED));
             request.setAttribute(SHOW_ADDON_ASPECTS, Boolean.TRUE);
         }
-        if (user.getOrg().hasEntitlement(
-                OrgFactory.getEntitlementVirtualizationPlatform())) {
-            log.debug("Adding virt-host-entitled droplist entry");
-            addOnEntitlements.add(lvl10n(
-                    EntitlementManager.VIRTUALIZATION_PLATFORM_ENTITLED,
-                    EntitlementManager.VIRTUALIZATION_PLATFORM_ENTITLED));
-            request.setAttribute(SHOW_ADDON_ASPECTS, Boolean.TRUE);
-        }
 
         if (user.getOrg().hasEntitlement(OrgFactory.getEntitlementEnterprise())) {
             setIfSlotsAvailable(SHOW_MANAGEMENT_ASPECTS,
@@ -143,15 +130,6 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
             form.set(ADDON_ENTITLEMENT, addOnEntitlements.get(0).getValue());
         }
         setupCounts(request, user);
-
-        setIfSlotsAvailable(SHOW_UPDATE_ASPECTS,
-                request, user,
-                EntitlementManager.UPDATE);
-
-
-        setupCounts(request, user);
-
-
 
         return forward;
     }
@@ -193,13 +171,6 @@ public class SystemEntitlementsSetupAction extends BaseSystemListSetupAction {
 
         setupCountsMessage(request, user, EntitlementManager.VIRTUALIZATION,
                 VIRTUALIZATION_COUNTS_MESSAGE);
-
-        setupCountsMessage(request, user, EntitlementManager.VIRTUALIZATION_PLATFORM,
-                VIRTUALIZATION_PLATFORM_COUNTS_MESSAGE);
-
-        setupCountsMessage(request, user,
-                EntitlementManager.UPDATE,
-                UPDATE_COUNTS_MESSAGE);
     }
 
     private void setupCountsMessage(HttpServletRequest request,

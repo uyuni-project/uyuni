@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 5903a304a84951d2413e4d25f17a09fda92f04ec
+-- oracle equivalent source sha1 b5953d3ea4665f84efd96560e6607667e1b0da51
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -111,55 +111,6 @@ as $$
         else
             return 0;
         end if;
-    end$$
-language plpgsql;
-
-    create or replace function lookup_entitlement_group (
-        org_id_in in numeric,
-        type_label_in in varchar default 'sw_mgr_entitled'
-    ) returns numeric
-as $$
-    declare
-        server_groups cursor for
-            select  sg.id               server_group_id
-            from    rhnServerGroup      sg,
-                    rhnServerGroupType  sgt
-            where   sgt.label = type_label_in
-                and sgt.id = sg.group_type
-                and sg.org_id = org_id_in;
-    begin
-        for sg in server_groups loop
-            return sg.server_group_id;
-        end loop;
-        return rhn_entitlements.create_entitlement_group(
-                org_id_in,
-                type_label_in
-            );
-    end$$
-language plpgsql;
-
-    create or replace function create_entitlement_group (
-        org_id_in in numeric,
-        type_label_in in varchar default 'sw_mgr_entitled'
-    ) returns numeric
-as $$
-    declare
-        sg_id_val numeric;
-    begin
-        select  nextval('rhn_server_group_id_seq')
-        into    sg_id_val;
-
-        insert into rhnServerGroup (
-                id, name, description, max_members, current_members,
-                group_type, org_id
-            ) (
-                select  sg_id_val, sgt.label, sgt.label,
-                        0, 0, sgt.id, org_id_in
-                from    rhnServerGroupType sgt
-                where   sgt.label = type_label_in
-            );
-
-        return sg_id_val;
     end$$
 language plpgsql;
 
@@ -292,7 +243,7 @@ language plpgsql;
 
     create or replace function entitle_server (
         server_id_in in numeric,
-        type_label_in in varchar default 'sw_mgr_entitled'
+        type_label_in in varchar
     ) returns void
 as $$
     declare
@@ -304,15 +255,13 @@ as $$
       select 1 into is_virt
         from rhnServerEntitlementView
         where server_id = server_id_in
-          and label in ('virtualization_host', 'virtualization_host_platform');
+          and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
       end if;
 
-      if is_virt = 0 and (type_label_in = 'virtualization_host' or
-                          type_label_in = 'virtualization_host_platform') then
-
+      if is_virt = 0 and type_label_in = 'virtualization_host' then
         is_virt := 1;
       end if;
 
@@ -327,10 +276,8 @@ as $$
                       case type_label_in
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
-                       when 'sw_mgr_entitled' then 'Update'
                        when 'virtualization_host' then 'Virtualization'
-                       when 'virtualization_host_platform' then
-                            'Virtualization Platform' end  );
+                      end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
 
@@ -349,7 +296,7 @@ language plpgsql;
 
     create or replace function remove_server_entitlement (
         server_id_in in numeric,
-        type_label_in in varchar default 'sw_mgr_entitled',
+        type_label_in in varchar,
         repoll_virt_guests in numeric default 1
     ) returns void
 as $$
@@ -362,7 +309,7 @@ as $$
         select 1 into is_virt
           from rhnServerEntitlementView
           where server_id = server_id_in
-            and label in ('virtualization_host', 'virtualization_host_platform');
+            and label = 'virtualization_host';
         if not found then
             is_virt := 0;
         end if;
@@ -395,10 +342,8 @@ as $$
                    case type_label_in
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'sw_mgr_entitled' then 'Update'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'virtualization_host_platform' then
-                         'Virtualization Platforrm' end  );
+                   end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
 
@@ -434,7 +379,7 @@ as $$
       select 1 into is_virt
         from rhnServerEntitlementView
         where server_id = server_id_in
-         and label in ('virtualization_host', 'virtualization_host_platform');
+         and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
@@ -448,10 +393,8 @@ as $$
                    case servergroup.label
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'sw_mgr_entitled' then 'Update'
                     when 'virtualization_host' then 'Virtualization'
-                    when 'virtualization_host_platform' then
-                         'Virtualization Platform' end  );
+                   end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in,
                                             servergroup.server_group_id );
@@ -527,7 +470,7 @@ as $$
           select 1 into is_virt
                 from rhnServerEntitlementView
            where server_id = server_id_in
-                 and label in ('virtualization_host', 'virtualization_host_platform');
+                 and label = 'virtualization_host';
 
       if not found then
           is_virt := 0;
@@ -593,9 +536,9 @@ as $$
                 and sg.id = sgm.server_group_id
                 and sgt.id = sg.group_type
                 and sgt.label in (
-                    'sw_mgr_entitled','enterprise_entitled', 'bootstrap_entitled',
-                    'nonlinux_entitled','virtualization_host',
-                    'virtualization_host_platform'
+                    'enterprise_entitled',
+                    'bootstrap_entitled',
+                    'virtualization_host'
                     );
 
          ent_array varchar[];
@@ -665,12 +608,6 @@ as $$
             ents_to_process := array_append(ents_to_process, 'rhn_virtualization');
 
             roles_to_process := array_append(roles_to_process, 'config_admin');
-        elsif service_label_in = 'virtualization_platform' then
-            ents_to_process := array_append(ents_to_process, 'rhn_virtualization_platform');
-            roles_to_process := array_append(roles_to_process, 'config_admin');
-    elsif service_label_in = 'nonlinux' then
-            ents_to_process := array_append(ents_to_process, 'rhn_nonlinux');
-            roles_to_process := array_append(roles_to_process, 'config_admin');
         end if;
 
         if enable_in = 'Y' then
@@ -731,30 +668,12 @@ as $$
     end$$
 language plpgsql;
 
-    create or replace function set_customer_nonlinux (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'nonlinux', 'Y');
-    end$$
-language plpgsql;
-
     create or replace function unset_customer_enterprise (
         customer_id_in in numeric
     ) returns void
 as $$
     begin
         perform rhn_entitlements.modify_org_service(customer_id_in, 'enterprise', 'N');
-    end$$
-language plpgsql;
-
-    create or replace function unset_customer_nonlinux (
-        customer_id_in in numeric
-    ) returns void
-as $$
-    begin
-        perform rhn_entitlements.modify_org_service(customer_id_in, 'nonlinux', 'N');
     end$$
 language plpgsql;
 

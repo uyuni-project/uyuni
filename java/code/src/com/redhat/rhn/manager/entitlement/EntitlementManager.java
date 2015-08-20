@@ -20,9 +20,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
-import com.redhat.rhn.domain.entitlement.UpdateEntitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
-import com.redhat.rhn.domain.entitlement.VirtualizationPlatformEntitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -39,7 +37,6 @@ import java.util.Set;
 
 /**
  * EntitlementManager
- * @version $Rev$
  */
 public class EntitlementManager extends BaseManager {
 
@@ -50,19 +47,13 @@ public class EntitlementManager extends BaseManager {
             .getLogger(EntitlementManager.class);
 
     //  ENTITLEMENTS
-    public static final Entitlement UPDATE = new UpdateEntitlement();
     public static final Entitlement MANAGEMENT = new ManagementEntitlement();
     public static final Entitlement VIRTUALIZATION = new VirtualizationEntitlement();
-    public static final Entitlement VIRTUALIZATION_PLATFORM =
-        new VirtualizationPlatformEntitlement();
     public static final Entitlement BOOTSTRAP = new BootstrapEntitlement();
 
     public static final String UNENTITLED = "unentitled";
-    public static final String SW_MGR_ENTITLED = "sw_mgr_entitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
     public static final String VIRTUALIZATION_ENTITLED = "virtualization_host";
-    public static final String VIRTUALIZATION_PLATFORM_ENTITLED
-        = "virtualization_host_platform";
     public static final String BOOTSTRAP_ENTITLED = "bootstrap_entitled";
 
     private static final Set <Entitlement> ADDON_ENTITLEMENTS;
@@ -70,7 +61,6 @@ public class EntitlementManager extends BaseManager {
     static {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);
-        ADDON_ENTITLEMENTS.add(VIRTUALIZATION_PLATFORM);
 
         BASE_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         BASE_ENTITLEMENTS.add(MANAGEMENT);
@@ -82,17 +72,11 @@ public class EntitlementManager extends BaseManager {
      * @return the entitlement whose name matches the given name.
      */
     public static Entitlement getByName(String name) {
-        if (SW_MGR_ENTITLED.equals(name)) {
-            return UPDATE;
-        }
-        else if (ENTERPRISE_ENTITLED.equals(name)) {
+        if (ENTERPRISE_ENTITLED.equals(name)) {
             return MANAGEMENT;
         }
         else if (VIRTUALIZATION_ENTITLED.equals(name)) {
             return VIRTUALIZATION;
-        }
-        else if (VIRTUALIZATION_PLATFORM_ENTITLED.equals(name)) {
-            return VIRTUALIZATION_PLATFORM;
         }
         else if (BOOTSTRAP_ENTITLED.equals(name)) {
         	return BOOTSTRAP;

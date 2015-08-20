@@ -167,7 +167,6 @@ import java.util.regex.Pattern;
 
 /**
  * SystemHandler
- * @version $Rev$
  * @xmlrpc.namespace system
  * @xmlrpc.doc Provides methods to access and modify registered system.
  */
@@ -265,8 +264,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #param_desc("string", "entitlementName", "One of:
-     *          'enterprise_entitled', 'virtualization_host', or
-     *          'virtualization_host_platform'.")
+     *          'enterprise_entitled' or 'virtualization_host'.")
      * @xmlrpc.returntype #return_int_success()
      */
     public int upgradeEntitlement(User loggedInUser, Integer sid, String entitlementLevel)
@@ -3664,7 +3662,7 @@ public class SystemHandler extends BaseHandler {
      *      #struct("server details")
      *          #prop_desc("string", "profile_name", "System's profile name")
      *          #prop_desc("string", "base_entitlement", "System's base entitlement label.
-     *                      (enterprise_entitled or sw_mgr_entitled)")
+     *                      (enterprise_entitled or unentitle)")
      *           #prop_desc("boolean", "auto_errata_update", "True if system has
      *                          auto errata updates enabled")
      *           #prop_desc("string", "description", "System description")
@@ -3871,7 +3869,7 @@ public class SystemHandler extends BaseHandler {
      * @xmlrpc.param #param("string", "sessionKey")
      * @xmlrpc.param #param("int", "serverId")
      * @xmlrpc.param #array_single("string", "entitlementLabel - one of following:
-     * virtualization_host, virtualization_host_platform, enterprise_entitled")
+     * virtualization_host, enterprise_entitled")
      * @xmlrpc.returntype #return_int_success()
      */
     public int addEntitlements(User loggedInUser, Integer serverId,
@@ -3887,19 +3885,6 @@ public class SystemHandler extends BaseHandler {
         }
 
         validateEntitlements(entitlements);
-
-        // Check that we're not adding virt or virt platform to a system that already has
-        // the other:
-        if (server.hasEntitlement(EntitlementManager.VIRTUALIZATION) &&
-                entitlements.contains(
-                        EntitlementManager.VIRTUALIZATION_PLATFORM_ENTITLED)) {
-            throw new InvalidEntitlementException();
-        }
-        if (server.hasEntitlement(EntitlementManager.VIRTUALIZATION_PLATFORM) &&
-                entitlements.contains(
-                        EntitlementManager.VIRTUALIZATION_ENTITLED)) {
-            throw new InvalidEntitlementException();
-        }
 
         List<String> addOnEnts = new LinkedList<String>(entitlements);
         // first process base entitlements

@@ -361,20 +361,6 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         }
     }
 
-    public void testSetNonAddOnEntitlement() throws Exception {
-        String newKey = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
-                KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.FALSE);
-        try {
-            // Not an add-on entitlement:
-            keyHandler.addEntitlements(admin, newKey,
-                    buildEntitlementsList(new String []{"sw_mgr_entitled"}));
-            fail();
-        }
-        catch (ValidatorException e) {
-            // expected
-        }
-    }
-
     /*
      * Ensure no exception is thrown when adding an entitlement the key already has.
      */
@@ -404,16 +390,17 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
      * No exception should be thrown removing an entitlement the key doesn't have:
      */
     public void testRemoveUnappliedAddOnEntitements() throws Exception {
+        List<String> noEntitlements = new ArrayList<>();
         String newKey = keyHandler.create(admin, KEY, KEY_DESCRIPTION, baseChannelLabel,
-                KEY_USAGE_LIMIT, KEY_ENTITLEMENTS, Boolean.FALSE);
+                KEY_USAGE_LIMIT, noEntitlements, Boolean.FALSE);
         ActivationKey activationKey = ActivationKeyManager.getInstance().
                                                         lookupByKey(newKey, admin);
-        assertEquals(2, activationKey.getEntitlements().size());
+        assertEquals(1, activationKey.getEntitlements().size());
 
         List<String> entsToRemove = new LinkedList<String>();
-        entsToRemove.add("virtualization_host_platform");
+        entsToRemove.add("virtualization_host");
         keyHandler.removeEntitlements(admin, newKey, entsToRemove);
-        assertEquals(2, activationKey.getEntitlements().size());
+        assertEquals(1, activationKey.getEntitlements().size());
     }
 
     public void testRemoveNonExistentAddOnEntitlement() throws Exception {

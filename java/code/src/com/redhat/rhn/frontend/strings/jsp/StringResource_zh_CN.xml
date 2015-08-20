@@ -6551,13 +6551,6 @@ deducted from the default organization.</source>
         </context-group>
         <target>附加权利</target>
       </trans-unit>
-      <trans-unit id="systementitlements.jsp.set_to_update_entitled">
-        <source>Set to Update Entitled</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/systems/SystemEntitlements</context>
-        </context-group>
-        <target>设置为赋予更新权利</target>
-      </trans-unit>
       <trans-unit id="systementitlements.jsp.set_to_manage_entitled">
         <source>Set to Management Entitled</source>
         <context-group name="ctx">
@@ -6691,26 +6684,6 @@ deducted from the default organization.</source>
         <trans-unit id="system_entitlements.virtualization_host.noSolarisSupport">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
           <target>&lt;strong&gt;{0}&lt;/strong&gt; 系统的&lt;strong&gt;虚拟化&lt;/strong&gt;权利失败，这是因为在 Solaris 系统中不支持虚拟化。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.success">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Virtualization Platform.&lt;/strong&gt;.  &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization it has been upgraded to Virtualization Platform. </source>
-          <target>将 &lt;strong&gt;{0}&lt;/strong&gt; 个系统设置为&lt;strong&gt;虚拟化平台&lt;/strong&gt; 权利。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;如果系统以前具有虚拟化台权利，它已经升级为虚拟化平台权利。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.removed.success">
-          <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
-          <target>从系统 &lt;strong&gt;{0}&lt;/strong&gt; 中删除 &lt;strong&gt;虚拟化&lt;/strong&gt;。这将导致任何和选定主机关联的虚拟机消耗物理的频道和系统权利。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlements, you will be able to upgrade these systems.  &lt;br/&gt;&lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization.</source>
-          <target>成功将 &lt;strong&gt;{0}&lt;/strong&gt; 系统设定为&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利，但是没有足够的&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利来满足剩余的 &lt;strong&gt;{1}&lt;/strong&gt; 系统。您可以通过 &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt; 购买额外的 &lt;strong&gt;虚拟化平台&lt;/strong&gt; 权利。在您具有了额外的&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利后，您将可以升级这些系统。&lt;br/&gt; &lt;strong&gt;注意：&lt;/strong&gt;如果系统以前具有虚拟化平台权利，它就降级为虚拟化权利了。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noManagement">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement to these system(s).</source>
-          <target>&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利对 &lt;strong&gt;{0}&lt;/strong&gt; 系统无效，因为它们没有&lt;strong&gt;管理&lt;/strong&gt;基本权利。在下面仍然可以选择这些失败的系统。如果您首先点下面的&lt;strong&gt;设为赋予管理权利&lt;/strong&gt;按钮，然后选择&lt;strong&gt;附加权利项&lt;/strong&gt;中的下拉列表中的&lt;strong&gt;虚拟化&lt;/strong&gt;，最后点下面的&lt;strong&gt;添加权利&lt;/strong&gt;按钮，您将可以为这些系统添加&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host_platform.noSolarisSupport">
-          <source>&lt;strong&gt;Virtualization Platform&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Virtualization is not supported on Solaris systems.</source>
-          <target>&lt;strong&gt;虚拟化平台&lt;/strong&gt;权利在 &lt;strong&gt;{0}&lt;/strong&gt; 系统中失败，因为 Solaris 系统不支持虚拟化。</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.success">
           <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
@@ -21667,13 +21640,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>适用于主机系统，可为最多四个客户系统启用管理。</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_plat_tip">
-        <source>Applied to a host system, enables management for unlimited guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>适用于主机系统，可为无限多个客户系统启用管理。</target>
-      </trans-unit>
       <trans-unit id="orgsystemsubs.jsp.possible_vals">
         <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
         <context-group name="ctx">
@@ -21765,13 +21731,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target> 虚拟化（添加）</target>
       </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host_platform">
-        <source> Virtualization Platform (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> 机虚拟化平台（添加）</target>
-      </trans-unit>
       <trans-unit id="sys_entitlements.add_on">
         <source>(Add-On)</source>
         <context-group name="ctx">
@@ -21827,13 +21786,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
         <target>单一虚拟化（添加）权利适用于主机系统，可为最多四个客户系统启用管理权利。</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host_platform">
-        <source>A single Virtualization Platform (Add-On) entitlement applied to a host system, enabled management for unlimited guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>单一虚拟化平台（添加）权利适用于主机系统，可为无限个客户系统启用管理权利。</target>
       </trans-unit>
       <trans-unit id="entitlementorgs.orgname">
         <source>Organization Name</source>

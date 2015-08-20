@@ -568,16 +568,7 @@ class OracleBackend(Backend):
               },
               pk=['id', 'label', 'name'],
               ),
-        # tables needed for virt ----------------------------------------
 
-        Table('rhnVirtSubLevel',
-            fields      = {
-                'id'                : DBint(),
-                'label'             : DBstring(32),
-                'name'              : DBstring(128),
-            },
-            pk          = ['id', 'label', 'name'],
-        ),
         Table('suseProductFile',
             fields      = {
                 'id'                : DBint(),
