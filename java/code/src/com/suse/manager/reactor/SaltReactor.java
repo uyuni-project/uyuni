@@ -14,6 +14,8 @@
  */
 package com.suse.manager.reactor;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
+
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
@@ -29,7 +31,7 @@ import java.net.URI;
 /**
  * Salt event reactor.
  */
-public class SaltReactor {
+public class SaltReactor implements EventListener {
 
     // Logger for this class
     private static Logger logger = Logger.getLogger(SaltReactor.class);
@@ -48,21 +50,10 @@ public class SaltReactor {
         try {
             Token token = client.login("admin", "", AuthModule.AUTO);
             logger.debug("Token: " + token.getToken());
-
+            // This is needed to prevent from early event stream close
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
             eventStream = client.events();
-            eventStream.addEventListener(new EventListener() {
-                @Override
-                public void notify(Event event) {
-                    logger.debug("Event tag: " + event.getTag());
-                    logger.debug("Event data: " + event.getData());
-                }
-
-                @Override
-                public void eventStreamClosed() {
-                    logger.debug("Event stream has closed");
-                }
-            });
+            eventStream.addEventListener(new SaltReactor());
         } catch (Throwable e) {
             logger.error(e.getMessage(), e);
         }
@@ -75,5 +66,36 @@ public class SaltReactor {
         if (eventStream != null) {
             eventStream.close();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notify(Event event) {
+        logger.debug("Event: " + event.getTag() + " -> " + event.getData());
+        if (event.getTag().matches("salt/key")) {
+            if (event.getData().get("act").equals("accept")) {
+                triggerMinionRegistration((String) event.getData().get("id"));
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void eventStreamClosed() {
+        logger.warn("Event stream has closed!");
+    }
+
+    /**
+     * Trigger event to register a given minion.
+     *
+     * @param minionId the minion id
+     */
+    private void triggerMinionRegistration(String minionId) {
+        logger.debug("Registering minion: " + minionId);
+        MessageQueue.publish(new RegisterMinionEvent(minionId));
     }
 }
