@@ -39,15 +39,20 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
      */
     protected void doExecute(EventMessage msg) {
         RegisterMinionEvent event = (RegisterMinionEvent) msg;
+        String minionId = event.getMinionId();
+        if (ServerFactory.findRegisteredMinion(minionId) != null) {
+            log.debug("Minion already registered, skipping registration: " + minionId);
+            return;
+        }
         try {
             User user = UserFactory.lookupById(event.getUserId());
             Server server = ServerFactory.createServer();
-            server.setName(event.getMinionId());
+            server.setName(minionId);
             server.setOrg(user.getOrg());
             server.setOs("AwesomeOS");
             server.setRelease("Awesome Release");
             server.setRunningKernel("Awesome Kernel");
-            server.setDigitalServerId(event.getMinionId());
+            server.setDigitalServerId(minionId);
             server.setSecret("pssst dont tell anyone");
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis());
