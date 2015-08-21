@@ -14,18 +14,23 @@
  */
 package com.suse.manager.webui;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.webui.controllers.MinionsController;
+import com.suse.manager.webui.utils.JadeTemplateEngine;
 import com.suse.manager.webui.utils.RouteWithUser;
 
+import de.neuland.jade4j.JadeConfiguration;
 import spark.Session;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.servlet.SparkApplication;
-import spark.template.jade.JadeTemplateEngine;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Router class defining the web UI routes.
@@ -33,7 +38,6 @@ import spark.template.jade.JadeTemplateEngine;
 public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
-    private final JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
 
     private TemplateViewRoute withUser(RouteWithUser route) {
         return (request, response) -> {
@@ -53,6 +57,12 @@ public class Router implements SparkApplication {
             CSRFTokenValidator.getToken(session.raw());
             response.type("text/html");
         });
+
+        JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
+        Map<String, Object> sharedVariables = new HashMap<>();
+        sharedVariables.put("l10n", LocalizationService.getInstance());
+        JadeConfiguration config = jade.getConfiguration();
+        config.setSharedVariables(sharedVariables);
 
         // List all minions
         Spark.get("/manager/minions", withUser(MinionsController::listMinions), jade);
