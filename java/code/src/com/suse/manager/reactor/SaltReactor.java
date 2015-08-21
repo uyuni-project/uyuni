@@ -95,7 +95,7 @@ public class SaltReactor implements EventListener {
      * @param minionId the minion id
      */
     private void triggerMinionRegistration(String minionId) {
-        logger.debug("Registering minion: " + minionId);
+        logger.debug("Triggering registration for minion: " + minionId);
         MessageQueue.publish(new RegisterMinionEvent(minionId));
     }
 }

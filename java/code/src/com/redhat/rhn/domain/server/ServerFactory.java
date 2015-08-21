@@ -881,4 +881,17 @@ public class ServerFactory extends HibernateFactory {
         criteria.add(Restrictions.eq("label", label));
         return (ContactMethod) criteria.uniqueResult();
     }
+
+    /**
+     * Find a registered minion: check if the digital server id matches a given minion id.
+     *
+     * @param minionId minion id
+     * @return server corresponding to the given minion id
+     */
+    public static Server findRegisteredMinion(String minionId) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(Server.class);
+        criteria.add(Restrictions.eq("digitalServerId", minionId));
+        return (Server) criteria.uniqueResult();
+    }
 }
