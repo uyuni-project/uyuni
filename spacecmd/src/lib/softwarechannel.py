@@ -38,6 +38,7 @@ import xmlrpclib
 ARCH_LABELS = ['ia32', 'ia64', 'x86_64', 'ppc',
                'i386-sun-solaris', 'sparc-sun-solaris']
 
+CHECKSUM = ['sha1', 'sha256', 'sha384', 'sha512']
 
 def help_softwarechannel_list(self):
     print 'softwarechannel_list: List all available software channels'
@@ -288,7 +289,7 @@ def do_softwarechannel_listlatestpackages(self, args, doreturn=False):
     (args, _options) = parse_arguments(args)
 
     if not len(args):
-        self.help_softwarechannel_listallpackages()
+        self.help_softwarechannel_listlatestpackages()
         return
 
     channel = args[0]
@@ -508,10 +509,10 @@ options:
   -p PARENT_CHANNEL
   -a ARCHITECTURE ['ia32', 'ia64', 'x86_64', 'ppc',
                   'i386-sun-solaris', 'sparc-sun-solaris']
-  -c CHECKSUM ['sha1', 'sha256']
+  -c CHECKSUM %s
   -u GPG_URL
   -i GPG_ID
-  -f GPG_FINGERPRINT'''
+  -f GPG_FINGERPRINT''' % CHECKSUM
 
 
 def do_softwarechannel_create(self, args):
@@ -579,8 +580,7 @@ def do_softwarechannel_create(self, args):
             return
 
         if not options.arch:
-            logging.error('An architecture is required')
-            return
+            options.arch = 'x86_64'
 
         if not options.checksum:
             options.checksum = 'sha256'
@@ -612,7 +612,8 @@ def do_softwarechannel_create(self, args):
                                             options.name,
                                             options.name,  # summary
                                             'channel-%s' % options.arch,
-                                            options.parent_channel)
+                                            options.parent_channel,
+                                            options.checksum)
 ####################
 
 
@@ -1497,7 +1498,7 @@ def help_softwarechannel_regenerateneededcache(self):
     print 'softwarechannel_regenerateneededcache: '
     print 'Regenerate the needed errata and package cache for all systems'
     print
-    print 'usage: softwarechannel_regnerateneededcache'
+    print 'usage: softwarechannel_regenerateneededcache'
 
 
 def do_softwarechannel_regenerateneededcache(self, args):
@@ -1511,7 +1512,7 @@ def help_softwarechannel_regenerateyumcache(self):
     print 'softwarechannel_regenerateyumcache: '
     print 'Regenerate the YUM cache for a software channel'
     print
-    print 'usage: softwarechannel_regnerateyumcache <CHANNEL ...>'
+    print 'usage: softwarechannel_regenerateyumcache <CHANNEL ...>'
 
 
 def complete_softwarechannel_regenerateyumcache(self, text, line, beg, end):

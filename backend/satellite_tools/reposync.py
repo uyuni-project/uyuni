@@ -137,12 +137,22 @@ def getCustomChannels():
 
     return l_custom_ch
 
+def latest_packages(packages):
+    #allows to download only lastest packages
+    packages.sort(reverse=True)
+    seen = set()
+    latest = []
+    for pack in packages:
+        if pack.getNRA() not in seen:
+            latest.append(pack)
+            seen.add(pack.getNRA())
+    return latest
 
 class RepoSync(object):
 
     def __init__(self, channel_label, repo_type, url=None, fail=False,
-                 quiet=False, noninteractive=False, filters=[],
-                 deep_verify=False, no_errata=False, sync_kickstart = False):
+                 quiet=False, noninteractive=False, filters=None,
+                 deep_verify=False, no_errata=False, sync_kickstart = False, latest=False):
         self.regen = False
         self.fail = fail
         self.quiet = quiet
@@ -153,6 +163,7 @@ class RepoSync(object):
         self.sync_kickstart = sync_kickstart
         self.error_messages = []
         self.available_packages = {}
+        self.latest = latest
 
         initCFG('server.susemanager')
         rhnSQL.initDB()
@@ -381,6 +392,7 @@ class RepoSync(object):
                     abspath = abspath.rstrip(suffix)
                     relativepath = relativepath.rstrip(suffix)
             src = fileutils.decompress_open(groupsfile)
+            print src
             dst = open(abspath, "w")
             shutil.copyfileobj(src, dst)
             dst.close()
@@ -1023,6 +1035,8 @@ class RepoSync(object):
             filters = self.filters
 
         packages = plug.list_packages(filters)
+        if self.latest:
+            packages = latest_packages(packages)
         to_process = []
         skipped = 0
         saveurl = suseLib.URL(url)

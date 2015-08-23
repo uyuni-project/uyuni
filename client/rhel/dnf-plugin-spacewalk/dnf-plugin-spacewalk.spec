@@ -1,6 +1,6 @@
 Summary: DNF plugin for Spacewalk
 Name: dnf-plugin-spacewalk
-Version: 2.4.13
+Version: 2.4.15
 Release: 1%{?dist}
 License: GPLv2
 Group: System Environment/Base
@@ -68,6 +68,12 @@ install -m 644 man/dnf.plugin.spacewalk.8 %{buildroot}%{_mandir}/man8/
 %endif
 
 %changelog
+* Thu Aug 20 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.15-1
+- 1254551 - fixed error message output
+
+* Wed Aug 19 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.14-1
+- 1254551 - fixed missing InvalidGpgKeyLocation exception
+
 * Mon Jul 13 2015 Michael Mraka <michael.mraka@redhat.com> 2.4.13-1
 - require on dnf-plugins-core is needed for docker images
 

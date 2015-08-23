@@ -8,7 +8,7 @@
 %endif
 
 Name:        spacecmd
-Version:     2.4.3
+Version:     2.4.9
 Release:     1%{?dist}
 Summary:     Command-line interface to Spacewalk and Satellite servers
 
@@ -85,6 +85,28 @@ PYTHONPATH=$RPM_BUILD_ROOT%{python_sitelib} \
 %doc %{_mandir}/man1/spacecmd.1.gz
 
 %changelog
+* Wed Aug 19 2015 Jan Dobes 2.4.9-1
+- 1229427 - use default value as in WebUI
+- 1229427 - do not forget checksum
+- 1229427 - offer more checksum types
+
+* Mon Aug 10 2015 Jan Dobes 2.4.8-1
+- softwarechannel_listlatestpackages help message
+
+* Fri Aug 07 2015 Jan Dobes 2.4.7-1
+- check for existence of device description in spacecmd system_listhardware
+  (bsc#932288)
+
+* Fri Aug 07 2015 Jan Dobes 2.4.6-1
+- use hostname instead of localhost for https connections
+
+* Mon Aug 03 2015 Tomas Lestach <tlestach@redhat.com> 2.4.5-1
+- 1244099 - fix spacecmd do_configchannel_sync for directories
+- Fix typo in softwarechannel.py
+
+* Wed Jul 29 2015 Aron Parsons <aronparsons@gmail.com> 2.4.4-1
+- spacecmd: add missing CHECKSUM list
+
 * Wed May 13 2015 Stephen Herr <sherr@redhat.com> 2.4.3-1
 - See pull request 247, always base64 encode config files to prevent whitespace
   stripping

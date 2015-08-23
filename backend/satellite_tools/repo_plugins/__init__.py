@@ -16,8 +16,8 @@
 from spacewalk.common import rhn_pkg
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.server import rhnPackageUpload
-
-
+import re
+import rpm
 class ContentPackage:
 
     def __init__(self):
@@ -40,9 +40,17 @@ class ContentPackage:
 
         self.a_pkg = None
 
-    def clear_header(self):
-        """a_pkg hold the header data. Remove it to not waste memory"""
-        self.a_pkg = None
+    def __cmp__(self,other):
+        relSelf = re.split(r".",self.release)[0]
+        relOther = re.split(r".",other.release)[0]
+        return rpm.labelCompare((self.epoch,self.version,relSelf),\
+                                (other.epoch,other.version,relOther))
+
+    def getNRA(self):
+        rel = re.match(".*?\\.(.*)",self.release)
+        rel = rel.group(1)
+        nra = str(self.name) + str(rel) + str(self.arch)
+        return nra
 
     def setNVREA(self, name, version, release, epoch, arch):
         self.name = name

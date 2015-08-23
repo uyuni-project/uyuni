@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.10
+Version: 2.4.15
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -812,6 +812,22 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Tue Aug 18 2015 Jiri Dostal <jdostal@redhat.com> 2.4.15-1
+- 1097634 - reposync fixed pylint warnings
+
+* Fri Aug 14 2015 Jiri Dostal <jdostal@redhat.com> 2.4.14-1
+- RFE 1097634 - fixed package sorting             - removed package
+  disassociation
+
+* Fri Aug 07 2015 Jan Dobes 2.4.13-1
+- use hostname instead of localhost for https connections
+
+* Tue Aug 04 2015 Jiri Dostal <jdostal@redhat.com> 2.4.12-1
+-  - patch for reposync (pylint)
+
+* Thu Jul 30 2015 Jiri Dostal <jdostal@redhat.com> 2.4.11-1
+- [RFE] - --latest feature for spacewalk-repo-sync
+
 * Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.10-1
 - require cobbler20 - Spacewalk is not working with upstream cobbler anyway
 - remove un-intentional changes

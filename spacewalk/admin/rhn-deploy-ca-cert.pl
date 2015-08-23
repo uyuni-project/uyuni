@@ -25,13 +25,14 @@ use File::Spec;
 
 $ENV{PATH} = '/bin:/usr/bin';
 
-my $usage = "usage: $0 --source-dir=<source-directory> --target-dir=<target-directory> [ --help ]\n";
+my $usage = "usage: $0 --source-dir=<source-directory> --target-dir=<target-directory> --trust-dir=<ca-trust-directory> [ --help ]\n";
 
 my $source_dir = '';
 my $target_dir = '';
+my $trust_dir = '';
 my $help = '';
 
-GetOptions("source-dir=s" => \$source_dir, "target-dir=s" => \$target_dir, "help" => \$help) or die $usage;
+GetOptions("source-dir=s" => \$source_dir, "target-dir=s" => \$target_dir, "trust-dir=s" => \$trust_dir, "help" => \$help) or die $usage;
 
 if ($help or not ($source_dir and $target_dir)) {
   die $usage;
@@ -51,6 +52,7 @@ unless (-r $latest_file) {
 
 my $rpm;
 my $cert;
+my $cert_target_file;
 
 open(LATEST, $latest_file) or die "Could not open '$latest_file' for reading: $OS_ERROR";
 
@@ -59,8 +61,10 @@ while (my $line = <LATEST>) {
 
   $rpm = File::Spec->catfile($source_dir, $line)
     if ($line =~ /(?<!src)\.rpm$/);
-  $cert = File::Spec->catfile($source_dir, $line)
-    if ($line =~ /CERT$/);
+  if ($line =~ /CERT$/) {
+    $cert = File::Spec->catfile($source_dir, $line);
+    $cert_target_file = File::Spec->catfile($target_dir, $line);
+  }
 }
 
 close(LATEST);
@@ -85,17 +89,19 @@ if ($ret) {
   die "Could not copy $rpm to $target_dir";
 }
 
-# on SUSE create a link to /etc/pki/trust/anchors/ and call /usr/sbin/update-ca-certificates
-if ( -e '/etc/SuSE-release' )
-{
-    $ret = system('ln', '-s', "$target_dir/RHN-ORG-TRUSTED-SSL-CERT", "/etc/pki/trust/anchors/OWN-SUSE-MANAGER-TRUSTED-SSL-CERT.pem");
-    if ($ret) 
-    {
-      print "WARNING: Could not link $target_dir/RHN-ORG-TRUSTED-SSL-CERT to /etc/pki/trust/anchors/";
-    }
-    else
-    {
-      `/usr/sbin/update-ca-certificates >/dev/null`;
-    }
+$ret = system('ln', '-sf', $cert_target_file, $trust_dir);
+
+if ($ret) {
+  die "Could not link $cert_target_file to $trust_dir";
 }
+if ( -e '/usr/sbin/update-ca-certificates' ) {
+    $ret = system('/usr/sbin/update-ca-certificates');
+} else {
+    $ret = system('update-ca-trust', 'extract');
+}
+
+if ($ret) {
+  die "Could not update CA trusts.";
+}
+
 exit 0;

@@ -603,7 +603,7 @@ def do_system_listhardware(self, args):
                     print 'Description: None'
                 else:
                     print 'Description: %s' % (
-                             wrap(device.get('description'), 60)[0])
+                        wrap(device.get('description'), 60)[0])
                 print 'Driver:      %s' % device.get('driver')
                 print 'Class:       %s' % device.get('device_class')
                 print 'Bus:         %s' % device.get('bus')

@@ -100,9 +100,11 @@ use constant ORACLE_RHNCONF_BACKUP =>
 use constant EMBEDDED_DB_ANSWERS =>
   '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
 our $DEFAULT_DOC_ROOT = "/var/www/html";
+our $CA_TRUST_DIR = '/etc/pki/ca-trust/source/anchors';
 if ( -e '/etc/SuSE-release' )
 {
     $DEFAULT_DOC_ROOT = '/srv/www/htdocs';
+    $CA_TRUST_DIR = '/etc/pki/trust/anchors';
 }
 use constant DEFAULT_SUSEMANAGER_CONF =>
   '/usr/share/rhn/config-defaults/rhn_server_susemanager.conf';
@@ -812,7 +814,7 @@ REDO_CONNECT:
 
         ask(
                 -noninteractive => $opts->{"non-interactive"},
-                -question => "Database service name (SID)",
+                -question => "Global Database Name or SID (requires tnsnames.ora)",
                 -test => qr/\S+/,
                 -answer => \$answers->{'db-name'}
         );

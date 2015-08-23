@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.4.10
+Version:	2.4.15
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -120,6 +120,23 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Tue Aug 18 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.15-1
+- list[] vs list() - list[] is bad
+
+* Fri Aug 07 2015 Jan Dobes 2.4.14-1
+- use hostname instead of localhost for https connections
+
+* Wed Aug 05 2015 Jan Dobes 2.4.13-1
+- regenerate CA cert too
+
+* Wed Aug 05 2015 Jan Dobes 2.4.12-1
+- trust spacewalk CA certificate
+
+* Thu Jul 30 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.11-1
+- disable pylint warnings
+- simplify expression
+- remove unused variable
+
 * Tue Jul 28 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.10-1
 - prevent infinte recursion cycles in spacewalk-clone-by-date
 - remove unused variable

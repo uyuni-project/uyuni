@@ -32,7 +32,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.42
+Version: 2.4.57
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -975,6 +975,70 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Aug 20 2015 Jan Dobes 2.4.57-1
+- 1229427 - support checksum change when cloning as in WebUI
+- 1229427 - channels without checksum are no longer supported
+- bump year in all languages
+
+* Wed Aug 19 2015 Jan Dobes 2.4.56-1
+- removing duplicate button
+- bump year
+
+* Wed Aug 19 2015 Jan Dobes 2.4.55-1
+- 1250067 - unschedule actions only on single system
+
+* Mon Aug 17 2015 Jan Dobes 2.4.54-1
+- 1252166 - remove results of rescheduled remote script actions immediately
+
+* Fri Aug 14 2015 Grant Gainey 2.4.53-1
+- 1253793 - Fixing IE8 display issues  * Add respond.js/html5-shim for IE8  *
+  Block editarea.js, which breaks respond.js under IE8, from    executing under
+  IE8
+
+* Fri Aug 14 2015 Tomas Lestach <tlestach@redhat.com> 2.4.52-1
+- 1253495 - Improve configchannel.channelExists API efficiency
+
+* Fri Aug 14 2015 Tomas Lestach <tlestach@redhat.com> 2.4.51-1
+- 1228589 - need to query rhnOrgDistChannelMap that is per organization
+- 1228589 - prevent NullPointerException when chaning base channels via SSM
+
+* Wed Aug 12 2015 Jan Dobes 2.4.50-1
+- 1252166 - simplify logic
+- 1252166 - delete status of previous action run
+- 1252166 - check if failed only this server action
+- 1252166 - reschedule only relevant server action
+
+* Tue Aug 11 2015 Jiri Dostal <jdostal@redhat.com> 2.4.49-1
+- [RFE] 1167999 - Osa ping for API, check sendOsaPing/getOsaPing methods
+
+* Fri Aug 07 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.48-1
+- reremove unsused SetDecl
+- don't cleanup set when adding packages to a channel
+
+* Tue Aug 04 2015 Jiri Dostal <jdostal@redhat.com> 2.4.47-1
+- 1241945 - Fixed - search field only allows 40 characters
+
+* Tue Aug 04 2015 Jiri Dostal <jdostal@redhat.com> 2.4.46-1
+- [RFE] 1097634 - Added option to schedule sync with latest packages
+
+* Mon Aug 03 2015 Tomas Lestach <tlestach@redhat.com> 2.4.45-1
+- 1219140 - skip errata clone events, where channel or erratum aren't available
+  anymore (were deleted in the meantime)
+- 1219140 - let errata.cloneAsync process the cloning process async
+
+* Fri Jul 31 2015 Tomas Lestach <tlestach@redhat.com> 2.4.44-1
+- 1179479 - add last boot and registration date to
+  systemgroup.listSystemsMinimal API
+
+* Fri Jul 31 2015 Tomas Lestach <tlestach@redhat.com> 2.4.43-1
+- detect removed packages during repo generation
+- sort the channels for rego generation task
+- set the policy for blocked execution (concurrent settings)
+- unmark channel in progress for failed repomd tasks
+- mark ChannelRepodataWorker failed, when exception is thrown
+- removing unused loadErrata() from ErrataQueueWorker
+- modified will be set by the rhnRepoRegenQueue update trigger
+
 * Fri Jul 24 2015 Jan Dobes 2.4.42-1
 - adding link to reposync logs
 - adding progress bar showing sync status
