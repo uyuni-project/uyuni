@@ -2,7 +2,7 @@ Name: spacewalk-reports
 Summary: Script based reporting
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.2
+Version: 2.4.4
 Release: 1%{?dist}
 URL: https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -46,6 +46,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING
 
 %changelog
+* Thu Aug 13 2015 Grant Gainey 2.4.4-1
+- 1225220 - find proxies via rhnProxyInfo
+
+* Wed Aug 12 2015 Grant Gainey 2.4.3-1
+- 1225220 - handle proxies-with-no-servers correctly
+
 * Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
 - remove Except KeyboardInterrupt from imports
 

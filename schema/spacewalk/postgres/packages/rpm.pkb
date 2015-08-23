@@ -145,8 +145,8 @@ $$ language 'plpgsql';
                 two := str2;
             end;
         end loop segment_loop;
+     
         if one = '' and two = '' then return 0; end if;
-
         if one = '' then return -1; end if;
         return 1;
     END ;

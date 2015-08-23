@@ -505,6 +505,7 @@ class ChannelTreeCloner:
         self.process_deps(dep_results)
 
     def process_deps(self, deps):
+        # pylint: disable=deprecated-lambda, unnecessary-lambda
         list_to_set = lambda x: set(map(lambda y: tuple(y), x))
         needed_list = dict((channel[0], [])
                            for channel in self.channel_map.values())
@@ -535,7 +536,7 @@ class ChannelTreeCloner:
             needed_str = list_to_set(needed)
             for needed_pkg in needed_str:
                 if needed_pkg in self.visited[cloner.dest_label()]:
-                    needed.remove(list[needed_pkg])
+                    needed.remove(list(needed_pkg))
             self.visited[cloner.dest_label()] |= needed_str
             if len(needed) > 0:
                 added_nevras = added_nevras + cloner.process_deps(needed)

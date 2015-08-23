@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.4.0
+Version: 2.4.1
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -174,6 +174,10 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Wed Aug 12 2015 Tomas Lestach <tlestach@redhat.com> 2.4.1-1
+- Fixed typo on the rhn.conf man page
+- Bumping package versions for 2.4.
+
 * Thu Mar 19 2015 Grant Gainey 2.3.17-1
 - remove unused dependency
 

@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     2.4.2
+Version:     2.4.4
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
@@ -62,6 +62,12 @@ docbook2man ./spacewalk-create-channel/doc/spacewalk-create-channel.sgml -o ./sp
 %doc %{_mandir}/man1/spacewalk-create-channel.1.gz
 
 %changelog
+* Fri Aug 07 2015 Jan Dobes 2.4.4-1
+- use hostname instead of localhost for https connections
+
+* Mon Aug 03 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.3-1
+- channel definitions for rhel 6.7
+
 * Mon Apr 13 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.2-1
 - channel definitions for rhel 7.1
 - update channel definitions

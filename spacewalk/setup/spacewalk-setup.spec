@@ -10,7 +10,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        2.4.4
+Version:        2.4.6
 Release:        1%{?dist}
 Summary:        Initial setup tools for Red Hat Spacewalk
 
@@ -207,6 +207,13 @@ rm -rf %{buildroot}
 %doc LICENSE
 
 %changelog
+* Fri Aug 07 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.6-1
+- Modified setup string to make it clearer that Oracle EZconnect requires the
+  Global Database Name, not the SID. The two values are the same for XE.
+
+* Wed Aug 05 2015 Jan Dobes 2.4.5-1
+- trust spacewalk CA certificate
+
 * Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.4-1
 - require cobbler20 - Spacewalk is not working with upstream cobbler anyway
 

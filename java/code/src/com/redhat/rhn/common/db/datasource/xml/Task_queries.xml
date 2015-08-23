@@ -181,9 +181,11 @@ SELECT DISTINCT
 
 <mode name="repomd_driver_query">
   <query>
-SELECT distinct channel_label
+SELECT channel_label, min(next_action) AS min_next_action
   FROM rhnRepoRegenQueue
    WHERE next_action is not null
+   GROUP BY channel_label
+   ORDER BY min_next_action
   </query>
 </mode>
 
@@ -204,6 +206,12 @@ SELECT id, channel_label, client, reason, force, bypass_filters, next_action
    AND channel_label = :channel_label
   </query>
 </mode>
+
+<write-mode name="repomd_unmark_in_progress">
+   <query params="channel_label">
+      UPDATE rhnRepoRegenQueue set next_action=current_timestamp WHERE channel_label = :channel_label
+   </query>
+</write-mode>
 
 <write-mode name="repomd_mark_in_progress">
    <query params="channel_label">

@@ -11,7 +11,7 @@ Name: spacewalk-certs-tools
 Summary: Spacewalk SSL Key/Cert Tool
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.3
+Version: 2.4.6
 Release: 1%{?dist}
 URL:      https://fedorahosted.org/spacewalk
 Source0:  https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -86,6 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %{rhnroot}/certs/*.py*
 %attr(755,root,root) %{rhnroot}/certs/sign.sh
 %attr(755,root,root) %{rhnroot}/certs/gen-rpm.sh
+%attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh
 %attr(755,root,root) %{_bindir}/rhn-sudo-ssl-tool
 %attr(755,root,root) %{_bindir}/rhn-ssl-tool
 %attr(755,root,root) %{_bindir}/rhn-bootstrap
@@ -111,6 +112,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug 07 2015 Jan Dobes 2.4.6-1
+- add file to RPM
+
+* Fri Aug 07 2015 Jan Dobes 2.4.5-1
+- add file to RPM
+
+* Thu Aug 06 2015 Jan Dobes 2.4.4-1
+- trust CA certificate when client RPM is installed
+
 * Tue Jul 14 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.3-1
 - remove Except KeyboardInterrupt from imports
 
