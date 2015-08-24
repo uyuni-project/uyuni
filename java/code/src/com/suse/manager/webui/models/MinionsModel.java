@@ -16,6 +16,7 @@ package com.suse.manager.webui.models;
 
 import com.redhat.rhn.domain.user.User;
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Grains;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.runner.Manage;
@@ -52,8 +53,8 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(saltMasterURI);
             // FIXME: Pass on actual user credentials as soon as it is supported
-            Keys keys = client.callSync(Key.listAll(), "admin", "", AuthModule.AUTO);
-            return keys;
+            WheelResult<Keys> result = client.callSync(Key.listAll(), "admin", "", AuthModule.AUTO);
+            return result.getData().getResult();
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
