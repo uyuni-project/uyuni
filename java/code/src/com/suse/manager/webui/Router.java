@@ -58,6 +58,7 @@ public class Router implements SparkApplication {
             response.type("text/html");
         });
 
+        // Exhibit localization service in templates
         JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l10n", LocalizationService.getInstance());
