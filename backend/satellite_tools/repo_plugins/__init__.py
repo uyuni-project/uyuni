@@ -40,6 +40,10 @@ class ContentPackage:
 
         self.a_pkg = None
 
+    def clear_header(self):
+        """a_pkg hold the header data. Remove it to not waste memory"""
+        self.a_pkg = None
+
     def __cmp__(self,other):
         relSelf = re.split(r".",self.release)[0]
         relOther = re.split(r".",other.release)[0]
