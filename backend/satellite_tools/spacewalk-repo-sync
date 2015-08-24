@@ -81,7 +81,7 @@ def main():
     parser.add_option('-d', '--dry-run', action='store_true',
                       dest='dry_run',
                       help='Test run. No sync takes place.')
-    parser.add_option('-n', '--latest', action='store_true',
+    parser.add_option('--latest', action='store_true',
                       dest='latest',
                       help='Sync lastest packages only. Use carefully - you might need to fix some dependencies on your own.')
     parser.add_option('-g', '--config', action='store', dest='config',
