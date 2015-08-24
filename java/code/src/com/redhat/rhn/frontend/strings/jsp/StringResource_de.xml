@@ -25324,6 +25324,27 @@ für einen angegebenen Channel aufgelistet wird.</target>
           <target>Pakete gesamt</target>
         </trans-unit>
       </group>
+      <trans-unit id="minions.all">
+        <source>Alle Minions</source>
+      </trans-unit>
+      <trans-unit id="minions.accepted">
+        <source>Akzeptiert</source>
+      </trans-unit>
+      <trans-unit id="minions.pending">
+        <source>Ausstehend</source>
+      </trans-unit>
+      <trans-unit id="minions.rejected">
+        <source>Abgelehnt</source>
+      </trans-unit>
+      <trans-unit id="minions.no.pending">
+        <source>Keine ausstehenden minions.</source>
+      </trans-unit>
+      <trans-unit id="minions.no.accepted">
+        <source>Keine akzeptierten minions.</source>
+      </trans-unit>
+      <trans-unit id="minions.no.rejected">
+        <source>Keine abgelehnten minions.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>

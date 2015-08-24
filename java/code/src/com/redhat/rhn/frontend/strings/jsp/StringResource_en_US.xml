@@ -21396,6 +21396,27 @@ given channel.</source>
           <source>Total Packages</source>
         </trans-unit>
       </group>
+      <trans-unit id="minions.all">
+        <source>All Minions</source>
+      </trans-unit>
+      <trans-unit id="minions.accepted">
+        <source>Accepted</source>
+      </trans-unit>
+      <trans-unit id="minions.pending">
+        <source>Pending</source>
+      </trans-unit>
+      <trans-unit id="minions.rejected">
+        <source>Rejected</source>
+      </trans-unit>
+      <trans-unit id="minions.no.pending">
+        <source>No pending minions.</source>
+      </trans-unit>
+      <trans-unit id="minions.no.accepted">
+        <source>No accepted minions.</source>
+      </trans-unit>
+      <trans-unit id="minions.no.rejected">
+        <source>no rejected minions.</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
