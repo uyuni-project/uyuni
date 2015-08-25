@@ -583,7 +583,6 @@ class MgrSync(object):
             ("SUSE products        ", "synchronizeProducts"),
             ("SUSE Product channels", "synchronizeProductChannels"),
             ("Subscriptions        ", "synchronizeSubscriptions"),
-            ("Upgrade paths        ", "synchronizeUpgradePaths")
         )
         text_width = len("Refreshing ") + 8 + \
                      len(sorted(actions, key=lambda t: t[0], reverse=True)[0])
