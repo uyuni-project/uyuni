@@ -109,7 +109,6 @@
             <include method="synchronizeProducts" />
             <include method="synchronizeProductChannels" />
             <include method="synchronizeSubscriptions" />
-            <include method="synchronizeUpgradePaths" />
         </create>
         <convert match="com.redhat.rhn.frontend.action.satellite.SCCConfigAction$SCCConfigException"
                  converter="exception">

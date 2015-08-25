@@ -146,18 +146,6 @@ public class SCCConfigAction extends RhnAction {
                 throw new SCCConfigException(e.getLocalizedMessage());
             }
         }
-
-        public static void synchronizeUpgradePaths() throws SCCConfigException {
-            ensureSatAdmin();
-            ContentSyncManager csm = new ContentSyncManager();
-            try {
-                csm.updateUpgradePaths();
-            }
-            catch (Exception e) {
-                logger.fatal(e.getMessage(), e);
-                throw new SCCConfigException(e.getLocalizedMessage());
-            }
-        }
     }
 
     /** {@inheritDoc} */
