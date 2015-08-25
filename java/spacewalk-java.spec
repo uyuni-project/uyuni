@@ -71,12 +71,15 @@ Requires: spacewalk-java-config
 Requires: spacewalk-java-jdbc
 Requires: spacewalk-java-lib
 Requires: stringtree-json
-Requires: saltstack-netapi-client-java
-Requires: spark
-Requires: spark-template-jade
 Requires: susestudio-java-client
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
+# Spark and Salt integration runtime
+%if 0%{?suse_version}
+Requires: saltstack-netapi-client-java
+Requires: spark
+Requires: spark-template-jade
+%endif
 %if 0%{?fedora}
 Requires: classpathx-jaf
 Requires: hibernate3 >= 3.6.10
@@ -228,9 +231,6 @@ BuildRequires: simple-core
 BuildRequires: simple-xml
 BuildRequires: snakeyaml
 BuildRequires: stringtree-json
-BuildRequires: saltstack-netapi-client-java
-BuildRequires: spark
-BuildRequires: spark-template-jade
 BuildRequires: susestudio-java-client
 BuildRequires: tanukiwrapper
 %if 0%{?run_checkstyle}
@@ -240,6 +240,10 @@ BuildRequires: checkstyle
 %if 0%{?suse_version}
 BuildRequires: log4j
 BuildRequires: struts >= 1.2.9
+# Spark and Salt integration
+BuildRequires: saltstack-netapi-client-java
+BuildRequires: spark
+BuildRequires: spark-template-jade
 %else
 BuildRequires: struts >= 1.3.0
 BuildRequires: struts-taglib >= 1.3.0
