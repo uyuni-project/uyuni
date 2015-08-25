@@ -173,16 +173,16 @@ public class ContentSyncHandler extends BaseHandler {
      * @param sessionKey User session token.
      * @return Integer
      * @throws ContentSyncException in case of an error
+     * @deprecated integrated into synchronizeProducts(User)
      *
      * @xmlrpc.doc Synchronize upgrade paths between the Customer Center
      *             and the SUSE Manager database.
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #return_int_success()
      */
+    @Deprecated
     public Integer synchronizeUpgradePaths(String sessionKey) throws ContentSyncException {
         ensureSatAdmin(getLoggedInUser(sessionKey));
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateUpgradePaths(csm.getProducts());
         return BaseHandler.VALID;
     }
 
