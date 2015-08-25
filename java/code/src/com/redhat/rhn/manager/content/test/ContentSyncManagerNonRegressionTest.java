@@ -79,7 +79,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     } };
 
     /** Logger instance. */
-    private static Logger logger = Logger.getLogger(ContentSyncManagerNonRegressionTest.class);
+    private static Logger logger = Logger
+            .getLogger(ContentSyncManagerNonRegressionTest.class);
 
     /** The failure strings. */
     private List<String> failures = new LinkedList<>();
@@ -123,12 +124,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             // to be removed when SCC team fixes this
             csm.addDirtyFixes(sccProducts);
 
-            for(SCCProduct p : sccProducts) {
+            for (SCCProduct p : sccProducts) {
                 List<SCCRepository> repoList = p.getRepositories();
-                if(repoList == null) {
+                if (repoList == null) {
                     continue;
                 }
-                for(SCCRepository r : repoList) {
+                for (SCCRepository r : repoList) {
                     SCCCachingFactory.saveRepository(r);
                 }
             }
@@ -152,19 +153,24 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                 if (baseExpected) {
                     while (actualExtensions.hasNext()) {
-                        failures.add("Base product " + actualBase.toString() + " found to have extension " + actualExtensions.next().toString()
-                                + " which was not expected");
+                        failures.add("Base product " + actualBase.toString() +
+                                " found to have extension " +
+                                actualExtensions.next().toString() +
+                                " which was not expected");
                     }
 
                     actualBase = actualProducts.next();
 
-                    checkProductMatches(friendlyName, version, arch, channelLabels, actualBase);
+                    checkProductMatches(friendlyName, version, arch,
+                            channelLabels, actualBase);
 
                     actualExtensions = actualBase.getExtensions().iterator();
                 }
                 else {
                     if (!actualExtensions.hasNext()) {
-                        failures.add("Base product " + actualBase.toString() + " does not have an expected extension named " + friendlyName);
+                        failures.add("Base product " + actualBase.toString() +
+                                " does not have an expected extension named " +
+                                friendlyName);
                     }
                     else {
                         MgrSyncProductDto extension = actualExtensions.next();
@@ -175,10 +181,12 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 }
             }
             while (actualProducts.hasNext()) {
-                failures.add("Found an unexpected base product " + actualProducts.next().toString());
+                failures.add("Found an unexpected base product " +
+                        actualProducts.next().toString());
             }
             while (actualExtensions.hasNext()) {
-                failures.add("Found an unexpected extension product " + actualExtensions.next().toString());
+                failures.add("Found an unexpected extension product " +
+                        actualExtensions.next().toString());
             }
         }
         finally {
@@ -251,14 +259,14 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         }
 
         for (String string : channelLabels) {
-            if (!actualChannelLabels.contains(string)){
-                failures.add(preamble+" does not have channel " + string);
+            if (!actualChannelLabels.contains(string)) {
+                failures.add(preamble + " does not have channel " + string);
             }
         }
 
         for (String string : actualChannelLabels) {
-            if (!channelLabels.contains(string)){
-                failures.add(preamble+" has unexpected channel " + string);
+            if (!channelLabels.contains(string)) {
+                failures.add(preamble + " has unexpected channel " + string);
             }
         }
     }
@@ -272,7 +280,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      */
     private void checkEquals(String message, String expected, String actual) {
         if (!expected.equals(actual)) {
-            failures.add(message + ": expected \"" + expected + "\", actual \"" + actual + "\"");
+            failures.add(message + ": expected \"" +
+                    expected + "\", actual \"" + actual + "\"");
         }
     }
 }
