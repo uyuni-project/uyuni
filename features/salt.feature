@@ -8,7 +8,7 @@ Feature: Check if SaltStack Master is configured and running
 
   Scenario: Check SaltStack Master is installed
     Given this client hostname
-    When I get a content of a file "/etc/salt/master"
+    When I get a content of a file "/etc/salt/master.d/susemanager.conf"
     Then it should contain "rest_cherrypy:" text
     And it should contain "port: 9080" text
     And it should contain "external_auth:" text
