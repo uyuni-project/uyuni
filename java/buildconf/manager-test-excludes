@@ -12,6 +12,3 @@ com/suse/scc/client/test/SCCClientUtilTest.class
 this triggers a known Hibernate bug when running without c3p0
 we shold re-enable this when we upgrade Hibernate past 3.2.4
 com/redhat/rhn/webapp/test/RhnServletListenerTest.class
-
-temporarily disabled until it's fixed in Manager-Subscription-Counting
-com/redhat/rhn/manager/content/test/ContentSyncManagerNonRegressionTest.class
