@@ -120,6 +120,14 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
             List<XMLChannel> allChannels =
                     new Persister().read(XMLChannels.class, channelsXML).getChannels();
 
+            // explicitly "mark" OES repos to be mirrorable
+            // this avoids querying NCC at test time (see ContentSyncManager.isMirrorable())
+            for (XMLChannel channel : allChannels) {
+                if (channel.getFamily().equals(ContentSyncManager.OES_CHANNEL_FAMILY)) {
+                    channel.setSourceUrl(null);
+                }
+            }
+
             List<SCCProduct> sccProducts =
                     new Gson().fromJson(FileUtils.readFileToString(productsJSON),
                     new TypeToken<List<SCCProduct>>() { } .getType());
