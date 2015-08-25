@@ -79,6 +79,7 @@ Requires: xerces-j2
 Requires: jade4j
 Requires: saltstack-netapi-client-java
 Requires: spark
+Requires: spark-template-jade
 %endif
 %if 0%{?fedora}
 Requires: classpathx-jaf
@@ -244,6 +245,7 @@ BuildRequires: struts >= 1.2.9
 BuildRequires: jade4j
 BuildRequires: saltstack-netapi-client-java
 BuildRequires: spark
+BuildRequires: spark-template-jade
 %else
 BuildRequires: struts >= 1.3.0
 BuildRequires: struts-taglib >= 1.3.0
@@ -899,6 +901,7 @@ fi
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
+%{jardir}/spark-template-jade.jar
 %endif
 
 %dir %{cobprofdir}
