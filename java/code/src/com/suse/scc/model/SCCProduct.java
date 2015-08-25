@@ -45,6 +45,8 @@ public class SCCProduct {
     private String eulaUrl;
     private List<SCCProduct> extensions;
     private List<SCCRepository> repositories;
+    @SerializedName("predecessor_ids")
+    private List<Integer> predecessorIds;
 
     /**
      * Default constructor.
@@ -178,6 +180,13 @@ public class SCCProduct {
      */
     public List<SCCRepository> getRepositories() {
         return repositories;
+    }
+
+    /**
+     * @return the predecessor Ids
+     */
+    public List<Integer> getPredecessorIds() {
+        return predecessorIds;
     }
 
     /**
