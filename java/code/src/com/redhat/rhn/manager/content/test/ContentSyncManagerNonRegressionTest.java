@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
-import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -57,6 +56,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String PRODUCTS_JSON = JARPATH + "products.json";
+    private static final String REPOSITORIES_JSON = JARPATH + "repositories.json";
     private static final String EXPECTED_PRODUCTS_CSV = JARPATH + "expected_products.csv";
 
     /** Channel family labels that are entitled in the scope of this non regression test. */
@@ -94,12 +94,13 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     public void testListProducts() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
+        File repositoriesJSON = new File(TestUtils.findTestData(REPOSITORIES_JSON)
+                .getPath());
         File expectedProductsCSV =
                 new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
         try {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
-            SCCCachingFactory.clearRepositories();
 
             // ensure all needed channel families have enough entitlements, so
             // that channels are available later
@@ -120,19 +121,16 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
             ContentSyncManager csm = new ContentSyncManager();
 
+            // load repository data
+            List<SCCRepository> sccRepositories =
+                    new Gson().fromJson(FileUtils.readFileToString(repositoriesJSON),
+                    new TypeToken<List<SCCRepository>>() { } .getType());
+            csm.refreshRepositoriesCache(sccRepositories);
+
             // HACK: some SCC products do not have correct data
             // to be removed when SCC team fixes this
             csm.addDirtyFixes(sccProducts);
 
-            for (SCCProduct p : sccProducts) {
-                List<SCCRepository> repoList = p.getRepositories();
-                if (repoList == null) {
-                    continue;
-                }
-                for (SCCRepository r : repoList) {
-                    SCCCachingFactory.saveRepository(r);
-                }
-            }
             csm.updateSUSEProducts(sccProducts);
             Collection<MgrSyncProductDto> products =
                     csm.listProducts(csm.getAvailableChannels(allChannels));
