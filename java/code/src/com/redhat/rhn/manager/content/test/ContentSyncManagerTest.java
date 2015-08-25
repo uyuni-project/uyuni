@@ -616,7 +616,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             // Update the upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsXML(upgradePathsXML);
-            csm.updateUpgradePaths();
+            csm.updateUpgradePaths(null);
 
             // Check the results
             List<SUSEUpgradePath> upgradePaths =
