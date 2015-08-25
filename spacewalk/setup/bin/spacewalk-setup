@@ -324,7 +324,7 @@ sub setup_cobbler {
 sub setup_salt_master {
     my $opts = shift;
     # We might need port and host from the options/YaST answer file in a future.
-    my $salt_master = '/etc/salt/master';
+    my $salt_master = '/etc/salt/master.d/susemanager.conf';
     open(SALT_MASTER, '>>', $salt_master) || die "Unable to open $salt_master file!";
 
     # Setup cherrypy
