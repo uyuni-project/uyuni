@@ -57,8 +57,7 @@ class RefreshOperationsTest(unittest.TestCase):
 Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
 Refreshing SUSE Product channels               [DONE]
-Refreshing Subscriptions                       [DONE]
-Refreshing Upgrade paths                       [DONE]"""
+Refreshing Subscriptions                       [DONE]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -77,9 +76,6 @@ Refreshing Upgrade paths                       [DONE]"""
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
-                                        self.fake_auth_token),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeUpgradePaths",
                                         self.fake_auth_token)
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
@@ -100,8 +96,7 @@ Refreshing Upgrade paths                       [DONE]"""
 Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
 Refreshing SUSE Product channels               [DONE]
-Refreshing Subscriptions                       [DONE]
-Refreshing Upgrade paths                       [DONE]"""
+Refreshing Subscriptions                       [DONE]"""
 
         self.assertEqual(expected_output.split("\n"), recorder.stdout)
 
@@ -120,9 +115,6 @@ Refreshing Upgrade paths                       [DONE]"""
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
-                                        self.fake_auth_token),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeUpgradePaths",
                                         self.fake_auth_token)
         ]
         stubbed_xmlrpm_call.assert_has_calls(expected_calls)
@@ -144,7 +136,6 @@ Refreshing Channel families                    [DONE]
 Refreshing SUSE products                       [DONE]
 Refreshing SUSE Product channels               [DONE]
 Refreshing Subscriptions                       [DONE]
-Refreshing Upgrade paths                       [DONE]
 
 Scheduling refresh of all the available channels
 Scheduling reposync for 'sles10-sp4-pool-x86_64' channel
@@ -167,9 +158,6 @@ Scheduling reposync for 'sle10-sdk-sp4-updates-x86_64' channel"""
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "synchronizeSubscriptions",
-                                        self.fake_auth_token),
-            call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
-                                        "synchronizeUpgradePaths",
                                         self.fake_auth_token),
             call._execute_xmlrpc_method(self.mgr_sync.conn.sync.content,
                                         "listChannels",
