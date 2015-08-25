@@ -75,7 +75,6 @@ public class MinionsModel {
         }
     }
 
-
     public static List<String> up() {
         SaltStackClient client;
         try {
@@ -129,7 +128,6 @@ public class MinionsModel {
             throw new RuntimeException(e);
         }
     }
-
 
     public static void delete(String minionKey) {
         SaltStackClient client;
