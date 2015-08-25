@@ -181,7 +181,8 @@ public class ContentSyncHandler extends BaseHandler {
      */
     public Integer synchronizeUpgradePaths(User loggedInUser) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
-        new ContentSyncManager().updateUpgradePaths();
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateUpgradePaths(csm.getProducts());
         return BaseHandler.VALID;
     }
 

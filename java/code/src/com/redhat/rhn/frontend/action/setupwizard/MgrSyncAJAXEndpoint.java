@@ -143,7 +143,7 @@ public class MgrSyncAJAXEndpoint {
         ensureSatAdmin();
         ContentSyncManager csm = new ContentSyncManager();
         try {
-            csm.updateUpgradePaths();
+            csm.updateUpgradePaths(csm.getProducts());
         }
         catch (Exception e) {
             log.fatal(e.getMessage(), e);
