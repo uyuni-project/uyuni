@@ -7,11 +7,38 @@ Feature: Check if SaltStack Master is configured and running
   I want to check if SaltStack Master is installed and running
 
   Scenario: Check SaltStack Master is installed
+    Given this client hostname
     When I get a content of a file "/etc/salt/master"
     Then it should contain "rest_cherrypy:" text
     And it should contain "port: 9080" text
     And it should contain "external_auth:" text
 
   Scenario: Check SaltStack Master is properly configured
-    When I issue command "ss -nta | grep 9080"
-    Then it should contain "127.0.0.1:9080" text
+    Then the Salt rest-api should be listening on local port 9080
+    And the salt-master should be listening on public port 4505
+    And the salt-master should be listening on public port 4506
+
+  Scenario: Check SaltStack Minion is running
+    When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
+    And when I restart Salt Minion
+    Then the Salt Minion should be running
+
+  Scenario: Check SaltStack Minion can be registered
+    Given this client hostname
+    When I list unaccepted keys at Salt Master
+    Then the list of the keys should contain this client hostname
+    When I accept all Salt unaccepted keys
+    When I list accepted keys at Salt Master
+    Then the list of the keys should contain this client hostname
+
+  Scenario: Check if SaltStack Minion communicates with the Master
+    Given this client hostname
+    Then the Salt Minion should be running
+    When I get OS information of the client machine from the Master
+    Then it should contain "SLES" text
+
+  Scenario: Cleaning up for the general testsuite
+    Given this client hostname
+    When I delete key of this client
+    When I list unaccepted keys at Salt Master
+    Then it should contain testsuite hostname
