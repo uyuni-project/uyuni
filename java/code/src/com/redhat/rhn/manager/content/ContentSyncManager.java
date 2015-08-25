@@ -107,8 +107,11 @@ public class ContentSyncManager {
     // Base channels have "BASE" as their parent in channels.xml
     public static final String BASE_CHANNEL = "BASE";
 
-    // Make exceptions for the OES channel family that is still hosted with NCC
-    private static final String OES_CHANNEL_FAMILY = "OES2";
+    /**
+     * OES channel family name, this is used to distinguish supported non-SUSE
+     * repos that are served directly from NCC instead of SCC.
+     */
+    public static final String OES_CHANNEL_FAMILY = "OES2";
     private static final String OES_URL = "https://nu.novell.com/repo/$RCE/" +
             "OES11-SP2-Pool/sle-11-x86_64/repodata/repomd.xml";
 
