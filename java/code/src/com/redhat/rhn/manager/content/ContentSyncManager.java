@@ -604,8 +604,16 @@ public class ContentSyncManager {
         if (log.isDebugEnabled()) {
             log.debug("Populating cache with " + reposList.size() + " repositories.");
         }
+        refreshRepositoriesCache(reposList);
+    }
+
+    /**
+     * Deletes all repositories stored in the database and inserts the specified ones.
+     * @param repositories the new repositories
+     */
+    public void refreshRepositoriesCache(Collection<SCCRepository> repositories) {
         SCCCachingFactory.clearRepositories();
-        for (SCCRepository repo : reposList) {
+        for (SCCRepository repo : repositories) {
             SCCCachingFactory.saveRepository(repo);
         }
     }
