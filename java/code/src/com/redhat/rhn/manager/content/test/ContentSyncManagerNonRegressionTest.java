@@ -73,7 +73,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         add("jeos"); add("SLM"); add("Moblin-2-Samsung");
         add("nVidia"); add("STUDIOONSITERUNNER"); add("SLE-HAE-Z");
         add("SLE-HAE-X86"); add("SLES-IA"); add("SLE-HAE-GEO");
-        add("SLE-WE");
+        add("SLE-WE"); add("SES");
     } };
 
     /** Logger instance. */
