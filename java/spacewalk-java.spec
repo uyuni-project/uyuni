@@ -76,9 +76,9 @@ Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
 # Spark and Salt integration runtime
 %if 0%{?suse_version}
+Requires: jade4j
 Requires: saltstack-netapi-client-java
 Requires: spark
-Requires: spark-template-jade
 %endif
 %if 0%{?fedora}
 Requires: classpathx-jaf
@@ -241,9 +241,9 @@ BuildRequires: checkstyle
 BuildRequires: log4j
 BuildRequires: struts >= 1.2.9
 # Spark and Salt integration
+BuildRequires: jade4j
 BuildRequires: saltstack-netapi-client-java
 BuildRequires: spark
-BuildRequires: spark-template-jade
 %else
 BuildRequires: struts >= 1.3.0
 BuildRequires: struts-taglib >= 1.3.0
@@ -899,7 +899,6 @@ fi
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
 %{jardir}/spark-core.jar
-%{jardir}/spark-template-jade.jar
 %endif
 
 %dir %{cobprofdir}
