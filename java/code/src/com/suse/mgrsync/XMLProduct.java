@@ -15,6 +15,7 @@
 
 package com.suse.mgrsync;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.simpleframework.xml.Attribute;
@@ -25,7 +26,7 @@ import org.simpleframework.xml.Text;
  * Represents a product in channels.xml format (element product_id).
  */
 @Root(name = "product_id", strict = false)
-public class XMLProduct {
+public class XMLProduct implements Comparable<XMLProduct> {
 
     /** The name. */
     @Attribute
@@ -133,5 +134,13 @@ public class XMLProduct {
     @Override
     public String toString() {
         return "XMLProduct [name=" + name + ", id=" + id + ", version=" + version + "]";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int compareTo(XMLProduct other) {
+        return new CompareToBuilder().append(id, other.id).toComparison();
     }
 }

@@ -85,6 +85,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
@@ -547,7 +548,7 @@ public class ContentSyncManager {
     private Map<XMLProduct, Set<XMLChannel>> getProductToChannelMap(
             Collection<XMLChannel> channels) {
         Map<XMLProduct, Set<XMLChannel>> result =
-                new HashMap<XMLProduct, Set<XMLChannel>>();
+                new TreeMap<XMLProduct, Set<XMLChannel>>();
 
         for (final XMLChannel channel : channels) {
             for (XMLProduct product : channel.getProducts()) {
