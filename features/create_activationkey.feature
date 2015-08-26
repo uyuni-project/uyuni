@@ -13,7 +13,6 @@ Feature: Create an activation key
     When I enter "SUSE Test Key" as "description"
     And I enter "SUSE-DEV" as "key"
     And I check "virtualization_host"
-    And I check "virtualization_host_platform"
     And I click on "Create Activation Key"
     Then I should see a "A system can have either the Virtualization or Virtualization Platform entitlement but not both." text
 
