@@ -613,24 +613,82 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                 TestUtils.saveAndFlush(p);
             }
 
+            List<SCCProduct> products = new ArrayList<SCCProduct>();
+            int productId = 10012345;
+            assertNull(SUSEProductFactory.lookupByProductId(productId));
+            String name = TestUtils.randomString();
+            String identifier = TestUtils.randomString();
+            String version = TestUtils.randomString();
+            String releaseType = TestUtils.randomString();
+            String friendlyName = TestUtils.randomString();
+            String productClass = TestUtils.randomString();
+
+            // Setup a product as it comes from SCC
+            SCCProduct prd = new SCCProduct();
+            prd.setId(productId);
+            prd.setName(name);
+            prd.setIdentifier(identifier);
+            prd.setVersion(version);
+            prd.setReleaseType(releaseType);
+            prd.setFriendlyName(friendlyName);
+            prd.setProductClass(productClass);
+            prd.setArch("i686");
+            products.add(prd);
+
+            productId = 10012346;
+            assertNull(SUSEProductFactory.lookupByProductId(productId));
+            name = TestUtils.randomString();
+            identifier = TestUtils.randomString();
+            version = TestUtils.randomString();
+            releaseType = TestUtils.randomString();
+            friendlyName = TestUtils.randomString();
+            productClass = TestUtils.randomString();
+
+            // Setup a 2nd product as it comes from SCC
+            SCCProduct prd2 = new SCCProduct();
+            prd2.setId(productId);
+            prd2.setName(name);
+            prd2.setIdentifier(identifier);
+            prd2.setVersion(version);
+            prd2.setReleaseType(releaseType);
+            prd2.setFriendlyName(friendlyName);
+            prd2.setProductClass(productClass);
+            prd2.setArch("i686");
+            List<Integer> predIn = new ArrayList<Integer>();
+            predIn.add(10012345);
+            prd2.setPredecessorIds(predIn);
+            products.add(prd2);
+
+            if (SUSEProductFactory.lookupByProductId(10012345) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(10012345);
+                TestUtils.saveAndFlush(p);
+            }
+            if (SUSEProductFactory.lookupByProductId(10012346) == null) {
+                p = SUSEProductTestUtils.createTestSUSEProduct(family);
+                p.setProductId(10012346);
+                TestUtils.saveAndFlush(p);
+            }
+
             // Update the upgrade paths
             ContentSyncManager csm = new ContentSyncManager();
             csm.setUpgradePathsXML(upgradePathsXML);
-            csm.updateUpgradePaths(null);
+            csm.updateUpgradePaths(products);
 
             // Check the results
             List<SUSEUpgradePath> upgradePaths =
                     SUSEProductFactory.findAllSUSEUpgradePaths();
             List<String> paths = new ArrayList<String>();
             for (SUSEUpgradePath path : upgradePaths) {
-                String identifier = String.format("%s-%s",
+                String ident = String.format("%s-%s",
                         path.getFromProduct().getProductId(),
                         path.getToProduct().getProductId());
-                paths.add(identifier);
+                paths.add(ident);
             }
             assertTrue(paths.contains("690-814"));
             assertTrue(paths.contains("1001-1119"));
             assertTrue(paths.contains("1193-1198"));
+            assertTrue(paths.contains("10012345-10012346"));
         }
         finally {
             SUSEProductTestUtils.deleteIfTempFile(upgradePathsXML);
