@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -36,12 +35,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
-import com.redhat.rhn.domain.server.EntitlementServerGroup;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.content.ConsolidatedSubscriptions;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncProductDto;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -49,12 +43,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.XMLChannelFamily;
 import com.suse.mgrsync.XMLProduct;
-import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.scc.model.SCCProduct;
-import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -73,7 +66,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     // Files we read
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
-    private static final String CHANNEL_FAMILIES_XML = JARPATH + "channel_families.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
     /**
@@ -231,145 +223,6 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         // Verify that the product has been updated correctly
         suseProduct = SUSEProductFactory.lookupByProductId(productId);
         assertEquals(friendlyNameNew, suseProduct.getFriendlyName());
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#consolidateSubscriptions(java.util.Collection)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testConsolidateSubscriptions() throws Exception {
-        SCCSubscription subscription = new SCCSubscription();
-        List<String> productClasses = new ArrayList<String>();
-        productClasses.add("SMS");
-        productClasses.add("SM_ENT_MGM_V");
-        subscription.setProductClasses(productClasses);
-        subscription.setType("full");
-        subscription.setStartsAt("2013-12-12T00:00:00.000Z");
-        subscription.setExpiresAt("2016-12-12T00:00:00.000Z");
-        List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
-        subscriptions.add(subscription);
-
-        // Check the consolidated product classes
-        ContentSyncManager csm = new ContentSyncManager();
-        File channelFamiliesXML = new File(
-                TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
-        csm.setChannelFamiliesXML(channelFamiliesXML);
-        ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
-        List<String> entitlements = result.getSystemEntitlements();
-        assertEquals(1, entitlements.size());
-        assertTrue(entitlements.contains("SM_ENT_MGM_V"));
-        List<String> channelSubscriptions = result.getChannelSubscriptions();
-        assertEquals(6, channelSubscriptions.size());
-        assertTrue(channelSubscriptions.contains("SMS"));
-        // Check the free product classes
-        assertTrue(channelSubscriptions.contains("SLESMT"));
-        assertTrue(channelSubscriptions.contains("WEBYAST"));
-        assertTrue(channelSubscriptions.contains("SLE-SDK"));
-        assertTrue(channelSubscriptions.contains("SUSE"));
-        assertTrue(channelSubscriptions.contains("nVidia"));
-
-        // Delete temp file
-        SUSEProductTestUtils.deleteIfTempFile(channelFamiliesXML);
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#consolidateSubscriptions(java.util.Collection)}.
-     * Subscriptions with startsAt == null are always started.
-     * @throws Exception if anything goes wrong
-     */
-    public void testConsolidateSubscriptionsStartAtNull() throws Exception {
-        List<SCCSubscription> subscriptions = new ArrayList<SCCSubscription>();
-
-        List<String> productClasses = new ArrayList<String>();
-        productClasses.add("RES");
-        productClasses.add("7261");
-        productClasses.add("7260");
-        productClasses.add("SMP");
-        productClasses.add("SMS");
-        for (String pc : productClasses) {
-            SCCSubscription subscription = new SCCSubscription();
-            List<String> pcs = new ArrayList<String>();
-            pcs.add(pc);
-            subscription.setProductClasses(pcs);
-            subscription.setType("full");
-            subscription.setStartsAt(null);
-            subscription.setExpiresAt("2100-12-12T00:00:00.000Z");
-            subscriptions.add(subscription);
-        }
-
-        // Check the consolidated product classes
-        ContentSyncManager csm = new ContentSyncManager();
-        File channelFamiliesXML = new File(
-                TestUtils.findTestData(CHANNEL_FAMILIES_XML).getPath());
-        csm.setChannelFamiliesXML(channelFamiliesXML);
-        ConsolidatedSubscriptions result = csm.consolidateSubscriptions(subscriptions);
-        List<String> channelSubscriptions = result.getChannelSubscriptions();
-        assertTrue(channelSubscriptions.contains("RES"));
-        assertTrue(channelSubscriptions.contains("7261"));
-        assertTrue(channelSubscriptions.contains("7260"));
-        assertTrue(channelSubscriptions.contains("SMP"));
-        assertTrue(channelSubscriptions.contains("SMS"));
-
-        // Delete temp file
-        SUSEProductTestUtils.deleteIfTempFile(channelFamiliesXML);
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testUpdateSystemEntitlements() throws Exception {
-        // Start with no subscribed product classes
-        List<String> productClasses = new ArrayList<String>();
-
-        // Update system entitlements
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSystemEntitlements(productClasses);
-
-        // Check reset to 10
-        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
-                "enterprise_entitled");
-        EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
-                OrgFactory.getSatelliteOrg(), sgt);
-        assertEquals(new Long(10), serverGroup.getMaxMembers());
-
-        // Add subscription for product class
-        productClasses.add("SM_ENT_MGM_V");
-
-        // Update system entitlements and check max_members = 200000
-        csm.updateSystemEntitlements(productClasses);
-        serverGroup = ServerGroupFactory.lookupEntitled(
-                OrgFactory.getSatelliteOrg(), sgt);
-        assertEquals(new Long(200000), serverGroup.getMaxMembers());
-    }
-
-    /**
-     * Test for {@link ContentSyncManager#updateSystemEntitlements(List)}.
-     * @throws Exception if anything goes wrong
-     */
-    public void testUpdateBootstrapEntitlement() throws Exception {
-        // Start with no subscribed product classes
-        List<String> productClasses = new ArrayList<String>();
-
-        // Update system entitlements
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateSystemEntitlements(productClasses);
-
-        // Check still 200000
-        ServerGroupType sgt = ServerFactory.lookupServerGroupTypeByLabel(
-                "bootstrap_entitled");
-        EntitlementServerGroup serverGroup = ServerGroupFactory.lookupEntitled(
-                OrgFactory.getSatelliteOrg(), sgt);
-        assertEquals(new Long(200000), serverGroup.getMaxMembers());
-
-        // Add subscription for product class
-        productClasses.add("SM_ENT_MGM_V");
-
-        // Update system entitlements and check max_members = 200000
-        csm.updateSystemEntitlements(productClasses);
-        serverGroup = ServerGroupFactory.lookupEntitled(
-                OrgFactory.getSatelliteOrg(), sgt);
-        assertEquals(new Long(200000), serverGroup.getMaxMembers());
     }
 
     /**
