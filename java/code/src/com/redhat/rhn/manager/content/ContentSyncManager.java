@@ -93,9 +93,6 @@ public class ContentSyncManager {
     // This was a guesswork and we so far *have* to stay on this value.
     private static final Long RESET_ENTITLEMENT = 10L;
 
-    // The "limitless or endless in space" at SUSE is 200000. Of type Long.
-    public static final Long INFINITE = 200000L;
-
     // Base channels have "BASE" as their parent in channels.xml
     public static final String BASE_CHANNEL = "BASE";
 
