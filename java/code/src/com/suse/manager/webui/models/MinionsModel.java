@@ -24,7 +24,7 @@ import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
 import com.suse.saltstack.netapi.datatypes.Keys;
-import com.suse.saltstack.netapi.datatypes.target.Glob;
+import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import com.suse.saltstack.netapi.exception.SaltStackException;
 
 import java.net.URI;
@@ -38,7 +38,7 @@ import java.util.Map;
 public class MinionsModel {
 
     // The salt URI as string
-    private static final URI saltMasterURI = URI.create("http://localhost:9080");
+    private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
 
     private MinionsModel() { }
 
@@ -51,8 +51,7 @@ public class MinionsModel {
     public static Keys getKeys(User user) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
-            // FIXME: Pass on actual user credentials as soon as it is supported
+            client = new SaltStackClient(SALT_MASTER_URI);
             WheelResult<Keys> result = client.callSync(Key.listAll(), "admin", "", AuthModule.AUTO);
             return result.getData().getResult();
         }
@@ -70,25 +69,10 @@ public class MinionsModel {
     public static Map<String, Object> grains(String minionKey) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            // FIXME: Pass on actual user credentials as soon as it is supported
-            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new Glob(minionKey), "admin", "", AuthModule.AUTO);
+            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new MinionList(minionKey), "admin", "", AuthModule.AUTO);
             return grains.getOrDefault(minionKey, new HashMap<>());
-        }
-        catch (SaltStackException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static List<String> up() {
-        SaltStackClient client;
-        try {
-            client = new SaltStackClient(saltMasterURI);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            // FIXME: Pass on actual user credentials as soon as it is supported
-            List<String> up = client.callSync(Manage.up(), "admin", "", AuthModule.AUTO);
-            return up;
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -103,9 +87,8 @@ public class MinionsModel {
     public static List<String> present() {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            // FIXME: Pass on actual user credentials as soon as it is supported
             List<String> present = client.callSync(Manage.present(), "admin", "", AuthModule.AUTO);
             return present;
         }
@@ -123,10 +106,9 @@ public class MinionsModel {
     public static Map<String, List<String>> packages(String minionKey) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            // FIXME: Pass on actual user credentials as soon as it is supported
-            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new Glob(minionKey), "admin", "", AuthModule.AUTO);
+            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new MinionList(minionKey), "admin", "", AuthModule.AUTO);
             return packages.get(minionKey);
         }
         catch (SaltStackException e) {
@@ -142,8 +124,7 @@ public class MinionsModel {
     public static void accept(String minionKey) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
-            // FIXME: Pass on actual user credentials as soon as it is supported
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.accept(minionKey), "admin", "", AuthModule.AUTO);
         }
         catch (SaltStackException e) {
@@ -159,8 +140,7 @@ public class MinionsModel {
     public static void delete(String minionKey) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
-            // FIXME: Pass on actual user credentials as soon as it is supported
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.delete(minionKey), "admin", "", AuthModule.AUTO);
         }
         catch (SaltStackException e) {
@@ -176,8 +156,7 @@ public class MinionsModel {
     public static void reject(String minionKey) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
-            // FIXME: Pass on actual user credentials as soon as it is supported
+            client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.reject(minionKey), "admin", "", AuthModule.AUTO);
         }
         catch (SaltStackException e) {

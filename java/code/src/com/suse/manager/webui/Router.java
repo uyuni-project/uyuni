@@ -65,7 +65,7 @@ public class Router implements SparkApplication {
         JadeConfiguration config = jade.getConfiguration();
         config.setSharedVariables(sharedVariables);
 
-        // List all minions
+        // Setup routes
         Spark.get("/manager/minions", withUser(MinionsController::listMinions), jade);
         Spark.get("/manager/minions/accept/:key", MinionsController::acceptMinion);
         Spark.get("/manager/minions/delete/:key", MinionsController::deleteMinion);
