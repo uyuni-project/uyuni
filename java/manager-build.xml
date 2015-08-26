@@ -139,10 +139,10 @@
       <fileset file="${build.dir}/rhn.jar" />
       <fileset dir="${lib.dir}">
         <include name="**/*.jar" />
-        <exclude name="**/tomcat-el*" />
+        <exclude name="**/tomcat*-el*" />
         <exclude name="**/jasper*" />
-        <exclude name="**/tomcat-jsp*" />
-        <exclude name="**/tomcat-servlet*" />
+        <exclude name="**/tomcat*-jsp*" />
+        <exclude name="**/tomcat*-servlet*" />
         <exclude name="**/jspapi*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
