@@ -1087,48 +1087,20 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            if (fromProduct != null && toProduct != null) {
-                // Products found, get the existing path object from map by removing
-                String identifier = String.format("%s-%s",
-                        path.getFromProductId(), path.getToProductId());
-                SUSEUpgradePath existingPath = null;
-                if (pathsToRemove.keySet().contains(identifier)) {
-                    existingPath = pathsToRemove.remove(identifier);
-                }
-
-                // Insert or update the existing path
-                if (existingPath == null) {
-                    SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
-                }
-                else {
-                    SUSEProductFactory.save(existingPath);
-                }
-            }
+            doUpdateUpgradePaths(fromProduct, path.getFromProductId(),
+                    toProduct, path.getToProductId(), pathsToRemove);
         }
-        for (SCCProduct p : products) {
-            if(p.getPredecessorIds() == null) {
-                continue;
-            }
-            SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
-            for (Integer predecessorId : p.getPredecessorIds()) {
-                SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
-                        predecessorId);
-                if (fromProduct != null && toProduct != null) {
-                    // Products found, get the existing path object from map by removing
-                    String identifier = String.format("%s-%s",
-                            predecessorId, p.getId());
-                    SUSEUpgradePath existingPath = null;
-                    if (pathsToRemove.keySet().contains(identifier)) {
-                        existingPath = pathsToRemove.remove(identifier);
-                    }
+        if (products != null) {
 
-                    // Insert or update the existing path
-                    if (existingPath == null) {
-                        SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
-                    }
-                    else {
-                        SUSEProductFactory.save(existingPath);
-                    }
+            for (SCCProduct p : products) {
+                if(p.getPredecessorIds() == null) {
+                    continue;
+                }
+                SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
+                for (Integer predecessorId : p.getPredecessorIds()) {
+                    SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
+                            predecessorId);
+                    doUpdateUpgradePaths(fromProduct, predecessorId, toProduct, p.getId(), pathsToRemove);
                 }
             }
         }
@@ -1139,6 +1111,28 @@ public class ContentSyncManager {
         }
         for (Map.Entry<String, SUSEUpgradePath> entry : pathsToRemove.entrySet()) {
             SUSEProductFactory.remove(entry.getValue());
+        }
+    }
+
+    private void doUpdateUpgradePaths(SUSEProduct fromProduct, Integer fromSCCProductid,
+            SUSEProduct toProduct, Integer toSCCProductid,
+            Map<String, SUSEUpgradePath> pathsToRemove) {
+        if (fromProduct != null && toProduct != null) {
+            // Products found, get the existing path object from map by removing
+            String identifier = String.format("%s-%s",
+                    fromSCCProductid, toSCCProductid);
+            SUSEUpgradePath existingPath = null;
+            if (pathsToRemove.keySet().contains(identifier)) {
+                existingPath = pathsToRemove.remove(identifier);
+            }
+
+            // Insert or update the existing path
+            if (existingPath == null) {
+                SUSEProductFactory.save(new SUSEUpgradePath(fromProduct, toProduct));
+            }
+            else {
+                SUSEProductFactory.save(existingPath);
+            }
         }
     }
 
