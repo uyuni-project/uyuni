@@ -276,4 +276,11 @@ public class SCCProduct {
     public void setIdentifier(String identifierIn) {
         this.identifier = identifierIn;
     }
+
+    /**
+     * @param predecessorIdsIn the predecessor Ids to set
+     */
+    public void setPredecessorIds(List<Integer> predecessorIdsIn) {
+        this.predecessorIds = predecessorIdsIn;
+    }
 }
