@@ -53,6 +53,13 @@ public class MinionsController {
         return new ModelAndView(data, "minions.jade");
     }
 
+    /**
+     * Handler for the minion details page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView minionDetails(Request request, Response response) {
         String key = request.params("key");
         Map<String, Object> grains = MinionsModel.grains(key);
@@ -64,18 +71,39 @@ public class MinionsController {
         return new ModelAndView(data, "minion.jade");
     }
 
+    /**
+     * Handler for accept minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
     public static Object acceptMinion(Request request, Response response) {
         MinionsModel.accept(request.params("key"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
 
+    /**
+     * Handler for delete minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
     public static Object deleteMinion(Request request, Response response) {
         MinionsModel.delete(request.params("key"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
 
+    /**
+     * Handler for reject minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
     public static Object rejectMinion(Request request, Response response) {
         MinionsModel.reject(request.params("key"));
         response.redirect("/rhn/manager/minions");

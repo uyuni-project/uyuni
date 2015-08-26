@@ -61,6 +61,12 @@ public class MinionsModel {
         }
     }
 
+    /**
+     * Get the grains from a minion.
+     *
+     * @param minionKey key of the target minion
+     * @return a map containing the grains
+     */
     public static Map<String, Object> grains(String minionKey) {
         SaltStackClient client;
         try {
@@ -89,6 +95,11 @@ public class MinionsModel {
         }
     }
 
+    /**
+     * Query all present minions according to salts presence detection
+     *
+     * @return the list of minion keys that are present
+     */
     public static List<String> present() {
         SaltStackClient client;
         try {
@@ -103,6 +114,12 @@ public class MinionsModel {
         }
     }
 
+    /**
+     *  Get the installed packages from a minion
+     *
+     * @param minionKey key of the target minion
+     * @return a map from package names to list of version strings
+     */
     public static Map<String, List<String>> packages(String minionKey) {
         SaltStackClient client;
         try {
@@ -117,6 +134,11 @@ public class MinionsModel {
         }
     }
 
+    /**
+     * Accept a pending minion key
+     *
+     * @param minionKey key of the target minion
+     */
     public static void accept(String minionKey) {
         SaltStackClient client;
         try {
@@ -129,6 +151,11 @@ public class MinionsModel {
         }
     }
 
+    /**
+     * Delete a minion key from the master
+     *
+     * @param minionKey key of the target minion
+     */
     public static void delete(String minionKey) {
         SaltStackClient client;
         try {
@@ -141,6 +168,11 @@ public class MinionsModel {
         }
     }
 
+    /**
+     * Reject a pending minion key
+     *
+     * @param minionKey key of the target minion
+     */
     public static void reject(String minionKey) {
         SaltStackClient client;
         try {
