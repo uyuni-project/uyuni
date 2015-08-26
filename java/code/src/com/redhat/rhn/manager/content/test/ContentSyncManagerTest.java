@@ -145,6 +145,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateSUSEProductsNew() throws Exception {
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         // Create test product attributes
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
@@ -170,6 +172,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsXML(upgradePathsXML);
         csm.updateSUSEProducts(products);
 
         // Verify that a new product has been created correctly
@@ -187,6 +190,8 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateSUSEProductsUpdate() throws Exception {
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         // Create test product attributes
         int productId = 12345;
         assertNull(SUSEProductFactory.lookupByProductId(productId));
@@ -224,6 +229,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
         // Call updateSUSEProducts()
         ContentSyncManager csm = new ContentSyncManager();
+        csm.setUpgradePathsXML(upgradePathsXML);
         csm.updateSUSEProducts(products);
 
         // Verify that the product has been updated correctly
