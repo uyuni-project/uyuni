@@ -36,3 +36,10 @@ Feature: Explore the Minions page
     When I follow "Minions"
     And when I see the contents of the minion
     And I should see a "/usr/bin/python" text
+
+  Scenario: Delete accepted minion
+    Given this client hostname
+    When I follow "Systems"
+    When I follow "Minions"
+    And when I delete this client as a minion from the Accepted section
+    Then I should not see this client as a minion anywhere
