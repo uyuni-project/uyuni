@@ -749,7 +749,8 @@ public class ContentSyncManager {
                 pcf.setCreated(new Date());
                 // Set the default organization (id = 1)
                 pcf.setOrg(OrgFactory.getSatelliteOrg());
-                // Set INFINITE max_members if default_nodecount = -1
+
+                // save the private channel family
                 pcf.setChannelFamily(family);
                 ChannelFamilyFactory.save(pcf);
 
