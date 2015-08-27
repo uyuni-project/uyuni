@@ -29,7 +29,6 @@
 <div class="hidden" id="sccconfig.jsp.products"><bean:message key="sccconfig.jsp.products"/></div>
 <div class="hidden" id="sccconfig.jsp.productchannels"><bean:message key="sccconfig.jsp.productchannels"/></div>
 <div class="hidden" id="sccconfig.jsp.subscriptions"><bean:message key="sccconfig.jsp.subscriptions"/></div>
-<div class="hidden" id="sccconfig.jsp.upgradepaths"><bean:message key="sccconfig.jsp.upgradepaths"/></div>
 <div class="hidden" id="sccconfig.jsp.completed"><bean:message key="sccconfig.jsp.completed"/></div>
 <div class="hidden" id="sccconfig.jsp.failed"><bean:message key="sccconfig.jsp.failed"/></div>
 <div class="hidden" id="sccconfig.jsp.failed.details.link"><bean:message key="sccconfig.jsp.failed.details.link"/></div>
