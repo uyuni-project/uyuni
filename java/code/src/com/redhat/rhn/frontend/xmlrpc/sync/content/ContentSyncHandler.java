@@ -166,27 +166,6 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * Synchronize upgrade paths between the Customer Center
-     * and the SUSE Manager database.
-     * This method is one step of the whole refresh cycle.
-     *
-     * @param loggedInUser the currently logged in user
-     * @return Integer
-     * @throws ContentSyncException in case of an error
-     *
-     * @xmlrpc.doc Synchronize upgrade paths between the Customer Center
-     *             and the SUSE Manager database.
-     * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #return_int_success()
-     */
-    public Integer synchronizeUpgradePaths(User loggedInUser) throws ContentSyncException {
-        ensureSatAdmin(loggedInUser);
-        ContentSyncManager csm = new ContentSyncManager();
-        csm.updateUpgradePaths(csm.getProducts());
-        return BaseHandler.VALID;
-    }
-
-    /**
      * Synchronize subscriptions between the Customer Center
      * and the SUSE Manager database.
      * This method is one step of the whole refresh cycle.
