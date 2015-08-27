@@ -90,9 +90,6 @@ public class ContentSyncManager {
     // Logger instance
     private static Logger log = Logger.getLogger(ContentSyncManager.class);
 
-    // This was a guesswork and we so far *have* to stay on this value.
-    private static final Long RESET_ENTITLEMENT = 10L;
-
     // Base channels have "BASE" as their parent in channels.xml
     public static final String BASE_CHANNEL = "BASE";
 
