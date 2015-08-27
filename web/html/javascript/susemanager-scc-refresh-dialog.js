@@ -75,7 +75,6 @@ $(function() {
       tasks.push({"task" : SCCConfigAjax.synchronizeProducts, "messageKey" : "#sccconfig\\.jsp\\.products"});
       tasks.push({"task" : SCCConfigAjax.synchronizeProductChannels, "messageKey" : "#sccconfig\\.jsp\\.productchannels"});
       tasks.push({"task" : SCCConfigAjax.synchronizeSubscriptions, "messageKey" : "#sccconfig\\.jsp\\.subscriptions"});
-      tasks.push({"task" : SCCConfigAjax.synchronizeUpgradePaths, "messageKey" : "#sccconfig\\.jsp\\.upgradepaths"});
     }
     // A task to perform in case of success
     function successTask() {
