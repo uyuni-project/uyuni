@@ -135,23 +135,6 @@ public class MgrSyncAJAXEndpoint {
     }
 
     /**
-     * Synchronize upgrade paths as in "mgr-sync refresh".
-     *
-     * @throws MgrSyncException in case of an error
-     */
-    public void synchronizeUpgradePaths() throws MgrSyncException {
-        ensureSatAdmin();
-        ContentSyncManager csm = new ContentSyncManager();
-        try {
-            csm.updateUpgradePaths();
-        }
-        catch (Exception e) {
-            log.fatal(e.getMessage(), e);
-            throw new MgrSyncException(e.getLocalizedMessage());
-        }
-    }
-
-    /**
      * Synchronize or add a given list of products.
      *
      * @param productIdents list of product idents
