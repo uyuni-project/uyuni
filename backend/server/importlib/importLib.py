@@ -204,7 +204,7 @@ class SuseUpgradePath(Information):
 
 class SuseSubscription(Information):
     attributeTypes = {
-        'max_members'       : IntType,
+        'max_members'       : IntType, # Deprecated
         'org_id'            : IntType,
         'channel_family_id' : IntType,
         'group_type'        : IntType
