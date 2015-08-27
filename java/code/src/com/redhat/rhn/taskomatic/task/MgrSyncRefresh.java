@@ -101,7 +101,6 @@ public class MgrSyncRefresh extends RhnJavaJob {
                 csm.updateSUSEProducts(csm.getProducts());
                 csm.updateSUSEProductChannels(csm.getAvailableChannels(csm.readChannels()));
                 csm.updateSubscriptions(csm.getSubscriptions());
-                csm.updateUpgradePaths();
             }
             catch (ContentSyncException e) {
                 log.error("Error during mgr-sync refresh", e);

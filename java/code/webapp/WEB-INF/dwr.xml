@@ -86,7 +86,6 @@
             <include method="synchronizeProducts" />
             <include method="synchronizeProductChannels" />
             <include method="synchronizeSubscriptions" />
-            <include method="synchronizeUpgradePaths" />
             <include method="syncProducts" />
         </create>
         <convert match="com.redhat.rhn.frontend.action.setupwizard.MgrSyncAJAXEndpoint$MgrSyncException"
