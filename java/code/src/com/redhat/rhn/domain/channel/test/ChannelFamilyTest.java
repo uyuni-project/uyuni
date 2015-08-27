@@ -65,8 +65,8 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
         throws Exception {
         ChannelFamily cf = ChannelFamilyFactory.lookupByLabel(label, null);
         if (cf == null) {
-            cf = ChannelFamilyFactoryTest.createTestChannelFamily(user,
-                0L, 0L, true, TestUtils.randomString());
+            cf = ChannelFamilyFactoryTest.createTestChannelFamily(user, true,
+                    TestUtils.randomString());
             cf.setName(label);
             cf.setLabel(label);
             ChannelFamilyFactory.save(cf);
