@@ -1379,69 +1379,6 @@ class Backend:
             insert_pcf.executemany(cfid=toinsert[0],
                                    org_id=toinsert[1])
 
-    def processSuseEntitlements(self, batch):
-        """Check if the System Entitlements are already in DB.
-           If yes, update it, if not add it.
-        """
-        # for org 1 all entitlements enries should be in DB
-        # so we need only to update the numbers
-        update_ents = self.dbmodule.prepare("""
-            UPDATE rhnServerGroup
-               SET max_members = :max_members
-             WHERE group_type = :group_type
-               AND org_id = :org_id
-             """)
-        _query_ents = self.dbmodule.prepare("""
-            SELECT group_type, org_id FROM rhnServerGroup
-            """)
-        _query_ents.execute()
-        existing_data = map(lambda x: "%s-%s" % (x['group_type'], x['org_id']), _query_ents.fetchall_dict() or [])
-        toupdate = [[], [], []]
-        for item in batch:
-            ident = "%s-%s" % (item['group_type'], item['org_id'])
-            if ident in existing_data:
-                existing_data.remove(ident)
-                toupdate[0].append(item['max_members'])
-                toupdate[1].append(item['group_type'])
-                toupdate[2].append(item['org_id'])
-                continue
-            # this should not happen
-            log_error("Not existing entitlement found %s" % item['group_type'])
-        if toupdate[0]:
-            update_ents.executemany(max_members=toupdate[0],
-                                    group_type=toupdate[1],
-                                    org_id=toupdate[2])
-
-    def getEntitlementLabels(self):
-        result = {}
-        sql = self.dbmodule.prepare("""
-           SELECT id, label FROM rhnServerGroupType
-           """)
-        sql.execute()
-        for item in (sql.fetchall_dict() or []):
-            result[item['label']] = item['id']
-        return result
-
-    def calcEntMaxMembers(self, ents):
-        """SUM max_members of org_id > 1 and set
-           new max_members = max_members - SUM(max_members of org > 1)
-        """
-        _query = self.dbmodule.prepare("""
-            SELECT sg.group_type, SUM(sg.max_members) AS giveaway
-              FROM rhnServerGroup sg
-             WHERE sg.org_id > 1
-          GROUP BY sg.group_type
-        """)
-        _query.execute()
-        existing_counts = {}
-        for entry in (_query.fetchall_dict() or []):
-            existing_counts[entry['group_type']] = 0
-            if entry['giveaway'] and int(entry['giveaway']) > 0:
-                existing_counts[entry['group_type']] = int(entry['giveaway'])
-
-        for item in ents:
-            if item['group_type'] in existing_counts:
-                item['max_members'] = item['max_members'] - existing_counts[item['group_type']]
 
     def lookupPackageIdFromPackage(self, package):
         if not isinstance(package, IncompletePackage):
