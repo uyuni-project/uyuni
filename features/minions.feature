@@ -27,19 +27,36 @@ Feature: Explore the Minions page
     Given this client hostname
     When I follow "Systems"
     When I follow "Minions"
-    And when I accept minion
+    And I accept minion
     Then I should see a this client as a minion in the Accepted section
 
   Scenario: Accepted minion is available
     Given this client hostname
     When I follow "Systems"
     When I follow "Minions"
-    And when I see the contents of the minion
+    And I see the contents of the minion
     And I should see a "/usr/bin/python" text
 
   Scenario: Delete accepted minion
     Given this client hostname
     When I follow "Systems"
     When I follow "Minions"
-    And when I delete this client as a minion from the Accepted section
+    And I delete this client as a minion from the Accepted section
     Then I should not see this client as a minion anywhere
+
+  Scenario: Reject pending minion
+    Given this client hostname
+    When I restart a minion of this client
+    And I refresh "Minions"
+    And I reject this client as a minion from the Pending section
+    Then I should see this client as a minion in the Rejected section
+
+  Scenario: Remove rejected minion
+    Given this client hostname
+    When I follow "Systems"
+    When I follow "Minions"
+    And I delete this client as a minion from the Rejected section
+    And I restart a minion of this client
+    And I refresh "Minions"
+    Then I should see a this client as a minion in the Pending section
+
