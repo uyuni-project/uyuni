@@ -1124,12 +1124,9 @@ public class ContentSyncManager {
             doUpdateUpgradePaths(fromProduct, path.getFromProductId(),
                     toProduct, path.getToProductId(), pathsToRemove);
         }
-        if (products != null) {
 
-            for (SCCProduct p : products) {
-                if(p.getPredecessorIds() == null) {
-                    continue;
-                }
+        for (SCCProduct p : products) {
+            if(p.getPredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
                 for (Integer predecessorId : p.getPredecessorIds()) {
                     SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
