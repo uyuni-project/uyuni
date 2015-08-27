@@ -64,6 +64,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     // manually compiled (eg. with LibreOffice)
     private static final String EXPECTED_PRODUCTS_CSV = JARPATH + "expected_products.csv";
 
+    private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+
     /** Channel family labels that are entitled in the scope of this non regression test. */
     private static final List<String> ENTITLED_LABELS = new LinkedList<String>() { {
         add("SLE-HAE-PPC"); add("RES"); add("SMS");
@@ -103,6 +105,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 .getPath());
         File expectedProductsCSV =
                 new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
@@ -133,6 +137,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
+            csm.setUpgradePathsXML(upgradePathsXML);
 
             // load repository data
             List<SCCRepository> sccRepositories =
@@ -222,6 +227,8 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
      */
     public void testUpdateProductsMultipleTimes() throws Exception {
         File productsJSON = new File(TestUtils.findTestData(PRODUCTS_JSON).getPath());
+        File upgradePathsXML = new File(
+                TestUtils.findTestData(UPGRADE_PATHS_XML).getPath());
         try {
             // clear existing products
             SUSEProductFactory.clearAllProducts();
@@ -231,6 +238,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     new TypeToken<List<SCCProduct>>() { } .getType());
 
             ContentSyncManager csm = new ContentSyncManager();
+            csm.setUpgradePathsXML(upgradePathsXML);
 
             // HACK: some SCC products do not have correct data
             // to be removed when SCC team fixes this
