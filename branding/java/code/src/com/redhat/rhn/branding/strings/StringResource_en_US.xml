@@ -2106,9 +2106,6 @@ tree will not be usable for autoinstalling.
       <trans-unit id="sccconfig.jsp.subscriptions">
         <source>Subscriptions</source>
       </trans-unit>
-      <trans-unit id="sccconfig.jsp.upgradepaths">
-        <source>Upgrade Paths</source>
-      </trans-unit>
       <trans-unit id="sccconfig.jsp.close">
         <source>Close</source>
       </trans-unit>
