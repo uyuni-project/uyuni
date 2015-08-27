@@ -49,3 +49,8 @@ web/rpm-build
 web/rhn-web-*.tar.gz
 sqlnet.log
 backend/reports
+
+# Intellij IDEA
+.idea/
+*.iml
+java/out
