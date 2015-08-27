@@ -1101,10 +1101,12 @@ public class ContentSyncManager {
     /**
      * Update contents of the suseUpgradePaths table with values from upgrade_paths.xml
      * and predecessor_ids from SCC
+     *
      * @param products Collection of SCC Products
      * @throws ContentSyncException in case of an error
      */
-    public void updateUpgradePaths(Collection<SCCProduct> products) throws ContentSyncException {
+    public void updateUpgradePaths(Collection<SCCProduct> products)
+            throws ContentSyncException {
         // Get all paths from DB and create map that eventually will hold the ones to remove
         List<SUSEUpgradePath> upgradePathsDB = SUSEProductFactory.findAllSUSEUpgradePaths();
         Map<String, SUSEUpgradePath> pathsToRemove = new HashMap<String, SUSEUpgradePath>();
@@ -1121,17 +1123,18 @@ public class ContentSyncManager {
                     path.getFromProductId());
             SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(
                     path.getToProductId());
-            doUpdateUpgradePaths(fromProduct, path.getFromProductId(),
+            updateUpgradePath(fromProduct, path.getFromProductId(),
                     toProduct, path.getToProductId(), pathsToRemove);
         }
 
         for (SCCProduct p : products) {
-            if(p.getPredecessorIds() != null) {
+            if (p.getPredecessorIds() != null) {
                 SUSEProduct toProduct = SUSEProductFactory.lookupByProductId(p.getId());
                 for (Integer predecessorId : p.getPredecessorIds()) {
-                    SUSEProduct fromProduct = SUSEProductFactory.lookupByProductId(
-                            predecessorId);
-                    doUpdateUpgradePaths(fromProduct, predecessorId, toProduct, p.getId(), pathsToRemove);
+                    SUSEProduct fromProduct =
+                            SUSEProductFactory.lookupByProductId(predecessorId);
+                    updateUpgradePath(fromProduct, predecessorId, toProduct, p.getId(),
+                            pathsToRemove);
                 }
             }
         }
@@ -1145,7 +1148,16 @@ public class ContentSyncManager {
         }
     }
 
-    private void doUpdateUpgradePaths(SUSEProduct fromProduct, Integer fromSCCProductid,
+    /**
+     * Updates a single upgrade path.
+     *
+     * @param fromProduct the source product
+     * @param fromSCCProductid the souce product's SCC ID
+     * @param toProduct the destination product
+     * @param toSCCProductid the destination product's SCC ID
+     * @param pathsToRemove Map of paths to remove, will be updated by this method
+     */
+    private void updateUpgradePath(SUSEProduct fromProduct, Integer fromSCCProductid,
             SUSEProduct toProduct, Integer toSCCProductid,
             Map<String, SUSEUpgradePath> pathsToRemove) {
         if (fromProduct != null && toProduct != null) {
