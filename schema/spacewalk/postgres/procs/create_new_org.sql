@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 393e2dd8602c7e6169828b3465685d2c6010cd19
+-- oracle equivalent source sha1 143891f440a39ce60116a16e2f461cba610d9d96
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -115,6 +115,20 @@ begin
                         200000, sgt.id, new_org_id
                 from rhnServerGroupType sgt
                 where sgt.label = 'bootstrap_entitled';
+
+        insert into rhnServerGroup
+                ( id, name, description, max_members, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        200000, sgt.id, new_org_id
+                from rhnServerGroupType sgt
+                where sgt.label = 'enterprise_entitled';
+
+        insert into rhnServerGroup
+                ( id, name, description, max_members, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        200000, sgt.id, new_org_id
+                from rhnServerGroupType sgt
+                where sgt.label = 'virtualization_host';
 
         org_id_out := new_org_id;
 
