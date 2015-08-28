@@ -10,17 +10,16 @@
       .panel-heading
         h2
           i.fa.fa-plus
-          |  
           #{l10n.getMessage("minions.pending")}
-      table(class="table table-striped")
+      table(class="table table-striped vertical-middle")
         for minion in unaccepted_minions
           tr
-            td(style="vertical-align: middle;")
+            td
               b #{minion}
             td.col-md-5
               .pull-right.btn-group
-                a.btn.btn-default(href="/rhn/manager/minions/accept/#{minion}"): i.fa.fa-check(style="margin:0px;")
-                a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times(style="margin:0px;")
+                a.btn.btn-default(href="/rhn/manager/minions/accept/#{minion}"): i.fa.fa-check.no-margin
+                a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times.no-margin
         else
           tr
             td #{l10n.getMessage("minions.no.pending")}
@@ -30,21 +29,20 @@
       .panel-heading
         h2
           i.fa.fa-check
-          |  
           #{l10n.getMessage("minions.accepted")}
-      table(class="table table-striped")
+      table(class="table table-striped vertical-middle")
         for minion in minions
           tr
-            td(style="vertical-align: middle;")
+            td
               if present.contains(minion)
                 b: a(href="/rhn/manager/minions/#{minion}") #{minion}
               else
-                i.fa.fa-exclamation-triangle(title="Minion is not available.", style="color: #a81a1a")
+                i.fa.fa-exclamation-triangle.text-danger(title="Minion is not available.")
                 |  
                 b #{minion}
             td.col-md-2
               .pull-right
-                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o(style="margin:0px;")
+                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
         else
           tr
             td #{l10n.getMessage("minions.no.accepted")}
@@ -54,16 +52,15 @@
       .panel-heading
         h2
           i.fa.fa-times
-          |  
           #{l10n.getMessage("minions.rejected")}
-      table(class="table table-striped")
+      table(class="table table-striped vertical-middle")
         for minion in rejected_minions
           tr
-            td(style="vertical-align: middle;")
+            td
               b #{minion}
-            td.col-md-2(style="vertical-align: middle;")
+            td.col-md-2
               .pull-right
-                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o(style="margin:0px;")
+                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
         else
           tr
             td #{l10n.getMessage("minions.no.rejected")}

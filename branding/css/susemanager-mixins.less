@@ -8,3 +8,14 @@
 .default-button-colour {
   #gradient .vertical(#fff, darken(#fff, 10%), 0%, 100%);
 }
+
+//this should really be the default
+i.no-margin {
+    &[class~="fa"],
+    &[class^="icon-"],
+    &[class*=" icon-"],
+    &[class*="spacewalk-icon"],
+    &[class^="spacewalk-icon"] {
+      margin: 0px;
+    }
+}
