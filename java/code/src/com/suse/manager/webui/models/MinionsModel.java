@@ -39,6 +39,9 @@ public class MinionsModel {
 
     // The salt URI as string
     private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
+    private static final String ADMIN_NAME = "admin";
+    private static final String ADMIN_PASSWORD = "";
+    private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
     private MinionsModel() { }
 
@@ -52,7 +55,7 @@ public class MinionsModel {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
-            WheelResult<Keys> result = client.callSync(Key.listAll(), "admin", "", AuthModule.AUTO);
+            WheelResult<Keys> result = client.callSync(Key.listAll(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
         catch (SaltStackException e) {
@@ -71,7 +74,7 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new MinionList(minionKey), "admin", "", AuthModule.AUTO);
+            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionKey, new HashMap<>());
         }
         catch (SaltStackException e) {
@@ -89,7 +92,7 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            List<String> present = client.callSync(Manage.present(), "admin", "", AuthModule.AUTO);
+            List<String> present = client.callSync(Manage.present(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return present;
         }
         catch (SaltStackException e) {
@@ -108,7 +111,7 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new MinionList(minionKey), "admin", "", AuthModule.AUTO);
+            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return packages.get(minionKey);
         }
         catch (SaltStackException e) {
@@ -125,7 +128,7 @@ public class MinionsModel {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.accept(minionKey), "admin", "", AuthModule.AUTO);
+            client.callSync(Key.accept(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -141,7 +144,7 @@ public class MinionsModel {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.delete(minionKey), "admin", "", AuthModule.AUTO);
+            client.callSync(Key.delete(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -157,7 +160,7 @@ public class MinionsModel {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.reject(minionKey), "admin", "", AuthModule.AUTO);
+            client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
