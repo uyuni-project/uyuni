@@ -1094,32 +1094,6 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup a Package based on the channel, package file name and range
-     * @param channel to look in
-     * @param fileName to look up
-     * @param headerStart start of header
-     * @param headerEnd end of header
-     * @return Package if found
-     */
-    public static Package lookupPackageByFilenameAndRange(Channel channel,
-            String fileName, int headerStart, int headerEnd) {
-
-        List<Package> pkgs = HibernateFactory.getSession()
-          .getNamedQuery("Channel.packageByFileNameAndRange")
-          .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId().longValue())
-          .setInteger("headerStart", headerStart)
-          .setInteger("headerEnd", headerEnd)
-          .list();
-        if (pkgs.isEmpty()) {
-            return null;
-        }
-        else {
-            return pkgs.get(0);
-        }
-    }
-
-    /**
      * Method to check if the channel contains any kickstart distributions
      * associated to it.
      * @param ch the channel to check distros on
