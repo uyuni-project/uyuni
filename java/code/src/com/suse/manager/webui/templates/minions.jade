@@ -21,7 +21,6 @@
               .pull-right.btn-group
                 a.btn.btn-default(href="/rhn/manager/minions/accept/#{minion}"): i.fa.fa-check(style="margin:0px;")
                 a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times(style="margin:0px;")
-                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o(style="margin:0px;")
         else
           tr
             td #{l10n.getMessage("minions.no.pending")}
