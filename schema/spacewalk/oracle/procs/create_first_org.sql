@@ -129,6 +129,21 @@ begin
                         200000, sgt.id, 1
                 from rhnServerGroupType sgt
                 where sgt.label = 'bootstrap_entitled';
+        
+        insert into rhnServerGroup
+                ( id, name, description, max_members, group_type, org_id )
+                select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
+                        200000, sgt.id, 1
+                from rhnServerGroupType sgt
+                where sgt.label = 'enterprise_entitled';
+        
+        insert into rhnServerGroup
+                ( id, name, description, max_members, group_type, org_id )
+                select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
+                        200000, sgt.id, 1
+                from rhnServerGroupType sgt
+                where sgt.label = 'virtualization_host';
+
 
 end create_first_org;
 /
