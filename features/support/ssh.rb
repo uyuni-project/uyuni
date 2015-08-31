@@ -6,7 +6,7 @@ def sshcmd(command, host: ENV['TESTHOST'], user: 'root', ignore_err: false)
   #Not passing :password uses systems keys for auth
   out = StringIO.new
   err = StringIO.new
-  Net::SSH.start(host, user) do |ssh|
+  Net::SSH.start(host, user, :paranoid => Net::SSH::Verifiers::Null.new) do |ssh|
     ssh.exec!(command) do |chan, str, data|
       out << data if str == :stdout
       err << data if str == :stderr
