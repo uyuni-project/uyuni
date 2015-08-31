@@ -1,0 +1,9 @@
+diff --git a/liblzma.py~ b/liblzma.py
+index 36d8047..293193d 100644
+--- a/liblzma.py~
++++ b/liblzma.py
+@@ -1,4 +1,3 @@
+-#!/usr/bin/env python
+ from lzma import *
+ from warnings import warn
+ warn("'liblzma' has been renamed to 'lzma'!\n Please update code to import 'lzma'!", DeprecationWarning, stacklevel=1)
