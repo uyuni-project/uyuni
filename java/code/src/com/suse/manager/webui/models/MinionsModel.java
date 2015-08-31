@@ -15,13 +15,22 @@
 package com.suse.manager.webui.models;
 
 import com.redhat.rhn.domain.user.User;
-
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.WheelResult;
+import com.suse.saltstack.netapi.calls.modules.Grains;
+import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.saltstack.netapi.calls.runner.Manage;
+import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.client.SaltStackClient;
+import com.suse.saltstack.netapi.config.ClientConfig;
 import com.suse.saltstack.netapi.datatypes.Keys;
+import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import com.suse.saltstack.netapi.exception.SaltStackException;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class containing functions for accessing data needed by MinionsController.
@@ -29,7 +38,10 @@ import java.net.URI;
 public class MinionsModel {
 
     // The salt URI as string
-    private static final URI saltMasterURI = URI.create("http://localhost:9080");
+    private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
+    private static final String ADMIN_NAME = "admin";
+    private static final String ADMIN_PASSWORD = "";
+    private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
     private MinionsModel() { }
 
@@ -42,12 +54,113 @@ public class MinionsModel {
     public static Keys getKeys(User user) {
         SaltStackClient client;
         try {
-            client = new SaltStackClient(saltMasterURI);
-            // FIXME: Pass on actual user credentials as soon as it is supported
-            client.login("admin", "", AuthModule.AUTO);
-            Keys keys = client.keys();
-            client.logoutAsync();
-            return keys;
+            client = new SaltStackClient(SALT_MASTER_URI);
+            WheelResult<Keys> result = client.callSync(Key.listAll(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return result.getData().getResult();
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the grains from a minion.
+     *
+     * @param minionKey key of the target minion
+     * @return a map containing the grains
+     */
+    public static Map<String, Object> grains(String minionKey) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return grains.getOrDefault(minionKey, new HashMap<>());
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Query all present minions according to salts presence detection
+     *
+     * @return the list of minion keys that are present
+     */
+    public static List<String> present() {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            List<String> present = client.callSync(Manage.present(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return present;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *  Get the installed packages from a minion
+     *
+     * @param minionKey key of the target minion
+     * @return a map from package names to list of version strings
+     */
+    public static Map<String, List<String>> packages(String minionKey) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return packages.get(minionKey);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Accept a pending minion key
+     *
+     * @param minionKey key of the target minion
+     */
+    public static void accept(String minionKey) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.callSync(Key.accept(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Delete a minion key from the master
+     *
+     * @param minionKey key of the target minion
+     */
+    public static void delete(String minionKey) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.callSync(Key.delete(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Reject a pending minion key
+     *
+     * @param minionKey key of the target minion
+     */
+    public static void reject(String minionKey) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);

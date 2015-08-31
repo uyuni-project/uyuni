@@ -20,6 +20,7 @@ import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import spark.ModelAndView;
@@ -43,10 +44,69 @@ public class MinionsController {
      */
     public static ModelAndView listMinions(Request request, Response response, User user) {
         Keys keys = MinionsModel.getKeys(user);
+        List<String> present = MinionsModel.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
         data.put("rejected_minions", keys.getRejectedMinions());
+        data.put("present", present);
         return new ModelAndView(data, "minions.jade");
+    }
+
+    /**
+     * Handler for the minion details page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView minionDetails(Request request, Response response) {
+        String key = request.params("key");
+        Map<String, Object> grains = MinionsModel.grains(key);
+        Map<String, List<String>> packages = MinionsModel.packages(key);
+        Map<String, Object> data = new HashMap<>();
+        data.put("key", key);
+        data.put("grains", grains);
+        data.put("packages", packages);
+        return new ModelAndView(data, "minion.jade");
+    }
+
+    /**
+     * Handler for accept minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
+    public static Object acceptMinion(Request request, Response response) {
+        MinionsModel.accept(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
+    }
+
+    /**
+     * Handler for delete minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
+    public static Object deleteMinion(Request request, Response response) {
+        MinionsModel.delete(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
+    }
+
+    /**
+     * Handler for reject minion url.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return dummy string to satisfy spark
+     */
+    public static Object rejectMinion(Request request, Response response) {
+        MinionsModel.reject(request.params("key"));
+        response.redirect("/rhn/manager/minions");
+        return "";
     }
 }
