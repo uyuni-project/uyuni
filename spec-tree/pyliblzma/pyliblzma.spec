@@ -7,7 +7,7 @@
 Summary:    Python bindings for lzma
 Name:       pyliblzma
 Version:    0.5.3
-Release:    13%{?dist}
+Release:    14%{?dist}
 License:    LGPLv3+
 URL:        https://launchpad.net/pyliblzma
 Source0:    http://pypi.python.org/packages/source/p/pyliblzma/%{name}-%{version}.tar.bz2
@@ -50,6 +50,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}*.egg-info
 
 %changelog
+* Mon Aug 31 2015 Tomas Lestach <tlestach@redhat.com> 0.5.3-14
+- new package built with tito
+
 * Sun Aug 17 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.5.3-13
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
