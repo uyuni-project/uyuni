@@ -4293,21 +4293,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>கணினிகள்</target>
       </trans-unit>
-      <trans-unit id="Used/Allotted">
-        <source>Used/Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="None Allocated">
-        <source>None Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Used/Allotted.tip">
-        <source>'Allotted' refers to the total number of entitlements allocated to any organization from initial pool as reflected in this @@PRODUCT_NAME@@'s certificate. 'Used' refers to entitlements that have been consumed by systems in various organizations.</source>
-      </trans-unit>
       <trans-unit id="satusers.tip">
         <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
 not be modified on this page. Instead, please visit the "Users" top-level
@@ -4349,10 +4334,6 @@ deducted from the default organization.</source>
       <trans-unit id="probedetails.jsp.end_date">
         <source>End date:</source>
         <target>முடிவு தேதி:</target>
-      </trans-unit>
-      <trans-unit id="softwareEntitlementSubs.invalidInput">
-        <source>Proposed Allocation is invalid.</source>
-        <target>கூறப்பட்ட ஒதுக்கீடு தவறானதாகும்.</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
         <source>Issue Start Date: </source>
@@ -6267,25 +6248,9 @@ deducted from the default organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_unlimited">
+        <trans-unit id="systementitlements.jsp.entitlement_counts_message">
           <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;unlimited available&lt;/strong&gt; entitlements</source>
           <target>&lt;strong&gt;{0} கணினி&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, &lt;strong&gt;வரையறையில்லாமல்&lt;/strong&gt; உரிமங்கள் உள்ளன</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_1">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} கணினிகள்&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, &lt;strong&gt;{1} இருக்கும்&lt;/strong&gt; உரிமங்கள் (&lt;strong&gt;{2} மொத்தமாகும்&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_2">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} கணினிகள்&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, &lt;strong&gt;{1} இருக்கும்&lt;/strong&gt; உரிமங்கள் (&lt;strong&gt;{2} மொத்தமாகும்&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_3">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} கணினிகள்&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, &lt;strong&gt;{1} இருக்கும்&lt;/strong&gt; உரிமங்கள் (&lt;strong&gt;{2} மொத்தமாகும்&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_4">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} கணினிகள்&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, &lt;strong&gt;{1} இருக்கும்&lt;/strong&gt; உரிமங்கள் (&lt;strong&gt;{2} மொத்தமாகும்&lt;/strong&gt;) </target>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
@@ -6325,10 +6290,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>&lt;strong&gt;{0}&lt;/strong&gt; கணினிகளிலிருந்து &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; நீக்கப்பட்டது.</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.provisioning.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; கணினி(கள்) வெற்றிகரமாக &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, ஆனால், நீங்கள் &lt;strong&gt;{1}&lt;/strong&gt; கணினி(களுக்கு) போதிய &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; உரிமம் இல்லை. நீங்கள் கூடுதல் &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; உரிமத்தை &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ஸ்டோரில் வாங்கலாம்&lt;/strong&gt;&lt;/a&gt;. நீங்கள்  கூடுதல் &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; உரிமத்தைப் பெற்ற பின், இந்த கணினிகளை மேம்படுத்தலாம்.</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.provisioning.noManagement">
           <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt; உரிமம் &lt;strong&gt;{0}&lt;/strong&gt; கணினிகளில் செயலிழக்கப்பட்டது. ஏனெனில் அவை &lt;strong&gt;மேலாண்மை&lt;/strong&gt;அடிப்படை உரிமங்களை கொண்டிருக்கவில்லை. செயலிழக்கப்பட்ட கணினிகள் இன்னும் கீழே தேர்வு செய்யப்பட்டுள்ளன. நீங்கள் &lt;strong&gt;மேலாண்மை உரிமத்திற்கு அமைக்கவும்&lt;/strong&gt;பொத்தானை கீழே சொடுக்கி, பின் &lt;strong&gt;கூடுதல் உரிம பிரிவில்&lt;/strong&gt; இருக்கும் &lt;strong&gt;கண்காணிப்பு&lt;/strong&gt; உருப்படி பட்டியலில் சொடுக்கி பின் கீழே &lt;strong&gt;கூடுதல் உரிமம்&lt;/strong&gt; பொத்தானை சொடுக்கவும், நீங்கள் &lt;strong&gt;வாய்ப்பளித்தல்&lt;/strong&gt;உரிமத்தையும் இந்த கணினிகளில் சேர்க்கலாம்.</target>
@@ -6345,10 +6306,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
           <target>&lt;strong&gt;மெய்நிகராக்கத்தை&lt;/strong&gt; &lt;strong&gt;{0}&lt;/strong&gt; கணினிகளிலிருந்து நீக்குவது தேர்ந்தெடுக்கப்பட்ட  புரவலினிலிருந்து தொடர்புடைய விருந்தினர்களை பருநிலை தடம் மற்றும் கணினி உரிமங்களை வைத்திருக்கிறது.</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; கணினி(கள்) வெற்றிகரமாக &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உரிமப்படுத்தப்பட்டது, ஆனால், நீங்கள் &lt;strong&gt;{1}&lt;/strong&gt; கணினி(களுக்கு) போதிய &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உரிமம் இல்லை. நீங்கள் கூடுதல் &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உரிமத்தை &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ஸ்டோரில் வாங்கலாம்&lt;/strong&gt;&lt;/a&gt;. நீங்கள்  கூடுதல் &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உரிமத்தைப் பெற்ற பின், இந்த கணினிகளை மேம்படுத்தலாம். &lt;br/&gt;&lt;strong&gt;குறிப்பு: &lt;/strong&gt;கணினி முன்பே மெய்நிகராக்க இயக்கத்தளத்தை கொண்டிருந்தால் அது மெய்நிகராத்திற்கு குறைக்கப்படும்.</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உரிமம் &lt;strong&gt;{0}&lt;/strong&gt; கணினிகளில் செயலிழக்கப்பட்டது. ஏனெனில் அவை &lt;strong&gt;மேலாண்மை&lt;/strong&gt;அடிப்படை உரிமங்களை கொண்டிருக்கவில்லை. செயலிழக்கப்பட்ட கணினிகள் இன்னும் கீழே தேர்வு செய்யப்பட்டுள்ளன. நீங்கள் &lt;strong&gt;மேலாண்மை உரிமத்திற்கு அமைக்கவும்&lt;/strong&gt;பொத்தானை கீழே சொடுக்கி, பின் &lt;strong&gt;கூடுதல் உரிம பிரிவில்&lt;/strong&gt; இருக்கும் &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt; உருப்படி பட்டியலில் சொடுக்கி பின் கீழே &lt;strong&gt;கூடுதல் உரிமம்&lt;/strong&gt; பொத்தானை சொடுக்கவும், நீங்கள் &lt;strong&gt;மெய்நிகராக்க&lt;/strong&gt;உரிமத்தையும் இந்த கணினிகளில் சேர்க்கலாம்.</target>
@@ -6364,10 +6321,6 @@ deducted from the default organization.</source>
         <trans-unit id="system_entitlements.monitoring.removed.success">
           <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>&lt;strong&gt;{0}&lt;/strong&gt; கணினிகளிலிருந்து &lt;strong&gt;கண்காணித்தல்&lt;/strong&gt; நீக்கப்பட்டது.</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.monitoring.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; கணினி(கள்) வெற்றிகரமாக &lt;strong&gt;கண்காணிப்பு&lt;/strong&gt; உரிமம் அமைக்கப்பட்டது, ஆனால் நீங்கள் போதுமான &lt;strong&gt;கண்காணிப்பு&lt;/strong&gt; மீதமுள்ள &lt;strong&gt;{1}&lt;/strong&gt; கணினி(களில்) கொண்டிருக்கவில்லை. நீங்கள் கூடுதல் &lt;strong&gt;கண்காணிப்பு&lt;/strong&gt; உரிமங்களை &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ஸ்டோரில்&lt;/strong&gt; &lt;/a&gt; வாங்கலாம். கூடுதல் &lt;strong&gt;கண்காணிப்பு&lt;/strong&gt; உரிமங்களை பெற்ற பின், நீங்கள் இந்த கணினிகளை மேம்படுத்த முடியும்.</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noManagement">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6389,15 +6342,6 @@ deducted from the default organization.</source>
       <group>
         <trans-unit id="Registered">
           <source>Registered</source>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message_unlimited">
-          <source>{0} consumed, unlimited available entitlements</source>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message">
-          <source>{0} consumed, {1} available entitlement</source>
-        </trans-unit>
-        <trans-unit id="eligible.floating.guests">
-          <source>Guests Consuming Regular Entitlements</source>
         </trans-unit>
       </group>
       <!--  System search -->
@@ -8351,41 +8295,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target>கண்காணிப்பு செயலிழக்கப்பட்டது..  எனவே &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;பொது&lt;/strong&gt;&lt;/a&gt; கட்டமைப்பு பக்கத்திற்கு சென்று கண்காணிப்பினை செயல்படுத்தவும் சோதனைப்பெட்டியை தேர்வு செய்யவும்.</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.toolbar">
-        <source>@@PRODUCT_NAME@@ Configuration - Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ கட்டமைப்பு - சான்றிதழ்</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.summary">
-        <source>You must provide an @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>நீங்கள் @@PRODUCT_NAME@@ சான்றிதல் வழங்க வேண்டும். இந்த சான்றிதழ் @@PRODUCT_NAME@@ வழங்கும் பல்வேறு சேவைகளை உரிமம் செய்யும்.</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.header2">
-        <source>@@PRODUCT_NAME@@ Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ சான்றிதழ்</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_file">
-        <source>Upload Certificate File:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>சான்றிதழ் கோப்பினை ஏற்றவும்</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_text">
-        <source>-or- Certificate Text:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>-அல்லது- சான்றிதழ் உரை:</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -20239,13 +20148,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <target>நீங்கள் அணுக முயற்சிக்கும் தடம் இல்லை அல்லது உங்களுக்கு அணுக அனுமதி இல்லை. இந்த பக்கத்திற்கு வந்த இணைப்பினை மீண்டும் சோதிக்கவும்.</target>
         </trans-unit>
       </group>
-      <trans-unit id="sdc.channels.edit.available">
-        <source>available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">outage-policy.jsp</context>
-        </context-group>
-        <target>இருப்பவை</target>
-      </trans-unit>
       <trans-unit id="sdc.channels.edit.unlimited">
         <source>unlimited</source>
         <context-group name="ctx">
@@ -20490,181 +20392,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>ஆரம்ப நிறுவன நிர்வாகியை உருவாக்குதல்</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>உரிம பெயர்</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>மொத்தம்</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>கூறப்பட்ட மொத்தம்</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.base">
-        <source>(Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(அடிப்பகுதி)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(கூடுதல் இணைப்பு)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.man_tip">
-        <source>Required for all systems registered to the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ உடன் பதிவு செய்யப்பட்ட அனைத்து கணினிகளுக்கும் தேவை.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.mon_tip">
-        <source>Enables the tracking of monitoring data for a system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ஒரு கணினிக்கு கண்காணித்தல் தரவுகளை தேட செயல்படுத்தப்பட்டுள்ளது.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_tip">
-        <source>Applied to a host system, enables management for up to 4 guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ஒரு புரவலன் கணினிக்கு செயல்படுத்தப்பட்டுள்ளது, 4 விருந்தினர்களை மேலாண்மை செய்ய செயல்படுத்தப்பட்டுள்ளது.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>வரும் மதிப்புகள் &lt;strong&gt;{0}&lt;/strong&gt; லிருந்து &lt;strong&gt;{1}&lt;/strong&gt; வரை.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.description">
-        <source>The following is a list of all software channel entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements</context>
-        </context-group>
-        <target>பின்வருவது நிறுவனங்களில், இந்த @@PRODUCT_NAME@@ இல் உள்ள அனைத்து மென்பொருள் தட உரிமங்கள் ஆகும் மற்றும் அதன் பயன்பாடாகும். உரிமங்களின் பெயரை சொடுக்கி அதன் முழு விவரங்களை பெறலாம்.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.header">
-        <source>System Entitlements Across @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@இல் கணினி உரிமங்கள்</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>உரிம பெயர்</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usagedata">
-        <source>{0} of {1} ({2}%)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>{1} ({2}%) இல் {0}</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.total">
-        <source>Total*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>மொத்தம்*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.available">
-        <source>Available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>இருப்பவை</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.tip">
-        <source>'Total' refers to the total available to the @@PRODUCT_NAME@@ as reflected in this @@PRODUCT_NAME@@'s certificate.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>*&lt;strong&gt;துணுக்கு:&lt;/strong&gt;'மொத்தம்' @@PRODUCT_NAME@@ சான்றிதழில் இருக்கும்
-மொத்த @@PRODUCT_NAME@@ காட்டப்படுவதாகும்.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.not_allocated">
-        <source>Not Allocated*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ஒதுக்கப்படவில்லை*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.notinuse">
-        <source>Not In Use</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>பயனில் இல்லை</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.enterprise_entitled">
-        <source> Management (Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>மேலாண்மை (அடிப்படை)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host">
-        <source> Virtualization (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>மெய்நிகராக்கம் (கூடுதல்)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>(கூடுதல் இணைப்பு)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentitlements">
-        <source>No Entitlements Found</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>உரிமங்கள் எதுவும் இல்லை</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentorgs">
-        <source>No organizations have this entitlement</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.cryptokey.description">
         <source>Description</source>
         <context-group name="ctx">
@@ -20678,151 +20405,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/keys/CrytpoKeysList</context>
         </context-group>
         <target>வகை</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant">
-        <source>Access Granted by this Entitlement:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>இந்த உரிமத்தால் அணுகல் வழங்கப்பட்டது:</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>சேட்டிலைட்டில் பதிவு செய்யப்பட்ட அனைத்து கணினிகளுக்கும் ஒரு ஒற்றை மேலாண்மை (அடிப்படை) உரிமம் தேவைப்படுகிறது</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
-        <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>ஒரு புரவலன் கணினிக்கு ஒத்த ஒரு ஒற்றை மெய்நிகராக்க இயக்கத்தள (கூடுதல்) உரிமம், 4 விருந்தினர்களை மேலாண்மை செய்ய செயல்படுத்தப்பட்டுள்ளது.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.orgname">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>நிறுவனத்தின் பெயர்</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>கூறப்பட்ட மொத்தம்</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.description">
-        <source>The Current Allocation of entitlements for {0} across the organizations on this @@PRODUCT_NAME@@ is displayed below. You may make changes to the allocation of entitlements for each organization in the "Proposed Total" column, but your changes will not take effect until you confirm using the 'Confirm Changes' button below. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>கீழே இந்த @@PRODUCT_NAME@@இல் நிறுவனங்களிடையே தற்போது {0}க்கு ஒதுக்கப்பட்ட உரிமங்கள் காட்டப்பட்டுள்ளது. நீங்கள் &quot;கூறப்பட்ட மொத்தம்&quot; நிரலில் ஒவ்வொரு நிறுவனத்திற்கும் ஒதுக்கப்பட்ட உரிமங்களை மாற்றங்கள் செய்யலாம், ஆனால் இந்த மாற்றங்கள் செயல்பட 'மாற்றங்களை உறுதிப்படுத்தல்' பொத்தானை கீழே சொடுக்க வேண்டும். </target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;0&lt;/strong&gt; to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>மதிப்புகள்: &lt;strong&gt;{0}&lt;/strong&gt; லிருந்து &lt;strong&gt;{0}&lt;/strong&gt;</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.update">
-        <source>Update</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>மேம்படுத்தல்</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.usage">
-        <source>@@PRODUCT_NAME@@-Wide Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ உரிம பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.filterBy">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>நிறுவனத்தின் பெயர்</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.miniheader">
-        <source>View/Modify Entitlement Counts by Organization</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>நிறுவனத்தின் படி உரிம எண்ணிக்கைகளை பார்வையிடு/மாற்று</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_allocated">
-        <source>Total Allocated</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>மொத்தம் ஒதுக்கப்பட்டது</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_inuse">
-        <source>Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>உரிம பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orguse">
-        <source>Organization Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>நிறுவன பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orgusedata">
-        <source>{0} of {1} organizations ({2}%) have access to
-this entitlement.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>{1} இல் {0} நிறுவனங்கள் ({2}%) இந்த உரிமத்தை
-கொண்டுள்ளது.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>மொத்தம்</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.used">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>பயன்பாடு</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip_allocated">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; This total corresponds to your @@PRODUCT_NAME@@ certificate's
-value for this entitlement, excluding the default organization's consumption.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; 'Total' refers to the total available entitlements to
-the organizations (excluding the default @@PRODUCT_NAME@@ organization) on this @@PRODUCT_NAME@@. It is not equal to the total available in the @@PRODUCT_NAME@@ certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;*துணுக்கு:&lt;/strong&gt; 'மொத்தம்' என்பது இந்த @@PRODUCT_NAME@@இல் நிறுவனங்களில் உள்ள
-மொத்த உரிமங்கள் ஆகும் (முன்னிருப்பு @@PRODUCT_NAME@@ நிறுவனங்களை தவிர்த்து). இது @@PRODUCT_NAME@@ சான்றிதழிலுள்ள மொத்தத்திற்கு சமமில்லை</target>
-      </trans-unit>
-      <trans-unit id="orgsoftwaresubs.jsp.description">
-        <source>Below you modify the total number of software channel entitlements available to the &lt;strong&gt;{0}&lt;/strong&gt; organization on a per-channel basis.  If you'd like to modify the number of entitlements available to a particular channel note that you are limited by the range indicated next to the field.</source>
-        <target>கீழே தடங்களின் அடிப்படையில் &lt;strong&gt;{0}&lt;/strong&gt; நிறுவனத்திற்கு நீங்கள் மென்பொருள் தட உரிமங்களை மாற்றலாம். நீங்கள் ஒரு குறிப்பிட்ட தடத்திற்கு உள்ள உரிமங்களின் எண்ணிக்கையை மாற்ற வேண்டுமென்றால் அடுத்த புலத்திலுள்ள வரம்பு வரையறையை குறித்து கொள்ள வேண்டும்.</target>
-      </trans-unit>
-      <trans-unit id="orgsysubs.jsp.header2">
-        <source>System Entitlement Counts</source>
-        <target>கணினி உரிம எண்ணிக்கைகள்</target>
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
@@ -21762,15 +21344,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="currentMembers">
         <source>Regular Usage - Used</source>
-      </trans-unit>
-      <trans-unit id="maxMembers">
-        <source>Regular Usage - Alloted</source>
-      </trans-unit>
-      <trans-unit id="currentFlex">
-        <source>Flex Usage - Used</source>
-      </trans-unit>
-      <trans-unit id="maxFlex">
-        <source>Flex Usage - Allotted</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewpackages">
         <source>View Packages</source>
@@ -22894,12 +22467,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether satellite certificate has not expired</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch">
         <source>Cleans up orphaned and outdated data</source>
         <context-group name="ctx">
@@ -23329,9 +22896,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata">
         <source>Channel Repodata</source>
-      </trans-unit>
-      <trans-unit id="task.status.sat-cert-check">
-        <source>Certificate Check</source>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data">
         <source>TimeSeries Cleanup</source>

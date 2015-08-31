@@ -105,7 +105,6 @@ import java.util.Set;
 
 /**
  * SystemManager
- * @version $Rev$
  */
 public class SystemManager extends BaseManager {
 
@@ -119,8 +118,6 @@ public class SystemManager extends BaseManager {
     public static final String CAP_PACKAGES_VERIFY = "packages.verify";
     public static final String CAP_CONFIGFILES_BASE64_ENC =
             "configfiles.base64_enc";
-
-    public static final String NO_SLOT_KEY = "system.entitle.noslots";
 
     private SystemManager() {
     }
@@ -1708,35 +1705,6 @@ public class SystemManager extends BaseManager {
             }
         }
 
-        boolean checkCounts = true;
-        if (server.isVirtualGuest()) {
-            Server host = server.getVirtualInstance().getHostSystem();
-            if (host != null) {
-                log.debug("host isnt null, checking entitlements.");
-                if (host.hasVirtualizationEntitlement() && host.hasEntitlement(ent)) {
-                    log.debug("host has virt and the ent passed in. FREE entitlement");
-                    checkCounts = false;
-                }
-                else {
-                    if (log.isDebugEnabled()) {
-                        log.debug("host doesnt have virt or : " + ent.getLabel());
-                    }
-                }
-            }
-        }
-        if (checkCounts) {
-            Long availableEntitlements =
-                    EntitlementManager.getAvailableEntitlements(ent, orgIn);
-            log.debug("avail: " + availableEntitlements);
-            if (availableEntitlements != null &&
-                    availableEntitlements.longValue() < 1) {
-                log.debug("Not enough slots.  returning error");
-                result.addError(new ValidatorError(NO_SLOT_KEY,
-                        ent.getHumanReadableLabel()));
-                return result;
-            }
-        }
-
         Map<String, Object> in = new HashMap<String, Object>();
         in.put("sid", sid);
         in.put("entitlement", ent.getLabel());
@@ -1918,19 +1886,6 @@ public class SystemManager extends BaseManager {
      */
     public static void removeServerEntitlement(Long sid,
             Entitlement ent) {
-        removeServerEntitlement(sid, ent, true);
-    }
-
-    /**
-     * Removes a specific level of entitlement from the given Server.
-     * @param sid server id to be unentitled.
-     * @param ent Level of Entitlement.
-     * @param repoll used mainly to repoll virtual entitlements post removal
-     *               irrelevant if virtual entitlements are not found..
-     */
-    public static void removeServerEntitlement(Long sid,
-            Entitlement ent,
-            boolean repoll) {
 
         if (!hasEntitlement(sid, ent)) {
             if (log.isDebugEnabled()) {
@@ -1942,12 +1897,6 @@ public class SystemManager extends BaseManager {
         Map<String, Object> in = new HashMap<String, Object>();
         in.put("sid", sid);
         in.put("entitlement", ent.getLabel());
-        if (repoll) {
-            in.put("repoll", new Integer(1));
-        }
-        else {
-            in.put("repoll", new Integer(0));
-        }
         CallableMode m = ModeFactory.getCallableMode(
                 "System_queries", "remove_server_entitlement");
         m.execute(in, new HashMap<String, Integer>());

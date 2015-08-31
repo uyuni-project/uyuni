@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
-import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BaseSetOperateOnSelectedItemsAction;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -48,8 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Class representing the submit action of the Systeme Eintitlements page
- * SystemEntitlementsSubmitAction
+ * Class representing the submit action of the System Entitlements page
  */
 public class SystemEntitlementsSubmitAction extends
                 BaseSetOperateOnSelectedItemsAction {
@@ -100,44 +98,21 @@ public class SystemEntitlementsSubmitAction extends
             Entitlement ent,
             User userIn,
             HttpServletRequest req) {
-        final String availableSlotsLabel = "Available_Slots";
         //Only entitle if the system doesn't already have the entitlement
         if (!SystemManager.hasEntitlement(sid, ent)) {
-
-            if (req.getAttribute(availableSlotsLabel) == null) {
-                //The slots were not in the request, find them and put them there.
-                Long slots = EntitlementManager.getAvailableEntitlements(ent,
-                        userIn.getOrg());
-                req.setAttribute(availableSlotsLabel, slots);
-            }
-            //We need one slot to put our system in.
-            Long availableSlots =
-                ((Long) req.getAttribute(availableSlotsLabel));
-
-            if (availableSlots != null && availableSlots.longValue() > 0) {
-                //Remove the current ones
-                //This is ok because of the prereq for this method.
-                SystemManager.removeAllServerEntitlements(sid);
-                if (SystemManager.canEntitleServer(sid, ent)) {
-                    SystemManager.entitleServer(userIn.getOrg(), sid, ent);
-                    if (availableSlots.longValue() != ServerGroup.UNLIMITED) {
-                        //Now we need to update our request attribute.
-                        req.setAttribute(availableSlotsLabel,
-                                new Long(availableSlots.longValue() - 1));
-                    }
-                }
-                else {
-                    //entitlement is invalid
-                    return Boolean.FALSE;
-                }
+            //Remove the current ones
+            //This is ok because of the prereq for this method.
+            SystemManager.removeAllServerEntitlements(sid);
+            if (SystemManager.canEntitleServer(sid, ent)) {
+                SystemManager.entitleServer(userIn.getOrg(), sid, ent);
             }
             else {
-                //not enough slots to put server
-                return Boolean.FALSE;
+                //entitlement is invalid
+                return false;
             }
         }
         //They have been successfully entitled, or they already were.
-        return Boolean.TRUE;
+        return true;
     }
 
     /**
@@ -283,7 +258,6 @@ public class SystemEntitlementsSubmitAction extends
         User user = rctx.getCurrentUser();
 
         int successCount = 0;
-        int failureDueToSlotsCount = 0;
         int failureDueToNonManagementCount = 0;
         int failureDueToVirtErrorCount = 0;
         int failureDueToSolarisCount = 0;
@@ -314,11 +288,7 @@ public class SystemEntitlementsSubmitAction extends
                             log.debug("entitleServer.VE: " + vr.getMessage());
                             if (vr.getErrors().size() > 0) {
                                 ValidatorError ve = vr.getErrors().get(0);
-                                if (ve.getKey().equals(SystemManager.NO_SLOT_KEY)) {
-                                    failureDueToSlotsCount++;
-                                    i.remove();
-                                }
-                                else if (isVirtEntitlement) {
+                                if (isVirtEntitlement) {
                                     failureDueToVirtErrorCount++;
                                     i.remove();
                                 }
@@ -370,13 +340,11 @@ public class SystemEntitlementsSubmitAction extends
         else {
             if (log.isDebugEnabled()) {
                 log.debug("successCount: " + successCount +
-                        " failureDueToSlotsCount:" + failureDueToSlotsCount +
                         " failureDueToNonManagementCount: " +
                         failureDueToNonManagementCount);
             }
             //Create the 'added entitlements' success message
             if (successCount > 0 &&
-                    failureDueToSlotsCount == 0 &&
                     failureDueToNonManagementCount == 0 &&
                     failureDueToVirtErrorCount == 0 &&
                     unknownFailureCount == 0 &&
@@ -398,14 +366,6 @@ public class SystemEntitlementsSubmitAction extends
                                 noteargs);
                     msg.add(ActionMessages.GLOBAL_MESSAGE, note);
                 }
-            }
-
-            //Create the 'not enough slots' failure message
-            if (failureDueToSlotsCount > 0) {
-                Object [] args = new Object[] {String.valueOf(successCount),
-                        String.valueOf(failureDueToSlotsCount)};
-                ActionMessage m = new ActionMessage(prefix + ".notEnoughSlots", args);
-                msg.add(ActionMessages.GLOBAL_MESSAGE, m);
             }
 
             //Create the 'invalid entitlement' failure message
@@ -436,7 +396,6 @@ public class SystemEntitlementsSubmitAction extends
                         String.valueOf(unknownFailureCount));
                 msg.add(ActionMessages.GLOBAL_MESSAGE, m);
             }
-
         }
 
         strutsDelegate.saveMessages(request, msg);

@@ -25,8 +25,6 @@ insert into rhnException values (-20102, 'channel_server_one_base', 'A server ca
 
 insert into rhnException values (-20200, 'usergroup_max_members', 'User group membership cannot exceed maximum membership');
 
-insert into rhnException values (-20220, 'servergroup_max_members', 'Server group membership cannot exceed maximum membership');
-
 insert into rhnException values (-20230, 'ugm_different_orgs', 'User and usergroup must be in same group to make a user a member');
 insert into rhnException values (-20231, 'sgm_different_orgs', 'Server and servergroup must be in same group to make a server a member');
 insert into rhnException values (-20232, 'no_org_admin_group', 'Organization has no org_admin usergroup');
@@ -92,11 +90,6 @@ insert into rhnException values (-20285, 'invalid_addon_entitlement', 'The addon
 insert into rhnException values (-20286, 'no_available_server_group', 'The server can be entitled to that entitlement, but no valid server group was found');
 insert into rhnException values (-20287, 'invalid_entitlement', 'The server can not be entitled to the specified level'); 
 insert into rhnException values (-20288, 'invalid_server_group_member', 'The specified entitlement can not be removed from the specified server because the server does not have that entitlement level');
-
-insert into rhnException
-values (-20290,
-        'not_enough_entitlements_in_base_org',
-        'You do not have enough entitlements in the base org.');
 
 insert into rhnException
 values (-20291,

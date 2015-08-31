@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html>
 <head>
-  <script src="/javascript/spacewalk-login.js"></script>
+    <script src="/javascript/spacewalk-login.js"></script>
 </head>
 <body>
 
@@ -15,26 +15,28 @@
 </c:if>
 
 <rhn:require acl="not user_authenticated()">
-  <c:if test="${requestScope.hasExpired != 'true'}">
     <div id="loginForm-container">
-      <h1 id="welcome-title"><bean:message key="relogin.jsp.pleasesignin"/></h1>
-      <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
-      <c:if test="${! empty login_banner}">
-        <p><c:out value="${login_banner}" escapeXml="false" /></p>
-      </c:if>
-      <html:form styleId="loginForm" action="/ReLoginSubmit">
-        <rhn:csrf />
-        <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf" %>
-      </html:form>
+        <h1 id="welcome-title">
+            <bean:message key="relogin.jsp.pleasesignin" />
+        </h1>
+        <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
+        <c:if test="${! empty login_banner}">
+            <p>
+                <c:out value="${login_banner}" escapeXml="false" />
+            </p>
+        </c:if>
+        <html:form styleId="loginForm" action="/ReLoginSubmit">
+            <rhn:csrf />
+            <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf"%>
+        </html:form>
 
-      <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
-      <c:if test="${! empty legal_note}">
-        <p class="legal-note">
-          <small><c:out value="${legal_note}" escapeXml="false" /></small>
-        </p>
-      </c:if>
+        <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
+        <c:if test="${! empty legal_note}">
+            <p class="legal-note">
+                <small><c:out value="${legal_note}" escapeXml="false" /></small>
+            </p>
+        </c:if>
     </div>
-  </c:if>
 </rhn:require>
 
 </body>

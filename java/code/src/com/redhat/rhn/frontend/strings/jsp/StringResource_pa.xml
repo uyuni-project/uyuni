@@ -4293,21 +4293,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>ਸਿਸਟਮ</target>
       </trans-unit>
-      <trans-unit id="Used/Allotted">
-        <source>Used/Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="None Allocated">
-        <source>None Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="Used/Allotted.tip">
-        <source>'Allotted' refers to the total number of entitlements allocated to any organization from initial pool as reflected in this @@PRODUCT_NAME@@'s certificate. 'Used' refers to entitlements that have been consumed by systems in various organizations.</source>
-      </trans-unit>
       <trans-unit id="satusers.tip">
         <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
 not be modified on this page. Instead, please visit the "Users" top-level
@@ -4349,10 +4334,6 @@ deducted from the default organization.</source>
       <trans-unit id="probedetails.jsp.end_date">
         <source>End date:</source>
         <target>ਅੰਤ ਮਿਤੀ:</target>
-      </trans-unit>
-      <trans-unit id="softwareEntitlementSubs.invalidInput">
-        <source>Proposed Allocation is invalid.</source>
-        <target>ਦਿੱਤਾ ਨਿਰਧਾਰਨ ਗਲਤ ਹੈ।</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
         <source>Issue Start Date: </source>
@@ -6267,25 +6248,9 @@ deducted from the default organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_unlimited">
+        <trans-unit id="systementitlements.jsp.entitlement_counts_message">
           <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;unlimited available&lt;/strong&gt; entitlements</source>
           <target>&lt;strong&gt;{0} ਸਿਸਟਮ&lt;/strong&gt; ਇੰਟਾਈਟਲ, &lt;strong&gt;{1} ਉਪਲੱਬਧ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ (&lt;strong&gt;{2} ਕੁੱਲ&lt;/strong&gt;)</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_1">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} ਸਿਸਟਮ&lt;/strong&gt; ਇੰਟਾਈਟਲ, &lt;strong&gt;{1} ਉਪਲੱਬਧ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ (&lt;strong&gt;{2} ਕੁੱਲ&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_2">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} ਸਿਸਟਮ&lt;/strong&gt; ਇੰਟਾਈਟਲ, &lt;strong&gt;{1} ਉਪਲੱਬਧ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟਸ (&lt;strong&gt;{2} ਕੁੱਲ&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_3">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} ਸਿਸਟਮ&lt;/strong&gt; ਇੰਟਾਈਟਲ, &lt;strong&gt;{1} ਉਪਲੱਬਧ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ (&lt;strong&gt;{2} ਕੁੱਲ&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_4">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} ਸਿਸਟਮ&lt;/strong&gt; ਇੰਟਾਈਟਲ, &lt;strong&gt;{1} ਉਪਲੱਬਧ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟਸ (&lt;strong&gt;{2} ਕੁੱਲ&lt;/strong&gt;) </target>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
@@ -6325,10 +6290,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>&lt;strong&gt;ਪਰੋਵਿਜ਼ਨਿੰਗ&lt;/strong&gt; ਨੂੰ ਇੱਰਾਟਾ&lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮ ਤੋਂ ਹਟਾਇਆ ਗਿਆ ਹੈ।</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.provisioning.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮ ਸਫਲਤਾਪੂਰਵਕ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ ਲਈ ਨਿਰਧਾਰਤ ਹੋ ਗਏ ਹਨ, ਪਰ ਆਖਰੀ &lt;strong&gt;{1}&lt;/strong&gt; ਸਿਸਟਮ ਲਈ ਲੋੜੀਂਦਾ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਹੈ।. ਤੁਹਾਨੂੰ &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ਭੰਡਾਰ&lt;/strong&gt;&lt;/a&gt; ਤੋਂ ਵਾਧੂ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਖਰੀਦਣਾ ਪੈ ਸਕਦਾ ਹੈ। ਵਾਧੂ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ ਇਹਨਾਂ ਸਿਸਟਮਾਂ ਨੂੰ ਅੱਪਗਰੇਡ ਕਰ ਸਕਦੇ ਹੋ।</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.provisioning.noManagement">
           <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ &lt;strong&gt;{0}&lt;/strong&gt; ਲਈ ਅਸਫਲ ਹੋਇਆ ਕਿਉਂਕਿ ਇਹਨਾਂ ਦਾ &lt;strong&gt;ਪਰਬੰਧਨ&lt;/strong&gt; ਅਧਾਰ ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਹੁੰਦਾ। ਅਸਫਲ ਸਿਸਟਮ ਹਾਲੇ ਵੀ ਹੇਠਾਂ ਚੁਣੇ ਹਨ। ਜੇ ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੇਠਲੇ &lt;strong&gt;ਪਰਬੰਧਨ ਇੰਟਾਈਟਲ ਨਿਰਧਾਰਤ ਕਰੋ&lt;/strong&gt; ਬਟਨ ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਫਿਰ &lt;strong&gt;ਐਡ-ਆਨ ਇੰਟਾਈਟਲਮੈਂਟ ਸ਼ੈਕਸ਼ਨ &lt;/strong&gt; ਵਿੱਚ ਵੇਖਾਈ ਲਟਕਵੀਂ ਸੂਚੀ ਵਿੱਚ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਦਰਾਜ ਚੁਣਦੇ ਹੋ ਅਤੇ ਫਿਰ ਹੇਠਾਂ &lt;strong&gt;ਇੰਟਾਈਟਲ&lt;/strong&gt; ਬਟਨ ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਇਹਨਾਂ ਸਿਸਟਮਾਂ ਵਿੱਚ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ ਸ਼ਾਮਲ ਕਰ ਸਕੋਗੇ।</target>
@@ -6345,10 +6306,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
           <target>&lt;strong&gt;ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ&lt;/strong&gt; ਨੂੰ &lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮਾਂ ਤੋਂ ਹਟਾਇਆ ਗਿਆ ਹੈ। ਇਸ ਨਾਲ ਚੁਣੇ ਮੇਜ਼ਬਾਨ ਨਾਲ ਸੰਬੰਧਿਤ ਕੋਈ ਵੀ ਗਿਸਟ ਭੌਤਿਕ ਚੈਨਲ ਅਤੇ ਸਿਸਟਮ ਇੰਟਾਈਟਲਮੈਂਟ ਵਰਤ ਸਕੇਗਾ।</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮ ਸਫਲਤਾਪੂਰਵਕ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ ਲਈ ਨਿਰਧਾਰਤ ਹੋ ਗਏ ਹਨ, ਪਰ ਆਖਰੀ &lt;strong&gt;{1}&lt;/strong&gt; ਸਿਸਟਮ ਲਈ ਲੋੜੀਂਦਾ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਹੈ।. ਤੁਹਾਨੂੰ &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ਭੰਡਾਰ&lt;/strong&gt;&lt;/a&gt; ਤੋਂ ਵਾਧੂ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਖਰੀਦਣਾ ਪੈ ਸਕਦਾ ਹੈ। ਵਾਧੂ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ ਇਹਨਾਂ ਸਿਸਟਮਾਂ ਨੂੰ ਅੱਪਗਰੇਡ ਕਰ ਸਕਦੇ ਹੋ।&lt;br/&gt; &lt;strong&gt;ਸੂਚਨਾ: &lt;/strong&gt;ਜੇ ਸਿਸਟਮ ਉੱਪਰ ਪਹਿਲਾਂ ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ ਪਲੇਟਫਾਰਮ ਹੈ ਇਸ ਨੂੰ ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ ਤੱਕ ਡਾਊਨਗਰੇਡ ਕੀਤਾ ਜਾਂਦਾ ਹੈ।</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ&lt;/strong&gt; ਇੰਟਾਈਟਲ &lt;strong&gt;{0}&lt;/strong&gt; ਲਈ ਅਸਫਲ ਹੋਇਆ ਕਿਉਂਕਿ ਇਹਨਾਂ ਦਾ &lt;strong&gt;ਪਰਬੰਧਨ&lt;/strong&gt; ਅਧਾਰ ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਹੁੰਦਾ। ਅਸਫਲ ਸਿਸਟਮ ਹਾਲੇ ਵੀ ਹੇਠਾਂ ਚੁਣੇ ਹਨ। ਜੇ ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੇਠਲੇ &lt;strong&gt;ਪਰਬੰਧਨ ਇੰਟਾਈਟਲ ਨਿਰਧਾਰਤ ਕਰੋ&lt;/strong&gt; ਬਟਨ ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਫਿਰ &lt;strong&gt;ਐਡ-ਆਨ ਇੰਟਾਈਟਲਮੈਂਟ ਸ਼ੈਕਸ਼ਨ &lt;/strong&gt; ਵਿੱਚ ਵੇਖਾਈ ਲਟਕਵੀਂ ਸੂਚੀ ਵਿੱਚ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਦਰਾਜ ਚੁਣਦੇ ਹੋ ਅਤੇ ਫਿਰ ਹੇਠਾਂ &lt;strong&gt;ਇੰਟਾਈਟਲ&lt;/strong&gt; ਬਟਨ ਤੇ ਕਲਿੱਕ ਕਰਦੇ ਹੋ, ਤਾਂ ਤੁਸੀਂ ਇਹਨਾਂ ਸਿਸਟਮਾਂ ਵਿੱਚ &lt;strong&gt;ਮਨਜੂਰੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ ਸ਼ਾਮਲ ਕਰ ਸਕੋਗੇ।</target>
@@ -6364,10 +6321,6 @@ deducted from the default organization.</source>
         <trans-unit id="system_entitlements.monitoring.removed.success">
           <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>&lt;strong&gt;ਪਰਬੰਧਨ&lt;/strong&gt; ਨੂੰ ਇਰੱਟਾ&lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮ ਤੋਂ ਹਟਾਇਆ ਗਿਆ ਹੈ।</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.monitoring.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; ਸਿਸਟਮ ਸਫਲਤਾਪੂਰਵਕ &lt;strong&gt;ਨਿਗਰਾਨੀ&lt;/strong&gt; ਇੰਟਾਈਟਲ ਲਈ ਨਿਰਧਾਰਤ ਹੋ ਗਏ ਹਨ, ਪਰ ਆਖਰੀ &lt;strong&gt;{1}&lt;/strong&gt; ਸਿਸਟਮ ਲਈ ਲੋੜੀਂਦਾ &lt;strong&gt;ਨਿਗਰਾਨੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਹੈ।. ਤੁਹਾਨੂੰ &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ ਭੰਡਾਰ&lt;/strong&gt;&lt;/a&gt; ਤੋਂ ਵਾਧੂ &lt;strong&gt;ਨਿਗਰਾਨੀ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਖਰੀਦਣਾ ਪੈ ਸਕਦਾ ਹੈ। ਵਾਧੂ &lt;strong&gt;ਪਰਬੰਧਨ&lt;/strong&gt; ਇੰਟਾਈਟਲਮੈਂਟ ਤੋਂ ਬਾਅਦ, ਤੁਸੀਂ ਇਹਨਾਂ ਸਿਸਟਮਾਂ ਨੂੰ ਅੱਪਗਰੇਡ ਕਰ ਸਕਦੇ ਹੋ।</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noManagement">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6389,15 +6342,6 @@ deducted from the default organization.</source>
       <group>
         <trans-unit id="Registered">
           <source>Registered</source>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message_unlimited">
-          <source>{0} consumed, unlimited available entitlements</source>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message">
-          <source>{0} consumed, {1} available entitlement</source>
-        </trans-unit>
-        <trans-unit id="eligible.floating.guests">
-          <source>Guests Consuming Regular Entitlements</source>
         </trans-unit>
       </group>
       <!--  System search -->
@@ -8351,41 +8295,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target>ਨਿਗਰਾਨੀ ਆਯੋਗ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;ਆਮ&lt;/strong&gt;&lt;/a&gt; ਸੰਰਚਨਾ ਸਫ਼ੇ ਉੱਤੇ ਜਾਓ ਅਤੇ ਨਿਗਰਾਨੀ ਯੋਗ ਚੋਣ ਬਕਸੇ ਦੀ ਚੋਣ ਕਰੋ।</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.toolbar">
-        <source>@@PRODUCT_NAME@@ Configuration - Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ ਸੰਰਚਨਾ - ਸਰਟੀਫਿਕੇਟ</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.summary">
-        <source>You must provide an @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>ਤੁਹਾਨੂੰ ਇੱਕ @@PRODUCT_NAME@@ ਸਰਟੀਫਿਕੇਟ ਦੇਣਾ ਚਾਹੀਦਾ ਹੈ। ਇਹ ਸਰਟੀਫਿਕੇਟ ਤੁਹਾਨੂੰ @@PRODUCT_NAME@@ ਵਲੋਂ ਉਪਲੱਬਧ ਕਈ ਸੇਵਾ ਪੱਧਰਾਂ ਲਈ ਇੰਟਾਈਟਲ ਕਰੇਗਾ।</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.header2">
-        <source>@@PRODUCT_NAME@@ Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ ਸਾਰਟੀਫਿਕੇਟ</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_file">
-        <source>Upload Certificate File:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>ਸਰਟੀਫਿਕੇਟ ਫਾਇਲ ਅੱਪਲੋਡ:</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_text">
-        <source>-or- Certificate Text:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>-ਜਾਂ- ਸਰਟੀਫਿਕੇਟ ਪਾਠ:</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -20238,13 +20147,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <target>ਚੈਨਲ ਜਿਨਾਂ ਨੂੰ ਤੁਸੀਂ ਵਰਤਣਾ ਚਾਹੁੰਦੇ ਹੋ, ਜਾਂ ਤਾਂ ਮੌਜੂਦ ਨਹੀਂ ਹੈ ਜਾਂ ਤੁਹਾਨੂੰ ਅਧਿਕਾਰ ਨਹੀਂ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਸੰਬੰਧ ਦੀ ਮੁੜ-ਜਾਂਚ ਕਰੋ ਜੋ ਤੁਹਾਨੂੰ ਇਸ ਸਫੇ ਤੇ ਲੈ ਕੇ ਆਇਆ ਹੈ।</target>
         </trans-unit>
       </group>
-      <trans-unit id="sdc.channels.edit.available">
-        <source>available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">outage-policy.jsp</context>
-        </context-group>
-        <target>ਉਪਲੱਬਧ</target>
-      </trans-unit>
       <trans-unit id="sdc.channels.edit.unlimited">
         <source>unlimited</source>
         <context-group name="ctx">
@@ -20489,181 +20391,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>ਸ਼ੁਰੂਆਤੀ ਸੰਗਠਨ ਪਰਬੰਧਕ ਬਣਾਓ</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਇੰਟਾਈਟਲਮੈਂਟ ਨਾਂ</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਕੁੱਲ</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਵਰਤੋਂ</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਪ੍ਰਸਤਾਵਿਤ ਕੁੱਲ</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.base">
-        <source>(Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(ਅਧਾਰ)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(ਐਡ-ਆਨ)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.man_tip">
-        <source>Required for all systems registered to the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ ਉੱਪਰ ਰਜਿਸਟਰ ਹੋਏ ਸਭ ਸਿਸਟਮਾਂ ਲਈ ਲੋੜੀਂਦਾ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.mon_tip">
-        <source>Enables the tracking of monitoring data for a system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਇੱਕ ਸਿਸਟਮ ਲਈ ਡਾਟਾ ਨਿਗਰਾਨੀ ਲਈ ਜਾਂਚ ਯੋਗ ਕਰੋ।</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_tip">
-        <source>Applied to a host system, enables management for up to 4 guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਹੋਸਟ ਸਿਸਟਮ ਤੇ ਲਾਗੂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, 4 ਗਿਸਟਾਂ ਲਈ ਪਰਬੰਧਨ ਯੋਗ ਕਰਦਾ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਸੰਭਵ ਮੁੱਲ: &lt;strong&gt;{0}&lt;/strong&gt; ਤੋਂ &lt;strong&gt;{1}&lt;/strong&gt; ਤੱਕ।</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.description">
-        <source>The following is a list of all software channel entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements</context>
-        </context-group>
-        <target>ਹੇਠਾਂ ਸੰਗਠਨ ਵਿੱਚ ਇਸ @@PRODUCT_NAME@@ ਉੱਪਰਲੇ ਸਭ ਸਾਫਟਵੇਅਰ ਚੈਨਲ ਇੰਟਾਈਟਲਮੈਂਟਾਂ ਦੀ ਸੂਚੀ, ਅਤੇ ਉਹਨਾਂ ਦੀ ਵਰਤੋਂ ਦਿੱਤੀ ਗਈ ਹੈ। ਵੇਰਵਾ ਵੇਖਣ ਲਈ ਇੰਟਾਈਟਲਮੈਂਟ ਦਾ ਨਾਂ ਦਬਾਓ।</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.header">
-        <source>System Entitlements Across @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ ਉੱਪਰ ਸਿਸਟਮ ਇੰਟਾਈਟਲਮੈਂਟ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਇੰਟਾਈਟਲਮੈਂਟ ਨਾਂ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਵਰਤੋਂ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usagedata">
-        <source>{0} of {1} ({2}%)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>{1} ({2}%) ਦਾ {0}</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.total">
-        <source>Total*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਕੁੱਲ*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.available">
-        <source>Available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਉਪਲੱਬਧ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.tip">
-        <source>'Total' refers to the total available to the @@PRODUCT_NAME@@ as reflected in this @@PRODUCT_NAME@@'s certificate.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>*&lt;strong&gt;ਟਿੱਪਣੀ:&lt;/strong&gt;'ਕੁੱਲ' ਦਾ ਮਤਲਬ ਹੈ ਕਿ @@PRODUCT_NAME@@ ਲਈ ਕੁੱਲ ਕਿੰਨੇ ਉਪਲੱਬਧ ਹਨ
-ਜਿਵੇਂ @@PRODUCT_NAME@@ ਸਾਰਟੀਫਿਕੇਟ ਵਿੱਚ ਦਿੱਤਾ ਗਿਆ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.not_allocated">
-        <source>Not Allocated*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਨਿਰਧਾਰਤ ਨਹੀਂ*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.notinuse">
-        <source>Not In Use</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਵਰਤੋਂ ਵਿੱਚ ਨਹੀਂ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.enterprise_entitled">
-        <source> Management (Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> ਪਰਬੰਧਨ (ਅਧਾਰ)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host">
-        <source> Virtualization (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ (ਐਡ-ਆਨ)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>(ਐਡ-ਆਨ)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentitlements">
-        <source>No Entitlements Found</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>ਕੋਈ ਇੰਟਾਈਟਲਮੈਂਟ ਨਹੀਂ ਲੱਭਿਆ</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentorgs">
-        <source>No organizations have this entitlement</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.cryptokey.description">
         <source>Description</source>
         <context-group name="ctx">
@@ -20677,151 +20404,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/keys/CrytpoKeysList</context>
         </context-group>
         <target>ਕਿਸਮ</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant">
-        <source>Access Granted by this Entitlement:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>ਇਸ ਇੰਟਾਈਟਲਮੈਂਟ ਦੁਆਰਾ ਦਿੱਤੀ ਪਹੁੰਚ:</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>ਸੈਟੇਲਾਈਟ ਉੱਪਰ ਰਜਿਸਟਰ ਹੋਏ ਸਭ ਸਿਸਟਮਾਂ ਲਈ ਇੱਕ ਸਿੰਗਲ ਪਰਬੰਧਨ (ਅਧਾਰ) ਇੰਟਾਈਟਲਮੈਂਟ ਦੀ ਲੋੜ ਹਨ।</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
-        <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>ਇੱਕ ਸਿੰਗਲ ਵਰਚੁਅਲਾਈਜੇਸ਼ਨ (ਐਡ-ਆਨ) ਇੰਟਾਈਟਲਮੈਂਟ ਇੱਕ ਹੋਸਟ ਤੇ ਲਾਗੂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਜੋ 4 ਗਿਸਟਾਂ ਲਈ ਪਰਬੰਧਨ ਯੋਗ ਕਰਦਾ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.orgname">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਸੰਗਠਨ ਨਾਂ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਪ੍ਰਸਤਾਵਿਤ ਕੁੱਲ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.description">
-        <source>The Current Allocation of entitlements for {0} across the organizations on this @@PRODUCT_NAME@@ is displayed below. You may make changes to the allocation of entitlements for each organization in the "Proposed Total" column, but your changes will not take effect until you confirm using the 'Confirm Changes' button below. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਇਸ @@PRODUCT_NAME@@ ਉੱਪਰ ਸੰਗਠਨਾਂ ਵਿੱਚ {0} ਲਈ ਇੰਟਾਈਟਲਮੈਂਟਾਂ ਦਾ ਨਿਰਧਾਰਨ ਹੇਠਾਂ ਵੇਖਾਇਆ ਗਿਆ ਹੈ। ਤੁਸੀਂ &quot;Proposed Total&quot; ਕਾਲਮ ਵਿੱਚ ਹਰੇਕ ਸੰਗਠਨ ਲਈ ਇੰਟਾਈਟਲਮੈਂਟਾਂ ਦੇ ਨਿਰਧਾਰਨ ਵਿੱਚ ਤਬਦੀਲੀ ਕਰ ਸਕਦੇ ਹੋ, ਪਰ ਤੁਹਾਡੀ ਤਬਦੀਲੀ ਲਾਗੂ ਨਹੀਂ ਹੋਵੇਗੀ ਜਦੋਂ ਤੱਕ 'ਤਬਦੀਲੀ ਪੁਸ਼ਟੀ' ਬਟਨ ਨਹੀਂ ਦਬਾਉਂਦੇ।</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;0&lt;/strong&gt; to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>ਸੰਭਵ ਮੁੱਲ: &lt;strong&gt;0&lt;/strong&gt; ਤੋਂ &lt;strong&gt;{0}&lt;/strong&gt; ਤੱਕ।</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.update">
-        <source>Update</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਅੱਪਡੇਟ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.usage">
-        <source>@@PRODUCT_NAME@@-Wide Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@-ਸੰਬੰਧੀ ਇੰਟਾਈਟਲਮੈਂਟ ਵਰਤੋਂ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.filterBy">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਸੰਗਠਨ ਨਾਂ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.miniheader">
-        <source>View/Modify Entitlement Counts by Organization</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਸੰਗਠਨ ਲਈ ਇੰਟਾਈਟਲਮੈਂਟ ਗਿਣਤੀ ਵੇਖਾਓ/ਸੋਧੋ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_allocated">
-        <source>Total Allocated</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਕੁੱਲ ਨਿਰਧਾਰਤ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_inuse">
-        <source>Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਇੰਟਾਈਟਲਮੈਂਟ ਉਪਯੋਗਤਾ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orguse">
-        <source>Organization Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>ਸੰਗਠਨ ਉਪਯੋਗਤਾ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orgusedata">
-        <source>{0} of {1} organizations ({2}%) have access to
-this entitlement.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>{1} organizations ({2}%) ਦੇ {0} ਨੂੰ ਇਸ ਇੰਟਾਈਟਲਮੈਂਟ
-ਲਈ ਪਹੁੰਚ ਹੈ।</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>ਕੁੱਲ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.used">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>ਵਰਤੋਂ</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip_allocated">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; This total corresponds to your @@PRODUCT_NAME@@ certificate's
-value for this entitlement, excluding the default organization's consumption.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; 'Total' refers to the total available entitlements to
-the organizations (excluding the default @@PRODUCT_NAME@@ organization) on this @@PRODUCT_NAME@@. It is not equal to the total available in the @@PRODUCT_NAME@@ certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;*ਟਿੱਪਣੀ:&lt;/strong&gt; 'ਕੁੱਲ' ਦਾ ਮਤਲਬ ਹੈ ਇਸ @@PRODUCT_NAME@@ ਉੱਪਰ
-ਸੰਗਠਨਾਂ (ਮੂਲ @@PRODUCT_NAME@@ ਸੰਗਠਨ ਸਮੇਤ) ਲਈ ਕੁੱਲ ਉਪਲੱਬਧ ਇੰਟਾਈਟਲਮੈਂਟ। ਇਹ @@PRODUCT_NAME@@ ਸਾਰਟੀਫਿਕੇਟ ਵਿੱਚ ਕੁੱਲ ਉਪਲੱਬਧ ਦੇ ਬਰਾਬਰ ਨਹੀਂ ਹੁੰਦਾ।</target>
-      </trans-unit>
-      <trans-unit id="orgsoftwaresubs.jsp.description">
-        <source>Below you modify the total number of software channel entitlements available to the &lt;strong&gt;{0}&lt;/strong&gt; organization on a per-channel basis.  If you'd like to modify the number of entitlements available to a particular channel note that you are limited by the range indicated next to the field.</source>
-        <target>ਹੇਠਾਂ ਤੁਸੀਂ ਪ੍ਰਤੀ-ਚੈਨਲ ਅਧਾਰ ਤੇ &lt;strong&gt;{0}&lt;/strong&gt; ਸੰਗਠਨ ਲਈ ਉਪਲੱਬਧ ਇੰਟਾਈਟਲਮੈਂਟ ਦੀ ਕੁੱਲ ਗਿਣਤੀ ਤਬਦੀਲ ਕਰ ਸਕਦੇ ਹੋ।  ਜੇ ਤੁਸੀਂ ਖਾਸ ਚੈਨਲ ਲਈ ਉਪਲੱਬਧ ਇੰਟਾਈਟਲਮੈਂਟਾਂ ਦੀ ਗਿਣਤੀ ਤਬਦੀਲ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ ਤਾਂ ਯਾਦ ਰੱਖੋ ਕਿ ਤੁਸੀਂ ਖੇਤਰ ਤੋਂ ਅੱਗੇ ਦਿੱਤੀ ਰੇਂਜ ਦੁਆਰਾ ਸੀਮਿਤ ਹੋ।</target>
-      </trans-unit>
-      <trans-unit id="orgsysubs.jsp.header2">
-        <source>System Entitlement Counts</source>
-        <target>ਸਿਸਟਮ ਇੰਟਾਈਟਲਮੈਂਟ ਗਿਣਤੀ</target>
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
@@ -21763,15 +21345,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="currentMembers">
         <source>Regular Usage - Used</source>
-      </trans-unit>
-      <trans-unit id="maxMembers">
-        <source>Regular Usage - Alloted</source>
-      </trans-unit>
-      <trans-unit id="currentFlex">
-        <source>Flex Usage - Used</source>
-      </trans-unit>
-      <trans-unit id="maxFlex">
-        <source>Flex Usage - Allotted</source>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewpackages">
         <source>View Packages</source>
@@ -22895,12 +22468,6 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether satellite certificate has not expired</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch">
         <source>Cleans up orphaned and outdated data</source>
         <context-group name="ctx">
@@ -23330,9 +22897,6 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.channel-repodata">
         <source>Channel Repodata</source>
-      </trans-unit>
-      <trans-unit id="task.status.sat-cert-check">
-        <source>Certificate Check</source>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data">
         <source>TimeSeries Cleanup</source>
