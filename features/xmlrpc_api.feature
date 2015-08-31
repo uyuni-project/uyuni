@@ -8,5 +8,5 @@ Feature: Test XML-RPC "api" namespace.
     When I call getVersion, I should get "16" as result
     When I call systemVersion, I should get "2.4" as result
     When I call getApiNamespaces, I should get 45 namespaces
-    When I call getApiNamespaceCallList, I should get 659 available api calls
+    When I call getApiNamespaceCallList, I should get 643 available api calls
     When I call getApiCallList, I should get 45 available groups
