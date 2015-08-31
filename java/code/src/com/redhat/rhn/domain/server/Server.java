@@ -56,6 +56,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -1765,7 +1766,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Set of valid addon Entitlement instances for this server
      */
     public Set<Entitlement> getValidAddonEntitlementsForServer() {
-        Set<Entitlement> retval = new HashSet<Entitlement>();
+        Set<Entitlement> retval = new TreeSet<Entitlement>();
         Iterator<?> i = this.getOrg().getValidAddOnEntitlementsForOrg()
                 .iterator();
         while (i.hasNext()) {

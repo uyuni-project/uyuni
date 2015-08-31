@@ -111,31 +111,20 @@ class SuseSubscriptionsImport(GenericPackageImport):
         GenericPackageImport.__init__(self, batch, backend)
         self._cache = syncCache.ShortPackageCache()
         self._sub_data = []
-        self._ent_data = []
 
     def preprocess(self):
-        ent_labels = self.backend.getEntitlementLabels()
         for item in self.batch:
             item['org_id'] = 1
-            if item['system_entitlement'] == "1":
-                if item['label'] in ent_labels:
-                    item['group_type'] = ent_labels[item['label']]
-                    self._ent_data.append(item)
-                # else: skip this entitlement. It does not exist here
-            else:
+            if item['system_entitlement'] == "0":
                 families = {}
                 families[item['label']] = None
                 self.backend.lookupChannelFamilies(families)
                 item['channel_family_id'] = families[item['label']]
                 self._sub_data.append(item)
 
-    def fix(self):
-        self.backend.calcEntMaxMembers(self._ent_data)
-
     def submit(self):
         try:
             self.backend.processSuseSubscriptions(self._sub_data)
-            self.backend.processSuseEntitlements(self._ent_data)
         except:
             self.backend.rollback()
             raise

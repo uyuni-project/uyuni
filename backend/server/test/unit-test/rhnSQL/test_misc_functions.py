@@ -83,28 +83,6 @@ class Tests(unittest.TestCase):
             self._verify_new_user(u)
             self.assertEqual(org_id, u.contact['org_id'])
 
-    def test_grant_entitlements_q(self):
-        "Grant entitlements"
-        org_id = misc_functions.create_new_org()
-        entitlement_level = 'enterprise_entitled'
-        quantity = 17
-
-        misc_functions.grant_entitlements(org_id, entitlement_level, quantity)
-
-        # Verify
-        h = rhnSQL.prepare("""
-            select sg.max_members quantity
-              from rhnServerGroupType sgt, rhnServerGroup sg
-             where sg.org_id = :org_id
-               and sg.group_type = sgt.id
-               and sgt.label = :entitlement_level
-        """)
-        h.execute(org_id=org_id, entitlement_level=entitlement_level)
-        row = h.fetchone_dict()
-
-        self.assertNotEqual(row, None)
-        self.assertEqual(row['quantity'], quantity)
-
 
 if __name__ == '__main__':
     sys.exit(unittest.main() or 0)

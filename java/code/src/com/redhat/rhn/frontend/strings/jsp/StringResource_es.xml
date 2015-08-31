@@ -4408,24 +4408,6 @@ del rol de Administrador de la organización.</target>
         </context-group>
         <target>Sistemas</target>
       </trans-unit>
-      <trans-unit id="Used/Allotted">
-        <source>Used/Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-        <target>Utilizado/Asignado</target>
-      </trans-unit>
-      <trans-unit id="None Allocated">
-        <source>None Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-        <target>Ninguno asignado</target>
-      </trans-unit>
-      <trans-unit id="Used/Allotted.tip">
-        <source>'Allotted' refers to the total number of entitlements allocated to any organization from initial pool as reflected in this @@PRODUCT_NAME@@'s certificate. 'Used' refers to entitlements that have been consumed by systems in various organizations.</source>
-        <target>'Asignado' se refiere al número total de derechos asignados a cualquier organización desde el pool inicial tal como se refleja en el certificado de este @@PRODUCT_NAME@@. 'Utilizado' se refiere a los derechos que los sistemas han consumido en varias organizaciones.</target>
-      </trans-unit>
       <trans-unit id="satusers.tip">
         <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
 not be modified on this page. Instead, please visit the "Users" top-level
@@ -4467,10 +4449,6 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
       <trans-unit id="probedetails.jsp.end_date">
         <source>End date:</source>
         <target>Fecha de terminación:</target>
-      </trans-unit>
-      <trans-unit id="softwareEntitlementSubs.invalidInput">
-        <source>Proposed Allocation is invalid.</source>
-        <target>La asignación propuesta no es válida.</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
         <source>Issue Start Date: </source>
@@ -6592,25 +6570,9 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_unlimited">
+        <trans-unit id="systementitlements.jsp.entitlement_counts_message">
           <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;unlimited available&lt;/strong&gt; entitlements</source>
           <target>&lt;strong&gt;{0} sistema&lt;/strong&gt; con derechos, derechos disponibles &lt;strong&gt;sin límite&lt;/strong&gt;</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_1">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} sistema&lt;/strong&gt; con derechos, &lt;strong&gt;{1}&lt;/strong&gt; derecho disponible (&lt;strong&gt;{2} total&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_2">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} sistema&lt;/strong&gt; con derechos, &lt;strong&gt;{1}&lt;/strong&gt; derechos disponibles (&lt;strong&gt;{2} en total&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_3">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} sistemas&lt;/strong&gt; con derechos, &lt;strong&gt;{1}&lt;/strong&gt; derecho disponible (&lt;strong&gt;{2} en total&lt;/strong&gt;) </target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_4">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} sistemas&lt;/strong&gt; con derechos, &lt;strong&gt;{1}&lt;/strong&gt; derechos disponibles (&lt;strong&gt;{2} en total&lt;/strong&gt;) </target>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
@@ -6655,10 +6617,6 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
           <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>Servicio de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; removido de &lt;strong&gt;{0}&lt;/strong&gt; sistema(s).</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.provisioning.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistema(s) fueron establecidos con derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt;, pero usted no tiene suficientes derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; para los &lt;strong&gt;{1}&lt;/strong&gt; sistemas restantes. Puede adquirir derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; adicionales en &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;tienda de @@PRODUCT_NAME@@&lt;/strong&gt;&lt;/a&gt;. Una vez tenga los derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; adicionales, podrá actualizar estos sistemas.</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.provisioning.noManagement">
           <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
           <target>Los derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; fallaron en &lt;strong&gt;{0}&lt;/strong&gt; sistema(s) porque no tienen derechos &lt;strong&gt;administrativos&lt;/strong&gt; de base. Los sistemas fallidos están aun seleccionados abajo. Si pulsa primero en el botón &lt;strong&gt;Establecer a derechos administrativos&lt;/strong&gt;, luego selecciona el elemento de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; en la lista desplegable ubicada en la sección &lt;strong&gt;Añadir derechos&lt;/strong&gt; y por último, hace clic en el botón &lt;strong&gt;Añadir derechos&lt;/strong&gt;, podrá añadir los derechos de &lt;strong&gt;aprovisionamiento&lt;/strong&gt; para estos sistema(s).</target>
@@ -6675,10 +6633,6 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
           <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
           <target>Se eliminó &lt;strong&gt;Virtualización&lt;/strong&gt; de &lt;strong&gt;{0}&lt;/strong&gt; sistemas. Esto hará que los huéspedes asociados con el host seleccionado consuman derechos de sistema y canal físico.</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistema(s) fueron establecidos en el nivel de servicios de &lt;strong&gt;Virtualización&lt;/strong&gt;, pero usted no tiene suficientes derechos para el nivel de servicios de &lt;strong&gt;Virtualización&lt;/strong&gt; para los &lt;strong&gt;{1}&lt;/strong&gt; sistemas restantes. Se pueden adquirir derechos adicionales para el nivel de servicios de &lt;strong&gt;Virtualización&lt;/strong&gt; en &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;la tienda de @@PRODUCT_NAME@@&lt;/strong&gt;&lt;/a&gt;.Cuando tenga los derechos adicionales para el nivel de servicios de &lt;strong&gt;Virtualización&lt;/strong&gt;, podrá actualizar estos sistemas. &lt;br/&gt; &lt;strong&gt;NOTA: &lt;/strong&gt;Si el sistema tenía Plataforma de virtualización éste ha sido degradado al nivel de servicios de Virtualización.</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
           <target>Los derechos de &lt;strong&gt;Virtualización&lt;/strong&gt; fallaron en &lt;strong&gt;{0}&lt;/strong&gt; sistema(s) ya que no tenían derechos &lt;strong&gt;administrativos&lt;/strong&gt; de base. Los sistemas fallidos están aún seleccionados abajo. Si primero hace clic en el botón &lt;strong&gt;Establecer a derechos administrativos&lt;/strong&gt; y luego selecciona el elemento &lt;strong&gt;Virtualización&lt;/strong&gt; en la lista desplegable ubicada en la sección &lt;strong&gt;Añadir derechos&lt;/strong&gt; y finalmente hace clic en el botón &lt;strong&gt;Añadir derechos&lt;/strong&gt;, podrá añadir el derecho de &lt;strong&gt;Virtualización&lt;/strong&gt; a estos sistemas.</target>
@@ -6694,10 +6648,6 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
         <trans-unit id="system_entitlements.monitoring.removed.success">
           <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>Servicio de &lt;strong&gt;monitorización&lt;/strong&gt; removido de &lt;strong&gt;{0}&lt;/strong&gt; sistema(s).</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.monitoring.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>&lt;strong&gt;{0}&lt;/strong&gt; sistema(s) fueron exitosamente establecidos a derecho de &lt;strong&gt;monitorización&lt;/strong&gt;, pero usted no tiene suficientes derechos de &lt;strong&gt;monitorización&lt;/strong&gt; para los &lt;strong&gt;{1}&lt;/strong&gt; sistemas restantes. Puede adquirir derechos de &lt;strong&gt;monitorización&lt;/strong&gt; adicionales en &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;tienda de @@PRODUCT_NAME@@&lt;/strong&gt;&lt;/a&gt;. Cuando tenga los derechos de &lt;strong&gt;monitorización&lt;/strong&gt; adicionales, podrá actualizar estos sistemas.</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noManagement">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6720,18 +6670,6 @@ Asimismo, si añade derechos de una organización no predeterminada, esos derech
         <trans-unit id="Registered">
           <source>Registered</source>
           <target>Registrado</target>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message_unlimited">
-          <source>{0} consumed, unlimited available entitlements</source>
-          <target>{0} consumidos, derechos disponibles ilimitados</target>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message">
-          <source>{0} consumed, {1} available entitlement</source>
-          <target>{0} consumido, {1} derecho disponible</target>
-        </trans-unit>
-        <trans-unit id="eligible.floating.guests">
-          <source>Guests Consuming Regular Entitlements</source>
-          <target>Huéspedes que consumen derechos normales</target>
         </trans-unit>
       </group>
       <!--  System search -->
@@ -8719,41 +8657,6 @@ y puede asignar o eliminar privilegios de administrador de Satélite
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target>El servicio de monitorización está desactivado. Vaya a la página de configuración &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;General&lt;/strong&gt;&lt;/a&gt; y seleccione la casilla de verificación Activar monitorización.</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.toolbar">
-        <source>@@PRODUCT_NAME@@ Configuration - Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>Configuración de  @@PRODUCT_NAME@@ - Certificado</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.summary">
-        <source>You must provide an @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>Debe proporcionar un certificado de @@PRODUCT_NAME@@. Este certificado lo autoriza a usar los distintos niveles de servicios proporcionados por @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.header2">
-        <source>@@PRODUCT_NAME@@ Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>Certificado de @@PRODUCT_NAME@@</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_file">
-        <source>Upload Certificate File:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>Cargar archivo de certificado:</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_text">
-        <source>-or- Certificate Text:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>-o- Texto de certificado:</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -21335,13 +21238,6 @@ La ruta del árbol, el RPM Kickstart, el canal base y la generación del instala
           <target>Los canales a los cuales ha tratado acceder no existen o usted no tiene derechos de acceso a éstos. Por favor revise el enlace que lo trajo a esta página.</target>
         </trans-unit>
       </group>
-      <trans-unit id="sdc.channels.edit.available">
-        <source>available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">outage-policy.jsp</context>
-        </context-group>
-        <target>disponible</target>
-      </trans-unit>
       <trans-unit id="sdc.channels.edit.unlimited">
         <source>unlimited</source>
         <context-group name="ctx">
@@ -21587,182 +21483,6 @@ La ruta del árbol, el RPM Kickstart, el canal base y la generación del instala
         </context-group>
         <target>Crear un administrador de la organización inicial</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Nombre del derecho</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Total</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Uso</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Total propuesto</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.base">
-        <source>(Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(Base)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>(Adicional)</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.man_tip">
-        <source>Required for all systems registered to the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Obligatorio para todos los sistemas registrados al @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.mon_tip">
-        <source>Enables the tracking of monitoring data for a system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Activa el sondeo de los datos de monitorización para un sistema.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_tip">
-        <source>Applied to a host system, enables management for up to 4 guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Aplicado a un sistema host, permite administrar hasta 4 huéspedes.</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Valores posibles: &lt;strong&gt;{0}&lt;/strong&gt; a &lt;strong&gt;{1}&lt;/strong&gt;.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.description">
-        <source>The following is a list of all software channel entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements</context>
-        </context-group>
-        <target>La siguiente lista muestra todos los derechos de canal de software y uso para todas las organizaciones de este @@PRODUCT_NAME@@. Haga clic en el nombre del derecho para obtener mayor información.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.header">
-        <source>System Entitlements Across @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Derechos de sistemas de  @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Nombre del derecho</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Uso</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usagedata">
-        <source>{0} of {1} ({2}%)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>{0} de {1} ({2}%)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.total">
-        <source>Total*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Total*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.available">
-        <source>Available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Disponible</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.tip">
-        <source>'Total' refers to the total available to the @@PRODUCT_NAME@@ as reflected in this @@PRODUCT_NAME@@'s certificate.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>*&lt;strong&gt;Consejo&lt;/strong&gt; 'Total' se refiere al total disponible del servidor de  @@PRODUCT_NAME@@.
-tal y como se refleja en el certificado de @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.not_allocated">
-        <source>Not Allocated*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Sin asignar*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.notinuse">
-        <source>Not In Use</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Sin usar</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.enterprise_entitled">
-        <source> Management (Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> Administración (Base)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host">
-        <source> Virtualization (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> Virtualización (Adicional)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>(Adicional)</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentitlements">
-        <source>No Entitlements Found</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Ningún derecho encontrado</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentorgs">
-        <source>No organizations have this entitlement</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>Ninguna organización tiene este derecho</target>
-      </trans-unit>
       <trans-unit id="kickstart.cryptokey.description">
         <source>Description</source>
         <context-group name="ctx">
@@ -21776,154 +21496,6 @@ tal y como se refleja en el certificado de @@PRODUCT_NAME@@.</target>
           <context context-type="sourcefile">/rhn/keys/CrytpoKeysList</context>
         </context-group>
         <target>Tipo</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant">
-        <source>Access Granted by this Entitlement:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Acceso garantizado por este derecho:</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Un solo derecho administrativo (Base) se requiere para todos los sistemas registrados al satélite</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
-        <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>Un derecho único de virtualización (adicional) se aplica al sistema host y permite administrar hasta 4 huéspedes.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.orgname">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Nombre de organización</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Total propuesto</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.description">
-        <source>The Current Allocation of entitlements for {0} across the organizations on this @@PRODUCT_NAME@@ is displayed below. You may make changes to the allocation of entitlements for each organization in the "Proposed Total" column, but your changes will not take effect until you confirm using the 'Confirm Changes' button below. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>A continuación aparece la asignación actual de derechos para {0} a lo largo de las organizaciones de este  @@PRODUCT_NAME@@. Puede realizar cambios a la asignación de derechos para cada organización en la columna &quot;Total propuesto&quot;, pero sus cambios no tendrán efecto hasta que no confirme la acción con el botón 'Confirmar cambios'.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;0&lt;/strong&gt; to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>Valores posibles: &lt;strong&gt;0&lt;/strong&gt; a &lt;strong&gt;{0}&lt;/strong&gt;.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.update">
-        <source>Update</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Actualizar</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.usage">
-        <source>@@PRODUCT_NAME@@-Wide Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Uso de derechos en todo el  @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.filterBy">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Nombre de organización</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.miniheader">
-        <source>View/Modify Entitlement Counts by Organization</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Ver/Modificar conteo de derechos para la organización</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_allocated">
-        <source>Total Allocated</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Total asignado</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_inuse">
-        <source>Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Uso de derechos</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orguse">
-        <source>Organization Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>Uso de la organización</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orgusedata">
-        <source>{0} of {1} organizations ({2}%) have access to
-this entitlement.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>{0} de {1} organizaciones ({2}%) tienen acceso a
-este derecho.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>Total</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.used">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>Uso</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip_allocated">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; This total corresponds to your @@PRODUCT_NAME@@ certificate's
-value for this entitlement, excluding the default organization's consumption.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;Consejo:&lt;/strong&gt; Este total corresponde al valor de su certificado @@PRODUCT_NAME@@
-para este derecho, excluyendo el consumo de la organización predeterminada.</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; 'Total' refers to the total available entitlements to
-the organizations (excluding the default @@PRODUCT_NAME@@ organization) on this @@PRODUCT_NAME@@. It is not equal to the total available in the @@PRODUCT_NAME@@ certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;*Consejo:&lt;/strong&gt; 'Total' se refiere al total de derechos disponibles
-para las organizaciones (excluyendo la organización predeterminada del  @@PRODUCT_NAME@@.)
-en este  @@PRODUCT_NAME@@. No es igual al total disponible en el certificado del @@PRODUCT_NAME@@.</target>
-      </trans-unit>
-      <trans-unit id="orgsoftwaresubs.jsp.description">
-        <source>Below you modify the total number of software channel entitlements available to the &lt;strong&gt;{0}&lt;/strong&gt; organization on a per-channel basis.  If you'd like to modify the number of entitlements available to a particular channel note that you are limited by the range indicated next to the field.</source>
-        <target>A continuación modifique el número total de derechos de canal de software disponibles para la organización &lt;strong&gt;{0}&lt;/strong&gt; para cada canal. Si desea modificar el número de derechos disponibles para cada canal particular note que tiene un límite que se indica al lado del campo.</target>
-      </trans-unit>
-      <trans-unit id="orgsysubs.jsp.header2">
-        <source>System Entitlement Counts</source>
-        <target>Conteo de derechos del sistema</target>
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
@@ -22913,18 +22485,6 @@ given channel.</source>
       <trans-unit id="currentMembers">
         <source>Regular Usage - Used</source>
         <target>Uso normal - Utilizado</target>
-      </trans-unit>
-      <trans-unit id="maxMembers">
-        <source>Regular Usage - Alloted</source>
-        <target>Uso normal - Asignado</target>
-      </trans-unit>
-      <trans-unit id="currentFlex">
-        <source>Flex Usage - Used</source>
-        <target>Uso flexible - Utilizado</target>
-      </trans-unit>
-      <trans-unit id="maxFlex">
-        <source>Flex Usage - Allotted</source>
-        <target>Uso flexible - Asignado</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewpackages">
         <source>View Packages</source>
@@ -24168,13 +23728,6 @@ given channel.</source>
         </context-group>
         <target>Genera repodata de canales</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether satellite certificate has not expired</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-        <target>Comprueba  que el certificado de satélite no ha expirado</target>
-      </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch">
         <source>Cleans up orphaned and outdated data</source>
         <context-group name="ctx">
@@ -24647,10 +24200,6 @@ given channel.</source>
       <trans-unit id="task.status.channel-repodata">
         <source>Channel Repodata</source>
         <target>Repodata de canal</target>
-      </trans-unit>
-      <trans-unit id="task.status.sat-cert-check">
-        <source>Certificate Check</source>
-        <target>Verificación de certificado</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data">
         <source>TimeSeries Cleanup</source>

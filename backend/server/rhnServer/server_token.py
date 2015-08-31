@@ -518,8 +518,6 @@ class ActivationTokens:
         self.user_id = user_id
         self.org_id = org_id
         self.kickstart_session_id = kickstart_session_id
-#        self.entitlement_label = entitlement_label
-#        self.entitlement_name = entitlement_name
         # Boolean
         self.deploy_configs = deploy_configs
         # entitlements is list of tuples [(name, label)]
@@ -618,11 +616,6 @@ class ActivationTokens:
             except rhnSQL.SQLSchemaError, e:
                 log_error("Token failed to entitle server", server_id,
                           self.get_names(), entitlement[0], e.errmsg)
-                if e.errno == 20220:
-                    # ORA-20220: (servergroup_max_members) - Server group membership
-                    # cannot exceed maximum membership
-                    raise rhnFault(91,
-                        _("Registration failed: SUSE Manager Software service entitlements exhausted: %s") % entitlement[0]), None, sys.exc_info()[2]
                 #No idea what error may be here...
                 raise rhnFault(90, e.errmsg), None, sys.exc_info()[2]
             except rhnSQL.SQLError, e:
@@ -662,7 +655,7 @@ class ReRegistrationActivationToken(ReRegistrationToken):
             unentitle_server = rhnSQL.Procedure(
                 "rhn_entitlements.remove_server_entitlement")
             try:
-                unentitle_server(server_id, ent, 0)
+                unentitle_server(server_id, ent)
             except rhnSQL.SQLSchemaError, e:
                 log_error("Failed to unentitle server", server_id,
                           ent, e.errmsg)

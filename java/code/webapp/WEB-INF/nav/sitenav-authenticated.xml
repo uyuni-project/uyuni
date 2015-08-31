@@ -252,17 +252,7 @@
         <rhn-tab-url>/rhn/admin/multiorg/OrgConfigDetails.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgUsers.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/DeleteOrg.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/OrgSystemSubscriptions.do</rhn-tab-url>
         <rhn-tab-url>/rhn/admin/multiorg/OrgCreate.do</rhn-tab-url>
-    </rhn-tab>
-
-    <rhn-tab name="Subscriptions" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/SystemEntitlements.do">
-
-      <rhn-tab name="System Entitlements" acl="user_role(satellite_admin)">
-        <rhn-tab-url>/rhn/admin/multiorg/SystemEntitlements.do</rhn-tab-url>
-        <rhn-tab-url>/rhn/admin/multiorg/EntitlementOrgs.do</rhn-tab-url>
-      </rhn-tab>
-
     </rhn-tab>
 
     <rhn-tab name="Users" acl="user_role(satellite_admin)" url="/rhn/admin/multiorg/Users.do">

@@ -24,8 +24,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.dto.MultiOrgUserOverview;
 import com.redhat.rhn.frontend.dto.OrgDto;
-import com.redhat.rhn.frontend.dto.OrgEntitlementDto;
-import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.MigrationToSameOrgException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchOrgException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
@@ -34,7 +32,6 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.org.OrgHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -42,7 +39,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class OrgHandlerTest extends BaseHandlerTestCase {
 
@@ -66,11 +62,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         }
         TestUtils.saveAndFlush(admin);
 
-        channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(
-                admin,
-                ChannelFamilyFactoryTest.ENTITLEMENT_ALLOCATION,
-                ChannelFamilyFactoryTest.FLEX_ALLOCATION,
-                true);
+        channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }
 
     public void testCreate() throws Exception {
@@ -188,161 +180,6 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         Org org =  OrgFactory.lookupByName(name);
         assertNotNull(org);
         return org;
-    }
-
-    public void testSetSystemEntitlements() throws Exception {
-        Org testOrg = createOrg();
-
-        String systemEnt = EntitlementManager.ENTERPRISE_ENTITLED;
-        int result = handler.setSystemEntitlements(admin,
-                new Integer(testOrg.getId().intValue()), systemEnt, new Integer(1));
-        assertEquals(1, result);
-
-        systemEnt = EntitlementManager.VIRTUALIZATION_ENTITLED;
-        result = handler.setSystemEntitlements(admin,
-                new Integer(testOrg.getId().intValue()), systemEnt, new Integer(1));
-        assertEquals(1, result);
-
-        assertOrgSystemEntitlementCount(testOrg.getId(), systemEnt, 1);
-    }
-
-    public void testSetSystemEntitlementsNoSuchOrgOrFamily() throws Exception {
-        Org testOrg = createOrg();
-        String systemEnt = EntitlementManager.VIRTUALIZATION_ENTITLED;
-        try {
-            handler.setSystemEntitlements(admin,
-                    new Integer(testOrg.getId().intValue()), "nosuchentitlement",
-                    new Integer(1));
-            fail();
-        }
-        catch (InvalidEntitlementException e) {
-            // expected
-        }
-
-        try {
-            handler.setSystemEntitlements(admin,
-                    new Integer(-1), systemEnt, new Integer(1));
-            fail();
-        }
-        catch (NoSuchOrgException e) {
-            // expected
-        }
-    }
-
-    public void testSetSystemEntitlementsDefaultOrg() throws Exception {
-        String systemEnt = EntitlementManager.VIRTUALIZATION_ENTITLED;
-        try {
-            handler.setSystemEntitlements(admin,
-                    new Integer(1), systemEnt, new Integer(10));
-            fail();
-        }
-        catch (IllegalArgumentException e) {
-            // expected
-        }
-    }
-
-    public void testListSystemEntitlements() throws Exception {
-        Org testOrg = createOrg();
-        String systemEnt = EntitlementManager.ENTERPRISE_ENTITLED;
-
-        // test the entitlement api before the entitlement has been assigned to the org
-        List<Map> entitlementCounts = null;
-
-        entitlementCounts = handler.listSystemEntitlements(admin, systemEnt,
-            Boolean.TRUE);
-        // since includeUnentitled=TRUE, we should find an entry for the org w/ 0 ents
-        assertOrgSystemEntitlement(testOrg.getId(), systemEnt,
-            entitlementCounts, 0, true);
-
-        entitlementCounts = handler.listSystemEntitlements(admin, systemEnt,
-           Boolean.FALSE);
-        // since includeUnentitled=FALSE, we shouldn't be able to locate the org
-        assertOrgSystemEntitlement(testOrg.getId(), systemEnt,
-           entitlementCounts, 0, false);
-
-        int result = handler.setSystemEntitlements(admin,
-            new Integer(testOrg.getId().intValue()), systemEnt, new Integer(1));
-        assertEquals(1, result);
-
-        // now that the org has the entitlement, we should find it entitled with
-        // both variations of the api call
-        entitlementCounts = handler.listSystemEntitlements(admin, systemEnt,
-            Boolean.TRUE);
-        assertOrgSystemEntitlement(testOrg.getId(), systemEnt,
-            entitlementCounts, 1, true);
-
-        entitlementCounts = handler.listSystemEntitlements(admin, systemEnt,
-            Boolean.FALSE);
-        assertOrgSystemEntitlement(testOrg.getId(), systemEnt,
-            entitlementCounts, 1, true);
-    }
-
-    private void assertOrgSystemEntitlement(Long orgId, String systemEntitlmentLabel,
-            List<Map> entitlementCounts, int expectedAllocation, boolean orgShouldExist) {
-
-        boolean found = false;
-
-        for (Map counts : entitlementCounts) {
-            Integer lookupOrgId = (Integer)counts.get("org_id");
-            if (lookupOrgId.longValue() != orgId.longValue()) {
-                continue;
-            }
-            // Found our org, check it's allocation:
-            found = true;
-            Integer total = (Integer)counts.get("allocated");
-            assertEquals(new Integer(expectedAllocation), total);
-        }
-        if (!found && orgShouldExist) {
-            fail("unable to find org: " + orgId);
-        }
-    }
-
-    /**
-     * Test both list entitlement calls by verifying the given org has the
-     * expected allocation for the given system entitlement.
-     *
-     * @param orgId orgId to lookup allocations for
-     * @param systemEntitlementLabel system entitlement label
-     * @param expectedAllocation expected allocation
-     */
-    private void assertOrgSystemEntitlementCount(Long orgId,
-            String systemEntitlementLabel, int expectedAllocation) {
-        List<Map> entitlementCounts = handler.listSystemEntitlements(admin,
-                systemEntitlementLabel);
-        boolean found = false;
-
-        for (Map counts : entitlementCounts) {
-            Integer lookupOrgId = (Integer)counts.get("org_id");
-            if (lookupOrgId.longValue() != orgId.longValue()) {
-                continue;
-            }
-            // Found our org, check it's allocation:
-            found = true;
-            Integer total = (Integer)counts.get("allocated");
-            assertEquals(new Integer(expectedAllocation), total);
-        }
-        if (!found) {
-            fail("unable to find org: " + orgId);
-        }
-
-        // Repeat for the "by org" list:
-        List<OrgEntitlementDto> counts2 = handler.listSystemEntitlementsForOrg(admin,
-                new Integer(orgId.intValue()));
-        found = false;
-
-        for (OrgEntitlementDto dto : counts2) {
-            String lookupLabel = dto.getEntitlement().getLabel();
-            if (!lookupLabel.equals(systemEntitlementLabel)) {
-                continue;
-            }
-            // Found our channel family label, check it's allocation:
-            found = true;
-            Integer total = new Integer(dto.getMaxEntitlements().intValue());
-            assertEquals(new Integer(expectedAllocation), total);
-        }
-        if (!found) {
-            fail("unable to find channel family: " + systemEntitlementLabel);
-        }
     }
 
     public void testMigrateSystem() throws Exception {

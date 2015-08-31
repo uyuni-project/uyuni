@@ -4407,24 +4407,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>系统</target>
       </trans-unit>
-      <trans-unit id="Used/Allotted">
-        <source>Used/Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-        <target>已使用的/已分配的</target>
-      </trans-unit>
-      <trans-unit id="None Allocated">
-        <source>None Allotted</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SoftwareEntitlements</context>
-        </context-group>
-        <target>都没被分配</target>
-      </trans-unit>
-      <trans-unit id="Used/Allotted.tip">
-        <source>'Allotted' refers to the total number of entitlements allocated to any organization from initial pool as reflected in this @@PRODUCT_NAME@@'s certificate. 'Used' refers to entitlements that have been consumed by systems in various organizations.</source>
-        <target>'已分配' 指的是本 @@PRODUCT_NAME@@ 证书所反映的初始池分配给任何机构的总共数目。'Used' 指的是不同机构中系统已经消费的权利。</target>
-      </trans-unit>
       <trans-unit id="satusers.tip">
         <source>&lt;strong&gt;*Tip:&lt;/strong&gt; Organization administrator privileges can
 not be modified on this page. Instead, please visit the "Users" top-level
@@ -4465,10 +4447,6 @@ deducted from the default organization.</source>
       <trans-unit id="probedetails.jsp.end_date">
         <source>End date:</source>
         <target>终止日期：</target>
-      </trans-unit>
-      <trans-unit id="softwareEntitlementSubs.invalidInput">
-        <source>Proposed Allocation is invalid.</source>
-        <target>提出的分配无效。</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date">
         <source>Issue Start Date: </source>
@@ -6590,25 +6568,9 @@ deducted from the default organization.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_unlimited">
+        <trans-unit id="systementitlements.jsp.entitlement_counts_message">
           <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;unlimited available&lt;/strong&gt; entitlements</source>
           <target>&lt;strong&gt;{0} 个系统&lt;/strong&gt;有权利，&lt;strong&gt;无限个可用的&lt;/strong&gt;权利</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_1">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} 个系统&lt;/strong&gt; 有权利，&lt;strong&gt;{1} 个可用的&lt;/strong&gt; 权利（&lt;strong&gt;共 {2} 个&lt;/strong&gt;）</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_2">
-          <source>&lt;strong&gt;{0} system&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} 个系统&lt;/strong&gt; 有权利，&lt;strong&gt;{1} 个有效的&lt;/strong&gt; 权利（&lt;strong&gt;共 {2} 个&lt;/strong&gt;）</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_3">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlement (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} 个系统&lt;/strong&gt; 有权利，&lt;strong&gt;{1} 个有效的&lt;/strong&gt; 权利（&lt;strong&gt;共 {2} 个&lt;/strong&gt;）</target>
-        </trans-unit>
-        <trans-unit id="systementitlements.jsp.entitlement_counts_message_4">
-          <source>&lt;strong&gt;{0} systems&lt;/strong&gt; entitled, &lt;strong&gt;{1} available&lt;/strong&gt; entitlements (&lt;strong&gt;{2} total&lt;/strong&gt;) </source>
-          <target>&lt;strong&gt;{0} 个系统&lt;/strong&gt; 有权利，&lt;strong&gt;{1} 个有效的&lt;/strong&gt; 权利（&lt;strong&gt;共 {2} 个&lt;/strong&gt;）</target>
         </trans-unit>
       </group>
       <trans-unit id="systementitlements.jsp.base_entitlements">
@@ -6653,10 +6615,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Provisioning&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>从 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中删除 &lt;strong&gt;Provisioning&lt;/strong&gt; 权利。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.provisioning.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Provisioning&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Provisioning&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>成功将 &lt;strong&gt;{0}&lt;/strong&gt; 系统设定为&lt;strong&gt;Provisioning&lt;/strong&gt;权利，但是没有足够的&lt;strong&gt;Provisioning&lt;/strong&gt;权利来满足剩余的&lt;strong&gt;{1}&lt;/strong&gt;个系统。您可以通过 &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt; 购买额外的&lt;strong&gt;Provisioning&lt;/strong&gt;权利。在您具有了额外的&lt;strong&gt;Provisioning&lt;/strong&gt;权利后，您将可以升级这些系统。</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.provisioning.noManagement">
           <source>&lt;strong&gt;Provisioning&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Provisioning&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Provisioning&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;Provisioning&lt;/strong&gt; 权利对 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无效，因为它们没有 &lt;strong&gt;管理&lt;/strong&gt; 基本权利。这些系统仍然在以下被选择。如果您首先点下面的 &lt;strong&gt;设为管理权利&lt;/strong&gt; 按钮，然后选择 &lt;strong&gt;添加权利项&lt;/strong&gt; 中的下拉列表中的 &lt;strong&gt;Provisioning&lt;/strong&gt;，最后点下面的 &lt;strong&gt;添加权利&lt;/strong&gt; 按钮，您将可以为这些系统添加 &lt;strong&gt;Provisioning&lt;/strong&gt; 权利。</target>
@@ -6673,10 +6631,6 @@ deducted from the default organization.</source>
           <source>Removed &lt;strong&gt;Virtualization&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s)  This will cause any guests associated with the selected host to consume physical Channel and System entitlements.</source>
           <target>从系统 &lt;strong&gt;{0}&lt;/strong&gt; 中删除 &lt;strong&gt;虚拟化&lt;/strong&gt;。这将导致任何和选定主机关联的虚拟机消耗物理的频道和系统权利。</target>
         </trans-unit>
-        <trans-unit id="system_entitlements.virtualization_host.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to &lt;strong&gt;Virtualization&lt;/strong&gt; entitled, but you do not have enough &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Virtualization&lt;/strong&gt; entitlements, you will be able to upgrade these systems. &lt;br/&gt; &lt;strong&gt;NOTE: &lt;/strong&gt;If the system previously had Virtualization Platform it has been downgraded to Virtualization. </source>
-          <target>成功将 &lt;strong&gt;{0}&lt;/strong&gt; 系统被设置为赋予&lt;strong&gt;虚拟化&lt;/strong&gt;权利，但您没有足够的&lt;strong&gt;虚拟化&lt;/strong&gt;权利来满足剩余的 &lt;strong&gt;{1}&lt;/strong&gt; 系统。您可以通过 &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt; 购买额外的&lt;strong&gt;虚拟化&lt;/strong&gt;权利。在您具有了额外的&lt;strong&gt;虚拟化&lt;/strong&gt;权利后，您将可以升级这些系统。&lt;br/&gt; &lt;strong&gt;注意：&lt;/strong&gt;如果系统以前具有虚拟化平台权利，它就降级为虚拟化权利了。</target>
-        </trans-unit>
         <trans-unit id="system_entitlements.virtualization_host.noManagement">
           <source>&lt;strong&gt;Virtualization&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Virtualization&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Virtualization&lt;/strong&gt; entitlement to these system(s).</source>
           <target>&lt;strong&gt;Provisioning&lt;/strong&gt; 权利对 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无效，因为它们没有&lt;strong&gt;管理&lt;/strong&gt;基本权利。在下面仍然选择了这些失败的系统。如果您首先点下面的&lt;strong&gt;设为赋予管理权利&lt;/strong&gt;按钮，然后选择&lt;strong&gt;附加权利项&lt;/strong&gt;中下拉列表中的 &lt;strong&gt;Provisioning&lt;/strong&gt;，最后点下面的 &lt;strong&gt;添加权利&lt;/strong&gt; 按钮，您将可以为这些系统添加 &lt;strong&gt;虚拟化&lt;/strong&gt; 权利。</target>
@@ -6692,10 +6646,6 @@ deducted from the default organization.</source>
         <trans-unit id="system_entitlements.monitoring.removed.success">
           <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
           <target>从&lt;strong&gt;{0}&lt;/strong&gt; 个系统中删除&lt;strong&gt;监测&lt;/strong&gt;权利。</target>
-        </trans-unit>
-        <trans-unit id="system_entitlements.monitoring.notEnoughSlots">
-          <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) were successfully set to&lt;strong&gt;Monitoring&lt;/strong&gt; entitled, but you not have enough &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements for the remaining &lt;strong&gt;{1}&lt;/strong&gt; system(s). You may purchase additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements at &lt;a href="https://www.redhat.com/apps/commerce/rhn/"&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt;. After you have additional &lt;strong&gt;Monitoring&lt;/strong&gt; entitlements, you will be able to upgrade these systems.</source>
-          <target>成功将 &lt;strong&gt;{0}&lt;/strong&gt; 系统设定为有 &lt;strong&gt;Monitoring&lt;/strong&gt; 权利，但是您没有足够的 &lt;strong&gt;Monitoring&lt;/strong&gt; 权利来满足剩余的 &lt;strong&gt;{1}&lt;/strong&gt; 系统。您可以通过 &lt;a href=&quot;https://www.redhat.com/apps/commerce/rhn/&quot;&gt;&lt;strong&gt;@@PRODUCT_NAME@@ store&lt;/strong&gt;&lt;/a&gt; 购买额外的 &lt;strong&gt;Monitoring&lt;/strong&gt; 权利。在您具有了额外的 &lt;strong&gt;Monitoring&lt;/strong&gt; 权利后，您将可以升级这些系统。</target>
         </trans-unit>
         <trans-unit id="system_entitlements.monitoring.noManagement">
           <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
@@ -6718,18 +6668,6 @@ deducted from the default organization.</source>
         <trans-unit id="Registered">
           <source>Registered</source>
           <target>已注册的</target>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message_unlimited">
-          <source>{0} consumed, unlimited available entitlements</source>
-          <target>{0} 已经被消费，无限制的可用权利</target>
-        </trans-unit>
-        <trans-unit id="flexguest.jsp.entitlement_counts_message">
-          <source>{0} consumed, {1} available entitlement</source>
-          <target>{0} 已经被消费，{1} 可用的权利</target>
-        </trans-unit>
-        <trans-unit id="eligible.floating.guests">
-          <source>Guests Consuming Regular Entitlements</source>
-          <target>消费常规权利的客户</target>
         </trans-unit>
       </group>
       <!--  System search -->
@@ -8711,41 +8649,6 @@ administrator privileges.</source>
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
         <target>禁用监测功能。请访问 &lt;a href=&quot;/rhn/admin/config/GeneralConfig.do&quot;&gt;&lt;strong&gt;一般配置&lt;/strong&gt;&lt;/a&gt; 页并选择启用监测选择框。</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.toolbar">
-        <source>@@PRODUCT_NAME@@ Configuration - Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ 配置 - 证书</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.summary">
-        <source>You must provide an @@PRODUCT_NAME@@ certificate. This certificate entitles you to the various levels of service provided by the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>您必须提供一个 @@PRODUCT_NAME@@ 证书。这个证书给予了您使用 @@PRODUCT_NAME@@ 所提供不同服务的权利。</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.header2">
-        <source>@@PRODUCT_NAME@@ Certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ 证书</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_file">
-        <source>Upload Certificate File:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>上传证书文件：</target>
-      </trans-unit>
-      <trans-unit id="certificate.jsp.cert_text">
-        <source>-or- Certificate Text:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
-        </context-group>
-        <target>-或- 证书内容：</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -21325,13 +21228,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <target>您试图访问的频道或者是不存在，也或者是您没有权限。请重新检查把您带入此页面的链接。</target>
         </trans-unit>
       </group>
-      <trans-unit id="sdc.channels.edit.available">
-        <source>available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">outage-policy.jsp</context>
-        </context-group>
-        <target>可用的</target>
-      </trans-unit>
       <trans-unit id="sdc.channels.edit.unlimited">
         <source>unlimited</source>
         <context-group name="ctx">
@@ -21577,181 +21473,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
         <target>创建初始机构管理员</target>
       </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>权利名称</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>总计</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>使用</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>提交的总计</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.base">
-        <source>(Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>（基本）</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>（添加）</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.man_tip">
-        <source>Required for all systems registered to the @@PRODUCT_NAME@@.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>所有在 @@PRODUCT_NAME@@ 注册的系统都需要。</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.mon_tip">
-        <source>Enables the tracking of monitoring data for a system.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>为系统启用追踪监控数据。</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.virt_tip">
-        <source>Applied to a host system, enables management for up to 4 guests.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>适用于主机系统，可为最多四个客户系统启用管理。</target>
-      </trans-unit>
-      <trans-unit id="orgsystemsubs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;{0}&lt;/strong&gt; to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>可能的值：&lt;strong&gt;{0}&lt;/strong&gt; 到 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.description">
-        <source>The following is a list of all software channel entitlements on this @@PRODUCT_NAME@@, across organizations, and their usage. Click on the entitlement's name for more details about it.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements</context>
-        </context-group>
-        <target>以下是这个 @@PRODUCT_NAME@@ 中所有跨机构的软件频道权利及其使用。点击权利名称查看详情。</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.header">
-        <source>System Entitlements Across @@PRODUCT_NAME@@</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>跨 @@PRODUCT_NAME@@ 的系统权利</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.ent_name">
-        <source>Entitlement Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>权利名称</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usage">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>使用</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.usagedata">
-        <source>{0} of {1} ({2}%)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>{1}（{2}%）的 {0}</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.total">
-        <source>Total*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>总计*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.available">
-        <source>Available</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>可用的</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.tip">
-        <source>'Total' refers to the total available to the @@PRODUCT_NAME@@ as reflected in this @@PRODUCT_NAME@@'s certificate.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>‘总计’如这个 @@PRODUCT_NAME@@ 证书所示指的是可用于 @@PRODUCT_NAME@@ 的总量。</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.not_allocated">
-        <source>Not Allocated*</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>未分配的*</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.notinuse">
-        <source>Not In Use</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>没有使用的</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.enterprise_entitled">
-        <source> Management (Base)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> 管理（基本）</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.virtualization_host">
-        <source> Virtualization (Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target> 虚拟化（添加）</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.add_on">
-        <source>(Add-On)</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>（添加）</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentitlements">
-        <source>No Entitlements Found</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>未发现权利</target>
-      </trans-unit>
-      <trans-unit id="sys_entitlements.noentorgs">
-        <source>No organizations have this entitlement</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlements.do</context>
-        </context-group>
-        <target>没有组织具有这个权利</target>
-      </trans-unit>
       <trans-unit id="kickstart.cryptokey.description">
         <source>Description</source>
         <context-group name="ctx">
@@ -21765,153 +21486,6 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
           <context context-type="sourcefile">/rhn/keys/CrytpoKeysList</context>
         </context-group>
         <target>类型</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant">
-        <source>Access Granted by this Entitlement:</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>由此权利赋予访问权限：</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.enterprise_entitled">
-        <source>A single Management (Base) entitlement is required for all systems registered to satellite</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>所有在 satellite 中注册的系统都需要单一管理（基本）权利</target>
-      </trans-unit>
-      <trans-unit id="system_entitlement_details.access_grant_desc.virtualization_host">
-        <source>A single Virtualization (Add-On) entitlement applied to a host system, enables management for up to 4 guests. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
-        </context-group>
-        <target>单一虚拟化（添加）权利适用于主机系统，可为最多四个客户系统启用管理权利。</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.orgname">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>机构名称</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.proposed_total">
-        <source>Proposed Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>提交的总计</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.description">
-        <source>The Current Allocation of entitlements for {0} across the organizations on this @@PRODUCT_NAME@@ is displayed below. You may make changes to the allocation of entitlements for each organization in the "Proposed Total" column, but your changes will not take effect until you confirm using the 'Confirm Changes' button below. </source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>以下列出了这个 @@PRODUCT_NAME@@ 中目前为 {0} 跨机构分配的权利。您可以在“计划总量”栏中为每个机构修改权利分配，但要在点击“确认修改”按钮后您做的修改才有效。</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.jsp.possible_vals">
-        <source>Possible Values: &lt;strong&gt;0&lt;/strong&gt; to &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/OrgSystemSubs.do</context>
-        </context-group>
-        <target>可能的值：&lt;strong&gt;{0}&lt;/strong&gt; 到 &lt;strong&gt;{1}&lt;/strong&gt;。</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.update">
-        <source>Update</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>更新</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.usage">
-        <source>@@PRODUCT_NAME@@-Wide Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>@@PRODUCT_NAME@@ 范围内权利用量</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.filterBy">
-        <source>Organization Name</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>机构名称</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.miniheader">
-        <source>View/Modify Entitlement Counts by Organization</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>机构累计的查看/修改权利</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_allocated">
-        <source>Total Allocated</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>分配总量</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_inuse">
-        <source>Entitlement Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>权利使用</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orguse">
-        <source>Organization Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>机构用量</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total_orgusedata">
-        <source>{0} of {1} organizations ({2}%) have access to
-this entitlement.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>{1} 机构的 {0}（{2}%）
-可访问此权利。</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.total">
-        <source>Total</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>总计</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.used">
-        <source>Usage</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/EntitlementOrgs</context>
-        </context-group>
-        <target>使用</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip_allocated">
-        <source>&lt;strong&gt;Tip:&lt;/strong&gt; This total corresponds to your @@PRODUCT_NAME@@ certificate's
-value for this entitlement, excluding the default organization's consumption.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;提示：&lt;/strong&gt;这个总数对应您的 @@PRODUCT_NAME@@ 证书的
-权利值，但不包括缺省组织的消费。</target>
-      </trans-unit>
-      <trans-unit id="entitlementorgs.tip">
-        <source>&lt;strong&gt;*Tip:&lt;/strong&gt; 'Total' refers to the total available entitlements to
-the organizations (excluding the default @@PRODUCT_NAME@@ organization) on this @@PRODUCT_NAME@@. It is not equal to the total available in the @@PRODUCT_NAME@@ certificate</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementOrgs</context>
-        </context-group>
-        <target>&lt;strong&gt;*窍门&lt;/strong&gt;‘总计’指的是在这个 @@PRODUCT_NAME@@ 中
-该机构（与默认 @@PRODUCT_NAME@@ 机构不同）可用的权利总量，并不等于 @@PRODUCT_NAME@@ 证书知道总可用量。</target>
-      </trans-unit>
-      <trans-unit id="orgsoftwaresubs.jsp.description">
-        <source>Below you modify the total number of software channel entitlements available to the &lt;strong&gt;{0}&lt;/strong&gt; organization on a per-channel basis.  If you'd like to modify the number of entitlements available to a particular channel note that you are limited by the range indicated next to the field.</source>
-        <target>下面您为每个频道修改可用于 &lt;strong&gt;{0}&lt;/strong&gt; 机构的软件频道权利总数。如果您不想修改可用于特定频道的权利数目，请注意，您将会受到字段旁给出的范围的限制。</target>
-      </trans-unit>
-      <trans-unit id="orgsysubs.jsp.header2">
-        <source>System Entitlement Counts</source>
-        <target>系统权利计数</target>
       </trans-unit>
       <!-- multiorg trustedorg strings  -->
       <trans-unit id="org.trust.summary">
@@ -22900,18 +22474,6 @@ given channel.</source>
       <trans-unit id="currentMembers">
         <source>Regular Usage - Used</source>
         <target>常规使用 - 已使用</target>
-      </trans-unit>
-      <trans-unit id="maxMembers">
-        <source>Regular Usage - Alloted</source>
-        <target>常规使用 - 已分配</target>
-      </trans-unit>
-      <trans-unit id="currentFlex">
-        <source>Flex Usage - Used</source>
-        <target>Flex 使用 - 已使用</target>
-      </trans-unit>
-      <trans-unit id="maxFlex">
-        <source>Flex Usage - Allotted</source>
-        <target>Flex 使用 - 已分配</target>
       </trans-unit>
       <trans-unit id="channel.jsp.package.viewpackages">
         <source>View Packages</source>
@@ -24150,13 +23712,6 @@ given channel.</source>
         </context-group>
         <target>生成频道库数据</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.satcert-check-bunch">
-        <source>Checks whether satellite certificate has not expired</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
-        </context-group>
-        <target>检查 satellite 证书是否过期</target>
-      </trans-unit>
       <trans-unit id="bunch.jsp.description.cleanup-data-bunch">
         <source>Cleans up orphaned and outdated data</source>
         <context-group name="ctx">
@@ -24628,10 +24183,6 @@ given channel.</source>
       <trans-unit id="task.status.channel-repodata">
         <source>Channel Repodata</source>
         <target>频道库数据</target>
-      </trans-unit>
-      <trans-unit id="task.status.sat-cert-check">
-        <source>Certificate Check</source>
-        <target>证书检查</target>
       </trans-unit>
       <trans-unit id="task.status.cleanup-timeseries-data">
         <source>TimeSeries Cleanup</source>

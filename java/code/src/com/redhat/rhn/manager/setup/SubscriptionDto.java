@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.manager.setup;
 
-import com.redhat.rhn.manager.content.ContentSyncManager;
 import java.util.Date;
 
 /**
@@ -23,7 +22,6 @@ import java.util.Date;
 public class SubscriptionDto {
     private String productClass;
     private Integer consumed;
-    private Long nodeCount = ContentSyncManager.INFINITE;
     private String name;
     private Date startDate;
     private Date endDate;
@@ -65,22 +63,6 @@ public class SubscriptionDto {
      */
     public Integer getConsumed() {
         return consumed;
-    }
-
-    /**
-     * Set node count.
-     * @param nodeCountIn the node count
-     */
-    public void setNodeCount(Long nodeCountIn) {
-        this.nodeCount = nodeCountIn;
-    }
-
-    /**
-     * Get node count.
-     * @return the node count
-     */
-    public Long getNodeCount() {
-        return nodeCount;
     }
 
     /**

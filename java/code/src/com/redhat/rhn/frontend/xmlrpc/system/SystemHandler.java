@@ -66,7 +66,6 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -102,7 +101,6 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchNetworkInterfaceException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchPackageException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSnapshotTagException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
-import com.redhat.rhn.frontend.xmlrpc.NotEnoughEntitlementsException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooLongException;
 import com.redhat.rhn.frontend.xmlrpc.ProfileNameTooShortException;
@@ -174,11 +172,6 @@ import java.util.regex.Pattern;
 public class SystemHandler extends BaseHandler {
 
     private static Logger log = Logger.getLogger(SystemHandler.class);
-
-    @Override
-    protected boolean availableInRestrictedPeriod() {
-        return true;
-    }
 
     /**
      * Get a reactivation key for this server.
@@ -259,7 +252,6 @@ public class SystemHandler extends BaseHandler {
      *   - The logged in user cannot access the system
      *   - The entitlement cannot be found
      *   - The server cannot be entitled with the given entitlement
-     *   - There are no available slots for the entitlement.
      *
      * @xmlrpc.doc Adds an entitlement to a given server.
      * @xmlrpc.param #param("string", "sessionKey")
@@ -281,12 +273,6 @@ public class SystemHandler extends BaseHandler {
         }
         if (!SystemManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
-        }
-
-        long availableSlots = ServerGroupFactory
-                .lookupEntitled(entitlement, loggedInUser.getOrg()).getAvailableSlots();
-        if (availableSlots < 1) {
-            throw new NotEnoughEntitlementsException();
         }
 
         SystemManager.entitleServer(server, entitlement);
