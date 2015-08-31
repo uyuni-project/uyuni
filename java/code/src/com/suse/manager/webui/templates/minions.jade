@@ -1,27 +1,66 @@
 .spacewalk-toolbar-h1
   h1
     i.fa.fa-desktop
-    | All Minions
+    |  
+    #{l10n.getMessage("minions.all")}
 
-.panel.panel-default
-  .panel-body
-    h2 Minions
-    ul
-      for minion in minions
-        li: b #{minion}
-      else
-        li Sorry, no minion keys have been accepted so far!
+.row
+  .col-md-4
+    #pending-list.panel.panel-default
+      .panel-heading
+        h2
+          i.fa.fa-plus
+          #{l10n.getMessage("minions.pending")}
+      table(class="table table-striped vertical-middle")
+        for minion in unaccepted_minions
+          tr
+            td
+              b #{minion}
+            td.col-md-5
+              .pull-right.btn-group
+                a.btn.btn-default(href="/rhn/manager/minions/accept/#{minion}"): i.fa.fa-check.no-margin
+                a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times.no-margin
+        else
+          tr
+            td #{l10n.getMessage("minions.no.pending")}
 
-    h2 Unaccepted Minions
-    ul
-      for minion in unaccepted_minions
-        li: b #{minion}
-      else
-        li No unaccepted minions
+  .col-md-4
+    #accepted-list.panel.panel-default
+      .panel-heading
+        h2
+          i.fa.fa-check
+          #{l10n.getMessage("minions.accepted")}
+      table(class="table table-striped vertical-middle")
+        for minion in minions
+          tr
+            td
+              if present.contains(minion)
+                b: a(href="/rhn/manager/minions/#{minion}") #{minion}
+              else
+                i.fa.fa-exclamation-triangle.text-danger(title="Minion is not available.")
+                |  
+                b #{minion}
+            td.col-md-2
+              .pull-right
+                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
+        else
+          tr
+            td #{l10n.getMessage("minions.no.accepted")}
 
-    h2 Rejected Minions
-    ul
-      for minion in rejected_minions
-        li: b #{minion}
-      else
-        li No rejected minions
+  .col-md-4
+    #rejected-list.panel.panel-default
+      .panel-heading
+        h2
+          i.fa.fa-times
+          #{l10n.getMessage("minions.rejected")}
+      table(class="table table-striped vertical-middle")
+        for minion in rejected_minions
+          tr
+            td
+              b #{minion}
+            td.col-md-2
+              .pull-right
+                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
+        else
+          tr
+            td #{l10n.getMessage("minions.no.rejected")}
