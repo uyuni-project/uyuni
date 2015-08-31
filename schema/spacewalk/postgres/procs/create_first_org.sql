@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 69f163e1ca75b43ce17539862d35320e4a6ca810
+-- oracle equivalent source sha1 b69506dcfefc590b08f444bc467581ac58f7f045
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -161,15 +161,6 @@ begin
                         sgt.id, 1
                 from rhnServerGroupType sgt
                 where sgt.label = 'virtualization_host';
-
-        -- set org entitlements
-        insert into rhnOrgEntitlements (org_id, entitlement_id)
-               select 1, oet.id from rhnOrgEntitlementType oet
-                where oet.label = 'sw_mgr_enterprise';
-
-        insert into rhnOrgEntitlements (org_id, entitlement_id)
-               select 1, oet.id from rhnOrgEntitlementType oet
-                where oet.label = 'rhn_virtualization';
 
 end
 $$ language plpgsql;
