@@ -194,7 +194,7 @@
         </table>
       </div>
 
-      <rhn:require acl="not system_has_bootstrap_entitlement();">
+      <rhn:require acl="system_has_management_entitlement()">
       <!-- Channel subcriptions -->
       <div class="panel panel-default">
         <div class="panel-heading">
