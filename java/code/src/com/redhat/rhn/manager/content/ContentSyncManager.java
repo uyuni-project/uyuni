@@ -67,6 +67,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -1560,13 +1561,20 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns true if the given label reserved.
-     * eg: label of vendor channel
+     * Returns true if the given label is reserved: eg. used by a vendor channel
+     *
+     * For a channel label to be reserved, {@link ContentSyncManager} needs
+     * access to a channels.xml file. If channels.xml is not available, all
+     * channel labels will be available.
+     *
      * @param label Label
      * @return true if the given label reserved.
      * @throws ContentSyncException
      */
     public static boolean isChannelLabelReserved(String label) throws ContentSyncException {
+        if (!Files.exists(channelsXML.toPath())) {
+            return false;
+        }
         ContentSyncManager csm = new ContentSyncManager();
         List<XMLChannel> channels = csm.readChannels();
         for (XMLChannel msc : channels) {
@@ -1578,13 +1586,21 @@ public class ContentSyncManager {
     }
 
     /**
-     * Returns true if the given name reserved.
+     * Returns true if the given name reserved. eg. used by a vendor channel
+     *
+     * For a channel name to be reserved, {@link ContentSyncManager} needs
+     * access to a channels.xml file. If channels.xml is not available, all
+     * channel names will be available.
+     *
      * eg: name of vendor channel
      * @param name name
      * @return true if the given name reserved.
      * @throws ContentSyncException
      */
     public static boolean isChannelNameReserved(String name) throws ContentSyncException {
+        if (!Files.exists(channelsXML.toPath())) {
+            return false;
+        }
         ContentSyncManager csm = new ContentSyncManager();
         List<XMLChannel> channels = csm.readChannels();
         for (XMLChannel msc : channels) {
