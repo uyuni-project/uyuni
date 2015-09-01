@@ -17,5 +17,5 @@ cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
 ant -f manager-build.xml refresh-branding-jar test
 
 # Postgres shutdown (avoid stale memory by shmget())
-rcpostgresql stop
+rcpostgresql stop ||:
 
