@@ -18,14 +18,11 @@
 #
 
 # language imports
-from time import strftime, strptime
-import os
 import sys
 
 # other rhn imports
 from spacewalk.server import rhnSQL
 from spacewalk.common.rhnTB import fetchTraceback
-from spacewalk.common.rhnConfig import RHNOptions
 
 class NoOrgIdError(Exception):
 
@@ -46,6 +43,11 @@ def get_all_orgs():
     if not rows:
         raise NoOrgIdError("Unable to look up org_id")
     return rows
+
+_queryLookupOrgId = rhnSQL.Statement("""
+    SELECT id
+      FROM web_customer
+""")
 
 #
 # SSL CA certificate section
