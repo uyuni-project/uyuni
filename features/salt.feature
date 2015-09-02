@@ -19,6 +19,7 @@ Feature: Check if SaltStack Master is configured and running
     And the salt-master should be listening on public port 4506
 
   Scenario: Check SaltStack Minion is running
+   Given the salt-minion is configured
     When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
     And I restart Salt Minion
     Then the Salt Minion should be running

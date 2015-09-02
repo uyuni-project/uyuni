@@ -3,6 +3,11 @@
 Given(/^this client hostname$/) do
   @this_client_hostname = `hostname -f`.chomp
 end
+Given(/^the salt-minion is configured$/) do
+  File.rename("/etc/salt/minion", "/etc/salt/minion.orig")
+  File.open("/etc/salt/minion", 'w') { |file| file.write("master: #{ENV['TESTHOST']}") }
+  step %[I restart Salt Minion]
+end
 
 When(/^I get a content of a file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
