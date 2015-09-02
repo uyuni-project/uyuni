@@ -254,7 +254,7 @@ public class CreateChannelCommand {
 
             if (ContentSyncManager.isChannelLabelReserved(label)) {
                 throw new InvalidChannelLabelException(label,
-                    InvalidChannelLabelException.Reason.LABEL_IN_USE,
+                    InvalidChannelLabelException.Reason.LABEL_RESERVED,
                     "edit.channel.invalidchannellabel.labelreserved", label);
             }
         } catch (ContentSyncException e) {
