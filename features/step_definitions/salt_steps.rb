@@ -26,10 +26,11 @@ end
 When(/^when I restart Salt Minion$/) do
   system("rcsalt-minion stop")
   system("rcsalt-minion start")
+  sleep(2)
 end
 
 Then(/^the Salt Minion should be running$/) do
-  fail if not `rcsalt-minion status | grep Active`.chomp.include? "active (running) since"
+  fail if not system("rcsalt-minion status")
 end
 
 When(/^I list unaccepted keys at Salt Master$/) do
