@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
+import com.suse.manager.webui.models.MinionsModel;
+
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -40,8 +42,14 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     protected void doExecute(EventMessage msg) {
         RegisterMinionEvent event = (RegisterMinionEvent) msg;
         String minionId = event.getMinionId();
-        if (ServerFactory.findRegisteredMinion(minionId) != null) {
-            log.debug("Minion already registered, skipping registration: " + minionId);
+
+        // Match the minion via its machine_id
+        String machineId = MinionsModel.getMachineId(minionId);
+        if (ServerFactory.findRegisteredMinion(machineId) != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Minion already registered, skipping registration: " +
+                        minionId + " [" + machineId + "]");
+            }
             return;
         }
         try {
@@ -52,7 +60,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOs("AwesomeOS");
             server.setRelease("Awesome Release");
             server.setRunningKernel("Awesome Kernel");
-            server.setDigitalServerId(minionId);
+            server.setDigitalServerId(machineId);
             server.setSecret("pssst dont tell anyone");
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis());
