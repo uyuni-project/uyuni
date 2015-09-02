@@ -133,3 +133,23 @@ Feature: Adding channels
       And I enter "test123" as "Channel Summary"
       And I click on "Create Channel"
       Then I should see a "Invalid channel name, please see the format described below" text
+
+    Scenario: I am not allowed to use a reserved name
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "Create Channel"
+    When I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+     And I enter "test123" as "Channel Label"
+     And I enter "test123" as "Channel Summary"
+     And I click on "Create Channel"
+    Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
+
+   Scenario: I am not allowed to use a reserved label
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "Create Channel"
+    When I enter "test123" as "Channel Name"
+     And I enter "sle-we12-pool-x86_64-sap" as "Channel Label"
+     And I enter "test123" as "Channel Summary"
+     And I click on "Create Channel"
+    Then I should see a "The channel label 'sle-we12-pool-x86_64-sap' is reserved, please enter a different name" text
