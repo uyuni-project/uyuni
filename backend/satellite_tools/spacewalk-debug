@@ -139,6 +139,11 @@ if [ $IS_SUSE -eq 1 ]; then
     cp -fa /var/log/susemanager* $DIR/rhn-logs
 fi
 
+if [ -d /var/log/salt ]; then
+    mkdir -p $DIR/salt-logs
+    cp -fa /var/log/salt $DIR/salt-logs
+fi
+
 # grab jabberd info if it exists (it should)
 if [ -d /etc/jabberd ]; then
     mkdir -p $DIR/jabberd
