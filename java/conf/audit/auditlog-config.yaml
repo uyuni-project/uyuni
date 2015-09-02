@@ -547,14 +547,6 @@
     type: ACTION_DELETE
     required: [submitted]
 
-/admin/multiorg/OrgSystemSubscriptions.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
-/admin/multiorg/EntitlementOrgs.do:
-    type: ACTION_CHANGE
-    required: [submitted]
-
 ###############################################################################
 # Activation Keys
 ###############################################################################
