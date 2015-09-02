@@ -87,10 +87,11 @@ section_header "SUSE Manager Client allowed Actions"
 
 find /etc/sysconfig/rhn/allowed-actions/
 
-section_header "SUSE Manager Proxy Log Files"
+section_header "SUSE Manager Client Log Files"
 
 plog_files 1000 /var/log/up2date
 plog_files 100 /var/log/osad
+plog_files 1000 /var/log/salt/minion
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
