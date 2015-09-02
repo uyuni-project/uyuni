@@ -883,15 +883,15 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * Find a registered minion: check if the digital server id matches a given minion id.
+     * Find a registered minion: check if digital server id matches a given machine_id.
      *
-     * @param minionId minion id
-     * @return server corresponding to the given minion id
+     * @param machineId minion machine_id from the grains
+     * @return server corresponding to the given machine_id
      */
-    public static Server findRegisteredMinion(String minionId) {
+    public static Server findRegisteredMinion(String machineId) {
         Session session = getSession();
         Criteria criteria = session.createCriteria(Server.class);
-        criteria.add(Restrictions.eq("digitalServerId", minionId));
+        criteria.add(Restrictions.eq("digitalServerId", machineId));
         return (Server) criteria.uniqueResult();
     }
 }

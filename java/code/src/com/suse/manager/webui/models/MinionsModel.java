@@ -84,6 +84,16 @@ public class MinionsModel {
     }
 
     /**
+     * Get the "machine_id" for a given minionId.
+     *
+     * @param minionId id of the target minion
+     * @return a map containing the "machine_id" grain
+     */
+    public static String getMachineId(String minionId) {
+        return (String) getGrain(minionId, "machine_id");
+    }
+
+    /**
      * Query all present minions according to salts presence detection
      *
      * @return the list of minion keys that are present
@@ -165,6 +175,28 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get a given grain's value for a given minionId.
+     *
+     * @param minionId id of the target minion
+     * @param grain name of the grain
+     * @return the grain value
+     */
+    private static Object getGrain(String minionId, String grain) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            Map<String, Map<String, Object>> grains = client.callSync(
+                    Grains.item(true, grain), new MinionList(minionId),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return grains.getOrDefault(minionId, new HashMap<>()).get(grain);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
