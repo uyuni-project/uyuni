@@ -531,6 +531,12 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                         q.getLabel()));
                 break;
 
+            case LABEL_RESERVED:
+                errors.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("edit.channel.invalidchannellabel.labelreserved",
+                        q.getLabel()));
+                break;
+
             default:
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("edit.channel.invalidchannellabel"));
