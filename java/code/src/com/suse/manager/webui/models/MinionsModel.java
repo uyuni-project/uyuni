@@ -55,7 +55,8 @@ public class MinionsModel {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
-            WheelResult<Keys> result = client.callSync(Key.listAll(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            WheelResult<Keys> result = client.callSync(Key.listAll(),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
         catch (SaltStackException e) {
@@ -74,7 +75,9 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, Object>> grains = client.callSync(Grains.items(true), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            Map<String, Map<String, Object>> grains = client.callSync(
+                    Grains.items(true), new MinionList(minionKey),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionKey, new HashMap<>());
         }
         catch (SaltStackException e) {
@@ -92,7 +95,8 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            List<String> present = client.callSync(Manage.present(), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            List<String> present = client.callSync(Manage.present(),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return present;
         }
         catch (SaltStackException e) {
@@ -111,7 +115,9 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, List<String>>> packages = client.callSync(Pkg.listPkgs(), new MinionList(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            Map<String, Map<String, List<String>>> packages = client.callSync(
+                    Pkg.listPkgs(), new MinionList(minionKey),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return packages.get(minionKey);
         }
         catch (SaltStackException e) {
