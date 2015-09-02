@@ -138,7 +138,7 @@ public class ContentSyncManager {
      * Set the channels.xml {@link File} to read from.
      * @param file the channels.xml file
      */
-    public void setChannelsXML(File file) {
+    public static void setChannelsXML(File file) {
         channelsXML = file;
     }
 
@@ -1557,5 +1557,41 @@ public class ContentSyncManager {
 
         return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
                 getUUID());
+    }
+
+    /**
+     * Returns true if the given label reserved.
+     * eg: label of vendor channel
+     * @param label Label
+     * @return true if the given label reserved.
+     * @throws ContentSyncException
+     */
+    public static boolean isChannelLabelReserved(String label) throws ContentSyncException {
+        ContentSyncManager csm = new ContentSyncManager();
+        List<XMLChannel> channels = csm.readChannels();
+        for (XMLChannel msc : channels) {
+            if (msc.getLabel().equals(label)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the given name reserved.
+     * eg: name of vendor channel
+     * @param name name
+     * @return true if the given name reserved.
+     * @throws ContentSyncException
+     */
+    public static boolean isChannelNameReserved(String name) throws ContentSyncException {
+        ContentSyncManager csm = new ContentSyncManager();
+        List<XMLChannel> channels = csm.readChannels();
+        for (XMLChannel msc : channels) {
+            if (msc.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
