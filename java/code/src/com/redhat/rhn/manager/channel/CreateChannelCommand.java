@@ -248,7 +248,7 @@ public class CreateChannelCommand {
         try {
             if (ContentSyncManager.isChannelNameReserved(name)) {
                 throw new InvalidChannelNameException(name,
-                        InvalidChannelNameException.Reason.NAME_IN_USE,
+                        InvalidChannelNameException.Reason.NAME_RESERVED,
                         "edit.channel.invalidchannelname.namereserved", name);
             }
 
