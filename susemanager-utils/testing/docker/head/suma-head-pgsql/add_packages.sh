@@ -5,8 +5,8 @@ set -e
 zypper --non-interactive --gpg-auto-import-keys ref
 
 # Packages required to run spacewalk-setup inside of the container
-zypper in -y postgresql93-contrib \
-             postgresql93-server \
-             postgresql93-pltcl \
+zypper in -y postgresql94-contrib \
+             postgresql94-server \
+             postgresql94-pltcl \
              smdba \
              perl-DBD-Pg
