@@ -36,8 +36,10 @@ public class SaltReactor implements EventListener {
     // Logger for this class
     private static Logger logger = Logger.getLogger(SaltReactor.class);
 
-    // The salt URI
-    private static final URI saltMasterURI = URI.create("http://localhost:9080");
+    // Salt properties
+    private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
+    private static final String SALT_USER = "admin";
+    private static final String SALT_PASSWORD = "";
 
     // The event stream object
     private static EventStream eventStream;
@@ -46,9 +48,9 @@ public class SaltReactor implements EventListener {
      * Start the salt reactor.
      */
     public static void start() {
-        SaltStackClient client = new SaltStackClient(saltMasterURI);
+        SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
         try {
-            Token token = client.login("admin", "", AuthModule.AUTO);
+            Token token = client.login(SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             if (logger.isDebugEnabled()) {
                 logger.debug("Token: " + token.getToken());
             }
