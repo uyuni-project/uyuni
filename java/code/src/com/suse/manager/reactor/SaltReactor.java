@@ -49,7 +49,10 @@ public class SaltReactor implements EventListener {
         SaltStackClient client = new SaltStackClient(saltMasterURI);
         try {
             Token token = client.login("admin", "", AuthModule.AUTO);
-            logger.debug("Token: " + token.getToken());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Token: " + token.getToken());
+            }
+
             // This is needed to prevent from early event stream close
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
             eventStream = client.events();
@@ -97,7 +100,9 @@ public class SaltReactor implements EventListener {
      * @param minionId the minion id
      */
     private void triggerMinionRegistration(String minionId) {
-        logger.debug("Triggering registration for minion: " + minionId);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Trigger registration for minion: " + minionId);
+        }
         MessageQueue.publish(new RegisterMinionEvent(minionId));
     }
 }
