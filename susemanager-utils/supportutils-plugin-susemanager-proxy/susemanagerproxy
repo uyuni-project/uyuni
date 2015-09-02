@@ -136,6 +136,7 @@ find_and_plog_files /var/log/rhn -type f
 find_and_plog_files /var/log/nocpulse -type f
 find_and_plog_files /var/log/squid -type f
 find_and_plog_files /var/log/apache2 -type f
+find_and_plog_files /var/log/salt -type f
 
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
