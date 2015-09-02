@@ -23,7 +23,7 @@ When(/^I remove possible Salt Master key "(.*?)"$/) do |filename|
   end
 end
 
-When(/^when I restart Salt Minion$/) do
+When(/^I restart Salt Minion$/) do
   system("rcsalt-minion stop")
   system("rcsalt-minion start")
   sleep(2)

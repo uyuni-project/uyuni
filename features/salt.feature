@@ -20,7 +20,7 @@ Feature: Check if SaltStack Master is configured and running
 
   Scenario: Check SaltStack Minion is running
     When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
-    And when I restart Salt Minion
+    And I restart Salt Minion
     Then the Salt Minion should be running
 
   Scenario: Check SaltStack Minion can be registered
