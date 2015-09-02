@@ -27,6 +27,7 @@ import com.suse.manager.webui.models.MinionsModel;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Event handler to create system records for salt minions.
@@ -53,19 +54,23 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             return;
         }
         try {
-            User user = UserFactory.lookupById(event.getUserId());
+            // Create the server
             Server server = ServerFactory.createServer();
             server.setName(minionId);
-            server.setOrg(user.getOrg());
-            server.setOs("AwesomeOS");
-            server.setRelease("Awesome Release");
-            server.setRunningKernel("Awesome Kernel");
             server.setDigitalServerId(machineId);
+            User user = UserFactory.lookupById(event.getUserId());
+            server.setOrg(user.getOrg());
+
+            // Get OS information from the grains
+            Map<String, Object> grains = MinionsModel.grains(minionId);
+            server.setOs((String) grains.get("osfullname"));
+            server.setRelease((String) grains.get("osrelease"));
+            server.setRunningKernel((String) grains.get("kernelrelease"));
             server.setSecret("pssst dont tell anyone");
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis());
             server.setCreated(new Date());
-            server.setModified(new Date());
+            server.setModified(server.getCreated());
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
             server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
             ServerInfo serverInfo = new ServerInfo();
