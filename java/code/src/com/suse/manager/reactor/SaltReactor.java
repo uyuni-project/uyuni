@@ -77,11 +77,9 @@ public class SaltReactor implements EventListener {
             logger.debug("Event: " + event.getTag() + " -> " + event.getData());
         }
 
-        // Trigger minion registration on key accept events
-        if (event.getTag().matches("salt/key")) {
-            if (event.getData().get("act").equals("accept")) {
-                triggerMinionRegistration((String) event.getData().get("id"));
-            }
+        // Trigger minion registration on minion start events (if not already registered)
+        if (event.getTag().matches("salt/minion/(.*)/start")) {
+            triggerMinionRegistration((String) event.getData().get("id"));
         }
     }
 
