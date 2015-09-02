@@ -494,6 +494,12 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                             ferengi.getName()));
                 break;
 
+            case NAME_RESERVED:
+                errors.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("edit.channel.invalidchannelname.namereserved",
+                            ferengi.getName()));
+                break;
+
             default:
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("edit.channel.invalidchannelname"));
