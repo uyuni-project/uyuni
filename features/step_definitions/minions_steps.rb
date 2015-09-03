@@ -55,3 +55,4 @@ end
 When(/^I delete this client as a minion from the Rejected section$/) do
   click_n_refresh("/rhn/manager/minions/delete/#{@this_client_hostname}")
 end
+
