@@ -171,7 +171,7 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);not system_has_bootstrap_entitlement()" url="/rhn/systems/details/groups/ListRemove.do">
+  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);system_has_management_entitlement()" url="/rhn/systems/details/groups/ListRemove.do">
 
     <rhn-tab name="List / Leave" url="/rhn/systems/details/groups/ListRemove.do"/>
     <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
@@ -197,7 +197,7 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Events" acl="not system_has_bootstrap_entitlement()">
+  <rhn-tab name="Events" acl="system_has_management_entitlement()">
     <rhn-tab-url>/rhn/systems/details/history/Pending.do</rhn-tab-url>
     <rhn-tab-url>/rhn/systems/details/history/Event.do</rhn-tab-url>
     <rhn-tab name="Pending">
