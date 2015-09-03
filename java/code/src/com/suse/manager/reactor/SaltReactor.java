@@ -17,17 +17,11 @@ package com.suse.manager.reactor;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.suse.manager.webui.models.MinionsModel;
-import com.suse.saltstack.netapi.AuthModule;
-import com.suse.saltstack.netapi.client.SaltStackClient;
-import com.suse.saltstack.netapi.config.ClientConfig;
 import com.suse.saltstack.netapi.datatypes.Event;
-import com.suse.saltstack.netapi.datatypes.Token;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
 
 import org.apache.log4j.Logger;
-
-import java.net.URI;
 
 /**
  * Salt event reactor.
@@ -37,11 +31,6 @@ public class SaltReactor implements EventListener {
     // Logger for this class
     private static Logger logger = Logger.getLogger(SaltReactor.class);
 
-    // Salt properties
-    private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
-    private static final String SALT_USER = "admin";
-    private static final String SALT_PASSWORD = "";
-
     // The event stream object
     private static EventStream eventStream;
 
@@ -49,25 +38,14 @@ public class SaltReactor implements EventListener {
      * Start the salt reactor.
      */
     public static void start() {
-        SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
-        try {
-            Token token = client.login(SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Token: " + token.getToken());
-            }
+        // Sync minions to systems in the database
+        logger.debug("Syncing minions to the database");
+        MinionsModel.getKeys().getMinions().forEach(
+                (minionId) -> triggerMinionRegistration(minionId));
 
-            // Sync minions to systems in the database
-            logger.debug("Syncing minions to the database");
-            MinionsModel.getKeys().getMinions().forEach(
-                    (minionId) -> triggerMinionRegistration(minionId));
-
-            // This is needed to prevent from early event stream close
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            eventStream = client.events();
-            eventStream.addEventListener(new SaltReactor());
-        } catch (Throwable e) {
-            logger.error(e.getMessage(), e);
-        }
+        // Initialize the event stream
+        eventStream = MinionsModel.getEventStream();
+        eventStream.addEventListener(new SaltReactor());
     }
 
     /**
