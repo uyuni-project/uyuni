@@ -2173,7 +2173,7 @@ tree will not be usable for autoinstalling.
           <source>No accepted minions.</source>
       </trans-unit>
       <trans-unit id="minions.no.rejected">
-          <source>no rejected minions.</source>
+          <source>No rejected minions.</source>
       </trans-unit>
     </body>
   </file>
