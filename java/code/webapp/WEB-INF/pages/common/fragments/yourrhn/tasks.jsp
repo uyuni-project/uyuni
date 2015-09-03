@@ -15,6 +15,19 @@
 
     <ul class="list-group">
 
+      <c:if test="${requestScope.amountOfMinions > 0}">
+        <rhn:require acl="user_role(satellite_admin)">
+          <rhn:require acl="user_role(org_admin)">
+            <li class="list-group-item">
+              <rhn:icon type="nav-bullet" /> <a
+                href="/rhn/manager/minions">
+                   <bean:message key="yourrhn.jsp.tasks.minions" arg0="${requestScope.amountOfMinions}"/>
+              </a>
+            </li>
+          </rhn:require>
+        </rhn:require>
+      </c:if>
+
       <rhn:require acl="not user_role(satellite_admin)">
         <rhn:require acl="user_role(org_admin)">
         <li class="list-group-item">
