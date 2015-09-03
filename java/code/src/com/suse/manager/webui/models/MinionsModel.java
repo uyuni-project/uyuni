@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.models;
 
-import com.redhat.rhn.domain.user.User;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Grains;
@@ -48,10 +47,9 @@ public class MinionsModel {
     /**
      * Get the minion keys from salt-api with their respective status.
      *
-     * @param user the user to use for connecting to salt-api
      * @return the keys with their respective status as returned from salt-api
      */
-    public static Keys getKeys(User user) {
+    public static Keys getKeys() {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);

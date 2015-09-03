@@ -39,6 +39,7 @@ public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
 
+    @SuppressWarnings("unused")
     private TemplateViewRoute withUser(RouteWithUser route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
@@ -66,7 +67,7 @@ public class Router implements SparkApplication {
         config.setSharedVariables(sharedVariables);
 
         // Setup routes
-        Spark.get("/manager/minions", withUser(MinionsController::listMinions), jade);
+        Spark.get("/manager/minions", MinionsController::listMinions, jade);
         Spark.get("/manager/minions/accept/:key", MinionsController::acceptMinion);
         Spark.get("/manager/minions/delete/:key", MinionsController::deleteMinion);
         Spark.get("/manager/minions/reject/:key", MinionsController::rejectMinion);
