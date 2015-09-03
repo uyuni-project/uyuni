@@ -26,7 +26,8 @@ Feature: Explore the Minions page
   Scenario: Minion is available in the Overview dashbord
     Given this client hostname
     Then I should see a "Manage Pending Minions (1)" link
-    Then the link "Manage Pending Minions (1)" should point to "/rhn/manager/minions" URI
+    Then I follow "Manage Pending Minions (1)"
+    Then I should see a "Pending Minions" text
 
   Scenario: Visible minion is moved to the Accepted Section
     Given this client hostname

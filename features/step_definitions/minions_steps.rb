@@ -56,9 +56,3 @@ When(/^I delete this client as a minion from the Rejected section$/) do
   click_n_refresh("/rhn/manager/minions/delete/#{@this_client_hostname}")
 end
 
-# Verify link
-Then(/^the link "(.*?)" should point to "(.*?)" URI$/) do |link_name, uri|
-  uri_obj = find(:xpath, "//a[@href='#{uri}']")
-  assert uri_obj.visible?
-  assert uri_obj.find("strong", :text => "Pending Minions").visible?
-end
