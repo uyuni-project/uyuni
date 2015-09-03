@@ -257,7 +257,8 @@ public class CreateChannelCommand {
                     InvalidChannelLabelException.Reason.LABEL_RESERVED,
                     "edit.channel.invalidchannellabel.labelreserved", label);
             }
-        } catch (ContentSyncException e) {
+        }
+        catch (ContentSyncException e) {
             throw new RuntimeException(e.getMessage());
         }
 
