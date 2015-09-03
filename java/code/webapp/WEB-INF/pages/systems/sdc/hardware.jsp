@@ -9,7 +9,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <html:form method="post"
     action="/systems/details/SystemHardware.do?sid=${sid}">
-    <rhn:require acl="not system_has_bootstrap_entitlement()">
+    <rhn:require acl="system_has_management_entitlement()">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4>
@@ -181,7 +181,7 @@
                   <td>${network_ip6_addr}</td>
                 </tr>
 
-                <rhn:require acl="not system_has_bootstrap_entitlement()">
+                <rhn:require acl="system_has_management_entitlement()">
                 <tr>
                   <th>
                     <c:out value="Primary network interface:" />
@@ -201,7 +201,7 @@
           </div>
           <rhn:csrf />
 
-          <rhn:require acl="not system_has_bootstrap_entitlement()">
+          <rhn:require acl="system_has_management_entitlement()">
           <div class="text-right margin-bottom-sm">
             <html:submit property="update_interface"
             styleClass="btn btn-default">
