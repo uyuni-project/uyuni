@@ -2176,10 +2176,10 @@ tree will not be usable for autoinstalling.
         <source>No rejected minions.</source>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions">
-          <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
-          <context-group name="ctx">
-              <context context-type="sourcefile">/rhn/YourRhn.do</context>
-          </context-group>
+        <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/YourRhn.do</context>
+        </context-group>
       </trans-unit>
     </body>
   </file>
