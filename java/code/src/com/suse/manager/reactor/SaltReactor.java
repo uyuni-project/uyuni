@@ -62,8 +62,8 @@ public class SaltReactor implements EventListener {
      */
     @Override
     public void notify(Event event) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Event: " + event.getTag() + " -> " + event.getData());
+        if (logger.isTraceEnabled()) {
+            logger.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
 
         // Trigger minion registration on minion start events (if not already registered)
