@@ -2222,14 +2222,30 @@ SELECT channel_arch_id
   </query>
 </mode>
 
-<mode name="count_entitled_systems_in_set">
+<mode name="count_systems_in_set_without_entitlement">
   <query params="user_id, set_label, entitlement_label">
     SELECT COUNT(*) as count
-      FROM rhnServerEntitlementView
-        JOIN rhnSet on rhnServerEntitlementView.server_id = rhnSet.element  
+      FROM rhnSet
+        LEFT JOIN rhnServerEntitlementView ON rhnSet.element = rhnServerEntitlementView.server_id
       WHERE rhnSet.user_id = :user_id AND
         rhnSet.label = :set_label AND
-        rhnServerEntitlementView.label = :entitlement_label
+        (rhnServerEntitlementView.is_base IS NULL OR rhnServerEntitlementView.is_base = 'Y') AND
+        (rhnServerEntitlementView.label IS NULL OR rhnServerEntitlementView.label &lt;&gt; :entitlement_label)
+  </query>
+</mode>
+
+<mode name="count_systems_in_set_without_feature">
+  <query params="user_id, set_label, feature_label">
+    SELECT COUNT(*) as count
+      FROM rhnSet
+      WHERE
+        rhnSet.user_id = :user_id AND
+        rhnSet.label = :set_label AND (
+          SELECT COUNT(*)
+            FROM rhnServerFeaturesView
+            WHERE rhnSet.element = rhnServerFeaturesView.server_id
+              AND rhnServerFeaturesView.label = :feature_label
+        ) = 0;
   </query>
 </mode>
 
