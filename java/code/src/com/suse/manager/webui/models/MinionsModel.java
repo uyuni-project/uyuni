@@ -24,6 +24,7 @@ import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
 import com.suse.saltstack.netapi.datatypes.Keys;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
+import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
 
 import java.net.URI;
@@ -175,6 +176,23 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the event stream from the /ws endpoint.
+     *
+     * @return the event stream
+     */
+    public static EventStream getEventStream() {
+        try {
+            SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
+            client.login(ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            return client.events();
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
