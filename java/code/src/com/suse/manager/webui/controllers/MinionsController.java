@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.domain.user.User;
-
 import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
@@ -42,8 +40,8 @@ public class MinionsController {
      * @param user the user associated with this request
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView listMinions(Request request, Response response, User user) {
-        Keys keys = MinionsModel.getKeys(user);
+    public static ModelAndView listMinions(Request request, Response response) {
+        Keys keys = MinionsModel.getKeys();
         List<String> present = MinionsModel.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
