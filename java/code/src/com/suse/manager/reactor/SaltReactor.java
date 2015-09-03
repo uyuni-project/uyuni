@@ -58,7 +58,7 @@ public class SaltReactor implements EventListener {
 
             // Sync minions to systems in the database
             logger.debug("Syncing minions to the database");
-            MinionsModel.getKeys(null).getMinions().forEach(
+            MinionsModel.getKeys().getMinions().forEach(
                     (minionId) -> triggerMinionRegistration(minionId));
 
             // This is needed to prevent from early event stream close
