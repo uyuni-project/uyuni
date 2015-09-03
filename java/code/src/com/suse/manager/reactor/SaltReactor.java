@@ -16,6 +16,7 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.suse.manager.webui.models.MinionsModel;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
@@ -54,6 +55,11 @@ public class SaltReactor implements EventListener {
             if (logger.isDebugEnabled()) {
                 logger.debug("Token: " + token.getToken());
             }
+
+            // Sync minions to systems in the database
+            logger.debug("Syncing minions to the database");
+            MinionsModel.getKeys(null).getMinions().forEach(
+                    (minionId) -> triggerMinionRegistration(minionId));
 
             // This is needed to prevent from early event stream close
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
@@ -101,7 +107,7 @@ public class SaltReactor implements EventListener {
      *
      * @param minionId the minion id
      */
-    private void triggerMinionRegistration(String minionId) {
+    private static void triggerMinionRegistration(String minionId) {
         if (logger.isDebugEnabled()) {
             logger.debug("Trigger registration for minion: " + minionId);
         }
