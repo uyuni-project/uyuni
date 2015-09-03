@@ -1786,7 +1786,7 @@ public class ContentSyncManager {
      *
      * @param label Label
      * @return true if the given label reserved.
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of error when parsing channels.xml
      */
     public static boolean isChannelLabelReserved(String label) throws ContentSyncException {
         if (!Files.exists(channelsXML.toPath())) {
@@ -1812,7 +1812,7 @@ public class ContentSyncManager {
      * eg: name of vendor channel
      * @param name name
      * @return true if the given name reserved.
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of error when parsing channels.xml
      */
     public static boolean isChannelNameReserved(String name) throws ContentSyncException {
         if (!Files.exists(channelsXML.toPath())) {
