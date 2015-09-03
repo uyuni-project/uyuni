@@ -37,7 +37,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
-        request.setAttribute("amountOfMinions", MinionsModel.getKeys(null).getUnacceptedMinions().size());
+        request.setAttribute("amountOfMinions", MinionsModel.getKeys(user).getUnacceptedMinions().size());
         RendererHelper.setTableStyle(request, null);
     }
 
