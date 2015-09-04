@@ -46,6 +46,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.setup.NCCMirrorCredentialsManager;
+
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamilies;
 import com.suse.mgrsync.MgrSyncChannelFamily;
@@ -60,6 +61,7 @@ import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;

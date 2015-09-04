@@ -224,7 +224,7 @@ public class CreateChannelCommand {
      * @throws IllegalArgumentException thrown if label, name or user are null.
      * @throws InvalidParentChannelException thrown if parent label is not a
      * valid base channel.
-     * @throws ContentSyncException
+     * @throws ContentSyncException in case of error with channels.xml
      */
     public Channel create()
         throws InvalidChannelLabelException, InvalidChannelNameException,
