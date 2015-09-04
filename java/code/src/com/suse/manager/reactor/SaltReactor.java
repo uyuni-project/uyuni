@@ -34,6 +34,9 @@ public class SaltReactor implements EventListener {
     // The event stream object
     private EventStream eventStream;
 
+    // Indicate that the reactor has been stopped
+    private volatile boolean isStopped = false;
+
     /**
      * Start the salt reactor.
      */
@@ -51,6 +54,7 @@ public class SaltReactor implements EventListener {
      * Stop the salt reactor.
      */
     public void stop() {
+        isStopped = true;
         if (eventStream != null) {
             eventStream.close();
         }
@@ -77,6 +81,13 @@ public class SaltReactor implements EventListener {
     @Override
     public void eventStreamClosed() {
         logger.warn("Event stream has closed!");
+
+        // Try to reconnect
+        if (!isStopped) {
+            logger.warn("Reconnecting to event stream...");
+            eventStream = MinionsModel.getEventStream();
+            eventStream.addEventListener(this);
+        }
     }
 
     /**
