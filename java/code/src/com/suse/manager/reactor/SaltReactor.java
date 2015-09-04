@@ -41,6 +41,10 @@ public class SaltReactor implements EventListener {
      * Start the salt reactor.
      */
     public void start() {
+        // Configure message queue to handle minion registrations
+        MessageQueue.registerAction(new RegisterMinionAction(),
+                RegisterMinionEvent.class);
+
         // Sync minions to systems in the database
         logger.debug("Syncing minions to the database");
         MinionsModel.getKeys().getMinions().forEach(this::triggerMinionRegistration);
