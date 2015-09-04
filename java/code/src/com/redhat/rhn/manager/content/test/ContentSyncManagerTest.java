@@ -981,7 +981,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         }
     }
 
-    public void testIsChannelOrLabelReserved() throws ContentSyncException, ClassNotFoundException, IOException {
+    public void testIsChannelOrLabelReserved() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         ContentSyncManager.setChannelsXML(channelsXML);
         assertFalse(ContentSyncManager.isChannelNameReserved("suse"));
