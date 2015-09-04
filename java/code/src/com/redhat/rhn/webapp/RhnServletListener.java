@@ -50,6 +50,8 @@ public class RhnServletListener implements ServletContextListener {
     private boolean hibernateStarted = false;
     private boolean loggingStarted = false;
 
+    // Salt event reactor instance
+    private SaltReactor saltReactor = new SaltReactor();
 
     private void startMessaging() {
         // Start the MessageQueue thread listening for
@@ -118,7 +120,7 @@ public class RhnServletListener implements ServletContextListener {
         startHibernate();
         logStart("Hibernate");
 
-        SaltReactor.start();
+        saltReactor.start();
         logStart("Salt reactor");
 
         log.debug("Starting upgrade check");
@@ -135,7 +137,7 @@ public class RhnServletListener implements ServletContextListener {
 
     /** {@inheritDoc} */
     public void contextDestroyed(ServletContextEvent sce) {
-        SaltReactor.stop();
+        saltReactor.stop();
         logStop("Salt reactor");
 
         stopMessaging();
