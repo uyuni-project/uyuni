@@ -32,26 +32,25 @@ public class SaltReactor implements EventListener {
     private static Logger logger = Logger.getLogger(SaltReactor.class);
 
     // The event stream object
-    private static EventStream eventStream;
+    private EventStream eventStream;
 
     /**
      * Start the salt reactor.
      */
-    public static void start() {
+    public void start() {
         // Sync minions to systems in the database
         logger.debug("Syncing minions to the database");
-        MinionsModel.getKeys().getMinions().forEach(
-                (minionId) -> triggerMinionRegistration(minionId));
+        MinionsModel.getKeys().getMinions().forEach(this::triggerMinionRegistration);
 
         // Initialize the event stream
         eventStream = MinionsModel.getEventStream();
-        eventStream.addEventListener(new SaltReactor());
+        eventStream.addEventListener(this);
     }
 
     /**
      * Stop the salt reactor.
      */
-    public static void stop() {
+    public void stop() {
         if (eventStream != null) {
             eventStream.close();
         }
@@ -85,7 +84,7 @@ public class SaltReactor implements EventListener {
      *
      * @param minionId the minion id
      */
-    private static void triggerMinionRegistration(String minionId) {
+    private void triggerMinionRegistration(String minionId) {
         if (logger.isDebugEnabled()) {
             logger.debug("Trigger registration for minion: " + minionId);
         }
