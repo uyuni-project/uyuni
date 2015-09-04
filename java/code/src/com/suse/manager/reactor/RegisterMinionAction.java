@@ -61,12 +61,12 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             User user = UserFactory.lookupById(event.getUserId());
             server.setOrg(user.getOrg());
 
-            // Get OS information from the grains
+            // TODO: Set complete OS, hardware and network information here
             Map<String, Object> grains = MinionsModel.grains(minionId);
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));
-            server.setSecret("pssst dont tell anyone");
+            server.setSecret("secret");
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis());
             server.setCreated(new Date());
@@ -76,7 +76,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             ServerInfo serverInfo = new ServerInfo();
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
-            server.setRam(1024);
+            server.setRam(((Double) grains.get("mem_total")).longValue());
             ServerFactory.save(server);
         }
         catch (Throwable t) {
