@@ -106,6 +106,7 @@ public class InvalidChannelNameException extends FaultException {
         TOO_LONG,
         IS_MISSING,
         NAME_IN_USE,
+        NAME_RESERVED,
         REDHAT_REGEX_FAILS
     }
 }

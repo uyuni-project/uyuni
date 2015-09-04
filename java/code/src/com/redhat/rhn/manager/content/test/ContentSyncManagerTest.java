@@ -49,7 +49,6 @@ import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import com.suse.mgrsync.MgrSyncChannel;
 import com.suse.mgrsync.MgrSyncChannelFamily;
 import com.suse.mgrsync.MgrSyncProduct;
@@ -60,6 +59,7 @@ import com.suse.scc.model.SCCSubscription;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -1150,6 +1150,15 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
             cs.setSourceUrl(TestUtils.randomString());
             TestUtils.saveAndFlush(cs);
         }
+    }
+
+    public void testIsChannelOrLabelReserved() throws ContentSyncException, ClassNotFoundException, IOException {
+        File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
+        ContentSyncManager.setChannelsXML(channelsXML);
+        assertFalse(ContentSyncManager.isChannelNameReserved("suse"));
+        assertFalse(ContentSyncManager.isChannelLabelReserved("label"));
+        assertTrue(ContentSyncManager.isChannelLabelReserved("sles11-sp3-pool-x86_64"));
+        assertTrue(ContentSyncManager.isChannelNameReserved("IBM-DLPAR-SDK"));
     }
 
     /**

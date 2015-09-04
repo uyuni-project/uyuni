@@ -494,6 +494,12 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
                             ferengi.getName()));
                 break;
 
+            case NAME_RESERVED:
+                errors.add(ActionMessages.GLOBAL_MESSAGE,
+                        new ActionMessage("edit.channel.invalidchannelname.namereserved",
+                            ferengi.getName()));
+                break;
+
             default:
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("edit.channel.invalidchannelname"));
@@ -528,6 +534,12 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
             case LABEL_IN_USE:
                 errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("edit.channel.invalidchannellabel.labelinuse",
+                        q.getLabel()));
+                break;
+
+            case LABEL_RESERVED:
+                errors.add(ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage("edit.channel.invalidchannellabel.labelreserved",
                         q.getLabel()));
                 break;
 

@@ -78,6 +78,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -153,7 +154,7 @@ public class ContentSyncManager {
      * Set the channels.xml {@link File} to read from.
      * @param file the channels.xml file
      */
-    public void setChannelsXML(File file) {
+    public static void setChannelsXML(File file) {
         channelsXML = file;
     }
 
@@ -1776,5 +1777,56 @@ public class ContentSyncManager {
         catch (IOException e) {
             throw new ContentSyncException(e);
         }
+    }
+
+    /**
+     * Returns true if the given label is reserved: eg. used by a vendor channel
+     *
+     * For a channel label to be reserved, {@link ContentSyncManager} needs
+     * access to a channels.xml file. If channels.xml is not available, all
+     * channel labels will be available.
+     *
+     * @param label Label
+     * @return true if the given label reserved.
+     * @throws ContentSyncException in case of error when parsing channels.xml
+     */
+    public static boolean isChannelLabelReserved(String label) throws ContentSyncException {
+        if (!Files.exists(channelsXML.toPath())) {
+            return false;
+        }
+        ContentSyncManager csm = new ContentSyncManager();
+        List<MgrSyncChannel> channels = csm.readChannels();
+        for (MgrSyncChannel msc : channels) {
+            if (msc.getLabel().equals(label)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if the given name reserved. eg. used by a vendor channel
+     *
+     * For a channel name to be reserved, {@link ContentSyncManager} needs
+     * access to a channels.xml file. If channels.xml is not available, all
+     * channel names will be available.
+     *
+     * eg: name of vendor channel
+     * @param name name
+     * @return true if the given name reserved.
+     * @throws ContentSyncException in case of error when parsing channels.xml
+     */
+    public static boolean isChannelNameReserved(String name) throws ContentSyncException {
+        if (!Files.exists(channelsXML.toPath())) {
+            return false;
+        }
+        ContentSyncManager csm = new ContentSyncManager();
+        List<MgrSyncChannel> channels = csm.readChannels();
+        for (MgrSyncChannel msc : channels) {
+            if (msc.getName().equals(name)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

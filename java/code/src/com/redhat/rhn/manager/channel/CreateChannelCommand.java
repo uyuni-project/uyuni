@@ -24,6 +24,8 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGKeyException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidGPGUrlException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -222,6 +224,7 @@ public class CreateChannelCommand {
      * @throws IllegalArgumentException thrown if label, name or user are null.
      * @throws InvalidParentChannelException thrown if parent label is not a
      * valid base channel.
+     * @throws ContentSyncException in case of error with channels.xml
      */
     public Channel create()
         throws InvalidChannelLabelException, InvalidChannelNameException,
@@ -242,6 +245,22 @@ public class CreateChannelCommand {
             throw new InvalidChannelLabelException(label,
                 InvalidChannelLabelException.Reason.LABEL_IN_USE,
                 "edit.channel.invalidchannellabel.labelinuse", label);
+        }
+        try {
+            if (ContentSyncManager.isChannelNameReserved(name)) {
+                throw new InvalidChannelNameException(name,
+                        InvalidChannelNameException.Reason.NAME_RESERVED,
+                        "edit.channel.invalidchannelname.namereserved", name);
+            }
+
+            if (ContentSyncManager.isChannelLabelReserved(label)) {
+                throw new InvalidChannelLabelException(label,
+                    InvalidChannelLabelException.Reason.LABEL_RESERVED,
+                    "edit.channel.invalidchannellabel.labelreserved", label);
+            }
+        }
+        catch (ContentSyncException e) {
+            throw new RuntimeException(e.getMessage());
         }
 
         ChannelArch ca = ChannelFactory.findArchByLabel(archLabel);
