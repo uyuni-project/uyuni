@@ -48,7 +48,7 @@ public class BootstrapEntitlement extends Entitlement {
      */
     @Override
     public boolean isBase() {
-        return false;
+        return true;
     }
 
     /**
