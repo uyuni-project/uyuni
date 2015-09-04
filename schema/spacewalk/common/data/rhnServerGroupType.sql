@@ -38,7 +38,7 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
 insert into rhnServerGroupType ( id, label, name, permanent, is_base)
    values ( sequence_nextval('rhn_servergroup_type_seq'),
       'bootstrap_entitled', 'Bootstrap Entitled Servers',
-      'N', 'Y'
+      'Y', 'Y'
    );
 
 commit;

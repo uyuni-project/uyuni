@@ -40,7 +40,7 @@ public class BootstrapEntitlement extends Entitlement {
      * {@inheritDoc}
      */
     public boolean isPermanent() {
-        return false;
+        return true;
     }
 
     /**
