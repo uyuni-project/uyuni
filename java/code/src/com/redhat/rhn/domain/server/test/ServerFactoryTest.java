@@ -927,4 +927,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
         assertContains(tags, tag);
     }
+
+    /**
+     * Test ServerFactory.findRegisteredMinion().
+     *
+     * @throws Exception in case of an error
+     */
+    public void testFindRegisteredMinion() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server minion = ServerFactory.findRegisteredMinion(server.getDigitalServerId());
+        assertEquals(server, minion);
+    }
 }
