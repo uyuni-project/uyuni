@@ -9,7 +9,7 @@
     <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
     <html:form method="post"
     action="/systems/details/SystemHardware.do?sid=${sid}">
-    <rhn:require acl="not system_has_bootstrap_entitlement()">
+    <rhn:require acl="system_has_management_entitlement()">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4>
@@ -181,7 +181,7 @@
                   <td>${network_ip6_addr}</td>
                 </tr>
 
-                <rhn:require acl="not system_has_bootstrap_entitlement()">
+                <rhn:require acl="system_has_management_entitlement()">
                 <tr>
                   <th>
                     <c:out value="Primary network interface:" />
@@ -201,7 +201,7 @@
           </div>
           <rhn:csrf />
 
-          <rhn:require acl="not system_has_bootstrap_entitlement()">
+          <rhn:require acl="system_has_management_entitlement()">
           <div class="text-right margin-bottom-sm">
             <html:submit property="update_interface"
             styleClass="btn btn-default">
@@ -210,153 +210,157 @@
           </div>
           </rhn:require>
 
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <table class="table table-condensed" width="90%"
-              cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>Interface</th>
-                    <th>IP Address</th>
-                    <th>Netmask</th>
-                    <th>Broadcast</th>
-                    <th>Hardware Address</th>
-                    <th>Driver Module</th>
-                  </tr>
-                </thead>
-                <c:forEach items="${network_interfaces}"
-                var="current" varStatus="loop">
-                  <c:choose>
-                    <c:when test="${loop.count % 2 == 0}">
-                      <c:set var="style_class"
-                      value="list-row-even" />
-                    </c:when>
-                    <c:otherwise>
-                      <c:set var="style_class"
-                      value="list-row-odd" />
-                    </c:otherwise>
-                  </c:choose>
-                  <tr class="${style_class}">
-                    <td>${current.name}</td>
+          <c:if test="${not empty network_interfaces}">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <table class="table table-condensed" width="90%"
+                cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Interface</th>
+                      <th>IP Address</th>
+                      <th>Netmask</th>
+                      <th>Broadcast</th>
+                      <th>Hardware Address</th>
+                      <th>Driver Module</th>
+                    </tr>
+                  </thead>
+                  <c:forEach items="${network_interfaces}"
+                  var="current" varStatus="loop">
                     <c:choose>
-                      <c:when test="${empty current.ip}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
+                      <c:when test="${loop.count % 2 == 0}">
+                        <c:set var="style_class"
+                        value="list-row-even" />
                       </c:when>
                       <c:otherwise>
-                        <td>${current.ip}</td>
+                        <c:set var="style_class"
+                        value="list-row-odd" />
                       </c:otherwise>
                     </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.netmask}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.netmask}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.broadcast}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.broadcast}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.hwaddr}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.hwaddr}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <td>${current.module}</td>
-                  </tr>
-                </c:forEach>
-              </table>
+                    <tr class="${style_class}">
+                      <td>${current.name}</td>
+                      <c:choose>
+                        <c:when test="${empty current.ip}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.ip}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.netmask}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.netmask}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.broadcast}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.broadcast}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.hwaddr}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.hwaddr}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <td>${current.module}</td>
+                    </tr>
+                  </c:forEach>
+                </table>
+              </div>
             </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <table class="table table-condensed">
-                <thead>
-                  <tr>
-                    <th>Interface</th>
-                    <th>IPv6 Address</th>
-                    <th>Netmask</th>
-                    <th>Scope</th>
-                    <th>Hardware Address</th>
-                    <th>Driver Module</th>
-                  </tr>
-                </thead>
-                <c:forEach items="${ipv6_network_interfaces}"
-                var="current" varStatus="loop">
-                  <c:choose>
-                    <c:when test="${loop.count % 2 == 0}">
-                      <c:set var="style_class"
-                      value="list-row-even" />
-                    </c:when>
-                    <c:otherwise>
-                      <c:set var="style_class"
-                      value="list-row-odd" />
-                    </c:otherwise>
-                  </c:choose>
-                  <tr class="${style_class}">
-                    <td>${current.name}</td>
+          </c:if>
+          <c:if test="${not empty ipv6_network_interfaces}">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <table class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th>Interface</th>
+                      <th>IPv6 Address</th>
+                      <th>Netmask</th>
+                      <th>Scope</th>
+                      <th>Hardware Address</th>
+                      <th>Driver Module</th>
+                    </tr>
+                  </thead>
+                  <c:forEach items="${ipv6_network_interfaces}"
+                  var="current" varStatus="loop">
                     <c:choose>
-                      <c:when test="${empty current.ip6}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
+                      <c:when test="${loop.count % 2 == 0}">
+                        <c:set var="style_class"
+                        value="list-row-even" />
                       </c:when>
                       <c:otherwise>
-                        <td>${current.ip6}</td>
+                        <c:set var="style_class"
+                        value="list-row-odd" />
                       </c:otherwise>
                     </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.netmask}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.netmask}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.scope}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.scope}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <c:choose>
-                      <c:when test="${empty current.hwaddr}">
-                        <td>
-                          <span class="no-details">(unknown)</span>
-                        </td>
-                      </c:when>
-                      <c:otherwise>
-                        <td>${current.hwaddr}</td>
-                      </c:otherwise>
-                    </c:choose>
-                    <td>${current.module}</td>
-                  </tr>
-                </c:forEach>
-              </table>
+                    <tr class="${style_class}">
+                      <td>${current.name}</td>
+                      <c:choose>
+                        <c:when test="${empty current.ip6}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.ip6}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.netmask}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.netmask}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.scope}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.scope}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:choose>
+                        <c:when test="${empty current.hwaddr}">
+                          <td>
+                            <span class="no-details">(unknown)</span>
+                          </td>
+                        </c:when>
+                        <c:otherwise>
+                          <td>${current.hwaddr}</td>
+                        </c:otherwise>
+                      </c:choose>
+                      <td>${current.module}</td>
+                    </tr>
+                  </c:forEach>
+                </table>
+              </div>
             </div>
-          </div>
+          </c:if>
           <c:if test="${not empty storageDevices}">
             <div class="panel panel-default">
               <div class="panel-heading">

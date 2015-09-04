@@ -191,18 +191,35 @@ public class Access extends BaseHandler {
     }
 
     /**
-     * Check if any system in the current system set is a bootsrap system.
+     * Check if all systems in the current system have a certain entitlement.
      * @param ctx Context map to pass in.
      * @param params Parameters to use to fetch from context.
-     * @return true if at least one system in the set is a bootstrap system
+     * @return true if at all systems in the set have the entitlement passed as params[0]
      */
     @SuppressWarnings("unchecked")
-    public boolean aclNoBootstrapSystemsInSet(Object ctx, String[] params) {
+    public boolean aclAllSystemsInSetHaveEntitlement(Object ctx,
+            String[] params) {
         Map<String, Object> map = (Map<String, Object>) ctx;
         User user = (User) map.get("user");
 
-        return SystemManager.countEntitledSystemsInSet(user, RhnSetDecl.SYSTEMS.getLabel(),
-            EntitlementManager.BOOTSTRAP.getLabel()) == 0;
+        return SystemManager.countSystemsInSetWithoutEntitlement(user,
+                RhnSetDecl.SYSTEMS.getLabel(), params[0]) == 0;
+    }
+
+    /**
+     * Check if all systems in the current system have a certain feature.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return true if at all systems in the set have the feature passed as params[0]
+     */
+    @SuppressWarnings("unchecked")
+    public boolean aclAllSystemsInSetHaveFeature(Object ctx,
+            String[] params) {
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        User user = (User) map.get("user");
+
+        return SystemManager.countSystemsInSetWithoutFeature(user,
+                RhnSetDecl.SYSTEMS.getLabel(), params[0]) == 0;
     }
 
     /**

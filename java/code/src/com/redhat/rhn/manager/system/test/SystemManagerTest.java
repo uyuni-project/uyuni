@@ -91,6 +91,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1153,13 +1154,13 @@ public class SystemManagerTest extends RhnBaseTestCase {
         assertEquals(0, result.size());
     }
 
-    public void testCountEntitledSystemsInSet() throws Exception {
+    public void testCountSystemsInSetWithoutEntitlement() throws Exception {
         User user = UserTestUtils.findNewUser("testUser", "testOrg" +
             this.getClass().getSimpleName());
 
         String setLabel = TestUtils.randomString();
-        int actual = SystemManager.countEntitledSystemsInSet(user, setLabel,
-            EntitlementManager.MANAGEMENT.getLabel());
+        int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+                        EntitlementManager.ENTERPRISE_ENTITLED);
         assertEquals(0, actual);
 
         Server server = ServerFactoryTest.createTestServer(user, true,
@@ -1169,16 +1170,55 @@ public class SystemManagerTest extends RhnBaseTestCase {
         set.addElement(server.getId());
         RhnSetManager.store(set);
 
-        actual = SystemManager.countEntitledSystemsInSet(user, setLabel,
-            EntitlementManager.MANAGEMENT.getLabel());
-        assertEquals(1, actual);
-
-        actual = SystemManager.countEntitledSystemsInSet(user, setLabel,
-            EntitlementManager.BOOTSTRAP.getLabel());
+        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+                        EntitlementManager.ENTERPRISE_ENTITLED);
         assertEquals(0, actual);
 
-        actual = SystemManager.countEntitledSystemsInSet(user, "non matching",
-            EntitlementManager.MANAGEMENT.getLabel());
+        Server unentitledServer = ServerFactoryTest.createUnentitledTestServer(user, true,
+                        ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+        set.addElement(unentitledServer.getId());
+        RhnSetManager.store(set);
+
+        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+                        EntitlementManager.ENTERPRISE_ENTITLED);
+        assertEquals(1, actual);
+
+        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, "non matching",
+                        EntitlementManager.ENTERPRISE_ENTITLED);
+        assertEquals(0, actual);
+    }
+
+    public void testCountSystemsInSetWithoutFeature() throws Exception {
+        User user = UserTestUtils.findNewUser("testUser", "testOrg" +
+            this.getClass().getSimpleName());
+
+        String setLabel = TestUtils.randomString();
+        int actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+                        EntitlementManager.ENTERPRISE_ENTITLED);
+        assertEquals(0, actual);
+
+        Server server = ServerFactoryTest.createTestServer(user, true,
+            ServerConstants.getServerGroupTypeEnterpriseEntitled());
+
+        RhnSet set = RhnSetManager.createSet(user.getId(), setLabel, SetCleanup.NOOP);
+        set.addElement(server.getId());
+        RhnSetManager.store(set);
+
+        actual = SystemManager.countSystemsInSetWithoutFeature(user, setLabel,
+                        "ftr_kickstart");
+        assertEquals(0, actual);
+
+        Server unentitledServer = ServerFactoryTest.createUnentitledTestServer(user, true,
+                        ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+        set.addElement(unentitledServer.getId());
+        RhnSetManager.store(set);
+
+        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+                        "ftr_kickstart");
+        assertEquals(1, actual);
+
+        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, "non matching",
+                        "ftr_kickstart");
         assertEquals(0, actual);
     }
 }

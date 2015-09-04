@@ -268,9 +268,7 @@ public class SystemHandler extends BaseHandler {
         Entitlement entitlement = EntitlementManager.getByName(entitlementLevel);
 
         // Make sure we got a valid entitlement and the server can be entitled to it
-        if (entitlement == null) {
-            throw new InvalidEntitlementException();
-        }
+        validateEntitlements(new ArrayList() { { add(entitlement); } });
         if (!SystemManager.canEntitleServer(server, entitlement)) {
             throw new PermissionCheckFailureException();
         }
@@ -3357,11 +3355,16 @@ public class SystemHandler extends BaseHandler {
         Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
                 loggedInUser);
 
-        Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
-                earliestOccurrence);
-        Action action = ActionFactory.save(a);
+        try {
+            Action a = ActionManager.scheduleHardwareRefreshAction(loggedInUser, server,
+                    earliestOccurrence);
+            Action action = ActionFactory.save(a);
 
-        return action.getId();
+            return action.getId();
+        }
+        catch (MissingEntitlementException e) {
+            throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
     }
 
     /**
@@ -3384,11 +3387,16 @@ public class SystemHandler extends BaseHandler {
         Server server = SystemManager.lookupByIdAndUser(new Long(sid.longValue()),
                 loggedInUser);
 
-        Action a = ActionManager.schedulePackageRefresh(loggedInUser, server,
-                earliestOccurrence);
-        ActionFactory.save(a);
+        try {
+            Action a = ActionManager.schedulePackageRefresh(loggedInUser, server,
+                    earliestOccurrence);
+            ActionFactory.save(a);
 
-        return a.getId().intValue();
+            return a.getId().intValue();
+        }
+        catch (MissingEntitlementException e) {
+            throw new com.redhat.rhn.frontend.xmlrpc.MissingEntitlementException();
+        }
     }
 
     /**
@@ -3985,6 +3993,10 @@ public class SystemHandler extends BaseHandler {
      */
     public int unentitle(String clientCert) {
         Server server = validateClientCertificate(clientCert);
+        if (server.getBaseEntitlement().isPermanent()) {
+            // a permanent entitlement is not changeable by API
+            throw new InvalidEntitlementException();
+        }
         SystemManager.removeAllServerEntitlements(server.getId());
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.entitlements"));
