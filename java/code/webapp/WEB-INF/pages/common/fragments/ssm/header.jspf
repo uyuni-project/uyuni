@@ -3,9 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
-<rhn:require acl="not no_bootstrap_systems_in_set()">
+<rhn:require acl="not all_systems_in_set_have_entitlement(enterprise_entitled)">
   <div class="alert alert-warning">
-    <bean:message key="ssm.overview.bootstrap.notice" />
+    <bean:message key="ssm.overview.management.notice" />
   </div>
 </rhn:require>
 

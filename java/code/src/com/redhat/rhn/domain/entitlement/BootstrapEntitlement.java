@@ -40,7 +40,7 @@ public class BootstrapEntitlement extends Entitlement {
      * {@inheritDoc}
      */
     public boolean isPermanent() {
-        return false;
+        return true;
     }
 
     /**
@@ -48,14 +48,6 @@ public class BootstrapEntitlement extends Entitlement {
      */
     @Override
     public boolean isBase() {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSatelliteEntitlement() {
-        return false;
+        return true;
     }
 }

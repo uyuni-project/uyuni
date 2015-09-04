@@ -24,7 +24,7 @@
     <div class="panel-body">
         <bean:message key="ssm.overview.systems.list"/>
     </div>
-    <rhn:require acl="no_bootstrap_systems_in_set()">
+    <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
         <div class="panel-heading">
             <rhn:icon type="header-errata" title="ssm.overview.patches" />
             <bean:message key="ssm.overview.patches"/>
@@ -62,6 +62,7 @@
             </ul>
         </div>
     </rhn:require>
+    <rhn:require acl="all_systems_in_set_have_feature(ftr_kickstart)">
     <div class="panel-heading">
         <rhn:icon type="header-kickstart" title="ssm.overview.provisioning" />
         <bean:message key="ssm.overview.provisioning"/>
@@ -69,35 +70,36 @@
     <div class="panel-body">
         <ul>
             <li><bean:message key="ssm.overview.provisioning.kickstart"/></li>
-            <rhn:require acl="no_bootstrap_systems_in_set()">
-                <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
-                <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
+            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
+            <li><bean:message key="ssm.overview.provisioning.rollback"/></li>
+            <li><bean:message key="ssm.overview.provisioning.remotecommands"/></li>
             </rhn:require>
             <li><bean:message key="ssm.overview.provisioning.powermanagement.configure"/></li>
             <li><bean:message key="ssm.overview.provisioning.powermanagement.operations"/></li>
         </ul>
     </div>
+    </rhn:require>
     <div class="panel-heading">
         <rhn:icon type="header-event-history" title="ssm.overview.misc" />
         <bean:message key="ssm.overview.misc"/>
     </div>
     <div class="panel-body">
         <ul>
-            <rhn:require acl="no_bootstrap_systems_in_set()">
+            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <li><bean:message key="ssm.overview.misc.updateprofiles"/></li>
             </rhn:require>
-            <rhn:require acl="no_bootstrap_systems_in_set()">
+            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <li><bean:message key="ssm.overview.misc.customvalues"/></li>
             </rhn:require>
-            <rhn:require acl="user_role(org_admin); no_bootstrap_systems_in_set()">
+            <rhn:require acl="user_role(org_admin); all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <li><bean:message key="ssm.overview.misc.entitlements"/></li>
             </rhn:require>
             <li><bean:message key="ssm.overview.misc.delete"/></li>
-            <rhn:require acl="no_bootstrap_systems_in_set()">
+            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <li><bean:message key="ssm.overview.misc.reboot"/></li>
             </rhn:require>
             <li><bean:message key="ssm.overview.misc.migrate"/></li>
-            <rhn:require acl="no_bootstrap_systems_in_set()">
+            <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
                 <li><bean:message key="ssm.overview.misc.scap"/></li>
             </rhn:require>
         </ul>

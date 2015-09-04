@@ -8,7 +8,6 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-  <rhn:require acl="not system_has_bootstrap_entitlement();">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4><bean:message key="sdc.details.overview.systemstatus"/></h4>
@@ -18,47 +17,52 @@
         <c:when test="${unentitled}">
           <rhn:icon type="system-unentitled" /> <bean:message key="sdc.details.overview.unentitled" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/>
         </c:when>
-        <c:when test="${systemInactive}">
-          <rhn:icon type="system-unknown" /> <bean:message key="sdc.details.overview.inactive1"/>
-        </c:when>
-        <c:when test="${hasUpdates}">
-          <c:choose>
-            <c:when test="${criticalErrataCount > 0}">
-              <rhn:icon type="system-crit" />
-            </c:when>
-            <c:otherwise>
-              <rhn:icon type="system-warn" />
-            </c:otherwise>
-          </c:choose>
-          &nbsp; <bean:message key="sdc.details.overview.updatesavailable" /> &nbsp;&nbsp;
-
-          <c:if test="${criticalErrataCount > 0}">
-            <bean:message key="sdc.details.overview.updates.critical" arg0="/rhn/systems/details/ErrataList.do?sid=${system.id}&type=${rhn:localize('errata.create.securityadvisory')}" arg1="${criticalErrataCount}"/> &nbsp;&nbsp;
-          </c:if>
-          <c:if test="${nonCriticalErrataCount > 0}">
-            <bean:message key="sdc.details.overview.updates.noncritical" arg0="/rhn/systems/details/ErrataList.do?sid=${system.id}&type=${rhn:localize('errata.updates.noncritical')}" arg1="${nonCriticalErrataCount}"/> &nbsp;&nbsp;
-          </c:if>
-          <c:if test="${upgradablePackagesCount > 0}">
-            <bean:message key="sdc.details.overview.updates.packages" arg0="/rhn/systems/details/packages/UpgradableList.do?sid=${system.id}" arg1="${upgradablePackagesCount}"/>
-          </c:if>
-        </c:when>
-
         <c:otherwise>
-          <rhn:icon type="system-ok" /> <bean:message key="sdc.details.overview.updated"/>
-        </c:otherwise>
-      </c:choose>
+          <rhn:require acl="system_has_management_entitlement()">
+              <c:choose>
+                <c:when test="${systemInactive}">
+                  <rhn:icon type="system-unknown" /> <bean:message key="sdc.details.overview.inactive1"/>
+                </c:when>
+                <c:when test="${hasUpdates}">
+                  <c:choose>
+                    <c:when test="${criticalErrataCount > 0}">
+                      <rhn:icon type="system-crit" />
+                    </c:when>
+                    <c:otherwise>
+                      <rhn:icon type="system-warn" />
+                    </c:otherwise>
+                  </c:choose>
+                  &nbsp; <bean:message key="sdc.details.overview.updatesavailable" /> &nbsp;&nbsp;
 
-      <c:if test="${rebootRequired}">
-        <div class="systeminfo">
-          <div class="systeminfo-full">
-            <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
-            <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
-          </div>
-        </div>
-      </c:if>
+                  <c:if test="${criticalErrataCount > 0}">
+                    <bean:message key="sdc.details.overview.updates.critical" arg0="/rhn/systems/details/ErrataList.do?sid=${system.id}&type=${rhn:localize('errata.create.securityadvisory')}" arg1="${criticalErrataCount}"/> &nbsp;&nbsp;
+                  </c:if>
+                  <c:if test="${nonCriticalErrataCount > 0}">
+                    <bean:message key="sdc.details.overview.updates.noncritical" arg0="/rhn/systems/details/ErrataList.do?sid=${system.id}&type=${rhn:localize('errata.updates.noncritical')}" arg1="${nonCriticalErrataCount}"/> &nbsp;&nbsp;
+                  </c:if>
+                  <c:if test="${upgradablePackagesCount > 0}">
+                    <bean:message key="sdc.details.overview.updates.packages" arg0="/rhn/systems/details/packages/UpgradableList.do?sid=${system.id}" arg1="${upgradablePackagesCount}"/>
+                  </c:if>
+                </c:when>
+
+                <c:otherwise>
+                  <rhn:icon type="system-ok" /> <bean:message key="sdc.details.overview.updated"/>
+                </c:otherwise>
+              </c:choose>
+
+              <c:if test="${rebootRequired}">
+                <div class="systeminfo">
+                  <div class="systeminfo-full">
+                    <rhn:icon type="system-reboot" /><bean:message key="sdc.details.overview.requires_reboot"/>
+                    <bean:message key="sdc.details.overview.schedulereboot" arg0="/rhn/systems/details/RebootSystem.do?sid=${system.id}"/>
+                  </div>
+                </div>
+              </c:if>
+          </rhn:require>
+          </c:otherwise>
+      </c:choose>
     </div>
   </div>
-  </rhn:require>
 
   <div class="row-0">
     <div class="col-md-6">
@@ -144,7 +148,7 @@
             <td><bean:message key="sdc.details.overview.sysid"/></td>
             <td><c:out value="${system.id}" /></td>
           </tr>
-          <rhn:require acl="not system_has_bootstrap_entitlement();">
+          <rhn:require acl="system_has_management_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.activationkey"/></td>
             <td>
@@ -194,7 +198,7 @@
         </table>
       </div>
 
-      <rhn:require acl="not system_has_bootstrap_entitlement();">
+      <rhn:require acl="system_has_management_entitlement()">
       <!-- Channel subcriptions -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -232,7 +236,7 @@
             <td><bean:message key="sdc.details.overview.checkedin"/></td>
             <td><rhn:formatDate humanStyle="calendar" value="${system.lastCheckin}" type="both" dateStyle="short" timeStyle="long"/></td>
           </tr>
-          <rhn:require acl="not system_has_bootstrap_entitlement();">
+          <rhn:require acl="system_has_management_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.registered"/></td>
             <td><rhn:formatDate humanStyle="calendar" value="${system.created}" type="both" dateStyle="short" timeStyle="long"/></td>
@@ -305,7 +309,6 @@
           <h4><bean:message key="sdc.details.overview.sysproperties" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/></h4>
         </div>
         <table class="table">
-          <rhn:require acl="not system_has_bootstrap_entitlement();">
           <tr>
             <td><bean:message key="sdc.details.overview.entitlement"/></td>
             <td>
@@ -314,13 +317,16 @@
                 <bean:message key="none.message"/>
               </c:when>
               <c:otherwise>
+                <rhn:require acl="system_has_management_entitlement()">
                 <c:forEach items="${system.entitlements}" var="entitlement">
                  [<c:out value="${entitlement.humanReadableLabel}" />]
                 </c:forEach>
+                </rhn:require>
                </c:otherwise>
             </c:choose>
             </td>
           </tr>
+          <rhn:require acl="system_has_management_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.notifications"/></td>
             <td>
