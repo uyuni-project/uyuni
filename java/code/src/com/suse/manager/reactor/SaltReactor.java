@@ -69,7 +69,7 @@ public class SaltReactor implements EventListener {
             logger.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
 
-        // Trigger minion registration on minion start events (if not already registered)
+        // Trigger minion registration on "salt/minion/*/start" events
         if (event.getTag().matches("salt/minion/(.*)/start")) {
             triggerMinionRegistration((String) event.getData().get("id"));
         }
@@ -91,9 +91,9 @@ public class SaltReactor implements EventListener {
     }
 
     /**
-     * Trigger event to register a given minion.
+     * Trigger the registration of a minion in case it is not registered yet.
      *
-     * @param minionId the minion id
+     * @param minionId the minion id of the minion to be registered
      */
     private void triggerMinionRegistration(String minionId) {
         if (logger.isDebugEnabled()) {
