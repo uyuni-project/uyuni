@@ -49,10 +49,6 @@ import com.redhat.rhn.frontend.events.TraceBackAction;
 import com.redhat.rhn.frontend.events.TraceBackEvent;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheAction;
 import com.redhat.rhn.frontend.events.UpdateErrataCacheEvent;
-
-import com.suse.manager.reactor.RegisterMinionAction;
-import com.suse.manager.reactor.RegisterMinionEvent;
-
 import com.redhat.rhn.frontend.events.SsmInstallPackagesAction;
 import com.redhat.rhn.frontend.events.SsmInstallPackagesEvent;
 import com.redhat.rhn.frontend.events.SsmSystemRebootAction;
@@ -319,10 +315,6 @@ public class MessageQueue {
         // Deploy configuration files
         MessageQueue.registerAction(new SsmConfigFilesAction(),
                                     SsmConfigFilesEvent.class);
-
-        // Create system records for salt minions
-        MessageQueue.registerAction(new RegisterMinionAction(),
-                RegisterMinionEvent.class);
     }
 }
 
