@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.frontend.action.test;
 
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 
@@ -27,7 +26,6 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/Search");
-        user.getOrg().getEntitlements().add(OrgFactory.getEntitlementEnterprise());
     }
 
     public void testSystemRedirect() throws Exception {

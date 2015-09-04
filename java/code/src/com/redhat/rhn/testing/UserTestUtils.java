@@ -28,14 +28,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
-import java.util.Set;
-
 import junit.framework.Assert;
 
 /**
  * A class that allows us to easily create test users.
- *
- * @version $Rev$
  */
 public class UserTestUtils extends Assert {
     // static class
@@ -269,8 +265,6 @@ public class UserTestUtils extends Assert {
      * @throws Exception foo
      */
     public static void addManagement(Org orgIn) throws Exception {
-        Set ents = orgIn.getEntitlements();
-        ents.add(OrgFactory.getEntitlementEnterprise());
         EntitlementServerGroup sg =
             ServerGroupTestUtils.createEntitled(orgIn,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -282,9 +276,6 @@ public class UserTestUtils extends Assert {
      * @throws Exception foo
      */
     public static void addVirtualization(Org orgIn) throws Exception {
-        Set ents = orgIn.getEntitlements();
-        ents.add(OrgFactory.getEntitlementVirtualization());
-
         EntitlementServerGroup sg =
             ServerGroupTestUtils.createEntitled(orgIn,
                     ServerConstants.getServerGroupTypeVirtualizationEntitled());

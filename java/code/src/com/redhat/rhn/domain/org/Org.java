@@ -70,7 +70,6 @@ public class Org extends BaseDomainHelper {
     private Long id;
     private String name;
     private Set<UserGroup> usergroups;
-    private Set entitlements;
     private Set<Channel> ownedChannels;
     private Set<CustomDataKey> customDataKeys;
     private Set<Org> trustedOrgs;
@@ -85,7 +84,6 @@ public class Org extends BaseDomainHelper {
      */
     protected Org() {
         usergroups = new HashSet<UserGroup>();
-        entitlements = new HashSet();
     }
 
     /**
@@ -242,22 +240,6 @@ public class Org extends BaseDomainHelper {
     }
 
     /**
-     * Set entitlements for this Org
-     * @param entsIn new Set of Entitlements to update
-     */
-    public void setEntitlements(Set entsIn) {
-        entitlements = entsIn;
-    }
-
-    /**
-     * Get entitlements for this Org
-     * @return Set of entitlements for this Org
-     */
-    public Set getEntitlements() {
-        return entitlements;
-    }
-
-    /**
      * Set OrgConfig
      * @param orgConfigIn The new OrgConfig to set.
      */
@@ -325,19 +307,6 @@ public class Org extends BaseDomainHelper {
      */
     public List<Channel> getAccessibleChannels() {
         return ChannelManager.getChannelsAccessibleByOrg(this.id);
-    }
-
-    /**
-     * Does this org have the requested entitlement
-     * @param ent Entitlement to check
-     * @return boolean if or not the org has the Ent
-     */
-    public boolean hasEntitlement(OrgEntitlementType ent) {
-        if (!OrgFactory.isValidEntitlement(ent)) {
-            throw new IllegalArgumentException("Invalid Entitlement specified");
-        }
-
-        return entitlements.contains(ent);
     }
 
     private void manipulateChannelPerms(String modeName, Long uid, Long cid,

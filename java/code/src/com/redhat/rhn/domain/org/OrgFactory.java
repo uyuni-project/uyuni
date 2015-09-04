@@ -148,38 +148,6 @@ public class OrgFactory extends HibernateFactory {
                 .uniqueResult();
     }
 
-    /**
-     * Get the OrgEntitlementType represented by the passed in label
-     * @param label label to lookup Entitlement by
-     * @return OrgEntitlementType that was found, null if not.
-     */
-    public static OrgEntitlementType lookupEntitlementByLabel(String label) {
-        //hack around this for now...
-        Session session = HibernateFactory.getSession();
-        return (OrgEntitlementType) session.
-                getNamedQuery("OrgEntitlementType.findByLabel")
-                .setString("label", label)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
-    }
-
-    /**
-     * Is the specified label a valid entitlement.
-     */
-    static boolean isValidEntitlement(OrgEntitlementType type) {
-        OrgEntitlementType org = lookupEntitlementByLabel(type.getLabel());
-        try {
-            // If org is valid, this will succeed,
-            org.getLabel();
-        }
-        catch (Exception e) {
-            return false;
-        }
-        //If we're here, type is valid.
-        return true;
-    }
-
     private static Org saveNewOrg(Org org) {
         CallableMode m = ModeFactory.getCallableMode("General_queries",
                 "create_org");
@@ -346,22 +314,6 @@ public class OrgFactory extends HibernateFactory {
      */
     public static Org getSatelliteOrg() {
         return lookupById(new Long(1));
-    }
-
-    /**
-     * Get entitlement for sw_mgr_enterprise - aka MANAGEMENT
-     * @return OrgEntitlementType
-     */
-    public static OrgEntitlementType getEntitlementEnterprise() {
-        return lookupEntitlementByLabel("sw_mgr_enterprise");
-    }
-
-    /**
-     * Get entitlement for rhn_virtualization
-     * @return OrgEntitlementType
-     */
-    public static OrgEntitlementType getEntitlementVirtualization() {
-        return lookupEntitlementByLabel("rhn_virtualization");
     }
 
     /**
