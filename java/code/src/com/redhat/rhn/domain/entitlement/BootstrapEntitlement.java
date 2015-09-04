@@ -50,12 +50,4 @@ public class BootstrapEntitlement extends Entitlement {
     public boolean isBase() {
         return true;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSatelliteEntitlement() {
-        return false;
-    }
 }
