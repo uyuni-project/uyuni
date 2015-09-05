@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.4.4
+Version:    2.4.5
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -149,6 +149,9 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/css/*.less
 
 %changelog
+* Wed Aug 26 2015 Jan Dobes 2.4.5-1
+- fixing floating problem
+
 * Fri Jul 03 2015 Matej Kollar <mkollar@redhat.com> 2.4.4-1
 - Fix file input control alignment issue with form-control (bsc#873203)
 

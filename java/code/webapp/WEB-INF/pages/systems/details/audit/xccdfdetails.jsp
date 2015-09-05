@@ -12,13 +12,13 @@
 
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-<div class="toolbar">
+<div class="spacewalk-toolbar">
   <c:choose>
     <c:when test="${not empty testResult.comparableId}">
       <a href="/rhn/audit/scap/DiffSubmit.do?first=${testResult.comparableId}&second=${testResult.id}&view=changed">
         <c:choose>
           <c:when test="${testResult.diffIcon == 'checked'}" >
-            <rhn:icon type="system-ok" title="scapdiff.jsp.i.checked" />
+            <rhn:icon type="scap-nochange" title="scapdiff.jsp.i.checked" />
           </c:when>
           <c:when test="${testResult.diffIcon == 'alert'}" >
             <rhn:icon type="system-warn" title="scapdiff.jsp.i.alert" />
@@ -37,14 +37,12 @@
       <bean:message key="system.audit.xccdfdetails.jsp.nodiff"/>
     </c:otherwise>
   </c:choose>
-  |
 
   <c:if test="${testResult.deletable}">
     <a href="/rhn/systems/details/audit/XccdfDeleteConfirm.do?sid=${param.sid}&xid=${testResult.id}">
       <rhn:icon type="item-del" title="system.audit.xccdfdelete" />
       <bean:message key="system.audit.xccdfdelete"/>
     </a>
-  |
   </c:if>
 
   <a href="/rhn/systems/details/audit/ScheduleXccdf.do?sid=${param.sid}&path=${testResult.scapActionDetails.path}&params=${testResult.scapActionDetails.parametersContents}">
