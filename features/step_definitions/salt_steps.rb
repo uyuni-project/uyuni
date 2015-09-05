@@ -35,7 +35,11 @@ When(/^I restart Salt Minion$/) do
 end
 
 Then(/^the Salt Minion should be running$/) do
-  fail if not system("rcsalt-minion status")
+  out = `rcsalt-minion status`
+  unless $?.success?
+    $stderr.puts "salt-minion status: #{out}"
+    fail
+  end
 end
 
 When(/^I list unaccepted keys at Salt Master$/) do
