@@ -7,7 +7,7 @@ Name: cobbler20
 License: GPLv2+
 AutoReq: no
 Version: 2.0.11
-Release: 50%{?dist}
+Release: 52%{?dist}
 Source0: cobbler-%{version}.tar.gz
 Source1: cobblerd.service
 Patch0: catch_cheetah_exception.patch
@@ -30,6 +30,8 @@ Patch16: cobbler-bz1214458.patch
 Patch17: whitelist.patch
 Patch18: disable_https.patch
 Patch19: buildiso-boot-options.patch
+Patch20: buildiso-no-local-hdd.patch
+Patch21: cobbler-s390-kernel-options.patch
 Group: Applications/System
 Requires: python >= 2.3
 
@@ -134,6 +136,8 @@ a XMLRPC API for integration with other applications.
 %patch17 -p1
 %patch18 -p1
 %patch19 -p1
+%patch20 -p1
+%patch21 -p1
 
 %build
 %{__python} setup.py build 
@@ -483,6 +487,12 @@ Web interface for Cobbler that allows visiting http://server/cobbler_web to conf
 %doc AUTHORS COPYING CHANGELOG README
 
 %changelog
+* Wed Sep 02 2015 Jan Dobes 2.0.11-52
+- 1199214 - removing kernel options for s390 systems
+
+* Tue Sep 01 2015 Tomas Kasparek <tkasparek@redhat.com> 2.0.11-51
+- add option to skip local harddrive as buildiso entry
+
 * Wed Jun 17 2015 Jan Dobes 2.0.11-50
 - 1095198 - fixing multiple nameserver boot options on rhel7 and fedora
 
