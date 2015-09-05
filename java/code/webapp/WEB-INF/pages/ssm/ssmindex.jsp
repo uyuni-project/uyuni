@@ -26,15 +26,15 @@
     </div>
     <rhn:require acl="all_systems_in_set_have_entitlement(enterprise_entitled)">
         <div class="panel-heading">
-            <rhn:icon type="header-errata" title="ssm.overview.patches" />
-            <bean:message key="ssm.overview.patches"/>
+            <rhn:icon type="header-errata" title="ssm.overview.errata" />
+            <bean:message key="ssm.overview.errata"/>
         </div>
         <div class="panel-body">
             <bean:message key="ssm.overview.errata.schedule"/>
         </div>
         <div class="panel-heading">
-            <rhn:icon type="header-errata-set" title="ssm.overview.patch.clusters" />
-            <bean:message key="ssm.overview.patch.clusters"/>
+            <rhn:icon type="header-package" title="ssm.overview.packages" />
+            <bean:message key="ssm.overview.packages"/>
         </div>
         <div class="panel-body">
             <bean:message key="ssm.overview.packages.upgrade"/>
