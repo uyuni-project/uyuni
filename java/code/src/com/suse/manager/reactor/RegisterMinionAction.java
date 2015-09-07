@@ -15,11 +15,10 @@
 package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import com.suse.manager.webui.models.MinionsModel;
@@ -58,8 +57,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             Server server = ServerFactory.createServer();
             server.setName(minionId);
             server.setDigitalServerId(machineId);
-            User user = UserFactory.lookupById(event.getUserId());
-            server.setOrg(user.getOrg());
+
+            // All registered minions initially belong to the default organization
+            server.setOrg(OrgFactory.getSatelliteOrg());
 
             // TODO: Set complete OS, hardware and network information here
             Map<String, Object> grains = MinionsModel.grains(minionId);
