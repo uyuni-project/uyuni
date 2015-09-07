@@ -69,7 +69,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setRunningKernel((String) grains.get("kernelrelease"));
             server.setSecret(RandomStringUtils.randomAlphanumeric(64));
             server.setAutoUpdate("N");
-            server.setLastBoot(System.currentTimeMillis());
+            server.setLastBoot(System.currentTimeMillis()/1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
