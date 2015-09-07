@@ -23,6 +23,7 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import com.suse.manager.webui.models.MinionsModel;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
@@ -66,7 +67,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));
-            server.setSecret("secret");
+            server.setSecret(RandomStringUtils.randomAlphanumeric(64));
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis());
             server.setCreated(new Date());
