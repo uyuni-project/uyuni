@@ -3563,7 +3563,7 @@
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4" family="AiO" is_signed="Y" label="sle11-sp4-sap-pool-x86_64" name="SLE11-SP4-SAP-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4" update_tag="slesappsp4">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64" family="AiO" is_signed="Y" label="sle11-sp4-sap-pool-x86_64" name="SLE11-SP4-SAP-Pool for x86_64" optional="N" parent="BASE" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64" update_tag="slesappsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
 		</products>
@@ -3573,7 +3573,7 @@
 			<product_id name="SUSE_SLES_SAP" version="11.4">1331</product_id>
 		</products>
 	</channel>
-	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4" family="AiO" is_signed="Y" label="sle11-sp4-sap-updates-x86_64" name="SLE11-SP4-SAP-Updates for x86_64" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4" update_tag="slesappsp4">
+	<channel arch="x86_64" description="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64" family="AiO" is_signed="Y" label="sle11-sp4-sap-updates-x86_64" name="SLE11-SP4-SAP-Updates for x86_64" optional="N" parent="sle11-sp4-sap-pool-x86_64" product_name="SUSE_SLES_SAP" product_version="11.4" source_url="https://updates.suse.com/repo/$RCE/SLE11-SP4-SAP-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Server for SAP All-in-One 11 SP4 x86_64" update_tag="slesappsp4">
 		<products>
 			<product_id name="SUSE_SLES_SAP" version="11.4">1329</product_id>
 		</products>
