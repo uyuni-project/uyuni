@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Sep 02 16:00:35 CEST 2015 - mseidl@suse.de
+
+- Prevent creating channels with reserved names (bsc#939349) / (fate#319308)
+
+-------------------------------------------------------------------
 Mon Jun 22 16:00:35 CEST 2015 - jrenner@suse.de
 
 - version 2.1.165.18-1
