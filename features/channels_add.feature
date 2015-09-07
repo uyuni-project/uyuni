@@ -153,3 +153,21 @@ Feature: Adding channels
      And I enter "test123" as "Channel Summary"
      And I click on "Create Channel"
     Then I should see a "The channel label 'sle-we12-pool-x86_64-sap' is reserved, please enter a different name" text
+
+   Scenario: I create a channel to change
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     And I follow "Create Channel"
+    When I enter "aaaSLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+     And I enter "sle-we12aaa-pool-x86_64-sap" as "Channel Label"
+     And I enter "test123" as "Channel Summary"
+     And I click on "Create Channel"
+    Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 created." text
+
+  Scenario: I try to change the channel name to a reserved name
+     And I follow "Channels"
+     And I follow "Manage Software Channels" in the left menu
+     When I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
+     And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+     And I click on "Update Channel"
+    Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
