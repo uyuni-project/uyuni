@@ -24,6 +24,7 @@ import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
 import com.suse.saltstack.netapi.datatypes.Keys;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
+import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
 
 import java.net.URI;
@@ -81,6 +82,16 @@ public class MinionsModel {
         catch (SaltStackException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Get the "machine_id" for a given minionId.
+     *
+     * @param minionId id of the target minion
+     * @return a map containing the "machine_id" grain
+     */
+    public static String getMachineId(String minionId) {
+        return (String) getGrain(minionId, "machine_id");
     }
 
     /**
@@ -165,6 +176,45 @@ public class MinionsModel {
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
             client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get the event stream from the /ws endpoint.
+     *
+     * @return the event stream
+     */
+    public static EventStream getEventStream() {
+        try {
+            SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
+            client.login(ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            return client.events();
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Get a given grain's value for a given minionId.
+     *
+     * @param minionId id of the target minion
+     * @param grain name of the grain
+     * @return the grain value
+     */
+    private static Object getGrain(String minionId, String grain) {
+        SaltStackClient client;
+        try {
+            client = new SaltStackClient(SALT_MASTER_URI);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
+            Map<String, Map<String, Object>> grains = client.callSync(
+                    Grains.item(true, grain), new MinionList(minionId),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            return grains.getOrDefault(minionId, new HashMap<>()).get(grain);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
