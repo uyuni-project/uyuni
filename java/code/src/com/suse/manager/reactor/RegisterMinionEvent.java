@@ -36,12 +36,13 @@ public class RegisterMinionEvent implements EventMessage {
     }
 
     /**
-     * Return constantly 1L here (needed to initialize logging).
+     * Return null here since we don't necessarily have a user, it could be that we are just
+     * synchronizing unregistered minions into the database.
      *
-     * @return the user that scheduled the event
+     * @return null since we don't have a user
      */
     public Long getUserId() {
-        return 1L;
+        return null;
     }
 
     /**
