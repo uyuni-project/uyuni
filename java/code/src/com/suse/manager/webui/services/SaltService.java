@@ -14,6 +14,7 @@
  */
 package com.suse.manager.webui.services;
 
+import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.event.EventStream;
 
@@ -62,6 +63,14 @@ public interface SaltService {
      * @return a map from package names to list of version strings
      */
     Map<String, List<String>> getPackages(String minionId);
+
+    /**
+     *  Get the installed packages from a minion with package info
+     *
+     * @param minionId id of the target minion
+     * @return a map from package names to package info objects
+     */
+    Map<String, Pkg.Info> getInstalledPackageDetails(String minionId);
 
     /**
      * Accept a given minion's key.

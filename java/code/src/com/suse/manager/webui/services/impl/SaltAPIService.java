@@ -194,4 +194,18 @@ public enum SaltAPIService implements SaltService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Pkg.Info> getInstalledPackageDetails(String minionId) {
+        try {
+            Map<String, Map<String, Pkg.Info>> packages = SALT_CLIENT.callSync(
+                    Pkg.infoInstalled(), new MinionList(minionId),
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            return packages.get(minionId);
+        } catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
