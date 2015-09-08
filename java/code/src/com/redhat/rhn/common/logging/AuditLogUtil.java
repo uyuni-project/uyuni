@@ -60,8 +60,11 @@ public class AuditLogUtil {
             .unmodifiableList(Arrays.asList("csrf_token", "login_cb",
                     "pxt:trap", "password", "desiredpassword",
                     "desiredpasswordConfirm", "rootPassword",
-                    "rootPasswordConfirm", "lower", "prev_lower", "next_lower",
-                    "first_lower", "last_lower"));
+                    "rootPasswordConfirm", "lower",
+                    RequestContext.Pagination.PREV.getLowerAttributeName(),
+                    RequestContext.Pagination.NEXT.getLowerAttributeName(),
+                    RequestContext.Pagination.FIRST.getLowerAttributeName(),
+                    RequestContext.Pagination.LAST.getLowerAttributeName()));
 
     // Error message in case the backend is n/a
     private static final String MSG_NOT_AVAILABLE =
