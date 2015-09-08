@@ -43,14 +43,27 @@ public class MinionsModel {
     private static final String ADMIN_PASSWORD = "";
     private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
+    // Instance variable
+    private static final MinionsModel INSTANCE = new MinionsModel();
+
+    // Prevent instantiation
     private MinionsModel() { }
+
+    /**
+     * Get the singleton instance of MinionsModel.
+     *
+     * @return singleton instance
+     */
+    public static MinionsModel getInstance() {
+        return INSTANCE;
+    }
 
     /**
      * Get the minion keys from salt-api with their respective status.
      *
      * @return the keys with their respective status as returned from salt-api
      */
-    public static Keys getKeys() {
+    public Keys getKeys() {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -69,7 +82,7 @@ public class MinionsModel {
      * @param minionKey key of the target minion
      * @return a map containing the grains
      */
-    public static Map<String, Object> grains(String minionKey) {
+    public Map<String, Object> grains(String minionKey) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -90,7 +103,7 @@ public class MinionsModel {
      * @param minionId id of the target minion
      * @return a map containing the "machine_id" grain
      */
-    public static String getMachineId(String minionId) {
+    public String getMachineId(String minionId) {
         return (String) getGrain(minionId, "machine_id");
     }
 
@@ -99,7 +112,7 @@ public class MinionsModel {
      *
      * @return the list of minion keys that are present
      */
-    public static List<String> present() {
+    public List<String> present() {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -119,7 +132,7 @@ public class MinionsModel {
      * @param minionKey key of the target minion
      * @return a map from package names to list of version strings
      */
-    public static Map<String, List<String>> packages(String minionKey) {
+    public Map<String, List<String>> packages(String minionKey) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -139,7 +152,7 @@ public class MinionsModel {
      *
      * @param minionKey key of the target minion
      */
-    public static void accept(String minionKey) {
+    public void accept(String minionKey) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -155,7 +168,7 @@ public class MinionsModel {
      *
      * @param minionKey key of the target minion
      */
-    public static void delete(String minionKey) {
+    public void delete(String minionKey) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -171,7 +184,7 @@ public class MinionsModel {
      *
      * @param minionKey key of the target minion
      */
-    public static void reject(String minionKey) {
+    public void reject(String minionKey) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
@@ -187,7 +200,7 @@ public class MinionsModel {
      *
      * @return the event stream
      */
-    public static EventStream getEventStream() {
+    public EventStream getEventStream() {
         try {
             SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
             client.login(ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
@@ -206,7 +219,7 @@ public class MinionsModel {
      * @param grain name of the grain
      * @return the grain value
      */
-    private static Object getGrain(String minionId, String grain) {
+    private Object getGrain(String minionId, String grain) {
         SaltStackClient client;
         try {
             client = new SaltStackClient(SALT_MASTER_URI);
