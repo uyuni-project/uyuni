@@ -83,6 +83,7 @@
 	<upgrade from_pdid="1060" from_product="sle-hae-11.2-None.ia64" to_pdid="1063" to_product="sle-hae-11.3-None.ia64"/>
 	<upgrade from_pdid="1061" from_product="sle-hae-11.1-None.ia64" to_pdid="1060" to_product="sle-hae-11.2-None.ia64"/>
 	<upgrade from_pdid="1063" from_product="sle-hae-11.3-None.ia64" to_pdid="1259" to_product="sle-hae-11.4-None.ia64"/>
+	<upgrade from_pdid="1072" from_product="sle-pos-11.1-None.None" to_pdid="1068" to_product="sle-pos-11.2-None.None"/>
 	<upgrade from_pdid="1080" from_product="sle-hae-11.3-None.s390x" to_pdid="1257" to_product="sle-hae-11.4-None.s390x"/>
 	<upgrade from_pdid="1082" from_product="sle-hae-11.2-None.s390x" to_pdid="1080" to_product="sle-hae-11.3-None.s390x"/>
 	<upgrade from_pdid="1084" from_product="sle-hae-11.1-None.s390x" to_pdid="1082" to_product="sle-hae-11.2-None.s390x"/>
