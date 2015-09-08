@@ -16,7 +16,14 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
@@ -25,11 +32,15 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
+import com.suse.saltstack.netapi.calls.modules.Pkg;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Event handler to create system records for salt minions.
@@ -104,6 +115,14 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
             server.setRam(((Double) grains.get("mem_total")).longValue());
+
+            Map<String, Pkg.Info> saltPackages =
+                    SALT_SERVICE.getInstalledPackageDetails(minionId);
+            Set<InstalledPackage> packages = saltPackages.entrySet().stream().map(
+                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
+            ).collect(Collectors.toSet());
+
+            server.setPackages(packages);
             ServerFactory.save(server);
 
             // Assign the SaltStack base entitlement by default
@@ -114,5 +133,36 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
         }
+    }
+
+    /**
+     * Creates a new InstalledPackage object from package name and info
+     * @param name name of the package
+     * @param info package info from salt
+     * @param server server this package will be added to
+     * @return The InstalledPackage object
+     */
+    private InstalledPackage createPackageFromSalt(String name, Pkg.Info info,
+                                                   Server server) {
+
+        String epoch = info.getEpoch().orElse(null);
+        String release = info.getRelease().orElse(null);
+        String version = info.getVersion();
+        PackageEvr evr = PackageEvrFactory
+                .lookupOrCreatePackageEvr(epoch, version, release);
+
+        PackageName pkgName = PackageFactory.lookupOrCreatePackageByName(name);
+
+        String arch = info.getArchitecture();
+        PackageArch packageArch = PackageFactory.lookupPackageArchByLabel(arch);
+
+        InstalledPackage pkg = new InstalledPackage();
+        pkg.setEvr(evr);
+        pkg.setArch(packageArch);
+
+        pkg.setInstallTime(Date.from(info.getInstallDate().toInstant()));
+        pkg.setName(pkgName);
+        pkg.setServer(server);
+        return pkg;
     }
 }
