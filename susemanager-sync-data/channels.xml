@@ -1723,6 +1723,26 @@
 			<product_id name="sle-pos" version="11.1">1072</product_id>
 		</products>
 	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP2" family="10040" is_signed="Y" label="sle11-pos-sp2-pool-i586" name="SLE11-POS-SP2-Pool for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-pos" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP2-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP2" update_tag="sleposp2">
+		<products>
+			<product_id name="sle-pos" version="11.2">1068</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP2" family="10040" is_signed="Y" label="sle11-pos-sp2-pool-x86_64" name="SLE11-POS-SP2-Pool for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-pos" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP2-Pool/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP2" update_tag="sleposp2">
+		<products>
+			<product_id name="sle-pos" version="11.2">1068</product_id>
+		</products>
+	</channel>
+	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP2" family="10040" is_signed="Y" label="sle11-pos-sp2-updates-i586" name="SLE11-POS-SP2-Updates for i586" optional="N" parent="sles11-sp1-pool-i586" product_name="sle-pos" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP2-Updates/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP2" update_tag="sleposp2">
+		<products>
+			<product_id name="sle-pos" version="11.2">1068</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Point of Service 11 SP2" family="10040" is_signed="Y" label="sle11-pos-sp2-updates-x86_64" name="SLE11-POS-SP2-Updates for x86_64" optional="N" parent="sles11-sp1-pool-x86_64" product_name="sle-pos" product_version="11.2" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP2-Updates/sle-11-x86_64/" summary="SUSE Linux Enterprise Point of Service 11 SP2" update_tag="sleposp2">
+		<products>
+			<product_id name="sle-pos" version="11.2">1068</product_id>
+		</products>
+	</channel>
 	<channel arch="i586" description="SUSE Linux Enterprise Point of Service 11 SP3" family="10040" is_signed="Y" label="sle11-pos-sp3-pool-i586" name="SLE11-POS-SP3-Pool for i586" optional="N" parent="sles11-sp3-pool-i586" product_name="sle-pos" product_version="11.3" source_url="https://updates.suse.com/repo/$RCE/SLE11-POS-SP3-Pool/sle-11-i586/" summary="SUSE Linux Enterprise Point of Service 11 SP3" update_tag="sleposp3">
 		<products>
 			<product_id name="sle-pos" version="11.3">1073</product_id>
