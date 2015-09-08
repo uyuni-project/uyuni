@@ -45,7 +45,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         String minionId = event.getMinionId();
 
         // Match the minion via its machine_id
-        String machineId = MinionsModel.getMachineId(minionId);
+        String machineId = MinionsModel.getInstance().getMachineId(minionId);
         if (ServerFactory.findRegisteredMinion(machineId) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Minion already registered, skipping registration: " +
@@ -63,7 +63,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOrg(OrgFactory.getSatelliteOrg());
 
             // TODO: Set complete OS, hardware and network information here
-            Map<String, Object> grains = MinionsModel.grains(minionId);
+            Map<String, Object> grains = MinionsModel.getInstance().grains(minionId);
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));
