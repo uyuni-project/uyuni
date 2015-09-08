@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import com.suse.manager.webui.models.MinionsModel;
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
