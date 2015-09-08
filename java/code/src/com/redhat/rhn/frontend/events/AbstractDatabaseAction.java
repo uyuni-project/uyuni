@@ -46,8 +46,8 @@ public abstract class AbstractDatabaseAction implements MessageAction {
         boolean commit = true;
         try {
             // initialize logging
+            LoggingFactory.clearLogId();
             if (msg.getUserId() != null) {
-                LoggingFactory.clearLogId();
                 LoggingFactory.setLogAuth(msg.getUserId());
             }
             doExecute(msg);
