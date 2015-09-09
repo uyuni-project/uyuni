@@ -1216,7 +1216,7 @@ msgstr ""
 "    ପୁନଃ ପ୍ରୟାସ କରନ୍ତୁ।"
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "ଅତିରିକ୍ତ ନିର୍ଗମ ପ୍ରଦର୍ଶନ କରନ୍ତୁ"
 
 #: ../src/up2date_client/rhncli.py:72

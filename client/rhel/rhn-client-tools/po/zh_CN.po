@@ -1173,7 +1173,7 @@ msgstr ""
 "即可不要求管理授权。"
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "显示附加输出"
 
 #: ../src/up2date_client/rhncli.py:72

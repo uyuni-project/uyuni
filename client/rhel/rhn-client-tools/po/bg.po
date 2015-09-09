@@ -1212,7 +1212,7 @@ msgstr ""
 "    за да избегнете изискването на Management права."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Покажи допълнителна информация"
 
 #: ../src/up2date_client/rhncli.py:72

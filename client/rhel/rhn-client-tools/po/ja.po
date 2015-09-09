@@ -1245,7 +1245,7 @@ msgstr ""
 "の催促を回避できます。 "
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "補足情報を表示"
 
 #: ../src/up2date_client/rhncli.py:72

@@ -1077,7 +1077,7 @@ msgid ""
 msgstr ""
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Vis tilleggsinformasjon"
 
 #: ../src/up2date_client/rhncli.py:72

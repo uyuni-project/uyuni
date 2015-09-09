@@ -1223,7 +1223,7 @@ msgstr ""
 "    인타이틀먼트를 요청하지 않아도 될 수 있습니다. "
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "추가 출력을 보여줌"
 
 #: ../src/up2date_client/rhncli.py:72

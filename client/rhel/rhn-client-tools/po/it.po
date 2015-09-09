@@ -1281,7 +1281,7 @@ msgstr ""
 "    evitando cosi la necessità di acquisire un entitlement di Gestione."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Mostra output aggiuntivo"
 
 #: ../src/up2date_client/rhncli.py:72

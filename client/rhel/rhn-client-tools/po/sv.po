@@ -1240,7 +1240,7 @@ msgstr ""
 "    och försöka igen för att undvika kravet på Management-rättigheter."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Visa ytterligare utdata"
 
 #: ../src/up2date_client/rhncli.py:72

@@ -1309,7 +1309,7 @@ msgstr ""
 "    que se le solicite un derecho administrativo."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Ver salida adicional"
 
 #: ../src/up2date_client/rhncli.py:72

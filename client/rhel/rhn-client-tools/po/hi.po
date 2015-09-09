@@ -1208,7 +1208,7 @@ msgstr ""
 "    से बचने के लिए फिर कोशिश कर सकते हैं."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "अतिरिक्त आउटपुट दिखाएँ"
 
 #: ../src/up2date_client/rhncli.py:72
