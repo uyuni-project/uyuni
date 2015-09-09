@@ -530,7 +530,7 @@ msgid ""
 msgstr ""
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "अतिरिक्त प्रदान दाखवा"
 
 #: ../src/up2date_client/rhncli.py:72

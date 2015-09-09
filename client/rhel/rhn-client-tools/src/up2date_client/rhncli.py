@@ -67,7 +67,7 @@ def utf8_encode(msg):
 
 _optionsTable = [
     Option("-v", "--verbose", action="count", default=0,
-        help=_("Show additional output")),
+        help=_("Show additional output. Repeat for more detail.")),
     Option("--proxy", action="store",
       help=_("Specify an http proxy to use")),
     Option("--proxyUser", action="store",
