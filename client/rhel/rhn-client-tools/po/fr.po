@@ -594,7 +594,7 @@ msgstr ""
 "    et recommencer en évitant le besoin d'un droit Management supplémentaire."
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "Afficher des informations supplémentaires"
 
 #: ../src/up2date_client/rhncli.py:72

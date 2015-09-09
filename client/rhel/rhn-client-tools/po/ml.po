@@ -530,7 +530,7 @@ msgid ""
 msgstr ""
 
 #: ../src/up2date_client/rhncli.py:70
-msgid "Show additional output"
+msgid "Show additional output. Repeat for more detail."
 msgstr "കൂടുതല്‍ ഔട്ട് പുട്ട് കാണിക്കുക"
 
 #: ../src/up2date_client/rhncli.py:72
