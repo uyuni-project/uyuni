@@ -56,7 +56,7 @@ public class MinionsModel {
     }
 
     /**
-     * Get the singleton instance of MinionsModel.
+     * Get the singleton instance of {@link MinionsModel}.
      *
      * @return singleton instance
      */
@@ -81,10 +81,10 @@ public class MinionsModel {
     }
 
     /**
-     * Get the grains from a minion.
+     * Get the grains for a given minion.
      *
      * @param minionKey key of the target minion
-     * @return a map containing the grains
+     * @return map containing the grains
      */
     public Map<String, Object> grains(String minionKey) {
         try {
@@ -99,17 +99,17 @@ public class MinionsModel {
     }
 
     /**
-     * Get the "machine_id" for a given minionId.
+     * Get the "machine_id" for a given minion.
      *
      * @param minionId id of the target minion
-     * @return a map containing the "machine_id" grain
+     * @return the "machine_id" as a string
      */
     public String getMachineId(String minionId) {
         return (String) getGrain(minionId, "machine_id");
     }
 
     /**
-     * Query all present minions according to salts presence detection
+     * Query all present minions according to salt's presence detection.
      *
      * @return the list of minion keys that are present
      */
@@ -125,7 +125,7 @@ public class MinionsModel {
     }
 
     /**
-     *  Get the installed packages from a minion
+     * Get all installed packages from a given minion.
      *
      * @param minionKey key of the target minion
      * @return a map from package names to list of version strings
@@ -143,7 +143,7 @@ public class MinionsModel {
     }
 
     /**
-     * Accept a pending minion key
+     * Accept a given minion's key.
      *
      * @param minionKey key of the target minion
      */
@@ -158,7 +158,7 @@ public class MinionsModel {
     }
 
     /**
-     * Delete a minion key from the master
+     * Delete a given minion's key.
      *
      * @param minionKey key of the target minion
      */
@@ -173,7 +173,7 @@ public class MinionsModel {
     }
 
     /**
-     * Reject a pending minion key
+     * Reject a given minion's key.
      *
      * @param minionKey key of the target minion
      */
@@ -206,7 +206,7 @@ public class MinionsModel {
     }
 
     /**
-     * Get a given grain's value for a given minionId.
+     * Get a given grain's value from a given minion.
      *
      * @param minionId id of the target minion
      * @param grain name of the grain
