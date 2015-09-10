@@ -83,15 +83,15 @@ public class MinionsModel {
     /**
      * Get the grains for a given minion.
      *
-     * @param minionKey key of the target minion
+     * @param minionId id of the target minion
      * @return map containing the grains
      */
-    public Map<String, Object> grains(String minionKey) {
+    public Map<String, Object> grains(String minionId) {
         try {
             Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
-                    Grains.items(true), new MinionList(minionKey),
+                    Grains.items(true), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return grains.getOrDefault(minionKey, new HashMap<>());
+            return grains.getOrDefault(minionId, new HashMap<>());
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -127,15 +127,15 @@ public class MinionsModel {
     /**
      * Get all installed packages from a given minion.
      *
-     * @param minionKey key of the target minion
+     * @param minionId id of the target minion
      * @return a map from package names to list of version strings
      */
-    public Map<String, List<String>> packages(String minionKey) {
+    public Map<String, List<String>> packages(String minionId) {
         try {
             Map<String, Map<String, List<String>>> packages = SALT_CLIENT.callSync(
-                    Pkg.listPkgs(), new MinionList(minionKey),
+                    Pkg.listPkgs(), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
-            return packages.get(minionKey);
+            return packages.get(minionId);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -145,11 +145,11 @@ public class MinionsModel {
     /**
      * Accept a given minion's key.
      *
-     * @param minionKey key of the target minion
+     * @param minionId id of the minion
      */
-    public void accept(String minionKey) {
+    public void accept(String minionId) {
         try {
-            SALT_CLIENT.callSync(Key.accept(minionKey),
+            SALT_CLIENT.callSync(Key.accept(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
@@ -160,11 +160,11 @@ public class MinionsModel {
     /**
      * Delete a given minion's key.
      *
-     * @param minionKey key of the target minion
+     * @param minionId id of the minion
      */
-    public void delete(String minionKey) {
+    public void delete(String minionId) {
         try {
-            SALT_CLIENT.callSync(Key.delete(minionKey),
+            SALT_CLIENT.callSync(Key.delete(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
@@ -175,11 +175,11 @@ public class MinionsModel {
     /**
      * Reject a given minion's key.
      *
-     * @param minionKey key of the target minion
+     * @param minionId id of the minion
      */
-    public void reject(String minionKey) {
+    public void reject(String minionId) {
         try {
-            SALT_CLIENT.callSync(Key.reject(minionKey),
+            SALT_CLIENT.callSync(Key.reject(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
