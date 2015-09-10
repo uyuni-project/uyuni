@@ -37,17 +37,23 @@ import java.util.Map;
  */
 public class MinionsModel {
 
-    // The salt URI as string
+    // Salt properties
     private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
     private static final String ADMIN_NAME = "admin";
     private static final String ADMIN_PASSWORD = "";
     private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
-    // Instance variable
+    // Shared salt client instance
+    private static final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
+
+    // Singleton instance of this class
     private static final MinionsModel INSTANCE = new MinionsModel();
 
     // Prevent instantiation
-    private MinionsModel() { }
+    private MinionsModel() {
+        // Set timeout to 30 seconds
+        SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
+    }
 
     /**
      * Get the singleton instance of MinionsModel.
@@ -64,10 +70,8 @@ public class MinionsModel {
      * @return the keys with their respective status as returned from salt-api
      */
     public Keys getKeys() {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            WheelResult<Keys> result = client.callSync(Key.listAll(),
+            WheelResult<Keys> result = SALT_CLIENT.callSync(Key.listAll(),
                     ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
@@ -83,11 +87,8 @@ public class MinionsModel {
      * @return a map containing the grains
      */
     public Map<String, Object> grains(String minionKey) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, Object>> grains = client.callSync(
+            Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
                     Grains.items(true), new MinionList(minionKey),
                     ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionKey, new HashMap<>());
@@ -113,11 +114,8 @@ public class MinionsModel {
      * @return the list of minion keys that are present
      */
     public List<String> present() {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            List<String> present = client.callSync(Manage.present(),
+            List<String> present = SALT_CLIENT.callSync(Manage.present(),
                     ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return present;
         }
@@ -133,11 +131,8 @@ public class MinionsModel {
      * @return a map from package names to list of version strings
      */
     public Map<String, List<String>> packages(String minionKey) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, List<String>>> packages = client.callSync(
+            Map<String, Map<String, List<String>>> packages = SALT_CLIENT.callSync(
                     Pkg.listPkgs(), new MinionList(minionKey),
                     ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return packages.get(minionKey);
@@ -153,10 +148,9 @@ public class MinionsModel {
      * @param minionKey key of the target minion
      */
     public void accept(String minionKey) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.accept(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            SALT_CLIENT.callSync(Key.accept(minionKey),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -169,10 +163,9 @@ public class MinionsModel {
      * @param minionKey key of the target minion
      */
     public void delete(String minionKey) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.delete(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            SALT_CLIENT.callSync(Key.delete(minionKey),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -185,10 +178,9 @@ public class MinionsModel {
      * @param minionKey key of the target minion
      */
     public void reject(String minionKey) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.callSync(Key.reject(minionKey), ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            SALT_CLIENT.callSync(Key.reject(minionKey),
+                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -196,7 +188,8 @@ public class MinionsModel {
     }
 
     /**
-     * Get the event stream from the /ws endpoint.
+     * Get the event stream from the /ws endpoint. Do not use the shared client object here,
+     * so we can set the timeout to 0 (no timeout).
      *
      * @return the event stream
      */
@@ -220,11 +213,8 @@ public class MinionsModel {
      * @return the grain value
      */
     private Object getGrain(String minionId, String grain) {
-        SaltStackClient client;
         try {
-            client = new SaltStackClient(SALT_MASTER_URI);
-            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
-            Map<String, Map<String, Object>> grains = client.callSync(
+            Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
                     Grains.item(true, grain), new MinionList(minionId),
                     ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionId, new HashMap<>()).get(grain);
