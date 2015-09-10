@@ -15,7 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.suse.manager.webui.services.SaltService;
-import com.suse.saltstack.netapi.datatypes.Keys;
+import com.suse.saltstack.netapi.calls.wheel.Key;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +44,7 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView listMinions(Request request, Response response) {
-        Keys keys = SALT_SERVICE.getKeys();
+        Key.Names keys = SALT_SERVICE.getKeys();
         List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
