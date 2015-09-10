@@ -39,8 +39,8 @@ public class MinionsModel {
 
     // Salt properties
     private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
-    private static final String ADMIN_NAME = "admin";
-    private static final String ADMIN_PASSWORD = "";
+    private static final String SALT_USER = "admin";
+    private static final String SALT_PASSWORD = "";
     private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
 
     // Shared salt client instance
@@ -72,7 +72,7 @@ public class MinionsModel {
     public Keys getKeys() {
         try {
             WheelResult<Keys> result = SALT_CLIENT.callSync(Key.listAll(),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
         catch (SaltStackException e) {
@@ -90,7 +90,7 @@ public class MinionsModel {
         try {
             Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
                     Grains.items(true), new MinionList(minionKey),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionKey, new HashMap<>());
         }
         catch (SaltStackException e) {
@@ -116,7 +116,7 @@ public class MinionsModel {
     public List<String> present() {
         try {
             List<String> present = SALT_CLIENT.callSync(Manage.present(),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return present;
         }
         catch (SaltStackException e) {
@@ -134,7 +134,7 @@ public class MinionsModel {
         try {
             Map<String, Map<String, List<String>>> packages = SALT_CLIENT.callSync(
                     Pkg.listPkgs(), new MinionList(minionKey),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return packages.get(minionKey);
         }
         catch (SaltStackException e) {
@@ -150,7 +150,7 @@ public class MinionsModel {
     public void accept(String minionKey) {
         try {
             SALT_CLIENT.callSync(Key.accept(minionKey),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -165,7 +165,7 @@ public class MinionsModel {
     public void delete(String minionKey) {
         try {
             SALT_CLIENT.callSync(Key.delete(minionKey),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -180,7 +180,7 @@ public class MinionsModel {
     public void reject(String minionKey) {
         try {
             SALT_CLIENT.callSync(Key.reject(minionKey),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
@@ -196,7 +196,7 @@ public class MinionsModel {
     public EventStream getEventStream() {
         try {
             SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
-            client.login(ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+            client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 0);
             return client.events();
         }
@@ -216,7 +216,7 @@ public class MinionsModel {
         try {
             Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
                     Grains.item(true, grain), new MinionList(minionId),
-                    ADMIN_NAME, ADMIN_PASSWORD, AUTH_MODULE);
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return grains.getOrDefault(minionId, new HashMap<>()).get(grain);
         }
         catch (SaltStackException e) {
