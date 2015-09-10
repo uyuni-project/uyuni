@@ -22,7 +22,6 @@ import com.suse.saltstack.netapi.calls.runner.Manage;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
-import com.suse.saltstack.netapi.datatypes.Keys;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
@@ -60,9 +59,9 @@ public enum SaltService {
      *
      * @return the keys with their respective status as returned from salt-api
      */
-    public Keys getKeys() {
+    public Key.Names getKeys() {
         try {
-            WheelResult<Keys> result = SALT_CLIENT.callSync(Key.listAll(),
+            WheelResult<Key.Names> result = SALT_CLIENT.callSync(Key.listAll(),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return result.getData().getResult();
         }
