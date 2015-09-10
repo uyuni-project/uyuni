@@ -86,7 +86,7 @@ public class MinionsModel {
      * @param minionId id of the target minion
      * @return map containing the grains
      */
-    public Map<String, Object> grains(String minionId) {
+    public Map<String, Object> getGrains(String minionId) {
         try {
             Map<String, Map<String, Object>> grains = SALT_CLIENT.callSync(
                     Grains.items(true), new MinionList(minionId),
@@ -130,7 +130,7 @@ public class MinionsModel {
      * @param minionId id of the target minion
      * @return a map from package names to list of version strings
      */
-    public Map<String, List<String>> packages(String minionId) {
+    public Map<String, List<String>> getPackages(String minionId) {
         try {
             Map<String, Map<String, List<String>>> packages = SALT_CLIENT.callSync(
                     Pkg.listPkgs(), new MinionList(minionId),
@@ -147,7 +147,7 @@ public class MinionsModel {
      *
      * @param minionId id of the minion
      */
-    public void accept(String minionId) {
+    public void acceptKey(String minionId) {
         try {
             SALT_CLIENT.callSync(Key.accept(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
@@ -162,7 +162,7 @@ public class MinionsModel {
      *
      * @param minionId id of the minion
      */
-    public void delete(String minionId) {
+    public void deleteKey(String minionId) {
         try {
             SALT_CLIENT.callSync(Key.delete(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
@@ -177,7 +177,7 @@ public class MinionsModel {
      *
      * @param minionId id of the minion
      */
-    public void reject(String minionId) {
+    public void rejectKey(String minionId) {
         try {
             SALT_CLIENT.callSync(Key.reject(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
