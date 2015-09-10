@@ -63,7 +63,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOrg(OrgFactory.getSatelliteOrg());
 
             // TODO: Set complete OS, hardware and network information here
-            Map<String, Object> grains = MinionsModel.getInstance().grains(minionId);
+            Map<String, Object> grains = MinionsModel.getInstance().getGrains(minionId);
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));
