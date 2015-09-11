@@ -14,6 +14,7 @@
  */
 package com.suse.scc.client;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
@@ -28,6 +29,7 @@ import org.apache.commons.httpclient.HttpStatus;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.net.NoRouteToHostException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -171,6 +173,11 @@ public class SCCWebClient implements SCCClient {
                 throw new SCCClientException("Got response code " + responseCode +
                         " connecting to " + request.getURI());
             }
+        }
+        catch (NoRouteToHostException e) {
+            String proxy = ConfigDefaults.get().getProxyHost();
+            throw new SCCClientException("No route to SCC" +
+                    (proxy != null ? " or the Proxy: " + proxy : ""));
         }
         catch (IOException e) {
             throw new SCCClientException(e);
