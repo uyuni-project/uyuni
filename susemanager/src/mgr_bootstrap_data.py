@@ -254,5 +254,17 @@ DATA = {
                           'PDID' : {'NCC' : 0 , 'SCC' : 1319}, 'PKGLIST' : PKGLIST12,
                           'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/0/bootstrap/'
                         },
+    'SLE-12-SP1-ppc64le' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1334}, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-s390x' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1335}, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
+    'SLE-12-SP1-x86_64' : {
+                          'PDID' : {'NCC' : 0 , 'SCC' : 1322}, 'PKGLIST' : PKGLIST12,
+                          'DEST' : '/srv/www/htdocs/pub/repositories/sle/12/1/bootstrap/'
+                        },
 }
 
