@@ -47,11 +47,11 @@ public class SaltReactor implements EventListener {
 
         // Sync minions to systems in the database
         logger.debug("Syncing minions to the database");
-        MinionsModel.getInstance().getKeys().getMinions().forEach(
+        MinionsModel.INSTANCE.getKeys().getMinions().forEach(
                 this::triggerMinionRegistration);
 
         // Initialize the event stream
-        eventStream = MinionsModel.getInstance().getEventStream();
+        eventStream = MinionsModel.INSTANCE.getEventStream();
         eventStream.addEventListener(this);
     }
 
@@ -90,7 +90,7 @@ public class SaltReactor implements EventListener {
         // Try to reconnect
         if (!isStopped) {
             logger.warn("Reconnecting to event stream...");
-            eventStream = MinionsModel.getInstance().getEventStream();
+            eventStream = MinionsModel.INSTANCE.getEventStream();
             eventStream.addEventListener(this);
         }
     }

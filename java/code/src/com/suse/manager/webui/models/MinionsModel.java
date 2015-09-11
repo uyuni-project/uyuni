@@ -35,33 +35,24 @@ import java.util.Map;
 /**
  * Class containing functions for accessing data needed by MinionsController.
  */
-public class MinionsModel {
-
-    // Salt properties
-    private static final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
-    private static final String SALT_USER = "admin";
-    private static final String SALT_PASSWORD = "";
-    private static final AuthModule AUTH_MODULE = AuthModule.AUTO;
-
-    // Shared salt client instance
-    private static final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
+public enum MinionsModel {
 
     // Singleton instance of this class
-    private static final MinionsModel INSTANCE = new MinionsModel();
+    INSTANCE;
+
+    // Salt properties
+    private final URI SALT_MASTER_URI = URI.create("http://localhost:9080");
+    private final String SALT_USER = "admin";
+    private final String SALT_PASSWORD = "";
+    private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+
+    // Shared salt client instance
+    private final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
 
     // Prevent instantiation
     private MinionsModel() {
         // Set timeout to 30 seconds
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
-    }
-
-    /**
-     * Get the singleton instance of {@link MinionsModel}.
-     *
-     * @return singleton instance
-     */
-    public static MinionsModel getInstance() {
-        return INSTANCE;
     }
 
     /**
