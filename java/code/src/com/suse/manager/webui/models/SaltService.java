@@ -33,9 +33,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class containing functions for accessing data needed by MinionsController.
+ * Singleton class acting as a service layer for accessing the salt API.
  */
-public enum MinionsModel {
+public enum SaltService {
 
     // Singleton instance of this class
     INSTANCE;
@@ -50,7 +50,7 @@ public enum MinionsModel {
     private final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
 
     // Prevent instantiation
-    private MinionsModel() {
+    private SaltService() {
         // Set timeout to 30 seconds
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
     }

@@ -16,7 +16,7 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.webui.models.MinionsModel;
+import com.suse.manager.webui.models.SaltService;
 import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
@@ -47,11 +47,11 @@ public class SaltReactor implements EventListener {
 
         // Sync minions to systems in the database
         logger.debug("Syncing minions to the database");
-        MinionsModel.INSTANCE.getKeys().getMinions().forEach(
+        SaltService.INSTANCE.getKeys().getMinions().forEach(
                 this::triggerMinionRegistration);
 
         // Initialize the event stream
-        eventStream = MinionsModel.INSTANCE.getEventStream();
+        eventStream = SaltService.INSTANCE.getEventStream();
         eventStream.addEventListener(this);
     }
 
@@ -90,7 +90,7 @@ public class SaltReactor implements EventListener {
         // Try to reconnect
         if (!isStopped) {
             logger.warn("Reconnecting to event stream...");
-            eventStream = MinionsModel.INSTANCE.getEventStream();
+            eventStream = SaltService.INSTANCE.getEventStream();
             eventStream.addEventListener(this);
         }
     }

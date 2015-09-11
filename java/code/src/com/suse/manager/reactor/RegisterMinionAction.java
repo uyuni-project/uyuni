@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
-import com.suse.manager.webui.models.MinionsModel;
+import com.suse.manager.webui.models.SaltService;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -45,7 +45,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         String minionId = event.getMinionId();
 
         // Match the minion via its machine_id
-        String machineId = MinionsModel.INSTANCE.getMachineId(minionId);
+        String machineId = SaltService.INSTANCE.getMachineId(minionId);
         if (ServerFactory.findRegisteredMinion(machineId) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Minion already registered, skipping registration: " +
@@ -63,7 +63,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOrg(OrgFactory.getSatelliteOrg());
 
             // TODO: Set complete OS, hardware and network information here
-            Map<String, Object> grains = MinionsModel.INSTANCE.getGrains(minionId);
+            Map<String, Object> grains = SaltService.INSTANCE.getGrains(minionId);
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));
