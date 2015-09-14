@@ -50,6 +50,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import com.redhat.rhn.manager.errata.ErrataManager;
 
 /**
  * Action class for scheduling distribution upgrades (Service Pack Migrations).
@@ -63,6 +64,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String LATEST_SP = "latestServicePack";
     private static final String TARGET_PRODUCTS = "targetProducts";
     private static final String CHANNEL_MAP = "channelMap";
+    private static final String UPDATESTACK_UPDATE_NEEDED = "updateStackUpdateNeeded";
 
     // Form parameters
     private static final String ACTION_STEP = "step";
@@ -100,6 +102,11 @@ public class SPMigrationAction extends RhnAction {
         boolean zyppPluginInstalled = PackageFactory.lookupByNameAndServer(
                 "zypp-plugin-spacewalk", server) != null;
         request.setAttribute(ZYPP_INSTALLED, zyppPluginInstalled);
+
+        // Check if the newest update stack is installed
+        boolean updateStackUpdateNeeded = ErrataManager.updateStackUpdateNeeded(
+                ctx.getCurrentUser(), server);
+        request.setAttribute(UPDATESTACK_UPDATE_NEEDED, updateStackUpdateNeeded);
 
         // Check if there is already a migration in the schedule
         Action migration = null;
