@@ -62,7 +62,7 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView minionDetails(Request request, Response response) {
-        String key = request.params("key");
+        String key = request.params("minion");
         Map<String, Object> grains = SALT_SERVICE.getGrains(key);
         Map<String, List<String>> packages = SALT_SERVICE.getPackages(key);
         Map<String, Object> data = new HashMap<>();
@@ -80,7 +80,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object acceptMinion(Request request, Response response) {
-        SALT_SERVICE.acceptKey(request.params("key"));
+        SALT_SERVICE.acceptKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -93,7 +93,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object deleteMinion(Request request, Response response) {
-        SALT_SERVICE.deleteKey(request.params("key"));
+        SALT_SERVICE.deleteKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -106,7 +106,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object rejectMinion(Request request, Response response) {
-        SALT_SERVICE.rejectKey(request.params("key"));
+        SALT_SERVICE.rejectKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
