@@ -37,6 +37,9 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     // Logger for this class
     private static final Logger log = Logger.getLogger(RegisterMinionAction.class);
 
+    // Reference to the SaltService instance
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+
     /**
      * {@inheritDoc}
      */
@@ -45,7 +48,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         String minionId = event.getMinionId();
 
         // Match the minion via its machine_id
-        String machineId = SaltService.INSTANCE.getMachineId(minionId);
+        String machineId = SALT_SERVICE.getMachineId(minionId);
         if (ServerFactory.findRegisteredMinion(machineId) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Minion already registered, skipping registration: " +
@@ -63,7 +66,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setOrg(OrgFactory.getSatelliteOrg());
 
             // TODO: Set complete OS, hardware and network information here
-            Map<String, Object> grains = SaltService.INSTANCE.getGrains(minionId);
+            Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
             server.setOs((String) grains.get("osfullname"));
             server.setRelease((String) grains.get("osrelease"));
             server.setRunningKernel((String) grains.get("kernelrelease"));

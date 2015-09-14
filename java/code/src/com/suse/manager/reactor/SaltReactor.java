@@ -31,6 +31,9 @@ public class SaltReactor implements EventListener {
     // Logger for this class
     private static Logger logger = Logger.getLogger(SaltReactor.class);
 
+    // Reference to the SaltService instance
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+
     // The event stream object
     private EventStream eventStream;
 
@@ -47,11 +50,10 @@ public class SaltReactor implements EventListener {
 
         // Sync minions to systems in the database
         logger.debug("Syncing minions to the database");
-        SaltService.INSTANCE.getKeys().getMinions().forEach(
-                this::triggerMinionRegistration);
+        SALT_SERVICE.getKeys().getMinions().forEach(this::triggerMinionRegistration);
 
         // Initialize the event stream
-        eventStream = SaltService.INSTANCE.getEventStream();
+        eventStream = SALT_SERVICE.getEventStream();
         eventStream.addEventListener(this);
     }
 
@@ -90,7 +92,7 @@ public class SaltReactor implements EventListener {
         // Try to reconnect
         if (!isStopped) {
             logger.warn("Reconnecting to event stream...");
-            eventStream = SaltService.INSTANCE.getEventStream();
+            eventStream = SALT_SERVICE.getEventStream();
             eventStream.addEventListener(this);
         }
     }
