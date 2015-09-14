@@ -5,7 +5,7 @@
     #{l10n.getMessage("minions.all")}
 
 .row
-  .col-md-4
+  .col-md-6
     #pending-list.panel.panel-default
       .panel-heading
         h2
@@ -24,30 +24,7 @@
           tr
             td #{l10n.getMessage("minions.no.pending")}
 
-  .col-md-4
-    #accepted-list.panel.panel-default
-      .panel-heading
-        h2
-          i.fa.fa-check
-          #{l10n.getMessage("minions.accepted")}
-      table(class="table table-striped vertical-middle")
-        for minion in minions
-          tr
-            td
-              if present.contains(minion)
-                b: a(href="/rhn/manager/minions/#{minion}") #{minion}
-              else
-                i.fa.fa-exclamation-triangle.text-danger(title="Minion is not available.")
-                |  
-                b #{minion}
-            td.col-md-2
-              .pull-right
-                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
-        else
-          tr
-            td #{l10n.getMessage("minions.no.accepted")}
-
-  .col-md-4
+  .col-md-6
     #rejected-list.panel.panel-default
       .panel-heading
         h2
