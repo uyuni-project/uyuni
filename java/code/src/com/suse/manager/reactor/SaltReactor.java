@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 public class SaltReactor implements EventListener {
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(SaltReactor.class);
+    private static final Logger logger = Logger.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
