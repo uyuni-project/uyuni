@@ -62,11 +62,11 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView minionDetails(Request request, Response response) {
-        String key = request.params("minion");
-        Map<String, Object> grains = SALT_SERVICE.getGrains(key);
-        Map<String, List<String>> packages = SALT_SERVICE.getPackages(key);
+        String minionId = request.params("minion");
+        Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
+        Map<String, List<String>> packages = SALT_SERVICE.getPackages(minionId);
         Map<String, Object> data = new HashMap<>();
-        data.put("key", key);
+        data.put("minion", minionId);
         data.put("grains", grains);
         data.put("packages", packages);
         return new ModelAndView(data, "minion.jade");
