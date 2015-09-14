@@ -1163,6 +1163,13 @@ public class ContentSyncManager {
             SUSEProduct toProduct, Integer toSCCProductid,
             Map<String, SUSEUpgradePath> pathsToRemove) {
         if (fromProduct != null && toProduct != null) {
+
+            // Dirty Hack: prevent major version update from 11.X to 12.X
+            if (fromProduct.getVersion().matches("^11(\\.\\d+)*$") &&
+                    toProduct.getVersion().matches("^12(\\.\\d+)*$")) {
+                return;
+            }
+
             // Products found, get the existing path object from map by removing
             String identifier = String.format("%s-%s",
                     fromSCCProductid, toSCCProductid);
