@@ -68,10 +68,10 @@ public class Router implements SparkApplication {
 
         // Setup routes
         Spark.get("/manager/minions", MinionsController::listMinions, jade);
-        Spark.get("/manager/minions/accept/:key", MinionsController::acceptMinion);
-        Spark.get("/manager/minions/delete/:key", MinionsController::deleteMinion);
-        Spark.get("/manager/minions/reject/:key", MinionsController::rejectMinion);
-        Spark.get("/manager/minions/:key", MinionsController::minionDetails, jade);
+        Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
+        Spark.get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
+        Spark.get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
+        Spark.get("/manager/minions/:minion", MinionsController::minionDetails, jade);
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {

@@ -18,7 +18,8 @@ package com.redhat.rhn.frontend.action.renderers;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.suse.manager.webui.models.MinionsModel;
+
+import com.suse.manager.webui.services.SaltService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +38,8 @@ public class TasksRenderer extends BaseFragmentRenderer {
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
-        request.setAttribute("amountOfMinions", MinionsModel.getKeys().getUnacceptedMinions().size());
+        request.setAttribute("amountOfMinions",
+                SaltService.INSTANCE.getKeys().getUnacceptedMinions().size());
         RendererHelper.setTableStyle(request, null);
     }
 
