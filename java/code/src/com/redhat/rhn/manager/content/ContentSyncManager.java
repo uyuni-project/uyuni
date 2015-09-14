@@ -1332,7 +1332,7 @@ public class ContentSyncManager {
             }
             catch (NoRouteToHostException e) {
                 String proxy = ConfigDefaults.get().getProxyHost();
-                throw new ContentSyncException("No route to the OES repo" +
+                throw new ContentSyncException("No route to the OES repository" +
                         (proxy != null ? " or the Proxy: " + proxy : ""));
             }
             catch (IOException e) {
