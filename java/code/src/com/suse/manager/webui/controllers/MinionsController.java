@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.suse.manager.webui.models.MinionsModel;
+import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import java.util.HashMap;
@@ -30,6 +30,9 @@ import spark.Response;
  */
 public class MinionsController {
 
+    // Reference to the SaltService instance
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+
     private MinionsController() { }
 
     /**
@@ -41,8 +44,8 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView listMinions(Request request, Response response) {
-        Keys keys = MinionsModel.getKeys();
-        List<String> present = MinionsModel.present();
+        Keys keys = SALT_SERVICE.getKeys();
+        List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
@@ -59,11 +62,11 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView minionDetails(Request request, Response response) {
-        String key = request.params("key");
-        Map<String, Object> grains = MinionsModel.grains(key);
-        Map<String, List<String>> packages = MinionsModel.packages(key);
+        String minionId = request.params("minion");
+        Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
+        Map<String, List<String>> packages = SALT_SERVICE.getPackages(minionId);
         Map<String, Object> data = new HashMap<>();
-        data.put("key", key);
+        data.put("minion", minionId);
         data.put("grains", grains);
         data.put("packages", packages);
         return new ModelAndView(data, "minion.jade");
@@ -77,7 +80,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object acceptMinion(Request request, Response response) {
-        MinionsModel.accept(request.params("key"));
+        SALT_SERVICE.acceptKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -90,7 +93,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object deleteMinion(Request request, Response response) {
-        MinionsModel.delete(request.params("key"));
+        SALT_SERVICE.deleteKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -103,7 +106,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object rejectMinion(Request request, Response response) {
-        MinionsModel.reject(request.params("key"));
+        SALT_SERVICE.rejectKey(request.params("minion"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
