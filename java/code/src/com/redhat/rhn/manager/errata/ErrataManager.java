@@ -1810,4 +1810,24 @@ public class ErrataManager extends BaseManager {
         }
         return result;
     }
+
+    /**
+     * Returns true if there are relevant errata for the server which
+     * affect the update stack, otherwise false.
+     * @param scheduler the user which schedule this actions
+     * @param server the server which update stack should be updated
+     * @return true if an update of the updatestack is needed
+     */
+    public static boolean updateStackUpdateNeeded(User scheduler, Server server) {
+        boolean needed = false;
+        List<ErrataOverview> erratas = SystemManager.relevantErrata(scheduler, server.getId());
+        for (ErrataOverview errata : erratas) {
+            Errata erratum = ErrataManager.lookupErrata(errata.getIdAsLong(), scheduler);
+            if (erratum.hasKeyword("restart_suggested")) {
+                needed = true;
+                break;
+            }
+        }
+        return needed;
+    }
 }

@@ -45,6 +45,11 @@
                     <bean:message key="spmigration.jsp.error.missing-channels" />
                 </div>
             </c:if>
+            <c:if test="${updateStackUpdateNeeded}">
+                <div class="alert alert-warning">
+                    <bean:message key="spmigration.jsp.error.updatestack-update-needed" />
+                </div>
+            </c:if>
             <html:form method="post" styleId="migrationForm"
                 action="/systems/details/SPMigration.do?sid=${system.id}">
                 <div class="form-horizontal">
