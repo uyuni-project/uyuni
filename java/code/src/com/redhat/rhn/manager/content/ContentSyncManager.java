@@ -75,6 +75,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.NoRouteToHostException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -1507,6 +1508,11 @@ public class ContentSyncManager {
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     return creds;
                 }
+            }
+            catch (NoRouteToHostException e) {
+                String proxy = ConfigDefaults.get().getProxyHost();
+                throw new ContentSyncException("No route to the OES repository" +
+                        (proxy != null ? " or the Proxy: " + proxy : ""));
             }
             catch (IOException e) {
                 throw new ContentSyncException(e);
