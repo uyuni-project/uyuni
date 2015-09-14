@@ -12,7 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.models;
+package com.suse.manager.webui.services;
 
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
