@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
@@ -52,24 +54,6 @@ public class MinionsController {
         data.put("rejected_minions", keys.getRejectedMinions());
         data.put("present", present);
         return new ModelAndView(data, "minions.jade");
-    }
-
-    /**
-     * Handler for the minion details page.
-     *
-     * @param request the request object
-     * @param response the response object
-     * @return the ModelAndView object to render the page
-     */
-    public static ModelAndView minionDetails(Request request, Response response) {
-        String minionId = request.params("minion");
-        Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
-        Map<String, List<String>> packages = SALT_SERVICE.getPackages(minionId);
-        Map<String, Object> data = new HashMap<>();
-        data.put("minion", minionId);
-        data.put("grains", grains);
-        data.put("packages", packages);
-        return new ModelAndView(data, "minion.jade");
     }
 
     /**
