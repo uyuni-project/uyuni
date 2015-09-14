@@ -30,6 +30,9 @@ import spark.Response;
  */
 public class MinionsController {
 
+    // Reference to the SaltService instance
+    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+
     private MinionsController() { }
 
     /**
@@ -41,8 +44,8 @@ public class MinionsController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView listMinions(Request request, Response response) {
-        Keys keys = MinionsModel.getInstance().getKeys();
-        List<String> present = SaltService.INSTANCE.present();
+        Keys keys = SALT_SERVICE.getKeys();
+        List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
         data.put("minions", keys.getMinions());
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
@@ -60,8 +63,8 @@ public class MinionsController {
      */
     public static ModelAndView minionDetails(Request request, Response response) {
         String key = request.params("key");
-        Map<String, Object> grains = SaltService.INSTANCE.getGrains(key);
-        Map<String, List<String>> packages = SaltService.INSTANCE.getPackages(key);
+        Map<String, Object> grains = SALT_SERVICE.getGrains(key);
+        Map<String, List<String>> packages = SALT_SERVICE.getPackages(key);
         Map<String, Object> data = new HashMap<>();
         data.put("key", key);
         data.put("grains", grains);
@@ -77,7 +80,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object acceptMinion(Request request, Response response) {
-        SaltService.INSTANCE.acceptKey(request.params("key"));
+        SALT_SERVICE.acceptKey(request.params("key"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -90,7 +93,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object deleteMinion(Request request, Response response) {
-        SaltService.INSTANCE.deleteKey(request.params("key"));
+        SALT_SERVICE.deleteKey(request.params("key"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -103,7 +106,7 @@ public class MinionsController {
      * @return dummy string to satisfy spark
      */
     public static Object rejectMinion(Request request, Response response) {
-        SaltService.INSTANCE.rejectKey(request.params("key"));
+        SALT_SERVICE.rejectKey(request.params("key"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
