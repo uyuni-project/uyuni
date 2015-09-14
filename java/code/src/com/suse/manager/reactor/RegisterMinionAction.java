@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
-import com.suse.manager.webui.models.SaltService;
+import com.suse.manager.webui.services.SaltService;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;

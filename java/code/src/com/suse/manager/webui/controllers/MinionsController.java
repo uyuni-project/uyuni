@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.suse.manager.webui.models.SaltService;
+import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.datatypes.Keys;
 
 import java.util.HashMap;

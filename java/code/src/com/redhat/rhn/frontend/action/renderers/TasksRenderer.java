@@ -18,7 +18,8 @@ package com.redhat.rhn.frontend.action.renderers;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.suse.manager.webui.models.SaltService;
+
+import com.suse.manager.webui.services.SaltService;
 
 import javax.servlet.http.HttpServletRequest;
 

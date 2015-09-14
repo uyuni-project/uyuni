@@ -16,7 +16,7 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.webui.models.SaltService;
+import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
