@@ -27,8 +27,10 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.Bug;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.errata.impl.PublishedBug;
 import com.redhat.rhn.domain.errata.impl.PublishedErrata;
+import com.redhat.rhn.domain.errata.impl.PublishedKeyword;
 import com.redhat.rhn.domain.errata.impl.UnpublishedBug;
 import com.redhat.rhn.domain.errata.impl.UnpublishedErrata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -663,5 +665,62 @@ public class ErrataManagerTest extends BaseTestCaseWithUser {
                 .add(Restrictions.idEq(action.getId()))
                 .uniqueResult();
         return errataAction;
+    }
+
+    /**
+     * Test updateStackUpdateNeeded
+     *
+     * @throws Exception the exception
+     */
+    public void testUpdateStackUpdateNeeded() throws Exception {
+
+        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata1);
+        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata2);
+        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        TestUtils.saveAndFlush(errata3);
+
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+
+        Set<Channel> serverChannels = new HashSet<Channel>();
+        serverChannels.add(channel1);
+        Server server = createTestServer(user, serverChannels);
+
+        // server 1 has an errata for package1 available
+        com.redhat.rhn.domain.rhnpackage.Package package1 =
+                createTestPackage(user, channel1, "noarch");
+        createTestInstalledPackage(package1, server);
+        createLaterTestPackage(user, errata1, channel1, package1);
+
+        // server 2 has an errata for package2 available
+        Package package2 = createTestPackage(user, channel1, "noarch");
+        createTestInstalledPackage(package2, server);
+        createLaterTestPackage(user, errata2, channel1, package2);
+
+        // errata in common for both servers
+        Package package3 = createTestPackage(user, channel1, "noarch");
+        createTestInstalledPackage(package3, server);
+        createLaterTestPackage(user, errata3, channel1, package3);
+
+        ErrataCacheManager.insertNeededErrataCache(
+                server.getId(), errata1.getId(), package1.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server.getId(), errata2.getId(), package2.getId());
+        ErrataCacheManager.insertNeededErrataCache(
+                server.getId(), errata3.getId(), package3.getId());
+        HibernateFactory.getSession().flush();
+
+        assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
+
+        Set<Keyword> kw = new HashSet<Keyword>();
+        Keyword k = new PublishedKeyword();
+        k.setKeyword("restart_suggested");
+        k.setErrata(errata3);
+        kw.add(k);
+        errata3.setKeywords(kw);
+        TestUtils.saveAndFlush(errata3);
+
+        assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
     }
 }
