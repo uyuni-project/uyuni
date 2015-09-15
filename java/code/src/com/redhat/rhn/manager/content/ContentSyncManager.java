@@ -672,7 +672,7 @@ public class ContentSyncManager {
      * can't be updated
      */
     public void updateChannelsInternal(String mirrorUrl) throws ContentSyncException {
-        if (mirrorUrl == null) {
+        if (StringUtils.isBlank(mirrorUrl)) {
             mirrorUrl = Config.get().getString(ContentSyncManager.MIRROR_CFG_KEY);
         }
 
