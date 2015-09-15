@@ -23,6 +23,8 @@ import com.suse.saltstack.netapi.event.EventStream;
 
 import org.apache.log4j.Logger;
 
+import javax.websocket.CloseReason;
+
 /**
  * Salt event reactor.
  */
@@ -86,8 +88,9 @@ public class SaltReactor implements EventListener {
      * {@inheritDoc}
      */
     @Override
-    public void eventStreamClosed() {
-        logger.warn("Event stream has closed!");
+    public void eventStreamClosed(CloseReason closeReason) {
+        logger.warn("Event stream closed: " + closeReason.getReasonPhrase() +
+                " [" + closeReason.getCloseCode() + "]");
 
         // Try to reconnect
         if (!isStopped) {
