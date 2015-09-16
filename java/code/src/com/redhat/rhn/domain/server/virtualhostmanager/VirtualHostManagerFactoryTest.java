@@ -1,0 +1,128 @@
+package com.redhat.rhn.domain.server.virtualhostmanager;
+
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.PropertyValueException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * VirtualHostManagerFactory Test
+ */
+public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
+
+    /**
+     * Tests creating and retrieving a VirtualHostManager.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHM() throws Exception {
+        VirtualHostManagerFactory.getInstance().createVirtualHostManager("mylabel",
+                user.getOrg(),
+                "SUSECloud",
+                null);
+
+        VirtualHostManager fromDb =
+                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+
+        assertEquals("mylabel", fromDb.getLabel());
+        assertEquals(user.getOrg(), fromDb.getOrg());
+        assertEquals("SUSECloud", fromDb.getGathererModule());
+        assertNull(fromDb.getConfigs());
+    }
+
+    /**
+     * Tests creating and retrieving a VirtualHostManager with credentials.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHManagerWithCreds() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("user", "FlashGordon");
+        config.put("pass", "The savior of the universe");
+
+        VirtualHostManagerFactory.getInstance().createVirtualHostManager(
+                "mylabel",
+                user.getOrg(),
+                "SUSECloud",
+                config);
+
+        VirtualHostManager virtualHostManager =
+                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+
+        assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
+        assertEquals("The savior of the universe", virtualHostManager.getCredentials().getPassword());
+
+        // user and pass should be deleted from configs
+        assertTrue(virtualHostManager.getConfigs().isEmpty());
+    }
+
+    /**
+     * Tests creating and retrieving a VirtualHostManager with config.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHMWithConfigs() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("testkey", "43");
+
+        VirtualHostManagerFactory.getInstance().createVirtualHostManager(
+                "mylabel",
+                user.getOrg(),
+                "SUSECloud",
+                config);
+
+        VirtualHostManager virtualHostManager =
+                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+
+        assertEquals(1, virtualHostManager.getConfigs().size());
+        assertEquals("43", virtualHostManager.getConfigs().iterator().next().getValue());
+    }
+
+    /**
+     * Tests creating and retrieving a VirtualHostManager with null label.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHMNullLabel() {
+        try {
+            VirtualHostManagerFactory.getInstance().createVirtualHostManager(
+                    null,
+                    user.getOrg(),
+                    "SUSECloud",
+                    null);
+        } catch (PropertyValueException e) {
+            return; // we've caught exception about violating not-null constraint
+        }
+        fail("PQLException should have been thrown.");
+    }
+
+    /**
+     * Tests creating and retrieving a VirtualHostManager with null organization.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHMNullOrg() {
+        try {
+            VirtualHostManagerFactory.getInstance().createVirtualHostManager(
+                    "mylabel",
+                    null,
+                    "SUSECloud",
+                    null);
+        } catch (PropertyValueException e) {
+            return; // we've caught exception about violating not-null constraint
+        }
+        fail("PQLException should have been thrown.");
+    }
+
+    /**
+     * Tests retrieving non-existing Virtual Host Manager.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetNonExistentVHM() {
+        try {
+            VirtualHostManagerFactory.getInstance().lookupByLabel("idontexist");
+        } catch (ObjectNotFoundException e) {
+            return; // we've caught exception about violating not-null constraint
+        }
+        fail("PQLException should have been thrown.");
+    }
+
+    // todo test case about deleting VHM and checking VHMC
+}
