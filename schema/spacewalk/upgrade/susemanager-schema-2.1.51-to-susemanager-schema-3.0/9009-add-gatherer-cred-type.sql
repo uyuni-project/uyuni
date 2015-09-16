@@ -1,5 +1,5 @@
 --
--- Copyright (c) 2012 Novell
+-- Copyright (c) 2014 Novell
 --
 -- This software is licensed to you under the GNU General Public License,
 -- version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,13 +13,12 @@
 -- in this software or its documentation.
 --
 
-insert into suseCredentialsType (id, label, name) values
-	(sequence_nextval('suse_credtype_id_seq'), 'susestudio', 'SUSE Studio');
-
-insert into suseCredentialsType (id, label, name) values
-        (sequence_nextval('suse_credtype_id_seq'), 'scc', 'SUSE Customer Center');
-
-insert into suseCredentialsType (id, label, name) values
-        (sequence_nextval('suse_credtype_id_seq'), 'vhm', 'Virtual Host Manager');
-
-commit;
+insert into suseCredentialsType (id, label, name) (
+  select sequence_nextval('suse_credtype_id_seq'), 'vhm', 'Virtual Host Manager'
+    from dual
+   where not exists (
+           select 1
+             from suseCredentialsType
+            where label = 'vhm'
+  )
+);
