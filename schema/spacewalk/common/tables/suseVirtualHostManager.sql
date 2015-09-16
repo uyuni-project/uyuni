@@ -17,6 +17,7 @@ CREATE TABLE suseVirtualHostManager
                     CONSTRAINT suse_vhms_oid_fk
                     REFERENCES web_customer (id)
                     ON DELETE CASCADE,
+    label       VARCHAR2(128) NOT NULL,
     gatherer_module     VARCHAR2(50) NOT NULL,
     cred_id     NUMBER
                     CONSTRAINT suse_vhms_creds_fk
@@ -29,6 +30,10 @@ CREATE TABLE suseVirtualHostManager
 )
 ENABLE ROW MOVEMENT
 ;
+
+CREATE UNIQUE INDEX suse_vhm_label_uq
+ON suseVirtualHostManager (label)
+TABLESPACE [[64k_tbs]];
 
 CREATE SEQUENCE suse_vhms_id_seq;
 
