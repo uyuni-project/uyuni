@@ -1755,7 +1755,7 @@ tree will not be usable for autoinstalling.
         <source>Some software channels are missing for this migration, please make sure to sync all mandatory channels by adding the below target product(s) using the &lt;a href="/rhn/admin/setup/SUSEProducts.do"&gt;&lt;strong&gt;Setup Wizard&lt;/strong&gt;&lt;/a&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.updatestack-update-needed">
-        <source>There are outstanding software stack updates available for this system. Please update all software stack related packages before you start a Service Pack migration.</source>
+        <source>There are outstanding Package Management Stack updates available for this system. Please update all Software Update Stack related packages before you start a Service Pack migration.</source>
       </trans-unit>
 
       <!-- Confirm -->
