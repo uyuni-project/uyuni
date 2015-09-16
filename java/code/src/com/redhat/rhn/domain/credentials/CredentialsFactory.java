@@ -149,6 +149,17 @@ public class CredentialsFactory extends HibernateFactory {
     }
 
     /**
+     * Helper method for creating new Virtual Host Manager {@link Credentials}
+     * @return new credential with type Virtual Host Manager
+     */
+    public static Credentials createVHMCredentials() {
+        Credentials creds = createCredentials();
+        creds.setType(CredentialsFactory
+                .findCredentialsTypeByLabel(Credentials.TYPE_VIRT_HOST_MANAGER));
+        return creds;
+    }
+
+    /**
      * Find credentials by ID.
      * @param id the id
      * @return credentials object or null
