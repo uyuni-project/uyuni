@@ -3,7 +3,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
-import com.suse.manager.gatherer.GathererFactory;
+import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.util.Collections;
@@ -36,13 +36,13 @@ public class VirtualHostManagerHandler extends BaseHandler {
     // todo think about (not) including 'gatherer' word in the api
     public Set<String> listAvailableGathererModules(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
-        return GathererFactory.INSTANCE.listModules();
+        return GathererCache.INSTANCE.listAvailableModules();
     }
 
     public Map<String, String> getGathererModuleDetail(User loggedInUser, String moduleName) {
         ensureSatAdmin(loggedInUser);
 
-        GathererModule gm = GathererFactory.INSTANCE.getDetails(moduleName);
+        GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
         Map<String, String> ret = gm.getParameter();
         ret.put("module", gm.getName());
         return ret;
