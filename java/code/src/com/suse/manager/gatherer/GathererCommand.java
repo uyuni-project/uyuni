@@ -1,8 +1,7 @@
 package com.suse.manager.gatherer;
 
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.BaseConfigureCommand;
 import com.redhat.rhn.manager.satellite.Executor;
+import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
 import com.suse.manager.model.gatherer.GathererModule;
 
@@ -18,7 +17,7 @@ import java.util.Map;
  * must be SAT_ADMIN to use this command.
  *
  */
-public class GathererCommand extends BaseConfigureCommand {
+public class GathererCommand {
 
     private static String GATHERER_CMD = "/usr/bin/gatherer";
 
@@ -27,12 +26,10 @@ public class GathererCommand extends BaseConfigureCommand {
      */
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    public GathererCommand(User userIn) {
-        super(userIn);
-    }
+    public GathererCommand() { }
 
     public Map<String, GathererModule> listModules() {
-        Executor e = getExecutor();
+        Executor e = new SystemCommandExecutor();
         List<String> args = new LinkedList<String>();
         args.add(GATHERER_CMD);
         args.add("--list-modules");
