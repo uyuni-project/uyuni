@@ -51,7 +51,10 @@ public class GathererModule {
     }
 
     /**
-     * @param parameterIn the parameter to set
+     * Add a paramter to the map
+     *
+     * @param key the key
+     * @param value the value
      */
     public void addParameter(String key, String value) {
         if(this.parameter == null) {
