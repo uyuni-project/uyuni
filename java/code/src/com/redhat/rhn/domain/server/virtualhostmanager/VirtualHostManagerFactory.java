@@ -93,6 +93,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Org org,
             String moduleName,
             Map<String, String> parameters) {
+        getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);
