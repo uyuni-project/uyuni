@@ -17,8 +17,7 @@
         <many-to-one name="org" column="org_id" not-null="true" class="com.redhat.rhn.domain.org.Org" />
         <many-to-one name="credentials" column="cred_id" class="com.redhat.rhn.domain.credentials.Credentials" />
 
-        <!-- todo revisit and test cascade (after adding delete operation to factory) -->
-        <set name="configs" table="suseVHMConfig" cascade="all">
+        <set name="configs" table="suseVHMConfig" inverse="true" cascade="all-delete-orphan">
             <key column="virtual_host_manager_id" />
             <one-to-many class="com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig" />
         </set>

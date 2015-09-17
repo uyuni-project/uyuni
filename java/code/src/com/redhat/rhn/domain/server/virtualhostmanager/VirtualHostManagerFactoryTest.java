@@ -101,10 +101,27 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         try {
             factory.lookupByLabel("idontexist");
         } catch (ObjectNotFoundException e) {
-            return; // we've caught exception about violating not-null constraint
+            return; // we've caught exception about non existing object
         }
-        fail("PQLException should have been thrown.");
+        fail("ObjectNotFoundException should have been thrown.");
     }
 
-    // todo test case about deleting VHM and checking VHMC
+    public void testDeleteVirtualHostManager() {
+        Map<String, String> config = new HashMap<>();
+        config.put("testkey", "43");
+        String myLabel = "myLabel";
+        VirtualHostManager vhm = factory
+                .createVirtualHostManager(myLabel, user.getOrg(), "SUSECloud", config);
+        assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
+        assertNotNull(factory.lookupByLabel(myLabel));
+
+        factory.delete(vhm);
+
+        try {
+            factory.lookupByLabel(myLabel);
+        } catch (ObjectNotFoundException e) {
+            return; // we've caught exception about non existing object
+        }
+        fail("ObjectNotFoundException should have been thrown.");
+    }
 }
