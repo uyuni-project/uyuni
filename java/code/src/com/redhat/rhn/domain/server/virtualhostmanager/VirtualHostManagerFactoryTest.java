@@ -12,18 +12,21 @@ import java.util.Map;
  */
 public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
+    private VirtualHostManagerFactory factory;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        factory = VirtualHostManagerFactory.getInstance();
+    }
+
     /**
      * Tests creating and retrieving a VirtualHostManager.
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHM() throws Exception {
-        VirtualHostManagerFactory.getInstance().createVirtualHostManager("mylabel",
-                user.getOrg(),
-                "SUSECloud",
-                null);
-
-        VirtualHostManager fromDb =
-                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", null);
+        VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
         assertEquals(user.getOrg(), fromDb.getOrg());
@@ -40,18 +43,11 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("user", "FlashGordon");
         config.put("pass", "The savior of the universe");
 
-        VirtualHostManagerFactory.getInstance().createVirtualHostManager(
-                "mylabel",
-                user.getOrg(),
-                "SUSECloud",
-                config);
-
-        VirtualHostManager virtualHostManager =
-                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", config);
+        VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
         assertEquals("The savior of the universe", virtualHostManager.getCredentials().getPassword());
-
         // user and pass should be deleted from configs
         assertTrue(virtualHostManager.getConfigs().isEmpty());
     }
@@ -64,14 +60,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         Map<String, String> config = new HashMap<>();
         config.put("testkey", "43");
 
-        VirtualHostManagerFactory.getInstance().createVirtualHostManager(
-                "mylabel",
-                user.getOrg(),
-                "SUSECloud",
-                config);
-
-        VirtualHostManager virtualHostManager =
-                VirtualHostManagerFactory.getInstance().lookupByLabel("mylabel");
+        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", config);
+        VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals(1, virtualHostManager.getConfigs().size());
         assertEquals("43", virtualHostManager.getConfigs().iterator().next().getValue());
@@ -83,11 +73,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullLabel() {
         try {
-            VirtualHostManagerFactory.getInstance().createVirtualHostManager(
-                    null,
-                    user.getOrg(),
-                    "SUSECloud",
-                    null);
+            factory.createVirtualHostManager(null, user.getOrg(), "SUSECloud", null);
         } catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
         }
@@ -100,11 +86,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullOrg() {
         try {
-            VirtualHostManagerFactory.getInstance().createVirtualHostManager(
-                    "mylabel",
-                    null,
-                    "SUSECloud",
-                    null);
+            factory.createVirtualHostManager("mylabel", null, "SUSECloud", null);
         } catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
         }
@@ -117,7 +99,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetNonExistentVHM() {
         try {
-            VirtualHostManagerFactory.getInstance().lookupByLabel("idontexist");
+            factory.lookupByLabel("idontexist");
         } catch (ObjectNotFoundException e) {
             return; // we've caught exception about violating not-null constraint
         }
