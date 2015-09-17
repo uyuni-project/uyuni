@@ -13,9 +13,7 @@ import java.util.Map;
 
 
 /**
- * GathererCommand - simple Command class to run the gatherer. User
- * must be SAT_ADMIN to use this command.
- *
+ * GathererCommand - simple Command class to run the gatherer.
  */
 public class GathererCommand {
 
@@ -26,8 +24,10 @@ public class GathererCommand {
      */
     private final Logger logger = Logger.getLogger(this.getClass());
 
-    public GathererCommand() { }
-
+    /**
+     * Call gatherer --list-modules and return the result
+     * @return the available modules with details
+     */
     public Map<String, GathererModule> listModules() {
         Executor e = new SystemCommandExecutor();
         List<String> args = new LinkedList<String>();
