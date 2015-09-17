@@ -47,8 +47,12 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         RegisterMinionEvent event = (RegisterMinionEvent) msg;
         String minionId = event.getMinionId();
 
-        // Match the minion via its machine_id
+        // Match minions via their machine id
         String machineId = SALT_SERVICE.getMachineId(minionId);
+        if (machineId == null) {
+            log.info("Cannot find machine id for minion: " + minionId);
+            return;
+        }
         if (ServerFactory.findRegisteredMinion(machineId) != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Minion already registered, skipping registration: " +
