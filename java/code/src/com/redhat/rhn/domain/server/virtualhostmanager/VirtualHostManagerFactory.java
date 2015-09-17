@@ -72,6 +72,15 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Deletes given VirtualHostManager and associated objects.
+     * @param virtualHostManager to be deleted
+     */
+    public void delete(VirtualHostManager virtualHostManager) {
+        getLogger().debug("Deleting VirtualHostManager " + virtualHostManager);
+        removeObject(virtualHostManager);
+    }
+
+    /**
      * Creates a new VirtualHostManager entity from given arguments
      * @param label
      * @param org
