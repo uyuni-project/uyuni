@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2015 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -13,15 +28,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Singletor representing Virtual Host Manager hibernate factory.
+ * Singleton representing Virtual Host Manager hibernate factory.
  */
 public class VirtualHostManagerFactory extends HibernateFactory {
 
     private static VirtualHostManagerFactory instance;
     private static Logger log;
 
-    private final static String CONFIG_USER = "user";
-    private final static String CONFIG_PASS = "pass";
+    private static final String CONFIG_USER = "user";
+    private static final String CONFIG_PASS = "pass";
 
     /**
      * Default constructor.
@@ -32,7 +47,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Gets instance of VirtualHostManagerFactory
-     * @return
+     * @return instance of VirtualHostManagerFactory
      */
     public static synchronized VirtualHostManagerFactory getInstance() {
         if (instance == null) {
@@ -54,7 +69,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Looks up VirtualHostManager by label
-     * @param label
+     * @param label the label
      * @return VirtualHostManager instance with given label
      */
     public VirtualHostManager lookupByLabel(String label) {
@@ -82,10 +97,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Creates a new VirtualHostManager entity from given arguments
-     * @param label
-     * @param org
-     * @param moduleName
-     * @param parameters
+     * @param label - the label
+     * @param org - the organization
+     * @param moduleName - the module name
+     * @param parameters - the parameters
      * @return new VirtualHostManager instance
      */
     public VirtualHostManager createVirtualHostManager(
@@ -102,7 +117,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         // todo validation, need list of valid modules
         virtualHostManager.setGathererModule(moduleName);
         virtualHostManager.setCredentials(createCredentialsFromParams(parameters));
-        virtualHostManager.setConfigs(createVirtualHostManagerConfigs(virtualHostManager, parameters));
+        virtualHostManager.setConfigs(
+                createVirtualHostManagerConfigs(virtualHostManager, parameters));
 
         saveObject(virtualHostManager);
 
@@ -132,7 +148,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             if (configEntry.equals(CONFIG_USER) || configEntry.equals(CONFIG_PASS)) {
                 continue;
             }
-            configs.add(createVirtualHostManagerConfig(virtualHostManager, configEntry.getKey(), configEntry.getValue()));
+            configs.add(createVirtualHostManagerConfig(virtualHostManager,
+                    configEntry.getKey(),
+                    configEntry.getValue()));
         }
 
         return configs;
@@ -167,7 +185,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      *         - null otherwise
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
-        if (params != null && params.containsKey(CONFIG_USER) && params.containsKey(CONFIG_PASS)) {
+        if (params != null &&
+                params.containsKey(CONFIG_USER) &&
+                params.containsKey(CONFIG_PASS)) {
             Credentials credentials = CredentialsFactory.createVHMCredentials();
             credentials.setUsername(params.get(CONFIG_USER));
             credentials.setPassword(params.get(CONFIG_PASS));
