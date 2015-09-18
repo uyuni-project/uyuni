@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 
 import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
@@ -84,6 +85,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
+        if (gm == null) {
+            throw new NoSuchGathererModuleException(moduleName);
+        }
         Map<String, String> ret = gm.getParameters();
         ret.put("module", gm.getName());
         return ret;
