@@ -15,7 +15,9 @@
 
 package com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager;
 
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -25,9 +27,9 @@ import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * todo javadoc!
@@ -57,7 +59,21 @@ public class VirtualHostManagerHandler extends BaseHandler {
     }
 
     public Map<String, String> getDetail(User loggedInUser, String label) {
-        return Collections.emptyMap();
+        ensureSatAdmin(loggedInUser);
+        VirtualHostManager manager =
+                VirtualHostManagerFactory.getInstance().lookupByLabel(label);
+
+        Map<String, String> configsMap = manager.getConfigs().stream().collect(
+                Collectors.toMap(
+                        VirtualHostManagerConfig::getParameter,
+                        VirtualHostManagerConfig::getValue));
+
+        Credentials credentials = manager.getCredentials();
+        if (credentials != null) {
+            configsMap.put("user", credentials.getUsername()); // todo externalize
+        }
+
+        return configsMap;
     }
 
     // todo think about (not) including 'gatherer' word in the api
