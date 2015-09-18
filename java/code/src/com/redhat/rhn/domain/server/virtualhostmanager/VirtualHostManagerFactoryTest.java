@@ -177,4 +177,21 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         }
         fail("IllegalArgumentException should have been thrown.");
     }
+
+    /**
+     * Tests creating and retrieving a list of VirtualHostManager an organization.
+     * @throws Exception if anything goes wrong
+     */
+    public void testCreateAndGetVHMs() throws Exception {
+        VirtualHostManager manager1 =
+                factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
+        VirtualHostManager manager2 =
+                factory.createVirtualHostManager("mylabel2", user.getOrg(), SUSE_CLOUD, null);
+
+        List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
+
+        assertEquals(2, managers.size());
+        assertContains(managers, manager1);
+        assertContains(managers, manager2);
+    }
 }

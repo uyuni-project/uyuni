@@ -25,6 +25,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,6 +87,18 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         }
 
         return result;
+    }
+
+    /**
+     * Returns a list of Virtual Host Managers associated with the given organization
+     * @param org - organization
+     * @return a list of corresponding Virtual Host Managers
+     */
+    public List<VirtualHostManager> listVirtualHostManagers(Org org) {
+        return getSession()
+                .createCriteria(VirtualHostManager.class)
+                .add(Restrictions.eq("org", org))
+                .list();
     }
 
     /**
