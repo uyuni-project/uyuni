@@ -1,26 +1,24 @@
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.org.Org;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Virtual Host Manager
  */
-public class VirtualHostManager {
+public class VirtualHostManager extends BaseDomainHelper {
 
     private Long id;
     private Org org;
     private String label;
     private String gathererModule;
     private Credentials credentials;
-    private Date created;
-    private Date modified;
     private Set<VirtualHostManagerConfig> configs;
 
     public VirtualHostManager() {
@@ -57,22 +55,6 @@ public class VirtualHostManager {
 
     public void setGathererModule(String gathererModule) {
         this.gathererModule = gathererModule;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getModified() {
-        return modified;
-    }
-
-    public void setModified(Date modified) {
-        this.modified = modified;
     }
 
     public Credentials getCredentials() {
