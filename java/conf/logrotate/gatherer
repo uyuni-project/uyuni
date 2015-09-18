@@ -1,0 +1,13 @@
+# logrotation file for gatherer
+#
+
+/var/log/rhn/gatherer.log {
+    weekly
+    rotate 5
+    copytruncate
+    nocompress
+    notifempty
+    create tomcat www
+    size=1M
+    su tomcat www
+}
