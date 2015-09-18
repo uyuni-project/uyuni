@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
-
 import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
 
@@ -36,8 +35,10 @@ import java.util.stream.Collectors;
  */
 public class VirtualHostManagerHandler extends BaseHandler {
 
-    public List<Object> listVirtualHostManagers(User loggedInUser) {
-        return null;
+    public List<VirtualHostManager> listVirtualHostManagers(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        return VirtualHostManagerFactory.getInstance()
+                .listVirtualHostManagers(loggedInUser.getOrg());
     }
 
     public int create(User loggedInUser, String label, String moduleName,
