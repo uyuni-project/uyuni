@@ -35,7 +35,7 @@ import java.util.Map;
 public class RegisterMinionAction extends AbstractDatabaseAction {
 
     // Logger for this class
-    private static final Logger log = Logger.getLogger(RegisterMinionAction.class);
+    private static final Logger LOG = Logger.getLogger(RegisterMinionAction.class);
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
@@ -50,12 +50,12 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         // Match minions via their machine id
         String machineId = SALT_SERVICE.getMachineId(minionId);
         if (machineId == null) {
-            log.info("Cannot find machine id for minion: " + minionId);
+            LOG.info("Cannot find machine id for minion: " + minionId);
             return;
         }
         if (ServerFactory.findRegisteredMinion(machineId) != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Minion already registered, skipping registration: " +
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Minion already registered, skipping registration: " +
                         minionId + " [" + machineId + "]");
             }
             return;
@@ -76,11 +76,12 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setRunningKernel((String) grains.get("kernelrelease"));
             server.setSecret(RandomStringUtils.randomAlphanumeric(64));
             server.setAutoUpdate("N");
-            server.setLastBoot(System.currentTimeMillis()/1000);
+            server.setLastBoot(System.currentTimeMillis() / 1000);
             server.setCreated(new Date());
             server.setModified(server.getCreated());
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-            server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+            server.setServerArch(
+                    ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
             ServerInfo serverInfo = new ServerInfo();
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
@@ -88,7 +89,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             ServerFactory.save(server);
         }
         catch (Throwable t) {
-            log.error("Error registering minion for event: " + event, t);
+            LOG.error("Error registering minion for event: " + event, t);
         }
     }
 }
