@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2015 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -47,7 +62,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
-        assertEquals("The savior of the universe", virtualHostManager.getCredentials().getPassword());
+        assertEquals("The savior of the universe",
+                virtualHostManager.getCredentials().getPassword());
         // user and pass should be deleted from configs
         assertTrue(virtualHostManager.getConfigs().isEmpty());
     }
@@ -69,12 +85,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with null label.
-     * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMNullLabel() {
         try {
             factory.createVirtualHostManager(null, user.getOrg(), "SUSECloud", null);
-        } catch (PropertyValueException e) {
+        }
+        catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
         }
         fail("PQLException should have been thrown.");
@@ -82,12 +98,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with null organization.
-     * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMNullOrg() {
         try {
             factory.createVirtualHostManager("mylabel", null, "SUSECloud", null);
-        } catch (PropertyValueException e) {
+        }
+        catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
         }
         fail("PQLException should have been thrown.");
@@ -95,17 +111,20 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests retrieving non-existing Virtual Host Manager.
-     * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetNonExistentVHM() {
         try {
             factory.lookupByLabel("idontexist");
-        } catch (ObjectNotFoundException e) {
+        }
+        catch (ObjectNotFoundException e) {
             return; // we've caught exception about non existing object
         }
         fail("ObjectNotFoundException should have been thrown.");
     }
 
+    /**
+     * Tests deleting an existing Virtual Host Manager.
+     */
     public void testDeleteVirtualHostManager() {
         Map<String, String> config = new HashMap<>();
         config.put("testkey", "43");
@@ -119,7 +138,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
         try {
             factory.lookupByLabel(myLabel);
-        } catch (ObjectNotFoundException e) {
+        }
+        catch (ObjectNotFoundException e) {
             return; // we've caught exception about non existing object
         }
         fail("ObjectNotFoundException should have been thrown.");
