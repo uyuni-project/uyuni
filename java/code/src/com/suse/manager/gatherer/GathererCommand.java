@@ -45,11 +45,11 @@ public class GathererCommand {
      */
     public Map<String, GathererModule> listModules() {
         Executor e = new SystemCommandExecutor();
-        List<String> args = new LinkedList<String>();
+        List<String> args = new LinkedList<>();
         args.add(GATHERER_CMD);
         args.add("--list-modules");
 
-        int exitcode = e.execute((String[]) args.toArray(new String[0]));
+        int exitcode = e.execute(args.toArray(new String[0]));
         if (exitcode != 0) {
             logger.error(e.getLastCommandErrorMessage());
             return null;
