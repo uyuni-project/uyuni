@@ -39,20 +39,20 @@ public class GathererJsonIOTest extends TestCase {
 
         for(GathererModule g : mods.values()) {
             if(g.getName().equals("VMware")) {
-                assertTrue(g.getParameter().containsKey("host"));
-                assertTrue(g.getParameter().containsKey("port"));
-                assertTrue(g.getParameter().containsKey("user"));
-                assertTrue(g.getParameter().containsKey("pass"));
-                assertFalse(g.getParameter().containsKey("proto"));
-                assertFalse(g.getParameter().containsKey("tenant"));
+                assertTrue(g.getParameters().containsKey("host"));
+                assertTrue(g.getParameters().containsKey("port"));
+                assertTrue(g.getParameters().containsKey("user"));
+                assertTrue(g.getParameters().containsKey("pass"));
+                assertFalse(g.getParameters().containsKey("proto"));
+                assertFalse(g.getParameters().containsKey("tenant"));
             }
             else if(g.getName().equals("SUSECloud")) {
-                assertTrue(g.getParameter().containsKey("host"));
-                assertTrue(g.getParameter().containsKey("port"));
-                assertTrue(g.getParameter().containsKey("user"));
-                assertTrue(g.getParameter().containsKey("pass"));
-                assertTrue(g.getParameter().containsKey("proto"));
-                assertTrue(g.getParameter().containsKey("tenant"));
+                assertTrue(g.getParameters().containsKey("host"));
+                assertTrue(g.getParameters().containsKey("port"));
+                assertTrue(g.getParameters().containsKey("user"));
+                assertTrue(g.getParameters().containsKey("pass"));
+                assertTrue(g.getParameters().containsKey("proto"));
+                assertTrue(g.getParameters().containsKey("tenant"));
             }
             else {
                 assertTrue("Unknown Module", false);

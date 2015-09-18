@@ -84,7 +84,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
-        Map<String, String> ret = gm.getParameter();
+        Map<String, String> ret = gm.getParameters();
         ret.put("module", gm.getName());
         return ret;
     }
