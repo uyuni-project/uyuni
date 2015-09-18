@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager;
 
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
@@ -38,11 +40,20 @@ public class VirtualHostManagerHandler extends BaseHandler {
 
     public int create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
-        return 1;
+        ensureSatAdmin(loggedInUser);
+        // todo catch IllegalArgExteption and re-throw NoSuchGathererModuleException
+        return VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
+                loggedInUser.getOrg(),
+                moduleName,
+                parameters).getId().intValue();
     }
 
     public int delete(User loggedInUser, String label) {
-        return 1;
+        ensureSatAdmin(loggedInUser);
+        VirtualHostManager manager =
+                VirtualHostManagerFactory.getInstance().lookupByLabel(label);
+        VirtualHostManagerFactory.getInstance().delete(manager);
+        return BaseHandler.VALID;
     }
 
     public Map<String, String> getDetail(User loggedInUser, String label) {
