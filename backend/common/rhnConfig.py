@@ -344,6 +344,7 @@ def parse_line(line):
                        'server.satellite.http_proxy_password': str,
                        'server.satellite.rhn_parent': str,
                        'db_name': str,
+                       'db_password': str,
                        'server.susemanager.mirrcred_user': str,
                        'server.susemanager.mirrcred_pass': str,
                        'db_host': str,
