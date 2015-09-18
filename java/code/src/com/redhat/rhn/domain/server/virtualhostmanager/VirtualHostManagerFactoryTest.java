@@ -19,8 +19,11 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * VirtualHostManagerFactory Test
@@ -28,11 +31,19 @@ import java.util.Map;
 public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     private VirtualHostManagerFactory factory;
+    private static final String SUSE_CLOUD = "SUSECloud";
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        factory = VirtualHostManagerFactory.getInstance();
+        factory = new VirtualHostManagerFactory() {
+            @Override
+            Set<String> getAvailableGathererModules() {
+                return new HashSet<String>() {{
+                        add(SUSE_CLOUD);
+                }};
+            }
+        };
     }
 
     /**
@@ -40,12 +51,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHM() throws Exception {
-        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", null);
+        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
         VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
         assertEquals(user.getOrg(), fromDb.getOrg());
-        assertEquals("SUSECloud", fromDb.getGathererModule());
+        assertEquals(SUSE_CLOUD, fromDb.getGathererModule());
         assertNull(fromDb.getConfigs());
     }
 
@@ -58,7 +69,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("user", "FlashGordon");
         config.put("pass", "The savior of the universe");
 
-        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", config);
+        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
@@ -76,7 +87,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         Map<String, String> config = new HashMap<>();
         config.put("testkey", "43");
 
-        factory.createVirtualHostManager("mylabel", user.getOrg(), "SUSECloud", config);
+        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals(1, virtualHostManager.getConfigs().size());
@@ -88,7 +99,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullLabel() {
         try {
-            factory.createVirtualHostManager(null, user.getOrg(), "SUSECloud", null);
+            factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD, null);
         }
         catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
@@ -101,7 +112,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullOrg() {
         try {
-            factory.createVirtualHostManager("mylabel", null, "SUSECloud", null);
+            factory.createVirtualHostManager("mylabel", null, SUSE_CLOUD, null);
         }
         catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
@@ -130,7 +141,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("testkey", "43");
         String myLabel = "myLabel";
         VirtualHostManager vhm = factory
-                .createVirtualHostManager(myLabel, user.getOrg(), "SUSECloud", config);
+                .createVirtualHostManager(myLabel, user.getOrg(), SUSE_CLOUD, config);
         assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
         assertNotNull(factory.lookupByLabel(myLabel));
 
@@ -143,5 +154,27 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
             return; // we've caught exception about non existing object
         }
         fail("ObjectNotFoundException should have been thrown.");
+    }
+
+    /**
+     * Tests throwing the exception when creating Virtual Host Manager with non-existing
+     * gatherer module
+     */
+    public void testCreateVHMInvalidGathererModule() {
+        VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
+            @Override
+            Set<String> getAvailableGathererModules() {
+                return Collections.emptySet();
+            }
+        };
+
+        try {
+            customFactory
+                    .createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD, null);
+        }
+        catch (IllegalArgumentException e) {
+            return; // we've caught exception invalid gatherer module
+        }
+        fail("IllegalArgumentException should have been thrown.");
     }
 }

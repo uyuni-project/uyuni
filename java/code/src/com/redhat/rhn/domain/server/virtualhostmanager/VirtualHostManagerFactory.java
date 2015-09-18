@@ -19,6 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.suse.manager.gatherer.GathererCache;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.criterion.Restrictions;
@@ -40,8 +41,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Default constructor.
+     * (package local for testing reasons)
      */
-    private VirtualHostManagerFactory() {
+    VirtualHostManagerFactory() {
         super();
     }
 
@@ -114,7 +116,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         virtualHostManager.setLabel(label);
         virtualHostManager.setOrg(org);
 
-        // todo validation, need list of valid modules
+        if (!getAvailableGathererModules().contains(moduleName)) {
+            throw new IllegalArgumentException("Module '" + moduleName + "' not available");
+        }
         virtualHostManager.setGathererModule(moduleName);
         virtualHostManager.setCredentials(createCredentialsFromParams(parameters));
         virtualHostManager.setConfigs(
@@ -123,6 +127,15 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         saveObject(virtualHostManager);
 
         return virtualHostManager;
+    }
+
+    /**
+     * Get list of avaliable gatherer modules
+     * (package protected for testing reasons)
+     * @return list of available gatherer modules
+     */
+    Set<String> getAvailableGathererModules() {
+        return GathererCache.INSTANCE.listAvailableModules();
     }
 
     /**
