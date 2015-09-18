@@ -26,7 +26,7 @@ import java.util.Map;
 public class GathererModule {
 
     private String name;
-    private Map<String, String> parameter;
+    private Map<String, String> parameters;
 
     /**
      * Default Constructor
@@ -49,33 +49,33 @@ public class GathererModule {
     }
 
     /**
-     * @return the parameter
+     * @return the parameters
      */
-    public Map<String, String> getParameter() {
-        return parameter;
+    public Map<String, String> getParameters() {
+        return parameters;
     }
 
     /**
-     * @param parameterIn the parameter to set
+     * @param parametersIn the parameters to set
      */
-    public void setParameter(Map<String, String> parameterIn) {
-        if (this.parameter == null) {
-            this.parameter = new HashMap<String, String>();
+    public void setParameters(Map<String, String> parametersIn) {
+        if (this.parameters == null) {
+            this.parameters = new HashMap<>();
         }
-        this.parameter = parameterIn;
+        this.parameters = parametersIn;
     }
 
     /**
-     * Add a paramter to the map
+     * Add a parameter to the map
      *
      * @param key the key
      * @param value the value
      */
     public void addParameter(String key, String value) {
-        if (this.parameter == null) {
-            this.parameter = new HashMap<String, String>();
+        if (this.parameters == null) {
+            this.parameters = new HashMap<>();
         }
-        this.parameter.put(key, value);
+        this.parameters.put(key, value);
     }
 
     /**

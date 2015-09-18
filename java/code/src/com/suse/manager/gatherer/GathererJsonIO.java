@@ -83,7 +83,7 @@ public class GathererJsonIO {
         public void write(JsonWriter writer, GathererModule value) throws IOException {
             writer.beginObject();
             writer.name("module").value(value.getName());
-            for (Map.Entry<String, String> e : value.getParameter().entrySet()) {
+            for (Map.Entry<String, String> e : value.getParameters().entrySet()) {
                 writer.name(e.getKey()).value(e.getValue());
             }
             writer.endObject();
