@@ -33,7 +33,7 @@ import java.util.Map;
 public class GathererCommand {
 
     private static final String GATHERER_CMD = "/usr/bin/gatherer";
-
+    private static final String LOG_DESTINATION = "/var/log/rhn/gatherer.log";
     /**
      * Logger for this class
      */
@@ -48,6 +48,8 @@ public class GathererCommand {
         List<String> args = new LinkedList<>();
         args.add(GATHERER_CMD);
         args.add("--list-modules");
+        args.add("--logfile");
+        args.add(LOG_DESTINATION);
 
         int exitcode = e.execute(args.toArray(new String[0]));
         if (exitcode != 0) {
