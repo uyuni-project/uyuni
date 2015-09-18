@@ -9,7 +9,7 @@ Feature: Explore the Minions page
   Background:
     Given I am authorized as "admin" with password "admin"
 
-  Scenario: Minion is available in the Overview dashbord
+  Scenario: Minion is available in the Overview dashboard
     Given this client hostname
     Then I should see a "Manage Pending Minions (1)" link
     Then I follow "Manage Pending Minions (1)"
