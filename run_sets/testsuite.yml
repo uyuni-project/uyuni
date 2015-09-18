@@ -6,7 +6,6 @@
 - features/running.feature
 - features/login.feature
 - features/mainpage.feature
-- features/minion_overview.feature
 - features/system_packages.feature
 - features/channels_add.feature
 - features/push_package.feature
