@@ -19,11 +19,9 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * VirtualHostManagerFactory Test
@@ -38,10 +36,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         factory = new VirtualHostManagerFactory() {
             @Override
-            Set<String> getAvailableGathererModules() {
-                return new HashSet<String>() {{
-                        add(SUSE_CLOUD);
-                }};
+            void validateGathererModule(String moduleName, Map<String, String> parameters) {
+                // no op
             }
         };
     }
@@ -96,8 +92,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with null label.
+     * @throws Exception if anything goes wrong
      */
-    public void testCreateAndGetVHMNullLabel() {
+    public void testCreateAndGetVHMNullLabel() throws Exception {
         try {
             factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD, null);
         }
@@ -109,8 +106,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests creating and retrieving a VirtualHostManager with null organization.
+     * @throws Exception if anything goes wrong
      */
-    public void testCreateAndGetVHMNullOrg() {
+    public void testCreateAndGetVHMNullOrg() throws Exception {
         try {
             factory.createVirtualHostManager("mylabel", null, SUSE_CLOUD, null);
         }
@@ -135,8 +133,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests deleting an existing Virtual Host Manager.
+     * @throws Exception if anything goes wrong
      */
-    public void testDeleteVirtualHostManager() {
+    public void testDeleteVirtualHostManager() throws Exception {
         Map<String, String> config = new HashMap<>();
         config.put("testkey", "43");
         String myLabel = "myLabel";
@@ -157,14 +156,16 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests throwing the exception when creating Virtual Host Manager with non-existing
-     * gatherer module
+     * Tests throwing the IllegalArgumentException creating Virtual Host Manager  
+     * with an invalid gatherer module
+     * @throws Exception if anything goes wrong
      */
     public void testCreateVHMInvalidGathererModule() {
         VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
             @Override
-            Set<String> getAvailableGathererModules() {
-                return Collections.emptySet();
+            void validateGathererModule(String moduleName, Map<String, String> parameters)
+                    throws InvalidGathererModuleException{
+                throw new InvalidGathererModuleException("Module 'foobar' not available");
             }
         };
 
@@ -172,8 +173,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
             customFactory
                     .createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD, null);
         }
-        catch (IllegalArgumentException e) {
-            return; // we've caught exception invalid gatherer module
+        catch (InvalidGathererModuleException e) {
+            return; // exception must be thrown
         }
         fail("IllegalArgumentException should have been thrown.");
     }
