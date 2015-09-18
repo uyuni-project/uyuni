@@ -31,7 +31,7 @@ import javax.websocket.CloseReason;
 public class SaltReactor implements EventListener {
 
     // Logger for this class
-    private static final Logger logger = Logger.getLogger(SaltReactor.class);
+    private static final Logger LOG = Logger.getLogger(SaltReactor.class);
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
@@ -51,7 +51,7 @@ public class SaltReactor implements EventListener {
                 RegisterMinionEvent.class);
 
         // Sync minions to systems in the database
-        logger.debug("Syncing minions to the database");
+        LOG.debug("Syncing minions to the database");
         SALT_SERVICE.getKeys().getMinions().forEach(this::triggerMinionRegistration);
 
         // Initialize the event stream
@@ -74,8 +74,8 @@ public class SaltReactor implements EventListener {
      */
     @Override
     public void notify(Event event) {
-        if (logger.isTraceEnabled()) {
-            logger.trace("Event: " + event.getTag() + " -> " + event.getData());
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
 
         // Trigger minion registration on "salt/minion/*/start" events
@@ -89,12 +89,12 @@ public class SaltReactor implements EventListener {
      */
     @Override
     public void eventStreamClosed(CloseReason closeReason) {
-        logger.warn("Event stream closed: " + closeReason.getReasonPhrase() +
+        LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
                 " [" + closeReason.getCloseCode() + "]");
 
         // Try to reconnect
         if (!isStopped) {
-            logger.warn("Reconnecting to event stream...");
+            LOG.warn("Reconnecting to event stream...");
             eventStream = SALT_SERVICE.getEventStream();
             eventStream.addEventListener(this);
         }
@@ -106,8 +106,8 @@ public class SaltReactor implements EventListener {
      * @param minionId the minion id of the minion to be registered
      */
     private void triggerMinionRegistration(String minionId) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Trigger registration for minion: " + minionId);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Trigger registration for minion: " + minionId);
         }
         MessageQueue.publish(new RegisterMinionEvent(minionId));
     }
