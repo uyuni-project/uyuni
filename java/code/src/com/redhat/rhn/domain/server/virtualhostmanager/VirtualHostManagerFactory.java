@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.suse.manager.gatherer.GathererCache;
+import com.suse.manager.model.gatherer.GathererModule;
 import org.apache.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.criterion.Restrictions;
@@ -42,7 +43,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Default constructor.
-     * (package local for testing reasons)
+     * (package protected for testing reasons, todo needs to be discussed
+     * _again_ as there was no conclusion)
      */
     VirtualHostManagerFactory() {
         super();
@@ -116,22 +118,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param org - the organization
      * @param moduleName - the module name
      * @param parameters - the parameters
+     * @throws InvalidGathererModuleException - if given module name is not a valid gatherer
+     * module or if the parameters don't contain required gatherer module configuration
      * @return new VirtualHostManager instance
      */
     public VirtualHostManager createVirtualHostManager(
             String label,
             Org org,
             String moduleName,
-            Map<String, String> parameters) {
+            Map<String, String> parameters) throws InvalidGathererModuleException {
         getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
+        validateGathererModule(moduleName, parameters);
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);
         virtualHostManager.setOrg(org);
-
-        if (!getAvailableGathererModules().contains(moduleName)) {
-            throw new IllegalArgumentException("Module '" + moduleName + "' not available");
-        }
         virtualHostManager.setGathererModule(moduleName);
         virtualHostManager.setCredentials(createCredentialsFromParams(parameters));
         virtualHostManager.setConfigs(
@@ -143,12 +144,25 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
-     * Get list of avaliable gatherer modules
-     * (package protected for testing reasons)
-     * @return list of available gatherer modules
+     * Validate gatherer module configuration. Check for:
+     *  - existence of given gatherer module
+     *  - existence of required parameters for given gatherer module
+     * @param moduleName - gatherer module name
+     * @param parameters - gatherer parameters
+     * @throws InvalidGathererModuleException - if given module name is not a valid gatherer
+     * module or if the parameters don't contain required gatherer module configuration
      */
-    Set<String> getAvailableGathererModules() {
-        return GathererCache.INSTANCE.listAvailableModules();
+    void validateGathererModule(String moduleName, Map<String, String> parameters)
+            throws InvalidGathererModuleException {
+        if (!GathererCache.INSTANCE.listAvailableModules().contains(moduleName)) {
+            throw new InvalidGathererModuleException("Module '" + moduleName + "' not available");
+        }
+
+        GathererModule details = GathererCache.INSTANCE.getDetails(moduleName);
+        if (details.getParameters() != null
+                && !parameters.keySet().containsAll(details.getParameters().keySet())) {
+            throw new InvalidGathererModuleException("Invalid gatherer module config.");
+        }
     }
 
     /**
