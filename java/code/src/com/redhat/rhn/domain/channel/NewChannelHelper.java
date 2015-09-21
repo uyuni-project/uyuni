@@ -18,6 +18,8 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import org.apache.commons.lang.StringUtils;
@@ -73,6 +75,23 @@ public class NewChannelHelper {
             throw new InvalidChannelLabelException(label,
                     InvalidChannelLabelException.Reason.REGEX_FAILS,
                     "edit.channel.invalidchannellabel.supportedregex", "");
+        }
+
+        try {
+            if (ContentSyncManager.isChannelNameReserved(name)) {
+                throw new InvalidChannelNameException(name,
+                        InvalidChannelNameException.Reason.NAME_RESERVED,
+                        "edit.channel.invalidchannelname.namereserved", name);
+            }
+
+            if (ContentSyncManager.isChannelLabelReserved(label)) {
+                throw new InvalidChannelLabelException(label,
+                        InvalidChannelLabelException.Reason.LABEL_RESERVED,
+                        "edit.channel.invalidchannellabel.labelreserved", label);
+            }
+        }
+        catch (ContentSyncException e) {
+            throw new RuntimeException(e.getMessage());
         }
 
         if (summary == null || StringUtils.isEmpty(summary)) {
@@ -163,15 +182,9 @@ public class NewChannelHelper {
             return false;
         }
 
-        Pattern pattern = Pattern.compile("^(rhn|red\\s*hat).*", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[a-zA-Z][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$");
         Matcher match = pattern.matcher(name);
-        if (match.matches()) {
-            return false;
-        }
-        pattern = Pattern.compile("^[a-z][\\w\\d\\s\\-\\.\\'\\(\\)\\/\\_]*$",
-                Pattern.CASE_INSENSITIVE);
-        match = pattern.matcher(name);
-        if (!match.matches()) {
+        if (!match.find()) {
             return false;
         }
         return true;
