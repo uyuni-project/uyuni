@@ -185,11 +185,12 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         Set<VirtualHostManagerConfig> configs = new HashSet<>();
 
         for (Map.Entry<String, String> configEntry : parameters.entrySet()) {
-            if (configEntry.equals(CONFIG_USER) || configEntry.equals(CONFIG_PASS)) {
+            String key = configEntry.getKey();
+            if (key.equals(CONFIG_USER) || key.equals(CONFIG_PASS)) {
                 continue;
             }
             configs.add(createVirtualHostManagerConfig(virtualHostManager,
-                    configEntry.getKey(),
+                    key,
                     configEntry.getValue()));
         }
 
