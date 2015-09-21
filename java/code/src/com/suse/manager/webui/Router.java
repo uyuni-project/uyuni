@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.webui.controllers.MinionsController;
-import com.suse.manager.webui.utils.JadeTemplateEngine;
 import com.suse.manager.webui.utils.RouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
@@ -28,6 +27,7 @@ import spark.Session;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.servlet.SparkApplication;
+import spark.template.jade.JadeTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +63,7 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l10n", LocalizationService.getInstance());
-        JadeConfiguration config = jade.getConfiguration();
+        JadeConfiguration config = jade.configuration();
         config.setSharedVariables(sharedVariables);
 
         // Setup routes
