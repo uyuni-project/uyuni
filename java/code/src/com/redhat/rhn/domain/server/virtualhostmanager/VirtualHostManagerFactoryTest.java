@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 
 import java.util.HashMap;
@@ -122,13 +121,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * Tests retrieving non-existing Virtual Host Manager.
      */
     public void testCreateAndGetNonExistentVHM() {
-        try {
-            factory.lookupByLabel("idontexist");
-        }
-        catch (ObjectNotFoundException e) {
-            return; // we've caught exception about non existing object
-        }
-        fail("ObjectNotFoundException should have been thrown.");
+        assertNull(factory.lookupByLabel("idontexist"));
     }
 
     /**
@@ -145,14 +138,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(factory.lookupByLabel(myLabel));
 
         factory.delete(vhm);
-
-        try {
-            factory.lookupByLabel(myLabel);
-        }
-        catch (ObjectNotFoundException e) {
-            return; // we've caught exception about non existing object
-        }
-        fail("ObjectNotFoundException should have been thrown.");
+        assertNull(factory.lookupByLabel(myLabel));
     }
 
     /**

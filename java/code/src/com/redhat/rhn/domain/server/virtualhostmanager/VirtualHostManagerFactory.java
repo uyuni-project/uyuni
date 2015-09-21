@@ -75,20 +75,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     /**
      * Looks up VirtualHostManager by label
      * @param label the label
-     * @return VirtualHostManager instance with given label
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        VirtualHostManager result = (VirtualHostManager) getSession()
+        return (VirtualHostManager) getSession()
                 .createCriteria(VirtualHostManager.class)
                 .add(Restrictions.eq("label", label))
                 .uniqueResult();
-
-        if (result == null) {
-            throw new ObjectNotFoundException(VirtualHostManager.class,
-                    "Virtual Host Manager with label '" + label + "' not found.");
-        }
-
-        return result;
     }
 
     /**
