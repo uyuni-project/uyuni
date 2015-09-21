@@ -605,7 +605,7 @@ def get_package_id(self, name):
     self.generate_package_cache()
 
     try:
-        return set(self.all_packages[name])
+        return self.all_packages[name]
     except KeyError:
         return
 
