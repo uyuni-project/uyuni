@@ -265,7 +265,7 @@
   </target>
 
   <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
-    <taskdef resource="checkstyletask.properties" classpathref="libjars" />
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpathref="libjars" />
     <checkstyle config="buildconf/checkstyle.xml">
       <classpath>
         <path location="${build.dir}/classes" />
@@ -276,7 +276,7 @@
         <exclude name="**/test/*.java" />
         <exclude name="**/playpen/*.java" />
       </fileset>
-      <property key="checkstyle.cache.file" file="build/${checkstyle.cache.src}" />
+      <property key="checkstyle.cache.file" file="${checkstyle.cache.src}" />
       <property key="checkstyle.header.file" file="buildconf/LICENSE.txt" />
       <property key="javadoc.method.scope" value="public" />
       <property key="javadoc.var.scope" value="package" />
