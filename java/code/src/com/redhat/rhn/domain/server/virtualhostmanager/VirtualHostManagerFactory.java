@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
 import org.apache.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.HashSet;
@@ -38,7 +37,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     private static VirtualHostManagerFactory instance;
     private static Logger log;
 
-    private static final String CONFIG_USER = "user";
+    /**
+     * Name of parameter specifying username in Virtual Host Manager Config
+     */
+    public static final String CONFIG_USER = "user";
     private static final String CONFIG_PASS = "pass";
 
     /**
