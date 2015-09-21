@@ -175,6 +175,7 @@ def getDefaultOptions():
             'no-ssl': 0,
             'no-gpg': 0,
             'no-up2date': 0,
+            'up2date': 0,
             'force': 0,
             'pub-tree': DEFAULT_APACHE_PUB_DIRECTORY,
             'verbose': 0,
@@ -244,7 +245,10 @@ def getOptionsTable():
                help='(not recommended) boolean; turn off GPG checking by the clients (currently %s)' % getSetString(defopts['no-gpg'])),
         Option('--no-up2date',
                action='store_true',
-               help='(not recommended) boolean; will not run the up2date section (full update usually) once bootstrapped (currently %s)' % getSetString(defopts['no-up2date'])),
+               help='boolean; will not run the up2date section (full update usually) once bootstrapped (currently %s)' % getSetString(defopts['no-up2date'])),
+        Option('--up2date',
+               action='store_true',
+               help='boolean; will run the up2date section (full update usually) once bootstrapped (currently %s)' % getSetString(defopts['up2date'])),
         Option('--pub-tree',
                action='store',
                type='string', default=defopts['pub-tree'],
@@ -306,6 +310,7 @@ Note: for rhn-bootstrap to work, certain files are expected to be
             'no-ssl': not not options.no_ssl,
             'no-gpg': not not options.no_gpg,
             'no-up2date': not not options.no_up2date,
+            'up2date': not not options.up2date,
             'pub-tree': options.pub_tree,
             'force': options.force,
             'verbose': options.verbose or 0,
@@ -378,7 +383,7 @@ ERROR: the value of --overrides and --script cannot be the same!
 
     # forcing numeric values
     for opt in ['allow_config_actions', 'allow_remote_commands', 'no_ssl',
-        'no_gpg', 'no_up2date', 'verbose']:
+        'no_gpg', 'no_up2date', 'up2date', 'verbose']:
         # operator.truth should return (0, 1) or (False, True) depending on
         # the version of python; passing any of those values through int()
         # will return an int
@@ -576,7 +581,7 @@ def generateBootstrapScript(options):
                   options.gpg_key, options.overrides, options.hostname,
                   orgCACert, isRpmYN, 1 - options.no_ssl, 1 - options.no_gpg,
                   options.allow_config_actions, options.allow_remote_commands,
-                  1 - options.no_up2date, pubname, DEFAULT_APACHE_PUB_DIRECTORY)
+                  options.up2date, pubname, DEFAULT_APACHE_PUB_DIRECTORY)
 
     writeYN = 1
 
