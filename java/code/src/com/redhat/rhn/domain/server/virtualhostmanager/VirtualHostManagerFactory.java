@@ -45,10 +45,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Default constructor.
-     * (package protected for testing reasons, todo needs to be discussed
-     * _again_ as there was no conclusion)
+     * (protected for testing reasons so that we can override it in tests)
      */
-    VirtualHostManagerFactory() {
+    protected VirtualHostManagerFactory() {
         super();
     }
 
@@ -148,7 +147,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @throws InvalidGathererModuleException - if given module name is not a valid gatherer
      * module or if the parameters don't contain required gatherer module configuration
      */
-    void validateGathererModule(String moduleName, Map<String, String> parameters)
+    protected void validateGathererModule(String moduleName, Map<String, String> parameters)
             throws InvalidGathererModuleException {
         if (!GathererCache.INSTANCE.listAvailableModules().contains(moduleName)) {
             throw new InvalidGathererModuleException("Module '" + moduleName + "' not available");

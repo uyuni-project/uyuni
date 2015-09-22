@@ -13,8 +13,11 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.server.virtualhostmanager;
+package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
+import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererModuleException;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.hibernate.PropertyValueException;
 
@@ -35,7 +38,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         factory = new VirtualHostManagerFactory() {
             @Override
-            void validateGathererModule(String moduleName, Map<String, String> parameters) {
+            protected void validateGathererModule(String moduleName,
+                    Map<String, String> parameters) {
                 // no op
             }
         };
@@ -149,8 +153,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     public void testCreateVHMInvalidGathererModule() {
         VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
             @Override
-            void validateGathererModule(String moduleName, Map<String, String> parameters)
-                    throws InvalidGathererModuleException{
+            protected void validateGathererModule(String moduleName,
+                    Map<String, String> parameters)
+                    throws InvalidGathererModuleException {
                 throw new InvalidGathererModuleException("Module 'foobar' not available");
             }
         };
