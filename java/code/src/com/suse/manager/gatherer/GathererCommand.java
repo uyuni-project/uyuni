@@ -15,6 +15,7 @@
 
 package com.suse.manager.gatherer;
 
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
@@ -22,6 +23,9 @@ import com.suse.manager.model.gatherer.GathererModule;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,5 +61,38 @@ public class GathererCommand {
             return null;
         }
         return new GathererJsonIO().readGathererModules(e.getLastCommandOutput());
+    }
+
+    public Map<String, Map<String, JsonHost>> run(List<VirtualHostManager> vhms) {
+
+        List<String> args = new LinkedList<>();
+        args.add(GATHERER_CMD);
+        args.add("--infile");
+        args.add("-");
+        args.add("--logfile");
+        args.add(LOG_DESTINATION);
+
+        Map<String, Map<String, JsonHost>> hosts = null;
+        Runtime r = Runtime.getRuntime();
+        try {
+            Process p = r.exec(args.toArray(new String[0]));
+            InputStreamReader irr = new InputStreamReader(p.getInputStream());
+            hosts = new GathererJsonIO().readHosts(irr);
+            PrintWriter stdin = new PrintWriter(p.getOutputStream());
+            stdin.print(new GathererJsonIO().toJson(vhms));
+
+            int exitcode = p.waitFor();
+            if (exitcode != 0) {
+                logger.error("Error while calling the gatherer");
+                return null;
+            }
+        }
+        catch (IOException ioe) {
+            logger.error("execute(String[])", ioe);
+        }
+        catch (InterruptedException e) {
+            logger.error("execute(String[])", e);
+        }
+        return hosts;
     }
 }
