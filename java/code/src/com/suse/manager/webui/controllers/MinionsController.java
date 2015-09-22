@@ -15,6 +15,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import spark.Response;
 public class MinionsController {
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
     private MinionsController() { }
 
