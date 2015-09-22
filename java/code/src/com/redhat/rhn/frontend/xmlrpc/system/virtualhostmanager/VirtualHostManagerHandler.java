@@ -148,9 +148,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *
      * @xmlrpc.doc List all available modules of the gatherer
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
-     * @xmlrpc.returntype #array()
-     *                       string
-     *                    #array_end()
+     * @xmlrpc.returntype #array_single("string", "moduleName")
      */
     public Collection<String> listAvailableGathererModules(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
