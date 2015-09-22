@@ -60,7 +60,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     /**
      * {@inheritDoc}
      */
-    protected void doExecute(EventMessage msg) {
+    public void doExecute(EventMessage msg) {
         RegisterMinionEvent event = (RegisterMinionEvent) msg;
         String minionId = event.getMinionId();
 
