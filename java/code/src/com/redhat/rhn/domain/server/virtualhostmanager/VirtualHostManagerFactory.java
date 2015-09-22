@@ -113,7 +113,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param org - the organization
      * @param moduleName - the module name
      * @param parameters - the parameters
-     * @throws InvalidGathererModuleException - if given module name is not a valid gatherer
+     * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
      * module or if the parameters don't contain required gatherer module configuration
      * @return new VirtualHostManager instance
      */
@@ -121,9 +121,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             String label,
             Org org,
             String moduleName,
-            Map<String, String> parameters) throws InvalidGathererModuleException {
+            Map<String, String> parameters) throws InvalidGathererConfigException {
         getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
-        validateGathererModule(moduleName, parameters);
+        validateGathererConfiguration(moduleName, parameters);
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);
@@ -144,19 +144,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      *  - existence of required parameters for given gatherer module
      * @param moduleName - gatherer module name
      * @param parameters - gatherer parameters
-     * @throws InvalidGathererModuleException - if given module name is not a valid gatherer
+     * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
      * module or if the parameters don't contain required gatherer module configuration
      */
-    protected void validateGathererModule(String moduleName, Map<String, String> parameters)
-            throws InvalidGathererModuleException {
+    protected void validateGathererConfiguration(String moduleName,
+            Map<String, String> parameters)
+            throws InvalidGathererConfigException {
         if (!GathererCache.INSTANCE.listAvailableModules().contains(moduleName)) {
-            throw new InvalidGathererModuleException("Module '" + moduleName + "' not available");
+            throw new InvalidGathererConfigException("Module '" + moduleName +
+                    "' not available");
         }
 
         GathererModule details = GathererCache.INSTANCE.getDetails(moduleName);
         if (details.getParameters() != null
                 && !parameters.keySet().containsAll(details.getParameters().keySet())) {
-            throw new InvalidGathererModuleException("Invalid gatherer module config.");
+            throw new InvalidGathererConfigException("Invalid gatherer module config.");
         }
     }
 
