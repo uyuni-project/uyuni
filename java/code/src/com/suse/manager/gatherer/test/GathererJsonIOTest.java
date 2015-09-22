@@ -16,18 +16,29 @@
 package com.suse.manager.gatherer.test;
 
 import com.redhat.rhn.common.util.FileUtils;
+import com.redhat.rhn.domain.credentials.Credentials;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.gatherer.GathererJsonIO;
+import com.suse.manager.gatherer.JsonHost;
 import com.suse.manager.model.gatherer.GathererModule;
 
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
 
 public class GathererJsonIOTest extends TestCase {
     private static final String MODULELIST = "modulelist.json";
+    private static final String GATHEREROUT = "exampleGathererOutput.json";
 
     public void testReadGathererModules() throws Exception {
         String json = FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
@@ -58,5 +69,57 @@ public class GathererJsonIOTest extends TestCase {
                 assertTrue("Unknown Module", false);
             }
         }
+    }
+
+    public void testVHMtoJson() throws Exception {
+        Credentials creds = CredentialsFactory.createVHMCredentials();
+        creds.setUsername("tux");
+        creds.setPassword("penguin");
+
+        Set<VirtualHostManagerConfig> config = new HashSet<>();
+        VirtualHostManagerConfig vhmc = new VirtualHostManagerConfig();
+        vhmc.setParameter("host");
+        vhmc.setValue("vCenter.example.com");
+        config.add(vhmc);
+
+        vhmc = new VirtualHostManagerConfig();
+        vhmc.setParameter("port");
+        vhmc.setValue("443");
+        config.add(vhmc);
+
+        VirtualHostManager vhm = new VirtualHostManager();
+        vhm.setGathererModule("VMware");
+        vhm.setLabel("vCenter");
+        vhm.setId(1L);
+        vhm.setCredentials(creds);
+        vhm.setConfigs(config);
+
+        List<VirtualHostManager> list = new ArrayList<>();
+        list.add(vhm);
+
+        String s = new GathererJsonIO().toJson(list);
+        assertNotNull(s);
+    }
+
+    public void testReadGathererOutput() throws Exception {
+        FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
+        Map<String, Map<String, JsonHost>> hosts = new GathererJsonIO().readHosts(fr);
+
+        assertEquals(3, hosts.keySet().size());
+
+        assertTrue(hosts.containsKey("1"));
+        JsonHost h = hosts.get("1").get("10.162.186.111");
+        assertEquals(8, h.getCores().intValue());
+        assertEquals("x86_64", h.getCpuArch());
+        assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
+        assertEquals("amd", h.getCpuVendor());
+        assertEquals(3.092212727, h.getGhz().doubleValue());
+        assertEquals("10.162.186.111", h.getName());
+        assertEquals("VMware ESXi", h.getOs());
+        assertEquals("5.5.0", h.getOsVersion());
+        assertEquals(65512, h.getRam().intValue());
+        assertEquals(2, h.getSockets().intValue());
+        assertEquals(1, h.getThreads().intValue());
+        assertEquals("564d6d90-459c-2256-8f39-3cb2bd24b7b0", h.getVms().get("vCenter"));
     }
 }
