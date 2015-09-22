@@ -64,7 +64,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param parameters additional parameters (credentials, paremeters for the gatherer)
      * @throws InvalidGathererModuleFaultException when the gatherer module
      * doesn't exist or if some required gatherer parameters are missing
-     * @return The ID of the created Virtual Host Manager
+     * @return The label of the created Virtual Host Manager
      *
      * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
@@ -72,9 +72,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
      * @xmlrpc.param #param_desc("parameters", "parameters"
      *         "additional parameters (credentials, paremeters for the gatherer)")
-     * @xmlrpc.returntype int  - The ID of the created Virtual Host Manager
+     * @xmlrpc.returntype string - The label of the created Virtual Host Manager
      */
-    public int create(User loggedInUser, String label, String moduleName,
+    public String create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
         ensureSatAdmin(loggedInUser);
         if (StringUtil.nullOrValue(label) == null) {
@@ -91,7 +91,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
             return VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
                     loggedInUser.getOrg(),
                     moduleName,
-                    parameters).getId().intValue();
+                    parameters).getLabel();
         } catch (InvalidGathererModuleException e) {
             throw new InvalidGathererModuleFaultException(e.getMessage());
         }
