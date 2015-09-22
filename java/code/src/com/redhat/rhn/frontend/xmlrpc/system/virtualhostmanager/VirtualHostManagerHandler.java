@@ -50,7 +50,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      *     #array_end()
      */
     public List<VirtualHostManager> listVirtualHostManagers(User loggedInUser) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
         return VirtualHostManagerFactory.getInstance()
                 .listVirtualHostManagers(loggedInUser.getOrg());
     }
@@ -76,7 +76,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      */
     public String create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
         if (StringUtil.nullOrValue(label) == null) {
             throw new InvalidParameterException("Virtual Host Manager label is missing.");
         }
@@ -111,7 +111,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.returntype #return_int_success()
      */
     public int delete(User loggedInUser, String label) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
         VirtualHostManager manager =
                 VirtualHostManagerFactory.getInstance().lookupByLabel(label);
         if (manager == null) {
@@ -135,7 +135,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.returntype $VirtualHostManagerSerializer
      */
     public VirtualHostManager getDetail(User loggedInUser, String label) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
         return VirtualHostManagerFactory.getInstance().lookupByLabel(label);
     }
 
@@ -172,7 +172,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.returntype map
      */
     public Map<String, String> getGathererModuleDetail(User loggedInUser, String moduleName) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
 
         GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
         if (gm == null) {
