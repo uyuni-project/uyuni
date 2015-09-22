@@ -30,7 +30,7 @@ public interface SaltService {
      *
      * @return the keys with their respective status as returned from salt
      */
-    public Key.Names getKeys();
+    Key.Names getKeys();
 
     /**
      * Get the grains for a given minion.
@@ -38,7 +38,7 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return map containing the grains
      */
-    public Map<String, Object> getGrains(String minionId);
+    Map<String, Object> getGrains(String minionId);
 
     /**
      * Get the machine id for a given minion.
@@ -46,14 +46,14 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return the machine id as a string
      */
-    public String getMachineId(String minionId);
+    String getMachineId(String minionId);
 
     /**
      * Query all present minions according to salt's presence detection.
      *
      * @return the list of minion keys that are present
      */
-    public List<String> present();
+    List<String> present();
 
     /**
      * Get all installed packages from a given minion.
@@ -61,33 +61,33 @@ public interface SaltService {
      * @param minionId id of the target minion
      * @return a map from package names to list of version strings
      */
-    public Map<String, List<String>> getPackages(String minionId);
+    Map<String, List<String>> getPackages(String minionId);
 
     /**
      * Accept a given minion's key.
      *
      * @param minionId id of the minion
      */
-    public void acceptKey(String minionId);
+    void acceptKey(String minionId);
 
     /**
      * Delete a given minion's key.
      *
      * @param minionId id of the minion
      */
-    public void deleteKey(String minionId);
+    void deleteKey(String minionId);
 
     /**
      * Reject a given minion's key.
      *
      * @param minionId id of the minion
      */
-    public void rejectKey(String minionId);
+    void rejectKey(String minionId);
 
     /**
      * Return the stream of events happening in salt.
      *
      * @return the event stream
      */
-    public EventStream getEventStream();
+    EventStream getEventStream();
 }
