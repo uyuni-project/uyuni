@@ -20,13 +20,13 @@ import com.redhat.rhn.FaultException;
 /**
  * Invalid gatherer module fault
  */
-public class InvalidGathererModuleFaultException extends FaultException {
+public class InvalidGathererConfigFaultException extends FaultException {
 
     /**
      * Constructor
      * @param message
      */
-    public InvalidGathererModuleFaultException(String message) {
+    public InvalidGathererConfigFaultException(String message) {
         super(3501, "invalidVHMModuleFaultException", "Invalid gatherer module: "
                 + message);
     }

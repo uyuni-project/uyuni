@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererModuleException;
+import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -38,7 +38,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         super.setUp();
         factory = new VirtualHostManagerFactory() {
             @Override
-            protected void validateGathererModule(String moduleName,
+            protected void validateGathererConfiguration(String moduleName,
                     Map<String, String> parameters) {
                 // no op
             }
@@ -150,13 +150,13 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * with an invalid gatherer module
      * @throws Exception if anything goes wrong
      */
-    public void testCreateVHMInvalidGathererModule() {
+    public void testCreateVHMInvalidGathererConfig() {
         VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
             @Override
-            protected void validateGathererModule(String moduleName,
+            protected void validateGathererConfiguration(String moduleName,
                     Map<String, String> parameters)
-                    throws InvalidGathererModuleException {
-                throw new InvalidGathererModuleException("Module 'foobar' not available");
+                    throws InvalidGathererConfigException {
+                throw new InvalidGathererConfigException("Module 'foobar' not available");
             }
         };
 
@@ -164,7 +164,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
             customFactory
                     .createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD, null);
         }
-        catch (InvalidGathererModuleException e) {
+        catch (InvalidGathererConfigException e) {
             return; // exception must be thrown
         }
         fail("IllegalArgumentException should have been thrown.");
