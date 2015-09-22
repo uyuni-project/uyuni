@@ -45,7 +45,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.doc Lists Virtual Host Managers for a user
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype
-     *
+     *     #array()
+     *         $VirtualHostManagerSerializer
+     *     #array_end()
      */
     public List<VirtualHostManager> listVirtualHostManagers(User loggedInUser) {
         ensureSatAdmin(loggedInUser);
