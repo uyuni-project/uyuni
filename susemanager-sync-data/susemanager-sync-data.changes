@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:07:08 CEST 2015 - mc@suse.de
+
+- version 2.1.9-1
+- Add channels for SLE11 Point of Service SP2 (bsc#944220)
+- Add SLE-Toolchain-12 module (bsc#942918, FATE#316684)
+- changed SAP All-in-One names
+
+-------------------------------------------------------------------
 Tue Jul 28 16:13:40 CEST 2015 - mc@suse.de
 
 - version 2.1.8-1
