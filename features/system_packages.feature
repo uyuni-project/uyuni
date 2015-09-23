@@ -13,18 +13,18 @@ Feature: Verify packages of a registered system
   Scenario: This client is a registered system
     When I follow "Systems"
     Then I should see a "System Overview" text
-    Then I should see this client as a registered system
+    Then I should see this client as link
 
   Scenario: Assign Management entitlement to this client
     When I follow "Systems"
-    Then I follow this client as a registered system
+    Then I follow this client link
     Then I follow "Properties"
     And I select "Management" from "baseentitlement"
-    And I press "Update Properties"
+    And I click on "Update Properties"
 
   Scenario: Check installed packages are visible
     When I follow "Systems"
-    Then I follow this client as a registered system
+    Then I follow this client link
     Then I follow "Software"
     Then I follow "List / Remove"
     Then I should see a "aaa_base" text
