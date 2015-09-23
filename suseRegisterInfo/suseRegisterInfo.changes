@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:05:50 CEST 2015 - mc@suse.de
+
+- version 2.1.11-1
+- enable zypp readonly hack for product information retrieval (bsc#940361)
+
+-------------------------------------------------------------------
 Tue Mar 31 14:42:08 CEST 2015 - mc@suse.de
 
 - version 2.1.10-1
