@@ -68,7 +68,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         NewChannelHelper helper = new NewChannelHelper();
         helper.setName("Test Clone of " + original.getName());
         helper.setArch(original.getChannelArch());
-        helper.setLabel("test-clone-of-" + original.getLabel());
+        helper.setLabel("test-clone-of-" + original.getLabel().toLowerCase());
         helper.setUser(admin);
         helper.setSummary(original.getSummary());
         Channel cloned = helper.clone(true, original);
