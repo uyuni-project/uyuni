@@ -27,7 +27,7 @@ Feature: Explore the Minions page
     Given this client hostname
     Then I should see a "Manage Pending Minions (1)" link
     Then I follow "Manage Pending Minions (1)"
-    Then I should see a "Pending Minions" text
+    Then I should see a "Pending" text
 
   Scenario: Visible minion is moved to the Accepted Section
     Given this client hostname
