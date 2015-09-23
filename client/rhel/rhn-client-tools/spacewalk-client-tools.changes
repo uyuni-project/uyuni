@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:09:28 CEST 2015 - mc@suse.de
+
+- version 2.1.16.9-1
+- add info on how to increase verbosity (bsc#944263)
+- Disable dmidecode on s390 and s390x (bsc#936545)
+- '.site' is an official TLD now (bsc#923990);
+- check for multiple entries in /etc/hostname (bsc#929979)
+
+-------------------------------------------------------------------
 Mon Jun 22 15:26:53 CEST 2015 - jrenner@suse.de
 
 - version 2.1.16.8-1
