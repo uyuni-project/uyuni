@@ -1,12 +1,9 @@
 --- # List of features for a full test run
-- features/salt.feature
 - features/init_user_create.feature
-- features/minions.feature
 - features/setup_proxy.feature
 - features/running.feature
 - features/login.feature
 - features/mainpage.feature
-- features/system_packages.feature
 - features/channels_add.feature
 - features/push_package.feature
 - features/create_repository.feature
@@ -67,6 +64,12 @@
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
 - features/setup_wizard.feature
+# Salt related features
+- features/delete_system_profile.feature
+- features/salt.feature
+- features/minions.feature
+- features/system_packages.feature
+# End salt related features
 - features/change_password.feature
 - features/spacewalk-debug.feature
 - features/tomcat_errors.feature
