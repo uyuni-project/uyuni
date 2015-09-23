@@ -23,11 +23,11 @@ Feature: Explore the Minions page
     When I follow "Minions"
     Then I should see a this client as a minion in the Pending section
 
-  Scenario: Minion is available in the Overview dashbord
+  Scenario: Minion is available in the Overview dashboard
     Given this client hostname
     Then I should see a "Manage Pending Minions (1)" link
     Then I follow "Manage Pending Minions (1)"
-    Then I should see a "Pending Minions" text
+    Then I should see a "Pending" text
 
   Scenario: Visible minion is moved to the Accepted Section
     Given this client hostname
