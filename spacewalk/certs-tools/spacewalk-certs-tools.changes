@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Sep 23 14:58:02 CEST 2015 - mc@suse.de
+
+- version 2.1.6.7-1
+- FULLY_UPDATE_THIS_BOX defaults to 0 now; add option '--up2date'
+  to mgr-bootstrap to fully update the system after registration
+- Added sudo support to ssh-push
+
+-------------------------------------------------------------------
 Mon Jun 22 15:50:57 CEST 2015 - jrenner@suse.de
 
 - version 2.1.6.6-1
