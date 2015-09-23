@@ -63,6 +63,7 @@
         rhnChannelErrata.errata_id,
         rhnErrata.advisory as errata_advisory,
         rhnErrataPackage.package_id,
+        rhnPackageName.name as package_name,
         (SELECT DISTINCT 1
             FROM rhnServerPackage sp, rhnPackageEVR sevr, rhnPackageUpgradeArchCompat puac
             WHERE rhnServerPackage.server_id = sp.server_id
@@ -89,6 +90,7 @@
           rhnChannelPackage,
           rhnPackageEVR,
           rhnPackage,
+          rhnPackageName,
           rhnServer,
           rhnServerPackage,
           rhnPackageUpgradeArchCompat,
@@ -108,6 +110,7 @@
           AND rhnUserServerPerms.server_id = rhnServerPackage.server_id
           AND rhnServer.id = rhnServerPackage.server_id
           AND rhnPackage.evr_id = rhnPackageEVR.id
+          AND rhnPackage.name_id = rhnPackageName.id
           AND rhnServerPackage.package_arch_id = rhnPackageUpgradeArchCompat.package_arch_id
           AND rhnPackageUpgradeArchCompat.package_upgrade_arch_id = rhnPackage.package_arch_id
           AND rhnChannelErrata.errata_id = rhnErrataCVE.errata_id
@@ -122,6 +125,7 @@
         CAST(NULL AS INTEGER) AS errata_id,
         CAST(NULL AS CHAR) AS errata_advisory,
         CAST(NULL AS INTEGER) AS package_id,
+        CAST(NULL AS CHAR) AS package_name,
         CAST(NULL AS INTEGER) AS package_installed,
         CAST(NULL AS INTEGER) AS channel_id,
         CAST(NULL AS CHAR) AS channel_name,
