@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:02:44 CEST 2015 - mc@suse.de
+
+- version 5.11.33.10-1
+- osad: re-send subscription stanzas after a while (bsc#933738)
+
+-------------------------------------------------------------------
 Mon Jun 22 16:04:29 CEST 2015 - jrenner@suse.de
 
 - version 5.11.33.9-1
