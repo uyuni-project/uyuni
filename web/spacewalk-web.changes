@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep 23 14:56:25 CEST 2015 - mc@suse.de
+
+- version 2.1.60.13-1
+- remove use of updateUpgradePaths() from external
+- Added sudo user config option and added comments
+
+-------------------------------------------------------------------
 Tue Feb 03 11:45:13 CET 2015 - mc@suse.de
 
 - version 2.1.60.12-1
