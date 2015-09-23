@@ -26,30 +26,28 @@ public class NewChannelHelperTest extends RhnBaseTestCase {
 
 
     public void testVerifyName() throws Exception {
-       String name = "Redhat-test-channel";
-       assertFalse(NewChannelHelper.verifyName(name));
-       name = "rhn-test";
-       assertFalse(NewChannelHelper.verifyName(name));
-       name = "test";
+       String name = "test";
        assertFalse(NewChannelHelper.verifyName(name));
        name = "test-{channel}";
        assertFalse(NewChannelHelper.verifyName(name));
        name = "test-channel";
        assertTrue(NewChannelHelper.verifyName(name));
+       name = "Test-channel";
+       assertTrue(NewChannelHelper.verifyName(name));
+       name = "test-Channel";
+       assertTrue(NewChannelHelper.verifyName(name));
 
     }
 
     public void testVerifyLabel() throws Exception {
-        String label = "test-channel";
-        assertTrue(NewChannelHelper.verifyLabel(label));
-        label = "redhat-channel";
-        assertFalse(NewChannelHelper.verifyLabel(label));
-        label = "rhn-channel";
-        assertFalse(NewChannelHelper.verifyLabel(label));
-        label = "test";
+        String label = "test";
         assertFalse(NewChannelHelper.verifyLabel(label));
         label = "test-{channel}";
         assertFalse(NewChannelHelper.verifyLabel(label));
+        label = "Test-channel";
+        assertFalse(NewChannelHelper.verifyLabel(label));
+        label = "2015-test-channel";
+        assertTrue(NewChannelHelper.verifyLabel(label));
     }
 
     public void testVerifyGpgFingerprint() throws Exception {
