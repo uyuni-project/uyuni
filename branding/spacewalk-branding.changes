@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:08:32 CEST 2015 - mc@suse.de
+
+- version 2.1.33.13-1
+- display a warning if the update stack is not up-to-date
+- remove Upgrade Path from jsp page and StringResources
+
+-------------------------------------------------------------------
 Mon Jun 22 15:35:09 CEST 2015 - jrenner@suse.de
 
 - version 2.1.33.12-1
