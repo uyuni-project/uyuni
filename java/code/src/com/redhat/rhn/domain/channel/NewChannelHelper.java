@@ -201,14 +201,8 @@ public class NewChannelHelper {
             return false;
         }
 
-        Pattern pattern = Pattern.compile("^(rhn|red\\s*hat).*", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[a-z\\d][a-z\\d\\-\\.\\_]*$");
         Matcher match = pattern.matcher(label);
-        if (match.matches()) {
-            return false;
-        }
-
-        pattern = Pattern.compile("^[a-z\\d][a-z\\d\\-\\.\\_]*$", Pattern.CASE_INSENSITIVE);
-        match = pattern.matcher(label);
         if (!match.matches()) {
             return false;
         }
