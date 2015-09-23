@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:03:42 CEST 2015 - mc@suse.de
+
+- version 2.1.21-1
+- added python-gobject2, libudev1 and udev to SLE12 bootstrap repo
+  (bsc#945275)
+- remove use of updateUpgradePaths() from external
+- Do some more checks for validity of email address during setup
+  (bsc#933304)
+- Refer to mgr-sync instead of mgr-ncc-sync after successful
+  setup (bsc#940811)
+- Timeout when user does not enter credentials for 60 seconds
+  for mgr-sync
+
+-------------------------------------------------------------------
 Tue Jul 28 16:12:42 CEST 2015 - mc@suse.de
 
 - version 2.1.20-1
