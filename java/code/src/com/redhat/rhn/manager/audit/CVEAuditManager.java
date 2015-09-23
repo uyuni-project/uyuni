@@ -515,6 +515,8 @@ public class CVEAuditManager {
         // Hold the system and errata we are currently looking at
         CVEAuditSystem currentSystem = null;
         Long currentErrata = null;
+        // Holds the list of patched packages for the CVE we are looking at
+        Set<String> patchedPackages = new HashSet<String>();
 
         // Flags
         boolean currentChannelAssigned = false;
@@ -536,6 +538,9 @@ public class CVEAuditManager {
                     setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
                             allChannelsForOneErrataAssigned, hasErrata);
 
+                    // clear up the package list for the next system
+                    patchedPackages.clear();
+
                     // Check if the patch status is contained in the filter
                     if (patchStatuses.contains(currentSystem.getPatchStatus())) {
                         ret.add(currentSystem);
@@ -549,6 +554,10 @@ public class CVEAuditManager {
                 // First assignment
                 currentChannelAssigned = getBooleanValue(result, "channel_assigned");
                 currentPackageInstalled = getBooleanValue(result, "package_installed");
+                if (currentPackageInstalled) {
+                    patchedPackages.add((String) result.get("package_name"));
+                }
+
                 allChannelsForOneErrataAssigned = false;
                 allPackagesForAllErrataInstalled = true;
 
@@ -578,7 +587,12 @@ public class CVEAuditManager {
                 if (errataID.equals(currentErrata)) {
                     // Combine flags with &
                     currentChannelAssigned &= getBooleanValue(result, "channel_assigned");
-                    currentPackageInstalled &= getBooleanValue(result, "package_installed");
+                    // the package can be installed
+                    if (getBooleanValue(result, "package_installed")) {
+                        patchedPackages.add((String) result.get("package_name"));
+                    } else {
+                        currentPackageInstalled &= patchedPackages.contains((String) result.get("package_name"));
+                    }
                 }
                 else {
                     // Finish work on old errata
@@ -588,7 +602,12 @@ public class CVEAuditManager {
                     // Switch to the new errata
                     currentErrata = errataID;
                     currentChannelAssigned = getBooleanValue(result, "channel_assigned");
-                    currentPackageInstalled = getBooleanValue(result, "package_installed");
+
+                    if (getBooleanValue(result, "package_installed")) {
+                        patchedPackages.add((String) result.get("package_name"));
+                    } else {
+                        currentPackageInstalled &= patchedPackages.contains((String) result.get("package_name"));
+                    }
                 }
 
                 // Add errata and channel ID
