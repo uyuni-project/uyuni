@@ -130,6 +130,7 @@ public class GathererJsonIO {
         @Override
         public void write(JsonWriter writer, VirtualHostManager value) throws IOException {
             writer.beginObject();
+            writer.name("id").value(value.getLabel());
             writer.name("module").value(value.getGathererModule());
             if (value.getCredentials() != null) {
                 writer.name("user").value(value.getCredentials().getUsername());
