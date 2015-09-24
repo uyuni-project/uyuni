@@ -99,6 +99,12 @@ public class GathererJsonIOTest extends TestCase {
 
         String s = new GathererJsonIO().toJson(list);
         assertNotNull(s);
+        assertTrue(s.contains("\"host\": \"vCenter.example.com\""));
+        assertTrue(s.contains("\"port\": \"443\""));
+        assertTrue(s.contains("\"user\": \"tux\""));
+        assertTrue(s.contains("\"pass\": \"penguin\""));
+        assertTrue(s.contains("\"id\": \"vCenter\""));
+        assertTrue(s.contains("\"module\": \"VMware\""));
     }
 
     public void testReadGathererOutput() throws Exception {
