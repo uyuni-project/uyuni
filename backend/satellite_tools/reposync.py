@@ -169,9 +169,6 @@ class RepoSync(object):
             try:
                 plugin = self.repo_plugin(data['source_url'], self.channel_label,
                                         insecure, self.quiet, self.interactive)
-                # update the checksum type of channels with org_id NULL
-                self.updateChannelChecksumType(plugin.get_md_checksum_type())
-
                 if data['id'] is not None:
                     keys = rhnSQL.fetchone_dict("""
                         select k1.key as ca_cert, k2.key as client_cert, k3.key as client_key
@@ -186,6 +183,9 @@ class RepoSync(object):
                         """, repo_id=int(data['id']))
                     if keys and keys.has_key('ca_cert'):
                         plugin.set_ssl_options(keys['ca_cert'], keys['client_cert'], keys['client_key'])
+
+                # update the checksum type of channels with org_id NULL
+                self.updateChannelChecksumType(plugin.get_md_checksum_type())
                 self.import_packages(plugin, data['id'], data['source_url'])
                 self.import_groups(plugin, data['source_url'])
                 if not self.no_errata:
