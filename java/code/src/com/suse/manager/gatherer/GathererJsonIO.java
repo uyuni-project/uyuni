@@ -118,9 +118,8 @@ public class GathererJsonIO {
     }
 
     /**
-     * (De)serializer for GathererModule class.
-     * Breaks the incoming arguments into module and parameter list
-     * and fills a new GathererModule instance.
+     * Serializer for VirtualHostManager class.
+     * Convert the Object into the correct JSON representation
      */
     public class VHMAdapter extends TypeAdapter<VirtualHostManager> {
         @Override
