@@ -41,5 +41,13 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'Y', 'Y'
    );
 
+--  saltstack_entitled type ---------------------------------------------------------
+
+insert into rhnServerGroupType (id, label, name, permanent, is_base)
+   values (sequence_nextval('rhn_servergroup_type_seq'),
+      'saltstack_entitled', 'SaltStack Management Entitled Servers',
+      'Y', 'Y'
+   );
+
 commit;
 
