@@ -2153,6 +2153,11 @@ tree will not be usable for autoinstalling.
         </source>
       </trans-unit>
 
+      <!-- Subscription Counting -->
+      <trans-unit id="foreign_entitled">
+        <source>Foreign</source>
+      </trans-unit>
+
       <!-- Salt -->
       <trans-unit id="Minions">
         <source>Minions</source>
