@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 2e3d621cc0c2114a0b5a2ce8829506f4c7c7775b
+-- oracle equivalent source sha1 b5ab1f37d2d265bc6a48fedf68ae067e2609d633
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -161,6 +161,13 @@ begin
                         sgt.id, 1
                 from rhnServerGroupType sgt
                 where sgt.label = 'saltstack_entitled';
+
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        sgt.id, 1
+                from rhnServerGroupType sgt
+                where sgt.label = 'foreign_entitled';
 
         insert into rhnServerGroup
                 ( id, name, description, group_type, org_id )

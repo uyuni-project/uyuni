@@ -165,6 +165,13 @@ begin
                 select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
                         sgt.id, 1
                 from rhnServerGroupType sgt
+                where sgt.label = 'foreign_entitled';
+
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select rhn_server_group_id_seq.nextval, sgt.name, sgt.name,
+                        sgt.id, 1
+                from rhnServerGroupType sgt
                 where sgt.label = 'virtualization_host';
 
 end create_first_org;

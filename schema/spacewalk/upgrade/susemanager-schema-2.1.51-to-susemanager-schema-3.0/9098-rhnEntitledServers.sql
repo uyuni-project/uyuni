@@ -38,7 +38,8 @@ from
 where
     S.id = SGM.server_id
 and SG.id = SGM.server_group_id
-and SGT.label IN ('enterprise_entitled', 'bootstrap_entitled', 'saltstack_entitled')
+and SGT.label IN ('enterprise_entitled', 'bootstrap_entitled',
+                  'saltstack_entitled', 'foreign_entitled')
 and SG.group_type = SGT.id
 and SG.org_id = S.org_id
 ;
