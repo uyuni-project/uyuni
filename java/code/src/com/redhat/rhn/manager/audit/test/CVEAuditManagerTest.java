@@ -961,6 +961,72 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
     }
 
     /**
+     * Test corner case where a system has a CVE covered by a package installed
+     * from a further away channel rank, but the closest one is not installed
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testCoveredByUnassigned() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel ltssChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products (LTSS channel is *not* part of the product!)
+        createTestSUSEProductChannel(baseChannelSP2, productSP2);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+
+        // Create two errata: one in the LTSS channel and one in SP3 updates
+        User user = createTestUser();
+        Package unpatched = createTestPackage(user, baseChannelSP2, "noarch");
+
+        Errata errataLTSS = createTestErrata(user, cves);
+        ltssChannelSP2.addErrata(errataLTSS);
+        TestUtils.saveAndFlush(ltssChannelSP2);
+        Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, unpatched);
+
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+        Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, patchedLTSS);
+
+        // Setup SP2 channels
+        Set<Channel> channelsSP2 = new HashSet<Channel>();
+        channelsSP2.add(baseChannelSP2);
+        channelsSP2.add(ltssChannelSP2);
+
+        // Create server: SP2 channels with LTSS patch available + SP3 patch installed
+        // (not a normal situation, he may had copied it)
+        // should still return as PATCHED!
+        Server server = createTestServer(user, channelsSP2);
+        createTestInstalledPackage(patchedSP3, server);
+        installSUSEProductOnServer(productSP2, server);
+
+        CVEAuditManager.populateCVEServerChannels();
+
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
+    }
+
+    /**
      * Test the SDK scenario: one errata with two packages in different channels.
      *
      * @throws Exception if anything goes wrong
