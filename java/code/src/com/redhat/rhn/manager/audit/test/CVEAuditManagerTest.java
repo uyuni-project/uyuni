@@ -999,12 +999,15 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Errata errataLTSS = createTestErrata(user, cves);
         ltssChannelSP2.addErrata(errataLTSS);
         TestUtils.saveAndFlush(ltssChannelSP2);
-        Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, unpatched);
 
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
         TestUtils.saveAndFlush(updateChannelSP3);
-        Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, patchedLTSS);
+        Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, unpatched);
+
+        // as this is a very hypothetical scenario, the LTSS package has higher version than the
+        // next SP package, otherwise it would show up as "installed"
+        Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, patchedSP3);
 
         // Setup SP2 channels
         Set<Channel> channelsSP2 = new HashSet<Channel>();
