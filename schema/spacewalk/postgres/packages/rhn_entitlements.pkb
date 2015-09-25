@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 22d041acac01ea8293465b137edd28d80bbb4714
+-- oracle equivalent source sha1 5749b633fb352607472487df4263bfb6e5ac0ff6
 --
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
@@ -225,6 +225,7 @@ as $$
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'saltstack_entitled' then 'SaltStack'
+                       when 'foreign_entitled' then 'Foreign'
                        when 'virtualization_host' then 'Virtualization'
                       end  );
 
@@ -278,6 +279,7 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 
@@ -316,6 +318,7 @@ as $$
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 

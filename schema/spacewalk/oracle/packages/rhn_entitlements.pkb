@@ -208,6 +208,7 @@ is
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'saltstack_entitled' then 'SaltStack'
+                       when 'foreign_entitled' then 'Foreign'
                        when 'virtualization_host' then 'Virtualization'
                       end  );
 
@@ -255,6 +256,7 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 
@@ -294,6 +296,7 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'foreign_entitled' then 'Foreign'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 
