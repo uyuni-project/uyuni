@@ -587,7 +587,7 @@ public class CVEAuditManager {
                 if (errataID.equals(currentErrata)) {
                     // Combine flags with &
                     currentChannelAssigned &= getBooleanValue(result, "channel_assigned");
-                    // the package can be installed
+
                     if (getBooleanValue(result, "package_installed")) {
                         patchedPackages.add((String) result.get("package_name"));
                     } else {
@@ -606,6 +606,7 @@ public class CVEAuditManager {
                     if (getBooleanValue(result, "package_installed")) {
                         patchedPackages.add((String) result.get("package_name"));
                     } else {
+                        // the package may not be installed by this errata but by another
                         currentPackageInstalled &= patchedPackages.contains((String) result.get("package_name"));
                     }
                 }
