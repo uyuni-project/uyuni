@@ -15,6 +15,7 @@
 package com.redhat.rhn.manager.entitlement;
 
 import com.redhat.rhn.domain.entitlement.BootstrapEntitlement;
+import com.redhat.rhn.domain.entitlement.ForeignEntitlement;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.entitlement.ManagementEntitlement;
 import com.redhat.rhn.domain.entitlement.SaltStackEntitlement;
@@ -43,12 +44,14 @@ public class EntitlementManager extends BaseManager {
     public static final Entitlement VIRTUALIZATION = new VirtualizationEntitlement();
     public static final Entitlement BOOTSTRAP = new BootstrapEntitlement();
     public static final Entitlement SALTSTACK = new SaltStackEntitlement();
+    public static final Entitlement FOREIGN = new ForeignEntitlement();
 
     public static final String UNENTITLED = "unentitled";
     public static final String ENTERPRISE_ENTITLED = "enterprise_entitled";
     public static final String VIRTUALIZATION_ENTITLED = "virtualization_host";
     public static final String BOOTSTRAP_ENTITLED = "bootstrap_entitled";
     public static final String SALTSTACK_ENTITLED = "saltstack_entitled";
+    public static final String FOREIGN_ENTITLED = "foreign_entitled";
 
     private static final Set<Entitlement> ADDON_ENTITLEMENTS;
     private static final Set<Entitlement> BASE_ENTITLEMENTS;
@@ -78,6 +81,9 @@ public class EntitlementManager extends BaseManager {
         }
         else if (SALTSTACK_ENTITLED.equals(name)) {
             return SALTSTACK;
+        }
+        else if (FOREIGN_ENTITLED.equals(name)) {
+            return FOREIGN;
         }
         return null;
     }
