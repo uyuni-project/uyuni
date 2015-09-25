@@ -2184,6 +2184,9 @@ tree will not be usable for autoinstalling.
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="saltstack_entitled">
+        <source>SaltStack</source>
+      </trans-unit>
     </body>
   </file>
 </xliff>
