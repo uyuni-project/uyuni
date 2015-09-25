@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
@@ -38,12 +39,28 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     private static final Logger LOG = Logger.getLogger(RegisterMinionAction.class);
 
     // Reference to the SaltService instance
-    private static final SaltService SALT_SERVICE = SaltService.INSTANCE;
+    private final SaltService SALT_SERVICE;
+
+    /**
+     * Default constructor.
+     */
+    public RegisterMinionAction() {
+        SALT_SERVICE = SaltAPIService.INSTANCE;
+    }
+
+    /**
+     * Constructor taking a {@link SaltService} instance.
+     *
+     * @param saltService the salt service to use
+     */
+    protected RegisterMinionAction(SaltService saltService) {
+        SALT_SERVICE = saltService;
+    }
 
     /**
      * {@inheritDoc}
      */
-    protected void doExecute(EventMessage msg) {
+    public void doExecute(EventMessage msg) {
         RegisterMinionEvent event = (RegisterMinionEvent) msg;
         String minionId = event.getMinionId();
 
