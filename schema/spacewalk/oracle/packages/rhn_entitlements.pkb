@@ -60,7 +60,7 @@ is
     ) return number    is
     begin
         if service_level_in = 'management' then
-            if entitlement_in = 'enterprise_entitled' then
+            if entitlement_in = 'enterprise_entitled' or entitlement_in = 'saltstack_entitled' then
                 return 1;
             else
                 return 0;
@@ -208,6 +208,7 @@ is
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
                        when 'virtualization_host' then 'Virtualization'
+                       when 'saltstack_entitled' then 'SaltStack'
                       end  );
 
             rhn_server.insert_into_servergroup (server_id_in, sgid);
@@ -254,6 +255,7 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'virtualization_host' then 'Virtualization'
+                    when 'saltstack_entitled' then 'SaltStack'
                    end  );
 
          rhn_server.delete_from_servergroup(server_id_in, group_id);
@@ -292,6 +294,7 @@ is
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
                     when 'virtualization_host' then 'Virtualization'
+                    when 'saltstack_entitled' then 'SaltStack'
                    end  );
 
          rhn_server.delete_from_servergroup(server_id_in,
@@ -313,12 +316,7 @@ is
             where    1=1
                 and sgm.server_id = server_id_in
                 and sg.id = sgm.server_group_id
-                and sgt.id = sg.group_type
-                and sgt.label in (
-                    'enterprise_entitled',
-                    'bootstrap_entitled',
-                    'virtualization_host'
-                    );
+                and sgt.id = sg.group_type;
 
          ent_array ents_array;
 
