@@ -19,7 +19,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 
-import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +39,7 @@ public class TasksRenderer extends BaseFragmentRenderer {
         request.setAttribute(TASKS, Boolean.TRUE);
         request.setAttribute("documentation", ConfigDefaults.get().isDocAvailable());
         request.setAttribute("amountOfMinions",
-                SaltService.INSTANCE.getKeys().getUnacceptedMinions().size());
+                SaltAPIService.INSTANCE.getKeys().getUnacceptedMinions().size());
         RendererHelper.setTableStyle(request, null);
     }
 
