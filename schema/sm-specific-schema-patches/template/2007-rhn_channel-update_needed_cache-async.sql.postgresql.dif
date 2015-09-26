@@ -1,8 +1,8 @@
 @@ -1,4 +1,4 @@
---- oracle equivalent source sha1 cfc181a2a7f9da163e72139e43b95f5d4fb1a797
-+-- oracle equivalent source sha1 449c9f86ddeaf7da27e91c1f404767e76adaf65e
+--- oracle equivalent source sha1 6c5bc2cf47b8fc3e6b7f11009d15394bc97ef4b1
++-- oracle equivalent source sha1 642fd06e9cba11fe3ee85193edb364241c520610
  --
- -- Copyright (c) 2008--2014 Red Hat, Inc.
+ -- Copyright (c) 2008--2015 Red Hat, Inc.
  --
 @@ -133,7 +133,8 @@
          IF available_subscriptions IS NULL OR 
