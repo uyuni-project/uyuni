@@ -14809,9 +14809,6 @@ any of these revisions.  Are you sure you want to do this?</source>
         <trans-unit id="sdcconfigconfirm.jsp.widgetsummary">
           <source>You may schedule configuration actions for the time below.</source>
         </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.usedate">
-          <source>Schedule configuration actions for no sooner than:</source>
-        </trans-unit>
       </group>
       <!-- configuration/sdc/difffile.jsp  -->
       <group>
@@ -15964,6 +15961,12 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.jsp.lang.ca">
+        <source>Catalan</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="preferences.jsp.lang.de">
         <source>German</source>
         <context-group name="ctx">
@@ -16020,6 +16023,12 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
       </trans-unit>
       <trans-unit id="preferences.jsp.lang.pa">
         <source>Punjabi</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.lang.pt">
+        <source>Portuguese</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/LocalePreferences.do</context>
         </context-group>
@@ -16461,7 +16470,7 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         </context-group>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.summary1">
-        <source>Please fill out the form below to create a new virtual system to be hosted on &lt;img src="/img/rhn-listicon-system.gif"&gt; &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
+        <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -20991,10 +21000,55 @@ given channel.</source>
       </group>
       <group>
         <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ResetLink</context>
+        </context-group>
+        <trans-unit id="resetpassword.jsp.error.header">
+          <source>Reset Password Link Error</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.message">
+          <source>
+          The reset-password link used is invalid.
+          Please contact your @@PRODUCT_NAME@@ administrator for assistance.
+          </source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.invalidtoken">
+          <source>Reset token has been invalidated.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.disabled_user">
+          <source>User has been disabled.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.notoken">
+          <source>Reset token not found.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.expiredtoken">
+          <source>Reset token has expired.</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ResetPasswordSubmit</context>
+        </context-group>
+        <trans-unit id="passwordreset.jsp.header">
+          <source>Reset Password</source>
+        </trans-unit>
+        <trans-unit id="passwordreset.jsp.passwordtip">
+          <source>
+          Passwords can be between {0} and {1} characters,
+          and cannot contain tabs or newlines.</source>
+        </trans-unit>
+        <trans-unit id="passwordreset.jsp.update">
+          <source>Update Password</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/ForgotCredentials.do</context>
         </context-group>
         <trans-unit id="help.credentials.jsp.passwordreset">
           <source>Password Reset</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.passwordreset.confirmation">
+          <source>Password Reset Confirmation</source>
         </trans-unit>
         <trans-unit id="help.credentials.jsp.passwordstrength">
           <source>Password Strength</source>

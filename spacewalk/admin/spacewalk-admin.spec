@@ -2,7 +2,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.4.1
+Version: 2.4.2
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2
@@ -92,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Thu Sep 24 2015 Jan Dobes 2.4.2-1
+- Bumping copyright year.
+
 * Wed Aug 05 2015 Jan Dobes 2.4.1-1
 - trust spacewalk CA certificate
 - Bumping package versions for 2.4.

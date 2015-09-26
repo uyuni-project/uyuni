@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.4.0
+Version:        2.4.2
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -29,13 +29,15 @@ make -f Makefile.spacewalk-abrt
 rm -rf $RPM_BUILD_ROOT
 make -f Makefile.spacewalk-abrt install PREFIX=$RPM_BUILD_ROOT
 
+%find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 service abrtd restart ||:
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root)
 %dir /etc/sysconfig/rhn/
 %dir /etc/sysconfig/rhn/clientCaps.d
@@ -50,6 +52,15 @@ service abrtd restart ||:
 %{_mandir}/man8/*
 
 %changelog
+* Fri Sep 25 2015 Jan Dobes 2.4.2-1
+- support translations in spacewalk-abrt
+
+* Wed Sep 23 2015 Jan Dobes 2.4.1-1
+- Pulling updated *.po translations from Zanata.
+- Bumping package versions for 2.4.
+- Bumping package versions for 2.3.
+- Bumping package versions for 2.2.
+
 * Thu Oct 31 2013 Tomas Kasparek <tkasparek@redhat.com> 2.1.4-1
 - explicitely require abrt-cli
 
