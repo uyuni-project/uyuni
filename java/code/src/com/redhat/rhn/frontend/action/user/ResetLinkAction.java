@@ -1,0 +1,80 @@
+/**
+ * Copyright (c) 2015 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.action.user;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionErrors;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+
+import com.redhat.rhn.common.db.ResetPasswordFactory;
+import com.redhat.rhn.domain.common.ResetPassword;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.frontend.struts.RhnAction;
+
+/**
+ * ResetLinkAction, responds to /ResetLink?token=<hash>
+ * Its job is to validate the token, log in the affected user, and redirect them to
+ * the change-your-password-NOW page
+ *
+ * @version $Rev: $
+ */
+public class ResetLinkAction extends RhnAction {
+
+    private static Logger log = Logger.getLogger(ResetLinkAction.class);
+
+    private static final String INVALID = "invalid";
+    private static final String VALID = "valid";
+
+    /** {@inheritDoc} */
+    @Override
+    public ActionForward execute(ActionMapping mapping, ActionForm formIn,
+                    HttpServletRequest request, HttpServletResponse response) {
+
+        log.debug("ResetLinkAction");
+        RequestContext requestContext = new RequestContext(request);
+        String token = requestContext.getRequiredParamAsString("token");
+
+        // Does token exist, and is it valid?
+        ResetPassword rp = ResetPasswordFactory.lookupByToken(token);
+
+        ActionErrors errs = ResetPasswordFactory.findErrors(rp);
+        if (!errs.isEmpty()) {
+            addErrors(request, errs);
+            return mapping.findForward(INVALID);
+        }
+
+        // Check for disabled user
+        User u = UserFactory.lookupById(rp.getUserId());
+        if (u.isDisabled()) {
+            log.debug("findErrors: disabled user found");
+            errs.add(ActionMessages.GLOBAL_MESSAGE,
+                     new ActionMessage("resetpassword.jsp.error.disabled_user"));
+            return mapping.findForward(INVALID);
+        }
+
+        // Everything looks good - send us to the next step
+        return mapping.findForward(VALID);
+    }
+
+}

@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.4.15
+Version:	2.4.18
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -120,6 +120,18 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Fri Sep 25 2015 Jan Dobes 2.4.18-1
+- have version in name
+- updating gpg
+- Spacewalk 2.3 is not for el5 but is for el7
+- removing Spacewalk 2.1 entries
+
+* Thu Sep 24 2015 Jan Dobes 2.4.17-1
+- Bumping copyright year.
+
+* Mon Sep 21 2015 Jan Dobes 2.4.16-1
+- fixing interactive run
+
 * Tue Aug 18 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.15-1
 - list[] vs list() - list[] is bad
 

@@ -10,7 +10,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 2.4.1
+Version: 2.4.2
 Release: 1%{?dist}
 URL:            https://fedorahosted.org/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -61,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/rhn/actions/
 
 %changelog
+* Wed Sep 16 2015 Jan Dobes 2.4.2-1
+- 1253464 - switch to KVM if possible
+
 * Fri May 29 2015 Jan Dobes 2.4.1-1
 - fixing duplicate BuildArch
 - Bumping package versions for 2.4.

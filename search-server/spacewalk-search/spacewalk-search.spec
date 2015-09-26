@@ -4,7 +4,7 @@ Name: spacewalk-search
 Summary: Spacewalk Full Text Search Server
 Group: Applications/Internet
 License: GPL-2.0 and Apache-2.0
-Version: 2.4.1
+Version: 2.4.2
 Release: 1%{?dist}
 # This src.rpm is cannonical upstream
 # You can obtain it using this set of commands
@@ -270,6 +270,9 @@ fi
 %doc licenses/*
 
 %changelog
+* Thu Sep 24 2015 Jan Dobes 2.4.2-1
+- Bumping copyright year.
+
 * Tue Apr 28 2015 Tomas Lestach <tlestach@redhat.com> 2.4.1-1
 - fix snapshot tag rhn-search issue
 - instantiate insert query only when needed

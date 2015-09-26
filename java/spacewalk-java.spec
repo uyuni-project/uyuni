@@ -32,7 +32,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.62
+Version: 2.4.78
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -981,6 +981,69 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Sep 24 2015 Jan Dobes 2.4.78-1
+- Bumping copyright year.
+
+* Thu Sep 24 2015 Jan Dobes 2.4.77-1
+- support more frontend languages
+- Merging updated frontend translations from Zanata.
+
+* Mon Sep 21 2015 Grant Gainey 2.4.76-1
+- 1253793 - Fix ks-snippets-view and catalin.out view under IE8
+
+* Fri Sep 18 2015 Jan Dobes 2.4.75-1
+- update api version
+
+* Thu Sep 17 2015 Jan Dobes 2.4.74-1
+- Make pagination attributes more consistent by putting them into enum
+- Unify paging parameter values
+- Remove unused pagination parameters checking
+
+* Thu Sep 17 2015 Jan Dobes 2.4.73-1
+- removing orphan_packages_for_channel query
+
+* Wed Sep 16 2015 Grant Gainey 2.4.72-1
+- 608355 - updated user-creation email template
+
+* Wed Sep 16 2015 Grant Gainey 2.4.71-1
+- 608355 - More checkstyle happiness
+- 608355 - Fix some Junit
+- 608355 - checkstyle
+- 608355 - Refactor reset-pwd path to not log user in until pwd-chg accepted
+- 608355 - Add min-password-length to user_attribute_sizes.jspf
+- 608355 - Teach ResetPasswordFactory about errors
+- 608355 - Make validatePassword into its own method in UserEditActionHelper
+- 608355 - First draft, UI workflow
+- 608355 - teach model about isExpired
+- 608355 - ResetPassword domain-model/mode-queries/access/Junit
+
+* Wed Sep 16 2015 Jan Dobes 2.4.70-1
+- 1250351 - kickstartable trees should not be cacheable
+
+* Mon Sep 14 2015 Jan Dobes 2.4.69-1
+- removing old-styled icon from
+  /rhn/systems/details/virtualization/ProvisionVirtualizationWizard
+- show virtual machine status instead of name
+
+* Thu Sep 10 2015 Jan Dobes 2.4.68-1
+- render the right icon in system details header
+
+* Wed Sep 09 2015 Jan Dobes 2.4.67-1
+- displaying the content once is enough
+- 1205818 - fixing NullPointerException
+
+* Wed Sep 09 2015 Jiri Dostal <jdostal@redhat.com> 2.4.66-1
+- 1181152 - WebUI -> Admin -> Users XSS
+
+* Tue Sep 08 2015 Jan Dobes 2.4.65-1
+- 1040871 - remove not existing system name reference
+
+* Mon Sep 07 2015 Jan Dobes 2.4.64-1
+- allow to use action chaining as SSM equivalent can
+
+* Mon Sep 07 2015 Jan Dobes 2.4.63-1
+- 1259445 - do not overwrite selected date and time
+
 * Thu Sep 03 2015 Jan Dobes 2.4.62-1
 - add missing string
 

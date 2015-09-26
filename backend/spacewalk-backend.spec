@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.4.17
+Version: 2.4.23
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -807,6 +807,27 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Wed Sep 23 2015 Jan Dobes 2.4.23-1
+- Pulling updated *.po translations from Zanata.
+
+* Mon Sep 21 2015 Jan Dobes 2.4.22-1
+- 1250351 - make sure ks tree label is valid
+
+* Fri Sep 18 2015 Jan Dobes 2.4.21-1
+- Realigning arguments to process_batch to conform to indentation standards -
+  see https://www.python.org/dev/peps/pep-0008/#indentation
+- Fixed spelling of _proces_batch -> _process_batch.
+
+* Thu Sep 10 2015 Tomas Lestach <tlestach@redhat.com> 2.4.20-1
+- call xz to decompress comps file directly, if pyliblzma not available
+
+* Tue Sep 08 2015 Jan Dobes 2.4.19-1
+- 1201007 - handle existing file
+- optimize experssion
+
+* Mon Sep 07 2015 Tomas Lestach <tlestach@redhat.com> 2.4.18-1
+- 1260735 - set domain name for sender address in rhn-satellite-exporter
+
 * Fri Aug 28 2015 Jan Dobes 2.4.17-1
 - Fixes orabug 20623622 spacewalk-repo-sync error: maximum recursion depth
   exceeded error when syncing to ULN via a proxy server

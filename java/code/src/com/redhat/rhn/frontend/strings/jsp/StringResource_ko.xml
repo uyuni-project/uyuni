@@ -2844,6 +2844,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="actionchain.jsp.configfiles.diff">
+        <source>Compare {0} on</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="actionchain.jsp.modaltitle">
         <source>Delete Action Chain?</source>
         <context-group name="ctx">
@@ -4125,12 +4131,37 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>조직 정보 </target>
       </trans-unit>
+      <trans-unit id="satconfig.jsp.header">
+        <source>@@PRODUCT_NAME@@ Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="satconfig.jsp.description">
+        <source>As @@PRODUCT_NAME@@ Admin you can configure, whether Organization Administrators may configure Organization Configuration. Organizaton Configuration settings may have huge impact on the @@PRODUCT_NAME@@ performance.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="orgconfig.jsp.header">
         <source>Organization Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
         <target>조직 설정</target>
+      </trans-unit>
+      <trans-unit id="orgconfig.jsp.description">
+        <source>Below you configure your organization to use staging content, errata e-mail notifications, software crash reporting (Crash file upload limit is a non negative number, zero means no limit) and SCAP settings.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+        <target>아래에서 스테이징 컨텐츠를 사용하기 위해 조직을 설정하고 소프트웨어 충돌 보고서를 설정합니다. 충돌 파일 업로드 제한은 음수가 아닌 숫자로 지정합니다. 제로는 제한이 없음을 의미합니다.</target>
+      </trans-unit>
+      <trans-unit id="orgconfig.jsp.description.noteditable">
+        <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications, software crash reporting and SCAP settings are configured.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="org.name.jsp">
         <source>Organization Name</source>
@@ -4160,12 +4191,24 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>시스템 그룹</target>
       </trans-unit>
+      <trans-unit id="org-config.orgadm-mgmt.jsp">
+        <source>Allow Organization Admin to manage Organization Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="org-config.staging-content.jsp">
         <source>Enable Staging Contents</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
         <target>준비 컨텐츠 활성화 </target>
+      </trans-unit>
+      <trans-unit id="org-config.errata-emails.jsp">
+        <source>Enable Errata E-mail Notifications (for users belonging to this organization)</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="org-config.crash-reporting.jsp">
         <source>Enable Software Crash Reporting</source>
@@ -8783,6 +8826,9 @@ Please note that some manual configuration of these scripts may still be require
         <source>Repository</source>
         <target>리포지터리 </target>
       </trans-unit>
+      <trans-unit id="repos.jsp.channel.status">
+        <source>Sync Status</source>
+      </trans-unit>
       <trans-unit id="repos.jsp.channel.repos">
         <source>Channel Repositories</source>
         <target>채널 리포지터리 </target>
@@ -12393,6 +12439,9 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
           <source>Xccdf Test Result</source>
           <target>Xccdf 테스트 결과 </target>
         </trans-unit>
+        <trans-unit id="system.audit.listscap.jsp.diff">
+          <source>Diff</source>
+        </trans-unit>
         <trans-unit id="system.audit.listscap.jsp.completed">
           <source>Completed</source>
           <target>완료 </target>
@@ -12837,6 +12886,9 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         <trans-unit id="system.event.header">
           <source>System History Event</source>
         </trans-unit>
+        <trans-unit id="system.event.pendingHeader">
+          <source>System Pending Event</source>
+        </trans-unit>
         <trans-unit id="system.event.summary">
           <source>Summary:</source>
         </trans-unit>
@@ -12893,6 +12945,9 @@ the &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stro
         </trans-unit>
         <trans-unit id="system.event.return">
           <source>Return to history list for {0}</source>
+        </trans-unit>
+        <trans-unit id="system.event.pendingReturn">
+          <source>Return to pending list for {0}</source>
         </trans-unit>
         <trans-unit id="system.event.returnIcon">
           <source>Return to history list</source>
@@ -17039,10 +17094,6 @@ any of these revisions.  Are you sure you want to do this?</source>
           <source>You may schedule configuration actions for the time below.</source>
           <target>아래 시간에 따라 설정 작업을 스케줄하실 수 있습니다.</target>
         </trans-unit>
-        <trans-unit id="sdcconfigconfirm.jsp.usedate">
-          <source>Schedule configuration actions for no sooner than:</source>
-          <target>최대한 빨리 설정 작업을 스케줄:</target>
-        </trans-unit>
       </group>
       <!-- configuration/sdc/difffile.jsp  -->
       <group>
@@ -18934,11 +18985,11 @@ The Tree Path, Kickstart RPM, Base Channel, and Installer Generation should alwa
         <target>킥스타트 프로파일 선택 </target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.summary1">
-        <source>Please fill out the form below to create a new virtual system to be hosted on &lt;img src="/img/rhn-listicon-system.gif"&gt; &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
+        <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>아래 양식을 작성하여 &lt;img src=&quot;/img/rhn-listicon-system.gif&quot;&gt; &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;에서 호스트될 새로운 가상 시스템을 생성하시기 바랍니다.</target>
+        <target>아래 양식을 작성하여 &lt;a href=&quot;/rhn/systems/details/Overview.do?sid={0}&quot;&gt;{1}&lt;/a&gt;에서 호스트될 새로운 가상 시스템을 생성하시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.header2">
         <source>Define the Virtual System</source>
@@ -22237,6 +22288,12 @@ given channel.</source>
         <source>Update Key</source>
         <target>키 업데이트</target>
       </trans-unit>
+      <trans-unit id="system.jsp.customdata.createtitle">
+        <source>Create Custom Value</source>
+      </trans-unit>
+      <trans-unit id="system.jsp.customdata.updatetitle">
+        <source>Edit Custom Value</source>
+      </trans-unit>
       <trans-unit id="system.jsp.customdata.deletetitle">
         <source>Remove Custom Value</source>
         <target>사용자 정의 값 제거 </target>
@@ -23024,6 +23081,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="channel.manage.sync.latestonly.jsp">
+        <source>Sync only latest packages</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/channels/manage/Sync.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="channel.manage.sync.synckickstart.jsp">
         <source>Create kickstartable tree</source>
         <context-group name="ctx">
@@ -23212,6 +23275,12 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.reboot-action-cleanup-bunch">
         <source>Invalidate reboot actions which never finish</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.auto-errata-bunch">
+        <source>Schedule auto errata updates as necessary</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
@@ -23682,6 +23751,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.reboot-action-cleanup">
         <source>Failed reboots cleanup</source>
+      </trans-unit>
+      <trans-unit id="task.status.auto-errata">
+        <source>Auto Errata Updates</source>
       </trans-unit>
       <trans-unit id="task.status.message">
         <source>The following is a status report for the various tasks run by the @@PRODUCT_NAME@@ task engine:</source>
@@ -24277,10 +24349,55 @@ given channel.</source>
       </group>
       <group>
         <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ResetLink</context>
+        </context-group>
+        <trans-unit id="resetpassword.jsp.error.header">
+          <source>Reset Password Link Error</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.message">
+          <source>
+          The reset-password link used is invalid.
+          Please contact your @@PRODUCT_NAME@@ administrator for assistance.
+          </source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.invalidtoken">
+          <source>Reset token has been invalidated.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.disabled_user">
+          <source>User has been disabled.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.notoken">
+          <source>Reset token not found.</source>
+        </trans-unit>
+        <trans-unit id="resetpassword.jsp.error.expiredtoken">
+          <source>Reset token has expired.</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/ResetPasswordSubmit</context>
+        </context-group>
+        <trans-unit id="passwordreset.jsp.header">
+          <source>Reset Password</source>
+        </trans-unit>
+        <trans-unit id="passwordreset.jsp.passwordtip">
+          <source>
+          Passwords can be between {0} and {1} characters,
+          and cannot contain tabs or newlines.</source>
+        </trans-unit>
+        <trans-unit id="passwordreset.jsp.update">
+          <source>Update Password</source>
+        </trans-unit>
+      </group>
+      <group>
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/ForgotCredentials.do</context>
         </context-group>
         <trans-unit id="help.credentials.jsp.passwordreset">
           <source>Password Reset</source>
+        </trans-unit>
+        <trans-unit id="help.credentials.jsp.passwordreset.confirmation">
+          <source>Password Reset Confirmation</source>
         </trans-unit>
         <trans-unit id="help.credentials.jsp.passwordstrength">
           <source>Password Strength</source>

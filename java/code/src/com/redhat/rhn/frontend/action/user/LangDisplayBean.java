@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,24 +24,6 @@ public class LangDisplayBean {
 
     private String languageCode;
     private String localizedName;
-    private String imageUri;
-
-    /**
-     * Returns relative uri pointing to the
-     * language example image
-     * @return string uri
-     */
-    public String getImageUri() {
-        return imageUri;
-    }
-
-    /**
-     * Sets the langauge example image uri
-     * @param uri relative uri
-     */
-    public void setImageUri(String uri) {
-        this.imageUri = uri;
-    }
 
     /**
      * Returns lang code
