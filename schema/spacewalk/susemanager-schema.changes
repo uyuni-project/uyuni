@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sun Sep 27 14:42:36 CEST 2015 - mc@suse.de
+
+- version 2.1.50.14-1
+- Set errata-cache job to run every minute if old schedule still
+  active (bsc#918994)
+
+-------------------------------------------------------------------
 Mon Jun 22 15:40:54 CEST 2015 - jrenner@suse.de
 
 - version 2.1.50.13-1
