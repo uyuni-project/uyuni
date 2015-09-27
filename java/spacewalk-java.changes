@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Sun Sep 27 14:44:59 CEST 2015 - mc@suse.de
+
+- version 2.1.165.19-1
+- support ssh-push with sudo
+- Fix CVE Audit for LTSS channels by looking at individual
+  packages (bnc#944729)
+- use same regexp for channel name as in CreateChannelCommand (bsc#946248)
+- prevent mojor version service pack updates from 11 to 12
+- display a warning if the update stack is not up-to-date
+- Add NoRouteToHost handling with better output
+- fix output of client events (bsc#935377)
+- fix pagination buttons (bsc#935387)
+- deprecate synchronizeUpgradePaths() XMLRPC
+- provide SCC product to updateUpradePaths for SLE12 migration data
+- parse predecessor_ids from json
+- Organization users page: fix typo (bnc#943283)
+- Do not return a OES repository with null credentials (bsc#937030)
+- Fix queue size: consider possible remainders from last run
+- Log message when finished errata cache for a server or channel
+- Log the current queue size before every job run (DEBUG)
+- Fix link back to the associated channel(bsc#931519)
+
+-------------------------------------------------------------------
 Mon Sep 02 16:00:35 CEST 2015 - mseidl@suse.de
 
 - Prevent creating channels with reserved names (bsc#939349) / (fate#319308)
