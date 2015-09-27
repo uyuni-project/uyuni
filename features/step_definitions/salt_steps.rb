@@ -37,8 +37,7 @@ end
 Then(/^the Salt Minion should be running$/) do
   out = `rcsalt-minion status`
   unless $?.success?
-    $stderr.puts "salt-minion status: #{out}"
-    fail
+    raise "salt-minion status: #{out}"
   end
 end
 
