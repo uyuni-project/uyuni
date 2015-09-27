@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sun Sep 27 14:44:12 CEST 2015 - mc@suse.de
+
+- version 2.1.55.21-1
+- read repository checksum type after setting the certificate
+  for a repository
+
+-------------------------------------------------------------------
 Wed Sep 23 15:10:55 CEST 2015 - mc@suse.de
 
 - version 2.1.55.20-1
