@@ -13,8 +13,8 @@ echo $PERLLIB
 ./build-schema.sh
 
 # do not exec "restart". restart is redirected to systemd which is not working
-rcpostgresql stop
-rcpostgresql start
+/etc/init.d/postgresql stop
+/etc/init.d/postgresql start
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
