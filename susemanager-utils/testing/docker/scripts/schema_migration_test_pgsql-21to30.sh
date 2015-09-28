@@ -22,7 +22,8 @@ echo Going to reset pgsql database
 echo $PATH
 echo $PERLLIB
 
-rcpostgresql restart
+rcpostgresql stop
+rcpostgresql start
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
