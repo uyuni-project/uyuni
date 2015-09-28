@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 export PERLLIB=/manager/spacewalk/setup/lib/:/manager/web/modules/rhn/:/manager/web/modules/pxt/
 export PATH=/manager/schema/spacewalk/:/manager/spacewalk/setup/bin/:$PATH
@@ -12,9 +12,8 @@ echo $PERLLIB
 
 ./build-schema.sh
 
-# do not exec "restart". restart is redirected to systemd which is not working
-/etc/init.d/postgresql stop
-/etc/init.d/postgresql start
+export SYSTEMD_NO_WRAP=1
+rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
