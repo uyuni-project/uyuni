@@ -22,8 +22,8 @@ echo Going to reset pgsql database
 echo $PATH
 echo $PERLLIB
 
-/etc/init.d/postgresql stop
-/etc/init.d/postgresql start
+export SYSTEMD_NO_WRAP=1
+rcpostgresql restart
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 
