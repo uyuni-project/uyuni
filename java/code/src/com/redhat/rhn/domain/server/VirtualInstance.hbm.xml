@@ -41,6 +41,22 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <query name="VirtualInstance.lookupVirtualInstanceByUuid">
+        <![CDATA[
+          from VirtualInstance guestVI
+          where guestVI.uuid = :uuid
+        ]]>
+    </query>
+
+    <query name="VirtualInstance.lookupHostVirtInstanceByHostId">
+        <![CDATA[
+          from VirtualInstance hostVI
+          where
+             hostVI.uuid = null
+             and hostVI.hostSystem.id = :hostId
+        ]]>
+    </query>
+
     <query name="VirtualInstance.isOutdatedVirtualInstance">
         <![CDATA[
         from VirtualInstance guest where guest = :guest

@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -301,5 +300,31 @@ public class VirtualInstanceFactory extends HibernateFactory {
         return (VirtualInstanceState)getSession().getNamedQuery(
                 "VirtualInstanceState.findByLabel").setString("label", "unknown")
                 .uniqueResult();
+    }
+
+    /**
+     * Returns a VirtualInstance with given uuid
+     * (todo this needs review. the original code contained very weird org. check which
+     * i don't entirely understand)
+     * @param uuid - uuid of the vm
+     * @return VirtualInstance with given uuid
+     */
+    public VirtualInstance lookupVirtualInstanceByUuid(String uuid) {
+        return (VirtualInstance) getSession()
+                .getNamedQuery("VirtualInstance.lookupVirtualInstanceByUuid")
+                .setParameter("uuid", uuid)
+            .uniqueResult();
+    }
+
+    /**
+     * Returns a VirtualInstance that is linked to the host system with given id.
+     * @param hostId - id of the host system
+     * @return VirtualInstance linked to the host with given id
+     */
+    public VirtualInstance lookupHostVirtInstanceByHostId(Long hostId) {
+        return (VirtualInstance) getSession()
+                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
+                .setParameter("hostId", hostId)
+            .uniqueResult();
     }
 }
