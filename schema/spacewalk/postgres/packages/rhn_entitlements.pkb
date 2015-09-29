@@ -224,8 +224,8 @@ as $$
                       case type_label_in
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
-                       when 'virtualization_host' then 'Virtualization'
                        when 'saltstack_entitled' then 'SaltStack'
+                       when 'virtualization_host' then 'Virtualization'
                       end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
@@ -277,8 +277,8 @@ as $$
                    case type_label_in
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'virtualization_host' then 'Virtualization'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'virtualization_host' then 'Virtualization'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in, group_id);
@@ -315,8 +315,8 @@ as $$
                    case servergroup.label
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
-                    when 'virtualization_host' then 'Virtualization'
                     when 'saltstack_entitled' then 'SaltStack'
+                    when 'virtualization_host' then 'Virtualization'
                    end  );
 
          perform rhn_server.delete_from_servergroup(server_id_in,
