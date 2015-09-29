@@ -115,17 +115,17 @@ public class GathererJsonIOTest extends TestCase {
 
         assertTrue(hosts.containsKey("1"));
         JsonHost h = hosts.get("1").get("10.162.186.111");
-        assertEquals(8, h.getCores().intValue());
+        assertEquals(16, h.getTotalCpuCores().intValue());
         assertEquals("x86_64", h.getCpuArch());
         assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
         assertEquals("amd", h.getCpuVendor());
-        assertEquals(3.092212727, h.getGhz().doubleValue());
+        assertEquals(3092.212727, h.getCpuMhz().doubleValue());
         assertEquals("10.162.186.111", h.getName());
         assertEquals("VMware ESXi", h.getOs());
         assertEquals("5.5.0", h.getOsVersion());
-        assertEquals(65512, h.getRam().intValue());
-        assertEquals(2, h.getSockets().intValue());
-        assertEquals(1, h.getThreads().intValue());
+        assertEquals(65512, h.getRamMb().intValue());
+        assertEquals(2, h.getTotalCpuSockets().intValue());
+        assertEquals(16, h.getTotalCpuThreads().intValue());
         assertEquals("564d6d90-459c-2256-8f39-3cb2bd24b7b0", h.getVms().get("vCenter"));
     }
 }

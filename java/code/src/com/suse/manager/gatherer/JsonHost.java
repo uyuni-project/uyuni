@@ -24,7 +24,11 @@ public class JsonHost {
 
     public String name;
 
-    public Integer cores;
+    public Integer totalCpuSockets;
+
+    public Integer totalCpuCores;
+
+    public Integer totalCpuThreads;
 
     public String cpuArch;
 
@@ -32,17 +36,15 @@ public class JsonHost {
 
     public String cpuVendor;
 
-    public Double ghz;
+    public Double cpuMhz;
 
     public String os;
 
     public String osVersion;
 
-    public Integer ram;
+    public String type;
 
-    public Integer sockets;
-
-    public Integer threads;
+    public Integer ramMb;
 
     public Map<String, String> vms;
 
@@ -55,11 +57,27 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU cores
+     * Gets the total number of CPU sockets of the system
+     * @return the number of sockets
+     */
+    public Integer getTotalCpuSockets() {
+        return totalCpuSockets;
+    }
+
+    /**
+     * Gets the total number of CPU cores of the system
      * @return the cpu cores
      */
-    public Integer getCores() {
-        return cores;
+    public Integer getTotalCpuCores() {
+        return totalCpuCores;
+    }
+
+    /**
+     * Gets the total number of CPU threads of the system
+     * @return the number of threads
+     */
+    public Integer getTotalCpuThreads() {
+        return totalCpuThreads;
     }
 
     /**
@@ -87,11 +105,11 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU speed in GHZ
-     * @return cpu speed in GHZ
+     * Gets the CPU speed in MHZ
+     * @return cpu speed in MHZ
      */
-    public Double getGhz() {
-        return ghz;
+    public Double getCpuMhz() {
+        return cpuMhz;
     }
 
     /**
@@ -111,27 +129,19 @@ public class JsonHost {
     }
 
     /**
+     * Gets the hypervisor type
+     * @return hyperviosor type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
      * Gets the memory in MB
      * @return the ram in MB
      */
-    public Integer getRam() {
-        return ram;
-    }
-
-    /**
-     * Gets the number of CPU sockets
-     * @return the number of sockets
-     */
-    public Integer getSockets() {
-        return sockets;
-    }
-
-    /**
-     * Gets the number of CPU threads
-     * @return the number of threads
-     */
-    public Integer getThreads() {
-        return threads;
+    public Integer getRamMb() {
+        return ramMb;
     }
 
     /**
