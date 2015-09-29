@@ -76,10 +76,13 @@ public class GathererCommand {
         Runtime r = Runtime.getRuntime();
         try {
             Process p = r.exec(args.toArray(new String[0]));
+            PrintWriter stdin = new PrintWriter(p.getOutputStream());
+            stdin.println(new GathererJsonIO().toJson(vhms));
+            stdin.flush();
+            stdin.close();
+
             InputStreamReader irr = new InputStreamReader(p.getInputStream());
             hosts = new GathererJsonIO().readHosts(irr);
-            PrintWriter stdin = new PrintWriter(p.getOutputStream());
-            stdin.print(new GathererJsonIO().toJson(vhms));
 
             int exitcode = p.waitFor();
             if (exitcode != 0) {
