@@ -1,33 +1,33 @@
 {
     "1": {
         "10.162.186.111": {
-            "cores": 8.0,
             "cpuArch": "x86_64",
             "cpuDescription": "AMD Opteron(tm) Processor 4386",
+            "cpuMhz": 3092.212727,
             "cpuVendor": "amd",
-            "ghz": 3.092212727,
             "name": "10.162.186.111",
             "os": "VMware ESXi",
             "osVersion": "5.5.0",
-            "ram": 65512,
-            "sockets": 2,
-            "threads": 1,
+            "ramMb": 65512,
+            "totalCpuCores": 16,
+            "totalCpuSockets": 2,
+            "totalCpuThreads": 16,
             "vms": {
                 "vCenter": "564d6d90-459c-2256-8f39-3cb2bd24b7b0"
             }
         },
         "10.162.186.112": {
-            "cores": 8.0,
             "cpuArch": "x86_64",
             "cpuDescription": "AMD Opteron(tm) Processor 4386",
+            "cpuMhz": 3092.212639,
             "cpuVendor": "amd",
-            "ghz": 3.092212639,
             "name": "10.162.186.112",
             "os": "VMware ESXi",
             "osVersion": "5.5.0",
-            "ram": 65512,
-            "sockets": 2,
-            "threads": 1,
+            "ramMb": 65512,
+            "totalCpuCores": 16,
+            "totalCpuSockets": 2,
+            "totalCpuThreads": 16,
             "vms": {
                 "49737e0a-c9e6-4ceb-aef8-6a9452f67cb5": "4230c60f-3f98-2a65-f7c3-600b26b79c22",
                 "5a2e4e63-a957-426b-bfa8-4169302e4fdb": "42307b15-1618-0595-01f2-427ffcddd88e",
@@ -39,57 +39,56 @@
     },
     "9c84c119-cb23-439b-b479-327e81d53988": {
         "abcdefg.suse.de": {
-            "cores": 8.0,
             "cpuArch": "x86_64",
             "cpuDescription": "AMD Opteron(tm) Processor 6128 HE",
+            "cpuMhz": 2000.139594,
             "cpuVendor": "amd",
-            "ghz": 2.000139594,
             "name": "abcdefg.suse.de",
             "os": "VMware ESXi",
             "osVersion": "5.5.0",
-            "ram": 32766,
-            "sockets": 2,
-            "threads": 1,
+            "ramMb": 32766,
+            "totalCpuCores": 16,
+            "totalCpuSockets": 2,
+            "totalCpuThreads": 16,
             "vms": {
                 "SUSE-Manager-Reference": "564d09ec-41b9-c894-566b-30248333e6d3",
                 "SUSE-Manager-Testsuite1": "564d3f2d-4a22-723a-839f-5fd8912ca2ca",
-                "VMware vCenter Server Appliance": "564d2054-1fec-4f83-52fe-fe25d6199e3d",
-                "x32vt1301": "564db0e5-d359-31f7-2bae-755c960e3fd6",
-                "x32vt1302": "564d638d-95c1-c9ab-f838-6bb7295b8f37",
-                "x64vt1301": "564d1d5d-5416-07af-cffd-f4b676e83a4d",
-                "x64vt1302": "564defaf-ee96-b7cf-87b8-4d0fa21b7321"
+                "ix32vt1301": "564db0e5-d359-31f7-2bae-755c960e3fd6",
+                "ix32vt1302": "564d638d-95c1-c9ab-f838-6bb7295b8f37",
+                "ix64vt1301": "564d1d5d-5416-07af-cffd-f4b676e83a4d",
+                "ix64vt1302": "564defaf-ee96-b7cf-87b8-4d0fa21b7321"
             }
         }
     },
     "my-suse-cloud": {
         "a1-48.d3.cloud.suse.de": {
-            "cores": 6,
             "cpuArch": "x86_64",
             "cpuDescription": "Opteron_G3",
+            "cpuMhz": 0,
             "cpuVendor": "AMD",
-            "ghz": 0,
             "name": "a1-48.d3.cloud.suse.de",
             "os": "QEMU",
             "osVersion": 1004002,
-            "ram": 32232,
-            "sockets": 1,
-            "threads": 1,
+            "ramMb": 32232,
+            "totalCpuCores": 6,
+            "totalCpuSockets": 1,
+            "totalCpuThreads": 1,
             "vms": {}
         },
         "a3-c2.d3.cloud.suse.de": {
-            "cores": 6,
             "cpuArch": "x86_64",
             "cpuDescription": "Opteron_G3",
+            "cpuMhz": 0,
             "cpuVendor": "AMD",
-            "ghz": 0,
             "name": "a3-c2.d3.cloud.suse.de",
             "os": "QEMU",
             "osVersion": 1004002,
-            "ram": 64487,
-            "sockets": 1,
-            "threads": 1,
+            "ramMb": 64487,
+            "totalCpuCores": 6,
+            "totalCpuSockets": 1,
+            "totalCpuThreads": 1,
             "vms": {
-                "instance-00000016": "23313215-a6a1-4fd5-b88b-070a0ccac65d"
+                "instance-00000016": "e17366ac-e8e0-48e1-9af4-0044967733a0"
             }
         }
     }
