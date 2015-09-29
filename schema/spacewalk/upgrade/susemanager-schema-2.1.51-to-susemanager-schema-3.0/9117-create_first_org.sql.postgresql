@@ -160,6 +160,13 @@ begin
                 select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
                         sgt.id, 1
                 from rhnServerGroupType sgt
+                where sgt.label = 'saltstack_entitled';
+
+        insert into rhnServerGroup
+                ( id, name, description, group_type, org_id )
+                select nextval('rhn_server_group_id_seq'), sgt.name, sgt.name,
+                        sgt.id, 1
+                from rhnServerGroupType sgt
                 where sgt.label = 'virtualization_host';
 
 end
