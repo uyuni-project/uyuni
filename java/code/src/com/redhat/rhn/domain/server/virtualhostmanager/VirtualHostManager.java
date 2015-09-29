@@ -18,6 +18,8 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.Server;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -35,12 +37,14 @@ public class VirtualHostManager extends BaseDomainHelper {
     private String gathererModule;
     private Credentials credentials;
     private Set<VirtualHostManagerConfig> configs;
+    private Set<Server> servers;
 
     /**
      * Constructor
      */
     public VirtualHostManager() {
         configs = new HashSet<>();
+        servers = new HashSet<>();
     }
 
     /**
@@ -139,6 +143,29 @@ public class VirtualHostManager extends BaseDomainHelper {
         this.configs = configsIn;
     }
 
+    /**
+     * Get the set of servers managed by this virtual host manager
+     * @return set of servers
+     */
+    public Set<Server> getServers() {
+        return this.servers;
+    }
+
+    /**
+     * Sets the set of servers managed by this virtual host manager
+     * @param serversIn set of servers
+     */
+    public void setServers(Set<Server> serversIn) {
+        this.servers = serversIn;
+    }
+
+    /**
+     * Add a server to the set of managed server by this virtual host manager
+     * @param serverIn a server
+     */
+    public void addServer(Server serverIn) {
+        this.servers.add(serverIn);
+    }
     /**
      * {@inheritDoc}
      */
