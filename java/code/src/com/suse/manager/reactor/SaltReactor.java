@@ -24,6 +24,8 @@ import com.suse.saltstack.netapi.event.EventStream;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+
 import javax.websocket.CloseReason;
 
 /**
@@ -66,7 +68,11 @@ public class SaltReactor implements EventListener {
     public void stop() {
         isStopped = true;
         if (eventStream != null) {
-            eventStream.close();
+            try {
+                eventStream.close();
+            } catch (IOException e) {
+                LOG.error("Error stopping the salt reactor", e);
+            }
         }
     }
 
