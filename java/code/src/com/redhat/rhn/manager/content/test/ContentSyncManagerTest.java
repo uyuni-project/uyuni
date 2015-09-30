@@ -116,7 +116,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // Update channel information from the xml file
             ContentSyncManager csm = new ContentSyncManager();
-            csm.setChannelsXML(channelsXML);
+            ContentSyncManager.setChannelsXML(channelsXML);
             csm.updateChannelsInternal(null);
 
             // Verify channel attributes
@@ -722,7 +722,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             // List channels and verify status
             ContentSyncManager csm = new ContentSyncManager();
-            csm.setChannelsXML(channelsXML);
+            ContentSyncManager.setChannelsXML(channelsXML);
             List<MgrSyncChannel> channels = csm.listChannels();
             for (MgrSyncChannel c : channels) {
                 if (StringUtils.isBlank(c.getSourceUrl())) {
@@ -884,7 +884,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testAddChannelNoSubscriptions() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(channelsXML);
+        ContentSyncManager.setChannelsXML(channelsXML);
         try {
             // Reset all channel subscriptions
             List<String> productClasses = new ArrayList<String>();
@@ -919,7 +919,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     public void testAddChannel() throws Exception {
         File channelsXML = new File(TestUtils.findTestData(CHANNELS_XML).getPath());
         ContentSyncManager csm = new ContentSyncManager();
-        csm.setChannelsXML(channelsXML);
+        ContentSyncManager.setChannelsXML(channelsXML);
         try {
             // Manually create channel object as parsed from channels.xml
             MgrSyncChannel xmlChannel = new MgrSyncChannel();
