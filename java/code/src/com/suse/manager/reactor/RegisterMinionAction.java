@@ -113,5 +113,8 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
         }
+        finally {
+            LOG.info("Finished minion registration: " + minionId);
+        }
     }
 }
