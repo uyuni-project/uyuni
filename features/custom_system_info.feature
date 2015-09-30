@@ -35,7 +35,7 @@ Feature: Test custom system info key value pairs
     When I follow this client link
     And I follow "Custom Info"
     And I follow "Edit this value"
-    And I should see a "Edit Custom Info Key" text
+    And I should see a "Edit Custom Value" text
     And I enter "key-value-edited" as "value"
     And I click on "Update Key"
     Then I should see a "key-label" text
