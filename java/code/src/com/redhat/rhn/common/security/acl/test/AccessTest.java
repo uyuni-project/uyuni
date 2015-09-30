@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -200,7 +201,34 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     }
 
+    /**
+     * Test ACL: system_has_salt_entitlement()
+     * @throws Exception in case of an error
+     */
+    public void testAclSystemHasSaltStackEntitlement() throws Exception {
+        Map<String, Object> context = new HashMap<>();
+        User user = UserTestUtils.findNewUser("testUser",
+                "testOrg" + this.getClass().getSimpleName());
 
+        // Check with a salt entitled system
+        Server s = ServerFactoryTest.createTestServer(user, true,
+                ServerConstants.getServerGroupTypeSaltStackEntitled());
+        context.put("sid", new String[] {s.getId().toString()});
+        context.put("user", user);
+        assertTrue(acl.evalAcl(context, "system_has_salt_entitlement()"));
+
+        // Change the base entitlement to MANAGEMENT
+        s.setBaseEntitlement(EntitlementManager.MANAGEMENT);
+        context.put("sid", new String[] {s.getId().toString()});
+        context.put("user", user);
+        assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
+
+        // Check with an unentitled system
+        s = ServerFactoryTest.createUnentitledTestServer(user, true,
+                ServerFactoryTest.TYPE_SERVER_NORMAL, new Date());
+        context.put("sid", new String[] {s.getId().toString()});
+        assertFalse(acl.evalAcl(context, "system_has_salt_entitlement()"));
+    }
 
     public void testUnimplementedMethods() {
 
