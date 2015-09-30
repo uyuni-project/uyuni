@@ -23,3 +23,7 @@ CREATE TABLE suseServerVirtualHostManager
 ENABLE ROW MOVEMENT
 ;
 
+CREATE UNIQUE INDEX suse_svhm_sid_vhmid_uq
+ON suseServerVirtualHostManager (server_id, vhmserver_id)
+TABLESPACE [[8m_tbs]];
+
