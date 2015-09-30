@@ -2157,6 +2157,12 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Minions">
         <source>Minions</source>
       </trans-unit>
+      <trans-unit id="Onboarding">
+        <source>Onboarding</source>
+      </trans-unit>
+      <trans-unit id="Remote Commands">
+        <source>Remote Commands</source>
+      </trans-unit>
       <trans-unit id="minions.all">
         <source>All Minions</source>
       </trans-unit>
