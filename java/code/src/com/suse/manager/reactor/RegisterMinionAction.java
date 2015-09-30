@@ -109,12 +109,10 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             // Assign the SaltStack base entitlement by default
             server.setBaseEntitlement(
                     EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
+            LOG.info("Finished minion registration: " + minionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
-        }
-        finally {
-            LOG.info("Finished minion registration: " + minionId);
         }
     }
 }
