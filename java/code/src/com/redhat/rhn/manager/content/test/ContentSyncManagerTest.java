@@ -59,7 +59,6 @@ import com.suse.scc.model.SCCSubscription;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
