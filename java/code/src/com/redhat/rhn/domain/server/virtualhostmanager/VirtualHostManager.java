@@ -166,6 +166,15 @@ public class VirtualHostManager extends BaseDomainHelper {
     public void addServer(Server serverIn) {
         this.servers.add(serverIn);
     }
+
+    /**
+     * Remove a server from the set of managed server by this virtual host manager
+     * @param serverIn a server
+     */
+    public void removeServer(Server serverIn) {
+        this.servers.remove(serverIn);
+    }
+
     /**
      * {@inheritDoc}
      */

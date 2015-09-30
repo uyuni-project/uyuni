@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SoftwareCrashDto;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
@@ -293,6 +294,24 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * lookup System with specified name which are foreign_entitled
+     *
+     * @param name the system name
+     * @return server corresponding to the given machine_id
+     */
+    public static Server lookupForeignSystemByName(String name) {
+        Session session = getSession();
+        Criteria criteria = session.createCriteria(Server.class);
+        criteria.add(Restrictions.eq("name", name));
+        for (Server server : (List<Server>) criteria.list()) {
+            if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
+                return server;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Lookup Servers by their ids
      * @param ids the ids to search for
      * @return the Servers found
@@ -430,6 +449,23 @@ public class ServerFactory extends HibernateFactory {
                 .setString("label", label)
                 // Retrieve from cache if there
                 .setCacheable(true).uniqueResult();
+    }
+
+    /**
+     * Lookup a ServerArch by its name
+     * @param name The name to search for
+     * @return The first ServerArch found
+     */
+    public static ServerArch lookupServerArchByName(String name) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        List<ServerArch> archs = singleton.listObjectsByNamedQuery(
+                "ServerArch.findByName",
+                params);
+        if (archs != null && archs.size() > 0) {
+            return archs.get(0);
+        }
+        return null;
     }
 
     /**
