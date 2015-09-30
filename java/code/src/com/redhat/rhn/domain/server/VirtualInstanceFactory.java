@@ -248,6 +248,18 @@ public class VirtualInstanceFactory extends HibernateFactory {
     }
 
     /**
+     * Returns the requested virtual instance type.
+     *
+     * @param label the type label
+     * @return The type or null
+     */
+    public VirtualInstanceType getVirtualInstanceType(String label) {
+        return (VirtualInstanceType)getSession().getNamedQuery(
+                "VirtualInstanceType.findByLabel").setString("label", label)
+                .setCacheable(true).uniqueResult();
+    }
+
+    /**
      * Returns the running state.
      *
      * @return The running state
