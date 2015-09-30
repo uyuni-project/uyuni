@@ -16,16 +16,22 @@ package com.suse.manager.webui.services.impl;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.AuthModule;
+import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 import com.suse.saltstack.netapi.calls.WheelResult;
+import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
+import com.suse.saltstack.netapi.calls.modules.Match;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.runner.Manage;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 import com.suse.saltstack.netapi.client.SaltStackClient;
 import com.suse.saltstack.netapi.config.ClientConfig;
+import com.suse.saltstack.netapi.datatypes.target.Glob;
 import com.suse.saltstack.netapi.datatypes.target.MinionList;
+import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
+import com.suse.saltstack.netapi.parser.JsonParser;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -204,6 +210,36 @@ public enum SaltAPIService implements SaltService {
                     Pkg.infoInstalled(), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return packages.get(minionId);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, String> runRemoteCommand(Target<?> target, String cmd) {
+        try {
+            Map<String, String> result = SALT_CLIENT.callSync(
+                    Cmd.run(cmd), target,
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Boolean> match(String target) {
+        try {
+            Map<String, Boolean> result = SALT_CLIENT.callSync(
+                    Match.glob(target), new Glob(target),
+                    SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
+            return result;
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);

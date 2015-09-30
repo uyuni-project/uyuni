@@ -30,7 +30,11 @@
   </rhn-tab>
   <rhn-tab name="Systems" url="/rhn/systems/Overview.do">
     <rhn-tab name="Overview" url="/rhn/systems/Overview.do"/>
-    <rhn-tab name="Minions" url="/rhn/manager/minions"/>
+    <rhn-tab name="Minions" url="/rhn/manager/minions">
+      <rhn-tab-directory>/rhn/manager/minions</rhn-tab-directory>
+      <rhn-tab name="Onboarding" url="/rhn/manager/minions"/>
+      <rhn-tab name="Remote Commands" url="/rhn/manager/minions/cmd"/>
+    </rhn-tab>
     <rhn-tab name="Systems" url="/rhn/systems/SystemList.do">
       <rhn-tab-directory>/rhn/systems/details</rhn-tab-directory>
       <rhn-tab name="All" url="/rhn/systems/SystemList.do"/>

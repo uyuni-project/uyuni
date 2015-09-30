@@ -16,6 +16,7 @@ package com.suse.manager.webui.services;
 
 import com.suse.saltstack.netapi.calls.modules.Pkg;
 import com.suse.saltstack.netapi.calls.wheel.Key;
+import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 
 import java.util.List;
@@ -99,4 +100,22 @@ public interface SaltService {
      * @return the event stream
      */
     EventStream getEventStream();
+
+    /**
+     * Run a remote command on a given minion.
+     *
+     * @param target the target
+     * @param cmd the command
+     * @return the output of the command
+     */
+    Map<String, String> runRemoteCommand(Target<?> target, String cmd);
+
+    /**
+     * Match the salt minions against a target glob.
+     *
+     * @param target the target glob
+     * @return a map from minion name to boolean representing if they matched the target
+     */
+    Map<String, Boolean> match(String target);
+
 }

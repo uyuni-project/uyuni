@@ -14,11 +14,13 @@
  */
 package com.suse.manager.webui;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.manager.webui.utils.RouteWithUser;
 
@@ -63,6 +65,7 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l10n", LocalizationService.getInstance());
+        sharedVariables.put("isDevMode", Config.get().getBoolean("java.development_environment"));
         JadeConfiguration config = jade.configuration();
         config.setSharedVariables(sharedVariables);
 
@@ -71,6 +74,13 @@ public class Router implements SparkApplication {
         Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
         Spark.get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
         Spark.get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
+
+        // Remote commands
+        Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
+
+        //Setup API routes
+        Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
+        Spark.get("/manager/api/minions/match", MinionsAPI::match);
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
