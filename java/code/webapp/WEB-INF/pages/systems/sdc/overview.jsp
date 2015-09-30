@@ -18,7 +18,7 @@
           <rhn:icon type="system-unentitled" /> <bean:message key="sdc.details.overview.unentitled" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/>
         </c:when>
         <c:otherwise>
-          <rhn:require acl="system_has_management_entitlement()">
+          <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
               <c:choose>
                 <c:when test="${systemInactive}">
                   <rhn:icon type="system-unknown" /> <bean:message key="sdc.details.overview.inactive1"/>
@@ -236,7 +236,7 @@
             <td><bean:message key="sdc.details.overview.checkedin"/></td>
             <td><rhn:formatDate humanStyle="calendar" value="${system.lastCheckin}" type="both" dateStyle="short" timeStyle="long"/></td>
           </tr>
-          <rhn:require acl="system_has_management_entitlement()">
+          <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.registered"/></td>
             <td><rhn:formatDate humanStyle="calendar" value="${system.created}" type="both" dateStyle="short" timeStyle="long"/></td>
@@ -317,7 +317,7 @@
                 <bean:message key="none.message"/>
               </c:when>
               <c:otherwise>
-                <rhn:require acl="system_has_management_entitlement()">
+                <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
                 <c:forEach items="${system.entitlements}" var="entitlement">
                  [<c:out value="${entitlement.humanReadableLabel}" />]
                 </c:forEach>

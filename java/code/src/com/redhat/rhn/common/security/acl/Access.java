@@ -240,6 +240,24 @@ public class Access extends BaseHandler {
     }
 
     /**
+     * Check if any system has a SaltStack entitlement.
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system has salt entitlement, false otherwise.
+     */
+    public boolean aclSystemHasSaltEntitlement(Object ctx, String[] params) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
+        Long sid = getAsLong(map.get("sid"));
+        User user = (User) map.get("user");
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
+        return server.hasEntitlement(EntitlementManager.SALTSTACK);
+    }
+
+    /**
      * Uses the sid param to decide if a system is a virtual guest
      * @param ctx Context Map to pass in
      * @param params Parameters to use (unused)

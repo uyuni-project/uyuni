@@ -16,6 +16,7 @@ package com.suse.manager.reactor.test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -65,6 +66,9 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 minion.getServerArch());
         assertEquals(ServerFactory.findContactMethodByLabel("default"),
                 minion.getContactMethod());
+
+        // Verify the entitlement
+        assertEquals(EntitlementManager.SALTSTACK, minion.getBaseEntitlement());
     }
 
     private String getMachineId(String minionId) {

@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
@@ -104,6 +105,11 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setServerInfo(serverInfo);
             server.setRam(((Double) grains.get("mem_total")).longValue());
             ServerFactory.save(server);
+
+            // Assign the SaltStack base entitlement by default
+            server.setBaseEntitlement(
+                    EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
+            LOG.info("Finished minion registration: " + minionId);
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);

@@ -63,7 +63,7 @@ language plpgsql;
 as $$
     begin
         if service_level_in = 'management' then
-            if entitlement_in = 'enterprise_entitled' then
+            if entitlement_in = 'enterprise_entitled' or entitlement_in = 'saltstack_entitled' then
                 return 1;
             else
                 return 0;
@@ -224,6 +224,7 @@ as $$
                       case type_label_in
                        when 'enterprise_entitled' then 'Management'
                        when 'bootstrap_entitled' then 'Bootstrap'
+                       when 'saltstack_entitled' then 'SaltStack'
                        when 'virtualization_host' then 'Virtualization'
                       end  );
 
@@ -276,6 +277,7 @@ as $$
                    case type_label_in
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
+                    when 'saltstack_entitled' then 'SaltStack'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 
@@ -313,6 +315,7 @@ as $$
                    case servergroup.label
                     when 'enterprise_entitled' then 'Management'
                     when 'bootstrap_entitled' then 'Bootstrap'
+                    when 'saltstack_entitled' then 'SaltStack'
                     when 'virtualization_host' then 'Virtualization'
                    end  );
 
@@ -337,12 +340,7 @@ as $$
             where   1=1
                 and sgm.server_id = server_id_in
                 and sg.id = sgm.server_group_id
-                and sgt.id = sg.group_type
-                and sgt.label in (
-                    'enterprise_entitled',
-                    'bootstrap_entitled',
-                    'virtualization_host'
-                    );
+                and sgt.id = sg.group_type;
 
          ent_array varchar[];
 
