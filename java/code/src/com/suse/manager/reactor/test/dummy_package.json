@@ -1,0 +1,42 @@
+{
+    "aaa_base": {
+        "build_date": "2015-03-25T01:49:28Z",
+        "group": "System/Fhs",
+        "description": "This package installs several important configuration files and central scripts.",
+        "license": "GPL-2.0+",
+        "build_host": "sheep16",
+        "url": "https://github.com/openSUSE/aaa_base",
+        "relocations": "(not relocatable)",
+        "install_date": "2015-08-24T05:57:49Z",
+        "summary": "openSUSE Base Package",
+        "source": "aaa_base-13.2+git20140911.61c1681-3.1.src.rpm",
+        "version": "13.2+git20140911.61c1681",
+        "architecture": "x86_64",
+        "signature": "RSA/SHA256, Tue 31 Mar 2015 01:09:25 PM UTC, Key ID 70af9e8139db7c82",
+        "release": "3.1",
+        "vendor": "SUSE LLC <https://www.suse.com/>",
+        "packager": "https://www.suse.com/",
+        "size": "266152",
+        "name": "aaa_base"
+    },
+    "bash": {
+        "build_date": "2014-09-26T07:20:03Z",
+        "group": "System/Shells",
+        "description": "Bash is an sh-compatible command interpreter that executes commands\nread from standard input or from a file.  Bash incorporates useful\nfeatures from the Korn and C shells (ksh and csh).  Bash is intended to\nbe a conformant implementation of the IEEE Posix Shell and Tools\nspecification (IEEE Working Group 1003.2).",
+        "license": "GPL-3.0+",
+        "build_host": "sheep18",
+        "url": "http://www.gnu.org/software/bash/bash.html",
+        "relocations": "(not relocatable)",
+        "install_date": "2015-08-24T05:57:44Z",
+        "summary": "The GNU Bourne-Again Shell",
+        "source": "bash-4.2-75.2.src.rpm",
+        "version": "4.2",
+        "architecture": "x86_64",
+        "signature": "RSA/SHA256, Fri 26 Sep 2014 07:20:45 PM UTC, Key ID 70af9e8139db7c82",
+        "release": "75.2",
+        "vendor": "SUSE LLC <https://www.suse.com/>",
+        "packager": "https://www.suse.com/",
+        "size": "720785",
+        "name": "bash"
+    }
+}
