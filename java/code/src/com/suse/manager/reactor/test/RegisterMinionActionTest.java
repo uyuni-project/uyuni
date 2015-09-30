@@ -34,8 +34,7 @@ import org.jmock.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * Tests for {@link RegisterMinionAction}.
@@ -43,6 +42,7 @@ import java.util.logging.Logger;
 public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
     private Map<String, String> machineIds = new HashMap<>();
+    private static final Logger log = Logger.getLogger(RegisterMinionActionTest.class);
 
     /**
      * Test the minion registration.
@@ -112,7 +112,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
             }
             jsonData = jdata.toString();
         } catch (ClassNotFoundException | IOException ex) {
-            Logger.getLogger(RegisterMinionActionTest.class.getName()).log(Level.SEVERE, null, ex);
+            RegisterMinionActionTest.log.fatal(ex);
         }
 
         return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(jsonData);
