@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.test;
 
+import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -23,11 +24,18 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.reactor.RegisterMinionAction;
 import com.suse.manager.reactor.RegisterMinionEvent;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.saltstack.netapi.calls.modules.Pkg;
+import com.suse.saltstack.netapi.parser.JsonParser;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import org.jmock.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Tests for {@link RegisterMinionAction}.
@@ -47,6 +55,8 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 returnValue(getMachineId(minionId)));
         saltServiceMock.stubs().method("getGrains").with(eq(minionId)).will(
                 returnValue(getGrains(minionId)));
+        saltServiceMock.stubs().method("getInstalledPackageDetails").with(eq(minionId)).will(
+                returnValue(this.getMinionPackages()));
         SaltService saltService = (SaltService) saltServiceMock.proxy();
         RegisterMinionAction action = new RegisterMinionAction(saltService) {};
         action.doExecute(new RegisterMinionEvent(minionId));
@@ -69,6 +79,43 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
         // Verify the entitlement
         assertEquals(EntitlementManager.SALTSTACK, minion.getBaseEntitlement());
+
+        int pkgs = 0;
+        for (InstalledPackage pkg : minion.getPackages()) {
+            String release = null;
+            String version = null;
+            if (pkg.getName().getName().equals("aaa_base")) {
+                release = "3.1";
+                version = "13.2+git20140911.61c1681";
+            } else if (pkg.getName().getName().equals("bash")) {
+                release = "75.2";
+                version = "4.2";
+            }
+
+            assertEquals(pkg.getEvr().getRelease(), release);
+            assertEquals(pkg.getEvr().getVersion(), version);
+            assertNull(pkg.getEvr().getEpoch());
+            assertEquals(pkg.getArch().getName(), "x86_64");
+            pkgs++;
+        }
+        assertEquals(pkgs, 2);
+    }
+
+    private Map<String, Pkg.Info> getMinionPackages() {
+        String jsonData = "{}";
+        try {
+            File channelsXML = new File(TestUtils.findTestData(
+                    "/com/suse/manager/reactor/test/dummy_package.json").getPath());
+            StringBuilder jdata = new StringBuilder();
+            for (String line : Files.readAllLines(channelsXML.toPath())) {
+                jdata.append(line).append("\n");
+            }
+            jsonData = jdata.toString();
+        } catch (ClassNotFoundException | IOException ex) {
+            Logger.getLogger(RegisterMinionActionTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(jsonData);
     }
 
     private String getMachineId(String minionId) {
