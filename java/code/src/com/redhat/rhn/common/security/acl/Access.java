@@ -246,7 +246,8 @@ public class Access extends BaseHandler {
      * @return True if system has salt entitlement, false otherwise.
      */
     public boolean aclSystemHasSaltEntitlement(Object ctx, String[] params) {
-        Map map = (Map) ctx;
+        @SuppressWarnings("unchecked")
+        Map<String, Object> map = (Map<String, Object>) ctx;
         Long sid = getAsLong(map.get("sid"));
         User user = (User) map.get("user");
         Server server = SystemManager.lookupByIdAndUser(sid, user);
