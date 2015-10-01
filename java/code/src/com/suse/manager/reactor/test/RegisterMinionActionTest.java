@@ -34,6 +34,7 @@ import org.jmock.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Tests for {@link RegisterMinionAction}.
@@ -106,17 +107,10 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
     private Map<String, Pkg.Info> getMinionPackages()
             throws IOException,
                    ClassNotFoundException {
-        String jsonData = "{}";
-        File channelsXML = new File(TestUtils.findTestData(
-                "/com/suse/manager/reactor/test/dummy_package.json").getPath());
-        StringBuilder jdata = new StringBuilder();
-        for (String line : Files.readAllLines(channelsXML.toPath())) {
-            jdata.append(line).append("\n");
-        }
-
-        jsonData = jdata.toString();
-
-        return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(jsonData);
+        return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(
+                Files.lines(new File(TestUtils.findTestData(
+                        "/com/suse/manager/reactor/test/dummy_package.json").getPath()
+                ).toPath()).collect(Collectors.joining("\n")));
     }
 
     private String getMachineId(String minionId) {
