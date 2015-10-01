@@ -99,7 +99,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
             assertNull(pkg.getEvr().getEpoch());
             assertEquals(pkg.getArch().getName(), "x86_64");
         }
-        assertEquals(minion.getPackages().size(), 2);
+        assertEquals(2, minion.getPackages().size());
     }
 
     private Map<String, Pkg.Info> getMinionPackages()
