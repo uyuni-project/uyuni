@@ -83,7 +83,6 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         // Verify the entitlement
         assertEquals(EntitlementManager.SALTSTACK, minion.getBaseEntitlement());
 
-        int pkgs = 0;
         for (InstalledPackage pkg : minion.getPackages()) {
             String release = null;
             String version = null;
@@ -99,9 +98,8 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
             assertEquals(pkg.getEvr().getVersion(), version);
             assertNull(pkg.getEvr().getEpoch());
             assertEquals(pkg.getArch().getName(), "x86_64");
-            pkgs++;
         }
-        assertEquals(pkgs, 2);
+        assertEquals(minion.getPackages().size(), 2);
     }
 
     private Map<String, Pkg.Info> getMinionPackages()
