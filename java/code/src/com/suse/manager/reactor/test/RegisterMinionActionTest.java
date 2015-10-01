@@ -94,10 +94,10 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 version = "4.2";
             }
 
-            assertEquals(pkg.getEvr().getRelease(), release);
-            assertEquals(pkg.getEvr().getVersion(), version);
+            assertEquals(release, pkg.getEvr().getRelease());
+            assertEquals(version, pkg.getEvr().getVersion());
             assertNull(pkg.getEvr().getEpoch());
-            assertEquals(pkg.getArch().getName(), "x86_64");
+            assertEquals("x86_64", pkg.getArch().getName());
         }
         assertEquals(2, minion.getPackages().size());
     }
