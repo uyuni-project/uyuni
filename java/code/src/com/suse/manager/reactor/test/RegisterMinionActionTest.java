@@ -34,7 +34,6 @@ import org.jmock.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
 /**
  * Tests for {@link RegisterMinionAction}.
@@ -42,12 +41,15 @@ import org.apache.log4j.Logger;
 public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
 
     private Map<String, String> machineIds = new HashMap<>();
-    private static final Logger log = Logger.getLogger(RegisterMinionActionTest.class);
 
     /**
      * Test the minion registration.
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
-    public void testDoExecute() {
+    public void testDoExecute()
+            throws IOException,
+                   ClassNotFoundException {
         // Register a minion via RegisterMinionAction and mocked SaltService
         Mock saltServiceMock = mock(SaltService.class);
         String minionId = TestUtils.randomString();
@@ -101,19 +103,18 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
         assertEquals(pkgs, 2);
     }
 
-    private Map<String, Pkg.Info> getMinionPackages() {
+    private Map<String, Pkg.Info> getMinionPackages()
+            throws IOException,
+                   ClassNotFoundException {
         String jsonData = "{}";
-        try {
-            File channelsXML = new File(TestUtils.findTestData(
-                    "/com/suse/manager/reactor/test/dummy_package.json").getPath());
-            StringBuilder jdata = new StringBuilder();
-            for (String line : Files.readAllLines(channelsXML.toPath())) {
-                jdata.append(line).append("\n");
-            }
-            jsonData = jdata.toString();
-        } catch (ClassNotFoundException | IOException ex) {
-            RegisterMinionActionTest.log.fatal(ex);
+        File channelsXML = new File(TestUtils.findTestData(
+                "/com/suse/manager/reactor/test/dummy_package.json").getPath());
+        StringBuilder jdata = new StringBuilder();
+        for (String line : Files.readAllLines(channelsXML.toPath())) {
+            jdata.append(line).append("\n");
         }
+
+        jsonData = jdata.toString();
 
         return new JsonParser<>(Pkg.infoInstalled("").getReturnType()).parse(jsonData);
     }
