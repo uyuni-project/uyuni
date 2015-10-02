@@ -204,7 +204,8 @@ public enum SaltAPIService implements SaltService {
                     Pkg.infoInstalled(), new MinionList(minionId),
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
             return packages.get(minionId);
-        } catch (SaltStackException e) {
+        }
+        catch (SaltStackException e) {
             throw new RuntimeException(e);
         }
     }
