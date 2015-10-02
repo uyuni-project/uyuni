@@ -37,6 +37,7 @@ Requires: python-xml
 Requires:    python-simplejson
 %endif
 Requires:    python
+Requires:    file
 
 %description
 spacecmd is a command-line interface to Spacewalk and Satellite servers
