@@ -295,6 +295,7 @@ Requires: /usr/bin/sudo
 This package contains the jar files for the Spacewalk Java web application
 and taskomatic process.
 
+%if 0%{?with_oracle}
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
@@ -313,6 +314,7 @@ Provides: spacewalk-java-jdbc = %{version}-%{release}
 
 %description oracle
 This package contains Oracle database backend files for the Spacewalk Java.
+%endif
 
 %package postgresql
 Summary: PostgreSQL database backend support files for Spacewalk Java
@@ -673,7 +675,9 @@ install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdi
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
+%if 0%{?with_oracle}
 ln -s -f %{_javadir}/ojdbc5.jar $RPM_BUILD_ROOT%{jardir}/ojdbc5.jar
+%endif
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
 install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
 ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
@@ -972,9 +976,11 @@ fi
 %{_datadir}/rhn/classes/log4j.properties
 %{_datadir}/rhn/lib/rhn.jar
 
+%if 0%{?with_oracle}
 %files oracle
 %defattr(644, tomcat, tomcat)
 %{jardir}/ojdbc5.jar
+%endif
 
 %files postgresql
 %defattr(644, tomcat, tomcat)
