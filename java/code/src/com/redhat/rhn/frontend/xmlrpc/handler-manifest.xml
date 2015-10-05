@@ -39,7 +39,7 @@
   <template name="system.provisioning.snapshot" classname="com.redhat.rhn.frontend.xmlrpc.system.provisioning.snapshot.SnapshotHandler"/>
   <template name="system.scap" classname="com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler"/>
   <template name="system.search" classname="com.redhat.rhn.frontend.xmlrpc.system.search.SystemSearchHandler"/>
-  <template name="system.virtualhostmanager" classname="com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager.VirtualHostManagerHandler" />
+  <template name="virtualhostmanager" classname="com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler" />
   <template name="systemgroup" classname="com.redhat.rhn.frontend.xmlrpc.systemgroup.ServerGroupHandler" />
   <template name="taskomatic" classname="com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticHandler" />
   <template name="taskomatic.org" classname="com.redhat.rhn.frontend.xmlrpc.taskomatic.TaskomaticOrgHandler" />
