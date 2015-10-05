@@ -48,7 +48,6 @@ Requires: cobbler >= 2.0.0
 %if 0%{?fedora} >= 22
 Recommends: cobbler20
 %endif
-Requires: dojo
 Requires: dwr >= 3
 Requires: google-gson >= 2.2.4
 Requires: jakarta-commons-el
