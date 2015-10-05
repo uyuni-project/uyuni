@@ -62,7 +62,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param moduleName the name of the Gatherer module
      * @param parameters additional parameters (credentials, paremeters for the gatherer)
      * @throws InvalidParameterException if any parameters are not correct
-     * @return The label of the created Virtual Host Manager
+     * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
@@ -70,9 +70,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "moduleName" "the name of the Gatherer module")
      * @xmlrpc.param #param_desc("parameters", "parameters"
      *         "additional parameters (credentials, paremeters for the gatherer)")
-     * @xmlrpc.returntype string - The label of the created Virtual Host Manager
+     * @xmlrpc.returntype #return_int_success()
      */
-    public String create(User loggedInUser, String label, String moduleName,
+    public int create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
         ensureOrgAdmin(loggedInUser);
         if (StringUtil.nullOrValue(label) == null) {
@@ -86,11 +86,11 @@ public class VirtualHostManagerHandler extends BaseHandler {
                     + " label already exists.");
         }
         try {
-            return VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
-                    loggedInUser.getOrg(),
-                    moduleName,
-                    parameters).getLabel();
-        } catch (InvalidGathererConfigException e) {
+            VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
+                    loggedInUser.getOrg(), moduleName, parameters);
+            return BaseHandler.VALID;
+        }
+        catch (InvalidGathererConfigException e) {
             throw new InvalidParameterException(e.getMessage());
         }
     }
