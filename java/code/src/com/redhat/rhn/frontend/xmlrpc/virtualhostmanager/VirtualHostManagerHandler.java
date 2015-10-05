@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
-import com.redhat.rhn.frontend.xmlrpc.InvalidGathererConfigFaultException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 import com.suse.manager.gatherer.GathererCache;
 import com.suse.manager.model.gatherer.GathererModule;
@@ -62,8 +61,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param label Virtual Host Manager label
      * @param moduleName the name of the Gatherer module
      * @param parameters additional parameters (credentials, paremeters for the gatherer)
-     * @throws InvalidGathererConfigFaultException when the gatherer module
-     * doesn't exist or if some required gatherer parameters are missing
+     * @throws InvalidParameterException if any parameters are not correct
      * @return The label of the created Virtual Host Manager
      *
      * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
@@ -93,7 +91,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
                     moduleName,
                     parameters).getLabel();
         } catch (InvalidGathererConfigException e) {
-            throw new InvalidGathererConfigFaultException(e.getMessage());
+            throw new InvalidParameterException(e.getMessage());
         }
     }
 
