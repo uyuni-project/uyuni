@@ -149,7 +149,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.returntype #array_single("string", "moduleName")
      */
     public Collection<String> listAvailableGathererModules(User loggedInUser) {
-        ensureSatAdmin(loggedInUser);
+        ensureOrgAdmin(loggedInUser);
         return GathererCache.INSTANCE.listAvailableModules();
     }
 
