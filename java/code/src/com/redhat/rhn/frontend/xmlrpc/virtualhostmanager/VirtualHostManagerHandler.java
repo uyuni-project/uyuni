@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.frontend.xmlrpc.system.virtualhostmanager;
+package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager;
 
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
