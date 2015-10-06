@@ -11,8 +11,7 @@ When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
 end
 
 When(/^I delete the key of this client$/) do
-  @this_client_hostname = `hostname -f`.chomp
-  sshcmd("yes | salt-key -d #{@this_client_hostname}")
+  sshcmd("yes | salt-key -d #{$myhostname}")
 end
 
 When(/^I remove possible Salt Master key "(.*?)"$/) do |filename|
@@ -42,8 +41,7 @@ When(/^I list accepted keys at Salt Master$/) do
 end
 
 Then(/^the list of the keys should contain this client's hostname$/) do
-  @this_client_hostname = `hostname -f`.chomp
-  fail if not @output[:stdout].include? @this_client_hostname
+  fail if not @output[:stdout].include? $myhostname
 end
 
 When(/^I accept all Salt unaccepted keys$/) do
@@ -51,8 +49,7 @@ When(/^I accept all Salt unaccepted keys$/) do
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
-  @this_client_hostname = `hostname -f`.chomp
-  @output = sshcmd("salt #{@this_client_hostname} grains.get os")
+  @output = sshcmd("salt #{$myhostname} grains.get os")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
