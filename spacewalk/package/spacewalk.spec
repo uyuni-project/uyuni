@@ -71,8 +71,8 @@ Requires:       spacewalk-config
 Requires:       yum-utils
 Requires:       pxe-default-image
 
-Requires:       python-gatherer
-Recommends:     python-gatherer-VMware
+Requires:       virtual-host-gatherer
+Recommends:     virtual-host-gatherer-VMware
 
 # Requires:       osa-dispatcher
 # Requires:       jabberpy
