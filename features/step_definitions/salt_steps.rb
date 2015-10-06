@@ -63,3 +63,12 @@ end
 Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
   fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "*:#{port}"
 end
+
+# Delete an already registered minion
+When(/^I delete the registered minion/) do
+  steps %[
+    Given I am on the Systems overview page of this client
+    Then I follow "Delete System"
+    And I click on "Delete Profile"
+  ]
+end

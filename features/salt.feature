@@ -34,9 +34,12 @@ Feature: Check if SaltStack is configured and running
     When I wait for "8" seconds
     And I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
+    And I should see this client in spacewalk
 
   Scenario: Check if the Minion key can be deleted
     When I delete the key of this client
+    # This is to clean up for the following tests
+    And I delete the registered minion
     And I restart salt-minion
     And I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
