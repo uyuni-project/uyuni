@@ -15,6 +15,7 @@
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
     </init-param>
+    <async-supported>true</async-supported>
   </filter>
 
 
@@ -24,12 +25,14 @@
     <filter-class>
         com.redhat.rhn.frontend.servlets.EnvironmentFilter
     </filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <!-- Hibernate Session Filter -->
   <filter>
     <filter-name>SessionFilter</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.SessionFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <!-- Sitemesh -->
@@ -38,11 +41,13 @@
     <filter-class>
         com.opensymphony.module.sitemesh.filter.PageFilter
     </filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>AuditLogFilterStruts</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuditLogFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <!-- DumpFilter dumps the entire request to the log file as log debug. -->
@@ -57,26 +62,31 @@
   <filter>
     <filter-name>AuthFilterStruts</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>AuthFilterJsp</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>RedirectFilter</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>AuthFilterSpark</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>LocalizedEnvironmentFilter</filter-name>
     <filter-class>com.redhat.rhn.frontend.servlets.LocalizedEnvironmentFilter</filter-class>
+    <async-supported>true</async-supported>
     <init-param>
       <param-name>encoding</param-name>
       <param-value>UTF-8</param-value>
@@ -86,6 +96,7 @@
   <filter>
     <filter-name>SparkFilter</filter-name>
     <filter-class>spark.servlet.SparkFilter</filter-class>
+      <async-supported>true</async-supported>
     <init-param>
       <param-name>applicationClass</param-name>
       <param-value>com.suse.manager.webui.Router</param-value>
