@@ -41,5 +41,6 @@ Feature: Check if SaltStack is configured and running
     # This is to clean up for the following tests
     And I delete the registered minion
     And I restart salt-minion
+    And I wait for "2" seconds
     And I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname

@@ -40,6 +40,7 @@ Feature: Explore the Minions page
 
   Scenario: Accepted minion shows up as a registered system
     When I restart salt-minion
+    And I wait for "2" seconds
     And I follow "Systems"
     And I follow "Minions"
     Then I should see this client in the Pending section
