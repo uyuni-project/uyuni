@@ -67,6 +67,7 @@
 # Salt related features
 - features/delete_system_profile.feature
 - features/salt.feature
+- features/delete_system_profile.feature
 - features/salt_minions_page.feature
 - features/system_packages.feature
 # End salt related features
