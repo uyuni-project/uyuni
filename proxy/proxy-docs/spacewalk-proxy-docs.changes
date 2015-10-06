@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Feb 04 13:58:59 CET 2015 - mc@suse.de
+
+- version 2.1.0.4-1
+- changed License tag to SPDX format
+
+-------------------------------------------------------------------
+Tue Feb 03 13:23:52 CET 2015 - mc@suse.de
+
+- version 2.1.0.3-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
 Wed May 21 17:03:45 CEST 2014 - mc@suse.de
 
 - version 2.1.0.2-1

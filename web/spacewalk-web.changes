@@ -1,4 +1,74 @@
 -------------------------------------------------------------------
+Wed Sep 23 14:56:25 CEST 2015 - mc@suse.de
+
+- version 2.1.60.13-1
+- remove use of updateUpgradePaths() from external
+- Added sudo user config option and added comments
+
+-------------------------------------------------------------------
+Tue Feb 03 11:45:13 CET 2015 - mc@suse.de
+
+- version 2.1.60.12-1
+- Getting rid of trailing spaces
+- Remove vestige of ctxt-sensitive help, and teach PXT::HTML->link
+  not to link when there is no url
+- Show Proxy tab if system is a proxy even when assigned to cloned
+  channels (bsc#913939)
+- spacewalk-web: add Requires for used perl modules
+- fix perl context-help to notice empty help-url strings
+- s1-sm-systems.html does not exist any more
+- unify style
+
+-------------------------------------------------------------------
+Thu Dec 04 16:21:11 CET 2014 - mc@suse.de
+
+- version 2.1.60.11-1
+- add User Guide to online help pages
+- fix links to monitoring documentation (bsc#906887)
+- clean up remnants of prototype.js, convert to jQuery
+- fix form-field-name for create-notification
+- Remove unused clone_newest_package function
+- fix rhnChannelNewestPackage table by using
+  refresh_newest_package function again
+- improve the layout in case the exception message is large
+- setup wizard: add tooltip to refresh button
+- stop the spinner for the success task
+- link the error message with the tomcat log viewer
+- make the SCC migration/refresh dialog show steps
+- Add a refresh button to the SUSE products page
+
+-------------------------------------------------------------------
+Fri Nov 07 13:02:38 CET 2014 - mc@suse.de
+
+- version 2.1.60.10-1
+- Integrate the refresh dialog with the setup wizard products page
+- Do a refresh only for ISS masters
+- minor updates to strings / wording
+- introduce a check for an empty snapshot tag for ssm
+- minor UI improvements
+
+-------------------------------------------------------------------
+Tue Oct 14 15:16:52 CEST 2014 - mc@suse.de
+
+- version 2.1.60.9-1
+- Add aarch64 and ppc64le to parent-child channel compatibility list
+
+-------------------------------------------------------------------
+Fri Sep 12 15:43:37 CEST 2014 - mc@suse.de
+
+- version 2.1.60.8-1
+- WebUI cloning should use the same SQL query as API
+- update linking and delete old page
+- Use text mode and set editor to read only
+
+-------------------------------------------------------------------
+Tue Jun 17 09:59:36 CEST 2014 - jrenner@suse.de
+
+- version 2.1.60.7-1
+- Remove unused perl code after pages have been ported to java
+- Add development_environment to rhn_web.conf
+
+-------------------------------------------------------------------
 Tue May 27 17:12:58 CEST 2014 - mc@suse.de
 
 - version 2.1.60.6-1

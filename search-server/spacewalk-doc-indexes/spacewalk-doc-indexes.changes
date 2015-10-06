@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Wed Feb 04 10:27:44 CET 2015 - mc@suse.de
+
+- version 2.1.2.3-1
+- create index for the user guide
+- fix License which is GPL-2.0 and Apache-2.0
+
+-------------------------------------------------------------------
+Tue Feb 03 12:05:04 CET 2015 - mc@suse.de
+
+- version 2.1.2.2-1
+- Updating search index
+- Getting rid of trailing spaces in XML
+
+-------------------------------------------------------------------
 Thu Feb 27 15:17:37 CET 2014 - fcastelli@suse.com
 
 - version 2.1.2.1-1

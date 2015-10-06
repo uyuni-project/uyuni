@@ -1,7 +1,386 @@
 -------------------------------------------------------------------
-Wed May 20 13:34:23 UTC 2015 - smoioli@suse.com
+Sun Sep 27 14:44:59 CEST 2015 - mc@suse.de
 
-- compile with JDK7 to match runtime version
+- version 2.1.165.19-1
+- support ssh-push with sudo
+- Fix CVE Audit for LTSS channels by looking at individual
+  packages (bnc#944729)
+- use same regexp for channel name as in CreateChannelCommand (bsc#946248)
+- prevent mojor version service pack updates from 11 to 12
+- display a warning if the update stack is not up-to-date
+- Add NoRouteToHost handling with better output
+- fix output of client events (bsc#935377)
+- fix pagination buttons (bsc#935387)
+- deprecate synchronizeUpgradePaths() XMLRPC
+- provide SCC product to updateUpradePaths for SLE12 migration data
+- parse predecessor_ids from json
+- Organization users page: fix typo (bnc#943283)
+- Do not return a OES repository with null credentials (bsc#937030)
+- Fix queue size: consider possible remainders from last run
+- Log message when finished errata cache for a server or channel
+- Log the current queue size before every job run (DEBUG)
+- Fix link back to the associated channel(bsc#931519)
+
+-------------------------------------------------------------------
+Mon Sep 02 16:00:35 CEST 2015 - mseidl@suse.de
+
+- Prevent creating channels with reserved names (bsc#939349) / (fate#319308)
+
+-------------------------------------------------------------------
+Mon Jun 22 16:00:35 CEST 2015 - jrenner@suse.de
+
+- version 2.1.165.18-1
+- Avoid deadlock in CompareConfigFilesTask when a
+  rhn_channel.update_needed_cache is in progress (bsc#932845)
+- add missing country code
+- Restore the default checksum and architecture when the parent channel is set
+  to None
+- Drop all product/channel relations before populating (bsc#932052)
+- Replace keyword iterator to fix writing support information (bsc#933675)
+- TaskoXmlRpcHandler: dead code removed
+- products.json updated from latest SCC version
+- Deserialize BLOBs correctly across databases
+- Revert "Java Eula database classes moved to Hibernate, fixes BLOB issue"
+  (bsc#930686)
+- Do not remove tasks from the database during getCandidates() (bsc#932052)
+- force taskomatic to use UTF-8 (bsc#932652)
+
+-------------------------------------------------------------------
+Fri May 29 10:35:46 CEST 2015 - mc@suse.de
+
+- version 2.1.165.17-1
+- wait for current transaction end
+- EXISTS is an Oracle keyword, don't use it casually
+- Scheduling remote command for large system sets is slow
+- move auto-errata updates into separate taskomatic task
+- improve system overview list performance
+- Implement a "default" kickstart script name for edit link
+- do not ignore errata with same package version
+- reduce number of system lookups
+- Get rid of IE7 compatibility mode enforcement
+- Unify profile creation/update with one submit button instead of two
+- Fix file input control alignment issue with form-control (bsc#873203)
+- Update specfile to compile with Java 7
+- add SLE11-Public-Cloud-Module (bsc#914606)
+- Change Activation Key Child Channels from select to checkboxes (bsc#859645)
+- Fix NPEx when updating distribution and missing cobbler entry (bsc#919722)
+- Provide channels and upgrade paths for SLE11 SP4 products (FATE#318261)
+- Fix broken icon in rhn/help/ForgotCredentials.do (bsc#915122)
+- Allow setting the contact method for systems via API (FATE#314858)
+- Make system.getDetails() return the contact method
+- Add support for setting contact_method on activation keys (FATE#314858)
+- implement tilde compare in java code
+- Return PATCHED if at least one patch is installed (bsc#926146)
+- SatCluster: strip ipv6 zone id from vip6 attribute
+
+-------------------------------------------------------------------
+Mon May 11 10:30:28 CEST 2015 - mc@suse.de
+
+- version 2.1.165.16.1-1
+- fix XML RPC API External Entities file disclosure
+  CVE-2014-8162 (bsc#922525)
+
+-------------------------------------------------------------------
+Wed Apr 08 11:20:10 CEST 2015 - mc@suse.de
+
+- version 2.1.165.16-1
+- HttpClientAdapter: fall-back to Basic auth from NTLM when both
+  are supported (bsc#926319)
+
+-------------------------------------------------------------------
+Tue Mar 31 14:57:06 CEST 2015 - mc@suse.de
+
+- version 2.1.165.15-1
+- Copyright texts updated to SUSE LLC
+- add SLE12-SAP product (bsc#922744)
+- SCCRepository: Only NOT NULL database columns can be mapped to primitive
+  types in Hibernate (bsc#922313)
+- change evr parsing for repodata primary.xml dependencies
+- Create only one errata cache worker per server (bsc#918994)
+- findKickstartPackageToInstall: in case multiple packages are available, pick
+  the most recent (bsc#924118)
+- update properly necessary cobbler fields when changing ks tree
+- close auto errata update timing hole
+- fixing typo: sync-kickstars -> sync-kickstart
+- IE11/WinServer2008/CompatMode fix
+- Missing refactored SQL query for system available packages (bsc#913400)
+- fixing weird path to action chain page (bsc#921720)
+- fix subscription check in case of an unset start date (bsc#918220)
+- Avoid high CPU loads with SSH push (bsc#920687)
+- Refresh errata cache asynchronously when subscribing server to channel
+- ErrataQueue shouldn't fail if server is subscribed to other org's
+  channel
+- Documentation changes - fix name and refer to RFC.
+- avoid deadlock if you call mergePackages after mergeErrata
+- Fix malformed repo metadata (bsc#920400)
+- update sles_register snippets to fix trusting the CA certificate on SLE12
+- hasPreflag(): improve documentation about which rpm flags are evaluated
+- fix generating pre-equires (pre="1" in metadata)
+- fix typo in Web UI (bsc#918151)
+- Revert fixing of versions, those should be regarded as historically correct
+  rather than inconsistent (bsc#910509)
+- Catch NumberFormatException and send error to the client (bsc#916177)
+- Do not generate solv files
+
+-------------------------------------------------------------------
+Tue Feb 03 12:10:48 CET 2015 - mc@suse.de
+
+- version 2.1.165.14-1
+- Fix style of kickstart wizard
+- Fix style of Create Kickstart Profile
+- Make mgr-sync fail in case of IO errors while sending
+  HEAD requests to OES
+- Do not swallow exceptions, rethrow ContentSyncException instead
+- make config file upload on FileDetails work
+- prevent NPE on activationkeys/Edit.do page
+- directories and symlinks cannot be binary
+- fix menu structure
+- Getting rid of Tabs and trailing spaces
+- make sure columns are named according to the dto attributes
+- fix failures due to uninitialized log it
+- Fix auditlog config yaml syntax (bnc#913221)
+- Show Proxy tab if system is a proxy even when assigned to cloned
+  channels (bsc#913939)
+- consider no_proxy setting
+- fixed uncaught error which prevent correct error handling
+  (bnc#858971)
+- fix NPE by setting max_members to 0 instead of NULL (bsc#912035)
+- Use Hibernate-friendly equals() and hashCode() in Org
+- CVE-2014-7811: fix more XSS bugs (bsc#902915)
+- set bootstrap entitlements to INFINITE in all organizations
+- Fix basic authentication for HTTP proxies (bsc#912057)
+- SCCRepository: save SCC ID in the database as well
+- SCCRepository: save to database with proper sequence
+- Accept repos with same SCC ID and different URLs (bsc#911808)
+- Avoid mgr-sync-refresh failure because clear_log_id was not called
+  (bnc#911166)
+- New API call: system.scheduleDistUpgrade()
+- New API call: system.scheduleSPMigration() (FATE#314785, FATE#314340)
+
+-------------------------------------------------------------------
+Wed Jan 14 14:43:29 CET 2015 - mc@suse.de
+
+- fix XSS in system-group (CVE-2014-7812) (bsc#912886)
+
+-------------------------------------------------------------------
+Thu Dec 18 13:39:37 CET 2014 - mc@suse.de
+
+- version 2.1.165.13-1
+- fix style of a lot of pages
+- Fix extra (eg.Select All) buttons display on rhn:list and
+  make it consistent with new rl:list (bnc#909724)
+- Fix List tag missing submit parameter for "Select All" and others
+  (bnc#909724)
+- Sort filelist in configfile.compare event history alphabetically
+  (bsc#910243)
+- fix setting powermanagement values
+- let system set manager csv contain add-on entitlements
+- allow filtering RHEL7 errata
+- add some missing strings
+- allow removing Cobbler System Profile on  the power management page
+- add csrf check for the power management page
+- No ISE on provisioning page when no base channel
+- Make the base channel ssm action asynchronous
+- Commit after each system deletion to avoid deadlocks
+- Allow paranthesis in input form descriptions
+- Allow paranthesis in system group description (bsc#903064)
+- Provide new API documentation in PDF format (bsc#896029)
+- Update the example scripts section (bsc#896029)
+- Fix grammar and typos in API code example descriptions
+- Fix xmlrpc.doc for sync.content namespace (bsc#896029)
+- Raise proper exception when Taskomatic is not running
+- Fixed wording issues on package lock page (bsc#880022)
+- made text more clear for package profile sync (bsc#884350)
+
+-------------------------------------------------------------------
+Mon Dec 08 13:33:20 CET 2014 - jrenner@suse.de
+
+- version 2.1.165.12-1
+- fix adding OES11 channels (bsc#908786)
+
+-------------------------------------------------------------------
+Thu Dec 04 16:35:53 CET 2014 - mc@suse.de
+
+- version 2.1.165.11-1
+- throw channel name exception if name is already used (bnc#901675)
+- Don't commit when XMLRPCExceptions are thrown (bsc#908320)
+- Remove "Select All" button from system currency report (bsc#653265)
+- Fix documentation search (bsc#875452)
+- add API listAutoinstallableChannels() (bsc#887879)
+- Avoid ArrayIndexOutOfBoundsException with invalid URLs (bsc#892711)
+- Avoid NumberFormatException in case of invalid URL (bsc#892711)
+- Lookup kickstart tree only when org is found (bsc#892711)
+- Fix NPE on GET /rhn/common/DownloadFile.do (bsc#892711)
+- Hide empty select boxes
+- Always place tips close to the inputs
+- Provisioning options page: full-width textboxes
+- Port of the advanced provisioning option page to Bootstrap (bnc#862408)
+- New installations should use SCC as default customer center
+- bnc#907337: mgr-sync refresh sets wrong permissions on JSON files
+- fix link to macro documentation (bsc#895961)
+- Forward to "raw mode" page in case this is an uploaded profile (bsc#904841)
+- Enlarge big text area to use more available screen space (bnc#867836)
+- add User Guide to online help pages
+- fix links to monitoring documentation (bsc#906887)
+- check memory settings for virtual SUSE systems
+- fix install type detection (bsc#875231)
+- point "Register Clients" link to "Client Configuration Guide" (bsc#880026)
+- change order of installer type - prefer SUSE Linux (bsc#860299)
+- fix ISE when clicking system currency (bnc#905530)
+- Set cobbler hostname variable when calling system.createSystemRecord
+  (bnc#904699)
+- fix wrong install=http://nullnull line when calling system.createSystemRecord
+  (bnc#904699)
+- apidoc generator does not know #array("something")
+- impove style of Software Crash pages
+- fix js injection on /rhn/systems/Search.do page
+- fixing javascript errors
+- Config file url should update when you create new revision
+- xml escape some pages
+- user does not need to be a channel admin to manage a channel
+- listActivationKeys should return empty list if no keys visible
+- cannot select code from disabled textarea in Firefox, use readonly editor
+- Fix entitled_systems.jsp num-per-page ISE
+- we should consider if text <> binary has changed for config files
+- all API methods should be able to find shared channels
+- adapt the page to adding/cloning errata
+- Explain snapshot/rollback behavior better (bsc#808947)
+- fix patch syncing - prevent hibernate.NonUniqueObjectException and rollback
+  (bsc#903880)
+- Remove "Add Selected to SSM" from system overview page (bsc#901776)
+- fix CVE audit in case of multiversion package installed and patch in multi
+  channels (bsc#903723)
+- Update channel family membership when channel is updated (bsc#901193)
+- SCCWebClient: log SCC data files as received to files
+- bnc#901927: Add log warning if uploaded file size > 1MB
+- fix channel package compare (bsc#904690)
+- fix automatic configuration file deployment via snippet (bsc#898426)
+- Avoid NPE when using 'from-dir', regression introduced with SCC caching
+- Add support for SLE12 and refactor kernel and initrd default paths finders.
+- Fix wizard mirror credentials side help to point to SCC
+- make the SCC migration/refresh dialog show steps
+- Show alert message about disabling cron jobs
+- Schedule sync of all vendor channels in MgrSyncRefresh job
+- Add client hostname or IP to log messages (bsc#904732)
+- hide email field for mirror credentials when on SCC
+- we do not want to use cascade for evr and name attributes of
+  PackageActionDetails
+- AccessChains belong to their creator, only
+- add csv export for /rhn/errata/manage/PublishedErrata.do
+- add csv output for /rhn/systems/details/packages/profiles/CompareSystems.do
+
+-------------------------------------------------------------------
+Thu Nov 27 11:01:49 UTC 2014 - jrenner@suse.com
+
+- Fixed copying text from kickstart snippets (bsc#880087)
+
+-------------------------------------------------------------------
+Wed Nov 12 11:12:53 CET 2014 - mc@suse.de
+
+- version 2.1.165.10-1
+- Sync correct repos (bnc#904959)
+
+-------------------------------------------------------------------
+Fri Nov 07 13:28:54 CET 2014 - mc@suse.de
+
+- version 2.1.165.9-1
+- No refresh if this server is an ISS slave
+- Refresh is needed only if we are migrated to use SCC yet
+- Integrate the refresh dialog with the setup wizard products page
+- Implement new "mgr-sync-refresh" taskomatic job
+- Introduce caching of repositories read from SCC
+- Fix pxt page link to point to the ported version of that page (bsc#903720)
+- Fix Null Pointer Exception: bare-metal systems do not have a base channel
+- Only show the SMT warning if we are using from-mirror or from-dir
+- add progress and reload page after finish
+- do not allow to cancel the kickstart once completed
+- minor UI improvements
+- Show ppc64le profiles to ppc systems
+- fix system.schedulePackageInstall APIdoc
+- fix javascript injections
+- add id to errata.getDetails APIdoc
+- Removed bogus label-limit from SDC Remote Cmd pg
+- Don't schedule a remote-cmd if the system can't execute it
+- check if user can see activation key
+- schedule configuration actions asynchronously
+- initial SCC integration
+
+-------------------------------------------------------------------
+Mon Oct 27 15:20:08 CET 2014 - mc@suse.de
+
+- fix various XSS issues CVE-2014-3654 (bsc#902182)
+  CVE-2014-3654-cobbler.patch
+  CVE-2014-3654-sort-attributes.patch
+
+-------------------------------------------------------------------
+Thu Oct 16 10:09:54 UTC 2014 - smoioli@suse.com
+
+- correctly apply patches to multiple systems in SSM (bsc#898242)
+
+-------------------------------------------------------------------
+Tue Oct 14 15:01:36 CEST 2014 - mc@suse.de
+
+- version 2.1.165.8-1
+- make parsing repo filters more robust
+- package details page should not list channels we can't see
+- fix file descriptor leak in system.crash.getCrashFile
+- specify usage of java.config_file_edit_size option
+- add more documentation to Power Management page
+- power management - make system identifier clearable
+- do not clone custom errata when merging
+- check, whether referenced kickstart profile and crypto keys are
+  available
+- display error messages in red
+- re-set number of config file diffs correctly
+- improving 'All Custom Channels' queries
+- move Mirror Credentials from config file into DB
+- ping SCC for testing proxy status if SCC is enabled
+- Implement the API methods to work with mirror credentials
+- fix CVE Audit when some packages of a patch are already installed
+  (bnc#899266)
+- broken checkbox layout in /rhn/channels/manage/Sync.do?cid=xxx
+- Download CSV button does not export all columns ("Base Channel" missing)
+  (bnc#896238)
+- support SCC API v4
+- support token auth with updates.suse.com
+- Official repo host is now updates.suse.com (after channels.xml change)
+- support list/add channels and products with SCC
+
+-------------------------------------------------------------------
+Fri Sep 12 15:21:22 CEST 2014 - mc@suse.de
+
+- version 2.1.165.7-1
+- SCC client for managing products and channels
+- fix XSS flaws - CVE-2014-3595 (bnc#896012)
+- implement SLE12 style of update tag handling while generating updateinfo
+- show package link if package is in database
+- Custom info empty value added (java/api)
+- check if action chain with same name already exists
+- remove duplicate Summary and Group entries
+- ISE when activation key has no description.
+- create /software/packages/Dependencies page in Java
+- add queries for weak package dependencies to Java
+- auto errata updates have to wait for errataCache to finish
+- fix NullPointerException
+- ssm config actions should show details for specific system in
+  history
+- ISE comparing config files in SSM
+- history events should show script results for this system only
+- config revision not found when following history link
+- fix broken links to old perl events page
+- fix to support custom kickstart distributions
+- call rhn-config-satellite.pl only if anything has changed
+- add Korea to the list of timezones
+- pre-require tomcat package for spacewalk-java-config
+- Fix ISE when tag name is left empty
+- Guest Provisioning was broken because of refactoring
+- Read and display only a limited number of logfile lines (bnc#883009)
+
+-------------------------------------------------------------------
+Wed Sep 10 14:55:30 CEST 2014 - mc@suse.de
+
+- fix XSS flaws - CVE-2014-3595 (bnc#896012)
+- fix package upgrade via SSM (bnc#889721)
 
 -------------------------------------------------------------------
 Wed Jul  2 15:24:34 CEST 2014 - mantel@suse.de
@@ -9,9 +388,29 @@ Wed Jul  2 15:24:34 CEST 2014 - mantel@suse.de
 - fix logrotate for /var/log/rhn/rhn_web_api.log (bnc#884081)
 
 -------------------------------------------------------------------
-Sat Jun 28 07:24:28 UTC 2014 - smoioli@suse.com
+Tue Jun 17 11:48:24 CEST 2014 - jrenner@suse.de
 
-- java version fixed, oscache removed from dependencies
+- version 2.1.165.6-1
+- Fixed wrong bug number
+
+-------------------------------------------------------------------
+Tue Jun 17 10:47:03 CEST 2014 - jrenner@suse.de
+
+- version 2.1.165.5-1
+- New page added for viewing channels a repo is associated to
+- Allow pasting of keys into textarea
+- Provide a faster systemgroup.listSystemsMinimal API method
+- Disable caching of Locale between page loads
+- Add spacewalk-report for systems with extra packages
+- Improve performance of Systems with Extra Packages query
+- System Event History page: fix link to pending events on Oracle databases
+- Fix human dates now() staying unmodified (bnc#880081)
+- Escape package name to prevent from script injection
+- Allow for null evr and archs on event history detail (bnc#880327)
+- Disable form autocompletion in some places (bnc#879998)
+- System Snapshots pages ported from perl to java
+- Add errata type selection to SSM page
+- Fix datepicker time at xx:xx PM pre-filled with xx:xx AM (bnc#881522)
 
 -------------------------------------------------------------------
 Tue May 27 17:15:17 CEST 2014 - mc@suse.de

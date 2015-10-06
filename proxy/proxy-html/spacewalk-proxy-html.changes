@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:25:23 CEST 2015 - jrenner@suse.de
+
+- version 2.1.0.3-1
+- add PGP keys also to proxy (bsc#930227)
+
+-------------------------------------------------------------------
+Tue Jun  2 13:52:33 CEST 2015 - mantel@suse.de
+
+- add PGP keys also to proxy (snc#930227)
+
+-------------------------------------------------------------------
+Tue Feb 03 13:18:03 CET 2015 - mc@suse.de
+
+- version 2.1.0.2-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
 Mon Dec 09 17:25:02 CET 2013 - mc@suse.de
 
 - version 2.1.0.1-1

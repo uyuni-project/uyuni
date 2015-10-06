@@ -1,9 +1,34 @@
 -------------------------------------------------------------------
-Fri Feb 20 16:15:56 UTC 2015 - dmacvicar@suse.de
+Mon Jun 22 15:43:43 CEST 2015 - jrenner@suse.de
 
+- version 2.1.14.7-1
+- Fix snapshot tag rhn-search issue
+- Instantiate insert query only when needed
+
+-------------------------------------------------------------------
+Fri Feb 20 16:15:56 UTC 2015 - dmacvicar@suse.de
 - workaround for bnc#918852
   remove hardcoded commons-logging configuration loading the
   log4j adapter from the hadoop jar.
+
+-------------------------------------------------------------------
+Tue Feb 03 13:18:55 CET 2015 - mc@suse.de
+
+- version 2.1.14.6-1
+- Getting rid of trailing spaces
+
+-------------------------------------------------------------------
+Tue Oct 14 15:13:41 CEST 2014 - mc@suse.de
+
+- version 2.1.14.5-1
+- use StringUtils for checking non-empty values
+- set newly constructed "db_name" even if db_ssl_enabled is disabled
+
+-------------------------------------------------------------------
+Fri Sep 12 14:54:22 CEST 2014 - mc@suse.de
+
+- version 2.1.14.4-1
+- fix package searching in shared channels
 
 -------------------------------------------------------------------
 Tue May 27 17:08:18 CEST 2014 - mc@suse.de

@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:14:33 CEST 2015 - jrenner@suse.de
+
+- version 2.1.6.9-1
+- Set USE_EXISTING_CERTS=N in the answers.txt example file.
+- 'Bring your own certificate': update documentation for configure-proxy.sh
+- configure-proxy.sh: 'Bring your own certificate' feature
+
+-------------------------------------------------------------------
+Tue Feb 03 11:59:55 CET 2015 - mc@suse.de
+
+- version 2.1.6.8-1
+- Added missing cli args (bnc#913941)
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Thu Dec 04 13:30:20 CET 2014 - mc@suse.de
+
+- version 2.1.6.7-1
+- read systemid path from configuration
+- proxy installer should use http proxy to get version number
+
+-------------------------------------------------------------------
+Fri Nov 07 13:16:16 CET 2014 - mc@suse.de
+
+- version 2.1.6.6-1
+- don't hardcode systemid path in rhn-proxy-activate
+
+-------------------------------------------------------------------
+Fri Sep 12 15:49:14 CEST 2014 - mc@suse.de
+
+- version 2.1.6.5-1
+- remove duplicate Summary and Group entries
+
+-------------------------------------------------------------------
 Tue May 06 15:17:23 CEST 2014 - mc@suse.de
 
 - version 2.1.6.4-1

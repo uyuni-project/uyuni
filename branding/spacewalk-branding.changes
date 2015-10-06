@@ -1,7 +1,67 @@
 -------------------------------------------------------------------
-Sat Jun 28 06:16:59 UTC 2014 - smoioli@suse.com
+Wed Sep 23 15:08:32 CEST 2015 - mc@suse.de
 
-- dependency names fixed 
+- version 2.1.33.13-1
+- display a warning if the update stack is not up-to-date
+- remove Upgrade Path from jsp page and StringResources
+
+-------------------------------------------------------------------
+Mon Jun 22 15:35:09 CEST 2015 - jrenner@suse.de
+
+- version 2.1.33.12-1
+- Fix file input control alignment issue with form-control (bsc#873203)
+- Restore missing cfg-diff CSS
+
+-------------------------------------------------------------------
+Tue Mar 31 14:50:30 CEST 2015 - mc@suse.de
+
+- version 2.1.33.11-1
+- fixing weird path to action chain page (bsc#921720)
+
+-------------------------------------------------------------------
+Tue Feb 03 12:01:33 CET 2015 - mc@suse.de
+
+- version 2.1.33.10-1
+- Getting rid of Tabs and trailing spaces
+- install all css files
+- remove unused css files
+- minor style changes
+
+-------------------------------------------------------------------
+Thu Dec 04 16:29:19 CET 2014 - mc@suse.de
+
+- version 2.1.33.9-1
+- fix link to macro documentation (bsc#895961)
+- add User Guide to online help pages
+- require online manual packages
+- fix branding in error message (bsc#902503)
+- long lines are not visible (API doc)
+- Change texts to print Inter-Server Synchronisation additionally
+  to ISS only.
+- disable credentials and products dialog on ISS slave
+- improve the layout in case the exception message is large
+- scc notification: change the link to the verb 'Migrate'
+- setup wizard: add tooltip to refresh button
+- make the SCC migration/refresh dialog show steps
+- Use the NCC/SCC acronyms together with the full name
+- Show alert message about disabling cron jobs
+
+-------------------------------------------------------------------
+Fri Nov 07 13:23:33 CET 2014 - mc@suse.de
+
+- version 2.1.33.8-1
+- Integrate the refresh dialog with the setup wizard products page
+- Implement new "mgr-sync-refresh" taskomatic job
+- improve translations
+- minor re-wording following upstream changes
+- End-user documentation clarification
+
+-------------------------------------------------------------------
+Tue Jun 17 09:56:16 CEST 2014 - jrenner@suse.de
+
+- version 2.1.33.7-1
+- CVE patches adapted for colour blind users (bnc#872298)
+- Underline in icons is removed (bnc#880001)
 
 -------------------------------------------------------------------
 Tue May 27 17:14:01 CEST 2014 - mc@suse.de
