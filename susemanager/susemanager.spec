@@ -81,7 +81,7 @@ make -C src install PREFIX=$RPM_BUILD_ROOT MANDIR=%{_mandir}
 mkdir -p %{buildroot}%{_datadir}/YaST2/clients
 mkdir -p %{buildroot}%{_datadir}/applications/YaST2
 mkdir -p %{buildroot}/etc/YaST2
-install -m 0644 yast/*.ycp %{buildroot}%{_datadir}/YaST2/clients
+install -m 0644 yast/*.rb %{buildroot}%{_datadir}/YaST2/clients
 install -m 0644 yast/firstboot-susemanager.xml %{buildroot}/etc/YaST2
 install -m 0644 yast/susemanager_setup.desktop %{buildroot}%{_datadir}/applications/YaST2/
 
@@ -132,7 +132,7 @@ chown root.root /etc/sysconfig
 %dir %{_datadir}/applications/YaST2
 %dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
-%{_datadir}/YaST2/clients/*.ycp
+%{_datadir}/YaST2/clients/*.rb
 %config /etc/YaST2/firstboot-susemanager.xml
 %config %{_sysconfdir}/sysconfig/SuSEfirewall2.d/services/suse-manager-server
 %config %{_sysconfdir}/slp.reg.d/susemanager.reg
