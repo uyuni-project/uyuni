@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:35:53 CEST 2015 - mc@suse.de
+
+- version 2.1.4.12-1
+- make file preservation work again with new upstream koan
+
+-------------------------------------------------------------------
+Tue Feb 03 11:51:59 CET 2015 - mc@suse.de
+
+- version 2.1.4.11-1
+- spacewalk-koan: improved merge-rd
+
+-------------------------------------------------------------------
+Thu Dec 18 13:32:51 CET 2014 - mc@suse.de
+
+- version 2.1.4.10-1
+- spacewalk-koan: Fix netmask calculation on SUSE systems (bnc#883487)
+
+-------------------------------------------------------------------
+Thu Dec 04 13:17:40 CET 2014 - mc@suse.de
+
+- version 2.1.4.9-1
+- make spacewalk-koan work with newer cobbler/koan version
+  (bsc#908152)
+
+-------------------------------------------------------------------
+Thu Sep 04 12:18:54 CEST 2014 - mc@suse.de
+
+- version 2.1.4.8-1
+- Fix crash when installing via DHCP.
+
+-------------------------------------------------------------------
+Wed Sep 03 12:11:38 CEST 2014 - mc@suse.de
+
+- version 2.1.4.7-1
+- spacewalk-koan: fix package requirements
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Wed Jul 16 14:28:30 CEST 2014 - mc@suse.de
+
+- version 2.1.4.6-1
+- Adding requirement for patched Koan to fix bnc#880936
+- Fix provisioning of a registered server on SLES with static
+  IP address (bnc#880936)
+
+-------------------------------------------------------------------
 Fri May 16 12:51:18 CEST 2014 - mc@suse.de
 
 - version 2.1.4.5-1

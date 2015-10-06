@@ -1,7 +1,126 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:03:42 CEST 2015 - mc@suse.de
+
+- version 2.1.21-1
+- added python-gobject2, libudev1 and udev to SLE12 bootstrap repo
+  (bsc#945275)
+- remove use of updateUpgradePaths() from external
+- Do some more checks for validity of email address during setup
+  (bsc#933304)
+- Refer to mgr-sync instead of mgr-ncc-sync after successful
+  setup (bsc#940811)
+- Timeout when user does not enter credentials for 60 seconds
+  for mgr-sync
+
+-------------------------------------------------------------------
+Tue Jul 28 16:12:42 CEST 2015 - mc@suse.de
+
+- version 2.1.20-1
+- add bootstrap data for SLES11 SP4 (bsc#939707)
+- add bootstrap data for SLES4SAP-11-SP4 (bsc#939699)
+- correctly initialize db_backend_target before db dump (bsc#937943)
+
+-------------------------------------------------------------------
+Mon Jun 22 15:45:58 CEST 2015 - jrenner@suse.de
+
+- version 2.1.19-1
+- fix mgr-create-bootstrap-repo for SLES11 SP3 ppc64 (bsc#933942)
+- mgr_bootstrap_data: add SLES12 for SAP data (bsc#933587)
+- give taskomatic more time to start up (bsc#933275)
+- check for sufficient diskspace during setup (bnc#926234)
+- make output of free disk space in error message more human readable
+- set ssl-use-existing-certs depending on ca, cert and key is set or not
+- introduce variables to import own certificates on setup
+
+-------------------------------------------------------------------
+Tue Mar 31 14:33:25 CEST 2015 - mc@suse.de
+
+- version 2.1.18-1
+- Copyright texts updated to SUSE LLC
+- mgr-sync: do not keep using expired tokens during refresh (bsc#922312)
+- add tool to update the spacewalk public cert in the DB
+- prevent setup from being run twice when substantial configuration
+  has been done
+- check for root user
+- Add hook at the end of the setup process
+- exit with error on Network errors
+- fix mgr-sync --no-optional option
+
+-------------------------------------------------------------------
+Wed Feb 11 09:05:01 CET 2015 - mc@suse.de
+
+- version 2.1.17-1
+- mgr-sync: never ask for user credentials when scheduling a refresh
+
+-------------------------------------------------------------------
+Tue Feb 03 11:49:13 CET 2015 - mc@suse.de
+
+- version 2.1.16-1
+- write repository configuration into the logfile
+- mgr-sync: ensure session token is always saved
+- Add logging to mgr-sync
+- Bring back the ability to save credentials to the configuration file
+- Raise a proper exception, in case Taskomatic is not running
+- Ask for the authentication beforehand (bnc#908317)
+- Bring back token verification availability
+
+-------------------------------------------------------------------
+Thu Dec 04 16:22:57 CET 2014 - mc@suse.de
+
+- version 2.1.15-1
+- Abort setup when invalid SSL countrycode given (bnc#882468)
+- mgr-sync: add man page
+- use noRepoSync parameter always
+- Enable and allow "mgr-sync refresh" in the case of ISS
+- mgr-sync: Fixed error message on exception (bnc#905263)
+- mgr-sync: fixed add product to not trigger redundant 
+            add of base channe (bnc#901928)
+- drop unused columns in suseProducts table
+
+-------------------------------------------------------------------
+Fri Nov 07 13:07:48 CET 2014 - mc@suse.de
+
+- version 2.1.14-1
+- schedule refresh after setup with SCC
+- On an ISS Slave disalow the use of mgr-sync except of enable-scc
+- mgr-sync: recommend to run refresh after credentials are changed
+- ISS setup for SCC do not need Mirror Credentials anymore
+- mgr-sync: explain what a primary credential is.
+- rename Mirror Credentials to Organization Credentials for SCC
+
+-------------------------------------------------------------------
 Wed Oct 29 11:33:36 CET 2014 - mantel@suse.de
 
 - rename "Mirror Credentials" to "Organization Credentials" for SCC
+
+-------------------------------------------------------------------
+Tue Oct 14 15:19:01 CEST 2014 - mc@suse.de
+
+- version 2.1.13-1
+- complete initial setup with SCC
+- mgr-sync: fix refresh
+- move current_backend() from susemanager to backend and rename it to
+  current_cc_backend
+- mgr-sync: added --from-options switch plus tests
+- Replace /etc/motd after setup (bnc#883379)
+- Adapt YaST setup to check credentials against SCC
+- require python-argparse
+- Added mirror credential manipulation functions to mgr-sync
+
+-------------------------------------------------------------------
+Fri Sep 12 15:37:56 CEST 2014 - mc@suse.de
+
+- version 2.1.12-1
+- Implement mgr-sync to manage products and channels from SCC
+- mgr-ncc-sync: update the error message when SCC is active
+- make mgr-create-bootstrap-repo SCC and SLE12 aware
+
+-------------------------------------------------------------------
+Tue Jun 17 10:08:08 CEST 2014 - jrenner@suse.de
+
+- version 2.1.11-1
+- Update the sudoers file after SUSE Manager upgrade (bnc#881711)
+- Fix oracle2postgres.sh (database configuration)
 
 -------------------------------------------------------------------
 Tue May 27 17:10:44 CEST 2014 - mc@suse.de

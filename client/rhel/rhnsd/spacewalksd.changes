@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:27:58 CEST 2015 - jrenner@suse.de
+
+- version 5.0.14.8-1
+- PIE+RELRO for rhnsd
+
+-------------------------------------------------------------------
+Tue Mar 31 14:48:09 CEST 2015 - mc@suse.de
+
+- version 5.0.14.7-1
+- install new service and enable it (bsc#919433)
+- add service spacewalk-update-status (bsc#919433)
+
+-------------------------------------------------------------------
+Tue Feb 03 13:11:21 CET 2015 - mc@suse.de
+
+- version 5.0.14.6-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Thu Dec 18 13:51:08 CET 2014 - mc@suse.de
+
+- version 5.0.14.5-1
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
 Thu Apr 10 17:38:36 CEST 2014 - mc@suse.de
 
 - version 5.0.14.4-1

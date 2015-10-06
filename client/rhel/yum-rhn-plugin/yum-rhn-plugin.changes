@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:21:15 CEST 2015 - jrenner@suse.de
+
+- version 2.1.7.5-1
+- fix PackageEVR.__eq__ not correctly defined for evrs with None values
+- report unavailable packages
+- don't fail if package is already installed
+- fix unspecified epoch is not epoch = '0'
+
+-------------------------------------------------------------------
+Tue Mar 31 14:30:07 CEST 2015 - mc@suse.de
+
+- version 2.1.7.4-1
+- rhnplugin.conf man page clarification
+
+-------------------------------------------------------------------
+Tue Feb 03 13:13:49 CET 2015 - mc@suse.de
+
+- version 2.1.7.3-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Fri Sep 12 14:53:30 CEST 2014 - mc@suse.de
+
+- version 2.1.7.2-1
+- don't encode proxy url if not set
+- encode proxy url when passing it to urlgrabber
+
+-------------------------------------------------------------------
 Wed Feb 26 13:44:57 CET 2014 - mc@suse.de
 
 - version 2.1.7.1-1

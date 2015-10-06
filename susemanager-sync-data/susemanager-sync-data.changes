@@ -1,8 +1,73 @@
 -------------------------------------------------------------------
-Fri Aug 29 11:06:12 CEST 2014 - mc@suse.de
+Wed Sep 23 15:07:08 CEST 2015 - mc@suse.de
 
-- version 2.2.1-1
-- update channels.xml - add nVidia driver for Workstation Extension
+- version 2.1.9-1
+- Add channels for SLE11 Point of Service SP2 (bsc#944220)
+- Add SLE-Toolchain-12 module (bsc#942918, FATE#316684)
+- changed SAP All-in-One names
+
+-------------------------------------------------------------------
+Tue Jul 28 16:13:40 CEST 2015 - mc@suse.de
+
+- version 2.1.8-1
+- add channels for SLES for SAP 11 SP4 (bsc#939699)
+- Add support for Container Module (bsc#936071)
+
+-------------------------------------------------------------------
+Tue Jun 02 16:08:13 CEST 2015 - mc@suse.de
+
+- version 2.1.7-1
+- add SLE11-Public-Cloud-Module (bsc#914606)
+- Provide channels and upgrade paths for SLE11 SP4 products
+  (FATE#318261) (bsc#931873)
+
+-------------------------------------------------------------------
+Tue Mar 31 14:48:59 CEST 2015 - mc@suse.de
+
+- version 2.1.6-1
+- add SAP-Updates and AMD and NVidia channels to WE-SAP
+- add SLE12-SAP product (bsc#922744)
+- add SUSE Enterprise Storage 1 (bsc#910332)
+- add SUSE Cloud 5 (bsc#915133)
+- add Advanced Systems Managemenet Module for s390x and ppc64le
+
+-------------------------------------------------------------------
+Tue Feb 03 11:55:45 CET 2015 - mc@suse.de
+
+- version 2.1.5-1
+- Add RES7 channels (bsc#893608)
+
+-------------------------------------------------------------------
+Thu Dec 18 15:47:19 CET 2014 - mc@suse.de
+
+- Added support for RES7 in SUSE Manager (bsc#897723)
+
+-------------------------------------------------------------------
+Thu Dec 04 13:23:42 CET 2014 - mc@suse.de
+
+- version 2.1.4-1
+- add Channels for Public Cloud Module (bsc#907586)
+- add new channel families SLE-WE and SLE-LP
+- add ATI and nVidia channels for SLED11-SP3 (bsc#901108)
+- add channels for IBM-DLPAR for SLE12 ppc64le
+  (FATE#316582, FATE#316583)
+
+-------------------------------------------------------------------
+Tue Oct 14 15:21:53 CEST 2014 - mc@suse.de
+
+- version 2.1.3-1
+- new URLs for SLE-Manager-Tools12 channels
+- new update server
+- changed paths and Debuginfo channels added for
+  modules and extensions
+
+-------------------------------------------------------------------
+Fri Sep 12 16:04:10 CEST 2014 - mc@suse.de
+
+- version 2.1.2-1
+- renamed modules and added Update channels to modules
+- add LTSS for SLMS 1.3 and SUSE Cloud 4 channels (bnc#883057)
+- add nVidia driver for Workstation Extension
 - add 'family' attributes for SLE12 channels
 
 -------------------------------------------------------------------

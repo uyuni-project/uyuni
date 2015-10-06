@@ -1,4 +1,56 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:49:07 CEST 2015 - jrenner@suse.de
+
+- version 2.1.14.12-1
+- configure tomcat with maxThreads=200 and timeout 20 sec (bsc#922923)
+- CVE-2014-8162 - Use newly introduced SAXParser class (bsc#922525)
+- introduce variables to import own certificates on setup
+
+-------------------------------------------------------------------
+Wed Apr 08 09:20:09 CEST 2015 - mc@suse.de
+
+- version 2.1.14.11-1
+- fix typo: use chmod to change permissions
+
+-------------------------------------------------------------------
+Tue Mar 31 14:31:24 CEST 2015 - mc@suse.de
+
+- version 2.1.14.10-1
+- add read permissions for tomcat to the NCCcredentials file
+
+-------------------------------------------------------------------
+Tue Feb 03 13:19:29 CET 2015 - mc@suse.de
+
+- version 2.1.14.9-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Fri Nov 07 12:59:45 CET 2014 - mc@suse.de
+
+- version 2.1.14.8-1
+- no activation if db population should be skipped (bsc#900956)
+
+-------------------------------------------------------------------
+Tue Oct 14 15:14:21 CEST 2014 - mc@suse.de
+
+- version 2.1.14.7-1
+- give tomcat read permissions on the NCCcredentials file
+- setup with scc credentials in DB
+
+-------------------------------------------------------------------
+Fri Sep 12 14:58:56 CEST 2014 - mc@suse.de
+
+- version 2.1.14.6-1
+- Do not enable spacewalk-service in runlevel 4 (bnc#879992)
+
+-------------------------------------------------------------------
+Tue Jun 17 10:12:51 CEST 2014 - jrenner@suse.de
+
+- version 2.1.14.5-1
+- Use curl instead of libwww-perl
+- Setup /etc/sudoers in SUSE Manager upgrade scripts (bnc#881711)
+
+-------------------------------------------------------------------
 Tue May 27 17:09:55 CEST 2014 - mc@suse.de
 
 - version 2.1.14.4-1

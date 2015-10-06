@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:30:45 CEST 2015 - mc@suse.de
+
+- version 2.5.69.7-1
+- Documentation changes - fix name and refer to RFC.
+
+-------------------------------------------------------------------
+Tue Feb 03 12:42:14 CET 2015 - mc@suse.de
+
+- version 2.5.69.6-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Thu Dec 18 13:50:31 CET 2014 - mc@suse.de
+
+- version 2.5.69.5-1
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:38 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Tue Jun 17 11:02:20 CEST 2014 - jrenner@suse.de
+
+- version 2.5.69.4-1
+- Ensure bytes strings are sent to pyOpenSSL (bnc#880388)
+
+-------------------------------------------------------------------
 Thu Apr 10 17:30:43 CEST 2014 - mc@suse.de
 
 - version 2.5.69.3-1

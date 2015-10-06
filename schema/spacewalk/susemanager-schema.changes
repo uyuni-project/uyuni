@@ -1,4 +1,98 @@
 -------------------------------------------------------------------
+Sun Sep 27 14:42:36 CEST 2015 - mc@suse.de
+
+- version 2.1.50.14-1
+- Set errata-cache job to run every minute if old schedule still
+  active (bsc#918994)
+
+-------------------------------------------------------------------
+Mon Jun 22 15:40:54 CEST 2015 - jrenner@suse.de
+
+- version 2.1.50.13-1
+- Fix rpm version compare in DB (bsc#927940)
+- Prevent from inserting duplicate update_server_errata_cache tasks
+- Move auto-errata updates into separate taskomatic task
+- Do not ignore errata with same package version
+
+-------------------------------------------------------------------
+Tue Mar 31 14:43:34 CEST 2015 - mc@suse.de
+
+- version 2.1.50.12-1
+- Fix ORA-01403: no data found in update_needed_cache during re-registrations
+- Avoid a deadlock when changing channel assignments (bsc#918549)
+- update adding aarch64 support to fix 1.7 to 2.1 update (bsc#922468)
+- delete cached metadata and regenerate them (bsc#920400)
+
+-------------------------------------------------------------------
+Tue Feb 03 12:08:01 CET 2015 - mc@suse.de
+
+- version 2.1.50.11-1
+- some values can be already present at the time of upgrade
+- fix NPE by setting max_members to 0 instead of NULL (bsc#912035)
+- SCCRepository: save SCC ID in the database as well
+- SCCRepository: save to database with proper sequence
+- Fix old migration for future reference (bsc#911180)
+- Avoid NPE when migrating to SCC on Oracle migrated from 1.7 (bsc#911180)
+- renamed package upgrade scripts to .sql
+- fixed double-counting systems subscribed to more than one channel
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Thu Dec 04 16:27:47 CET 2014 - mc@suse.de
+
+- version 2.1.50.10-1
+- fix migration script names to fix bare-metal registration (bsc#896109)
+- add virt-host-plat entitlement mappings for new arches
+- Create regular index instead and have one migration per DB (bsc#905072)
+- Drop unique index on package ids (bsc#905072)
+- drop unused column product_list in suseProducts table
+- drop unused column channel_family_id in suseProducts
+
+-------------------------------------------------------------------
+Fri Nov 07 13:20:08 CET 2014 - mc@suse.de
+
+- version 2.1.50.9-1
+- add SLE12 distro targets to DB
+- randomize mgr-sync refresh task schedule
+- add aarch64 server to noarch package mapping
+
+-------------------------------------------------------------------
+Tue Oct 14 15:17:50 CEST 2014 - mc@suse.de
+
+- version 2.1.50.8-1
+- increase source_url column size to 2048
+- fix evr_t schema upgrade (bnc#881111)
+- Speed up satellite-sync by avoiding commonly-called dblink_exec
+- rhnDistChannelMap index needs to handle nulls on postgresql
+- allow null for user_id in suseCredentials
+- add scc credential type
+
+-------------------------------------------------------------------
+Fri Sep 12 16:02:16 CEST 2014 - mc@suse.de
+
+- version 2.1.50.7-1
+- implement tilde compare for 1.0~beta1 in version numbers
+- force character set and numerical separators to good known
+  defaults.
+- increase size of update_tag column
+- fixing order of commands
+- make config file deletion faster if there are lots of snapshots
+- make future installs run ErrataCache task more often
+- add Fedora 21 GPG keys
+- add CentOS 7 GPG key
+- Fix rhnKickstartableTree trigger, 'null = null' is not true in sql
+- Add support to ppc64le arch
+- add Korea to the list of timezones
+- Allow evr_t to be compared with NULL in Oracle (bnc#881111)
+
+-------------------------------------------------------------------
+Tue Jun 17 10:06:46 CEST 2014 - jrenner@suse.de
+
+- version 2.1.50.6-1
+- Index for user_id on wupi table speeds up errata mailer
+- Copy upstream schema migration to SUSE Manager schema upgrade
+
+-------------------------------------------------------------------
 Fri May 16 13:14:25 CEST 2014 - mc@suse.de
 
 - version 2.1.50.5-1

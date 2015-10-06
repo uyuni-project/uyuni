@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:23:17 CEST 2015 - jrenner@suse.de
+
+- version 2.1.5.6-1
+- Remove obsolete WebKit-CSP tag: it breaks older browsers and it is ignored on
+  newer ones.
+
+-------------------------------------------------------------------
+Tue Mar 31 14:52:40 CEST 2015 - mc@suse.de
+
+- version 2.1.5.5-1
+- Disable Cache-Control headers for non dynamic content. (bnc#916220)
+
+-------------------------------------------------------------------
+Tue Feb 03 13:21:34 CET 2015 - mc@suse.de
+
+- version 2.1.5.4-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Fri Sep 12 16:05:41 CEST 2014 - mc@suse.de
+
+- version 2.1.5.3-1
+- Recommended apache settings from the security team
+
+-------------------------------------------------------------------
 Thu Feb 27 15:24:45 CET 2014 - fcastelli@suse.com
 
 - version 2.1.5.2-1

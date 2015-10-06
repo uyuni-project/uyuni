@@ -1,4 +1,62 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:02:44 CEST 2015 - mc@suse.de
+
+- version 5.11.33.10-1
+- osad: re-send subscription stanzas after a while (bsc#933738)
+
+-------------------------------------------------------------------
+Mon Jun 22 16:04:29 CEST 2015 - jrenner@suse.de
+
+- version 5.11.33.9-1
+- fix duplicate jabber ids (bsc#869888, bsc#931685)
+- improve error logging
+
+-------------------------------------------------------------------
+Tue Mar 31 14:32:18 CEST 2015 - mc@suse.de
+
+- version 5.11.33.8-1
+- Apply needed SElinux fix for RHEL7 and make use of systemd unit files
+- introduce notify_threshold for osa-dispatcher (bsc#915581)
+- really check for action type reboot
+
+-------------------------------------------------------------------
+Tue Feb 03 13:14:54 CET 2015 - mc@suse.de
+
+- version 5.11.33.7-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Thu Dec 04 13:16:34 CET 2014 - mc@suse.de
+
+- version 5.11.33.6-1
+- removed PyXML dependency for RHEL systems
+- fix osad through unauthenticated proxy case
+
+-------------------------------------------------------------------
+Fri Nov 07 13:06:40 CET 2014 - mc@suse.de
+
+- version 5.11.33.5-1
+- enable and install osad during first installation (bsc#901958)
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:37 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Mon Sep 01 17:04:21 CEST 2014 - mc@suse.de
+
+- version 5.11.33.4-1
+- osad: fix traceback if http proxy is not configured
+- osad: support communication over proxy
+
+-------------------------------------------------------------------
+Tue Jun 17 10:57:46 CEST 2014 - jrenner@suse.de
+
+- version 5.11.33.3-1
+- Call python using the -s option
+
+-------------------------------------------------------------------
 Thu Apr 10 17:21:11 CEST 2014 - mc@suse.de
 
 - version 5.11.33.2-1

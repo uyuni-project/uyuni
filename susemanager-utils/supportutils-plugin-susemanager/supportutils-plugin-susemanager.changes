@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:26:53 CEST 2015 - jrenner@suse.de
+
+- version 1.0.4-1
+- check if configured connections are aligned (bsc#922923)
+- store the spacewalk-debug.tar.gz in the supportconfig directory
+
+-------------------------------------------------------------------
+Tue Feb 03 11:41:48 CET 2015 - mc@suse.de
+
+- version 1.0.3-1
+- write current service and repository configuration into
+  supportconfig
+
+-------------------------------------------------------------------
 Thu Apr 03 09:07:17 CEST 2014 - mc@suse.de
 
 - version 1.0.2-1

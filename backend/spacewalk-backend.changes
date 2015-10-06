@@ -1,4 +1,157 @@
 -------------------------------------------------------------------
+Sun Sep 27 14:44:12 CEST 2015 - mc@suse.de
+
+- version 2.1.55.21-1
+- read repository checksum type after setting the certificate
+  for a repository
+
+-------------------------------------------------------------------
+Wed Sep 23 15:10:55 CEST 2015 - mc@suse.de
+
+- version 2.1.55.20-1
+- define db_password to be read as a string (bsc#946381)
+
+-------------------------------------------------------------------
+Wed Jul 29 14:53:27 CEST 2015 - mc@suse.de
+
+- version 2.1.55.19-1
+- Enhance date only in patches to full ISO datetime (bsc#937029)
+- Fix UnboundLocalError on rhnFault in dist upgrade (bsc#936182)
+- detect new and old SUSE patch style (bsc#936869)
+
+-------------------------------------------------------------------
+Tue Jun 23 11:12:57 CEST 2015 - jrenner@suse.de
+
+- version 2.1.55.18-1
+- Require pyliblzma to enable sync of EPEL repos (bsc#934417)
+
+-------------------------------------------------------------------
+Mon Jun 22 16:15:43 CEST 2015 - jrenner@suse.de
+
+- version 2.1.55.17-1
+- detect SUSE Manager Tools channel as well (bsc#935433)
+- import RPMs which vendor is an empty string (bsc#934124)
+- set primary interface during registration (bnc#929058)
+- do not reset primary network interface at hardware refresh (bnc#895071)
+
+-------------------------------------------------------------------
+Tue Mar 31 14:55:31 CEST 2015 - mc@suse.de
+
+- version 2.1.55.16-1
+- Copyright texts updated to SUSE LLC
+- package inventory and channel report into spacewalk-debug
+- Adding on the spacewalk-data-fsck man page the option --remove-mismatch
+- add funcionality on spacewalk-data-fsck to remove the RPM which does not
+  match checksum
+- Fix the primary key definition for rhnPackageFile
+- don't crash re-registrations if the original owner has been deleted
+- sw-repo-sync fix to sync kickstart.
+- init the second DB connection only when needed (inspired by bsc#915581)
+- check for reboot type only (inspired by bsc#915581)
+
+-------------------------------------------------------------------
+Tue Feb 03 12:05:52 CET 2015 - mc@suse.de
+
+- version 2.1.55.15-1
+- convert mtime to localtime to prevent invalid times because of DST
+  (bsc#914437)
+- Do not exit with error if a vendor channel has no URL associated
+  (bsc#914260)
+- Getting rid of Tabs and trailing spaces
+- copy all SUSE Manager logfiles into spacewalk-debug
+- Update spacewalk-debug man page
+- Exclude old backup-logs from spacewalk-debug to reduce size
+- fix ISS export with unset patch severity
+- ISS export/import informations about cloned channels (FATE#317789)
+- convert empty string to null for DMI values (bsc#911272)
+
+-------------------------------------------------------------------
+Thu Dec 18 13:38:25 CET 2014 - mc@suse.de
+
+- version 2.1.55.14-1
+- fix encoding of submit message
+- create (and label) /var/cache/rhn/satsync
+- fixed double-counting of systems subscribed to more than one
+  channel
+
+-------------------------------------------------------------------
+Thu Dec 04 16:31:03 CET 2014 - mc@suse.de
+
+- version 2.1.55.13-1
+- insert update tag at the correct place for SLE12 (bsc#907677)
+- different registration paths should lock tables in the same order
+  This could potentially cause deadlocks
+- spacewalk-data-fsck: use config file variable instead of hardcoded path part
+- drop unused column product_list in suseProducts table
+- sanitize db_* config values
+
+-------------------------------------------------------------------
+Mon Nov 24 13:49:38 CET 2014 - mc@suse.de
+
+- trigger generation of metadata if the repo contains no packages
+  (bsc#870159)
+
+-------------------------------------------------------------------
+Fri Nov 07 13:27:27 CET 2014 - mc@suse.de
+
+- version 2.1.55.12-1
+- With NCC Backend still use the old style ISS method
+- Make spacewalk-debug scc migration compatible
+
+-------------------------------------------------------------------
+Sat Nov 01 15:54:13 CET 2014 - mc@suse.de
+
+- version 2.1.55.11-1
+- ISS: Ignore errors if deprecated files do not exist on export
+- ISS: export/import Subscriptions and entitlements
+- ISS: remove old import code for NCC products and subscriptions
+- ISS: export/import suseProductChannels and suseUpgradePaths via ISS
+- ISS: export/import SUSE Products via ISS
+- Fix cleanup when DB init goes wrong
+- sanitize db_name config value
+- fixed variable name
+
+-------------------------------------------------------------------
+Tue Oct 14 14:57:25 CEST 2014 - mc@suse.de
+
+- version 2.1.55.10-1
+- require python-enum34
+- update channel checksum type for vendor channels
+- read mirror credenatials from DB depending on the cc_backend.
+- move current_backend() from susemanager to backend and rename it to
+  current_cc_backend
+- Speed up satellite-sync by avoiding commonly-called dblink_exec
+- backend should correctly checksum config files with macros in them
+- Add /usr/share/rhn/config-defaults in spacewalk-debug
+- fix spacewalk-debug to be fully postgreSQL aware.
+- correct UTF8 config files from being marked as binary
+- increase size of update_tag column in rhnChannel table
+
+-------------------------------------------------------------------
+Fri Sep 12 15:34:51 CEST 2014 - mc@suse.de
+
+- version 2.1.55.9-1
+- preserve the query params in the url
+- allow missing packages in patches if they are not part of this repo
+- handle SLE12 update tag correctly in reposync
+- fix traceback when pushing rpms with archive size > 4GB
+- queue server for errata cache update when package list changes
+- recognize oVirt node as virtual system
+- adding handling for new rpm header information
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Tue Jun 17 11:04:37 CEST 2014 - jrenner@suse.de
+
+- version 2.1.55.8-1
+- Additional spacewalk backend methods and capability needed
+- Spacewalk changes needed to support collisionless proxy lookaside
+
+-------------------------------------------------------------------
 Tue May 27 17:14:40 CEST 2014 - mc@suse.de
 
 - version 2.1.55.7-1

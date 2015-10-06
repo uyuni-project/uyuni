@@ -1,4 +1,43 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:05:50 CEST 2015 - mc@suse.de
+
+- version 2.1.11-1
+- enable zypp readonly hack for product information retrieval (bsc#940361)
+
+-------------------------------------------------------------------
+Tue Mar 31 14:42:08 CEST 2015 - mc@suse.de
+
+- version 2.1.10-1
+- Copyright texts updated to SUSE LLC
+
+-------------------------------------------------------------------
+Tue Oct 14 15:23:17 CEST 2014 - mc@suse.de
+
+- version 2.1.9-1
+- re-add legacy suse_register_info to successfully perform the update
+  (bnc#898428)
+
+-------------------------------------------------------------------
+Fri Sep 12 15:47:09 CEST 2014 - mc@suse.de
+
+- version 2.1.8-1
+- remove asking SUSEConnect for systemid.
+  Not implemented in SUSEConnect
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Thu Jul 10 16:57:20 CEST 2014 - mc@suse.de
+
+- version 2.1.7-1
+- Fix suseRegisterInfo for RHEL5 systems
+  (use external uuidgen, as python does not yet have uuid support)
+  (bnc#885997)
+
+-------------------------------------------------------------------
 Fri May 16 12:52:57 CEST 2014 - mc@suse.de
 
 - version 2.1.6-1

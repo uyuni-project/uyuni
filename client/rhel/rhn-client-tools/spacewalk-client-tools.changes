@@ -1,4 +1,54 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:09:28 CEST 2015 - mc@suse.de
+
+- version 2.1.16.9-1
+- add info on how to increase verbosity (bsc#944263)
+- Disable dmidecode on s390 and s390x (bsc#936545)
+- '.site' is an official TLD now (bsc#923990);
+- check for multiple entries in /etc/hostname (bsc#929979)
+
+-------------------------------------------------------------------
+Mon Jun 22 15:26:53 CEST 2015 - jrenner@suse.de
+
+- version 2.1.16.8-1
+- fix --ca-chain option for rhnpush (bsc#931503, bsc#895869)
+- use hardware_gudev.py instead of hardware_hal.py on SLES12
+
+-------------------------------------------------------------------
+Tue Mar 31 14:53:38 CEST 2015 - mc@suse.de
+
+- version 2.1.16.7-1
+- Copyright texts updated to SUSE LLC
+- we might be registered also via rhsm
+- avoid "list index out of range"
+- separate username/password request
+- Documentation changes - fix name and refer to RFC.
+
+-------------------------------------------------------------------
+Tue Feb 03 13:13:15 CET 2015 - mc@suse.de
+
+- version 2.1.16.6-1
+- Getting rid of Tabs and trailing spaces
+
+-------------------------------------------------------------------
+Fri Nov 07 13:26:13 CET 2014 - mc@suse.de
+
+- version 2.1.16.5-1
+- disable sgmlop import in rhn_check
+
+-------------------------------------------------------------------
+Wed Sep  3 01:41:39 CEST 2014 - ro@suse.de
+
+- sanitize release line in specfile
+
+-------------------------------------------------------------------
+Mon Sep 01 17:08:37 CEST 2014 - mc@suse.de
+
+- version 2.1.16.4-1
+- allow unicode characters in proxy username / password
+- Send correct hostname (bnc#887538)
+
+-------------------------------------------------------------------
 Fri May 16 12:54:46 CEST 2014 - mc@suse.de
 
 - version 2.1.16.3-1

@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Mon Jun 22 16:19:47 CEST 2015 - jrenner@suse.de
+
+- version 2.1.15.7-1
+- disable WebUI redirecting (bsc#922923)
+- make proxy able to understand (bad) requests from ubuntu clients
+
+-------------------------------------------------------------------
+Thu May 28 07:43:14 UTC 2015 - smoioli@suse.com
+
+- disable pylint which is not compatible with upstream's version.
+ We run it independently in Jenkins anyway
+
+-------------------------------------------------------------------
+Tue Mar 31 14:36:41 CEST 2015 - mc@suse.de
+
+- version 2.1.15.6-1
+- wsgi.input is only guaranteed to be readable once.
+  Prevent to read it twice
+- prevent squid 3.2 from detecting forwarding loops
+
+-------------------------------------------------------------------
+Thu Dec 04 13:25:58 CET 2014 - mc@suse.de
+
+- version 2.1.15.5-1
+- read systemid path from configuration
+- configure proxy max memory file size separately from buffer_size
+
+-------------------------------------------------------------------
+Tue Jun 17 11:06:01 CEST 2014 - jrenner@suse.de
+
+- version 2.1.15.4-1
+- Add default path structure to proxy lookaside that avoids collisions
+- Make rhnpush backwards-compatible with old spacewalk-proxy
+- rhn_package_manager should not force md5; use package hearders
+
+-------------------------------------------------------------------
 Tue May 06 15:14:05 CEST 2014 - mc@suse.de
 
 - version 2.1.15.3-1

@@ -1,4 +1,78 @@
 -------------------------------------------------------------------
+Wed Sep 23 15:05:03 CEST 2015 - mc@suse.de
+
+- version 2.1.25.10-1
+- Revert "1207606 - do not return one package multiple times" (bsc#945380)
+- check for existence of device description in spacecmd system_listhardware
+  (bsc#932288)
+
+-------------------------------------------------------------------
+Mon Jun 22 15:57:11 CEST 2015 - jrenner@suse.de
+
+- version 2.1.25.9-1
+- do not escape spacecmd command arguments
+- do not return one package multiple times
+- add system_setcontactmethod (FATE#314858)
+- add activationkey_setcontactmethod (FATE#314858)
+- show contact method with activationkey_details and system_details
+- clone config files without loosing trailing new lines (bsc#926318)
+
+-------------------------------------------------------------------
+Tue Mar 31 14:38:08 CEST 2015 - mc@suse.de
+
+- version 2.1.25.8-1
+- sanitize data from export
+
+-------------------------------------------------------------------
+Thu Jan 29 15:51:44 CET 2015 - mc@suse.de
+
+- version 2.1.25.7-1
+- fix configchannel export - do not create 'contents' key for directories
+  (bsc#908849)
+- fix patch summary printing
+- code cleanup
+- add new function kickstart_getsoftwaredetails
+- Added feature to get installed packageversion of a system or systems managed
+  by ssm to spacecmd
+
+-------------------------------------------------------------------
+Thu Dec 04 13:27:13 CET 2014 - mc@suse.de
+
+- version 2.1.25.6-1
+- call listAutoinstallableChannels() for listing distributions
+  (bsc#887879)
+- Fix spacecmd schedule listing (bsc#902494)
+- Teach spacecmd report_errata to process all-errata in the absence
+  of further args
+
+-------------------------------------------------------------------
+Tue Dec  2 15:13:52 CET 2014 - mc@suse.de
+
+- fix call of setCustomOptions() during kickstart_importjson
+  (bsc#879904)
+
+-------------------------------------------------------------------
+Fri Nov 07 13:10:33 CET 2014 - mc@suse.de
+
+- version 2.1.25.5-1
+- spacecmd: fix listupgrades [bnc#892707]
+
+-------------------------------------------------------------------
+Fri Aug 01 10:14:56 CEST 2014 - mc@suse.de
+
+- version 2.1.25.4-1
+- make print_result a static method of SpacewalkShell (bnc#889605)
+
+-------------------------------------------------------------------
+Tue Jun 17 10:29:00 CEST 2014 - jrenner@suse.de
+
+- version 2.1.25.3-1
+- Added option to force deployment of a config channel to all subscribed systems
+- Added last boot message in system_details command
+- Updated kickstart_import documentation
+- Added kickstart_import_raw command
+
+-------------------------------------------------------------------
 Tue May 06 15:14:55 CEST 2014 - mc@suse.de
 
 - version 2.1.25.2-1

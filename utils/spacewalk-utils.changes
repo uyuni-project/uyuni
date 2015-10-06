@@ -1,4 +1,62 @@
 -------------------------------------------------------------------
+Tue Mar 31 14:39:32 CEST 2015 - mc@suse.de
+
+- version 2.1.27.13-1
+- spacewalk-manage-channel-lifecycle: Fix automatic assumption of
+  first phase (bsc#922294)
+
+-------------------------------------------------------------------
+Tue Feb 03 11:58:46 CET 2015 - mc@suse.de
+
+- version 2.1.27.12-1
+- make sql queries Oracle 10g compatible
+- disable and enable indexes in Oracle, set time format and control parameters
+- added Fedora 21 channels
+
+-------------------------------------------------------------------
+Thu Dec 04 13:28:41 CET 2014 - mc@suse.de
+
+- version 2.1.27.11-1
+- prevent empty dir creation by scbd
+- Updated spacewalk-common-channels.ini to include Oracle Linux 7
+- fix error if blacklist / removelist not in scbd config file
+- improve error messaging in scbd
+
+-------------------------------------------------------------------
+Fri Nov 07 13:15:08 CET 2014 - mc@suse.de
+
+- version 2.1.27.10-1
+- Add openSUSE 13.2 repositories to spacewalk-common-channels
+- extending spacewalk-api man page with usage of boolean values
+
+-------------------------------------------------------------------
+Tue Oct 14 15:15:59 CEST 2014 - mc@suse.de
+
+- version 2.1.27.9-1
+- spacewalk-manage-channel-lifecycle: put default phases in help output
+- Allow use of "-" symbol in phase names
+
+-------------------------------------------------------------------
+Fri Sep 12 15:47:56 CEST 2014 - mc@suse.de
+
+- version 2.1.27.8-1
+- man page update: clone-by-date doesn't support 3rd party repos
+- improve clone-by-date dependency resolution
+- Check if dest parent is cloned
+- sw-clone-by-date --dry-run
+- make clone-by-date able to specify --parents from config file
+- you should not have to specify both parent channels for clone-by-
+  date
+- CentOS 7 + EPEL 7 channels
+
+-------------------------------------------------------------------
+Tue Jun 17 10:17:09 CEST 2014 - jrenner@suse.de
+
+- version 2.1.27.7-1
+- Fixed spacewalk-hostname-rename to work with postgresql backend
+- Added limitation of spacewalk-clone-by-date for RHEL4 and earlier
+
+-------------------------------------------------------------------
 Tue May 27 17:13:27 CEST 2014 - mc@suse.de
 
 - version 2.1.27.6-1

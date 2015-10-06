@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Feb 03 11:43:27 CET 2015 - mc@suse.de
+
+- version 1.0.4-1
+- write current service and repository configuration into
+  supportconfig
+
+-------------------------------------------------------------------
 Thu Apr 03 09:06:10 CEST 2014 - mc@suse.de
 
 - version 1.0.3-1

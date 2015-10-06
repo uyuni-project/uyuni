@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Jun 24 09:47:25 CEST 2015 - jrenner@suse.de
+
+- version 2.1.0.5-1
+- Re-add conflicts with postgresql94 packages
+
+-------------------------------------------------------------------
+Tue Jun 23 16:36:16 CEST 2015 - jrenner@suse.de
+
+- version 2.1.0.4-1
+- Specifically require postgresql91-* packages
+
+-------------------------------------------------------------------
 Fri May 16 12:51:56 CEST 2014 - mc@suse.de
 
 - version 2.1.0.3-1
