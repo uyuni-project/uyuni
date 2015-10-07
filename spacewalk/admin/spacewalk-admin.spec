@@ -2,7 +2,7 @@
 Summary: Various utility scripts and data files for Spacewalk installations
 Name: spacewalk-admin
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.0
+Version: 2.5.0.1
 Release: 1%{?dist}
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 License: GPLv2

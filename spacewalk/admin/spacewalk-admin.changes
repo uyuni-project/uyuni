@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Oct 07 13:36:42 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+- integrate SaltStack for configuration management (FATE#312447)
+- drop monitoring
+- Update certificate installation for SLE12
+
+-------------------------------------------------------------------
 Tue Feb 03 13:20:53 CET 2015 - mc@suse.de
 
 - version 2.1.2.4-1
