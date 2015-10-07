@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:31:55 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+- fix spacewalk-report multival issue
+- Adding reports for activation-keys
+
+-------------------------------------------------------------------
 Mon Jun 22 15:59:56 CEST 2015 - jrenner@suse.de
 
 - version 2.1.14.9-1
