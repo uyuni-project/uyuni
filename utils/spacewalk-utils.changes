@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 13:32:35 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- spacewalk-hostname-rename knows to start postgresql
+- prevent spacewalk-hostname-rename to fail with an IPv6 address
+- general bugfixes
+
+-------------------------------------------------------------------
 Tue Mar 31 14:39:32 CEST 2015 - mc@suse.de
 
 - version 2.1.27.13-1
