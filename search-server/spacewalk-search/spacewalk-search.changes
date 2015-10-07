@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:30:25 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- require objectweb-asm instead of asm on SUSE also
+- systemd fixes for spacewalk-search
+- relax compiler errors to build on SLE12
+
+-------------------------------------------------------------------
 Mon Jun 22 15:43:43 CEST 2015 - jrenner@suse.de
 
 - version 2.1.14.7-1
