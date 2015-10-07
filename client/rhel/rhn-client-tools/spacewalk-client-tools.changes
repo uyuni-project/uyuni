@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 15:06:28 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- add python3 compatibility
+- Show a descriptive message on reboot
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+
+-------------------------------------------------------------------
 Wed Sep 23 15:09:28 CEST 2015 - mc@suse.de
 
 - version 2.1.16.9-1
