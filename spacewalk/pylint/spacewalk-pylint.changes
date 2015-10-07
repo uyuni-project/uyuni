@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 17:01:59 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- disable pylint rule R0903:  Too few public methods
+- use new pylint on SLE12
+
+-------------------------------------------------------------------
 Tue Feb 03 13:22:05 CET 2015 - mc@suse.de
 
 - version 0.12.4-1
