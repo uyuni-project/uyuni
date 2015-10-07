@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:41:35 CEST 2015 - mc@suse.de
+
+- version 2.5.2.1-1
+- drop monitoring
+- port all perl web pages to java
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+- integrate SaltStack for configuration management (FATE#312447)
+- support password-recovery-tokens
+- remove Solaris support
+- allow to specify read-only users
+
+-------------------------------------------------------------------
 Sun Sep 27 14:44:59 CEST 2015 - mc@suse.de
 
 - version 2.1.165.19-1
