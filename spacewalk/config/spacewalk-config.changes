@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 13:54:50 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+
+-------------------------------------------------------------------
 Mon Jun 22 16:23:17 CEST 2015 - jrenner@suse.de
 
 - version 2.1.5.6-1
