@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 07 17:03:48 CEST 2015 - mc@suse.de
+
+- version 11.2.0.12.1-1
+- provide ojdbc5 and remove obsolete code
+
+-------------------------------------------------------------------
 Thu Jul  3 08:26:42 UTC 2014 - dmacvicar@suse.de
 
 - fixed paths
