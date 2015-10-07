@@ -10,7 +10,7 @@ Group: System Environment/Kernel
 License: GPLv2
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
-Version: 2.4.2
+Version: 2.5.0
 Release: 1%{?dist}
 URL:            https://fedorahosted.org/spacewalk
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
