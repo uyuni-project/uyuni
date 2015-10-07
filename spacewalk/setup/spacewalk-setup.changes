@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 13:58:26 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- Remove certificate handling from setup (FATE#311619)
+- Remove monitoring setup
+
+-------------------------------------------------------------------
 Mon Jun 22 15:49:07 CEST 2015 - jrenner@suse.de
 
 - version 2.1.14.12-1
