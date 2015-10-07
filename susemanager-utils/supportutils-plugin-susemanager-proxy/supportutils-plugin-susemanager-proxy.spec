@@ -7,13 +7,13 @@
 #
 
 # norootforbuild
-# neededforbuild  
+# neededforbuild
 
 Name:         supportutils-plugin-susemanager-proxy
 License:      GPLv2
 Group:        Documentation/SuSE
 Autoreqprov:  on
-Version:      1.0.2
+Version:      3.0.1
 Release:      1%{?dist}
 Source:       %{name}-%{version}.tar.gz
 Summary:      Supportconfig Plugin for SUSE Manager Proxy
