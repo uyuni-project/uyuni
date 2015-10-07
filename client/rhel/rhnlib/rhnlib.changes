@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 15:09:31 CEST 2015 - mc@suse.de
+
+- version 2.5.77.1-1
+- python 3 compatibility
+- SmartIO: don't use tmpDir configuration from /etc/sysconfig/rhn/up2date
+
+-------------------------------------------------------------------
 Tue Mar 31 14:30:45 CEST 2015 - mc@suse.de
 
 - version 2.5.69.7-1
