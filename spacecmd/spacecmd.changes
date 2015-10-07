@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:26:44 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- drop monitoring
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+
+-------------------------------------------------------------------
 Wed Sep 23 15:05:03 CEST 2015 - mc@suse.de
 
 - version 2.1.25.10-1
