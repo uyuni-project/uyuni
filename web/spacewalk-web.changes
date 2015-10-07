@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 13:31:32 CEST 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- drop monitoring
+- port all perl web pages to java
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+
+-------------------------------------------------------------------
 Wed Sep 23 14:56:25 CEST 2015 - mc@suse.de
 
 - version 2.1.60.13-1
