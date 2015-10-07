@@ -31,7 +31,8 @@ Feature: Check if SaltStack is configured and running
     Then the list of the keys should contain this client's hostname
 
   Scenario: Check if the minion communicates with the master and verify registration
-    When I wait for "8" seconds
+    # It takes a while before we can get the grains and registration is done
+    When I wait for "15" seconds
     And I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
     And I should see this client in spacewalk
