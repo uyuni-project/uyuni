@@ -1,0 +1,77 @@
+{
+  "1": {
+    "10.162.186.111": {
+      "cpuArch": "x86_64",
+      "cpuDescription": "AMD Opteron(tm) Processor 4386",
+      "cpuMhz": 3092.212727,
+      "cpuVendor": "amd",
+      "name": "10.162.186.111",
+      "os": "VMware ESXi",
+      "osVersion": "5.5.0",
+      "ramMb": 65512,
+      "totalCpuCores": 16,
+      "totalCpuSockets": 2,
+      "totalCpuThreads": 16,
+      "vms": {
+        "vCenter": "564d6d90-459c-2256-8f39-3cb2bd24b7b0"
+      }
+    },
+    "10.162.186.112": {
+      "cpuArch": "x86_64",
+      "cpuDescription": "AMD Opteron(tm) Processor 4386",
+      "cpuMhz": 3092.212639,
+      "cpuVendor": "amd",
+      "name": "10.162.186.112",
+      "os": "VMware ESXi",
+      "osVersion": "5.5.0",
+      "ramMb": 65512,
+      "totalCpuCores": 16,
+      "totalCpuSockets": 2,
+      "totalCpuThreads": 16,
+      "vms": {
+        "49737e0a-c9e6-4ceb-aef8-6a9452f67cb5": "4230c60f-3f98-2a65-f7c3-600b26b79c22",
+        "5a2e4e63-a957-426b-bfa8-4169302e4fdb": "42307b15-1618-0595-01f2-427ffcddd88e",
+        "NSX-gateway": "4230d43e-aafe-38ba-5a9e-3cb67c03a16a",
+        "NSX-l3gateway": "4230b00f-0b21-0e9d-dfde-6c7b06909d5f",
+        "NSX-service": "4230e924-b714-198b-348b-25de01482fd9"
+      }
+    },
+    "host-with-no-vms": {
+      "cpuArch": "x86_64",
+      "cpuDescription": "AMD Opteron(tm) Processor 4386",
+      "cpuMhz": 3092.212727,
+      "cpuVendor": "amd",
+      "name": "10.162.186.111",
+      "os": "VMware ESXi",
+      "osVersion": "5.5.0",
+      "ramMb": 65512,
+      "totalCpuCores": 16,
+      "totalCpuSockets": 2,
+      "totalCpuThreads": 16,
+      "vms": { }
+    }
+  },
+  "9c84c119-cb23-439b-b479-327e81d53988": {
+    "abcdefg.suse.de": {
+      "cpuArch": "x86_64",
+      "cpuDescription": "AMD Opteron(tm) Processor 6128 HE",
+      "cpuMhz": 2000.139594,
+      "cpuVendor": "amd",
+      "name": "abcdefg.suse.de",
+      "os": "VMware ESXi",
+      "osVersion": "5.5.0",
+      "ramMb": 32766,
+      "totalCpuCores": 16,
+      "totalCpuSockets": 2,
+      "totalCpuThreads": 16,
+      "vms": {
+        "SUSE-Manager-Reference": "564d09ec-41b9-c894-566b-30248333e6d3",
+        "SUSE-Manager-Testsuite1": "564d3f2d-4a22-723a-839f-5fd8912ca2ca",
+        "ix32vt1301": "564db0e5-d359-31f7-2bae-755c960e3fd6",
+        "ix32vt1302": "564d638d-95c1-c9ab-f838-6bb7295b8f37",
+        "ix64vt1301": "564d1d5d-5416-07af-cffd-f4b676e83a4d",
+        "ix64vt1302": "564defaf-ee96-b7cf-87b8-4d0fa21b7321"
+      }
+    }
+  }
+}
