@@ -208,9 +208,10 @@ exit_in_case_of_error
 
 # Check if sudo exists or if user has sudo access
 # Will fail if sudo isn't installed or user doesn't have sudo access
-ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} 'sudo -v'
-exit_in_case_of_error
-
+if [ -n "${SUDO_USER}" ]; then
+  ssh -i ${SSH_IDENTITY} ${USER}@${CLIENT} 'sudo -v'
+  exit_in_case_of_error
+fi
 
 # Remove duplicate entries from authorized keys
 echo "* Removing duplicate host keys remotely"
