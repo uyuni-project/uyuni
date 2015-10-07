@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:29:14 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- Bumping package versions for 2.5.
+- Use FHS location for tomcat on SUSE
+- update index
+
+-------------------------------------------------------------------
 Wed Feb 04 10:27:44 CET 2015 - mc@suse.de
 
 - version 2.1.2.3-1
