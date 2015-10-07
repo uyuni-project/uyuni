@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 07 15:51:28 CEST 2015 - mc@suse.de
+
+- version 5.10.85.1-1
+- make rhncfg support sha256 and use it by default
+- fix for assigning all groups user belongs to running process
+- show server modified time with rhncfg-client diff
+
+-------------------------------------------------------------------
 Tue Mar 31 14:51:34 CEST 2015 - mc@suse.de
 
 - version 5.10.65.11-1
