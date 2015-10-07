@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.5.0
+Version:        2.5.0.1
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
