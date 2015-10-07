@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 07 16:48:59 CEST 2015 - mc@suse.de
+
+- version 3.0.1-1
+- translate yast module to setup SUSE Manager from ycp to ruby
+
+-------------------------------------------------------------------
 Wed Sep 23 15:03:42 CEST 2015 - mc@suse.de
 
 - version 2.1.21-1
