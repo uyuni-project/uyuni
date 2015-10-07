@@ -1,5 +1,5 @@
 Name:           oracle-lib-compat
-Version:        11.2.0.12
+Version:        11.2.0.12.1
 Release:        1
 Summary:        Compatibility package so that perl-DBD-Oracle will install
 Group:          Applications/Multimedia
