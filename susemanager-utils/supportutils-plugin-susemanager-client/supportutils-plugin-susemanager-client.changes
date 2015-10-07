@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 07 17:14:29 CEST 2015 - mc@suse.de
+
+- version 3.0.1-1
+- collect salt minion logfile for supportconfig
+
+-------------------------------------------------------------------
 Tue Feb 03 11:43:27 CET 2015 - mc@suse.de
 
 - version 1.0.4-1
