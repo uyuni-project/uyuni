@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:53:10 CEST 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- drop monitoring
+- replace upstream subscription counting with new subscription
+  matching (FATE#311619)
+- integrate SaltStack for configuration management (FATE#312447)
+
+-------------------------------------------------------------------
 Sun Sep 27 14:44:12 CEST 2015 - mc@suse.de
 
 - version 2.1.55.21-1
