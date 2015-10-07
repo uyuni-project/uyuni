@@ -68,7 +68,7 @@
 - features/delete_system_profile.feature
 - features/salt.feature
 - features/salt_minions_page.feature
-- features/system_packages.feature
+- features/salt_minion_details.feature
 # End salt related features
 - features/change_password.feature
 - features/spacewalk-debug.feature
