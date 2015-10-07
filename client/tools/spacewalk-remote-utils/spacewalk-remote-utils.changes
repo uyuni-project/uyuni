@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Wed Oct 07 16:05:47 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- update channel definitions RHEL 6.7, 7.1
+- use hostname instead of localhost for https connections
+- spacewalk-create-channel added -o option to clone channel to
+  current state
+
+-------------------------------------------------------------------
 Mon Jun 22 16:17:12 CEST 2015 - jrenner@suse.de
 
 - version 2.1.3.10-1
