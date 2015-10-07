@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 07 14:35:40 CEST 2015 - mc@suse.de
+
+- version 2.5.0.1-1
+- Bumping package versions for 2.5.
+- change permissions on config-default directory
+
+-------------------------------------------------------------------
 Mon Jun 22 16:19:47 CEST 2015 - jrenner@suse.de
 
 - version 2.1.15.7-1
