@@ -65,7 +65,6 @@
 - features/xmlrpc_channel.feature
 - features/setup_wizard.feature
 # Salt related features
-- features/delete_system_profile.feature
 - features/salt.feature
 - features/salt_minions_page.feature
 - features/salt_minion_details.feature
