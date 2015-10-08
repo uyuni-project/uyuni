@@ -19,12 +19,15 @@ import com.redhat.rhn.common.messaging.MessageQueue;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.datatypes.Event;
+import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
+import com.suse.saltstack.netapi.event.MinionStartEvent;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.websocket.CloseReason;
 
@@ -85,10 +88,41 @@ public class SaltReactor implements EventListener {
             LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
 
-        // Trigger minion registration on "salt/minion/*/start" events
-        if (event.getTag().matches("salt/minion/(.*)/start")) {
-            triggerMinionRegistration((String) event.getData().get("id"));
-        }
+        // Setup event handlers for different types of events
+        Runnable runnable =
+                MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
+                BeaconEvent.parse(event).map(this::onBeaconEvent)
+                .orElse(() -> {}));
+        runnable.run();
+    }
+
+    /**
+     * Detect changes of managed files.
+     *
+     * @param beaconEvent beacon event
+     * @return event handler runnable
+     */
+    private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
+        return () -> {
+            if (beaconEvent.getBeacon().equals("managedwatch")) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> data = (Map<String, Object>)
+                        beaconEvent.getData().get("data");
+                LOG.debug("Managed file has changed: " + data.get("path"));
+            }
+        };
+    }
+
+    /**
+     * Trigger registration on minion start events.
+     *
+     * @param minionStartEvent minion start event
+     * @return event handler runnable
+     */
+    private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
+        return () -> {
+            triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
+        };
     }
 
     /**
