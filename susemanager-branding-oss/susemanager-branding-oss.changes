@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 08 16:56:43 CEST 2015 - mc@suse.de
+
+- version 3.0.1-1
+- add standard SUSE Beta license
+- Added static EULA page
+- Delete PXT-based EULA page
+
+-------------------------------------------------------------------
 Tue May 27 17:12:01 CEST 2014 - mc@suse.de
 
 - version 2.1.4-1
