@@ -59,7 +59,7 @@ public class SSEServlet extends HttpServlet {
                 out.flush();
             }
             catch (IllegalStateException | IOException e) {
-                logger.error("Error: " + e.getMessage(), e);
+                logger.error("Removing connection: " + e.getMessage());
                 iterator.remove();
             }
         });
