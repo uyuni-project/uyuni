@@ -99,6 +99,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Returns a list of all Virtual Host Managers
+     * @return list of all Virtual Host Managers
+     */
+    public List<VirtualHostManager> listVirtualHostManagers() {
+        return getSession()
+                .createCriteria(VirtualHostManager.class)
+                .list();
+    }
+
+    /**
      * Deletes given VirtualHostManager and associated objects.
      * @param virtualHostManager to be deleted
      */
