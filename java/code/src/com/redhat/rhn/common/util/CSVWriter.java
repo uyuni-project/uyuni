@@ -35,7 +35,7 @@ import java.util.Map;
  * @version $Rev$
  */
 public class CSVWriter extends BufferedWriter implements ExportWriter {
-    private List <String> columns;
+    private List<String> columns;
     private Writer contents;
     private String headerText;
     private char separatorChar = ',';

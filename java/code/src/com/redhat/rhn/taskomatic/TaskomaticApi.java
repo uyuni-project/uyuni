@@ -122,10 +122,10 @@ public class TaskomaticApi {
      * @param params parameters
      * @throws TaskomaticApiException if there was an error
      */
-    public void scheduleSingleRepoSync(Channel chan, User user, Map <String, String>params)
+    public void scheduleSingleRepoSync(Channel chan, User user, Map<String, String> params)
                                     throws TaskomaticApiException {
 
-        Map <String, String> scheduleParams = new HashMap<String, String>();
+        Map<String, String> scheduleParams = new HashMap<String, String>();
         scheduleParams.put("channel_id", chan.getId().toString());
         scheduleParams.putAll(params);
 
@@ -170,7 +170,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleRepoSync(Channel chan, User user, String cron,
-                                                     Map <String, String>params)
+                                                     Map<String, String> params)
                                         throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
@@ -178,7 +178,7 @@ public class TaskomaticApi {
         if (task != null) {
             unscheduleRepoTask(jobLabel, user);
         }
-        Map <String, String> scheduleParams = new HashMap<String, String>();
+        Map<String, String> scheduleParams = new HashMap<String, String>();
         scheduleParams.put("channel_id", chan.getId().toString());
         scheduleParams.putAll(params);
 

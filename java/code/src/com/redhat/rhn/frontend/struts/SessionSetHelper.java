@@ -65,7 +65,7 @@ public class SessionSetHelper extends BaseSetHelper {
      * @param label set declaration
      * @return the set
      */
-    public static Set <String> lookupAndBind(HttpServletRequest request, String label) {
+    public static Set<String> lookupAndBind(HttpServletRequest request, String label) {
         String lbl = makeLabel(label);
 
         Set<String> set = (Set<String>) request.getSession().getAttribute(lbl);

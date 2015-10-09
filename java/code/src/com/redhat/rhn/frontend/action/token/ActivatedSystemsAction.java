@@ -73,7 +73,7 @@ public class ActivatedSystemsAction extends BaseListAction {
      * @param context the request context
      * @param servers list of servers
      */
-    private void setupMap(RequestContext context, List <Server> servers) {
+    private void setupMap(RequestContext context, List<Server> servers) {
         Map<Long, Long> accessMap = new HashMap<Long, Long>();
         Map<Long, String> dateMap = new HashMap<Long, String>();
         LocalizationService ls = LocalizationService.getInstance();

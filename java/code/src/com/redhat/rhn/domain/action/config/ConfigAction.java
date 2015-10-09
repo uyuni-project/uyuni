@@ -34,7 +34,7 @@ import java.util.Set;
  */
 public class ConfigAction extends Action {
 
-    private Set <ConfigRevisionAction> configRevisionActions;
+    private Set<ConfigRevisionAction> configRevisionActions;
 
     /**
      * @return Returns the configRevisionActions.

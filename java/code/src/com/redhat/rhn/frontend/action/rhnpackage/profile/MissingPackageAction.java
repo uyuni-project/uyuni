@@ -147,7 +147,7 @@ public class MissingPackageAction extends BaseProfilesAction {
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
-        Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
+        Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
                 getDecl(context, sid));
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
@@ -172,7 +172,7 @@ public class MissingPackageAction extends BaseProfilesAction {
             HttpServletResponse response) {
         RequestContext requestContext = new RequestContext(request);
         Long sid = requestContext.getRequiredParam("sid");
-        Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
+        Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
                 getDecl(requestContext, sid));
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sid", sid);
@@ -191,7 +191,7 @@ public class MissingPackageAction extends BaseProfilesAction {
                                        HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
         Long sid = requestContext.getRequiredParam("sid");
-        Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
+        Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
                                                 getDecl(requestContext, sid));
 
         if (isProfileSync(requestContext)) {

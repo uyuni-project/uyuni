@@ -84,7 +84,7 @@ public class UserManager extends BaseManager {
      * @return the list of roles assignable by this user.
      */
     public static Set<Role> listRolesAssignableBy(User user) {
-        Set <Role> assignable = new LinkedHashSet<Role>();
+        Set<Role> assignable = new LinkedHashSet<Role>();
         if (user.hasRole(RoleFactory.SAT_ADMIN)) {
             assignable.add(RoleFactory.SAT_ADMIN);
         }
@@ -658,7 +658,7 @@ public class UserManager extends BaseManager {
      * @param pc The details of which results to return.
      * @return A DataResult containing the specified number of users.
      */
-    public static DataResult <UserOverview> usersInOrg(User user, PageControl pc) {
+    public static DataResult<UserOverview> usersInOrg(User user, PageControl pc) {
         SelectMode m = ModeFactory.getMode("User_queries", "users_in_org");
         return getUsersInOrg(user, pc, m);
     }

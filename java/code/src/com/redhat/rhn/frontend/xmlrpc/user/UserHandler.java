@@ -312,7 +312,7 @@ public class UserHandler extends BaseHandler {
      * @return all the role labels that are assignable to a user.
      */
     private Set<String> getAssignableRoles(User user) {
-        Set <String> assignableRoles = new LinkedHashSet<String>();
+        Set<String> assignableRoles = new LinkedHashSet<String>();
         for (Role r : UserManager.listRolesAssignableBy(user)) {
             assignableRoles.add(r.getLabel());
         }
@@ -325,7 +325,7 @@ public class UserHandler extends BaseHandler {
      * @param user the logged in user who wants to assign the given role.
      */
     private void validateRoleInputs(String role, User user) {
-        Set <String> assignableRoles = getAssignableRoles(user);
+        Set<String> assignableRoles = getAssignableRoles(user);
         if (!assignableRoles.contains(role)) {
             String msg = "Role with the label [%s] cannot be " +
                           "assigned/revoked from the user." +
@@ -859,7 +859,7 @@ public class UserHandler extends BaseHandler {
         Set<Long> ids =  target.getDefaultSystemGroupIds();
 
 
-        List <ServerGroup> sgs = new ArrayList(ids.size());
+        List<ServerGroup> sgs = new ArrayList(ids.size());
         for (Long id : ids) {
             sgs.add(ServerGroupFactory.lookupByIdAndOrg(id, target.getOrg()));
         }

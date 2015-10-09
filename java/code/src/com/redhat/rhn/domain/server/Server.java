@@ -318,7 +318,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return Returns the ServerConfigChannels mappings currently available
      * to the server based on it's entitlements.
      */
-    public List <ConfigChannel> getConfigChannels() {
+    public List<ConfigChannel> getConfigChannels() {
         ensureConfigManageable();
         return getConfigChannelsHibernate();
     }
@@ -1952,8 +1952,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * @return active Set of active interaces without lo
      */
-    public Set <NetworkInterface> getActiveNetworkInterfaces() {
-        Set <NetworkInterface> active = new HashSet();
+    public Set<NetworkInterface> getActiveNetworkInterfaces() {
+        Set<NetworkInterface> active = new HashSet();
         for (NetworkInterface n : networkInterfaces) {
             if (!n.isDisabled()) {
                 active.add(n);

@@ -219,7 +219,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
         }
 
-        List <String> args = new ArrayList();
+        List<String> args = new ArrayList();
         args.add(xmlRpcToken);
         List<Map> systems = (List) invokeXMLRPC("get_systems", args);
         for (Map row : systems) {
@@ -406,7 +406,7 @@ public class CobblerSystemCreateCommand extends CobblerCommand {
 
     protected void processNetworkInterfaces(SystemRecord rec,
             Server serverIn) {
-        List <Network> nics = new LinkedList<Network>();
+        List<Network> nics = new LinkedList<Network>();
         if (serverIn.getNetworkInterfaces() != null) {
             for (NetworkInterface n : serverIn.getNetworkInterfaces()) {
                 // don't create a physical network device for a bond

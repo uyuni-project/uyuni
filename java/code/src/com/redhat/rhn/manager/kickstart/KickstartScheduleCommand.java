@@ -381,8 +381,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      */
     public DataResult<KickstartDto> getKickstartProfiles() {
         log.debug("getKickstartProfiles()");
-        DataResult<KickstartDto> retval = new DataResult
-                <KickstartDto>(Collections.EMPTY_LIST);
+        DataResult<KickstartDto> retval = new DataResult<KickstartDto>(
+                Collections.EMPTY_LIST);
 
         // Profiles are associated with the host; the target system might not be created
         // yet.  Also, the host will be the one performing the kickstart, so the profile

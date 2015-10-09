@@ -1414,8 +1414,8 @@ public class SystemHandler extends BaseHandler {
     public int deleteSystems(User loggedInUser, List<Integer> systemIds)
             throws FaultException {
 
-        List <Integer> skippedSids = new ArrayList<Integer>();
-        List <Long> deletion = new LinkedList<Long>();
+        List<Integer> skippedSids = new ArrayList<Integer>();
+        List<Long> deletion = new LinkedList<Long>();
         // Loop through the sids and try to delete the server
         for (Integer sysId : systemIds) {
             try {

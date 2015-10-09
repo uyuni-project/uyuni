@@ -375,7 +375,7 @@ public class KickstartEditCommand extends BaseKickstartCommand {
                 RepoInfo rInfo = ri.next();
                 repoSet.put(rInfo.getName(), rInfo);
             }
-            Set<RepoInfo> selected = new HashSet <RepoInfo>();
+            Set<RepoInfo> selected = new HashSet<RepoInfo>();
             for (int i = 0; i < reposIn.length; i++) {
                 selected.add(repoSet.get(reposIn[i]));
             }

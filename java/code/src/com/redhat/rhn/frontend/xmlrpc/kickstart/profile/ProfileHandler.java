@@ -1464,7 +1464,7 @@ public class ProfileHandler extends BaseHandler {
                 RepoInfo rInfo = ri.next();
                 repoSet.put(rInfo.getName(), rInfo);
             }
-            Set<RepoInfo> selected = new HashSet <RepoInfo>();
+            Set<RepoInfo> selected = new HashSet<RepoInfo>();
             for (int i = 0; i < reposIn.size(); i++) {
                 RepoInfo repoInfo = repoSet.get(reposIn.get(i));
                 if (repoInfo != null) {

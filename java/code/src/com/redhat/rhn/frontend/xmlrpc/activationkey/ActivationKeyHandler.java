@@ -981,7 +981,7 @@ public class ActivationKeyHandler extends BaseHandler {
          List<ActivationKey> activationKeys = helper.lookupKeys(loggedInUser, keys);
          XmlRpcConfigChannelHelper configHelper =
                              XmlRpcConfigChannelHelper.getInstance();
-         List <ConfigChannel> channels = configHelper.
+         List<ConfigChannel> channels = configHelper.
                               lookupGlobals(loggedInUser, configChannelLabels);
          ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
          if (addToTop) {

@@ -131,7 +131,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
     public ValidatorError store() {
         List<String> errors = new LinkedList<String>();
 
-        List <KickstartableTree> trees = KickstartFactory.lookupKickstartTrees();
+        List<KickstartableTree> trees = KickstartFactory.lookupKickstartTrees();
 
         //Any distros exist on spacewalk and not in cobbler?
         Map<String, Distro> cobblerDistros = getDistros();

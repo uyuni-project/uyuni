@@ -72,7 +72,7 @@ public class SyncProfilesAction extends BaseProfilesAction {
         }
 
         try {
-            Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
+            Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
                     getDecl(sid));
 
             PackageAction pa = ProfileManager.syncToProfile(user, sid, prid,

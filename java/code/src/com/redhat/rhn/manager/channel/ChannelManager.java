@@ -2006,7 +2006,7 @@ public class ChannelManager extends BaseManager {
             return result;
         }
 
-        Map <ProductName, Channel> prodChannels =
+        Map<ProductName, Channel> prodChannels =
             new HashMap<ProductName, Channel>();
         Set<ProductName> nonUniqueProducts = new HashSet<ProductName>();
         List<Channel> newChildren = newBaseChannel.getAccessibleChildrenFor(user);

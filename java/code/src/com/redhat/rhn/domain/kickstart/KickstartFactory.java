@@ -722,7 +722,7 @@ public class KickstartFactory extends HibernateFactory {
      * @param org owning org
      * @return list of KickstartableTrees
      */
-    public static List <KickstartableTree> lookupAccessibleTreesByOrg(Org org) {
+    public static List<KickstartableTree> lookupAccessibleTreesByOrg(Org org) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", org.getId());
         return singleton.listObjectsByNamedQuery(
@@ -758,7 +758,7 @@ public class KickstartFactory extends HibernateFactory {
      * list all kickstart trees stored in the satellite
      * @return list of kickstart trees
      */
-    public static List <KickstartableTree> lookupKickstartTrees() {
+    public static List<KickstartableTree> lookupKickstartTrees() {
         String query = "KickstartableTree.findAll";
         return singleton.listObjectsByNamedQuery(query, Collections.EMPTY_MAP, false);
     }
