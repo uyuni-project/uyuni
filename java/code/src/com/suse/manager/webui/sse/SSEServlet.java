@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -47,15 +48,19 @@ public class SSEServlet extends HttpServlet {
     private static Queue<AsyncContext> connections = new ConcurrentLinkedDeque<>();
 
     public static void sendEvent(Event event) {
-        connections.forEach(connection -> {
+        Iterator<AsyncContext> iterator = connections.iterator();
+        iterator.forEachRemaining(connection -> {
             try {
+                logger.debug("Sending event to connection: " + connection);
                 PrintWriter out = connection.getResponse().getWriter();
                 out.append("data: ");
                 out.append(GSON.toJson(event));
                 out.append("\n\n");
                 out.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IllegalStateException | IOException e) {
+                logger.error("Error: " + e.getMessage(), e);
+                iterator.remove();
             }
         });
     }
