@@ -394,7 +394,7 @@ public class ActivationKey extends BaseDomainHelper {
      * @param user the user needed to ensure credentials
      * @return the config channels associated to this activation key
      */
-    public List <ConfigChannel> getConfigChannelsFor(User user) {
+    public List<ConfigChannel> getConfigChannelsFor(User user) {
         return getToken().getConfigChannelsFor(user);
     }
 

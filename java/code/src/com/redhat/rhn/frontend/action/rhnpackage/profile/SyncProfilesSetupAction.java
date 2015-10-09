@@ -102,7 +102,7 @@ public class SyncProfilesSetupAction extends RhnAction implements Listable {
         Long prid = context.getRequiredParam("prid");
         User user = context.getCurrentUser();
 
-        Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
+        Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
                 getDecl(sid));
 
         DataResult dr = ProfileManager.prepareSyncToProfile(sid, prid,

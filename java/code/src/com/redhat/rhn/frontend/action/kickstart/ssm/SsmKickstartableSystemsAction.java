@@ -58,7 +58,7 @@ public class SsmKickstartableSystemsAction extends RhnAction implements Listable
         ListHelper helper = new ListHelper(this, request);
         helper.execute();
 
-        List <KickstartIpRange> range = KickstartManager.getInstance().
+        List<KickstartIpRange> range = KickstartManager.getInstance().
                                     listIpRanges(context.getCurrentUser());
         if (range.isEmpty()) {
             request.setAttribute(DISABLE_RANGES, Boolean.TRUE);

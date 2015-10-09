@@ -503,7 +503,7 @@ public class ConfigurationManager extends BaseManager {
      * @param server The server to which these files must be relevant
      * @return A list of config file names in DTO format.
      */
-    public DataResult <ConfigFileNameDto> listAllFileNamesForSystem(Server server) {
+    public DataResult<ConfigFileNameDto> listAllFileNamesForSystem(Server server) {
         SelectMode m = ModeFactory.getMode("config_queries",
                 "automated_file_names_for_system");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -523,7 +523,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A PageControl for this user
      * @return A list of config file names in DTO format.
      */
-    public DataResult <ConfigFileNameDto> listFileNamesForSystem(User user,
+    public DataResult<ConfigFileNameDto> listFileNamesForSystem(User user,
             Server server, PageControl pc) {
         SelectMode m = ModeFactory.getMode("config_queries",
                 "file_names_for_system");
@@ -578,7 +578,7 @@ public class ConfigurationManager extends BaseManager {
      * @param pc A PageControl for this user
      * @return A list of config file names in DTO format.
      */
-    public DataResult <ConfigFileNameDto> listFileNamesForSystemChannel(User user,
+    public DataResult<ConfigFileNameDto> listFileNamesForSystemChannel(User user,
             Server server, ConfigChannel channel, PageControl pc) {
         SelectMode m = ModeFactory.getMode("config_queries",
                 "file_names_for_system_channel");
@@ -1562,7 +1562,7 @@ public class ConfigurationManager extends BaseManager {
      * @return a list of unique'ly named paths sorted by the name of
      *          type com.redhat.rhn.frontend.dto.ConfigFileNameDto
      */
-    public List< ? extends ConfigFileNameDto> listManagedPathsFor(Server server,
+    public List<? extends ConfigFileNameDto> listManagedPathsFor(Server server,
             User user,
             ConfigChannelType type) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -2096,7 +2096,7 @@ public class ConfigurationManager extends BaseManager {
      * @param datePicked date to deploy or null for the earliest date
      */
     public void deployConfiguration(User user,
-            Collection <Server> servers,
+            Collection<Server> servers,
             Date datePicked) {
         deployConfiguration(user, servers, null, datePicked);
     }
@@ -2113,7 +2113,7 @@ public class ConfigurationManager extends BaseManager {
      * @param datePicked date to deploy or null for the earliest date
      */
     public void deployConfiguration(User user,
-            Collection <Server> servers,
+            Collection<Server> servers,
             ConfigChannel channel,
             Date datePicked) {
         if (datePicked == null) {
@@ -2122,7 +2122,7 @@ public class ConfigurationManager extends BaseManager {
         for (Server server : servers) {
             ensureConfigManageable(server);
 
-            List <ConfigFileNameDto> names;
+            List<ConfigFileNameDto> names;
             if (channel == null) {
                 names = listFileNamesForSystem(user, server, null);
             }
@@ -2130,9 +2130,9 @@ public class ConfigurationManager extends BaseManager {
                 names = listFileNamesForSystemChannel(user, server, channel, null);
             }
 
-            Set <Server> system = new HashSet<Server>();
+            Set<Server> system = new HashSet<Server>();
             system.add(server);
-            Set <Long> revs = new HashSet<Long>();
+            Set<Long> revs = new HashSet<Long>();
             for (ConfigFileNameDto dto : names) {
                 revs.add(getDeployableRevisionForFileName(dto.getId().longValue(),
                         server.getId()));

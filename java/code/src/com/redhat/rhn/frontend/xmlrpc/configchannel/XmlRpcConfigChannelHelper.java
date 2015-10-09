@@ -81,7 +81,7 @@ public class XmlRpcConfigChannelHelper {
      * @return Returns a list of config channels corresponding to labels
      */
     public List<ConfigChannel> lookupGlobals(User user, List<String> labels) {
-        List <ConfigChannel> channels = new LinkedList<ConfigChannel>();
+        List<ConfigChannel> channels = new LinkedList<ConfigChannel>();
         for (String label : labels) {
             channels.add(lookupGlobal(user, label));
         }

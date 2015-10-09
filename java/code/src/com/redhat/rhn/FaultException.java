@@ -85,12 +85,12 @@ public class FaultException extends RuntimeException  {
      */
     public static FaultException create(int errorIn, String labelIn,
             ValidatorResult resultIn) {
-        for (Iterator <ValidatorError> iter = resultIn.getErrors().iterator();
+        for (Iterator<ValidatorError> iter = resultIn.getErrors().iterator();
                 iter.hasNext();) {
             ValidatorError ve = iter.next();
             return new FaultException(errorIn, labelIn, ve.getKey(), ve.getValues());
         }
-        for (Iterator <ValidatorWarning> iter = resultIn.getWarnings().iterator();
+        for (Iterator<ValidatorWarning> iter = resultIn.getWarnings().iterator();
                 iter.hasNext();) {
             ValidatorWarning vw = iter.next();
             return new FaultException(errorIn, labelIn, vw.getKey(), vw.getValues());

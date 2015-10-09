@@ -67,7 +67,7 @@ public class ActivationKeysListAction extends RhnAction {
         User user = context.getCurrentUser();
 
         RhnSet set =  getDecl().get(user);
-        List <ActivationKeyDto> dataSet = KickstartLister.getInstance().
+        List<ActivationKeyDto> dataSet = KickstartLister.getInstance().
                                         getActivationKeysInOrg(user.getOrg(), null);
 
         //if its not submitted
@@ -114,7 +114,7 @@ public class ActivationKeysListAction extends RhnAction {
 
     private ActionForward handleDispatchAction(ActionMapping mapping,
             RequestContext context, RhnSet set,
-            List <ActivationKeyDto> currentKeys) {
+            List<ActivationKeyDto> currentKeys) {
         User user = context.getCurrentUser();
         int numEnabled = 0;
         int numDisabled = 0;

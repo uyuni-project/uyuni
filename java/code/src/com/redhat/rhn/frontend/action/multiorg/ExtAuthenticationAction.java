@@ -98,7 +98,7 @@ public class ExtAuthenticationAction extends RhnAction {
 
         DataList<OrgDto> dr = OrgManager.activeOrgs(user);
 
-        List <LabelValueBean> orgs = new LinkedList<LabelValueBean>();
+        List<LabelValueBean> orgs = new LinkedList<LabelValueBean>();
         orgs.add(lv(
                 LocalizationService.getInstance().getMessage("message.ext_auth_disable"),
                 null));

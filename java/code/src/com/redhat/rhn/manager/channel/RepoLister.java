@@ -71,7 +71,7 @@ public class RepoLister extends BaseManager {
      * @return list of content source dto's for users org
      */
     public List<ContentSourceDto> list(User user) {
-        List <ContentSourceDto> repos = new LinkedList<ContentSourceDto>();
+        List<ContentSourceDto> repos = new LinkedList<ContentSourceDto>();
         repos.addAll(sourcesInOrg(user.getOrg()));
         return repos;
     }

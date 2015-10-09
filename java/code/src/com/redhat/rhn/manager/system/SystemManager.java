@@ -576,7 +576,7 @@ public class SystemManager extends BaseManager {
      * @param pc PageControl
      * @return list of SystemOverviews.
      */
-    public static DataResult <SystemOverview> systemsNotInGroup(User user,
+    public static DataResult<SystemOverview> systemsNotInGroup(User user,
             ServerGroup sg, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "target_systems_for_group");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -3061,7 +3061,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageControl
      * @return Returns snapshot tags for a system
      */
-    public static DataResult <SnapshotTagDto> snapshotTagsForSystem(Long sid,
+    public static DataResult<SnapshotTagDto> snapshotTagsForSystem(Long sid,
             PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries", "tags_for_system");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -3076,7 +3076,7 @@ public class SystemManager extends BaseManager {
      * @param pc pageControl
      * @return Returns snapshot tags for a system
      */
-    public static DataResult <SnapshotTagDto> snapshotTagsForSystemAndSnapshot(Long sid,
+    public static DataResult<SnapshotTagDto> snapshotTagsForSystemAndSnapshot(Long sid,
             Long ssId, PageControl pc) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "tags_for_system_and_snapshot");
@@ -3094,7 +3094,7 @@ public class SystemManager extends BaseManager {
      * @param sid Server ID
      * @return SnapshotTags in RHNSet
      */
-    public static DataResult <SnapshotTagDto> snapshotTagsInSet(User user, PageControl pc,
+    public static DataResult<SnapshotTagDto> snapshotTagsInSet(User user, PageControl pc,
             String setLabel, Long sid) {
         SelectMode m = ModeFactory.getMode("System_queries",
                 "snapshot_tags_in_set");

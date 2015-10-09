@@ -61,7 +61,7 @@ public class AddGroupsAction extends RhnAction implements Listable {
 
         if (helper.isDispatched()) {
             ServerGroupManager manager = ServerGroupManager.getInstance();
-            List <Server> servers = new LinkedList<Server>();
+            List<Server> servers = new LinkedList<Server>();
             servers.add(server);
 
             for (String id : helper.getSet()) {

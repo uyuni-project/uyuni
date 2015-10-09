@@ -50,8 +50,8 @@ public class EntitlementManager extends BaseManager {
     public static final String BOOTSTRAP_ENTITLED = "bootstrap_entitled";
     public static final String SALTSTACK_ENTITLED = "saltstack_entitled";
 
-    private static final Set <Entitlement> ADDON_ENTITLEMENTS;
-    private static final Set <Entitlement> BASE_ENTITLEMENTS;
+    private static final Set<Entitlement> ADDON_ENTITLEMENTS;
+    private static final Set<Entitlement> BASE_ENTITLEMENTS;
     static {
         ADDON_ENTITLEMENTS = new LinkedHashSet<Entitlement>();
         ADDON_ENTITLEMENTS.add(VIRTUALIZATION);

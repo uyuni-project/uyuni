@@ -85,7 +85,7 @@ public class XmlRpcSystemHelper {
      * corresponding to sid cannot be found.
      */
     public List<Server> lookupServers(User user,
-            List< ? extends Number> serverIds)  throws NoSuchSystemException {
+            List<? extends Number> serverIds)  throws NoSuchSystemException {
         List<Server> servers = new LinkedList<Server>();
         for (Number sid : serverIds) {
             servers.add(lookupServer(user, sid));

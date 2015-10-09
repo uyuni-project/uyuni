@@ -425,11 +425,11 @@ public interface Errata {
      * Sets cves
      * @param cvesIn cve input
      */
-    void setCves(Set <Cve> cvesIn);
+    void setCves(Set<Cve> cvesIn);
     /**
      *
      * @return Returns Cves
      */
-    Set <Cve> getCves();
+    Set<Cve> getCves();
 
 }

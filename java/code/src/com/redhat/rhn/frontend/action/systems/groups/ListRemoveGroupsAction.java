@@ -74,9 +74,9 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable {
         User user = context.getCurrentUser();
         Server server = context.lookupAndBindServer();
         ServerGroupManager manager = ServerGroupManager.getInstance();
-        List <Server> servers = new LinkedList<Server>();
+        List<Server> servers = new LinkedList<Server>();
         servers.add(server);
-        Set <String> set = helper.getSet();
+        Set<String> set = helper.getSet();
 
         for (String id : set) {
             Long sgid = Long.valueOf(id);

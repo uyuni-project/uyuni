@@ -397,7 +397,7 @@ Serializable {
      * @return Returns first most global ipv6 address
      */
     public String getGlobalIpv6Addr() {
-        ArrayList <String> addrs = getGlobalIpv6Addresses();
+        ArrayList<String> addrs = getGlobalIpv6Addresses();
         if (addrs == null) {
             addrs = findServerNetAddress6ByScope("site");
         }

@@ -509,7 +509,7 @@ public class CVEAuditManager {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("cve_identifier", cveIdentifier);
         params.put("user_id", user.getId());
-        DataResult<Map<String, Object>>results = m.execute(params);
+        DataResult<Map<String, Object>> results = m.execute(params);
         List<CVEAuditSystem> ret = new LinkedList<CVEAuditSystem>();
 
         // Hold the system and errata we are currently looking at

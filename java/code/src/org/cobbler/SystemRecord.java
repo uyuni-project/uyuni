@@ -173,8 +173,8 @@ public class SystemRecord extends CobblerObject {
      * @return a list of systems.
      */
     public static List<SystemRecord> list(CobblerConnection connection) {
-        List <SystemRecord> systems = new LinkedList<SystemRecord>();
-        List <Map<String, Object >> cSystems = (List <Map<String, Object >>)
+        List<SystemRecord> systems = new LinkedList<SystemRecord>();
+        List<Map<String, Object>> cSystems = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_systems");
 
         for (Map<String, Object> sysMap : cSystems) {
@@ -194,8 +194,8 @@ public class SystemRecord extends CobblerObject {
      */
     public static List<SystemRecord> list(CobblerConnection connection,
                                 Set<String> excludes) {
-        List <SystemRecord> systems = new LinkedList<SystemRecord>();
-        List <Map<String, Object >> cSystems = (List <Map<String, Object >>)
+        List<SystemRecord> systems = new LinkedList<SystemRecord>();
+        List<Map<String, Object>> cSystems = (List<Map<String, Object>>)
                                         connection.invokeMethod("get_systems");
 
         for (Map<String, Object> sysMap : cSystems) {

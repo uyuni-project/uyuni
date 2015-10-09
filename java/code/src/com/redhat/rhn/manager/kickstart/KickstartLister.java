@@ -257,7 +257,7 @@ public class KickstartLister extends BaseManager {
      * @param pc to filter
      * @return DataResult list.
      */
-    public DataResult <ActivationKeyDto> getActivationKeysInOrg(Org orgIn,
+    public DataResult<ActivationKeyDto> getActivationKeysInOrg(Org orgIn,
                                                               PageControl pc) {
         if (logger.isDebugEnabled()) {
             logger.debug("activationKeysForKickstartProfile(Org orgIn=" + orgIn +
@@ -268,7 +268,7 @@ public class KickstartLister extends BaseManager {
                                            "activation_keys_for_org");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("org_id", orgIn.getId());
-        DataResult <ActivationKeyDto>  returnDataResult = makeDataResult(params,
+        DataResult<ActivationKeyDto>  returnDataResult = makeDataResult(params,
                                                     Collections.EMPTY_MAP, pc, m);
 
         if (logger.isDebugEnabled()) {
@@ -428,12 +428,12 @@ public class KickstartLister extends BaseManager {
      * @param user the user object needed for cobbler conneciton
      * @return list of cobbler profile dtos.
      */
-    public List <CobblerProfileDto> listCobblerProfiles(User user) {
+    public List<CobblerProfileDto> listCobblerProfiles(User user) {
         logger.debug("Adding cobblerProfiles to the list");
         Set<String> excludes = new HashSet<String>(
                     KickstartFactory.listKickstartDataCobblerIds());
 
-        List <CobblerProfileDto> profiles = new LinkedList<CobblerProfileDto>();
+        List<CobblerProfileDto> profiles = new LinkedList<CobblerProfileDto>();
 
         List<Profile> cProfiles = Profile.list(CobblerXMLRPCHelper.getConnection(user),
                                                                 excludes);
@@ -456,7 +456,7 @@ public class KickstartLister extends BaseManager {
      * @param dtos the kickstart dto
      * @param user the user object needed to connect to cobbler
      */
-    public void setKickstartUrls(List <KickstartDto> dtos, User user) {
+    public void setKickstartUrls(List<KickstartDto> dtos, User user) {
         CobblerConnection conn = CobblerXMLRPCHelper.getConnection(user);
 
         for (KickstartDto dto : dtos) {
@@ -474,8 +474,8 @@ public class KickstartLister extends BaseManager {
      * @param user the user object needed to get access to cobbler
      * @return a list of cobbler profiles or empty list.
      */
-    public List <KickstartDto> listProfilesForSsm(User user) {
-        List <KickstartDto> ret = new LinkedList<KickstartDto>();
+    public List<KickstartDto> listProfilesForSsm(User user) {
+        List<KickstartDto> ret = new LinkedList<KickstartDto>();
         ret.addAll(kickstartsInOrg(user.getOrg(), null));
         pruneInvalid(user, ret);
         ret.addAll(listCobblerProfiles(user));

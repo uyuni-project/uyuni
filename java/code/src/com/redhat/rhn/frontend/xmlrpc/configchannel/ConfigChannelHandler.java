@@ -504,7 +504,7 @@ public class ConfigChannelHandler extends BaseHandler {
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List <ConfigRevision> revisions = new LinkedList<ConfigRevision>();
+        List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
         for (String path : paths) {
             ConfigFile cf = cm.lookupConfigFile(loggedInUser, channel.getId(), path);
             if (cf == null) {
@@ -605,7 +605,7 @@ public class ConfigChannelHandler extends BaseHandler {
     public int deleteChannels(User loggedInUser, List<String> channelLabels) {
         ensureConfigAdmin(loggedInUser);
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
-        List <ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser,
+        List<ConfigChannel> channels = configHelper.lookupGlobals(loggedInUser,
                                                                 channelLabels);
         ConfigurationManager cm = ConfigurationManager.getInstance();
         for (ConfigChannel channel : channels) {
@@ -630,7 +630,7 @@ public class ConfigChannelHandler extends BaseHandler {
      * #array_single("string","file paths to remove.")
      * @xmlrpc.returntype #return_int_success()
      */
-     public int deleteFiles(User loggedInUser, String channelLabel, List <String> paths) {
+     public int deleteFiles(User loggedInUser, String channelLabel, List<String> paths) {
         XmlRpcConfigChannelHelper configHelper = XmlRpcConfigChannelHelper.getInstance();
         ConfigChannel channel = configHelper.lookupGlobal(loggedInUser,
                                                                 channelLabel);

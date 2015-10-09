@@ -358,7 +358,7 @@ public class PackageManager extends BaseManager {
      * upgradable packages.
      * @return a list of UpgradablePackageListItems
      */
-    public static DataResult <UpgradablePackageListItem> upgradable(Long sid,
+    public static DataResult<UpgradablePackageListItem> upgradable(Long sid,
                                                                 PageControl pc) {
         SelectMode m = ModeFactory.getMode("Package_queries",
                                            "system_upgradable_package_list");

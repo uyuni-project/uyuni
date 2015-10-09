@@ -143,7 +143,7 @@ public class CobblerSnippetLister extends BaseManager {
      * @return the snippets accessible to the user.
      */
     public List<CobblerSnippet> list(User user) {
-        List <CobblerSnippet> snip = new LinkedList<CobblerSnippet>(listDefault(user));
+        List<CobblerSnippet> snip = new LinkedList<CobblerSnippet>(listDefault(user));
         snip.addAll(listCustom(user));
         return snip;
     }
