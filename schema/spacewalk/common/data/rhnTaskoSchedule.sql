@@ -118,3 +118,10 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
     VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'mgr-sync-refresh-default',
         (SELECT id FROM rhnTaskoBunch WHERE name='mgr-sync-refresh-bunch'),
         current_timestamp, '0 0 0 ? * *');
+
+-- Once a day at 00:00
+
+INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'gatherer-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='gatherer-bunch'),
+        current_timestamp, '0 0 0 ? * *');
