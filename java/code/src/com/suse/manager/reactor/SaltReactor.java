@@ -30,6 +30,8 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.websocket.CloseReason;
 
@@ -49,6 +51,9 @@ public class SaltReactor implements EventListener {
 
     // Indicate that the reactor has been stopped
     private volatile boolean isStopped = false;
+
+    // Executor service for handling incoming events
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     /**
      * Start the salt reactor.
@@ -95,7 +100,7 @@ public class SaltReactor implements EventListener {
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
                 BeaconEvent.parse(event).map(this::onBeaconEvent)
                 .orElse(() -> {}));
-        runnable.run();
+        executorService.submit(runnable);
     }
 
     /**
