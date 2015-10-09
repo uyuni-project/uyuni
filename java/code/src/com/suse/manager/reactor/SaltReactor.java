@@ -16,8 +16,10 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.sse.SSEServlet;
 import com.suse.saltstack.netapi.datatypes.Event;
 import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
@@ -109,6 +111,11 @@ public class SaltReactor implements EventListener {
                 Map<String, Object> data = (Map<String, Object>)
                         beaconEvent.getData().get("data");
                 LOG.debug("Managed file has changed: " + data.get("path"));
+
+                // Send event via SSE to connected clients
+                SSEServlet.sendEvent(new ManagedFileChangedEvent(
+                        beaconEvent.getMinionId(), (String) data.get("path"),
+                        (String) data.get("diff")));
             }
         };
     }
