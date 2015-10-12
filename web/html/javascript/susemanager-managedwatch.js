@@ -9,7 +9,8 @@ $(document).on("ready", function() {
         // Create an alert and add it to spacewalk-content
         var alert = $('<div class="alert alert-danger"/>');
         var data = JSON.parse(event.data);
-        alert.html('Managed file <b>' + data.path + '</b> has been modified on minion: ' + data.minionId);
+        alert.html('Managed file <b>' + data.path +
+            '</b> has been modified on minion: <b>' + data.minionId + '</b>');
         $("#spacewalk-content").prepend(alert);
       }, false);
       source.onerror = function(error) {
