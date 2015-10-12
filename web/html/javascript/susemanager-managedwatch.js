@@ -17,7 +17,7 @@ $(document).on("ready", function() {
       };
       console.log("Event listener added");
     } else {
-      alert("Sorry, Server-Sent Event is not supported in your browser");
+      console.log("Sorry, Server-Sent Event is not supported in your browser");
     }
     return false;
   }
