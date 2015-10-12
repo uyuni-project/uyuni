@@ -14,10 +14,10 @@
  */
 package com.suse.manager.webui.sse;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.events.Event;
+
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -36,22 +36,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * SSE endpoint for running remote commands.
+ * SSE endpoint for forwarding events to connected browsers.
  */
 @WebServlet(urlPatterns = {"/sse"}, asyncSupported = true)
 public class SSEServlet extends HttpServlet {
 
     // Logger for this class
-    private static Logger logger = Logger.getLogger(SSEServlet.class);
-    private static Gson GSON = new GsonBuilder().create();
+    private static final Logger LOG = Logger.getLogger(SSEServlet.class);
 
-    private static Queue<AsyncContext> connections = new ConcurrentLinkedDeque<>();
+    // JSON serializer
+    private static final Gson GSON = new GsonBuilder().create();
 
+    // Pool of currently connected clients
+    private static final Queue<AsyncContext> CONNECTIONS = new ConcurrentLinkedDeque<>();
+
+    /**
+     * Send an event to all currently connected clients.
+     *
+     * @param event the event to be forwarded to the clients
+     */
     public static void sendEvent(Event event) {
-        Iterator<AsyncContext> iterator = connections.iterator();
+        Iterator<AsyncContext> iterator = CONNECTIONS.iterator();
         iterator.forEachRemaining(connection -> {
             try {
-                logger.debug("Sending event to connection: " + connection);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Sending event on connection: " + connection);
+                }
                 PrintWriter out = connection.getResponse().getWriter();
                 out.append("data: ");
                 out.append(GSON.toJson(event));
@@ -59,46 +69,59 @@ public class SSEServlet extends HttpServlet {
                 out.flush();
             }
             catch (IllegalStateException | IOException e) {
-                logger.error("Removing connection: " + e.getMessage());
+                LOG.error("Removing connection: " + e.getMessage());
                 iterator.remove();
             }
         });
     }
 
+    /**
+     * For every incoming request create an {@link AsyncContext} representing a
+     * connection to a client.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @throws ServletException if the request for the GET could not be handled
+     * @throws IOException if an I/O error is detected when the request is handled
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        logger.debug("see started");
+        LOG.debug("SSE event-stream requested");
 
         // Set content type
         response.setContentType("text/event-stream");
         response.setCharacterEncoding("UTF-8");
 
-        // start async
+        // Start async context
         final AsyncContext asyncContext = request.startAsync();
         asyncContext.setTimeout(0);
-        connections.add(asyncContext);
+        CONNECTIONS.add(asyncContext);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Number of connections: " + CONNECTIONS.size());
+        }
+
         asyncContext.addListener(new AsyncListener() {
             @Override
             public void onComplete(AsyncEvent event) throws IOException {
-                logger.debug("sse complete");
-                connections.remove(asyncContext);
+                LOG.debug("SSE complete");
+                CONNECTIONS.remove(asyncContext);
             }
 
             @Override
             public void onTimeout(AsyncEvent event) throws IOException {
-                logger.debug("sse timeout");
-                connections.remove(asyncContext);
+                LOG.debug("SSE timeout");
+                CONNECTIONS.remove(asyncContext);
             }
 
             @Override
             public void onError(AsyncEvent event) throws IOException {
-                logger.debug("sse error");
-                connections.remove(asyncContext);
+                LOG.debug("SSE error");
+                CONNECTIONS.remove(asyncContext);
             }
 
             @Override
             public void onStartAsync(AsyncEvent event) throws IOException {
+                LOG.debug("SSE start async");
             }
         });
     }

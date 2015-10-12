@@ -90,37 +90,55 @@ public class SaltReactor implements EventListener {
      * {@inheritDoc}
      */
     @Override
+    public void eventStreamClosed(CloseReason closeReason) {
+        LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
+                " [" + closeReason.getCloseCode() + "]");
+
+        // Try to reconnect
+        if (!isStopped) {
+            LOG.warn("Reconnecting to event stream...");
+            eventStream = SALT_SERVICE.getEventStream();
+            eventStream.addEventListener(this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void notify(Event event) {
         if (LOG.isTraceEnabled()) {
             LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
         }
 
-        // Setup event handlers for different types of events
+        // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent)
-                .orElse(() -> {}));
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> {}));
         executorService.submit(runnable);
     }
 
     /**
-     * Detect changes of managed files.
+     * Event handler for beacon events.
      *
      * @param beaconEvent beacon event
      * @return event handler runnable
      */
     private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
         return () -> {
+            // Detect changes of managed files using the "managedwatch" beacon
             if (beaconEvent.getBeacon().equals("managedwatch")) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> data = (Map<String, Object>)
                         beaconEvent.getData().get("data");
-                LOG.debug("Managed file has changed: " + data.get("path"));
+                String path = (String) data.get("path");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Managed file has changed: " + path);
+                }
 
                 // Send event via SSE to connected clients
                 SSEServlet.sendEvent(new ManagedFileChangedEvent(
-                        beaconEvent.getMinionId(), (String) data.get("path"),
-                        (String) data.get("diff")));
+                        beaconEvent.getMinionId(), path, (String) data.get("diff")));
             }
         };
     }
@@ -135,22 +153,6 @@ public class SaltReactor implements EventListener {
         return () -> {
             triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
         };
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void eventStreamClosed(CloseReason closeReason) {
-        LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
-                " [" + closeReason.getCloseCode() + "]");
-
-        // Try to reconnect
-        if (!isStopped) {
-            LOG.warn("Reconnecting to event stream...");
-            eventStream = SALT_SERVICE.getEventStream();
-            eventStream.addEventListener(this);
-        }
     }
 
     /**
