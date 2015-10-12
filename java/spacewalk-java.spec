@@ -643,6 +643,7 @@ install -m 644 conf/cobbler/snippets/redhat_register  $RPM_BUILD_ROOT%{cobdirsni
 install -m 644 conf/cobbler/snippets/sles_register    $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register
 install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdirsnippets}/sles_register_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
+install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
 
 ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
 ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
@@ -886,6 +887,7 @@ fi
 %config %{cobdirsnippets}/sles_register
 %config %{cobdirsnippets}/sles_register_script
 %config %{cobdirsnippets}/sles_no_signature_checks
+%config %{cobdirsnippets}/wait_for_networkmanager_script
 %if  0%{?rhel} && 0%{?rhel} < 6
 %config(noreplace) %{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
 %else
