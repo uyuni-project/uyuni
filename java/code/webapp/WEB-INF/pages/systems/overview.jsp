@@ -7,7 +7,6 @@
 
 <html>
 <head>
-  <script src="/javascript/susemanager-managedwatch.js"></script>
 </head>
 <body>
 <rhn:toolbar base="h1" icon="header-system" imgAlt="overview.jsp.alt"
