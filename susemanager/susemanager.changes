@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 12 11:31:53 CEST 2015 - mantel@suse.de
+
+- rename migration.sh to mgr-setup; provide compatibility link
+
+-------------------------------------------------------------------
 Wed Oct 07 16:48:59 CEST 2015 - mc@suse.de
 
 - version 3.0.1-1

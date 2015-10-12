@@ -63,7 +63,8 @@ This package contains SUSE Manager tools
 %install
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/hooks/
-install -m 0755 bin/*.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/
+install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
+ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 
 mkdir -p %{buildroot}/%{_prefix}/share/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig/SuSEfirewall2.d/services
