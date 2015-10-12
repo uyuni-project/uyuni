@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public class GathererCommand {
 
-    private static final String GATHERER_CMD = "/usr/bin/gatherer";
+    private static final String GATHERER_CMD = "/usr/bin/virtual-host-gatherer";
     private static final String LOG_DESTINATION = "/var/log/rhn/gatherer.log";
     /**
      * Logger for this class

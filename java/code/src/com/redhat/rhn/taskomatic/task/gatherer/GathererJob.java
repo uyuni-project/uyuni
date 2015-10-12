@@ -37,7 +37,7 @@ public class GathererJob extends RhnJavaJob {
                     results.size()));
 
             managers.stream()
-                    .filter(manager -> results.containsKey(manager))
+                    .filter(manager -> results.containsKey(manager.getLabel()))
                     .forEach(manager -> {
                         String label = manager.getLabel();
                         log.debug("Processing " + label);
