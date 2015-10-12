@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Domain logic for the Setup Wizard proxy settings page.
  */
-public class ProxySettingsManager {
+public final class ProxySettingsManager {
 
     /** Configuration key for proxy hostname */
     public static final String KEY_PROXY_HOSTNAME = "server.satellite.http_proxy";
@@ -32,6 +32,8 @@ public class ProxySettingsManager {
     public static final String KEY_PROXY_USERNAME = "server.satellite.http_proxy_username";
     /** Configuration key for proxy password */
     public static final String KEY_PROXY_PASSWORD = "server.satellite.http_proxy_password";
+
+    private ProxySettingsManager() { }
 
     /**
      * Get the current proxy settings from configuration.
