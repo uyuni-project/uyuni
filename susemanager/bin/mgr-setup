@@ -552,7 +552,7 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
 	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427"
 	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427"
-	systemctl enable slpd
+	systemctl enable -q slpd
 	systemctl start slpd
     fi
 fi
