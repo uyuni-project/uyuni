@@ -22,6 +22,6 @@ $(document).on("ready", function() {
     return false;
   }
 
-  // Call it
-  setupManagedWatch();
+  // Connect to the event stream after 3 seconds of staying on a page
+  window.setTimeout(setupManagedWatch, 3000);
 });
