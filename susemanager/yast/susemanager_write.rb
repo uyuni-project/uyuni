@@ -79,8 +79,8 @@ module Yast
           # text label
           Label(
             _(
-              "Now you can start the migration process using the migration.sh script.\n" +
-                "View the available options with /usr/lib/susemanager/bin/migration.sh -h\n" +
+              "Now you can start the migration process using the mgr-setup script.\n" +
+                "View the available options with /usr/lib/susemanager/bin/mgr-setup -h\n" +
                 "\n" +
                 "Be aware that this process can take more than 10 hours,\n" +
                 "depending on the configuration of you Satellite server.\n" +
@@ -134,7 +134,7 @@ module Yast
       Wizard.DisableNextButton
       Wizard.DisableBackButton
 
-      @cmd = Builtins.sformat("/usr/lib/susemanager/bin/migration.sh -s")
+      @cmd = Builtins.sformat("/usr/lib/susemanager/bin/mgr-setup -s")
       @pid = Convert.to_integer(SCR.Execute(path(".process.start_shell"), @cmd))
       @status = 0
 
