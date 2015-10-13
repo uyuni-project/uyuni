@@ -104,7 +104,7 @@ module Yast
                       InputField(
                         Id("MANAGER_DB_NAME"),
                         Opt(:hstretch),
-                        _("&Database SID"),
+                        _("&Database Name"),
                         Ops.get(@settings, "MANAGER_DB_NAME", "")
                       ),
                       # text entry label
@@ -265,12 +265,8 @@ module Yast
                   Builtins.y2milestone("local db postgres detected")
                   val = "postgresql"
                 end
-              elsif UI.QueryWidget(Id(key), :CurrentButton) == :postgres
-                Builtins.y2milestone("remote db postgres detected")
-                val = "postgresql"
               else
-                Builtins.y2milestone("remote db oracle detected")
-                val = "oracle"
+                val = "postgresql"
               end
 
               oraclepkgs = [
