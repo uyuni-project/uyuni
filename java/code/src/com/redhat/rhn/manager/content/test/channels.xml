@@ -358,6 +358,16 @@
 			<product_id name="SLES_SAP" version="12">1319</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sle-12-sp1-ga-desktop-nvidia-driver-x86_64" name="SLE-12-SP1-GA-Desktop-nVidia-Driver for x86_64" optional="N" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="http://download.nvidia.com/novell/sle12sp1/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="SLE-WE" is_signed="Y" label="sle-12-sp1-ga-desktop-nvidia-driver-x86_64-we-sp1" name="SLE-12-SP1-GA-Desktop-nVidia-Driver for x86_64 WE-SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-we" product_version="12.1" source_url="http://download.nvidia.com/novell/sle12sp1/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="">
+		<products>
+			<product_id name="sle-we" version="12.1">1338</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-debuginfo-pool-s390x" name="SLE-HA-GEO12-Debuginfo-Pool for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-ha-geo" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12/s390x/product_debug/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 s390x" update_tag="SLE-HA-GEO">
 		<products>
 			<product_id name="sle-ha-geo" version="12">1156</product_id>
@@ -401,6 +411,26 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-pool-x86_64-sap" name="SLE-HA-GEO12-Pool for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-ha-geo" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12/x86_64/product/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 x86_64" update_tag="SLE-HA-GEO">
 		<products>
 			<product_id name="sle-ha-geo" version="12">1157</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-sp1-debuginfo-pool-x86_64" name="SLE-HA-GEO12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-ha-geo" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 SP1 x86_64" update_tag="SLE-HA-GEO">
+		<products>
+			<product_id name="sle-ha-geo" version="12.1">1337</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-sp1-debuginfo-updates-x86_64" name="SLE-HA-GEO12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-ha-geo" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 SP1 x86_64" update_tag="SLE-HA-GEO">
+		<products>
+			<product_id name="sle-ha-geo" version="12.1">1337</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-sp1-pool-x86_64" name="SLE-HA-GEO12-SP1-Pool for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-ha-geo" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 SP1 x86_64" update_tag="SLE-HA-GEO">
+		<products>
+			<product_id name="sle-ha-geo" version="12.1">1337</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-sp1-updates-x86_64" name="SLE-HA-GEO12-SP1-Updates for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-ha-geo" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 SP1 x86_64" update_tag="SLE-HA-GEO">
+		<products>
+			<product_id name="sle-ha-geo" version="12.1">1337</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Geographical Cluster Extension" family="SLE-HAE-GEO" is_signed="Y" label="sle-ha-geo12-updates-s390x" name="SLE-HA-GEO12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-ha-geo" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12/s390x/update/" summary="SUSE Linux Enterprise High Availability GEO Extension 12 s390x" update_tag="SLE-HA-GEO">
@@ -463,6 +493,46 @@
 			<product_id name="SLES_SAP" version="12">1319</product_id>
 		</products>
 	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-Z" is_signed="Y" label="sle-ha12-sp1-debuginfo-pool-s390x" name="SLE-HA12-SP1-Debuginfo-Pool for s390x" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/s390x/product_debug/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 s390x" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1336</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-X86" is_signed="Y" label="sle-ha12-sp1-debuginfo-pool-x86_64" name="SLE-HA12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 x86_64" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1324</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-Z" is_signed="Y" label="sle-ha12-sp1-debuginfo-updates-s390x" name="SLE-HA12-SP1-Debuginfo-Updates for s390x" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP1/s390x/update_debug/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 s390x" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1336</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-X86" is_signed="Y" label="sle-ha12-sp1-debuginfo-updates-x86_64" name="SLE-HA12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 x86_64" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1324</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-Z" is_signed="Y" label="sle-ha12-sp1-pool-s390x" name="SLE-HA12-SP1-Pool for s390x" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/s390x/product/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 s390x" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1336</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-X86" is_signed="Y" label="sle-ha12-sp1-pool-x86_64" name="SLE-HA12-SP1-Pool for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 x86_64" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1324</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-Z" is_signed="Y" label="sle-ha12-sp1-updates-s390x" name="SLE-HA12-SP1-Updates for s390x" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP1/s390x/update/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 s390x" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1336</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-X86" is_signed="Y" label="sle-ha12-sp1-updates-x86_64" name="SLE-HA12-SP1-Updates for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-ha" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise High Availability Extension 12 SP1 x86_64" update_tag="SLE-HA">
+		<products>
+			<product_id name="sle-ha" version="12.1">1324</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Linux Enterprise High Availability Extension." family="SLE-HAE-Z" is_signed="Y" label="sle-ha12-updates-s390x" name="SLE-HA12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-ha" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-HA/12/s390x/update/" summary="SUSE Linux Enterprise High Availability Extension 12 s390x" update_tag="SLE-HA">
 		<products>
 			<product_id name="sle-ha" version="12">1244</product_id>
@@ -483,9 +553,19 @@
 			<product_id name="SLES" version="12">1116</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-ppc64le-sp1" name="SLE-Manager-Tools12-Debuginfo-Pool ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-s390x" name="SLE-Manager-Tools12-Debuginfo-Pool s390x" optional="Y" parent="sles12-pool-s390x" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1115</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-s390x-sp1" name="SLE-Manager-Tools12-Debuginfo-Pool s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-x86_64" name="SLE-Manager-Tools12-Debuginfo-Pool x86_64" optional="Y" parent="sles12-pool-x86_64" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -503,14 +583,34 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7260" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-x86_64-sled-sp1" name="SLE-Manager-Tools12-Debuginfo-Pool x86_64 SLED-SP1" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-debuginfo-pool-x86_64-sp1" name="SLE-Manager-Tools12-Debuginfo-Pool x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-ppc64le" name="SLE-Manager-Tools12-Debuginfo-Updates ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1116</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-ppc64le-sp1" name="SLE-Manager-Tools12-Debuginfo-Updates ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-s390x" name="SLE-Manager-Tools12-Debuginfo-Updates s390x" optional="Y" parent="sles12-pool-s390x" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1115</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-s390x-sp1" name="SLE-Manager-Tools12-Debuginfo-Updates s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-x86_64" name="SLE-Manager-Tools12-Debuginfo-Updates x86_64" optional="Y" parent="sles12-pool-x86_64" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -528,14 +628,34 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7260" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-x86_64-sled-sp1" name="SLE-Manager-Tools12-Debuginfo-Updates x86_64 SLED-SP1" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-debuginfo-updates-x86_64-sp1" name="SLE-Manager-Tools12-Debuginfo-Updates x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-pool-ppc64le" name="SLE-Manager-Tools12-Pool ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1116</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-pool-ppc64le-sp1" name="SLE-Manager-Tools12-Pool ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-pool-s390x" name="SLE-Manager-Tools12-Pool s390x" optional="N" parent="sles12-pool-s390x" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1115</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-pool-s390x-sp1" name="SLE-Manager-Tools12-Pool s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-pool-x86_64" name="SLE-Manager-Tools12-Pool x86_64" optional="N" parent="sles12-pool-x86_64" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -553,14 +673,34 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7260" is_signed="Y" label="sle-manager-tools12-pool-x86_64-sled-sp1" name="SLE-Manager-Tools12-Pool x86_64 SLED-SP1" optional="N" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-pool-x86_64-sp1" name="SLE-Manager-Tools12-Pool x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-updates-ppc64le" name="SLE-Manager-Tools12-Updates ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1116</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-PPC" is_signed="Y" label="sle-manager-tools12-updates-ppc64le-sp1" name="SLE-Manager-Tools12-Updates ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-updates-s390x" name="SLE-Manager-Tools12-Updates s390x" optional="N" parent="sles12-pool-s390x" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
 		<products>
 			<product_id name="SLES" version="12">1115</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="SLES-Z" is_signed="Y" label="sle-manager-tools12-updates-s390x-sp1" name="SLE-Manager-Tools12-Updates s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-updates-x86_64" name="SLE-Manager-Tools12-Updates x86_64" optional="N" parent="sles12-pool-x86_64" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
@@ -578,12 +718,32 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7260" is_signed="Y" label="sle-manager-tools12-updates-x86_64-sled-sp1" name="SLE-Manager-Tools12-Updates x86_64 SLED-SP1" optional="N" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Manager Tools provide packages required to connect to a SUSE Manager Server." family="7261" is_signed="Y" label="sle-manager-tools12-updates-x86_64-sp1" name="SLE-Manager-Tools12-Updates x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update/" summary="SUSE Manager Tools" update_tag="SLE-Manager-Tools">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-pool-ppc64le" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/ppc64le/product_debug/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-pool-ppc64le-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/ppc64le/product_debug/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-pool-s390x" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/s390x/product_debug/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-pool-s390x-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/s390x/product_debug/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
 		</products>
@@ -598,12 +758,27 @@
 			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product_debug/" summary="Advanced Systems Management Module 12 x86_64" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-updates-ppc64le" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/ppc64le/update_debug/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-updates-ppc64le-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/ppc64le/update_debug/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-updates-s390x" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/s390x/update_debug/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-updates-s390x-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/s390x/update_debug/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
 		</products>
@@ -618,12 +793,27 @@
 			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-adv-systems-management12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Adv-Systems-Management12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/x86_64/update_debug/" summary="Advanced Systems Management Module 12 x86_64" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-pool-ppc64le" name="SLE-Module-Adv-Systems-Management12-Pool for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/ppc64le/product/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-pool-ppc64le-sp1" name="SLE-Module-Adv-Systems-Management12-Pool for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/ppc64le/product/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-pool-s390x" name="SLE-Module-Adv-Systems-Management12-Pool for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/s390x/product/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-pool-s390x-sp1" name="SLE-Module-Adv-Systems-Management12-Pool for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/s390x/product/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
 		</products>
@@ -638,12 +828,27 @@
 			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-adv-systems-management12-pool-x86_64-sp1" name="SLE-Module-Adv-Systems-Management12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Adv-Systems-Management/12/x86_64/product/" summary="Advanced Systems Management Module 12 x86_64" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-updates-ppc64le" name="SLE-Module-Adv-Systems-Management12-Updates for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/ppc64le/update/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-adv-systems-management12-updates-ppc64le-sp1" name="SLE-Module-Adv-Systems-Management12-Updates for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/ppc64le/update/" summary="Advanced Systems Management Module 12 ppc64le" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1294</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-updates-s390x" name="SLE-Module-Adv-Systems-Management12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/s390x/update/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-adv-systems-management12-updates-s390x-sp1" name="SLE-Module-Adv-Systems-Management12-Updates for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/s390x/update/" summary="Advanced Systems Management Module 12 s390x" update_tag="SLE-Module-Adv-Systems-Management">
 		<products>
 			<product_id name="sle-module-adv-systems-management" version="12">1295</product_id>
 		</products>
@@ -658,7 +863,17 @@
 			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains current versions of the popular configuration management frameworks Puppet and CFEngine as well as the new systems management toolbox called machinery.&lt;/p&gt; &lt;p&gt;The machinery tool will be frequently updated and is SUSE's upcoming systems management toolbox for inspecting and validating systems remotely, storing their system description and creating new systems to deploy them in datacenters and clouds. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-adv-systems-management12-updates-x86_64-sp1" name="SLE-Module-Adv-Systems-Management12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-adv-systems-management" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Adv-Systems-Management/12/x86_64/update/" summary="Advanced Systems Management Module 12 x86_64" update_tag="SLE-Module-Adv-Systems-Management">
+		<products>
+			<product_id name="sle-module-adv-systems-management" version="12">1212</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-debuginfo-pool-x86_64" name="SLE-Module-Containers12-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product_debug/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id name="sle-module-containers" version="12">1332</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Containers12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product_debug/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
 		<products>
 			<product_id name="sle-module-containers" version="12">1332</product_id>
 		</products>
@@ -668,7 +883,17 @@
 			<product_id name="sle-module-containers" version="12">1332</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Containers12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/12/x86_64/update_debug/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id name="sle-module-containers" version="12">1332</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-pool-x86_64" name="SLE-Module-Containers12-Pool for x86_64" optional="N" parent="sles12-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id name="sle-module-containers" version="12">1332</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-pool-x86_64-sp1" name="SLE-Module-Containers12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Containers/12/x86_64/product/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
 		<products>
 			<product_id name="sle-module-containers" version="12">1332</product_id>
 		</products>
@@ -678,12 +903,27 @@
 			<product_id name="sle-module-containers" version="12">1332</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt;This Module contains several packages revolving around containers and related tools. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-containers12-updates-x86_64-sp1" name="SLE-Module-Containers12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-containers" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Containers/12/x86_64/update/" summary="Containers Module 12 x86_64" update_tag="SLE-Module-Containers">
+		<products>
+			<product_id name="sle-module-containers" version="12">1332</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-debuginfo-pool-ppc64le" name="SLE-Module-Legacy12-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/ppc64le/product_debug/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1148</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-debuginfo-pool-ppc64le-sp1" name="SLE-Module-Legacy12-Debuginfo-Pool for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/ppc64le/product_debug/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1148</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-debuginfo-pool-s390x" name="SLE-Module-Legacy12-Debuginfo-Pool for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/s390x/product_debug/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1149</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-debuginfo-pool-s390x-sp1" name="SLE-Module-Legacy12-Debuginfo-Pool for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/s390x/product_debug/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1149</product_id>
 		</products>
@@ -698,12 +938,27 @@
 			<product_id name="sle-module-legacy" version="12">1150</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-legacy12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Legacy12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product_debug/" summary="Legacy Module 12 x86_64" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1150</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-debuginfo-updates-ppc64le" name="SLE-Module-Legacy12-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/ppc64le/update_debug/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1148</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-debuginfo-updates-ppc64le-sp1" name="SLE-Module-Legacy12-Debuginfo-Updates for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/ppc64le/update_debug/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1148</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-debuginfo-updates-s390x" name="SLE-Module-Legacy12-Debuginfo-Updates for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/s390x/update_debug/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1149</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-debuginfo-updates-s390x-sp1" name="SLE-Module-Legacy12-Debuginfo-Updates for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/s390x/update_debug/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1149</product_id>
 		</products>
@@ -718,12 +973,27 @@
 			<product_id name="sle-module-legacy" version="12">1150</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-legacy12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Legacy12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/x86_64/update_debug/" summary="Legacy Module 12 x86_64" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1150</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-pool-ppc64le" name="SLE-Module-Legacy12-Pool for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/ppc64le/product/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1148</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-pool-ppc64le-sp1" name="SLE-Module-Legacy12-Pool for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/ppc64le/product/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1148</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-pool-s390x" name="SLE-Module-Legacy12-Pool for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/s390x/product/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1149</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-pool-s390x-sp1" name="SLE-Module-Legacy12-Pool for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/s390x/product/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1149</product_id>
 		</products>
@@ -738,12 +1008,27 @@
 			<product_id name="sle-module-legacy" version="12">1150</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-legacy12-pool-x86_64-sp1" name="SLE-Module-Legacy12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Legacy/12/x86_64/product/" summary="Legacy Module 12 x86_64" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1150</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-updates-ppc64le" name="SLE-Module-Legacy12-Updates for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/ppc64le/update/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1148</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-legacy12-updates-ppc64le-sp1" name="SLE-Module-Legacy12-Updates for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/ppc64le/update/" summary="Legacy Module 12 ppc64le" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1148</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-updates-s390x" name="SLE-Module-Legacy12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/s390x/update/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1149</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-legacy12-updates-s390x-sp1" name="SLE-Module-Legacy12-Updates for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/s390x/update/" summary="Legacy Module 12 s390x" update_tag="SLE-Module-Legacy">
 		<products>
 			<product_id name="sle-module-legacy" version="12">1149</product_id>
 		</products>
@@ -758,12 +1043,22 @@
 			<product_id name="sle-module-legacy" version="12">1150</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Legacy Module helps you migrating applications from SUSE Linux Enterprise 10 and 11 and other systems to SUSE Linux Enterprise 12, by providing packages which are discontinued on SUSE Linux Enterprise Server, such as: sendmail, syslog-ng, IBM Java6, and a number of libraries (for example openssl-0.9.8). &lt;/p&gt; &lt;p&gt; Access to the Legacy Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Packages in the this module are usually supported for at most three years. Support for Sendmail and IBM Java 6 will end in September 2017 the latest. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-legacy12-updates-x86_64-sp1" name="SLE-Module-Legacy12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-legacy" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Legacy/12/x86_64/update/" summary="Legacy Module 12 x86_64" update_tag="SLE-Module-Legacy">
+		<products>
+			<product_id name="sle-module-legacy" version="12">1150</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-debuginfo-pool-x86_64" name="SLE-Module-Public-Cloud12-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_debug/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
 		<products>
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-debuginfo-pool-x86_64-sap" name="SLE-Module-Public-Cloud12-Debuginfo-Pool for x86_64 SAP" optional="Y" parent="sle12-sap-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_debug/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Public-Cloud12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product_debug/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
 		<products>
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
@@ -778,12 +1073,22 @@
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Public-Cloud12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/x86_64/update_debug/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-pool-x86_64" name="SLE-Module-Public-Cloud12-Pool for x86_64" optional="N" parent="sles12-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
 		<products>
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-pool-x86_64-sap" name="SLE-Module-Public-Cloud12-Pool for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-pool-x86_64-sp1" name="SLE-Module-Public-Cloud12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Public-Cloud/12/x86_64/product/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
 		<products>
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
@@ -798,12 +1103,22 @@
 			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The Public Cloud Module is a collection of tools that enables you to create and manage cloud images from the commandline on SUSE Linux Enterprise Server. When building your own images with KIWI or SUSE Studio, initialization code specific to the target cloud is included in that image. &lt;/p&gt; &lt;p&gt; Access to the Public Cloud Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself; please check the Release Notes for further details. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-public-cloud12-updates-x86_64-sp1" name="SLE-Module-Public-Cloud12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-public-cloud" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Public-Cloud/12/x86_64/update/" summary="Public Cloud Module 12 x86_64" update_tag="SLE-Module-Public-Cloud">
+		<products>
+			<product_id name="sle-module-public-cloud" version="12">1220</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-ppc64le" name="SLE-Module-Toolchain12-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product_debug/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-ppc64le-sap" name="SLE-Module-Toolchain12-Debuginfo-Pool for ppc64le SAP" optional="Y" parent="sle12-sap-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product_debug/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1339</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-ppc64le-sp1" name="SLE-Module-Toolchain12-Debuginfo-Pool for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product_debug/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
@@ -818,12 +1133,22 @@
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
 	</channel>
+	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-s390x-sp1" name="SLE-Module-Toolchain12-Debuginfo-Pool for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product_debug/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1340</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-x86_64" name="SLE-Module-Toolchain12-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-x86_64-sap" name="SLE-Module-Toolchain12-Debuginfo-Pool for x86_64 SAP" optional="Y" parent="sle12-sap-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1341</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Toolchain12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
@@ -838,12 +1163,22 @@
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-debuginfo-updates-ppc64le-sp1" name="SLE-Module-Toolchain12-Debuginfo-Updates for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update_debug/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1339</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-debuginfo-updates-s390x" name="SLE-Module-Toolchain12-Debuginfo-Updates for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update_debug/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-debuginfo-updates-s390x-sap" name="SLE-Module-Toolchain12-Debuginfo-Updates for s390x SAP" optional="Y" parent="sle12-sap-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update_debug/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1340</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-debuginfo-updates-s390x-sp1" name="SLE-Module-Toolchain12-Debuginfo-Updates for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update_debug/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
@@ -858,12 +1193,22 @@
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Toolchain12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update_debug/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1341</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-pool-ppc64le" name="SLE-Module-Toolchain12-Pool for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-pool-ppc64le-sap" name="SLE-Module-Toolchain12-Pool for ppc64le SAP" optional="N" parent="sle12-sap-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1339</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-pool-ppc64le-sp1" name="SLE-Module-Toolchain12-Pool for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
@@ -878,12 +1223,22 @@
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
 	</channel>
+	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-pool-s390x-sp1" name="SLE-Module-Toolchain12-Pool for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1340</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-pool-x86_64" name="SLE-Module-Toolchain12-Pool for x86_64" optional="N" parent="sles12-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-pool-x86_64-sap" name="SLE-Module-Toolchain12-Pool for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1341</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-pool-x86_64-sp1" name="SLE-Module-Toolchain12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
@@ -898,12 +1253,22 @@
 			<product_id name="sle-module-toolchain" version="12">1339</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-PPC" is_signed="Y" label="sle-module-toolchain12-updates-ppc64le-sp1" name="SLE-Module-Toolchain12-Updates for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update/" summary="Toolchain Module 12 ppc64le" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1339</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-updates-s390x" name="SLE-Module-Toolchain12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
 	</channel>
 	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-updates-s390x-sap" name="SLE-Module-Toolchain12-Updates for s390x SAP" optional="N" parent="sle12-sap-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1340</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="SLES-Z" is_signed="Y" label="sle-module-toolchain12-updates-s390x-sp1" name="SLE-Module-Toolchain12-Updates for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update/" summary="Toolchain Module 12 s390x" update_tag="SLE-Module-Toolchain">
 		<products>
 			<product_id name="sle-module-toolchain" version="12">1340</product_id>
 		</products>
@@ -918,12 +1283,27 @@
 			<product_id name="sle-module-toolchain" version="12">1341</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="Via this Module you will have access to a more recent GCC and Toolchain in addition to the default compiler of SUSE Linux Enterprise. Access to the Toolchain Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself. Please check the Release Notes for further details." family="7261" is_signed="Y" label="sle-module-toolchain12-updates-x86_64-sp1" name="SLE-Module-Toolchain12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-toolchain" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update/" summary="Toolchain Module 12 x86_64" update_tag="SLE-Module-Toolchain">
+		<products>
+			<product_id name="sle-module-toolchain" version="12">1341</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-debuginfo-pool-ppc64le" name="SLE-Module-Web-Scripting12-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/ppc64le/product_debug/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-debuginfo-pool-ppc64le-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Pool for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/ppc64le/product_debug/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-debuginfo-pool-s390x" name="SLE-Module-Web-Scripting12-Debuginfo-Pool for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/s390x/product_debug/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-debuginfo-pool-s390x-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Pool for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/s390x/product_debug/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
 		</products>
@@ -938,12 +1318,27 @@
 			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-web-scripting12-debuginfo-pool-x86_64-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Pool for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product_debug/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-debuginfo-updates-ppc64le" name="SLE-Module-Web-Scripting12-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/ppc64le/update_debug/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-debuginfo-updates-ppc64le-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Updates for ppc64le SP1" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/ppc64le/update_debug/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-debuginfo-updates-s390x" name="SLE-Module-Web-Scripting12-Debuginfo-Updates for s390x" optional="Y" parent="sles12-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/s390x/update_debug/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-debuginfo-updates-s390x-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Updates for s390x SP1" optional="Y" parent="sles12-sp1-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/s390x/update_debug/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
 		</products>
@@ -958,12 +1353,27 @@
 			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-web-scripting12-debuginfo-updates-x86_64-sp1" name="SLE-Module-Web-Scripting12-Debuginfo-Updates for x86_64 SP1" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/x86_64/update_debug/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-pool-ppc64le" name="SLE-Module-Web-Scripting12-Pool for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/ppc64le/product/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-pool-ppc64le-sp1" name="SLE-Module-Web-Scripting12-Pool for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/ppc64le/product/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-pool-s390x" name="SLE-Module-Web-Scripting12-Pool for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/s390x/product/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-pool-s390x-sp1" name="SLE-Module-Web-Scripting12-Pool for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/s390x/product/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
 		</products>
@@ -978,12 +1388,27 @@
 			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-web-scripting12-pool-x86_64-sp1" name="SLE-Module-Web-Scripting12-Pool for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-Module-Web-Scripting/12/x86_64/product/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-updates-ppc64le" name="SLE-Module-Web-Scripting12-Updates for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/ppc64le/update/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
 		</products>
 	</channel>
+	<channel arch="ppc64le" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-PPC" is_signed="Y" label="sle-module-web-scripting12-updates-ppc64le-sp1" name="SLE-Module-Web-Scripting12-Updates for ppc64le SP1" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/ppc64le/update/" summary="Web and Scripting Module 12 ppc64le" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1151</product_id>
+		</products>
+	</channel>
 	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-updates-s390x" name="SLE-Module-Web-Scripting12-Updates for s390x" optional="N" parent="sles12-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/s390x/update/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="SLES-Z" is_signed="Y" label="sle-module-web-scripting12-updates-s390x-sp1" name="SLE-Module-Web-Scripting12-Updates for s390x SP1" optional="N" parent="sles12-sp1-pool-s390x" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/s390x/update/" summary="Web and Scripting Module 12 s390x" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1152</product_id>
 		</products>
@@ -994,6 +1419,11 @@
 		</products>
 	</channel>
 	<channel arch="x86_64" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-web-scripting12-updates-x86_64-sap" name="SLE-Module-Web-Scripting12-Updates for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/x86_64/update/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
+		<products>
+			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; The SUSE Linux Enterprise Web and Scripting Module delivers a comprehensive suite of scripting languages, frameworks, and related tools helping developers and systems administrators accelerate the creation of stable, modern web applications, using dynamic languages, such as PHP, Ruby on Rails, and Python. &lt;/p&gt; &lt;p&gt; Access to the Web and Scripting Module is included in your SUSE Linux Enterprise Server subscription. The module has a different lifecycle than SUSE Linux Enterprise Server itself: Package versions in the this module are usually supported for at most three years. We are planning to release more recent versions on a schedule of approximately 18 month; the exact dates may differ per package. &lt;/p&gt;" family="7261" is_signed="Y" label="sle-module-web-scripting12-updates-x86_64-sp1" name="SLE-Module-Web-Scripting12-Updates for x86_64 SP1" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-module-web-scripting" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-Module-Web-Scripting/12/x86_64/update/" summary="Web and Scripting Module 12 x86_64" update_tag="SLE-Module-Web-Scripting">
 		<products>
 			<product_id name="sle-module-web-scripting" version="12">1153</product_id>
 		</products>
@@ -1073,6 +1503,46 @@
 			<product_id name="sle-sdk" version="12">1223</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-debuginfo-pool-x86_64" name="SLE-SDK12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-debuginfo-pool-x86_64-sled-sp1" name="SLE-SDK12-SP1-Debuginfo-Pool for x86_64 SLED-SP1" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-debuginfo-updates-x86_64" name="SLE-SDK12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-debuginfo-updates-x86_64-sled-sp1" name="SLE-SDK12-SP1-Debuginfo-Updates for x86_64 SLED-SP1" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-pool-x86_64" name="SLE-SDK12-SP1-Pool for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-pool-x86_64-sled-sp1" name="SLE-SDK12-SP1-Pool for x86_64 SLED-SP1" optional="N" parent="sled12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-updates-x86_64" name="SLE-SDK12-SP1-Updates for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-sp1-updates-x86_64-sled-sp1" name="SLE-SDK12-SP1-Updates for x86_64 SLED-SP1" optional="N" parent="sled12-sp1-pool-x86_64" product_name="sle-sdk" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise Software Development Kit 12 SP1 x86_64" update_tag="SLE-SDK">
+		<products>
+			<product_id name="sle-sdk" version="12.1">1323</product_id>
+		</products>
+	</channel>
 	<channel arch="ppc64le" description="&lt;p&gt; SUSE Linux Enterprise Software Development Kit 12 is the Software Development Kit for the family of SUSE Linux Enterprise products. It is a free of charge extension for partners and customers working with SUSE Linux Enterprise Server and Desktop and derived products. &lt;/p&gt; &lt;p&gt; Packages on the SDK are delivered without L3 support; maintenance updates will be done for critical security and critical non-security issues, and where needed to remain in sync with packages delivered in the SUSE Linux Enterprise Server and Desktop products. &lt;/p&gt; &lt;p&gt; Packages to rebuild SUSE Linux Enterprise Server are not part of the SUSE Linux Enterprise Software Development Kit. &lt;/p&gt;" family="SLE-SDK" is_signed="Y" label="sle-sdk12-updates-ppc64le" name="SLE-SDK12-Updates for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="sle-sdk" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-SDK/12/ppc64le/update/" summary="SUSE Linux Enterprise Software Development Kit 12 ppc64le" update_tag="SLE-SDK">
 		<products>
 			<product_id name="sle-sdk" version="12">1145</product_id>
@@ -1126,6 +1596,26 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-pool-x86_64-sap" name="SLE-WE12-Pool for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="sle-we" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-WE/12/x86_64/product/" summary="SUSE Linux Enterprise Workstation Extension 12 x86_64" update_tag="SLE-WE">
 		<products>
 			<product_id name="sle-we" version="12">1222</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-sp1-debuginfo-pool-x86_64" name="SLE-WE12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-we" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise Workstation Extension 12 SP1 x86_64" update_tag="SLE-WE">
+		<products>
+			<product_id name="sle-we" version="12.1">1338</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-sp1-debuginfo-updates-x86_64" name="SLE-WE12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="sle-we" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-WE/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise Workstation Extension 12 SP1 x86_64" update_tag="SLE-WE">
+		<products>
+			<product_id name="sle-we" version="12.1">1338</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-sp1-pool-x86_64" name="SLE-WE12-SP1-Pool for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-we" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise Workstation Extension 12 SP1 x86_64" update_tag="SLE-WE">
+		<products>
+			<product_id name="sle-we" version="12.1">1338</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-sp1-updates-x86_64" name="SLE-WE12-SP1-Updates for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="sle-we" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-WE/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise Workstation Extension 12 SP1 x86_64" update_tag="SLE-WE">
+		<products>
+			<product_id name="sle-we" version="12.1">1338</product_id>
 		</products>
 	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise Workstation Extension extends the functionality of SUSE Linux Enterprise Server with packages of SUSE Linux Enterprise Desktop, like additional desktop applications (office suite, email client, graphical editor ...) and libraries. It allows to combine both products to create a full featured Workstation." family="SLE-WE" is_signed="Y" label="sle-we12-updates-x86_64" name="SLE-WE12-Updates for x86_64" optional="N" parent="sles12-pool-x86_64" product_name="sle-we" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-WE/12/x86_64/update/" summary="SUSE Linux Enterprise Workstation Extension 12 x86_64" update_tag="SLE-WE">
@@ -4085,6 +4575,26 @@
 			<product_id name="SLED" version="12">1118</product_id>
 		</products>
 	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sled12-sp1-debuginfo-pool-x86_64" name="SLED12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-DESKTOP/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="SLE-DESKTOP">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sled12-sp1-debuginfo-updates-x86_64" name="SLED12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-DESKTOP/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="SLE-DESKTOP">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sled12-sp1-pool-x86_64" name="SLED12-SP1-Pool for x86_64" optional="N" parent="BASE" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-DESKTOP/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="SLE-DESKTOP">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sled12-sp1-updates-x86_64" name="SLED12-SP1-Updates for x86_64" optional="N" parent="sled12-sp1-pool-x86_64" product_name="SLED" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-DESKTOP/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise Desktop 12 SP1 x86_64" update_tag="SLE-DESKTOP">
+		<products>
+			<product_id name="SLED" version="12.1">1333</product_id>
+		</products>
+	</channel>
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class. SUSE Linux Enterprise provides more than a cute desktop product or a basic server offering. It is the only Linux platform for enterprise computing, and it is now replacing UNIX* and Windows* as well." family="7260" is_signed="Y" label="sled12-updates-x86_64" name="SLED12-Updates for x86_64" optional="N" parent="sled12-pool-x86_64" product_name="SLED" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-DESKTOP/12/x86_64/update/" summary="SUSE Linux Enterprise Desktop 12 x86_64" update_tag="SLE-DESKTOP">
 		<products>
 			<product_id name="SLED" version="12">1118</product_id>
@@ -5629,6 +6139,66 @@
 	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="AiO" is_signed="Y" label="sles12-pool-x86_64-sap" name="SLES12-Pool for x86_64 SAP" optional="N" parent="sle12-sap-pool-x86_64" product_name="SLES_SAP" product_version="12" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/" summary="SUSE Linux Enterprise Server 12 x86_64" update_tag="SLE-SERVER">
 		<products>
 			<product_id name="SLES_SAP" version="12">1319</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-PPC" is_signed="Y" label="sles12-sp1-debuginfo-pool-ppc64le" name="SLES12-SP1-Debuginfo-Pool for ppc64le" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/ppc64le/product_debug/" summary="SUSE Linux Enterprise Server 12 SP1 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-Z" is_signed="Y" label="sles12-sp1-debuginfo-pool-s390x" name="SLES12-SP1-Debuginfo-Pool for s390x" optional="Y" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/s390x/product_debug/" summary="SUSE Linux Enterprise Server 12 SP1 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="7261" is_signed="Y" label="sles12-sp1-debuginfo-pool-x86_64" name="SLES12-SP1-Debuginfo-Pool for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_debug/" summary="SUSE Linux Enterprise Server 12 SP1 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-PPC" is_signed="Y" label="sles12-sp1-debuginfo-updates-ppc64le" name="SLES12-SP1-Debuginfo-Updates for ppc64le" optional="Y" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/ppc64le/update_debug/" summary="SUSE Linux Enterprise Server 12 SP1 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-Z" is_signed="Y" label="sles12-sp1-debuginfo-updates-s390x" name="SLES12-SP1-Debuginfo-Updates for s390x" optional="Y" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/s390x/update_debug/" summary="SUSE Linux Enterprise Server 12 SP1 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="7261" is_signed="Y" label="sles12-sp1-debuginfo-updates-x86_64" name="SLES12-SP1-Debuginfo-Updates for x86_64" optional="Y" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/x86_64/update_debug/" summary="SUSE Linux Enterprise Server 12 SP1 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-PPC" is_signed="Y" label="sles12-sp1-pool-ppc64le" name="SLES12-SP1-Pool for ppc64le" optional="N" parent="BASE" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/ppc64le/product/" summary="SUSE Linux Enterprise Server 12 SP1 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-Z" is_signed="Y" label="sles12-sp1-pool-s390x" name="SLES12-SP1-Pool for s390x" optional="N" parent="BASE" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/s390x/product/" summary="SUSE Linux Enterprise Server 12 SP1 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="7261" is_signed="Y" label="sles12-sp1-pool-x86_64" name="SLES12-SP1-Pool for x86_64" optional="N" parent="BASE" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product/" summary="SUSE Linux Enterprise Server 12 SP1 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
+		</products>
+	</channel>
+	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-PPC" is_signed="Y" label="sles12-sp1-updates-ppc64le" name="SLES12-SP1-Updates for ppc64le" optional="N" parent="sles12-sp1-pool-ppc64le" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/ppc64le/update/" summary="SUSE Linux Enterprise Server 12 SP1 ppc64le" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1334</product_id>
+		</products>
+	</channel>
+	<channel arch="s390x" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-Z" is_signed="Y" label="sles12-sp1-updates-s390x" name="SLES12-SP1-Updates for s390x" optional="N" parent="sles12-sp1-pool-s390x" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/s390x/update/" summary="SUSE Linux Enterprise Server 12 SP1 s390x" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1335</product_id>
+		</products>
+	</channel>
+	<channel arch="x86_64" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="7261" is_signed="Y" label="sles12-sp1-updates-x86_64" name="SLES12-SP1-Updates for x86_64" optional="N" parent="sles12-sp1-pool-x86_64" product_name="SLES" product_version="12.1" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12-SP1/x86_64/update/" summary="SUSE Linux Enterprise Server 12 SP1 x86_64" update_tag="SLE-SERVER">
+		<products>
+			<product_id name="SLES" version="12.1">1322</product_id>
 		</products>
 	</channel>
 	<channel arch="ppc64le" description="SUSE Linux Enterprise offers a comprehensive suite of products built on a single code base. The platform addresses business needs from the smallest thin-client devices to the world's most powerful high-performance computing and mainframe servers. SUSE Linux Enterprise offers common management tools and technology certifications across the platform, and each product is enterprise-class." family="SLES-PPC" is_signed="Y" label="sles12-updates-ppc64le" name="SLES12-Updates for ppc64le" optional="N" parent="sles12-pool-ppc64le" product_name="SLES" product_version="12" source_url="https://updates.suse.com/SUSE/Updates/SLE-SERVER/12/ppc64le/update/" summary="SUSE Linux Enterprise Server 12 ppc64le" update_tag="SLE-SERVER">
