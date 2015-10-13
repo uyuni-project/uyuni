@@ -59,5 +59,5 @@
     <script src="/javascript/bootstrap-datepicker.js"></script>
 
     <rhn:require acl="user_authenticated()">
-      <script src="/javascript/susemanager-managedwatch.js"></script>
+      <script src="/javascript/susemanager-events.js"></script>
     </rhn:require>

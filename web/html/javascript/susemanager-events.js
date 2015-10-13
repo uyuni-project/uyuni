@@ -1,6 +1,6 @@
 $(document).on("ready", function() {
-  // Setup SSE event source to receive events in case a managed file has changed
-  function setupManagedWatch() {
+  // Setup SSE event source to receive events
+  function setupEventSource() {
     if (typeof(EventSource) !== "undefined") {
       var source = new EventSource("/rhn/sse");
       source.addEventListener("message", function(event) {
@@ -14,15 +14,15 @@ $(document).on("ready", function() {
         $("#spacewalk-content").prepend(alert);
       }, false);
       source.onerror = function(error) {
-        console.log("Event-stream error");
+        console.log("Event stream error");
       };
       console.log("Event listener added");
     } else {
-      console.log("Sorry, Server-Sent Event is not supported in your browser");
+      console.log("Sorry, Server-Sent Events are not supported in your browser");
     }
     return false;
   }
 
-  // Connect to the event stream after 3 seconds of staying on a page
-  window.setTimeout(setupManagedWatch, 3000);
+  // Connect to the event stream after staying on the page for a while
+  window.setTimeout(setupEventSource, 4000);
 });
