@@ -100,29 +100,6 @@ module Yast
                   HBox(
                     HSpacing(3),
                     VBox(
-                      VSpacing(0.4),
-                      Left(
-                        RadioButtonGroup(
-                          Id("DB_BACKEND"),
-                          HBox(
-                            HSpacing(0.2),
-                            RadioButton(
-                              Id(:postgres),
-                              Opt(:notify),
-                              # radio button label
-                              _("postgres Database"),
-                              Ops.get(@settings, "DB_BACKEND", "") == "postgresql"
-                            ),
-                            RadioButton(
-                              Id(:oracle),
-                              Opt(:notify),
-                              # radio button label
-                              _("oracle Database"),
-                              Ops.get(@settings, "DB_BACKEND", "") == "oracle"
-                            )
-                          )
-                        )
-                      ),
                       # text entry label
                       InputField(
                         Id("MANAGER_DB_NAME"),
@@ -189,7 +166,7 @@ module Yast
       # help text
       @help_text = _(
         "<p>Decide if to use the embedded or a remote database for SUSE Manager. If you select Local Database, Port and Protocol are set automatically.</p>\n" +
-          "<p>For Remote Database you need to fill <b>Database SID</b> (Oracle System ID), Hostname, Port and Protocol.</p>\n" +
+          "<p>For Remote Database you need to fill <b>Database Name</b>, Hostname, Port and Protocol.</p>\n" +
           "<p>\n" +
           "If you use the local database, set a user name and a password for the SUSE Manager database user that should be created. For a remote database, enter a user name that already exists in the database configuration and enter the correct password for this user</p>"
       )
@@ -217,11 +194,6 @@ module Yast
         :Enabled,
         Ops.get(@settings, "MANAGER_DB_HOST", "") != "localhost"
       )
-      UI.ChangeWidget(
-        Id("DB_BACKEND"),
-        :Enabled,
-        Ops.get(@settings, "MANAGER_DB_HOST", "") != "localhost"
-      )
 
       while true
         @ret = UI.UserInput
@@ -229,7 +201,6 @@ module Yast
           Builtins.foreach(@local_db) do |key, value|
             UI.ChangeWidget(Id(key), :Enabled, @ret == :remotedb)
           end
-          UI.ChangeWidget(Id("DB_BACKEND"), :Enabled, @ret == :remotedb)
           UI.ChangeWidget(Id("MANAGER_DB_PORT"), :Enabled, @ret == :remotedb)
         end
         break if @ret == :back
