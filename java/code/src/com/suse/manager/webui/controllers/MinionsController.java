@@ -94,4 +94,16 @@ public class MinionsController {
         response.redirect("/rhn/manager/minions");
         return "";
     }
+
+    /**
+     * Handler for the realtime remote commands page.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return the ModelAndView object to render the page
+     */
+    public static ModelAndView remoteCommands(Request request, Response response) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "remote-commands.jade");
+    }
 }
