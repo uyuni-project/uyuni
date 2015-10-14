@@ -32,7 +32,7 @@ import java.util.Map;
 
 
 /**
- * GathererCommand - simple Command class to run the gatherer.
+ * GathererCommand - simple Command class to run the virtual-host-gatherer.
  */
 public class GathererCommand {
 
