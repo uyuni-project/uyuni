@@ -197,7 +197,6 @@ public class VirtualHostManager extends BaseDomainHelper {
 
     /**
      * {@inheritDoc}
-     * @return
      */
     @Override
     public int hashCode() {
