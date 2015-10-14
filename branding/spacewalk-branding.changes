@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Oct 14 09:52:36 CEST 2015 - mc@suse.de
+
+- version 2.5.0.2-1
+- implement remote command interface with target glob
+- require updated version of font-awesome
+
+-------------------------------------------------------------------
 Wed Oct 07 14:51:50 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
