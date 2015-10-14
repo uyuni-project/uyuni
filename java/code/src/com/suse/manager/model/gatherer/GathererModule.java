@@ -98,7 +98,7 @@ public class GathererModule {
             return false;
         }
         GathererModule other = (GathererModule) obj;
-        if (name != other.name) {
+        if (!name.equals(other.name)) {
             return false;
         }
         return true;
