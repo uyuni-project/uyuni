@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is a Gatherer Module class parsed from JSON
+ * Represents a virtual-host-gatherer module class as parsed from JSON
  */
 public class GathererModule {
 
