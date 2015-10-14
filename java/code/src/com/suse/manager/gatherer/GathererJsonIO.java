@@ -32,11 +32,11 @@ import java.io.Reader;
 import java.util.Map;
 
 /**
- * Gatherer Json IO handler
+ * Json IO handler to and from virtual-host-gatherer
  */
 public class GathererJsonIO {
 
-    /** Deserializer instance. */
+    /** (De)serializer instance. */
     private Gson gson;
 
     /** Default constructor. */
@@ -49,10 +49,10 @@ public class GathererJsonIO {
     }
 
     /**
-     * Read gatherer modules from JSON.
+     * Read virtual-host-gatherer modules from its JSON output.
      *
      * @param reader the reader object
-     * @return the list
+     * @return a map from module name to {@link GathererModule} object
      * @throws JsonSyntaxException in case JSON does not have correct syntax
      */
     public Map<String, GathererModule> readGathererModules(String reader)
@@ -62,7 +62,7 @@ public class GathererJsonIO {
     }
 
     /**
-     * Read Hosts from JSON.
+     * Read Hosts from virtual-host-gatherer's JSON output.
      *
      * @param reader the reader object
      * @return a map from virtual host manager names to
@@ -90,6 +90,9 @@ public class GathererJsonIO {
      * and fills a new GathererModule instance.
      */
     public class GathererModuleAdapter extends TypeAdapter<GathererModule> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public GathererModule read(JsonReader reader) throws IOException {
             GathererModule gm = new GathererModule();
@@ -107,6 +110,9 @@ public class GathererJsonIO {
             return gm;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void write(JsonWriter writer, GathererModule value) throws IOException {
             writer.beginObject();
@@ -123,11 +129,17 @@ public class GathererJsonIO {
      * Convert the Object into the correct JSON representation
      */
     public class VHMAdapter extends TypeAdapter<VirtualHostManager> {
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public VirtualHostManager read(JsonReader reader) throws IOException {
             return null;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void write(JsonWriter writer, VirtualHostManager value) throws IOException {
             writer.beginObject();
