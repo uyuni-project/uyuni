@@ -148,7 +148,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "sessionKey", "Session token, issued at login")
      * @xmlrpc.returntype #array_single("string", "moduleName")
      */
-    public Collection<String> listAvailableGathererModules(User loggedInUser) {
+    public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
         return GathererCache.INSTANCE.listAvailableModules();
     }
@@ -167,7 +167,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @xmlrpc.param #param_desc("string", "moduleName", "The name of the module")
      * @xmlrpc.returntype map
      */
-    public Map<String, String> getGathererModuleDetail(User loggedInUser, String moduleName) {
+    public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {
         ensureOrgAdmin(loggedInUser);
 
         GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
