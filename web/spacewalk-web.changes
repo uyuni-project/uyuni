@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Oct 14 09:48:35 CEST 2015 - mc@suse.de
+
+- version 2.5.1.2-1
+- implement remote command interface with target glob
+
+-------------------------------------------------------------------
 Wed Oct 07 13:31:32 CEST 2015 - mc@suse.de
 
 - version 2.5.1.1-1
