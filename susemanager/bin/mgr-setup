@@ -149,6 +149,28 @@ host $MANAGER_DB_NAME $MANAGER_USER ::1/128 md5
     systemctl restart postgresql
 }
 
+check_var_spacewalk() {
+SPACEWALK_DIR="/var/spacewalk"
+
+if [ ! -d $SPACEWALK_DIR ]; then
+    FSTYPE=`df -T \`dirname $SPACEWALK_DIR\` | tail -1 | awk '{print $2}'`
+    echo -n "Filesystem type for $SPACEWALK_DIR is $FSTYPE - "
+    if [ $FSTYPE == "btrfs" ]; then
+        echo "creating nCoW subvolume."
+        if [ -x /usr/sbin/mksubvolume ]; then
+            /usr/sbin/mksubvolume --nocow $SPACEWALK_DIR
+            chown wwwrun $SPACEWALK_DIR
+        else
+            echo "Cannot execute /usr/sbin/mksubvolume. Package snapper is outdated."
+        fi
+    else
+        echo "ok."
+    fi
+else
+    echo "$SPACEWALK_DIR already exists. Leaving it untouched."
+fi
+}
+
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
 
@@ -500,6 +522,7 @@ if [ "$LOGFILE" != "0" ]; then
 fi
 
 wait_step
+check_var_spacewalk
 
 if [ "$DO_SETUP" = "1" ]; then
     if [ -f $MANAGER_COMPLETE ]; then
