@@ -32,16 +32,16 @@ import java.util.Map;
 
 
 /**
- * GathererCommand - simple Command class to run the virtual-host-gatherer.
+ * Runs the virtual-host-gatherer command.
  */
-public class GathererCommand {
+public class GathererRunner {
 
     private static final String GATHERER_CMD = "/usr/bin/virtual-host-gatherer";
     private static final String LOG_DESTINATION = "/var/log/rhn/gatherer.log";
     /**
      * Logger for this class
      */
-    private static Logger logger = Logger.getLogger(GathererCommand.class);
+    private static Logger logger = Logger.getLogger(GathererRunner.class);
 
     /**
      * Call gatherer --list-modules and return the result

@@ -4,7 +4,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
-import com.suse.manager.gatherer.GathererCommand;
+import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.gatherer.JsonHost;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -32,7 +32,7 @@ public class GathererJob extends RhnJavaJob {
                 managers.size()));
 
         try {
-            Map<String, Map<String, JsonHost>> results = new GathererCommand().run(managers);
+            Map<String, Map<String, JsonHost>> results = new GathererRunner().run(managers);
             log.debug(String.format("Got %d Virtual Host Managers from gatherer",
                     results.size()));
 
