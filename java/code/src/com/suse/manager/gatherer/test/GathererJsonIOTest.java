@@ -35,21 +35,25 @@ import java.util.Set;
 
 import junit.framework.TestCase;
 
-
+/**
+ * Tests for {@link GathererJsonIO}
+ */
 public class GathererJsonIOTest extends TestCase {
+
     private static final String MODULELIST = "modulelist.json";
     private static final String GATHEREROUT = "exampleGathererOutput.json";
 
     public void testReadGathererModules() throws Exception {
-        String json = FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
+        String json =
+                FileUtils.readStringFromFile(TestUtils.findTestData(MODULELIST).getPath());
         Map<String, GathererModule> mods = new GathererJsonIO().readGathererModules(json);
 
         assertEquals(2, mods.keySet().size());
         assertTrue(mods.keySet().contains("VMware"));
         assertTrue(mods.keySet().contains("SUSECloud"));
 
-        for(GathererModule g : mods.values()) {
-            if(g.getName().equals("VMware")) {
+        for (GathererModule g : mods.values()) {
+            if (g.getName().equals("VMware")) {
                 assertTrue(g.getParameters().containsKey("host"));
                 assertTrue(g.getParameters().containsKey("port"));
                 assertTrue(g.getParameters().containsKey("user"));
@@ -57,7 +61,7 @@ public class GathererJsonIOTest extends TestCase {
                 assertFalse(g.getParameters().containsKey("proto"));
                 assertFalse(g.getParameters().containsKey("tenant"));
             }
-            else if(g.getName().equals("SUSECloud")) {
+            else if (g.getName().equals("SUSECloud")) {
                 assertTrue(g.getParameters().containsKey("host"));
                 assertTrue(g.getParameters().containsKey("port"));
                 assertTrue(g.getParameters().containsKey("user"));
