@@ -63,8 +63,14 @@ public class GathererCommand {
         return new GathererJsonIO().readGathererModules(e.getLastCommandOutput());
     }
 
+    /**
+     * Runs virtual-host-gatherer against a set of Virtual Host Managers.
+     *
+     * @param vhms the virtual host managers
+     * @return a map from virtual host manager names to
+     * (virtual name, {@link JsonHost}) pairs
+     */
     public Map<String, Map<String, JsonHost>> run(List<VirtualHostManager> vhms) {
-
         List<String> args = new LinkedList<>();
         args.add(GATHERER_CMD);
         args.add("--infile");
