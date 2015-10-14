@@ -59,9 +59,6 @@ public class GathererModule {
      * @param parametersIn the parameters to set
      */
     public void setParameters(Map<String, String> parametersIn) {
-        if (this.parameters == null) {
-            this.parameters = new HashMap<>();
-        }
         this.parameters = parametersIn;
     }
 
