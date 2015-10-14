@@ -41,7 +41,7 @@ public class GathererCommand {
     /**
      * Logger for this class
      */
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private static Logger logger = Logger.getLogger(GathererCommand.class);
 
     /**
      * Call gatherer --list-modules and return the result
