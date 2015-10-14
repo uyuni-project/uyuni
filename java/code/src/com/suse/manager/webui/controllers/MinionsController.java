@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
