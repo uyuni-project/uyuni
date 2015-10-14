@@ -1,0 +1,19 @@
+# begin waiting for NetworkManager
+    <source>
+        <![CDATA[
+if systemctl is-enabled NetworkManager.service ; then
+  TIMEOUT=0
+  until route -n|grep "^0.0.0.0"; do
+    echo "Network is still not available. Waiting 2 seconds..."
+    sleep 2
+    if [ $TIMEOUT -ge 150 ]; then
+      echo "Timeout reached. Giving up"
+      break
+    fi
+    ((TIMEOUT++))
+  done
+fi
+        ]]>
+    </source>
+# end waiting for NetworkManager
+
