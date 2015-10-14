@@ -16,15 +16,22 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
 
+import com.suse.manager.webui.events.ManagedFileChangedEvent;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.sse.SSEServlet;
 import com.suse.saltstack.netapi.datatypes.Event;
+import com.suse.saltstack.netapi.event.BeaconEvent;
 import com.suse.saltstack.netapi.event.EventListener;
 import com.suse.saltstack.netapi.event.EventStream;
+import com.suse.saltstack.netapi.event.MinionStartEvent;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.websocket.CloseReason;
 
@@ -44,6 +51,9 @@ public class SaltReactor implements EventListener {
 
     // Indicate that the reactor has been stopped
     private volatile boolean isStopped = false;
+
+    // Executor service for handling incoming events
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     /**
      * Start the salt reactor.
@@ -80,21 +90,6 @@ public class SaltReactor implements EventListener {
      * {@inheritDoc}
      */
     @Override
-    public void notify(Event event) {
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
-        }
-
-        // Trigger minion registration on "salt/minion/*/start" events
-        if (event.getTag().matches("salt/minion/(.*)/start")) {
-            triggerMinionRegistration((String) event.getData().get("id"));
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void eventStreamClosed(CloseReason closeReason) {
         LOG.warn("Event stream closed: " + closeReason.getReasonPhrase() +
                 " [" + closeReason.getCloseCode() + "]");
@@ -105,6 +100,59 @@ public class SaltReactor implements EventListener {
             eventStream = SALT_SERVICE.getEventStream();
             eventStream.addEventListener(this);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void notify(Event event) {
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Event: " + event.getTag() + " -> " + event.getData());
+        }
+
+        // Setup handlers for different event types
+        Runnable runnable =
+                MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> {}));
+        executorService.submit(runnable);
+    }
+
+    /**
+     * Event handler for beacon events.
+     *
+     * @param beaconEvent beacon event
+     * @return event handler runnable
+     */
+    private Runnable onBeaconEvent(BeaconEvent beaconEvent) {
+        return () -> {
+            // Detect changes of managed files using the "managedwatch" beacon
+            if (beaconEvent.getBeacon().equals("managedwatch")) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> data = (Map<String, Object>)
+                        beaconEvent.getData().get("data");
+                String path = (String) data.get("path");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Managed file has changed: " + path);
+                }
+
+                // Send event via SSE to connected clients
+                SSEServlet.sendEvent(new ManagedFileChangedEvent(
+                        beaconEvent.getMinionId(), path, (String) data.get("diff")));
+            }
+        };
+    }
+
+    /**
+     * Trigger registration on minion start events.
+     *
+     * @param minionStartEvent minion start event
+     * @return event handler runnable
+     */
+    private Runnable onMinionStartEvent(MinionStartEvent minionStartEvent) {
+        return () -> {
+            triggerMinionRegistration((String) minionStartEvent.getData().get("id"));
+        };
     }
 
     /**
