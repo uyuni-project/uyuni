@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Oct 14 09:54:14 CEST 2015 - mc@suse.de
+
+- version 2.5.2.2-1
+- build without checkstyle
+- Support for SLE12 SP1 product family (bsc#949726)
+- implement remote command interface with target glob
+
+-------------------------------------------------------------------
 Wed Oct 07 14:41:35 CEST 2015 - mc@suse.de
 
 - version 2.5.2.1-1
