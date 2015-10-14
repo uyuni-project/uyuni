@@ -28,7 +28,7 @@ public enum GathererCache {
     INSTANCE;
 
     private Map<String, GathererModule> gathererModules =
-            new GathererCommand().listModules();
+            new GathererRunner().listModules();
     private Long cacheCreated = System.currentTimeMillis();
     private long CACHE_LIFETIME = 5 * 60 * 1000;
 
@@ -56,7 +56,7 @@ public enum GathererCache {
     private void updateCacheIfNeeded(boolean force) {
         if (force || System.currentTimeMillis() - cacheCreated > CACHE_LIFETIME) {
             // cache is more than 5 minutes old => refresh
-            gathererModules = new GathererCommand().listModules();
+            gathererModules = new GathererRunner().listModules();
             cacheCreated = System.currentTimeMillis();
         }
     }
