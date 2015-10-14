@@ -16,7 +16,6 @@ package com.suse.manager.webui.services.impl;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.AuthModule;
-import com.suse.saltstack.netapi.calls.LocalAsyncResult;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
 import com.suse.saltstack.netapi.calls.modules.Grains;
@@ -31,7 +30,6 @@ import com.suse.saltstack.netapi.datatypes.target.MinionList;
 import com.suse.saltstack.netapi.datatypes.target.Target;
 import com.suse.saltstack.netapi.event.EventStream;
 import com.suse.saltstack.netapi.exception.SaltStackException;
-import com.suse.saltstack.netapi.parser.JsonParser;
 
 import java.net.URI;
 import java.util.HashMap;
