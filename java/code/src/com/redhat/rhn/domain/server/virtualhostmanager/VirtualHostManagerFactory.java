@@ -19,8 +19,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.suse.manager.gatherer.GathererCache;
+
+import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
@@ -160,14 +162,15 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     protected void validateGathererConfiguration(String moduleName,
             Map<String, String> parameters)
             throws InvalidGathererConfigException {
-        if (!GathererCache.INSTANCE.listAvailableModules().contains(moduleName)) {
+        Map<String, GathererModule> modules = new GathererRunner().listModules();
+        if (!modules.containsKey(moduleName)) {
             throw new InvalidGathererConfigException("Module '" + moduleName +
                     "' not available");
         }
 
-        GathererModule details = GathererCache.INSTANCE.getDetails(moduleName);
-        if (details.getParameters() != null
-                && !parameters.keySet().containsAll(details.getParameters().keySet())) {
+        GathererModule details = modules.get(moduleName);
+        if (details.getParameters() != null &&
+            !parameters.keySet().containsAll(details.getParameters().keySet())) {
             throw new InvalidGathererConfigException("Invalid gatherer module config.");
         }
     }

@@ -23,7 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
-import com.suse.manager.gatherer.GathererCache;
+
+import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.util.Collection;
@@ -149,7 +150,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
      */
     public Collection<String> listAvailableVirtualHostGathererModules(User loggedInUser) {
         ensureOrgAdmin(loggedInUser);
-        return GathererCache.INSTANCE.listAvailableModules();
+        return new GathererRunner().listModules().keySet();
     }
 
     /**
@@ -169,7 +170,7 @@ public class VirtualHostManagerHandler extends BaseHandler {
     public Map<String, String> getModuleParameters(User loggedInUser, String moduleName) {
         ensureOrgAdmin(loggedInUser);
 
-        GathererModule gm = GathererCache.INSTANCE.getDetails(moduleName);
+        GathererModule gm = new GathererRunner().listModules().get(moduleName);
         if (gm == null) {
             throw new NoSuchGathererModuleException(moduleName);
         }
