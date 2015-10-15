@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
@@ -185,5 +186,23 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, managers.size());
         assertContains(managers, manager1);
         assertContains(managers, manager2);
+    }
+
+    /**
+     * Tests that after removing VirtualHostManager, its credentials are removed as well.
+     * @throws Exception if anything goes wrong
+     */
+    public void testDeleteVHMAndCredentials() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("user", "foouser");
+        config.put("pass", "barpass");
+
+        VirtualHostManager manager =
+                factory.createVirtualHostManager("label", user.getOrg(), SUSE_CLOUD, config);
+
+        Long id = manager.getCredentials().getId();
+        assertNotNull(CredentialsFactory.lookupCredentialsById(id));
+        factory.delete(manager);
+        assertNull(CredentialsFactory.lookupCredentialsById(id));
     }
 }
