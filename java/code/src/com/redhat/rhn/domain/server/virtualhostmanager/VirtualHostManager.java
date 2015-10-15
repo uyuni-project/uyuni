@@ -19,9 +19,9 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -210,10 +210,10 @@ public class VirtualHostManager extends BaseDomainHelper {
      */
     @Override
     public String toString() {
-        return "VirtualHostManager{" +
-                "id=" + id +
-                ", label='" + label + '\'' +
-                ", gathererModule='" + gathererModule + '\'' +
-                '}';
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("label", label)
+                .append("gathererModule", gathererModule)
+                .toString();
     }
 }
