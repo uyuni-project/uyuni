@@ -124,7 +124,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param label - the label
      * @param org - the organization
      * @param moduleName - the module name
-     * @param parameters - the parameters
+     * @param parameters - the non-null map with additional gatherer parameters
      * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
      * module or if the parameters don't contain required gatherer module configuration
      * @return new VirtualHostManager instance
@@ -155,7 +155,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      *  - existence of given gatherer module
      *  - existence of required parameters for given gatherer module
      * @param moduleName - gatherer module name
-     * @param parameters - gatherer parameters
+     * @param parameters - non-null map with gatherer parameters
      * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
      * module or if the parameters don't contain required gatherer module configuration
      */
@@ -188,10 +188,6 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     private Set<VirtualHostManagerConfig> createVirtualHostManagerConfigs(
             VirtualHostManager virtualHostManager,
             Map<String, String> parameters) {
-        if (parameters == null) {
-            return null;
-        }
-
         Set<VirtualHostManagerConfig> configs = new HashSet<>();
 
         for (Map.Entry<String, String> configEntry : parameters.entrySet()) {
@@ -230,27 +226,24 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * Creates and stores db entity for credentials if the input params contain
      * entry for username and password.
      * Important note: This method removes credentials data from input params!
-     * @param params
+     * @param params - non-null map of gatherer parameters
      * @return - new Credentials instance
      *           if input params contain entry for username and password
      *         - null otherwise
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
-        if (params != null &&
-                params.containsKey(CONFIG_USER) &&
-                params.containsKey(CONFIG_PASS)) {
-            Credentials credentials = CredentialsFactory.createVHMCredentials();
+        Credentials credentials = null;
+        if (params.containsKey(CONFIG_USER) && params.containsKey(CONFIG_PASS)) {
+            credentials = CredentialsFactory.createVHMCredentials();
             credentials.setUsername(params.get(CONFIG_USER));
             credentials.setPassword(params.get(CONFIG_PASS));
             CredentialsFactory.storeCredentials(credentials);
 
-            // filter creds from the params, as they are stored separately
+            // filter credentials from the params, as they are stored separately
             params.remove(CONFIG_USER);
             params.remove(CONFIG_PASS);
-
-            return credentials;
         }
 
-        return null;
+        return credentials;
     }
 }
