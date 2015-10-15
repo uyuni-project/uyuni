@@ -30,15 +30,15 @@ public class ManagedFileChangedEvent implements Event {
     /**
      * Constructor for creating events.
      *
-     * @param minionId the minion id
-     * @param path the path of the managed file
-     * @param diff the diff of the change
+     * @param minionIdIn the minion id
+     * @param pathIn the path of the managed file
+     * @param diffIn the diff of the change
      */
-    public ManagedFileChangedEvent(String minionId, String path, String diff) {
+    public ManagedFileChangedEvent(String minionIdIn, String pathIn, String diffIn) {
         super();
-        this.minionId = minionId;
-        this.path = path;
-        this.diff = diff;
+        this.minionId = minionIdIn;
+        this.path = pathIn;
+        this.diff = diffIn;
     }
 
     /**
@@ -49,7 +49,7 @@ public class ManagedFileChangedEvent implements Event {
     public String getMinionId() {
         return minionId;
     }
-    
+
     /**
      * Get the path of the managed file that has been changed.
      *

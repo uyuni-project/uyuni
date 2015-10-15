@@ -130,7 +130,6 @@ public class StrutsDelegate {
                 params));
         errors.add(msg);
     }
-    
 
     /**
      * Add a message into an existing set of ActionMessages. Useful to add stuff to
@@ -154,7 +153,7 @@ public class StrutsDelegate {
     public void addInfo(ActionMessages messages, String msgKey, Object ... params) {
         ActionMessages msg = new ActionMessages();
         msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, params));
-        messages.add(msg);        
+        messages.add(msg);
     }
 
     /**

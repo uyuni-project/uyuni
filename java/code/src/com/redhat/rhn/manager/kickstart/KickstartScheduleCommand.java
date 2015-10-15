@@ -400,7 +400,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             }
             else {
                 log.debug("getKickstartProfiles(): find arch via server arch");
-                arch = ChannelFactory.lookupArchByName(hostServer.getServerArch().getName());
+                arch = ChannelFactory.lookupArchByName(
+                        hostServer.getServerArch().getName());
             }
             if (arch != null) {
                 SelectMode mode = getMode();

@@ -61,7 +61,7 @@ public class RpmVersionComparator implements Comparator {
                 b2++;
                 continue;
             }
-            if(b1 >= str1.length() || b2 >= str2.length()) {
+            if (b1 >= str1.length() || b2 >= str2.length()) {
                 break;
             }
             /* grab first completely alpha or completely numeric segment */

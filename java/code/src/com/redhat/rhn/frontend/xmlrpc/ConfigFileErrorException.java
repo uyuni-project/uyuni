@@ -21,9 +21,11 @@ import com.redhat.rhn.FaultException;
  * Config File Error Exception
  */
 public class ConfigFileErrorException extends FaultException  {
+
     /**
      * Constructor
      * message additional error message(s)
+     * @param message a message
      */
     public ConfigFileErrorException(String message) {
         super(1023, "Config File Error", message);

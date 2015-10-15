@@ -30,7 +30,7 @@ public class ConfigFile extends BaseDomainHelper {
     private ConfigFileName configFileName;
     private ConfigFileState configFileState;
     private ConfigRevision latestConfigRevision;
-    private static final Logger log = Logger.getLogger(ConfigFile.class);
+    private static Logger log = Logger.getLogger(ConfigFile.class);
 
 
     /**

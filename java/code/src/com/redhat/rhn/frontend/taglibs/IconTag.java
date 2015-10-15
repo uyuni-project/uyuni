@@ -146,10 +146,10 @@ public class IconTag extends TagSupport {
         icons.put("spinner", "fa fa-spinner fa-spin");
         icons.put("system-bare-metal-legend", "fa fa-1-5x spacewalk-icon-bare-metal");
         icons.put("system-bare-metal", "fa spacewalk-icon-bare-metal");
-		icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
+        icons.put("system-crit", "fa fa-exclamation-circle fa-1-5x text-danger");
         icons.put("system-kickstarting", "fa fa-rocket fa-1-5x");
         icons.put("system-locked", "fa fa-lock fa-1-5x");
-		icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
+        icons.put("system-ok", "fa fa-check-circle fa-1-5x text-success");
         icons.put("system-physical", "fa fa-desktop fa-1-5x");
         icons.put("system-reboot", "fa fa-refresh");
         icons.put("system-unentitled", "fa fa-times-circle fa-1-5x");

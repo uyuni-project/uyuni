@@ -54,7 +54,7 @@ public enum SaltAPIService implements SaltService {
     private final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
 
     // Prevent instantiation
-    private SaltAPIService() {
+    SaltAPIService() {
         // Set timeout to 30 seconds
         SALT_CLIENT.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
     }

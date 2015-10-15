@@ -147,7 +147,7 @@ public class ActivationKeyFactory extends HibernateFactory {
 
         // Set the entitlements equal to what the server has by default
         // If the server has the bootstrap entitlement use enterprise entitlement
-        if (server != null && ! server.isBootstrap()) {
+        if (server != null && !server.isBootstrap()) {
             List serverEntitlements = server.getEntitledGroups();
             for (Iterator itr = serverEntitlements.iterator(); itr.hasNext();) {
                 ServerGroup group = (ServerGroup) itr.next();

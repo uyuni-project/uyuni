@@ -35,7 +35,7 @@ public enum PatchStatus {
      * @param label
      * @param descriptionIn
      */
-    private PatchStatus(String descriptionIn) {
+    PatchStatus(String descriptionIn) {
         this.description = descriptionIn;
     }
 
