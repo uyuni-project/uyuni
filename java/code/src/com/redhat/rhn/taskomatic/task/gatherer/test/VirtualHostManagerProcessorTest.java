@@ -284,7 +284,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // verify that processor linked this guest to its host
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         VirtualInstance guestFromDb =
-                VirtualInstanceFactory.getInstance().lookupById(registeredGuest.getId());
+                VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid("vm-uuid");
         assertEquals(hostServer, guestFromDb.getHostSystem());
     }
 }
