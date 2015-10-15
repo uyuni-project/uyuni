@@ -101,7 +101,7 @@ public class SyncSystemsSetupAction extends RhnAction implements Listable {
         Long sid1 = context.getRequiredParam(RequestContext.SID1);
         User user = context.getCurrentUser();
 
-        Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
+        Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
                 getDecl(sid));
 
         DataResult dr = ProfileManager.prepareSyncToServer(sid, sid1,

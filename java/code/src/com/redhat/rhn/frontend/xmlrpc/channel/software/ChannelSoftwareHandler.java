@@ -2708,7 +2708,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser, String channelLabel,
-                                               Map <String, String> params) {
+                                               Map<String, String> params) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
         new TaskomaticApi().scheduleSingleRepoSync(chan, loggedInUser, params);
         return 1;
@@ -2761,7 +2761,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      * @xmlrpc.returntype  #return_int_success()
      */
     public int syncRepo(User loggedInUser,
-            String channelLabel, String cronExpr, Map <String, String> params) {
+            String channelLabel, String cronExpr, Map<String, String> params) {
         Channel chan = lookupChannelByLabel(loggedInUser, channelLabel);
         TaskomaticApi tapi = new TaskomaticApi();
         if (!tapi.isRunning()) {

@@ -1105,7 +1105,7 @@ public class ListTag extends BodyTagSupport {
         if (PageSizeDecorator.pageWidgetSelected(httpRequest, getUniqueName())) {
             int size = PageSizeDecorator.getSelectedPageSize(httpRequest,
                                                         getUniqueName());
-            List <Integer> pageSizes = PageSizeDecorator.getPageSizes();
+            List<Integer> pageSizes = PageSizeDecorator.getPageSizes();
             if (size < 1 || size > pageSizes.get(pageSizes.size() - 1)) {
                 return;
             }

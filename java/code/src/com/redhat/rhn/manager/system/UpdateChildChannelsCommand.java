@@ -54,7 +54,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
      * @param s server to update
      * @param channelIdsIn List of Long channel ids
      */
-    public UpdateChildChannelsCommand(User userIn, Server s, List <Long> channelIdsIn) {
+    public UpdateChildChannelsCommand(User userIn, Server s, List<Long> channelIdsIn) {
         this.cids = channelIdsIn;
         this.user = userIn;
         this.server = s;

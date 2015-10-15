@@ -226,7 +226,7 @@ public class ActivationKeyManager {
      * @param key Activation key to be acted upon
      * @param entitlementLabels List of string entitlement labels for the activation key
      */
-    public void addEntitlements(ActivationKey key, List <String> entitlementLabels) {
+    public void addEntitlements(ActivationKey key, List<String> entitlementLabels) {
         validateAddOnEntitlements(entitlementLabels, true);
         for (Iterator it = entitlementLabels.iterator(); it.hasNext();) {
             String label = (String)it.next();
@@ -243,7 +243,7 @@ public class ActivationKeyManager {
      * @param key Activation key to be acted upon
      * @param entitlementLabels List of string entitlement labels for the activation key
      */
-    public void removeEntitlements(ActivationKey key, List <String> entitlementLabels) {
+    public void removeEntitlements(ActivationKey key, List<String> entitlementLabels) {
         validateAddOnEntitlements(entitlementLabels, false);
         for (String label : entitlementLabels) {
             ServerGroupType entitlement =
@@ -317,7 +317,7 @@ public class ActivationKeyManager {
      * @param requester User requesting the list.
      * @return All activation keys visible to user.
      */
-    public List <ActivationKey> findAll(User requester) {
+    public List<ActivationKey> findAll(User requester) {
         Session session = null;
         session = HibernateFactory.getSession();
         return session.getNamedQuery("ActivationKey.findByOrg")
@@ -386,7 +386,7 @@ public class ActivationKeyManager {
      * @param entitlements List of string entitlement labels to be validated.
      * @param adding True if adding entitlements, false if removing.
      */
-    public void validateAddOnEntitlements(List <String> entitlements, boolean adding) {
+    public void validateAddOnEntitlements(List<String> entitlements, boolean adding) {
         ValidatorResult ve = new ValidatorResult();
         for (String entitlementLabel : entitlements) {
             Entitlement ent = EntitlementManager.getByName(entitlementLabel);
@@ -471,9 +471,9 @@ public class ActivationKeyManager {
          * so we have to subscribe all the child channels
          * with the package name
          */
-        List <Channel> channels = new ArrayList<Channel>();
+        List<Channel> channels = new ArrayList<Channel>();
         if (key.getBaseChannel() == null) {
-            List <Long> cids = ChannelManager.findChildChannelsWithPackage(packageName,
+            List<Long> cids = ChannelManager.findChildChannelsWithPackage(packageName,
                     key.getOrg());
             for (Long cid : cids) {
                 channels.add(ChannelFactory.lookupById(cid));
@@ -486,7 +486,7 @@ public class ActivationKeyManager {
             // f.e. libvirt available in RHEL5VT (child channel),
             // but in RHEL6Server (base channel)
             if (ChannelManager.getLatestPackageEqual(bcid, packageName) == null) {
-                List <Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
+                List<Long> cids = ChannelManager.findChildChannelsWithPackage(key.getOrg(),
                         bcid, packageName, false);
                 Collections.sort(cids);
                 log.warn("sorted cids: " + cids.toString());

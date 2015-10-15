@@ -119,7 +119,7 @@ public interface RhnSet extends Set {
      * Returns a java.util.Set of the Elements in the RhnSet.
      * @return java.util.Set of the Elements in the RhnSet.
      */
-    Set <RhnSetElement> getElements();
+    Set<RhnSetElement> getElements();
 
     /**
      * Returns a java.util.Set of the Long values in each RhnSetElement.
@@ -128,7 +128,7 @@ public interface RhnSet extends Set {
      *
      * @return java.util.Set values in the RhnSet.
      */
-    Set <Long>getElementValues();
+    Set<Long> getElementValues();
 
     /**
      * Returns whether or not the set contains the given RhnSetElement

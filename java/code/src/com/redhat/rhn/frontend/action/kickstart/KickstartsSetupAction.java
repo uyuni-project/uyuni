@@ -51,7 +51,7 @@ public class KickstartsSetupAction  extends RhnAction {
 
         RequestContext requestContext = new RequestContext(request);
         User user =  requestContext.getCurrentUser();
-        DataResult <KickstartDto>result = KickstartLister.getInstance().
+        DataResult<KickstartDto> result = KickstartLister.getInstance().
                             kickstartsInOrg(user.getOrg(), null);
         for (KickstartDto dto : result) {
             if (dto.isOrgDefault()) {

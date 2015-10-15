@@ -118,13 +118,13 @@ public abstract class CobblerObject {
      *                       method to lookup: eg get_profile for profile
      * @return the Cobbler Object Data Map or null
      */
-    protected static Map <String, Object> lookupDataMapByName(CobblerConnection client,
+    protected static Map<String, Object> lookupDataMapByName(CobblerConnection client,
                                     String name, String lookupMethod) {
         Object obj = client.invokeMethod(lookupMethod, name);
         if ("~".equals(obj)) {
             return null;
         }
-        Map <String, Object> map = (Map<String, Object>) obj;
+        Map<String, Object> map = (Map<String, Object>) obj;
         if (map == null || map.isEmpty()) {
             return null;
         }

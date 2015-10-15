@@ -627,7 +627,7 @@ public class KickstartData {
     /**
      * @return Returns the repos.
      */
-    public Set <KickstartCommand> getRepos() {
+    public Set<KickstartCommand> getRepos() {
         return getCommandSubset("repo");
     }
 
@@ -643,8 +643,8 @@ public class KickstartData {
      * @return Returns the repos.
      */
     public Set<RepoInfo> getRepoInfos() {
-        Set <KickstartCommand> repoCommands =  getRepos();
-        Set <RepoInfo> info = new HashSet<RepoInfo>();
+        Set<KickstartCommand> repoCommands =  getRepos();
+        Set<RepoInfo> info = new HashSet<RepoInfo>();
         for (KickstartCommand cmd : repoCommands) {
             info.add(RepoInfo.parse(cmd));
         }
@@ -656,7 +656,7 @@ public class KickstartData {
      * @param repos the repos to update
      **/
     public void setRepoInfos(Collection<RepoInfo> repos) {
-        Set <KickstartCommand> repoCommands = new HashSet<KickstartCommand>();
+        Set<KickstartCommand> repoCommands = new HashSet<KickstartCommand>();
         for (RepoInfo repo : repos) {
             KickstartCommand cmd = KickstartFactory.createKickstartCommand(this, "repo");
             repo.setArgumentsIn(cmd);

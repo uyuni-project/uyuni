@@ -195,7 +195,7 @@ public class SystemCompareDto {
      */
     public List<List<Item>> getSystemGroups() {
         List<List> groups = new LinkedList<List>();
-        Map <String, String> idMap = new HashMap<String, String>();
+        Map<String, String> idMap = new HashMap<String, String>();
         for (Server system : servers) {
             List sysGroups = new LinkedList();
             for (ServerGroup sg : system.getManagedGroups()) {
@@ -238,7 +238,7 @@ public class SystemCompareDto {
      */
     public List<Item> getBaseChannels() {
         List<String> ids = new LinkedList<String>();
-        Map <String, String> idMap = new HashMap<String, String>();
+        Map<String, String> idMap = new HashMap<String, String>();
         for (Server s : servers) {
             if (s.getBaseChannel() != null) {
                 ids.add(s.getBaseChannel().getName());
@@ -258,7 +258,7 @@ public class SystemCompareDto {
      */
     public List<List<Item>> getChildChannels() {
         List<List> ret = new LinkedList<List>();
-        Map <String, String> idMap = new HashMap<String, String>();
+        Map<String, String> idMap = new HashMap<String, String>();
         for (Server system : servers) {
             List keys = new LinkedList();
             Set<Channel> childChannels = system.getChildChannels();
@@ -280,7 +280,7 @@ public class SystemCompareDto {
      */
     public List<List<Item>> getConfigChannels() {
         List<List> ret = new LinkedList<List>();
-        Map <String, String> idMap = new HashMap<String, String>();
+        Map<String, String> idMap = new HashMap<String, String>();
         for (Server system : servers) {
             List keys = new LinkedList();
             if (system.getConfigChannelCount() > 0) {
@@ -358,7 +358,7 @@ public class SystemCompareDto {
      */
     public List<List<Item>> getActivationKeys() {
         List<List> ret = new LinkedList<List>();
-        Map <String, String> idMap = new HashMap<String, String>();
+        Map<String, String> idMap = new HashMap<String, String>();
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         for (Server system : servers) {
             List keys = new LinkedList();

@@ -47,7 +47,7 @@ public class SatelliteHandler extends BaseHandler {
      * #array_end()
      */
     public Object[] listProxies(User loggedInUser) {
-        List <Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
+        List<Server> proxies = ServerFactory.lookupProxiesByOrg(loggedInUser);
         List toReturn = new ArrayList();
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
         for (Server server : proxies) {

@@ -54,7 +54,7 @@ public class ListRemoveChannelsAction extends BaseListAction {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-        Set <String> set = helper.getSet();
+        Set<String> set = helper.getSet();
 
         for (String id : set) {
             Long ccid = Long.valueOf(id);

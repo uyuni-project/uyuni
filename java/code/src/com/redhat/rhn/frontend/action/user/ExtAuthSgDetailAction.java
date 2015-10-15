@@ -84,7 +84,7 @@ public class ExtAuthSgDetailAction extends RhnAction {
             String label = (String) form.get("extGroupLabel");
             String[] selectedSgs = form.getStrings("selected_sgs");
 
-            Set <ServerGroup>sgs = new HashSet<ServerGroup>();
+            Set<ServerGroup> sgs = new HashSet<ServerGroup>();
             for (String sg : selectedSgs) {
                 sgs.add(ServerGroupFactory.lookupByNameAndOrg(sg, org));
             }

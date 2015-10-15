@@ -312,7 +312,7 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param threshold the threshold to check on
      * @return the server ids
      */
-    public static List <Long> listActiveServerIds(ServerGroup sg, Long threshold) {
+    public static List<Long> listActiveServerIds(ServerGroup sg, Long threshold) {
         return listServerIds(sg, threshold, "ServerGroup.lookupActiveServerIds");
     }
 
@@ -324,10 +324,10 @@ public class ServerGroupFactory extends HibernateFactory {
      * @param threshold the threshold to check on
      * @return the server ids
      */
-    public static List <Long> listInactiveServerIds(ServerGroup sg, Long threshold) {
+    public static List<Long> listInactiveServerIds(ServerGroup sg, Long threshold) {
         return listServerIds(sg, threshold, "ServerGroup.lookupInactiveServerIds");    }
 
-    private static List <Long> listServerIds(ServerGroup sg, Long threshold, String query) {
+    private static List<Long> listServerIds(ServerGroup sg, Long threshold, String query) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("sgid", sg.getId());
         params.put("threshold", threshold);

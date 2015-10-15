@@ -88,7 +88,7 @@ public class ServerConfigHandler extends BaseHandler {
             return dtos;
         }
         List<ConfigFileNameDto> files = new LinkedList<ConfigFileNameDto>();
-        List <ConfigFileDto> currentFiles = cm.listCurrentFiles(loggedInUser,
+        List<ConfigFileDto> currentFiles = cm.listCurrentFiles(loggedInUser,
                 server.getSandboxOverride(), null);
         for (ConfigFileDto dto : currentFiles) {
             files.add(ConfigFileNameDtoSerializer.toNameDto(dto,
@@ -294,7 +294,7 @@ public class ServerConfigHandler extends BaseHandler {
         XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         Server server = sysHelper.lookupServer(loggedInUser, sid);
         ConfigurationManager cm = ConfigurationManager.getInstance();
-        List <ConfigRevision> revisions = new LinkedList<ConfigRevision>();
+        List<ConfigRevision> revisions = new LinkedList<ConfigRevision>();
         for (String path : paths) {
             ConfigFile cf;
             if (searchLocal) {
@@ -347,7 +347,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int deleteFiles(User loggedInUser,
             Integer sid,
-            List <String> paths,
+            List<String> paths,
             boolean deleteFromLocal) {
         XmlRpcSystemHelper sysHelper = XmlRpcSystemHelper.getInstance();
         ConfigurationManager cm = ConfigurationManager.getInstance();
@@ -395,7 +395,7 @@ public class ServerConfigHandler extends BaseHandler {
      */
     public int deployAll(User loggedInUser, List<Number> serverIds, Date date) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List <Server> servers = new ArrayList<Server>(serverIds.size());
+        List<Server> servers = new ArrayList<Server>(serverIds.size());
         for (Number sid : serverIds) {
             servers.add(helper.lookupServer(loggedInUser, sid));
         }
@@ -475,10 +475,10 @@ public class ServerConfigHandler extends BaseHandler {
     public int addChannels(User loggedInUser, List<Number> serverIds,
             List<String> configChannelLabels, boolean addToTop) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List <Server> servers = helper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
-        List <ConfigChannel> channels = configHelper.
+        List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         if (addToTop) {
@@ -522,10 +522,10 @@ public class ServerConfigHandler extends BaseHandler {
     public int setChannels(User loggedInUser, List<Number> serverIds,
             List<String> configChannelLabels) {
         XmlRpcSystemHelper helper = XmlRpcSystemHelper.getInstance();
-        List <Server> servers = helper.lookupServers(loggedInUser, serverIds);
+        List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
-        List <ConfigChannel> channels = configHelper.
+        List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         for (Server server : servers) {
@@ -556,7 +556,7 @@ public class ServerConfigHandler extends BaseHandler {
         List<Server> servers = helper.lookupServers(loggedInUser, serverIds);
         XmlRpcConfigChannelHelper configHelper =
                 XmlRpcConfigChannelHelper.getInstance();
-        List <ConfigChannel> channels = configHelper.
+        List<ConfigChannel> channels = configHelper.
                 lookupGlobals(loggedInUser, configChannelLabels);
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         boolean success = true;
