@@ -248,7 +248,7 @@ public class Action extends BaseDomainHelper implements Serializable {
      * a collection of: com.redhat.rhn.domain.action.server.ServerAction classes
      * @return Set of com.redhat.rhn.domain.action.server.ServerAction classes
     */
-    public Set <ServerAction> getServerActions() {
+    public Set<ServerAction> getServerActions() {
         return this.serverActions;
     }
 

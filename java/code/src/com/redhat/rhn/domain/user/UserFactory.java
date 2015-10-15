@@ -66,7 +66,7 @@ public  class UserFactory extends HibernateFactory {
             RoleFactory.ACTIVATION_KEY_ADMIN };
 
     /** List of Role objects that are applied if you are an Org_admin */
-    public static final List <Role> IMPLIEDROLES = Arrays.asList(IMPLIEDROLESARRAY);
+    public static final List<Role> IMPLIEDROLES = Arrays.asList(IMPLIEDROLESARRAY);
 
     public static final State ENABLED = loadState("enabled");
     public static final State DISABLED = loadState("disabled");
@@ -324,7 +324,7 @@ public  class UserFactory extends HibernateFactory {
     public static boolean isDisabled(User user) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("user", user);
-        List <StateChange>  changes =  getInstance().
+        List<StateChange>  changes =  getInstance().
                 listObjectsByNamedQuery("StateChanges.lookupByUserId", params);
         return changes != null && !changes.isEmpty() &&
                 DISABLED.equals(changes.get(0).getState());

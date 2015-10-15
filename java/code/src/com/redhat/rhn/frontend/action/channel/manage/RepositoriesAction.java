@@ -86,7 +86,7 @@ public class RepositoriesAction extends RhnAction implements Listable {
         if (helper.isDispatched()) {
             Set<ContentSource> foo = chan.getSources();
             foo.clear();
-            Set <String> set = helper.getSet();
+            Set<String> set = helper.getSet();
             for (String id : set) {
                 Long sgid = Long.valueOf(id);
                 ContentSource tmp = ChannelFactory.lookupContentSource(sgid, user.getOrg());

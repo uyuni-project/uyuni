@@ -55,7 +55,7 @@ public class ListRemoveGroupsAction extends BaseListAction {
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
         ServerGroupManager sgm = ServerGroupManager.getInstance();
-        Set <String> set = helper.getSet();
+        Set<String> set = helper.getSet();
         for (String id : set) {
             Long sgid = Long.valueOf(id);
             key.removeServerGroup(sgm.lookup(sgid, user));

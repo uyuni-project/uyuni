@@ -75,9 +75,9 @@ public class AddGroupsAction extends BaseListAction {
     public List<ManagedServerGroup> getResult(RequestContext context) {
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
-        List <ManagedServerGroup> mainList = ServerGroupFactory.
+        List<ManagedServerGroup> mainList = ServerGroupFactory.
                                             listManagedGroups(user.getOrg());
-        List <ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
+        List<ManagedServerGroup> groups = new LinkedList<ManagedServerGroup>();
         for (ManagedServerGroup sg : mainList) {
             if (!key.getServerGroups().contains(sg)) {
                 groups.add(sg);
@@ -94,7 +94,7 @@ public class AddGroupsAction extends BaseListAction {
      * @param context the request context
      * @param groups list of server groups
      */
-    static void setupAccessMap(RequestContext context, List <ManagedServerGroup> groups) {
+    static void setupAccessMap(RequestContext context, List<ManagedServerGroup> groups) {
         ServerGroupManager sgm = ServerGroupManager.getInstance();
         Map<Long, Long> accessMap = new HashMap<Long, Long>();
         for (ServerGroup sg : groups) {

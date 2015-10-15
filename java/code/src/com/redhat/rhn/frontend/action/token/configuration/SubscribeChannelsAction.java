@@ -57,7 +57,7 @@ public class SubscribeChannelsAction extends BaseListAction {
         RequestContext context = new RequestContext(request);
         ActivationKey key = context.lookupAndBindActivationKey();
         User user = context.getCurrentUser();
-        Set <String> set = helper.getSet();
+        Set<String> set = helper.getSet();
         if (set.size() == 1 && key.getConfigChannelsFor(user).isEmpty()) {
             ActionForward af =  handleSingleAdd(mapping, context, set.iterator().next());
             helper.destroy();

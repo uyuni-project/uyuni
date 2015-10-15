@@ -551,7 +551,7 @@ public class ActionManager extends BaseManager {
     public static Action createConfigAction(User user, Collection<Long> revisions,
             Collection<Long> serverIds, ActionType type, Date earliest) {
 
-        List <Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
+        List<Server> servers = SystemManager.hydrateServerFromIds(serverIds, user);
         return createConfigActionForServers(user, revisions, servers, type, earliest);
     }
 

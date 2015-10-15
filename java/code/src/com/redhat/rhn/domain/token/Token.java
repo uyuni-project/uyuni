@@ -52,8 +52,8 @@ public class Token implements Identifiable {
     private User creator;
     private Server server;
     private ContactMethod contactMethod;
-    private Set <Server> activatedSystems = new HashSet<Server>();
-    private List <ConfigChannel> configChannels = new LinkedList <ConfigChannel>();
+    private Set<Server> activatedSystems = new HashSet<Server>();
+    private List<ConfigChannel> configChannels = new LinkedList<ConfigChannel>();
     private Set<ServerGroupType> entitlements = new HashSet<ServerGroupType>();
     private Set<Channel> channels = new HashSet<Channel>();
     private Set<ServerGroup> serverGroups = new HashSet<ServerGroup>();
@@ -489,7 +489,7 @@ public class Token implements Identifiable {
      * @param user the User object needed for access credentials
      * @return the list of config channels assign to this user
      */
-    public List <ConfigChannel> getConfigChannelsFor(User user) {
+    public List<ConfigChannel> getConfigChannelsFor(User user) {
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         proc.validateUserAccess(user, getConfigChannels());
         return getConfigChannels();

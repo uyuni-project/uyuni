@@ -308,7 +308,7 @@ public class KickstartSoftwareEditAction extends BaseKickstartEditAction {
         if (tree != null && !tree.getInstallType().isRhel2() &&
                 !tree.getInstallType().isRhel3() &&
                 !tree.getInstallType().isRhel4()) {
-            List <LabelValueEnabledBean> repos = new LinkedList<LabelValueEnabledBean>();
+            List<LabelValueEnabledBean> repos = new LinkedList<LabelValueEnabledBean>();
             for (RepoInfo repo : RepoInfo.getStandardRepos(tree)) {
                 repos.add(lve(repo.getName(), repo.getName(), !repo.isAvailable()));
             }

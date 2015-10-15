@@ -257,7 +257,7 @@ public class ActivationKeyDetailsAction extends RhnAction {
         else {
             form.set(SELECTED_CHANNEL, chan.getId());
         }
-        List <String> entitlements = new ArrayList<String>();
+        List<String> entitlements = new ArrayList<String>();
         for (ServerGroupType type : key.getEntitlements()) {
             entitlements.add(type.getLabel());
         }

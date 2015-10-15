@@ -47,7 +47,7 @@ class DataSourceParserHelper implements ContentHandler {
     /**
      * Create a new DataSourceParserHelper
      */
-    public DataSourceParserHelper() {
+    DataSourceParserHelper() {
         internal_queries = new HashMap();
         modes = new HashMap();
         state = TOP_LEVEL;

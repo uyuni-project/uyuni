@@ -124,7 +124,7 @@ public abstract class BaseSystemPackagesConfirmAction extends RhnAction {
 
         Long sid = requestContext.getRequiredParam("sid");
 
-        Set <String> data = SessionSetHelper.lookupAndBind(request, getDecl(sid));
+        Set<String> data = SessionSetHelper.lookupAndBind(request, getDecl(sid));
         List<PackageListItem> items = new LinkedList<PackageListItem>();
         for (String key : data) {
             items.add(PackageListItem.parse(key));

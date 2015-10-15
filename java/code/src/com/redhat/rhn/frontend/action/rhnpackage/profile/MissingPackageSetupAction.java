@@ -91,7 +91,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         if ("system".equals(type)) {
             Long sid1 = context.getRequiredParam(RequestContext.SID1);
 
-            Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
+            Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
                     DECL_SYSTEM_ACTION.getDecl(sid));
 
             return ProfileManager.getMissingSystemPackages(
@@ -100,7 +100,7 @@ public class MissingPackageSetupAction extends RhnAction implements Listable {
         else if ("profile".equals(type)) {
             Long prid = context.getRequiredParam(RequestContext.PRID);
 
-            Set <String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
+            Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(context.getRequest(),
                     DECL_PROFILE_ACTION.getDecl(sid));
 
             return ProfileManager.getMissingProfilePackages(
