@@ -201,7 +201,7 @@ if [ -f ~/.ssh/known_hosts ];then
   ssh-keygen -R ${CLIENT}
 fi
 
-# Copy public key to the client, require 'ssh-rsa' as host key algorithm
+# Copy public key to the client
 echo "* Pushing SSH key to '${CLIENT}', please login as ${user}:"
 ssh-copy-id -i ${SSH_IDENTITY}.pub ${USER}@${CLIENT} 2>&1
 exit_in_case_of_error
