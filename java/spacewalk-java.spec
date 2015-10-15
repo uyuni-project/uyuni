@@ -123,7 +123,6 @@ BuildRequires: tomcat-lib >= 7
 %if 0%{?suse_version}
 Requires: jakarta-commons-httpclient
 Requires: struts >= 1.2.9
-Requires: pxe-default-image
 Requires(pre): tomcat >= 8
 Requires: tomcat-lib >= 8
 Requires: tomcat-servlet-3.1-api >= 8

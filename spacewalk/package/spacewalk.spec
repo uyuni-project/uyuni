@@ -69,6 +69,7 @@ Requires:       rhnpush
 Requires:       spacewalk-schema
 Requires:       spacewalk-config
 Requires:       yum-utils
+Requires:       pxe-default-image
 
 # Requires:       osa-dispatcher
 # Requires:       jabberpy
