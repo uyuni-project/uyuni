@@ -171,6 +171,22 @@ else
 fi
 }
 
+open_firewall_ports() {
+echo "Open needed firewall ports..."
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp"
+
+# ports needed for Saltstack
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506"
+
+systemctl restart SuSEfirewall2
+}
+
 setup_spacewalk() {
     CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr [:lower:] [:upper:]`
 
@@ -523,6 +539,7 @@ fi
 
 wait_step
 check_var_spacewalk
+open_firewall_ports
 
 if [ "$DO_SETUP" = "1" ]; then
     if [ -f $MANAGER_COMPLETE ]; then
