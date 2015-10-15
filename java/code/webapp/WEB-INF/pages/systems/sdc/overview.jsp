@@ -317,11 +317,9 @@
                 <bean:message key="none.message"/>
               </c:when>
               <c:otherwise>
-                <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
                 <c:forEach items="${system.entitlements}" var="entitlement">
                  [<c:out value="${entitlement.humanReadableLabel}" />]
                 </c:forEach>
-                </rhn:require>
                </c:otherwise>
             </c:choose>
             </td>
