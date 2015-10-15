@@ -83,6 +83,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
         if (StringUtil.nullOrValue(moduleName) == null) {
             throw new InvalidParameterException("Gatherer module name is missing.");
         }
+        if (parameters == null) {
+            throw new InvalidParameterException("Parameters are missing name is missing.");
+        }
         if (VirtualHostManagerFactory.getInstance().lookupByLabel(label) != null) {
             throw new InvalidParameterException("Another Virtual Host Manager with the same"
                     + " label already exists.");

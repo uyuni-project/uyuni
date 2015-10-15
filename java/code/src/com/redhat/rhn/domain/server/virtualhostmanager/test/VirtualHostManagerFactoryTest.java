@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import org.hibernate.PropertyValueException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,13 +52,14 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHM() throws Exception {
-        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
+        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD,
+                Collections.emptyMap());
         VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
         assertEquals(user.getOrg(), fromDb.getOrg());
         assertEquals(SUSE_CLOUD, fromDb.getGathererModule());
-        assertNull(fromDb.getConfigs());
+        assertTrue(fromDb.getConfigs().isEmpty());
     }
 
     /**
@@ -100,7 +102,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullLabel() throws Exception {
         try {
-            factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD, null);
+            factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD,
+                    Collections.emptyMap());
         }
         catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
@@ -114,7 +117,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullOrg() throws Exception {
         try {
-            factory.createVirtualHostManager("mylabel", null, SUSE_CLOUD, null);
+            factory.createVirtualHostManager("mylabel", null, SUSE_CLOUD,
+                    Collections.emptyMap());
         }
         catch (PropertyValueException e) {
             return; // we've caught exception about violating not-null constraint
@@ -137,8 +141,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         Map<String, String> config = new HashMap<>();
         config.put("testkey", "43");
         String myLabel = "myLabel";
-        VirtualHostManager vhm = factory
-                .createVirtualHostManager(myLabel, user.getOrg(), SUSE_CLOUD, config);
+        VirtualHostManager vhm = factory.createVirtualHostManager(myLabel, user.getOrg(),
+                SUSE_CLOUD, config);
         assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
         assertNotNull(factory.lookupByLabel(myLabel));
 
@@ -147,7 +151,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests throwing the IllegalArgumentException creating Virtual Host Manager  
+     * Tests throwing the IllegalArgumentException creating Virtual Host Manager
      * with an invalid gatherer module
      * @throws Exception if anything goes wrong
      */
@@ -162,8 +166,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         };
 
         try {
-            customFactory
-                    .createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD, null);
+            customFactory.createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD,
+                    Collections.emptyMap());
         }
         catch (InvalidGathererConfigException e) {
             return; // exception must be thrown
@@ -176,10 +180,10 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMs() throws Exception {
-        VirtualHostManager manager1 =
-                factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
-        VirtualHostManager manager2 =
-                factory.createVirtualHostManager("mylabel2", user.getOrg(), SUSE_CLOUD, null);
+        VirtualHostManager manager1 = factory.createVirtualHostManager("mylabel",
+                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
+        VirtualHostManager manager2 = factory.createVirtualHostManager("mylabel2",
+                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
 
         List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
 
@@ -197,12 +201,27 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         config.put("user", "foouser");
         config.put("pass", "barpass");
 
-        VirtualHostManager manager =
-                factory.createVirtualHostManager("label", user.getOrg(), SUSE_CLOUD, config);
+        VirtualHostManager manager = factory.createVirtualHostManager("label",
+                user.getOrg(), SUSE_CLOUD, config);
 
         Long id = manager.getCredentials().getId();
         assertNotNull(CredentialsFactory.lookupCredentialsById(id));
         factory.delete(manager);
         assertNull(CredentialsFactory.lookupCredentialsById(id));
+    }
+
+    /**
+     * Tests that createVirtualHostManager throws NullPointerException when passing null
+     * params.
+     * @throws Exception - if anything goes wrong
+     */
+    public void testFailOnNullParameters() throws InvalidGathererConfigException {
+        try {
+            // should throw a NullPointerException
+            factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
+        } catch (NullPointerException e) {
+            return;
+        }
+        fail();
     }
 }
