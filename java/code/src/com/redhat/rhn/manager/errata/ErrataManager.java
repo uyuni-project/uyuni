@@ -1820,7 +1820,8 @@ public class ErrataManager extends BaseManager {
      */
     public static boolean updateStackUpdateNeeded(User scheduler, Server server) {
         boolean needed = false;
-        List<ErrataOverview> erratas = SystemManager.relevantErrata(scheduler, server.getId());
+        List<ErrataOverview> erratas =
+                SystemManager.relevantErrata(scheduler, server.getId());
         for (ErrataOverview errata : erratas) {
             Errata erratum = ErrataManager.lookupErrata(errata.getIdAsLong(), scheduler);
             if (erratum.hasKeyword("restart_suggested")) {

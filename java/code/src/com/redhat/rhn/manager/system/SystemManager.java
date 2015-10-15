@@ -1006,12 +1006,11 @@ public class SystemManager extends BaseManager {
      * @param user The user
      * @param sid System Id
      * @param type of errata to include
-     * @param synopsis to filter by
+     * @param severityLabel to filter by
      * @return a list of ErrataOverviews
      */
     public static DataResult<ErrataOverview> relevantCurrencyErrata(User user,
-            Long sid, String type,
-            String severity_label) {
+            Long sid, String type, String severityLabel) {
         SelectMode m = ModeFactory.getMode("Errata_queries",
                 "security_relevant_to_system_by_severity");
 
@@ -1019,7 +1018,7 @@ public class SystemManager extends BaseManager {
         params.put("user_id", user.getId());
         params.put("sid", sid);
         params.put("type", type);
-        params.put("severity_label", severity_label);
+        params.put("severity_label", severityLabel);
 
         Map<String, Object> elabParams = new HashMap<String, Object>();
         elabParams.put("sid", sid);

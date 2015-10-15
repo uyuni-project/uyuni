@@ -142,6 +142,7 @@ public class HttpServerMock {
 
     /**
      * Details of a request-response pair.
+     * @param <T> result type
      */
     class ExchangeDetails<T> {
 

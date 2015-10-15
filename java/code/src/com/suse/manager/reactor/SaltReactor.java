@@ -80,7 +80,8 @@ public class SaltReactor implements EventListener {
         if (eventStream != null) {
             try {
                 eventStream.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 LOG.error("Error stopping the salt reactor", e);
             }
         }
@@ -114,7 +115,7 @@ public class SaltReactor implements EventListener {
         // Setup handlers for different event types
         Runnable runnable =
                 MinionStartEvent.parse(event).map(this::onMinionStartEvent).orElseGet(() ->
-                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> {}));
+                BeaconEvent.parse(event).map(this::onBeaconEvent).orElse(() -> { }));
         executorService.submit(runnable);
     }
 

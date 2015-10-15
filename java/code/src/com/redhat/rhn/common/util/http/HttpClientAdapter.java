@@ -73,10 +73,10 @@ public class HttpClientAdapter {
             }
 
             // Explicitly exclude the NTLM authentication scheme
-            ArrayList<String> authPrefs = new ArrayList<String>() {{
+            ArrayList<String> authPrefs = new ArrayList<String>() { {
                 add(AuthPolicy.DIGEST);
                 add(AuthPolicy.BASIC);
-            }};
+            } };
             httpClient.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);
         }
 

@@ -14,13 +14,8 @@
  */
 package com.redhat.rhn.manager.content;
 
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.frontend.dto.SetupWizardProductDto;
-
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.mgrsync.XMLChannel;
-import com.suse.mgrsync.XMLProduct;
-import com.suse.scc.model.SCCProduct;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;

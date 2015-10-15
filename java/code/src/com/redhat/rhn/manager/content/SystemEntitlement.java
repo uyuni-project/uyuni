@@ -35,9 +35,9 @@ public enum SystemEntitlement {
 
     private final List<String> entitlements;
 
-    SystemEntitlement(String... entitlements) {
+    SystemEntitlement(String... entitlementsIn) {
         this.entitlements = Collections.unmodifiableList(
-                new ArrayList<String>(Arrays.asList(entitlements)));
+                new ArrayList<String>(Arrays.asList(entitlementsIn)));
     }
 
     /**
@@ -62,7 +62,7 @@ public enum SystemEntitlement {
 
     /**
      * Return all product classes that are bound to a given entitlement.
-     * @param entitlement
+     * @param entitlement the entitlement
      * @return list of product classes
      */
     public static List<String> getProductClasses(String entitlement) {

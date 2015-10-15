@@ -117,7 +117,7 @@ public class SuseDataXmlWriter extends RepomdWriter {
      */
     private void addKeywords(long pkgId, Collection<String> keywords,
             SimpleContentHandler localHandler) throws SAXException {
-        for(String keyword : keywords) {
+        for (String keyword : keywords) {
             localHandler.startElement("keyword");
             localHandler.addCharacters(sanitize(pkgId, keyword));
             localHandler.endElement("keyword");

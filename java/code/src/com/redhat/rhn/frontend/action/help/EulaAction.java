@@ -46,12 +46,14 @@ public class EulaAction extends org.apache.struts.action.Action {
             try {
                 request.setAttribute(attr, new String(
                         Files.readAllBytes(Paths.get(EULA_PATH.toURI())),
-                        StandardCharsets.UTF_8)) ;
-            } catch (IOException ex) {
+                        StandardCharsets.UTF_8));
+            }
+            catch (IOException ex) {
                 Logger.getLogger(EulaAction.class.getName()).log(Level.SEVERE, null, ex);
                 throw new RuntimeException(ex);
             }
-        } else {
+        }
+        else {
             request.setAttribute(attr, String.format("EULA text file '%s' was not found.",
                                                      EULA_PATH.getAbsolutePath()));
         }

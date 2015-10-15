@@ -65,7 +65,8 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l10n", LocalizationService.getInstance());
-        sharedVariables.put("isDevMode", Config.get().getBoolean("java.development_environment"));
+        sharedVariables.put("isDevMode",
+                Config.get().getBoolean("java.development_environment"));
         JadeConfiguration config = jade.configuration();
         config.setSharedVariables(sharedVariables);
 

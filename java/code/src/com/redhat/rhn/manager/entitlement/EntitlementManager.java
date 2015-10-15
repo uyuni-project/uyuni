@@ -74,7 +74,7 @@ public class EntitlementManager extends BaseManager {
             return VIRTUALIZATION;
         }
         else if (BOOTSTRAP_ENTITLED.equals(name)) {
-        	return BOOTSTRAP;
+            return BOOTSTRAP;
         }
         else if (SALTSTACK_ENTITLED.equals(name)) {
             return SALTSTACK;

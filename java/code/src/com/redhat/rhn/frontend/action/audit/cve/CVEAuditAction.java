@@ -87,7 +87,8 @@ public class CVEAuditAction extends RhnAction {
 
             if (StringUtils.isNotBlank(cveIdentifierId)) {
                 try {
-                    String cveIdentifier = CVE_PREFIX + "-" + cveIdentifierYear + "-" + cveIdentifierId;
+                    String cveIdentifier = CVE_PREFIX + "-" + cveIdentifierYear +
+                            "-" + cveIdentifierId;
                     return runAudit(request, cveIdentifier);
                 }
                 catch (UnknownCVEIdentifierException e) {
