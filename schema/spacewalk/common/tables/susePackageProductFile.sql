@@ -15,7 +15,8 @@ susePackageProductFile
 (
     package_id numeric        not null
                              CONSTRAINT sppf_pid_fk
-                             REFERENCES rhnPackage (id),
+                             REFERENCES rhnPackage (id)
+                             ON DELETE CASCADE,
     prodfile_id numeric        not null
                              CONSTRAINT sppf_pfid_fk
                              REFERENCES suseProductFile (id),
