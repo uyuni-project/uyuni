@@ -339,6 +339,7 @@ public class VirtualInstance extends BaseDomainHelper {
 
         return new EqualsBuilder()
                 .append(this.getUuid(), that.getUuid())
+                .append(this.getHostSystem(), that.getHostSystem())
                 .isEquals();
     }
 
@@ -349,6 +350,7 @@ public class VirtualInstance extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getUuid())
+                .append(getHostSystem())
                 .toHashCode();
     }
 

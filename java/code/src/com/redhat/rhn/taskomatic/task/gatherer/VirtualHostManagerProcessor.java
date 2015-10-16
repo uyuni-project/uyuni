@@ -11,9 +11,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-
 import com.suse.manager.gatherer.JsonHost;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -45,7 +43,7 @@ public class VirtualHostManagerProcessor {
 
     /**
      * Process given map of Virtual Hosts for Virtual Host Manager.
-     * (Mimicks the logic of some handler methods from rhnVirtualization.py)
+     * (Mimics the logic of some handler methods from rhnVirtualization.py)
      *
      * Goes through the map of Virtual Hosts, for each of calls method for updating
      * mapping.
@@ -139,7 +137,7 @@ public class VirtualHostManagerProcessor {
                             .lookupVirtualInstanceByUuid(guid);
 
                     if (virtualInstance == null) {
-                        addGuestVirtualInstance(guid, name, server);
+                        addGuestVirtualInstance(guid, name, server, null);
                     } else {
                         updateGuestVirtualInstance(virtualInstance, name, server);
                     }
@@ -148,31 +146,28 @@ public class VirtualHostManagerProcessor {
 
     /**
      * Creates a new (guest) VirtualInstance for given VM GUID.
-     * Sets given server as a host for this VirtualInstance.
-     * Mimicks __db_insert_domain function
+     * Sets given host as a host for this VirtualInstance.
+     * Mimics __db_insert_domain function
      *
      * @param vmGuid - guid of the new VirtualInstance
      * @param name
-     * @param server - server to be set as host for the new VirtualInstance
+     * @param host - host to be set as host for the new VirtualInstance
      */
-    private void addGuestVirtualInstance(String vmGuid, String name, Server server) {
-        VirtualInstance newVm = new VirtualInstance();
-        newVm.setState(VirtualInstanceFactory.getInstance().getStoppedState());
-        newVm.setName(name);
-        newVm.setHostSystem(server);
-        newVm.setGuestSystem(null);
-        newVm.setUuid(vmGuid);
-        newVm.setConfirmed(1L);
+    private void addGuestVirtualInstance(String vmGuid, String name, Server host, Server guest) {
+        VirtualInstance virtualInstance = new VirtualInstance();
+        virtualInstance.setUuid(vmGuid);
+        virtualInstance.setConfirmed(1L);
+        virtualInstance.setGuestSystem(guest);
+        virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
+        virtualInstance.setName(name);
 
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(newVm);
-
-        server.addGuest(newVm);
-        ServerFactory.save(server);
+        host.addGuest(virtualInstance); // will also set the hostSystem for virtualInstance
     }
 
     /**
      * Update mapping of given guest VirtualInstance to given (host) Server.
-     * Mimicks __db_update_domain function
+     * This method removes the old VirtualInstance and creates a new one.
+     * Mimics __db_update_domain function
      *
      * @param virtualInstance
      * @param name
@@ -180,20 +175,11 @@ public class VirtualHostManagerProcessor {
      */
     private void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, Server server) {
-        Server oldSystem = virtualInstance.getHostSystem();
-        if (oldSystem == null || oldSystem.getId() != server.getId()) {
-            if (oldSystem != null) {
-                oldSystem.removeGuest(virtualInstance);
-            }
-            virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
-            virtualInstance.setName(name);
-            virtualInstance.setHostSystem(server);
-            virtualInstance.setConfirmed(1L);
-            // after hostSystem.removeGuest, virtualInstance is not in hibernate session
-            // let's add it
-            VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
-
-            server.addGuest(virtualInstance);
+        Server oldHost = virtualInstance.getHostSystem();
+        if (oldHost == null || oldHost.getId() != server.getId()) {
+            VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
+            addGuestVirtualInstance(virtualInstance.getUuid(), name,  server,
+                    virtualInstance.getGuestSystem());
         }
     }
 

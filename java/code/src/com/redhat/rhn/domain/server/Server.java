@@ -1550,8 +1550,6 @@ public class Server extends BaseDomainHelper implements Identifiable {
         for (Iterator<VirtualInstance> it = guests.iterator(); it.hasNext();) {
             VirtualInstance g = it.next();
             if (g.getId().equals(guest.getId())) {
-                guest.setHostSystem(null);
-
                 it.remove();
                 deleted = true;
                 break;
