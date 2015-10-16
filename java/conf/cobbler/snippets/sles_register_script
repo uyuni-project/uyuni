@@ -63,7 +63,8 @@ fi
 
 #if $varExists('allow_config_actions')
 if [ $allow_config_actions -eq 1 ]; then
-   mgr-actions-control --enable-deploy --enable-diff
+   mgr-actions-control --enable-all
+   mgr-actions-control --disable-run
 fi
 #end if
 
