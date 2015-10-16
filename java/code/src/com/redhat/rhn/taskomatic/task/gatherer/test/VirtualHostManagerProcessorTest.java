@@ -1,5 +1,6 @@
 package com.redhat.rhn.taskomatic.task.gatherer.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -286,5 +287,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstance guestFromDb =
                 VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid("vm-uuid");
         assertEquals(hostServer, guestFromDb.getHostSystem());
+        // 2 VirtualInstances should be persisted
+        // (one for the host system, one for the guest)
+        assertEquals(2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
+                .list().size());
     }
 }
