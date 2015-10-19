@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public static final String CONFIG_USER = "user";
     private static final String CONFIG_PASS = "pass";
+    private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
+            new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
 
     /**
      * Default constructor.
@@ -179,8 +182,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     /**
      * Helper method for creating VirtualHostManager configs from given key-value
      * parameters.
-     * Important note: this method filters out parameters corresponding to username and
-     * password as these are handled separately.
+     * Important note: this method skips the parameters that shouldn't be stored as
+     * configs (module, id, username and password).
      *
      * @param virtualHostManager for which the config shall be created
      * @param parameters input parameters
@@ -193,7 +196,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
         for (Map.Entry<String, String> configEntry : parameters.entrySet()) {
             String key = configEntry.getKey();
-            if (key.equals(CONFIG_USER) || key.equals(CONFIG_PASS)) {
+            if (CONFIGS_TO_SKIP.contains(key)) {
                 continue;
             }
             configs.add(createVirtualHostManagerConfig(virtualHostManager,
@@ -226,7 +229,6 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     /**
      * Creates and stores db entity for credentials if the input params contain
      * entry for username and password.
-     * Important note: This method removes credentials data from input params!
      * @param params - non-null map of gatherer parameters
      * @return - new Credentials instance
      *           if input params contain entry for username and password
@@ -239,10 +241,6 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             credentials.setUsername(params.get(CONFIG_USER));
             credentials.setPassword(params.get(CONFIG_PASS));
             CredentialsFactory.storeCredentials(credentials);
-
-            // filter credentials from the params, as they are stored separately
-            params.remove(CONFIG_USER);
-            params.remove(CONFIG_PASS);
         }
 
         return credentials;
