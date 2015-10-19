@@ -141,7 +141,7 @@ Group: Applications/Internet
 Requires(pre): %{name}-sql = %{version}-%{release}
 Requires: %{name}-sql = %{version}-%{release}
 # /etc/rhn/rhn.conf should be available before run this %post script
-%if 0%{?suse_version} == 1315
+%if 0%{?sle_version} >= 120000
 # no pre yet for SLE12. We only need -libs package for the client tools
 # and do not want to build the whole chain. A pre-requires is a buildrequire
 Requires: spacewalk-config
@@ -423,7 +423,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES perl
 # Is secret key in our config file?
 regex="^[[:space:]]*(server\.|)secret_key[[:space:]]*=.*$"
 
-%if 0%{?suse_version} == 1315
+%if 0%{?sle_version} >= 120000
 if [ ! -d %{rhnconf} ]; then
     # happens if we do not pre-require spacewalk-config
     exit 0
