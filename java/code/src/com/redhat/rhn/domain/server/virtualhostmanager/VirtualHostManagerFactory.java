@@ -95,6 +95,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param org - organization
      * @return a list of corresponding Virtual Host Managers
      */
+    @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
         return getSession()
                 .createCriteria(VirtualHostManager.class)
@@ -106,6 +107,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * Returns a list of all Virtual Host Managers
      * @return list of all Virtual Host Managers
      */
+    @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
         return getSession()
                 .createCriteria(VirtualHostManager.class)
