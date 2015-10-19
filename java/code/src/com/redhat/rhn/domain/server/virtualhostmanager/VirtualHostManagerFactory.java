@@ -169,8 +169,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         }
 
         GathererModule details = modules.get(moduleName);
-        if (details.getParameters() != null &&
-            !parameters.keySet().containsAll(details.getParameters().keySet())) {
+        if (!parameters.keySet().containsAll(details.getParameters().keySet())) {
             throw new InvalidGathererConfigException("Invalid gatherer module config.");
         }
     }
