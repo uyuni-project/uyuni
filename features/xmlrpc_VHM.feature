@@ -40,6 +40,23 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
       And configs "host" should be "10.162.186.115"
       And I logout from XML-RPC/virtualhostmanager
 
+  Scenario: Run virtual-host-gatherer
+    Given I am on the Admin page
+    When I follow "Task Schedules"
+    And I follow "gatherer-bunch"
+    And I click on "Single Run Schedule"
+    Then I should see a "bunch was scheduled" text
+    And I wait for "10" seconds
+
+  Scenario: Check new Virtual Hosts
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+    When I follow "10.162.186.111"
+    Then I should see a "OS: VMware ESXi" text
+    When I follow "Virtual Systems" in the left menu
+    Then I should see a "vCenter" text
+     And I should see a "NSX-l3gateway" text
+
   Scenario: Check delete
     Given I am logged in via XML-RPC/virtualhostmanager as user "admin" and password "admin"
     When I call virtualhostmanager.delete("vCenter")
