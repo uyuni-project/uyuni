@@ -13,6 +13,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.suse.manager.gatherer.JsonHost;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +42,35 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         minimalHost.os = "Windows";
         minimalHost.osVersion = "Vista";
         minimalHost.vms = new HashMap<>();
+    }
+
+    /**
+     * Two equal VirtualHostManagers, run mapping for each of them, check that there are no
+     * duplicate VirtualInstances. Similar situation can happen if the user adds one
+     * VirtualHostManager for vCenter and one for ESXi host, which is part of this vCenter.
+     * These VirtualHostManager are both processed, but no duplicate VirtualInstances should
+     * be created in the database.
+     */
+    public void testTwoEqualsVHMs() {
+        minimalHost.getVms().put("myVM", "id_of_my_guest");
+        Map<String, JsonHost> data = new HashMap<>();
+        data.put("esxi_host_1", minimalHost);
+
+        VirtualHostManager virtualHostManager2 = new VirtualHostManager();
+        virtualHostManager2.setLabel(virtualHostManager.getLabel());
+        virtualHostManager2.setOrg(virtualHostManager.getOrg());
+        assertEquals(virtualHostManager, virtualHostManager2);
+
+        VirtualHostManagerProcessor processor = new VirtualHostManagerProcessor(virtualHostManager, data);
+        processor.processMapping();
+        VirtualHostManagerProcessor processor2 = new VirtualHostManagerProcessor(virtualHostManager2, data);
+        processor2.processMapping();
+
+        List<VirtualInstance> allVirtInstances = HibernateFactory.getSession()
+                .createCriteria(VirtualInstance.class)
+                .list();
+        System.out.println(allVirtInstances);
+        assertEquals(2, allVirtInstances.size()); // one for host, one for guest, no dupes
     }
 
     /**

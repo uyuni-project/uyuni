@@ -68,8 +68,6 @@ public class VirtualHostManagerProcessor {
      * - update mapping between this new Server and its VirtualInstance
      * - for each VM (guest) reported to be running on this host, update the mapping
      *
-     * todo - corner case - user specifies esxi host and then they add vcenter with this
-     *        host. result -> esxi host will be processed twice
      * todo (long term) - add a mechanism (possibly heuristics) which decides that a host is
      * already managed by poller. if positive -> skip it here
      *
