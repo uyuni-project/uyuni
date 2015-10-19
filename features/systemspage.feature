@@ -413,7 +413,7 @@ Feature: Explore the main landing page
     #And I wait for "1" seconds
     And I click on "Next Page"
     And I follow "spacewalk/sles_no_signature_checks"
-    Then I should see a "<signature-handling>" text
+    Then I should see "<signature-handling>" in the textarea
 
    @cobbler_ui 
   Scenario: create a snippet

@@ -24,6 +24,15 @@ Then /^I should see a "([^"]*)" text$/ do |arg1|
   end
 end
 
+#
+# Test for text in a snippet textarea
+#
+Then /^I should see "([^"]*)" in the textarea$/ do |arg1|
+  within('textarea') do
+    fail if not page.has_content?(debrand_string(arg1))
+  end
+end
+
 Then /^I should see that this system has been deleted$/ do
   system_id = client_system_id_to_i
   step %[I should see a "System profile #{system_id} has been deleted." text]
