@@ -81,6 +81,22 @@ HELP
     exit 1
 }
 
+open_firewall_ports() {
+echo "Open needed firewall ports..."
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp"
+
+# ports needed for Saltstack
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506"
+
+systemctl restart SuSEfirewall2
+}
+
 parse_answer_file() {
     local FILE="$1"
     local ALIAS
@@ -633,6 +649,8 @@ for service in squid apache2 jabberd; do
         /sbin/insserv -d $service
     fi
 done
+
+open_firewall_ports
 
 default_or_input "Activate advertising proxy via SLP?" ACTIVATE_SLP "Y/n"
 ACTIVATE_SLP=$(yes_no $ACTIVATE_SLP)
