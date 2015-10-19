@@ -22,10 +22,9 @@
             <one-to-many class="com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig" />
         </set>
 
-        <set name="servers" lazy="true" table="suseServerVirtualHostManager" cascade="all">
+        <set name="servers" lazy="true" table="suseServerVirtualHostManager" cascade="save-update">
             <key column="vhmserver_id"/>
-            <many-to-many class="com.redhat.rhn.domain.server.Server"
-                column="server_id"/>
+            <many-to-many class="com.redhat.rhn.domain.server.Server" column="server_id"/>
         </set>
     </class>
 
