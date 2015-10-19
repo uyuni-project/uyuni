@@ -83,11 +83,12 @@ public class VirtualHostManagerProcessor {
             serversToDelete.remove(server);
         }
 
-        updateHostVirtualInstance(server, jsonHost.getType());
-        updateGuestsVirtualInstances(server, jsonHost.getVms());
+        VirtualInstanceType virtType = extractVirtualInstanceType(jsonHost.getType());
+        updateHostVirtualInstance(server, virtType);
+        updateGuestsVirtualInstances(server, virtType, jsonHost.getVms());
     }
 
-    private void updateHostVirtualInstance(Server server, String htype) {
+    private void updateHostVirtualInstance(Server server, VirtualInstanceType type) {
         VirtualInstance serverVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(server.getId());
 
@@ -98,35 +99,43 @@ public class VirtualHostManagerProcessor {
 
             serverVirtInstance.setState(
                     VirtualInstanceFactory.getInstance().getUnknownState());
-            setVirtualInstanceType(htype, serverVirtInstance);
+            serverVirtInstance.setType(type);
 
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
         } else if (serverVirtInstance.getConfirmed() != 1L) { // __db_update_system logic
             serverVirtInstance.setConfirmed(1L);
-            setVirtualInstanceType(htype, serverVirtInstance);
+            serverVirtInstance.setType(type);
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
         }
     }
 
-    private void setVirtualInstanceType(String htype, VirtualInstance serverVirtInstance) {
+    /**
+     * Extracts virtual instance type from string. Falls back to para virtualization if the
+     * requested string doesn't match to any existing virtualization type.
+
+     * @param candidate - source string
+     * @return - VirtualInstanceType corresponding to source string
+     */
+    private VirtualInstanceType extractVirtualInstanceType(String candidate) {
         VirtualInstanceType type =
-                VirtualInstanceFactory.getInstance().getVirtualInstanceType(htype);
+                VirtualInstanceFactory.getInstance().getVirtualInstanceType(candidate);
         if (type == null) { // fallback
             type = VirtualInstanceFactory.getInstance().getParaVirtType();
             log.warn(String.format("Can't find virtual instance type for string '%s'. " +
-                    "Defaulting to '%s'", htype, type));
+                    "Defaulting to '%s'", candidate, type));
         }
-        serverVirtInstance.setType(type);
+        return type;
     }
 
     /**
      * Goes through all the vms(guests), creates/updates VirtualInstance entries
      * (Server - guests mapping)
-     * todo fill virtualization type (and possibly state)
      * @param server to be processed
+     * @param type - virtualization type to be set to the guests
      * @param vms - guests to be mapped to this server
      */
-    private void updateGuestsVirtualInstances(Server server, Map<String, String> vms) {
+    private void updateGuestsVirtualInstances(Server server, VirtualInstanceType type,
+            Map<String, String> vms) {
         vms.entrySet().stream().forEach(
                 vmEntry -> {
                     String name = vmEntry.getKey();
@@ -135,7 +144,7 @@ public class VirtualHostManagerProcessor {
                             .lookupVirtualInstanceByUuid(guid);
 
                     if (virtualInstance == null) {
-                        addGuestVirtualInstance(guid, name, server, null);
+                        addGuestVirtualInstance(guid, name, type, server, null);
                     } else {
                         updateGuestVirtualInstance(virtualInstance, name, server);
                     }
@@ -148,16 +157,20 @@ public class VirtualHostManagerProcessor {
      * Mimics __db_insert_domain function
      *
      * @param vmGuid - guid of the new VirtualInstance
-     * @param name
-     * @param host - host to be set as host for the new VirtualInstance
+     * @param name - name of the guest
+     * @param type - virtualization type of the guest
+     * @param host - host to be set as host system for the new VirtualInstance
+     * @param guest - guest to be set as the guest system for the new VirtualInstance
      */
-    private void addGuestVirtualInstance(String vmGuid, String name, Server host, Server guest) {
+    private void addGuestVirtualInstance(String vmGuid, String name,
+            VirtualInstanceType type, Server host, Server guest) {
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setUuid(vmGuid);
         virtualInstance.setConfirmed(1L);
         virtualInstance.setGuestSystem(guest);
         virtualInstance.setState(VirtualInstanceFactory.getInstance().getStoppedState());
         virtualInstance.setName(name);
+        virtualInstance.setType(type);
 
         host.addGuest(virtualInstance); // will also set the hostSystem for virtualInstance
     }
@@ -176,8 +189,8 @@ public class VirtualHostManagerProcessor {
         Server oldHost = virtualInstance.getHostSystem();
         if (oldHost == null || oldHost.getId() != server.getId()) {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
-            addGuestVirtualInstance(virtualInstance.getUuid(), name,  server,
-                    virtualInstance.getGuestSystem());
+            addGuestVirtualInstance(virtualInstance.getUuid(), name,
+                    virtualInstance.getType(), server, virtualInstance.getGuestSystem());
         }
     }
 
