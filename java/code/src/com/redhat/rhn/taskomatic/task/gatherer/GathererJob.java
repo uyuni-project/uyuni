@@ -36,14 +36,18 @@ public class GathererJob extends RhnJavaJob {
             log.debug(String.format("Got %d Virtual Host Managers from gatherer",
                     results.size()));
 
-            managers.stream()
-                    .filter(manager -> results.containsKey(manager.getLabel()))
-                    .forEach(manager -> {
-                        String label = manager.getLabel();
-                        log.debug("Processing " + label);
-                        new VirtualHostManagerProcessor(manager, results.get(label))
-                                .processMapping();
-                    });
+            for (VirtualHostManager manager : managers) {
+                String label = manager.getLabel();
+
+                if (!results.containsKey(label)) {
+                    log.warn(String.format("Virtual Host Manager with label '%s' is not " +
+                                    "contained in the results from gatherer - skipping it.",
+                            label));
+                    continue;
+                }
+                log.debug("Processing " + label);
+                new VirtualHostManagerProcessor(manager, results.get(label)).processMapping();
+            }
         } catch (Throwable t) {
             log.error(t.getMessage(), t);
             HibernateFactory.rollbackTransaction();
