@@ -15,11 +15,15 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import org.hibernate.PropertyValueException;
 
 import java.util.Collections;
@@ -149,6 +153,24 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
         factory.delete(vhm);
         assertNull(factory.lookupByLabel(myLabel));
+    }
+
+    /**
+     * Tests that the deleting an existing Virtual Host Manager doesn't cascade to server.
+     * @throws Exception if anything goes wrong
+     */
+    public void testDeleteVirtualHostManagerDontCascade() throws Exception {
+        Server server = ServerTestUtils.createForeignSystem(user, "server");
+        Long serverId = server.getId();
+
+        VirtualHostManager vhm = factory.createVirtualHostManager("myLabel", user.getOrg(),
+                SUSE_CLOUD, Collections.emptyMap());
+
+        vhm.addServer(server);
+        HibernateFactory.getSession().flush();
+
+        factory.delete(vhm);
+        assertNotNull(ServerFactory.lookupById(serverId));
     }
 
     /**
