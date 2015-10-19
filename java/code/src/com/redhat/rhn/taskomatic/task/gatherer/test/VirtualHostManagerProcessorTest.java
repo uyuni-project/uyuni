@@ -5,6 +5,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
@@ -248,9 +249,12 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // create a host
         Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host");
         // create a GUEST virt. instance
-        VirtualInstance guestVirtInstance = new VirtualInstance();
+        VirtualInstance guestVirtInstance = new GuestBuilder(user)
+            .createGuest()
+            .inStoppedState()
+            .asFullyVirtGuest()
+            .build();
         guestVirtInstance.setUuid("id_of_my_guest");
-        guestVirtInstance.setConfirmed(1L);
         existingHost.addGuest(guestVirtInstance);
         ServerFactory.save(existingHost);
         VirtualInstanceFactory.getInstance().saveVirtualInstance(guestVirtInstance);
@@ -301,6 +305,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // guest already registered by usual registration process
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
+                .inStoppedState()
+                .asFullyVirtGuest()
                 .build();
         registeredGuest.setUuid("vm-uuid");
         VirtualInstanceFactory.getInstance().saveVirtualInstance(registeredGuest);
@@ -321,5 +327,32 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // (one for the host system, one for the guest)
         assertEquals(2, HibernateFactory.getSession().createCriteria(VirtualInstance.class)
                 .list().size());
+    }
+
+    /**
+     * Tests that the virtual instance type is correctly set for the host and that its
+     * guests inherit this virtualization type.
+     */
+    public void testGuestVirtualizationType() {
+        VirtualInstanceType fullyVirtType =
+                VirtualInstanceFactory.getInstance().getFullyVirtType();
+        minimalHost.getVms().put("myVM", "id_of_my_guest");
+        minimalHost.type = fullyVirtType.getLabel();
+        Map<String, JsonHost> data = new HashMap<>();
+        data.put("esxi_host_1", minimalHost);
+
+        VirtualHostManagerProcessor processor
+                = new VirtualHostManagerProcessor(virtualHostManager, data);
+        processor.processMapping();
+
+
+        Server newHost = ServerFactory.lookupForeignSystemByName("esxi_host_1");
+        VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
+                .lookupHostVirtInstanceByHostId(newHost.getId());
+        assertEquals(fullyVirtType, hostVirtInstance.getType());
+
+        VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("id_of_my_guest");
+        assertEquals(fullyVirtType, guestFromDb.getType());
     }
 }
