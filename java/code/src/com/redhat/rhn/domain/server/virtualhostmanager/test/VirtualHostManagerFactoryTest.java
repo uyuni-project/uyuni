@@ -97,7 +97,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests creating and retrieving a VirtualHostManager with null label.
+     * Tests that creating a VirtualHostManager with null label will throw an
+     * IllegalArgumentException.
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMNullLabel() throws Exception {
@@ -105,10 +106,10 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
             factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD,
                     Collections.emptyMap());
         }
-        catch (PropertyValueException e) {
-            return; // we've caught exception about violating not-null constraint
+        catch (IllegalArgumentException e) {
+            return;
         }
-        fail("PQLException should have been thrown.");
+        fail("IllegalArgumentException should have been thrown.");
     }
 
     /**

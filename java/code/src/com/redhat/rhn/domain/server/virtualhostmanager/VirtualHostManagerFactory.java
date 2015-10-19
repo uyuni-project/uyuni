@@ -19,10 +19,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
-
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
@@ -121,7 +120,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Creates a new VirtualHostManager entity from given arguments
-     * @param label - the label
+     * @param label - non-null label
      * @param org - the organization
      * @param moduleName - the module name
      * @param parameters - the non-null map with additional gatherer parameters
@@ -134,6 +133,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             Org org,
             String moduleName,
             Map<String, String> parameters) throws InvalidGathererConfigException {
+        if (StringUtils.isEmpty(label)) {
+            throw new IllegalArgumentException("Label cannot not be empty.");
+        }
         getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
         validateGathererConfiguration(moduleName, parameters);
 
