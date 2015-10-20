@@ -1,6 +1,5 @@
 package com.redhat.rhn.taskomatic.task.gatherer;
 
-import com.redhat.rhn.domain.common.LoggingFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.Server;
@@ -204,7 +203,6 @@ public class VirtualHostManagerProcessor {
     }
 
     private Server getOrCreateServer(String hostId, JSONHost jsonHost) {
-        LoggingFactory.clearLogId();
         Server server = ServerFactory.lookupForeignSystemByName(hostId);
         ServerInfo serverInfo = null;
         CPU cpu = null;
