@@ -36,6 +36,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -126,6 +127,11 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             // Assign the SaltStack base entitlement by default
             server.setBaseEntitlement(
                     EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
+
+            Map<String, String> data = new HashMap<>();
+            data.put("minionId", minionId);
+            data.put("machineId", machineId);
+            SALT_SERVICE.sendEvent("susemanager/minion/registered", data);
             LOG.info("Finished minion registration: " + minionId);
         }
         catch (Throwable t) {
