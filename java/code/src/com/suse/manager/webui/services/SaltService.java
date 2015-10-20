@@ -118,4 +118,12 @@ public interface SaltService {
      */
     Map<String, Boolean> match(String target);
 
+    /**
+     * Injects an event into the salt event bus
+     * @param tag salt event tag
+     * @param data salt event data
+     * @return
+     */
+    boolean sendEvent(String tag, Object data);
+
 }

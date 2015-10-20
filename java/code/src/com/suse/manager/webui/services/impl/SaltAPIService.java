@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.services.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
@@ -49,6 +51,8 @@ public enum SaltAPIService implements SaltService {
     private final String SALT_USER = "admin";
     private final String SALT_PASSWORD = "";
     private final AuthModule AUTH_MODULE = AuthModule.AUTO;
+    // JSON serializer
+    private static final Gson GSON = new GsonBuilder().create();
 
     // Shared salt client instance
     private final SaltStackClient SALT_CLIENT = new SaltStackClient(SALT_MASTER_URI);
@@ -238,6 +242,21 @@ public enum SaltAPIService implements SaltService {
                     Match.glob(target), new Glob(target),
                     SALT_USER, SALT_PASSWORD, AuthModule.AUTO);
             return result;
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean sendEvent(String tag, Object data) {
+        try {
+            SaltStackClient client = new SaltStackClient(SALT_MASTER_URI);
+            client.login(SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+            client.getConfig().put(ClientConfig.SOCKET_TIMEOUT, 30000);
+            return client.sendEvent(tag, GSON.toJson(data));
         }
         catch (SaltStackException e) {
             throw new RuntimeException(e);
