@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.server.virtualhostmanager;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * VirtualHostManagerConfig - represtentation of a single configuration entry of
- * VirtualHostManager.
+ * Representation of a single configuration entry of VirtualHostManager.
  */
 public class VirtualHostManagerConfig {
 
@@ -119,7 +119,7 @@ public class VirtualHostManagerConfig {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
                 .append(virtualHostManager)
                 .append(parameter)
                 .toHashCode();
@@ -130,11 +130,11 @@ public class VirtualHostManagerConfig {
      */
     @Override
     public String toString() {
-        return "VirtualHostManagerConfig{" +
-                "id=" + id +
-                ", virtualHostManager=" + virtualHostManager +
-                ", parameter='" + parameter + '\'' +
-                ", value='" + value + '\'' +
-                '}';
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("virtualHostManager", virtualHostManager)
+            .append("parameter", parameter)
+            .append("value", value)
+            .toString();
     }
 }
