@@ -95,7 +95,7 @@ public class VirtualHostManagerProcessor {
         VirtualInstance serverVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(server.getId());
 
-        if (serverVirtInstance == null) { // __db_insert_system logic
+        if (serverVirtInstance == null) {
             serverVirtInstance = new VirtualInstance();
             serverVirtInstance.setHostSystem(server);
             serverVirtInstance.setConfirmed(1L);
@@ -106,7 +106,7 @@ public class VirtualHostManagerProcessor {
 
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
         }
-        else if (serverVirtInstance.getConfirmed() != 1L) { // __db_update_system logic
+        else if (serverVirtInstance.getConfirmed() != 1L) {
             serverVirtInstance.setConfirmed(1L);
             serverVirtInstance.setType(type);
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
@@ -159,7 +159,6 @@ public class VirtualHostManagerProcessor {
     /**
      * Creates a new (guest) VirtualInstance for given VM GUID.
      * Sets given host as a host for this VirtualInstance.
-     * Mimics __db_insert_domain function
      *
      * @param vmGuid - guid of the new VirtualInstance
      * @param name - name of the guest
@@ -183,7 +182,6 @@ public class VirtualHostManagerProcessor {
     /**
      * Update mapping of given guest VirtualInstance to given (host) Server.
      * This method removes the old VirtualInstance and creates a new one.
-     * Mimics __db_update_domain function
      *
      * @param virtualInstance
      * @param name
