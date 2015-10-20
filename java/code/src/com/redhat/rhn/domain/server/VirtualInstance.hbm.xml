@@ -52,7 +52,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[
           from VirtualInstance hostVI
           where
-             hostVI.uuid = null
+             hostVI.uuid is null
              and hostVI.hostSystem.id = :hostId
         ]]>
     </query>
