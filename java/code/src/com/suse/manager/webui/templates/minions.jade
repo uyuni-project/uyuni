@@ -8,9 +8,18 @@
   .col-md-6
     #pending-list.panel.panel-default
       .panel-heading
-        h2
-          i.fa.fa-plus
-          #{l10n.getMessage("minions.pending")}
+        if size(unaccepted_minions) > 1
+          h2.pull-left(style="padding-top: 4px")
+            i.fa.fa-plus
+            #{size(unaccepted_minions)} #{l10n.getMessage("minions.pending")}
+          .pull-right.btn-group
+            a.btn.btn-default(href="/rhn/manager/minions/accept/*"): i.fa.fa-check.no-margin
+            a.btn.btn-default(href="/rhn/manager/minions/reject/*"): i.fa.fa-times.no-margin
+          .clearfix
+        else
+          h2
+            i.fa.fa-plus
+            #{size(unaccepted_minions)} #{l10n.getMessage("minions.pending")}
       table(class="table table-striped vertical-middle")
         for minion in unaccepted_minions
           tr
@@ -29,7 +38,7 @@
       .panel-heading
         h2
           i.fa.fa-times
-          #{l10n.getMessage("minions.rejected")}
+          #{size(rejected_minions)} #{l10n.getMessage("minions.rejected")}
       table(class="table table-striped vertical-middle")
         for minion in rejected_minions
           tr
