@@ -68,9 +68,9 @@ public class GathererRunner {
      *
      * @param vhms the virtual host managers
      * @return a map from virtual host manager names to
-     * (virtual name, {@link JsonHost}) pairs
+     * (virtual name, {@link JSONHost}) pairs
      */
-    public Map<String, Map<String, JsonHost>> run(List<VirtualHostManager> vhms) {
+    public Map<String, Map<String, JSONHost>> run(List<VirtualHostManager> vhms) {
         List<String> args = new LinkedList<>();
         args.add(GATHERER_CMD);
         args.add("--infile");
@@ -78,7 +78,7 @@ public class GathererRunner {
         args.add("--logfile");
         args.add(LOG_DESTINATION);
 
-        Map<String, Map<String, JsonHost>> hosts = null;
+        Map<String, Map<String, JSONHost>> hosts = null;
         Runtime r = Runtime.getRuntime();
         try {
             Process p = r.exec(args.toArray(new String[0]));

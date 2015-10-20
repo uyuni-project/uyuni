@@ -11,7 +11,7 @@ import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.suse.manager.gatherer.JsonHost;
+import com.suse.manager.gatherer.JSONHost;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 
@@ -29,12 +29,12 @@ import java.util.Set;
 public class VirtualHostManagerProcessor {
 
     private final VirtualHostManager virtualHostManager;
-    private final Map<String, JsonHost> virtualHosts;
+    private final Map<String, JSONHost> virtualHosts;
     private Set<Server> serversToDelete;
     private Logger log;
 
     public VirtualHostManagerProcessor(VirtualHostManager managerIn,
-            Map<String, JsonHost> virtualHostsIn) {
+            Map<String, JSONHost> virtualHostsIn) {
         this.log = Logger.getLogger(VirtualHostManagerProcessor.class);
         this.virtualHostManager = managerIn;
         this.virtualHosts = virtualHostsIn;
@@ -74,7 +74,7 @@ public class VirtualHostManagerProcessor {
      * @param hostLabel - name of the Server (corresponds to label of Virtual Host Manager)
      * @param jsonHost - object containing the information about the host and its VMs
      */
-    private void processVirtualHost(String hostLabel, JsonHost jsonHost) {
+    private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
         Server server = getOrCreateServer(hostLabel, jsonHost);
         if (! virtualHostManager.getServers().contains(server)) {
             virtualHostManager.addServer(server);
@@ -194,7 +194,7 @@ public class VirtualHostManagerProcessor {
         }
     }
 
-    private Server getOrCreateServer(String hostId, JsonHost jsonHost) {
+    private Server getOrCreateServer(String hostId, JSONHost jsonHost) {
         LoggingFactory.clearLogId();
         Server server = ServerFactory.lookupForeignSystemByName(hostId);
         ServerInfo serverInfo = null;

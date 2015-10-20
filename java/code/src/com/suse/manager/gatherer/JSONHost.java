@@ -18,38 +18,52 @@ package com.suse.manager.gatherer;
 import java.util.Map;
 
 /**
- * Json representation of a Virtual Host system
+ * Json representation of a Virtual Host system.
  */
-public class JsonHost {
+public class JSONHost {
 
+    /** The name. */
     public String name;
 
+    /** The total CPU socket count. */
     public Integer totalCpuSockets;
 
+    /** The total CPU core count. */
     public Integer totalCpuCores;
 
+    /** The total CPU thread count. */
     public Integer totalCpuThreads;
 
+    /** The CPU architecture. */
     public String cpuArch;
 
+    /** The CPU description. */
     public String cpuDescription;
 
+    /** The CPU vendor. */
     public String cpuVendor;
 
+    /** The CPU frequency. */
     public Double cpuMhz;
 
+    /** The OS. */
     public String os;
 
+    /** The OS version. */
     public String osVersion;
 
+    /** The type. */
     public String type;
 
+    /** The amount of RAM. */
     public Integer ramMb;
 
+    /** The map of virtual guests running on this host. */
     public Map<String, String> vms;
 
     /**
-     * Gets the name
+     * Gets the name.
+     *
      * @return the name
      */
     public String getName() {
@@ -57,7 +71,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the total number of CPU sockets of the system
+     * Gets the total number of CPU sockets of the system.
+     *
      * @return the number of sockets
      */
     public Integer getTotalCpuSockets() {
@@ -65,7 +80,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the total number of CPU cores of the system
+     * Gets the total number of CPU cores of the system.
+     *
      * @return the cpu cores
      */
     public Integer getTotalCpuCores() {
@@ -73,7 +89,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the total number of CPU threads of the system
+     * Gets the total number of CPU threads of the system.
+     *
      * @return the number of threads
      */
     public Integer getTotalCpuThreads() {
@@ -81,7 +98,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU architecture
+     * Gets the CPU architecture.
+     *
      * @return the architecture
      */
     public String getCpuArch() {
@@ -89,7 +107,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU descriptions
+     * Gets the CPU descriptions.
+     *
      * @return the description
      */
     public String getCpuDescription() {
@@ -97,7 +116,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU vendor
+     * Gets the CPU vendor.
+     *
      * @return the vendor
      */
     public String getCpuVendor() {
@@ -105,7 +125,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the CPU speed in MHZ
+     * Gets the CPU speed in MHZ.
+     *
      * @return cpu speed in MHZ
      */
     public Double getCpuMhz() {
@@ -113,7 +134,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the OS
+     * Gets the OS.
+     *
      * @return the OS
      */
     public String getOs() {
@@ -121,7 +143,8 @@ public class JsonHost {
     }
 
     /**
-     * Gets the OS version
+     * Gets the OS version.
+     *
      * @return the OS version
      */
     public String getOsVersion() {
@@ -129,15 +152,17 @@ public class JsonHost {
     }
 
     /**
-     * Gets the hypervisor type
-     * @return hyperviosor type
+     * Gets the hypervisor type.
+     *
+     * @return hypervisor type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * Gets the memory in MB
+     * Gets the memory in MB.
+     *
      * @return the ram in MB
      */
     public Integer getRamMb() {

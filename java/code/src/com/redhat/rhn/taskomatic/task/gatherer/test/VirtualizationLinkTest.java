@@ -9,7 +9,7 @@ import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.gatherer.GathererJsonIO;
-import com.suse.manager.gatherer.JsonHost;
+import com.suse.manager.gatherer.JSONHost;
 
 import java.io.FileReader;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
      */
     public void testLinking() throws Exception {
         FileReader fr = new FileReader(TestUtils.findTestData("gatherer.out.json").getPath());
-        Map<String, Map<String, JsonHost>> hosts = new GathererJsonIO().readHosts(fr);
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
 
         VirtualHostManager manager = new VirtualHostManager();
         String vhmLabel = "1";
