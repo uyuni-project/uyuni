@@ -74,9 +74,6 @@ public class VirtualHostManagerProcessor {
      * - update mapping between this new Server and its VirtualInstance
      * - for each VM (guest) reported to be running on this host, update the mapping
      *
-     * todo (long term) - add a mechanism (possibly heuristics) which decides that a host is
-     * already managed by poller. if positive -> skip it here
-     *
      * @param hostLabel name of the Server (corresponds to label of Virtual Host Manager)
      * @param jsonHost object containing the information about the host and its VMs
      */
