@@ -78,7 +78,7 @@ public class VirtualHostManagerProcessor {
      * @param jsonHost object containing the information about the host and its VMs
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
-        Server server = getOrCreateServer(hostLabel, jsonHost);
+        Server server = updateAndGetServer(hostLabel, jsonHost);
         if (!virtualHostManager.getServers().contains(server)) {
             virtualHostManager.addServer(server);
         }
@@ -199,80 +199,108 @@ public class VirtualHostManagerProcessor {
         }
     }
 
-    private Server getOrCreateServer(String hostId, JSONHost jsonHost) {
+    /**
+     * Updates server with given hostId according to data in jsonHost.
+     * If such server doesn't exist, create it beforehand.
+     *
+     * @param hostId - id of server to update
+     * @param jsonHost - data for updating
+     * @return the updated server
+     */
+    private Server updateAndGetServer(String hostId, JSONHost jsonHost) {
         Server server = ServerFactory.lookupForeignSystemByName(hostId);
-        ServerInfo serverInfo = null;
-        CPU cpu = null;
         if (server == null) {
-            server = ServerFactory.createServer();
-            // Create the server
-            server.setName(hostId);
-            // All new servers belong to org of the virtualHostManager
-            server.setOrg(virtualHostManager.getOrg());
-            server.setCreated(new Date());
-            server.setDigitalServerId("foreign-" + RandomStringUtils.randomNumeric(32));
-            server.setSecret(RandomStringUtils.randomAlphanumeric(64));
-
-            serverInfo = new ServerInfo();
-            serverInfo.setServer(server);
-            server.setServerInfo(serverInfo);
-            serverInfo.setCheckinCounter(0L);
-
-            String serverDescription = "Initial Registration Parameters:\n";
-            serverDescription += "OS: " + jsonHost.getOs() + "\n";
-            serverDescription += "Release: " + jsonHost.getOsVersion() + "\n";
-            serverDescription += "CPU Arch: " + jsonHost.getCpuArch() + "\n";
-            server.setDescription(serverDescription);
-            server.setAutoUpdate("N");
-            server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-
-            // these are used in the Server.equals() method any make hibernate think
-            // the server objects are different.
-            // this result into inserting duplicate entries into
-            // suseServerVirtualHostManager table
-            server.setLastBoot(System.currentTimeMillis() / 1000);
-            server.setOs(jsonHost.getOs());
-            server.setRelease(jsonHost.getOsVersion());
-        }
-        else {
-            serverInfo = server.getServerInfo();
-            cpu = server.getCpu();
+            server = createNewServer(hostId, jsonHost);
+        } else {
+            updateServerMiscFields(server, jsonHost);
         }
 
-        // mapping from JsonHost to the server entity
+        updateServerCpu(server, jsonHost);
+        updateServerInfo(server);
+        updateServerNetwork(server, hostId);
 
+        if (server.getBaseEntitlement() == null) {
+            server.setBaseEntitlement(EntitlementManager.FOREIGN);
+        }
+        return server;
+    }
+
+    private Server createNewServer(String hostId, JSONHost jsonHost) {
+        Server server = ServerFactory.createServer();
+        // Create the server
+        server.setName(hostId);
+        // All new servers belong to org of the virtualHostManager
+        server.setOrg(virtualHostManager.getOrg());
+        server.setCreated(new Date());
+        server.setDigitalServerId("foreign-" + RandomStringUtils.randomNumeric(32));
+        server.setSecret(RandomStringUtils.randomAlphanumeric(64));
+
+        String serverDescription = "Initial Registration Parameters:\n";
+        serverDescription += "OS: " + jsonHost.getOs() + "\n";
+        serverDescription += "Release: " + jsonHost.getOsVersion() + "\n";
+        serverDescription += "CPU Arch: " + jsonHost.getCpuArch() + "\n";
+        server.setDescription(serverDescription);
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+
+        // these are used in the Server.equals() method any make hibernate think
+        // the server objects are different.
+        // this result into inserting duplicate entries into
+        // suseServerVirtualHostManager table
+        server.setLastBoot(System.currentTimeMillis() / 1000);
+        server.setOs(jsonHost.getOs());
+        server.setRelease(jsonHost.getOsVersion());
+
+        updateServerMiscFields(server, jsonHost);
+
+        ServerFactory.save(server);
+        return server;
+    }
+
+    private void updateServerMiscFields(Server server, JSONHost jsonHost) {
+        // fields that need to be updated on both create (before ServerFactory.save)
+        // and update server
         server.setModified(new Date());
         server.setRam(jsonHost.getRamMb());
         server.setServerArch(ServerFactory.lookupServerArchByName(jsonHost.getCpuArch()));
+    }
 
-        serverInfo.setCheckin(new Date());
-        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
-
+    private void updateServerCpu(Server server, JSONHost jsonHost) {
+        CPU cpu = server.getCpu();
         if (cpu == null) {
             cpu = new CPU();
         }
+
         cpu.setArch(ServerFactory.lookupCPUArchByName(jsonHost.getCpuArch()));
         cpu.setMHz(new Double(jsonHost.getCpuMhz()).toString());
         cpu.setNrCPU(jsonHost.getTotalCpuCores().longValue());
         cpu.setNrsocket(jsonHost.getTotalCpuSockets().longValue());
         cpu.setVendor(jsonHost.getCpuVendor());
         cpu.setModel(jsonHost.getCpuDescription());
-        // todo hibernate riddle: why this crashes if it's in the block with the "new CPU()"
+
         cpu.setServer(server);
         server.setCpu(cpu);
+    }
 
-        ServerFactory.save(server);
+    private void updateServerInfo(Server server) {
+        ServerInfo serverInfo = server.getServerInfo();
+        if (serverInfo == null) {
+            serverInfo = new ServerInfo();
+            serverInfo.setServer(server);
+            server.setServerInfo(serverInfo);
+            serverInfo.setCheckinCounter(0L);
+        }
 
+        serverInfo.setCheckin(new Date());
+        serverInfo.setCheckinCounter(serverInfo.getCheckinCounter() + 1);
+    }
+
+    private void updateServerNetwork(Server server, String hostId) {
         Network n = new Network();
         n.setHostname(hostId);
         n.setServer(server);
         Set<Network> networks = new HashSet<>();
         networks.add(n);
         server.setNetworks(networks);
-
-        if (server.getBaseEntitlement() == null) {
-            server.setBaseEntitlement(EntitlementManager.FOREIGN);
-        }
-        return server;
     }
 }
