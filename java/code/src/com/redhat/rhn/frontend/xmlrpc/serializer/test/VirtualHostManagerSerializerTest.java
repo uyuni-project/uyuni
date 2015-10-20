@@ -37,7 +37,6 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
 
     /**
      * {@inheritDoc}
-     * @throws Exception
      */
     @Override
     public void setUp() throws Exception {
