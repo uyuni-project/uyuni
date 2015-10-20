@@ -28,7 +28,6 @@ public class VirtualHostManagerSerializer extends RhnXmlRpcCustomSerializer {
 
     /**
      * {@inheritDoc}
-     * @return
      */
     @Override
     public Class getSupportedClass() {
@@ -58,8 +57,8 @@ public class VirtualHostManagerSerializer extends RhnXmlRpcCustomSerializer {
         Map<String, String> result = new HashMap<>();
 
         // fill user name if manager has credentials
-        if (manager.getCredentials() != null
-                && !StringUtils.isEmpty(manager.getCredentials().getUsername())) {
+        if (manager.getCredentials() != null &&
+                !StringUtils.isEmpty(manager.getCredentials().getUsername())) {
             result.put(VirtualHostManagerFactory.CONFIG_USER,
                     manager.getCredentials().getUsername());
         }
@@ -67,7 +66,7 @@ public class VirtualHostManagerSerializer extends RhnXmlRpcCustomSerializer {
         // fill configs map
         if (manager.getConfigs() != null) {
             manager.getConfigs().stream().forEach(
-                    config -> result.put(config.getParameter(), config.getValue())
+                config -> result.put(config.getParameter(), config.getValue())
             );
         }
 
