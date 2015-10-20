@@ -13,16 +13,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Taskomatic job for running gatherer on all Virtual Host Managers and processing its
- * results.
+ * Taskomatic job for running gatherer on all Virtual Host Managers and
+ * processing its results.
  */
 public class GathererJob extends RhnJavaJob {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(JobExecutionContext jobExecutionContext)
-            throws JobExecutionException {
-        List<VirtualHostManager> managers
-                = VirtualHostManagerFactory.getInstance().listVirtualHostManagers();
+        throws JobExecutionException {
+        List<VirtualHostManager> managers =
+                VirtualHostManagerFactory.getInstance().listVirtualHostManagers();
         if (managers == null || managers.isEmpty()) {
             log.debug("No Virtual Host Managers to run the gatherer job");
             return;
@@ -40,18 +43,21 @@ public class GathererJob extends RhnJavaJob {
                 String label = manager.getLabel();
 
                 if (!results.containsKey(label)) {
-                    log.warn(String.format("Virtual Host Manager with label '%s' is not " +
-                                    "contained in the results from gatherer - skipping it.",
+                    log.warn(String.format("Virtual Host Manager with label '%s' is not "
+                            + "contained in the results from gatherer - skipping it.",
                             label));
                     continue;
                 }
                 log.debug("Processing " + label);
-                new VirtualHostManagerProcessor(manager, results.get(label)).processMapping();
+                new VirtualHostManagerProcessor(manager, results.get(label))
+                        .processMapping();
             }
-        } catch (Throwable t) {
+        }
+        catch (Throwable t) {
             log.error(t.getMessage(), t);
             HibernateFactory.rollbackTransaction();
-        } finally {
+        }
+        finally {
             HibernateFactory.closeSession();
         }
     }
