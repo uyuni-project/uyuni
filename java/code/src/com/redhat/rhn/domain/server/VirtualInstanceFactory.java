@@ -338,8 +338,6 @@ public class VirtualInstanceFactory extends HibernateFactory {
 
     /**
      * Returns a VirtualInstance with given uuid
-     * (todo this needs review. the original code contained very weird org. check which
-     * i don't entirely understand)
      * @param uuid - uuid of the vm
      * @return VirtualInstance with given uuid
      */
