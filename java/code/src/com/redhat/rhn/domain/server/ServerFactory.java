@@ -299,9 +299,9 @@ public class ServerFactory extends HibernateFactory {
      * @param name the system name
      * @return server corresponding to the given machine_id
      */
+    @SuppressWarnings("unchecked")
     public static Server lookupForeignSystemByName(String name) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(Server.class);
+        Criteria criteria = getSession().createCriteria(Server.class);
         criteria.add(Restrictions.eq("name", name));
         for (Server server : (List<Server>) criteria.list()) {
             if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
@@ -456,6 +456,7 @@ public class ServerFactory extends HibernateFactory {
      * @param name The name to search for
      * @return The first ServerArch found
      */
+    @SuppressWarnings("unchecked")
     public static ServerArch lookupServerArchByName(String name) {
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
