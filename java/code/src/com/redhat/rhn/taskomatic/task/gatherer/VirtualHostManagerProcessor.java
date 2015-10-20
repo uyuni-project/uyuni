@@ -33,6 +33,13 @@ public class VirtualHostManagerProcessor {
     private Set<Server> serversToDelete;
     private Logger log;
 
+    /**
+     * Instantiates a new virtual host manager processor, will update a virtual
+     * host manager with information coming from a JSONHost.
+     *
+     * @param managerIn the virtual host manager
+     * @param virtualHostsIn the virtual hosts information from JSON
+     */
     public VirtualHostManagerProcessor(VirtualHostManager managerIn,
             Map<String, JSONHost> virtualHostsIn) {
         this.log = Logger.getLogger(VirtualHostManagerProcessor.class);
@@ -71,12 +78,12 @@ public class VirtualHostManagerProcessor {
      * todo (long term) - add a mechanism (possibly heuristics) which decides that a host is
      * already managed by poller. if positive -> skip it here
      *
-     * @param hostLabel - name of the Server (corresponds to label of Virtual Host Manager)
-     * @param jsonHost - object containing the information about the host and its VMs
+     * @param hostLabel name of the Server (corresponds to label of Virtual Host Manager)
+     * @param jsonHost object containing the information about the host and its VMs
      */
     private void processVirtualHost(String hostLabel, JSONHost jsonHost) {
         Server server = getOrCreateServer(hostLabel, jsonHost);
-        if (! virtualHostManager.getServers().contains(server)) {
+        if (!virtualHostManager.getServers().contains(server)) {
             virtualHostManager.addServer(server);
         }
         else {
@@ -102,7 +109,8 @@ public class VirtualHostManagerProcessor {
             serverVirtInstance.setType(type);
 
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
-        } else if (serverVirtInstance.getConfirmed() != 1L) { // __db_update_system logic
+        }
+        else if (serverVirtInstance.getConfirmed() != 1L) { // __db_update_system logic
             serverVirtInstance.setConfirmed(1L);
             serverVirtInstance.setType(type);
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
@@ -141,11 +149,12 @@ public class VirtualHostManagerProcessor {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue();
                     VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
-                            .lookupVirtualInstanceByUuid(guid);
+                        .lookupVirtualInstanceByUuid(guid);
 
                     if (virtualInstance == null) {
                         addGuestVirtualInstance(guid, name, type, server, null);
-                    } else {
+                    }
+                    else {
                         updateGuestVirtualInstance(virtualInstance, name, server);
                     }
                 });
