@@ -234,15 +234,16 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests that createVirtualHostManager throws NullPointerException when passing null
-     * params.
+     * Tests that createVirtualHostManager throws NullPointerException when
+     * passing null params.
      * @throws Exception - if anything goes wrong
      */
-    public void testFailOnNullParameters() throws InvalidGathererConfigException {
+    public void testFailOnNullParameters() throws Exception {
         try {
             // should throw a NullPointerException
             factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             return;
         }
         fail();
