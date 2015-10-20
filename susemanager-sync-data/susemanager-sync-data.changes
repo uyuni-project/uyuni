@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 20 11:55:32 CEST 2015 - mc@suse.de
+
+- version 2.1.10-1
+- Support for SLE12 SP1 product family (bsc#949726)
+- add SUSE Enterprise Storage 2 (bsc#949285)
+
+-------------------------------------------------------------------
 Wed Sep 23 15:07:08 CEST 2015 - mc@suse.de
 
 - version 2.1.9-1
