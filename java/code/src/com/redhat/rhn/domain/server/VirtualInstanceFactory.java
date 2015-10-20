@@ -150,7 +150,8 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param virtualInstance The virtual instance to delete
      */
     public void deleteVirtualInstanceOnly(VirtualInstance virtualInstance) {
-        log.debug("deleteVirtualInstanceOnly");
+        log.debug("Deleting virtual instance without removing associated objects " +
+                virtualInstance);
         Server hostSystem = virtualInstance.getHostSystem();
         if (hostSystem != null) {
             hostSystem.removeGuest(virtualInstance);
