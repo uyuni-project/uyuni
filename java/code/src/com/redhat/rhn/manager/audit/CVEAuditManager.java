@@ -517,11 +517,10 @@ public class CVEAuditManager {
         Long currentErrata = null;
         // Holds the list of patched packages for the CVE we are looking at
         Map<String, Boolean> patchedPackageNames = new HashMap<>();
+        // Holds wether the channel for a certain package name is assigned
+        Map<String, Boolean> channelAssignedPackageNames = new HashMap<>();
 
         // Flags
-        boolean currentChannelAssigned = false;
-        boolean allChannelsForOneErrataAssigned = false;
-        boolean allPackagesForAllErrataInstalled = true;
         boolean hasErrata = false;
 
         for (Map<String, Object> result : results) {
@@ -532,16 +531,22 @@ public class CVEAuditManager {
             if (currentSystem == null || !systemID.equals(currentSystem.getSystemID())) {
                 // Finish up work on the last one
                 if (currentSystem != null) {
-                    allChannelsForOneErrataAssigned |= currentChannelAssigned;
+                    boolean oneChannelForPackageAssigned = true;
+                    for (Boolean isAssigned : channelAssignedPackageNames.values()) {
+                        oneChannelForPackageAssigned &= isAssigned;
+                    }
+
+                    boolean allPackagesForAllErrataInstalled = true;
                     for (Boolean isPatched : patchedPackageNames.values()) {
                         allPackagesForAllErrataInstalled &= isPatched;
                     }
 
                     setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
-                            allChannelsForOneErrataAssigned, hasErrata);
+                            oneChannelForPackageAssigned, hasErrata);
 
                     // clear up the package list for the next system
                     patchedPackageNames.clear();
+                    channelAssignedPackageNames.clear();
 
                     // Check if the patch status is contained in the filter
                     if (patchStatuses.contains(currentSystem.getPatchStatus())) {
@@ -554,11 +559,12 @@ public class CVEAuditManager {
                 currentSystem.setSystemName((String) result.get("system_name"));
 
                 // First assignment
-                currentChannelAssigned = getBooleanValue(result, "channel_assigned");
                 patchedPackageNames.put((String) result.get("package_name"),
                         getBooleanValue(result, "package_installed"));
-                allChannelsForOneErrataAssigned = false;
-                allPackagesForAllErrataInstalled = true;
+                if (!getBooleanValue(result, "package_installed")) {
+                    channelAssignedPackageNames.put((String) result.get("package_name"),
+                            getBooleanValue(result, "channel_assigned"));
+                }
 
                 // Get errata and channel ID
                 currentErrata = (Long) result.get("errata_id");
@@ -584,9 +590,6 @@ public class CVEAuditManager {
                 // NOT a new system, check if we are still looking at the same errata
                 Long errataID = (Long) result.get("errata_id");
                 if (errataID.equals(currentErrata)) {
-                    // Combine flags with &
-                    currentChannelAssigned &= getBooleanValue(result, "channel_assigned");
-
                     // At the end the entry should be true if the package name is patched once
                     // false otherwise (but should still appear in the map)
                     Boolean patched = false;
@@ -595,15 +598,19 @@ public class CVEAuditManager {
                         patched = patchedPackageNames.get(packageName);
                     }
                     patchedPackageNames.put(packageName, patched || getBooleanValue(result, "package_installed"));
+
+                    // similar, if for each package name, at least one has an assigned channel, we are fine
+                    if (! getBooleanValue(result, "package_installed")) {
+                        Boolean assigned = false;
+                        if (channelAssignedPackageNames.containsKey(packageName)) {
+                            assigned = channelAssignedPackageNames.get(packageName);
+                        }
+                        channelAssignedPackageNames.put(packageName, assigned || getBooleanValue(result, "channel_assigned"));
+                    }
                 }
                 else {
-                    // Finish work on old errata
-                    allChannelsForOneErrataAssigned |= currentChannelAssigned;
-
                     // Switch to the new errata
                     currentErrata = errataID;
-                    currentChannelAssigned = getBooleanValue(result, "channel_assigned");
-
                     // At the end the entry should be true if the package name is patched once
                     // false otherwise (but should still appear in the map)
                     Boolean patched = false;
@@ -612,6 +619,15 @@ public class CVEAuditManager {
                         patched = patchedPackageNames.get(packageName);
                     }
                     patchedPackageNames.put(packageName, patched || getBooleanValue(result, "package_installed"));
+
+                    // similar, if for each package name, at least one has an assigned channel, we are fine
+                    if (! getBooleanValue(result, "package_installed")) {
+                        Boolean assigned = false;
+                        if (channelAssignedPackageNames.containsKey(packageName)) {
+                            assigned = channelAssignedPackageNames.get(packageName);
+                        }
+                        channelAssignedPackageNames.put(packageName, assigned || getBooleanValue(result, "channel_assigned"));
+                    }
                 }
 
                 // Add errata and channel ID
@@ -630,13 +646,18 @@ public class CVEAuditManager {
 
         // Finish up the *very* last system record
         if (currentSystem != null) {
-            allChannelsForOneErrataAssigned |= currentChannelAssigned;
+            boolean allPackagesForAllErrataInstalled = true;
             for (Boolean isPatched : patchedPackageNames.values()) {
                 allPackagesForAllErrataInstalled &= isPatched;
             }
 
+            boolean oneChannelForPackageAssigned = true;
+            for (Boolean isAssigned : channelAssignedPackageNames.values()) {
+                oneChannelForPackageAssigned &= isAssigned;
+            }
+
             setPatchStatus(currentSystem, allPackagesForAllErrataInstalled,
-                    allChannelsForOneErrataAssigned, hasErrata);
+                    oneChannelForPackageAssigned, hasErrata);
 
             // Check if the patch status is contained in the filter
             if (patchStatuses.contains(currentSystem.getPatchStatus())) {
