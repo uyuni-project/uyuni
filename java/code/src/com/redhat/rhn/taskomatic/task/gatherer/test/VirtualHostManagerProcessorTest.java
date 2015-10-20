@@ -11,7 +11,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.suse.manager.gatherer.JsonHost;
+import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
     private VirtualHostManager virtualHostManager;
-    private JsonHost minimalHost;
+    private JSONHost minimalHost;
 
     @Override
     public void setUp() throws Exception {
@@ -33,7 +33,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         virtualHostManager.setLabel("vhmanager");
         virtualHostManager.setOrg(user.getOrg());
 
-        minimalHost = new JsonHost();
+        minimalHost = new JSONHost();
         minimalHost.type = "para_virtualized";
         minimalHost.ramMb = 128;
         minimalHost.cpuArch = "x86_64";
@@ -54,7 +54,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testTwoEqualsVHMs() {
         minimalHost.getVms().put("myVM", "id_of_my_guest");
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
         VirtualHostManager virtualHostManager2 = new VirtualHostManager();
@@ -79,7 +79,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * for a host reported from gatherer.
      */
     public void testCreateServer() {
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
         VirtualHostManagerProcessor processor =
@@ -97,7 +97,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * for a host reported from gatherer.
      */
     public void testCreateVirtualInstance() {
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
         VirtualHostManagerProcessor processor =
@@ -129,7 +129,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host");
 
         // gatherer reports this host
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("existing_host", minimalHost);
 
         VirtualHostManagerProcessor processor
@@ -152,7 +152,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host");
 
         // gatherer reports this host
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("existing_host", minimalHost);
 
         VirtualHostManagerProcessor processor =
@@ -188,7 +188,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
 
         // gatherer reports this host
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("existing_host", minimalHost);
 
         VirtualHostManagerProcessor processor =
@@ -214,7 +214,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      */
     public void testGuestVirtInstanceInserted() {
         minimalHost.getVms().put("myVM", "id_of_my_guest");
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
         VirtualHostManagerProcessor processor
@@ -260,7 +260,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstanceFactory.getInstance().saveVirtualInstance(guestVirtInstance);
 
         minimalHost.getVms().put("myVM", "id_of_my_guest");
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("existing_host", minimalHost);
 
         // do the mapping
@@ -314,7 +314,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // gatherer reports this guest belonging to a host _after_ registration
         Server hostServer = ServerTestUtils.createForeignSystem(user, "foreign_system");
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("foreign_system", minimalHost);
         minimalHost.getVms().put("vm name", "vm-uuid");
 
@@ -338,7 +338,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 VirtualInstanceFactory.getInstance().getFullyVirtType();
         minimalHost.getVms().put("myVM", "id_of_my_guest");
         minimalHost.type = fullyVirtType.getLabel();
-        Map<String, JsonHost> data = new HashMap<>();
+        Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
         VirtualHostManagerProcessor processor

@@ -66,13 +66,13 @@ public class GathererJsonIO {
      *
      * @param reader the reader object
      * @return a map from virtual host manager names to
-     * (virtual name, {@link JsonHost}) pairs
+     * (virtual name, {@link JSONHost}) pairs
      * @throws JsonSyntaxException in case JSON does not have correct syntax
      */
-    public Map<String, Map<String, JsonHost>> readHosts(Reader reader)
+    public Map<String, Map<String, JSONHost>> readHosts(Reader reader)
             throws JsonSyntaxException {
         return  gson.fromJson(reader,
-                new TypeToken<Map<String, Map<String, JsonHost>>>() { }.getType());
+                new TypeToken<Map<String, Map<String, JSONHost>>>() { }.getType());
     }
 
     /**

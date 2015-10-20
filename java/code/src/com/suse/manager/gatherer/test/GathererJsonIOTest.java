@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.gatherer.GathererJsonIO;
-import com.suse.manager.gatherer.JsonHost;
+import com.suse.manager.gatherer.JSONHost;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import java.io.FileReader;
@@ -113,12 +113,12 @@ public class GathererJsonIOTest extends TestCase {
 
     public void testReadGathererOutput() throws Exception {
         FileReader fr = new FileReader(TestUtils.findTestData(GATHEREROUT).getPath());
-        Map<String, Map<String, JsonHost>> hosts = new GathererJsonIO().readHosts(fr);
+        Map<String, Map<String, JSONHost>> hosts = new GathererJsonIO().readHosts(fr);
 
         assertEquals(3, hosts.keySet().size());
 
         assertTrue(hosts.containsKey("1"));
-        JsonHost h = hosts.get("1").get("10.162.186.111");
+        JSONHost h = hosts.get("1").get("10.162.186.111");
         assertEquals(16, h.getTotalCpuCores().intValue());
         assertEquals("x86_64", h.getCpuArch());
         assertEquals("AMD Opteron(tm) Processor 4386", h.getCpuDescription());
