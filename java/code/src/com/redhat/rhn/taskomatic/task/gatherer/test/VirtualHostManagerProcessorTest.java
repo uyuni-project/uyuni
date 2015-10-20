@@ -11,6 +11,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+
 import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
@@ -25,6 +26,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     private VirtualHostManager virtualHostManager;
     private JSONHost minimalHost;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -52,6 +56,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * These VirtualHostManager are both processed, but no duplicate VirtualInstances should
      * be created in the database.
      */
+    @SuppressWarnings("unchecked")
     public void testTwoEqualsVHMs() {
         minimalHost.getVms().put("myVM", "id_of_my_guest");
         Map<String, JSONHost> data = new HashMap<>();
@@ -62,9 +67,11 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         virtualHostManager2.setOrg(virtualHostManager.getOrg());
         assertEquals(virtualHostManager, virtualHostManager2);
 
-        VirtualHostManagerProcessor processor = new VirtualHostManagerProcessor(virtualHostManager, data);
+        VirtualHostManagerProcessor processor =
+                new VirtualHostManagerProcessor(virtualHostManager, data);
         processor.processMapping();
-        VirtualHostManagerProcessor processor2 = new VirtualHostManagerProcessor(virtualHostManager2, data);
+        VirtualHostManagerProcessor processor2 =
+                new VirtualHostManagerProcessor(virtualHostManager2, data);
         processor2.processMapping();
 
         List<VirtualInstance> allVirtInstances = HibernateFactory.getSession()
@@ -209,8 +216,6 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * Tests that VirtualHostManagerProcessor creates a new (guest) VirtualInstance
      * entity for VM(s) reported from gatherer and that this entity is correctly linked with
      * the host server.
-     *
-     * @throws Exception - if anything goes wrong
      */
     public void testGuestVirtInstanceInserted() {
         minimalHost.getVms().put("myVM", "id_of_my_guest");
