@@ -33,7 +33,7 @@ module Yast
       @migration = FileUtils.Exists(@migration_file)
 
       Builtins.foreach(
-        ["env_migration", "env_manager", "env_db", "env_cert", "env_cc"]
+        ["env_force", "env_migration", "env_manager", "env_db", "env_cert", "env_cc"]
       ) do |file|
         file_path = Builtins.sformat("%1/%2", @dir, file)
         if FileUtils.Exists(file_path)

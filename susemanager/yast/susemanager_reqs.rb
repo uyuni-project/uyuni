@@ -31,6 +31,19 @@ module Yast
         @totalmem
       )
 
+      @env_file = Ops.add(Directory.tmpdir, "/env_force")
+      if FileUtils.Exists(@env_file)
+        SCR.Execute(path(".target.remove"), @env_file)
+      end
+      SCR.Execute(
+        path(".target.bash"),
+        Builtins.sformat("/usr/bin/touch %1; /bin/chmod 0600 %1;", @env_file)
+      )
+
+      @settings = {
+        "MANAGER_FORCE_INSTALL"  => "0"
+      }
+
       # something is wrong
       if @totalmem == nil
         # using only RAM if possible
@@ -50,17 +63,21 @@ module Yast
         if !Popup.AnyQuestionRichText(
             _("already setup"),
             _(
-              "SUSE Manager is already setup. A second attempt to run the setup will fail."
+              "SUSE Manager is already set up. Do you want to delete the existing setup and start all over again?"
             ),
             40,
             10,
-            _("Continue anyway"),
+            _("Continue"),
             _("Exit installation"),
             :focus_no
           )
           return :abort if Popup.ConfirmAbort(:incomplete)
         end
+        Ops.set(@settings, "MANAGER_FORCE_INSTALL", "1")
       end
+
+      val = Ops.get(@settings, "MANAGER_FORCE_INSTALL")
+      SCR.Execute(path(".target.bash"), Builtins.sformat("echo \"export MANAGER_FORCE_INSTALL='%1'\" >> %2", val, @env_file))
 
       # do we have less memory than needed?
       if Ops.less_than(@totalmem, @enough_memory)
