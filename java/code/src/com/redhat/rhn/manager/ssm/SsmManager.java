@@ -178,7 +178,7 @@ public class SsmManager {
                 subscribeChannel(system.getId(), cid, user.getId());
             }
             for (Long cid : system.getUnsubscribeChannelIds()) {
-                SystemManager.unsubscribeServerFromChannel(system.getId(), cid);
+                SystemManager.unsubscribeServerFromChannel(system.getId(), cid, true);
             }
         }
     }
@@ -193,6 +193,7 @@ public class SsmManager {
         in.put("server_id", sid);
         in.put("user_id", uid);
         in.put("channel_id", cid);
+        in.put("update_counts", 1);
         m.execute(in, new HashMap());
     }
 

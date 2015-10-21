@@ -1116,7 +1116,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
         log.debug("Subscribing to:");
         for (Channel channel : channels) {
             server = SystemManager.subscribeServerToChannel(loggedInUser, server,
-                    channel, true);
+                    channel, true, true);
             log.debug("   " + channel.getName());
         }
 
