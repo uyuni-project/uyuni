@@ -107,28 +107,13 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullLabel() throws Exception {
         try {
-            factory.createVirtualHostManager(null, user.getOrg(), SUSE_CLOUD,
+            factory.createVirtualHostManager("test", null, SUSE_CLOUD,
                     Collections.emptyMap());
         }
-        catch (IllegalArgumentException e) {
+        catch (Exception e) {
             return;
         }
         fail("IllegalArgumentException should have been thrown.");
-    }
-
-    /**
-     * Tests creating and retrieving a VirtualHostManager with null organization.
-     * @throws Exception if anything goes wrong
-     */
-    public void testCreateAndGetVHMNullOrg() throws Exception {
-        try {
-            factory.createVirtualHostManager("mylabel", null, SUSE_CLOUD,
-                    Collections.emptyMap());
-        }
-        catch (PropertyValueException e) {
-            return; // we've caught exception about violating not-null constraint
-        }
-        fail("PQLException should have been thrown.");
     }
 
     /**
