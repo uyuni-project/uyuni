@@ -9,6 +9,7 @@ DO_MIGRATION=0
 DO_SETUP=0
 LOGFILE=0
 WAIT_BETWEEN_STEPS=0
+MANAGER_FORCE_INSTALL=0
 
 MIGRATION_ENV="/root/migration_env.sh"
 SETUP_ENV="/root/setup_env.sh"
@@ -185,6 +186,24 @@ sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505"
 sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506"
 
 systemctl restart SuSEfirewall2
+}
+
+check_re_install() {
+if [ -f $MANAGER_COMPLETE ]; then
+     if [ $MANAGER_FORCE_INSTALL == "1" ]; then
+        echo "Performing forced re-installation!"
+        /usr/sbin/spacewalk-service stop
+        rm -f /etc/rhn/rhn.conf
+        if [ $LOCAL_DB != "0" ]; then
+            echo "Delete existing database..."
+            su - postgres -c "dropdb $MANAGER_DB_NAME" 2> /dev/null
+            su - postgres -c "dropuser $MANAGER_USER" 2> /dev/null
+        fi
+    else
+        echo "SUSE Manager is already set up. Exit." >&2
+        exit 1
+    fi
+fi
 }
 
 setup_spacewalk() {
@@ -456,6 +475,7 @@ do_setup() {
         MANAGER_DB_NAME="susemanager"
     fi
     DB_BACKEND="postgresql"
+    check_re_install
     setup_swap
     setup_mail
     setup_db_postgres
@@ -542,11 +562,6 @@ check_var_spacewalk
 open_firewall_ports
 
 if [ "$DO_SETUP" = "1" ]; then
-    if [ -f $MANAGER_COMPLETE ]; then
-	echo "SUSE Manager is already set up. Exit." >&2
-	exit 1
-    fi
-
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     do_setup
 
