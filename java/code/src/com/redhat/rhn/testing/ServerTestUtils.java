@@ -280,4 +280,11 @@ public class ServerTestUtils {
         assert ssmSet != null;
     }
 
+    public static Server createForeignSystem(User user, String name) throws Exception {
+        Server existingHost = ServerTestUtils.createTestSystem(user);
+        existingHost.setName(name);
+        existingHost.setBaseEntitlement(EntitlementManager.getByName("foreign_entitled"));
+        ServerFactory.save(existingHost);
+        return existingHost;
+    }
 }

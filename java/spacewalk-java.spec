@@ -640,6 +640,7 @@ install -m 644 conf/default/rhn_taskomatic_daemon.conf $RPM_BUILD_ROOT%{_prefix}
 install -m 644 conf/default/rhn_org_quartz.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults
 install -m 644 conf/logrotate/rhn_web_api $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
+install -m 644 conf/logrotate/gatherer $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/gatherer
 # LOGROTATE >= 3.8 requires extra permission config
 %if 0%{?fedora} || 0%{?rhel} > 6
 sed -i 's/#LOGROTATE-3.8#//' $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d/rhn_web_api
@@ -758,6 +759,11 @@ if [ ! -e /var/log/rhn/rhn_web_api.log ]; then
     touch /var/log/rhn/rhn_web_api.log
 fi
 chown tomcat:www /var/log/rhn/rhn_web_api.log
+
+if [ ! -e /var/log/rhn/gatherer.log ]; then
+    touch /var/log/rhn/gatherer.log
+fi
+chown tomcat:www /var/log/rhn/gatherer.log
 
 %else
 %post -n spacewalk-taskomatic
@@ -964,6 +970,7 @@ fi
 %{_prefix}/share/rhn/config-defaults/rhn_org_quartz.conf
 %{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %config %{_sysconfdir}/logrotate.d/rhn_web_api
+%config %{_sysconfdir}/logrotate.d/gatherer
 %dir %{_datadir}/spacewalk
 %dir %{_datadir}/spacewalk/audit
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml

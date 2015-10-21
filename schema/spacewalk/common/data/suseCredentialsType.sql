@@ -19,4 +19,7 @@ insert into suseCredentialsType (id, label, name) values
 insert into suseCredentialsType (id, label, name) values
         (sequence_nextval('suse_credtype_id_seq'), 'scc', 'SUSE Customer Center');
 
+insert into suseCredentialsType (id, label, name) values
+        (sequence_nextval('suse_credtype_id_seq'), 'vhm', 'Virtual Host Manager');
+
 commit;

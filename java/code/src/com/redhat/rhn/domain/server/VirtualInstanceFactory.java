@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -142,6 +141,29 @@ public class VirtualInstanceFactory extends HibernateFactory {
     }
 
     /**
+     * Deletes the virtual instance from the database.
+     * If the virtual instance has an association to a guest system (i.e. it is
+     * a registered guest), remove this association.
+     * If the virtual instance has an association to a host system, remove this
+     * association.
+     *
+     * @param virtualInstance The virtual instance to delete
+     */
+    public void deleteVirtualInstanceOnly(VirtualInstance virtualInstance) {
+        log.debug("Deleting virtual instance without removing associated objects " +
+                virtualInstance);
+        Server hostSystem = virtualInstance.getHostSystem();
+        if (hostSystem != null) {
+            hostSystem.removeGuest(virtualInstance);
+        }
+        Server guestSystem = virtualInstance.getGuestSystem();
+        if (guestSystem != null) {
+            guestSystem.setVirtualInstance(null);
+        }
+        removeObject(virtualInstance);
+    }
+
+    /**
      * Finds all registered guests, within a particular org, whose hosts do not have any
      * virtualization entitlements.
      *
@@ -249,6 +271,18 @@ public class VirtualInstanceFactory extends HibernateFactory {
     }
 
     /**
+     * Returns the requested virtual instance type.
+     *
+     * @param label the type label
+     * @return The type or null
+     */
+    public VirtualInstanceType getVirtualInstanceType(String label) {
+        return (VirtualInstanceType)getSession().getNamedQuery(
+                "VirtualInstanceType.findByLabel").setString("label", label)
+                .setCacheable(true).uniqueResult();
+    }
+
+    /**
      * Returns the running state.
      *
      * @return The running state
@@ -301,5 +335,29 @@ public class VirtualInstanceFactory extends HibernateFactory {
         return (VirtualInstanceState)getSession().getNamedQuery(
                 "VirtualInstanceState.findByLabel").setString("label", "unknown")
                 .uniqueResult();
+    }
+
+    /**
+     * Returns a VirtualInstance with given uuid
+     * @param uuid - uuid of the vm
+     * @return VirtualInstance with given uuid
+     */
+    public VirtualInstance lookupVirtualInstanceByUuid(String uuid) {
+        return (VirtualInstance) getSession()
+                .getNamedQuery("VirtualInstance.lookupVirtualInstanceByUuid")
+                .setParameter("uuid", uuid)
+            .uniqueResult();
+    }
+
+    /**
+     * Returns a VirtualInstance that is linked to the host system with given id.
+     * @param hostId - id of the host system
+     * @return VirtualInstance linked to the host with given id
+     */
+    public VirtualInstance lookupHostVirtInstanceByHostId(Long hostId) {
+        return (VirtualInstance) getSession()
+                .getNamedQuery("VirtualInstance.lookupHostVirtInstanceByHostId")
+                .setParameter("hostId", hostId)
+            .uniqueResult();
     }
 }

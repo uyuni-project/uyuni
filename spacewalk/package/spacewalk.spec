@@ -71,6 +71,9 @@ Requires:       spacewalk-config
 Requires:       yum-utils
 Requires:       pxe-default-image
 
+Requires:       virtual-host-gatherer
+Recommends:     virtual-host-gatherer-VMware
+
 # Requires:       osa-dispatcher
 # Requires:       jabberpy
 Obsoletes:      spacewalk-monitoring < 2.3
