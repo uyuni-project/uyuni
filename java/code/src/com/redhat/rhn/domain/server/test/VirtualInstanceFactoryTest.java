@@ -23,7 +23,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
 
@@ -301,4 +300,35 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertTrue(vi.getState() != null);
     }
 
+    public void testLookupGuestByUuidAndHostId() throws Exception {
+        Server host = ServerTestUtils.createVirtHostWithGuest();
+        VirtualInstance guest = host.getGuests().iterator().next();
+        String uuid = guest.getUuid();
+
+        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(uuid);
+        assertEquals(guest, fromDb);
+    }
+
+    public void testLookupGuestByUuidAndHostIdOrgClashNonExistentOrg() throws Exception {
+        Server host = ServerTestUtils.createVirtHostWithGuest();
+        VirtualInstance guest = host.getGuests().iterator().next();
+        String uuid = guest.getUuid();
+
+        // try retrieving guest by uuid and host from different (nonexisting) org
+        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(uuid);
+        assertEquals(guest, fromDb);
+    }
+
+    public void testLookupGuestByUuidAndHostIdNullUuid() throws Exception {
+        Server host = ServerTestUtils.createVirtHostWithGuest();
+        VirtualInstance guest = host.getGuests().iterator().next();
+        guest.setUuid(null);
+        ServerFactory.save(host);
+
+        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
+                .lookupHostVirtInstanceByHostId(host.getId());
+        assertEquals(guest, fromDb);
+    }
 }

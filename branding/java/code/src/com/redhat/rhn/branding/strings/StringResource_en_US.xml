@@ -1820,6 +1820,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch">
         <source>Refreshes data about channels, products and subscriptions</source>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.gatherer-bunch">
+        <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results</source>
+      </trans-unit>
 
       <!-- Server Contact Methods -->
       <trans-unit id="server.contact-method.label">
@@ -2151,6 +2154,11 @@ tree will not be usable for autoinstalling.
     SUSE may charge a fee to recover its reasonable costs of distribution
 &lt;/p&gt;
         </source>
+      </trans-unit>
+
+      <!-- Subscription Counting -->
+      <trans-unit id="foreign_entitled">
+        <source>Foreign</source>
       </trans-unit>
 
       <!-- Salt -->
