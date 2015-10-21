@@ -27,7 +27,7 @@ public class GathererJob extends RhnJavaJob {
         throws JobExecutionException {
         List<VirtualHostManager> managers =
                 VirtualHostManagerFactory.getInstance().listVirtualHostManagers();
-        if (managers == null || managers.isEmpty()) {
+        if (managers.isEmpty()) {
             log.debug("No Virtual Host Managers to run the gatherer job");
             return;
         }
