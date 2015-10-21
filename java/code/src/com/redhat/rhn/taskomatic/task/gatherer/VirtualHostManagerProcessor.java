@@ -108,7 +108,6 @@ public class VirtualHostManagerProcessor {
         }
         else if (serverVirtInstance.getConfirmed() != 1L) {
             serverVirtInstance.setConfirmed(1L);
-            serverVirtInstance.setType(type);
             VirtualInstanceFactory.getInstance().saveVirtualInstance(serverVirtInstance);
         }
     }
