@@ -26,6 +26,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -77,11 +78,11 @@ public class VirtualHostManagerHandler extends BaseHandler {
     public int create(User loggedInUser, String label, String moduleName,
             Map<String, String> parameters) {
         ensureOrgAdmin(loggedInUser);
-        if (StringUtil.nullOrValue(label) == null) {
-            throw new InvalidParameterException("Virtual Host Manager label is missing.");
+        if (StringUtils.isEmpty(label)) {
+            throw new IllegalArgumentException("Label cannot not be empty.");
         }
-        if (StringUtil.nullOrValue(moduleName) == null) {
-            throw new InvalidParameterException("Gatherer module name is missing.");
+        if (StringUtils.isEmpty(moduleName)) {
+            throw new IllegalArgumentException("Module name cannot not be empty.");
         }
         if (parameters == null) {
             throw new InvalidParameterException("Parameters are missing name is missing.");
