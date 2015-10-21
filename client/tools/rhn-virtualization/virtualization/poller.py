@@ -90,7 +90,8 @@ def poll_hypervisor():
 
     if not domainIDs:
         domainIDs = []
-    domainIDs.extend(conn.listDefinedDomains())
+    if len(domainIDs) == 0:
+        domainIDs.extend(conn.listDefinedDomains())
 
     state = {}
 
