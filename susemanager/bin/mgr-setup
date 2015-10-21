@@ -476,6 +476,7 @@ do_setup() {
     fi
     DB_BACKEND="postgresql"
     check_re_install
+    echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_swap
     setup_mail
     setup_db_postgres
@@ -562,7 +563,6 @@ check_var_spacewalk
 open_firewall_ports
 
 if [ "$DO_SETUP" = "1" ]; then
-    echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     do_setup
 
     # rename the default org
