@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-import org.hibernate.PropertyValueException;
 
 import java.util.Collections;
 import java.util.HashMap;

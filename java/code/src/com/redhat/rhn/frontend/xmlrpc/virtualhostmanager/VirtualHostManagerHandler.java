@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager;
 
-import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
