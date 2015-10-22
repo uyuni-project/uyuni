@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:35:50 CEST 2015 - mc@suse.de
+
+- version 2.5.1.2-1
+- use sle_version macro while checking for SLE only
+
+-------------------------------------------------------------------
 Wed Oct 07 14:53:10 CEST 2015 - mc@suse.de
 
 - version 2.5.1.1-1
