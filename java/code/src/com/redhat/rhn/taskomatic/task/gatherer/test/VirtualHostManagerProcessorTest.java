@@ -38,15 +38,15 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         virtualHostManager.setOrg(user.getOrg());
 
         minimalHost = new JSONHost();
-        minimalHost.type = "para_virtualized";
-        minimalHost.ramMb = 128;
-        minimalHost.cpuArch = "x86_64";
-        minimalHost.cpuMhz = 400.0;
-        minimalHost.totalCpuCores = 1;
-        minimalHost.totalCpuSockets = 1;
-        minimalHost.os = "Windows";
-        minimalHost.osVersion = "Vista";
-        minimalHost.vms = new HashMap<>();
+        minimalHost.setType("para_virtualized");
+        minimalHost.setRamMb(128);
+        minimalHost.setCpuArch("x86_64");
+        minimalHost.setCpuMhz(400.0);
+        minimalHost.setTotalCpuCores(1);
+        minimalHost.setTotalCpuSockets(1);
+        minimalHost.setOs("Windows");
+        minimalHost.setOsVersion("Vista");
+        minimalHost.setVms(new HashMap<>());
     }
 
     /**
@@ -342,7 +342,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         VirtualInstanceType fullyVirtType =
                 VirtualInstanceFactory.getInstance().getFullyVirtType();
         minimalHost.getVms().put("myVM", "id_of_my_guest");
-        minimalHost.type = fullyVirtType.getLabel();
+        minimalHost.setType(fullyVirtType.getLabel());
         Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
