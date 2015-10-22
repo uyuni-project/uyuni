@@ -11,6 +11,7 @@ Feature: Check client registration
     And I am on the Systems page
     And I follow "Systems" in the left menu
     When I follow this client link
+     And I wait for the data update
     Then I should see a "System Status" text
     And I should see a "Software Updates Available" text
     And I should see a "Critical:" link
