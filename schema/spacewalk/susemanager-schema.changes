@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:29:40 CEST 2015 - mc@suse.de
+
+- version 3.0.2-1
+- Fix license header
+- Taskomatic job for gatherer
+- add new foreign_entitled entitlement and migrations for it
+- create a unique index on suseServerVirtualHostManager
+- add new foreign_entitled entitlement
+- Add migrations for Virtual Host Manager
+- Add tables for Virtual Host Manager
+- Set job to run every minute if old schedule still active (bsc#918994)
+- adding on delete cascade to sppf_pid_fk (bsc#948238)
+
+-------------------------------------------------------------------
 Wed Oct 07 16:51:51 CEST 2015 - mc@suse.de
 
 - version 3.0.1-1
