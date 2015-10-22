@@ -8244,15 +8244,6 @@
     "autorefresh": false
   },
   {
-    "id": 1873,
-    "name": "SLE-12-SP1-GA-Desktop-nVidia-Driver",
-    "distro_target": "sle-12-x86_64",
-    "description": "SLE-12-SP1-GA-Desktop-nVidia-Driver for sle-12-x86_64",
-    "url": "http://download.nvidia.com/novell/sle12-sp1",
-    "enabled": true,
-    "autorefresh": true
-  },
-  {
     "id": 1874,
     "name": "SLED12-SP1-Debuginfo-Pool",
     "distro_target": "sle-12-x86_64",
@@ -8438,6 +8429,384 @@
     "distro_target": "sle-12-x86_64",
     "description": "SLE-WE12-SP1-Debuginfo-Pool for sle-12-x86_64",
     "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1895,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1896,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1897,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1898,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1899,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1900,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1901,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1902,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1903,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1904,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1905,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1906,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1907,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1908,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLES12-SP1-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/ppc64le/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1909,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLES12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/s390x/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1910,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLES12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1911,
+    "name": "SLE-12-SP1-GA-Desktop-nVidia-Driver",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-12-SP1-GA-Desktop-nVidia-Driver for sle-12-x86_64",
+    "url": "http://download.nvidia.com/novell/sle12sp1",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1912,
+    "name": "SLED12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLED12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-DESKTOP/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1913,
+    "name": "SLE-HA12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/s390x/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1914,
+    "name": "SLE-HA12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-HA12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1915,
+    "name": "SLE-HA-GEO12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-HA-GEO12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1916,
+    "name": "SLE-WE12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-WE12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1917,
+    "name": "SUSE-Enterprise-Storage-2-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1918,
+    "name": "SUSE-Enterprise-Storage-2-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1919,
+    "name": "SUSE-Enterprise-Storage-2-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1920,
+    "name": "SUSE-Enterprise-Storage-2-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1921,
+    "name": "SUSE-Enterprise-Storage-2-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1922,
+    "name": "SLE-SDK12-SP1-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/ppc64le/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1923,
+    "name": "SLE-SDK12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Debuginfo-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/ppc64le/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1924,
+    "name": "SLE-SDK12-SP1-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1925,
+    "name": "SLE-SDK12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Debuginfo-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1926,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1927,
+    "name": "SLE-SDK12-SP1-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/s390x/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1928,
+    "name": "SLE-SDK12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/s390x/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1929,
+    "name": "SLE-SDK12-SP1-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1930,
+    "name": "SLE-SDK12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1931,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product_source?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1932,
+    "name": "SLE-HA-GEO12-SP1-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/s390x/update?my-fake-token",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1933,
+    "name": "SLE-HA-GEO12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/s390x/update_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1934,
+    "name": "SLE-HA-GEO12-SP1-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product?my-fake-token",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1935,
+    "name": "SLE-HA-GEO12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product_debug?my-fake-token",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1936,
+    "name": "SLE-HA-GEO12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product_source?my-fake-token",
     "enabled": false,
     "autorefresh": false
   }
