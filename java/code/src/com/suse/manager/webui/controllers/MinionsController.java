@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
@@ -103,5 +105,19 @@ public class MinionsController {
     public static ModelAndView remoteCommands(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "remote-commands.jade");
+    }
+
+    /**
+     * Redirects to the system overview page of the minion
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return nothing
+     */
+    public static String systemOverview(Request request, Response response) {
+        String minionId = request.params("minion");
+        Server server = ServerFactory.findRegisteredMinion(SaltAPIService.INSTANCE.getMachineId(minionId));
+        response.redirect("/rhn/systems/details/Overview.do?sid=" + server.getId());
+        return "";
     }
 }
