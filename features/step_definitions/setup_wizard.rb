@@ -36,7 +36,7 @@ When /^I click on "([^"]*)" link in the setup wizard$/ do |arg1|
 end
 
 When /^I select "([^\"]*)" as a product for the "([^\"]*)" architecture$/ do |product, architecture|
-  within(:xpath, "//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]]") do
+  within(:xpath, "(//span[contains(text(), '#{product}')]/ancestor::tr[td[contains(text(), '#{architecture}')]])[1]") do
     fail if not find("button.product-add-btn").click
   end
 end
