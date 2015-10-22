@@ -60,8 +60,8 @@ public class GathererJob extends RhnJavaJob {
                 String label = manager.getLabel();
 
                 if (!results.containsKey(label)) {
-                    log.warn(String.format("Virtual Host Manager with label '%s' is not "
-                            + "contained in the results from gatherer - skipping it.",
+                    log.warn(String.format("Virtual Host Manager with label '%s' is not " +
+                            "contained in the results from gatherer - skipping it.",
                             label));
                     continue;
                 }
