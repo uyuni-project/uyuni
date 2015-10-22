@@ -1213,11 +1213,11 @@ public class SystemManagerTest extends RhnBaseTestCase {
         set.addElement(unentitledServer.getId());
         RhnSetManager.store(set);
 
-        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, setLabel,
+        actual = SystemManager.countSystemsInSetWithoutFeature(user, setLabel,
                         "ftr_kickstart");
         assertEquals(1, actual);
 
-        actual = SystemManager.countSystemsInSetWithoutEntitlement(user, "non matching",
+        actual = SystemManager.countSystemsInSetWithoutFeature(user, "non matching",
                         "ftr_kickstart");
         assertEquals(0, actual);
     }
