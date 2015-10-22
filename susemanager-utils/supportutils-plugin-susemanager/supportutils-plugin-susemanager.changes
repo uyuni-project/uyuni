@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:22:30 CEST 2015 - mc@suse.de
+
+- version 3.0.2-1
+- adapt for systemd
+- use postgresql instead of oracle
+- add activation key info
+
+-------------------------------------------------------------------
 Wed Oct 07 17:12:02 CEST 2015 - mc@suse.de
 
 - version 3.0.1-1
