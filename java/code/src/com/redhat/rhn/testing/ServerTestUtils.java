@@ -280,6 +280,14 @@ public class ServerTestUtils {
         assert ssmSet != null;
     }
 
+    /**
+     * Creates a new foreign system.
+     *
+     * @param user the user
+     * @param name the system name
+     * @return the newly created foreign system
+     * @throws Exception if server creation goes wrong
+     */
     public static Server createForeignSystem(User user, String name) throws Exception {
         Server existingHost = ServerTestUtils.createTestSystem(user);
         existingHost.setName(name);

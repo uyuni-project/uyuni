@@ -16,10 +16,14 @@
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
 /**
- * Invalid gatherer module exception
+ * Invalid gatherer module exception.
  */
 public class InvalidGathererConfigException extends Exception {
 
+    /**
+     * Standard constructor.
+     * @param message the message
+     */
     public InvalidGathererConfigException(String message) {
         super(message);
     }

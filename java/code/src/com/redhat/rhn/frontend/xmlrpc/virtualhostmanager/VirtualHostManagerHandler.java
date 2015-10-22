@@ -63,7 +63,6 @@ public class VirtualHostManagerHandler extends BaseHandler {
      * @param moduleName the name of the Gatherer module
      * @param parameters additional parameters (credentials, parameters for
      * virtual-host-gatherer)
-     * @throws InvalidParameterException if any parameters are not correct
      * @return 1 if successful, exception otherwise
      *
      * @xmlrpc.doc Creates a Virtual Host Manager from given arguments
@@ -87,8 +86,8 @@ public class VirtualHostManagerHandler extends BaseHandler {
             throw new InvalidParameterException("Parameters are missing name is missing.");
         }
         if (VirtualHostManagerFactory.getInstance().lookupByLabel(label) != null) {
-            throw new InvalidParameterException("Another Virtual Host Manager with the same"
-                    + " label already exists.");
+            throw new InvalidParameterException("Another Virtual Host Manager with the " +
+                    "same label already exists.");
         }
         try {
             VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
@@ -117,8 +116,8 @@ public class VirtualHostManagerHandler extends BaseHandler {
         VirtualHostManager manager =
                 VirtualHostManagerFactory.getInstance().lookupByLabel(label);
         if (manager == null) {
-            throw new InvalidParameterException("Virtual Host Manager with label '" + label
-                    + "' doesn't exist.");
+            throw new InvalidParameterException("Virtual Host Manager with label '" +
+                    label + "' doesn't exist.");
         }
         VirtualHostManagerFactory.getInstance().delete(manager);
         return BaseHandler.VALID;
