@@ -22,48 +22,47 @@ import java.util.Map;
  */
 public class JSONHost {
 
-    /** The name. */
-    public String name;
+    /** Host name. */
+    private String name;
 
-    /** The total CPU socket count. */
-    public Integer totalCpuSockets;
+    /** Total CPU socket count. */
+    private Integer totalCpuSockets;
 
-    /** The total CPU core count. */
-    public Integer totalCpuCores;
+    /** Total CPU core count. */
+    private Integer totalCpuCores;
 
-    /** The total CPU thread count. */
-    public Integer totalCpuThreads;
+    /** Total CPU thread count. */
+    private Integer totalCpuThreads;
 
-    /** The CPU architecture. */
-    public String cpuArch;
+    /** CPU architecture. */
+    private String cpuArch;
 
-    /** The CPU description. */
-    public String cpuDescription;
+    /** CPU description. */
+    private String cpuDescription;
 
-    /** The CPU vendor. */
-    public String cpuVendor;
+    /** CPU vendor. */
+    private String cpuVendor;
 
-    /** The CPU frequency. */
-    public Double cpuMhz;
+    /** CPU frequency in MHz. */
+    private Double cpuMhz;
 
-    /** The OS. */
-    public String os;
+    /** OS. */
+    private String os;
 
-    /** The OS version. */
-    public String osVersion;
+    /** OS version. */
+    private String osVersion;
 
-    /** The type. */
-    public String type;
+    /** Hypervisor type. */
+    private String type;
 
-    /** The amount of RAM. */
-    public Integer ramMb;
+    /** Amount of memory in MB. */
+    private Integer ramMb;
 
-    /** The map of virtual guests running on this host. */
-    public Map<String, String> vms;
+    /** Maps virtual guests names to UUIDs. */
+    private Map<String, String> vms;
 
     /**
      * Gets the name.
-     *
      * @return the name
      */
     public String getName() {
@@ -71,8 +70,7 @@ public class JSONHost {
     }
 
     /**
-     * Gets the total number of CPU sockets of the system.
-     *
+     * Gets the total CPU socket count.
      * @return the number of sockets
      */
     public Integer getTotalCpuSockets() {
@@ -80,8 +78,7 @@ public class JSONHost {
     }
 
     /**
-     * Gets the total number of CPU cores of the system.
-     *
+     * Gets the total CPU core count.
      * @return the cpu cores
      */
     public Integer getTotalCpuCores() {
@@ -89,9 +86,8 @@ public class JSONHost {
     }
 
     /**
-     * Gets the total number of CPU threads of the system.
-     *
-     * @return the number of threads
+     * Gets the total CPU thread count.
+     * @return the CPU thread count
      */
     public Integer getTotalCpuThreads() {
         return totalCpuThreads;
@@ -99,7 +95,6 @@ public class JSONHost {
 
     /**
      * Gets the CPU architecture.
-     *
      * @return the architecture
      */
     public String getCpuArch() {
@@ -107,8 +102,7 @@ public class JSONHost {
     }
 
     /**
-     * Gets the CPU descriptions.
-     *
+     * Gets the CPU description.
      * @return the description
      */
     public String getCpuDescription() {
@@ -117,7 +111,6 @@ public class JSONHost {
 
     /**
      * Gets the CPU vendor.
-     *
      * @return the vendor
      */
     public String getCpuVendor() {
@@ -125,9 +118,8 @@ public class JSONHost {
     }
 
     /**
-     * Gets the CPU speed in MHZ.
-     *
-     * @return cpu speed in MHZ
+     * Gets the CPU frequency in MHz.
+     * @return the CPU frequency in MHz
      */
     public Double getCpuMhz() {
         return cpuMhz;
@@ -135,7 +127,6 @@ public class JSONHost {
 
     /**
      * Gets the OS.
-     *
      * @return the OS
      */
     public String getOs() {
@@ -144,7 +135,6 @@ public class JSONHost {
 
     /**
      * Gets the OS version.
-     *
      * @return the OS version
      */
     public String getOsVersion() {
@@ -153,7 +143,6 @@ public class JSONHost {
 
     /**
      * Gets the hypervisor type.
-     *
      * @return hypervisor type
      */
     public String getType() {
@@ -161,8 +150,7 @@ public class JSONHost {
     }
 
     /**
-     * Gets the memory in MB.
-     *
+     * Gets the amount of memory in MB.
      * @return the ram in MB
      */
     public Integer getRamMb() {
@@ -171,10 +159,117 @@ public class JSONHost {
 
     /**
      * Gets a map of virtual guests running on this host.
-     * The key is the name of the guest while the value is the UUID.
+     * Keys are guest names and values are corresponding UUIDs.
      * @return map of guests
      */
     public Map<String, String> getVms() {
         return vms;
+    }
+
+    /**
+     * Sets the name.
+     * @param nameIn the new name
+     */
+    public void setName(String nameIn) {
+        name = nameIn;
+    }
+
+    /**
+     * Sets the total CPU socket count.
+     * @param totalCpuSocketsIn the number of sockets
+     */
+    public void setTotalCpuSockets(Integer totalCpuSocketsIn) {
+        totalCpuSockets = totalCpuSocketsIn;
+    }
+
+    /**
+     * Sets the the total CPU core count.
+     *
+     * @param totalCpuCoresIn the cpu cores
+     */
+    public void setTotalCpuCores(Integer totalCpuCoresIn) {
+        totalCpuCores = totalCpuCoresIn;
+    }
+
+    /**
+     * Sets the total CPU thread count.
+     * @param totalCpuThreadsIn the thread count
+     */
+    public void setTotalCpuThreads(Integer totalCpuThreadsIn) {
+        totalCpuThreads = totalCpuThreadsIn;
+    }
+
+    /**
+     * Sets the CPU architecture
+     * @param cpuArchIn the architecture
+     */
+    public void setCpuArch(String cpuArchIn) {
+        cpuArch = cpuArchIn;
+    }
+
+    /**
+     * Sets the CPU description.
+     * @param cpuDescriptionIn the description
+     */
+    public void setCpuDescription(String cpuDescriptionIn) {
+        cpuDescription = cpuDescriptionIn;
+    }
+
+    /**
+     * Sets the CPU vendor.
+     * @param cpuVendorIn the vendor
+     */
+    public void setCpuVendor(String cpuVendorIn) {
+        cpuVendor = cpuVendorIn;
+    }
+
+    /**
+     * Sets the the CPU frequency in MHz.
+     *
+     * @param cpuMhzIn the CPU frequency in MHz.
+     */
+    public void setCpuMhz(Double cpuMhzIn) {
+        cpuMhz = cpuMhzIn;
+    }
+
+    /**
+     * Sets the OS.
+     * @param osIn the new OS
+     */
+    public void setOs(String osIn) {
+        os = osIn;
+    }
+
+    /**
+     * Sets the OS version.
+     * @param osVersionIn the new OS version
+     */
+    public void setOsVersion(String osVersionIn) {
+        osVersion = osVersionIn;
+    }
+
+    /**
+     * Sets the hypervisor type.
+     * @param typeIn the new type
+     */
+    public void setType(String typeIn) {
+        type = typeIn;
+    }
+
+    /**
+     * Sets the the amount of memory in MB.
+     * @param ramMbIn the amount of memory in MB
+     */
+    public void setRamMb(Integer ramMbIn) {
+        ramMb = ramMbIn;
+    }
+
+    /**
+     * Sets a map of virtual guests running on this host.
+     * Keys are guest names and values are corresponding UUIDs.
+     * @param vmsIn the map of guests
+     */
+    public void setVms(Map<String, String> vmsIn) {
+        vms = vmsIn;
     }
 }
