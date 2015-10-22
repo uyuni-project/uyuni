@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:36:21 CEST 2015 - mc@suse.de
+
+- version 2.5.2.3-1
+- List VirtualHostGatherer modules via XMLRPC API
+- Added and delete Virtual Host Manager (VHM) entities via XMLRPC API
+- Taskomatic job for running virtual-host-gatherer
+- fix incomplete enabling of config actions via snippet (bsc#949528)
+- deactivate all non spacewalk plugin services and repos via snippet
+  (bsc#949554)
+- add SUSE Enterprise Storage 2 (bsc#949285)
+- do not hide human readable entitlement names
+- require pxe-default-image in the spacewalk main package
+- Rename javascript file to susemanager-events.js
+- Open the event stream on every page
+- Setup SSE event source on the system overview page
+- add snippet to wait for NetworkManager (bsc#937802)
+
+-------------------------------------------------------------------
 Wed Oct 14 09:54:14 CEST 2015 - mc@suse.de
 
 - version 2.5.2.2-1
