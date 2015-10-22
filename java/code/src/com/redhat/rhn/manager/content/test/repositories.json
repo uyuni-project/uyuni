@@ -355,7 +355,7 @@
     "name": "SLE10-SP3-Debuginfo-Pool",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SP3-Debuginfo-Pool for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-s390x?U0ufAtcTegthxG2yRRtRYLRPpOm5ZWo6EYpF-BqHRvZvOurHDCXX2PSrZnHdgLB6N0MFXT9Rv1twW29CDPuiAEYDMNTFlq-C4CnRFpd-DVBVOdQLnndY7uUVSzBxYaQKniJOnOqsA8BOwW7gMSH5",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-s390x?YHvUPecZoDZODNkhbGtn3zsxtAC4IiJ4bdTO1b8zj_bIBA9B_RZdIaKKl1wTGzLT5fC1cn9-rOEs08TnxItffwMFVjo-ibUQbrMLTyX3P7VaNorkzeNrTrqN_yoxHob42sLhAPU5QamVrJItw10F",
     "enabled": false,
     "autorefresh": false
   },
@@ -382,7 +382,7 @@
     "name": "SLE10-SP3-Debuginfo-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SP3-Debuginfo-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-s390x?W0ggMNUIiSQIzDR-JqBlzzmgeRL6kKgGYyG-wkCMYC2sO54trC9leZXC-vWYF4fObgGU8-N1Z6V0x4YUfcUoIylpV_5goHMtbRfvI1VfFlDKYV2kPTZdNU_p1xkXdxCPZEL8PxfYmLUxzuWfBWCTu-HO",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-s390x?6i6B-_ijj_wJqqyjKrHksnzLGA457GRn9pZZVVYO3MgojcZ6rpsqLHRzrVRLeGWpaW18hkmx77wLATeZVzhV2r78KVx-K4j3S30ZPJjGqsVnh-v8breaH5pZOA5CVqfwTNBoYpnIApb_V-P6ki9UPEXc",
     "enabled": false,
     "autorefresh": true
   },
@@ -1309,7 +1309,7 @@
     "name": "SLE10-SP3-Debuginfo-Pool",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SP3-Debuginfo-Pool for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-ppc?a-_ZV0VYp4lNL0dXjqnYd0pgVO-ZObPHJbGPd83xuSD1Ia-x6dwYjHQx-Ua96zt1crgf8x7Q-W1L9z1txdjJ9vp4BOEPcHmNGKo3TghGrlEsCedDu9vjJP-iP_VJdVoW5BLRntSXmFFeSuhHwA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-ppc?B5xmmDzU2A_6dkEBTgYFxpiMqfMyG24aVM9dL20A4K1KtZ0h7XyyTQk64NXQEVEh7w3NUmOJfH5HYw4pDi6kiI8aDQYNezH2VaswG__xOz21GWkVdVMI7H3OUgYPkYVg2lO8wJ1g4geZ9rO0wQ",
     "enabled": false,
     "autorefresh": false
   },
@@ -1318,7 +1318,7 @@
     "name": "SLE10-SP3-Debuginfo-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SP3-Debuginfo-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-ppc?2f8ipzvZZTSt3TVJF5dEz3kHSer_-kZ5x73pYGIB-GtB57ScME5xx39S4Vn2--bKfhTuoinTEdZsRuAlzDCQbq85_LW_V5dEJMlhbPenH_rHhX3sMD8YU2jj-QMINxIp2yVN4_jBhgEqALKapbQtfA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-ppc?3yTwGf3GM1-4OjIKy6ijt48k9TIvIl7lkft4zlst_C_S6RBqXHSzS2kNsEg19DcQpqQyiP3xRnSFuSKH6W_ZtyomQn6URKhT1Rn8wzqUmS_hFilRS7XIrqHmIrsO5DQFoEmBintTY3umYvL70_vZjg",
     "enabled": false,
     "autorefresh": true
   },
@@ -1390,7 +1390,7 @@
     "name": "SLE10-SP3-Debuginfo-Pool",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SP3-Debuginfo-Pool for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-ia64?YMCvrcAt2oV4AAAAYnPQq-iBmMeJYBLMGIthwPZO62-CG_hTJwvx7TTbZnMekB5qKC_d4cNFAsp3ec1E3YQI1xmiqWK2YXwRIGc4XiCKugUIKNEbrSzMp6vNu0Z9JF0dl5r7oAFwKiiTXI6q7uw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sles-10-ia64?98Hm8r_k_2VI5Ek4xLRaKmAZCJqH-9ZqU0BtTZ5bZlapCe80HwLHD_7_A3uuIw2hlDpwqFt28ydheStjz8y0gR9JRo-Z77DHXTOH3ARjzEnyj2K8jSa5_37qBKMm_XwgYx5_oVIJEkUWJVVmUVM",
     "enabled": false,
     "autorefresh": false
   },
@@ -1399,7 +1399,7 @@
     "name": "SLE10-SP3-Debuginfo-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SP3-Debuginfo-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-ia64?hAeUS0pQKQaU4yZX638HZ90ZC4OCWEHgAChJpNMh_-GJkkHHJKI8p0pMWCf1Dkv9ApAL5VSWHrq9-hydbDYNvfTGzdcu3Rf-2Wwx1JgVMi5xKopDzD1KiqpTD6tNMuBPNg3YAR3PvIcKMGCJ1DiZBUw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sles-10-ia64?v_rtwVn7hDVgvM46MkrHGkIT2xje4VknB3Qm2y5IfKXEP6YUwX5Vkp4idPU8q2nGD9_a2f82pKNh1seDyRZ1O_rDtH501wVNtHfGI0amWJ3NpBwhbi8Sjyq4-8mT_IQXIR1Df31nwVnZm4pXWrOYX9Q",
     "enabled": false,
     "autorefresh": true
   },
@@ -1723,7 +1723,7 @@
     "name": "SLE11-SP1-WebYaST-1.1-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-WebYaST-1.1-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Updates/sle-11-i586?OfIHW0B_LTMaT7Hp98ib88uxYsPbCkPeoD1q67s7Ljnj2apj5OobclAh8OstNB5NeNqNU7IMGIeQrBfJozi8n7G7vPHaP9yqHvY2g4D09LKW378xN2yLKjJb9Bjd_rMBqRRuOZrCgt16IVmrsvA6yhO1",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Updates/sle-11-i586?wioAAAAAAAAAAAAAXhM4mtAlhIDS6O-4Exo98jsU0HSLtFqndNiAFE3yy-cvnG1Q1CjIcm6373YJjLNMcq2uaTLz-laQLM87rE9FC-O8T2hX8g2e3A-Rs0rYWcgGkCDGyuYEU3Nrz0H44nLoI-Y0jGNM",
     "enabled": true,
     "autorefresh": true
   },
@@ -1732,7 +1732,7 @@
     "name": "SLE11-SP1-WebYaST-1.1-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-WebYaST-1.1-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Pool/sle-11-i586?ES_TrLoyjTLTo1DyM066KEkN9AKR_DX2VLeVoE4ZBVXIzsV_lsOn4ugfp5hKWO-Z94NvETGsDqL-KdZohXSbJDf1dOALe3-g-SN5nlvX8mcHOqraznZNhKrMdamiNusAlqkToeVEpFsVf5GuSBOG",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Pool/sle-11-i586?G1zzTWa4UGXY_enib7wyDotP7RVl-F8FkFdwMCD7Ps_g6zl5CQQMgWaGM7wJmgT2NqXaYeaPezKJ66cJz09cbP-A2eIjSm9869zE1NZG7_7JsSLExiTbl2wrD3p-soQIs6KKAWL0w0-viKHNt6OS",
     "enabled": true,
     "autorefresh": false
   },
@@ -1741,7 +1741,7 @@
     "name": "SLE11-SP1-WebYaST-1.1-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-WebYaST-1.1-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Pool/sle-11-x86_64?izKWwJZwgT7d83_Ij-UNqPBPrTvIrrQj5aq4CBT6wok25JN3w-5u4Y6bT6sgX5hedaP4-keqeGKUB1HWq2Or-aqBn0gIDNXGY3fyfjEpe-gaFXLvsehx9Azpjet3LFb5wk4DpEpRPO7n6fdYtsIMtOo",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Pool/sle-11-x86_64?iFs5fAfliK4oXO9Unkqk1QFSzMCyUvV-dNhufOzahtr9O1xE28iccnclYywkDRelYpIKWO6alRKZvEALJiG9ERcbd916G2TFYUjeAV1jErstN3hlp2aDumZvNVkzt1E2VfirYeKfI_PFFTBfNkKr1SU",
     "enabled": true,
     "autorefresh": false
   },
@@ -1750,7 +1750,7 @@
     "name": "SLE11-SP1-WebYaST-1.1-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-WebYaST-1.1-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Updates/sle-11-x86_64?OEsoq6LSsEoVrft40Qm6mhY-SNBtiZ9thTxde5LbBa7aRhLep1Vnt2yofk7FmxTNRttL9T7d8jzXF5ws7aR8204M0sTCl06w3-d8ZikLW81tG5xqNqgef-X9vVaJrRuj5l_kYw1HX8o0UZA8eDjFMu3oCjY",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.1-Updates/sle-11-x86_64?z3nWzzmzw76dC9E8TtGt92NT8PyuG72K6sppUOcMxaj2rFnM0uwHeWAFe9IuMLd5QiXISDj6Cnfv9Pn6uz8l-1yIDOJBWQgtjimWN7FZy5KH7E5H0VpTOASO44P_SFp6CJDmQRDShzmzdbTCpB2M0OkFE7U",
     "enabled": true,
     "autorefresh": true
   },
@@ -1759,7 +1759,7 @@
     "name": "SLE11-WebYaST-1.0-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-WebYaST-1.0-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-i586?rHifgCkuehtgT165ofxemWgjZf1sKQJBFiwLMSMZNOpB1WSg_1dpwVwnvi1KJxnn-9V6FdMHj4nsoe3GJ62c9sp7E3xt9fRWYY3HsxwVKqqJ5IcAnR57H8qhmpwphUZfgJs9pMVcJIc9h3Aft_A",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-i586?Z6w8NR6TvYqSvjU8wWAGCqg1B2ShMCzJx0z4hG45ar_iRLzdL93YpihNBBwxN-UBez_wDISTPvLFeZhAxNUY6wCx-LpD53awkZNIWR95SDa4XWB51PkbsP-ZQQwrId5VSmIlmay_H5FDWLRW62I",
     "enabled": true,
     "autorefresh": true
   },
@@ -1768,7 +1768,7 @@
     "name": "SLE11-WebYaST-1.0-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-WebYaST-1.0-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-ia64?k7NSmYm8iUBdilJ6ihxPSMuk7VpN4uM7MWaABByLrc0-K84JBk_at3MdKFG6LEE4DR4OmnSgugeDVwsYV125ZE0nnQA3vDS5SjC6q8pHIst4hSLIMsHD1ryrtSyu44EaZBX436COIq3BJXg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-ia64?UwzYPCJDoplX5tmz4PQ_puH2Ka-p3RCcIEBT9W_PbQgXPTTU_hKhOqnSel72RTWW6oii79DrKO3hLVM1DVpW_m1KDmjRgN5wZgutIYOKw4zgZz4oEgc64wIF6wnlyz_4p95F6JKdJReL5rM",
     "enabled": true,
     "autorefresh": false
   },
@@ -1777,7 +1777,7 @@
     "name": "SLE11-WebYaST-1.0-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-WebYaST-1.0-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-ppc64?AAAAAAAAAAAAAAAA-LEMuj9nkfRSEHzHvPhtaSHNBDQ8fkBJPFWCSuf6pR14RajAwT52S_pOmatqQeRVjRuZ_TbJnizMSSKSN_6jbJ_9hZwOFzQ9nIWPAni-9g3-nY-Xjakj246-YSBmCkhd4QfS",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-ppc64?42aswJLM8erkLc5ku2T0XH2tBgthW84Yl4ERxLXKWd_y7cARgNbl4k_XTPdXbCG6WD63Cwpv4mCKPHWIdJtekvdFOV6z0CEjRIiUQX9-6T7wm6MP_EgbID3AdambLMJJ5Kr_WX9MsykdaVBVXVmQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -1786,7 +1786,7 @@
     "name": "SLE11-WebYaST-1.0-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-WebYaST-1.0-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-i586?6q-1XzmS3NtS6I33MlYeDJMr6vHHGpL5tAe_0F9t2jJxyefSD2fcjU76S7z-iJxJYSr7lY-ib_IPEoJTtK0N8RfmIkf0NNUW-SLredsZ4pXtMmsdibLLwoNSikPidRgHQZff43x6yFN-dA8",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-i586?MnQ6wsfOqQTbdMfFoMfBzT8P7ZJA40YZ5UyeIbnWKtK8-BvWZUCCqCie4UenU5s4Zb8CfCaGG7RCV2JOdc_LnYggoxUd1iBqR8J1bcPokaXQM7ttaOIaS0EDez45T25aJIZRKxRuowEq1UY",
     "enabled": true,
     "autorefresh": false
   },
@@ -1795,7 +1795,7 @@
     "name": "SLE11-WebYaST-1.0-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-WebYaST-1.0-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-s390x?w-W8v2NPjVG2F32LijUqLlrX8IFejeFY-W8FNbX3P7ZJIlqqoZjequEMEpDY6CDAPOSIg47eHm80Rc-H6Zwd8lqfF8sVgbyF8gRse3DPvJHIEglMGFhlHa82_9C9no89HMRNMBFtvHeHYCvK",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-s390x?qQGLn0HJZfSqTM3cpFQLf2ODltmNIir_wY7Hn0g-LAZ17icvmKAHScpYBA0fnCGuuUuyNyRVUJg8NqrDkePWoPjmMoZhetIOQoZ1pACR_6KoBCrKCMlV3I9PF7Ew5aPw7-f6UA9yZKiUhFLV",
     "enabled": true,
     "autorefresh": false
   },
@@ -1804,7 +1804,7 @@
     "name": "SLE11-WebYaST-1.0-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-WebYaST-1.0-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-s390x?05xjFoLKR3ZgQDCQOb_MmkATq6XoFrEIsCjcaFDRjM449gpAomfNoeDy52KCFIXJAi88KirJw_HTrgFn5zmPngqDus81XNkgEecN4l8U6o9ZrShSbFrHyo2F7cTzol7YStVY-t8XkCbraWf79-SF",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-s390x?2JZqYLyGE-f4puvxrlGkIK5uVDv5dorTJzWtcrjtU-RZnlQKyjHxjU9YAGDzJljnJjg_Hpwj42dRVMA5HJY2d0hv3qCKKb6PPGJiHeXyZ3kT6LLgepFGi7EuFCuBk1qdAAl5lTAix99ZLoX4KJWG",
     "enabled": true,
     "autorefresh": true
   },
@@ -1813,7 +1813,7 @@
     "name": "SLE11-WebYaST-1.0-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-WebYaST-1.0-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-x86_64?3j4LqqOpOHnvtuMGMDJ0QuUvlfjILNTSonmE2LhtTzMkyeR4ZS4pDKq_REEZjDpOhawixXR9HNgDaipAk4OUMtC6ZT367vXH-YLak89H3D6_sEhcVHcfFiRHvEkH39cU9K94-it67XXgKa0tLbwhEg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-x86_64?III20Y64dyAkUA6uU1MaRWc8nbbFeWiLAAvbwFSfnuP-inZ4Be5DcuhSOuH-3tYlgk39S0yM0_CPvQOYGSKFV7B7rpQy_DH8togGHIZoUENZhtxzxSMGZPUaWCQEQtOagOOS0NQVy0jzEcFtfoqjTg",
     "enabled": true,
     "autorefresh": true
   },
@@ -1822,7 +1822,7 @@
     "name": "SLE11-WebYaST-1.0-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-WebYaST-1.0-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-x86_64?uFi3hM1aXk2pi4Vljux10sPEyQ-I1gSZRKNADvE3iqJNy7biQkibUKGnCscsgc5t6c4AYkhYb8P1CWVbtjG4tBZ4_4VkC3VZlMNLv0C-JcDiW0Y7qzEcJOVpcg5-rNKim7-i6_VpF2pOiWMzug",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-x86_64?Yswj-FlRIXw9Yn2UMMeS-rzjM-EAJ8qRlyjOD_zMbNDhfnsgOqxxR_YtNP0OS9DY1Ye4DIKpXE2sP6aEGndFs5hntysmP0HFryH5RjgGk30fP5Se8DZrCam6rwlbEPtST0wuGq-_t98J9v2zGA",
     "enabled": true,
     "autorefresh": false
   },
@@ -1831,7 +1831,7 @@
     "name": "SLE11-WebYaST-1.0-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-WebYaST-1.0-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-ia64?oLG0uCOo_HeRDDJy31EL330SYPK-g3ssr648dX-n64GLnMPfvNhicy2iLoyJ5g9GLpKOZD9AXTMRf50AcqKJWJJWvCRvGs7NHO21Y4lglCTsGOCk3puZXTEXdBnBfCfXt6sb4A6pns7S7fDvsvE",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Updates/sle-11-ia64?jDywNmk9gVgk8F-L0p6xLjmCdf8O-2YxqRpgur37nkOaSdgG8LB-gKEL8888jqVe1y8cO_kvPPRxWkVQdNiFinRO7lZBQO_rM5TddRLm_xfHq3hdP57qIZ30Y0j8nlAO9TA2uvnED_Z0-mitObo",
     "enabled": true,
     "autorefresh": true
   },
@@ -1840,7 +1840,7 @@
     "name": "SLE11-WebYaST-1.0-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-WebYaST-1.0-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-ppc64?WTzdMQ_S9S08BILgpYh9hC_OfKXewO4uxRNIolE74c7QX4fCbP9xlHs3QFSRY1v2wfZmAnIxX-AXgh6Gly2c21qwFmPP6k-cSMXorPrcykJdvJjMVvrYqibY-mUPyYgATNvs8dTsH6MmtFyn",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-WebYaST-1.0-Pool/sle-11-ppc64?POVX0QdAz1WCpwXYV7Y9STt0WEoML6mBXZD9i0Qsbm4VNZgp9pJ0NHrTtkdcw5SWKLvHCN3jc06n2rxusTTlrrd7e6egEn7xebG_gTGA8vugVByo4k8N36OK2pp3qpX7fqFvidPtjnQHItoZ",
     "enabled": true,
     "autorefresh": false
   },
@@ -1849,7 +1849,7 @@
     "name": "SLE11-SP1-WebYaST-1.2-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-WebYaST-1.2-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Updates/sle-11-x86_64?FThqgvF9OoIG7UF1wJHOamOkGxjZGmmpCgVX65X8D7uQQYv40raMP0h4K0mjEZAvsqq4AfSuQ9H_cC1UPDQ87SYsut8S8emjHuvx7kAOYRmLQkfR6gaKsNb6ox1fjBPbm5FgIKz_RNvXTkcrw_1ZDVV3r54",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Updates/sle-11-x86_64?QcZmMzVTPPMUdAsO5mUSaU4-AHHh2jNUoqD9jN-06PrrEaaDsYrMRu-V03NEiNEyJhrXoAdepFu0rhAtx2XCsdAt2oDVlO3up2OpRjno5R4SPqa2coE98U7yFpXdm6W45NuU1UJvuicQI6AgKn7Wc1XwDS0",
     "enabled": true,
     "autorefresh": true
   },
@@ -1858,7 +1858,7 @@
     "name": "SLE11-SP1-WebYaST-1.2-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-WebYaST-1.2-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Pool/sle-11-i586?WbdN8DXm86p3YMvgZ_zpVx6flf_hrWdoEIjsKsYSxOXnRQWo0IvRHegkgdEiRjuwWUsUasSQvSqEtlqTa3G0ChVDrJ2JEyAsg5B3A_dlQyRt0RaSo9Yu4UpQMd22WshWvJCuGQ_9tfl59DvAssq1",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Pool/sle-11-i586?blMt4VvfiaLHZ-CZO2OVwUhTE993c9iRHFEeFakuW_uRns-FndnxW-Or_6WpV8lIl-hPTEb_zmQCFykY17MP7Ncfaj35798OiqHTmfgPOb7j3H-5U5X7SYcuaa8YYHdJC45_NVOv7ppqiZmabDzL",
     "enabled": true,
     "autorefresh": false
   },
@@ -1867,7 +1867,7 @@
     "name": "SLE11-SP1-WebYaST-1.2-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-WebYaST-1.2-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Pool/sle-11-x86_64?q6zNahg0eALB3NhLqlOG_AEVuckrQqVEY8aKKPhNZ2GwyOCCibnXbTsyGxKSxotAErjYxMRSdHkciohy98xi4FkTY5fRefp4O5zCgnMPxXLdRcfpvN_NqTZ2UmTTcmPDztHMn1hpjpzB3tiIHx8v8a0",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Pool/sle-11-x86_64?IRycb-Jw2Q9cDnmJ9rygXY_jUY5W3WNeR2TMMsdl6iUiDfugvHvXiRYha46vJFKxuWmOby8oAgX2M_IXP4JeofvsCAXW9kU566n9zfF25QW94qrkMFJJGYZ8klpDhD_e-28Gp6UmqerJXaj3r7ld0e0",
     "enabled": true,
     "autorefresh": false
   },
@@ -1876,7 +1876,7 @@
     "name": "SLE11-SP1-WebYaST-1.2-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-WebYaST-1.2-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Updates/sle-11-i586?mPcYcU_k-m5uGqsbnX-lGzvq00qs9JMyw6L5GwD-hO7MjEm1pCJLDBIsGJxo6TEbWUaLjMad7Km3Jhs9pyLCFCqkq2Qg6sXcDGlJ7_Gg7PmLdQfjLilj5__qv84BQsFMdf8JETfiRkgUjVG26sJ7QkDk",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-WebYaST-1.2-Updates/sle-11-i586?OJuFPdOLk-SGbV8QmkpkAK7GQTVf47dQxoCKaTKKX9U_ps4Rtj1ulTEBSWxZ7uaEBppKaIBnjEcauvJMFFQShrrsMZUrcfvsRcBjON4-GNm93PIcPkWxpf8LfHstAcR6U9_zW8uTCBUfbtpmXYSF6n8o",
     "enabled": true,
     "autorefresh": true
   },
@@ -2119,7 +2119,7 @@
     "name": "SLE10-SP3-Debuginfo-Pool",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SP3-Debuginfo-Pool for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sled-10-x86_64?ec9389FfG3-5lxMBSE0G1fFo2AGyjCjqM_TFru5NMRYLAaHWq4VDgsx0h8bqNVU3HYwnmSJC9_3F1dYKRO9h4CpqB_WcZ0jYe_jeHTov7bJGndZMqXP02dM9ivxbH7jukjyGY1_kR9J_6_6PzcO3yw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sled-10-x86_64?8pq3iipbJhbcrBhZ1SMxr3RvTTMaZhWIOheVaKMSbdnPLB_-XfZqikstxUe3aMPS-Y9tXhqg2Fyl1hpXe3aL1UqfG_K7AyykoYhbTTwYpQd0EbKWZOdh3cUJS4AjGr2LTnPWXzUTMXB6rNnr268fnQ",
     "enabled": false,
     "autorefresh": false
   },
@@ -2128,7 +2128,7 @@
     "name": "SLE10-SP3-Debuginfo-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SP3-Debuginfo-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sled-10-x86_64?2Gy4zAyCJEXde8NZiVib6g6jtSInMjWMjRpqJcofuaGLwcivuINRbCvVTC2zwuRyh1wNJhj-sYRJFMrtCIsOfP73d0VQkVDZByzSNxkQ7Eexzj9Z4KOlReClU0mTkZi9k3lLWoqEUp3ZkWbp9gopUfoRPA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sled-10-x86_64?hKektt8TT1ONjZ4YZ-Lj6KPE6anRQ6czQkjryU0yn0PTQMOP1LwwsUmOJbNk1UrM3iBZXDOmakRjmYPB8Z74WsRDhDzDkVVri-TMDCNheHHZ8i05hsI-Eqfw2l1d_9NRNvMmceZHEAisxhYHTp6RQMRMsQ",
     "enabled": false,
     "autorefresh": true
   },
@@ -2353,7 +2353,7 @@
     "name": "SLE10-SP3-Debuginfo-Pool",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SP3-Debuginfo-Pool for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sled-10-i586?E-EXURllYObf_7JGK_hCNaOdaWN4XwEDnGW92QCzbLaGjucnkQVzw64lRIifSf_akeovPSzplwK1AiLkjv-2yS0zNTLrGVL6lgXQUmUVD427T7FwFFp8y22u0cMQb0bKSXhfDR_OYWf7fg3eIOU",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Pool/sled-10-i586?uRmX9gJGgRPWzgGNEt4q1ZsCHWoli0vtoT-082FjR6joSmX1qaNfW5y4-Oc6VFsQ0RBjOzV_OdJYLEAuEp4aziz-xjgF3MfClPZemt-w-vzRwIutHXNbM6IjZLuxbBq7swCXqrZmVQZm9XgHuec",
     "enabled": false,
     "autorefresh": false
   },
@@ -2362,7 +2362,7 @@
     "name": "SLE10-SP3-Debuginfo-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SP3-Debuginfo-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sled-10-i586?3kM7l1sBl-Xn03336wKI0rRXPWvUMvDgXMlnWCN46x-nVFDTJYH0sq1d0v7OnGPYAMzs4ZCccRqWA_kSocZ1bQBimCdGEPSsXsxozxd93OLLyNhOzRGHfpmnH61o0RpEDnaKRg0RQWdQQIQ-LggHzfc",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-Debuginfo-Updates/sled-10-i586?9VVVe4P0sd920SRdQBKWXT75GGgtxBV1PZHYq2EAWiKXsgf4OpPzIu1MRe0H-U7oUEPdvUhYJZtW6jqT0xwAsPt4NVGpMMKquNNWSt6sdD59c3H2fUOUcp8jJ4ua5Dak6fBPGAqePSXHfmOuceZyyno",
     "enabled": false,
     "autorefresh": true
   },
@@ -4567,7 +4567,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP2-WebYaST-1.3-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64?yiYUhfGY3JYF01mLJPWVrgFdwAinHlKu529zeaw-KwfnOoA7mXWKVT9C_n2mtM3iZLX090psGnvoAn044DRI7CG2ve151YZgdNUSsLzwNJNAtX73W9F2v7UyjNGZTiiNExPWnXOcsj-g75fga7MbmJQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-x86_64?MgpadjHna7AjdsV3bxxrQhFv0EE9sodTp8GP_ofdAOMPBseD-QXiBY_ykqxi8lCq2ttMZAK56TIl2bPXKGFZ48dOfTAL0SBtTx8YrDXPCOwrW16TCnW9he1TDc7X-grhrQ5hPZbgnBEesUA6WEDBQxM",
     "enabled": true,
     "autorefresh": false
   },
@@ -4585,7 +4585,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP2-WebYaST-1.3-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64?nN9Fov1AFN_5RYPDMcYoEys3M90YS6SMXMhwx-kBstvpnVD_udmMby7rplG5jfB7Nmjh8mpjCTH6H2Ap4yeQSZXOnYaSz-3YuB5VzJCDH9XYFDYKZyXiS2pxITUYunnfwQPBDXu1aaCVhxaQCoiEuRv1Foo",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-x86_64?WyRQbCKwvWB1lke8IH-HuuwJ1nlTBbs9t8s9Zrv7rqks_WWCqC-rJrvoroFXLyVp7v6M6u75WRCIqFySsAPi44rEsCPq_r0o3gZ_kTpRewmDO-25yiRDs2u2Z-eyc8m06PBT_XdbsSeTbdUYigyEDakeVGo",
     "enabled": true,
     "autorefresh": true
   },
@@ -4711,7 +4711,7 @@
     "name": "SLE11-SDK-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-ppc64?uEZPNjy4qnRxtgFfbyzZp_qg1BL0mMK7sRw_tyEKhTm2eD8colJkQBqwirzX_noxTn9UYFDVLRb_4Xbv6v73GT4SAax8mh2ch8_ZwQXvK4YnG5hYDEVcne11YWtXP3MCaL8DoPeLHg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-ppc64?prU1AhyvHnsoBR4YLi1Qypfy6Asi_kg9L9t28xSeWUlFDE7pPdElR-hNtmFC2qfq6Yim0lmcw1zaCBVuCA6S9jLm8KoHMcB-NCO7np0XJ34w0P9UCQGbkfxX_Xhk4iMMgQkMH6jDRw",
     "enabled": true,
     "autorefresh": true
   },
@@ -4720,7 +4720,7 @@
     "name": "SLE11-SDK-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-s390x?9tTEJa0bAAAAAAAA_7qvnwWk6AmaDDujOHOZQrUUU_qGUOfY686fZjfGH20NtInLKtpuyxav7xVye15PdWSW09TReVBYidBgAUy95BdVpjc0CBFvNB6Y0_N-dXP3x7riTr4IKA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-s390x?GgG4kT3eTZ404I-KmCrWZPl6KP-kam-7MXF_hVUVB9B36eFqACDTFS3BKejZNVWBeia0eqzuOZAtfgWhTlNTdCDXYESL4qp7jtAoWcKqHNtn18ZeMEB4fOyMmjKZ-fzA8IVqRw",
     "enabled": true,
     "autorefresh": false
   },
@@ -4729,7 +4729,7 @@
     "name": "SLE11-SDK-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-x86_64?6TJeRkYvME-IbYMo6YvrjgQfqqhueJR3lfgt4pqkZeomCQiV5szMQgYOQOfCGL0s5GgEBJJT3l4LsElpHThrHTrZibGwkAfLtgsCDpvhqV_S5coCfbzn-7u-TBUiOPPxxEMRlzMzn18",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-x86_64?pTtb_KLT4PIhkHbCROeCRpqyGyja5aSCCK3InF13f9T-wL74lgwoIkasPClHuLlEJ9svG4LpD6V4EQZZ94znErXBfbR3HhDOCkTX1En4CV7vqNK85Oi8P05oiUSNwA5UWZAroBuFU6w",
     "enabled": true,
     "autorefresh": true
   },
@@ -4738,7 +4738,7 @@
     "name": "SLE11-SDK-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-i586?Lyi8ZXUXLMdjBObchuz6-6AiH-uCrXXZSQlBe3T8w2I_P7pj8ouZE9aldhztDqM-iDOLucguCg8KYGoPXG7w2mOu0nesEHN096Fp9ZhE50TmV19omvs5dK4BuNtdCE2zHr5d",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-i586?PDgCghGrrXIZRqvmbm92e02R2F_ZdEeI9vXTbdPbiNQaeHb8JqgtirTrLVKce7D132Z06CagfY8HNwahRTO68ypGHh0F-ShYWiXzPB9F4iO3iUN_WqIIJfZQniBK4pZokubY",
     "enabled": true,
     "autorefresh": false
   },
@@ -4747,7 +4747,7 @@
     "name": "SLE11-SDK-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-x86_64?4kYfRM5zefh-dp5F4x-cmBRxZnUIALZK49z3ArO0EI-ZHcW1CZkslw0BUEQFMREH5b7Ejbq10sEMREsh-ckJ9EW6nospbHlSkkxmBpiHrfh5vxSkKPNR4CLqKf9A0uhoM8Z1JwM",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-x86_64?O865434Kil0wSyOlZStdFW68CSE4JyjIsgOhRe5bxHH9DsG_l_B1UkYeOUS4AriOvfC2IGe33WDKOOfn3omc_hrdvWw-uohAboTBUxR3qKuoTxQYKY5ilX5y5HFdsUUngUP-50A",
     "enabled": true,
     "autorefresh": false
   },
@@ -4756,7 +4756,7 @@
     "name": "SLE11-SDK-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-ppc64?dAJbemJYp-cDyaDsziELuVmJSXjvwpNCGvjFJC3NpPCsD9-FIlEeAtSsnOhQ0MA1wAUJmFReTFPnAnGA8wSptfuko0JCf_WcQaDsCTy-l0ReTds7ifAkf-BtqrsEZxyGnMeuEA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-ppc64?KWuJ5odVGOEuN3Kc5G6hzws3A1PVYoFVPCU6ZsRJsaHnwAvXb-ZKGTNyNAeSAefFoFgEhZR5IcVjyTpf7d5Xt1G6I9ODLYRFLEEgfzvBvs2N1K4NV5obJMIZ3fXUuetzPKeFYQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -4765,7 +4765,7 @@
     "name": "SLE11-SDK-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-i586?OBxzjX1u-VUyy3H68pt6urNy9-MPeVeBLPSjc-CHI2s9ko7yc7uxmCb7v8J0JEtOQ0XqdhE74bS9nZ8-NJbsnVsbztIZe-imm-KwiA62R9UAmeBPZvHG3a-gH99Ko--T4OAg5nPI",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-i586?PiGBUjb7GT10pa8GJvqUYeCkQoWLfH_IDElN0Xc_swjtVWnvtw-AJpcvcuMKX4ZjLX7ReOrzoBnkZ2f1Dj6ve9QFu3a3Vu6-X8LnkKVZngZONP4g09r2-3OKAuo6rjqyNuFhQ62i",
     "enabled": true,
     "autorefresh": true
   },
@@ -4774,7 +4774,7 @@
     "name": "SLE11-SDK-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-ia64?NS2seucqDbpNfHTaTAy7DgfJEb5QDvwjo9X1Wyug3oub58TmDMmobAVfGEwmbe5ilOgNXa1dh2UgSlQEdMwAapHpt0IMAicezWGeqrUfiYoKvP14pLPrxb0ybUiXoi6gXb0f",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Pool/sle-11-ia64?tKbcTMKmpJxGcrSbqzEgbVMFayj6pAZJBBj-7rrW4wuNorok6gC3ofcgGUhju9PQavS4T-AwdEqEEb5YgQXigXCMrDQbqxtIsUp6qW2zapHX6lkI2TtJGqtOqjr7E07gxlux",
     "enabled": true,
     "autorefresh": false
   },
@@ -4783,7 +4783,7 @@
     "name": "SLE11-SDK-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-s390x?ciHR6WorBKmutTsTYoCdgNB9IX4aQkfcPw94JFuzCtspTSo4w8fJCyv8SOHmv-jgP01i9jPJfrCor129oYne_JaJHflX7opKie_qD1vvTvu0FoqCaUG_4g6R8elshy5xGMGY2J0GpQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-s390x?e7jHhsUujR_jECb1YgoMcrXDTZ3HFw2wL6y21XoMedtmXnsQ5POMAgtM6PAeo5NXZpDtoTvMfQuYL3jToYPBdVGVaL1Hrkp7QTw1rZk0gXps_O_D6tJ8sxi3Wz03iRKZVg_7EMQTYA",
     "enabled": true,
     "autorefresh": true
   },
@@ -4792,7 +4792,7 @@
     "name": "SLE11-SDK-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-ia64?n78yBNIZJkjmfKeUHlcVy9qvK80FNrq9HzgC_Gw-ZA71eqEdIOHZ47gcxNC9AWAJ0tSDvv3f1J1nlLUG7T2ZgAoGYyQJWpMfjg6NZhlmzZ-ty6evpIH13dfdGdHaicl8LhV3B9Hr",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-Updates/sle-11-ia64?mzKRlxL-_3jbgz1khkMhx5rYKCZW4nmHrvDdKq7c7YSGqRxvSEDaUWPAPFNMD5FNy9QdIfWRxiqcEqVHLHxPxs1m6LHT1DTKZzpkaapJZHCVYmfVu6cV8BQHerhU2Fd9ry0rfB01",
     "enabled": true,
     "autorefresh": true
   },
@@ -4801,7 +4801,7 @@
     "name": "SLE11-SDK-SP1-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP1-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-ia64?ZxAGmGnB0AAAAAAAVFQWNt__KGGhodPSBTE1ZF4BtHm0u8RaqVvyOVz6skyDZJ9mdtlXivyLT7LL4nkgQ3Dqfh-c0da3XjIn1msvZm2WU0e1JN5UZffbOmdZClmoZ7JDXBOFBX1VB_qy8Q",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-ia64?AZG9Xa8_-ZEfEjXQ38zymw0ClCxF88KtYufXlK9zlVEhhPMVYzuCA5J1QlfeFtGERhS0bFouA-Bguanvb2AV7sZ56IcjL1NMddPl-83fNRuvGmULBObrc1rCusjXlTJO45CTgqLAVzhf-w",
     "enabled": true,
     "autorefresh": true
   },
@@ -4810,7 +4810,7 @@
     "name": "SLE11-SDK-SP1-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP1-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-ia64?ck8AAAAAAAAAAAAA6J5DSNrpxdxBESBAitfjodpi_sUE0mTxSX5KihMo9e41Hd-uQbQOT7KMBihzEUfUSLZI6DZIgVNCJhvzAO14EUINX4cE2nnX56ERmVCWQVkWvMgmOufFNywscg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-ia64?fS2BdsLszVJpJAqIjtC9j38u3WxepFPoMa36352V3oHFVn7UZRUFE_zUclExnpOgfQpVl3BILxukdsfg23yzcDW-9Xne303RUvSofR46UOZ8RtWef8qeO2hkxQrz_D_BDpxChmroig",
     "enabled": true,
     "autorefresh": false
   },
@@ -4819,7 +4819,7 @@
     "name": "SLE11-SDK-SP1-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP1-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-s390x?flSZEJpCdbkDka6O47tGScUI50DDS14_5t7FSJqRWDeWo49YGwEwOdHycG-zyCt7OKYmhZQdtOPR9msqC-PHdTpPMETO82S1lYendLN5jhUpnRfBEpQ6OlsIYdor7hsdhB12sOUWuoo",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-s390x?iEVWE3JZtDHIjLCnjO7L8lRySTQku7Llc7a0sYmBAz1_48utC7t86aqlTOC-kWqqWStSKEe7oaJLl24ze5eS2h-4jCABGCr5Pxcd1AL78hwUuHV-YyU5-SvHOZWqfuS8dNjCw2HK6SA",
     "enabled": true,
     "autorefresh": false
   },
@@ -4828,7 +4828,7 @@
     "name": "SLE11-SDK-SP1-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP1-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-ppc64?TE4Q705UpPZKB9qZ6I6l2Z5Wg6s2XDCBr18zx96HX0jcY2NUk_VGG0L3lLOjEoLB4vMQr-aAf7meIl2OyMCulHfDYiZjspVNOZEmTLg-hdHEZXD5asw3ZjQ4-32ABWEbjdZrQuAvrVf-SDw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-ppc64?cdjhN3nFh0mS7u2kZjqTQEyfMFagibbzem7xJL0y2jB5pZSK7t9Vw6RHUfku5ITfcF990VN2I1G3ZolAhb6tZg1rkf3gtFH5Y92e_LmXlYIk7mmEN3IznZ7HPrgz49tqBItd_F1HXWnStBk",
     "enabled": true,
     "autorefresh": true
   },
@@ -4837,7 +4837,7 @@
     "name": "SLE11-SDK-SP1-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP1-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-ppc64?sO_vTow9ML5tUyqD0dic9UZ6cIoDZ6MWYI9AXTtvo6hziZizGhRMj7l9mZYO13j4zt1buHYPAIA7yowTMPbGfyNesjYbQxRMu53cVzHfcnxUyDVeloE5L5kFGaRHOzNjVjXbVzJfuJE",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-ppc64?EoDekGdua8uGIk5SONyhlI10HagU3aH7wDaRIqSK6kEh-G0T2jUChlQy16zdz6NGcv3G2K_kcf7J59-5iSwoWgUsju6eNsyU55WEa9K4V3zV1gzkISquM4EJrkOJf85WdPBhNUrJgio",
     "enabled": true,
     "autorefresh": false
   },
@@ -4846,7 +4846,7 @@
     "name": "SLE11-SDK-SP1-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP1-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586?5Qr_RyHA1e-tkHgPu5Tf5QfAsCiVk6GIZfIuzwRsDTvrKmFgqPCULMH61weAPGwKgAG6k6C93Cw48EZNHOJs31rhHwCGE34rbNFXPT1pzpzAAlW9DbVy8yGoWxOBA0CP43VNSHMu07C8UQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-i586?lTApDdQ3HuoGExKiEhHKZOimMOe5dh0eU4mT3fs-Zm2nhAkch-Zthp2H9cVxMrzNvqJHV_dn4sz2txVKgLG8-pcVs9NSPqj8kMra5jj-glTzwHzifenfpkLdkwdSq-mviIr-FKpSBzbQkQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -4855,7 +4855,7 @@
     "name": "SLE11-SDK-SP1-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP1-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586?GQt-KVZlqVLQI8PA_fAq6uKtjXm7V8rf6Cy5Qprd6aQfS-S-JQ-kxLwmqINISLzaC8cIq33TIwfPnsUFE9XqSUHI1zIpd1fSeGEt5v_uPUGM3MTUClERQwMQwsueAs730ymRxkZKDw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-i586?DVoUVxy4zTIKBrtsKDh7lhGtWP7_5tmQ30A0iNACasEP-2UBC-UlhjewB1KGy4ESK_I2h_AwVDC0HZVTNKLqZ1FVYA7cUiHe5-Ymq_-qbYZSnxaHz3_wqcJLUn8qs7pTzapxXpzPbw",
     "enabled": true,
     "autorefresh": false
   },
@@ -4864,7 +4864,7 @@
     "name": "SLE11-SDK-SP1-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP1-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64?Z2OvvTx0BcTr7s9i027omomhcHikgp1b41I4ztsqSNJLceSq1LG83VtBAQ9ZUMiFq-qUI_EGqcC55gTTdCr4HVqaKNbZ_iPXlJ6SaecbU4c6iXDxlhtPlcvDexPihac6YNwvGCn3uO2E",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Pool/sle-11-x86_64?8mTxvCJHX9S7tVYJZLVb8DhHJxVm0PM_BDzM2wITZd6tCIF1qYXe-EkHTItAp8p7MM-OzvfW_6sKClyN3b4TuOjygvHS1PxBEnTQDsbz9oEZYxoc1rkq_n-x8b2REXzu05F4eIsUC6Fr",
     "enabled": true,
     "autorefresh": false
   },
@@ -4873,7 +4873,7 @@
     "name": "SLE11-SDK-SP1-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP1-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64?iCpyXrpu3p5XRqeyPgK596SSo_mwm6bBqbnSML5L9nak1mOhbQo3ERYGbQHFHBiaftroBsP55BxDxONpPHEhxBEdx2m3piMYse0SEAXqtLQq_AA41yP8U9j8_LWatSJbjcgHNnGEOdSitY3k",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-x86_64?RJYm6mBe8uIPrMt0MGKI_4dlfO-UhWAnoz8JyDfINwVKrg1jHlDPDkyGxJpeK5unP04Mq6yXNqUrmKCev_cm8QGP_xzXIBsRoXVek7e3GBzRUAigoVgEaRlDbdTylK93Ipw8rVNx9WmfjJe6",
     "enabled": true,
     "autorefresh": true
   },
@@ -4882,7 +4882,7 @@
     "name": "SLE11-SDK-SP1-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP1-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-s390x?lJEpc5KkxUlPjk_dMbvJnnRoJBOZ9yUrYPsWiafOJpmIj47N4RM7RPT7m11PndQVKze0QaX87Xkh4Joj3nWpA2JFCT7fQxBaj19B7q1Us0Jxb3_ZI__T_o7qlO2aXYRi--IeTOW2S9FfgN8",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP1-Updates/sle-11-s390x?-Fbg6f6H1P3ryc9ofkdXZDYnuKiym-_ActMAx5au_ZgwpKpdeikciFKoaSZlqLDoOkczfJnyL0Rr3gWKtzF029OLZLq0CmqDuCPtyKIBClqe22TnXTOb9pdkFN6ILaDuIBz5YzOpCSO2kR0",
     "enabled": true,
     "autorefresh": true
   },
@@ -4891,7 +4891,7 @@
     "name": "SLE11-SDK-SP2-Core",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP2-Core for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-ia64?h_VPdLsguPhkPVTyRA4ShHmIK8QTFQXpmOhE9faK9MT2O0_1vWIKztlRTDUN4JEcZt5XWUO3rzI6nLzMRRASjA2IawJyucCFJgD9m-kAc_ylB7e9EkcxsoOdLGu9CytQLGGzo0DEnQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-ia64?g_qjo0V3mFiymNQZyUYWFFGVGwpp8rO0f0N8NCSt_Mgi1RC7BASFtzqvnLXVYgC-IGfvlDn0R83dclYm8sUnmaO0CDfrj1TlWF65VvY2crj-DNCJT9h6XG0glKLSkiam--IJ6ZSyXQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -4900,7 +4900,7 @@
     "name": "SLE11-SDK-SP2-Core",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP2-Core for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-s390x?NuAOEX6l0xbidgyrNddzSZXTAfxg0xE9UgqNw1hxBD9UBj-BNdsbbgv4xQ26KuQGNvJ6V_dbaqtdAwHryZ_w9Mdr2Jz5ORxJQablH_PIu4InPmNrAYmbFmp1aW5ci4U5mTCOZbAGnig",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-s390x?VpTcddP1DnxwShDAOScyIbZcocAaYQIOgdAriyWHp-um5u6jEWllLL5wYlRG_QlfvyZyCeoiOpHpM4OdW5OdDL0vFs0ZILJdA3IRN2HrejrAKi0ZBvqxTfvSgMYY9g8sW2iy82KJi6I",
     "enabled": true,
     "autorefresh": false
   },
@@ -4909,7 +4909,7 @@
     "name": "SLE11-SDK-SP2-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP2-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-s390x?e7vRJaGukHS1_xdd2iE0znYo-aMxN1Fa5YuxFFzjtb8De_KeNgtSuTfmyTbYx-euJnfikYd8Y96rV5eoaWKj7C-q81czxecQQz_W1IUHPt9JDzW0XrKf8H7QZYswCCIGisCt_ABRvNXox4M",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-s390x?vIQqGUfqiCjCMbTGL7wi9JwblUWRdSgLA2iS_rb-5ICX378gZTPlybkPn3h0tN9oK8LnX9r3_CnEgS5Ho1ZdmRvYRz6stvkMKdLNdxoKLCvuM6hRbJ6opSnXTvTY9oC7PaVwwwco-YqU_qQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -4918,7 +4918,7 @@
     "name": "SLE11-SDK-SP2-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP2-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-ppc64?1H_dwY5PYDCX75JoSP8XNxiKOk8K8AU6CGPzIbGIVKoAjovNPwwrFyPNKj0A0q7R-ZAz3KEEQx2SM8-gfNM4Q-f3fp9jKSVemUm4Y2mfMh_zBk1EyRdejbQKt1LG1g8uEURxDBEi64eolPk",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-ppc64?UWkNahZUuau8kMfWFR7En20MCzlfg9CU7teZyrydD1PP3Znv87aj_SG151kgSzk6Oc_WUuq0ZM4Eu9X5ImUgyh_42BNk0YvIR8pp3mP6KT8mYbLj7BC6-N-fp69E87jrR3Pj5J-n9T_lgdM",
     "enabled": true,
     "autorefresh": true
   },
@@ -4927,7 +4927,7 @@
     "name": "SLE11-SDK-SP2-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP2-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-i586?kPnJpSGHIPG6ywRIQZonk21jvouxLyKvlAJaKIOA2wAQjLCDEXpEjv3HlJI1uD1FyOkKnuA3AiSK1N4qU3mUptzWISs5dIQpTMINcYE0dVjm0yuuHepu7Pr3ojHyhzUiANE5dRpSlOzDCQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-i586?fuetFXuMwFlRfIdJIR-NMhdxeP15Z1Ca3Y6lE-u1DtN_-dM6Rz39Aunkq3TZQamKSr1XdP44CtVanub5CWpCGfWQyS3Euo0TeOxk0wPUyu-VJnEwkQ9401xpJp2KlZpW7U9xuTzN6joHSA",
     "enabled": true,
     "autorefresh": true
   },
@@ -4936,7 +4936,7 @@
     "name": "SLE11-SDK-SP2-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP2-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-ia64?Qx-wiw_SxM1XQTc0vCGqiZ_b2kDcXGzBQta0Aqgs9FxW39t12sO0lvCWsX7n98dyoZSxY73iP8LcE6WCTONxXbi3ooZ34rUNOi3BqxG6XOtVL5fmeDAPx3EAWOXKJbI1U1mXm01LTcWR5g",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-ia64?630ekBiK-Prgu2CPzGZcvcKYvGHFY52DBFqkXjC1qvGH0Ae36M8zJFiulH7euD0JOFj_LbR9QUVV54UPMBnPNvfj0ySJzFhDDTaf_AuLLwHkaugfNFDjCyN10kgNATd0B44VHOxGYFc9Dg",
     "enabled": true,
     "autorefresh": true
   },
@@ -4945,7 +4945,7 @@
     "name": "SLE11-SDK-SP2-Core",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP2-Core for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-ppc64?VcQbwaeYNTtrUuiWrVCQ-FoDy_iB-6LWXCqKCSmwvKapTuma3ahxK9XEvctrNYoMhorFPcr5lqavrScExBP6-Y5mUxMQm5l19yLXlmd4fD0p2BJUtm78CN450RkeHoq75FdtzWJ2-Ps",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-ppc64?ryIU0TSEMavV3A_tdZRafUZcDyWKPhY0KXoigB4LvTgeHnLhOnSGC1E7oPlv0R_Q9ToARDJzx-NpC9EicLlRjmQoDsWE-AK6-Qk4mBJo_EeblWl1VaH--W8VaOQvV5LnlP2cAPM2b4k",
     "enabled": true,
     "autorefresh": false
   },
@@ -4954,7 +4954,7 @@
     "name": "SLE11-SDK-SP2-Core",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP2-Core for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-i586?bP6A9EtnBfi-vuBQvYoeA8Tsw0h-VBW5a9uNa5g8cM-KiyHLI3QiTkMBicbFwVLrPCNb0ZUVxRBd2IE1Ogk1OZzntWs6cqj4iOyLM2yrUVvGpSQzCkxlAstXddtzMl1KJeGrmcsRrQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-i586?SWWRP3eVy7I_o6nj4xnnQ-JOfBAtbr9pgMNmzR2bAJ5_FHczomvGLz-cN1hclUOHp7G4EDCoZWgrCuCF_tym_MWjzpSKTqFA8RMe-4F1I6gMV_SFoGyhewa3HNzQNBdAGu6k5geNzw",
     "enabled": true,
     "autorefresh": false
   },
@@ -4963,7 +4963,7 @@
     "name": "SLE11-SDK-SP2-Core",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP2-Core for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-x86_64?ccdXtyLaQIDR3wxtsWoDS5Edu1LuUHmhHukwwKvN-9le_kNFAEk3AlYoGFGj3X05BO_ss9cc80qD9w1wGN3vJuAVK_qKontczQrSzjEtML_zpUQ71hi1lox8sBbziW5YTFAwVdHonU6v",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Core/sle-11-x86_64?eHvGTAS78vjf_BkYRkXsTvhXWYBoRjVh8MkZAoQMRmg91DTEgAiTI1zeXkY-5RKGluCtNl3JIWxu3uV6dx_nsRrvhonTBgrGXuFdS-UCMRc0sUU4kWWEtRAlksYZyu6oF-Oi-hEgvT5C",
     "enabled": true,
     "autorefresh": false
   },
@@ -4972,7 +4972,7 @@
     "name": "SLE11-SDK-SP2-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP2-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-x86_64?UImBrEJSreJNPgp8GFYxLul6Xt2htHa0d4mGlWtahNjFw-T1T5k6NU4H7B5O_jIxFcp-XU3Gwv73wt1lnldsrQorsZ3wV2yEP8VYJwWJzrkdlm-5E7iJprHQtWsuwQ8qJgCJo2CVWOIHRKnm",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP2-Updates/sle-11-x86_64?M6jUTbThlIhSU9joMT3Q-3hMGUvmww5wUdrsfskcgu9vku1E-CDfKGrIs6noK3MK8aDMq3FtoDS97TyNrhW-2BqKEWoiH5h4ApsJKRMJFSVEZLq2EygZfwNSE_h7xo-a9GvCBRn_cTyvI6n-",
     "enabled": true,
     "autorefresh": true
   },
@@ -4981,7 +4981,7 @@
     "name": "SLE11-SDK-SP3-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP3-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-i586?7z77tn2I1b0UXQ2p3QpTH5Ehmg4m8uuNmatyCIQM0A6ZlekEziUN-jjvOyzv66y3k3VQDjj_cXm8YKKaqqEG5tEckOFKX3gRiWHX603PfoQymyy2QHftx13Q34IzhRSV6FyX_osjZQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-i586?DFTYhDeTVnRFqog-Po-UZIFD2UHTeHoANnOkQuFk_g7AESc_fsa9TEfggV21fqIsISGxKb5-4ryQk-ElyPQzIVo2eXrVdDk0KWdDUVBvQdpuLFDhkLDwEc2suTJb8DW4LYrpuKp1wA",
     "enabled": true,
     "autorefresh": false
   },
@@ -4990,7 +4990,7 @@
     "name": "SLE11-SDK-SP3-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP3-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-ia64?5nENWKwrkdzIymlctjAPExWZ5JCoIxoKPnu1rmbT13JMha5yh27sLZ_OqRl7kN62vgaAltgV3QDPRxxAyt1QV2wtrUuldspA8n5FYXBNTvzBDaD8BbwHtZgXi56T07ju7_xYDxsbUw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-ia64?VouwCwPQwSNmc2eGjXR1dIzH3T9l-hK2SN2HBHcjvj9nmPuXyZrzhYTD22-u9nmH7r2vn9TXA_a7uYjxUvIt5nbtY_dY2imMXjbNOq5ao2Cl7GVG-hMRM6V6vhmJrIPX-zcWs8jgDA",
     "enabled": true,
     "autorefresh": false
   },
@@ -4999,7 +4999,7 @@
     "name": "SLE11-SDK-SP3-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP3-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-ppc64?cVCh-PbQNmedjhmjW0chHS6ZfFuxHrVriADw9lMLi2-Li0xKBeY-napfigRN_emSCV7CSh6dMLxl2UNmhNGvuRysdslT3kdLezQnbcDuIOBJl17P9n31U-Ucd49Uq0EDieu7tqPtapzdqcI",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-ppc64?OTFgzHjaGONAI4zVs9otWplR-I38j0KaJQQpTAuBUnqITcSn0KYLVq9IP3xelG0clPtjJ--kFiY8a_ERtnT9QGv6SDYz_eDAwZyFIUx67BCE4jAVm-hr90F-I75qyDKa0vBKuYddnYoToJ0",
     "enabled": true,
     "autorefresh": true
   },
@@ -5008,7 +5008,7 @@
     "name": "SLE11-SDK-SP3-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP3-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-ia64?g076hByT_9g9KDvvSrzvXJ-V8Xjof_0gxJpGAENnSxgiyAPSKpp-YAJrYzkzPapF_rm-RaioTJAe5L-mFMT1fzjp0JJk4WFMAmjiX7ApIE3eNV5XSXimqnn_2bYkbPFKnePfGF5q6tZIJw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-ia64?kU4p7007kwFQ3fm7ly_4rZ4fGj9Jezm6XFknrMQVNt3KMaIr1YL0Rbj0EWvSfDCUydnj1S4SvtQLLe-kAgP1WqdeYnzuham7Vb1nq1TEtVwcPHLfSJ2DAvbmt4EHi722AFwCvMTKnuancw",
     "enabled": true,
     "autorefresh": true
   },
@@ -5017,7 +5017,7 @@
     "name": "SLE11-SDK-SP3-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP3-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64?japU05uYFOBhYLEl7Zwo3iuH1tPxmGV7zKsOVThGaAi4LLb7UusB8CmzicByDMxTJgayDYjp1s6fltaU4RYlsQfCqjDxgrzkGFF--eMXRnlPbg5JhBeO1q4T2rckyTpKuqxU9n4znslv",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-x86_64?NV4Hyi-cWWhDqzZ-5XzMKFZYMS9eMDsGOh1LzwYtCO3iDwZByB5_KdBbGhkDhZvnh7p6VBvUdq6HUo-2So68GRvyYkU_G9f21BwHOkJy3AYTEh8wKTb1zGnFk_aFzRaWEDnrsRzdR2Lb",
     "enabled": true,
     "autorefresh": false
   },
@@ -5026,7 +5026,7 @@
     "name": "SLE11-SDK-SP3-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP3-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-s390x?TsWu5XY5XSdGJxPz8Z8POEuNjV-lWLtbzT2Sqd9nqABAP9vf6EDAlrhahDE74rz5gHfyanB4xLb0zYP-KuKzt-MedAGA2U6c0knqSfvk9G_Abi34KEsLoM2zH1pBGPYWgpX5WVfnOqEbgmg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-s390x?i9_F_lh7kyqFf4Jo0NUxcuL-uOHRyxcoxbfAKIP4KewA_B21MpFkCPGDkhS_-pFtrdulQW-dnlPpgnCXoEpfCUfauJF5Lrqnw90byv07JG42wGiAdhBAri_csPa0HhwzYwzd999W-0tnSiY",
     "enabled": true,
     "autorefresh": true
   },
@@ -5035,7 +5035,7 @@
     "name": "SLE11-SDK-SP3-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP3-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-ppc64?HiUGZkcrgMwTaMg-Hkimr0uFcztgug_6x3twny6q_anafwsrb-lzR_RFFejrenbp75su6AmLMBhoaiPeApYhGmATM3QzwO1npWeIaj6PGboPq_pXn-7rke3URsN7BxW7iwX5UsiG8xU",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-ppc64?OFa72sWPgz2o-njtzwgrSAh0_uWkPDMe9ggiYuwLyDQbAwsgk3qhQTC7Q_OdTtbNYD8g9gNP7lIxDGoUkFMmHGPE6OcMaw3IFCWw7wrXg94Fh-pNOaqgkz0uqs9gvbgDcIpcz8YhBj0",
     "enabled": true,
     "autorefresh": false
   },
@@ -5044,7 +5044,7 @@
     "name": "SLE11-SDK-SP3-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP3-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64?dMqWqjG0kdavhA6sv44tHISWuo5O6fUXKgX7Kk3kK0tfldYOAVr8rJgFIpj_qxgq0yQ9V-M-OJGz1QddYJIaqrWoaLA1ZK3NDUlCCCOb9pepKvjn6TNSheLpq9vS8I-4j19D27ZiAbgaTOdk",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-x86_64?rNCoBhVGGlZByEJ8Ui2z0-n9tkOa9uqEakFL4rdiuh6xfXKv5Qk899E0PuOWoIuH03GLVgD6WJYTgqAzeOqfnC2UuvHCHStxyMdqQL0ta7P4KU16XubB77jeE87QZ6C6_m883b37Q1Quxkgg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5053,7 +5053,7 @@
     "name": "SLE11-SDK-SP3-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP3-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-i586?9xw6cwGtS_Lq7NweSpcnPNoxYJyUfgNh4ySrQDfFTFzb2CuI2YN0FsfSlYPP4NLiWYB12CbIl0bJKB-dGTtihHfNDBwFb9scTK4_cxPt8lFRYYvEGy_XZi7FgJY8uQ8TJKy48suBVrGRGQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Updates/sle-11-i586?Hf6vvsjvszeTYttEgJVg8hPnTh76XamggTEcuc_48EgRDG6HnRWT_RBH76cyjs9Ase_AEBsSInLvO9WZsZM-2kUjwJaaxa-_n-KidRRH3jPYxBDTF3lI6jXuIhGrZcxGVjJA2a2q5AqhJQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5062,7 +5062,7 @@
     "name": "SLE11-SDK-SP3-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP3-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-s390x?zq05XylxX_w0u2YMh2HbSKUby9yhoxttRz5onOKN1QxqYKSb5dej4RdwLzwlNjZqH5BJrjG-GnX7AC8oWO537WIXyIYy4-fIv-lWfy5gJNepQzdnyTqwbBFT919eZ3wYdvH7LgL73pM",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP3-Pool/sle-11-s390x?cf5WmDW72_lmjl35uiYddDqwkN3OfhVVu2QyyaPK3-9vQtFQA9pErfahOfbzFDn826ql4Pbw8cfW4Dm9m7kUx-jxD17DznABYEQiIUrFdHPHg3iIYdfvQA1uMJmcs19YjM_IFMX95zY",
     "enabled": true,
     "autorefresh": false
   },
@@ -5071,7 +5071,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sled-10-i586?Ji93FKf4r-h6zjS7oJhAns0vBQZVy_VUoa6LdMHbA_DS0CO03QI3Z--KLfzaZtfmi7jQ-6GgkBcESSkwwst5Dob66jAiJ-mPoTFNWuy1ofab4ArSFD_m3CJU79_hMTQSl_bM0014Hw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sled-10-i586?bgZfINbTfVqe-FpBfnnCw24TdalKGQ6nhrOeSkMNA5rb7viJUidbIfdNVdhXSVEFvgR6wVxSy4wbYzDIiTdEqerhkvSYmjjRWiaVp2jdNqp-vOPTqk6Fcy4iI59kBT-56C_qx30weg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5080,7 +5080,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-i586?h4-RiTDawSKIgaQiUPTG6pDIPZ_J22Xd2oNJ-ZX1fEKt3l1MnbktcLjX-AqI80O5cUU5iHKrFI1JxiMg1aTImujo5KGb2afFy3ZWuLHnVnhdMH--x_j3kq2G7JSfo7YCjYKOXtUg3w",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-i586?298jNFi1qYOwyMoKszmVvJPFDXgjv5TTwPTvvKXxapreMsqUdNZ_iBNGdP_FdM0We3rjkliXug-Um2Cr2O6GuZYvuK0SOn010UuOdBiGq5LVHtbuGz9XmGWMqPohax_5Fai3WoOAXw",
     "enabled": true,
     "autorefresh": true
   },
@@ -5089,7 +5089,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-ia64?EawUmJeOYE7wqMCIytEWlWg061yY46dh_A8LnSgn3cKXZGHgQn5lOSJW5o5qJocMNx5XCO6uEXy_g_UVBt9trurJIlevHLVAETfuiLLfAHqhV_8htzIxc_6f8ld8gO39gLNf71RsOg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-ia64?S38_f-EhYCMRbspaK4LTXwop_II1M5uI_aBWo9R_-aZrnFnXlfdbytWn26eCz9LYzbLyGkJoioPAKLZ-tNK_R9QKDwOzYAk5m32oXMmJq2JebE_8rzdncCp3CmtghRjQeidGVqFp9Q",
     "enabled": true,
     "autorefresh": true
   },
@@ -5098,7 +5098,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-ppc?UGtQ8IPIkdaKwCMHH4KPagbvVQqUOjue8iUTWInfUKf0pAcScnTtqnfpqqE6wqZdDcMQm4SNSbWJ6PLhuH7zgUJCprecvboemgeSR0LRG3hzv8SWbnEdlBZ3N-z-DcsF_MifRR0m",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-ppc?H6UxOE4NsipO66lSu37jLmrVWy7cjgclh8SMpnBE94pyf8ZyEWP4XPsGH5yzbdktoqRaO68O7Qi34dZT_Jgh02U_Q-jw2yw0YVPw6YfeoNP6CKvENYx4WPDNQdzgyQYlVemjGMQF",
     "enabled": true,
     "autorefresh": true
   },
@@ -5107,7 +5107,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-s390x?d8KlXYj7Wpl9uEP_tAiZgGwVBYeWYwgAR8BObeD6XVrUbtV9SFjWf_JApr72wf7palobSB8bWmIDaPuIX9N1kNvEg3FI9XXGfzBdt364m6bDVqf3YOxP8S3it_g3QKxWs70-refDQBs",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-s390x?baOJLysqBxs5ixJt2ZSTIcSaJ8kfv16axLWj1OaL4TO4OyaXp32gRa-w7seyS-IEaxOddqcRHuK0bTZwvr7EHE0EdRiK75ld5OKKBctLV3cHXs8HcnJu2yW3gcam2ewSUx971zz9Vcs",
     "enabled": true,
     "autorefresh": true
   },
@@ -5116,7 +5116,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sled-10-x86_64?VU8S7721ZcXNifN-jGFbN5GN0kgdo7dzAtwgKZ2G-srvqcfDDvVgKL2mYkBbzRInDW5ww-ja4GXWPUFZfTuuXqNFcaaBAVXFANz8csPh_7Vxw_j2D4zR4ezcdse4nA_06mx40U90YWkr",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sled-10-x86_64?0g33mfZk7fzz5aWeyWuTPpGlQGQnCNZHKYycyCCrJ4jqRwGpzOPK_LXgI3AXk81ldG9YI7MdnLvu80Tj5bHJJ-OakeMmTTOOqKeReLWBF2eogsDfKz4GW5MTb5hL-MbfRPDuvRN4a--m",
     "enabled": true,
     "autorefresh": true
   },
@@ -5125,7 +5125,7 @@
     "name": "SLE10-SDK-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-x86_64?S_NW2Cw3MWGtk-li9kHoSocLVZ8BmCPC3kbIOyyJJ-lui4r_cl3nWGhW81tQFmwfcL4GSnwWMQK46nRUJt3EdF9eoperf0APoGwBCTqAAJVepgmVKtkMlSlpJ39z9kVqQnGT91_KhGq0",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-Updates/sles-10-x86_64?8NLI_NNQ_6qWSXYzx7fTYnUV1eBLHWD2K17RoWw5FziajR5CAWeMgrTUkdpBLae4dhjTyPrrMzopKFqhF3SfIqUzpIYFll8iphYSl0KR5i4u7H49oZkGFvCXcC_X7hmdd_gaWsPYFmlT",
     "enabled": true,
     "autorefresh": true
   },
@@ -5134,7 +5134,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP1-Online for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-s390x?CHfiA57zk0MZC350WV6s9qZk2yWWHEWJpwuRZ2izKy3oCC4WmYNAIRbz3ijfTttQGS24kSORit0oYNvECNqXZwqsWoKHFWqSU3htffvPYXT_IRFhszXEvijO1eYDsV13lbF8lhvn-4V3pzA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-s390x?-6E7DK8FCwuVHG7Hl6qg7tNC_BDG_zUX10bVl0SbfkagL3aKPKbG6-I0IljYNkkCI3yNqWMzY2o_EXd8EK1KcrK4A-9R9CCWZohOBIh-4v22ew4R0m29QDoAyV8Yb2b1V3-vIu48zweal1c",
     "enabled": true,
     "autorefresh": true
   },
@@ -5143,7 +5143,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP1-Online for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-x86_64?Z38WR0Y1fYbzVn5GgqKD1i95nbkU-5IVklgmcxBmWeLb3XdC-ze0nF_Q1vdCw_RklSxwsXZqAp7x8igB50TqAJOFMba73HbHj4yMzdVCQkmQAcKFcgpQUmN6Ke6Pc6e1VOmHWWG6Npk0WNO2",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-x86_64?75rVvjOpGY7OfNsK4aBTVaagRBpymxVlcc5o2Awl46A0Cj11KRgF9U5ZOO1bod0V2k8jf_yWRGJyALEK-3Yf65--GzhZWwAc-n1zdw3SXcC4QV7nqFHZP4asU2VY6NhG-iSG2lKsdaGNrzqx",
     "enabled": true,
     "autorefresh": true
   },
@@ -5152,7 +5152,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP1-Online for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sled-10-i586?dDaqS1kwHU_HV899z46qI_zcODBH99yC9so9-4f5T-sGdXerbWqFHqI5gBnLjrPZbO1-OeQrWIdR-x4-iqb-kV0TLMKPq6gYynIX4FipXqzothYIJC5GI1nxwVumf1SKVpOvhlX7Ns9d_g",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sled-10-i586?6UhgWm0hWUI7-xSd5Pi9P2OiLhkoduosdILUh5V0vVjcfxP2824MfTLJQkOt7aRqVn5ytvQ6OMW1orBB4crRNQdFL5_-pV8uGTHZmgvaWgbrujdvzZgfrPQSEotvZh3IQil0L0z-_5D5zA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5161,7 +5161,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP1-Online for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-ppc?SqkfLyFE_za9B-pdmor0U15mS3TuRvyaGcadqBF0gCwcy_yjFsfciYi0fjrlZv4_BUcLtclYyUVdQb96togiI7MHUvV7wE0iCiRDbk-M8bIMIRtkc7VMiJXE2sDpxGX2GNhPT3zu7A4W",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-ppc?6F7XqlzoGzY_XPynr4tzFlIEygT6u6u3L2QhaE00VTQQdJQpe3JzG-_xTK9GIu_nD56XQdeSZgvHsh9LvRxS_9IX-tmf-0aoRKmZjn6M0O6paTfJPksAt7ZZ8N5icnNirLK8HV9_7vG4",
     "enabled": true,
     "autorefresh": true
   },
@@ -5170,7 +5170,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP1-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-s390x?U4rJcPrD17fZx-v3mq6djv4u73sGrE7dXYdU6umTJM63niESKeff3nm58hEVkOapHAt0Zz5hh8w9rNmMJ-pl-pHVFkhk_-IxyI3q4LR4x8qMQArryx3MtvEesIcdb3oVg2_yy0EYrtWd6mr-",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-s390x?y80bEXs_MarEFrlv0IuRsLfXrCAgHm5EEyFYS8ROZEQFDZ5i0C7El6POrynz7gTr0j9LsJIesTcfRNVTrLq1sW_RY2J7UYYtDAnAFOQA45Y4EZEFMR6VSwG0hMN66va8PxOTgdAMfrzxaZrS",
     "enabled": true,
     "autorefresh": true
   },
@@ -5179,7 +5179,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP1-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sled-10-x86_64?8gVjOEkV9L9uUXjS9TcmGBaG_f0kNNh7jqRAQjSwdkdnGotHcEJszD4-QKcBRcKs38E1xbsLW5uz_gElTuT4t0EMreQJmpbre1wvDKCkXI8MCG7tlX70ilAl4RccG6N6aBkNJfAeUl5i08tDQw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sled-10-x86_64?YZBcIZ5m_aKW4koizi3-npNArSzrKSVkOFSErv7xIfn8DocHSHhFhWOQSvOHS5zc44G2W-ncCO-HELf5nQdVsorSPYjMIZZc6lca1Rgh1UxwLc3zfwzFTeUEVt3vDsDCQ9i1aE-6OZMMnRPiiQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5188,7 +5188,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP1-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-x86_64?fxaB0DmH-0rfmicCWMBNZhofBdMhW9jyLg-EOVyh9dVLaG2LqzEefrzheJyRD6tYf1EGBLw93iajl7d0ForEC50CWyX2nBsxraSsxKxs0QvSGGU6GZBvLGxB_hlVDhd4AYT95jZeF1YhOSc0nQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-x86_64?oLxQZmNlAVcME2UY7m1K6W87YXPDYzGhg3Gub9imftXQEioKtZ11G8mlZPOGp6Mt0Sm8EgSvGBV2kNjcHFE5fxgZr-AV2XMrYtxcp594t3VAgni0FipZ8b2WU5SarOlleZ8A0ybPD1-V4pqt6Q",
     "enabled": true,
     "autorefresh": true
   },
@@ -5197,7 +5197,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP1-Online for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-ia64?Oa6OWFerB3YDTmzcPhuDaB9i9P8l2Y987kEsH_CcCzTIsPhszGTnWJfdBSiAIsWxyuh4q68EHnSsNi9zTZ1p1bqOyJcrqG-BJzCoBImphP9knMOAAdrRQcKMevr0EDO4EmDXrhuy-J0Dtw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-ia64?jz6EvE15w4-Gw9-CX4SSNh6lAl8a8O_e7EXljhei-UZjQaAxNzzlMaJUt47UOXGRCYgS_cYqadNUT7UW4VGNa98Rr_GEPIHdMyac91ZJ_nz_ODJ2IZvWj1l2W3a-pccQCN8UUrZWhSqkrQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5206,7 +5206,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP1-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sled-10-i586?wSGL8EhBAUOanWmuAgHJR8wLRD540XJ4zHByJvGiVzlN3ASn-e7ieS2gsgAW7QPVqkZnZoeQANuujf7dsZBH6u0fQHjmYPRUn4t6HbrZTHSaDVI646VpvCzH80o1Evor48ykgL67fUDiZ6M",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sled-10-i586?7jSV1WXZL1vzf7Dke1Gss9HNJijvPuKC_CiFpAAZQGwvuQ3tpDEcxIzvcCYEY9dyd6B_ikY-Pb--vIsXAkcC1pmv_ZS2Mh_YdW0oebDXmpJnKQjtwplgVhASnYbzhckL0GEuM0lOqZz8A7g",
     "enabled": true,
     "autorefresh": true
   },
@@ -5215,7 +5215,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP1-Online for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-i586?Vfx1mth9HioZRzISpp-3pishs6K06et0cPlAswvTCHqMyk9vdggvB_37KQSX8CC-QqxUwYW1O_2HRD_13LgFPL9yL7NhHqDiitM9fjwsR4xe9UhXITJm84szckc51H9zej4UstxbwSe9qQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sles-10-i586?kBcnQ8ODw2weyemiHNT0EmLwtbWahtMIkPmyp3ZowErCmeidngGqci8Chk4MybrYVYpidz_G3gEQxLvRWBrmW7na4pq8F-CoYxFpQdJ36c4MqvordDGtWeTMzNvtZB5Jy_qmT2MxJf374g",
     "enabled": true,
     "autorefresh": true
   },
@@ -5224,7 +5224,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP1-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-ia64?vcTuzzKOYHaCYi7TdT4CeWK8ImOg0PVlunJO9PgWyDZVtUGcVsNSDDnKjx8JQDlupM9OKtpIkH1w4bqa31QJMh85NiHgz3MiB-LfRYoBszZ92qt78Mvejk_bJka4a3LF0t6wP40mp4cGUzk",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-ia64?gClkuZC_wUQFOMzQGvWj3ARrkEYzGXPMF9UlcxdfxczZDcz09WLFJzaHRJLsoIrstKaLaJ8LUfzDA6d1tVemtKDHV3jr9zB6rR1AMCTwBhGxyWtPFeYl38OASI9yopRHM7ezEQMSimrd1tI",
     "enabled": true,
     "autorefresh": true
   },
@@ -5233,7 +5233,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP1-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-ppc?aLuFZUXoDKisktbUkDXkRLcdtMk9cFtEIRmRXhpjZAyB7-08c5MgJlmRdAwYV1c2ATOyWOtldfo16QYss7zE0mw-X3DOfP_RyeIlO46GN7HD3N3i35qRo3K0_VBrrErwag7EPbwQrzdLbg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-ppc?far1GFKVyeZ76BcPRlRPLEPykZiaiAnGTt2GEukM61wXkrmiA_mxZwmyNF_4Azm9FsLoNYmaIGg_1U2K3Es3P6XarXpAb4kOoNiIFWx8de4j77GKlGa4PDfDO08bPnYwlH4d6PvAoOUpkw",
     "enabled": true,
     "autorefresh": true
   },
@@ -5242,7 +5242,7 @@
     "name": "SLE10-SDK-SP1-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP1-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-i586?M_e4ZPXRSdyc8bFrBB0Jxt6HMveg1fbKkq_6jZp5hPaQhWgv3h5g-5C9CMt7oR4PYapMFUTS-qwRmvfsJBJyKfDlySLA2JGbhxe89qUp8YBapqsFA41ZKRqHjzogwfxAewx72TODWzD7We0",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Updates/sles-10-i586?7EF2bsoQ-0Wqy1t5D-TOtobckSreQNfbKOc9Z-S-3PEsipvTSUamhxHJG-di4Wxr90cMObjLYfQqqWpj-EJiZy0i9tW66QNHmKTA9kHZwX7A0mIgfP_ffHfpXkMHwW-cwgGRFyscKg5fEYo",
     "enabled": true,
     "autorefresh": true
   },
@@ -5251,7 +5251,7 @@
     "name": "SLE10-SDK-SP1-Online",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP1-Online for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sled-10-x86_64?89yYKbbyH0JACasnjWXZCYPvlq76YR6VEmg07XWGi9_XY9ubBk68XGAmsW5BetT-7sP6Fdu30UiezcqJKl4NJBZ95Q_BGII1bCwtp8cwj-fIPICrWLAcE_C9kU9lv4JvzfXn8CtkFjOf6ua7",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP1-Online/sled-10-x86_64?N4sIrW4MbkrWexwC-mFM66fAg9Jp-GyO6VA_6DSrxiXPwextAOz-_rJENnx65QgSjL2usZvH3wXqexvMXEd2ypBwlieIHXLU_SdPWuwKepAx8ieUGOpCTl063gCUjgYhIefs4IWQzRDuYycz",
     "enabled": true,
     "autorefresh": true
   },
@@ -5260,7 +5260,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP2-Online for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sled-10-i586?78wW6zEDFH9g1YLiClrBwkVzRxRrMedUiUmCHklFMARkJjIZ8C_VEPi7ZF3DFlbDhpXBqxjxoWOWuwPC2GhU2X6F8COjcvhAZtsPJsd5RYLf23Ha89AwLXSWprb1PXaHzIOvBEfqhFekYg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sled-10-i586?Ks9sHheaumwdwlq7V7UtwGDGspje4QIj0BkI2s0vjOOTDTAug0D69XxnXaC-BBt1VfxFWZlJIzKYafKBQuMjaX3l0ohsG7MJkMWm5ZF8RziQVLaFTZHrQ-Hq8_594KyKsPZf7qnSYxQqKQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5269,7 +5269,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP2-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-i586?JMtQ7Xdy_ISGURPuS6mSpwo8Bqp3YSPPj9s4VMVkcvx5nQWQMk0MEmYidHQUUvO8piXSFD1v2hQqsee2Xfo6B72VVkgMa8rOQFWJ6hW0d_0u8LpUWoHwQgFub1r4DcwelGhFg0zBykAtJA4",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-i586?93Sko447myacG1j1jepkjmIUeLiBGXXAvOqy8YIpZcB2JYvpAiVgwbiWEJfjvWw3vCNxb1peGEZFK84yrqUgyMkPYWS2M6p2uySVww9jde3l6MEzKhvc7JxKBmE7dVyy6HsBTncXoDDRFH4",
     "enabled": true,
     "autorefresh": true
   },
@@ -5278,7 +5278,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP2-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-ia64?70WlvEjI_TAoAseicqI2qLyRb05WPJCCtkRVyKFvynGYrwi3XO5VHAqHLR5F3XFPH6ioi3iiTxAVLsyF637w87mJakJYXsJz57qKwy2ZYX6c87C9FV_0pV_mySNc76b75a--ISvYvGt9szs",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-ia64?uxcd3kpRK33oc7K62Binn8XGktjVyck6O9TsfYFliPB4lm3Is28bJvX_eX6fUnqIInU634LjtaYGP7KfnrKo7CbBjhuSnj-BtxcZrjIfOeamYbpZjnnApzNfIQVfbzET3TNayGtSMuqZqmM",
     "enabled": true,
     "autorefresh": true
   },
@@ -5287,7 +5287,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP2-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-s390x?pa3yJtLUW-dh-ZSpR57icPMLrWfYHYAcX7F4M7uDGzPXXsypu678qUk1odQRjBFQv0C4v5C17K2Ne1eplh7FZFiaw0D9JVK_bEu7-td7pPXMcM0QIrSuAeSdN1G0FSokOYsan3jEOquySOA-",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-s390x?eP36I7qMsyT45k8JzDcz7cPRkw5kyCbAx1WrNnlqDccXwgfgTp_MxRjOkFnGKCaxe7Lc8AkF5WMIOdnYvSL3bltZOJVpynp5AKDOeDBfwduMjXS_aSbsTvc8ebw_peEWfstyHB9pzgIRZ2Tb",
     "enabled": true,
     "autorefresh": true
   },
@@ -5296,7 +5296,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP2-Online for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-ppc?8B1MfzJsNL-Xrkng-CbbjajJizDH2GEiujtwwi-bnhxmsrFsTzTha2EO68exhAI9S7dqg0zTShDJbWFzBbIgMJGPU9wZrHwvsh-AM5IkNU9-aOvYhj4Ei-Z4E4Gq3JWIkQ0FYsTsulfl",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-ppc?blGEhYqfkLIw5k6ubGqEE0NjoYXajaxv1dI93IwUfDXSIR8fGE7fcVLNzxNN2XTMGbMCqmNZHTv3mMNcA0EiQrPiKTqmXbTg1eXdGseSm1CJ6VB4b-Mv9pi-Rhanf1fC5_1i3clx8fcW",
     "enabled": true,
     "autorefresh": true
   },
@@ -5305,7 +5305,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP2-Online for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-i586?pXMmUF-oJpPivNrb8_93yTPyrGHbO5VhoX4tpAJwv02Yc2De8YrYK5QnUStbOOol2BQA22RN-az6EA0z7Dq3Cv8xvVt_YotrcW-6R6Db8gTxBF9pKmLDVktfZYWz0-SgIxVENf-efheDZw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-i586?_7fXu8NDJVhK2pBRGa43ACNFbFaQRjz6rRpmtaDmSJUtq5eWEyX5hm0mh07FHqr3R-AiVxtFBGODL5XXLxOg1Av24Nfrr15q9SW1HzfG8TKQS61JbKkTgVMw_eedui9l5uKZExQHwkGxSg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5314,7 +5314,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP2-Online for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sled-10-x86_64?a5xyi2UWJj3xYUu8HaqgWJWXqBNw-maNb3cLNvlWW3-jXNYZEfu3Qe5iRqTTTj_G13R8aWo1TZpnUs0j2OFYHOHZYn7yQ7dhz-J1IeqSGDkZER4bSQd9osiBIfKkOca2bJbyYYvl5o9ctITp",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sled-10-x86_64?nJsKzEYH7ueRv4p5rAqoyJm-EtRITEmvJ3rWnqtOSlyZj77w8m88MCAMOiAQFXl-LCyTHO3QweX45qwtTJqiHcQ7ITJ9dqnxafjFb9V5t4wfTwFrLifgenA8Hdwmwl0wqy57AfUHouBc10bl",
     "enabled": true,
     "autorefresh": true
   },
@@ -5323,7 +5323,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP2-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-x86_64?hzXCo2DpYHhGzlOYDufKGPnshw-DRAlP0dApfxx3ACzRUV6mRjbqjKh4qR7n6rjWFzEMYcLwIhSf4AQ6ksiCHy3WNqdIEdZJr416gZpsgAYTBYb2bYcm3YTPpGdukcGh5OgGwCyHO7DmBHe1QA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-x86_64?JdmEJXIUoByfZf7L--NxkaNz1WnH4RwBQA2E6-gw5ZCP14bh99ALloyaJH5cpw3pmG2Ut8i4swgaUcE-7ln93W8DvukwAfH_CJT6SNjALdB_QD_w-ERvNLZnbs33d_KcibHQkBh7EBKyov5anA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5332,7 +5332,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP2-Online for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-ia64?RsGh_d7xjNTzVcFCnaxJyhVQxATqTSn6o42gS_xz534OH1-OtBcgty6MKpf_3Y0X0CrNQOwT7gcea9cd6VfPo3Wp9gRblmrBq7Xx-342e3HwP1aXC4iwaeymo7UEys63711hbg8DOl4bAg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-ia64?VkHItxXk5_BsBagicoqaIgmQWULS23H4KJNH3QWXZZnmmRzsBi4m0M0cPspyp932dapZShJe1ysOfJyO5USFDNjP6uTDbokDQEAh2jJaIDfiH3Lbsyk-WFpDbEgcSQKKNc_2Jvux0dJZBQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5341,7 +5341,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP2-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-ppc?s-5T1MkWAAAAAAAAdfITTyCfbOWPt9Oe0u74EGTPRl2mk82W4vuoDx_FrCes8LoTLe2CYkdBuipsximR--viZmC9Wne2qzwCTbXdh-v1gxL9ROqi-A-m1VxmzBF-ym8mb9MPpNOpSKaKPg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sles-10-ppc?JtKze_7-i736kEfboe4mhDC8G6gOIUgKdLkE77DSgwwBOWAxwCUpNc5KtAy1dCjalDrhbXzE9KTj7hDwrK1rfrucx1tUbLZccacYKiyPkWXrdTLwx_TPYxE8DCqj8baNZeHJg6T9ncrzBg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5350,7 +5350,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP2-Online for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-s390x?UBj4SOlgFk49ku6cbCC1L7fWvmvsBZ_7RBnMdoCat3DPjI30DGXWOPheWlGg-gTZfuXytLqn2FWrVifw2kqb6WK4tKKThOHe-kPfEU8oUeR5zVX5Eb0oRLTDCC0Y6q69SWsAXP0DcvB27Aw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-s390x?XSDItDM4Sb2ReGILTK3f8Z_Se7Y2xsYGGXnB0kv7hNq5cJm6IppXEoF0RRXODMW0iyta3mytsSxDDdOKChXhLCLrztUR4b0p3JXEUnFDC3nK8qmWAbutI9iP2_Hl0AZ_548gO3DA6b9odJU",
     "enabled": true,
     "autorefresh": true
   },
@@ -5359,7 +5359,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP2-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sled-10-x86_64?3aVRLvl3129BXlQ9jZvHhVdBqWs_1CJ1tbYRliy_hk3v8gvvB2k90020dT23I04X7MUL7vyFzvLpW_JNYxXFeWsjSs4wG5vnOgqXMTJWPK0LZLVeAvMzmn9dpg5vf22oM7xpMX03JCecf04AOg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sled-10-x86_64?gLK_g91R_v-iJhssoFED5K0bW0h063fsZpg_j31mlbbITQrXDrDbAtvnDYPASoMXX2RHDRhY0unzUomm4o1ZZrixHzt8CElp3SedU_J_bzp61AdwYjYlBXGMb4XgCXRjGpQ4sfzqxjQLdW1VYA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5368,7 +5368,7 @@
     "name": "SLE10-SDK-SP2-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP2-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sled-10-i586?yGCjOSwKn_OVHS96MUZPn5OSJpGHEjZe9HKANNbeqXQJZOysDc8IU7yqMb9KtG9o66YNdV-VrTXy3_NqXhSg4Wh4CHPHqZhuqIrmjB885xyYRhRrNmcqoipydPOdJiclNJo_6kLH29Nb-xY",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Updates/sled-10-i586?VPzK3uYfmS8GPmAb4YqHLuT1W0REwV9pB16_-ysR4SpdiyFgWj_GiJxNdETckE78IhyWx5YYsX_G3DcX0vnSdL7N820GSHMhzRFb4PSTJQXl-gHE1pOhizdpzUuTOYW96JN7ecxd5w50w6Y",
     "enabled": true,
     "autorefresh": true
   },
@@ -5377,7 +5377,7 @@
     "name": "SLE10-SDK-SP2-Online",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP2-Online for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-x86_64?cdMpqUZZHSJeSYEPQao2XDcGYkzOdaOJkwOaOEPbAfzBOZXgcRmlT329Bd_ufj9NiLYLtjxmyKZKPePagR2ROx-h5eFXLTMbJDuUmLzNcVcYAZ7tHtQZQQdPKbTD4ztA8bftxenh0wrMsm2M",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP2-Online/sles-10-x86_64?dL8b3Yvod6hS0dVJfGWSTholRCWZMbCyTaIyoXQxueVlLGzhBe_a3mmQxQ1Co-7yssX9pqqeoVIdN5JnZDTsoTTc49iuiqxeyF5HBLHZ3xpA8yb6rXdimCeEmUAlL1oDGFPWi0_mlBL_pZx9",
     "enabled": true,
     "autorefresh": true
   },
@@ -5386,7 +5386,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP3-Pool for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ppc?cQAAAAAAAAAAAAAAwUZNe4BC46FwTJ4XsYyEHZSefTq3ho57zRDrZHIhAEThUTzgoKyDGJJuqfXTryxfvObz_5HJECOYTITGuPHbs6ffOcfvLihI5RXl6KjQU8NYr0mampITHN4hZQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ppc?0vqU3pQOX-3xC_lizyLrYTiFADn_oN-8FLX4-u2wOCaASXzJfurIBzteHO3jPQAIN35Ace4N2wIrz33H-RaGGxNpdm7_GbUIhdvPCtq2rOAJJ0pxMlG_f7sHl325LgsqLALgKYKoew",
     "enabled": true,
     "autorefresh": false
   },
@@ -5395,7 +5395,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP3-Pool for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-x86_64?_5Y3MhLXfkPQSfOQ3Itk5xxpOoWSPPI4GkpbIkd8LB56-jWIJo8JE3Cs6Dl-SiTr3Wty357-moKZ-4_M4_wT4Smj763nIGlwijCnG0or_5hrb1GUr96W4ZF-TZ2XuzdXXiWj9E-qYPzH_Q",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-x86_64?J0djeIC1WYsBB0tHk09_pYvuGeUng59Gcm1iNsSqxWsotZKQeo1bqsZECN8OJHLFaJW_ZMlVe3TUReeYi6QWX1WZcMkL1O8YJV4_czWbB5-nXXBqxSKDfeXDKgY5Gc3Og92pFnABesaJUg",
     "enabled": true,
     "autorefresh": false
   },
@@ -5404,7 +5404,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP3-Online for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sled-10-i586?H22oLUWuslxkFtZJ2v4s-_iz8fFY0YTjwriN3v4XdvSA221rQHw6VbR_ypUHXvSty921j7ByuVZbtAXFTnJiYk45GDQX1lYTZ5G2yi7mspM1KTTTQFnp5SELrLDKhOFGNm3EhTQ57CqMaQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sled-10-i586?zU0JSUCFMHXjQsX3aLqSFdwG3_LX2ap4aeyqR-rSjR3Bfik7As2LyC2WzBdKhpFhsDkjRqdkjjXYxFsQ23nTnrNndhAK6Cm__EhMCZ9rf6LATdB5smdsSBekU3NSb6Hydok8PXHQEUN2Qg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5413,7 +5413,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP3-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sled-10-x86_64?f7Zc3fLWyYT6Klv4NfEvxfPqTF3X32CbsLEIxUw4_nLQkNYrCMlIbLUuAhmDyE2ekvJ9zsbAgQXGYwUj3z4p5B5MESml0FuwZhjMFL-fHGjqERv-_p1BuNBKsAYd3j39hHcpg5sEThAb-pEkJQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sled-10-x86_64?m9i_3fbDn0yzhOEniSFEMIQMpRp8w8zJMLX_2Bg-2n_EpcSttEDwqVR_oAAcsaesF7E3EZBZE5MDdprVC2PFppC8PVQ6VeJu-SEFHA004HjvEDpaZ9KgAt2lsiu9s0VyV53wuuGqkPQ08YiTCQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5422,7 +5422,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP3-Online for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sled-10-x86_64?QWTw51p9f6AToyTmzrUWEsC5B1X43MJuVAk0DnIbMixezpfBXAZwPm0Fkqr-K3N6FdL45h_unXedb7XCduSOzrv4VcxChQpi7xGWIxspdLrcSy4SlcrckPiHCdSd4XcF6pDgVBTAI9pGvxPd",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sled-10-x86_64?qIxwU6QjMtqXAplsYC3aQkncf6jH_2e2IOz2ngDKjAUY-zfjv2JbysjdjskvrtiXCUYWxAE0C3N_Vhbd_BOZGslxva65Wmb1-ylZ_yQVvYf6BYcA9q781GD7q4JSGvGCdiejaveuYJgciG-M",
     "enabled": true,
     "autorefresh": true
   },
@@ -5431,7 +5431,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP3-Pool for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sled-10-x86_64?Pj8iLwYRBNDkAAAAaKCpDniOCUp7Xkwi1CoZ9lXuomCMbdrehLO4vWrAY7s-RdOTV2P5Zv9znZD0S51-q6cQKOBe-oNIPuCBjNA_JdNYfjCHP-Xh-8pPevUKIEyyPy17ym-iN2fqpQCMQw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sled-10-x86_64?nZ85GWU3ppiWGJ-yICQsfhU7P_UgNc06yvj1aFFJBFsbtU7jBVfjMfcboqxtldcBsTg2g9S4glqMhPiVRHfPZztdPJHlUCOhuQK5tFlCE7j8DWiEHvp9WFpdAzO6bcT5PYWHCwllbM8HwQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -5440,7 +5440,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP3-Online for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-ia64?tDzr-cwB1QvP1Y4eQxsu9BXkmFm3N6gymnWNgQv5mWdEiqnGsroriOU4TTtkwZ3cPdNAVY0ABx6W1Md3Hbr3l7asMgPh-w4ajYuJgPinjvHYC94QgELdhwbux4s2Y3NOxcKFBoPPf2gFWw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-ia64?IB-Qr8ZJTzalXr_IqTQxEmEXOTjInCxozYz0aIsAi7ht85tTnEilu8Ix5LwTXx5iA2iXz5wm0NVOu_K-3umJ-Cm8hhEFd38y0XNtlbkRoVCX36YLEyZqfg77R0A9tetQ5tApSxXF5sNYmg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5449,7 +5449,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP3-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-ia64?slspukmaJjz_COSuKF7TENOqHWQ5KvoRpJLyzBgSVQe3SFo-Ri9gzgeZUrGadRTwSGp5_Z6_ChT1j__HW-t-Su9e2wF1qScZqzlnkxiE4D52Y2N8jC5Eo-mwlUejsjMVPBjwDWcJfsf5DJg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-ia64?mzUKDvHIDRKgZ6XwbgU0yccHNn5tQf53Y5Fpb7B6-3ogBM9dfeT1npGzRD6NuTSLzDJfVqCLD3MpjXKmetxF353q-ETCHmYBxotow8YJDfNa3u-Joca9jxadMIlB2N9I9WX5zfOgIGh4ACM",
     "enabled": true,
     "autorefresh": true
   },
@@ -5458,7 +5458,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP3-Online for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-i586?Fs-aDkplCrOqLMszNIuPlUv3nETlW-lDXAX4wUtHYi5P88F2mXp3lh9NbM7ENbTIK8lmZezRgtQVPEtSyGhE9NcsUCk6J_4RgFNb-MgZ7Zq_NNSL6JZWCymyuT_zGC9aDEdKCzRY4-XKNA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-i586?qzviiSUEJhXUoYPH8DyWd7-YHzlaWPqoa22m65NNqDMJwweqj_ORjLb53JCRPsGnReg1rEtW8VYhij_qgeLot0ofBHvWF8Jigla9Q0TetOXOdOphbvhsP9swunOZrSxx2HbyWhc3OBKB2w",
     "enabled": true,
     "autorefresh": true
   },
@@ -5467,7 +5467,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP3-Pool for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ia64?QzvOeiuV_k-f7wntCsMfXD8LZsktgeedkDsEcND7_7sshrl9ddWtmeOc6csmILNX2tQ4JG3bBa0DsZeJ-zMHdZQ32y1rVaPODqhETIzAabGAu82w3j7JvWtmbDPNSERZ3C6t0U2RJUw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-ia64?0_4XKMBVuXsreKFHFOxkK8H-sOYzxOaJHmkKdTBhHy3_jXaqal5QXaqSglzNpJsfjsU28qHwl67KztNTOkNC6OYMOmKu7JZ4J3fMM-lar-6nbK0bs3nsvfREEfT1QbEoFfTpl0qV5s8",
     "enabled": true,
     "autorefresh": false
   },
@@ -5476,7 +5476,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP3-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-x86_64?BHHN8FBXpfgweMs1zOgmACrNuBq9TKiVrHtoBqIeuGx_rEnBMrI_AQjWrnprm0LL1D1_5nTYMx_R7hDFmdhEVH6ZdzaEu_zMfoBBy9PMo_20bMxcx2iJ6ykZCzHgvgvxU7Cf8xjGcfc6ymI12g",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-x86_64?v2kGZNs6WSNPOoRk-YJP_QTJabrMhvyTR5Z-T4o45S0qMnPW7g-UWle1dGfBF7xTrwH7NnW7OrpW-py0wgEpZCbpL4ODBG7j6l43VM90ufCHJa47bJlppFGMA0PK3R-5rp9Bo3_tGTlmup-Feg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5485,7 +5485,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP3-Pool for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-i586?UN3S_FuICs-9rmIG3kHJjgackgPkAWlFH2dIRAVDBSLT6iBhMNY6yylZcs-1OptL_SJN6yz4gksIzrVCKF5DdKBsyxJEsDjWKnAV6QU1Ndibz2B2kLkP7_6EP_QUPQI5H0MKS8XOxBg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-i586?dxm7hsrxzcaHSBaXDBYHWsxhEY1y-zABjKN0SXufOa9P6-Ja4gdunswgwyS-EXjVlN4sVWQjCKwIu7OqOflgVzsIFsgDAdrwoM7eNcv43TVUkJzlVuJpBxFKzsl2cdVuIwky8Id-HL8",
     "enabled": true,
     "autorefresh": false
   },
@@ -5494,7 +5494,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP3-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-i586?ZHGo2CI1Je4naAxz6-VbDKztnZD5YKIGbQOYIvBIr1I8fSQS4kD-Z_EykX3lw-36_RoGivt3Bk8m1-2QGdOjMdc0SXSm3NMlW30pY1tm0bWPHw-dldIU77PhXHADc_GYAeZj5NUphR4S4zs",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-i586?jZvOA-e14Y4CpLurqPOmVseVmG6pLrFq8x43RlFutHg6Rr_fKOo_7ugOxzlQYExDmT34pKeCh8oDwmNLInFz7hWmJjJg6HgYcxRcmyxhMlagKQJk2eJw3xT_Qm3kJGOIukiDo0PMDZ0dCNI",
     "enabled": true,
     "autorefresh": true
   },
@@ -5503,7 +5503,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP3-Online for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-s390x?FmZ9Ff08EEK32J6Ky1_khAVPpVoROHcOyJtPUqD5H5xh_hecy1KgHz3yTcPpU1m9hZcxjVVtzTNwdE18Qc7EnhxxgvWbodcZWOr2pBUh9TOhSoWT9Ok4ZkLADkRFU9BVg624BRwPmNIfodw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-s390x?6Txag0CNS1yT24QFBmsXPe29KXVohk8rMEX3O6C7H9kxv57D76v1ijEDC7E1DNnIVo9TbyGQuDBCiBz7b-cg6Z9WV2n5NJK7cP8XhZ4E2dqLKp5dzxLiO9qSqTvpPtuKmoFrumJFnQwnXJs",
     "enabled": true,
     "autorefresh": true
   },
@@ -5512,7 +5512,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP3-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-ppc?uz4GXfCMMdE5oEjZUxatIrq8-tEnqn_6JFkDXYpkz1PGaA_r8zyrh8iwDIwu-VfydnSm_G6XMgFNvMBZD-Wr_py7vDTyIbUpjzZSrp0xRQlBgBVRANHl93EVcdEsswAuChHMR-X0s2Ywzw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-ppc?3kbIAAAAAAAAAAAAQzHISwIxT3I8ZDUXV5aYvKwLLmopO7AR2Y86auCB1-tpQWM5-JNQpqDIXF6eXkOkNuL5q2haReT98SVgWGqiOe4nQp57W4MsIv9JqJPKZBkhB2VzJnSgR5AQjagrXA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5521,7 +5521,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP3-Pool for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-s390x?0v2yvas0sPVH4YqLzXymOzJ6sroc2L4wvVk7N7SpW-TSvgwDDBv9h9YJfjRKbjIdBmXctqo9bLAMNjcGeGBIADF43orNXDsCBUsRrxnHFe8sTFKt93gyglWfn3HZxoac0ybXwpHVo6Lz",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sles-10-s390x?HrDvheE1cBUhINvc-KhsfLG2v7hUjqnk0SVNZrfj8ECimDOr86TbHJ4CHfQdpmvMLm256IeS5ZZCA1s9wmoUcJLfgTY8FnIx5J9nmoXbwd5i9PcAenfdYfVB0x1Uf_mI_-cnt-Cyc95A",
     "enabled": true,
     "autorefresh": false
   },
@@ -5530,7 +5530,7 @@
     "name": "SLE10-SDK-SP3-Pool",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP3-Pool for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sled-10-i586?Pk81gG5rOHpMHjJp7d_x5-KrVSfci5qaE20WYR9pnb_GRH_5kWZGbbb_NF6n8nu2FreyjXMJ86sodE-HJFPyuMTWfhd8ANYKgvAQdcxvkMtV6Z65_aUTXoPUwOo6pLlbeDsxdpKjak8",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Pool/sled-10-i586?CUFPtcmrIt712kmX8QQrzPnf7pqH4M4EBd59cwo43BuaHiwjlwa2J6a0mBAQOHknQqp5adPAIMpY6b4cZ2J09jorLBUwgHFbGEPh0bti4W5lZ0guigF_0YguniEVkgqo2s3Uq-yRHH4",
     "enabled": true,
     "autorefresh": false
   },
@@ -5539,7 +5539,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP3-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-s390x?XQisEnaoIcCOe7HUpzfLFq2r6wUImLv7pSZ6HY9OJanKkLbb8Po_IlMYymMK5No6q1IkihDJo0948rnAqoSXE2RA224uiGUnf7JSxykzC7ijvhXeeCKsuU1K25dYArpsUqASeAftgOpwNetp",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sles-10-s390x?5d0kP0EEb4KwvtD3X19MRf7GuQwKhM25aDCSo2QCVlSwBVqV5Xkl9j5u_ZE9nmSZHSbIUdnK0A87lf5plSdgmcbIxEHFi8UEo3HIdxHVP9sEnYVM372BBJTADbXDjo-6I1LynELzLprdWzPj",
     "enabled": true,
     "autorefresh": true
   },
@@ -5548,7 +5548,7 @@
     "name": "SLE10-SDK-SP3-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP3-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sled-10-i586?pAlt_XySjvKs7lP98bCoQW5RhSnweTL4F0yjEfIBOKTDsEbIBpsZttxk2yAVgBoMhrJVskiH2pRwwNqpg2yPrNcRRNbK4cXNYT9l5S6lUj-utWVflZvqcWx2XC6D_wfqDgR1fPqIjlfXuto",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Updates/sled-10-i586?xrclcEqsQBmN5vXwgFMYIV3lIvpJwbBX73WKQeMJA9C-YgjEvenV3BsxpUv2swUvfayWmG422j4HO1Sj7EPu78YVqvHTzq2M1u_3spbdsm_F0qQQPFWaNNvcFrzNAldl8EEPa8h41V6j5uQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5557,7 +5557,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP3-Online for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-x86_64?NZSW_0AFpnQAAAAA2EA3m_IoWF3_qjSTMeBfgkiTkPDIzns6lMJv5SeYtBDSEp5LlFqNNx_Ks7ziht8SCuLwn5IJTduocgmByUrlOyBsTT9leobdTiNC3QFQ_PPtboDTwF2wwQVvGDcGuQWz",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-x86_64?mycEotxgBxeXVFw9rgT_sDylySEULM9z1Jxp0720Zh7lpMPt3Gp8hN4YTb841YGGAFxbK95nGz7gO6CGiZtZS6-CHLUprvu86BlnXWOfAjpXrgcY4dG4Ib-Qmna_Ib1nCBRss92G_XY4GsAp",
     "enabled": true,
     "autorefresh": true
   },
@@ -5566,7 +5566,7 @@
     "name": "SLE10-SDK-SP3-Online",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP3-Online for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-ppc?-hIE4mNSu6o5DsqUA83m0A-B3i41UmCSuYbNwfqfOuyrP4HJcM_r4XKSOX87BkqXGQ09zYug7pRJH6yvhnGuhKI5tc2GvG_Y4D3d01tqn4JxgfyygBoP3BO3Ov93aVjfthoR3RN9S2mX",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP3-Online/sles-10-ppc?BW2IipHPH-QPiR3NXvynIBIXiEtzvLX66dM3lLAUCkBzfl5P32FCFJw_VEQq2vpv-ZKivnAuXqmM9bkRT04TQMgsOIVKhCFFPOEcRJfi1m2FrfE_llq8SPaUDZy4o-c8DYoR0tJambsm",
     "enabled": true,
     "autorefresh": true
   },
@@ -5575,7 +5575,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP4-Pool for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-x86_64?3glqHgAAAAAAAAAA465Ndkl8V0mJTSlmyN_e8lpJcmm5B4uTEOLbN742bIhZVgGzhacjZIKmPPJD0Is7lFfZsmfvgc8SuDJcHQlXr1qaWDerHDQKDhYNS9rfp2afOJjNgq9wGiMn_4fyAQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-x86_64?vVcyOuN4dKsQglbTmv2paSfxR0_VRhcSucjVbaLFicmbDnoGhG4bv-P2In1pzh1agQBa2-9nAy4R-dDxneBbrZ8fsecQsmdeoNFAVhUrlg7GXSIJC4bs-zE1fjB9oRYateGHUeocglhtwQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -5584,7 +5584,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP4-Pool for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-ppc?7-2DxORG6PfrqODG-m4p9pVz1C5VA_4ZxFeV_B4tsrpXcdq6K8zFBDmQu8v8VhLigwrfiDf2AWbcDPMmTDWv25NnIpDRk8UJpETu6dLg5JBCiPJlYsViftj6PFyw_AM8H_OXgmGm2A",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-ppc?jh7Hh2PkVKCzmQXOcPbsHoNCscff5sSb0aqchU-ScR5cZED4Mx9HiBtPjWm5woos3Y81sNgreSHxa6Q5FDszusci0OvsjCjzLoOkopNL4CKQSzhV9EEFO2rTipPQoYGvGHN_iNTu1A",
     "enabled": true,
     "autorefresh": false
   },
@@ -5593,7 +5593,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP4-Pool for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-i586?_It_9UQkMJLSgzuz6xkAjGLepD6FzntmUwkfIo7gvJ2K6VhRcbnXRjKCik_2mJwITyQuVp3rCu8RMT-mJoih-XTapIazv-F23CI6I647jt_CDJ4wyNLr2F48z1FVLpiaysngIqTvyQM",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-i586?whQhp0CzZ2oepezSEn91reKGqgNQur-Ww9TFBr_4vyvKQuSVSeZwuZ_CEN1OcQXv_moU4XsLLZdIfZbLTqvtET2p0pGw4Tt8wl2fFqZHgHy0d7FHtCsK08yJjgRSbslNqFSWHvjM-Xs",
     "enabled": true,
     "autorefresh": false
   },
@@ -5602,7 +5602,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP4-Pool for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sled-10-i586?mhyCEnEJwqv62Y_b_XSGT0rINOfRN7uey307-cFlKPAgHAFfo2aOJjUyvi8AJ3jSOfQ35OQcbI89GB0y-g-KbPA5S7iZUh40l4oNvqgkQCgwhAWzQeiCl2kTup623sq6jlgYFVtU-I4",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sled-10-i586?GD21J5WWRyn8AeHyjrzSrMCGuZHi-OzRuRT8JmVWys4NpHFg6wWhwJBBqDiIRvOKj5pvu8TwHQfKwA4yJDL2gHc6V4Ftz2wDHfGeZ5CibyvJlFOuDaYd9whetFFwUxW4S8-NdnVAePM",
     "enabled": true,
     "autorefresh": false
   },
@@ -5611,7 +5611,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP4-Updates for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-x86_64?IQTB-ltULlupRhEbRr1h-Om5i1G_0Scxd8RTibGoIFedN2gN6d7n8lf1__cuYJ0az4WzKBFXP-QbDwP9VXLMizYN0-qkX9U8a7IjofKxSwhLuMO8NF5bxKHse5JL_gtaj0OGW2vJANHoA6rnDQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-x86_64?Ss66D0AXqbHSfcgjOeQ-NLG4xnPJzAoddM0rsA3yrguJc5RX18-KLXwiUmbOu8ETG3kihkboKU__ieMv5UhoxzhqXgNjOgRwHeop1awcZ9ZNPs7dquGA5nJFBAsm520AgcM4x4BhWQUXavdhKg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5620,7 +5620,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP4-Pool for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-s390x?RJEmx00CKH6cg0ZknfRLIjE36ZYX5izJ87a9OWPO7g3lQO1859YjkjGccgjDaq4GATf5wQNQ21cJWguDhyb84-6zIdlG-F5rUKUTsDgGTcRTSPzXGx8VYyD4ChoEeIP9CdreQfUxWz00",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-s390x?g6RZ-GkNuHWNYKuhLbbtsxoP5Wh-PnfzO0dIaduoduy8jLdVmPiL8UhcbolihXLU5LgXg4MK2k1aVMbrBjb8H_SRMuMQKTrQHylb4i0J1jBsM-FHr8bINcqo2noZov6_8KAWBV2iL9ef",
     "enabled": true,
     "autorefresh": false
   },
@@ -5629,7 +5629,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP4-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-x86_64?8zkowk2RlGWt1U374OQK16k-DPt2zALITIuVSm8QKiw6_64L2v-OiJJv_Cd3wVz7XkmLEbjv70Sfu2ALji86bKYxr6Hhr9EcC6qaDNTlOQlbrLalanD3QnkDycWyio--ERBhm6ogoHglAYTA_w",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-x86_64?NHNxnjFsDVV6B6ubtoST8aEUerGw6qIYa4USmw7xfwKY2oET7a_QWPv3GLuM10GlJnv9bn1nCENb-nalQ1cWDJzjaizzkigOgLTrmmALRib059vH7hjqzKTeYsuZlz5O0O3_UHpJGgm-noEW6g",
     "enabled": true,
     "autorefresh": true
   },
@@ -5638,7 +5638,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP4-Updates for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-s390x?WvEXiLMGMihCo8jCWdc32QvW3xnVF3BeFj2_d2XwR8O0Jf1uLRDlSeixabr35IPdbSIUEI59xWjaItDWbCztPb3cuQwBit035EOaBH94SyiEbFr9S9Pf-WDxL4GZHsrWC1ddoS2Fj4xTfhsZ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-s390x?dskU1dxuixbRS_EXW7pcPhuToUiGUkAI8GdA9TJzFAApqoUcYj4MoGqxqrSx_UTwE4Eoai6mdSepbTADw30jgxlCOVENBHKHnml4MB8GsLAKJu0nbIJWQAreNejtz_qMEbWNwlv4dwPRBGl4",
     "enabled": true,
     "autorefresh": true
   },
@@ -5647,7 +5647,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP4-Updates for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-i586?sqLa5kw32QOnBI31EttoHcPNKGpETuOozMigJy-LAsP2ViD-NEH--Im9Yc_wNyXbArgptuoQrEQRaE0BbePW2u7ZwH7PoPUqq1O1OBbat8PftRfT7ihrTTROOiVWoUHPChGzrg5LgKSiXpY",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sled-10-i586?K2CHVLihQgHebXVxorvrABZXgXpYKS-0FotoOpkuEmVijPpHDomNN95Ym8jCna3XJUopAyVFYVEBoSQMsH7wrvtE0aV8d-im32yIC5sdNICJJdLcU-KXjROsHoDkmG53dgT6c-4I655lBTg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5656,7 +5656,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP4-Updates for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-ppc?GODhayHMpB7fN6_02r-TxYtrucp3iC-C68TTo3tM2JUYLeBeyf5N2iOiufMKORYUxqYj1bkiCaXjGF0pv9OwfCzgT21Xbo4sPBRQ1iYbBS3uXq912WEI_Vt6HKLyS_1M9wCTQtl3CDQK9w",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-ppc?jrFIi_GLSV1Wif0a5RlHFJFP0RESdA_m4WM22L22URVU1YWUslg-6T-zL_1T-o23NU6EkhyDUbaf1vL-8sZlQyyb7NYCwb8p_Uw4uhu68QwbKA101DOpmK3b--ayMjP1RHML5CY6smFjrg",
     "enabled": true,
     "autorefresh": true
   },
@@ -5665,7 +5665,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP4-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-i586?KYb43eN2Low3aNeC8gJHhxbTyE1vODfofrgzRPUDkJvrZx1drjaNRP1Y8uDQxcI30H-dDC4CymoYoVceJeWHmC1WGMLkqpwCaHW2BFsRo-eGZUYKaVp50FQG1pdXwthU1_UzEmwfda0zIfI",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-i586?rgJjSBNKaBaTWPZ0DR3CsJwnVPFbF2Ih12NDwAqfOQ-a6USf4R4tz150Z_oofXLk8dAc7y1S9k6Zx3uXblcdnYSp8Crr-zu1Efapd8BK0aSrpSAY-uSB6UzkFu-XvAFFjn2n7OAXrXnZV90",
     "enabled": true,
     "autorefresh": true
   },
@@ -5674,7 +5674,7 @@
     "name": "SLE10-SDK-SP4-Updates",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP4-Updates for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-ia64?scZEqCcLgTVCwRsPYVbqXStz2yDvIBCkOGgX9co-lpEuT4xmL4eSJ7C4Ba_bqs5-jvKSeJm2pSHII5-np7ybvNPNzmQC_5iU_Ze3_VoXxX2kjr3mBP1woyWy-8694PH8sGEVprCNqZP61lg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Updates/sles-10-ia64?DxEwnHKiXqwirdvfGClSDWLr9uB8bh9sKWXm9Icf9C5to6KKRX6qfociNc1F1yZj0ZdhP5IeVFm8CR9UGN-uQs4TgkCCtpYuTLk3XJS8O0SgdrBi3LObjPsh2Dr2Gd2uyvQ3xqNLyGWDZZQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5683,7 +5683,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP4-Pool for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sled-10-x86_64?ufzkNId3b551B2KSCZobcvYnE6HCL-2p6Q3TXKR-1Kt4_a_39LcDX1cHfNh7ELb_MrZaOfn8I24gMeWs4BIK_87LmZ6z0KWvHbZqRhVjP7phmMd4v2IXB-ybtlpGqG_UjL7oq6caxAQWvw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sled-10-x86_64?YSVCNmvh_pcfXXi1dl9phDw8MDSDwTeXKC6R2o8mQpgKkDiXaZEicQ9VXUS9xRGMwdrIBqwiFKzQTZbClPK7yrI3XHWQJx6jB9ZkxbcwkqG7vPe26dYhgBzg1uFOQvWemO9Xn546lPBs7g",
     "enabled": true,
     "autorefresh": false
   },
@@ -5692,7 +5692,7 @@
     "name": "SLE10-SDK-SP4-Pool",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP4-Pool for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-ia64?wcFQsWCdCvl8gYVWrR5aNUFzdmhKIach2qiC-NTxLdLpPk8J54z7vZKfO613bNFp4akTsiXn_7YhspewNbyDMQcqQBUEyPDXCbuTdNJZ9LQrI-eVY0g8KVB3HP5eHm0ml8VKgMcFqEU",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Pool/sles-10-ia64?cM-kGVfhHXnvmpdOQ2aSlntu-LyfyfRLQ9FxCPdacAbnYva7zRbH-8xg8nzoKuLax-GqGkmTi0xTI0zN-5YnsMDBeUtd5I7J-l5Tq0Vwlzg6rhTBU83Vy-X96kzxFw5B5v7MVBKmdG0",
     "enabled": true,
     "autorefresh": false
   },
@@ -5701,7 +5701,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SDK-SP4-Online for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-x86_64?yHGMedKse5lOAAAAV93O-Mj86ZJ7qatSwyphBhNfnZmXOF24JZ4p3jRRF7eElHPUSyiO8gs7RN9fd9pcaugB4eTDLn8Nu5_jY-EIssFku-ggvJktkk2UtjRxEkDe_Kk1EJYY6YaJUkWYCfkW",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-x86_64?5MlQB-urPGWzm6f3jgfXtwOiFLBf88JYYz0VxPnr9F5SjpHPXpdhs1d0-Jlts_JwIh80BtHxXv88L7aofm6rNOltUqcFd2OADnKkiwnVSBAqDCEJZ4OKigCJg0ydElRnohhsHEJAPUIvZVDC",
     "enabled": true,
     "autorefresh": true
   },
@@ -5710,7 +5710,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SDK-SP4-Online for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586?CfdI2sKQgvw5iWRbFI_lWom2Rba_d4-T9fmEFa-Zp8E98AKQmlz17iJQunWxDxTMfO2_GTWeNgfCFgFUkTNEsE-4KShG8qxkYAlAxfyBQRODIM7JDKjhmGZg8gT6E0BpxB1fir5v84jNig",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-i586?GeMow5vstHoLiyKtcAEmuQ9DvoRAoMV20SwoPTTQOoB9IE49exVbrW9grZzk58DEa2QgM-ssgR-7VxA_00GS2EA29zl_xpEu7Qc62KoUBFcg9uNWamE94LmqVavLtu8WV3jYmAZ5P_WdRQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5719,7 +5719,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sles-10-ia64",
     "description": "SLE10-SDK-SP4-Online for sles-10-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-ia64?_Zlw2Forxx0qHec-Ai3gRiSf5vfakJdmWuZC6wbi4HsZ7f1IKPk9GiQMKEyPLcCuReGSZ5cMO0blY7uD_-tzxtTDyiFAGjhLGn9AlhGYwQ895x4-MWY_m8HnI80thYgXEa7RoP2NkCFX9w",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-ia64?gcyq3LWn5HLlkJ4aA7Zo_knDwnMxEBLtzxjPek3n3_RasgD1km2kDVjlw7HQDxm74Fz-3zqR1ZxMtSAjQb1v2ZRucbaIFNZJsUXXGGTUCEewQqxyw1L8SB6ex31KIONsxc2poNZ0j7pk1A",
     "enabled": true,
     "autorefresh": true
   },
@@ -5728,7 +5728,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sled-10-x86_64",
     "description": "SLE10-SDK-SP4-Online for sled-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sled-10-x86_64?hLqQLruvcmm4bmUoRuyHG707nielftpK9LYyuXl3yHDZfUTIyHyMlmI3KFw77GusFCV29b642LpiIfknu_hs7yxe4zkkPiIPGqpZ5Ls8dhAJ_K-bLv_y50rXYcPsEM23D4ecdN2bIag5UrkU",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sled-10-x86_64?kBOI9N7F-UY80i7o0nuhELvvviBO9MFlvpmoMAiz4z24RAoXAJazYAhsKKiQnw8JDazZjZZsdqVwszmWiD_YoQLpSqV5e8hDRduewmItZzBkxIHlK-CVNoqBbAc_XOPeUp3nH9hemiwhiqXc",
     "enabled": true,
     "autorefresh": true
   },
@@ -5737,7 +5737,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sled-10-i586",
     "description": "SLE10-SDK-SP4-Online for sled-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sled-10-i586?4tCb8ZmGrGTReNW3D_kU0YNRF26p6CVmX6U-7llRAuKAFQyecVi47Q1TScQq3yduwz7jR4P8HC1ZgYGWIgxlCourgxpYaZ64VB6EBa1m__SakiUjMadyf8s5RH7KwxSpNrsalTmhGIGiQg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sled-10-i586?sAbklV981-ixtZs7txIFdP3Kk7zru8-DIK38--Q8mxzRJgUSjvlZKZjZmZpmK5d_0ZEMAKYak86E0VHLo44vVuO0lw298l1gqjti1PF8zY2MZ84_qGz9lTBGmOuHnrsXu6RJWXQT0jwHxA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5746,7 +5746,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sles-10-ppc",
     "description": "SLE10-SDK-SP4-Online for sles-10-ppc",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-ppc?2YtB0K1-jLDUJQ0qOKD2fUUxV2KW4XE4v3le4NBaRJ4Kcgkj1cH8O_XY5lMsq6QyufRgLgv4-0AT13DRLY4kgmCbc0v5TfSCKzmEn2vrBM-WbIBg0zucpIppndW5fea_UA5Ot8EM8XVp",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-ppc?KpHf0LYM0yYU-fk_I7CK-AOSRiBfq6hBlo0xvBB-GE6rinynjp8Ia3U96qMnoo_zAtPKnqLln5zYFBUBdIXG_3UKX9CypfTIkC4hAilMyCzxRSg5urw3MIwHTKtTfdtRs7NkcHV-iY4O",
     "enabled": true,
     "autorefresh": true
   },
@@ -5755,7 +5755,7 @@
     "name": "SLE10-SDK-SP4-Online",
     "distro_target": "sles-10-s390x",
     "description": "SLE10-SDK-SP4-Online for sles-10-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-s390x?6O5QpmQSbuSOIfRsPpbGIyQC8Q6JqjIzcoq6gcJ_p3IDium6uE1vzK8Z2IqPdz2_6CGjuWbgpK-k4zK53ZbQn4uQfWGGKkSclXTJQ1yxSvfA0Rvyrdgxoi8kSj2VmG3W2uqhb24Jx02iByY",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SDK-SP4-Online/sles-10-s390x?5Hy9gumCXuv68SR3fffIYjrkvRVR0uojdB19KsYZlObIva-tL-sJBNT9UX4O38yfsPj2abZlBpLLrUQjJ_M40BM7t_tdW6Wz7TC6GLPDSozslm60TJOdhmSW9rseRtMcDWUZQ459sfgOnBc",
     "enabled": true,
     "autorefresh": true
   },
@@ -5809,7 +5809,7 @@
     "name": "SLE11-SP1-SMT-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-SMT-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-x86_64?cMDM2wPXXabod9BBUDguBQhIgRITiDU9tGODjVe_rXW6UzBHVpLCnvAqI2a0ItyS1r6ge-MOne3sBaZwJwtlyt6x6H2if1krvPAlkgc3QmWjbVpzg1yt0IiSaf8_PJqaKE9MjfuAt-94UCyB",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-x86_64?NUGIKyzj4TxqcQg8czEMppY8PUu2bHCISbbv_2JBGqznSMgrkOzTFDlojDybO60ZBEi2xfxgATM3HW-vYLfd4s_hPMCL9hpHRRU3wfZQccrJseThMpUNfS1wOnWiAexQLEU88ENVeodUqIU2",
     "enabled": true,
     "autorefresh": true
   },
@@ -5818,7 +5818,7 @@
     "name": "SLE11-SP1-SMT-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SP1-SMT-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-s390x?5jLHGgqBxwWZUaOxShDpNNXbengku_eVbkf8EulqLeGaz-VMs2hfsHRSic_5VoZx8365YPqgK9zlPg4hojIl7dRJwNbWJ3JWNyw62QUtsPeR8YfCKliEJMJQ8KtzrU-aOgzdkcbgbuk",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-s390x?XTsVP1CYeKb6EZOaJdSeOVEYhkvPncVtGFbaeQPFFscuuELnwD0FtGYqxmF24wdptEEpsN8bEn8k1Ph8kayRcnEKUS3F9cxrlZ4521z5cbPGpJVr7eT6Xr42iEXDRr6nt7JKuG5-NEU",
     "enabled": true,
     "autorefresh": false
   },
@@ -5827,7 +5827,7 @@
     "name": "SLE11-SP1-SMT-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SP1-SMT-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-x86_64?mQQHRDRZe0g6U96opWdyMWe9uAkePX0VV3D1NuiWajZQZ1TIn2MhBQBflctmmTWLBHIORz2k-UDFbumR3AYUQoBPFRYVC_0loUYtCQ-CIvnyJl8tYePs6FVAw1bTwkGygGL7hjFiqoGX",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-x86_64?4dgZbE975jUXUwguZNcZKZt6dqiVstWs6jEWBN97LALygdjtjrUViPqYzTlKhTEdbqicwKphA2W_TT19_S0kj0L0Th36HYLmcaEh_hHrhDrvC6hvS_pS-5oX_gzhduEapg2Dx_I4yX95",
     "enabled": true,
     "autorefresh": false
   },
@@ -5836,7 +5836,7 @@
     "name": "SLE11-SP1-SMT-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-SMT-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-i586?1_FX1hZ7UbcU8HL3ngJEMKQI1KYxxG6sQOcrMGT1kbq24ZwXvX3TIWIAHJWRlzfrBDLRSf9ykCPHpzIu1qRJRBQ8Oa2AWHSICawDRkUYKyzJsxdhhNE-WYIM62Akhzu6avH5sZhbjHaI0w",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-i586?ubbK2xafqHdSRHwrABHgDTODrVR1KppY6P_9XxGost6IjSYT35KKI05CLeJxEcFgz_D9nk11JPAeNFgESRI6dTU2C6w_2Yer6mOSX5DxCh5Vz1k7Mj6DWCi007i7rswAzIJQN4BXwSTj3g",
     "enabled": true,
     "autorefresh": true
   },
@@ -5845,7 +5845,7 @@
     "name": "SLE11-SP1-SMT-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP1-SMT-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-i586?n3oQ7uHCXo8EpWgb_LCXVTISUUp51V_zgbs8-9Vocv-UMioUTUK1P5se9YClB1kHmLyx4bDeZH1EVt2QSL2Uh-9Q98k1sPF6mUmNMakx9txTi448e6FcRbssNg14MLoX4JNm_2Opwg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Pool/sle-11-i586?GLv--OYXbh9nbrawSbsVw5xXDJoWsLD8khcneMNa_n-wB3O-NIS8ln70LlnRzVXgqXvAS92B9Bhm_1awDCV_HfJRB60OOCmsOD_FG0kpylyG3Y53agaZcwjfVJoRYFRBLFzDED1Z-g",
     "enabled": true,
     "autorefresh": false
   },
@@ -5854,7 +5854,7 @@
     "name": "SLE11-SP1-SMT-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SP1-SMT-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-s390x?tUKZTU1cR1Ds6YyS8hqgBiu98zW2QHFnNkNMqoJlAQhox69izKBs-VhtGlwhS_Xc1pdZJMu7ayVgI53Scoh_r1_3xQMP2ofpXCxNWgHUvYMWd5FYdtZ-KeKpH_PXlQeOKSs5x9yPqI85SHs",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP1-SMT-Updates/sle-11-s390x?i2HJjSPvLqQeSunVVrxy_YU4OAmGIa1Lb4vcaWHIXAYSxCTotEJ8P_ifQl09dnlsV9swVsWYnlfIiUQmnGryh2ZG9NxD5x14MyTQt07Hf5O_fiXmu1oGu3Xq7wW5kn06myY6s9p2splXHA8",
     "enabled": true,
     "autorefresh": true
   },
@@ -5863,7 +5863,7 @@
     "name": "SLE11-SMT-SP2-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SMT-SP2-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64?LNkykHNyTuxSSSDoOD_x7Hrbge34DibAbe9mPfE_CpG3iOIeqsZSaNIhdxief_7bw4-Z9VGuOzUMmqcURpbcLTlLibBHTEt7gFBw4bXfNuYNm9lZ5BF5iIsXlFXbeXYUewuY772AfzVC",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-x86_64?F2rCtt9KPfqC7rczxipdrdIE-2lXQb4AFrcIlXtpgmN8iPywP_64kuF7cTGlLf_Bbt7kum8RqjP0RO5-n5UtgNkA08uIUyNe_-mZlnP_JXb-s2lw3E3w1jqJKzXMY7UdUwRCGoNR9MqK",
     "enabled": true,
     "autorefresh": false
   },
@@ -5872,7 +5872,7 @@
     "name": "SLE11-SMT-SP2-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SMT-SP2-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-s390x?XiN8g73ql6MJtClEhqVWJA1zfIMi0CID9tZ8-S3jw9pi8ZoRKxwf4zvFlEQVvXFJuXnFFAFwaflXp1SNQfjVRnYzd88R6hdj3oEv01dzXfxarUeCUdLTB7d_l-xZSOWnQVjAe8r1C_S_V_0",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-s390x?MXQOvR0M4Uphb8w3zpTzyXfm27A8PKNQOol5xXR-tTNAT80QrXgCeszdsvkOE3CQ4W2cZ6lk4wR2UFzwqzbi2wAtm8TOgM_zSTwgClbjNzU_uswiyfos5HvdBSwN5j5xu1SUA8L0znAZD3I",
     "enabled": true,
     "autorefresh": true
   },
@@ -5881,7 +5881,7 @@
     "name": "SLE11-SMT-SP2-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SMT-SP2-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586?YXBTrNNrdXo_pm7jsB3zyrq5n04wLrmUCZKVmYfSacMb0gzjgrWwjvg_7OAuDjSiOvDORSDZt4QKwIL6Vu-n-HjuH9IOFD22io60jNeckEZufzIkgSxp7XJmiqjtSKNOzTgjDg7eOQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-i586?ecpJ0e05MLobgr-rOIr6GTEoTN3jqQXqnrHfjYGXq_GCQbS31ui_Yenl3jUBtSz5O6L7L4S6yjB7OcIGOsa3Pg9-TMbVBofom2MO0-YGUaGCbCWMIQjAqcqmWA_8u6lhepuK84bE6Q",
     "enabled": true,
     "autorefresh": false
   },
@@ -5890,7 +5890,7 @@
     "name": "SLE11-SMT-SP2-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SMT-SP2-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586?c0_LgsjHa0wPiPq9Z01dvF4Aux1k1GWdVTD62UxDWshQtIR44y0xxubd504Y3JOVsMcCXNeLz7qCrR7xQo7BT54dUV-MVSUmxx0xYmrCgIfS4Y_cyrjSPnyA2z3PPme6g-livFqWtMeJ_A",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-i586?Vp9KSKGe7VoUKVCQVLZobJ66O4RSrEimo6D5M9AEJUQrf0dyaoUoOM6sMjPtC-qdnZLY79U1F-0nJ-tBK42g07Q_5KXI3lgpVEp7iVy0W6GnAwg9Ve8nv61bhuahdCPCKub8MtH44Gm5rQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5899,7 +5899,7 @@
     "name": "SLE11-SMT-SP2-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SMT-SP2-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-s390x?spGg2o2sNMG0szy7PL6jZzDE346396i2DdbiBVdBUfQkMtjJwnVMikYdyWentGoSNOAuvroY4ESu5w0RS9i0EEKIEsSqmbdTMxUxVWZnrI3VlGURe8mYgOrFuSk_7KrAEe26KKObs58",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Pool/sle-11-s390x?JIf8qahDEqxexpbA4wK4dEN5RZ1xHOFR4wNGDpKovghak65f0EPZjB7EjAWOi3GTvjfA0zOuOhjUaV7Q4LuMmlNTJ8ulamsif2rEqZyjSzKc14MfTW73gh1WVfAo010Wk9EEkXa_HAs",
     "enabled": true,
     "autorefresh": false
   },
@@ -5908,7 +5908,7 @@
     "name": "SLE11-SMT-SP2-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SMT-SP2-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64?UDEk_Ffyh1PPZTC0NH-emoNztq3uQndZICLzSkaraxa1mQXjdKg-kxIprPE36J5NIV_uoUTm6fvOBIGhe6h91gAUOxfhOjYMZYrhukF_Q2qYn8wFdhKEuNWFxbI_yFqYRSSZ2utZfB0ECBLa",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP2-Updates/sle-11-x86_64?Z8eYIK4aRlo5ZXVjoqyL3O_2cRZfqAQyysIXVa664AxbZzPXdOuJJptEnnRJRIKR9iWmUQ-5lxLRLKun9YocOps_yHA1FXjV7mt0IiLWfaJHuEPU3LxhTR6sG02sUn30E0pC_-fQ1YK-Krba",
     "enabled": true,
     "autorefresh": true
   },
@@ -5917,7 +5917,7 @@
     "name": "SLE10-SP2-SMT-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SP2-SMT-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP2-SMT-Updates/sles-10-x86_64?zAAAAAAAAAAAAAAAUP1hYIJ3HOXxDAZj9rjcqNXw2_uj7Q_Hny7JRVNrJPfhBeoWGsTdHTAGHc5rD4FZirhbqHMmIQSI5C0b3BIhwGvkjYkkEYZi9PaX44Xn0Sh_R2uPDEFrh4GzizJFD04yTg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP2-SMT-Updates/sles-10-x86_64?g_RD-7nCN75SUx_KS4Tis1XDUarV2fx3WnbH99sJoMfEUI7Qd_n9gUMI9rkjLig-XzwQF6SpWUAq1PUO1Iyw40z_lFbvaSe00av1rJCfbCZGOBTM4rArT9n0PAtQFm63K5hu8J1KTvRACal6FA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5926,7 +5926,7 @@
     "name": "SLE10-SP2-SMT-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SP2-SMT-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP2-SMT-Updates/sles-10-i586?wOyHBA9w5ez7aCWFnNTwK4_uc-BnJd5OynU5buLj5wdlZHyt-j4LIoD6_2GG9EsuMmVBv16qOGgu40BR6S2sfhWHcw1T6cHmwBcbksEvpCqI7F9JN5S9bBP_UrTh4_ptPBPsTqQ97t-Yvfc",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP2-SMT-Updates/sles-10-i586?aUeiSEjqmiAWFr72a_JM-ZzxzMW-HrKSQBZfqHcoTiPVH_RO4z6rY7UmRqXE9IifT_cZ1BYzNWvgSUnASNpzz0QN7HSFKqzStZOQ9d2Twkom5yetvDApDd1GUcMHMqEFBrAJc5WrYc4-ass",
     "enabled": true,
     "autorefresh": true
   },
@@ -5935,7 +5935,7 @@
     "name": "SLE11-SMT-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SMT-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-s390x?faojeUpmmEllXkuTqUGlzNG5ZS9Y5pKi9YnB6godCRPCbQHJQrPKdAJfb6RzjWHO9Szgm5cXcEr_rI9lS594o2vnUYtI0PvC6rdpt0kBs2dJfz3OPJpN_8v3LEglkLAoUqDt7clZDA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-s390x?DpJ74iusmR2LOl4jf5pEuDwLtsYUSNqDPGn7qFDyuD4QQxd62uuyYvCshHFcOy9_58P6Ia4JhsVk63ZLWFz92f8JZuZJDeIyxhH1qeQTqm4ah2Pvgd3N5GdBe-V2qsNWIqAlx9ZSBQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5944,7 +5944,7 @@
     "name": "SLE11-SMT-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SMT-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64?nB5DN_Tt3kYVTIj3qdvfL6ZfwJu-qM2kYwEaE4MEGMY2A122fP5HiqqRcok6Xc7fO5q994t4u5AhDTUiRms4JXgqZi5f_xz2I4M17qE8PTlxqW8p4P_mvPWKO7XH6_Z9oVLY9B9G9kU",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-x86_64?yYby2vS4yepWCfV6mIFJsFJsPT9stI4oKfUYLquI-jBgtP4Sk3-3qBPkFkFDo4cs-OQZIW1SAuH6QLYxsB5n56x09UUi-tNUr9sHfOFV4mFoBDg-nzOlDpil5scmBu1gawT6Uhn5usM",
     "enabled": true,
     "autorefresh": true
   },
@@ -5953,7 +5953,7 @@
     "name": "SLE11-SMT-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SMT-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586?rqCbCiUTUT8yQhPFNkbWZ0wOCEhxkOVuxTeZ9MJKYqNdOw0AQcAXsNT-wtocS8HUobvedDlDZuz4yLC6x40H_EIZvaFIyVt9E2OKMuLnFwTG6qvxD-nEQB8xkxX5csEqzXiGwweI",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-Updates/sle-11-i586?jLVvU2C6VOXEtVv4HuHiZEFnGeQEdHvYu64J7Zr974MUJlU-Y68XPF4HUS930bJQtbL1v7Ix5vJjcHgffVx1GoGBQD__86RN1gW6TT7ukcqV4mzOsqIe1e9vqHqMwp4pew9bfxu0",
     "enabled": true,
     "autorefresh": true
   },
@@ -5962,7 +5962,7 @@
     "name": "SLE10-SP3-SMT-Updates",
     "distro_target": "sles-10-i586",
     "description": "SLE10-SP3-SMT-Updates for sles-10-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-SMT-Updates/sles-10-i586?WmEgwJGXYFzdi1fpobOVabsz7wc2Yri2EOAvybc4YABro2bTPMS_yX8svhxNoKY6hsj4SP6CdJXicnwjdGWlT695jDGvPyN-1LJ6dOjj9bRL5FKjOZvgCIYu2EeXWsuDWF8U19kE3T58BIQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-SMT-Updates/sles-10-i586?AAAAAAAAAAAAAAAA-LEMuj9nkfRSEHzHvPhtaSHNBDQ8fkBJPFWCSub6oSgpMZrewT4SFa4CuL59D-Ncm0fHoGPJxijZD3SUYpXgcYzLkoFDT3FokIKOD3269u3Rgykk58NiSRXla73E-qQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -5971,7 +5971,7 @@
     "name": "SLE10-SP3-SMT-Updates",
     "distro_target": "sles-10-x86_64",
     "description": "SLE10-SP3-SMT-Updates for sles-10-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-SMT-Updates/sles-10-x86_64?yOurv14DaikHsC94uich5MVp73xQWcF4f9zv6aH3bJBwfiW5bkpEqlPRCHMv57KXRfQZ5jxIszaj5u5SGS9uU4KZf6Vt4n2ubrnXNXxgH7kggTWl4gfBQHjyyzZQVaJrdckLPS2dyFgT1iBbDA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE10-SP3-SMT-Updates/sles-10-x86_64?oOTddiWpP5E8eg6Fr8U2L2nmJbAb-yEgD0Lk_Rw-LDoEtrIRmrlpeo5pHHKARhwAoApdVhYfo2OE_OuJ5tOWeAKDL6wi6C8A-LlKVuN4ztLR9MLKfGZZqqn9OBFawoQAvU3UxFUnSJUGp9CVUA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5980,7 +5980,7 @@
     "name": "SLE11-SMT-SP3-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SMT-SP3-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64?Y4BGEMZjXBzhAAAA69HzbcnXTx_qiWM6qzp4Gejbhpg2maqLbMwwysTxt69FAceT8fy3IjxDyvbzhM--0xOn-Z1bcdhOEKyk7ufiA23yhFTSm3IuRQYjZICH6cn_DCPD9on_8a_dzJDbKWK6",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-x86_64?TJ3DYgtJuDtmpiK73Y-_cFiId0CW1P7Y7CHp8Un4oK0eTi712-ItIvpsbH1Nk7JDwpLUQ3foijmOIZVxqAvRgw2hpnHMUMQg8nUplbLM66wtkeD2T4MJdbxegGcCMfq-Z_IdedoEZmVu8T6C",
     "enabled": true,
     "autorefresh": true
   },
@@ -5989,7 +5989,7 @@
     "name": "SLE11-SMT-SP3-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SMT-SP3-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586?R7yNI--s-uAI62q-WNreDk644dtion9HVKBoCHRYllAMJv---fdBctb42pA8D3oNpn_P8RC3YTuJGTMylmUYXdCeS8iKKGz_tWd8Zezivci9bYUHCXy-SerFTdtC5zJyPCwJ3HXUDRifxg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-i586?xyPimVSGjracjBf8J2OgYBqPgE_oZQPdKUckzF0599iofZZhljOFcc_5OW0qJHG4t3BgAtCjecMdSmyQUcalPzWSlvb2aL5MVmplOSEXzFtoFsh7OkCWlV4xleC4lTYRygvAN88rsOMpmA",
     "enabled": true,
     "autorefresh": true
   },
@@ -5998,7 +5998,7 @@
     "name": "SLE11-SMT-SP3-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SMT-SP3-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-s390x?xr6sBwUzqtHAFF8fvD9uC_oObqiCzf_wMQivu2nMBMa81dRMMOxqXQPBMo6KWEDPlYx3v-yPqDWq_BOurizLrRozDooC4-oJdqdXgDUfPdEuXp4OtqbNb1H9cfqHGKPYHjxwXDPCVCPuZE8",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Updates/sle-11-s390x?kz_OhzG6kRAaUvVHmYyTlIKEtRvb6Q23yL7Hu4YhZTKLk-7XLqwiQ2wPJ63TDuZu0McfSRxEqNumrJHmzWZIZD4k7xeVjbRhW3mI66EWdtO5MUcUQa48eyMkNCJpcN0dlTGXzY1-lHymnZc",
     "enabled": true,
     "autorefresh": true
   },
@@ -6007,7 +6007,7 @@
     "name": "SLE11-SMT-SP3-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SMT-SP3-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-s390x?Za4jzUY4y70-7ov1MvUDMvK0jeHecQKXnck3t7FiWIA-lS9PiEtC65b2Enq6heNSDoSPVpx3rlDkhNsL6BUlUh6KaUBkfSZ7w1yndTkZPhsvXMS2i6Iisjr_YmNa7OGrfe-c7cVdYvE",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-s390x?RSinSdysLcfcxYreHBi7fDxJn16h5X8lhPwP8VCECf5cavSVXnQTW_DtVW2FVuNTIFRveAcMzIbXvIAWnAlbWCYQchIno92WjBvcN887HOGemdBmfEyYCiKeeM9PzlchUoXisL4UAXU",
     "enabled": true,
     "autorefresh": false
   },
@@ -6016,7 +6016,7 @@
     "name": "SLE11-SMT-SP3-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SMT-SP3-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64?svhs0wYOTynZllPdBH1LtK1D8_rLjFzJzklALp6xLJf2dEICdk73cnhvXBz5RvCZFFr1p5dp6yXKGDRHys8gCQUKOK5FythQLmJQz0Rr_zs4_h1HpCQWYdxO8hn8qo0Ziqjiav0Q4rr9",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-x86_64?kl4Qf3u74Rdi0sQCzzlGQbjWeyBty9p-Xomtb3rjRZRkLNOUzEhcIbS6F6tCx_e6NkDeK6oFoJzvmW3isyCSEClyx1-rAXSAbBQq-XJC5MrQJMNxJVZRUUmrHbbW5bsyhwDtCXbwdR0-",
     "enabled": true,
     "autorefresh": false
   },
@@ -6025,7 +6025,7 @@
     "name": "SLE11-SMT-SP3-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SMT-SP3-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586?miUH8BdHgBP9IkGuB6NS_4Js2fw7opAe7JqkvL490Gg9gFnhJ6IZnzyCP5qGFKUtlr8wrRGPJzsImRyJ-3Yrypkg-mG4ywPnKnMYPnEYzNXHP50cyjcpbUvyw7IfmVAJWoGpjjuO2g",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SMT-SP3-Pool/sle-11-i586?AfXZxhFojzi2P1LEt8zpzcR1mGa9sKuGglVHANVxJUR9PYIS7uQH3vq3wLipoK6SBX1KoXzbeU5XsOfPh5YAK7Kw2hqf2k7n5Kj5BvXB8xhrLF8xKbYBwc16c8DrBodknUg_tilCpA",
     "enabled": true,
     "autorefresh": false
   },
@@ -6034,7 +6034,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SP2-WebYaST-1.3-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-s390x?6mGshKCpCoJA9LJwcsu5ORDXzvkvfnZXo-DNIe7mPD9DvoQOKWTMPCTJ5X-2ZhWtIe0kQtaQAXjHkgqJTMZcSztWIwcLtoavC_S--6jlWQiuDShx2IyJKe893oAwL1yuSRNi1jaPrGEFLSnChWG0vQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-s390x?P4E98-vIRlAtbJg_tHiYTltU0fZ_Vog5Nw5cT3a7x9ysQ0fFVd2Sa1QdNK6dcrmC9lQEGDTqJQ3EztZbTZyOjfKvIaeONOjx0gRXGRed7tGZMJ-jZWDlAr4AIXjT4amOJOY6Vpckt_84Byju1EPsMw",
     "enabled": true,
     "autorefresh": false
   },
@@ -6043,7 +6043,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SP2-WebYaST-1.3-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-s390x?fViHfLT4PQJBiuTvoE9aBah38Gqf-u8pKLaAyQNBGtMo8tZOFGhZCHJ-RZw7LCTsyJNPLA6We3sgwdAG2e1cf3DeqR9KlaqpabStipaUlvw7T8OO1zpeZZl08Hn5fxANfYn_eWZnyMiIH56XtDYOP01Nlg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-s390x?hfJVf6GIEm3tpJ3BIoRWaWr8jZHhAqA15IOpKcojHAf7BbvNfv0WfPgU5hgXVTv_u_kqRxXQ10HRIQ-Mu1SvNFRRjYlzefjl0J20PYGbmnvwFYktOWFaiz71S_3kLKHr4CDMivik_F-7yPjhvFpOfrTaJA",
     "enabled": true,
     "autorefresh": true
   },
@@ -6052,7 +6052,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP2-WebYaST-1.3-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-i586?LhBG8fsz_28AAAAAWQBWjMn2EKMh7Q88kPJnc1QLNrM3yek4-zTN_WNkI1dAUYCcmmWObUEusSY5ml6Sce7_aQYjrJJSiVFEEUS1fAkAcMAdrtvyy9gLCvJCPXabWjZecJ8qZTEo9BAyup1t19GMGc14",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-i586?jrlBYJuZXiY_kBZLeIVPG2ATnxce3RrBTJUxIOYcoUX_CbLCjjoKoftGaHPj805Y5BKJ-CRV5YOwPWCt_CCjQ6be7_YuMgs10sKPiczT-aYHIx-CxUj5x7vKgdcg32CnkZy0WSs31T1Cw4TqZBFQQOO8",
     "enabled": true,
     "autorefresh": true
   },
@@ -6061,7 +6061,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SP2-WebYaST-1.3-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ppc64?c06LE-0oD9Y7MALWywNkuoeVA1MpeJxiCTXOytltu15tkFb-ad9bSjFWa59GGPpGu5WxKr09ELP5b0BZlXwlV-gdu04uNj3gZH_gUOGZQHESUsb6KbR8v8qMygeLmYVd6UcRZ5t6wbPqoTGVauyZfg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ppc64?V1sKv042zuj9sGn-zQd5JugSVFCPkCgFqz9sIK2P9unSPf4e7MK10o4zDyOaZbOU1cZHDAeQUdMuhsynh252T6RK58tLe0qpfdkIxsRrP9U4OyxGIrBHtoQz_k1HPs11mecwS9X5N7EQRfJIOGCBNQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -6070,7 +6070,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SP2-WebYaST-1.3-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ia64?uJTxjx4jZfpl3hvfBo_IJ7J6ds4ZF8ZDjTIu2-4DtMV5uOx9n1QIAx0nVttbIzGnos_LKAtfFvTo6-_vGUAtqNMDAXOuoAEyX__RbK_nZhSKNYCLPiKsTCDkapQhUVvUpL1CR0aq_lTgRhVGCHhEY3CR",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ia64?g8Yb-1glqIrx-eovYHeyk3hSpDquFz-Fnh690IVfcRYQ3ZABuRr2zaOtzqiQpVQnnLCQVw_ti4vXFhHOFAQ-tUfOxropFTOLrQAdbTYRHee9iwYSctydpWOMSg_RtOVnTGTxV-M8SXmOc0zu2ON9qwet",
     "enabled": true,
     "autorefresh": true
   },
@@ -6079,7 +6079,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SP2-WebYaST-1.3-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ia64?QNfvHEOglBuMKxwkQuRbIz-oVhLsoFMO-B_kldpyAPGgwCfzgW0e0KAMzb047P9T54t4i5dMVqAp83EVeibCjwuyLmFBDMGq3gYBepEu-DqGTR58HtCriLdwRuu2NBNh1dA2mmcCD-4tjX07L5LQ",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-ia64?86c9Fr72QYJwfMKHIwPtOAMPltSX8EmjWSJbReEmn1hoV_BkwfFiUYlge3PqxlD_VGvLEjSUviRjnpEz4sInxz48OqtXRY7MDUnwcrFkNne5jNZU7DNmbp2fG3EbYBdqyar7koIeVcOOR5k4QaIs",
     "enabled": true,
     "autorefresh": false
   },
@@ -6088,7 +6088,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SP2-WebYaST-1.3-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-i586?kDzXn7NQTsYRFC3k65HZ6phFQHo2Wbq5wbAFpQ2eWSBQqmvC5e5ngadtdD5foxXDYNU4Jg9_l2vvz7K5HmjxVNqURrXlF6w7GJvZcvE8vXIVvfSKunL3vXFV-gElp5obs3BaIATEm0lIfVVklSD0",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Pool/sle-11-i586?oXBwGws1Ifg6OXQqJF7dmTLh6-R6MwAQMEm9U7h93NowSq6JP7-4r9K219nawvVCciF-kmCG_7f8Rlq-U1qoHJy_ke07SgITZP5sIIBjfiUOMAWixvSxzNt712PhXVvnEhBkT71uW5LRsmV9j3gj",
     "enabled": true,
     "autorefresh": false
   },
@@ -6097,7 +6097,7 @@
     "name": "SLE11-SP2-WebYaST-1.3-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SP2-WebYaST-1.3-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ppc64?QouRdG0wuvb4v7-PwQ4YxCQuj8ME2p1-KXjTwI-6AILYfVm5oU78QK5S25nnB1izHUnJO6KP-yxN70x6RUW_9C7L4az2xJkIOk5o6k-aBQT4g0-mDTb_l0AUuFNQCWtHmmJ8GisVKJ6S2kkcVhxlUinvZg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SP2-WebYaST-1.3-Updates/sle-11-ppc64?KyHcXtt574QWIwWJ62ck6df0tos4nTH_Z-JkUs5wxCutwPMylr-P1YeNV15hf9FUmOruDsn3ZDABFLvDD11bKHzExlW_L6w_qBTm44tilTSohRzsXxwLq162X2dyanIKIkwzd8yX-SHMQ1cAyWuwhtP9rA",
     "enabled": true,
     "autorefresh": true
   },
@@ -6448,7 +6448,7 @@
     "name": "SLE-SDK12-Updates",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-SDK12-Updates for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/ppc64le/update?qsRrfvh3OjmQYql9i6eroQGxQ5JDgurC_VOgys-BgYZBh1cjvGCmNuXm-59qVm5Vv6NwfHpBR1YaIM671aia0itgpDT3e4YEwBt2prldeNTADHbXgsD-MTR-iuP1XT-J1DttkpQ",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/ppc64le/update?C-QseZnkQAa_QueCZJ6OZZ5vJgEagsJ7L6IlTlZ-KlI8qfOId6iRLuFksJ2rWumojFG75firQFX9ceBqLdDaJ_sdR3Sq5By6EHMkwPn19J6hcswaJLr5iIW-UpK3DTVbN8bdTgo",
     "enabled": true,
     "autorefresh": true
   },
@@ -6457,7 +6457,7 @@
     "name": "SLE-SDK12-Debuginfo-Updates",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-SDK12-Debuginfo-Updates for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/ppc64le/update_debug?4r8jlo4PRvgl8wEwAQ1ic1thy1iEfXmykP87CcP4WWyN0aO6x1fmtCgZVNgXIOoevUpBEKsTT-o_j3CXUwZA7mLrPWcX996mBIrRh51PBG5BBAKDSmpNqJvcLfg8QS4LvpfP7YNtpAgFKJE",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/ppc64le/update_debug?PlEQ5grDAAAAAAAAbXCFIx2_NFVDnO9GKRoHt8M-eYr6vOryLB8P_XSrT_8hi2CVl4QxVmpEmkIEQ095EYMid4YdmwceKWoUbPpvE3X8bANvEAxNlqKGlb9N4UrQjjPms6E1zx2BymVg91s",
     "enabled": false,
     "autorefresh": true
   },
@@ -6466,7 +6466,7 @@
     "name": "SLE-SDK12-Pool",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-SDK12-Pool for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/ppc64le/product?9i9HCGXVSiTZsksZzt8Wii_mgjSJmoGZHju31q87IBLhvWwmqyVBLezjvSosCugARJwVbEBdj-LDxKqtfBkkZodcXx0E97ojZGInmW5DqQ2J3OjJl6la1ulGkBp7luZFwU1cDeM3Vg",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/ppc64le/product?GVqzR277Pp5qmhGgK2sn7Q-on3T2ES9U7rSGdusNDF70hheX4t36EBtT8m0a1MFgE4Jm8RLQMfPJr8OnXw2qM8K9v3x3LiqK3pto6qfg7h4A73mEgSVndMbwvWAYeXAgGVenwcPZ8g",
     "enabled": true,
     "autorefresh": false
   },
@@ -6475,7 +6475,7 @@
     "name": "SLE-SDK12-Debuginfo-Pool",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-SDK12-Debuginfo-Pool for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/ppc64le/product_debug?8wlSLMHXvqywZjmW6RpRs6YtDYAkGCrrFGxRobUOgMHjExK0eMxvXFxGgXqXoYyFj16Ek20O6yZRurR3QXuM2pJs8Zktk_WVSyIUVnHjK8bxwq6TdbIJ_LJRQtQmPAFMQVwZ_nGIuhSx5xKjQg",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/ppc64le/product_debug?NQnAqFlNWZvAwP3FAhfUR92SO7c_qeIrrOGEKGN0yB_JsIfskwHTzXK74cT-kxLxUGdjs6uexgvfRRQOxZPxUYpL814O-UuD2cxmp55syT7If0JDm7DJKC5RkRu73YVNFK-DlRHBK8mYVz8nqQ",
     "enabled": false,
     "autorefresh": false
   },
@@ -6484,7 +6484,7 @@
     "name": "SLE-SDK12-Updates",
     "distro_target": "sle-12-s390x",
     "description": "SLE-SDK12-Updates for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/s390x/update?z4vT7vYSAccbLYzkt8Lv4Gie4_CzOjNOpr4dH8Y1DBNQjcxP1B2wX_LPXO68DRzZlc4E1pb5BvMF7_hskljyvI4bIbfFw7NLumopJnw0YNn7oU55PEU7wORRF_gwdnieiVoy",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/s390x/update?dn2Sm-1Dz5fV8eqUtdFw5tgpgHo6U7TcafmoRqLg_mWGVE9qcEaW3UAvNxyx9NEPd7beDHyilvvAQg8ho2kBDlVw6e-MFHEvAliZv2F2eu6mFO3SvlgHRDaDWos9NTn9hPly",
     "enabled": true,
     "autorefresh": true
   },
@@ -6493,7 +6493,7 @@
     "name": "SLE-SDK12-Debuginfo-Updates",
     "distro_target": "sle-12-s390x",
     "description": "SLE-SDK12-Debuginfo-Updates for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/s390x/update_debug?YnmNcZ9bjp8awQFTs7RiJe-pRPNkT09zOpx1A4pn1QOv-TZASzEmKt5L-FJyASPPE7WPZX9m2raaKOPSwUJLcKGKYnOKNQMO-3v2GrfwIizZNm6O9xTArrJ0afb6UHZZiHCnvEwBfZGR",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/s390x/update_debug?nBjFaTp3vTQ54qp9Y8QdI5M9u2K--JzCFkF74xBUhf-14IHhenFDTol3RNPPTzevF--5qWmWv2vE8IpXz2_jIjTL7XGO4U7VExjc3T1IE-_qppDuLAm-O2CVf4hG2OtmboRkDv7nVnyV",
     "enabled": false,
     "autorefresh": true
   },
@@ -6502,7 +6502,7 @@
     "name": "SLE-SDK12-Pool",
     "distro_target": "sle-12-s390x",
     "description": "SLE-SDK12-Pool for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/s390x/product?nua3SwnWtayykNXJq38H956gbV0mYJ95aATtA8BHuwhErGNPVdmB_rzIbSf870vG8aHC7gIEI3cPVKG7-AYXZJrzqbpa3N0ghzY3AZTxoBRGDE99jQWD4xC7IPsNG5ee-nCa8MQ",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/s390x/product?cxhlKuzSEPDu3znjhinSphh5PSIdEzVn8buqaziXZBbsXMTk76ojqv7FOEz_GZpKcF0jlmghczZpB-73-PlYP9KUMKr-OjDO8SBVs_wVil6TXqaDk8aYRQF6wryyhAL0y7AkcxU",
     "enabled": true,
     "autorefresh": false
   },
@@ -6511,7 +6511,7 @@
     "name": "SLE-SDK12-Debuginfo-Pool",
     "distro_target": "sle-12-s390x",
     "description": "SLE-SDK12-Debuginfo-Pool for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/s390x/product_debug?VjcOOy59htYn1Avp81_f1fK_oJtmNxWsFE2CCQmsy5TzGzhTY-qx6McQEZxf9JiNhmR5FGz-D540uj58WUobozvojuanDB_7PdTxUDlI0Av3LlrRQIrsG0Xsl0XHRNiCAjh1S19lHyrcAPs",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/s390x/product_debug?32Dt4_0paTgmAoYU5vqsE0ZCXI6K-_TBhghl9shehGX0hUbz-_zVsBl5Zc5acuPsomKdSme5AYJPFblw8TizhDFLRcu_YyYnfemnOjDJhv5QcHwTWitw5TwLbxWRSbmwe6GlsKe1QT_kRoE",
     "enabled": false,
     "autorefresh": false
   },
@@ -6520,7 +6520,7 @@
     "name": "SLE-SDK12-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update?obARFtAohDVMzTFGv38EPPvm3BaC8w-U0QQLo6dke0ni2D6VynsXQDEuQzCMWo_AKLPlsUWuNPmKWGhsdIr_xzZ2KQvYgmDgr0Z4e2B7ZyUFczJo0vwqUTZLQgmGzwtM1ldlqQ",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update?uqOVKd8CsYOU4HwB4M5OGViTERkng-sHnLE7P5MXXlkhzz75rnm5XlxKpztCoM7BxLF-8pMuCU8_PnEXH3wB7quuGAoW6atrfWSchod_t0UNxLczI1kpEEqVdWLb4amBtO6NRg",
     "enabled": true,
     "autorefresh": true
   },
@@ -6529,7 +6529,7 @@
     "name": "SLE-SDK12-Debuginfo-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-Debuginfo-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update_debug?CZ2W6GLOtnB0UBSpYsvd0q4m0EOJftlKbKzkcFMCVuLS1JTaWDzSSBlg4ziDP1N2UsZ2GAQiB7jRZ2XaErruL-pYHHmLX2q8Usv1QFg5LgC63OQqYUN4oAZChd61Dzw5LhLM0Oc_jIsP4g",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12/x86_64/update_debug?Di-dv-MfpUIZxd8uCx93KCaLwVnF_fY7qg92qf5IzfqWsXdwfSA5xGMIabLNRlREIjoHc1D3ENdbalM_YENtEAh3V1uGICian1SotcXXHdQLnUA0T7G5e1jENHNKPygvjYvb_xXqlhsOsA",
     "enabled": false,
     "autorefresh": true
   },
@@ -6538,7 +6538,7 @@
     "name": "SLE-SDK12-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product?OTcUOqpOi8OaX3hOOQftmCnqb6bDp6LTQUQbGXUsCS6Aj5pjyDcZG6I86AQJRUNc-NuZdLzGS8_PAQW0T7KG1zKwGonEzV7pk65jOmGl5OWaSN62Sfk9AkY-Wfpop1RSx8Q2GABt",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product?cnxwLtWV3JOnoTb5ZQ4J4sxOlaSlRNPDd5O57JhrXtZwGc0E600ZxMjytDw3ofoiAH5lkLkOk5nPcCkVE8pG9KwU7NSdOnWsmVfzvU2OzAGGBOoSo92UCV6qMG-cA2l6qZxQRvBi",
     "enabled": true,
     "autorefresh": false
   },
@@ -6547,7 +6547,7 @@
     "name": "SLE-SDK12-Debuginfo-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-Debuginfo-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product_debug?a7mHr2W25vNrwZgB27kODjYlUBLMeBiqHshOGg12NSLsBX_RdphuqUXKUc2YRs7fGMJEeKw5YKqkgCaHwXRvoSmE19NkzDhBT7-qNb6LQBEnvfNlSLT7Xw3rcz1fWl_Jjn4Q6EKSl9T9vh6y",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12/x86_64/product_debug?GyPqp_JkOJsxH-AwEjzgpWZPz-Ea--kSLQzLx9QNP8aGRW_Wg_6e4E98RwTQhVS861E7jQo7p9aoB4Daw6Y2JWSm9O8eTMHsSg8M434cv-oip04w_ydpRgUsvf9Q17w1n9ccqpBamR3CUzHI",
     "enabled": false,
     "autorefresh": false
   },
@@ -7060,7 +7060,7 @@
     "name": "SLE-Manager-Tools12-Updates",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-Manager-Tools12-Updates for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update?qJyvZGdj6uqqvgUIxM9nZJmsUHhuWYJDVwl4bf-DZAXlco3xbkQldG-mo5si78tBK1O7itkaHuCNBjhjKDh25MKtkX0iKeX_UG2Td-6yXRc9mkb42DqpTmqMP2WJmhqWgcBE1hQ6jEndWMDH8v9b",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update?bdK1S70ubrhRJdu4TWjHBO4wI0DYTGcA5YxQdzv7B5WWfewdiXrXrQCc75OuyDGI-QhWe1ucEbtUBkVAR-mPPOJhgW6PmmZahlhSD-q-Vk93p5PFbKg3OHqYUzUTFcizsU4XX99uB9KX9mo4zrrO",
     "enabled": true,
     "autorefresh": true
   },
@@ -7069,7 +7069,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-Manager-Tools12-Debuginfo-Updates for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug?GH9q1vepVICFvGCPMBDnhXvAIc8oea040euVyn872cuKhFnNYVixrsBckRw8pEdKPJel-Ba0qexnHFT2Eb4Epz1Sk2yMiR3e9vbCx2yphZ6LCOdaLvOWotS99j5sS5vM85lA2tp8DXCRuitn2TykzlarpM-8",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/ppc64le/update_debug?rVKEAxZBAXv-NL342lC8V6FOh5sKh8RMw64Md8SN-JJX3a6MLILMMG778tVoynY_r9cMv2jTEl5LyvBs3y6mkulDguW3KRjaxgOt1iQ7X_7J6U7XlYio-TzWSdZKdfblOQpnczOTPEpVJEs1jCdt08QhixbZ",
     "enabled": false,
     "autorefresh": true
   },
@@ -7078,7 +7078,7 @@
     "name": "SLE-Manager-Tools12-Pool",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-Manager-Tools12-Pool for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product?ooiYDKwGZ4hynN-fdt4X_0WpoEarPSx6pDu0U0WtXaerttYxi0olvXtjZxIF0cCaneXuoRv6qxcBbPxatF79sBxEjSUrhNdcmp-TarZBTr5-F3sz-vylVhUBeHBvdzNi1eYquFgrCOg8qcgzUO50FFc",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product?qy_O3JTJolZiGoB5_5hPQBsJ9DGAWZtJ8ZjS-IckDxkG28RovexhWxnS-CUn4GMq6kTcGpCK9KZXnRMiq2E0j4ceCzBEDYRDNewf_T4d-B9azTRHi0_hyH-XbcIh8jls1pRpSMwyHQ41lUEybHWiMIk",
     "enabled": true,
     "autorefresh": false
   },
@@ -7087,7 +7087,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
     "distro_target": "sle-12-ppc64le",
     "description": "SLE-Manager-Tools12-Debuginfo-Pool for sle-12-ppc64le",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug?QAW4MKY6sgdc6p9p5Ye7YlKbLmzKUGX_EVsuN_8iTtq6gQrGdo-yRk-0TjwPeIBHle9trNCqr1CFP1lUvdQPyO6a7qx39B3iHHHIYWZbp-h6RbFoMHZqqAZlcX0i0rB2KHGggrWB3viff5vleQWyvAKcqanSH1k",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/ppc64le/product_debug?cAAAAAAAAAAAAAAAyPf_Vv2cYUCqfIfuS3PKsMvG7mD05-XkZM0Wvv7bhztZpA8Fij2SUp3qNDxy9EfISl8lc6fsFjZg_lxjhXTb4qoktPqcuPvdbyKfZS1EVMXtK2xerktAWKl7uFPBJLLbV7ta3qfxv7avVU4",
     "enabled": false,
     "autorefresh": false
   },
@@ -7096,7 +7096,7 @@
     "name": "SLE-Manager-Tools12-Updates",
     "distro_target": "sle-12-s390x",
     "description": "SLE-Manager-Tools12-Updates for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update?AwI8RBESQ1FSYAAAZR9whl97dZpO04BWLe-ZFMzhyYPYEau2XL9Yp9_TwcbFsyT4f7BHqufsrpaN19AGN5KJUDtKRev2YQ6ENfPoVRddNWQVzhtktjZCMoTGEAeOfpXx2hvDFb687R66C5wA8Q",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update?-FfetRKGsrDLa57JlGFiCdGw_e2bohuWzPFux1dlpUqF5W3pCuwA2HZ0qBvDuVdFI1Bh_9TQSyLldSirBiXyWSFC7B3bmjGfsWYoXMjXgWS_Md8pblKcpGg8I-4hB2K47tG92HbD0fnhuLrsOQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -7105,7 +7105,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
     "distro_target": "sle-12-s390x",
     "description": "SLE-Manager-Tools12-Debuginfo-Updates for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug?n_ThaAfDznSzOjIFBD9O95B_rfd0OINkJOh41mVuKN-PJJxPxCgOWL2iQZ5RsiEO_reKEv2Hm-a2khxQ7ymWhWx9-3SIKoRPEM5aF4zpg1xroRXLgYTE10DVRH5ffHOvNCln3i2tAllK4y4dHnnin8BP9w",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/s390x/update_debug?3rWRWAZ5jeUcXtEjmwegE7WwuGckGFF7JH1fIrvMbBpTgoFBNAKRDsZwGaskSjhIcUz83O__N8DuGAwwfU01mBnAV-Y_X6dCjnv_8urSdqA81CNrqPS2krbct8CQCtzldkcHKWmEyoRAJsdt5rGd27Y0IQ",
     "enabled": false,
     "autorefresh": true
   },
@@ -7114,7 +7114,7 @@
     "name": "SLE-Manager-Tools12-Pool",
     "distro_target": "sle-12-s390x",
     "description": "SLE-Manager-Tools12-Pool for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product?FVUVvEV1RmcZVcHA8Cq2YciXD-eOA7RGoPWGC-2FwlZ9xM-IR9pSgHf-9p9tI4JMdBMQgP9Ud2B-IbI0a_DPLo6iPwEcscb5FNgI83P_SdjjpgHL2zPH2N9R1Yhjiq6o3oEWAikPXBCQkkiYT_rk",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product?ixlRzetFomAdx4D8uVackBZ0V9oie-xYeEjp4rLaYQPkh8iH3h4Zrr9MyHIcRzZ1B6mVmcd1-9A2C0t3dsXLdvDhmaz2f9PeNZJcMEyLORNzZhC6nOPn2k1L24WAA_f4GASxH2ho1cQROOjndQxj",
     "enabled": true,
     "autorefresh": false
   },
@@ -7123,7 +7123,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
     "distro_target": "sle-12-s390x",
     "description": "SLE-Manager-Tools12-Debuginfo-Pool for sle-12-s390x",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug?EuC3s3x382lGuUnHnCW5OWereVpQkWPRqhegfp9awW0fJebzIdpq0JJr3jg90YPJ2TSdcf2ggW-nVBi76ed6_jUVdo5Tpndqzkv9k2TDI2Lq4Pyc4UoJYjypyOaOOwAzi0MR3mfMstRl8n6i9W8nBL8y9wP2",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/s390x/product_debug?KkQe8C5QZ1dY4Gh41qfRPWZu4WSJKW-8qwdyPmLBBJOktK1zJAnHCAGiH9DzMMcOILj07rTRz2LRzWalQtUdZm34e1ScGnygxihLBqtT5nQVDBo-Rit99zEGeu8NYGKyJBV94zJUQQJWT_s_FCNT2ll4XAMT",
     "enabled": false,
     "autorefresh": false
   },
@@ -7132,7 +7132,7 @@
     "name": "SLE-Manager-Tools12-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-Manager-Tools12-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update?8pe_LHVJel9PRMWtaKCVp6U74EjtG2w4InS6FOF75iccrzPe0aS3M3tagURQyVxJ2LVQxS2TL24lo0IZHbhAuqwG7wLnaJQcsg5OwVVhzlLdYXzNGxzcSITAS2U-P0c-C_cYRSZ9BlmfbWjfTRk",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update?6W2Zmf33GRPnGMYCJzgHlrKG7F5NCqDTy93kHoRrAozxpCj-yIZTWvakKomAM94lHJpyvP5wSPmh8qYgl1MMuLSY3sWb-2nEMV975fdXzr58YjvMM6UvSEWCZgRFWRjWHeI4vQHPfhp5DF4wJZU",
     "enabled": true,
     "autorefresh": true
   },
@@ -7141,7 +7141,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-Manager-Tools12-Debuginfo-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug?OYsldhkr5ZLHopf7_1rcDKZacklC9x8obbzZ928aG5ENLXl4zf-6CyxwEt8i5nHKlEBN9zNYgVWZzLjb8ott0s29CKAwjZyZVJ2gQlG-9u5hh2ghguMD-369KWVUSiOQxN4krQlvrBdtl53UxDj7u-A1QuA",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Manager-Tools/12/x86_64/update_debug?UFWQAnP946VrX0faqnZ_qrYrHVmDq2Q8Jyz1pI_FTwYEOHEYkrVil6_4kHt6LY_P1R-KRAfZnZRo2DQkcNmGKf3L_W9WRUU-z9Y_J5ZUiZfbhjMLZVQBR-MausgTDE1O0_EmlJjRO1g5T6Fm2XncKLaOf8g",
     "enabled": false,
     "autorefresh": true
   },
@@ -7150,7 +7150,7 @@
     "name": "SLE-Manager-Tools12-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-Manager-Tools12-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product?46X-M1qlCO-d9wwyl0Vbli-gvffnNACAlBd0DbxR_a9u4l7wVuIAXSQ6V7FRM2_sJ98sIvrCYbzLyzpkYtQZ4Nb1WZd83YWqMQpqo3x0qsN2Dv-bsRDkvbRf2vYWZ8h-Y_cp8Y2Q5Tp-vdogSnaByg",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product?AwShgn3pT-ZMhNZLH2qdPS2cjzBNAG2rkizjZDjxCi89yHD2QiA8too9g4DLzrzP2WW9zLK_BDEqFbYERuM8UoKhqXsc4blPr9LzkskWh5HIxsRn7Ck_tkCArUJ2mXrYhgJjNrcs5WsReeKfsQakrQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -7159,7 +7159,7 @@
     "name": "SLE-Manager-Tools12-Debuginfo-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-Manager-Tools12-Debuginfo-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug?KW2iOL5gvldrN580Cz_xFLTBgW4xPyMRgTLx32K9Xr2OF_BuyUO9BvqgYLUevIOeMykLdRT-TEH3u-ozKwTF_e53UgWgwNQ3Hl_5-Ib_GlGOFSg--3Ri8EHnTod1pl-xR4eqkIFDznXf1PIKf_kIjk7AsR48vA",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Manager-Tools/12/x86_64/product_debug?s-NB76465Pg48Zj5LTe9B2O168-QmYy3LCInabuQkTZBWYC5Fw8JWopkUeoCz9DAiBqE3CBHEuXj7zgK7Tr-2IMpL8js7MNsrxgFnC-7MD-vsyNAP2jINIVfenuoAPQykanTGJJv4b0xmI7OSB1pzA-D1Z6bAQ",
     "enabled": false,
     "autorefresh": false
   },
@@ -7816,7 +7816,7 @@
     "name": "SLE11-SDK-SP4-Pool",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP4-Pool for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-i586?xYn7NxgaLlM3TDNhxy8PWpfChb6uPm8wurqE5DiJFT4S4I-l47sofXvFbK-RYbK3IKLr5K-TcGLOw58OfqHxJt1uduyuYqHfr6LtOrrBzkxG9RvQNUnnQfowU6kDpkaVmRztEKaepw",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-i586?idkzxWtbJE5lqDT6kNqSvpSS3vbtUXQRaRV1yhYZfTUzv9Q4cS4ZOH8XV5s-jBjKRscPWCU1QySv7TG78_97K5-bBnTsalw0IYV-vJE13i-ZL0re6dQSKyN-4FBt2OZuA8mdO28X7Q",
     "enabled": true,
     "autorefresh": false
   },
@@ -7825,7 +7825,7 @@
     "name": "SLE11-SDK-SP4-Pool",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP4-Pool for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-ia64?9pWq2Gq_xQ51yzyN1Xd9aTVm1xXHFWucnCbXz3SKx7CX_xc-WtOIAaD8zBOZ09hoHN4uzp7q04TraUsCKwuJ8KGIgsyy93Gw9VyZTg6_ZeE01Ta7Bs1xnGRYRPjrQFKJHGdY2O6xkg",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-ia64?KRb9-XzP-sgQMcwoJCMdXUB6yxd6pbHKp9hpPMU5vDQmEkg-d8BRc8nabA2PTx-toIOrqXEyZqHqCztcQYppUS5F8TJ54_4Sz5pu6WK5McJmvoQVvD-6_yGHwn5gfWJdS_cp6h5wLQ",
     "enabled": true,
     "autorefresh": false
   },
@@ -7834,7 +7834,7 @@
     "name": "SLE11-SDK-SP4-Pool",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP4-Pool for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-ppc64?HKggJ3x08iavNsE_wsGlQnlIEmIzUCFLmzJuwNm_eGCgcblfcxYh1355WRqfws5ARfjULF7m31m5ByN5Lbi5pBx5jnKpT9icB1TgLnUV9cBZlably-kI2KY-uY58gVYx7OtiZHfa5ko",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-ppc64?DIZIYm10AAAAAAAAC5_7OYdHx0La9RmZYawndpXJkBHWd4eQk32S4DgBx4PheFzu965_xhhYKdBBktGFWazl33NFeJo7XEr7VF7QxEZz4_9uRtRfepEEI8Uw1iFjcgrT4vVfgGtSgxA",
     "enabled": true,
     "autorefresh": false
   },
@@ -7843,7 +7843,7 @@
     "name": "SLE11-SDK-SP4-Pool",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP4-Pool for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-s390x?vHwexXQkoijIc7psRwZ_45mSqevUgLStb4eqXfJaEyl44QfE2M9kyqQG-2rD-NE2tvHf-ZTrx9KEKvI7vriOTSJSVT9oJt5Y_u6ZL_5g-bE3DsUTOanXmgxOTB9NpnbJjfZhZPXfL8I",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-s390x?neYgjJwc_jpD54IEoSXOStImcadqCVB65rTJ8MIJnh1UE4StSWb1JKiF7NiLeiidKhMYaI9Z-fpw9BFxi_WGFqL1SVzy9WaSPt5beeRW3NcuBnnoNvvMQUYAFo5JVXI1o-tJ0_sjBCI",
     "enabled": true,
     "autorefresh": false
   },
@@ -7852,7 +7852,7 @@
     "name": "SLE11-SDK-SP4-Pool",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP4-Pool for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-x86_64?fcb0Z5g8dE72_g6HBG_RUql68eIHlMRjtFjPudFEx64WbG3P1VDjssUKfKD1aDJ0BlZA_89UW9DiO_ko_Nn3VMwsmHee564Y77BXu7vI1CxRgJF4b7-HaeG44s6K97hobEb_et0UP3uW",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Pool/sle-11-x86_64?Wb3AHrP8O8lW8uz4BkLm9l0xuM_HAWZs52Oh4yI_FyOuKwXxf1OuWd5geGcCKfMiGQZMZiuLL2hVTKpWeZqAmObRPxe1gfC6PpCAHwmvWG9cnv32Rubf4T5aeUI4830q_O--5PwndX_I",
     "enabled": true,
     "autorefresh": false
   },
@@ -7861,7 +7861,7 @@
     "name": "SLE11-SDK-SP4-Updates",
     "distro_target": "sle-11-i586",
     "description": "SLE11-SDK-SP4-Updates for sle-11-i586",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-i586?g7gpN0xgTBzAYyRaUo32Io_Iczg-CQmBOQZbN742Q5DRiwW8x4WfvHiijqLEtIkIBD_SS7tRcNMwepn-Iej4fJeKk3Dnm9lSU481BtLGszqONgPp2agvLMjkH__GlV89lltanaVEen_b4Q",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-i586?PyzVsY5fpCPoqSwNdSFOX8-A9gcMw_0EO_U6Tav_YxL60lhOd-9a6u4KyEkGYvM_L1u2lNwcgnhKY7Ni7w_dZqlDY4R-w8IyeAe-A9UU3ecaJs3fqLzuZMdlIQlqO_vxxsOCuvunx99-oQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -7870,7 +7870,7 @@
     "name": "SLE11-SDK-SP4-Updates",
     "distro_target": "sle-11-ia64",
     "description": "SLE11-SDK-SP4-Updates for sle-11-ia64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-ia64?J8XuczCmHl4QPL4H-Tdy6QaWoqMTTyWMbJsG-KECGYrim_f_bneRGRnLkdGPXrI70CLQQ5CbyVFw2AKGEapUR9tPsgtfOToUmJjVAoN9kExKX_WHAWjOt1MivPz5pqr8xlOJGwTTUWt5FA",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-ia64?ho67sfSzwQHsPnG8Ww-bYpw829GMUcB5FnbKo6nPGFsYGrZ1yL796KhIGR_g1HA_YKtlllebdQ9a9TxmZeAhQ1sSaE12nJA5Mi9Xab7MQ3gjIaAVMimoMAW6JmJuNdiOYiHp8moHg0f1tg",
     "enabled": true,
     "autorefresh": true
   },
@@ -7879,7 +7879,7 @@
     "name": "SLE11-SDK-SP4-Updates",
     "distro_target": "sle-11-ppc64",
     "description": "SLE11-SDK-SP4-Updates for sle-11-ppc64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-ppc64?xuDMBTECPgOeJH4N2yksi9aeuQbv7zddD9WDx0ZhGkypcipw0N3PdyWb0JGOrGWuNv2Yxv8qzyfiCMulfmQtKxmJeGUFRMxz59uf23myGC_gFQE7qIhnoF9nYBrlIYN7RLnYVjE-t3VO5Io",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-ppc64?P_4UQTvjQAHxjWu49RIEZnVYkVpazsUvOpBrDndp2wXZ3h-M_oyXVKR61qP2PaldPC9X9rzNwV5Ne3qjw0BmCNKd4dsmok1OwN2umtep_vpHIQRM5qRlE_xSlWKyGS2rUEID1q8M8_5GWGI",
     "enabled": true,
     "autorefresh": true
   },
@@ -7888,7 +7888,7 @@
     "name": "SLE11-SDK-SP4-Updates",
     "distro_target": "sle-11-s390x",
     "description": "SLE11-SDK-SP4-Updates for sle-11-s390x",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-s390x?L3u3a6vd87uajYFUPO1wgnYtV0E5YuV4lrI_zS44F3czUpbG1KKP5lRDCvpj9VkWHl1PFnsCxnA-wUq_nX5g29ktB_GWv_0ZhCY0Jg7jC-5i5NFIscZ--Rhu-0HKcXfpQYx4t6dvhDmAT9s",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-s390x?sjcL0kgAAAAAAAAAv5vciqK1QqxEyPFdJ2HlpZG1vw-jZKPR0sSgKRQNMTOLK8JUa6dfsdPXxsp97xPHY6zQ5m-YkvjY_FIG3MnNEwmzTb2l0wuOWwyMFiLNviItdsjFAvBvKCBY782KF0o",
     "enabled": true,
     "autorefresh": true
   },
@@ -7897,7 +7897,7 @@
     "name": "SLE11-SDK-SP4-Updates",
     "distro_target": "sle-11-x86_64",
     "description": "SLE11-SDK-SP4-Updates for sle-11-x86_64",
-    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-x86_64?ROyDmC6Z8_jJY0WG5X03ALgEvWH5mohrVvqSxXcOcpszOF-RXY8V9g3CscoEWApjrQOMRTdOdpLxSLgWhmfHf2YXyCmPLDMX2xx0Y0_gtLSp1a_vYVmKeVevyxcGCuV3oQylGLXGe5OpGGsP",
+    "url": "https://updates.suse.com/repo/$RCE/SLE11-SDK-SP4-Updates/sle-11-x86_64?n6UE19lUDb_lwQroIwQuKdd0flNU3k6lavIdJC5LSl0nCvHqcWzmkx-27Uh1bdCmy4VX9cDnQjVVbELJdE6U5NrJZfMwQoB-Fhh0EaxLVvIkxtXNrpQl-iGNoahPsUv_hrCR6o-9xWcw9atV",
     "enabled": true,
     "autorefresh": true
   },
@@ -8041,7 +8041,7 @@
     "name": "SLE-SDK12-SP1-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-SP1-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update?UqJCfWamuu7AKtu_LCK5WwDb6TjhsTMvA51K-n_37oQMWVPIl5QC0xcdAkgIDHsIHbKLh0D9FcPjtMfo5u8kb5om4KPZjoBlkmh1OBOpQ3qcExvsxAmsO2CLocdA9Pj7OrKwQkjZWQI",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update?5hc8kV9dmC1zu3XHN5dBldhWx5_ZUbxbuc5vaVt0gAfKzZQBkRjIMikeFIjh6yaVtmNvkE0c6ltEjLd00EzZPU8TIn1_fJz17MPyGWXOJFo6rhHCpwh_svnWQU9nanxpaMO7x_H8TMQ",
     "enabled": true,
     "autorefresh": true
   },
@@ -8050,7 +8050,7 @@
     "name": "SLE-SDK12-SP1-Debuginfo-Updates",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-SP1-Debuginfo-Updates for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update_debug?wH034A7Dw0J-CrkNKjmMrTwjfYoHTc0wtcV34fdJQ8lZL6WluJzzz6SL4x1wj7X6EaAwK6qyHlIwqbX12dQBMAb3qR82kusC13PZeIQ8uMJw8UFgrhmSb3XZ2lcwMNaEs-QuSrb240JXwB1yoz8",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/x86_64/update_debug?VUsjvMLWxBdMwHHOEqcyEyq0umACchGbCYrPNKo3WEvsktquvghhCoLN9BWfc3ZrsJCwXR6aWUtApD3LQGSgSpHKYYSp81bBxEowRDmKhXS6nX7xk6okEtrZl8_GFYp0-00daFvMyvR922jRUuQ",
     "enabled": false,
     "autorefresh": true
   },
@@ -8059,7 +8059,7 @@
     "name": "SLE-SDK12-SP1-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-SP1-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product?YjLbOm0voWFvCGx6rjvPEiEWD2-iVsDc3UnShaMFt6jbGZHqWSbvflZBJ0Z-IdR50K1igr5MqKzK7YmzxuyPl8O54wbPf4lQO7C5uvCWB1Yx6OZykdWHjfHPQPvgu04hyj-vDnTxyxdPSA",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product?Hvm96E1k4EzcleSUVV8x6JzWc3fQYg0Sm1IE3T9jml4-xrYeolqm6gQJSnHuMSY2hup-xYIOIlm-oEQcmis2Cm-CiO5pfoLRsTm8Y1CL6CbIEHQVVId5zY4E8bLPRT7_PSi-0Wo0-9W92g",
     "enabled": true,
     "autorefresh": false
   },
@@ -8068,7 +8068,7 @@
     "name": "SLE-SDK12-SP1-Debuginfo-Pool",
     "distro_target": "sle-12-x86_64",
     "description": "SLE-SDK12-SP1-Debuginfo-Pool for sle-12-x86_64",
-    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_debug?kqVKvgAAAAAAAAAApAuyt6ULsENKN0jzxxea14vb_fRUgpcvsMCrTIMtVPFzfn89pIqr_qOYAVhwgOhrmY6dxB046uQPLEr2fECgjijwi1ql1Pt0ioTnRWjAfvNXs4HU-EKsbdYvt76Kcg3r6YLEMA",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_debug?4LjeQAYu5-5x6Ja_c5oaLg4uZ90pHoKImDTQPGNgkDvrSeqyg9maXskduhqHq2coWdPOF6YMX1VwviHvGnTGd8rVwi0IDbfjL6vq2_DH0jpZct0RDL_LLAyHLyuPKsddI9DJNA9THUc12ZrjTNX4Jg",
     "enabled": false,
     "autorefresh": false
   },
@@ -8242,15 +8242,6 @@
     "url": "https://updates.suse.com/SUSE/Products/SLE-DESKTOP/12-SP1/x86_64/product?vSwd-XNFXeUi5kug3GkTJyR8VKxauBGjHd1z-dy4sitJD1n5DF2fxz2poS1pMwxY6qsrhynS2eJmZtvC-1FrkZgyVTFsOV9Yt-S-y_htYld4w91yRBQzbQ6taRtF3_-5tYEgmNeHhwAqfNzVmAU",
     "enabled": true,
     "autorefresh": false
-  },
-  {
-    "id": 1873,
-    "name": "SLE-12-SP1-GA-Desktop-nVidia-Driver",
-    "distro_target": "sle-12-x86_64",
-    "description": "SLE-12-SP1-GA-Desktop-nVidia-Driver for sle-12-x86_64",
-    "url": "http://download.nvidia.com/novell/sle12-sp1",
-    "enabled": true,
-    "autorefresh": true
   },
   {
     "id": 1874,
@@ -8438,6 +8429,384 @@
     "distro_target": "sle-12-x86_64",
     "description": "SLE-WE12-SP1-Debuginfo-Pool for sle-12-x86_64",
     "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product_debug?vPaYIG-pd9MhVWUL8vlkqejrAyXT3Fr0UxrN2Ny46IzU1zWruAPCxKJiDgugqX2gktOLlToxg03-uxV4Bdf9_g1f-oLtbHtigqdvD9RT6DRziBtS0_gwaQqzubxx-UV4lRBsXPwBnTYHWrpEd9Ul",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1895,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update?inRjdN2nb922zIZOHS12oilaY5b2RXeMO99LnidcgJwTPLuhJQnU6DHBS8k4UwcKBaQx52JUG5ujHpbWecHsXoEiI07VvernfZ5m-7O1lKzAD10cJLM0NYnFiB867EpiftnUmRV1RK3PfUiclJVPQ2KT",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1896,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/ppc64le/update_debug?S-uYC5qxLR6Mr1VqZJmKecGqvfE4xlqXlRwAwFJQcE5kvPOtXwU0o4rsiwgR2yM77qY5ooOMAcW578Cvz2mmNIvqoNNBzcCj6vFxV5TWJeCXwE6Btqx6u_TDfCPynxE8ztLBRhi-vyPqUKfC0TNkXRk3ESkvlIyn",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1897,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product?JR9aWhO9IDhyfYnW2Fv9Xh1YRstFqUIG05uSGyN6IVGNaPFc33GBPTm98j0Ul5_9O6GpHkmnVP5I-w_zKvrqHKfVrjRaNRHweuuiw0YPPzB2FfOfmttvWcWN95oZQOsa8IugqLLwDqI6LMRz3J_NcGA1wPM",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1898,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/ppc64le/product_debug?BUfx0mmQbzQzL4FQif9Q6bcl-C1vg0n3sK1SBv0E7hbLMDIzNIT27RH3iHlcKXI2-7TxZQV6LRLHzQx2W8yKAKeoBkUGojIteSAuomtHTIGcRJ0oHwMeU_F-1KkNR5xjgS1Byde8IKgUELP4behuQcwMUrpnI2s3TGE",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1899,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update?wANUSpHcIcaDl8HTjV_52a2ZX95cbt7pKf1D2Hv4SIrG2m9MyQ2opx7VgFDSbDbKt7py1RvnerNGVCkzReVkXXKxkNKqFVvXypW7Xcq-p3d41dcLTaQ9MwARJeHrbfUTArvTROZbgXFGjaOXSXTeZA",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1900,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/s390x/update_debug?fK3IxOXKTbORKAElnZrYIjme1asc0d1MJDgFwbGs68TRDvdjQ2d1V0RALj4UHNSleC_FPIjGEbYASkB22sHZCL_zfaekMhPJyfiqzevpyPMy4oRt5Q1uqyJWdH378A0yxb4r5r7nIcQc4g5RO_SaLIKmYS8eVw",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1901,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product?VpPgfRPfIpxD2bJijmk40UaJikJm0FsCYO60T8NpzhvJZ3T8jbjPp-A70UalkIpUpEUBtTLSwJBi-_7APsIpNCRKLu0aHzOV3jLa4VVvZhw2Btjao173Pc8bth-dxjcerqy9mQnFfgfPdCbSjtf5m2ye",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1902,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/s390x/product_debug?UaK6kzKGGVSvaItYrG-LmcyJncwdW-zc9PbkrXtBeg4Ijcz69ASytqUPKjHksupcJSb1jikBX-j8reJO-49Ag-sCH_bbLHCCSoLPnYiYJH9Gb1VmSJmF4MU6qxOLO-kfCAUXHCrknTbtP_wLlntyBOdZV1okiHbd",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1903,
+    "name": "SLE-Module-Toolchain12-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update?ce2S5Urj_gzDI6-6VDhu8uEDyfxr3VYhUhj9e7BOTwlWeAk404ie2bDgYKx-Lyp8mBMZkgOe76-DcuhFmZvy75_R9OpGMvKbRPA_ZAoz9KSGsxYtYi_yKsk9ADiFHNpSqvg-dTzZED8VAXe-f-9Arwo",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1904,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-Module-Toolchain/12/x86_64/update_debug?xW99pywtFbdEjlPF9iLQKZVyo_6PmQ63n3LuUsY7DtpdD43-HZtxowwopBtTN4MLcZATBy7uWG7U1l9bXBTIOZEk-WVLwtYUXloobtUI4bL-dNKzajfaafHOKlrj-3D1R_FoRPqjIRw9LaEKQxlyweoGeagPWGU",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1905,
+    "name": "SLE-Module-Toolchain12-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product?-W7YBNK9LPQr4x5LcGQ_S_oBApO3j3GQxRqqZ7CZ40rOn6psrVfYVxy7CPc0ncrlqgNBDEx5WuevIXzGRDAqYJkHW03FyV-uZDnNGLf6-7YkIgCkmzBOkqneFBeEZYD_Y9Dc0onJ9j8PSb7-2RqMMZBe_w",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1906,
+    "name": "SLE-Module-Toolchain12-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-Module-Toolchain12-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-Module-Toolchain/12/x86_64/product_debug?r5DfEVwoKhzkfDMRFN6SXJYzmcuIiYYs92OFcAam5eFZI0-RhPJZJUIN352hSWR8wZTE2RYD6Z6l_xr7SmF3wv6gHdYnGXPtaVaBuf5woaGvjV71OJFwwrnPAsIY46Rfrgf1StVOELcfKUOezdfaSdajgQEEUNfiOw",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1907,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/x86_64/product_source?v1mcBzr46SpVHEvs0qS7IfEcfwhFUlxPmMk3iAcOUo7dLrf0fQfFyAKCjNS2z7nyO-ZZ8G3Fmh491DegcwrISKlJbPv20xrSDzl-7FyVBZCG2RmBpveEoBZoFxIfw-17ykU5tPO9bzrX-pk-q1J7Yc0",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1908,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLES12-SP1-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/ppc64le/product_source?1wt5J_ncmlwy-r5D5GFnh6wj6Ief-pfGmJhQ9P2VYcdGTaRjSWdbB0ISLJbI2Qqm-mZVyJ1cfExJ0oLldN8-5vOL7HyQp1MdimjCAqC8sRVilF-9K7uDaVjwSu45GhAnpzPqhMfy8t3-IgelTR7hnqRZi67W",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1909,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLES12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/s390x/product_source?LWEyvLWS7BYG8oog0Rz2pGmTLzLtxkDOFmaLFNh-0zjR8t3jeZ0KAq4PYFxHisZDXr72SO4paIOBackqOmDhtTrGJgPZ9eFAMqEEsm2Ee04WCuEEPjRDHUQWm7yrn9pbscOheS1GE198RZigtzEq7PH_9w",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1910,
+    "name": "SLES12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLES12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SERVER/12-SP1/x86_64/product_source?GeFQwReaLfhFzZj7-TRockcGIvn5yDskqaLaXyXTgs7xfwqUM0qbVoNlq-F_3Mvq3CigM7ZvMVk5Gd8FTaWm3lEKN6qWOvJUlJgPbJeKXU7MdT-CP3Hlkp8W12YY7haiEd8o8g-IS5rGcLKqYeXcn1nN_CU",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1911,
+    "name": "SLE-12-SP1-GA-Desktop-nVidia-Driver",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-12-SP1-GA-Desktop-nVidia-Driver for sle-12-x86_64",
+    "url": "http://download.nvidia.com/novell/sle12sp1",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1912,
+    "name": "SLED12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLED12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-DESKTOP/12-SP1/x86_64/product_source?e_1Op7Fiu1kNJ_lnBPeJkAb9G7e0M192MyWTlG6RyWvBFIkDq0TWeITgbts9s-QA5g82A2ye1fqHhtTWs5hCvE9Uc7LdmIX6qSMquW7jojhRfqsT4GiA2381OjvtHD9MfscEnCCpk7mBzgXl6rfDGGyiXuY7",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1913,
+    "name": "SLE-HA12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/s390x/product_source?N3tCMgpsSEkpVegsQYYlLUEwgSUGNdgYWQQwvsvjYOPKmQoFH404q8hCBOcZpIV8yWcX3IZWJvr_0z6v82zDnSGoRMyeuFv4x_8kI95g0mM4gfzkbKqeOHlaeSuE8LHG_hfIvhtSuPsz6ROtSZxL",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1914,
+    "name": "SLE-HA12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-HA12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA/12-SP1/x86_64/product_source?nK6Ffqjra6gGPo6E4xRNlQN5T4oVk6chJS4hTB34PMEBZl8qHtXljhoNdip8p1pvyk-sFyuoezMopzWdnZDTr0q6JJwVL_EbbZxrPlVHLenEwlYboPzOdFr32S0D0FVxABi-8pQWwXW6LM2BoMLD3g",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1915,
+    "name": "SLE-HA-GEO12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-HA-GEO12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/x86_64/product_source?RU_ivbd96yKKAQAAEHVhH20x8ThX5MYjrtQQGpe1vHN4Donz65Ef3iGQ31SzVo4pxjqmybS1Vtnngxu2mf_uk3puM-GxyLVTqKm_BytEK0dibsbn3OQWBf37uyGbCJiEuq7gUhlO3KG3fPiTvW4N445nfpo",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1916,
+    "name": "SLE-WE12-SP1-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SLE-WE12-SP1-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-WE/12-SP1/x86_64/product_source?Dy9gqxOivjwe9J02A-QWYAt8Cc29tffIVzmP9qOj-S6vkCVw_NVf_4tCV6j3h0_GOvjn2r5-c9HhSR0B6A7EU-n-Kg1NDtN0qgf9x9qxJx4IK_kPqQciw0imzfowM4Y4TtdMa7pmBCpjeYy0KUzIZw",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1917,
+    "name": "SUSE-Enterprise-Storage-2-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update?cVxf9eA8wiAEDTKkTNRDzfLvDBplm9i-7vr7vQfBM1aWLEqqwL7fCZSMofbYMWMuUspUErUXz_K8zg2oZIyA3hF2vlla81L0fBCdil42D-xywwq_pGfM3-7hCTp6s0n8CURB",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1918,
+    "name": "SUSE-Enterprise-Storage-2-Debuginfo-Updates",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Debuginfo-Updates for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Updates/Storage/2/x86_64/update_debug?wS297GQjyNulC2kQm9iBwHkzYDxmXFPKHopxVdJJ3XAhpOSmNDjnN-zt9pIuPoGPI9nhOvdnso1ZiKGVz5aOt7cB1xQ7cqQmbTiRQUihhGo7xpOVSuDIvhrVjJsS54khh7C9Tm_yEQ4X",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1919,
+    "name": "SUSE-Enterprise-Storage-2-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product?u0jhR3HEwqlDTLX08fqZUw0ZjTBimAISeilZNxPcBtp3gW6dEq_9CT4Y4-ZwQvbL7no0pB1WdnGpCURgVOzJdr0lgf9KK4eoHxhB8TfKWWjnSbzF58eDGAZ-rWPdu4tzlxfkSPw",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1920,
+    "name": "SUSE-Enterprise-Storage-2-Debuginfo-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Debuginfo-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_debug?z5-ZbBW8_WklnzTCBN7F-1u6EL4IlyW02PfR1cxhb4SKkmfTo7mmE5wHoOwAkhg3wHz4XbreZKgAkXqK0wObJDdFrhvLP1DQ-jiaKsXQd7XSUyqrUbQi3MViAWcFt3IN46to5aJyx8kdUKA",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1921,
+    "name": "SUSE-Enterprise-Storage-2-Source-Pool",
+    "distro_target": "sle-12-x86_64",
+    "description": "SUSE-Enterprise-Storage-2-Source-Pool for sle-12-x86_64",
+    "url": "https://updates.suse.com/SUSE/Products/Storage/2/x86_64/product_source?JzieLQlGbqmHtqLQGY6Vj8n6YPvI_PlgzzOzhOXvKxXHwK0IGxebet3ASZ8bHRBri55LffB9GpHPE7bFvejUJfwCdlw5DSRY6cZrc6APB5HpDOEcjb9-snNSJAlPcCS1e8890KfK5ZDH9gFN",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1922,
+    "name": "SLE-SDK12-SP1-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/ppc64le/update?VDfJZgXniO__1vD1sEaTcLKJvLUtQbkjeRq4i2lq4mYoDSmSugrAHTecciS2WH0ZOnOoV7TYMYXJUvn3-hWZdNMeIoICKmRYSb73OBHHb4lN70TskBjw8KytiuDBphSo_Wag9Ad2hEPk",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1923,
+    "name": "SLE-SDK12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Debuginfo-Updates for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/ppc64le/update_debug?kIgcuHh9TTWRp0EfJVK4zzZt0qZESVzAAuA8SPnwR_YSxPR5JFmZGZ9qDhVF2utl1S_r6cQiAmCoRUFWl0y8kz_2laId7HRYJLfNU9tUlkHjwdd6Js-fL4Qa8chG_Shrz5hIVRzBe9m3b-EeqLXt",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1924,
+    "name": "SLE-SDK12-SP1-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product?w5H9_fN0fDOE0cToLs-aiN8vpjvyRxLOTDaqjjRSr4cG7Fhnnx3Z-sQ1tt3criWyjtQLpd6AnShe4HivcAmpbdhSWownTD0Pk02Hz-cBSj23i1ohlF5h0dGyYHGDOKRIWPulFL-yO4FwvgQ",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1925,
+    "name": "SLE-SDK12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Debuginfo-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product_debug?PzwYWUfACS51ZlxXxUPWK4nH5HTScscdHx9kXes1mIEnJJ6GDOUm3MDQGKXMVlFO-Bl5Ke_UPDCta_7X1cYpQiQu_jtyNSLSxBqs7XuCmCQKzkY37HAlLrEYp7xWyePbtOzBfcbK7_CkLlyd9tjxxKk",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1926,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-ppc64le",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-ppc64le",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/ppc64le/product_source?2k1yDNpPizPLF8zyHPh4oTlXL4OqTTLpOyQ1TX8-RqzpOxhs6DGAL5gC1u09jpEfmqntVK84QAonaiX0-7XImkpguXU_9NpQuPanp7oJe0gsU7cr-T5wplOuJLLJK1Q5N7o66dONVsV2eXdHql8sOOL9",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1927,
+    "name": "SLE-SDK12-SP1-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/s390x/update?1L9vPnue6f6eG8HqYhiVpbC1pNKGcwYM-oE_1jfV5sCxhfkuwjnNejBamA5zA2PO0Z0QFV37nq5fkLHpNM0csBSwREhCk778chtn2HwQGpUbawYVckZ9z9iNE9OH24egkicmGafV3Q",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1928,
+    "name": "SLE-SDK12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-SDK/12-SP1/s390x/update_debug?M9DP1MQotILkeGUV9RYMzN_NsFvUJK1gcA4SsM_iI0e0R0fLD3qcxNrUESt9bRCMGStf3pR2Lx6J5D64hy_MNzZdrpzi7a8nCQNuhIt24NHKWnnc1PgofONLWO-CDOXPgsYgXZnwbK925WyolA",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1929,
+    "name": "SLE-SDK12-SP1-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product?WUA2mU5Rs4t1YZzCUmYgvTfO3P4YSe8Okw_9PRekRuHs7QXyvfB7eMKgRmJLs7U3F-thTptVxn3j8EDG3NwQBazDHfJv7ZrRzmsqy3xaeio1GnEWy-Q4ixtvo3ije-l7aW01mwPXQ3f_",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1930,
+    "name": "SLE-SDK12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product_debug?WKDOrQcukK1WaetNv9PyycDkzCw7h6_9ubKHWHUDDZuFdfYkVDwZQjKUAAryF_denrvltJWUG22el2TQXrU2oA8UFKOUGNrMFw-YM1Uv76P87J0iyHY404HMmela53Uyo5F8mkxQYyBojxFGnhms",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1931,
+    "name": "SLE-SDK12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-SDK12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-SDK/12-SP1/s390x/product_source?Bc_qCoEAAAAAAAAAErqN1HYZ5PNxEgzZyvAuIbPabwMaCfsZ2oiWbsVmZ_eC-P6NLEgDg4XrHx0Fe9f2qRXSWm5N4wZxFIiyIafB24GuzmD4QdXsd_z3qXZhd5y5X_WZnjKgcLkwK5sB-Y0s7qf_fA",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1932,
+    "name": "SLE-HA-GEO12-SP1-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/s390x/update?8ezGmHG6P2skut1vHBvBdG24TlwQc2cXJFDn4khmB7ohlMtUzw8rvbqs9qETV4TqlmpTsRYkeZtMimMLbmjY5MtjIMCFPqzWXvQoWQ_DlijTPCOBwBPQ2iTReeN-k2VbyUMc0Oxol-BM4g",
+    "enabled": true,
+    "autorefresh": true
+  },
+  {
+    "id": 1933,
+    "name": "SLE-HA-GEO12-SP1-Debuginfo-Updates",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Debuginfo-Updates for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Updates/SLE-HA-GEO/12-SP1/s390x/update_debug?AjbNXYhjuHOz_5NVDSp6qVf-Mi4tc8uOEZZHgvvpMT0-cv69Jw2tLnnfZuTgLN3JADU-I4I2Qf-JoHftLeF8NAnF-p0t4P_OvDvTaogtO-4YaboMQggB5Ctsr6SdZwWVrA4jWYO68VU7L2UOqkv0FQ",
+    "enabled": false,
+    "autorefresh": true
+  },
+  {
+    "id": 1934,
+    "name": "SLE-HA-GEO12-SP1-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product?0QuguGS0hTN0Wi6SHYIzb4obLceO0hbo9dq4hcNmaFbM0NUp7ppoQqG7g5NF0KPbnxnQo0ARkU8Kv5jFZUOxYvjEKG0YY1veD3vSWj39FPxqFBHap3ZjImMnHpy5fZjS1ptVLgP1VOAfXMrq",
+    "enabled": true,
+    "autorefresh": false
+  },
+  {
+    "id": 1935,
+    "name": "SLE-HA-GEO12-SP1-Debuginfo-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Debuginfo-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product_debug?RsQxtsft8TafjqQotchiH08PKWVrb-4e7LtRiTbE-QCrk3e4Ifm1ZNGJSZqdTuP4Pxze9ATete0NQibPPy17OHjzhsh0rImNELo3bId3lfwaDAhqeumYq2qZ9l-063wpegFd9f6NoF6hXm1kBTrv6Yyb",
+    "enabled": false,
+    "autorefresh": false
+  },
+  {
+    "id": 1936,
+    "name": "SLE-HA-GEO12-SP1-Source-Pool",
+    "distro_target": "sle-12-s390x",
+    "description": "SLE-HA-GEO12-SP1-Source-Pool for sle-12-s390x",
+    "url": "https://updates.suse.com/SUSE/Products/SLE-HA-GEO/12-SP1/s390x/product_source?SDh6_10hSkroTTCBDTsol7R3OalVhR4w1CE0qgFu_BUDKaijSd6Qhk5g4O67sXprE2qIsBA7Wd9FGVVlQoaO86EYcmTKUqgv7xp5vJpK9ljliRDaeFhLlYVpLPdt8rJRSt4OVHFOIny9jzCtk6Opyy2UIA",
     "enabled": false,
     "autorefresh": false
   }
