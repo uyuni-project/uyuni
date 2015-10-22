@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:42:24 CEST 2015 - mc@suse.de
+
+- version 2.5.0.3-1
+- Taskomatic job for running gatherer
+- add new foreign entitlement
+
+-------------------------------------------------------------------
 Wed Oct 14 09:52:36 CEST 2015 - mc@suse.de
 
 - version 2.5.0.2-1
