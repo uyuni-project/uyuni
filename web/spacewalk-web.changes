@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 22 16:24:20 CEST 2015 - mc@suse.de
+
+- version 2.5.1.3-1
+- Improve the alert notification
+- Instead of showing an alert just log out if browser unsupported
+- Open the event stream on every page
+- Setup SSE event source on the system overview page
+
+-------------------------------------------------------------------
 Wed Oct 14 09:48:35 CEST 2015 - mc@suse.de
 
 - version 2.5.1.2-1
