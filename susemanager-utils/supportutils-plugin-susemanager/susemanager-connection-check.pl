@@ -52,7 +52,7 @@ open(FILE, "< /etc/apache2/server-tuning.conf") and do
     close FILE;
 };
 
-my $ref = XMLin("/etc/tomcat6/server.xml");
+my $ref = XMLin("/etc/tomcat/server.xml");
 my $tomcatmax = 0;
 foreach my $con (@{$ref->{'Service'}->{'Connector'}})
 {
