@@ -427,7 +427,7 @@ public class ServerFactory extends HibernateFactory {
         Map in = new HashMap();
         in.put("server_id", server.getId());
         m.execute(in, new HashMap());
-        HibernateFactory.getSession().evict(server);
+        HibernateFactory.getSession().clear();
     }
 
     private static void updateServerPerms(Server server) {
