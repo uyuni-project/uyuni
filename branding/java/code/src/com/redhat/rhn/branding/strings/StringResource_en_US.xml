@@ -2165,6 +2165,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Minions">
         <source>Minions</source>
       </trans-unit>
+      <trans-unit id="Salt Master">
+          <source>Salt Master</source>
+      </trans-unit>
       <trans-unit id="Onboarding">
         <source>Onboarding</source>
       </trans-unit>
