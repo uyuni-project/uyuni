@@ -110,7 +110,7 @@ public class VirtualGuestsConfirmAction extends BaseSystemListAction {
                 Long vid = new Long(next.getId().longValue());
                 VirtualInstance virtualInstance =
                     VirtualInstanceFactory.getInstance().lookupById(vid);
-                VirtualInstanceFactory.getInstance().deleteVirtualInstance(virtualInstance);
+                virtualInstance.getHostSystem().deleteGuest(virtualInstance);
                 actionCount++;
                 key = "virt.deleted";
             }
