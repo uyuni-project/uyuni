@@ -122,7 +122,7 @@ public interface SaltService {
      * Injects an event into the salt event bus
      * @param tag salt event tag
      * @param data salt event data
-     * @return
+     * @return true if successful otherwise false
      */
     boolean sendEvent(String tag, Object data);
 

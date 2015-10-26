@@ -116,7 +116,8 @@ public class MinionsController {
      */
     public static String systemOverview(Request request, Response response) {
         String minionId = request.params("minion");
-        Server server = ServerFactory.findRegisteredMinion(SaltAPIService.INSTANCE.getMachineId(minionId));
+        String machineId = SaltAPIService.INSTANCE.getMachineId(minionId);
+        Server server = ServerFactory.findRegisteredMinion(machineId);
         response.redirect("/rhn/systems/details/Overview.do?sid=" + server.getId());
         return "";
     }
