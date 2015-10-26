@@ -1,7 +1,7 @@
 %define crawl_output crawl_output
 
 Name: spacewalk-doc-indexes
-Version: 2.5.0.1
+Version: 2.5.1
 Release: 1%{?dist}
 Summary: Lucene indexes of help documentation for spacewalk
 
@@ -50,6 +50,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc licenses/*
 
 %changelog
+* Thu Oct 15 2015 Jan Dobes 2.5.1-1
+- updating doc indexes
+- updating doc URLs
+- Bumping package versions for 2.5.
+- Bumping package versions for 2.4.
+
 * Thu Mar 19 2015 Grant Gainey 2.3.3-1
 - update crawl setting for Spacewalk 2.3
 
