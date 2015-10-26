@@ -83,5 +83,6 @@ When /^I wait for the data update$/ do
       break
     end
     sleep 30
+    visit current_url
   end
 end
