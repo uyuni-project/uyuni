@@ -25,7 +25,7 @@ zypper --non-interactive in perl \
              timezone
 
 # Packages required to run the python unit tests
-zypper --non-interactive in  cx_Oracle \
+zypper --non-interactive in  \
               make \
               python \
               python-argparse \
