@@ -2,7 +2,7 @@
 #
 # VERSION               0.1
 
-FROM suma-docker-registry.suse.de/suma-head-base
+FROM suma-docker-registry.suse.de/suma-head-base:1.0.0
 MAINTAINER Flavio Castelli "fcastelli@suse.com"
 
 # Install the required packages
