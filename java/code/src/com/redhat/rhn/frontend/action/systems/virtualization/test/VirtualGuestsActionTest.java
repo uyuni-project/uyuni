@@ -115,18 +115,12 @@ public class VirtualGuestsActionTest extends RhnPostMockStrutsTestCase {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 1);
         Server guest =
             host.getGuests().iterator().next().getGuestSystem();
-
-        VirtualInstance virtualInstance = new VirtualInstance();
-        virtualInstance.setUuid("1234");
-        virtualInstance.setGuestSystem(guest);
-        virtualInstance.setConfirmed(0L);
-
         ServerFactory.save(guest);
-        new VirtualInstanceFactory().saveVirtualInstance(virtualInstance);
 
         addRequestParameter(RequestContext.SID, host.getId().toString());
         addDispatchCall("virtualguests_confirm.jsp.confirm");
         RhnSet set = RhnSetDecl.VIRTUAL_SYSTEMS.get(user);
+        VirtualInstance virtualInstance = guest.getVirtualInstance();
         set.addElement(virtualInstance.getId());
         RhnSetManager.store(set);
         TestUtils.flushAndEvict(virtualInstance);
@@ -143,6 +137,11 @@ public class VirtualGuestsActionTest extends RhnPostMockStrutsTestCase {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", virtualInstance.getId());
         DataResult dr = TestUtils.runTestQuery("select_virtual_instance_by_id", params);
+        assertTrue(dr.size() == 1);
+
+        ServerFactory.delete(host);
+
+        dr = TestUtils.runTestQuery("select_virtual_instance_by_id", params);
         assertTrue(dr.size() == 0);
     }
 
