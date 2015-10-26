@@ -27,6 +27,11 @@ World(MiniTest::Assertions)
 # basic support for rebranding of strings in the UI
 BRANDING = ENV['BRANDING'] || 'suse'
 
+# Returns current url
+def current_url
+  driver.current_url
+end
+
 def debrand_string(str)
   case BRANDING
     when 'suse'
