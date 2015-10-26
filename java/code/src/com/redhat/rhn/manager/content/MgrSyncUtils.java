@@ -139,7 +139,7 @@ public class MgrSyncUtils {
             product = new ChannelProduct();
             product.setProduct(channel.getProductName());
             product.setVersion(channel.getProductVersion());
-            product.setBeta("N");
+            product.setBeta(false);
             ChannelFactory.save(product);
         }
         return product;
