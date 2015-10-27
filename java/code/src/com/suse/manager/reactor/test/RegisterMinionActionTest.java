@@ -60,6 +60,7 @@ public class RegisterMinionActionTest extends RhnJmockBaseTestCase {
                 returnValue(getGrains(minionId)));
         saltServiceMock.stubs().method("getInstalledPackageDetails").with(eq(minionId)).will(
                 returnValue(this.getMinionPackages()));
+        saltServiceMock.stubs().method("sendEvent").will(returnValue(true));
         SaltService saltService = (SaltService) saltServiceMock.proxy();
         RegisterMinionAction action = new RegisterMinionAction(saltService) {};
         action.doExecute(new RegisterMinionEvent(minionId));
