@@ -170,4 +170,28 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </query>
 
+    <sql-query name="Package.lookupByChannelLabelNevra">
+        <![CDATA[ select {p.*}
+                from
+                  rhnPackageArch pa,
+                  rhnChannelPackage cp,
+                  rhnPackage p,
+                  rhnPackageEVR pe,
+                  rhnPackageName pn,
+                  rhnChannel c
+        where 1=1
+            and c.label = :channel
+            and pn.name = :name
+            and pe.version = :version
+            and pe.release = :release
+            and c.id = cp.channel_id
+            and pa.label = :arch
+            and pn.id = p.name_id
+            and p.id = cp.package_id
+            and p.evr_id = pe.id
+            and p.package_arch_id = pa.id
+        ]]>
+        <return alias="p" class="com.redhat.rhn.domain.rhnpackage.Package" />
+    </sql-query>
+
 </hibernate-mapping>

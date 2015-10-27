@@ -20,6 +20,7 @@ import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.manager.webui.utils.RouteWithUser;
@@ -83,6 +84,9 @@ public class Router implements SparkApplication {
         //Setup API routes
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
+
+        // download endpoint
+        Spark.get("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
