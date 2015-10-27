@@ -514,8 +514,7 @@ FORCE_OWN_CA=$(yes_no $FORCE_OWN_CA)
 
 SSL_BUILD_DIR=${SSL_BUILD_DIR:-/root/ssl-build}
 if ! [ -d $SSL_BUILD_DIR ] && [ 0$FORCE_OWN_CA -eq 0 ] && [ 0$USE_EXISTING_CERTS -eq 0 ]; then
-    echo "Error: ssl build directory $SSL_BUILD_DIR does not exist. Please create this directory."
-    exit 1
+    mkdir -p $SSL_BUILD_DIR
 fi
 
 if [ 0$FORCE_OWN_CA -eq 0 ] && \
