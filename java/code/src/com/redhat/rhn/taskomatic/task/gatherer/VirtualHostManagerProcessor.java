@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -158,14 +159,15 @@ public class VirtualHostManagerProcessor {
                 vmEntry -> {
                     String name = vmEntry.getKey();
                     String guid = vmEntry.getValue();
-                    VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
-                        .lookupVirtualInstanceByUuid(guid);
+                    List<VirtualInstance> virtualInstances = VirtualInstanceFactory
+                        .getInstance().lookupVirtualInstanceByUuid(guid);
 
-                    if (virtualInstance == null) {
+                    if (virtualInstances.isEmpty()) {
                         addGuestVirtualInstance(guid, name, type, server, null);
                     }
                     else {
-                        updateGuestVirtualInstance(virtualInstance, name, server);
+                        virtualInstances.stream().forEach(virtualInstance ->
+                            updateGuestVirtualInstance(virtualInstance, name, server));
                     }
                 });
     }

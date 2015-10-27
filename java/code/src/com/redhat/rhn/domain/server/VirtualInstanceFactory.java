@@ -323,11 +323,11 @@ public class VirtualInstanceFactory extends HibernateFactory {
      * @param uuid - uuid of the vm
      * @return VirtualInstance with given uuid
      */
-    public VirtualInstance lookupVirtualInstanceByUuid(String uuid) {
-        return (VirtualInstance) getSession()
+    public List<VirtualInstance> lookupVirtualInstanceByUuid(String uuid) {
+        return (List<VirtualInstance>) getSession()
                 .getNamedQuery("VirtualInstance.lookupVirtualInstanceByUuid")
                 .setParameter("uuid", uuid)
-            .uniqueResult();
+            .list();
     }
 
     /**

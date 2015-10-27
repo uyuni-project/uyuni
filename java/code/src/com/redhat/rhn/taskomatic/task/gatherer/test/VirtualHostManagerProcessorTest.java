@@ -11,7 +11,6 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.taskomatic.task.gatherer.VirtualHostManagerProcessor;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
-
 import com.suse.manager.gatherer.JSONHost;
 
 import java.util.HashMap;
@@ -77,7 +76,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         List<VirtualInstance> allVirtInstances = HibernateFactory.getSession()
                 .createCriteria(VirtualInstance.class)
                 .list();
-        System.out.println(allVirtInstances);
+
         assertEquals(2, allVirtInstances.size()); // one for host, one for guest, no dupes
     }
 
@@ -227,9 +226,11 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         processor.processMapping();
 
         Server newHost = ServerFactory.lookupForeignSystemByName("esxi_host_1");
-        VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
+        List<VirtualInstance> guestsFromDb = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("id_of_my_guest");
+        assertEquals(1, guestsFromDb.size());
 
+        VirtualInstance guestFromDb = guestsFromDb.iterator().next();
         assertNotNull(newHost);
         assertContains(newHost.getGuests(), guestFromDb);
 
@@ -251,18 +252,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
      * @throws Exception - if anything goes wrong
      */
     public void testGuestVirtInstanceUpdated() throws Exception {
-        // create a host
-        Server existingHost = ServerTestUtils.createForeignSystem(user, "existing_host");
-        // create a GUEST virt. instance
-        VirtualInstance guestVirtInstance = new GuestBuilder(user)
-            .createGuest()
-            .inStoppedState()
-            .asFullyVirtGuest()
-            .build();
-        guestVirtInstance.setUuid("id_of_my_guest");
-        existingHost.addGuest(guestVirtInstance);
-        ServerFactory.save(existingHost);
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(guestVirtInstance);
+        createRegisteredGuestWithForeignHost("id_of_my_guest", "existing_host");
 
         minimalHost.getVms().put("myVM", "id_of_my_guest");
         Map<String, JSONHost> data = new HashMap<>();
@@ -275,8 +265,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // verify guest is linked to the 1st host
         Server host = ServerFactory.lookupForeignSystemByName("existing_host");
-        VirtualInstance guest = VirtualInstanceFactory.getInstance()
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("id_of_my_guest");
+        VirtualInstance guest = virtualInstances.iterator().next();
+        assertEquals(1, virtualInstances.size());
         assertContains(host.getGuests(), guest);
         assertEquals(host, guest.getHostSystem());
 
@@ -288,8 +280,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // after processing, the virtual instance should be mapped to "another_host"
         Server anotherHost = ServerFactory.lookupForeignSystemByName("another_host");
-        guest = VirtualInstanceFactory.getInstance()
+        virtualInstances = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("id_of_my_guest");
+        guest = virtualInstances.iterator().next();
+        assertEquals(1, virtualInstances.size());
         assertContains(anotherHost.getGuests(), guest);
         assertEquals(anotherHost, guest.getHostSystem());
         // the original host shouldn't know about the guest anymore
@@ -310,11 +304,10 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // guest already registered by usual registration process
         VirtualInstance registeredGuest = new GuestBuilder(user)
                 .createGuest()
+                .withUuid("vm-uuid")
                 .inStoppedState()
                 .asFullyVirtGuest()
                 .build();
-        registeredGuest.setUuid("vm-uuid");
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(registeredGuest);
         assertNull(registeredGuest.getHostSystem());
 
         // gatherer reports this guest belonging to a host _after_ registration
@@ -325,8 +318,9 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // verify that processor linked this guest to its host
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        VirtualInstance guestFromDb =
-                VirtualInstanceFactory.getInstance().lookupVirtualInstanceByUuid("vm-uuid");
+
+        VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("vm-uuid").iterator().next();
         assertEquals(hostServer, guestFromDb.getHostSystem());
         // 2 VirtualInstances should be persisted
         // (one for the host system, one for the guest)
@@ -346,10 +340,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, JSONHost> data = new HashMap<>();
         data.put("esxi_host_1", minimalHost);
 
-        VirtualHostManagerProcessor processor
-                = new VirtualHostManagerProcessor(virtualHostManager, data);
-        processor.processMapping();
-
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
         Server newHost = ServerFactory.lookupForeignSystemByName("esxi_host_1");
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
@@ -357,7 +348,64 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertEquals(fullyVirtType, hostVirtInstance.getType());
 
         VirtualInstance guestFromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid("id_of_my_guest");
+                .lookupVirtualInstanceByUuid("id_of_my_guest").iterator().next();
         assertEquals(fullyVirtType, guestFromDb.getType());
+    }
+
+    /**
+     * Tests the situation when the virtual host gatherer reports a VM but we already have
+     * multiple guest VirtualInstances with this VM UUID in the database.
+     *
+     * In this corner case we want the VirtualHostManagerProcessor to update all
+     * VirtualInstances.
+     *
+     * @throws Exception - if anything goes wrong
+     */
+    public void testMultipleUuidInDb() throws Exception {
+        String guestUuid = "guestUuid";
+        // create a GUEST virt. instances with same uuid
+        createRegisteredGuestWithHost(guestUuid);
+        createRegisteredGuestWithHost(guestUuid);
+
+        String newVmName = "new name";
+        minimalHost.getVms().put(newVmName, guestUuid);
+        Map<String, JSONHost> data = new HashMap<>();
+        data.put("existing_host", minimalHost);
+
+        // do the mapping
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        Server newHost = ServerFactory.lookupForeignSystemByName("existing_host");
+
+        // verify that both have a new name and both belong to the same host server
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(guestUuid);
+        assertEquals(2, virtualInstances.size());
+        virtualInstances.stream()
+                .forEach(vi -> {
+                    assertEquals(newVmName, vi.getName());
+                    assertEquals(newHost, vi.getHostSystem());
+                });
+    }
+
+    private VirtualInstance createRegisteredGuestWithForeignHost(String guestUuid,
+            String hostLabel) throws Exception {
+        return new GuestBuilder(user)
+            .createGuest()
+            .withUuid(guestUuid)
+            .withForeignEntitledHost(hostLabel)
+            .inStoppedState()
+            .asFullyVirtGuest()
+            .build();
+    }
+
+    private VirtualInstance createRegisteredGuestWithHost(String guestUuid) throws Exception {
+        return new GuestBuilder(user)
+            .createGuest()
+            .withUuid(guestUuid)
+            .withVirtHost()
+            .inStoppedState()
+            .asFullyVirtGuest()
+            .build();
     }
 }

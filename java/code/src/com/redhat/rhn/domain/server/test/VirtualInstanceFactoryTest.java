@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.server.test;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -23,11 +24,12 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -246,35 +248,30 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertTrue(vi.getState() != null);
     }
 
-    public void testLookupGuestByUuidAndHostId() throws Exception {
+    public void testLookupGuestByUuid() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest();
         VirtualInstance guest = host.getGuests().iterator().next();
-        String uuid = guest.getUuid();
 
-        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid(uuid);
+        List<VirtualInstance> virtualInstances = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid(guest.getUuid());
+        VirtualInstance fromDb = virtualInstances.iterator().next();
+
+        assertEquals(1, virtualInstances.size());
         assertEquals(guest, fromDb);
     }
 
-    public void testLookupGuestByUuidAndHostIdOrgClashNonExistentOrg() throws Exception {
+    public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest();
-        VirtualInstance guest = host.getGuests().iterator().next();
-        String uuid = guest.getUuid();
 
-        // try retrieving guest by uuid and host from different (nonexisting) org
-        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
-                .lookupVirtualInstanceByUuid(uuid);
-        assertEquals(guest, fromDb);
-    }
+        VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
+                .createCriteria(VirtualInstance.class)
+                .add(Restrictions.eq("hostSystem", host))
+                .add(Restrictions.eq("guestSystem", null))
+                .uniqueResult();
 
-    public void testLookupGuestByUuidAndHostIdNullUuid() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuest();
-        VirtualInstance guest = host.getGuests().iterator().next();
-        guest.setUuid(null);
-        ServerFactory.save(host);
-
-        VirtualInstance fromDb = VirtualInstanceFactory.getInstance()
+        VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
-        assertEquals(guest, fromDb);
+
+        assertEquals(fromDb, hostVirtInstance);
     }
 }
