@@ -15,7 +15,7 @@ RCFILE="/usr/lib/supportconfig/resources/scplugin.rc"
 
 section_header "Supportconfig Plugin for SUSE Manager, v${SVER}"
 RPMLIST="susemanager-tools susemanager susemanager-schema suse-manager-server-release suse-manager-server-release-cd release-notes-susemanager"
-DAEMONLIST="susemanager tomcat6 osa-dispatcher oracle"
+DAEMONLIST="susemanager tomcat6 osa-dispatcher postgresql"
 
 if ! rpm -q susemanager &>/dev/null; then
   echo "ERROR: SUSE Manager package(s) not installed"
