@@ -20,12 +20,6 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="/sm/id">
-  <xsl:copy>
-  <xsl:text>@hostname@</xsl:text>
-  </xsl:copy>
-</xsl:template>
-
 <xsl:template match="/sm/local[ not (id  = '@hostname@') ]">
   <xsl:copy>
     <xsl:text>
