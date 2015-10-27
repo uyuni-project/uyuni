@@ -83,5 +83,5 @@ class MgrSyncTest(unittest.TestCase):
             self.assertEqual(0, self.mgr_sync.run(options))
         self.assertEqual(self.fake_auth_token, self.mgr_sync.config.token)
 
-        self.mgr_sync.config.write.assert_called_once()
+        self.mgr_sync.config.write.assert_called_once_with()
 
