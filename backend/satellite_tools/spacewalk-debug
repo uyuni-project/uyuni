@@ -310,7 +310,10 @@ if [ $IS_SUSE -eq 1 ]; then
         # get some inventory info
         /usr/bin/spacewalk-report inventory > $DIR/inventory-report.csv
         /usr/bin/spacewalk-report channels > $DIR/channels-report.csv
+        /usr/bin/spacewalk-report activation-keys > $DIR/activation-keys-report.csv
     fi
+
+    ls -laR /srv/www/htdocs/pub > $DIR/ls-laR-htdocs
 fi
 
 echo "    * timestamping"
