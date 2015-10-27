@@ -36,7 +36,5 @@ done
 plugin_command "zypper --no-refresh ls"
 plugin_command "zypper --no-refresh lr -u"
 plugin_command "/usr/lib/susemanager/bin/susemanager-connection-check"
-plugin_command "spacewalk-report activation-keys"
-ls -laR /srv/www/htdocs/pub > $LOG/ls-laR-htdocs
 
 plugin_command "/sbin/supportconfig-sumalog $LOG"
