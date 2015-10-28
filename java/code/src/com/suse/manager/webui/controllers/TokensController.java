@@ -35,6 +35,7 @@ public class TokensController {
                 ChannelFactory.getAccessibleChannelsByOrg(user.getOrg().getId());
 
         attributes.put("channels", orgChannels);
+        attributes.put("org", user.getOrg());
 
         return new ModelAndView(attributes, "tokens.jade");
     }
