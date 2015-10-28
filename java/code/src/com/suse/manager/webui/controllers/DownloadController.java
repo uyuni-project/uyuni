@@ -16,9 +16,11 @@ package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.domain.rhnpackage.*;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.suse.manager.webui.utils.TokenUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jose4j.jwt.JwtClaims;
@@ -26,11 +28,11 @@ import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.jose4j.keys.AesKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -38,9 +40,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Key;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.stream.Collectors;
 
 public class DownloadController {
 
@@ -78,8 +81,8 @@ public class DownloadController {
         }
 
         String token = queryParams.iterator().next();
-        Key key = new AesKey(Config.get().getString("server.secret_key").getBytes());
 
+        Key key = TokenUtils.getServerKey();
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()
                 //.setRequireExpirationTime()
                 //.setAllowedClockSkewInSeconds(30)
@@ -92,7 +95,19 @@ public class DownloadController {
         try {
             JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
 
-            List<String> channels = jwtClaims.getStringListClaimValue("channels");
+            Set<String> channels = new HashSet<String>();
+
+            // add all the organization channels
+            long orgId = jwtClaims.getClaimValue("org", Long.class);
+            List<String> orgChannels =
+                    ChannelFactory.getAccessibleChannelsByOrg(orgId)
+                            .stream()
+                            .map(i -> i.toString())
+                            .collect(Collectors.toList());
+            channels.addAll(orgChannels);
+            // add the extra claimed channels
+            channels.addAll(jwtClaims.getStringListClaimValue("channels"));
+
             if (!channels.contains(channel)) {
                 response.status(403);
                 response.body(String.format("Token is not provide access to channel %s", channel));
