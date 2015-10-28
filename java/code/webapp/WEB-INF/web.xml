@@ -173,7 +173,9 @@
 
   <filter-mapping>
     <filter-name>AuthFilterSpark</filter-name>
-    <url-pattern>/manager/*</url-pattern>
+    <url-pattern>/manager/minions/*</url-pattern>
+    <url-pattern>/manager/tokens/*</url-pattern>
+    <url-pattern>/manager/api/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
