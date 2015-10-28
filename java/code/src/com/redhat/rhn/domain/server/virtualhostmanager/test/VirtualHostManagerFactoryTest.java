@@ -144,7 +144,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testDeleteVirtualHostManagerDontCascade() throws Exception {
-        Server server = ServerTestUtils.createForeignSystem(user, "server");
+        Server server = ServerTestUtils.createForeignSystem(user, "server_digital_id");
         Long serverId = server.getId();
 
         VirtualHostManager vhm = factory.createVirtualHostManager("myLabel", user.getOrg(),

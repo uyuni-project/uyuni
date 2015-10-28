@@ -34,33 +34,36 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
         VirtualHostManager manager = new VirtualHostManager();
         String vhmLabel = "1";
         manager.setLabel(vhmLabel);
+        manager.setId(101L);
         manager.setOrg(user.getOrg());
 
         new VirtualHostManagerProcessor(manager, hosts.get(vhmLabel)).processMapping();
 
         // server 1
-        Server server1 = ServerFactory.lookupForeignSystemByName("10.162.186.111");
+        String digitalServerId = "de8-9a-8f-bd-a1-48.d3.cloud.mydomain.de";
+        Server server1 = ServerFactory.lookupForeignSystemByDigitalServerId("101-" + digitalServerId);
         assertNotNull(server1);
         assertEquals(1, server1.getGuests().size());
         VirtualInstance guest1 = server1.getGuests().iterator().next();
         assertEquals("vCenter", guest1.getName());
-        assertEquals("564d6d90-459c-2256-8f39-3cb2bd24b7b0", guest1.getUuid());
+        assertEquals("564d6d90459c22568f393cb2bd24b7b0", guest1.getUuid());
         VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid(guest1.getUuid());
 
         // server 2
-        Server server2 = ServerFactory.lookupForeignSystemByName("10.162.186.112");
+        digitalServerId = "de8-9a-8f-bd-a1-49.d3.cloud.mydomain.de";
+        Server server2 = ServerFactory.lookupForeignSystemByDigitalServerId("101-" + digitalServerId);
         assertNotNull(server2);
         assertEquals(5, server2.getGuests().size());
 
         Map<String, String> vms = new HashMap<>();
         vms.put("49737e0a-c9e6-4ceb-aef8-6a9452f67cb5",
-                "4230c60f-3f98-2a65-f7c3-600b26b79c22");
+                "4230c60f3f982a65f7c3600b26b79c22");
         vms.put("5a2e4e63-a957-426b-bfa8-4169302e4fdb",
-                "42307b15-1618-0595-01f2-427ffcddd88e");
-        vms.put("NSX-gateway", "4230d43e-aafe-38ba-5a9e-3cb67c03a16a");
-        vms.put("NSX-l3gateway", "4230b00f-0b21-0e9d-dfde-6c7b06909d5f");
-        vms.put("NSX-service", "4230e924-b714-198b-348b-25de01482fd9");
+                "42307b151618059501f2427ffcddd88e");
+        vms.put("NSX-gateway", "4230d43eaafe38ba5a9e3cb67c03a16a");
+        vms.put("NSX-l3gateway", "4230b00f0b210e9ddfde6c7b06909d5f");
+        vms.put("NSX-service", "4230e924b714198b348b25de01482fd9");
         server2.getGuests().stream().forEach(
                 guest -> assertEquals(
                         vms.get(guest.getName()),
@@ -69,7 +72,8 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
         );
 
         // server 3 (with no vms)
-        Server server3 = ServerFactory.lookupForeignSystemByName("host-with-no-vms");
+        digitalServerId = "de8-9a-8f-bd-a1-50.d3.cloud.mydomain.de";
+        Server server3 = ServerFactory.lookupForeignSystemByDigitalServerId("101-" + digitalServerId);
         assertNotNull(server3);
         assertTrue(server3.getGuests().isEmpty());
     }

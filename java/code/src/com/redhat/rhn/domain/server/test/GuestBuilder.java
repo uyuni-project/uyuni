@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.server.test;
 
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
@@ -178,13 +177,13 @@ public class GuestBuilder {
      * Creates the host with given name and foreign entitlement for the guest under
      * construction.
      *
-     * @param name - name for the host
      * @return This builder
      *
      * @throws Exception if an error occurs.
      */
-    public GuestBuilder withForeignEntitledHost(String name) throws Exception {
-        Server host = ServerTestUtils.createForeignSystem(owner, name);
+    public GuestBuilder withForeignEntitledHost(String digitalServerId)
+            throws Exception {
+        Server host = ServerTestUtils.createForeignSystem(owner, digitalServerId);
         host.addGuest(guest);
         return this;
     }

@@ -158,7 +158,7 @@ public class VirtualHostManagerProcessor {
         vms.entrySet().stream().forEach(
                 vmEntry -> {
                     String name = vmEntry.getKey();
-                    String guid = vmEntry.getValue();
+                    String guid = vmEntry.getValue().replaceAll("-", "");
                     List<VirtualInstance> virtualInstances = VirtualInstanceFactory
                         .getInstance().lookupVirtualInstanceByUuid(guid);
 
@@ -222,7 +222,8 @@ public class VirtualHostManagerProcessor {
      * @return the updated server
      */
     private Server updateAndGetServer(String hostId, JSONHost jsonHost) {
-        Server server = ServerFactory.lookupForeignSystemByName(hostId);
+        Server server = ServerFactory.lookupForeignSystemByDigitalServerId(
+                buildServerFullDigitalId(jsonHost.getHostIdentifier()));
         if (server == null) {
             server = createNewServer(hostId, jsonHost);
         }
@@ -240,6 +241,17 @@ public class VirtualHostManagerProcessor {
         return server;
     }
 
+    /**
+     * Builds full digital id from virtual host manager id and the host identifier (string
+     * consisting of those two separated by '-'. For instance: 1000000001-my_host_id).
+     *
+     * @param hostIdentifier host identifier (from gatherer)
+     * @return full digital server id
+     */
+    private String buildServerFullDigitalId(String hostIdentifier) {
+        return virtualHostManager.getId() + "-" + hostIdentifier;
+    }
+
     private Server createNewServer(String hostId, JSONHost jsonHost) {
         Server server = ServerFactory.createServer();
         // Create the server
@@ -247,7 +259,7 @@ public class VirtualHostManagerProcessor {
         // All new servers belong to org of the virtualHostManager
         server.setOrg(virtualHostManager.getOrg());
         server.setCreated(new Date());
-        server.setDigitalServerId("foreign-" + RandomStringUtils.randomNumeric(32));
+        server.setDigitalServerId(buildServerFullDigitalId(jsonHost.getHostIdentifier()));
         server.setSecret(RandomStringUtils.randomAlphanumeric(64));
 
         String serverDescription = "Initial Registration Parameters:\n";
