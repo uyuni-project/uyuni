@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
-import static spark.Spark.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -67,12 +66,14 @@ public class DownloadController {
 
         Set<String> queryParams = request.queryParams();
         if (queryParams.size() < 1) {
-            halt(403, String.format("You need a token to access %s in %s", filename, channel));
+            response.status(403);
+            response.body(String.format("You need a token to access %s in %s", filename, channel));
             return null;
         }
 
         if (queryParams.size() > 1) {
-            halt(400, "Only one token is accepted");
+            response.status(400);
+            response.body("Only one token is accepted");
             return null;
         }
 
@@ -93,18 +94,21 @@ public class DownloadController {
 
             List<String> channels = jwtClaims.getStringListClaimValue("channels");
             if (!channels.contains(channel)) {
-                halt(403, String.format("Token is not provide access to channel %s", channel));
+                response.status(403);
+                response.body(String.format("Token is not provide access to channel %s", channel));
                 return null;
             }
         }
         catch (InvalidJwtException|MalformedClaimException e) {
-            halt(403, String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+            response.status(403);
+            response.body(String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
             return null;
         }
 
         Package pkg = PackageFactory.lookupByChannelLabelNevra(channel, name, version, release, null, arch);
         if (pkg == null) {
-            halt(404, String.format("%s not found in %s", filename, channel));
+            response.status(404);
+            response.body(String.format("%s not found in %s", filename, channel));
             return null;
         }
 
@@ -128,7 +132,9 @@ public class DownloadController {
             out.flush();
             out.close();
         } catch (IOException e) {
-            halt(500, e.getMessage());
+            response.status(500);
+            response.body(e.getMessage());
+            return null;
         }
 
         return raw;
