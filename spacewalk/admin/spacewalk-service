@@ -41,7 +41,7 @@ if [ -x /etc/init.d/apache2 ]; then
 fi
 
 if [ -x /etc/init.d/auditlog-keeper ]; then
-   SUSE_AL_DEFAULT=`get_rhnconf_value /etc/rhn/default/rhn_audit.conf enabled`;
+   SUSE_AL_DEFAULT=`get_rhnconf_value /usr/share/rhn/config-defaults/rhn_audit.conf enabled`;
    SUSE_AL_MAIN=`get_rhnconf_value /etc/rhn/rhn.conf audit.enabled`;
    if [[ "$SUSE_AL_MAIN" = "1" || "$SUSE_AL_DEFAULT" = "1" ]]; then
      if [[ "$SUSE_AL_MAIN" = "1" || "$SUSE_AL_MAIN" = "" ]]; then
