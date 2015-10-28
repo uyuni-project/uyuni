@@ -23,6 +23,8 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
+import com.suse.manager.webui.controllers.TokensAPI;
+import com.suse.manager.webui.controllers.TokensController;
 import com.suse.manager.webui.utils.RouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
@@ -81,9 +83,14 @@ public class Router implements SparkApplication {
         // Remote commands
         Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
+        // Token generation
+        Spark.get("/manager/tokens", withUser(TokensController::createToken), jade);
+
         //Setup API routes
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
+
+        Spark.get("/manager/api/tokens/create", TokensAPI::create);
 
         // download endpoint
         Spark.get("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);

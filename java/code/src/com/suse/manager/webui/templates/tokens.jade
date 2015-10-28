@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    script(src='/javascript/manager/tokens.js', type='text/javascript')
+  body
+    .spacewalk-toolbar-h1
+      h1
+        i.fa.fa-key
+        | #{l10n.getMessage("tokens.create")}
+    .row
+      .col-md-12
+        form
+          p.
+            Here you can create a token that gives access to all the organization channels or just some of them.
+          .checkbox
+            label
+              input#orgaccess(type='checkbox')
+              | #{l10n.getMessage("tokens.orgaccess")}
+          .form-group#channels-group
+            label(for='channel-list')
+              | #{l10n.getMessage("tokens.channels")}
+            select#channel-list.form-control(multiple='multiple')
+              for channel in channels
+                option(value='#{channel.label}') #{channel.name}
+          button.btn.btn-default#create(type='submit') #{l10n.getMessage("tokens.create")}
