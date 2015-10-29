@@ -95,7 +95,7 @@ public class TokensAPI {
         Optional<Long> orgId = Optional.empty();
         Optional<String[]> channels = Optional.empty();
 
-        String orgStr = request.queryParams("org");
+        String orgStr = request.queryParams("orgid");
         if (!StringUtils.isBlank(orgStr)) {
             orgId = Optional.of(Long.parseLong(orgStr));
         }
