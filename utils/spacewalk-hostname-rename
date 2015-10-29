@@ -29,6 +29,9 @@ BOOTSTRAP_CCO=/srv/www/htdocs/pub/bootstrap/client-config-overrides.txt
 SAT_LOCAL_RULES_CONF=/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf
 BACKUP_EXT=.rnmbck
 CA_CERT_TRUST_DIR=/etc/pki/ca-trust/source/anchors
+if [ -d /etc/pki/trust/anchors/ ]; then
+    CA_CERT_TRUST_DIR=/etc/pki/trust/anchors/
+fi
 
 DB_BACKEND="$(spacewalk-cfg-get db_backend)"
 if [ "$DB_BACKEND" = "oracle" ]; then
