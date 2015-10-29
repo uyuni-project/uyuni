@@ -206,7 +206,9 @@ public class VirtualHostManagerProcessor {
     private void updateGuestVirtualInstance(VirtualInstance virtualInstance,
             String name, Server server) {
         Server oldHost = virtualInstance.getHostSystem();
-        if (oldHost == null || oldHost.getId() != server.getId()) {
+        if (oldHost == null ||
+                !oldHost.getId().equals(server.getId()) ||
+                !name.equals(virtualInstance.getName())) {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
             addGuestVirtualInstance(virtualInstance.getUuid(), name,
                     virtualInstance.getType(), server, virtualInstance.getGuestSystem());

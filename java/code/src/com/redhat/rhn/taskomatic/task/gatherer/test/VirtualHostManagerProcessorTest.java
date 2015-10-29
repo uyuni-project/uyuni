@@ -231,6 +231,18 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         assertFalse(host.getGuests().contains(guest));
     }
 
+    public void testGuestNameUpdated() {
+        Map<String, JSONHost> data = createHostData("my-host-id",
+                pairsToMap("old name", "uuid"));
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+        data = createHostData("my-host-id", pairsToMap("new name", "uuid"));
+        new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
+
+        VirtualInstance guest = VirtualInstanceFactory.getInstance()
+                .lookupVirtualInstanceByUuid("uuid").iterator().next();
+        assertEquals("new name", guest.getName());
+    }
+
     /**
      * Tests the scenario in which the guest's system is already registered and the
      * virtualization mapping reporting happens after that. In this case,
@@ -397,8 +409,6 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         ServerFactory.save(host);
         HibernateFactory.getSession().clear();
 
-        // todo renaming doesn't work - it triggers only when the server id differs in VHMP
-        // is fixed in a follow up patch
         data = createHostData("esxi_host_1_id", pairsToMap("renamed vm", "id_of_my_guest"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
 
