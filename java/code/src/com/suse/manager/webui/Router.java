@@ -94,6 +94,10 @@ public class Router implements SparkApplication {
 
         // download endpoint
         Spark.get("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
+        Spark.get("/manager/download/:channel/repodata/:file", DownloadController::downloadMetadata);
+        Spark.head("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
+        Spark.head("/manager/download/:channel/repodata/:file", DownloadController::downloadMetadata);
+
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
