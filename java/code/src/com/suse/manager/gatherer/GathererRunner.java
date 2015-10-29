@@ -15,17 +15,22 @@
 
 package com.suse.manager.gatherer;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
 import com.suse.manager.model.gatherer.GathererModule;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -78,10 +83,38 @@ public class GathererRunner {
         args.add("--logfile");
         args.add(LOG_DESTINATION);
 
+        Map<String, String> env = new HashMap<String, String>(System.getenv());
+        String proxyHostname = ConfigDefaults.get().getProxyHost();
+        if (!StringUtils.isBlank(proxyHostname)) {
+            String proxyUri = "http://";
+            String proxyUsername = ConfigDefaults.get().getProxyUsername();
+            String proxyPassword = ConfigDefaults.get().getProxyPassword();
+            if (!StringUtils.isBlank(proxyUsername) &&
+                    !StringUtils.isBlank(proxyPassword)) {
+                proxyUri += proxyUsername + ":" + proxyPassword + "@";
+            }
+            int proxyPort = ConfigDefaults.get().getProxyPort();
+            proxyUri += proxyHostname + ":" + proxyPort + "/";
+            env.put("http_proxy", proxyUri);
+            env.put("https_proxy", proxyUri);
+            logger.debug("Set http(s)_proxy to " + proxyUri);
+        }
+        String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
+        if (noProxy != null) {
+            env.put("no_proxy", noProxy);
+            logger.debug("Set no_proxy to " + noProxy);
+        }
+
+        String[] envp = new String[env.size()];
+        int i = 0;
+        for (Map.Entry<String, String> e : env.entrySet()) {
+            envp[i++] = e.getKey() + "=" + e.getValue();
+        }
+
         Map<String, Map<String, JSONHost>> hosts = null;
         Runtime r = Runtime.getRuntime();
         try {
-            Process p = r.exec(args.toArray(new String[0]));
+            Process p = r.exec(args.toArray(new String[0]), envp);
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             stdin.println(new GathererJsonIO().toJson(vhms));
             stdin.flush();
