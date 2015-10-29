@@ -72,7 +72,7 @@ public class SystemListHelper {
         else if (checkinOverdue(next)) {
             //status = "awol";
             url.setAttribute("href",
-                    "/rhn/help/reference/en-US/s1-sm-systems.jsp");
+                    "/rhn/help/user/en-US/s2-sm-system-list.jsp#s3-sm-system-list-inact");
             i.setType("system-unknown");
             i.setTitle("systemlist.jsp.notcheckingin");
             if (makeLinks) {
