@@ -1,37 +1,33 @@
-doctype html
-html
-  head
-    script(src='/javascript/manager/tokens.js', type='text/javascript')
-    script(src='/javascript/clipboard/clipboard.min.js', type='text/javascript')
-  body
-    .spacewalk-toolbar-h1
-      h1
-        i.fa.fa-key
-        | #{l10n.getMessage("tokens.create")}
-    .row
-      .col-md-12
-        .alert.alert-danger#error(role='alert') #{l10n.getMessage("tokens.error")}
+.spacewalk-toolbar-h1
+  h1
+    i.fa.fa-key
+    | #{l10n.getMessage("tokens.create")}
+.row
+  .col-md-12
+    .alert.alert-danger#error(role='alert') #{l10n.getMessage("tokens.error")}
 
-        form
-          p.
-            Here you can create a token that gives access to all the channels for the #{org.name} or just some of them.
-          .checkbox
-            label
-              input#orgaccess(type='checkbox')
-              | #{l10n.getMessage("tokens.orgaccess")}
-          .form-group#channels-group
-            label(for='channel-list')
-              | #{l10n.getMessage("tokens.channels")}
-            select#channel-list.form-control(multiple='multiple')
-              for channel in channels
-                option(value='#{channel.label}') #{channel.name}
-            input#orgid(type='hidden', value='#{org.id}')
-          .form-group#token-group
-            label(for='token')
-              | #{l10n.getMessage("tokens.generated")}
-              .input-group
-                input#token.form-control
-                .input-group-btn
-                  button.btn.btn-default#copy-token(type='button', data-clipboard-target='#token')
-                    i.fa.fa-clipboard
-          button.btn.btn-default#create(type='button') #{l10n.getMessage("tokens.create")}
+    form
+      p.
+        Here you can create a token that gives access to all the channels for the #{org.name} or just some of them.
+      .checkbox
+        label
+          input#orgaccess(type='checkbox')
+          | #{l10n.getMessage("tokens.orgaccess")}
+      .form-group#channels-group
+        label(for='channel-list')
+          | #{l10n.getMessage("tokens.channels")}
+        select#channel-list.form-control(multiple='multiple')
+          for channel in channels
+            option(value='#{channel.label}') #{channel.name}
+        input#orgid(type='hidden', value='#{org.id}')
+      .form-group#token-group
+        label(for='token')
+          | #{l10n.getMessage("tokens.generated")}
+          .input-group
+            input#token.form-control
+            .input-group-btn
+              button.btn.btn-default#copy-token(type='button', data-clipboard-target='#token')
+                i.fa.fa-clipboard
+      button.btn.btn-default#create(type='button') #{l10n.getMessage("tokens.create")}
+      script(src='/javascript/manager/tokens.js', type='text/javascript')
+      script(src='/javascript/clipboard/clipboard.min.js', type='text/javascript')
