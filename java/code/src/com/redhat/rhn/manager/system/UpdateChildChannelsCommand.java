@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.system;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,6 +27,8 @@ import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
+import com.suse.manager.reactor.ChannelChangedEvent;
 
 import org.apache.log4j.Logger;
 
@@ -106,6 +109,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         log.debug("unsubscribing from other channels");
         unsubscribeFromOldChannels(user, remove, server);
 
+        MessageQueue.publish(new ChannelChangedEvent(server.getId(), user.getId()));
         super.store();
 
         if (failedChannels) {
