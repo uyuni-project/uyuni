@@ -4,7 +4,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html>
 <head>
-    <script src="/javascript/spacewalk-login.js"></script>
+    <script src="/javascript/susemanager-login.js"></script>
 </head>
 <body>
 
