@@ -17,6 +17,10 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.user.User;
 import com.suse.manager.webui.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
@@ -33,9 +37,15 @@ import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static spark.Spark.halt;
 
 public class TokensAPI {
 
@@ -53,7 +63,7 @@ public class TokensAPI {
      * @param channels a list of channel labels
      * @return the token
      */
-    private static String createToken(Optional<Long> orgId, String[] channels) throws JoseException {
+    private static String createToken(Optional<Long> orgId, Set<String> channels) throws JoseException {
         Key key = TokenUtils.getServerKey();
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
@@ -61,8 +71,8 @@ public class TokensAPI {
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
 
         orgId.ifPresent(id -> claims.setClaim("org", id));
-        if (channels.length > 0) {
-            claims.setStringListClaim("channels", channels);
+        if (channels.isEmpty()) {
+            claims.setStringListClaim("channels", new ArrayList<String>(channels));
         }
 
         JsonWebEncryption jwt = new JsonWebEncryption();
@@ -80,7 +90,7 @@ public class TokensAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String create(Request request, Response response) {
+    public static String create(Request request, Response response, User user) {
 
         Key key = TokenUtils.getServerKey();
         JwtClaims claims = new JwtClaims();
@@ -94,9 +104,25 @@ public class TokensAPI {
                             .filter(StringUtils::isNotBlank)
                             .map(Long::parseLong);
 
-            String[] channels = Optional.ofNullable(request.queryParams("channels"))
+            Set<String> channels = Optional.ofNullable(request.queryParams("channels"))
                             .map(str -> StringUtils.split(str, ","))
-                            .orElse(new String[]{});
+                            .map(arr -> new HashSet<String>(Arrays.asList(arr)))
+                            .orElse(new HashSet<String>());
+
+            // check that the user has access to those channels
+            Set<String> orgChannels =
+                    ChannelFactory.getAccessibleChannelsByOrg(user.getOrg().getId())
+                            .stream()
+                            .map(Channel::getLabel)
+                            .collect(Collectors.toCollection(HashSet::new));
+
+            // remove all channels not in the current user accessible
+            // channels list
+            boolean anyNotAuthorized = channels.retainAll(orgChannels);
+            if (anyNotAuthorized) {
+                halt(403, LocalizationService.getInstance()
+                        .getMessage("tokens.usernotallchannelsaccess", user.getOrg().getName()));
+            }
 
             response.type("application/json");
             return GSON.toJson(createToken(orgId, channels));
