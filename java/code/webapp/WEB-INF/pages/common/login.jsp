@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta name="decorator" content="layout_c" />
-    <script src="/javascript/spacewalk-login.js"></script>
+    <script src="/javascript/susemanager-login.js"></script>
 </head>
 <body>
     <c:if test="${schemaUpgradeRequired == 'true'}">
