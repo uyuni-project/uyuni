@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
-import spark.Spark.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
@@ -53,26 +52,19 @@ public class DownloadController {
     private static final int BUF_SIZE = 4096;
     private static final Logger LOG = LoggerFactory.getLogger(Request.class);
     private static final Gson GSON = new GsonBuilder().create();
+    private static final Key KEY = TokenUtils.getServerKey();
+    private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
+            .setDecryptionKey(KEY)
+            .setDisableRequireSignature()
+            .setEnableRequireEncryption()
+            .build();
 
     private DownloadController() {
     }
 
     private static void validateToken(String token, String channel, String filename) {
-        Key key = TokenUtils.getServerKey();
-        JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-                //.setRequireExpirationTime()
-                //.setAllowedClockSkewInSeconds(30)
-                //.setRequireSubject()
-                //.setExpectedIssuer("Issuer")
-                //.setExpectedAudience("Audience")
-                //.setVerificationKey(key)
-                .setDecryptionKey(key)
-                .setDisableRequireSignature()
-                .setEnableRequireEncryption()
-                .build();
-
         try {
-            JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
+            JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
 
             Set<String> channels = new HashSet<String>();
 
