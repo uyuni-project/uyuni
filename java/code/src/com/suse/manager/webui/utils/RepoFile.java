@@ -1,5 +1,7 @@
 package com.suse.manager.webui.utils;
 
+import java.util.Optional;
+
 /**
  *
  */
@@ -14,9 +16,9 @@ public class RepoFile {
     private final boolean gpgCheck;
     private final boolean repoGpgCheck;
     private final boolean packageGpgCheck;
-    private final String service;
+    private final Optional<String> service;
 
-    public RepoFile(String alias, String name, boolean enabled, boolean autoRefresh, String baseUrl, String type, boolean gpgCheck, boolean repoGpgCheck, boolean packageGpgCheck, String service) {
+    public RepoFile(String alias, String name, boolean enabled, boolean autoRefresh, String baseUrl, String type, boolean gpgCheck, boolean repoGpgCheck, boolean packageGpgCheck, Optional<String> service) {
         this.alias = alias;
         this.name = name;
         this.enabled = enabled;
@@ -65,7 +67,7 @@ public class RepoFile {
         return packageGpgCheck;
     }
 
-    public String getService() {
+    public Optional<String> getService() {
         return service;
     }
 
@@ -107,9 +109,11 @@ public class RepoFile {
         builder.append(isPackageGpgCheck() ? 1 : 0);
         builder.append("\n");
 
-        builder.append("service=");
-        builder.append(getService());
-        builder.append("\n");
+        getService().ifPresent(s -> {
+            builder.append("service=");
+            builder.append(s);
+            builder.append("\n");
+        });
         return builder.toString();
     }
 }

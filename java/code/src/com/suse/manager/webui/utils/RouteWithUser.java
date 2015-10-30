@@ -23,7 +23,7 @@ import spark.Response;
 /**
  * A route that gets the user in addition to the request and response.
  */
-public interface RouteWithUser {
+public interface RouteWithUser<T> {
 
     /**
      * Invoked when a request is made on this route's corresponding path.
@@ -33,5 +33,5 @@ public interface RouteWithUser {
      * @param user the user associated with this request
      * @return the content to be set in the response
      */
-    ModelAndView handle(Request request, Response response, User user);
+    T handle(Request request, Response response, User user);
 }

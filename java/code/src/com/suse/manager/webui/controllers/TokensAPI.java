@@ -63,7 +63,7 @@ public class TokensAPI {
      * @param channels a list of channel labels
      * @return the token
      */
-    private static String createToken(Optional<Long> orgId, Set<String> channels) throws JoseException {
+    public static String createToken(Optional<Long> orgId, Set<String> channels) throws JoseException {
         Key key = TokenUtils.getServerKey();
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
