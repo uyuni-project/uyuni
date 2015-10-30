@@ -198,7 +198,7 @@
         </table>
       </div>
 
-      <rhn:require acl="system_has_management_entitlement()">
+      <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
       <!-- Channel subcriptions -->
       <div class="panel panel-default">
         <div class="panel-heading">
