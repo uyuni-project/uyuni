@@ -47,6 +47,10 @@ import java.util.stream.Collectors;
 
 import static spark.Spark.halt;
 
+/**
+ * Provides a programmatically way to generate channel access tokens and
+ * also exposes it as an http endpoint.
+ */
 public class TokensAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
@@ -60,7 +64,7 @@ public class TokensAPI {
      * has access to, plus access to all extra given channels.
      *
      * @param orgId id of the organization
-     * @param channels a list of channel labels
+     * @param channels a set of channel labels
      * @return the token
      */
     public static String createToken(Optional<Long> orgId, Set<String> channels) throws JoseException {
