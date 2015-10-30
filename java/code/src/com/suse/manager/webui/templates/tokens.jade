@@ -5,7 +5,6 @@
 .row
   .col-md-12
     .alert.alert-danger#error(role='alert') #{l10n.getMessage("tokens.error")}
-
     form
       p.
         Here you can create a token that gives access to all the channels for the #{org.name} or just some of them.
@@ -28,6 +27,54 @@
             .input-group-btn
               button.btn.btn-default#copy-token(type='button', data-clipboard-target='#token')
                 i.fa.fa-clipboard
+      .form-group
+        .control-label
+          input(type='radio', name='expires', value='true', id='ineverexpires', checked='true')
+          label(for='ineverexpires')
+            | #{l10n.getMessage("tokens.neverexpires")}
+      .form-group
+        .control-label.col-sm-4
+          input(type='radio', name='expires', value='false', id='iexpires')
+          label(for='iexpires')
+            | #{l10n.getMessage("tokens.expires")}
+        .col-sm-8
+          .input-group#date_datepicker_widget
+            span.input-group-addon.text#date_datepicker_widget_input_addon(data-picker-name='date', data-picker-type='date')
+              i.fa.fa-calendar
+            input.form-control#date_datepicker_widget_input(data-provide='date-picker',
+                                              data-date-today-highlight='true',
+                                              data-date-orientation='top auto',
+                                              data-date-autoclose='true',
+                                              data-date-language='en',
+                                              data-date-format='m/d/yy',
+                                              data-picker-name='date',
+                                              data-initial-year='2015',
+                                              data-initial-month='9',
+                                              data-initial-day='30',
+                                              data-date-week-start='0',
+                                              type='text', size='15')
+            span.input-group-addon.text#date_timepicker_widget_input_addon(data-picker-name='date', data-picker-type='time')
+              i.fa.fa-clock-o
+
+            input.form-control.ui-timepicker-input#date_timepicker_widget_input(type='text',
+                                              data-provide='time-picker',
+                                              data-time-format="g:i a",
+                                              size='10',
+                                              data-picker-name='date',
+                                              data-initial-hour='15',
+                                              data-initial-minute='49',
+                                              autocomplete='off')
+            script(src='/javascript/spacewalk-datetimepicker.js', type='text/javascript')
+            script(type='text/javascript').
+              $.fn.datepicker.dates['en'] = {
+                days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',],
+                daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',],
+                daysMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',],
+                months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',],
+                monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',],
+              };
+            span.input-group-addon.text.tz_input_addon#date_tz_input_addon(data-picker-name='date')
+              | CET
       button.btn.btn-default#create(type='button') #{l10n.getMessage("tokens.create")}
       script(src='/javascript/manager/tokens.js', type='text/javascript')
       script(src='/javascript/clipboard/clipboard.min.js', type='text/javascript')
