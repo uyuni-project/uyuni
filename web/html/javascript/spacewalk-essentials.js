@@ -50,7 +50,7 @@ function columnHeight() {
   // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
   if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
     var asideHeight = $(".spacewalk-main-column-layout aside").height();
-    var navbarHeight = $("nav").height();
+    var navbarHeight = $("header").height();
     var footerHeight = $("footer").height();
     var heightDoc = $(document).height();
     // Column heights should equal the document height minus the header height and footer height
