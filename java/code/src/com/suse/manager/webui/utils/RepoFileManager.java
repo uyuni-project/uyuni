@@ -1,12 +1,17 @@
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
+import com.suse.manager.webui.controllers.TokensAPI;
+import org.jose4j.lang.JoseException;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,24 +25,32 @@ public class RepoFileManager {
     public static final String SALT_CHANNEL_FILES = "channels";
 
     public static void generateRepositoryFile(Server server) {
-        String fileName = "channels.repo." + server.getDigitalServerId();
-        String fileContents = StreamSupport.stream(server.getChannels().spliterator(), false)
-                .map(RepoFileManager::repoFromChannel)
-                .map(RepoFile::fileFormat)
-                .collect(Collectors.joining("\n"));
-
-        Path baseDir = Paths.get(SALT_BASE_FILE_ROOT, SALT_CHANNEL_FILES);
         try {
+            String fileName = "channels.repo." + server.getDigitalServerId();
+            String token = TokensAPI.createToken(
+                    Optional.of(server.getOrg().getId()), Collections.emptySet());
+
+            String fileContents = StreamSupport.stream(server.getChannels().spliterator(), false)
+                    .map(ch -> RepoFileManager.repoFromChannel(ch, token))
+                    .map(RepoFile::fileFormat)
+                    .collect(Collectors.joining("\n"));
+
+            Path baseDir = Paths.get(SALT_BASE_FILE_ROOT, SALT_CHANNEL_FILES);
             Files.write(baseDir.resolve(fileName), fileContents.getBytes());
         }
-        catch (IOException e) {
+        catch (JoseException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static RepoFile repoFromChannel(Channel channel) {
+    public static RepoFile repoFromChannel(Channel channel, String token) {
         String alias = "susemanager:" + channel.getLabel();
-        return new RepoFile(alias, channel.getName(), true, true, "https://localhost", "rpm-md", false, false, true, "spacewalk");
-    }
 
+        return new RepoFile(alias, channel.getName(), true, true,
+                String.format("https://%s/rhn/manager/download/%s?%s",
+                        ConfigDefaults.get().getCobblerHost(),
+                        channel.getLabel(),
+                        token),
+                "rpm-md", false, false, true, Optional.empty());
+    }
 }
