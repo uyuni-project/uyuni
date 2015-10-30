@@ -9,10 +9,29 @@ html, body {
 }
 header, nav.navbar.navbar-default.navbar-pf {
 	width: 100%;
-	background: @spacewalk-header;
 	border: none;
 	border-radius: 0;
 	margin-bottom: 0;
+}
+header {
+	background: @susemanager-green;
+	background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
+	background: -webkit-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -o-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -ms-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: linear-gradient(135deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#268a90', endColorstr='#3f9988',GradientType=1 );
+	a {
+		color: #ccc;
+		margin-right: .7em
+	}
+	a:hover {
+		color: #007a75;
+	}
+	img {
+		float: left;
+	}
 }
 
 footer {
@@ -41,14 +60,14 @@ footer {
   height: 16px;
   width: 100%;
   position: absolute;
-  background: #1fad7a; /* Old browsers */
-  background: -moz-linear-gradient(left, #1fad7a 0%, #80c235 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#1fad7a), color-stop(100%,#80c235)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* IE10+ */
-  background: linear-gradient(to right, #1fad7a 0%,#80c235 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1fad7a', endColorstr='#80c235',GradientType=1 ); /* IE6-9 */
+  background: @susemanager-green;
+	background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
+	background: -webkit-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -o-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -ms-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: linear-gradient(135deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#268a90', endColorstr='#3f9988',GradientType=1 );
   bottom: 0
 }
 
