@@ -53,20 +53,16 @@ public class TokensAPI {
      * @param channels a list of channel labels
      * @return the token
      */
-    private static String createToken(Optional<Long> orgId, Optional<String[]> channels) throws JoseException {
+    private static String createToken(Optional<Long> orgId, String[] channels) throws JoseException {
         Key key = TokenUtils.getServerKey();
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
         claims.setIssuedAtToNow();
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
 
-        if (orgId.isPresent()) {
-            claims.setClaim("org", orgId.get());
-        }
-
-        if (channels.isPresent()) {
-            String[] labels = channels.get();
-            claims.setStringListClaim("channels", labels);
+        orgId.ifPresent(id -> claims.setClaim("org", id));
+        if (channels.length > 0) {
+            claims.setStringListClaim("channels", channels);
         }
 
         JsonWebEncryption jwt = new JsonWebEncryption();
@@ -92,23 +88,19 @@ public class TokensAPI {
         claims.setIssuedAtToNow();
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
 
-        Optional<Long> orgId = Optional.empty();
-        Optional<String[]> channels = Optional.empty();
-
-        String orgStr = request.queryParams("orgid");
-        if (!StringUtils.isBlank(orgStr)) {
-            orgId = Optional.of(Long.parseLong(orgStr));
-        }
-
-        String channelsStr = request.queryParams("channels");
-        if (!StringUtils.isBlank(channelsStr)) {
-            channels = Optional.of(StringUtils.split(","));
-        }
-
         try {
+            Optional<Long> orgId =
+                    Optional.ofNullable(request.queryParams("orgid"))
+                            .filter(StringUtils::isNotBlank)
+                            .map(Long::parseLong);
+
+            String[] channels = Optional.ofNullable(request.queryParams("channels"))
+                            .map(str -> StringUtils.split(str, ","))
+                            .orElse(new String[]{});
+
             response.type("application/json");
             return GSON.toJson(createToken(orgId, channels));
-        } catch (JoseException e) {
+        } catch (NumberFormatException | JoseException e) {
             response.status(500);
             return e.getMessage();
         }
