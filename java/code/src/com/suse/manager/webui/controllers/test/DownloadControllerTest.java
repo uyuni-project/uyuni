@@ -69,7 +69,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
     }
 
-    public void testFoo() throws Exception {
+    public void testEndpoint() throws Exception {
         assertTrue(true);
 
         User user = createTestUser();
