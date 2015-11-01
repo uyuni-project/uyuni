@@ -34,8 +34,16 @@ public class TokenUtils {
         if (serverSecret == null) {
             throw new RuntimeException("Server has no secret key");
         }
+        return getKeyForSecret(serverSecret);
+    }
+
+    /**
+     * Creates a cryptographic key from the given secret
+     * @return the key
+     */
+    public static Key getKeyForSecret(String secret) {
         ConcatKeyDerivationFunction func = new ConcatKeyDerivationFunction("SHA-256");
         // AES 128 key
-        return new AesKey(func.kdf(serverSecret.getBytes(), 128, new byte[]{}));
+        return new AesKey(func.kdf(secret.getBytes(), 128, new byte[]{}));
     }
 }
