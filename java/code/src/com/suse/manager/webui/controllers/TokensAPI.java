@@ -67,8 +67,7 @@ public class TokensAPI {
      * @param channels a set of channel labels
      * @return the token
      */
-    public static String createToken(Optional<Long> orgId, Set<String> channels) throws JoseException {
-        Key key = TokenUtils.getServerKey();
+    public static String createTokenWithKey(Key key, Optional<Long> orgId, Set<String> channels) throws JoseException {
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
         claims.setIssuedAtToNow();
@@ -89,14 +88,30 @@ public class TokensAPI {
     }
 
     /**
+     * Creates a token for a given org or channel set
+     *
+     * The resulting token will allow access to all channels that orgId
+     * has access to, plus access to all extra given channels.
+     *
+     * @param orgId id of the organization
+     * @param channels a set of channel labels
+     * @return the token
+     */
+    public static String createTokenWithServerKey(Optional<Long> orgId, Set<String> channels) throws JoseException {
+        String serverSecret = Config.get().getString("server.secret_key");
+        if (serverSecret == null) {
+            throw new RuntimeException("Server has no secret key");
+        }
+        return createTokenWithKey(TokenUtils.getServerKey(), orgId, channels);
+    }
+
+    /**
      * API endpoint to create a token for a given org or channel set
      * @param request the request object
      * @param response the response object
      * @return json result of the API call
      */
     public static String create(Request request, Response response, User user) {
-
-        Key key = TokenUtils.getServerKey();
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
         claims.setIssuedAtToNow();
@@ -129,7 +144,7 @@ public class TokensAPI {
             }
 
             response.type("application/json");
-            return GSON.toJson(createToken(orgId, channels));
+            return GSON.toJson(createTokenWithServerKey(orgId, channels));
         } catch (NumberFormatException | JoseException e) {
             response.status(500);
             return e.getMessage();

@@ -27,7 +27,7 @@ public class RepoFileManager {
     public static void generateRepositoryFile(Server server) {
         try {
             String fileName = "channels.repo." + server.getDigitalServerId();
-            String token = TokensAPI.createToken(
+            String token = TokensAPI.createTokenWithServerKey(
                     Optional.of(server.getOrg().getId()), Collections.emptySet());
 
             String fileContents = StreamSupport.stream(server.getChannels().spliterator(), false)
