@@ -441,7 +441,7 @@ Provides: taskomatic-sat = %{version}-%{release}
 BuildRequires: systemd
 %{?systemd_requires}
 Requires: jakarta-commons-httpclient
-Requires: susemanager-frontend-libs
+Requires: susemanager-frontend-libs >= 2.1.5
 %else
 Requires(post): chkconfig
 Requires(preun): chkconfig
