@@ -231,11 +231,11 @@ public class ContentSyncManager {
      * As well as we do need to read the file only once.
      * If /etc/rhn/rhn.conf contains local path URL, then the SCCClient will read
      * from the local file instead of the network.
-     *
-     * @param credentials
      * @return List of {@link Credentials}
      */
-    private List<Credentials> filterCredentials(List<Credentials> credentials) {
+    private List<Credentials> filterCredentials() {
+        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
+
         // Create one pair of bogus credentials
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
             credentials.clear();
@@ -252,8 +252,7 @@ public class ContentSyncManager {
      */
     public Collection<SCCProduct> getProducts() throws ContentSyncException {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
         Iterator<Credentials> i = credentials.iterator();
 
         // stop as soon as a credential pair works
@@ -563,8 +562,7 @@ public class ContentSyncManager {
      */
     public void refreshRepositoriesCache() throws ContentSyncException {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
 
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
@@ -636,8 +634,7 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscription> getSubscriptions() throws ContentSyncException {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
             try {
