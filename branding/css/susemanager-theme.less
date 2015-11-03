@@ -9,11 +9,31 @@ html, body {
 }
 header, nav.navbar.navbar-default.navbar-pf {
 	width: 100%;
-	background: @spacewalk-header;
 	border: none;
 	border-radius: 0;
 	margin-bottom: 0;
 }
+header {
+	background: @susemanager-green;
+	background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
+	background: -webkit-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -o-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -ms-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: linear-gradient(135deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#268a90', endColorstr='#3f9988',GradientType=1 );
+	a {
+		color: #ccc;
+		margin-right: .7em
+	}
+	a:hover {
+		color: #007a75;
+	}
+	img {
+		float: left;
+	}
+}
+
 footer {
 	padding: 1.2em 0;
 	background: @spacewalk-footer;
@@ -26,16 +46,6 @@ footer {
 
 	.make-row(0);
 
-	div:nth-child(1) {
-		.make-xs-column(8);
-		.text-center;
-		.make-sm-column-offset(2);
-	}
-	div:nth-child(2) {
-		.make-xs-column(2);
-		.text-right;
-		.hidden-xs;
-	}
 	a {
 		color: @spacewalk-footer-links;
 		text-decoration: underline;
@@ -50,14 +60,14 @@ footer {
   height: 16px;
   width: 100%;
   position: absolute;
-  background: #1fad7a; /* Old browsers */
-  background: -moz-linear-gradient(left, #1fad7a 0%, #80c235 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#1fad7a), color-stop(100%,#80c235)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, #1fad7a 0%,#80c235 100%); /* IE10+ */
-  background: linear-gradient(to right, #1fad7a 0%,#80c235 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1fad7a', endColorstr='#80c235',GradientType=1 ); /* IE6-9 */
+  background: @susemanager-green;
+	background: -moz-linear-gradient(-45deg,  @susemanager-green 0%, @suse-green-dark 100%);
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@susemanager-green), color-stop(100%,@suse-green-dark));
+	background: -webkit-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -o-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: -ms-linear-gradient(-45deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	background: linear-gradient(135deg,  @susemanager-green 0%,@suse-green-dark 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#268a90', endColorstr='#3f9988',GradientType=1 );
   bottom: 0
 }
 
@@ -281,7 +291,7 @@ header, nav.navbar-pf {
 		select.form-control {
 			-webkit-appearance: button;
 		    -webkit-padding-end: 20px;
-			background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+			background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
 			cursor: pointer;
 			display: inline-block;
 		    -moz-appearance: none;
@@ -750,108 +760,7 @@ ul.nav.nav-tabs {
 ul.nav.nav-tabs:last-child {
 	margin-bottom: 1.5em
 }
-/* style for the login page */
-.login-page {
-	width: 70%;
-	text-align: center;
-	margin-right: auto;
-	margin-left: auto;
-	overflow: hidden;
-	margin-top: 2em;
-}
 
-/* login form */
-#loginForm-container {
-	.make-md-column(4);
-	.make-md-column-offset(4);
-}
-#welcome-title {
-	width: 100%;
-	margin: 0;
-	margin-top: 1em;
-	padding: .7em 0;
-	display: block;
-	font-size: 1.5em;
-	text-align: center;
-	color: #fff;
-  .call-to-action-gradient;
-	.border-rounded(4px; 4px; 0; 0);
-}
-#welcome-text {
-	display: none;
-}
-#loginForm small {
-	margin-bottom: 2em;
-}
-#loginForm {
-	.text-left;
-	border: 1px solid @gray-light;
-	.border-rounded(0; 0; 4px; 4px);
-	background: #fff;
-	margin-top: 0;
-	margin-bottom:2em;
-	.login-form-holder {
-		padding: 0 1.5em 1.5em;
-	}
-	label {
-		text-align: left;
-		.Roboto-thin;
-		color: @gray;
-		font-size: 1.1em;
-		padding: .6em 0 0 0;
-	}
-	hr {
-		border-top: 1px solid #ccc;
-	}
-	//Style for SUSE Manager login
-	.form-username-addon, .form-password-addon {
-		.input-group-addon;
-		.border-right-radius(0);
-		//.fa
-		font-family: FontAwesome;
-		font-style: normal;
-		font-weight: normal;
-		line-height: 1;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		//.fa-fw
-		width: 1.2857142857142858em;
-		text-align: center;
-	}
-	//.fa-user
-	.form-username-addon:before {
-		content: "\f007";
-	}
-	.form-password-addon:before {
-		content: "\f023";
-	}
-	.input-grouped {
-		.input-group;
-		width: 100%;
-		input {
-			.border-rounded(0; 4px; 4px; 0);
-		}
-	}
-	.login-btn {
-		.text-center;
-	}
-
-}
-.login-reference-links {
-	.text-left;
-}
-.login-page .login-reference-links small a i.fa-globe {
-	font-size: 1.5em;
-	background: #fff;
-	border: 1px solid #ccc;
-	padding: .3em .4em;
-	border-radius: 4px
-}
-.login-page .legal-note {
-	text-align: left;
-	.alert;
-	.alert-info;
-}
 // Rewriting
 // Jumbotron
 // --------------------------------------------------
@@ -908,7 +817,7 @@ form[name="createSatelliteForm"] .panel {
 select[name="cveIdentifierYear"]#cveIdentifierYear {
 	-webkit-appearance: button;
     -webkit-padding-end: 20px;
-	background: url('../../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
+	background: url('../img/susemanager/dropdown-arrow.jpg') #fff no-repeat right center;
 	cursor: pointer;
 	display: inline-block;
 	min-width: 80px;

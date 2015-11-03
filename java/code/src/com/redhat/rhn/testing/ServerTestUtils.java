@@ -43,7 +43,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
-
 import org.hibernate.Session;
 
 import java.util.HashSet;
@@ -284,13 +283,15 @@ public class ServerTestUtils {
      * Creates a new foreign system.
      *
      * @param user the user
-     * @param name the system name
+     * @param digitalServerId the system digital server id
      * @return the newly created foreign system
      * @throws Exception if server creation goes wrong
      */
-    public static Server createForeignSystem(User user, String name) throws Exception {
+    public static Server createForeignSystem(User user, String digitalServerId)
+            throws Exception {
         Server existingHost = ServerTestUtils.createTestSystem(user);
-        existingHost.setName(name);
+        existingHost.setName(TestUtils.randomString());
+        existingHost.setDigitalServerId(digitalServerId);
         existingHost.setBaseEntitlement(EntitlementManager.getByName("foreign_entitled"));
         ServerFactory.save(existingHost);
         return existingHost;

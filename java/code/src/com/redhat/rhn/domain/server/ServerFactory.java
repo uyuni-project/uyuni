@@ -31,7 +31,6 @@ import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -294,15 +293,15 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * lookup System with specified name which are foreign_entitled
+     * lookup System with specified digital server id which are foreign_entitled
      *
-     * @param name the system name
-     * @return server corresponding to the given machine_id
+     * @param id the digital server id
+     * @return server corresponding to the given id
      */
     @SuppressWarnings("unchecked")
-    public static Server lookupForeignSystemByName(String name) {
+    public static Server lookupForeignSystemByDigitalServerId(String id) {
         Criteria criteria = getSession().createCriteria(Server.class);
-        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("digitalServerId", id));
         for (Server server : (List<Server>) criteria.list()) {
             if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
                 return server;
