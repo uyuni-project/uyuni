@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -115,13 +116,20 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setServerInfo(serverInfo);
             server.setRam(((Double) grains.get("mem_total")).longValue());
 
-            Map<String, Pkg.Info> saltPackages =
-                    SALT_SERVICE.getInstalledPackageDetails(minionId);
-            Set<InstalledPackage> packages = saltPackages.entrySet().stream().map(
-                    entry -> createPackageFromSalt(entry.getKey(), entry.getValue(), server)
-            ).collect(Collectors.toSet());
+            // FIXME: This switch has been introduced to allow speeding up registrations
+            if (!Config.get().getBoolean("disable_minion_package_inventory")) {
+                Map<String, Pkg.Info> saltPackages =
+                        SALT_SERVICE.getInstalledPackageDetails(minionId);
+                Set<InstalledPackage> packages = saltPackages.entrySet().stream().map(
+                        entry -> createPackageFromSalt(
+                                entry.getKey(), entry.getValue(), server)
+                ).collect(Collectors.toSet());
 
-            server.setPackages(packages);
+                server.setPackages(packages);
+            }
+            else {
+                LOG.debug("Skipping package inventory (as configured via rhn.conf)");
+            }
             ServerFactory.save(server);
 
             // Assign the SaltStack base entitlement by default
