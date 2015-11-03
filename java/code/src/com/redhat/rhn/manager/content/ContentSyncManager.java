@@ -259,7 +259,7 @@ public class ContentSyncManager {
         while (i.hasNext() && productList.size() == 0) {
             Credentials c = i.next();
             try {
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                SCCClient scc = getSCCClient(c);
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -568,7 +568,7 @@ public class ContentSyncManager {
         for (Credentials c : credentials) {
             try {
                 log.debug("Getting repos for: " + c.getUsername());
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                SCCClient scc = getSCCClient(c);
                 List<SCCRepository> repos = scc.listRepositories();
 
                 // Add mirror credentials to all repos
@@ -609,16 +609,14 @@ public class ContentSyncManager {
 
     /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
-     *
-     * @param user username
-     * @param password password
+     * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
      * @throws SCCClientException in case of an error
      */
-    public List<SCCSubscription> getSubscriptions(String user, String password)
+    public List<SCCSubscription> getSubscriptions(Credentials credentials)
             throws SCCClientException {
         try {
-            SCCClient scc = this.getSCCClient(user, password);
+            SCCClient scc = this.getSCCClient(credentials);
             return scc.listSubscriptions();
         }
         catch (URISyntaxException e) {
@@ -638,7 +636,7 @@ public class ContentSyncManager {
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
             try {
-                subscriptions.addAll(getSubscriptions(c.getUsername(), c.getPassword()));
+                subscriptions.addAll(getSubscriptions(c));
             }
             catch (SCCClientException e) {
                 throw new ContentSyncException(e);
@@ -1537,13 +1535,12 @@ public class ContentSyncManager {
      * Get an instance of {@link SCCWebClient} and configure it to use localpath, if
      * such is setup in /etc/rhn/rhn.conf
      *
-     * @param user network credential: user
-     * @param password networ credential: password
+     * @param credentials username/password pair
      * @throws URISyntaxException if the URL in configuration file is malformed
      * @throws SCCClientException
      * @return {@link SCCWebClient}
      */
-    private SCCClient getSCCClient(String user, String password)
+    private SCCClient getSCCClient(Credentials credentials)
             throws URISyntaxException, SCCClientException {
         // check that URL is valid
         URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
@@ -1566,8 +1563,8 @@ public class ContentSyncManager {
             }
         }
 
-        return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
-                getUUID());
+        return SCCClientFactory.getInstance(url, credentials.getUsername(),
+                credentials.getPassword(), localAbsolutePath, getUUID());
     }
 
     /**
