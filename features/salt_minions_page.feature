@@ -11,14 +11,14 @@ Feature: Explore the Minions page
 
   Scenario: Completeness of the Minions page
     When I follow "Systems"
-    And I follow "Minions"
+    And I follow "Salt Master"
     Then I should see a "All Minions" text
     And I should see a "Pending" text
     And I should see a "Rejected" text
 
   Scenario: Minion is visible in the Pending section
     When I follow "Systems"
-    And I follow "Minions"
+    And I follow "Salt Master"
     Then I should see this client in the Pending section
 
   Scenario: Pending minion shows up in the Overview dashboard
@@ -28,13 +28,13 @@ Feature: Explore the Minions page
 
   Scenario: Reject pending minion key
     When I follow "Systems"
-    And I follow "Minions"
+    And I follow "Salt Master"
     And I reject this client from the Pending section
     Then I should see this client in the Rejected section
 
   Scenario: Delete rejected minion key
     When I follow "Systems"
-    And I follow "Minions"
+    And I follow "Salt Master"
     And I delete this client from the Rejected section
     Then I should not see this client as a Minion anywhere
 
@@ -42,7 +42,7 @@ Feature: Explore the Minions page
     When I restart salt-minion
     And I wait for "2" seconds
     And I follow "Systems"
-    And I follow "Minions"
+    And I follow "Salt Master"
     Then I should see this client in the Pending section
     When I accept this client's minion key
     # Registration takes a while
