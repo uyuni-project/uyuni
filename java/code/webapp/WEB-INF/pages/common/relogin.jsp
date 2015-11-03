@@ -4,40 +4,47 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <html>
 <head>
-    <script src="/javascript/spacewalk-login.js"></script>
+    <script src="/javascript/susemanager-login.js"></script>
 </head>
 <body>
 
-<c:if test="${schemaUpgradeRequired == 'true'}">
-    <div class="alert alert-danger">
-        <bean:message key="login.jsp.schemaupgraderequired" />
-    </div>
-</c:if>
-
-<rhn:require acl="not user_authenticated()">
-    <div id="loginForm-container">
-        <h1 id="welcome-title">
-            <bean:message key="relogin.jsp.pleasesignin" />
-        </h1>
-        <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
-        <c:if test="${! empty login_banner}">
-            <p>
-                <c:out value="${login_banner}" escapeXml="false" />
-            </p>
-        </c:if>
-        <html:form styleId="loginForm" action="/ReLoginSubmit">
-            <rhn:csrf />
-            <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf"%>
-        </html:form>
-
-        <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
-        <c:if test="${! empty legal_note}">
-            <p class="legal-note">
-                <small><c:out value="${legal_note}" escapeXml="false" /></small>
-            </p>
-        </c:if>
-    </div>
-</rhn:require>
-
+    <c:if test="${schemaUpgradeRequired == 'true'}">
+        <div class="alert alert-danger">
+            <bean:message key="login.jsp.schemaupgraderequired" />
+        </div>
+    </c:if>
+    <rhn:require acl="not user_authenticated()">
+        <section class="wrap">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1 class="Raleway-font">SUSE<br/> Manager</h1>
+                    <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
+                    <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark"> View website</a></p>
+                </div>
+                <div class="col-sm-5 col-sm-offset-1">
+                    <h2 class="Raleway-font gray-text">
+                        <bean:message key="relogin.jsp.pleasesignin" />
+                    </h2>
+                    <html:form action="/ReLoginSubmit">
+                        <rhn:csrf />
+                        <%@ include file="/WEB-INF/pages/common/fragments/login_form.jspf"%>
+                    </html:form>
+                    <hr/>
+                    <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
+                    <c:if test="${! empty login_banner}">
+                        <p class="gray-text small-text">
+                            <c:out value="${login_banner}" escapeXml="false" />
+                        </p>
+                    </c:if>
+                    <c:set var="legal_note" scope="page" value="${rhn:getConfig('java.legal_note')}" />
+                    <c:if test="${! empty legal_note}">
+                        <p class="gray-text small-text">
+                            <c:out value="${legal_note}" escapeXml="false" />
+                        </p>
+                    </c:if>
+                </div>
+            </div>
+        </section>
+    </rhn:require>
 </body>
 </html>

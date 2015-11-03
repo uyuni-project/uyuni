@@ -25,6 +25,9 @@ public class JSONHost {
     /** Host name. */
     private String name;
 
+    /** Host Identifier. */
+    private String hostIdentifier;
+
     /** Total CPU socket count. */
     private Integer totalCpuSockets;
 
@@ -67,6 +70,14 @@ public class JSONHost {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Gets the host identifier
+     * @return the host identifier
+     */
+    public String getHostIdentifier() {
+        return hostIdentifier;
     }
 
     /**
@@ -172,6 +183,14 @@ public class JSONHost {
      */
     public void setName(String nameIn) {
         name = nameIn;
+    }
+
+    /**
+     * Sets the host identifier.
+     * @param hostIdentifierIn the host identifier
+     */
+    public void setHostIdentifier(String hostIdentifierIn) {
+        this.hostIdentifier = hostIdentifierIn;
     }
 
     /**

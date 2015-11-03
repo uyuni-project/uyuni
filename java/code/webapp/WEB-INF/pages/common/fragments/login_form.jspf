@@ -1,26 +1,11 @@
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
-<div class="login-form-holder">
-  <div class="group-input-label">
-    <label for="username-field" class="username-label"><bean:message key="login.jsp.redhatlogin" /></label>
-    <div class="input-grouped">
-      <span class="form-username-addon">
-      </span>
-      <input type="text" id="username-field" class="form-control" tabindex="1" name="username" maxlength="${loginLength}" placeholder="Login" />
-    </div>
-  </div>
-  <div class="group-input-label">
-    <label for="password-field" class="password-label"><bean:message key="login.jsp.password"/></label>
-    <div class="input-grouped">
-      <span class="form-password-addon">
-      </span>
-      <input type="password" id="password-field" class="form-control" tabindex="2" name="password" maxlength="${passwordLength}" placeholder="Password" />
-    </div>
-  </div>
-  <hr/>
-  <div class="login-btn">
-    <html:hidden property="login_cb" value="login" />
-    <html:hidden property="url_bounce" value="${url_bounce}" />
-    <html:hidden property="request_method" value="${request_method}" />
-  <html:submit styleId="login" styleClass="btn btn-primary" tabindex="3"><bean:message key="Sign In" /></html:submit>
-  </div>
+<div class="margins-updown">
+  <input type="text" id="username-field" class="form-control" tabindex="1" name="username" maxlength="${loginLength}" placeholder="Login" />
+  <input type="password" id="password-field" class="form-control" tabindex="2" name="password" maxlength="${passwordLength}" placeholder="Password" />
+
+  <html:hidden property="login_cb" value="login" />
+  <html:hidden property="url_bounce" value="${url_bounce}" />
+  <html:hidden property="request_method" value="${request_method}" />
+  <html:submit styleId="login" styleClass="btn btn-success btn-block" tabindex="3"><bean:message key="Sign In" /></html:submit>
+
 </div>

@@ -253,6 +253,7 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES wsgi
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES access_compat
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES proxy
 sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES rewrite
+sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES version
 sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS SSL
 
 # In case of an update, remove superfluous stuff
