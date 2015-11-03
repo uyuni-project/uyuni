@@ -234,15 +234,13 @@ public class ContentSyncManager {
      * @return List of {@link Credentials}
      */
     private List<Credentials> filterCredentials() {
-        List<Credentials> credentials = CredentialsFactory.lookupSCCCredentials();
-
-        // Create one pair of bogus credentials
+        // if repos are read with "fromdir", no credentials are used. We signal this
+        // with one null Credentials object
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
-            credentials.clear();
-            credentials.add(new Credentials());
+            return new ArrayList<Credentials>() { { add(null); } };
         }
 
-        return credentials;
+        return CredentialsFactory.lookupSCCCredentials();
     }
 
     /**
@@ -567,7 +565,7 @@ public class ContentSyncManager {
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             try {
-                log.debug("Getting repos for: " + c.getUsername());
+                log.debug("Getting repos for: " + c);
                 SCCClient scc = getSCCClient(c);
                 List<SCCRepository> repos = scc.listRepositories();
 
@@ -577,7 +575,7 @@ public class ContentSyncManager {
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Found " + repos.size() +
-                            " repos with credentials: " + c.getUsername());
+                            " repos with credentials: " + c);
                 }
                 reposList.addAll(repos);
             }
@@ -1563,8 +1561,11 @@ public class ContentSyncManager {
             }
         }
 
-        return SCCClientFactory.getInstance(url, credentials.getUsername(),
-                credentials.getPassword(), localAbsolutePath, getUUID());
+        String username = credentials == null ? null : credentials.getUsername();
+        String password = credentials == null ? null : credentials.getPassword();
+
+        return SCCClientFactory.getInstance(url, username, password, localAbsolutePath,
+                getUUID());
     }
 
     /**
