@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.credentials;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
@@ -182,5 +183,16 @@ public class Credentials extends BaseDomainHelper {
         return StringUtils.isEmpty(username) &&
                 StringUtils.isEmpty(encodedPassword) &&
                 StringUtils.isEmpty(url);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", getId())
+            .append("username", getUsername())
+            .toString();
     }
 }
