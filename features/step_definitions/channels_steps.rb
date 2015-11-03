@@ -14,7 +14,7 @@ end
 
 Given /^I am on the manage software channels page$/ do
   step %[I am authorized as "testing" with password "testing"]
-  within(:xpath, "//*[contains(@role, 'navigation')]") do
+  within(:xpath, "//header") do
     find_link("Channels").click
   end
   step %[I follow "Manage Software Channels" in the left menu]

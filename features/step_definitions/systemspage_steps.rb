@@ -3,7 +3,7 @@
 
 Given /^I am on the Systems page$/ do
   step %[I am authorized]
-  within(:xpath, "//*[contains(@role, 'navigation')]") do
+  within(:xpath, "//header") do
     find_link("Systems").click
   end
 end

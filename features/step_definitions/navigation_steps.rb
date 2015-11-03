@@ -108,7 +108,7 @@ end
 When /^I follow "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
+  when /tab bar|tabs/ then "header"
   when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
@@ -121,7 +121,7 @@ end
 When /^I follow first "([^"]*)" in the (.+)$/ do |arg1, arg2|
   tag = case arg2
   when /left menu/ then "aside"
-  when /tab bar|tabs/ then "*[contains(@role, 'navigation')]"
+  when /tab bar|tabs/ then "header"
   when /content area/ then "section"
   else raise "Unknown element with description '#{desc}'"
   end
