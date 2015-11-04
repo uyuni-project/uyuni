@@ -116,7 +116,10 @@ class HTTPProxyConnection(HTTPConnection):
         # save the proxy values
         self.__proxy, self.__proxy_port = self.host, self.port
         # self.host and self.port will point to the real host
-        self._set_hostport(host, port)
+        if hasattr(self, '_get_hostport'):
+            self.host, self.port = self._get_hostport(host, port)
+        else:
+            self._set_hostport(host, port)
         # save the host and port
         self._host, self._port = self.host, self.port
         # Authenticated proxies support
@@ -125,10 +128,16 @@ class HTTPProxyConnection(HTTPConnection):
 
     def connect(self):
         # We are actually connecting to the proxy
-        self._set_hostport(self.__proxy, self.__proxy_port)
+        if hasattr(self, '_get_hostport'):
+            self.host, self.port = self._get_hostport(self.__proxy, self.__proxy_port)
+        else:
+            self._set_hostport(self.__proxy, self.__proxy_port)
         HTTPConnection.connect(self)
         # Restore the real host and port
-        self._set_hostport(self._host, self._port)
+        if hasattr(self, '_get_hostport'):
+            self.host, self.port = self._get_hostport(self._host, self._port)
+        else:
+            self._set_hostport(self._host, self._port)
 
     def putrequest(self, method, url, skip_host=0):
         # The URL has to include the real host
