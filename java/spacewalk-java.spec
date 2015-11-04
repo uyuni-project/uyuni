@@ -79,7 +79,9 @@ Requires: jade4j
 Requires: saltstack-netapi-client-java
 Requires: spark
 Requires: spark-template-jade
-%endif
+Requires: hibernate3 = 3.2.7
+BuildRequires: hibernate3 = 3.2.7
+%else
 %if 0%{?fedora}
 Requires: classpathx-jaf
 Requires: hibernate3 >= 3.6.10
@@ -94,6 +96,7 @@ BuildRequires: javassist
 %else
 Requires: hibernate3 = 0:3.2.4
 BuildRequires: hibernate3 = 0:3.2.4
+%endif
 %endif
 %if 0%{?suse_version}
 Requires: gnu-jaf
