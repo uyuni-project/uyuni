@@ -1389,7 +1389,7 @@ public class SystemHandler extends BaseHandler {
                 throw new SystemsNotDeletedException("Unable to delete guest profile " +
                         vi.getName() + ": the guest is registered.");
             }
-            server.removeGuest(vi);
+            VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(vi);
         }
 
         return 1;
