@@ -82,7 +82,6 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.user.UserManager;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -358,9 +357,13 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Deletes a server
+     * Deletes a Server and associated VirtualInstances:
+     *  - If the server was a virtual guest, remove the VirtualInstance that links it to its
+     *  host server.
+     *  - If the server was a virtual host, remove all its entitlements and all
+     *  VirtualInstances that link it to the guest servers.
      * @param user The user doing the deleting.
-     * @param sid The id of the system to be deleted
+     * @param sid The id of the Server to be deleted
      */
     public static void deleteServer(User user, Long sid) {
         /*
@@ -373,22 +376,19 @@ public class SystemManager extends BaseManager {
         CobblerSystemRemoveCommand rc = new CobblerSystemRemoveCommand(user, server);
         rc.store();
 
+        // remove associated VirtualInstances
+        Set<VirtualInstance> toRemove = new HashSet<>();
         if (server.isVirtualGuest()) {
-            VirtualInstance virtInstance = server.getVirtualInstance();
-            virtInstance.deleteGuestSystem();
+            toRemove.add(server.getVirtualInstance());
+        } else {
+            removeAllServerEntitlements(server.getId());
+            toRemove.addAll(server.getGuests());
         }
-        else {
-            if (server.getGuests() != null) {
-                removeAllServerEntitlements(server.getId());
-                // Remove guest associations to the host system we're now deleting:
-                for (Iterator<VirtualInstance> it = server.getGuests().iterator(); it
-                        .hasNext();) {
-                    VirtualInstance vi = it.next();
-                    server.removeGuest(vi);
-                }
-            }
-            ServerFactory.delete(server);
-        }
+        toRemove.stream().forEach(vi ->
+            VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(vi));
+
+        // remove server itself
+        ServerFactory.delete(server);
     }
 
     /**
