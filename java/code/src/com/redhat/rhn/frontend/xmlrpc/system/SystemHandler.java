@@ -138,7 +138,6 @@ import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.VirtualizationActionCommand;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
-import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -1693,17 +1692,6 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Private helper method to get a list of systems for a particular user
-     *   The query used is very inefficient.  Only use it when you need a lot
-     *   of information about the systems.
-     * @param user The user to lookup
-     * @return An array of SystemOverview objects representing a system
-     */
-    private List<SystemOverview> getUserSystemsList(User user) {
-        return  UserManager.visibleSystemsAsDto(user);
-    }
-
-    /**
      * Set custom values for the specified server.
      * @param loggedInUser The current user
      * @param sid The id of the server in question
@@ -2688,7 +2676,7 @@ public class SystemHandler extends BaseHandler {
      *
      */
     public List<SystemOverview> searchByName(User loggedInUser, String regexp) {
-        List<SystemOverview>  systems =  getUserSystemsList(loggedInUser);
+        List<SystemOverview> systems =  SystemManager.systemListShort(loggedInUser, null);
         List<SystemOverview> returnList = new ArrayList<SystemOverview>();
 
         Pattern pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
