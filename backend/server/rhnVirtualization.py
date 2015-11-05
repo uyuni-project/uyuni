@@ -315,8 +315,8 @@ class VirtualizationEventHandler:
         # will never have one.  Instead, a host should be identified by its
         # sysid only.
         #
-        # When IdentityType.GUEST, need to worry about cross-org issues...
-        # 2 states to worry about:
+        # When IdentityType.GUEST we have 2 states to worry about (we don't
+        # care about cross-org issues):
         # - no prior entry in the VI table; we return nothing, insert happens
         # - prior entry, we return that one, update happens
         if identity == IdentityType.HOST:
@@ -452,10 +452,6 @@ class VirtualizationEventHandler:
     def __db_update_system(self, identity, system_id, existing_row):
         """ Updates a system in the database. """
 
-        # since __db_get_system protects us against crossing the org
-        # boundary, we really don't need to worry much about existing_row's
-        # values...
-
         new_values_array = []
         bindings = {}
         if not existing_row.get('confirmed'):
@@ -470,9 +466,6 @@ class VirtualizationEventHandler:
             if existing_row['virtual_system_id'] != system_id:
                 new_values_array.append("virtual_system_id=:sysid")
                 bindings['sysid'] = system_id
-                # note, at this point, it's still possible to have
-                # an entry in rhnVirtualInstance for this uuid w/out
-                # a virtual_system_id; it'd be for a different org
 
         # Only touch the database if something changed.
         if new_values_array:
