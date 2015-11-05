@@ -507,8 +507,8 @@ class VirtualizationEventHandler:
             WHERE
                 (rvi.uuid = :uuid or
                  (:uuid is null and
-                  rvi.uuid is null)) and
-                rvi.host_system_id = :host_id and
+                  rvi.uuid is null and
+                  rvi.host_system_id = :host_id)) and
                 rvi.id = rvii.instance_id and
                 rvit.id = rvii.instance_type and
                 rvis.id = rvii.state
@@ -587,9 +587,6 @@ class VirtualizationEventHandler:
         # registered but its host was not, it is possible that the
         # rhnVirtualInstance table's host_system_id column is null.  We'll
         # update that now, if need be.
-
-        # __db_get_domain is responsible for ensuring that the org for any
-        # existing_row matches the org for host_id
 
         new_values_array = []
         bindings = {}
