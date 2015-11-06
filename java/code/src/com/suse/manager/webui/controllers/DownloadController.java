@@ -173,9 +173,9 @@ public class DownloadController {
         response.raw().setContentType("application/octet-stream");
         response.raw().setHeader("Content-Disposition", "attachment; filename=" + file.getName());
 
-        try {
+        try (BufferedInputStream bufferedInputStream =
+                new BufferedInputStream(new FileInputStream(file))) {
             OutputStream out = raw.getOutputStream();
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
 
             byte[] buffer = new byte[BUF_SIZE];
             int len;
