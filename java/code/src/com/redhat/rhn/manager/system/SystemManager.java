@@ -380,7 +380,8 @@ public class SystemManager extends BaseManager {
         Set<VirtualInstance> toRemove = new HashSet<>();
         if (server.isVirtualGuest()) {
             toRemove.add(server.getVirtualInstance());
-        } else {
+        }
+        else {
             removeAllServerEntitlements(server.getId());
             toRemove.addAll(server.getGuests());
         }
