@@ -135,11 +135,11 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j saltstack-netapi-client spark-core spark-template-jade" />
+  <property name="suse-common-jars" value="jade4j saltstack-netapi-client spark-core spark-template-jade httpclient" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="commons-jexl commons-lang3 concurrentlinkedhashmap-lru
-      httpclient httpcore slf4j/api slf4j/log4j12" />
+      httpcore slf4j/api slf4j/log4j12" />
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
