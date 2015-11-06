@@ -14,8 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -27,8 +25,6 @@ import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 
@@ -49,8 +45,6 @@ import static spark.Spark.halt;
 public class DownloadController {
 
     private static final int BUF_SIZE = 4096;
-    private static final Logger LOG = LoggerFactory.getLogger(Request.class);
-    private static final Gson GSON = new GsonBuilder().create();
     private static final Key KEY = TokenUtils.getServerKey();
     private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
             .setDecryptionKey(KEY)
@@ -185,7 +179,6 @@ public class DownloadController {
 
             byte[] buffer = new byte[BUF_SIZE];
             int len;
-            int off = 0;
             while ((len = bufferedInputStream.read(buffer)) > 0) {
                 out.write(buffer, 0, len);
             }
