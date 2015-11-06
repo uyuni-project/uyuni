@@ -1,8 +1,8 @@
 package com.suse.manager.webui.utils.test;
+
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.utils.TokenUtils;
-import junit.framework.TestCase;
 
 import java.security.Key;
 
