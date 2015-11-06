@@ -32,7 +32,7 @@ import spark.Request;
 import spark.Response;
 import spark.RequestResponseFactory;
 import spark.route.HttpMethod;
-import spark.route.RouteMatch;
+import spark.routematch.RouteMatch;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -99,7 +99,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         mockRequest.setupPathInfo(
                 String.format("/rhn/manager/download/%s/getPackage/fake_rpm_package-1.0-4.x86_64.rpm", channel.getLabel()));
 
-        RouteMatch match = new RouteMatch(HttpMethod.get, new Object(), "", "", "");
+        RouteMatch match = new RouteMatch(new Object(), "", "", "");
         Request request = RequestResponseFactory.create(match, mockRequest);
         Response response =  RequestResponseFactory.create(mockReponse);
 
