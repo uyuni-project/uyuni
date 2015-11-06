@@ -46,7 +46,6 @@ public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
 
-    @SuppressWarnings("unused")
     private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
@@ -54,7 +53,6 @@ public class Router implements SparkApplication {
         };
     }
 
-    @SuppressWarnings("unused")
     private Route withUser(RouteWithUser<Object> route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
