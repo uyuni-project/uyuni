@@ -112,7 +112,8 @@ public class VirtualGuestsConfirmAction extends BaseSystemListAction {
 
                 if (guestSystem != null) {
                     SystemManager.deleteServer(user, guestSystem.getId());
-                } else {
+                }
+                else {
                     // if a system is not registered, delete at least the VirtualInstance
                     VirtualInstanceFactory.getInstance()
                             .deleteVirtualInstanceOnly(virtualInstance);
