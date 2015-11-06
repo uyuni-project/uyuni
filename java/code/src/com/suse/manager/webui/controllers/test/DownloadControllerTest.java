@@ -26,12 +26,10 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.TokensAPI;
-import junit.framework.Test;
 import org.apache.commons.io.FilenameUtils;
 import spark.Request;
 import spark.Response;
 import spark.RequestResponseFactory;
-import spark.route.HttpMethod;
 import spark.routematch.RouteMatch;
 
 import java.util.Arrays;
