@@ -1,5 +1,7 @@
 -- oracle equivalent source sha1 3062dd19d000fdb1884097b21443a7488e49899c
 
+SELECT logging.clear_log_id();
+
 -- rhnServerGroup and dependencies
 
 DELETE FROM rhnOrgExtGroupMapping
