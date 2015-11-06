@@ -301,7 +301,7 @@ public class VirtualHostManagerProcessor {
         }
 
         cpu.setArch(ServerFactory.lookupCPUArchByName(jsonHost.getCpuArch()));
-        cpu.setMHz(new Double(jsonHost.getCpuMhz()).toString());
+        cpu.setMHz( new Long(Math.round(jsonHost.getCpuMhz())).toString());
         cpu.setNrCPU(jsonHost.getTotalCpuCores().longValue());
         cpu.setNrsocket(jsonHost.getTotalCpuSockets().longValue());
         cpu.setVendor(jsonHost.getCpuVendor());
