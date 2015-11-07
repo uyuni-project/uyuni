@@ -1514,7 +1514,8 @@ def _fix_notice(notice):
 def _is_old_suse_style(notice):
     if((notice['from'] and "suse" in notice['from'].lower() and
         int(notice['version']) >= 1000) or
-        (notice['update_id'][:4] in ('res5', 'res6') and int(notice['version']) > 6 )):
+        (notice['update_id'][:4] in ('res5', 'res6') and int(notice['version']) > 6 ) or
+        (notice['update_id'][:4] == 'res4')):
         # old style suse updateinfo starts with version >= 1000 or
         # have the res update_tag
         return True
