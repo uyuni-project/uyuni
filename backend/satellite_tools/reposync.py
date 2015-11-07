@@ -1359,6 +1359,8 @@ def _best_checksum_item(checksums):
     return (checksum_type, checksum_type_orig, checksum)
 
 def _to_db_date(date):
+    if not date:
+        return datetime.utcnow().isoformat(' ')
     if date.isdigit():
         ret = datetime.fromtimestamp(float(date)).isoformat(' ')
     else:
