@@ -23,7 +23,7 @@ CREATE TABLE rhnServer
                             CONSTRAINT rhn_server_oid_fk
                                 REFERENCES web_customer (id)
                                 ON DELETE CASCADE,
-    digital_server_id   VARCHAR2(64) NOT NULL,
+    digital_server_id   VARCHAR2(1024) NOT NULL,
     server_arch_id      NUMBER NOT NULL
                             CONSTRAINT rhn_server_said_fk
                                 REFERENCES rhnServerArch (id),

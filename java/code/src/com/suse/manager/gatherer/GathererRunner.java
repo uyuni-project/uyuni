@@ -15,17 +15,24 @@
 
 package com.suse.manager.gatherer;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.manager.satellite.Executor;
 import com.redhat.rhn.manager.satellite.SystemCommandExecutor;
 
 import com.suse.manager.model.gatherer.GathererModule;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -78,10 +85,46 @@ public class GathererRunner {
         args.add("--logfile");
         args.add(LOG_DESTINATION);
 
+        Map<String, String> env = new HashMap<String, String>(System.getenv());
+        ConfigDefaults config = ConfigDefaults.get();
+        String proxyHostname = config.getProxyHost();
+        if (!StringUtils.isBlank(proxyHostname)) {
+            URIBuilder builder = new URIBuilder();
+            builder.setScheme("http");
+            String proxyUsername = ConfigDefaults.get().getProxyUsername();
+            String proxyPassword = ConfigDefaults.get().getProxyPassword();
+            if (!StringUtils.isBlank(proxyUsername) &&
+                    !StringUtils.isBlank(proxyPassword)) {
+                builder.setUserInfo(proxyUsername, proxyPassword);
+            }
+            builder.setHost(proxyHostname);
+            builder.setPort(config.getProxyPort());
+            try {
+                String uri = builder.build().toString();
+                env.put("http_proxy", uri);
+                env.put("https_proxy", uri);
+                logger.debug("Set http(s)_proxy to " + uri);
+            }
+            catch (URISyntaxException e) {
+                logger.error("URI syntax exception when setting Proxy: " + e.getMessage());
+            }
+        }
+        String noProxy = Config.get().getString(HttpClientAdapter.NO_PROXY);
+        if (!StringUtils.isEmpty(noProxy)) {
+            env.put("no_proxy", noProxy);
+            logger.debug("Set no_proxy to " + noProxy);
+        }
+
+        String[] envp = new String[env.size()];
+        int i = 0;
+        for (Map.Entry<String, String> e : env.entrySet()) {
+            envp[i++] = e.getKey() + "=" + e.getValue();
+        }
+
         Map<String, Map<String, JSONHost>> hosts = null;
         Runtime r = Runtime.getRuntime();
         try {
-            Process p = r.exec(args.toArray(new String[0]));
+            Process p = r.exec(args.toArray(new String[0]), envp);
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
             stdin.println(new GathererJsonIO().toJson(vhms));
             stdin.flush();
@@ -90,9 +133,9 @@ public class GathererRunner {
             InputStreamReader irr = new InputStreamReader(p.getInputStream());
             hosts = new GathererJsonIO().readHosts(irr);
 
-            int exitcode = p.waitFor();
-            if (exitcode != 0) {
-                logger.error("Error while calling the gatherer");
+            int exitCode = p.waitFor();
+            if (exitCode != 0) {
+                logger.error("Error while calling the gatherer, exit code " + exitCode);
                 return null;
             }
         }
