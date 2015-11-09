@@ -231,18 +231,16 @@ public class ContentSyncManager {
      * As well as we do need to read the file only once.
      * If /etc/rhn/rhn.conf contains local path URL, then the SCCClient will read
      * from the local file instead of the network.
-     *
-     * @param credentials
      * @return List of {@link Credentials}
      */
-    private List<Credentials> filterCredentials(List<Credentials> credentials) {
-        // Create one pair of bogus credentials
+    private List<Credentials> filterCredentials() {
+        // if repos are read with "fromdir", no credentials are used. We signal this
+        // with one null Credentials object
         if (Config.get().getString(ContentSyncManager.RESOURCE_PATH) != null) {
-            credentials.clear();
-            credentials.add(new Credentials());
+            return new ArrayList<Credentials>() { { add(null); } };
         }
 
-        return credentials;
+        return CredentialsFactory.lookupSCCCredentials();
     }
 
     /**
@@ -252,15 +250,14 @@ public class ContentSyncManager {
      */
     public Collection<SCCProduct> getProducts() throws ContentSyncException {
         Set<SCCProduct> productList = new HashSet<SCCProduct>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
         Iterator<Credentials> i = credentials.iterator();
 
         // stop as soon as a credential pair works
         while (i.hasNext() && productList.size() == 0) {
             Credentials c = i.next();
             try {
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                SCCClient scc = getSCCClient(c);
                 List<SCCProduct> products = scc.listProducts();
                 for (SCCProduct product : products) {
                     // Check for missing attributes
@@ -563,14 +560,13 @@ public class ContentSyncManager {
      */
     public void refreshRepositoriesCache() throws ContentSyncException {
         Set<SCCRepository> reposList = new HashSet<SCCRepository>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
 
         // Query repos for all mirror credentials and consolidate
         for (Credentials c : credentials) {
             try {
-                log.debug("Getting repos for: " + c.getUsername());
-                SCCClient scc = getSCCClient(c.getUsername(), c.getPassword());
+                log.debug("Getting repos for: " + c);
+                SCCClient scc = getSCCClient(c);
                 List<SCCRepository> repos = scc.listRepositories();
 
                 // Add mirror credentials to all repos
@@ -579,7 +575,7 @@ public class ContentSyncManager {
                 }
                 if (log.isDebugEnabled()) {
                     log.debug("Found " + repos.size() +
-                            " repos with credentials: " + c.getUsername());
+                            " repos with credentials: " + c);
                 }
                 reposList.addAll(repos);
             }
@@ -611,16 +607,14 @@ public class ContentSyncManager {
 
     /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
-     *
-     * @param user username
-     * @param password password
+     * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
      * @throws SCCClientException in case of an error
      */
-    public List<SCCSubscription> getSubscriptions(String user, String password)
+    public List<SCCSubscription> getSubscriptions(Credentials credentials)
             throws SCCClientException {
         try {
-            SCCClient scc = this.getSCCClient(user, password);
+            SCCClient scc = this.getSCCClient(credentials);
             return scc.listSubscriptions();
         }
         catch (URISyntaxException e) {
@@ -636,12 +630,11 @@ public class ContentSyncManager {
      */
     public Collection<SCCSubscription> getSubscriptions() throws ContentSyncException {
         Set<SCCSubscription> subscriptions = new HashSet<SCCSubscription>();
-        List<Credentials> credentials = filterCredentials(
-                CredentialsFactory.lookupSCCCredentials());
+        List<Credentials> credentials = filterCredentials();
         // Query subscriptions for all mirror credentials
         for (Credentials c : credentials) {
             try {
-                subscriptions.addAll(getSubscriptions(c.getUsername(), c.getPassword()));
+                subscriptions.addAll(getSubscriptions(c));
             }
             catch (SCCClientException e) {
                 throw new ContentSyncException(e);
@@ -1540,13 +1533,12 @@ public class ContentSyncManager {
      * Get an instance of {@link SCCWebClient} and configure it to use localpath, if
      * such is setup in /etc/rhn/rhn.conf
      *
-     * @param user network credential: user
-     * @param password networ credential: password
+     * @param credentials username/password pair
      * @throws URISyntaxException if the URL in configuration file is malformed
      * @throws SCCClientException
      * @return {@link SCCWebClient}
      */
-    private SCCClient getSCCClient(String user, String password)
+    private SCCClient getSCCClient(Credentials credentials)
             throws URISyntaxException, SCCClientException {
         // check that URL is valid
         URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
@@ -1569,7 +1561,10 @@ public class ContentSyncManager {
             }
         }
 
-        return SCCClientFactory.getInstance(url, user, password, localAbsolutePath,
+        String username = credentials == null ? null : credentials.getUsername();
+        String password = credentials == null ? null : credentials.getPassword();
+
+        return SCCClientFactory.getInstance(url, username, password, localAbsolutePath,
                 getUUID());
     }
 
