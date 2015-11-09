@@ -158,7 +158,7 @@ chgrp %{apache_group} /etc/rhn /etc/rhn/rhn.conf 2> /dev/null || :
 # ... once we restrict access to some files that were too open in
 # the past.
 chmod o-rwx /etc/rhn/rhn.conf* /etc/sysconfig/rhn/backup-* /var/lib/rhn/rhn-satellite-prep/* 2> /dev/null || :
-chmod 755 /var/lib/rhn/rhn-satellite-prep/etc || :
+chmod 755 /var/lib/rhn/rhn-satellite-prep/etc 2> /dev/null || :
 
 %if 0%{?suse_version}
 %post
