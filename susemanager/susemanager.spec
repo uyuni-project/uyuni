@@ -27,6 +27,8 @@ Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
 Requires:       spacewalk-db-virtual
 Requires:       susemanager-branding
+# yast module dependency
+Requires:       yast2-users
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %global pythonsmroot %{python_sitelib}/spacewalk
 
