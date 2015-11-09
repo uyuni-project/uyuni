@@ -315,11 +315,10 @@ class VirtualizationEventHandler:
         # will never have one.  Instead, a host should be identified by its
         # sysid only.
         #
-        # When IdentityType.GUEST, need to worry about cross-org issues...
-        # 3 states to worry about:
+        # When IdentityType.GUEST we have 2 states to worry about (we don't
+        # care about cross-org issues):
         # - no prior entry in the VI table; we return nothing, insert happens
-        # - prior entry, same org; we return that one, update happens
-        # - prior entry, different org; we return nothing, insert happens sans host sid
+        # - prior entry, we return that one, update happens
         if identity == IdentityType.HOST:
             condition = """
                 vi.uuid is null
@@ -338,8 +337,7 @@ class VirtualizationEventHandler:
                     where
                         shost.id is not null
                         and shost.id = vi.host_system_id
-                        and sguest.id = :system_id
-                        and shost.org_id = sguest.org_id )
+                        and sguest.id = :system_id )
             """
         else:
             raise VirtualizationEventError(
@@ -454,10 +452,6 @@ class VirtualizationEventHandler:
     def __db_update_system(self, identity, system_id, existing_row):
         """ Updates a system in the database. """
 
-        # since __db_get_system protects us against crossing the org
-        # boundary, we really don't need to worry much about existing_row's
-        # values...
-
         new_values_array = []
         bindings = {}
         if not existing_row.get('confirmed'):
@@ -472,9 +466,6 @@ class VirtualizationEventHandler:
             if existing_row['virtual_system_id'] != system_id:
                 new_values_array.append("virtual_system_id=:sysid")
                 bindings['sysid'] = system_id
-                # note, at this point, it's still possible to have
-                # an entry in rhnVirtualInstance for this uuid w/out
-                # a virtual_system_id; it'd be for a different org
 
         # Only touch the database if something changed.
         if new_values_array:
@@ -507,16 +498,10 @@ class VirtualizationEventHandler:
                 rhnVirtualInstanceState rvis,
                 rhnVirtualInstance rvi
             WHERE
-                ((rvi.uuid=:uuid and
-                  NOT EXISTS (SELECT 1
-                                FROM rhnServer host_system,
-                                     rhnServer matching_uuid_system
-                               WHERE matching_uuid_system.id = rvi.virtual_system_id
-                                 AND host_system.id = :host_id
-                                 AND host_system.org_id != matching_uuid_system.org_id)) or
+                (rvi.uuid = :uuid or
                  (:uuid is null and
-                      rvi.uuid is null and
-                      rvi.host_system_id=:host_id)) and
+                  rvi.uuid is null and
+                  rvi.host_system_id = :host_id)) and
                 rvi.id = rvii.instance_id and
                 rvit.id = rvii.instance_type and
                 rvis.id = rvii.state
@@ -595,9 +580,6 @@ class VirtualizationEventHandler:
         # registered but its host was not, it is possible that the
         # rhnVirtualInstance table's host_system_id column is null.  We'll
         # update that now, if need be.
-
-        # __db_get_domain is responsible for ensuring that the org for any
-        # existing_row matches the org for host_id
 
         new_values_array = []
         bindings = {}
