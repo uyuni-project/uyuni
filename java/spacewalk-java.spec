@@ -46,6 +46,11 @@ Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
 %if 0%{?suse_version}
+Requires: apache-commons-beanutils
+Requires: apache-commons-collections
+Requires: jakarta-commons-digester
+Requires: apache-commons-lang3
+Requires: concurrent
 Requires: cobbler >= 2.0.0
 Requires: google-gson >= 2.2.4
 Requires: java-ibm >= 1.8.0
@@ -61,7 +66,6 @@ Requires: gnu-jaf
 Requires: ehcache
 BuildRequires: hibernate3 = 3.2.7
 BuildRequires: ehcache
-BuildRequires: sitemesh
 BuildRequires: apache-commons-lang
 BuildRequires: google-gson >= 2.2.4
 BuildRequires: java-devel-ibm >= 1.8.0
@@ -86,7 +90,6 @@ Requires: oscache
 BuildRequires: java-devel >= 1:1.6.0
 BuildRequires: jpam
 BuildRequires: oscache
-BuildRequires: sitemesh
 
 %endif
 Requires: dwr >= 3
@@ -246,6 +249,7 @@ BuildRequires: quartz
 BuildRequires: redstone-xmlrpc
 BuildRequires: simple-core
 BuildRequires: simple-xml
+BuildRequires: sitemesh
 BuildRequires: stringtree-json
 BuildRequires: susestudio-java-client
 BuildRequires: tanukiwrapper
