@@ -976,7 +976,7 @@ fi
 %{_sbindir}/rctaskomatic
 
 %files config
-%defattr(644,root,root,775)
+%defattr(644,root,root,755)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
