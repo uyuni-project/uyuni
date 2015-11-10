@@ -23,8 +23,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
-import com.suse.manager.webui.controllers.TokensAPI;
-import com.suse.manager.webui.controllers.TokensController;
 import com.suse.manager.webui.utils.RouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
@@ -46,6 +44,7 @@ public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
 
+    @SuppressWarnings("unused")
     private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
@@ -53,6 +52,7 @@ public class Router implements SparkApplication {
         };
     }
 
+    @SuppressWarnings("unused")
     private Route withUser(RouteWithUser<Object> route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
@@ -91,14 +91,9 @@ public class Router implements SparkApplication {
         // Remote commands
         Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
-        // Token generation
-        Spark.get("/manager/tokens", templatedWithUser(TokensController::createToken), jade);
-
         //Setup API routes
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
-
-        Spark.get("/manager/api/tokens/create", withUser(TokensAPI::create));
 
         // download endpoint
         Spark.get("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
