@@ -24,23 +24,17 @@ public class RepoFileManager {
     public static final String SALT_BASE_FILE_ROOT = "/srv/salt";
     public static final String SALT_CHANNEL_FILES = "channels";
 
-    public static void generateRepositoryFile(Server server) {
-        try {
+    public static void generateRepositoryFile(Server server) throws IOException, JoseException {
             String fileName = "channels.repo." + server.getDigitalServerId();
             String token = TokensAPI.createTokenWithServerKey(
                     Optional.of(server.getOrg().getId()), Collections.emptySet());
 
             String fileContents = StreamSupport.stream(server.getChannels().spliterator(), false)
-                    .map(ch -> RepoFileManager.repoFromChannel(ch, token))
-                    .map(RepoFile::fileFormat)
+                    .map(ch -> RepoFileManager.repoFromChannel(ch, token).fileFormat())
                     .collect(Collectors.joining("\n"));
 
             Path baseDir = Paths.get(SALT_BASE_FILE_ROOT, SALT_CHANNEL_FILES);
             Files.write(baseDir.resolve(fileName), fileContents.getBytes());
-        }
-        catch (JoseException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static RepoFile repoFromChannel(Channel channel, String token) {
