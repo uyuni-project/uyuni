@@ -989,7 +989,7 @@ fi
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files lib
-%defattr(644,root,root,775)
+%defattr(644,root,root,755)
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
