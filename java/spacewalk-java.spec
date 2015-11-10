@@ -14,8 +14,13 @@
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
 %else
+%if  0%{?suse_version}
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
+%else
+%define appdir          %{_localstatedir}/lib/tomcat6/webapps
+%define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
+%endif
 %endif
 %endif
 
@@ -23,10 +28,6 @@
 # RHEL5 checkstyle4 is incompatible with checkstyle5
 %define run_checkstyle  1
 %endif
-%if 0%{?suse_version}
-%define run_checkstyle  0
-%endif
-
 
 Name: spacewalk-java
 Summary: Java web application files for Spacewalk
@@ -44,23 +45,58 @@ ExcludeArch: ia64
 Requires: bcel
 Requires: c3p0 >= 0.9.1
 Requires: classpathx-mail
+%if 0%{?suse_version}
 Requires: cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
+Requires: google-gson >= 2.2.4
+Requires: java-ibm >= 1.8.0
+Requires: pam-modules
+Requires: snakeyaml
+Requires: sudo
+Requires: jade4j
+Requires: saltstack-netapi-client-java
+Requires: spark
+Requires: spark-template-jade
+Requires: hibernate3 = 3.2.7
+Requires: gnu-jaf
+Requires: ehcache
+BuildRequires: hibernate3 = 3.2.7
+BuildRequires: ehcache
+BuildRequires: sitemesh
+BuildRequires: apache-commons-lang
+BuildRequires: google-gson >= 2.2.4
+BuildRequires: java-devel-ibm >= 1.8.0
+BuildRequires: pam-modules
+BuildRequires: jsch
+BuildRequires: snakeyaml
+# SUSE additional build requirements
+BuildRequires: log4j
+# Spark and Salt integration
+BuildRequires: jade4j
+BuildRequires: saltstack-netapi-client-java
+BuildRequires: spark
+BuildRequires: spark-template-jade
+
+%else
+Requires: cobbler20
+Requires: dojo
+Requires: java >= 1:1.6.0
+Requires: java-devel >= 1:1.6.0
+Requires: jpam
+Requires: oscache
+BuildRequires: java-devel >= 1:1.6.0
+BuildRequires: jpam
+BuildRequires: oscache
+BuildRequires: sitemesh
+
 %endif
 Requires: dwr >= 3
-Requires: google-gson >= 2.2.4
 Requires: jakarta-commons-el
 Requires: jakarta-commons-fileupload
 Requires: jakarta-taglibs-standard
-Requires: java-ibm >= 1.8.0
 Requires: jcommon
 Requires: jdom
 Requires: jta
 Requires: log4j
-Requires: pam-modules
-Requires: snakeyaml
-Requires: sudo
 Requires: redstone-xmlrpc
 Requires: simple-core
 Requires: simple-xml
@@ -73,15 +109,6 @@ Requires: stringtree-json
 Requires: susestudio-java-client
 Requires: xalan-j2 >= 0:2.6.0
 Requires: xerces-j2
-# Spark and Salt integration runtime
-%if 0%{?suse_version}
-Requires: jade4j
-Requires: saltstack-netapi-client-java
-Requires: spark
-Requires: spark-template-jade
-Requires: hibernate3 = 3.2.7
-BuildRequires: hibernate3 = 3.2.7
-%else
 %if 0%{?fedora}
 Requires: classpathx-jaf
 Requires: hibernate3 >= 3.6.10
@@ -94,15 +121,10 @@ BuildRequires: hibernate3-c3p0 >= 3.6.10
 BuildRequires: hibernate3-ehcache >= 3.6.10
 BuildRequires: javassist
 %else
+%if 0%{?rhel}
 Requires: hibernate3 = 0:3.2.4
 BuildRequires: hibernate3 = 0:3.2.4
 %endif
-%endif
-%if 0%{?suse_version}
-Requires: gnu-jaf
-Requires: ehcache
-BuildRequires: ehcache
-BuildRequires: sitemesh
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
 %if 0%{?rhel} && 0%{?rhel} < 6
@@ -139,10 +161,13 @@ Requires: struts-taglib >= 0:1.3.0
 Requires: tomcat6
 Requires: tomcat6-lib
 Requires: tomcat6-servlet-2.5-api
+BuildRequires: struts >= 0:1.3.0
+BuildRequires: struts-taglib >= 0:1.3.0
+BuildRequires: tomcat6
+BuildRequires: tomcat6-lib
 %endif
 %endif
 %endif
-Requires: xalan-j2 >= 2.6.0
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires:      apache-commons-cli
 Requires:      apache-commons-codec
@@ -181,9 +206,6 @@ BuildRequires: jakarta-commons-logging
 BuildRequires: jakarta-commons-validator
 BuildRequires: jpackage-utils
 %endif
-%if 0%{?suse_version}
-BuildRequires: apache-commons-lang
-%endif
 
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
@@ -193,17 +215,18 @@ Requires: cglib < 0:2.2
 Requires: cglib
 %endif
 
-BuildRequires: perl
 %if 0%{?suse_version}
+BuildRequires: perl
 BuildRequires: libxml2-tools
+BuildRequires: libxml2
 %else
+BuildRequires: /usr/bin/perl
 BuildRequires: /usr/bin/xmllint
 %endif
 BuildRequires: ant
 BuildRequires: ant-apache-regexp
 BuildRequires: ant-junit
 BuildRequires: antlr >= 2.7.6
-BuildRequires: libxml2
 BuildRequires: bcel
 BuildRequires: c3p0 >= 0.9.1
 BuildRequires: cglib
@@ -211,45 +234,23 @@ BuildRequires: classpathx-mail
 BuildRequires: concurrent
 BuildRequires: dom4j
 BuildRequires: dwr >= 3
-BuildRequires: google-gson >= 2.2.4
 BuildRequires: jaf
 BuildRequires: jakarta-commons-el
 BuildRequires: jakarta-commons-fileupload
 BuildRequires: jakarta-taglibs-standard
-BuildRequires: java-devel-ibm >= 1.8.0
 BuildRequires: jcommon
 BuildRequires: jdom
-%if 0%{?suse_version}
-BuildRequires: pam-modules
-%else
-BuildRequires: jpam
-%endif
 BuildRequires: jta
-BuildRequires: jsch
 BuildRequires: postgresql-jdbc
 BuildRequires: quartz
 BuildRequires: redstone-xmlrpc
 BuildRequires: simple-core
 BuildRequires: simple-xml
-BuildRequires: snakeyaml
 BuildRequires: stringtree-json
 BuildRequires: susestudio-java-client
 BuildRequires: tanukiwrapper
 %if 0%{?run_checkstyle}
 BuildRequires: checkstyle
-%endif
-# SUSE additional build requirements
-%if 0%{?suse_version}
-BuildRequires: log4j
-BuildRequires: struts >= 1.2.9
-# Spark and Salt integration
-BuildRequires: jade4j
-BuildRequires: saltstack-netapi-client-java
-BuildRequires: spark
-BuildRequires: spark-template-jade
-%else
-BuildRequires: struts >= 1.3.0
-BuildRequires: struts-taglib >= 1.3.0
 %endif
 %if ! 0%{?omit_tests} > 0
 BuildRequires: translate-toolkit
@@ -265,14 +266,10 @@ Provides: rhn-oracle-jdbc-tomcat5 = %{version}-%{release}
 This package contains the code for the Java version of the Spacewalk Web Site.
 
 %package config
-%if 0%{?suse_version}
-%if 0%{?suse_version} >= 1315
-Requires(pre): tomcat
-%else
-Requires(pre): tomcat6
-%endif
-%endif
 Summary: Configuration files for Spacewalk Java
+%if 0%{?suse_version}
+Requires(pre): tomcat
+%endif
 Group: Applications/Internet
 Obsoletes: rhn-java-config < 5.3.0
 Obsoletes: rhn-java-config-sat < 5.3.0
@@ -300,15 +297,18 @@ and taskomatic process.
 %package oracle
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
-Requires: ojdbc5
-BuildRequires: ojdbc5
+Requires: ojdbc14
 %if  0%{?rhel} && 0%{?rhel} < 6
 Requires: tomcat5
 %else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7
 %else
-Requires: tomcat >= 7
+%if 0%{?suse_version}
+Requires: tomcat >= 8
+%else
+Requires: tomcat6
+%endif
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
@@ -327,7 +327,11 @@ Requires: tomcat5
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: tomcat >= 7
 %else
-Requires: tomcat >= 7
+%if 0%{?suse_version}
+Requires: tomcat >= 8
+%else
+Requires: tomcat6
+%endif
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
@@ -381,27 +385,28 @@ Group: Applications/Internet
 # for RHEL6 we need to filter out several package versions
 %if  0%{?rhel} && 0%{?rhel} >= 6
 # cglib is not compatible with hibernate and asm from RHEL6
-Requires: cglib < 2.2
+Requires: cglib < 0:2.2
 %else
 Requires: cglib
 %endif
 
 Requires: bcel
 Requires: c3p0 >= 0.9.1
+%if 0%{?suse_version}
 Requires: cobbler >= 2.0.0
-%if 0%{?fedora} >= 22
-Recommends: cobbler20
+Requires: java >= 1.8.0
+Requires: pam-modules
+Requires: jsch
+%else
+Requires: cobbler20
+Requires: java >= 0:1.6.0
+Requires: java-devel >= 0:1.7.0
+Requires: jpam
+Requires: oscache
 %endif
 Requires: concurrent
 Requires: jakarta-taglibs-standard
-Requires: java >= 0:1.6.0
 Requires: jcommon
-%if 0%{?suse_version}
-Requires: pam-modules
-%else
-Requires: java-devel >= 0:1.7.0
-Requires: jpam
-%endif
 Requires: log4j
 Requires: quartz < 2.0
 Requires: simple-core
@@ -432,9 +437,6 @@ Requires: jakarta-commons-dbcp
 Requires: jakarta-commons-lang >= 0:2.1
 Requires: jakarta-commons-logging
 %endif
-Requires: jsch
-Requires: pam-modules
-Requires: xalan-j2 >= 2.6.0
 Conflicts: quartz >= 2.0
 Obsoletes: taskomatic < 5.3.0
 Obsoletes: taskomatic-sat < 5.3.0
@@ -512,7 +514,7 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=public \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -vE '(/test/|/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml ||:
+xargs checkstyle -c buildconf/checkstyle.xml
 
 echo "Running checkstyle on java test sources"
 export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
@@ -522,24 +524,24 @@ export ADDITIONAL_OPTIONS="-Djavadoc.method.scope=nothing \
 -Djavadoc.lazy=false \
 -Dcheckstyle.header.file=buildconf/LICENSE.txt"
 find . -name *.java | grep -E '/test/' | grep -vE '(/jsp/|/playpen/)' | \
-xargs checkstyle -c buildconf/checkstyle.xml ||:
-%endif
+xargs checkstyle -c buildconf/checkstyle.xml
 
 # catch macro name errors
-#find . -type f -name '*.xml' | xargs perl -CSAD -lne '
-#          for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/g) {
-#              print;
-#              $exit = 1;
-#          }
-#          @r = /((..)?PRODUCT_NAME(..)?)/g ;
-#          while (@r) {
-#              $s = shift(@r); $f = shift(@r); $l = shift(@r);
-#              if ($f ne "@@" or $l ne "@@") {
-#                  print $s;
-#                  $exit = 1;
-#              }
-#          }
-#          END { exit $exit }'
+find . -type f -name '*.xml' | xargs perl -CSAD -lne '
+          for (grep { $_ ne "PRODUCT_NAME" } /\@\@(\w+)\@\@/g) {
+              print;
+              $exit = 1;
+          }
+          @r = /((..)?PRODUCT_NAME(..)?)/g ;
+          while (@r) {
+              $s = shift(@r); $f = shift(@r); $l = shift(@r);
+              if ($f ne "@@" or $l ne "@@") {
+                  print $s;
+                  $exit = 1;
+              }
+          }
+          END { exit $exit }'
+%endif
 
 echo "Building apidoc docbook sources"
 ant -Dprefix=$RPM_BUILD_ROOT init-install apidoc-docbook
@@ -576,9 +578,15 @@ ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
+%if 0%{?suse_version}
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat8-suse
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
 install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
+%else
+ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
+install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
+install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%endif
 %endif
 %endif
 
@@ -602,10 +610,8 @@ install -d -m 755 $RPM_BUILD_ROOT%{cobprofdir}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirup}
 install -d -m 755 $RPM_BUILD_ROOT%{cobprofdirwiz}
 install -d -m 755 $RPM_BUILD_ROOT%{cobdirsnippets}
-
 %if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/scc
-install -d -m 755 $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs
 %else
 install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
@@ -630,12 +636,13 @@ wrapper.java.classpath.66=/usr/share/java/jboss-logging.jar
 wrapper.java.classpath.67=/usr/share/java/javassist.jar
 wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
-echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %if 0%{suse_version}
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
+echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.64=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
+echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %endif
 %endif
 install -m 644 conf/default/rhn_hibernate.conf $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
@@ -677,21 +684,18 @@ install -m 644 conf/cobbler/snippets/sles_register_script $RPM_BUILD_ROOT%{cobdi
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{cobdirsnippets}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{cobdirsnippets}/wait_for_networkmanager_script
 
-ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT/%{_bindir}/taskomaticd
+ln -s -f /usr/sbin/tanukiwrapper $RPM_BUILD_ROOT%{_bindir}/taskomaticd
 %if 0%{?with_oracle}
-ln -s -f %{_javadir}/ojdbc5.jar $RPM_BUILD_ROOT%{jardir}/ojdbc5.jar
+ln -s -f %{_javadir}/ojdbc14.jar $RPM_BUILD_ROOT%{jardir}/ojdbc14.jar
 %endif
 ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{jardir}/dwr.jar
-install -d -m 755 $RPM_BUILD_ROOT/%{realcobsnippetsdir}
-ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT/%{realcobsnippetsdir}/spacewalk
-
+install -d -m 755 $RPM_BUILD_ROOT%{realcobsnippetsdir}
+ln -s -f  %{cobdirsnippets} $RPM_BUILD_ROOT%{realcobsnippetsdir}/spacewalk
+%if 0%{?suse_version}
 install -d -m 755 $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit
 install -m 644 conf/audit/auditlog-config.yaml $RPM_BUILD_ROOT%{_datadir}/spacewalk/audit/auditlog-config.yaml
-
-%if 0%{?suse_version}
-touch $RPM_BUILD_ROOT/%{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %else
-touch $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs/audit-review.log
+touch $RPM_BUILD_ROOT%{_var}/spacewalk/systemlogs/audit-review.log
 %endif
 
 # Fedoras have cglib version that is not compatible with asm and need objectweb-asm
@@ -785,13 +789,13 @@ fi
 %endif
 
 %files
-%defattr(-,root,root)
 %if 0%{?suse_version}
+%defattr(-,root,root)
 %dir %{_localstatedir}/lib/rhn
 %dir %{_localstatedir}/lib/spacewalk
-%defattr(0664,root,tomcat,0775)
 %endif
 %defattr(644,tomcat,tomcat,775)
+%attr(775, root, tomcat) %dir %{appdir}
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
@@ -824,7 +828,6 @@ fi
 %{jardir}/commons-discovery.jar
 %{jardir}/commons-el.jar
 %{jardir}/commons-fileupload.jar
-%{jardir}/commons-httpclient.jar
 %{jardir}/commons-io.jar
 %{jardir}/commons-lang.jar
 %{jardir}/commons-logging.jar
@@ -832,7 +835,6 @@ fi
 %{jardir}/concurrent*.jar
 %{jardir}/dom4j.jar
 %{jardir}/dwr.jar
-%{jardir}/google-gson.jar
 %{jardir}/hibernate3*
 %if 0%{?fedora}
 %{jardir}/ehcache-core.jar
@@ -841,11 +843,7 @@ fi
 %{jardir}/javassist.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
-%endif
-%if 0%{?suse_version}
-%{jardir}/ehcache.jar
-%endif
-%if 0%{?fedora}
+%{jardir}/mchange-commons.jar
 %{_javadir}/mchange-commons.jar
 %{_javadir}/jboss-logging.jar
 %{jardir}/*jboss-logging.jar
@@ -856,6 +854,27 @@ fi
 %{_javadir}/hibernate-jpa-2.0-api.jar
 %endif
 
+%endif
+%if 0%{?suse_version}
+%{jardir}/commons-httpclient.jar
+%{jardir}/google-gson.jar
+%{jardir}/ehcache.jar
+%{jardir}/snakeyaml.jar
+# SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
+%{jardir}/commons-jexl.jar
+%{jardir}/commons-lang3.jar
+%{jardir}/concurrentlinkedhashmap-lru.jar
+%{jardir}/httpclient.jar
+%{jardir}/httpcore.jar
+%{jardir}/jade4j.jar
+%{jardir}/saltstack-netapi-client.jar
+%{jardir}/slf4j_api.jar
+%{jardir}/slf4j_log4j12*.jar
+%{jardir}/spark-core.jar
+%{jardir}/spark-template-jade.jar
+%else
+%{jardir}/jpam.jar
+%{jardir}/oscache.jar
 %endif
 %{jardir}/jaf.jar
 %{jardir}/javamail.jar
@@ -871,7 +890,6 @@ fi
 %{jardir}/simple-core.jar
 %{jardir}/simple-xml.jar
 %{jardir}/sitemesh.jar
-%{jardir}/snakeyaml.jar
 %{jardir}/stringtree-json.jar
 %{jardir}/susestudio-java-client.jar
 %{jardir}/taglibs-core.jar
@@ -901,21 +919,6 @@ fi
 %{jardir}/commons-chain.jar
 %endif
 
-# SUSE extra runtime dependencies: spark, jade4j, salt API client + dependencies
-%if 0%{?suse_version}
-%{jardir}/commons-jexl.jar
-%{jardir}/commons-lang3.jar
-%{jardir}/concurrentlinkedhashmap-lru.jar
-%{jardir}/httpclient.jar
-%{jardir}/httpcore.jar
-%{jardir}/jade4j.jar
-%{jardir}/saltstack-netapi-client.jar
-%{jardir}/slf4j_api.jar
-%{jardir}/slf4j_log4j12*.jar
-%{jardir}/spark-core.jar
-%{jardir}/spark-template-jade.jar
-%endif
-
 %dir %{cobprofdir}
 %dir %{cobprofdirup}
 %dir %{cobprofdirwiz}
@@ -935,17 +938,19 @@ fi
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
+%if  0%{?suse_version}
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
-%endif
-%endif
 %attr(755,root,root) %dir %{cobblerdir}
 %attr(755,root,root) %dir %{realcobsnippetsdir}
+%else
+%config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
+%endif
+%endif
+%endif
 %{realcobsnippetsdir}/spacewalk
 
 %if 0%{?suse_version}
 %attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/scc
-%attr(755, tomcat, root) %dir %{_localstatedir}/lib/spacewalk/systemlogs
-%ghost %attr(644, tomcat, root) %{_localstatedir}/lib/spacewalk/systemlogs/audit-review.log
 %dir %{appdir}/rhn/WEB-INF
 %dir %{jardir}
 %else
@@ -954,7 +959,7 @@ fi
 %endif
 
 %files -n spacewalk-taskomatic
-%defattr(-,root,root)
+%defattr(644,root,root,775)
 %if 0%{?fedora} || 0%{?suse_version}
 %attr(755, root, root) %{_sbindir}/taskomatic
 %attr(755, root, root) %{_unitdir}/taskomatic.service
@@ -966,7 +971,7 @@ fi
 %{_sbindir}/rctaskomatic
 
 %files config
-%defattr(-,root,root)
+%defattr(644,root,root,775)
 %attr(755,root,www) %dir %{_prefix}/share/rhn/config-defaults
 %{_prefix}/share/rhn/config-defaults/rhn_hibernate.conf
 %{_prefix}/share/rhn/config-defaults/rhn_taskomatic_daemon.conf
@@ -979,7 +984,7 @@ fi
 %config %{_datadir}/spacewalk/audit/auditlog-config.yaml
 
 %files lib
-%defattr(-,root,root)
+%defattr(644,root,root,775)
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
@@ -989,7 +994,7 @@ fi
 %if 0%{?with_oracle}
 %files oracle
 %defattr(644, tomcat, tomcat)
-%{jardir}/ojdbc5.jar
+%{jardir}/ojdbc14.jar
 %endif
 
 %files postgresql
