@@ -95,16 +95,19 @@ public class Router implements SparkApplication {
         // Remote commands
         Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
-        //Setup API routes
+        // Setup API routes
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
 
-        // download endpoint
-        Spark.get("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
-        Spark.get("/manager/download/:channel/repodata/:file", DownloadController::downloadMetadata);
-        Spark.head("/manager/download/:channel/getPackage/:file", DownloadController::downloadPackage);
-        Spark.head("/manager/download/:channel/repodata/:file", DownloadController::downloadMetadata);
-
+        // Download endpoint
+        Spark.get("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        Spark.get("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+        Spark.head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        Spark.head("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
@@ -114,7 +117,8 @@ public class Router implements SparkApplication {
                 response.type("application/json");
                 response.body(this.GSON.toJson(exc));
                 response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            } else {
+            }
+            else {
                 throw (RuntimeException) e;
             }
         });
