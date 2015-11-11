@@ -95,6 +95,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
         // First unsubscribe all the child channels
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
                 ListUtils.EMPTY_LIST);
+        cmd.skipChannelChangedEvent(true);
         cmd.store();
 
 
