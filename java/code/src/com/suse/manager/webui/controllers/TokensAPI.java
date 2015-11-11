@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers;
 
-import com.redhat.rhn.common.conf.Config;
 import com.suse.manager.webui.utils.TokenUtils;
 import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
 import org.jose4j.jwe.JsonWebEncryption;
@@ -76,10 +75,6 @@ public class TokensAPI {
      * @return the token
      */
     public static String createTokenWithServerKey(Optional<Long> orgId, Set<String> channels) throws JoseException {
-        String serverSecret = Config.get().getString("server.secret_key");
-        if (serverSecret == null) {
-            throw new RuntimeException("Server has no secret key");
-        }
         return createTokenWithKey(TokenUtils.getServerKey(), orgId, channels);
     }
 }
