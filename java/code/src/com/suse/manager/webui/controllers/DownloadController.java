@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 
 import static spark.Spark.halt;
 
+import org.apache.commons.httpclient.HttpStatus;
+
 public class DownloadController {
 
     private static final int BUF_SIZE = 4096;
@@ -78,11 +80,15 @@ public class DownloadController {
             }
 
             if (!channels.contains(channel)) {
-                halt(403, String.format("Token is not provide access to channel %s", channel));
+                halt(HttpStatus.SC_FORBIDDEN,
+                     String.format("Token is not provide access to channel %s",
+                                   channel));
             }
         }
         catch (InvalidJwtException|MalformedClaimException e) {
-            halt(403, String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+            halt(HttpStatus.SC_FORBIDDEN,
+                 String.format("Token is not valid to access %s in %s: %s",
+                               filename, channel, e.getMessage()));
         }
 
     }
@@ -109,11 +115,13 @@ public class DownloadController {
     private static String getTokenFromRequest(Request request) {
         Set<String> queryParams = request.queryParams();
         if (queryParams.size() < 1) {
-            halt(403, String.format("You need a token to access %s", request.pathInfo()));
+            halt(HttpStatus.SC_FORBIDDEN,
+                 String.format("You need a token to access %s", request.pathInfo()));
         }
 
         if (queryParams.size() > 1) {
-            halt(400, "Only one token is accepted");
+            halt(HttpStatus.SC_BAD_REQUEST,
+                 "Only one token is accepted");
         }
         return queryParams.iterator().next();
     }
@@ -141,7 +149,8 @@ public class DownloadController {
 
         Package pkg = PackageFactory.lookupByChannelLabelNevra(channel, name, version, release, null, arch);
         if (pkg == null) {
-            halt(404, String.format("%s not found in %s", filename, channel));
+            halt(HttpStatus.SC_NOT_FOUND,
+                 String.format("%s not found in %s", filename, channel));
         }
 
         File file = new File("/var/spacewalk", pkg.getPath()).getAbsoluteFile();
@@ -158,9 +167,9 @@ public class DownloadController {
     private static void downloadFile(Request request, Response response, File file) {
 
         if (file.exists()) {
-            response.status(200);
+            response.status(HttpStatus.SC_OK);
         } else {
-            response.status(404);
+            response.status(HttpStatus.SC_NOT_FOUND);
         }
 
         // skip download
@@ -186,7 +195,8 @@ public class DownloadController {
             out.flush();
             out.close();
         } catch (IOException e) {
-            halt(500, e.getMessage());
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                 e.getMessage());
         }
     }
 }
