@@ -33,12 +33,12 @@ public class ChannelChangedEvent implements EventDatabaseMessage {
     /**
      * Constructor for creating a {@link ChannelChangedEvent} for a given server.
      *
-     * @param serverId the server id
-     * @param userId the user id
+     * @param serverIdIn the server id
+     * @param userIdIn the user id
      */
-    public ChannelChangedEvent(long serverId, long userId) {
-        this.serverId = serverId;
-        this.userId = userId;
+    public ChannelChangedEvent(long serverIdIn, long userIdIn) {
+        this.serverId = serverIdIn;
+        this.userId = userIdIn;
         this.transaction = HibernateFactory.getSession().getTransaction();
     }
 
