@@ -14,15 +14,21 @@
  */
 package com.suse.manager.reactor;
 
-import com.redhat.rhn.common.messaging.EventMessage;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.messaging.EventDatabaseMessage;
+
+import org.hibernate.Transaction;
 
 /**
- * Trigger actions whenever a server's channel assignments were changed.
+ * Trigger actions whenever a server's channel assignments were changed. Execution of the
+ * action will wait until the current transaction has been committed as we are implementing
+ * {@link EventDatabaseMessage}).
  */
-public class ChannelChangedEvent implements EventMessage {
+public class ChannelChangedEvent implements EventDatabaseMessage {
 
     private final long serverId;
     private final long userId;
+    private final Transaction transaction;
 
     /**
      * Constructor for creating a {@link ChannelChangedEvent} for a given server.
@@ -33,6 +39,7 @@ public class ChannelChangedEvent implements EventMessage {
     public ChannelChangedEvent(long serverId, long userId) {
         this.serverId = serverId;
         this.userId = userId;
+        this.transaction = HibernateFactory.getSession().getTransaction();
     }
 
     /**
@@ -50,6 +57,13 @@ public class ChannelChangedEvent implements EventMessage {
     @Override
     public Long getUserId() {
         return this.userId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Transaction getTransaction() {
+        return this.transaction;
     }
 
     /**
