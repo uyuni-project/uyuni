@@ -3,7 +3,6 @@ package com.suse.manager.webui.utils;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.Server;
-import com.suse.manager.webui.controllers.TokensAPI;
 import org.jose4j.lang.JoseException;
 
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class RepoFileManager {
 
     public static void generateRepositoryFile(Server server) throws IOException, JoseException {
             String fileName = "channels.repo." + server.getDigitalServerId();
-            String token = TokensAPI.createTokenWithServerKey(
+            String token = TokenUtils.createTokenWithServerKey(
                     Optional.of(server.getOrg().getId()), Collections.emptySet());
 
             String fileContents = StreamSupport.stream(server.getChannels().spliterator(), false)

@@ -25,7 +25,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
-import com.suse.manager.webui.controllers.TokensAPI;
+import com.suse.manager.webui.utils.TokenUtils;
+
 import org.apache.commons.io.FilenameUtils;
 import spark.Request;
 import spark.Response;
@@ -120,19 +121,19 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         }
 
         // now create a token for a different org
-        String tokenOtherOrg = TokensAPI.createTokenWithServerKey(
+        String tokenOtherOrg = TokenUtils.createTokenWithServerKey(
                 Optional.of(user.getOrg().getId() + 1), Collections.emptySet());
 
         // now create a token for WRONG channel only
-        String tokenOtherChannel = TokensAPI.createTokenWithServerKey(
+        String tokenOtherChannel = TokenUtils.createTokenWithServerKey(
                 Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel() + "WRONG")));
 
         // now create a token for the channel only
-        String tokenChannel = TokensAPI.createTokenWithServerKey(
+        String tokenChannel = TokenUtils.createTokenWithServerKey(
                 Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel())));
 
         // now create a the right token, only for the org
-        String token = TokensAPI.createTokenWithServerKey(
+        String token = TokenUtils.createTokenWithServerKey(
                 Optional.of(user.getOrg().getId()), Collections.emptySet());
 
         params.put(token, "");
