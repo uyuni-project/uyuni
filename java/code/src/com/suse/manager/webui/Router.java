@@ -46,7 +46,7 @@ public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
     private final Gson GSON = new GsonBuilder().create();
-    private final static int HTTP_ERROR_500 = 500;
+    private final static int HTTP_INTERNAL_SERVER_ERROR = 500;
 
     @SuppressWarnings("unused")
     private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
@@ -113,7 +113,7 @@ public class Router implements SparkApplication {
                 exc.put("message", e.getMessage());
                 response.type("application/json");
                 response.body(this.GSON.toJson(exc));
-                response.status(Router.HTTP_ERROR_500);
+                response.status(Router.HTTP_INTERNAL_SERVER_ERROR);
             } else {
                 throw (RuntimeException) e;
             }
