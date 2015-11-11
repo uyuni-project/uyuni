@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
@@ -43,6 +45,8 @@ import java.util.Map;
 public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
+    private final Gson GSON = new GsonBuilder().create();
+    private final static int HTTP_ERROR_500 = 500;
 
     @SuppressWarnings("unused")
     private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
@@ -104,7 +108,15 @@ public class Router implements SparkApplication {
 
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
-            throw (RuntimeException) e;
+            if (request.headers("accept").contains("json")) {
+                Map<String, Object> exc = new HashMap<>();
+                exc.put("message", e.getMessage());
+                response.type("application/json");
+                response.body(this.GSON.toJson(exc));
+                response.status(Router.HTTP_ERROR_500);
+            } else {
+                throw (RuntimeException) e;
+            }
         });
     }
 }
