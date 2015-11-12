@@ -27,6 +27,7 @@ SATELLITE_IP=""
 
 SATELLITE_IS_RH=1
 KEYFILE="/root/migration-key"
+DBDUMPFILE="susemanager.dmp.gz"
 
 RSYNC_PASSWORD=""
 
@@ -174,16 +175,16 @@ fi
 
 open_firewall_ports() {
 echo "Open needed firewall ports..."
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "http" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "https" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-client" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "xmpp-server" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "tftp" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "tftp" > /dev/null 2>&1
 
 # ports needed for Saltstack
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505"
-sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506"
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4505" > /dev/null 2>&1
+sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "4506" > /dev/null 2>&1
 
 systemctl restart SuSEfirewall2
 }
@@ -249,7 +250,7 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
     PARAM_DB="--external-postgresql"
 
     if [ "$DO_MIGRATION" = "1" ]; then
-        /usr/bin/spacewalk-setup $PARAM_CC --skip-db-population --answer-file=/root/spacewalk-answers $PARAM_DB
+        /usr/bin/spacewalk-setup --disconnected --skip-db-population --skip-ssl-cert-generation --answer-file=/root/spacewalk-answers $PARAM_DB
         SWRET=$?
     else
         /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
@@ -272,34 +273,26 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 
 dump_remote_db() {
     echo "Dumping remote database. Please wait..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - oracle -c \"exp \\\"$SATELLITE_DB_USER\\\"/\\\"$SATELLITE_DB_PASS\\\"@\\\"$SATELLITE_DB_SID\\\" owner=$SATELLITE_DB_USER compress=n consistent=y statistics=none file=/tmp/sat.oracleXE.dmp log=/tmp/rhn.oracleXE.log\""
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | gzip -9 > /tmp/$DBDUMPFILE\""
 
     echo "Copy remote database dump to local machine..."
-    scp -i $KEYFILE root@$SATELLITE_IP:/tmp/sat.oracleXE.dmp /tmp
+    scp -i $KEYFILE root@$SATELLITE_IP:/tmp/$DBDUMPFILE /tmp
 
     echo "Delete remote database dump..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/sat.oracleXE.dmp"
+    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/$DBDUMPFILE"
 }
 
 import_db() {
     echo "Importing database dump. Please wait..."
-    MANAGER_DB_NAME=`echo -n $MANAGER_DB_NAME|tr [:lower:] [:upper:]`
-    su -s /bin/bash - oracle -c "imp system/$SYS_DB_PASS@$MANAGER_DB_NAME fromuser=$SATELLITE_DB_USER touser=$MANAGER_USER file=/tmp/sat.oracleXE.dmp log=/tmp/spacewalk.oracleXE.imp.log ignore=y"
+    su -s /bin/bash - postgres -c "zcat /tmp/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
     if [ $? -eq 0 ]; then
         echo "Database dump successfully imported."
-        rm -f /tmp/sat.oracleXE.dmp
+        rm -f /tmp/$DBDUMPFILE
     fi
 }
 
 upgrade_schema() {
-    spacewalk-schema-upgrade
-    if [ "$LOCAL_DB" != "0" ]; then
-        su -s /bin/bash - oracle -c "ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\"$SYS_DB_PASS\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @/opt/apps/oracle/product/11gR2/dbhome_1/rdbms/admin/utlrp.sql; exit;ENDPLUS"
-    else
-        echo "You may need to recompile the schema on your database host using:"
-        echo "su -s /bin/bash - oracle -c \"ORACLE_SID=$MANAGER_DB_NAME sqlplus sys/\\\"<SYS_DB_PASS>\\\"@$MANAGER_DB_NAME as sysdba <<ENDPLUS @\$ORACLE_HOME/rdbms/admin/utlrp.sql; exit;ENDPLUS\""
-    fi
-# FIXME: not needed for postgres ?
+    spacewalk-schema-upgrade -y
 }
 
 backup_files() {
@@ -354,7 +347,7 @@ copy_remote_files_suse() {
 create_ssh_key() {
     echo "Please enter the root password of the remote machine."
     ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
-    ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null
+    ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null 2>&1
 }
 
 remove_ssh_key() {
@@ -365,17 +358,19 @@ remove_ssh_key() {
 check_remote_type() {
     ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/apache2/ssl.crt/spacewalk.crt"
     if [ $? -eq 0 ]; then
-       echo "Remote machine is SUSE Manager"
+        echo "Remote machine is SUSE Manager"
         SATELLITE_IS_RH=0
     else
-       ssh -i $KEYFILE root@$SATELLITE_IP "test -e /etc/pki/tls/certs/spacewalk.crt"
-       if [ $? -eq 0 ]; then
-           echo "Remote machine is Red Hat Satellite"
-            SATELLITE_IS_RH=1
-       else
-           echo "Remote machine appears to be neither SUSE Manager nor Red Hat Satellite. Exit."
-           exit
-       fi
+        echo "Remote machine appears not to be a SUSE Manager. Exit."
+        exit
+    fi
+
+    ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
+    if [ $? -eq 0 ]; then
+        echo "Remote system is already migrated to SCC. Good."
+    else
+        echo "Remote system has not yet been migrated to SCC! Exit."
+        exit
     fi
 }
 
@@ -421,8 +416,11 @@ do_migration() {
     check_remote_type
     wait_step
 
+    echo "Shutting down remote spacewalk services..."
+    ssh -i $KEYFILE root@$SATELLITE_IP "/usr/sbin/spacewalk-service stop"
+    wait_step
+
     do_setup
-    sleep 10
     wait_step
 
     dump_remote_db
@@ -580,8 +578,8 @@ fi
 wait_step
 
 if [ "$DO_MIGRATION" = "1" ]; then
-    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "oracle" ]; then
-        echo "Migration only supported with oracle DB Backend" >&2
+    if [ -z "$DB_BACKEND" -o "$DB_BACKEND" != "postgresql" ]; then
+        echo "Migration only supported with postgresql DB Backend" >&2
         exit 1
     fi
     do_migration
@@ -605,8 +603,8 @@ fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$ACTIVATE_SLP" = "y" ]; then
-	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427"
-	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427"
+	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_TCP "427" > /dev/null 2>&1
+	sysconf_addword /etc/sysconfig/SuSEfirewall2 FW_SERVICES_EXT_UDP "427" > /dev/null 2>&1
 	systemctl enable -q slpd
 	systemctl start slpd
     fi

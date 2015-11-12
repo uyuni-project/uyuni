@@ -151,8 +151,10 @@ setup_ssl_certs(\%opts, \%answers);
 print Spacewalk::Setup::loc("* Deploying configuration files.\n");
 populate_final_configs(\%opts, \%answers);
 
-print Spacewalk::Setup::loc("* Update configuration in database.\n");
-final_db_config(\%opts, \%answers);
+if(not $opts{"skip-db-population"}) {
+    print Spacewalk::Setup::loc("* Update configuration in database.\n");
+    final_db_config(\%opts, \%answers);
+}
 
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
@@ -168,7 +170,7 @@ if ($opts{'upgrade'}) {
     print Spacewalk::Setup::loc("Please refer to appropriate upgrade document in /etc/sysconfig/rhn/satellite-upgrade\n");
     print Spacewalk::Setup::loc("for any remaining steps in the process.\n");
   }
-} else {
+} elsif(not $opts{"skip-db-population"}) {
   print Spacewalk::Setup::loc("* Restarting services.\n");
   Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-service', 'restart'], 40,
                'Could not restart spacewalk services.');
