@@ -21,6 +21,7 @@ import spark.Response;
 
 /**
  * A route that gets the user in addition to the request and response.
+ * @param <T> the return value type of the route
  */
 public interface RouteWithUser<T> {
 
