@@ -19,7 +19,7 @@ import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.suse.manager.webui.utils.RepoFileManager;
+import com.suse.manager.webui.utils.RepoFileUtils;
 import org.apache.log4j.Logger;
 import org.jose4j.lang.JoseException;
 
@@ -43,7 +43,7 @@ public class GenerateRepoFileAction implements MessageAction {
         // Generate repo files only for salt minions
         if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
             try {
-                RepoFileManager.generateRepositoryFile(server);
+                RepoFileUtils.generateRepositoryFile(server);
             }
             catch (IOException | JoseException e) {
                 LOG.error(String.format(

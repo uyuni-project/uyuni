@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  *
  */
-public class RepoFile {
+public class RepoFileEntry {
 
     private final String alias;
     private final String name;
@@ -18,59 +18,112 @@ public class RepoFile {
     private final boolean packageGpgCheck;
     private final Optional<String> service;
 
-    public RepoFile(String alias, String name, boolean enabled, boolean autoRefresh, String baseUrl, String type, boolean gpgCheck, boolean repoGpgCheck, boolean packageGpgCheck, Optional<String> service) {
-        this.alias = alias;
-        this.name = name;
-        this.enabled = enabled;
-        this.autoRefresh = autoRefresh;
-        this.baseUrl = baseUrl;
-        this.type = type;
-        this.gpgCheck = gpgCheck;
-        this.repoGpgCheck = repoGpgCheck;
-        this.packageGpgCheck = packageGpgCheck;
-        this.service = service;
+    /**
+     * Creates a new RepoFileEntry
+     *
+     * @param inAlias alias for this repo entry
+     * @param inName name of this repo entry
+     * @param inEnabled if the repo entry is enabled
+     * @param inAutoRefresh if the repo entry gets automatically refreshed
+     * @param inBaseUrl the base url of this repo entry
+     * @param inType the type of this repo entry
+     * @param inGpgCheck if the repo checks gpg
+     * @param inRepoGpgCheck if the repo checks gpg
+     * @param inPackageGpgCheck if the package get gpg checked
+     * @param inService service associated with this repo entry
+     */
+    public RepoFileEntry(String inAlias, String inName, boolean inEnabled,
+                         boolean inAutoRefresh, String inBaseUrl, String inType,
+                         boolean inGpgCheck, boolean inRepoGpgCheck,
+                         boolean inPackageGpgCheck, Optional<String> inService) {
+        this.alias = inAlias;
+        this.name = inName;
+        this.enabled = inEnabled;
+        this.autoRefresh = inAutoRefresh;
+        this.baseUrl = inBaseUrl;
+        this.type = inType;
+        this.gpgCheck = inGpgCheck;
+        this.repoGpgCheck = inRepoGpgCheck;
+        this.packageGpgCheck = inPackageGpgCheck;
+        this.service = inService;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public String getAlias() {
         return alias;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public boolean isAutoRefresh() {
         return autoRefresh;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public String getBaseUrl() {
         return baseUrl;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public boolean isGpgCheck() {
         return gpgCheck;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public boolean isRepoGpgCheck() {
         return repoGpgCheck;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public boolean isPackageGpgCheck() {
         return packageGpgCheck;
     }
 
+    /**
+     * @return the alias of this RepoFileEntry
+     */
     public Optional<String> getService() {
         return service;
     }
 
+    /**
+     * Creates a string containing this RepoFileEntries contents
+     * in the format of a .repo file.
+     *
+     * @return the .repo file formatted string
+     */
     public String fileFormat() {
         StringBuilder builder = new StringBuilder();
         builder.append("[");
