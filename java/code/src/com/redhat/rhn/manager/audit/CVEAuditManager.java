@@ -590,43 +590,50 @@ public class CVEAuditManager {
                 // NOT a new system, check if we are still looking at the same errata
                 Long errataID = (Long) result.get("errata_id");
                 if (errataID.equals(currentErrata)) {
-                    // At the end the entry should be true if the package name is patched once
-                    // false otherwise (but should still appear in the map)
+                    // At the end the entry should be true if the package name
+                    // is patched once false otherwise (but should still appear
+                    // in the map)
                     Boolean patched = false;
                     String packageName = (String) result.get("package_name");
                     if (patchedPackageNames.containsKey(packageName)) {
                         patched = patchedPackageNames.get(packageName);
                     }
-                    patchedPackageNames.put(packageName, patched || getBooleanValue(result, "package_installed"));
+                    patchedPackageNames.put(packageName, patched ||
+                            getBooleanValue(result, "package_installed"));
 
-                    // similar, if for each package name, at least one has an assigned channel, we are fine
-                    if (! getBooleanValue(result, "package_installed")) {
+                    // similar, if for each package name, at least one has an assigned
+                    // channel, we are fine
+                    if (!getBooleanValue(result, "package_installed")) {
                         Boolean assigned = false;
                         if (channelAssignedPackageNames.containsKey(packageName)) {
                             assigned = channelAssignedPackageNames.get(packageName);
                         }
-                        channelAssignedPackageNames.put(packageName, assigned || getBooleanValue(result, "channel_assigned"));
+                        channelAssignedPackageNames.put(packageName, assigned ||
+                                getBooleanValue(result, "channel_assigned"));
                     }
                 }
                 else {
                     // Switch to the new errata
                     currentErrata = errataID;
-                    // At the end the entry should be true if the package name is patched once
-                    // false otherwise (but should still appear in the map)
+                    // At the end the entry should be true if the package name is
+                    // patched once false otherwise (but should still appear in the map)
                     Boolean patched = false;
                     String packageName = (String) result.get("package_name");
                     if (patchedPackageNames.containsKey(packageName)) {
                         patched = patchedPackageNames.get(packageName);
                     }
-                    patchedPackageNames.put(packageName, patched || getBooleanValue(result, "package_installed"));
+                    patchedPackageNames.put(packageName, patched ||
+                            getBooleanValue(result, "package_installed"));
 
-                    // similar, if for each package name, at least one has an assigned channel, we are fine
-                    if (! getBooleanValue(result, "package_installed")) {
+                    // similar, if for each package name, at least one has an assigned
+                    // channel, we are fine
+                    if (!getBooleanValue(result, "package_installed")) {
                         Boolean assigned = false;
                         if (channelAssignedPackageNames.containsKey(packageName)) {
                             assigned = channelAssignedPackageNames.get(packageName);
                         }
-                        channelAssignedPackageNames.put(packageName, assigned || getBooleanValue(result, "channel_assigned"));
+                        channelAssignedPackageNames.put(packageName, assigned ||
+                                getBooleanValue(result, "channel_assigned"));
                     }
                 }
 
