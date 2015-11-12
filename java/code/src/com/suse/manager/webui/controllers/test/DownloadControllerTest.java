@@ -21,6 +21,7 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -28,6 +29,7 @@ import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.utils.TokenUtils;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.http.client.utils.URIBuilder;
 import spark.Request;
 import spark.Response;
 import spark.RequestResponseFactory;
@@ -76,7 +78,10 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         Package pkg = createTestPackage(user, channel, "noarch");
 
         // set a fake file for the package
-        File packageFile = File.createTempFile("fake_rpm_package-1.0-4.x86_64", ".rpm");
+        final String nvra = String.format("%s-%s-%s.%s",
+                pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(), pkg.getPackageEvr().getRelease(),
+                pkg.getPackageArch().getLabel());
+        File packageFile = File.createTempFile(nvra, ".rpm");
         Files.write(packageFile.getAbsoluteFile().toPath(), TestUtils.randomString().getBytes());
 
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
@@ -85,20 +90,24 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         TestUtils.saveAndFlush(pkg);
 
         //assertEquals("", pkg.getPath());
-
+        URIBuilder uriBuilder = new URIBuilder("http://localhost:8080");
+        final String uriPathFmt = "/rhn/manager/download/%s/getPackage/%s";
+        final String uriFile = String.format("%s.rpm", nvra);
+        final String uriPath = String.format(uriPathFmt,  channel.getLabel(), uriFile);
+        uriBuilder.setPath(uriPath);
+        final String uri = uriBuilder.toString();
 
         MockHttpServletRequest mockRequest = new MockHttpServletRequest();
         MockHttpServletResponse mockReponse = new MockHttpServletResponse();
         mockRequest.setSession(new MockHttpSession());
-        mockRequest.setupGetRequestURI("http://localhost:8080");
+        mockRequest.setupGetRequestURI(uriBuilder.toString());
         mockRequest.setupGetMethod("GET");
 
         Map<String, String> params = new HashMap<>();
         mockRequest.setupGetParameterMap(params);
-        mockRequest.setupPathInfo(
-                String.format("/rhn/manager/download/%s/getPackage/fake_rpm_package-1.0-4.x86_64.rpm", channel.getLabel()));
+        mockRequest.setupPathInfo(uriPath);
 
-        RouteMatch match = new RouteMatch(new Object(), "", "", "");
+        RouteMatch match = new RouteMatch(new Object(), uriBuilder.setPath(String.format(uriPathFmt, ":channel", ":file")).toString(), uri, "");
         Request request = RequestResponseFactory.create(match, mockRequest);
         Response response =  RequestResponseFactory.create(mockReponse);
 
