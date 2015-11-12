@@ -30,11 +30,11 @@ module Yast
       @invalid_pw_chars = "\"$'!"
 
       @settings = {
-        "SATELLITE_HOST"    => "satellite",
+        "SATELLITE_HOST"    => "susemanager",
         "SATELLITE_DOMAIN"  => Hostname.CurrentDomain,
-        "SATELLITE_DB_USER" => "rhnsat",
-        "SATELLITE_DB_PASS" => "rhnsat",
-        "SATELLITE_DB_SID"  => "rhnsat"
+        "SATELLITE_DB_USER" => "susemanager",
+        "SATELLITE_DB_PASS" => "susemanager",
+        "SATELLITE_DB_SID"  => "susemanager"
       }
 
       @env_file = Ops.add(Directory.tmpdir, "/env_migration")
@@ -91,7 +91,7 @@ module Yast
           InputField(
             Id("SATELLITE_DB_SID"),
             Opt(:hstretch),
-            _("Satellite Database &SID"),
+            _("Satellite Database &Name"),
             Ops.get(@settings, "SATELLITE_DB_SID", "")
           ),
           VSpacing(0.5)

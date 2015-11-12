@@ -83,9 +83,9 @@ module Yast
                 "View the available options with /usr/lib/susemanager/bin/mgr-setup -h\n" +
                 "\n" +
                 "Be aware that this process can take more than 10 hours,\n" +
-                "depending on the configuration of you Satellite server.\n" +
+                "depending on the configuration of your SUSE Manager server.\n" +
                 "\n" +
-                "For more information of how to migrate a Satellite server,\n" +
+                "For more information on how to migrate a SUSE Manager server,\n" +
                 "refer to the SUSE Manager Quick Start."
             )
           ),

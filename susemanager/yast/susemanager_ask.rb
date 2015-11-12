@@ -44,7 +44,7 @@ module Yast
                 Id(:migration),
                 Opt(:notify),
                 # radio button label
-                _("Migrate a Satellite/Spacewalk compatible server"),
+                _("Migrate a SUSE Manager compatible server"),
                 @migration
               )
             )
@@ -56,7 +56,7 @@ module Yast
 
       # help text
       @help_text = _(
-        "<p>Choose if you are setting up SUSE Manager from scratch or migrating to SUSE Manager from a Satellite/Spacewalk compatible server.</p>"
+        "<p>Choose if you are setting up SUSE Manager from scratch or migrating to SUSE Manager from a SUSE Manager compatible server.</p>"
       )
 
       # dialog caption
