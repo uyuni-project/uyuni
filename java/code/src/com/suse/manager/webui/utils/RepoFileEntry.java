@@ -17,7 +17,7 @@ package com.suse.manager.webui.utils;
 import java.util.Optional;
 
 /**
- *
+ * Representation of an entry in a repo file.
  */
 public class RepoFileEntry {
 
