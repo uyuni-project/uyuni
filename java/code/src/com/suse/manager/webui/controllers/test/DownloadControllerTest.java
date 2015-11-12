@@ -182,18 +182,18 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         params.clear();
         params.put(tokenChannel, "");
         try {
-            DownloadController.downloadPackage(request, response);
+            assertNull(DownloadController.downloadPackage(request, response));
         } catch (spark.HaltException e) {
-            assertEquals(200, e.getStatusCode());
+            fail("No HaltException should be thrown with a valid token!");
         }
 
         // token for right org
         params.clear();
         params.put(token, "");
         try {
-            DownloadController.downloadPackage(request, response);
+            assertNull(DownloadController.downloadPackage(request, response));
         } catch (spark.HaltException e) {
-            assertEquals(200, e.getStatusCode());
+            fail("No HaltException should be thrown with a valid token!");
         }
 
         Files.deleteIfExists(packageFile.toPath());
