@@ -39,7 +39,7 @@
 
   <!-- Paths -->
   <path id="libjars">
-    <fileset dir="${lib.dir}" includes="**/*.jar" />
+    <fileset dir="${lib.dir}" includes="**/*.jar" excludes="**/tomcat-servlet-*8*.jar" />
   </path>
   <path id="managertestjars">
     <fileset dir="${lib.dir}" includes="**/*.jar" />
@@ -140,9 +140,13 @@
       <fileset dir="${lib.dir}">
         <include name="**/*.jar" />
         <exclude name="**/el-api*" />
+        <exclude name="**/tomcat*-el*" />
         <exclude name="**/jasper*" />
+        <exclude name="**/tomcat*-jsp*" />
+        <exclude name="**/tomcat*-servlet*" />
         <exclude name="**/jspapi*" />
-        <exclude name="**/tomcat6-servlet*" />
+        <exclude name="**/websocket-api*" />
+        <exclude name="**/checkstyle*" />
       </fileset>
       <fileset dir="${rhn-home}/buildconf/tempjars">
         <include name="**/*.jar" />
