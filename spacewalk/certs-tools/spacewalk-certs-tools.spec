@@ -30,7 +30,6 @@ Requires: python-hashlib
 BuildRequires: docbook-utils
 %if 0%{?suse_version}
 BuildRequires: filesystem
-BuildRequires: sm-client-tools
 Requires: susemanager-build-keys-web
 %endif
 BuildRequires: python
@@ -65,9 +64,6 @@ ln -s rhn-sudo-ssl-tool $RPM_BUILD_ROOT/%{_bindir}/mgr-sudo-ssl-tool
 ln -s spacewalk-push-register $RPM_BUILD_ROOT/%{_sbindir}/mgr-push-register
 ln -s spacewalk-ssh-push-init $RPM_BUILD_ROOT/%{_sbindir}/mgr-ssh-push-init
 
-# fetch sm-client-tools and put it in the bootstrap dir
-install -m 0644 /.build.binaries/sm-client-tools.rpm $RPM_BUILD_ROOT/srv/www/htdocs/pub/bootstrap/
-
 %py_compile %{buildroot}/%{rhnroot}
 %py_compile -O %{buildroot}/%{rhnroot}
 
@@ -100,7 +96,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /srv/www/htdocs/pub/bootstrap
 %dir /usr/share/rhn
 /srv/www/htdocs/pub/bootstrap/client_config_update.py*
-/srv/www/htdocs/pub/bootstrap/sm-client-tools.rpm
 %{_bindir}/mgr-bootstrap
 %{_bindir}/mgr-ssl-tool
 %{_bindir}/mgr-sudo-ssl-tool
