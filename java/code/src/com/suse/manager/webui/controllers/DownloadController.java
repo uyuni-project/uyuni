@@ -172,7 +172,7 @@ public class DownloadController {
         if (file.exists()) {
             response.status(HttpStatus.SC_OK);
         } else {
-            response.status(HttpStatus.SC_NOT_FOUND);
+            halt(HttpStatus.SC_NOT_FOUND);
         }
 
         // skip download
