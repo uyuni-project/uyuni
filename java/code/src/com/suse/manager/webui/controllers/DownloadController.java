@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -153,7 +155,8 @@ public class DownloadController {
                  String.format("%s not found in %s", filename, channel));
         }
 
-        File file = new File("/var/spacewalk", pkg.getPath()).getAbsoluteFile();
+        File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
+                pkg.getPath()).getAbsoluteFile();
         downloadFile(request, response, file);
         // make spark happy
         return null;
