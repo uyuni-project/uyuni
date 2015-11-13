@@ -35,7 +35,6 @@ import spark.RequestResponseFactory;
 import spark.routematch.RouteMatch;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
