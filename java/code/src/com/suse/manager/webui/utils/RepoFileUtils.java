@@ -39,7 +39,7 @@ public class RepoFileUtils {
     }
 
     /**
-     * Generates a .repo file containting all its channels for a given server
+     * Generates a .repo file containing all its channels for a given server.
      *
      * @param server server to generate repo file for
      * @throws IOException if an I/O error occurs writing to or creating the file
@@ -63,7 +63,7 @@ public class RepoFileUtils {
     }
 
     /**
-     * Creates a RepoFileEntry for a given channel using some authorisation token
+     * Creates a RepoFileEntry for a given channel using some authorization token.
      *
      * @param channel the channel to
      * @param token the token to be used to authorize the channel access
