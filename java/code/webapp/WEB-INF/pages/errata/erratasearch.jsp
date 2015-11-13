@@ -236,7 +236,7 @@
           </rl:column>
           <rl:column bound="false" sortable="false" headerkey="details.jsp.cves">
             <c:forEach items="${current.cves}" var="cve">
-                <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve.name}">
+                <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve.name}" target="_blank">
                    <rhn:highlight tag="strong" text="${search_string}">
                     ${cve.name}
                    </rhn:highlight>
