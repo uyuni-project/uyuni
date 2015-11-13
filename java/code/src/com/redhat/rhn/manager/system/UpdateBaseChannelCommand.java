@@ -114,6 +114,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
                 SystemManager.subscribeServerToChannel(user, server, newChannel);
                 cmd = new UpdateChildChannelsCommand(user, server,
                         newKidsToSubscribe);
+                cmd.skipChannelChangedEvent(true);
                 cmd.store();
 
             }
