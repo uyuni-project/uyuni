@@ -119,6 +119,7 @@
       <rhn-tab-url>/rhn/systems/SoftwareCrashesOverview.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/SoftwareCrashUuidDetails.do</rhn-tab-url>
     </rhn-tab>
+    <rhn-tab name="Virtual Host Managers" url="/rhn/manager/vhms" />
   </rhn-tab>
   <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do" active-image="tab-errata-selected.gif" inactive-image="tab-errata.gif">
     <rhn-tab name="Patches" url="/rhn/errata/RelevantErrata.do">
