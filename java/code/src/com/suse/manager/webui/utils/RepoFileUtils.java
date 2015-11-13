@@ -50,7 +50,7 @@ public class RepoFileUtils {
             throws IOException, JoseException {
             String fileName = "channels.repo." + server.getDigitalServerId();
             String token = TokenUtils.createTokenWithServerKey(
-                    Optional.of(server.getOrg().getId()), Collections.emptySet());
+                    server.getOrg().getId(), Optional.empty());
 
             String fileContents = StreamSupport
                     .stream(server.getChannels().spliterator(), false)
