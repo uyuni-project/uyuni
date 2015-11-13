@@ -1804,7 +1804,7 @@ public class ActionManager extends BaseManager {
         }
         else if (type.equals(ActionFactory.TYPE_PACKAGES_UPDATE) ||
                 type.equals(ActionFactory.TYPE_SOLARISPKGS_INSTALL)) {
-            name = "Package Install";
+            name = "Package Install/Upgrade";
         }
         else if (type.equals(ActionFactory.TYPE_PACKAGES_VERIFY)) {
             name = "Package Verify";
