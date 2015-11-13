@@ -73,6 +73,7 @@ Requires:       pxe-default-image
 
 Requires:       virtual-host-gatherer
 Recommends:     virtual-host-gatherer-VMware
+Requires:       subscription-matcher
 
 # Requires:       osa-dispatcher
 # Requires:       jabberpy
