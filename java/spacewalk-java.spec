@@ -59,6 +59,7 @@ Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
 Requires: jade4j
+Requires: jose4j
 Requires: saltstack-netapi-client-java
 Requires: spark
 Requires: spark-template-jade
@@ -77,6 +78,7 @@ BuildRequires: snakeyaml
 BuildRequires: log4j
 # Spark and Salt integration
 BuildRequires: jade4j
+BuildRequires: jose4j
 BuildRequires: saltstack-netapi-client-java
 BuildRequires: spark
 BuildRequires: spark-template-jade
@@ -875,6 +877,7 @@ fi
 %{jardir}/httpclient.jar
 %{jardir}/httpcore.jar
 %{jardir}/jade4j.jar
+%{jardir}/jose4j.jar
 %{jardir}/saltstack-netapi-client.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar
