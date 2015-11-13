@@ -347,6 +347,13 @@ sub setup_salt_master {
     print SALT_MASTER "      - '\@runner'\n";
     print SALT_MASTER "      - '\@jobs'\n";
 
+    # Configure different file roots
+    print SALT_MASTER "file_roots:\n";
+    print SALT_MASTER "  base:\n";
+    print SALT_MASTER "    /usr/share/susemanager/salt\n";
+    print SALT_MASTER "    /srv/susemanager/salt\n";
+    print SALT_MASTER "    /srv/salt\n";
+
     close(SALT_MASTER);
 }
 
