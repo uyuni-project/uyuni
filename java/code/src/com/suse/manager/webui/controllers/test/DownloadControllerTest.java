@@ -21,7 +21,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -49,6 +48,9 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestUser;
 
+/**
+ * Tests for the {@link DownloadController} endpoint.
+ */
 public class DownloadControllerTest extends RhnBaseTestCase {
 
     private String originalMountPoint;
@@ -66,30 +68,35 @@ public class DownloadControllerTest extends RhnBaseTestCase {
     }
 
     public void tearDown() throws Exception {
-        super.tearDown();
         Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
+        super.tearDown();
     }
 
+    /**
+     * This is just one method verifying various scenarios, it should rather be split up
+     * into separate methods for each of the tested scenarios.
+     *
+     * @throws Exception in case of an error
+     */
     public void testEndpoint() throws Exception {
-        assertTrue(true);
-
         User user = createTestUser();
         Channel channel = createTestChannel(user);
         Package pkg = createTestPackage(user, channel, "noarch");
 
-        // set a fake file for the package
+        // Write a fake file for the package
         final String nvra = String.format("%s-%s-%s.%s",
-                pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(), pkg.getPackageEvr().getRelease(),
-                pkg.getPackageArch().getLabel());
+                pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(),
+                pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         File packageFile = File.createTempFile(nvra, ".rpm");
-        Files.write(packageFile.getAbsoluteFile().toPath(), TestUtils.randomString().getBytes());
+        Files.write(packageFile.getAbsoluteFile().toPath(),
+                TestUtils.randomString().getBytes());
 
+        // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
-
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
         TestUtils.saveAndFlush(pkg);
 
-        //assertEquals("", pkg.getPath());
+        // Setup the URI
         URIBuilder uriBuilder = new URIBuilder("http://localhost:8080");
         final String uriPathFmt = "/rhn/manager/download/%s/getPackage/%s";
         final String uriFile = String.format("%s.rpm", nvra);
@@ -100,53 +107,54 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         MockHttpServletRequest mockRequest = new MockHttpServletRequest();
         MockHttpServletResponse mockReponse = new MockHttpServletResponse();
         mockRequest.setSession(new MockHttpSession());
-        mockRequest.setupGetRequestURI(uriBuilder.toString());
+        mockRequest.setupGetRequestURI(uri);
         mockRequest.setupGetMethod("GET");
 
         Map<String, String> params = new HashMap<>();
         mockRequest.setupGetParameterMap(params);
         mockRequest.setupPathInfo(uriPath);
 
-        RouteMatch match = new RouteMatch(new Object(), uriBuilder.setPath(String.format(uriPathFmt, ":channel", ":file")).toString(), uri, "");
+        RouteMatch match = new RouteMatch(new Object(), uriBuilder.setPath(
+                String.format(uriPathFmt, ":channel", ":file")).toString(), uri, "");
         Request request = RequestResponseFactory.create(match, mockRequest);
         Response response =  RequestResponseFactory.create(mockReponse);
 
+        // Try to download package without a token
         try {
             DownloadController.downloadPackage(request, response);
-            fail("Controller should fail if no token given");
+            fail("Controller should fail if no token was given");
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
-            //assertContains(e.getMessage(), "foobar");
         }
 
-        // now add the token
-        params.put("randomtoken", "");
+        // Add an invalid token parameter
+        params.put("invalid-token-should-return-403", "");
         try {
             DownloadController.downloadPackage(request, response);
-            fail("Controller should fail if wrong token given");
+            fail("Controller should fail if wrong token was given");
         } catch (spark.HaltException e) {
             assertEquals(403, e.getStatusCode());
-            //assertContains(e.getMessage(), "foobar");
         }
 
-        // now create a token for a different org
+        // Create a token for a different organization
         String tokenOtherOrg = TokenUtils.createTokenWithServerKey(
                 Optional.of(user.getOrg().getId() + 1), Collections.emptySet());
 
-        // now create a token for WRONG channel only
+        // Create a token for a WRONG channel only
         String tokenOtherChannel = TokenUtils.createTokenWithServerKey(
                 Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel() + "WRONG")));
 
-        // now create a token for the channel only
+        // Create a token for the channel only
         String tokenChannel = TokenUtils.createTokenWithServerKey(
                 Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel())));
 
-        // now create a the right token, only for the org
+        // Create a token for the organization only
         String token = TokenUtils.createTokenWithServerKey(
                 Optional.of(user.getOrg().getId()), Collections.emptySet());
 
+        params.clear();
         params.put(token, "");
-        // add a second param, and the controller should reject it
+        // Add a second param: the controller should reject it
         params.put("2ndtoken", "");
         try {
             DownloadController.downloadPackage(request, response);
@@ -156,7 +164,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
             assertEquals(400, e.getStatusCode());
         }
 
-        // token for a different org
+        // The added token is for a different organization
         params.clear();
         params.put(tokenOtherOrg, "");
         try {
@@ -167,7 +175,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
             assertEquals(403, e.getStatusCode());
         }
 
-        // token for a different channel
+        // The added token is for a different channel
         params.clear();
         params.put(tokenOtherChannel, "");
         try {
@@ -178,7 +186,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
             assertEquals(403, e.getStatusCode());
         }
 
-        // token for right channel
+        // The token is valid for the right channel
         params.clear();
         params.put(tokenChannel, "");
         try {
@@ -187,7 +195,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
             fail("No HaltException should be thrown with a valid token!");
         }
 
-        // token for right org
+        // The token is valid for the right org
         params.clear();
         params.put(token, "");
         try {
