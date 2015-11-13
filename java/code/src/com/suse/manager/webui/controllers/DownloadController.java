@@ -46,6 +46,9 @@ import static spark.Spark.halt;
 
 import org.apache.commons.httpclient.HttpStatus;
 
+/**
+ * Controller for the download endpoint serving packages and metadata to managed clients.
+ */
 public class DownloadController {
 
     private static final int BUF_SIZE = 4096;
@@ -59,42 +62,13 @@ public class DownloadController {
     private DownloadController() {
     }
 
-    private static void validateToken(String token, String channel, String filename) {
-        try {
-            JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
-
-            Set<String> channels = new HashSet<String>();
-
-            // add all the organization channels
-            if (jwtClaims.hasClaim("org")) {
-                long orgId = jwtClaims.getClaimValue("org", Long.class);
-                List<String> orgChannels =
-                        ChannelFactory.getAccessibleChannelsByOrg(orgId)
-                                .stream()
-                                .map(i -> i.getLabel())
-                                .collect(Collectors.toList());
-                channels.addAll(orgChannels);
-            }
-
-            if (jwtClaims.hasClaim("channels")) {
-                // add the extra claimed channels
-                channels.addAll(jwtClaims.getStringListClaimValue("channels"));
-            }
-
-            if (!channels.contains(channel)) {
-                halt(HttpStatus.SC_FORBIDDEN,
-                     String.format("Token is not provide access to channel %s",
-                                   channel));
-            }
-        }
-        catch (InvalidJwtException|MalformedClaimException e) {
-            halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("Token is not valid to access %s in %s: %s",
-                               filename, channel, e.getMessage()));
-        }
-
-    }
-
+    /**
+     * Download metadata taking the channel and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
     public static Object downloadMetadata(Request request, Response response) {
         String channel = request.params(":channel");
         String filename = request.params(":file");
@@ -102,37 +76,22 @@ public class DownloadController {
         String token = getTokenFromRequest(request);
         validateToken(token, channel, filename);
 
-        File file = new File(new File("/var/cache/rhn/repodata", channel), filename).getAbsoluteFile();
+        File file = new File(new File("/var/cache/rhn/repodata", channel),
+                filename).getAbsoluteFile();
         downloadFile(request, response, file);
+
         // make spark happy
         return null;
     }
 
     /**
-     * Returns the token from the request and sends the appropiate response if it
-     * is not there
+     * Download a package taking the channel and RPM filename from the request path.
+     *
      * @param request the request object
-     * @return the token
+     * @param response the response object
+     * @return an object to make spark happy
      */
-    private static String getTokenFromRequest(Request request) {
-        Set<String> queryParams = request.queryParams();
-        if (queryParams.size() < 1) {
-            halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("You need a token to access %s", request.pathInfo()));
-        }
-
-        if (queryParams.size() > 1) {
-            halt(HttpStatus.SC_BAD_REQUEST,
-                 "Only one token is accepted");
-        }
-        return queryParams.iterator().next();
-    }
-
-    /**
-     * Endpoint to download a package from the given channel and filename
-     */
-    public static String downloadPackage(Request request, Response response) {
-
+    public static Object downloadPackage(Request request, Response response) {
         String channel = request.params(":channel");
         String filename = request.params(":file");
 
@@ -145,11 +104,10 @@ public class DownloadController {
         String name = StringUtils.substringBeforeLast(rest, "-");
 
         String token = getTokenFromRequest(request);
-
         validateToken(token, channel, filename);
 
-
-        Package pkg = PackageFactory.lookupByChannelLabelNevra(channel, name, version, release, null, arch);
+        Package pkg = PackageFactory.lookupByChannelLabelNevra(
+                channel, name, version, release, null, arch);
         if (pkg == null) {
             halt(HttpStatus.SC_NOT_FOUND,
                  String.format("%s not found in %s", filename, channel));
@@ -158,32 +116,96 @@ public class DownloadController {
         File file = new File(Config.get().getString(ConfigDefaults.MOUNT_POINT),
                 pkg.getPath()).getAbsoluteFile();
         downloadFile(request, response, file);
+
         // make spark happy
         return null;
     }
 
     /**
-     * Downloads a file and writes it to the response
+     * Return the token from the request or send an appropriate response if it is not there.
+     *
+     * @param request the request object
+     * @return the token
+     */
+    private static String getTokenFromRequest(Request request) {
+        Set<String> queryParams = request.queryParams();
+        if (queryParams.size() < 1) {
+            halt(HttpStatus.SC_FORBIDDEN,
+                 String.format("You need a token to access %s", request.pathInfo()));
+        }
+        if (queryParams.size() > 1) {
+            halt(HttpStatus.SC_BAD_REQUEST, "Only one token is accepted");
+        }
+
+        return queryParams.iterator().next();
+    }
+
+    /**
+     * TODO: This rather belongs to {@link TokenUtils} or some TokenValidatorService class.
+     *
+     * Validate a given token.
+     *
+     * @param token the token to validate
+     * @param channel the channel
+     * @param filename the filename
+     */
+    private static void validateToken(String token, String channel, String filename) {
+        try {
+            JwtClaims jwtClaims = JWT_CONSUMER.processToClaims(token);
+
+            // Add all the organization channels
+            Set<String> channels = new HashSet<String>();
+            if (jwtClaims.hasClaim("org")) {
+                long orgId = jwtClaims.getClaimValue("org", Long.class);
+                List<String> orgChannels =
+                        ChannelFactory.getAccessibleChannelsByOrg(orgId)
+                                .stream()
+                                .map(i -> i.getLabel())
+                                .collect(Collectors.toList());
+                channels.addAll(orgChannels);
+            }
+
+            if (jwtClaims.hasClaim("channels")) {
+                // Add the extra claimed channels
+                channels.addAll(jwtClaims.getStringListClaimValue("channels"));
+            }
+
+            if (!channels.contains(channel)) {
+                halt(HttpStatus.SC_FORBIDDEN,
+                     String.format("Token does not provide access to channel %s",
+                                   channel));
+            }
+        }
+        catch (InvalidJwtException | MalformedClaimException e) {
+            halt(HttpStatus.SC_FORBIDDEN,
+                 String.format("Token is not valid to access %s in %s: %s",
+                               filename, channel, e.getMessage()));
+        }
+    }
+
+    /**
+     * Write the actual file contents to the response.
+     *
+     * @param request the request object
      * @param response the response object
-     * @param file a file description of the file to download
+     * @param file description of the file to send
      */
     private static void downloadFile(Request request, Response response, File file) {
-
         if (file.exists()) {
             response.status(HttpStatus.SC_OK);
-        } else {
+        }
+        else {
             halt(HttpStatus.SC_NOT_FOUND);
         }
 
-        // skip download
+        // Skip download in case of a HEAD request
         if (request.requestMethod().equals("HEAD")) {
             return;
         }
 
         HttpServletResponse raw = response.raw();
-
-        response.raw().setContentType("application/octet-stream");
-        response.raw().setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+        raw.setContentType("application/octet-stream");
+        raw.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
 
         try (BufferedInputStream bufferedInputStream =
                 new BufferedInputStream(new FileInputStream(file))) {
@@ -197,9 +219,9 @@ public class DownloadController {
 
             out.flush();
             out.close();
-        } catch (IOException e) {
-            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                 e.getMessage());
+        }
+        catch (IOException e) {
+            halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 }
