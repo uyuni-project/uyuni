@@ -164,10 +164,13 @@ public class DownloadController {
                                 .collect(Collectors.toList());
                 channels.addAll(orgChannels);
             }
+            else {
+                halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
+            }
 
-            if (jwtClaims.hasClaim("channels")) {
-                // Add the extra claimed channels
-                channels.addAll(jwtClaims.getStringListClaimValue("channels"));
+            if (jwtClaims.hasClaim("onlyChannels")) {
+                // keep only channels from the whitelist
+                channels.retainAll(jwtClaims.getStringListClaimValue("onlyChannels"));
             }
 
             if (!channels.contains(channel)) {

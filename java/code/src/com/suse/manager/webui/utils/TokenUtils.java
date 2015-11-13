@@ -75,21 +75,21 @@ public class TokenUtils {
      *
      * @param key the key to create a token from
      * @param orgId id of the organization
-     * @param channels a set of channel labels
+     * @param onlyChannels if present, only allow access to these channels
      * @return the token
      * @throws JoseException in case of problems during key generation
      */
-    public static String createTokenWithKey(Key key, Optional<Long> orgId,
-            Set<String> channels) throws JoseException {
+    public static String createTokenWithKey(Key key, long orgId,
+            Optional<Set<String>> onlyChannels) throws JoseException {
         JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(YEAR_IN_MINUTES);
         claims.setIssuedAtToNow();
         claims.setNotBeforeMinutesInThePast(NOT_BEFORE_MINUTES);
 
-        orgId.ifPresent(id -> claims.setClaim("org", id));
-        if (!channels.isEmpty()) {
-            claims.setStringListClaim("channels", new ArrayList<String>(channels));
-        }
+        claims.setClaim("org", orgId);
+        onlyChannels.ifPresent(
+                channels -> claims.setStringListClaim("onlyChannels",
+                        new ArrayList<String>(channels)));
 
         JsonWebEncryption jwt = new JsonWebEncryption();
         jwt.setPayload(claims.toJson());
@@ -107,12 +107,12 @@ public class TokenUtils {
      * access to all extra given channels.
      *
      * @param orgId id of the organization
-     * @param channels a set of channel labels
+     * @param onlyChannels if present, only allow access to these channels
      * @return the token
      * @throws JoseException in case of problems during key generation
      */
-    public static String createTokenWithServerKey(Optional<Long> orgId,
-            Set<String> channels) throws JoseException {
-        return createTokenWithKey(TokenUtils.getServerKey(), orgId, channels);
+    public static String createTokenWithServerKey(long orgId,
+            Optional<Set<String>> onlyChannels) throws JoseException {
+        return createTokenWithKey(TokenUtils.getServerKey(), orgId, onlyChannels);
     }
 }

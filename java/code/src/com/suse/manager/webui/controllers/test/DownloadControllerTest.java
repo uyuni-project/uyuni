@@ -138,19 +138,21 @@ public class DownloadControllerTest extends RhnBaseTestCase {
 
         // Create a token for a different organization
         String tokenOtherOrg = TokenUtils.createTokenWithServerKey(
-                Optional.of(user.getOrg().getId() + 1), Collections.emptySet());
+                user.getOrg().getId() + 1,
+                Optional.of(new HashSet<String>(Arrays.asList(channel.getLabel()))));
 
         // Create a token for a WRONG channel only
         String tokenOtherChannel = TokenUtils.createTokenWithServerKey(
-                Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel() + "WRONG")));
+                user.getOrg().getId(),
+                Optional.of(new HashSet<String>(Arrays.asList(channel.getLabel() + "WRONG"))));
 
         // Create a token for the channel only
         String tokenChannel = TokenUtils.createTokenWithServerKey(
-                Optional.empty(), new HashSet<String>(Arrays.asList(channel.getLabel())));
+                user.getOrg().getId(),
+                Optional.of(new HashSet<String>(Arrays.asList(channel.getLabel()))));
 
         // Create a token for the organization only
-        String token = TokenUtils.createTokenWithServerKey(
-                Optional.of(user.getOrg().getId()), Collections.emptySet());
+        String token = TokenUtils.createTokenWithServerKey(user.getOrg().getId(), Optional.empty());
 
         params.clear();
         params.put(token, "");
