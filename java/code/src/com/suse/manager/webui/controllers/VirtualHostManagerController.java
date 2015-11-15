@@ -5,9 +5,13 @@ import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigExce
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+
 import org.apache.commons.lang.StringUtils;
+
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -35,6 +39,7 @@ public class VirtualHostManagerController {
 
     public static ModelAndView getAll(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
         return new ModelAndView(data, "virtualhostmanager/all.jade");
@@ -151,6 +156,21 @@ public class VirtualHostManagerController {
         String label = request.params("vhmlabel");
         VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label, user.getOrg());
         getFactory().delete(virtualHostManager);
+        response.redirect("/rhn/manager/vhms");
+        return "";
+    }
+
+    public static Object refresh(Request request, Response response, User user) {
+        // todo pass info about deleted
+        String label = request.params("vhmlabel");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("vhmlabel", label);
+        try {
+            new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-bunch", params);
+        }
+        catch (TaskomaticApiException e) {
+            throw new IllegalArgumentException("Wrong gatherer params.");
+        }
         response.redirect("/rhn/manager/vhms");
         return "";
     }
