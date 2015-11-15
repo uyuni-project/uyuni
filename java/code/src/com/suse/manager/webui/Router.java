@@ -72,5 +72,7 @@ public class Router implements SparkApplication {
                 withOrgAdmin(VirtualHostManagerController::get), jade);
         post("/manager/vhm/delete/:vhmlabel",
                 withOrgAdmin(VirtualHostManagerController::delete));
+        post("/manager/vhm/refresh/:vhmlabel",
+                withOrgAdmin(VirtualHostManagerController::refresh));
     }
 }

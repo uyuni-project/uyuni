@@ -8,13 +8,28 @@
     | Virtual Host Managers
 
 .row
-  a(href="vhm/add") Add Virtual Host Manager
-
-.row
-  ul
-    if empty(virtualHostManagers)
-      li You don't have any Virtual Host Managers
-    else
-      for vhmanager in virtualHostManagers
-        li: a(href="vhm/#{vhmanager.label}") #{vhmanager.label}, #{vhmanager.org.name}
+  .col-md-12
+    #pending-list.panel.panel-default
+      table(class="table table-rounded")
+        thead
+          tr
+            th
+              | Label
+            th
+        tbody.table-content
+          if empty(virtualHostManagers)
+            tr
+              td: You don't have any Virtual Host Managers
+          else
+            for vhmanager in virtualHostManagers
+              tr
+                td.text-only
+                  a(href="vhm/#{vhmanager.label}") #{vhmanager.label}, #{vhmanager.org.name}
+                td
+                  .pull-right
+                    form(action="vhm/refresh/#{vhmanager.label}", method="post")
+                      input(type="hidden", name="csrf_token", value="#{csrf_token}")
+                      button#refresh(class="btn btn-default")
+                        i.fa.fa-refresh
+                        | Refresh
 
