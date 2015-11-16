@@ -18,7 +18,7 @@
             <div class="col-sm-6">
                 <h1 class="Raleway-font">SUSE<br/> Manager</h1>
                 <p class="gray-text margins-updown">Discover a new way of managing your servers, packages, patches and more via one interface.</p>
-                <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark"> View website</a></p>
+                <p class="gray-text">Learn more about SUSE Manager: <a href="http://www.suse.com/products/suse-manager/" class="btn-dark" target="_blank"> View website</a></p>
 
                 <!-- original text
                 <c:set var="login_banner" scope="page" value="${rhn:getConfig('java.login_banner')}" />
