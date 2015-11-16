@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.net.NoRouteToHostException;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -58,6 +59,7 @@ public class SSHPushWorker implements QueueWorker {
     // Config keys
     private static final String CONFIG_KEY_USE_HOSTNAME = "ssh_push_use_hostname";
     private static final String CONFIG_KEY_SUDO_USER = "ssh_push_sudo_user";
+    private static final String CONFIG_KEY_TASK_TIMEOUT = "ssh_push_task_timeout";
 
     // Client and proxy hostnames
     private String proxy;
@@ -70,6 +72,11 @@ public class SSHPushWorker implements QueueWorker {
     private String localhost;
     private TaskQueue parentQueue;
     private JSch ssh;
+
+    // Maximum wait time for a task in minutes
+    private int maxWait;
+    // Keep track if command timed out
+    private boolean commandTimedOut = false;
 
     /**
      * Constructor.
@@ -174,6 +181,8 @@ public class SSHPushWorker implements QueueWorker {
             // Get the server's primary proxy (if any)
             proxy = getPrimaryProxy(server);
 
+            maxWait = Config.get().getInt(CONFIG_KEY_TASK_TIMEOUT);
+
             // Connect to the client
             rhnCheck();
             HibernateFactory.commitTransaction();
@@ -220,8 +229,11 @@ public class SSHPushWorker implements QueueWorker {
             waitForChannelClosed(channel);
             int exitStatus = channel.getExitStatus();
 
-            if (exitStatus != 0 || log.isTraceEnabled()) {
+            if (exitStatus != 0 || log.isTraceEnabled() || commandTimedOut) {
                 log.error("Exit status: " + exitStatus + " [" + client + "]");
+                if (commandTimedOut) {
+                    log.error("Task took to long to complete");
+                }
                 log.error("stdout:\n" + IOUtils.toString(stdout));
                 log.error("stderr:\n" + IOUtils.toString(stderr));
             }
@@ -298,10 +310,19 @@ public class SSHPushWorker implements QueueWorker {
 
     /**
      * Wait for a given {@link ChannelExec} to be closed.
+     * Will close channel if maxWait is set and exceeded.
      * @param channel the channel
      */
     private void waitForChannelClosed(ChannelExec channel) {
+        long startTime = System.currentTimeMillis();
         while (!channel.isClosed()) {
+            // Check to see if we have been waiting too long, converts ms to minutes
+            long elapsedTimeInMins =
+                    TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - startTime);
+            if (maxWait > 0 && elapsedTimeInMins > maxWait) {
+                commandTimedOut = true;
+                channel.disconnect();
+            }
             try {
                 Thread.sleep(1000);
             }
