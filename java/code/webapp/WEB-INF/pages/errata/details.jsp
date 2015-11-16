@@ -56,14 +56,14 @@
         <div class="page-summary">
             <c:choose>
               <c:when test="${current.href == null && errata.org == null}">
-                <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}">
+                <a href="https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=${current.bugId}" target="_blank">
                 <c:out value="${current.summary}"/></a>
               </c:when>
               <c:when test="${current.href == null && errata.org != null}">
                 <bean:message key="details.jsp.bugnumber" arg0="${current.bugId}"/> <c:out value="${current.summary}"/>
               </c:when>
               <c:otherwise>
-                <a href="${current.href}">
+                <a href="${current.href}" target="_blank">
                 <c:out value="${current.summary}"/></a>
               </c:otherwise>
             </c:choose>
@@ -86,7 +86,7 @@
 <h2><bean:message key="details.jsp.cves"/></h2>
     <c:forEach items="${cve}" var="current">
         <div class="page-summary">
-            <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${current.name}">
+            <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=${current.name}" target="_blank">
                 ${current.name}</a>
         </div>
     </c:forEach>
