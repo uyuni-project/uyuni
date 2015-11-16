@@ -90,6 +90,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up VirtualHostManager by label and Org
+     * @param label the label
+     * @param org the organization
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
+     */
+    public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
+        return (VirtualHostManager) getSession()
+                .createCriteria(VirtualHostManager.class)
+                .add(Restrictions.eq("org", org))
+                .add(Restrictions.eq("label", label))
+                .uniqueResult();
+    }
+
+    /**
      * Returns a list of Virtual Host Managers associated with the given organization
      * @param org - organization
      * @return a list of corresponding Virtual Host Managers

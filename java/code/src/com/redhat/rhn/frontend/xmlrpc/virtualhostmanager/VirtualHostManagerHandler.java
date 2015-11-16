@@ -114,7 +114,8 @@ public class VirtualHostManagerHandler extends BaseHandler {
     public int delete(User loggedInUser, String label) {
         ensureOrgAdmin(loggedInUser);
         VirtualHostManager manager =
-                VirtualHostManagerFactory.getInstance().lookupByLabel(label);
+                VirtualHostManagerFactory.getInstance().lookupByLabelAndOrg(label,
+                    loggedInUser.getOrg());
         if (manager == null) {
             throw new InvalidParameterException("Virtual Host Manager with label '" +
                     label + "' doesn't exist.");
