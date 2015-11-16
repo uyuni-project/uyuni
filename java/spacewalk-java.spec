@@ -805,6 +805,7 @@ fi
 %endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, root, tomcat) %dir %{appdir}
+%dir /srv/susemanager
 %dir /srv/susemanager/salt
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
