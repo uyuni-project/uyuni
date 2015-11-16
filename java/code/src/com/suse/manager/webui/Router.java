@@ -15,7 +15,6 @@
 package com.suse.manager.webui;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -64,7 +63,7 @@ public class Router implements SparkApplication {
         // Exhibit localization service in templates
         JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
         Map<String, Object> sharedVariables = new HashMap<>();
-        sharedVariables.put("l10n", LocalizationService.getInstance());
+        sharedVariables.put("l", Languages.getInstance());
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
         JadeConfiguration config = jade.configuration();
