@@ -2,7 +2,7 @@
   h1
     i.fa.fa-desktop
     |  
-    #{l10n.getMessage("minions.all")}
+    #{l.t("All Minions")}
 
 .row
   .col-md-6
@@ -11,7 +11,7 @@
         if size(unaccepted_minions) > 1
           h2.pull-left(style="padding-top: 4px")
             i.fa.fa-plus
-            #{size(unaccepted_minions)} #{l10n.getMessage("minions.pending")}
+            #{size(unaccepted_minions)} #{l.t("Pending")}
           .pull-right.btn-group
             a.btn.btn-default(href="/rhn/manager/minions/accept/*"): i.fa.fa-check.no-margin
             a.btn.btn-default(href="/rhn/manager/minions/reject/*"): i.fa.fa-times.no-margin
@@ -19,7 +19,7 @@
         else
           h2
             i.fa.fa-plus
-            #{size(unaccepted_minions)} #{l10n.getMessage("minions.pending")}
+            #{size(unaccepted_minions)} #{l.t("Pending")}
       table(class="table table-striped vertical-middle")
         for minion in unaccepted_minions
           tr
@@ -31,14 +31,14 @@
                 a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times.no-margin
         else
           tr
-            td #{l10n.getMessage("minions.no.pending")}
+            td #{l.t("No pending minions.")}
 
   .col-md-6
     #rejected-list.panel.panel-default
       .panel-heading
         h2
           i.fa.fa-times
-          #{size(rejected_minions)} #{l10n.getMessage("minions.rejected")}
+          #{size(rejected_minions)} #{l.t("Rejected")}
       table(class="table table-striped vertical-middle")
         for minion in rejected_minions
           tr
@@ -49,4 +49,4 @@
                 a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
         else
           tr
-            td #{l10n.getMessage("minions.no.rejected")}
+            td #{l.t("No rejected minions.")}
