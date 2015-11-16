@@ -2162,9 +2162,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
 
       <!-- Salt -->
-      <trans-unit id="Minions">
-        <source>Minions</source>
-      </trans-unit>
       <trans-unit id="Salt Master">
           <source>Salt Master</source>
       </trans-unit>
@@ -2173,21 +2170,6 @@ tree will not be usable for autoinstalling.
       </trans-unit>
       <trans-unit id="Remote Commands">
         <source>Remote Commands</source>
-      </trans-unit>
-      <trans-unit id="minions.all">
-        <source>All Minions</source>
-      </trans-unit>
-      <trans-unit id="minions.pending">
-        <source>Pending</source>
-      </trans-unit>
-      <trans-unit id="minions.rejected">
-        <source>Rejected</source>
-      </trans-unit>
-      <trans-unit id="minions.no.pending">
-        <source>No pending minions.</source>
-      </trans-unit>
-      <trans-unit id="minions.no.rejected">
-        <source>No rejected minions.</source>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
