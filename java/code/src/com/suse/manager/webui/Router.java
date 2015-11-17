@@ -14,51 +14,28 @@
  */
 package com.suse.manager.webui;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.redhat.rhn.common.conf.Config;
+import static com.suse.manager.webui.utils.SparkApplicationUtils.setup;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 
-import de.neuland.jade4j.JadeConfiguration;
 import spark.Spark;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.httpclient.HttpStatus;
 
 /**
  * Router class defining the web UI routes.
  */
 public class Router implements SparkApplication {
 
-    private final String templateRoot = "com/suse/manager/webui/templates";
-    private final Gson GSON = new GsonBuilder().create();
-
     /**
      * Invoked from the SparkFilter. Add routes here.
      */
     @Override
     public void init() {
-        // handler for crosscutting concerns relevant to all pages
-        Spark.before((request, response) -> {
-            response.type("text/html");
-        });
+        JadeTemplateEngine jade = setup();
 
-        // Exhibit localization service in templates
-        JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
-        Map<String, Object> sharedVariables = new HashMap<>();
-        sharedVariables.put("l", Languages.getInstance());
-        sharedVariables.put("isDevMode",
-                Config.get().getBoolean("java.development_environment"));
-        JadeConfiguration config = jade.configuration();
-        config.setSharedVariables(sharedVariables);
-
-        // Setup routes
         Spark.get("/manager/minions", MinionsController::listMinions, jade);
         Spark.get("/manager/minions/overview/:minion", MinionsController::systemOverview);
         Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
@@ -81,19 +58,5 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         Spark.head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-
-        // RuntimeException will be passed on (resulting in status code 500)
-        Spark.exception(RuntimeException.class, (e, request, response) -> {
-            if (request.headers("accept").contains("json")) {
-                Map<String, Object> exc = new HashMap<>();
-                exc.put("message", e.getMessage());
-                response.type("application/json");
-                response.body(this.GSON.toJson(exc));
-                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            }
-            else {
-                throw (RuntimeException) e;
-            }
-        });
     }
 }

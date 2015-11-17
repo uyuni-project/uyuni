@@ -14,16 +14,33 @@
  */
 package com.suse.manager.webui.utils;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.Languages;
+
+import de.neuland.jade4j.JadeConfiguration;
+
+import org.apache.commons.httpclient.HttpStatus;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import spark.Route;
+import spark.Spark;
 import spark.TemplateViewRoute;
+import spark.template.jade.JadeTemplateEngine;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
  */
 public class SparkApplicationUtils {
+
+    private static final String TEMPLATE_ROOT = "com/suse/manager/webui/templates";
+    private static final Gson GSON = new GsonBuilder().create();
 
     /**
      * Private constructor.
@@ -55,5 +72,43 @@ public class SparkApplicationUtils {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
         };
+    }
+
+    /**
+     * Sets up this application and the Jade engine.
+     * @return the jade template engine
+     */
+    public static JadeTemplateEngine setup() {
+        // default for text/html or OpenSynphony will compain
+        Spark.before((request, response) -> {
+            response.type("text/html");
+        });
+
+        // set up template engine
+        JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
+
+        // set up i10n engine and other default template variables
+        Map<String, Object> sharedVariables = new HashMap<>();
+        sharedVariables.put("l", Languages.getInstance());
+        sharedVariables.put("isDevMode",
+                Config.get().getBoolean("java.development_environment"));
+        JadeConfiguration config = jade.configuration();
+        config.setSharedVariables(sharedVariables);
+
+        // capture json endpoint exceptions, let others pass (resulting in status code 500)
+        Spark.exception(RuntimeException.class, (e, request, response) -> {
+            if (request.headers("accept").contains("json")) {
+                Map<String, Object> exc = new HashMap<>();
+                exc.put("message", e.getMessage());
+                response.type("application/json");
+                response.body(GSON.toJson(exc));
+                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            }
+            else {
+                throw (RuntimeException) e;
+            }
+        });
+
+        return jade;
     }
 }
