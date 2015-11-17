@@ -20,7 +20,7 @@ import static spark.Spark.head;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
-import com.suse.manager.webui.controllers.MinionsController;
+import com.suse.manager.webui.controllers.MinionController;
 
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -38,18 +38,18 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = setup();
 
         // Salt Master pages
-        get("/manager/minions", MinionsController::listMinions, jade);
-        get("/manager/minions/overview/:minion", MinionsController::systemOverview);
-        get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
-        get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
-        get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
+        get("/manager/minions", MinionController::index, jade);
+        get("/manager/minions/overview/:minion", MinionController::systemOverview);
+        get("/manager/minions/accept/:minion", MinionController::acceptMinion);
+        get("/manager/minions/delete/:minion", MinionController::deleteMinion);
+        get("/manager/minions/reject/:minion", MinionController::rejectMinion);
 
         // Minion APIs
         get("/manager/api/minions/cmd", MinionsAPI::run);
         get("/manager/api/minions/match", MinionsAPI::match);
 
         // Remote command page
-        get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
+        get("/manager/minions/cmd", MinionController::remoteCommands, jade);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",

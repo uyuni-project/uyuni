@@ -31,21 +31,21 @@ import spark.Response;
 /**
  * Controller class providing backend code for the minions page.
  */
-public class MinionsController {
+public class MinionController {
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
-    private MinionsController() { }
+    private MinionController() { }
 
     /**
-     * Handler for the minions page.
+     * Displays a list of minions.
      *
      * @param request the request object
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView listMinions(Request request, Response response) {
+    public static ModelAndView index(Request request, Response response) {
         Key.Names keys = SALT_SERVICE.getKeys();
         List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
