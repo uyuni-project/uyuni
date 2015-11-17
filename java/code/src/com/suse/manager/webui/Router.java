@@ -36,18 +36,19 @@ public class Router implements SparkApplication {
     public void init() {
         JadeTemplateEngine jade = setup();
 
+        // Salt Master pages
         Spark.get("/manager/minions", MinionsController::listMinions, jade);
         Spark.get("/manager/minions/overview/:minion", MinionsController::systemOverview);
         Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
         Spark.get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
         Spark.get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
 
-        // Remote commands
-        Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
-
-        // Setup API routes
+        // Minion APIs
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
+
+        // Remote command page
+        Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
         // Download endpoint
         Spark.get("/manager/download/:channel/getPackage/:file",
