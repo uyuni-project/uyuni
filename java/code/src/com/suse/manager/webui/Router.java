@@ -18,20 +18,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
-import com.suse.manager.webui.utils.RouteWithUser;
-import com.suse.manager.webui.utils.TemplateViewRouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
-import spark.Route;
 import spark.Session;
 import spark.Spark;
-import spark.TemplateViewRoute;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -46,22 +40,6 @@ public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
     private final Gson GSON = new GsonBuilder().create();
-
-    @SuppressWarnings("unused")
-    private TemplateViewRoute withUser(TemplateViewRouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            return route.handle(request, response, user);
-        };
-    }
-
-    @SuppressWarnings("unused")
-    private Route withUser(RouteWithUser route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            return route.handle(request, response, user);
-        };
-    }
 
     /**
      * Invoked from the SparkFilter. Add routes here.
