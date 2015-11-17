@@ -268,6 +268,43 @@ public class PackageFactory extends HibernateFactory {
     }
 
     /**
+     * Find a package based off of the channel and NEVRA
+     * @param channel the channel label
+     * @param name the name to search for
+     * @param version the version to search for
+     * @param release the release to search for
+     * @param epoch if epoch is null, the best match for epoch will be used.
+     * @param arch the arch to search for
+     * @return the requested Package
+     */
+    public static Package lookupByChannelLabelNevra(String channel, String name,
+            String version, String release, String epoch, String arch) {
+        @SuppressWarnings("unchecked")
+        List<Package> packages = HibernateFactory.getSession()
+                .getNamedQuery("Package.lookupByChannelLabelNevra")
+                .setString("channel", channel)
+                .setString("name", name)
+                .setString("version", version)
+                .setString("release", release)
+                .setString("arch", arch)
+                .list();
+
+        if (packages.isEmpty()) {
+            return null;
+        }
+
+        if (epoch != null && packages.size() > 1) {
+            for (Package pack : packages) {
+                if (!epoch.equals(pack.getPackageEvr().getEpoch())) {
+                    packages.remove(pack);
+                }
+            }
+        }
+
+        return packages.get(0);
+    }
+
+    /**
      * Returns an InstalledPackage object, given a server and package name to
      * lookup the latest version of the package. Return null if the package
      * doesn;t exist.

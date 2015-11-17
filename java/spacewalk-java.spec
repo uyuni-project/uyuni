@@ -59,6 +59,7 @@ Requires: pam-modules
 Requires: snakeyaml
 Requires: sudo
 Requires: jade4j
+Requires: jose4j
 Requires: saltstack-netapi-client-java
 Requires: spark
 Requires: spark-template-jade
@@ -77,6 +78,7 @@ BuildRequires: snakeyaml
 BuildRequires: log4j
 # Spark and Salt integration
 BuildRequires: jade4j
+BuildRequires: jose4j
 BuildRequires: saltstack-netapi-client-java
 BuildRequires: spark
 BuildRequires: spark-template-jade
@@ -622,6 +624,8 @@ install -d -m 755 $RPM_BUILD_ROOT/%{_var}/spacewalk/systemlogs
 %endif
 
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/logrotate.d
+install -d $RPM_BUILD_ROOT/srv/susemanager/salt
+
 %if 0%{?fedora}
 echo "hibernate.cache.region.factory_class=net.sf.ehcache.hibernate.SingletonEhCacheRegionFactory" >> conf/default/rhn_hibernate.conf
 %endif
@@ -801,6 +805,8 @@ fi
 %endif
 %defattr(644,tomcat,tomcat,775)
 %attr(775, root, tomcat) %dir %{appdir}
+%dir /srv/susemanager
+%dir /srv/susemanager/salt
 %dir %{appdir}/rhn/
 %{appdir}/rhn/apidoc/
 %{appdir}/rhn/css/
@@ -872,6 +878,7 @@ fi
 %{jardir}/httpclient.jar
 %{jardir}/httpcore.jar
 %{jardir}/jade4j.jar
+%{jardir}/jose4j.jar
 %{jardir}/saltstack-netapi-client.jar
 %{jardir}/slf4j_api.jar
 %{jardir}/slf4j_log4j12*.jar

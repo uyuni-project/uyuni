@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system;
 
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
@@ -22,6 +23,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
+import com.suse.manager.reactor.ChannelChangedEvent;
 
 import org.apache.commons.collections.ListUtils;
 
@@ -92,6 +95,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
         // First unsubscribe all the child channels
         UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(user, server,
                 ListUtils.EMPTY_LIST);
+        cmd.skipChannelChangedEvent(true);
         cmd.store();
 
 
@@ -110,6 +114,7 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
                 SystemManager.subscribeServerToChannel(user, server, newChannel);
                 cmd = new UpdateChildChannelsCommand(user, server,
                         newKidsToSubscribe);
+                cmd.skipChannelChangedEvent(true);
                 cmd.store();
 
             }
@@ -118,6 +123,8 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
                 throw new PermissionCheckFailureException();
             }
         }
+
+        MessageQueue.publish(new ChannelChangedEvent(server.getId(), user.getId()));
         return super.store();
     }
 
