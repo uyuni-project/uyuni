@@ -15,12 +15,13 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationUtils.setup;
+import static spark.Spark.get;
+import static spark.Spark.head;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 
-import spark.Spark;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
 
@@ -37,27 +38,27 @@ public class Router implements SparkApplication {
         JadeTemplateEngine jade = setup();
 
         // Salt Master pages
-        Spark.get("/manager/minions", MinionsController::listMinions, jade);
-        Spark.get("/manager/minions/overview/:minion", MinionsController::systemOverview);
-        Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
-        Spark.get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
-        Spark.get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
+        get("/manager/minions", MinionsController::listMinions, jade);
+        get("/manager/minions/overview/:minion", MinionsController::systemOverview);
+        get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
+        get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
+        get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
 
         // Minion APIs
-        Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
-        Spark.get("/manager/api/minions/match", MinionsAPI::match);
+        get("/manager/api/minions/cmd", MinionsAPI::run);
+        get("/manager/api/minions/match", MinionsAPI::match);
 
         // Remote command page
-        Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
+        get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
         // Download endpoint
-        Spark.get("/manager/download/:channel/getPackage/:file",
+        get("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        Spark.get("/manager/download/:channel/repodata/:file",
+        get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-        Spark.head("/manager/download/:channel/getPackage/:file",
+        head("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        Spark.head("/manager/download/:channel/repodata/:file",
+        head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
     }
 }
