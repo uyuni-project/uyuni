@@ -10,6 +10,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 
+import com.suse.manager.webui.utils.FlashScopeHelper;
 import org.apache.commons.lang.StringUtils;
 
 import spark.ModelAndView;
@@ -42,6 +43,7 @@ public class VirtualHostManagerController {
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
+        data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "virtualhostmanager/all.jade");
     }
 
@@ -156,6 +158,8 @@ public class VirtualHostManagerController {
         String label = request.params("vhmlabel");
         VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label, user.getOrg());
         getFactory().delete(virtualHostManager);
+        FlashScopeHelper.flash(request, "Virtual Host Manager with label '" + label +
+                "' has been deleted");
         response.redirect("/rhn/manager/vhms");
         return "";
     }
