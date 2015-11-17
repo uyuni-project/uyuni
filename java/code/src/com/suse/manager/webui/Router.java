@@ -39,7 +39,7 @@ public class Router implements SparkApplication {
 
         // Salt Master pages
         get("/manager/minions", MinionController::index, jade);
-        get("/manager/minions/overview/:minion", MinionController::systemOverview);
+        get("/manager/minions/:id", MinionController::show);
         get("/manager/minions/accept/:minion", MinionController::acceptMinion);
         get("/manager/minions/delete/:minion", MinionController::deleteMinion);
         get("/manager/minions/reject/:minion", MinionController::rejectMinion);

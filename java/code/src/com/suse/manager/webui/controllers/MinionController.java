@@ -108,14 +108,14 @@ public class MinionController {
     }
 
     /**
-     * Redirects to the system overview page of the minion
+     * Displays a single minion.
      *
      * @param request the request object
      * @param response the response object
      * @return nothing
      */
-    public static String systemOverview(Request request, Response response) {
-        String minionId = request.params("minion");
+    public static String show(Request request, Response response) {
+        String minionId = request.params("id");
         String machineId = SaltAPIService.INSTANCE.getMachineId(minionId);
         Server server = ServerFactory.findRegisteredMinion(machineId);
         response.redirect("/rhn/systems/details/Overview.do?sid=" + server.getId());
