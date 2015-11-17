@@ -16,8 +16,8 @@
 #
 
 Name:           susemanager-sls
-Version:        0.1.0
-Release:        0
+Version:        0.1.1
+Release:        1
 License:        GPL-2.0
 Summary:        Static Salt state files for SUSE Manager
 Group:          Applications/Internet
