@@ -17,14 +17,12 @@ package com.suse.manager.webui;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 
 import de.neuland.jade4j.JadeConfiguration;
-import spark.Session;
 import spark.Spark;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -48,8 +46,6 @@ public class Router implements SparkApplication {
     public void init() {
         // handler for crosscutting concerns relevant to all pages
         Spark.before((request, response) -> {
-            Session session = request.session(true);
-            CSRFTokenValidator.getToken(session.raw());
             response.type("text/html");
         });
 
