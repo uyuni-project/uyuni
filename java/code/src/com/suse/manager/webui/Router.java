@@ -14,16 +14,21 @@
  */
 package com.suse.manager.webui;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
+import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.manager.webui.utils.RouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
+import spark.ModelAndView;
+import spark.Route;
 import spark.Session;
 import spark.Spark;
 import spark.TemplateViewRoute;
@@ -32,6 +37,7 @@ import spark.template.jade.JadeTemplateEngine;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.httpclient.HttpStatus;
 
 /**
  * Router class defining the web UI routes.
@@ -39,9 +45,18 @@ import java.util.Map;
 public class Router implements SparkApplication {
 
     private final String templateRoot = "com/suse/manager/webui/templates";
+    private final Gson GSON = new GsonBuilder().create();
 
     @SuppressWarnings("unused")
-    private TemplateViewRoute withUser(RouteWithUser route) {
+    private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            return route.handle(request, response, user);
+        };
+    }
+
+    @SuppressWarnings("unused")
+    private Route withUser(RouteWithUser<Object> route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
@@ -79,13 +94,32 @@ public class Router implements SparkApplication {
         // Remote commands
         Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
-        //Setup API routes
+        // Setup API routes
         Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
         Spark.get("/manager/api/minions/match", MinionsAPI::match);
 
+        // Download endpoint
+        Spark.get("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        Spark.get("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+        Spark.head("/manager/download/:channel/getPackage/:file",
+                DownloadController::downloadPackage);
+        Spark.head("/manager/download/:channel/repodata/:file",
+                DownloadController::downloadMetadata);
+
         // RuntimeException will be passed on (resulting in status code 500)
         Spark.exception(RuntimeException.class, (e, request, response) -> {
-            throw (RuntimeException) e;
+            if (request.headers("accept").contains("json")) {
+                Map<String, Object> exc = new HashMap<>();
+                exc.put("message", e.getMessage());
+                response.type("application/json");
+                response.body(this.GSON.toJson(exc));
+                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            }
+            else {
+                throw (RuntimeException) e;
+            }
         });
     }
 }

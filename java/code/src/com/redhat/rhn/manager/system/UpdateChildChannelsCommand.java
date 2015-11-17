@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.system;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,6 +27,8 @@ import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.manager.channel.ChannelManager;
+
+import com.suse.manager.reactor.ChannelChangedEvent;
 
 import org.apache.log4j.Logger;
 
@@ -47,6 +50,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
     private List<Long> cids;
     private Server server;
+    private boolean skipChannelChangedEvent = false;
 
     /**
      * Constructor
@@ -106,6 +110,9 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
         log.debug("unsubscribing from other channels");
         unsubscribeFromOldChannels(user, remove, server);
 
+        if (!skipChannelChangedEvent) {
+            MessageQueue.publish(new ChannelChangedEvent(server.getId(), user.getId()));
+        }
         super.store();
 
         if (failedChannels) {
@@ -192,5 +199,15 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
                 throw new PermissionCheckFailureException();
             }
         }
+    }
+
+    /**
+     * Set true here to skip sending the {@link ChannelChangedEvent} for this command. This
+     * makes sense in case the child channels were removed as part of a base channel change.
+     *
+     * @param skip the value to set: true if sending the event should be skipped
+     */
+    public void skipChannelChangedEvent(boolean skip) {
+        skipChannelChangedEvent = skip;
     }
 }

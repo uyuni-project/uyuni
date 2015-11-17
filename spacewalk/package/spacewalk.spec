@@ -74,6 +74,7 @@ Requires:       pxe-default-image
 Requires:       virtual-host-gatherer
 Recommends:     virtual-host-gatherer-VMware
 Requires:       subscription-matcher
+Requires:       susemanager-sls
 
 # Requires:       osa-dispatcher
 # Requires:       jabberpy

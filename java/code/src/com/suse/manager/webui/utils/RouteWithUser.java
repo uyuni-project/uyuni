@@ -16,14 +16,14 @@ package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.domain.user.User;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 
 /**
  * A route that gets the user in addition to the request and response.
+ * @param <T> the return value type of the route
  */
-public interface RouteWithUser {
+public interface RouteWithUser<T> {
 
     /**
      * Invoked when a request is made on this route's corresponding path.
@@ -33,5 +33,5 @@ public interface RouteWithUser {
      * @param user the user associated with this request
      * @return the content to be set in the response
      */
-    ModelAndView handle(Request request, Response response, User user);
+    T handle(Request request, Response response, User user);
 }
