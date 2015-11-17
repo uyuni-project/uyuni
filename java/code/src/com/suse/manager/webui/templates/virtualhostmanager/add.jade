@@ -1,0 +1,50 @@
+// todo i18n
+// todo icon of VHM!
+
+script(type='text/javascript').
+  function updateVisibility() {
+    jQuery(".gatherer-parameters").hide(); // hide all
+    var visibleGroup = jQuery("#gm-select").val();
+    jQuery("#" + visibleGroup).show();
+  }
+
+  jQuery(document).ready(function() {
+    updateVisibility();
+  });
+
+.spacewalk-toolbar-h1
+  h1
+    | Add new Virtual Host Manager
+
+if errors
+  .alert.alert-danger
+    ul
+      for e in errors
+        li #{e}
+
+.row
+  form(action="/rhn/manager/vhm", method="post", class="form-horizontal")
+    input(type="hidden", name="csrf_token", value="#{csrf_token}")
+    .form-group
+      label.col-lg-3.control-label Label:
+      .col-lg-6
+        input(type="text", name="label", value="#{label}", class="form-control")
+    .form-group
+      label.col-lg-3.control-label Gatherer Module:
+      .col-lg-6
+        select(name="gathererModule", onchange="updateVisibility()", id="gm-select", class="form-control")
+          for gm in gathererModules
+            option(value="#{gm.name}", selected=gm.name == selectedGathererModule)
+              #{gm.name}
+
+    for gm in gathererModules
+      // configs
+      div(id="#{gm.name}", class="gatherer-parameters")
+        for parValue, parKey in gm.parameters
+          .form-group
+            label.col-lg-3.control-label #{parKey}:
+            .col-lg-6
+              input(type="text", name="#{gm.name}---#{parKey}", value="#{parValue}", class="form-control")
+
+    .col-lg-offset-3.col-lg-6
+      input(type="submit", value="Add", class="btn btn-success")
