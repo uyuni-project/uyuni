@@ -15,6 +15,7 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
@@ -22,6 +23,7 @@ import static spark.Spark.post;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -60,5 +62,8 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+
+        // Virtual Host Managers
+        get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::getAll), jade);
     }
 }

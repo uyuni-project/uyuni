@@ -15,8 +15,10 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.common.security.PermissionException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,6 +72,23 @@ public class SparkApplicationHelper {
     public static Route withUser(RouteWithUser route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an Org
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withOrgAdmin(TemplateViewRouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
             return route.handle(request, response, user);
         };
     }

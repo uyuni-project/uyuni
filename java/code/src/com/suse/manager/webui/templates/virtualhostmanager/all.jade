@@ -1,0 +1,15 @@
+// todo i18n
+// todo icon of VHM!
+
+.spacewalk-toolbar-h1
+  h1
+    | Virtual Host Managers
+
+.row
+  ul
+    if empty(virtualHostManagers)
+      li You don't have any Virtual Host Managers
+    else
+      for vhmanager in virtualHostManagers
+        li: a(href="vhm/#{vhmanager.label}") #{vhmanager.label}, #{vhmanager.org.name}
+
