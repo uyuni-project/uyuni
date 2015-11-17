@@ -29,7 +29,6 @@
 <div class="navbar-collapse collapse">
   <rhn:require acl="user_authenticated()">
     <ul class="nav navbar-nav navbar-utility">
-      <li class="hidden-sm hidden-xs"><a href="/rhn/account/LocalePreferences.do"><c:out value="${rhnActiveLang}" /> (<bean:message key="header.jsp.change"/>)</a></li>
       <li class="hidden-xs"><a href="https://www.suse.com/support/kb/product.php?id=SUSE_Manager" target="_blank"><bean:message key="header.jsp.knowledgebase" /></a></li>
       <li class="hidden-xs"><a href="/rhn/help/index.do"><bean:message key="header.jsp.documentation" /></a></li>
       <li><a href="/rhn/account/UserDetails.do"><rhn:icon type="header-user" /> <c:out escapeXml="true" value="${requestScope.session.user.login}" /></a></li>
