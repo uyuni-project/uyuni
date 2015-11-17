@@ -165,16 +165,21 @@ public class VirtualHostManagerController {
     }
 
     public static Object refresh(Request request, Response response, User user) {
-        // todo pass info about deleted
         String label = request.params("vhmlabel");
+        String message = null;
         Map<String, String> params = new HashMap<String, String>();
         params.put("vhmlabel", label);
         try {
             new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-bunch", params);
         }
         catch (TaskomaticApiException e) {
-            throw new IllegalArgumentException("Wrong gatherer params.");
+            message  = "Problem when running gatherer Taskomatic job: " + e.getMessage();
         }
+        if (message == null) {
+            message = "Gatherer Taskomatic job for Virtual Host Manager with label '"
+                    + label + "' was triggered";
+        }
+        FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
         return "";
     }
