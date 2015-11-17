@@ -1,0 +1,15 @@
+// todo i18n
+// todo icon of VHM!
+
+.spacewalk-toolbar-h1
+  h1
+    | #{virtualHostManager.label}
+
+ul
+  li Organization: #{virtualHostManager.org.name}
+  li Gatherer module: #{virtualHostManager.gathererModule}
+  li User name: #{virtualHostManager.credentials.username}
+  li Configs:
+    ul
+      for config in virtualHostManager.configs
+        li #{config.parameter}: #{config.value}

@@ -42,6 +42,16 @@ public class VirtualHostManagerController {
         return new ModelAndView(data, "virtualhostmanager/all.jade");
     }
 
+    public static ModelAndView get(Request request, Response response, User user) {
+        String label = request.params("vhmlabel");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("virtualHostManager", getFactory().lookupByLabelAndOrg(label, user.getOrg()));
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+
+        return new ModelAndView(data, "virtualhostmanager/detail.jade");
+    }
+
     public static ModelAndView addForm(Request request, Response response) {
         Map<String, Object> data = makeModuleFormData("", null, null);
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
