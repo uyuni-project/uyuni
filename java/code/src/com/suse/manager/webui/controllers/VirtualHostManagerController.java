@@ -2,24 +2,22 @@ package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
-
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
-
 import org.apache.commons.lang.StringUtils;
+import spark.ModelAndView;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
 
 /**
  * todo all javadocs
@@ -146,6 +144,15 @@ public class VirtualHostManagerController {
                 .collect(Collectors.toMap(
                         keyVal -> stripSeparator(keyVal.getKey()),
                         keyVal -> keyVal.getValue()[0]));
+    }
+
+    public static Object delete(Request request, Response response, User user) {
+        // todo pass info about deleted
+        String label = request.params("vhmlabel");
+        VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label, user.getOrg());
+        getFactory().delete(virtualHostManager);
+        response.redirect("/rhn/manager/vhms");
+        return "";
     }
 
     private static VirtualHostManagerFactory getFactory() {

@@ -13,3 +13,7 @@ ul
     ul
       for config in virtualHostManager.configs
         li #{config.parameter}: #{config.value}
+
+form(action="delete/#{virtualHostManager.label}", method="post")
+  input(type="hidden", name="csrf_token", value="#{csrf_token}")
+  input(type="submit", value="Delete this Virtual Host Manager")

@@ -94,6 +94,23 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Use in routes to automatically get the current user, which must be an Org
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withOrgAdmin(RouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
      * Sets up this application and the Jade engine.
      * @return the jade template engine
      */
