@@ -115,9 +115,11 @@ public class SparkApplicationHelper {
      * @return the jade template engine
      */
     public static JadeTemplateEngine setup() {
-        // default for text/html or OpenSynphony will complain
         Spark.before((request, response) -> {
+            // default for text/html or OpenSynphony will complain
             response.type("text/html");
+            // init the flash scope
+            FlashScopeHelper.handleFlashData(request, response);
         });
 
         // set up template engine
