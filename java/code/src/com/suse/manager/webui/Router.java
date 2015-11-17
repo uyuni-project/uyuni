@@ -16,6 +16,7 @@ package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
@@ -65,5 +66,7 @@ public class Router implements SparkApplication {
 
         // Virtual Host Managers
         get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::getAll), jade);
+        get("/manager/vhm/new", VirtualHostManagerController::addForm, jade);
+        post("/manager/vhm", withUser(VirtualHostManagerController::add), jade);
     }
 }
