@@ -25,9 +25,9 @@ import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
 import com.suse.manager.webui.utils.RouteWithUser;
+import com.suse.manager.webui.utils.TemplateViewRouteWithUser;
 
 import de.neuland.jade4j.JadeConfiguration;
-import spark.ModelAndView;
 import spark.Route;
 import spark.Session;
 import spark.Spark;
@@ -48,7 +48,7 @@ public class Router implements SparkApplication {
     private final Gson GSON = new GsonBuilder().create();
 
     @SuppressWarnings("unused")
-    private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
+    private TemplateViewRoute withUser(TemplateViewRouteWithUser route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
@@ -56,7 +56,7 @@ public class Router implements SparkApplication {
     }
 
     @SuppressWarnings("unused")
-    private Route withUser(RouteWithUser<Object> route) {
+    private Route withUser(RouteWithUser route) {
         return (request, response) -> {
             User user = new RequestContext(request.raw()).getCurrentUser();
             return route.handle(request, response, user);
