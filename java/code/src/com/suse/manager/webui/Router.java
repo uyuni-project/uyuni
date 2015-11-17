@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui;
 
-import static com.suse.manager.webui.utils.SparkApplicationUtils.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static spark.Spark.get;
 import static spark.Spark.head;
 
