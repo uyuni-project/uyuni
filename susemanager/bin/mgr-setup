@@ -311,11 +311,9 @@ backup_files() {
 
 copy_remote_files_common() {
     # copy only new files (new kickstart profiles, snippets, trigger, etc.)
-    rsync -e "ssh -i $KEYFILE -l root" -a -v -z --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
-    rsync -e "ssh -i $KEYFILE -l root" -a -v -z root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
+    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/lib/cobbler/ /var/lib/cobbler/
+    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/lib/rhn/kickstarts /var/lib/rhn/
     chown -R tomcat.tomcat /var/lib/rhn/kickstarts
-    rsync -e "ssh -i $KEYFILE -l root" -a -v -z --exclude='libexec/*' root@$SATELLITE_IP:/var/lib/nocpulse/ /var/lib/nocpulse/
-    chown -R nocpulse.nocpulse /var/lib/nocpulse
     rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/root/ssl-build /root/
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/spacewalk/jabberd/server.pem /etc/pki/spacewalk/jabberd/server.pem
     chmod 600 /etc/pki/spacewalk/jabberd/server.pem
@@ -325,9 +323,9 @@ copy_remote_files_common() {
 copy_remote_files_redhat() {
     echo "Copy files from old satellite..."
     # maybe add -H for hardlinks?
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/
+    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/satellite/ /var/spacewalk/
     chown -R wwwrun.www /var/spacewalk
-    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
+    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/var/www/html/pub/ /srv/www/htdocs/pub/
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/certs/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/pki/tls/private/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
@@ -336,15 +334,19 @@ copy_remote_files_redhat() {
 copy_remote_files_suse() {
     echo "Copy files from old SUSE Manager..."
     # maybe add -H for hardlinks?
-    rsync -e "ssh -i $KEYFILE -l root" -avz root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/
+    rsync -e "ssh -i $KEYFILE -l root" -av root@$SATELLITE_IP:/var/spacewalk/ /var/spacewalk/
     chown -R wwwrun.www /var/spacewalk
-    rsync -e "ssh -i $KEYFILE -l root" -avz --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/
+    rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/
+    ln -s /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.crt/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
 }
 
 create_ssh_key() {
+    rm -f $KEYFILE
+    rm -f $KEYFILE.pub
+    cleanup_hostname
     echo "Please enter the root password of the remote machine."
     ssh-keygen -q -N "" -C "spacewalk-migration-key" -f $KEYFILE
     ssh-copy-id -i $KEYFILE root@$SATELLITE_IP > /dev/null 2>&1
@@ -353,6 +355,7 @@ create_ssh_key() {
 remove_ssh_key() {
     ssh root@$SATELLITE_IP -i $KEYFILE "grep -v spacewalk-migration-key /root/.ssh/authorized_keys > /root/.ssh/authorized_keys.tmp && mv /root/.ssh/authorized_keys.tmp /root/.ssh/authorized_keys"
     rm -f $KEYFILE
+    rm -f $KEYFILE.pub
 }
 
 check_remote_type() {
@@ -362,7 +365,7 @@ check_remote_type() {
         SATELLITE_IS_RH=0
     else
         echo "Remote machine appears not to be a SUSE Manager. Exit."
-        exit
+        exit 1
     fi
 
     ssh -i $KEYFILE root@$SATELLITE_IP "test -e /var/lib/spacewalk/scc/migrated"
@@ -370,7 +373,7 @@ check_remote_type() {
         echo "Remote system is already migrated to SCC. Good."
     else
         echo "Remote system has not yet been migrated to SCC! Exit."
-        exit
+        exit 1
     fi
 }
 
@@ -437,6 +440,8 @@ do_migration() {
 
     cleanup_hostname
     remove_ssh_key
+
+    sed -i -e "s/^web\.ssl_available.*$/web.ssl_available = 1/" /etc/rhn/rhn.conf
 }
 
 do_setup() {
@@ -588,14 +593,18 @@ fi
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
     if [ "$LOCAL_DB" != "0" ]; then
         /usr/bin/smdba system-check autotuning
-        /usr/sbin/spacewalk-service restart
+        if [ "$DO_SETUP" = "1" ]; then
+            /usr/sbin/spacewalk-service restart
+        fi
     fi
-    if [ -n "$SCC_USER" -o -n "$ISS_PARENT" ]; then
-        # wait for taskomatic port is open
-        sleep 1
-        /usr/sbin/spacewalk-startup-helper wait-for-taskomatic
-        # schedule refresh
-        mgr-sync refresh --schedule
+    if [ "$DO_SETUP" = "1" ]; then
+        if [ -n "$SCC_USER" -o -n "$ISS_PARENT" ]; then
+            # wait for taskomatic port is open
+            sleep 1
+            /usr/sbin/spacewalk-startup-helper wait-for-taskomatic
+            # schedule refresh
+            mgr-sync refresh --schedule
+        fi
     fi
     # we cannot do this for SCC - the Java API requires a first user
     # which does not exist yet.
@@ -608,6 +617,18 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
 	systemctl enable -q slpd
 	systemctl start slpd
     fi
+fi
+
+if [ "$DO_MIGRATION" = "1" ]; then
+    echo
+    echo
+    echo "============================================================================"
+    echo "Migration complete."
+    echo "Please shut down the old SUSE Manager server now."
+    echo "Reboot the new server and make sure it uses the same IP address and hostname"
+    echo "as the old SUSE Manager server!"
+    echo "============================================================================"
+    echo
 fi
 
 # vim: set expandtab:

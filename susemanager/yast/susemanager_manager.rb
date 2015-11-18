@@ -25,9 +25,7 @@ module Yast
         "MANAGER_ADMIN_EMAIL" => Ops.add("susemanager@", Hostname.CurrentDomain),
         "ACTIVATE_SLP"        => "n"
       }
-      if @migration
-        Ops.set(@settings, "SYS_DB_PASS", "novell")
-      else
+      if !@migration
         Ops.set(@settings, "MANAGER_ENABLE_TFTP", "y")
       end
 
@@ -79,13 +77,7 @@ module Yast
                 _("&IP Address of the SUSE Manager Server"),
                 Ops.get(@settings, "MANAGER_IP", "")
               ),
-              InputField(
-                Id("SYS_DB_PASS"),
-                Opt(:hstretch),
-                # text entry label
-                _("&Database Administrator Password"),
-                Ops.get(@settings, "SYS_DB_PASS", "")
-              )
+            VSpacing(0.5),
             ) :
             VBox(),
           InputField(
