@@ -173,12 +173,18 @@ public class VirtualHostManagerController {
     }
 
     public static Object delete(Request request, Response response, User user) {
-        // todo pass info about deleted
         String label = request.params("vhmlabel");
-        VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label, user.getOrg());
-        getFactory().delete(virtualHostManager);
-        FlashScopeHelper.flash(request, "Virtual Host Manager with label '" + label +
-                "' has been deleted");
+        VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label,
+                user.getOrg());
+        String message;
+        if (virtualHostManager == null) {
+            message = "Virtual Host Manager with label '" + label + "' couldn't be found";
+        }
+        else {
+            getFactory().delete(virtualHostManager);
+            message = "Virtual Host Manager with label '" + label + "' has been deleted";
+        }
+        FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
         return "";
     }
