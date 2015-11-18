@@ -14,9 +14,7 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import com.mockobjects.servlet.MockHttpServletRequest;
 import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockHttpSession;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
@@ -25,23 +23,20 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.controllers.DownloadController;
+import com.suse.manager.webui.utils.SparkTestUtils;
 import com.suse.manager.webui.utils.TokenUtils;
-
 import org.apache.commons.io.FilenameUtils;
-import org.apache.http.client.utils.URIBuilder;
 import spark.Request;
-import spark.Response;
 import spark.RequestResponseFactory;
-import spark.routematch.RouteMatch;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Optional;
+import spark.Response;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannel;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestPackage;
@@ -95,28 +90,14 @@ public class DownloadControllerTest extends RhnBaseTestCase {
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
         TestUtils.saveAndFlush(pkg);
 
-        // Setup the URI
-        URIBuilder uriBuilder = new URIBuilder("http://localhost:8080");
-        final String uriPathFmt = "/rhn/manager/download/%s/getPackage/%s";
-        final String uriFile = String.format("%s.rpm", nvra);
-        final String uriPath = String.format(uriPathFmt,  channel.getLabel(), uriFile);
-        uriBuilder.setPath(uriPath);
-        final String uri = uriBuilder.toString();
-
-        MockHttpServletRequest mockRequest = new MockHttpServletRequest();
-        MockHttpServletResponse mockReponse = new MockHttpServletResponse();
-        mockRequest.setSession(new MockHttpSession());
-        mockRequest.setupGetRequestURI(uri);
-        mockRequest.setupGetMethod("GET");
-
         Map<String, String> params = new HashMap<>();
-        mockRequest.setupGetParameterMap(params);
-        mockRequest.setupPathInfo(uriPath);
+        final String uriFile = String.format("%s.rpm", nvra);
+        Request request = SparkTestUtils.createMockRequest(
+                "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
+                params,
+                channel.getLabel(), uriFile);
 
-        RouteMatch match = new RouteMatch(new Object(), uriBuilder.setPath(
-                String.format(uriPathFmt, ":channel", ":file")).toString(), uri, "");
-        Request request = RequestResponseFactory.create(match, mockRequest);
-        Response response =  RequestResponseFactory.create(mockReponse);
+        Response response = RequestResponseFactory.create(new MockHttpServletResponse());
 
         // Try to download package without a token
         try {
