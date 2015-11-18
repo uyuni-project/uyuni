@@ -75,8 +75,6 @@ public class SSHPushWorker implements QueueWorker {
 
     // Maximum wait time for a task in minutes
     private int maxWait;
-    // Keep track if command timed out
-    private boolean commandTimedOut = false;
 
     /**
      * Constructor.
@@ -229,11 +227,8 @@ public class SSHPushWorker implements QueueWorker {
             waitForChannelClosed(channel);
             int exitStatus = channel.getExitStatus();
 
-            if (exitStatus != 0 || log.isTraceEnabled() || commandTimedOut) {
+            if (exitStatus != 0 || log.isTraceEnabled()) {
                 log.error("Exit status: " + exitStatus + " [" + client + "]");
-                if (commandTimedOut) {
-                    log.error("Task took to long to complete");
-                }
                 log.error("stdout:\n" + IOUtils.toString(stdout));
                 log.error("stderr:\n" + IOUtils.toString(stderr));
             }
@@ -320,7 +315,7 @@ public class SSHPushWorker implements QueueWorker {
             long elapsedTimeInMins =
                     TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - startTime);
             if (maxWait > 0 && elapsedTimeInMins > maxWait) {
-                commandTimedOut = true;
+                log.error("Task took to long to complete");
                 channel.disconnect();
             }
             try {
