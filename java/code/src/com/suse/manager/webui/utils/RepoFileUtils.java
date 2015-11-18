@@ -50,7 +50,8 @@ public class RepoFileUtils {
             String fileName = "channels.repo." + server.getDigitalServerId();
             String token = TokenUtils.createTokenWithServerKey(
                     server.getOrg().getId(), Optional.empty());
-
+            Path baseDir = Paths.get(GENERATED_SLS_ROOT, SALT_CHANNEL_FILES);
+            Files.createDirectories(baseDir);
             String fileContents = StreamSupport
                     .stream(server.getChannels().spliterator(), false)
                     .map(ch -> RepoFileUtils
@@ -58,7 +59,6 @@ public class RepoFileUtils {
                             .fileFormat())
                     .collect(Collectors.joining("\n"));
 
-            Path baseDir = Paths.get(GENERATED_SLS_ROOT, SALT_CHANNEL_FILES);
             Files.write(baseDir.resolve(fileName), fileContents.getBytes());
     }
 
