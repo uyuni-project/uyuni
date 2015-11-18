@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2015 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
@@ -34,6 +49,8 @@ import java.util.stream.Collectors;
  */
 public class VirtualHostManagerController {
 
+    private VirtualHostManagerController() { }
+
     // to separate gatherer modules config values in the form:
     // (VMWare<separator>host, SUSECloud<separator>port)
     public static final String SEPARATOR = "---";
@@ -51,7 +68,8 @@ public class VirtualHostManagerController {
         String label = request.params("vhmlabel");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("virtualHostManager", getFactory().lookupByLabelAndOrg(label, user.getOrg()));
+        data.put("virtualHostManager", getFactory().lookupByLabelAndOrg(label,
+                user.getOrg()));
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
 
         return new ModelAndView(data, "virtualhostmanager/detail.jade");
@@ -78,8 +96,7 @@ public class VirtualHostManagerController {
      * @return
      */
     private static HashMap<String, Object> makeModuleFormData(String vhmLabel,
-            String filledGathererModule, Map<String, String> filledGMParams)
-    {
+            String filledGathererModule, Map<String, String> filledGMParams) {
         HashMap<String, Object> data = new HashMap<>();
         Map<String, GathererModule> gathererModules = new GathererRunner().listModules();
 
@@ -91,7 +108,8 @@ public class VirtualHostManagerController {
         // pre-filled gatherer config values, if provided
         if (filledGathererModule != null && filledGMParams != null) {
             // add (possibly partly) already filled data
-            gathererModules.get(filledGathererModule).getParameters().putAll(filledGMParams);
+            gathererModules.get(filledGathererModule).getParameters().putAll(
+                    filledGMParams);
         }
 
         data.put("label", vhmLabel);
@@ -127,7 +145,8 @@ public class VirtualHostManagerController {
                         gathererModule,
                         gathererModuleParams);
             }
-        } catch (InvalidGathererConfigException e) {
+        }
+        catch (InvalidGathererConfigException e) {
             errors.add("Invalid gatherer module configuration (did you fill all fields?)");
         }
 
@@ -143,7 +162,7 @@ public class VirtualHostManagerController {
         return null;
     }
 
-    private static Map<String,String> createGathererModuleParams(String gathererModule,
+    private static Map<String, String> createGathererModuleParams(String gathererModule,
             Map<String, String[]> queryMap) {
         return queryMap.entrySet().stream()
                 .filter(keyVal -> StringUtils.isNotEmpty(keyVal.getValue()[0]))
@@ -176,8 +195,8 @@ public class VirtualHostManagerController {
             message  = "Problem when running gatherer Taskomatic job: " + e.getMessage();
         }
         if (message == null) {
-            message = "Gatherer Taskomatic job for Virtual Host Manager with label '"
-                    + label + "' was triggered";
+            message = "Gatherer Taskomatic job for Virtual Host Manager with label '" +
+                    label + "' was triggered";
         }
         FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
