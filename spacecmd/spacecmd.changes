@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Nov 19 14:07:08 UTC 2015 - dmacvicar@suse.de
+
+- set binary mode on uploaded files based on content
+  (bsc#948245)
+
+-------------------------------------------------------------------
 Wed Oct 07 14:26:44 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
