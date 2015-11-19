@@ -332,7 +332,8 @@ public class ServerSnapshot extends BaseDomainHelper {
                                                                         this.server);
         for (Map<String, Object> ch : chs) {
             SystemManager.unsubscribeServerFromChannel(this.server.getId(),
-                                                       (Long) ch.get("id"));
+                                                       (Long) ch.get("id"),
+                                                       true);
         }
         // subscribe to appropriate channels
         chs = snapshotChannelList();

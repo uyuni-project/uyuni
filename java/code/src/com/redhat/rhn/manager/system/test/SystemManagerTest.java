@@ -712,7 +712,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
 
         // Get ourselves a system
         Server s = ServerTestUtils.createTestSystem(user);
-        SystemManager.unsubscribeServerFromChannel(user, s, s.getBaseChannel());
+        SystemManager.unsubscribeServerFromChannel(user, s, s.getBaseChannel(), true);
 
         // insert sys into system-set
         RhnSetDecl.SYSTEMS.clear(user);
@@ -731,7 +731,7 @@ public class SystemManagerTest extends RhnBaseTestCase {
 
         // Create a new no-base-channel-server
         Server s2 = ServerTestUtils.createTestSystem(user);
-        SystemManager.unsubscribeServerFromChannel(user, s2, s2.getBaseChannel());
+        SystemManager.unsubscribeServerFromChannel(user, s2, s2.getBaseChannel(), true);
 
         // We should NOT see it yet
         dr = SystemManager.systemsWithoutBaseChannelsInSet(user);

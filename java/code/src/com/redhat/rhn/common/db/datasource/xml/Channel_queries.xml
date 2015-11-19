@@ -711,14 +711,14 @@ ORDER BY UPPER(C.name)
 </mode>
 
 <callable-mode name="subscribe_server_to_channel">
-  <query params="server_id, channel_id, user_id">
-      {call rhn_channel.subscribe_server(:server_id, :channel_id, 0, :user_id)}
+  <query params="server_id, channel_id, user_id, update_counts">
+      {call rhn_channel.subscribe_server(:server_id, :channel_id, 0, :user_id, :update_counts)}
   </query>
 </callable-mode>
 
 <callable-mode name="unsubscribe_server_from_channel">
-  <query params="server_id, channel_id">
-      {call rhn_channel.unsubscribe_server(:server_id, :channel_id)}
+  <query params="server_id, channel_id, update_counts">
+      {call rhn_channel.unsubscribe_server(:server_id, :channel_id, 0, 0, 0, :update_counts)}
   </query>
 </callable-mode>
 

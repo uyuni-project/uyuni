@@ -153,11 +153,13 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
                 // unsubscribe first... It is what the perl code does though.
                 try {
                     log.debug("unsub from channel to be sure");
+                    boolean updateCounts = channel.getChannelFamily()
+                            .getMaxMembers(loggedInUser.getOrg()) != null;
                     SystemManager.unsubscribeServerFromChannel(loggedInUser,
-                            serverIn, channel);
+                            serverIn, channel, updateCounts);
                     log.debug("Sub to channel.");
                     SystemManager.subscribeServerToChannel(loggedInUser, serverIn, channel,
-                            false);
+                            false, updateCounts);
                 }
                 catch (IncompatibleArchException iae) {
                     throw new InvalidChannelException(iae);
@@ -191,8 +193,10 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
 
             // unsubscribe from channel
             try {
+                boolean updateCounts = channel.getChannelFamily()
+                        .getMaxMembers(loggedInUser.getOrg()) != null;
                 SystemManager.unsubscribeServerFromChannel(loggedInUser,
-                        serverIn, channel);
+                        serverIn, channel, updateCounts);
             }
             catch (PermissionException e) {
                 //convert to FaultException

@@ -1380,7 +1380,7 @@ public class SystemManager extends BaseManager {
      */
     public static Server subscribeServerToChannel(User user,
             Server server, Channel channel) {
-        return subscribeServerToChannel(user, server, channel, false);
+        return subscribeServerToChannel(user, server, channel, false, true);
     }
 
     /**
@@ -1389,6 +1389,7 @@ public class SystemManager extends BaseManager {
      * @param server Server to be subscribed
      * @param channel Channel to subscribe to.
      * @param flush flushes the hibernate session.
+     * @param updateCounts true to update channel family counts
      * @return the modified server if there were
      *           any changes modifications made
      *           to the Server during the call.
@@ -1398,7 +1399,8 @@ public class SystemManager extends BaseManager {
     public static Server subscribeServerToChannel(User user,
             Server server,
             Channel channel,
-            boolean flush) {
+            boolean flush,
+            boolean updateCounts) {
 
         // do not allow non-satellite servers to be subscribed to satellite channels.
         if (channel.isSatellite()) {
@@ -1437,6 +1439,7 @@ public class SystemManager extends BaseManager {
             in.put("user_id", null);
         }
         in.put("channel_id", channel.getId());
+        in.put("update_counts", updateCounts ? 1 : 0);
 
         m.execute(in, new HashMap<String, Integer>());
 
@@ -1474,10 +1477,11 @@ public class SystemManager extends BaseManager {
      * @param user The user performing the operation
      * @param server The server to be unsubscribed
      * @param channel The channel to unsubscribe from
+     * @param updateCounts true to update channel family counts
      */
     public static void unsubscribeServerFromChannel(User user, Server server,
-            Channel channel) {
-        unsubscribeServerFromChannel(user, server, channel, false);
+            Channel channel, boolean updateCounts) {
+        unsubscribeServerFromChannel(user, server, channel, false, updateCounts);
     }
 
     /**
@@ -1489,7 +1493,7 @@ public class SystemManager extends BaseManager {
     public static void unsubscribeServerFromChannel(User user, Long sid,
             Long cid) {
         if (ChannelManager.verifyChannelSubscribe(user, cid)) {
-            unsubscribeServerFromChannel(sid, cid);
+            unsubscribeServerFromChannel(sid, cid, true);
         }
     }
 
@@ -1498,12 +1502,13 @@ public class SystemManager extends BaseManager {
      * @param user The user performing the operation
      * @param server The server to be unsubscribed
      * @param channel The channel to unsubscribe from
+     * @param updateCounts true to update channel family counts
      * @param flush flushes the hibernate session. Make sure you
      *              reload the server & channel after  method call
      *              if you set this to true..
      */
     public static void unsubscribeServerFromChannel(User user, Server server,
-            Channel channel, boolean flush) {
+            Channel channel, boolean flush, boolean updateCounts) {
         if (!isAvailableToUser(user, server.getId())) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
@@ -1516,7 +1521,7 @@ public class SystemManager extends BaseManager {
             throw pex;
         }
 
-        unsubscribeServerFromChannel(server, channel, flush);
+        unsubscribeServerFromChannel(server, channel, flush, updateCounts);
     }
 
     /**
@@ -1533,7 +1538,7 @@ public class SystemManager extends BaseManager {
      */
     public static Server unsubscribeServerFromChannel(Server server,
             Channel channel) {
-        return unsubscribeServerFromChannel(server, channel, false);
+        return unsubscribeServerFromChannel(server, channel, false, true);
     }
 
     /**
@@ -1545,6 +1550,7 @@ public class SystemManager extends BaseManager {
      * @param flush flushes the hibernate session. Make sure you
      *              reload the server & channel after  method call
      *              if you set this to true..
+     * @param updateCounts true to update channel family counts
      * @return the modified server if there were
      *           any changes modifications made
      *           to the Server during the call.
@@ -1553,13 +1559,14 @@ public class SystemManager extends BaseManager {
      */
     public static Server unsubscribeServerFromChannel(Server server,
             Channel channel,
-            boolean flush) {
+            boolean flush,
+            boolean updateCounts) {
         if (channel == null) {
             //nothing to do ;)
             return server;
         }
 
-        unsubscribeServerFromChannel(server.getId(), channel.getId());
+        unsubscribeServerFromChannel(server.getId(), channel.getId(), updateCounts);
 
         /*
          * This is f-ing hokey, but we need to be sure to refresh the
@@ -1578,13 +1585,16 @@ public class SystemManager extends BaseManager {
      * overloaded versions of this method if unsure.
      * @param sid the server id
      * @param cid the channel id
+     * @param updateCounts true to update channel family counts
      */
-    public static void unsubscribeServerFromChannel(Long sid, Long cid) {
+    public static void unsubscribeServerFromChannel(Long sid, Long cid,
+            boolean updateCounts) {
         CallableMode m = ModeFactory.getCallableMode("Channel_queries",
             "unsubscribe_server_from_channel");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("server_id", sid);
         params.put("channel_id", cid);
+        params.put("update_counts", updateCounts ? 1 : 0);
         m.execute(params, new HashMap<String, Integer>());
     }
 

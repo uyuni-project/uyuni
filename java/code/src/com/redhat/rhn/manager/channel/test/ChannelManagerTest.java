@@ -197,7 +197,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         DataResult<ChannelTreeNode> dr = ChannelManager.popularChannelTree(user, 1L, null);
 
        assertTrue(dr.isEmpty());
-       SystemManager.unsubscribeServerFromChannel(user, server, server.getBaseChannel());
+       SystemManager.unsubscribeServerFromChannel(user, server, server.getBaseChannel(), true);
        server = SystemManager.subscribeServerToChannel(user, server, channel);
 
        dr = ChannelManager.popularChannelTree(user, 1L, null);

@@ -103,7 +103,9 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
 
         // Unsubscribe the server from it's current base channel
         try {
-            SystemManager.unsubscribeServerFromChannel(user, server, oldChannel);
+            boolean updateCounts =
+                    oldChannel.getChannelFamily().getMaxMembers(user.getOrg()) != null;
+            SystemManager.unsubscribeServerFromChannel(user, server, oldChannel, updateCounts);
         }
         catch (PermissionException e) {
             // convert to FaultException
@@ -113,7 +115,10 @@ public class UpdateBaseChannelCommand extends BaseUpdateChannelCommand {
         if (newChannel != null) {
             // Subscribe the server to the new base channel
             try {
-                SystemManager.subscribeServerToChannel(user, server, newChannel);
+                boolean updateCounts =
+                        newChannel.getChannelFamily().getMaxMembers(user.getOrg()) != null;
+                SystemManager.subscribeServerToChannel(user, server, newChannel,
+                        false, updateCounts);
                 cmd = new UpdateChildChannelsCommand(user, server,
                         newKidsToSubscribe);
                 cmd.store();
