@@ -17,6 +17,7 @@ package com.suse.manager.webui;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
 import static spark.Spark.get;
 import static spark.Spark.head;
+import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
@@ -40,9 +41,9 @@ public class Router implements SparkApplication {
         // Salt Master pages
         get("/manager/minions", MinionController::index, jade);
         get("/manager/minions/:id", MinionController::show);
-        get("/manager/minions/accept/:minion", MinionController::acceptMinion);
+        post("/manager/minions/:id/accept", MinionController::accept);
+        post("/manager/minions/:id/reject", MinionController::reject);
         get("/manager/minions/delete/:minion", MinionController::deleteMinion);
-        get("/manager/minions/reject/:minion", MinionController::rejectMinion);
 
         // Minion APIs
         get("/manager/api/minions/cmd", MinionsAPI::run);
