@@ -6,19 +6,15 @@ import com.suse.manager.webui.utils.TokenUtils;
 
 import java.security.Key;
 
+/**
+ * Tests for the TokenUtils class.
+ */
 public class TokenUtilsTest extends RhnBaseTestCase {
-
-    public void setUp() throws Exception {
-       super.setUp();
-    }
-
-    public void tearDown() throws Exception {
-       super.tearDown();
-    }
 
     public void testGetKey() {
         Key key = TokenUtils.getKeyForSecret(TestUtils.randomString());
         assertNotNull(key);
+        System.out.println(key.toString());
         assertEquals(16, key.getEncoded().length);
     }
 }
