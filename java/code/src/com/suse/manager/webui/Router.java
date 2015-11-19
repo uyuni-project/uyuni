@@ -14,112 +14,51 @@
  */
 package com.suse.manager.webui;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.struts.RequestContext;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static spark.Spark.get;
+import static spark.Spark.head;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionsController;
-import com.suse.manager.webui.utils.RouteWithUser;
 
-import de.neuland.jade4j.JadeConfiguration;
-import spark.ModelAndView;
-import spark.Route;
-import spark.Session;
-import spark.Spark;
-import spark.TemplateViewRoute;
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
-
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.httpclient.HttpStatus;
 
 /**
  * Router class defining the web UI routes.
  */
 public class Router implements SparkApplication {
 
-    private final String templateRoot = "com/suse/manager/webui/templates";
-    private final Gson GSON = new GsonBuilder().create();
-
-    @SuppressWarnings("unused")
-    private TemplateViewRoute templatedWithUser(RouteWithUser<ModelAndView> route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            return route.handle(request, response, user);
-        };
-    }
-
-    @SuppressWarnings("unused")
-    private Route withUser(RouteWithUser<Object> route) {
-        return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
-            return route.handle(request, response, user);
-        };
-    }
-
     /**
      * Invoked from the SparkFilter. Add routes here.
      */
     @Override
     public void init() {
-        // handler for crosscutting concerns relevant to all pages
-        Spark.before((request, response) -> {
-            Session session = request.session(true);
-            CSRFTokenValidator.getToken(session.raw());
-            response.type("text/html");
-        });
+        JadeTemplateEngine jade = setup();
 
-        // Exhibit localization service in templates
-        JadeTemplateEngine jade = new JadeTemplateEngine(templateRoot);
-        Map<String, Object> sharedVariables = new HashMap<>();
-        sharedVariables.put("l", Languages.getInstance());
-        sharedVariables.put("isDevMode",
-                Config.get().getBoolean("java.development_environment"));
-        JadeConfiguration config = jade.configuration();
-        config.setSharedVariables(sharedVariables);
+        // Salt Master pages
+        get("/manager/minions", MinionsController::listMinions, jade);
+        get("/manager/minions/overview/:minion", MinionsController::systemOverview);
+        get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
+        get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
+        get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
 
-        // Setup routes
-        Spark.get("/manager/minions", MinionsController::listMinions, jade);
-        Spark.get("/manager/minions/overview/:minion", MinionsController::systemOverview);
-        Spark.get("/manager/minions/accept/:minion", MinionsController::acceptMinion);
-        Spark.get("/manager/minions/delete/:minion", MinionsController::deleteMinion);
-        Spark.get("/manager/minions/reject/:minion", MinionsController::rejectMinion);
+        // Minion APIs
+        get("/manager/api/minions/cmd", MinionsAPI::run);
+        get("/manager/api/minions/match", MinionsAPI::match);
 
-        // Remote commands
-        Spark.get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
-
-        // Setup API routes
-        Spark.get("/manager/api/minions/cmd", MinionsAPI::run);
-        Spark.get("/manager/api/minions/match", MinionsAPI::match);
+        // Remote command page
+        get("/manager/minions/cmd", MinionsController::remoteCommands, jade);
 
         // Download endpoint
-        Spark.get("/manager/download/:channel/getPackage/:file",
+        get("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        Spark.get("/manager/download/:channel/repodata/:file",
+        get("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-        Spark.head("/manager/download/:channel/getPackage/:file",
+        head("/manager/download/:channel/getPackage/:file",
                 DownloadController::downloadPackage);
-        Spark.head("/manager/download/:channel/repodata/:file",
+        head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
-
-        // RuntimeException will be passed on (resulting in status code 500)
-        Spark.exception(RuntimeException.class, (e, request, response) -> {
-            if (request.headers("accept").contains("json")) {
-                Map<String, Object> exc = new HashMap<>();
-                exc.put("message", e.getMessage());
-                response.type("application/json");
-                response.body(this.GSON.toJson(exc));
-                response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-            }
-            else {
-                throw (RuntimeException) e;
-            }
-        });
     }
 }
