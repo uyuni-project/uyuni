@@ -298,7 +298,8 @@ function disableEnterKey() {
 
 // fix anchor scrolling in inline help
 $(function() {
-  if (window.location.pathname.indexOf("rhn/help/user") < 0) {
+  if (window.location.pathname.indexOf("rhn/help/user") < 0 &&
+	window.location.pathname.indexOf("rhn/systems/ssm/misc") < 0) {
     return;
   }
   if (window.location.hash) {
