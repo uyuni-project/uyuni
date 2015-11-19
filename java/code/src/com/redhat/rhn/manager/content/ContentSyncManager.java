@@ -1321,7 +1321,7 @@ public class ContentSyncManager {
             int responseCode;
             try {
                 responseCode = MgrSyncUtils.sendHeadRequest(
-                        OES_URL, creds.getUsername(), creds.getPassword());
+                        OES_URL, creds.getUsername(), creds.getPassword()).getStatusLine().getStatusCode();
                 if (log.isDebugEnabled()) {
                     log.debug("OES repo response code for " +
                             creds.getUsername() + ": " + responseCode);
@@ -1486,7 +1486,7 @@ public class ContentSyncManager {
 
                 // Verify the mirrored repo by sending a HEAD request
                 int mirrorStatus = MgrSyncUtils.sendHeadRequest(testUri.toString(),
-                        username, password);
+                        username, password).getStatusLine().getStatusCode();
                 if (mirrorStatus == HttpURLConnection.HTTP_OK) {
                     // Build URL combining the mirror and N/SCC parts
                     String[] mirrorParams = StringUtils.split(mirrorUri.getQuery(), '&');
