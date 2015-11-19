@@ -23,8 +23,9 @@ import com.redhat.rhn.domain.channel.ProductName;
 
 import com.suse.mgrsync.XMLChannel;
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.HeadMethod;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpHead;
 
 import java.io.IOException;
 
@@ -46,7 +47,7 @@ public class MgrSyncUtils {
      * @return the response code of the request
      * @throws IOException in case of an error
      */
-    public static int sendHeadRequest(String url, String username, String password)
+    public static HttpResponse sendHeadRequest(String url, String username, String password)
             throws IOException {
         return sendHeadRequest(url, username, password, false);
     }
@@ -59,7 +60,7 @@ public class MgrSyncUtils {
      * @throws IOException in case of an error
      */
     public static boolean verifyProxy(String url) throws IOException {
-        return sendHeadRequest(url, null, null, true) == HttpStatus.SC_OK;
+        return sendHeadRequest(url, null, null, true).getStatusLine().getStatusCode() == HttpStatus.SC_OK;
     }
 
     /**
@@ -72,10 +73,10 @@ public class MgrSyncUtils {
      * @return the response code of the request
      * @throws IOException in case of an error
      */
-    private static int sendHeadRequest(String url, String username, String password,
+    private static HttpResponse sendHeadRequest(String url, String username, String password,
             boolean ignoreNoProxy) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
-        HeadMethod headRequest = new HeadMethod(url);
+        HttpHead headRequest = new HttpHead(url);
         try {
             return httpClient.executeRequest(
                     headRequest, username, password, ignoreNoProxy);

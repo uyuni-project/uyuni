@@ -21,13 +21,12 @@ import com.redhat.rhn.manager.setup.test.ProxySettingsManagerTest;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -63,9 +62,10 @@ public class HttpClientAdapterTest extends TestCase {
         Callable<Integer> requester = new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                HttpMethod request = new GetMethod(SERVER_MOCK.getURI().toString());
+                HttpGet request = new HttpGet(SERVER_MOCK.getURI().toString());
                 HttpClientAdapter client = new HttpClientAdapter();
-                return client.executeRequest(request, TEST_USER, TEST_PASSWORD);
+                return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+                        .getStatusLine().getStatusCode();
             }
         };
 
@@ -91,9 +91,10 @@ public class HttpClientAdapterTest extends TestCase {
         Callable<Integer> requester = new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
-                HttpMethod request = new GetMethod("http://" + TEST_AUTHORITY);
+                HttpGet request = new HttpGet("http://" + TEST_AUTHORITY);
                 HttpClientAdapter client = new HttpClientAdapter();
-                return client.executeRequest(request, TEST_USER, TEST_PASSWORD);
+                return client.executeRequest(request, TEST_USER, TEST_PASSWORD)
+                        .getStatusLine().getStatusCode();
             }
         };
 
@@ -162,29 +163,29 @@ public class HttpClientAdapterTest extends TestCase {
         setNoProxy("example.com, false.com");
 
         // No proxy would be used for these examples
-        boolean result = callUseProxyFor(new URI("http://example.com:1234", false));
+        boolean result = callUseProxyFor(new URI("http://example.com:1234"));
         assertFalse(result);
 
-        result = callUseProxyFor(new URI("http://foo.example.com", false));
+        result = callUseProxyFor(new URI("http://foo.example.com"));
         assertFalse(result);
 
-        result = callUseProxyFor(new URI("http://check.false.com", false));
+        result = callUseProxyFor(new URI("http://check.false.com"));
         assertFalse(result);
 
-        result = callUseProxyFor(new URI("http://localhost:1234", false));
+        result = callUseProxyFor(new URI("http://localhost:1234"));
         assertFalse(result);
 
-        result = callUseProxyFor(new URI("http://127.0.0.1:1234", false));
+        result = callUseProxyFor(new URI("http://127.0.0.1:1234"));
         assertFalse(result);
 
         // ... while a proxy would be used for those
-        result = callUseProxyFor(new URI("http://fooexample.com:1234", false));
+        result = callUseProxyFor(new URI("http://fooexample.com:1234"));
         assertTrue(result);
 
-        result = callUseProxyFor(new URI("http://foobar.com", false));
+        result = callUseProxyFor(new URI("http://foobar.com"));
         assertTrue(result);
 
-        result = callUseProxyFor(new URI("http://truefalse.com", false));
+        result = callUseProxyFor(new URI("http://truefalse.com"));
         assertTrue(result);
     }
 
@@ -197,10 +198,10 @@ public class HttpClientAdapterTest extends TestCase {
         setNoProxy("example.com, *");
 
         // No proxy should be used for *all* hosts, even for example.com
-        boolean result = callUseProxyFor(new URI("http://example.com", false));
+        boolean result = callUseProxyFor(new URI("http://example.com"));
         assertFalse(result);
 
-        result = callUseProxyFor(new URI("http://foobar.com", false));
+        result = callUseProxyFor(new URI("http://foobar.com"));
         assertFalse(result);
     }
 
@@ -213,13 +214,13 @@ public class HttpClientAdapterTest extends TestCase {
         setNoProxy("");
 
         // Proxy should be used for *all* hosts (except localhost etc.)
-        boolean result = callUseProxyFor(new URI("http://example.com", false));
+        boolean result = callUseProxyFor(new URI("http://example.com"));
         assertTrue(result);
 
-        result = callUseProxyFor(new URI("http://foobar.com", false));
+        result = callUseProxyFor(new URI("http://foobar.com"));
         assertTrue(result);
 
-        result = callUseProxyFor(new URI("http://localhost:1234", false));
+        result = callUseProxyFor(new URI("http://localhost:1234"));
         assertFalse(result);
     }
 
