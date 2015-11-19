@@ -1,8 +1,7 @@
 .spacewalk-toolbar-h1
   h1
     i.fa.fa-desktop
-    |  
-    #{l.t("All Minions")}
+    | #{l.t("All Minions")}
 
 .row
   .col-md-6
@@ -11,7 +10,7 @@
         if size(unaccepted_minions) > 1
           h2.pull-left(style="padding-top: 4px")
             i.fa.fa-plus
-            #{size(unaccepted_minions)} #{l.t("Pending")}
+            | #{size(unaccepted_minions)} #{l.t("Pending")}
           .pull-right.btn-group
             a.btn.btn-default(href="/rhn/manager/minions/accept/*"): i.fa.fa-check.no-margin
             a.btn.btn-default(href="/rhn/manager/minions/reject/*"): i.fa.fa-times.no-margin
@@ -19,7 +18,7 @@
         else
           h2
             i.fa.fa-plus
-            #{size(unaccepted_minions)} #{l.t("Pending")}
+            | #{size(unaccepted_minions)} #{l.t("Pending")}
       table(class="table table-striped vertical-middle")
         for minion in unaccepted_minions
           tr
@@ -38,7 +37,7 @@
       .panel-heading
         h2
           i.fa.fa-times
-          #{size(rejected_minions)} #{l.t("Rejected")}
+          | #{size(rejected_minions)} #{l.t("Rejected")}
       table(class="table table-striped vertical-middle")
         for minion in rejected_minions
           tr
