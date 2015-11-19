@@ -75,6 +75,15 @@ function columnHeight() {
     horizontalMenu.removeClass('in');
   };
 
+  // Detect if side menu is really side and not whole screen wide. Detecting indirectly with section width because aside can be hidden.
+  if ($(".spacewalk-main-column-layout section").outerWidth() < $(".spacewalk-main-column-layout").outerWidth()) {
+    var asideTop = $(".spacewalk-main-column-layout aside").offset().top;
+    var footerTop = $("footer").offset().top;
+    $(".spacewalk-main-column-layout aside").css("min-height", footerTop - asideTop);
+  }
+  else{
+    $(".spacewalk-main-column-layout aside").css("min-height", '100%');
+  }
 };
 
 // returns an object that can be passed to DWR renderer as a callback
@@ -289,7 +298,8 @@ function disableEnterKey() {
 
 // fix anchor scrolling in inline help
 $(function() {
-  if (window.location.pathname.indexOf("rhn/help/user") < 0) {
+  if (window.location.pathname.indexOf("rhn/help/user") < 0 &&
+	window.location.pathname.indexOf("rhn/systems/ssm/misc") < 0) {
     return;
   }
   if (window.location.hash) {
