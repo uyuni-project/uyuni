@@ -11,7 +11,7 @@ $(document).on("ready", function() {
         var data = JSON.parse(event.data);
         var modalId = data.minionId + Date.now();
         alert.html('Managed file <b>' + data.path +
-            '</b> has been modified on minion: <a href="/rhn/manager/minions/overview/' + data.minionId +'"><b>' + data.minionId + '</b></a>' +
+            '</b> has been modified on minion: <a href="/rhn/manager/minions/' + data.minionId +'"><b>' + data.minionId + '</b></a>' +
             '<button data-toggle="modal" data-target="#' + modalId + '" class="btn btn-danger pull-right">See Changes</button>' +
             '<span class="clearfix"></span>' +
             '<div class="modal fade" id="' + modalId + '" tabindex="-1" role="dialog" aria-labelledby="diff">' +

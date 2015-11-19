@@ -14,8 +14,10 @@
  */
 package com.suse.manager.webui.controllers;
 
+import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.saltstack.netapi.calls.wheel.Key;
@@ -31,21 +33,21 @@ import spark.Response;
 /**
  * Controller class providing backend code for the minions page.
  */
-public class MinionsController {
+public class MinionController {
 
     // Reference to the SaltService instance
     private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
-    private MinionsController() { }
+    private MinionController() { }
 
     /**
-     * Handler for the minions page.
+     * Displays a list of minions.
      *
      * @param request the request object
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView listMinions(Request request, Response response) {
+    public static ModelAndView index(Request request, Response response) {
         Key.Names keys = SALT_SERVICE.getKeys();
         List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
@@ -53,6 +55,7 @@ public class MinionsController {
         data.put("unaccepted_minions", keys.getUnacceptedMinions());
         data.put("rejected_minions", keys.getRejectedMinions());
         data.put("present", present);
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         return new ModelAndView(data, "minions.jade");
     }
 
@@ -63,8 +66,8 @@ public class MinionsController {
      * @param response the response object
      * @return dummy string to satisfy spark
      */
-    public static Object acceptMinion(Request request, Response response) {
-        SALT_SERVICE.acceptKey(request.params("minion"));
+    public static Object accept(Request request, Response response) {
+        SALT_SERVICE.acceptKey(request.params("id"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -76,8 +79,8 @@ public class MinionsController {
      * @param response the response object
      * @return dummy string to satisfy spark
      */
-    public static Object deleteMinion(Request request, Response response) {
-        SALT_SERVICE.deleteKey(request.params("minion"));
+    public static Object destroy(Request request, Response response) {
+        SALT_SERVICE.deleteKey(request.params("id"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -89,8 +92,8 @@ public class MinionsController {
      * @param response the response object
      * @return dummy string to satisfy spark
      */
-    public static Object rejectMinion(Request request, Response response) {
-        SALT_SERVICE.rejectKey(request.params("minion"));
+    public static Object reject(Request request, Response response) {
+        SALT_SERVICE.rejectKey(request.params("id"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
@@ -108,14 +111,14 @@ public class MinionsController {
     }
 
     /**
-     * Redirects to the system overview page of the minion
+     * Displays a single minion.
      *
      * @param request the request object
      * @param response the response object
      * @return nothing
      */
-    public static String systemOverview(Request request, Response response) {
-        String minionId = request.params("minion");
+    public static String show(Request request, Response response) {
+        String minionId = request.params("id");
         String machineId = SaltAPIService.INSTANCE.getMachineId(minionId);
         Server server = ServerFactory.findRegisteredMinion(machineId);
         response.redirect("/rhn/systems/details/Overview.do?sid=" + server.getId());

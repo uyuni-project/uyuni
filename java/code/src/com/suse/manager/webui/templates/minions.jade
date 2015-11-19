@@ -11,9 +11,13 @@
           h2.pull-left(style="padding-top: 4px")
             i.fa.fa-plus
             | #{size(unaccepted_minions)} #{l.t("Pending")}
-          .pull-right.btn-group
-            a.btn.btn-default(href="/rhn/manager/minions/accept/*"): i.fa.fa-check.no-margin
-            a.btn.btn-default(href="/rhn/manager/minions/reject/*"): i.fa.fa-times.no-margin
+          form(method="post")
+            input(type="hidden", name="csrf_token", value="#{csrf_token}")
+            .pull-right.btn-group
+              button(type="submit" formaction="/rhn/manager/minions/*/accept").btn.btn-default
+                i.fa.fa-check.no-margin
+              button(type="submit" formaction="/rhn/manager/minions/*/reject").btn.btn-default
+                i.fa.fa-times.no-margin
           .clearfix
         else
           h2
@@ -25,9 +29,13 @@
             td
               b #{minion}
             td.col-md-5
-              .pull-right.btn-group
-                a.btn.btn-default(href="/rhn/manager/minions/accept/#{minion}"): i.fa.fa-check.no-margin
-                a.btn.btn-default(href="/rhn/manager/minions/reject/#{minion}"): i.fa.fa-times.no-margin
+              form(method="post")
+                input(type="hidden", name="csrf_token", value="#{csrf_token}")
+                .pull-right.btn-group
+                  button(type="submit" formaction="/rhn/manager/minions/#{minion}/accept").btn.btn-default
+                    i.fa.fa-check.no-margin
+                  button(type="submit" formaction="/rhn/manager/minions/#{minion}/reject").btn.btn-default
+                    i.fa.fa-times.no-margin
         else
           tr
             td #{l.t("No pending minions.")}
@@ -44,8 +52,10 @@
             td
               b #{minion}
             td.col-md-2
-              .pull-right
-                a.btn.btn-default(href="/rhn/manager/minions/delete/#{minion}"): i.fa.fa-trash-o.no-margin
+              form(method="post" action="/rhn/manager/minions/#{minion}/delete")
+                input(type="hidden", name="csrf_token", value="#{csrf_token}")
+                .pull-right
+                  button(type="submit").btn.btn-default: i.fa.fa-trash-o.no-margin
         else
           tr
             td #{l.t("No rejected minions.")}
