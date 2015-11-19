@@ -79,8 +79,8 @@ public class MinionController {
      * @param response the response object
      * @return dummy string to satisfy spark
      */
-    public static Object deleteMinion(Request request, Response response) {
-        SALT_SERVICE.deleteKey(request.params("minion"));
+    public static Object destroy(Request request, Response response) {
+        SALT_SERVICE.deleteKey(request.params("id"));
         response.redirect("/rhn/manager/minions");
         return "";
     }
