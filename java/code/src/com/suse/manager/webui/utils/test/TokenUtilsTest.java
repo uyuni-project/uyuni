@@ -19,6 +19,6 @@ public class TokenUtilsTest extends RhnBaseTestCase {
     public void testGetKey() {
         Key key = TokenUtils.getKeyForSecret(TestUtils.randomString());
         assertNotNull(key);
-        assertEquals(32, key.getEncoded().length );
+        assertEquals(16, key.getEncoded().length);
     }
 }
