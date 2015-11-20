@@ -21,7 +21,7 @@ if errors
     .alert.alert-danger #{e}
 
 .row.col-md-12
-  form(action="/rhn/manager/vhm", method="post", class="form-horizontal")
+  form(action="/rhn/manager/vhms", method="post", class="form-horizontal")
     input(type="hidden", name="csrf_token", value="#{csrf_token}")
     .form-group
       label.col-md-3.control-label Label:
