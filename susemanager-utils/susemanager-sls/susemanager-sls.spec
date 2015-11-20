@@ -40,7 +40,7 @@ cp -R salt/* %{buildroot}/usr/share/susemanager/salt
 
 %post
 # HACK! Create broken link when it will be replaces with the real file
-ln -s /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+ln -sf /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
       /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT 2>&1 || exit 0
 
 %files
