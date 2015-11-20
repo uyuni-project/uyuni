@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.virtualhostmanager;
 
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -25,6 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.NoSuchGathererModuleException;
 
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
@@ -89,13 +89,15 @@ public class VirtualHostManagerHandler extends BaseHandler {
             throw new InvalidParameterException("Another Virtual Host Manager with the " +
                     "same label already exists.");
         }
-        try {
-            VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
+
+        VirtualHostManagerFactory factory = VirtualHostManagerFactory.getInstance();
+        if (!factory.isConfigurationValid(moduleName, parameters)) {
+            throw new InvalidParameterException("Parameter validation failed.");
+        }
+        else {
+            factory.createVirtualHostManager(label,
                     loggedInUser.getOrg(), moduleName, parameters);
             return BaseHandler.VALID;
-        }
-        catch (InvalidGathererConfigException e) {
-            throw new InvalidParameterException(e.getMessage());
         }
     }
 

@@ -19,7 +19,6 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -38,16 +37,13 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     private VirtualHostManagerFactory factory;
     private static final String SUSE_CLOUD = "SUSECloud";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        factory = new VirtualHostManagerFactory() {
-            @Override
-            protected void validateGathererConfiguration(String moduleName,
-                    Map<String, String> parameters) {
-                // no op
-            }
-        };
+        factory = VirtualHostManagerFactory.getInstance();
     }
 
     /**
@@ -155,31 +151,6 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
 
         factory.delete(vhm);
         assertNotNull(ServerFactory.lookupById(serverId));
-    }
-
-    /**
-     * Tests throwing the IllegalArgumentException creating Virtual Host Manager
-     * with an invalid gatherer module
-     * @throws Exception if anything goes wrong
-     */
-    public void testCreateVHMInvalidGathererConfig() {
-        VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
-            @Override
-            protected void validateGathererConfiguration(String moduleName,
-                    Map<String, String> parameters)
-                    throws InvalidGathererConfigException {
-                throw new InvalidGathererConfigException("Module 'foobar' not available");
-            }
-        };
-
-        try {
-            customFactory.createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD,
-                    Collections.emptyMap());
-        }
-        catch (InvalidGathererConfigException e) {
-            return; // exception must be thrown
-        }
-        fail("IllegalArgumentException should have been thrown.");
     }
 
     /**
