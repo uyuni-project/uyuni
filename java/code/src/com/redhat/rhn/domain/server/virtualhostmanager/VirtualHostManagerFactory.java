@@ -41,8 +41,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     /**
      * Name of parameter specifying username in Virtual Host Manager Config
      */
-    public static final String CONFIG_USER = "user";
-    private static final String CONFIG_PASS = "pass";
+    public static final String CONFIG_USER = "username";
+    private static final String CONFIG_PASS = "password";
     private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
             new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
 
