@@ -1,2 +1,2 @@
 include:
-    - .{{ grains['os'] + grains['osrelease'].replace('.', '_') }}
+    - .{{ grains['osfullname'] + grains['osrelease'].replace('.', '_') }}
