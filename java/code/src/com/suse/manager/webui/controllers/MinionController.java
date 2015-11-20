@@ -47,7 +47,7 @@ public class MinionController {
      * @param response the response object
      * @return the ModelAndView object to render the page
      */
-    public static ModelAndView index(Request request, Response response) {
+    public static ModelAndView list(Request request, Response response) {
         Key.Names keys = SALT_SERVICE.getKeys();
         List<String> present = SALT_SERVICE.present();
         Map<String, Object> data = new HashMap<>();
