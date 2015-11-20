@@ -33,7 +33,7 @@ Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.11
+Version: 2.5.14
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -1014,6 +1014,19 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Nov 19 2015 Jan Dobes 2.5.14-1
+- BugFix: remove inconsistency and make more general the action description for
+  package page title and tab-title in Schedule
+
+* Thu Nov 19 2015 Jan Dobes 2.5.13-1
+- better log than nothing
+- Use non-immediate errata cache rebuilding on channel unsubscription
+
+* Tue Nov 17 2015 Grant Gainey 2.5.12-1
+- 1282855 - publishToChannel optimization
+- 1282838 - Fix extremely slow channel.software.syncErrata API
+- Fix typo and remove from whitelist
+
 * Mon Nov 02 2015 Tomas Lestach <tlestach@redhat.com> 2.5.11-1
 - removing unused code
 
