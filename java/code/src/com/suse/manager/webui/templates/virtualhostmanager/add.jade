@@ -1,26 +1,24 @@
-// todo i18n
-
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
-    | Add a #{module.name}-based Virtual Host Manager
+    | #{l.t("Add a " + module.name + "-based Virtual Host Manager")}
 
 if errors
   for e in errors
-    .alert.alert-danger #{e}
+    .alert.alert-danger #{l.t(e)}
 
 .row.col-md-12
   form(action="/rhn/manager/vhms", method="post", class="form-horizontal")
     input(type="hidden", name="csrf_token", value="#{csrf_token}")
     input(type="hidden", name="module", value="#{module.name}")
     .form-group
-      label.col-md-3.control-label Label:
+      label.col-md-3.control-label #{l.t("Label")}:
       .col-md-6
         input(type="text", name="label", value="#{virtualHostManager.label}", class="form-control")
 
     for parValue, parKey in module.parameters
       .form-group
-        label.col-md-3.control-label #{h.capitalize(parKey)}:
+        label.col-md-3.control-label #{l.t(h.capitalize(parKey))}:
         .col-md-6
           input(type="text", name="module_#{parKey}", value="#{parValue}", class="form-control")
 
@@ -28,4 +26,4 @@ if errors
       .col-md-offset-3.col-md-6
         button(type="submit", class="btn btn-success")
           i.fa.fa-plus
-          | Add Virtual Host Manager
+          | #{l.t("Add Virtual Host Manager")}
