@@ -17,7 +17,7 @@ package com.suse.manager.model.gatherer;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -70,7 +70,7 @@ public class GathererModule {
      */
     public void addParameter(String key, String value) {
         if (this.parameters == null) {
-            this.parameters = new HashMap<>();
+            this.parameters = new LinkedHashMap<>();
         }
         this.parameters.put(key, value);
     }
