@@ -41,7 +41,6 @@ import java.util.stream.Collectors;
 
 /**
  * todo all javadocs
- * todo conventions, conventions, conventions!!!!
  *  - jade template filenames
  *  - spark parameters
  *  - spark endpoints!
@@ -55,27 +54,27 @@ public class VirtualHostManagerController {
     // (VMWare<separator>host, SUSECloud<separator>port)
     public static final String SEPARATOR = "---";
 
-    public static ModelAndView getAll(Request request, Response response, User user) {
+    public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
         data.put("info", FlashScopeHelper.flash(request));
-        return new ModelAndView(data, "virtualhostmanager/all.jade");
+        return new ModelAndView(data, "virtualhostmanager/list.jade");
     }
 
-    public static ModelAndView get(Request request, Response response, User user) {
-        String label = request.params("vhmlabel");
+    public static ModelAndView show(Request request, Response response, User user) {
+        String label = request.params("id");
 
         Map<String, Object> data = new HashMap<>();
         data.put("virtualHostManager", getFactory().lookupByLabelAndOrg(label,
                 user.getOrg()));
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
 
-        return new ModelAndView(data, "virtualhostmanager/detail.jade");
+        return new ModelAndView(data, "virtualhostmanager/show.jade");
     }
 
-    public static ModelAndView addForm(Request request, Response response) {
+    public static ModelAndView add(Request request, Response response) {
         Map<String, Object> data = makeModuleFormData("", null, null);
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         return new ModelAndView(data, "virtualhostmanager/add.jade");
@@ -119,7 +118,7 @@ public class VirtualHostManagerController {
     }
 
     // todo generalize the validation somehow (maybe wrap with sth that catches an exc...)
-    public static ModelAndView add(Request request, Response response, User user) {
+    public static ModelAndView create(Request request, Response response, User user) {
         List<String> errors = new LinkedList<>();
 
         String label = request.queryParams("label");
@@ -173,7 +172,7 @@ public class VirtualHostManagerController {
     }
 
     public static Object delete(Request request, Response response, User user) {
-        String label = request.params("vhmlabel");
+        String label = request.params("id");
         VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label,
                 user.getOrg());
         String message;
@@ -190,7 +189,7 @@ public class VirtualHostManagerController {
     }
 
     public static Object refresh(Request request, Response response, User user) {
-        String label = request.params("vhmlabel");
+        String label = request.params("id");
         String message = null;
         Map<String, String> params = new HashMap<String, String>();
         params.put("vhmlabel", label);

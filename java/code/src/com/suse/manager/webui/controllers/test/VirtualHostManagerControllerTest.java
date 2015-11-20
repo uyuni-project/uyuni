@@ -58,7 +58,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
     public void testGetAll() throws Exception {
         createVirtualHostManagerWithLabel("myVHM", user.getOrg());
-        Map modelMap = (Map) VirtualHostManagerController.getAll(getRequestWithCsrf(""),
+        Map modelMap = (Map) VirtualHostManagerController.list(getRequestWithCsrf(""),
                 response, user).getModel();
         // just test for non-emptiness
         assertNotNull(modelMap.get("virtualHostManagers"));
@@ -70,7 +70,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         createVirtualHostManagerWithLabel(label, otherOrg);
 
         Request request = getRequestWithCsrf("/:vhmlabel", label);
-        Object result = VirtualHostManagerController.get(request, response, user)
+        Object result = VirtualHostManagerController.show(request, response, user)
                 .getModel();
 
         assertFalse(((Map) result).containsKey(label));
@@ -82,7 +82,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
         Request request = getRequestWithCsrf("/:vhmlabel", label);
         Object result =
-                VirtualHostManagerController.get(request, response, user).getModel();
+                VirtualHostManagerController.show(request, response, user).getModel();
         assertEquals(manager, ((Map) result).get("virtualHostManager"));
     }
 

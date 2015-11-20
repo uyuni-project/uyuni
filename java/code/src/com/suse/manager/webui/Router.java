@@ -65,14 +65,13 @@ public class Router implements SparkApplication {
                 DownloadController::downloadMetadata);
 
         // Virtual Host Managers
-        get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::getAll), jade);
-        get("/manager/vhm/new", VirtualHostManagerController::addForm, jade);
-        post("/manager/vhm", withUser(VirtualHostManagerController::add), jade);
-        get("/manager/vhm/:vhmlabel",
-                withOrgAdmin(VirtualHostManagerController::get), jade);
-        post("/manager/vhm/delete/:vhmlabel",
+        get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::list), jade);
+        get("/manager/vhms/add", VirtualHostManagerController::add, jade);
+        post("/manager/vhms", withUser(VirtualHostManagerController::create), jade);
+        get("/manager/vhms/:id", withOrgAdmin(VirtualHostManagerController::show), jade);
+        post("/manager/vhms/:id/delete",
                 withOrgAdmin(VirtualHostManagerController::delete));
-        post("/manager/vhm/refresh/:vhmlabel",
+        post("/manager/vhms/:id/refresh",
                 withOrgAdmin(VirtualHostManagerController::refresh));
     }
 }

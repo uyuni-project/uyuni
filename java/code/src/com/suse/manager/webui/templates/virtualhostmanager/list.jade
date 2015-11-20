@@ -2,7 +2,7 @@
 
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
-    a(href="vhm/new")
+    a(href="vhms/add")
       i.fa.fa-plus(title='Add Virtual Host Manager')
       | Add Virtual Host Manager
   h1
@@ -26,7 +26,7 @@ if (info)
           for vhmanager in virtualHostManagers
             tr
               td
-                a(href="vhm/#{vhmanager.label}")
+                a(href="vhms/#{vhmanager.id}")
                   i.fa.spacewalk-icon-virtual-host-manager
                   | #{vhmanager.label}
               td #{vhmanager.org.name}
