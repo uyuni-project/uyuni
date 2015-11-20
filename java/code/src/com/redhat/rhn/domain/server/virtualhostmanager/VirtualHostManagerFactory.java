@@ -19,12 +19,15 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -160,9 +163,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         virtualHostManager.setConfigs(
                 createVirtualHostManagerConfigs(virtualHostManager, parameters));
 
-        saveObject(virtualHostManager);
-
         return virtualHostManager;
+    }
+
+    /**
+     * Saves a Virtual Host Manager.
+     *
+     * @param virtualHostManager the Virtual Host Manager
+     */
+    public void save(VirtualHostManager virtualHostManager) {
+        saveObject(virtualHostManager);
     }
 
     /**
@@ -245,7 +255,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
             credentials = CredentialsFactory.createVHMCredentials();
             credentials.setUsername(params.get(CONFIG_USER));
             credentials.setPassword(params.get(CONFIG_PASS));
-            CredentialsFactory.storeCredentials(credentials);
+            credentials.setModified(new Date());
         }
 
         return credentials;

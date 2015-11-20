@@ -116,11 +116,13 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     }
 
     private VirtualHostManager createVirtualHostManagerWithLabel(String label, Org otherOrg) {
-        return factory.createVirtualHostManager(label,
+        VirtualHostManager vhm = factory.createVirtualHostManager(label,
                 user.getOrg(),
                 "File",
                 new HashMap<String, String>() {{
                     put("url", "notimportant");
                 }});
+        factory.save(vhm);
+        return vhm;
     }
 }
