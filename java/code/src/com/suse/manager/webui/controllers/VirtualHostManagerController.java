@@ -119,13 +119,10 @@ public class VirtualHostManagerController {
                 createGathererModuleParams(gathererModule, request.queryMap().toMap());
 
         if (StringUtils.isEmpty(label)) {
-            errors.add("Label can't be empty");
-        }
-        if (StringUtils.isEmpty(gathererModule)) {
-            errors.add("Gatherer module must be selected");
+            errors.add("Label must be specified.");
         }
         if (VirtualHostManagerFactory.getInstance().lookupByLabel(label) != null) {
-            errors.add("Virtual Host Manager with given name already exists");
+            errors.add("Virtual Host Manager with given label already exists.");
         }
 
         try {
@@ -138,7 +135,7 @@ public class VirtualHostManagerController {
             }
         }
         catch (InvalidGathererConfigException e) {
-            errors.add("Invalid gatherer module configuration (did you fill all fields?)");
+            errors.add("All fields are mandatory.");
         }
 
         if (!errors.isEmpty()) {
@@ -169,11 +166,11 @@ public class VirtualHostManagerController {
                 user.getOrg());
         String message;
         if (virtualHostManager == null) {
-            message = "Virtual Host Manager with label '" + label + "' couldn't be found";
+            message = "Virtual Host Manager with label '" + label + "' couldn't be found.";
         }
         else {
             getFactory().delete(virtualHostManager);
-            message = "Virtual Host Manager with label '" + label + "' has been deleted";
+            message = "Virtual Host Manager with label '" + label + "' has been deleted.";
         }
         FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
@@ -189,11 +186,11 @@ public class VirtualHostManagerController {
             new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-bunch", params);
         }
         catch (TaskomaticApiException e) {
-            message  = "Problem when running gatherer Taskomatic job: " + e.getMessage();
+            message  = "Problem when running Taskomatic job: " + e.getMessage();
         }
         if (message == null) {
-            message = "Gatherer Taskomatic job for Virtual Host Manager with label '" +
-                    label + "' was triggered";
+            message = "Refresh for Virtual Host Manager with label '" +
+                    label + "' was triggered.";
         }
         FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
