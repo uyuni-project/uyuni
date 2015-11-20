@@ -16,7 +16,6 @@
 package com.suse.manager.webui.controllers.test;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -47,13 +46,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
         commonRequest = getRequestWithCsrf("http://localhost:8080");
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
-        factory = new VirtualHostManagerFactory() {
-            @Override
-            protected void validateGathererConfiguration(String moduleName,
-                    Map<String, String> parameters) {
-                // no op
-            }
-        };
+        factory = VirtualHostManagerFactory.getInstance();
     }
 
     public void testGetAll() throws Exception {
@@ -64,7 +57,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertNotNull(modelMap.get("virtualHostManagers"));
     }
 
-    public void testGetWrongOrg() throws InvalidGathererConfigException {
+    public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
         createVirtualHostManagerWithLabel(label, otherOrg);
@@ -76,7 +69,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertFalse(((Map) result).containsKey(label));
     }
 
-    public void testGet() throws InvalidGathererConfigException {
+    public void testGet() {
         String label = "myVHM";
         VirtualHostManager manager = createVirtualHostManagerWithLabel(label,user.getOrg());
 
@@ -86,7 +79,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertEquals(manager, ((Map) result).get("virtualHostManager"));
     }
 
-    public void testDelete() throws InvalidGathererConfigException {
+    public void testDelete() {
         String label = "myVHM";
         createVirtualHostManagerWithLabel(label, user.getOrg());
 
@@ -96,7 +89,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertNull(factory.lookupByLabel(label));
     }
 
-    public void testGetDeleteWrongOrg() throws InvalidGathererConfigException {
+    public void testGetDeleteWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
         createVirtualHostManagerWithLabel(label, otherOrg);
@@ -122,7 +115,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         return request;
     }
 
-    private VirtualHostManager createVirtualHostManagerWithLabel(String label, Org otherOrg) throws InvalidGathererConfigException {
+    private VirtualHostManager createVirtualHostManagerWithLabel(String label, Org otherOrg) {
         return factory.createVirtualHostManager(label,
                 user.getOrg(),
                 "File",

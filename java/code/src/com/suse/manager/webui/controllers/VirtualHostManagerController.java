@@ -16,7 +16,6 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -122,33 +121,28 @@ public class VirtualHostManagerController {
         if (StringUtils.isEmpty(label)) {
             errors.add("Label must be specified.");
         }
-        if (VirtualHostManagerFactory.getInstance().lookupByLabel(label) != null) {
+        if (getFactory().lookupByLabel(label) != null) {
             errors.add("Virtual Host Manager with given label already exists.");
         }
-
-        try {
-            if (errors.isEmpty()) {
-                getFactory().createVirtualHostManager(
-                        label,
-                        user.getOrg(),
-                        gathererModule,
-                        gathererModuleParams);
-            }
-        }
-        catch (InvalidGathererConfigException e) {
+        if (!getFactory().isConfigurationValid(gathererModule,
+                gathererModuleParams)) {
             errors.add("All fields are mandatory.");
         }
 
-        if (!errors.isEmpty()) {
-            Map data = makeModuleFormData(label, gathererModule, gathererModuleParams);
+        if (errors.isEmpty()) {
+            getFactory().createVirtualHostManager(label, user.getOrg(), gathererModule,
+                    gathererModuleParams);
+            response.redirect("/rhn/manager/vhms");
+            Spark.halt();
+            return null;
+        }
+        else {
+            Map<String, Object> data =
+                    makeModuleFormData(label, gathererModule, gathererModuleParams);
             data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
             data.put("errors", errors);
             return new ModelAndView(data, "virtualhostmanager/add.jade");
         }
-
-        response.redirect("/rhn/manager/vhms");
-        Spark.halt();
-        return null;
     }
 
     private static Map<String, String> createGathererModuleParams(String gathererModule,
