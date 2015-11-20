@@ -71,8 +71,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHManagerWithCreds() throws Exception {
         Map<String, String> config = new HashMap<>();
-        config.put("user", "FlashGordon");
-        config.put("pass", "The savior of the universe");
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
 
         factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
@@ -205,8 +205,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testDeleteVHMAndCredentials() throws Exception {
         Map<String, String> config = new HashMap<>();
-        config.put("user", "foouser");
-        config.put("pass", "barpass");
+        config.put("username", "foouser");
+        config.put("password", "barpass");
 
         VirtualHostManager manager = factory.createVirtualHostManager("label",
                 user.getOrg(), SUSE_CLOUD, config);
