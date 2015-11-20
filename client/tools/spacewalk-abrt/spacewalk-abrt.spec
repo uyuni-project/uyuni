@@ -1,5 +1,5 @@
 Name:           spacewalk-abrt
-Version:        2.5.0.1
+Version:        2.5.1
 Release:        1%{?dist}
 Summary:        ABRT plug-in for rhn-check
 
@@ -12,6 +12,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  python-devel
 BuildRequires:  gettext
+BuildRequires:  python
 Requires:       abrt
 Requires:       abrt-cli
 Requires:       rhnlib
@@ -52,6 +53,10 @@ service abrtd restart ||:
 %{_mandir}/man8/*
 
 %changelog
+* Fri Nov 13 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.1-1
+- python is not part of basic Fedora installation anymore
+- Bumping package versions for 2.5.
+
 * Fri Sep 25 2015 Jan Dobes 2.4.2-1
 - support translations in spacewalk-abrt
 
