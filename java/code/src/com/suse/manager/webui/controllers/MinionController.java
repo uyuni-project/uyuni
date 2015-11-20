@@ -56,7 +56,7 @@ public class MinionController {
         data.put("rejected_minions", keys.getRejectedMinions());
         data.put("present", present);
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "minions.jade");
+        return new ModelAndView(data, "minion/list.jade");
     }
 
     /**
