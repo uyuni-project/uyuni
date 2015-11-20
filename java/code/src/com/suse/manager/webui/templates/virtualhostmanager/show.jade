@@ -22,7 +22,7 @@
           td.col-md-9 #{virtualHostManager.credentials.username}
         for config in virtualHostManager.configs
           tr
-            td.col-md-3 #{config.parameter}:
+            td.col-md-3 #{h.capitalize(config.parameter)}:
             td.col-md-9 #{config.value}
 
 form(method="post")

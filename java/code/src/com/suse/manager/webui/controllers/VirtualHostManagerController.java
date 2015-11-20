@@ -22,10 +22,11 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
-
 import com.suse.manager.webui.utils.FlashScopeHelper;
+
 import org.apache.commons.lang.StringUtils;
 
 import spark.ModelAndView;
