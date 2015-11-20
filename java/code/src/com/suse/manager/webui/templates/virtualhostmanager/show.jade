@@ -28,10 +28,10 @@
 form(method="post")
   input(type="hidden", name="csrf_token", value="#{csrf_token}")
   .col-offset-3.col-md-9
-    button(type="submit" formaction="#{virtualHostManager.id}/delete").btn.btn-danger
+    button(type="submit" formaction="#{virtualHostManager.label}/delete").btn.btn-danger
       i.fa.fa-trash
       | Delete Virtual Host Manager
     &nbsp;
-    button(type="submit" formaction="#{virtualHostManager.id}/refresh").btn.btn-default
+    button(type="submit" formaction="#{virtualHostManager.label}/refresh").btn.btn-default
       i.fa.fa-refresh
       | Refresh data from this Virtual Host Manager

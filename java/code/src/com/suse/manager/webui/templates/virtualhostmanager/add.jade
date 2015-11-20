@@ -1,20 +1,9 @@
 // todo i18n
 
-script(type='text/javascript').
-  function updateVisibility() {
-    jQuery(".gatherer-parameters").hide(); // hide all
-    var visibleGroup = jQuery("#gm-select").val();
-    jQuery("#" + visibleGroup).show();
-  }
-
-  jQuery(document).ready(function() {
-    updateVisibility();
-  });
-
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
-    | Add a Virtual Host Manager
+    | Add a #{module.name}-based Virtual Host Manager
 
 if errors
   for e in errors
@@ -23,25 +12,17 @@ if errors
 .row.col-md-12
   form(action="/rhn/manager/vhms", method="post", class="form-horizontal")
     input(type="hidden", name="csrf_token", value="#{csrf_token}")
+    input(type="hidden", name="module", value="#{module.name}")
     .form-group
       label.col-md-3.control-label Label:
       .col-md-6
-        input(type="text", name="label", value="#{label}", class="form-control")
-    .form-group
-      label.col-md-3.control-label Gatherer Module:
-      .col-md-6
-        select(name="gathererModule", onchange="updateVisibility()", id="gm-select", class="form-control")
-          for gm in gathererModules
-            option(value="#{gm.name}", selected=gm.name == selectedGathererModule) #{gm.name}
+        input(type="text", name="label", value="#{virtualHostManager.label}", class="form-control")
 
-    for gm in gathererModules
-      // configs
-      div(id="#{gm.name}", class="gatherer-parameters")
-        for parValue, parKey in gm.parameters
-          .form-group
-            label.col-md-3.control-label #{parKey}:
-            .col-md-6
-              input(type="text", name="#{gm.name}---#{parKey}", value="#{parValue}", class="form-control")
+    for parValue, parKey in module.parameters
+      .form-group
+        label.col-md-3.control-label #{parKey}:
+        .col-md-6
+          input(type="text", name="module_#{parKey}", value="#{parValue}", class="form-control")
 
     .form-group
       .col-md-offset-3.col-md-6
