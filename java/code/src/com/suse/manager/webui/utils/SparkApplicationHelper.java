@@ -128,6 +128,7 @@ public class SparkApplicationHelper {
         // set up i10n engine and other default template variables
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l", Languages.getInstance());
+        sharedVariables.put("h", ViewHelper.getInstance());
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
         JadeConfiguration config = jade.configuration();

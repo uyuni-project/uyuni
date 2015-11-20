@@ -20,7 +20,7 @@ if errors
 
     for parValue, parKey in module.parameters
       .form-group
-        label.col-md-3.control-label #{parKey}:
+        label.col-md-3.control-label #{h.capitalize(parKey)}:
         .col-md-6
           input(type="text", name="module_#{parKey}", value="#{parValue}", class="form-control")
 
