@@ -1,25 +1,23 @@
-// todo i18n
-
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
-    | #{virtualHostManager.label}
+    | #{l.t(virtualHostManager.label)}
 
 .row.col-md-12
   .panel.panel-default
     .panel-heading
-      h4 Properties
+      h4 #{l.t("Properties")}
     .table-responsive: table(class="table")
       tbody
         tr
-          td.col-md-3 Organization:
+          td.col-md-3 #{l.t("Organization")}:
           td.col-md-9 #{virtualHostManager.org.name}
         tr
-          td.col-md-3 virtual-host-gatherer module:
-          td.col-md-9 #{virtualHostManager.gathererModule}
+          td.col-md-3 #{l.t("virtual-host-gatherer module")}:
+          td.col-md-9 #{l.t(virtualHostManager.gathererModule)}
         for config in virtualHostManager.configs
           tr
-            td.col-md-3 #{h.capitalize(config.parameter)}:
+            td.col-md-3 #{l.t(h.capitalize(config.parameter))}:
             td.col-md-9 #{config.value}
 
 form(method="post")
@@ -27,8 +25,8 @@ form(method="post")
   .col-offset-3.col-md-9
     button(type="submit" formaction="#{virtualHostManager.label}/delete").btn.btn-danger
       i.fa.fa-trash
-      | Delete Virtual Host Manager
+      | #{l.t("Delete Virtual Host Manager")}
     &nbsp;
     button(type="submit" formaction="#{virtualHostManager.label}/refresh").btn.btn-default
       i.fa.fa-refresh
-      | Refresh data from this Virtual Host Manager
+      | #{l.t("Refresh data from this Virtual Host Manager")}
