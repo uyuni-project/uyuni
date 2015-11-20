@@ -15,11 +15,8 @@
           td.col-md-3 Organization:
           td.col-md-9 #{virtualHostManager.org.name}
         tr
-          td.col-md-3 Gatherer module:
+          td.col-md-3 virtual-host-gatherer module:
           td.col-md-9 #{virtualHostManager.gathererModule}
-        tr
-          td.col-md-3 User name:
-          td.col-md-9 #{virtualHostManager.credentials.username}
         for config in virtualHostManager.configs
           tr
             td.col-md-3 #{h.capitalize(config.parameter)}:
