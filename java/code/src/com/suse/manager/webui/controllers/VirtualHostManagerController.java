@@ -130,8 +130,9 @@ public class VirtualHostManagerController {
         }
 
         if (errors.isEmpty()) {
-            getFactory().createVirtualHostManager(label, user.getOrg(), gathererModule,
-                    gathererModuleParams);
+            VirtualHostManager vhm = getFactory().createVirtualHostManager(
+                    label, user.getOrg(), gathererModule, gathererModuleParams);
+            getFactory().save(vhm);
             response.redirect("/rhn/manager/vhms");
             Spark.halt();
             return null;

@@ -95,8 +95,9 @@ public class VirtualHostManagerHandler extends BaseHandler {
             throw new InvalidParameterException("Parameter validation failed.");
         }
         else {
-            factory.createVirtualHostManager(label,
+            VirtualHostManager vhm = factory.createVirtualHostManager(label,
                     loggedInUser.getOrg(), moduleName, parameters);
+            factory.save(vhm);
             return BaseHandler.VALID;
         }
     }
