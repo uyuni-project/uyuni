@@ -18,9 +18,9 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
   Scenario: Check getModuleParameters
     Given I am logged in via XML-RPC/virtualhostmanager as user "admin" and password "admin"
     When I call virtualhostmanager.getModuleParameters() for "VMware"
-    Then I should get "user"
-     And I should get "pass"
-     And I should get "host"
+    Then I should get "username"
+     And I should get "password"
+     And I should get "hostname"
      And I should get "port"
      And I logout from XML-RPC/virtualhostmanager
 
@@ -37,7 +37,7 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
      Then "label" should be "vCenter"
       And "org_id" should be "1"
       And "gatherer_module" should be "VMware"
-      And configs "host" should be "10.162.186.115"
+      And configs "hostname" should be "10.162.186.115"
       And I logout from XML-RPC/virtualhostmanager
 
   Scenario: Run virtual-host-gatherer
