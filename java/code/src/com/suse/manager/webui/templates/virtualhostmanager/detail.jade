@@ -5,15 +5,33 @@
     i.fa.spacewalk-icon-virtual-host-manager
     | #{virtualHostManager.label}
 
-ul
-  li Organization: #{virtualHostManager.org.name}
-  li Gatherer module: #{virtualHostManager.gathererModule}
-  li User name: #{virtualHostManager.credentials.username}
-  li Configs:
-    ul
-      for config in virtualHostManager.configs
-        li #{config.parameter}: #{config.value}
+.row.col-md-12
+  .panel.panel-default
+    .panel-heading
+      h4 Properties
+    .table-responsive: table(class="table")
+      tbody
+        tr
+          td.col-md-3 Organization:
+          td.col-md-9 #{virtualHostManager.org.name}
+        tr
+          td.col-md-3 Gatherer module:
+          td.col-md-9 #{virtualHostManager.gathererModule}
+        tr
+          td.col-md-3 User name:
+          td.col-md-9 #{virtualHostManager.credentials.username}
+        for config in virtualHostManager.configs
+          tr
+            td.col-md-3 #{config.parameter}:
+            td.col-md-9 #{config.value}
 
-form(action="delete/#{virtualHostManager.label}", method="post")
+form(method="post")
   input(type="hidden", name="csrf_token", value="#{csrf_token}")
-  input(type="submit", value="Delete this Virtual Host Manager")
+  .col-offset-3.col-md-9
+    button(type="submit" formaction="delete/#{virtualHostManager.label}").btn.btn-danger
+      i.fa.fa-trash
+      | Delete Virtual Host Manager
+    &nbsp;
+    button(type="submit" formaction="refresh/#{virtualHostManager.label}").btn.btn-default
+      i.fa.fa-refresh
+      | Refresh data from this Virtual Host Manager

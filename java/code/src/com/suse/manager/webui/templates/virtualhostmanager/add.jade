@@ -1,5 +1,4 @@
 // todo i18n
-// todo icon of VHM!
 
 script(type='text/javascript').
   function updateVisibility() {
@@ -15,37 +14,37 @@ script(type='text/javascript').
 .spacewalk-toolbar-h1
   h1
     i.fa.spacewalk-icon-virtual-host-manager
-    | Add a new Virtual Host Manager
+    | Add a Virtual Host Manager
 
 if errors
-  .alert.alert-danger
-    ul
-      for e in errors
-        li #{e}
+  for e in errors
+    .alert.alert-danger #{e}
 
-.row
+.row.col-md-12
   form(action="/rhn/manager/vhm", method="post", class="form-horizontal")
     input(type="hidden", name="csrf_token", value="#{csrf_token}")
     .form-group
-      label.col-lg-3.control-label Label:
-      .col-lg-6
+      label.col-md-3.control-label Label:
+      .col-md-6
         input(type="text", name="label", value="#{label}", class="form-control")
     .form-group
-      label.col-lg-3.control-label Gatherer Module:
-      .col-lg-6
+      label.col-md-3.control-label Gatherer Module:
+      .col-md-6
         select(name="gathererModule", onchange="updateVisibility()", id="gm-select", class="form-control")
           for gm in gathererModules
-            option(value="#{gm.name}", selected=gm.name == selectedGathererModule)
-              #{gm.name}
+            option(value="#{gm.name}", selected=gm.name == selectedGathererModule) #{gm.name}
 
     for gm in gathererModules
       // configs
       div(id="#{gm.name}", class="gatherer-parameters")
         for parValue, parKey in gm.parameters
           .form-group
-            label.col-lg-3.control-label #{parKey}:
-            .col-lg-6
+            label.col-md-3.control-label #{parKey}:
+            .col-md-6
               input(type="text", name="#{gm.name}---#{parKey}", value="#{parValue}", class="form-control")
 
-    .col-lg-offset-3.col-lg-6
-      input(type="submit", value="Add", class="btn btn-success")
+    .form-group
+      .col-md-offset-3.col-md-6
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-plus
+          | Add Virtual Host Manager
