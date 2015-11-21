@@ -62,4 +62,15 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
     When I call virtualhostmanager.delete("vCenter")
      And I call virtualhostmanager.listVirtualHostManagers()
     Then I should get 0 returned
-     And I logout from XML-RPC/virtualhostmanager
+    And I logout from XML-RPC/virtualhostmanager
+
+  Scenario: Delete Virtual Hosts
+    Given I am on the Systems page
+      And I follow "Systems" in the left menu
+    When I follow "10.162.186.111"
+    Then I folow "Delete System"
+    And click on "Delete Profile"
+    When I follow "10.162.186.112"
+    Then I folow "Delete System"
+    And click on "Delete Profile"
+

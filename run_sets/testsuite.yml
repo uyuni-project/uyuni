@@ -64,6 +64,7 @@
 - features/xmlrpc_activationkey.feature
 - features/xmlrpc_channel.feature
 - features/xmlrpc_VHM.feature
+- features/check_VHM.feature
 - features/setup_wizard.feature
 # Salt related features
 - features/salt.feature
