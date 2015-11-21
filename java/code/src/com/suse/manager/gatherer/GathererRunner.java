@@ -135,7 +135,8 @@ public class GathererRunner {
 
             int exitCode = p.waitFor();
             if (exitCode != 0) {
-                logger.error("Error while calling the gatherer, exit code " + exitCode);
+                logger.error("Error while calling the virtual-host-gatherer, exit code " + exitCode);
+                logger.error("Please check the virtual-host-gatherer logfile.");
                 return null;
             }
         }
