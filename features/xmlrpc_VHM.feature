@@ -68,9 +68,9 @@ Feature: Test XML-RPC "virtualhostmanager" namespace.
     Given I am on the Systems page
       And I follow "Systems" in the left menu
     When I follow "10.162.186.111"
-    Then I folow "Delete System"
-    And click on "Delete Profile"
+    Then I follow "Delete System"
+    And I click on "Delete Profile"
     When I follow "10.162.186.112"
-    Then I folow "Delete System"
-    And click on "Delete Profile"
+    Then I follow "Delete System"
+    And I click on "Delete Profile"
 
