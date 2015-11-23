@@ -71,42 +71,16 @@ public class VirtualHostManagerController {
         return new ModelAndView(data, "virtualhostmanager/show.jade");
     }
 
-    public static ModelAndView add(Request request, Response response) {
+    public static ModelAndView add(Request request, Response response, User user) {
         String module = request.queryParams("module");
-        Map<String, Object> data = makeModuleFormData("", module, null);
-        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
-        return new ModelAndView(data, "virtualhostmanager/add.jade");
-    }
-
-    /**
-     * Creates a backing map for Virtual Host Manager creation form.
-     * This form contains, among other things, configs (parameter names and values)
-     * of all possible Virtual Host Gatherer modules.
-     * The values of this backing map can be pre-populated with given data in arguments
-     * (can be useful when we want to preserve user-entered values when form validation
-     * fails.)
-     *
-     * todo this boilerplate should be definitely handled by some kind of framework!
-     *
-     * @param module
-     * @param filledGMParams
-     * @return
-     */
-    private static HashMap<String, Object> makeModuleFormData(String vhmLabel,
-            String module, Map<String, String> filledGMParams) {
-        HashMap<String, Object> data = new HashMap<>();
         GathererModule gathererModule = new GathererRunner().listModules().get(module);
 
-        // pre-filled gatherer config values, if provided
-        if (filledGMParams != null) {
-            // add (possibly partly) already filled data
-            gathererModule.getParameters().putAll(
-                    filledGMParams);
-        }
-
-        data.put("label", vhmLabel);
-        data.put("module", gathererModule);
-        return data;
+        Map<String, Object> data = new HashMap<>();
+        data.put("virtualHostManager",
+                getFactory().createVirtualHostManager("", user.getOrg(), module,
+                        gathererModule.getParameters()));
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        return new ModelAndView(data, "virtualhostmanager/add.jade");
     }
 
     // todo generalize the validation somehow (maybe wrap with sth that catches an exc...)
@@ -129,17 +103,18 @@ public class VirtualHostManagerController {
             errors.add("All fields are mandatory.");
         }
 
+        VirtualHostManager vhm = getFactory().createVirtualHostManager(
+                label, user.getOrg(), gathererModule, gathererModuleParams);
+
         if (errors.isEmpty()) {
-            VirtualHostManager vhm = getFactory().createVirtualHostManager(
-                    label, user.getOrg(), gathererModule, gathererModuleParams);
             getFactory().save(vhm);
             response.redirect("/rhn/manager/vhms");
             Spark.halt();
             return null;
         }
         else {
-            Map<String, Object> data =
-                    makeModuleFormData(label, gathererModule, gathererModuleParams);
+            Map<String, Object> data = new HashMap<>();
+            data.put("virtualHostManager", vhm);
             data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
             data.put("errors", errors);
             return new ModelAndView(data, "virtualhostmanager/add.jade");
@@ -149,7 +124,6 @@ public class VirtualHostManagerController {
     private static Map<String, String> createGathererModuleParams(String gathererModule,
             Map<String, String[]> queryMap) {
         return queryMap.entrySet().stream()
-                .filter(keyVal -> StringUtils.isNotEmpty(keyVal.getValue()[0]))
                 .filter(keyVal -> keyVal.getKey().startsWith("module_"))
                 .collect(Collectors.toMap(
                         keyVal -> keyVal.getKey().replaceFirst("module_", ""),
