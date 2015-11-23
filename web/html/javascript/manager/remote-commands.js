@@ -146,7 +146,12 @@ class RemoteCommand extends React.Component {
       },
       started: true
     });
-    $.get("/rhn/manager/api/minions/cmd?cmd=" + cmd + "&target=" + target, data => {
+    $.post("/rhn/manager/api/minions/cmd", {
+        csrf_token: csrfToken,
+        cmd: cmd,
+        target: target
+      },
+      data => {
       console.log(data);
       this.setState({
         result: {

@@ -40,17 +40,15 @@ public class Router implements SparkApplication {
 
         // Salt Master pages
         get("/manager/minions", MinionController::list, jade);
+        get("/manager/minions/cmd", MinionController::remoteCommands, jade);
         get("/manager/minions/:id", MinionController::show);
         post("/manager/minions/:id/accept", MinionController::accept);
         post("/manager/minions/:id/reject", MinionController::reject);
         post("/manager/minions/:id/delete", MinionController::destroy);
 
         // Minion APIs
-        get("/manager/api/minions/cmd", MinionsAPI::run);
+        post("/manager/api/minions/cmd", MinionsAPI::run);
         get("/manager/api/minions/match", MinionsAPI::match);
-
-        // Remote command page
-        get("/manager/minions/cmd", MinionController::remoteCommands, jade);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",
