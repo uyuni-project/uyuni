@@ -21,8 +21,12 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
+
+import com.suse.manager.gatherer.GathererRunner;
+import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.utils.SparkTestUtils;
+
 import spark.Request;
 import spark.RequestResponseFactory;
 import spark.Response;
@@ -47,6 +51,12 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         commonRequest = getRequestWithCsrf("http://localhost:8080");
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         factory = VirtualHostManagerFactory.getInstance();
+        VirtualHostManagerController.setGathererRunner(new GathererRunner() {
+            @Override
+            public Map<String, GathererModule> listModules() {
+                return new HashMap<>();
+            }
+        });
     }
 
     public void testGetAll() throws Exception {
@@ -60,9 +70,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     public void testGetWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
-        createVirtualHostManagerWithLabel(label, otherOrg);
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
 
-        Request request = getRequestWithCsrf("/:vhmlabel", label);
+        Request request = getRequestWithCsrf("/:id", vhm.getId());
         Object result = VirtualHostManagerController.show(request, response, user)
                 .getModel();
 
@@ -73,7 +83,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         String label = "myVHM";
         VirtualHostManager manager = createVirtualHostManagerWithLabel(label,user.getOrg());
 
-        Request request = getRequestWithCsrf("/:vhmlabel", label);
+        Request request = getRequestWithCsrf("/:id", manager.getId());
         Object result =
                 VirtualHostManagerController.show(request, response, user).getModel();
         assertEquals(manager, ((Map) result).get("virtualHostManager"));
@@ -81,9 +91,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
     public void testDelete() {
         String label = "myVHM";
-        createVirtualHostManagerWithLabel(label, user.getOrg());
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
 
-        Request request = getRequestWithCsrf("/:vhmlabel", label);
+        Request request = getRequestWithCsrf("/:id", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
 
         assertNull(factory.lookupByLabel(label));
@@ -92,8 +102,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     public void testGetDeleteWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
-        createVirtualHostManagerWithLabel(label, otherOrg);
-        VirtualHostManagerController.delete(commonRequest, response, user);
+        VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
+        Request request = getRequestWithCsrf("/:id", vhm.getId());
+        VirtualHostManagerController.delete(request, response, user);
 
         // the original VHM is not deleted
         assertNotNull(factory.lookupByLabel(label));
@@ -117,10 +128,12 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
     private VirtualHostManager createVirtualHostManagerWithLabel(String label, Org otherOrg) {
         VirtualHostManager vhm = factory.createVirtualHostManager(label,
-                user.getOrg(),
+                otherOrg,
                 "File",
                 new HashMap<String, String>() {{
                     put("url", "notimportant");
+                    put("username", "Bing Bong");
+                    put("password", "imaginary friend");
                 }});
         factory.save(vhm);
         return vhm;
