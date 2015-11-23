@@ -26,6 +26,7 @@ import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
@@ -134,6 +135,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         return getSession()
                 .createCriteria(VirtualHostManager.class)
                 .add(Restrictions.eq("org", org))
+                .addOrder(Order.asc("label"))
                 .list();
     }
 
