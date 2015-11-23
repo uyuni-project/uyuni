@@ -52,8 +52,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHM() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
         createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD,
-                Collections.emptyMap());
+                config);
         VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
@@ -87,6 +91,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMWithConfigs() throws Exception {
         Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
         config.put("testkey", "43");
 
         createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
@@ -125,6 +131,8 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testDeleteVirtualHostManager() throws Exception {
         Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
         config.put("testkey", "43");
         String myLabel = "myLabel";
         VirtualHostManager vhm = createAndSaveVirtualHostManager(myLabel, user.getOrg(),
@@ -144,8 +152,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         Server server = ServerTestUtils.createForeignSystem(user, "server_digital_id");
         Long serverId = server.getId();
 
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
         VirtualHostManager vhm = createAndSaveVirtualHostManager("myLabel", user.getOrg(),
-                SUSE_CLOUD, Collections.emptyMap());
+                SUSE_CLOUD, config);
 
         vhm.addServer(server);
         HibernateFactory.getSession().flush();
@@ -159,10 +171,14 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMs() throws Exception {
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
         VirtualHostManager manager1 = createAndSaveVirtualHostManager("mylabel",
-                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
+                user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager manager2 = createAndSaveVirtualHostManager("mylabel2",
-                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
+                user.getOrg(), SUSE_CLOUD, config);
 
         List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
 
