@@ -16,6 +16,7 @@
 package com.suse.manager.webui.controllers;
 
 import com.redhat.rhn.common.security.CSRFTokenValidator;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -79,6 +80,7 @@ public class VirtualHostManagerController {
         data.put("virtualHostManager", getFactory().lookupByIdAndOrg(id,
                 user.getOrg()));
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        data.put("satAdmin", user.hasRole(RoleFactory.SAT_ADMIN));
 
         return new ModelAndView(data, "virtualhostmanager/show.jade");
     }

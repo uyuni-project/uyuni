@@ -27,6 +27,8 @@ form(method="post")
       i.fa.fa-trash
       | #{l.t("Delete Virtual Host Manager")}
     &nbsp;
-    button(type="submit" formaction="#{virtualHostManager.id}/refresh").btn.btn-default
-      i.fa.fa-refresh
-      | #{l.t("Refresh data from this Virtual Host Manager")}
+
+    if satAdmin
+      button(type="submit" formaction="#{virtualHostManager.id}/refresh").btn.btn-default
+        i.fa.fa-refresh
+        | #{l.t("Refresh data from this Virtual Host Manager")}
