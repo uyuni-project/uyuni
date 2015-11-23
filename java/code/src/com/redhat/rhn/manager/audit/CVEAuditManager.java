@@ -33,6 +33,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -266,7 +267,13 @@ public class CVEAuditManager {
         while (targets.size() > 0) {
             // We assume that there is always only one source!
             if (targets.size() > 1) {
-                log.warn("More than one target product found!");
+                SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
+                log.warn("More than one migration source product found for " +
+                        product.getFriendlyName() + " (" + product.getProductId() + "):");
+                for (SUSEProductDto source : targets) {
+                    SUSEProduct p = SUSEProductFactory.getProductById(source.getId());
+                    log.warn("- " + p.getFriendlyName() + " (" + p.getProductId() + ")");
+                }
             }
             SUSEProductDto target = targets.get(0);
             result.add(target);
