@@ -95,6 +95,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up VirtualHostManager by id and Org
+     * @param id the id
+     * @param org the organization
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
+     */
+    public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
+        return (VirtualHostManager) getSession()
+                .createCriteria(VirtualHostManager.class)
+                .add(Restrictions.eq("org", org))
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+    }
+
+    /**
      * Looks up VirtualHostManager by label and Org
      * @param label the label
      * @param org the organization

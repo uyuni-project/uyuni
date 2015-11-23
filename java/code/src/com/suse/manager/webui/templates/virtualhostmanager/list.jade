@@ -25,7 +25,7 @@ if (info)
           for vhmanager in virtualHostManagers
             tr
               td
-                a(href="vhms/#{vhmanager.label}")
+                a(href="vhms/#{vhmanager.id}")
                   i.fa.spacewalk-icon-virtual-host-manager
                   | #{l.t(vhmanager.label)}
               td #{l.t(vhmanager.org.name)}
