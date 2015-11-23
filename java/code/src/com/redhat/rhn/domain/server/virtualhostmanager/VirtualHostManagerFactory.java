@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -28,7 +30,7 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -191,7 +193,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         }
 
         GathererModule details = modules.get(moduleName);
-        return parameters.keySet().containsAll(details.getParameters().keySet());
+        Set<String> parameterNames = details.getParameters().keySet();
+
+        return parameterNames.stream().allMatch(n -> isNotEmpty(parameters.get(n)));
     }
 
     /**
@@ -207,7 +211,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     private Set<VirtualHostManagerConfig> createVirtualHostManagerConfigs(
             VirtualHostManager virtualHostManager,
             Map<String, String> parameters) {
-        Set<VirtualHostManagerConfig> configs = new HashSet<>();
+        Set<VirtualHostManagerConfig> configs = new LinkedHashSet<>();
 
         for (Map.Entry<String, String> configEntry : parameters.entrySet()) {
             String key = configEntry.getKey();
@@ -242,21 +246,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
-     * Creates and stores db entity for credentials if the input params contain
+     * Creates a db entity for credentials if the input params contain
      * entry for username and password.
      * @param params - non-null map of gatherer parameters
-     * @return - new Credentials instance
-     *           if input params contain entry for username and password
-     *         - null otherwise
+     * @return new Credentials instance
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
-        Credentials credentials = null;
-        if (params.containsKey(CONFIG_USER) && params.containsKey(CONFIG_PASS)) {
-            credentials = CredentialsFactory.createVHMCredentials();
-            credentials.setUsername(params.get(CONFIG_USER));
-            credentials.setPassword(params.get(CONFIG_PASS));
-            credentials.setModified(new Date());
-        }
+        Credentials credentials = CredentialsFactory.createVHMCredentials();
+        credentials.setUsername(params.get(CONFIG_USER));
+        credentials.setPassword(params.get(CONFIG_PASS));
+        credentials.setModified(new Date());
 
         return credentials;
     }
