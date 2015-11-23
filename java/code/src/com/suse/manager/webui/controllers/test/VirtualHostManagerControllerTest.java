@@ -35,20 +35,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Test for basic scenarios in VirtualHostManagerController
+ * Test for basic scenarios in VirtualHostManagerController.
  */
 public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
 
-    // common request that should be enough for controller functions without dealing
-    // with parameters in the url
-    private Request commonRequest;
+    // common request that should be enough for controller functions without
+    // dealing with parameters in the url
     private Response response;
     private VirtualHostManagerFactory factory;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setUp() throws Exception {
         super.setUp();
 
-        commonRequest = getRequestWithCsrf("http://localhost:8080");
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         factory = VirtualHostManagerFactory.getInstance();
         VirtualHostManagerController.setGathererRunner(new GathererRunner() {
@@ -59,36 +61,53 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         });
     }
 
-    public void testGetAll() throws Exception {
+    /**
+     * Test the list endpoint.
+     */
+    @SuppressWarnings("unchecked")
+    public void testList() {
         createVirtualHostManagerWithLabel("myVHM", user.getOrg());
-        Map modelMap = (Map) VirtualHostManagerController.list(getRequestWithCsrf(""),
-                response, user).getModel();
-        // just test for non-emptiness
+        Map<String, Object> modelMap = (Map<String, Object>) VirtualHostManagerController
+                .list(getRequestWithCsrf(""), response, user).getModel();
+
         assertNotNull(modelMap.get("virtualHostManagers"));
     }
 
-    public void testGetWrongOrg() {
+    /**
+     * Test the show endpoint.
+     */
+    @SuppressWarnings("unchecked")
+    public void testShow() {
+        String label = "myVHM";
+        VirtualHostManager manager = createVirtualHostManagerWithLabel(label,
+                user.getOrg());
+
+        Request request = getRequestWithCsrf("/:id", manager.getId());
+        Object result = VirtualHostManagerController.show(request, response, user)
+                .getModel();
+
+        assertEquals(manager, ((Map<String, Object>) result).get("virtualHostManager"));
+    }
+
+    /**
+     * Test the show endpoint from a wrong organization.
+     */
+    @SuppressWarnings("unchecked")
+    public void testShowWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
 
         Request request = getRequestWithCsrf("/:id", vhm.getId());
-        Object result = VirtualHostManagerController.show(request, response, user)
-                .getModel();
-
-        assertFalse(((Map) result).containsKey(label));
-    }
-
-    public void testGet() {
-        String label = "myVHM";
-        VirtualHostManager manager = createVirtualHostManagerWithLabel(label,user.getOrg());
-
-        Request request = getRequestWithCsrf("/:id", manager.getId());
         Object result =
                 VirtualHostManagerController.show(request, response, user).getModel();
-        assertEquals(manager, ((Map) result).get("virtualHostManager"));
+
+        assertFalse(((Map<String, Object>) result).containsKey(label));
     }
 
+    /**
+     * Test delete.
+     */
     public void testDelete() {
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
@@ -99,6 +118,9 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertNull(factory.lookupByLabel(label));
     }
 
+    /**
+     * Test the delete endpoint from a wrong organization.
+     */
     public void testGetDeleteWrongOrg() {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
@@ -110,31 +132,37 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         assertNotNull(factory.lookupByLabel(label));
     }
 
-    public void testAdd() throws Exception {
-        // todo
-    }
-
-    public void testRefresh() throws Exception {
-        // todo
-    }
-
     // Utils methods
 
-    private Request getRequestWithCsrf(String uri, Object ... vars) {
+    /**
+     * Creates a request with csrf token.
+     *
+     * @param uri the uri
+     * @param vars the vars
+     * @return the request with csrf
+     */
+    private Request getRequestWithCsrf(String uri, Object... vars) {
         Request request = SparkTestUtils.createMockRequest(uri, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
 
-    private VirtualHostManager createVirtualHostManagerWithLabel(String label, Org otherOrg) {
-        VirtualHostManager vhm = factory.createVirtualHostManager(label,
-                otherOrg,
-                "File",
-                new HashMap<String, String>() {{
-                    put("url", "notimportant");
-                    put("username", "Bing Bong");
-                    put("password", "imaginary friend");
-                }});
+    /**
+     * Creates and saves a virtual host manager with a certain label.
+     *
+     * @param label the label
+     * @param org the org
+     * @return the virtual host manager
+     */
+    private VirtualHostManager createVirtualHostManagerWithLabel(String label,
+            Org org) {
+        VirtualHostManager vhm =
+            factory.createVirtualHostManager(label, org, "File",
+                new HashMap<String, String>() { {
+                        put("url", "notimportant");
+                        put("username", "Bing Bong");
+                        put("password", "imaginary friend");
+                    } });
         factory.save(vhm);
         return vhm;
     }
