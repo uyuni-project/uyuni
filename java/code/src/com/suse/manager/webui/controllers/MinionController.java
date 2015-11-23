@@ -107,6 +107,7 @@ public class MinionController {
      */
     public static ModelAndView remoteCommands(Request request, Response response) {
         Map<String, Object> data = new HashMap<>();
+        data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         return new ModelAndView(data, "remote-commands.jade");
     }
 
