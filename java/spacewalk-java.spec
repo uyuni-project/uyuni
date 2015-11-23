@@ -152,12 +152,10 @@ BuildRequires: tomcat >= 7
 BuildRequires: tomcat-lib >= 7
 %else
 %if 0%{?suse_version}
-Requires: jakarta-commons-httpclient
 Requires: struts >= 1.2.9
 Requires(pre): tomcat >= 8
 Requires: tomcat-lib >= 8
 Requires: tomcat-servlet-3.1-api >= 8
-BuildRequires: jakarta-commons-httpclient
 BuildRequires: struts >= 1.2.9
 BuildRequires: tomcat >= 8
 BuildRequires: tomcat-lib >= 8
@@ -452,7 +450,6 @@ Provides: taskomatic-sat = %{version}-%{release}
 %if 0%{?suse_version}
 BuildRequires: systemd
 %{?systemd_requires}
-Requires: jakarta-commons-httpclient
 Requires: httpcomponents-client
 Requires: httpcomponents-core
 Requires: susemanager-frontend-libs >= 2.1.5
@@ -871,7 +868,6 @@ fi
 
 %endif
 %if 0%{?suse_version}
-%{jardir}/commons-httpclient.jar
 %{jardir}/google-gson.jar
 %{jardir}/ehcache.jar
 %{jardir}/snakeyaml.jar
