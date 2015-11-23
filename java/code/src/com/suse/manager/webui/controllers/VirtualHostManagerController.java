@@ -40,16 +40,20 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * todo all javadocs
- *  - jade template filenames
- *  - spark parameters
- *  - spark endpoints!
- *  todo polish the csrf machinery
+ * Controller class providing backend code for the VHM pages.
  */
 public class VirtualHostManagerController {
 
     private VirtualHostManagerController() { }
 
+    /**
+     * Displays a list of VHMs.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView list(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
@@ -60,6 +64,14 @@ public class VirtualHostManagerController {
         return new ModelAndView(data, "virtualhostmanager/list.jade");
     }
 
+    /**
+     * Displays a certain VHM.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView show(Request request, Response response, User user) {
         String label = request.params("id");
 
@@ -71,6 +83,14 @@ public class VirtualHostManagerController {
         return new ModelAndView(data, "virtualhostmanager/show.jade");
     }
 
+    /**
+     * Displays a page to add a VHM.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView add(Request request, Response response, User user) {
         String module = request.queryParams("module");
         GathererModule gathererModule = new GathererRunner().listModules().get(module);
@@ -83,14 +103,21 @@ public class VirtualHostManagerController {
         return new ModelAndView(data, "virtualhostmanager/add.jade");
     }
 
-    // todo generalize the validation somehow (maybe wrap with sth that catches an exc...)
+    /**
+     * Creates a new VHM.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return the ModelAndView object to render the page
+     */
     public static ModelAndView create(Request request, Response response, User user) {
         List<String> errors = new LinkedList<>();
 
         String label = request.queryParams("label");
         String gathererModule = request.queryParams("module");
         Map<String, String> gathererModuleParams =
-                createGathererModuleParams(gathererModule, request.queryMap().toMap());
+                paramsFromQueryMap(gathererModule, request.queryMap().toMap());
 
         if (StringUtils.isEmpty(label)) {
             errors.add("Label must be specified.");
@@ -121,15 +148,14 @@ public class VirtualHostManagerController {
         }
     }
 
-    private static Map<String, String> createGathererModuleParams(String gathererModule,
-            Map<String, String[]> queryMap) {
-        return queryMap.entrySet().stream()
-                .filter(keyVal -> keyVal.getKey().startsWith("module_"))
-                .collect(Collectors.toMap(
-                        keyVal -> keyVal.getKey().replaceFirst("module_", ""),
-                        keyVal -> keyVal.getValue()[0]));
-    }
-
+    /**
+     * Deletes a VHM.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return dummy string to satisfy spark
+     */
     public static Object delete(Request request, Response response, User user) {
         String label = request.params("id");
         VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label,
@@ -147,6 +173,14 @@ public class VirtualHostManagerController {
         return "";
     }
 
+    /**
+     * Schedule a refresh to a VHM.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the user
+     * @return dummy string to satisfy spark
+     */
     public static Object refresh(Request request, Response response, User user) {
         String label = request.params("id");
         String message = null;
@@ -167,6 +201,27 @@ public class VirtualHostManagerController {
         return "";
     }
 
+    /**
+     * Creates VHM gatherer module params from the query map.
+     *
+     * @param gathererModule the gatherer module
+     * @param queryMap the query map
+     * @return the map
+     */
+    private static Map<String, String> paramsFromQueryMap(String gathererModule,
+            Map<String, String[]> queryMap) {
+        return queryMap.entrySet().stream()
+                .filter(keyVal -> keyVal.getKey().startsWith("module_"))
+                .collect(Collectors.toMap(
+                        keyVal -> keyVal.getKey().replaceFirst("module_", ""),
+                        keyVal -> keyVal.getValue()[0]));
+    }
+
+    /**
+     * Gets the VHM factory.
+     *
+     * @return the factory
+     */
     private static VirtualHostManagerFactory getFactory() {
         return VirtualHostManagerFactory.getInstance();
     }
