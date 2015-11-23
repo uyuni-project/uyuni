@@ -262,22 +262,22 @@ public class CVEAuditManager {
         }
 
         result = new LinkedList<SUSEProductDto>();
-        List<SUSEProductDto> targets = DistUpgradeManager
+        List<SUSEProductDto> sources = DistUpgradeManager
                 .findSourceProducts(suseProductID);
-        while (targets.size() > 0) {
+        while (sources.size() > 0) {
             // We assume that there is always only one source!
-            if (targets.size() > 1) {
+            if (sources.size() > 1) {
                 SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
                 log.warn("More than one migration source product found for " +
                         product.getFriendlyName() + " (" + product.getProductId() + "):");
-                for (SUSEProductDto source : targets) {
+                for (SUSEProductDto source : sources) {
                     SUSEProduct p = SUSEProductFactory.getProductById(source.getId());
                     log.warn("- " + p.getFriendlyName() + " (" + p.getProductId() + ")");
                 }
             }
-            SUSEProductDto target = targets.get(0);
-            result.add(target);
-            targets = DistUpgradeManager.findSourceProducts(target.getId());
+            SUSEProductDto source = sources.get(0);
+            result.add(source);
+            sources = DistUpgradeManager.findSourceProducts(source.getId());
         }
 
         // Put it in the cache before returning
