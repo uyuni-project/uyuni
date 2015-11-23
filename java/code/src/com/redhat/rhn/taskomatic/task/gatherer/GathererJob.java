@@ -69,6 +69,9 @@ public class GathererJob extends RhnJavaJob {
 
         try {
             Map<String, Map<String, JSONHost>> results = new GathererRunner().run(managers);
+            if (results == null) {
+                return;
+            }
             log.debug(String.format("Got %d Virtual Host Managers from gatherer",
                     results.size()));
 
