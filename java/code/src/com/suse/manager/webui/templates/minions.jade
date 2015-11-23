@@ -14,9 +14,9 @@
           form(method="post")
             input(type="hidden", name="csrf_token", value="#{csrf_token}")
             .pull-right.btn-group
-              button(type="submit" formaction="/rhn/manager/minions/*/accept").btn.btn-default
+              button(type="submit", formaction="/rhn/manager/minions/*/accept").btn.btn-default
                 i.fa.fa-check.no-margin
-              button(type="submit" formaction="/rhn/manager/minions/*/reject").btn.btn-default
+              button(type="submit", formaction="/rhn/manager/minions/*/reject").btn.btn-default
                 i.fa.fa-times.no-margin
           .clearfix
         else
@@ -32,9 +32,9 @@
               form(method="post")
                 input(type="hidden", name="csrf_token", value="#{csrf_token}")
                 .pull-right.btn-group
-                  button(type="submit" formaction="/rhn/manager/minions/#{minion}/accept").btn.btn-default
+                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/accept").btn.btn-default
                     i.fa.fa-check.no-margin
-                  button(type="submit" formaction="/rhn/manager/minions/#{minion}/reject").btn.btn-default
+                  button(type="submit", formaction="/rhn/manager/minions/#{minion}/reject").btn.btn-default
                     i.fa.fa-times.no-margin
         else
           tr

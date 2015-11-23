@@ -79,7 +79,7 @@ public class SparkApplicationHelper {
      * @return the jade template engine
      */
     public static JadeTemplateEngine setup() {
-        // default for text/html or OpenSynphony will compain
+        // default for text/html or OpenSynphony will complain
         Spark.before((request, response) -> {
             response.type("text/html");
         });
