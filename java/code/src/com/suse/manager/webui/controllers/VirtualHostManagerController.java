@@ -73,10 +73,10 @@ public class VirtualHostManagerController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView show(Request request, Response response, User user) {
-        String label = request.params("id");
+        Long id = Long.parseLong(request.params("id"));
 
         Map<String, Object> data = new HashMap<>();
-        data.put("virtualHostManager", getFactory().lookupByLabelAndOrg(label,
+        data.put("virtualHostManager", getFactory().lookupByIdAndOrg(id,
                 user.getOrg()));
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
 
@@ -157,16 +157,16 @@ public class VirtualHostManagerController {
      * @return dummy string to satisfy spark
      */
     public static Object delete(Request request, Response response, User user) {
-        String label = request.params("id");
-        VirtualHostManager virtualHostManager = getFactory().lookupByLabelAndOrg(label,
+        Long id = Long.parseLong(request.params("id"));
+        VirtualHostManager virtualHostManager = getFactory().lookupByIdAndOrg(id,
                 user.getOrg());
         String message;
         if (virtualHostManager == null) {
-            message = "Virtual Host Manager with label '" + label + "' couldn't be found.";
+            message = "Virtual Host Manager with id '" + id + "' couldn't be found.";
         }
         else {
             getFactory().delete(virtualHostManager);
-            message = "Virtual Host Manager with label '" + label + "' has been deleted.";
+            message = "Virtual Host Manager with id '" + id + "' has been deleted.";
         }
         FlashScopeHelper.flash(request, message);
         response.redirect("/rhn/manager/vhms");
@@ -182,7 +182,10 @@ public class VirtualHostManagerController {
      * @return dummy string to satisfy spark
      */
     public static Object refresh(Request request, Response response, User user) {
-        String label = request.params("id");
+        Long id = Long.parseLong(request.params("id"));
+        VirtualHostManager virtualHostManager = getFactory().lookupByIdAndOrg(id,
+                user.getOrg());
+        String label = virtualHostManager.getLabel();
         String message = null;
         Map<String, String> params = new HashMap<String, String>();
         params.put("vhmlabel", label);
