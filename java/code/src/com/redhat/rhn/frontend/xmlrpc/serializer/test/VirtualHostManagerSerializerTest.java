@@ -80,10 +80,10 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
         serializer.serialize(manager, output, new XmlRpcSerializer());
 
         String actual = output.toString();
-        assertTrue(actual.contains("<name>user</name>"));
+        assertTrue(actual.contains("<name>username</name>"));
         assertTrue(actual.contains("<string>Somebody</string>"));
         // we don't want the password in the output!
-        assertFalse(actual.contains("pass"));
+        assertFalse(actual.contains("password"));
         assertFalse(actual.contains("strongpass"));
     }
 
