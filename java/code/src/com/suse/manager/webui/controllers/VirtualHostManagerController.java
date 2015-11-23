@@ -47,6 +47,8 @@ public class VirtualHostManagerController {
 
     private VirtualHostManagerController() { }
 
+    private static GathererRunner gathererRunner = new GathererRunner();
+
     /**
      * Displays a list of VHMs.
      *
@@ -60,7 +62,7 @@ public class VirtualHostManagerController {
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("virtualHostManagers", getFactory()
                 .listVirtualHostManagers(user.getOrg()));
-        data.put("modules", new GathererRunner().listModules().keySet());
+        data.put("modules", gathererRunner.listModules().keySet());
         data.put("info", FlashScopeHelper.flash(request));
         return new ModelAndView(data, "virtualhostmanager/list.jade");
     }
@@ -95,7 +97,7 @@ public class VirtualHostManagerController {
      */
     public static ModelAndView add(Request request, Response response, User user) {
         String module = request.queryParams("module");
-        GathererModule gathererModule = new GathererRunner().listModules().get(module);
+        GathererModule gathererModule = gathererRunner.listModules().get(module);
 
         Map<String, Object> data = new HashMap<>();
         data.put("virtualHostManager",
@@ -229,5 +231,13 @@ public class VirtualHostManagerController {
      */
     private static VirtualHostManagerFactory getFactory() {
         return VirtualHostManagerFactory.getInstance();
+    }
+
+    /**
+     * Changes the gatherer runner instance, used in tests.
+     * @param gathererRunnerIn a new gatherer runner
+     */
+    public static void setGathererRunner(GathererRunner gathererRunnerIn) {
+        gathererRunner = gathererRunnerIn;
     }
 }
