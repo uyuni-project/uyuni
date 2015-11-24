@@ -54,9 +54,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
 
     /**
      * Default constructor.
-     * (protected for testing reasons so that we can override it in tests)
+     * (public for testing reasons so that we can override it in tests)
      */
-    protected VirtualHostManagerFactory() {
+    public VirtualHostManagerFactory() {
         super();
     }
 

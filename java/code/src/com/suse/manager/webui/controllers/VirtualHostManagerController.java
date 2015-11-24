@@ -49,6 +49,8 @@ public class VirtualHostManagerController {
 
     private static GathererRunner gathererRunner = new GathererRunner();
 
+    private static VirtualHostManagerFactory factory;
+
     /**
      * Displays a list of VHMs.
      *
@@ -230,7 +232,18 @@ public class VirtualHostManagerController {
      * @return the factory
      */
     private static VirtualHostManagerFactory getFactory() {
+        if (factory != null) {
+            return factory;
+        }
         return VirtualHostManagerFactory.getInstance();
+    }
+
+    /**
+     * For testing only!
+     * @param mockFactory - the factory
+     */
+    public static void setMockFactory(VirtualHostManagerFactory mockFactory) {
+        factory = mockFactory;
     }
 
     /**
