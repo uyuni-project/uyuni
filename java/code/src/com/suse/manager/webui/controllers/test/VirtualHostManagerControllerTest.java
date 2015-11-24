@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.test;
 
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
+import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -27,6 +28,7 @@ import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.utils.SparkTestUtils;
 
+import spark.HaltException;
 import spark.Request;
 import spark.RequestResponseFactory;
 import spark.Response;
@@ -104,6 +106,40 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
                 VirtualHostManagerController.show(request, response, user).getModel();
 
         assertFalse(((Map<String, Object>) result).containsKey(label));
+    }
+
+    /**
+     * Test add.
+     */
+    public void testAdd() {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("label", "myVHM");
+        queryParams.put("module", "File");
+        queryParams.put("module_testParam", "testVal");
+        Request request = SparkTestUtils.createMockRequestWithParams(baseUri + "add",
+                queryParams);
+        try {
+            VirtualHostManagerController.setMockFactory(new VirtualHostManagerFactory() {
+                @Override
+                public boolean isConfigurationValid(String moduleName,
+                        Map<String, String> parameters) {
+                    return true;
+                }
+            });
+            VirtualHostManagerController.create(request, response, user);
+        } catch (HaltException e) {
+            VirtualHostManager created = VirtualHostManagerFactory.getInstance()
+                    .lookupByLabel("myVHM");
+            assertEquals("myVHM", created.getLabel());
+            assertEquals("File", created.getGathererModule());
+            assertEquals(1, created.getConfigs().size());
+            VirtualHostManagerConfig config = created.getConfigs().iterator().next();
+            assertEquals("testParam", config.getParameter());
+            assertEquals("testVal", config.getValue());
+            config.getVirtualHostManager();
+            return;
+        }
+        fail("Halt exception expected.");
     }
 
     /**
