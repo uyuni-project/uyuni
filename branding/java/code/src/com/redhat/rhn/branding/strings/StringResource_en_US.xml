@@ -2160,6 +2160,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="foreign_entitled">
         <source>Foreign</source>
       </trans-unit>
+      <trans-unit id="Virtual Host Managers">
+        <source>Virtual Host Managers</source>
+      </trans-unit>
 
       <!-- Salt -->
       <trans-unit id="Salt Master">

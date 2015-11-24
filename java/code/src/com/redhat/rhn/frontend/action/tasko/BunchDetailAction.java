@@ -32,6 +32,7 @@ import org.apache.struts.action.ActionMessages;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +63,7 @@ public class BunchDetailAction extends RhnAction implements Listable {
         if (ctx.wasDispatched("bunch.edit.jsp.button-schedule")) {
             try {
                 Date date = new TaskomaticApi().scheduleSingleSatBunch(loggedInUser,
-                        bunchLabel);
+                        bunchLabel, new HashMap<String, String>());
                 ActionMessages msgs = new ActionMessages();
                 msgs.add(ActionMessages.GLOBAL_MESSAGE,
                         new ActionMessage("message.bunch.singlescheduled", bunchLabel,

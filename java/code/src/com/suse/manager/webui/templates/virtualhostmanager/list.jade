@@ -1,0 +1,31 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    for module in modules
+      a(href="vhms/add?module=#{module}")
+        i.fa.fa-plus(title='Add Virtual Host Manager')
+        | #{l.t("Add " + module + "-based Virtual Host Manager")}
+  h1
+    i.fa.spacewalk-icon-virtual-host-manager
+    | #{l.t("Virtual Host Managers")}
+
+if (info)
+  .row: .alert.alert-info #{l.t(info)}
+
+.row.col-md-12
+  .panel.panel-default
+    table(class="table table-striped")
+      thead: tr
+        th #{l.t("Label")}
+        th #{l.t("Organization")}
+      tbody.table-content
+        if empty(virtualHostManagers)
+          tr
+            td(colspan="2") #{l.t("No Virtual Host Managers.")}
+        else
+          for vhmanager in virtualHostManagers
+            tr
+              td
+                a(href="vhms/#{vhmanager.id}")
+                  i.fa.spacewalk-icon-virtual-host-manager
+                  | #{l.t(vhmanager.label)}
+              td #{l.t(vhmanager.org.name)}

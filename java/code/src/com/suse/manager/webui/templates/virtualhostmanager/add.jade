@@ -1,0 +1,39 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-virtual-host-manager
+    | #{l.t("Add a " + virtualHostManager.gathererModule + "-based Virtual Host Manager")}
+
+if errors
+  for e in errors
+    .alert.alert-danger #{l.t(e)}
+
+.row.col-md-12
+  form(action="/rhn/manager/vhms", method="post", class="form-horizontal")
+    input(type="hidden", name="csrf_token", value="#{csrf_token}")
+    input(type="hidden", name="module", value="#{virtualHostManager.gathererModule}")
+    .form-group
+      label.col-md-3.control-label #{l.t("Label")}:
+      .col-md-6
+        input(type="text", name="label", value="#{virtualHostManager.label}", class="form-control")
+
+    for config in virtualHostManager.configs
+      .form-group
+        label.col-md-3.control-label #{l.t(h.capitalize(config.parameter))}:
+        .col-md-6
+          input(type="text", name="module_#{config.parameter}", value="#{config.value}", class="form-control")
+
+    if virtualHostManager.credentials
+      .form-group
+        label.col-md-3.control-label #{l.t("Username")}:
+        .col-md-6
+          input(type="text", name="module_username", value="#{virtualHostManager.credentials.username}", class="form-control")
+      .form-group
+        label.col-md-3.control-label #{l.t("Password")}:
+        .col-md-6
+          input(type="password", name="module_password", value="#{virtualHostManager.credentials.password}", class="form-control")
+
+    .form-group
+      .col-md-offset-3.col-md-6
+        button(type="submit", class="btn btn-success")
+          i.fa.fa-plus
+          | #{l.t("Add Virtual Host Manager")}

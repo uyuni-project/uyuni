@@ -179,3 +179,9 @@
 .spacewalk-icon-bare-metal:before {
 	content: "\e623";
 }
+.spacewalk-icon-virtual-host-manager:before {
+  content: "\e63a";
+}
+.spacewalk-icon-subscription-counting:before {
+  content: "\e63b";
+}

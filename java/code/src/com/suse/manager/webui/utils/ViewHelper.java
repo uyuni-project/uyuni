@@ -13,18 +13,36 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.server.virtualhostmanager;
+package com.suse.manager.webui.utils;
+
+import org.apache.commons.lang.WordUtils;
 
 /**
- * Invalid gatherer module exception.
+ * Utility class for Jade views.
  */
-public class InvalidGathererConfigException extends Exception {
+public enum ViewHelper {
+    /**
+     * Singleton instance
+     */
+    INSTANCE;
+
+    ViewHelper() { }
 
     /**
-     * Standard constructor.
-     * @param message the message
+     * Singleton implementation
+     * @return an instance of this class
      */
-    public InvalidGathererConfigException(String message) {
-        super(message);
+    public static ViewHelper getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * Capitalizes a string.
+     *
+     * @param s the string
+     * @return the capitalized string
+     */
+    public String capitalize(String s) {
+        return WordUtils.capitalize(s);
     }
 }

@@ -15,8 +15,10 @@
 package com.suse.manager.webui.utils;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
+import com.redhat.rhn.common.security.PermissionException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,13 +77,49 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Use in routes to automatically get the current user, which must be an Org
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static TemplateViewRoute withOrgAdmin(TemplateViewRouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
+     * Use in routes to automatically get the current user, which must be an Org
+     * admin, in your controller.
+     * Example: <code>Spark.get("/url", withOrgAdmin(Controller::method));</code>
+     * @param route the route
+     * @return the route
+     */
+    public static Route withOrgAdmin(RouteWithUser route) {
+        return (request, response) -> {
+            User user = new RequestContext(request.raw()).getCurrentUser();
+            if (user == null || !user.hasRole(RoleFactory.ORG_ADMIN)) {
+                throw new PermissionException("no perms");
+            }
+            return route.handle(request, response, user);
+        };
+    }
+
+    /**
      * Sets up this application and the Jade engine.
      * @return the jade template engine
      */
     public static JadeTemplateEngine setup() {
-        // default for text/html or OpenSynphony will complain
         Spark.before((request, response) -> {
+            // default for text/html or OpenSynphony will complain
             response.type("text/html");
+            // init the flash scope
+            FlashScopeHelper.handleFlashData(request, response);
         });
 
         // set up template engine
@@ -90,6 +128,7 @@ public class SparkApplicationHelper {
         // set up i10n engine and other default template variables
         Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l", Languages.getInstance());
+        sharedVariables.put("h", ViewHelper.getInstance());
         sharedVariables.put("isDevMode",
                 Config.get().getBoolean("java.development_environment"));
         JadeConfiguration config = jade.configuration();
