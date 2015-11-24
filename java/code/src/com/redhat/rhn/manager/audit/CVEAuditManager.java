@@ -33,6 +33,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -261,16 +262,22 @@ public class CVEAuditManager {
         }
 
         result = new LinkedList<SUSEProductDto>();
-        List<SUSEProductDto> targets = DistUpgradeManager
+        List<SUSEProductDto> sources = DistUpgradeManager
                 .findSourceProducts(suseProductID);
-        while (targets.size() > 0) {
+        while (sources.size() > 0) {
             // We assume that there is always only one source!
-            if (targets.size() > 1) {
-                log.warn("More than one target product found!");
+            if (sources.size() > 1) {
+                SUSEProduct product = SUSEProductFactory.getProductById(suseProductID);
+                log.warn("More than one migration source product found for " +
+                        product.getFriendlyName() + " (" + product.getProductId() + "):");
+                for (SUSEProductDto source : sources) {
+                    SUSEProduct p = SUSEProductFactory.getProductById(source.getId());
+                    log.warn("- " + p.getFriendlyName() + " (" + p.getProductId() + ")");
+                }
             }
-            SUSEProductDto target = targets.get(0);
-            result.add(target);
-            targets = DistUpgradeManager.findSourceProducts(target.getId());
+            SUSEProductDto source = sources.get(0);
+            result.add(source);
+            sources = DistUpgradeManager.findSourceProducts(source.getId());
         }
 
         // Put it in the cache before returning
@@ -434,6 +441,9 @@ public class CVEAuditManager {
             }
         }
 
+        // Increase the rank for indication of older products (previous SPs)
+        currentRank = 99999;
+
         // for each base product source...
         for (SUSEProductDto baseProductSource : baseProductSources) {
             Long baseProductChannelId = getBaseProductChannelId(baseProductSource, arch);
@@ -522,6 +532,7 @@ public class CVEAuditManager {
 
         // Flags
         boolean hasErrata = false;
+        boolean ignoreOldProducts = true;
 
         for (Map<String, Object> result : results) {
             // Get the server id first
@@ -558,6 +569,9 @@ public class CVEAuditManager {
                 currentSystem = new CVEAuditSystem(systemID);
                 currentSystem.setSystemName((String) result.get("system_name"));
 
+                // Ignore old products as long as there is a patch available elsewhere
+                ignoreOldProducts = true;
+
                 // First assignment
                 patchedPackageNames.put((String) result.get("package_name"),
                         getBooleanValue(result, "package_installed"));
@@ -587,6 +601,16 @@ public class CVEAuditManager {
                 }
             }
             else {
+                // Consider old products only if there is no patch in current or future
+                // products, channel rank >= 100000 indicates older products
+                Long channelRank = (Long) result.get("channel_rank");
+                if (channelRank >= 100000 && currentSystem.getErratas().isEmpty()) {
+                    ignoreOldProducts = false;
+                }
+                if (channelRank >= 100000 && ignoreOldProducts) {
+                    continue;
+                }
+
                 // NOT a new system, check if we are still looking at the same errata
                 Long errataID = (Long) result.get("errata_id");
                 if (errataID.equals(currentErrata)) {
