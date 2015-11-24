@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
