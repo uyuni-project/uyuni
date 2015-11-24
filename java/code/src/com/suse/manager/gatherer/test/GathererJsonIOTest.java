@@ -54,19 +54,19 @@ public class GathererJsonIOTest extends TestCase {
 
         for (GathererModule g : mods.values()) {
             if (g.getName().equals("VMware")) {
-                assertTrue(g.getParameters().containsKey("host"));
+                assertTrue(g.getParameters().containsKey("hostname"));
                 assertTrue(g.getParameters().containsKey("port"));
-                assertTrue(g.getParameters().containsKey("user"));
-                assertTrue(g.getParameters().containsKey("pass"));
-                assertFalse(g.getParameters().containsKey("proto"));
+                assertTrue(g.getParameters().containsKey("username"));
+                assertTrue(g.getParameters().containsKey("password"));
+                assertFalse(g.getParameters().containsKey("protocol"));
                 assertFalse(g.getParameters().containsKey("tenant"));
             }
             else if (g.getName().equals("SUSECloud")) {
-                assertTrue(g.getParameters().containsKey("host"));
+                assertTrue(g.getParameters().containsKey("hostname"));
                 assertTrue(g.getParameters().containsKey("port"));
-                assertTrue(g.getParameters().containsKey("user"));
-                assertTrue(g.getParameters().containsKey("pass"));
-                assertTrue(g.getParameters().containsKey("proto"));
+                assertTrue(g.getParameters().containsKey("username"));
+                assertTrue(g.getParameters().containsKey("password"));
+                assertTrue(g.getParameters().containsKey("protocol"));
                 assertTrue(g.getParameters().containsKey("tenant"));
             }
             else {
@@ -82,7 +82,7 @@ public class GathererJsonIOTest extends TestCase {
 
         Set<VirtualHostManagerConfig> config = new HashSet<>();
         VirtualHostManagerConfig vhmc = new VirtualHostManagerConfig();
-        vhmc.setParameter("host");
+        vhmc.setParameter("hostname");
         vhmc.setValue("vCenter.example.com");
         config.add(vhmc);
 
@@ -103,10 +103,10 @@ public class GathererJsonIOTest extends TestCase {
 
         String s = new GathererJsonIO().toJson(list);
         assertNotNull(s);
-        assertTrue(s.contains("\"host\": \"vCenter.example.com\""));
+        assertTrue(s.contains("\"hostname\": \"vCenter.example.com\""));
         assertTrue(s.contains("\"port\": \"443\""));
-        assertTrue(s.contains("\"user\": \"tux\""));
-        assertTrue(s.contains("\"pass\": \"penguin\""));
+        assertTrue(s.contains("\"username\": \"tux\""));
+        assertTrue(s.contains("\"password\": \"penguin\""));
         assertTrue(s.contains("\"id\": \"vCenter\""));
         assertTrue(s.contains("\"module\": \"VMware\""));
     }
