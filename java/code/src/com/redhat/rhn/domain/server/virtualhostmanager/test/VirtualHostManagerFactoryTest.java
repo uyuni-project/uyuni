@@ -17,9 +17,9 @@ package com.redhat.rhn.domain.server.virtualhostmanager.test;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.virtualhostmanager.InvalidGathererConfigException;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -38,16 +38,13 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     private VirtualHostManagerFactory factory;
     private static final String SUSE_CLOUD = "SUSECloud";
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        factory = new VirtualHostManagerFactory() {
-            @Override
-            protected void validateGathererConfiguration(String moduleName,
-                    Map<String, String> parameters) {
-                // no op
-            }
-        };
+        factory = VirtualHostManagerFactory.getInstance();
     }
 
     /**
@@ -55,8 +52,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHM() throws Exception {
-        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD,
-                Collections.emptyMap());
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
+        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD,
+                config);
         VirtualHostManager fromDb = factory.lookupByLabel("mylabel");
 
         assertEquals("mylabel", fromDb.getLabel());
@@ -71,10 +72,10 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHManagerWithCreds() throws Exception {
         Map<String, String> config = new HashMap<>();
-        config.put("user", "FlashGordon");
-        config.put("pass", "The savior of the universe");
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
 
-        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals("FlashGordon", virtualHostManager.getCredentials().getUsername());
@@ -90,9 +91,11 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMWithConfigs() throws Exception {
         Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
         config.put("testkey", "43");
 
-        factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
+        createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, config);
         VirtualHostManager virtualHostManager = factory.lookupByLabel("mylabel");
 
         assertEquals(1, virtualHostManager.getConfigs().size());
@@ -106,7 +109,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testCreateAndGetVHMNullLabel() throws Exception {
         try {
-            factory.createVirtualHostManager("test", null, SUSE_CLOUD,
+            createAndSaveVirtualHostManager("test", null, SUSE_CLOUD,
                     Collections.emptyMap());
         }
         catch (Exception e) {
@@ -128,9 +131,11 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testDeleteVirtualHostManager() throws Exception {
         Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
         config.put("testkey", "43");
         String myLabel = "myLabel";
-        VirtualHostManager vhm = factory.createVirtualHostManager(myLabel, user.getOrg(),
+        VirtualHostManager vhm = createAndSaveVirtualHostManager(myLabel, user.getOrg(),
                 SUSE_CLOUD, config);
         assertNotEmpty(factory.lookupByLabel(myLabel).getConfigs());
         assertNotNull(factory.lookupByLabel(myLabel));
@@ -147,8 +152,12 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         Server server = ServerTestUtils.createForeignSystem(user, "server_digital_id");
         Long serverId = server.getId();
 
-        VirtualHostManager vhm = factory.createVirtualHostManager("myLabel", user.getOrg(),
-                SUSE_CLOUD, Collections.emptyMap());
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
+        VirtualHostManager vhm = createAndSaveVirtualHostManager("myLabel", user.getOrg(),
+                SUSE_CLOUD, config);
 
         vhm.addServer(server);
         HibernateFactory.getSession().flush();
@@ -158,39 +167,18 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     }
 
     /**
-     * Tests throwing the IllegalArgumentException creating Virtual Host Manager
-     * with an invalid gatherer module
-     * @throws Exception if anything goes wrong
-     */
-    public void testCreateVHMInvalidGathererConfig() {
-        VirtualHostManagerFactory customFactory = new VirtualHostManagerFactory() {
-            @Override
-            protected void validateGathererConfiguration(String moduleName,
-                    Map<String, String> parameters)
-                    throws InvalidGathererConfigException {
-                throw new InvalidGathererConfigException("Module 'foobar' not available");
-            }
-        };
-
-        try {
-            customFactory.createVirtualHostManager("myLabel", user.getOrg(), SUSE_CLOUD,
-                    Collections.emptyMap());
-        }
-        catch (InvalidGathererConfigException e) {
-            return; // exception must be thrown
-        }
-        fail("IllegalArgumentException should have been thrown.");
-    }
-
-    /**
      * Tests creating and retrieving a list of VirtualHostManager an organization.
      * @throws Exception if anything goes wrong
      */
     public void testCreateAndGetVHMs() throws Exception {
-        VirtualHostManager manager1 = factory.createVirtualHostManager("mylabel",
-                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
-        VirtualHostManager manager2 = factory.createVirtualHostManager("mylabel2",
-                user.getOrg(), SUSE_CLOUD, Collections.emptyMap());
+        Map<String, String> config = new HashMap<>();
+        config.put("username", "FlashGordon");
+        config.put("password", "The savior of the universe");
+
+        VirtualHostManager manager1 = createAndSaveVirtualHostManager("mylabel",
+                user.getOrg(), SUSE_CLOUD, config);
+        VirtualHostManager manager2 = createAndSaveVirtualHostManager("mylabel2",
+                user.getOrg(), SUSE_CLOUD, config);
 
         List<VirtualHostManager> managers = factory.listVirtualHostManagers(user.getOrg());
 
@@ -205,10 +193,10 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
      */
     public void testDeleteVHMAndCredentials() throws Exception {
         Map<String, String> config = new HashMap<>();
-        config.put("user", "foouser");
-        config.put("pass", "barpass");
+        config.put("username", "foouser");
+        config.put("password", "barpass");
 
-        VirtualHostManager manager = factory.createVirtualHostManager("label",
+        VirtualHostManager manager = createAndSaveVirtualHostManager("label",
                 user.getOrg(), SUSE_CLOUD, config);
 
         Long id = manager.getCredentials().getId();
@@ -225,11 +213,28 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
     public void testFailOnNullParameters() throws Exception {
         try {
             // should throw a NullPointerException
-            factory.createVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
+            createAndSaveVirtualHostManager("mylabel", user.getOrg(), SUSE_CLOUD, null);
         }
         catch (NullPointerException e) {
             return;
         }
         fail();
+    }
+
+    /**
+     * Creates and saves a Virtual Host Manager.
+     *
+     * @param label the label
+     * @param org the org
+     * @param module the module
+     * @param parameters the parameters
+     * @return the virtual host manager
+     */
+    private VirtualHostManager createAndSaveVirtualHostManager(String label, Org org,
+            String module, Map<String, String> parameters) {
+        VirtualHostManager vhm =
+                factory.createVirtualHostManager(label, org, module, parameters);
+        factory.save(vhm);
+        return vhm;
     }
 }

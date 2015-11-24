@@ -453,6 +453,8 @@ Provides: taskomatic-sat = %{version}-%{release}
 BuildRequires: systemd
 %{?systemd_requires}
 Requires: jakarta-commons-httpclient
+Requires: httpcomponents-client
+Requires: httpcomponents-core
 Requires: susemanager-frontend-libs >= 2.1.5
 %else
 Requires(post): chkconfig
@@ -649,6 +651,8 @@ wrapper.java.classpath.68=/usr/share/java/ehcache-core.jar" >> conf/default/rhn_
 echo "hibernate.cache.provider_class=org.hibernate.cache.EhCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.48=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf
 echo "wrapper.java.classpath.64=/usr/share/java/ehcache.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.65=/usr/share/java/httpcore.jar" >> conf/default/rhn_taskomatic_daemon.conf
+echo "wrapper.java.classpath.66=/usr/share/java/httpclient.jar" >> conf/default/rhn_taskomatic_daemon.conf
 %else
 echo "hibernate.cache.provider_class=org.hibernate.cache.OSCacheProvider" >> conf/default/rhn_hibernate.conf
 echo "wrapper.java.classpath.49=/usr/share/java/hibernate3.jar" >> conf/default/rhn_taskomatic_daemon.conf

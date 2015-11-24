@@ -15,17 +15,23 @@
 
 package com.redhat.rhn.domain.server.virtualhostmanager;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
+
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
+
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,16 +47,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     /**
      * Name of parameter specifying username in Virtual Host Manager Config
      */
-    public static final String CONFIG_USER = "user";
-    private static final String CONFIG_PASS = "pass";
+    public static final String CONFIG_USER = "username";
+    private static final String CONFIG_PASS = "password";
     private static final List<String> CONFIGS_TO_SKIP = Arrays.asList(
             new String[] {CONFIG_USER, CONFIG_PASS, "id", "module"});
 
     /**
      * Default constructor.
-     * (protected for testing reasons so that we can override it in tests)
+     * (public for testing reasons so that we can override it in tests)
      */
-    protected VirtualHostManagerFactory() {
+    public VirtualHostManagerFactory() {
         super();
     }
 
@@ -90,6 +96,36 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
+     * Looks up VirtualHostManager by id and Org
+     * @param id the id
+     * @param org the organization
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
+     */
+    public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
+        return (VirtualHostManager) getSession()
+                .createCriteria(VirtualHostManager.class)
+                .add(Restrictions.eq("org", org))
+                .add(Restrictions.eq("id", id))
+                .uniqueResult();
+    }
+
+    /**
+     * Looks up VirtualHostManager by label and Org
+     * @param label the label
+     * @param org the organization
+     * @return VirtualHostManager object with given label or null if such object doesn't
+     * exist
+     */
+    public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
+        return (VirtualHostManager) getSession()
+                .createCriteria(VirtualHostManager.class)
+                .add(Restrictions.eq("org", org))
+                .add(Restrictions.eq("label", label))
+                .uniqueResult();
+    }
+
+    /**
      * Returns a list of Virtual Host Managers associated with the given organization
      * @param org - organization
      * @return a list of corresponding Virtual Host Managers
@@ -99,6 +135,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         return getSession()
                 .createCriteria(VirtualHostManager.class)
                 .add(Restrictions.eq("org", org))
+                .addOrder(Order.asc("label"))
                 .list();
     }
 
@@ -128,17 +165,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param org - non-null organization
      * @param moduleName - nonempty module name
      * @param parameters - non-null map with additional gatherer parameters
-     * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
-     * module or if the parameters don't contain required gatherer module configuration
      * @return new VirtualHostManager instance
      */
     public VirtualHostManager createVirtualHostManager(
             String label,
             Org org,
             String moduleName,
-            Map<String, String> parameters) throws InvalidGathererConfigException {
+            Map<String, String> parameters) {
         getLogger().debug("Creating VirtualHostManager with label '" + label + "'.");
-        validateGathererConfiguration(moduleName, parameters);
 
         VirtualHostManager virtualHostManager = new VirtualHostManager();
         virtualHostManager.setLabel(label);
@@ -148,9 +182,16 @@ public class VirtualHostManagerFactory extends HibernateFactory {
         virtualHostManager.setConfigs(
                 createVirtualHostManagerConfigs(virtualHostManager, parameters));
 
-        saveObject(virtualHostManager);
-
         return virtualHostManager;
+    }
+
+    /**
+     * Saves a Virtual Host Manager.
+     *
+     * @param virtualHostManager the Virtual Host Manager
+     */
+    public void save(VirtualHostManager virtualHostManager) {
+        saveObject(virtualHostManager);
     }
 
     /**
@@ -159,22 +200,18 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      *  - existence of required parameters for given gatherer module
      * @param moduleName - gatherer module name
      * @param parameters - non-null map with gatherer parameters
-     * @throws InvalidGathererConfigException - if given module name is not a valid gatherer
-     * module or if the parameters don't contain required gatherer module configuration
+     * @return false if the module name or configuration is not valid
      */
-    protected void validateGathererConfiguration(String moduleName,
-            Map<String, String> parameters)
-            throws InvalidGathererConfigException {
+    public boolean isConfigurationValid(String moduleName, Map<String, String> parameters) {
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         if (!modules.containsKey(moduleName)) {
-            throw new InvalidGathererConfigException("Module '" + moduleName +
-                    "' not available");
+            return false;
         }
 
         GathererModule details = modules.get(moduleName);
-        if (!parameters.keySet().containsAll(details.getParameters().keySet())) {
-            throw new InvalidGathererConfigException("Invalid gatherer module config.");
-        }
+        Set<String> parameterNames = details.getParameters().keySet();
+
+        return parameterNames.stream().allMatch(n -> isNotEmpty(parameters.get(n)));
     }
 
     /**
@@ -190,7 +227,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     private Set<VirtualHostManagerConfig> createVirtualHostManagerConfigs(
             VirtualHostManager virtualHostManager,
             Map<String, String> parameters) {
-        Set<VirtualHostManagerConfig> configs = new HashSet<>();
+        Set<VirtualHostManagerConfig> configs = new LinkedHashSet<>();
 
         for (Map.Entry<String, String> configEntry : parameters.entrySet()) {
             String key = configEntry.getKey();
@@ -225,21 +262,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
     }
 
     /**
-     * Creates and stores db entity for credentials if the input params contain
+     * Creates a db entity for credentials if the input params contain
      * entry for username and password.
      * @param params - non-null map of gatherer parameters
-     * @return - new Credentials instance
-     *           if input params contain entry for username and password
-     *         - null otherwise
+     * @return new Credentials instance
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
-        Credentials credentials = null;
-        if (params.containsKey(CONFIG_USER) && params.containsKey(CONFIG_PASS)) {
-            credentials = CredentialsFactory.createVHMCredentials();
-            credentials.setUsername(params.get(CONFIG_USER));
-            credentials.setPassword(params.get(CONFIG_PASS));
-            CredentialsFactory.storeCredentials(credentials);
+        String username = params.get(CONFIG_USER);
+        if (username == null) {
+            return null;
         }
+
+        Credentials credentials = CredentialsFactory.createVHMCredentials();
+        credentials.setUsername(username);
+        credentials.setPassword(params.get(CONFIG_PASS));
+        credentials.setModified(new Date());
 
         return credentials;
     }

@@ -15,6 +15,8 @@
 package com.suse.manager.webui;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.setup;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.head;
 import static spark.Spark.post;
@@ -22,6 +24,7 @@ import static spark.Spark.post;
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
 import com.suse.manager.webui.controllers.MinionController;
+import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
 import spark.servlet.SparkApplication;
 import spark.template.jade.JadeTemplateEngine;
@@ -40,7 +43,8 @@ public class Router implements SparkApplication {
 
         // Salt Master pages
         get("/manager/minions", MinionController::list, jade);
-        get("/manager/minions/cmd", MinionController::remoteCommands, jade);
+        // Remote command page
+        get("/manager/minions/cmd", MinionController::cmd, jade);
         get("/manager/minions/:id", MinionController::show);
         post("/manager/minions/:id/accept", MinionController::accept);
         post("/manager/minions/:id/reject", MinionController::reject);
@@ -59,5 +63,15 @@ public class Router implements SparkApplication {
                 DownloadController::downloadPackage);
         head("/manager/download/:channel/repodata/:file",
                 DownloadController::downloadMetadata);
+
+        // Virtual Host Managers
+        get("/manager/vhms", withOrgAdmin(VirtualHostManagerController::list), jade);
+        get("/manager/vhms/add", withOrgAdmin(VirtualHostManagerController::add), jade);
+        post("/manager/vhms", withUser(VirtualHostManagerController::create), jade);
+        get("/manager/vhms/:id", withOrgAdmin(VirtualHostManagerController::show), jade);
+        post("/manager/vhms/:id/delete",
+                withOrgAdmin(VirtualHostManagerController::delete));
+        post("/manager/vhms/:id/refresh",
+                withOrgAdmin(VirtualHostManagerController::refresh));
     }
 }

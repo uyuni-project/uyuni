@@ -1,0 +1,34 @@
+.spacewalk-toolbar-h1
+  h1
+    i.fa.spacewalk-icon-virtual-host-manager
+    | #{l.t(virtualHostManager.label)}
+
+.row.col-md-12
+  .panel.panel-default
+    .panel-heading
+      h4 #{l.t("Properties")}
+    .table-responsive: table(class="table")
+      tbody
+        tr
+          td.col-md-3 #{l.t("Organization")}:
+          td.col-md-9 #{virtualHostManager.org.name}
+        tr
+          td.col-md-3 #{l.t("virtual-host-gatherer module")}:
+          td.col-md-9 #{l.t(virtualHostManager.gathererModule)}
+        for config in virtualHostManager.configs
+          tr
+            td.col-md-3 #{l.t(h.capitalize(config.parameter))}:
+            td.col-md-9 #{config.value}
+
+form(method="post")
+  input(type="hidden", name="csrf_token", value="#{csrf_token}")
+  .col-offset-3.col-md-9
+    button(type="submit" formaction="#{virtualHostManager.id}/delete").btn.btn-danger
+      i.fa.fa-trash
+      | #{l.t("Delete Virtual Host Manager")}
+    &nbsp;
+
+    if satAdmin
+      button(type="submit" formaction="#{virtualHostManager.id}/refresh").btn.btn-default
+        i.fa.fa-refresh
+        | #{l.t("Refresh data from this Virtual Host Manager")}

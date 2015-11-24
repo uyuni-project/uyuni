@@ -15,7 +15,9 @@
 package com.redhat.rhn.testing;
 
 import com.mockobjects.servlet.MockHttpSession;
+import org.apache.commons.collections.iterators.IteratorEnumeration;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +55,11 @@ public class RhnMockHttpSession extends MockHttpSession {
      */
     public void setAttribute(String name, Object value) {
         attributes.put(name, value);
+    }
+
+    @Override
+    public Enumeration getAttributeNames() {
+        return new IteratorEnumeration(attributes.keySet().iterator());
     }
 
     /**

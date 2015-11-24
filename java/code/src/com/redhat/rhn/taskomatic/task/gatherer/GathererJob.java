@@ -22,9 +22,12 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.gatherer.JSONHost;
+
+import org.apache.commons.lang.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,14 +37,28 @@ import java.util.Map;
  */
 public class GathererJob extends RhnJavaJob {
 
+    private static final String VHM_LABEL = "vhmLabel";
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void execute(JobExecutionContext jobExecutionContext)
         throws JobExecutionException {
-        List<VirtualHostManager> managers =
-                VirtualHostManagerFactory.getInstance().listVirtualHostManagers();
+
+        String vhmLabel = null;
+        if (jobExecutionContext.getJobDetail().getJobDataMap().containsKey(VHM_LABEL)) {
+            vhmLabel = jobExecutionContext.getJobDetail()
+                    .getJobDataMap().getString(VHM_LABEL);
+        }
+        List<VirtualHostManager> managers = new ArrayList<VirtualHostManager>();
+        if (StringUtils.isEmpty(vhmLabel)) {
+            managers.addAll(VirtualHostManagerFactory.getInstance()
+                    .listVirtualHostManagers());
+        }
+        else {
+            managers.add(VirtualHostManagerFactory.getInstance().lookupByLabel(vhmLabel));
+        }
         if (managers.isEmpty()) {
             log.debug("No Virtual Host Managers to run the gatherer job");
             return;
@@ -52,6 +69,9 @@ public class GathererJob extends RhnJavaJob {
 
         try {
             Map<String, Map<String, JSONHost>> results = new GathererRunner().run(managers);
+            if (results == null) {
+                return;
+            }
             log.debug(String.format("Got %d Virtual Host Managers from gatherer",
                     results.size()));
 

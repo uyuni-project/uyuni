@@ -191,13 +191,14 @@ public class TaskomaticApi {
      * Creates a new single satellite schedule
      * @param user shall be sat admin
      * @param bunchName bunch name
+     * @param params parameters for the bunch
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
      */
-    public Date scheduleSingleSatBunch(User user, String bunchName)
-    throws TaskomaticApiException {
+    public Date scheduleSingleSatBunch(User user, String bunchName,
+            Map<String, String> params) throws TaskomaticApiException {
         ensureSatAdminRole(user);
-        return (Date) invoke("tasko.scheduleSingleSatBunchRun", bunchName, new HashMap());
+        return (Date) invoke("tasko.scheduleSingleSatBunchRun", bunchName, params);
     }
 
     /**
