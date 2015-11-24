@@ -34,8 +34,9 @@ public class FlashScopeHelper {
 
     /**
      * Puts object to the flash scope.
-     * @param request
-     * @param object
+     *
+     * @param request - request with the session into which the flash data will be inserted
+     * @param object - object to be added to the flash scope
      */
     public static void flash(Request request, Object object) {
         request.session(true).attribute(FLASH, object);
@@ -43,9 +44,10 @@ public class FlashScopeHelper {
 
     /**
      * Gets data from the flash scope.
-     * @param request
-     * @param <T>
-     * @return
+     *
+     * @param request - request with the session containing the flash data
+     * @param <T> - type of the object to be retrieved from the flash scope
+     * @return the object stored in the flash scope
      */
     public static <T> T flash(Request request) {
         return request.attribute(FLASH);
@@ -54,8 +56,10 @@ public class FlashScopeHelper {
     /**
      * Spark filter for passing the data from (temporary) session attribute to the request
      * attribute.
-     * Deletes the flash data from the cache.
-     * @return filter
+     * Deletes the flash data from the cache in the session.
+     *
+     * @param request - request with the session containing the flash object
+     * @param response - not used
      */
     public static void handleFlashData(Request request, Response response) {
         Session session = request.session();
