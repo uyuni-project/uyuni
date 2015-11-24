@@ -268,8 +268,13 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @return new Credentials instance
      */
     private Credentials createCredentialsFromParams(Map<String, String> params) {
+        String username = params.get(CONFIG_USER);
+        if (username == null) {
+            return null;
+        }
+
         Credentials credentials = CredentialsFactory.createVHMCredentials();
-        credentials.setUsername(params.get(CONFIG_USER));
+        credentials.setUsername(username);
         credentials.setPassword(params.get(CONFIG_PASS));
         credentials.setModified(new Date());
 
