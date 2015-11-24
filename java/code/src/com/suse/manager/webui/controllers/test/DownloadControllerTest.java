@@ -92,7 +92,7 @@ public class DownloadControllerTest extends RhnBaseTestCase {
 
         Map<String, String> params = new HashMap<>();
         final String uriFile = String.format("%s.rpm", nvra);
-        Request request = SparkTestUtils.createMockRequest(
+        Request request = SparkTestUtils.createMockRequestWithParams(
                 "http://localhost:8080/rhn/manager/download/:channel/getPackage/:file",
                 params,
                 channel.getLabel(), uriFile);

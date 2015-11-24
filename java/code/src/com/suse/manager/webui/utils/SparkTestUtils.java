@@ -21,20 +21,33 @@ import spark.Request;
 import spark.RequestResponseFactory;
 import spark.routematch.RouteMatch;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * SparkTestUtils - todo javadoc
+ * SparkTestUtils - utils methods for testing controllers.
  */
 public class SparkTestUtils {
 
     private SparkTestUtils() { }
 
-    public static Request createMockRequest(
+    /**
+     * Creates a mock request with given parametrized uri, query parameters.
+     *
+     * @param matchUri - the uri with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param queryParams - POST or GET parameters (no multivalued parameters,
+     *                    for convenience)
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
+     */
+    public static Request createMockRequestWithParams(
             String matchUri,
             Map<String, String> queryParams,
-            Object ... vals) {
+            Object... vals) {
         final String requestUri = substituteVariables(matchUri, vals);
         final RouteMatch match = new RouteMatch(new Object(), matchUri, requestUri, "");
 
@@ -42,28 +55,41 @@ public class SparkTestUtils {
         mockRequest.setSession(new RhnMockHttpSession());
         mockRequest.setupGetRequestURI(requestUri);
         mockRequest.setupGetMethod("GET");
-        mockRequest.setupGetParameterMap(queryParams);
-        mockRequest.setupPathInfo(requestUri); // todo verify
+
+        // we need to set the query params twice as mockobjects request uses two separate
+        // backing objects
+        queryParams.forEach(
+                (name, val) -> mockRequest.setupAddParameter(name, new String[]{val}));
+        // we must convert to a "multi-value map"
+        mockRequest.setupGetParameterMap(queryParams.entrySet().stream().collect(
+                Collectors.toMap(v -> v.getKey(), v -> new String[]{v.getValue()})));
+
+        mockRequest.setupPathInfo(URI.create(requestUri).getPath());
 
         return RequestResponseFactory.create(match, mockRequest);
     }
 
     /**
-     * matchuri: "http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/";
-     * vals: "foo", "bar"
-     * returns: "http://localhost:8080/rhn/manager/foo/delete/bar/";
-     * @param matchUri
-     * @param vals
-     * @return
+     * Creates a mock request with given parametrized uri, query parameters.
+     *
+     * @param matchUri - the uri with parameters (prefixed by a colon) in path, for example:
+     *     <code>http://localhost:8080/rhn/manager/:vhm/delete/:vhmlabel/</code>
+     * @param vals - values that will substitute the parameters in matchUri
+     * @return Spark Request object corresponding to given URI (after params substitution)
+     * and query parameters
      */
-    public static Request createMockRequest(
-            String matchUri,
-            Object ... vals) {
-        return createMockRequest(matchUri, new HashMap<String, String>(), vals);
+    public static Request createMockRequest(String matchUri, Object... vals) {
+        return createMockRequestWithParams(matchUri, new HashMap<>(), vals);
     }
 
-    // public for testability
-    public static String substituteVariables(String matchUri, Object ... vals) {
+    /**
+     * Substitutes variable parameters in uri path.
+     *
+     * @param matchUri - uri string with parameters (prefixed by a colon)
+     * @param vals - parameter values
+     * @return string representing a uri with parameters substituted with parameter values
+     */
+    public static String substituteVariables(String matchUri, Object... vals) {
         final String format = matchUri.replaceAll("/:[^/]+", "/%s");
         return String.format(format, vals);
     }
