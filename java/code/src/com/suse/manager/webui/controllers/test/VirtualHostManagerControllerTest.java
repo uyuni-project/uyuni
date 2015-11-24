@@ -43,6 +43,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     // dealing with parameters in the url
     private Response response;
     private VirtualHostManagerFactory factory;
+    private final String baseUri = "http://localhost:8080/rhn/vhms/";
 
     /**
      * {@inheritDoc}
@@ -112,7 +113,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
 
-        Request request = getRequestWithCsrf("/:id", vhm.getId());
+        Request request = getRequestWithCsrf("/:id/delete", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
 
         assertNull(factory.lookupByLabel(label));
@@ -125,7 +126,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         Org otherOrg = UserTestUtils.createNewOrgFull("foobar org");
         String label = "myVHM";
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, otherOrg);
-        Request request = getRequestWithCsrf("/:id", vhm.getId());
+        Request request = getRequestWithCsrf("/:id/delete", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
 
         // the original VHM is not deleted
@@ -142,7 +143,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
      * @return the request with csrf
      */
     private Request getRequestWithCsrf(String uri, Object... vars) {
-        Request request = SparkTestUtils.createMockRequest(uri, vars);
+        Request request = SparkTestUtils.createMockRequest(baseUri + uri, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }
