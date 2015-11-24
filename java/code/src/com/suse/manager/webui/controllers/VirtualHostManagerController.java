@@ -123,7 +123,7 @@ public class VirtualHostManagerController {
         String label = request.queryParams("label");
         String gathererModule = request.queryParams("module");
         Map<String, String> gathererModuleParams =
-                paramsFromQueryMap(gathererModule, request.queryMap().toMap());
+                paramsFromQueryMap(request.queryMap().toMap());
 
         if (StringUtils.isEmpty(label)) {
             errors.add("Label must be specified.");
@@ -131,8 +131,7 @@ public class VirtualHostManagerController {
         if (getFactory().lookupByLabel(label) != null) {
             errors.add("Virtual Host Manager with given label already exists.");
         }
-        if (!getFactory().isConfigurationValid(gathererModule,
-                gathererModuleParams)) {
+        if (!getFactory().isConfigurationValid(gathererModule, gathererModuleParams)) {
             errors.add("All fields are mandatory.");
         }
 
@@ -193,7 +192,7 @@ public class VirtualHostManagerController {
                 user.getOrg());
         String label = virtualHostManager.getLabel();
         String message = null;
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("vhmlabel", label);
         try {
             new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-bunch", params);
@@ -213,12 +212,10 @@ public class VirtualHostManagerController {
     /**
      * Creates VHM gatherer module params from the query map.
      *
-     * @param gathererModule the gatherer module
      * @param queryMap the query map
      * @return the map
      */
-    private static Map<String, String> paramsFromQueryMap(String gathererModule,
-            Map<String, String[]> queryMap) {
+    private static Map<String, String> paramsFromQueryMap(Map<String, String[]> queryMap) {
         return queryMap.entrySet().stream()
                 .filter(keyVal -> keyVal.getKey().startsWith("module_"))
                 .collect(Collectors.toMap(

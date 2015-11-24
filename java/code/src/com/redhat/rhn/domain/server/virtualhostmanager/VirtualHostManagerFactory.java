@@ -202,8 +202,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param parameters - non-null map with gatherer parameters
      * @return false if the module name or configuration is not valid
      */
-    public boolean isConfigurationValid(String moduleName,
-            Map<String, String> parameters) {
+    public boolean isConfigurationValid(String moduleName, Map<String, String> parameters) {
         Map<String, GathererModule> modules = new GathererRunner().listModules();
         if (!modules.containsKey(moduleName)) {
             return false;
