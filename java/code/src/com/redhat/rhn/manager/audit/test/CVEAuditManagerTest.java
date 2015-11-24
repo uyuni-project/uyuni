@@ -431,9 +431,9 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
                 childChannelNextSP.getId(), 2));
         // Check channels relevant for the previous SP
         assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                baseChannelPrevSP.getId(), 3));
+                baseChannelPrevSP.getId(), 100000));
         assertContains(relevantChannels, new ServerChannelIdPair(server.getId(),
-                childChannelPrevSP.getId(), 3));
+                childChannelPrevSP.getId(), 100000));
     }
 
     /**
@@ -1027,6 +1027,77 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         List<CVEAuditSystem> results =
                 CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
         assertSystemPatchStatus(server, PatchStatus.PATCHED, results);
+    }
+
+    /**
+     * Test that older products and service packs are considered *only* if there is no patch
+     * available in a current or future product. Even if an "older" patch is fulfilled since
+     * the installed package has a higher version number a system should still show up as
+     * unpatched in case there is a patch available in the current product.
+     *
+     * See also here: http://bugzilla.suse.com/show_bug.cgi?id=954983
+     *
+     * @throws Exception if anything goes wrong
+     */
+    public void testIgnoreOldProductsWhenCurrentPatchAvailable() throws Exception {
+        // Create a CVE number
+        String cveName = TestUtils.randomString().substring(0, 13);
+        Cve cve = createTestCve(cveName);
+        Set<Cve> cves = new HashSet<Cve>();
+        cves.add(cve);
+
+        // Create SP2 and SP3 products + upgrade path
+        ChannelFamily channelFamily = createTestChannelFamily();
+        SUSEProduct productSP2 = createTestSUSEProduct(channelFamily);
+        SUSEProduct productSP3 = createTestSUSEProduct(channelFamily);
+        createTestSUSEUpgradePath(productSP2, productSP3);
+
+        // Create channels for the products
+        ChannelProduct channelProductSP2 = createTestChannelProduct();
+        ChannelProduct channelProductSP3 = createTestChannelProduct();
+        Channel baseChannelSP2 = createTestVendorBaseChannel(channelFamily, channelProductSP2);
+        Channel ltssChannelSP2 = createTestVendorChildChannel(baseChannelSP2, channelProductSP2);
+        Channel baseChannelSP3 = createTestVendorBaseChannel(channelFamily, channelProductSP3);
+        Channel updateChannelSP3 = createTestVendorChildChannel(baseChannelSP3, channelProductSP3);
+
+        // Assign channels to products
+        createTestSUSEProductChannel(baseChannelSP2, productSP2);
+        createTestSUSEProductChannel(ltssChannelSP2, productSP2);
+        createTestSUSEProductChannel(baseChannelSP3, productSP3);
+        createTestSUSEProductChannel(updateChannelSP3, productSP3);
+
+        // Create two errata: one in the LTSS channel and one in SP3 updates
+        User user = createTestUser();
+        Errata errataLTSS = createTestErrata(user, cves);
+        ltssChannelSP2.addErrata(errataLTSS);
+        TestUtils.saveAndFlush(ltssChannelSP2);
+        Errata errataSP3 = createTestErrata(user, cves);
+        updateChannelSP3.addErrata(errataSP3);
+        TestUtils.saveAndFlush(updateChannelSP3);
+
+        // This is a realistic scenario: the LTSS package has a lower version than the
+        // installed "upnatched" package, system showed up as patched in bsc#954983.
+        Package patchedLTSS = createTestPackage(user, errataLTSS, ltssChannelSP2, "noarch");
+        Package unpatched = createLaterTestPackage(user, null, baseChannelSP3, patchedLTSS);
+        @SuppressWarnings("unused")
+        Package patchedSP3 = createLaterTestPackage(
+                user, errataSP3, updateChannelSP3, unpatched);
+
+        // Create server: no patch is installed
+        Set<Channel> channelsSP3 = new HashSet<Channel>();
+        channelsSP3.add(baseChannelSP3);
+        channelsSP3.add(updateChannelSP3);
+        Server server = createTestServer(user, channelsSP3);
+        createTestInstalledPackage(unpatched, server);
+        installSUSEProductOnServer(productSP3, server);
+
+        // Result is not PATCHED here, even though there is a package with a lower version
+        // number from an older product's LTSS channel
+        CVEAuditManager.populateCVEServerChannels();
+        EnumSet<PatchStatus> filter = EnumSet.allOf(PatchStatus.class);
+        List<CVEAuditSystem> results =
+                CVEAuditManager.listSystemsByPatchStatus(user, cveName, filter);
+        assertSystemPatchStatus(server, PatchStatus.AFFECTED_PATCH_APPLICABLE, results);
     }
 
     /**
