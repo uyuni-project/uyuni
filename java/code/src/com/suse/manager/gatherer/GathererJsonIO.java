@@ -147,8 +147,8 @@ public class GathererJsonIO {
             writer.name("id").value(value.getLabel());
             writer.name("module").value(value.getGathererModule());
             if (value.getCredentials() != null) {
-                writer.name("user").value(value.getCredentials().getUsername());
-                writer.name("pass").value(value.getCredentials().getPassword());
+                writer.name("username").value(value.getCredentials().getUsername());
+                writer.name("password").value(value.getCredentials().getPassword());
             }
             for (VirtualHostManagerConfig c : value.getConfigs()) {
                 writer.name(c.getParameter()).value(c.getValue());
