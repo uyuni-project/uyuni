@@ -46,11 +46,11 @@ drop function if exists rhn_entitlements.unset_customer_nonlinux(customer_id_in 
 drop function if exists rhn_entitlements.unset_customer_provisioning(customer_id_in in numeric);
 
 drop function if exists rhn_cmeth_val_trig_fun();
-drop function if exists rhn_org_ent_mod_trig_fun() cascade;
-drop function if exists rhn_org_ent_type_mod_trig_fun() cascade;
+drop function if exists rhn_org_ent_mod_trig_fun();
+drop function if exists rhn_org_ent_type_mod_trig_fun();
 drop function if exists rhn_probe_delete_trigger_fun();
 drop function if exists rhn_probe_insert_trigger_fun();
-drop function if exists rhn_satcert_mod_trig_fun() cascade;
+drop function if exists rhn_satcert_mod_trig_fun();
 drop function if exists rhn_servnet_ipaddr_mon_trig_fun();
 drop function if exists rhn_solaris_p_mod_trig_fun();
 drop function if exists rhn_solaris_ps_mod_trig_fun();
