@@ -16,6 +16,7 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
+import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -44,6 +45,8 @@ public class GenerateRepoFileAction implements MessageAction {
         if (server.hasEntitlement(EntitlementManager.SALTSTACK)) {
             try {
                 RepoFileUtils.generateRepositoryFile(server);
+                MessageQueue.publish(
+                        new StateDirtyEvent(serverId, event.getUserId(), "channels"));
             }
             catch (IOException | JoseException e) {
                 LOG.error(String.format(
