@@ -60,7 +60,8 @@ public class MgrSyncUtils {
      * @throws IOException in case of an error
      */
     public static boolean verifyProxy(String url) throws IOException {
-        return sendHeadRequest(url, null, null, true).getStatusLine().getStatusCode() == HttpStatus.SC_OK;
+        return sendHeadRequest(url, null, null, true).getStatusLine()
+                .getStatusCode() == HttpStatus.SC_OK;
     }
 
     /**

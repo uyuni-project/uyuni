@@ -45,7 +45,7 @@ public class SCCClientUtilTest extends MockObjectTestCase {
 
     /**
      * Tests {@link SCCClientUtils#getLogFilename}
-     * @throws URISyntaxException
+     * @throws URISyntaxException if URI syntax is wrong
      */
     public void testFilenameFromURI() throws URISyntaxException {
         URI uri = new URI(TEST_URI);

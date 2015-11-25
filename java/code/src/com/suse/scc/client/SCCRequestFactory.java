@@ -17,10 +17,8 @@ package com.suse.scc.client;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 
-import spark.route.HttpMethod;
-
 /**
- * Helper class for setting up HTTP Requests as {@link HttpMethod} objects.
+ * Helper class for setting up HTTP Requests as {@link HttpRequestBase} objects.
  */
 public class SCCRequestFactory {
 
@@ -47,7 +45,7 @@ public class SCCRequestFactory {
      * @param method the HTTP method to use
      * @param endpoint the SCC API endpoint
      * @param config SCC client configuration
-     * @return {@link HttpMethod} object representing the request
+     * @return {@link HttpRequestBase} object representing the request
      * @throws SCCClientException in case of an error
      */
     public HttpRequestBase initRequest(String method, String endpoint, SCCConfig config)
