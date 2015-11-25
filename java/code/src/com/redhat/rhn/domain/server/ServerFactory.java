@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -929,5 +930,13 @@ public class ServerFactory extends HibernateFactory {
         Criteria criteria = session.createCriteria(Server.class);
         criteria.add(Restrictions.eq("digitalServerId", machineId));
         return (Server) criteria.uniqueResult();
+    }
+
+    /**
+     * @return a list of all systems
+     */
+    @SuppressWarnings("unchecked")
+    public static List<Server> list() {
+        return getSession().createCriteria(Server.class).list();
     }
 }
