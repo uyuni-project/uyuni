@@ -45,14 +45,13 @@ import org.apache.log4j.Logger;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
-// TODO: Auto-generated Javadoc
 /**
  * Adapter class holding an {@link HttpClient} object and offering a simple API to execute
  * arbitrary HTTP requests while proxy settings are applied transparently.
  */
 public class HttpClientAdapter {
 
-    /** The Constant IGNORE_NO_PROXY. */
+    /** Name of custom attribute used to pass the ignoreNoProxy flag down the request chain. */
     private static final String IGNORE_NO_PROXY = "ignoreNoProxy";
 
     /** The Constant REQUEST_URI. */
