@@ -166,6 +166,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-many class="com.redhat.rhn.domain.server.InstalledPackage"/>
         </set>
 
+        <set name="installedProducts" table="suseServerInstalledProduct"
+             lazy="true" cascade="save-update">
+            <key column="rhn_server_id"/>
+            <many-to-many column="suse_installed_product_id" class="com.redhat.rhn.domain.server.InstalledProduct"/>
+        </set>
+
         <joined-subclass name="com.redhat.rhn.domain.server.SatelliteServer"
             table="rhnSatelliteInfo">
             <key column="server_id"/>
