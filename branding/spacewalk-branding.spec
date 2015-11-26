@@ -21,7 +21,7 @@
 %define bootstrappkg bootstrap-less
 %endif
 Name:       spacewalk-branding
-Version:    2.5.0.3
+Version:    2.5.1
 Release:    1%{?dist}
 Summary:    Spacewalk branding data
 
@@ -149,6 +149,12 @@ rm -rf %{buildroot}
 /%{wwwdocroot}/css/*.less
 
 %changelog
+* Tue Nov 24 2015 Jan Dobes 2.5.1-1
+- Remove unused load_satellite_certificate function and satellite-cert-file
+  parameter
+- branding: remove unused css classes and their dead references
+- Bumping package versions for 2.5.
+
 * Thu Sep 24 2015 Jan Dobes 2.4.6-1
 - deleting language images
 

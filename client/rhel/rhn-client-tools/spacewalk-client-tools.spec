@@ -15,7 +15,7 @@ Group: System Environment/Base
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/rhn-client-tools-%{version}.tar.gz
 Source1: %{name}-rpmlintrc
 URL:     https://fedorahosted.org/spacewalk
-Version: 2.5.0.1
+Version: 2.5.2
 Release: 1%{?dist}
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch: noarch
@@ -477,6 +477,30 @@ make -f Makefile.rhn-client-tools test
 %endif
 
 %changelog
+* Tue Nov 24 2015 Jan Dobes 2.5.2-1
+- rhel client tools: po files updated
+- rhel client tools: remove virtualization host platform entitlement references
+- rhel client tools: drop references to update entitlements
+- client-tools: Remove 'provisioning_entitled' slot from RHEL and Debian
+- backend: unused reg_num parameter removed from documentation
+- client-tools: Remove 'monitoring_entitled' slot from RHEL and Debian
+
+* Thu Oct 15 2015 Tomas Lestach <tlestach@redhat.com> 2.5.1-1
+- fix rhnChannel instance has no attribute 'get'
+- Bumping package versions for 2.5.
+
+* Thu Sep 24 2015 Jan Dobes 2.4.11-1
+- Bumping copyright year.
+
+* Wed Sep 23 2015 Jan Dobes 2.4.10-1
+- Pulling updated *.po translations from Zanata.
+
+* Wed Sep 16 2015 Jan Dobes 2.4.9-1
+- 1263707 - fixing python2.4 to python3.3 exception compatibility
+
+* Wed Sep 02 2015 Jan Dobes 2.4.8-1
+- Show a descriptive message on reboot
+
 * Fri Jul 24 2015 Tomas Kasparek <tkasparek@redhat.com> 2.4.7-1
 - merge if into into one registerSystem call
 - remove dead code
