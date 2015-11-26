@@ -64,7 +64,7 @@ basepath="$basepath/upgrade/"
 echo "P: $basepath"
 echo "T: $templatedir"
 
-dirs=(spacewalk-schema-2.1-to-spacewalk-schema-2.2 spacewalk-schema-2.2-to-spacewalk-schema-2.3 spacewalk-schema-2.3-to-spacewalk-schema-2.4)
+dirs=(spacewalk-schema-2.1-to-spacewalk-schema-2.2 spacewalk-schema-2.2-to-spacewalk-schema-2.3 spacewalk-schema-2.3-to-spacewalk-schema-2.4 spacewalk-schema-2.4-to-spacewalk-schema-2.5)
 
 for d in ${dirs[*]}; do
     for i in $basepath/$d/*; do
@@ -90,6 +90,9 @@ for d in ${dirs[*]}; do
                 if grep "already applied in Manager" "$dest" > /dev/null; then
                     continue
                 fi
+                if grep "own migration available" "$dest" > /dev/null; then
+                    continue
+                fi
                 templatename=`basename $dest`
                 #echo "Searching for template: $templatedir/$templatename.dif"
                 if [ -e "$templatedir/$templatename.dif" ]; then
@@ -106,6 +109,11 @@ for d in ${dirs[*]}; do
         source=`find_source $i $basepath`
     	#echo ">cp $source $dest"
     	cp -v $source $dest
+        #if grep "oracle equivalent source" $source; then
+        #    echo "-- oracle equivalent source sha1 6c3a7d18a2df3aaabff00dedafa5fe70caeaa219" > $dest
+        #fi
+        #echo "-- This file is intentionally left empty." >> $dest
+        #echo "-- own migration available" >> $dest
     done
     incr
 done
