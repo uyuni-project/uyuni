@@ -49,7 +49,7 @@ When(/^I accept all Salt unaccepted keys$/) do
 end
 
 When(/^I get OS information of the Minion from the Master$/) do
-  @output = sshcmd("salt #{$myhostname} grains.get os")
+  @output = sshcmd("salt #{$myhostname} grains.get osfullname")
 end
 
 Then(/^it should contain a "(.*?)" text$/) do |content|
