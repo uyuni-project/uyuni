@@ -37,12 +37,26 @@ function hideModal() {
 
 // Save credentials from edit dialog
 function saveCredentials() {
-  console.log("Saving credentials: " + editId);
-  var user = $('#edit-user').val();
-  var password = $('#edit-password').val();
-  showSpinner("edit-credentials-spinner");
-  MirrorCredentialsRenderer.saveCredentials(editId, user, password,
-      makeRendererHandler("listset-container", false));
+  var validated = true;
+  $('#add-credentials-form .form-control[required]').each(function() {
+    var field = $(this);
+    if (field.val().length == 0) {
+      field.closest('.form-group').addClass('has-error');
+      validated = false;
+    }
+    else {
+      field.closest('.form-group').removeClass('has-error');
+    }
+  });
+
+  if (validated) {
+    console.log("Saving credentials: " + editId);
+    var user = $('#edit-user').val();
+    var password = $('#edit-password').val();
+    showSpinner("edit-credentials-spinner");
+    MirrorCredentialsRenderer.saveCredentials(editId, user, password,
+        makeRendererHandler("listset-container", false));
+  }
 }
 
 // Delete credentials from modal

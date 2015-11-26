@@ -21,17 +21,17 @@
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" role="form">
+                        <form class="form-horizontal" role="form" id="add-credentials-form">
                             <div class="form-group">
                                 <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" autocomplete="off" id="edit-user" placeholder="Username">
+                                    <input type="text" class="form-control" autocomplete="off" id="edit-user" placeholder="Username" required>>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
-                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;">
+                                    <input type="password" class="form-control" autocomplete="off" id="edit-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;" required>>
                                 </div>
                             </div>
                         </form>
