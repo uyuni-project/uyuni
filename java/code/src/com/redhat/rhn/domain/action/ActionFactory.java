@@ -105,7 +105,10 @@ public class ActionFactory extends HibernateFactory {
                 Iterator i = types.iterator();
                 while (i.hasNext()) {
                     ActionArchType type = (ActionArchType) i.next();
-                    actionArchTypes.add(type);
+                    // don't cache the entire ActionArchType bean to ovoid
+                    // any LazyInitializatoinException later
+                    actionArchTypes.add(toActionArchTypeKey(type.getActionType().getId(),
+                            type.getActionStyle()));
                 }
             }
             catch (HibernateException he) {
@@ -114,6 +117,10 @@ public class ActionFactory extends HibernateFactory {
                 HibernateRuntimeException("Error loading ActionArchTypes from db");
             }
         }
+    }
+
+    private static String toActionArchTypeKey(Integer id, String actionStyle) {
+        return id + "_" + actionStyle;
     }
 
     /**
@@ -621,16 +628,8 @@ public class ActionFactory extends HibernateFactory {
      *         the set of ActionArchTypes
      */
     public static boolean checkActionArchType(Action actionCheck, String actionStyle) {
-        Iterator i = actionArchTypes.iterator();
-        while (i.hasNext()) {
-            ActionArchType at = (ActionArchType) i.next();
-            if (at.getActionType().equals(actionCheck.getActionType()) &&
-                    at.getActionStyle().equals(actionStyle)) {
-                return true;
-            }
-        }
-
-        return false;
+        return actionArchTypes.contains(
+                toActionArchTypeKey(actionCheck.getActionType().getId(), actionStyle));
     }
 
     /**
