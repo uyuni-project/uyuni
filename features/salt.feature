@@ -20,7 +20,7 @@ Feature: Check if SaltStack is configured and running
    Given the Salt Minion is configured
     When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
     And I restart salt-minion
-    And I wait for "2" seconds
+    And I wait for "20" seconds
     Then the Salt Minion should be running
 
   Scenario: Check if the minion key can be accepted
