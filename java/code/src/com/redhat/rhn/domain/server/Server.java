@@ -118,6 +118,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Set<Capability> capabilities;
     private CrashCount crashCount;
     private Set<Crash> crashes;
+    private Set<InstalledProduct> installedProducts = new HashSet<>();
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -1863,6 +1864,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public void setCrashCount(CrashCount crashIn) {
         crashCount = crashIn;
+    }
+
+    /**
+     * @param installedProductsIn the installedProducts to set
+     */
+    public void setInstalledProducts(Set<InstalledProduct> installedProductsIn) {
+        this.installedProducts = installedProductsIn;
+    }
+
+    /**
+     * @return the installedProducts
+     */
+    public Set<InstalledProduct> getInstalledProducts() {
+        return installedProducts;
     }
 
     /**
