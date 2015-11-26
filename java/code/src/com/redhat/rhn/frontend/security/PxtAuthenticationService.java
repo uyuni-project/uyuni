@@ -115,7 +115,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     /**
      * {@inheritDoc}
      */
-    @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response) {
         if (requestURIRequiresAuthentication(request)) {
             if (isAuthenticationRequired(request)) {

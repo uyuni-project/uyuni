@@ -86,7 +86,7 @@ begin
 		where old_server_id = server_id_in 
 		   or new_server_id = server_id_in;
 
-	rhn_channel.clear_subscriptions(server_id_in,1);
+	rhn_channel.clear_subscriptions(server_id_in, 1);
 
     	-- A little complicated here, but the goal is to
 	-- delete records from rhnVirtualInstace only if we don't

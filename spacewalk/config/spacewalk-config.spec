@@ -15,7 +15,7 @@
 
 Name: spacewalk-config
 Summary: Spacewalk Configuration
-Version: 2.5.0.1
+Version: 2.5.1
 Release: 1%{?dist}
 URL: http://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -174,6 +174,10 @@ sysconf_addword /etc/sysconfig/apache2 APACHE_SERVER_FLAGS ISSUSE
 %endif
 
 %changelog
+* Tue Nov 24 2015 Jan Dobes 2.5.1-1
+- rhn-satellite-activate: manual references removed
+- Bumping package versions for 2.5.
+
 * Wed Aug 12 2015 Tomas Lestach <tlestach@redhat.com> 2.4.1-1
 - Fixed typo on the rhn.conf man page
 - Bumping package versions for 2.4.

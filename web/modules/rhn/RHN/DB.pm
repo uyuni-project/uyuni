@@ -268,7 +268,6 @@ sub call_function {
   }
 }
 
-
 # another package
 package RHN::DB::st;
 our @ISA = qw/DBI::st/;
