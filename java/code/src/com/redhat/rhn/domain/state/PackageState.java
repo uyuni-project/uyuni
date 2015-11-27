@@ -23,8 +23,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
- * Represent the state of a single package: includes the package NEVRA (name, evr and
- * architecture), as well the state together with a version constraint.
+ * Representation of a single package state: it includes the package name, evr and
+ * architecture as well as the state together with a version constraint.
  */
 public class PackageState {
 
@@ -67,7 +67,7 @@ public class PackageState {
     }
 
     /**
-     * @return he id
+     * @return the id
      */
     public Long getId() {
         return id;
@@ -88,7 +88,7 @@ public class PackageState {
     }
 
     /**
-     * @param nameIn the name to set.
+     * @param nameIn the name to set
      */
     public void setName(PackageName nameIn) {
         this.name = nameIn;
@@ -102,7 +102,7 @@ public class PackageState {
     }
 
     /**
-     * @param groupIdIn
+     * @param groupIdIn the groupId to set
      */
     public void setGroupId(Long groupIdIn) {
         this.groupId = groupIdIn;
@@ -116,15 +116,13 @@ public class PackageState {
     }
 
     /**
-     * @param packageStateIdIn
+     * @param packageStateIdIn the packageStateId to set
      */
     public void setPackageStateId(int packageStateIdIn) {
         this.packageStateId = packageStateIdIn;
     }
 
     /**
-     * Return the package state.
-     *
      * @return the packageState
      */
     public PackageStates getPackageState() {
@@ -133,21 +131,21 @@ public class PackageState {
     }
 
     /**
-     * @param packageState
+     * @param packageState the packageState to set
      */
     public void setPackageState(PackageStates packageState) {
-        this.packageStateId = packageState.ID;
+        this.packageStateId = packageState.id();
     }
 
     /**
-     * @return the versionConstraint
+     * @return the versionConstraintId
      */
     public int getVersionConstraintId() {
         return versionConstraintId;
     }
 
     /**
-     * @param versionConstraintIn the versionConstraint to set
+     * @param versionConstraintIdIn the versionConstraintId to set
      */
     public void setVersionConstraintId(int versionConstraintIdIn) {
         this.versionConstraintId = versionConstraintIdIn;
@@ -162,10 +160,10 @@ public class PackageState {
     }
 
     /**
-     * @param versionConstraint
+     * @param versionConstraint the versionConstraint to set
      */
     public void setVersionConstraint(VersionConstraints versionConstraint) {
-        versionConstraintId = versionConstraint.ID;
+        versionConstraintId = versionConstraint.id();
     }
 
     /**
@@ -176,14 +174,14 @@ public class PackageState {
         if (!(other instanceof PackageState)) {
             return false;
         }
-        PackageState otherPackageState = (PackageState) other;
+        PackageState otherState = (PackageState) other;
         return new EqualsBuilder()
-                .append(getName(), otherPackageState.getName())
-                .append(getEvr(), otherPackageState.getEvr())
-                .append(getArch(), otherPackageState.getArch())
-                .append(getGroupId(), otherPackageState.getGroupId())
-                .append(getPackageStateId(), otherPackageState.getPackageStateId())
-                .append(getVersionConstraintId(), otherPackageState.getVersionConstraintId())
+                .append(getName(), otherState.getName())
+                .append(getEvr(), otherState.getEvr())
+                .append(getArch(), otherState.getArch())
+                .append(getGroupId(), otherState.getGroupId())
+                .append(getPackageStateId(), otherState.getPackageStateId())
+                .append(getVersionConstraintId(), otherState.getVersionConstraintId())
                 .isEquals();
     }
 

@@ -24,10 +24,19 @@ public enum PackageStates {
     INSTALLED(0), REMOVED(1), PURGED(2);
 
     /** This ID corresponds to the id column in the database */
-    public final int ID;
+    private final int ID;
 
-    private PackageStates(int id) {
+    PackageStates(int id) {
         ID = id;
+    }
+
+    /**
+     * Return the id.
+     *
+     * @return the id
+     */
+    public int id() {
+        return ID;
     }
 
     /**
