@@ -13,11 +13,10 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseVersionConstraints
+CREATE TABLE suseVersionConstraintType
 (
     id        NUMBER NOT NULL
-                  CONSTRAINT suse_verconstr_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
+                  CONSTRAINT suse_verconstrtype_id_pk PRIMARY KEY,
     label     VARCHAR2(32) NOT NULL
 )
 ENABLE ROW MOVEMENT

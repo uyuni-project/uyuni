@@ -13,6 +13,11 @@
 -- in this software or its documentation.
 --
 
-insert into suseVersionConstraints (id, label) values (0, 'latest');
-insert into suseVersionConstraints (id, label) values (1, 'equal');
-commit;
+CREATE TABLE susePackageStateType
+(
+    id        NUMBER NOT NULL
+                  CONSTRAINT suse_pkgstatetype_id_pk PRIMARY KEY,
+    label     VARCHAR2(32) NOT NULL
+)
+ENABLE ROW MOVEMENT
+;

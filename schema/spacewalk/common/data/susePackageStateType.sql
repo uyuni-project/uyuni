@@ -13,12 +13,7 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE susePackageStates
-(
-    id        NUMBER NOT NULL
-                  CONSTRAINT suse_pkgstates_id_pk PRIMARY KEY
-                  USING INDEX TABLESPACE [[64k_tbs]],
-    label     VARCHAR2(32) NOT NULL
-)
-ENABLE ROW MOVEMENT
-;
+insert into susePackageStateType (id, label) values (0, 'installed');
+insert into susePackageStateType (id, label) values (1, 'removed');
+insert into susePackageStateType (id, label) values (2, 'purged');
+commit;

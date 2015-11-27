@@ -16,24 +16,23 @@
 CREATE TABLE susePackageState
 (
     id               NUMBER NOT NULL
-                         CONSTRAINT suse_pkgstate_id_pk PRIMARY KEY
-                         USING INDEX TABLESPACE [[8m_tbs]],
+                         CONSTRAINT suse_pkgstate_id_pk PRIMARY KEY,
     name_id          NUMBER NOT NULL
                          CONSTRAINT suse_pkgstate_nid_fk
                              REFERENCES rhnPackageName (id),
-    evr_id           NUMBER NOT NULL
+    evr_id           NUMBER
                          CONSTRAINT suse_pkgstate_eid_fk
                              REFERENCES rhnPackageEVR (id),
     package_arch_id  NUMBER
                          CONSTRAINT suse_pkgstate_paid_fk
                              REFERENCES rhnPackageArch (id),
-    state_id         NUMBER NOT NULL,
+    group_id         NUMBER NOT NULL,
     package_state_id NUMBER NOT NULL
                          CONSTRAINT suse_pkgstate_psid_fk
-                             REFERENCES susePackageStates (id),
+                             REFERENCES susePackageStateType (id),
     version_constraint_id NUMBER NOT NULL
                          CONSTRAINT suse_pkgstate_vcid_fk
-                             REFERENCES suseVersionConstraints (id)
+                             REFERENCES suseVersionConstraintType (id)
 )
 ENABLE ROW MOVEMENT
 ;
@@ -41,9 +40,4 @@ ENABLE ROW MOVEMENT
 CREATE SEQUENCE suse_pkgstate_id_seq;
 
 ALTER TABLE susePackageState
-    ADD CONSTRAINT suse_pkgstate_nid_sid_uq UNIQUE (name_id, state_id);
-
-ALTER TABLE susePackageState
-    ADD CONSTRAINT suse_pkgstate_nid_eid_paid_fk FOREIGN KEY (name_id, evr_id, package_arch_id)
-    REFERENCES rhnPackageNEVRA (name_id, evr_id, package_arch_id)
-        ON DELETE CASCADE;
+    ADD CONSTRAINT suse_pkgstate_nid_gid_uq UNIQUE (name_id, group_id);

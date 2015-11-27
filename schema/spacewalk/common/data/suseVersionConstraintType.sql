@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-insert into susePackageStates (id, label) values (0, 'installed');
-insert into susePackageStates (id, label) values (1, 'removed');
-insert into susePackageStates (id, label) values (2, 'purged');
+insert into suseVersionConstraintType (id, label) values (0, 'latest');
+insert into suseVersionConstraintType (id, label) values (1, 'equal');
 commit;
