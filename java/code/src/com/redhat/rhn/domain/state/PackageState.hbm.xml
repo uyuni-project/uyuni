@@ -14,4 +14,7 @@
         <property name="packageStateId" column="package_state_id" type="int" not-null="true"/>
         <property name="versionConstraintId" column="version_constraint_id" type="int" not-null="true"/>
     </class>
+    <query name="PackageState.deleteAll">
+        <![CDATA[delete from com.redhat.rhn.domain.state.PackageState]]>
+    </query>
 </hibernate-mapping>

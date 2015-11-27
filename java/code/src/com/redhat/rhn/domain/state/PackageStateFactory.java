@@ -61,4 +61,11 @@ public class PackageStateFactory extends HibernateFactory {
                 .add(Restrictions.eq("groupId", groupId))
                 .list();
     }
+
+    /**
+     * Clear all package states from the database.
+     */
+    public static void clearPackageStates() {
+        getSession().getNamedQuery("PackageState.deleteAll").executeUpdate();
+    }
 }
