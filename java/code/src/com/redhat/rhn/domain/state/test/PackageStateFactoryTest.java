@@ -16,11 +16,16 @@ package com.redhat.rhn.domain.state.test;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStateFactory;
 import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.ServerState;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import java.util.List;
 
 /**
  * Tests for {@link PackageStateFactory}.
@@ -41,7 +46,7 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception in case of an error
      */
     public void testSavePackageState() throws Exception {
-        // Save a test package
+        // Create a test package
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
         // Setup and save a state for this package
@@ -55,12 +60,50 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
         PackageStateFactory.savePackageState(packageState);
 
         // Verify the state attributes
-        PackageStateFactory.lookupPackageStates(1L).forEach(state -> {
+        List<PackageState> packageStates = PackageStateFactory.lookupPackageStates(1L);
+        assertEquals(1, packageStates.size());
+        packageStates.forEach(state -> {
             assertEquals(pkg.getPackageName(), state.getName());
             assertEquals(pkg.getPackageEvr(), state.getEvr());
             assertEquals(pkg.getPackageArch(), state.getArch());
             assertEquals(PackageStates.INSTALLED, state.getPackageState());
             assertEquals(VersionConstraints.LATEST, state.getVersionConstraint());
+        });
+    }
+
+    /**
+     * Assign a group of package states to a server.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testServerState() throws Exception {
+        // Create a test package and a server
+        Package pkg = PackageTest.createTestPackage(user.getOrg());
+        Server server = ServerFactoryTest.createTestServer(user);
+
+        // Setup and save a package state
+        PackageState packageState = new PackageState();
+        packageState.setGroupId(1L);
+        packageState.setName(pkg.getPackageName());
+        packageState.setEvr(pkg.getPackageEvr());
+        packageState.setArch(pkg.getPackageArch());
+        packageState.setPackageState(PackageStates.INSTALLED);
+        packageState.setVersionConstraint(VersionConstraints.LATEST);
+        PackageStateFactory.savePackageState(packageState);
+
+        // Create server state and assign the package state
+        ServerState serverState = new ServerState();
+        serverState.setServer(server);
+        serverState.setPackageStateGroupId(packageState.getGroupId());
+        PackageStateFactory.save(serverState);
+
+        // Verify the server state
+        List<ServerState> serverStates = PackageStateFactory.lookupServerStates(server);
+        assertEquals(1, serverStates.size());
+        serverStates.forEach(state -> {
+            assertEquals(0, state.getRevision());
+            assertEquals(server, state.getServer());
+            assertEquals(packageState.getGroupId(), state.getPackageStateGroupId());
         });
     }
 }
