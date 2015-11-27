@@ -135,7 +135,7 @@
              regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j saltstack-netapi-client spark-core spark-template-jade httpclient" />
+  <property name="suse-common-jars" value="jade4j jose4j saltstack-netapi-client spark-core spark-template-jade httpclient httpcore" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="commons-jexl commons-lang3 concurrentlinkedhashmap-lru
@@ -153,7 +153,7 @@
   <property name="install.common.jar.dependencies"
       value="bcel cglib commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
-             commons-el commons-fileupload commons-httpclient commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
+             commons-el commons-fileupload commons-io commons-lang commons-logging ${commons-validator} ${hibernate}
              ${tomcat-jars} javamail jdom jsch dwr google-gson
              log4j oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              jcommon stringtree-json postgresql-jdbc
@@ -164,7 +164,7 @@
   <property name="dist.jar.dependencies"
       value="antlr ${asm} bcel c3p0 cglib
              commons-collections commons-beanutils commons-cli commons-codec
-             commons-digester commons-discovery commons-el commons-fileupload commons-httpclient commons-io
+             commons-digester commons-discovery commons-el commons-fileupload commons-io
              commons-lang commons-logging
              ${commons-validator} concurrent dom4j google-gson ${hibernate} jta
              jaf ${jasper-jars} javamail jcommon jdom ${other-jars}

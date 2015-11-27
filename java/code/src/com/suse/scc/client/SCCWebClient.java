@@ -22,9 +22,10 @@ import com.google.gson.Gson;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpRequestBase;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -141,14 +142,17 @@ public class SCCWebClient implements SCCClient {
     private <T> PaginatedResult<T> request(String endpoint, Type resultType, String method)
             throws SCCClientException {
         Reader streamReader = null;
-        HttpMethod request = SCCRequestFactory.getInstance().initRequest(
+        HttpRequestBase request = SCCRequestFactory.getInstance().initRequest(
                 method, endpoint, config);
         try {
             // Connect and parse the response on success
-            int responseCode = httpClient.executeRequest(request,
+            HttpResponse response = httpClient.executeRequest(request,
                     config.getUsername(), config.getPassword());
+            
+            int responseCode = response.getStatusLine().getStatusCode();
+            
             if (responseCode == HttpStatus.SC_OK) {
-                streamReader = SCCClientUtils.getLoggingReader(request,
+                streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
                         config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
@@ -156,7 +160,7 @@ public class SCCWebClient implements SCCClient {
                 T result = gson.fromJson(streamReader, resultType);
 
                 String nextUrl = null;
-                Header linkHeader = request.getResponseHeader("Link");
+                Header linkHeader = response.getFirstHeader("Link");
                 if (linkHeader != null) {
                     String linkHeaderValue = linkHeader.getValue();
                     Matcher m = Pattern

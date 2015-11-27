@@ -14,9 +14,8 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.URI;
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedReader;
@@ -30,6 +29,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.URI;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,18 +69,19 @@ public class SCCClientUtils {
     /**
      * Returns a buffered reader for data in the connection that will also log
      * any read data to a file in path.
-     * @param request the HTTP request
+     * @param requestUri the URI of the request
+     * @param response the HTTP response
      * @param user the user name
      * @param logDir where to save the log file
      * @return the logging reader
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public static BufferedReader getLoggingReader(HttpMethod request, String user,
-            String logDir) throws IOException {
+    public static BufferedReader getLoggingReader(URI requestUri, HttpResponse response,
+            String user, String logDir) throws IOException {
         InputStream inputStream = null;
         try {
-            inputStream = request.getResponseBodyAsStream();
-            Header encodingHeader = request.getResponseHeader("Content-Encoding");
+            inputStream = response.getEntity().getContent();
+            Header encodingHeader = response.getFirstHeader("Content-Encoding");
             String encoding = encodingHeader != null ? encodingHeader.getValue() : null;
             if (GZIP_ENCODING.equals(encoding)) {
                 inputStream = new GZIPInputStream(inputStream);
@@ -97,7 +98,7 @@ public class SCCClientUtils {
             logDirFile.setWritable(true, false);
         }
 
-        String logFilename = getLogFilename(request.getURI(), user);
+        String logFilename = getLogFilename(requestUri, user);
         File logFile = new File(logDir + File.separator + logFilename);
         if (!logFile.exists()) {
             FileUtils.touch(logFile);

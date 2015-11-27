@@ -14,11 +14,11 @@
  */
 package com.suse.scc.client;
 
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 
 /**
- * Helper class for setting up HTTP Requests as {@link HttpMethod} objects.
+ * Helper class for setting up HTTP Requests as {@link HttpRequestBase} objects.
  */
 public class SCCRequestFactory {
 
@@ -45,26 +45,26 @@ public class SCCRequestFactory {
      * @param method the HTTP method to use
      * @param endpoint the SCC API endpoint
      * @param config SCC client configuration
-     * @return {@link HttpMethod} object representing the request
+     * @return {@link HttpRequestBase} object representing the request
      * @throws SCCClientException in case of an error
      */
-    public HttpMethod initRequest(String method, String endpoint, SCCConfig config)
+    public HttpRequestBase initRequest(String method, String endpoint, SCCConfig config)
             throws SCCClientException {
-        HttpMethod request = null;
+        HttpRequestBase request = null;
         if (method.equals("GET")) {
-            request = new GetMethod(config.getUrl() + endpoint);
+            request = new HttpGet(config.getUrl() + endpoint);
         }
         else {
             throw new SCCClientException("HTTP method not supported: " + method);
         }
 
         // Additional request headers
-        request.setRequestHeader("Accept", "application/vnd.scc.suse.com.v4+json");
-        request.setRequestHeader("Accept-Encoding", "gzip, deflate");
+        request.addHeader("Accept", "application/vnd.scc.suse.com.v4+json");
+        request.addHeader("Accept-Encoding", "gzip, deflate");
 
         // Send the UUID for debugging if available
         String uuid = config.getUUID();
-        request.setRequestHeader("SMS", uuid != null ? uuid : "undefined");
+        request.addHeader("SMS", uuid != null ? uuid : "undefined");
 
         return request;
     }
