@@ -23,14 +23,14 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 
 /**
- * Factory class for working with package states.
+ * Factory class for working with states.
  */
-public class PackageStateFactory extends HibernateFactory {
+public class StateFactory extends HibernateFactory {
 
-    private static Logger log = Logger.getLogger(PackageStateFactory.class);
-    private static PackageStateFactory singleton = new PackageStateFactory();
+    private static Logger log = Logger.getLogger(StateFactory.class);
+    private static StateFactory singleton = new StateFactory();
 
-    private PackageStateFactory() {
+    private StateFactory() {
     }
 
     /**

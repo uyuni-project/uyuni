@@ -19,7 +19,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStateFactory;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerState;
 import com.redhat.rhn.domain.state.VersionConstraints;
@@ -28,16 +28,16 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import java.util.List;
 
 /**
- * Tests for {@link PackageStateFactory}.
+ * Tests for {@link StateFactory}.
  */
-public class PackageStateFactoryTest extends BaseTestCaseWithUser {
+public class StateFactoryTest extends BaseTestCaseWithUser {
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
 
         // Clear all package states that might be there already (temporarily)
-        PackageStateFactory.clearPackageStates();
+        StateFactory.clearPackageStates();
     }
 
     /**
@@ -57,10 +57,10 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
         packageState.setArch(pkg.getPackageArch());
         packageState.setPackageState(PackageStates.INSTALLED);
         packageState.setVersionConstraint(VersionConstraints.LATEST);
-        PackageStateFactory.savePackageState(packageState);
+        StateFactory.savePackageState(packageState);
 
         // Verify the state attributes
-        List<PackageState> packageStates = PackageStateFactory.lookupPackageStates(1L);
+        List<PackageState> packageStates = StateFactory.lookupPackageStates(1L);
         assertEquals(1, packageStates.size());
         packageStates.forEach(state -> {
             assertEquals(pkg.getPackageName(), state.getName());
@@ -76,7 +76,7 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
      *
      * @throws Exception in case of an error
      */
-    public void testServerState() throws Exception {
+    public void testSaveServerState() throws Exception {
         // Create a test package and a server
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         Server server = ServerFactoryTest.createTestServer(user);
@@ -89,16 +89,16 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
         packageState.setArch(pkg.getPackageArch());
         packageState.setPackageState(PackageStates.INSTALLED);
         packageState.setVersionConstraint(VersionConstraints.LATEST);
-        PackageStateFactory.savePackageState(packageState);
+        StateFactory.savePackageState(packageState);
 
         // Create server state and assign the package state
         ServerState serverState = new ServerState();
         serverState.setServer(server);
         serverState.setPackageStateGroupId(packageState.getGroupId());
-        PackageStateFactory.save(serverState);
+        StateFactory.save(serverState);
 
         // Verify the server state
-        List<ServerState> serverStates = PackageStateFactory.lookupServerStates(server);
+        List<ServerState> serverStates = StateFactory.lookupServerStates(server);
         assertEquals(1, serverStates.size());
         serverStates.forEach(state -> {
             assertEquals(0, state.getRevision());
