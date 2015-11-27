@@ -97,14 +97,14 @@ public class PackageState {
     /**
      * @return the groupId
      */
-    public Long getGroupId() {
+    public long getGroupId() {
         return groupId;
     }
 
     /**
      * @param groupIdIn the groupId to set
      */
-    public void setGroupId(Long groupIdIn) {
+    public void setGroupId(long groupIdIn) {
         this.groupId = groupIdIn;
     }
 
