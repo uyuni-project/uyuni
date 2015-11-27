@@ -37,6 +37,7 @@ search-server/spacewalk-search/dist
 search-server/spacewalk-search/rhn-search.pid
 search-server/spacewalk-search/rhn_search_daemon.log
 *~
+*#*#*
 .project
 .pydevproject
 .zanata-cache
