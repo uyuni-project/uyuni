@@ -31,8 +31,6 @@ import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.util.LabelValueBean;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -109,25 +107,8 @@ public abstract class BaseTreeAction extends BaseEditAction {
             lookupKickstartInstallTypeByLabel(form.getString(INSTALL_TYPE));
         bte.setInstallType(type);
 
-        if (type.isSUSE()) {
-            String kopts = form.getString(KERNEL_OPTS);
-            if (!kopts.contains("install=")) {
-                String localhost = request.getLocalName();
-                try {
-                    // Find the FQDN of localhost
-                    localhost = InetAddress.getByName(localhost).getCanonicalHostName();
-                }
-                catch (UnknownHostException e) {
-                    // Fall back to the local name in this case
-                }
-                kopts = kopts + " install=http://" + localhost +
-                    "/ks/dist/" + form.getString(LABEL);
-            }
-            bte.setKernelOptions(kopts);
-        }
-        else {
-            bte.setKernelOptions(form.getString(KERNEL_OPTS));
-        }
+        bte.setServerName(request.getLocalName());
+        bte.setKernelOptions(form.getString(KERNEL_OPTS));
         bte.setKernelOptionsPost(form.getString(POST_KERNEL_OPTS));
 
         return null;
