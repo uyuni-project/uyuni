@@ -50,15 +50,15 @@ public class PackageStateFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup all package states for a given state id.
+     * Lookup all package states belonging to a state group given by group id.
      *
-     * @param sateId the state id
+     * @param groupId the group id
      * @return list of states with a given state id
      */
     @SuppressWarnings("unchecked")
-    public static List<PackageState> lookupPackageStates(long stateId) {
+    public static List<PackageState> lookupPackageStates(long groupId) {
         return getSession().createCriteria(PackageState.class)
-                .add(Restrictions.eq("stateId", stateId))
+                .add(Restrictions.eq("groupId", groupId))
                 .list();
     }
 }

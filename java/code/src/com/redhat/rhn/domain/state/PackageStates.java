@@ -17,12 +17,13 @@ package com.redhat.rhn.domain.state;
 import java.util.Optional;
 
 /**
- * Available package states, matches the content of DB table: susePackageStates.
+ * Available package states, matches the content of DB table "susePackageStateType".
  */
 public enum PackageStates {
 
     INSTALLED(0), REMOVED(1), PURGED(2);
 
+    /** This ID corresponds to the id column in the database */
     public final int ID;
 
     private PackageStates(int id) {
@@ -30,9 +31,10 @@ public enum PackageStates {
     }
 
     /**
+     * Get enum value for a given ID.
      *
-     * @param id
-     * @return
+     * @param id the ID
+     * @return enum value or empty if the given id is invalid
      */
     public static Optional<PackageStates> byId(int id) {
         switch (id) {
