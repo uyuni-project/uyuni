@@ -148,9 +148,9 @@ public class SCCWebClient implements SCCClient {
             // Connect and parse the response on success
             HttpResponse response = httpClient.executeRequest(request,
                     config.getUsername(), config.getPassword());
-            
+
             int responseCode = response.getStatusLine().getStatusCode();
-            
+
             if (responseCode == HttpStatus.SC_OK) {
                 streamReader = SCCClientUtils.getLoggingReader(request.getURI(), response,
                         config.getUsername(), config.getLoggingDir());
