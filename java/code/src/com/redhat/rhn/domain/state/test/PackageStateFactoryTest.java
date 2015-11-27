@@ -15,12 +15,10 @@
 package com.redhat.rhn.domain.state.test;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageNevra;
-import com.redhat.rhn.domain.rhnpackage.PackageNevraFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.PackageStateFactory;
+import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -29,22 +27,26 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
  */
 public class PackageStateFactoryTest extends BaseTestCaseWithUser {
 
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        // Clear all package states that might be there already (temporarily)
+        PackageStateFactory.clearPackageStates();
+    }
+
     /**
-     * Save a single package state and verify the attributes.
+     * Save just one single package state and verify the attributes.
+     *
      * @throws Exception in case of an error
      */
     public void testSavePackageState() throws Exception {
-        // Save a test package + NEVRA
+        // Save a test package
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-        PackageNevra nevra = new PackageNevra();
-        nevra.setArch(pkg.getPackageArch());
-        nevra.setEvr(pkg.getPackageEvr());
-        nevra.setName(pkg.getPackageName());
-        PackageNevraFactory.savePackageNevra(nevra);
 
-        // Setup and save a package state
+        // Setup and save a state for this package
         PackageState packageState = new PackageState();
-        packageState.setStateId(1L);
+        packageState.setGroupId(1L);
         packageState.setName(pkg.getPackageName());
         packageState.setEvr(pkg.getPackageEvr());
         packageState.setArch(pkg.getPackageArch());
@@ -52,11 +54,11 @@ public class PackageStateFactoryTest extends BaseTestCaseWithUser {
         packageState.setVersionConstraint(VersionConstraints.LATEST);
         PackageStateFactory.savePackageState(packageState);
 
-        // Verify the attributes
+        // Verify the state attributes
         PackageStateFactory.lookupPackageStates(1L).forEach(state -> {
             assertEquals(pkg.getPackageName(), state.getName());
-            assertEquals(pkg.getPackageArch(), state.getArch());
             assertEquals(pkg.getPackageEvr(), state.getEvr());
+            assertEquals(pkg.getPackageArch(), state.getArch());
             assertEquals(PackageStates.INSTALLED, state.getPackageState());
             assertEquals(VersionConstraints.LATEST, state.getVersionConstraint());
         });
