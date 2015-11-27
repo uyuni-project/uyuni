@@ -2188,29 +2188,6 @@ select a.id
   </query>
 </mode>
 
-<mode name="system_installed_product_ids">
-  <query params="sid">
-  SELECT sp.id
-    FROM suseInstalledProduct sip
-    JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
-    JOIN suseProducts sp ON sp.name = LOWER(sip.name)
-        AND (sp.version IS NULL OR sp.version = LOWER(COALESCE(sip.version, '')))
-        AND (sp.release IS NULL OR sp.release = LOWER(COALESCE(sip.release, '')))
-        AND (sp.arch_type_id IS NULL OR sp.arch_type_id = sip.arch_type_id)
-   WHERE ssip.rhn_server_id = :sid
-  </query>
-</mode>
-
-<mode name="system_installed_products">
-  <query params="serverid">
-SELECT sip.name, sip.version, at.label as arch, sip.release
-  FROM suseInstalledProduct sip
-  JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
-  JOIN rhnPackageArch at ON sip.arch_type_id = at.id
- WHERE ssip.rhn_server_id = :serverid
-  </query>
-</mode>
-
 <mode name="find_compatible_channel_arch">
   <query params="server_arch_id">
 SELECT channel_arch_id
