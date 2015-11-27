@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.state;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
@@ -42,6 +43,15 @@ public class PackageStateFactory extends HibernateFactory {
     }
 
     /**
+     * Save a {@link ServerState}.
+     *
+     * @param serverState the server state to save
+     */
+    public static void save(ServerState serverState) {
+        singleton.saveObject(serverState);
+    }
+
+    /**
      * Lookup all package states belonging to a state group given by group id.
      *
      * @param groupId the group id
@@ -51,6 +61,19 @@ public class PackageStateFactory extends HibernateFactory {
     public static List<PackageState> lookupPackageStates(long groupId) {
         return getSession().createCriteria(PackageState.class)
                 .add(Restrictions.eq("groupId", groupId))
+                .list();
+    }
+
+    /**
+     * Lookup server states for a given server.
+     *
+     * @param server the server
+     * @return the states for this server
+     */
+    @SuppressWarnings("unchecked")
+    public static List<ServerState> lookupServerStates(Server server) {
+        return getSession().createCriteria(ServerState.class)
+                .add(Restrictions.eq("server", server))
                 .list();
     }
 
