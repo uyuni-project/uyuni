@@ -82,7 +82,7 @@ BuildRequires: jose4j
 BuildRequires: saltstack-netapi-client-java
 BuildRequires: spark
 BuildRequires: spark-template-jade
-
+BuildRequires: httpcomponents-client
 %else
 Requires: cobbler20
 Requires: dojo
