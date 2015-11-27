@@ -121,43 +121,6 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Return a {@link SUSEProductSet} containing all products installed on a server.
-     * @param server server
-     * @return products installed on the given server
-     */
-    @SuppressWarnings("unchecked")
-    public static SUSEProductSet getInstalledProducts(Server server) {
-        SUSEProductSet products = new SUSEProductSet();
-
-        // Find base product
-        SelectMode m = ModeFactory.getMode("System_queries",
-                "system_installed_base_product");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("sid", server.getId());
-        DataResult<Map<String, String>> result = m.execute(params);
-        if (result.size() > 0) {
-            Map<String, String> row = result.get(0);
-            SUSEProduct baseProduct = findSUSEProduct(row.get("name"), row.get("version"),
-                    row.get("release"), row.get("arch"), true);
-            products.setBaseProduct(baseProduct);
-        }
-
-        // Find addon products
-        m = ModeFactory.getMode("System_queries", "system_installed_child_products");
-        result = m.execute(params);
-        for (Map<String, String> row : result) {
-            SUSEProduct childProduct = findSUSEProduct(row.get("name"), row.get("version"),
-                    row.get("release"), row.get("arch"), true);
-            // Ignore unknown addon products
-            if (childProduct != null) {
-                products.addAddonProduct(childProduct);
-            }
-        }
-
-        return products;
-    }
-
-    /**
      * Find a {@link SUSEProduct} given by name, version, release and arch.
      * @param name name
      * @param version version or null

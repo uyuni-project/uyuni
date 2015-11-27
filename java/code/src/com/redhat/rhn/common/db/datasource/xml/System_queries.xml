@@ -2201,28 +2201,6 @@ select a.id
   </query>
 </mode>
 
-<mode name="system_installed_base_product">
-  <query params="sid">
-  SELECT sip.name, sip.version, at.label arch, sip.release, sip.is_baseproduct
-    FROM suseInstalledProduct sip
-    JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
-    JOIN rhnPackageArch at ON sip.arch_type_id = at.id
-   WHERE ssip.rhn_server_id = :sid
-     AND sip.is_baseproduct = 'Y'
-  </query>
-</mode>
-
-<mode name="system_installed_child_products">
-  <query params="sid">
-  SELECT sip.name, sip.version, at.label arch, sip.release, sip.is_baseproduct
-    FROM suseInstalledProduct sip
-    JOIN suseServerInstalledProduct ssip ON sip.id = ssip.suse_installed_product_id
-    JOIN rhnPackageArch at ON sip.arch_type_id = at.id
-   WHERE ssip.rhn_server_id = :sid
-     AND sip.is_baseproduct = 'N'
-  </query>
-</mode>
-
 <mode name="system_installed_products">
   <query params="serverid">
 SELECT sip.name, sip.version, at.label as arch, sip.release
