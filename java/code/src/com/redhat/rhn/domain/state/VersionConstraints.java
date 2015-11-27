@@ -25,10 +25,19 @@ public enum VersionConstraints {
     LATEST(0), EQUAL(1);
 
     /** This ID corresponds to the id column in the database */
-    public final int ID;
+    private final int ID;
 
-    private VersionConstraints(int id) {
+    VersionConstraints(int id) {
         ID = id;
+    }
+
+    /**
+     * Return the id.
+     *
+     * @return the id
+     */
+    public int id() {
+        return ID;
     }
 
     /**
