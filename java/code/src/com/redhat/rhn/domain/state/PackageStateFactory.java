@@ -33,14 +33,6 @@ public class PackageStateFactory extends HibernateFactory {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Logger getLogger() {
-        return log;
-    }
-
-    /**
      * Save a {@link PackageState}.
      *
      * @param packageState the package state to save
@@ -67,5 +59,13 @@ public class PackageStateFactory extends HibernateFactory {
      */
     public static void clearPackageStates() {
         getSession().getNamedQuery("PackageState.deleteAll").executeUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 }
