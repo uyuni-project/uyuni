@@ -20,8 +20,11 @@ import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
 import org.jose4j.jwe.JsonWebEncryption;
 import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
 import org.jose4j.jwe.kdf.ConcatKeyDerivationFunction;
+import org.jose4j.jws.AlgorithmIdentifiers;
+import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.keys.AesKey;
+import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 
 import java.security.Key;
@@ -64,8 +67,7 @@ public class TokenUtils {
      */
     public static Key getKeyForSecret(String secret) {
         ConcatKeyDerivationFunction func = new ConcatKeyDerivationFunction("SHA-256");
-        // AES 128 key
-        return new AesKey(func.kdf(secret.getBytes(), 128, new byte[]{}));
+        return new HmacKey(func.kdf(secret.getBytes(), 256, new byte[]{}));
     }
 
     /**
@@ -91,14 +93,13 @@ public class TokenUtils {
                 channels -> claims.setStringListClaim("onlyChannels",
                         new ArrayList<String>(channels)));
 
-        JsonWebEncryption jwt = new JsonWebEncryption();
-        jwt.setPayload(claims.toJson());
-        jwt.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
-        jwt.setEncryptionMethodHeaderParameter(
-                ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
-        jwt.setKey(key);
 
-        return jwt.getCompactSerialization();
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setPayload(claims.toJson());
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
+        jws.setKey(key);
+
+        return jws.getCompactSerialization();
     }
 
     /**
