@@ -38,7 +38,7 @@ public class StateFactory extends HibernateFactory {
      *
      * @param packageState the package state to save
      */
-    public static void savePackageState(PackageState packageState) {
+    public static void save(PackageState packageState) {
         singleton.saveObject(packageState);
     }
 
