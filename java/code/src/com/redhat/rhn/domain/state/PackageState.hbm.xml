@@ -10,7 +10,7 @@
         <many-to-one name="name" column="name_id" class="com.redhat.rhn.domain.rhnpackage.PackageName"/>
         <many-to-one name="evr" column="evr_id" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"/>
         <many-to-one name="arch" column="package_arch_id" class="com.redhat.rhn.domain.rhnpackage.PackageArch"/>
-        <property name="stateId" column="state_id" type="long" not-null="true"/>
+        <property name="groupId" column="group_id" type="long" not-null="true"/>
         <property name="packageStateId" column="package_state_id" type="int" not-null="true"/>
         <property name="versionConstraintId" column="version_constraint_id" type="int" not-null="true"/>
     </class>

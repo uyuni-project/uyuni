@@ -17,13 +17,14 @@ package com.redhat.rhn.domain.state;
 import java.util.Optional;
 
 /**
- * Available package version constraints, matches the content of DB table:
- * suseVersionConstraints.
+ * Available package version constraints, matches the content of DB table
+ * "suseVersionConstraintType".
  */
 public enum VersionConstraints {
 
     LATEST(0), EQUAL(1);
 
+    /** This ID corresponds to the id column in the database */
     public final int ID;
 
     private VersionConstraints(int id) {
@@ -31,9 +32,10 @@ public enum VersionConstraints {
     }
 
     /**
+     * Get enum value for a given ID.
      *
-     * @param id
-     * @return
+     * @param id the ID
+     * @return enum value or empty if the given id is invalid
      */
     public static Optional<VersionConstraints> byId(int id) {
         switch (id) {
