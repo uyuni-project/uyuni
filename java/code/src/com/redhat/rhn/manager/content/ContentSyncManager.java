@@ -1320,8 +1320,11 @@ public class ContentSyncManager {
         for (Credentials creds : credentials) {
             int responseCode;
             try {
-                responseCode = MgrSyncUtils.sendHeadRequest(
-                        OES_URL, creds.getUsername(), creds.getPassword()).getStatusLine().getStatusCode();
+                responseCode =
+                        MgrSyncUtils
+                                .sendHeadRequest(OES_URL, creds.getUsername(),
+                                        creds.getPassword())
+                                .getStatusLine().getStatusCode();
                 if (log.isDebugEnabled()) {
                     log.debug("OES repo response code for " +
                             creds.getUsername() + ": " + responseCode);

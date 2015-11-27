@@ -51,7 +51,10 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
  */
 public class HttpClientAdapter {
 
-    /** Name of custom attribute used to pass the ignoreNoProxy flag down the request chain. */
+    /**
+     * Name of custom attribute used to pass the ignoreNoProxy flag down the
+     * request chain.
+     */
     private static final String IGNORE_NO_PROXY = "ignoreNoProxy";
 
     /** The Constant REQUEST_URI. */
