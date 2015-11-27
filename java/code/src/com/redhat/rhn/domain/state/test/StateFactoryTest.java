@@ -57,7 +57,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         packageState.setArch(pkg.getPackageArch());
         packageState.setPackageState(PackageStates.INSTALLED);
         packageState.setVersionConstraint(VersionConstraints.LATEST);
-        StateFactory.savePackageState(packageState);
+        StateFactory.save(packageState);
 
         // Verify the state attributes
         List<PackageState> packageStates = StateFactory.lookupPackageStates(1L);
@@ -89,7 +89,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         packageState.setArch(pkg.getPackageArch());
         packageState.setPackageState(PackageStates.INSTALLED);
         packageState.setVersionConstraint(VersionConstraints.LATEST);
-        StateFactory.savePackageState(packageState);
+        StateFactory.save(packageState);
 
         // Create server state and assign the package state
         ServerState serverState = new ServerState();
