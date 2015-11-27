@@ -1869,7 +1869,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Return the installed products or null in case of no products found.
      * @return installed products
      */
-    public SUSEProductSet getInstalledProducts() {
+    public SUSEProductSet getInstalledProductSet() {
         SUSEProductSet result = SUSEProductFactory.getInstalledProducts(this);
         if (result.isEmpty()) {
             return null;
