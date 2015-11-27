@@ -1047,38 +1047,6 @@ select c.id,
   </query>
 </mode>
 
-<mode name="installed_products_on_server">
-  <query params="sid">
-    SELECT sip.name, sip.version, sip.arch_type_id, sip.release, sip.is_baseproduct
-    FROM suseInstalledProduct sip
-    JOIN suseServerInstalledProduct ssip on sip.id = ssip.suse_installed_product_id
-    WHERE ssip.rhn_server_id = :sid
-  </query>
-</mode>
-
-<mode name="installed_base_product_on_server">
-  <query params="sid">
-    SELECT sip.name, sip.version, sip.arch_type_id, sip.release, sip.is_baseproduct
-    FROM suseInstalledProduct sip
-    JOIN suseServerInstalledProduct ssip on sip.id = ssip.suse_installed_product_id
-    WHERE ssip.rhn_server_id = :sid
-    AND sip.is_baseproduct = 'Y'
-  </query>
-</mode>
-
-<mode name="best_suse_product_for_installed_product">
-  <query params="name, version, arch_type_id, release">
-    SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
-      FROM suseProducts sp
- LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
-     WHERE sp.name = :name
-       AND (sp.version IS NULL OR sp.version = :version)
-       AND (sp.release IS NULL OR sp.release = :release)
-       AND (sp.arch_type_id IS NULL OR sp.arch_type_id = :arch_type_id)
-  ORDER BY name, version, release, arch
-  </query>
-</mode>
-
 <mode name="suse_base_channels_for_suse_product"
      class="com.redhat.rhn.frontend.dto.EssentialChannelDto">
   <query params="pid, channel_arch_id">
