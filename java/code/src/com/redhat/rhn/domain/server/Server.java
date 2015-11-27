@@ -29,7 +29,6 @@ import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
@@ -1885,13 +1884,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * @return installed products
      */
     public SUSEProductSet getInstalledProductSet() {
-        SUSEProductSet result = SUSEProductFactory.getInstalledProducts(this);
-        if (result.isEmpty()) {
+        if (installedProducts.isEmpty()) {
             return null;
         }
-        else {
-            return result;
-        }
+        return new SUSEProductSet(installedProducts);
     }
 
     /**
