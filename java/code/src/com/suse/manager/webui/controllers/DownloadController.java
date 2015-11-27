@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.suse.manager.webui.utils.TokenUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpStatus;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -44,7 +45,6 @@ import java.util.stream.Collectors;
 
 import static spark.Spark.halt;
 
-import org.apache.commons.httpclient.HttpStatus;
 
 /**
  * Controller for the download endpoint serving packages and metadata to managed clients.
