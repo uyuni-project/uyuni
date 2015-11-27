@@ -21,6 +21,10 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 /**
@@ -53,11 +57,32 @@ public class TreeCreateOperation extends BaseTreeEditOperation {
      * {@inheritDoc}
      */
     public ValidatorError store() {
-        KickstartableTree tree = KickstartFactory.lookupKickstartTreeByLabel(
+        KickstartableTree existingTree = KickstartFactory.lookupKickstartTreeByLabel(
                         this.getTree().getLabel(), this.getUser().getOrg());
-        if (tree != null) {
-            return new ValidatorError("distribution.tree.exists", tree.getLabel());
+        if (existingTree != null) {
+            return new ValidatorError("distribution.tree.exists", existingTree.getLabel());
         }
+
+        if (this.tree.getInstallType().isSUSE()) {
+
+            String kopts = StringUtils.defaultString(this.tree.getKernelOptions());
+            if (!kopts.contains("install=")) {
+                String localhost = this.getServerName();
+                try {
+                    // Find the FQDN of localhost
+                    localhost = InetAddress.getByName(localhost).getCanonicalHostName();
+                }
+                catch (UnknownHostException e) {
+                    // Fall back to the local name in this case
+                }
+                kopts = kopts + " install=http://" + localhost + "/ks/dist/" +
+                       this.tree.getLabel();
+
+                this.tree.setKernelOptions(kopts);
+            }
+
+        }
+
         return super.store();
 
     }

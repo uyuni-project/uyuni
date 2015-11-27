@@ -45,6 +45,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     private static final String INVALID_INITRD = "kickstart.tree.invalidinitrd";
     private static final String INVALID_KERNEL = "kickstart.tree.invalidkernel";
     protected KickstartableTree tree;
+    protected String serverName;
     private static final String EMPTY_STRING = "";
     public static final String KICKSTART_CAPABILITY = "rhn.kickstart.boot_image";
 
@@ -192,6 +193,22 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     }
 
     /**
+     * Set the local hostname of the installation server.
+     * @param localHostname to set
+     */
+    public void setServerName(String localHostname) {
+        this.serverName = localHostname;
+    }
+
+    /**
+     * Get the local hostname of the installation server.
+     * @return the hostname
+     */
+    public String getServerName() {
+        return serverName;
+    }
+
+    /**
      * Set the location of the tree
      * @param url to set.
      */
@@ -268,4 +285,5 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     public void setKernelOptions(String kernelOptionsIn) {
         tree.setKernelOptions(kernelOptionsIn);
     }
+
 }
