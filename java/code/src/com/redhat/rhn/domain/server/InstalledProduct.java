@@ -20,6 +20,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 /**
@@ -116,6 +118,14 @@ public class InstalledProduct extends BaseDomainHelper {
      */
     public boolean isBaseproduct() {
         return baseproduct;
+    }
+
+    /**
+     * @return a SUSE Product if one could be found or null otherwise
+     */
+    public SUSEProduct getSUSEProduct() {
+        return SUSEProductFactory.findSUSEProduct(getName(), getVersion(), getRelease(),
+            getArch().getLabel(), true);
     }
 
     /**
