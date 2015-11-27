@@ -126,7 +126,7 @@ public class SystemOverviewAction extends RhnAction {
         request.setAttribute("baseChannel", baseChannel);
         request.setAttribute("childChannels", childChannels);
         request.setAttribute("description", description);
-        request.setAttribute("installedProducts", s.getInstalledProducts());
+        request.setAttribute("installedProducts", s.getInstalledProductSet());
         request.setAttribute("prefs", findUserServerPreferences(user, s));
         request.setAttribute("system", s);
         request.setAttribute("hasLocation",

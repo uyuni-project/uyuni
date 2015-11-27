@@ -394,7 +394,7 @@ public class CVEAuditManager {
     public static void addRelevantMigrationProductChannels(
             Set<ServerChannelIdPair> relevantChannels, Server server, int maxRank) {
 
-        SUSEProductSet suseProductSet = server.getInstalledProducts();
+        SUSEProductSet suseProductSet = server.getInstalledProductSet();
         if (suseProductSet == null) {
             return;
         }

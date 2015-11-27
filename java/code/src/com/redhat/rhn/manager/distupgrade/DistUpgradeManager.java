@@ -559,7 +559,7 @@ public class DistUpgradeManager extends BaseManager {
         // Add product upgrades
         // Note: product upgrades are relevant for SLE 10 only!
         if (targetSet != null) {
-            SUSEProductSet installedProducts = server.getInstalledProducts();
+            SUSEProductSet installedProducts = server.getInstalledProductSet();
             SUSEProductUpgrade upgrade = new SUSEProductUpgrade(
                     installedProducts.getBaseProduct(), targetSet.getBaseProduct());
             details.addProductUpgrade(upgrade);
