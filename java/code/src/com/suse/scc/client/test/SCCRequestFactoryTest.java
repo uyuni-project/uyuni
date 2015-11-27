@@ -17,8 +17,8 @@ package com.suse.scc.client.test;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
 
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 
 import java.net.URI;
 
@@ -31,7 +31,7 @@ public class SCCRequestFactoryTest extends TestCase {
 
     // Headers to be verified
     private static final String TEST_SCHEME = "https";
-    private static final String TEST_HOST = "test_host";
+    private static final String TEST_HOST = "testhost";
     private static final String TEST_PATH = "/test_url";
     private static final String TEST_UUID = "test_uuid";
     private static final String EXPECTED_ACCEPT = "application/vnd.scc.suse.com.v4+json";
@@ -45,16 +45,16 @@ public class SCCRequestFactoryTest extends TestCase {
         SCCConfig config = new SCCConfig(new URI(TEST_SCHEME + "://" + TEST_HOST),
                 "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR);
         SCCRequestFactory factory = SCCRequestFactory.getInstance();
-        HttpMethod request = factory.initRequest("GET", TEST_PATH, config);
-        assertTrue(request instanceof GetMethod);
+        HttpRequestBase request = factory.initRequest("GET", TEST_PATH, config);
+        assertTrue(request instanceof HttpGet);
         assertEquals(TEST_SCHEME, request.getURI().getScheme());
         assertEquals(TEST_HOST, request.getURI().getHost());
         assertEquals(TEST_PATH, request.getURI().getPath());
         assertEquals(EXPECTED_ACCEPT,
-                request.getRequestHeader("Accept").getValue());
+                request.getFirstHeader("Accept").getValue());
         assertEquals(EXPECTED_ACCEPT_ENCODING,
-                request.getRequestHeader("Accept-Encoding").getValue());
+                request.getFirstHeader("Accept-Encoding").getValue());
         assertEquals(TEST_UUID,
-                request.getRequestHeader("SMS").getValue());
+                request.getFirstHeader("SMS").getValue());
     }
 }

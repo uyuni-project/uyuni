@@ -14,25 +14,36 @@
  */
 package com.redhat.rhn.common.util.http;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.ProxyHost;
-import org.apache.commons.httpclient.URI;
-import org.apache.commons.httpclient.URIException;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthPolicy;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.AuthSchemes;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.ProxyAuthenticationStrategy;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.log4j.Logger;
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 
 /**
  * Adapter class holding an {@link HttpClient} object and offering a simple API to execute
@@ -40,52 +51,122 @@ import java.util.List;
  */
 public class HttpClientAdapter {
 
+    /** Name of custom attribute used to pass the ignoreNoProxy flag down the request chain. */
+    private static final String IGNORE_NO_PROXY = "ignoreNoProxy";
+
+    /** The Constant REQUEST_URI. */
+    private static final String REQUEST_URI = "request_uri";
+
     /**
      * Configuration key for the proxy skip list.
      */
     public static final String NO_PROXY = "server.satellite.no_proxy";
 
+    /** The log. */
     private static Logger log = Logger.getLogger(HttpClientAdapter.class);
-    private ProxyHost proxyHost;
+
+    /** The proxy host. */
+    private HttpHost proxyHost;
+
+    /** The http client. */
     private HttpClient httpClient;
+
+    /** The no proxy domains. */
     private List<String> noProxyDomains = new ArrayList<String>();
 
+    /** The request config. */
+    private RequestConfig requestConfig;
+
+    /** The credentials provider. */
+    private CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
      * be read from the configuration and applied transparently.
      */
     public HttpClientAdapter() {
-        httpClient = new HttpClient();
-
+        HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+        clientBuilder.setDefaultCredentialsProvider(credentialsProvider);
         // Store the proxy settings
         String proxyHostname = ConfigDefaults.get().getProxyHost();
         if (!StringUtils.isBlank(proxyHostname)) {
             int proxyPort = ConfigDefaults.get().getProxyPort();
-            proxyHost = new ProxyHost(proxyHostname, proxyPort);
+
+            proxyHost = new HttpHost(proxyHostname, proxyPort);
+            clientBuilder.setProxy(proxyHost);
+
             String proxyUsername = ConfigDefaults.get().getProxyUsername();
             String proxyPassword = ConfigDefaults.get().getProxyPassword();
             if (!StringUtils.isBlank(proxyUsername) &&
                     !StringUtils.isBlank(proxyPassword)) {
                 Credentials proxyCredentials = new UsernamePasswordCredentials(
                         proxyUsername, proxyPassword);
-                httpClient.getState().setProxyCredentials(
-                        new AuthScope(proxyHostname, proxyPort), proxyCredentials);
+
+                credentialsProvider.setCredentials(new AuthScope(proxyHostname, proxyPort),
+                        proxyCredentials);
             }
 
             // Explicitly exclude the NTLM authentication scheme
-            ArrayList<String> authPrefs = new ArrayList<String>() { {
-                add(AuthPolicy.DIGEST);
-                add(AuthPolicy.BASIC);
-            } };
-            httpClient.getParams().setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPrefs);
+            requestConfig =
+                    RequestConfig.custom()
+                            .setProxyPreferredAuthSchemes(
+                                    Arrays.asList(AuthSchemes.DIGEST, AuthSchemes.BASIC))
+                            .build();
+
+            clientBuilder.setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy());
+
+            clientBuilder.setRoutePlanner(new CustomProxyRoutePlanner(proxyHost));
         }
 
         // Read proxy exceptions from the "no_proxy" config option
         String noProxy = Config.get().getString(NO_PROXY);
-        if (noProxy != null) {
+        if (!StringUtils.isBlank(noProxy)) {
             for (String domain : Arrays.asList(noProxy.split(","))) {
                 noProxyDomains.add(domain.toLowerCase().trim());
             }
+        }
+
+        httpClient = clientBuilder.build();
+    }
+
+    /**
+     * Custom ProxyRoutePlanner that routes the request to a proxy
+     * or to a direct route depending on the setting
+     * {@code server.satellite.no_proxy} and the calling class passing a
+     * {@code ignoreNoProxy} flag.
+     */
+    class CustomProxyRoutePlanner extends DefaultProxyRoutePlanner {
+
+        /**
+         * Instantiates a new custom proxy route planner.
+         *
+         * @param proxy the proxy
+         */
+        CustomProxyRoutePlanner(HttpHost proxy) {
+            super(proxy);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public HttpRoute determineRoute(final HttpHost host, final HttpRequest request,
+                final HttpContext context) throws HttpException {
+
+            Boolean ignoreNoProxy = (Boolean) context.getAttribute(IGNORE_NO_PROXY);
+            URI requestUri = (URI) context.getAttribute(REQUEST_URI);
+
+            if (proxyHost != null &&
+                    (Boolean.TRUE.equals(ignoreNoProxy) || useProxyFor(requestUri))) {
+                if (log.isDebugEnabled()) {
+                    log.debug("Using proxy: " + proxyHost);
+                }
+                return super.determineRoute(host, request, context);
+            }
+            if (log.isDebugEnabled()) {
+                log.debug("Using a direct connection (no proxy)");
+            }
+            // Return direct route
+            return new HttpRoute(host);
         }
     }
 
@@ -96,7 +177,7 @@ public class HttpClientAdapter {
      * @return the return code of the request
      * @throws IOException in case of errors
      */
-    public int executeRequest(HttpMethod request) throws IOException {
+    public HttpResponse executeRequest(HttpRequestBase request) throws IOException {
         return executeRequest(request, false);
     }
 
@@ -108,32 +189,26 @@ public class HttpClientAdapter {
      * @return the return code of the request
      * @throws IOException in case of errors
      */
-    public int executeRequest(HttpMethod request, boolean ignoreNoProxy)
+    public HttpResponse executeRequest(HttpRequestBase request, boolean ignoreNoProxy)
             throws IOException {
         if (log.isDebugEnabled()) {
-            log.debug(request.getName() + " " + request.getURI());
+            log.debug(request.getMethod() + " " + request.getURI());
         }
-
         // Decide if a proxy should be used for this request
-        if (proxyHost != null && (ignoreNoProxy || useProxyFor(request.getURI()))) {
-            if (log.isDebugEnabled()) {
-                log.debug("Using proxy: " + proxyHost);
-            }
-            httpClient.getHostConfiguration().setProxyHost(proxyHost);
-        }
-        else {
-            if (log.isDebugEnabled()) {
-                log.debug("Using a direct connection (no proxy)");
-            }
-            httpClient.getHostConfiguration().setProxyHost(null);
-        }
+
+        HttpContext httpContxt = new BasicHttpContext();
+        httpContxt.setAttribute(IGNORE_NO_PROXY, ignoreNoProxy);
+
+        httpContxt.setAttribute(REQUEST_URI, request.getURI());
 
         // Execute the request
-        int returnCode = httpClient.executeMethod(request);
+        request.setConfig(requestConfig);
+        HttpResponse httpResponse = httpClient.execute(request, httpContxt);
+
         if (log.isDebugEnabled()) {
-            log.debug("Response code: " + returnCode);
+            log.debug("Response code: " + httpResponse.getStatusLine().getStatusCode());
         }
-        return returnCode;
+        return httpResponse;
     }
 
     /**
@@ -145,7 +220,8 @@ public class HttpClientAdapter {
      * @return the return code of the request
      * @throws IOException in case of errors
      */
-    public int executeRequest(HttpMethod request, String username, String password)
+    public HttpResponse executeRequest(HttpRequestBase request, String username,
+            String password)
             throws IOException {
         return executeRequest(request, username, password, false);
     }
@@ -160,14 +236,15 @@ public class HttpClientAdapter {
      * @return the return code of the request
      * @throws IOException in case of errors
      */
-    public int executeRequest(HttpMethod request, String username, String password,
+    public HttpResponse executeRequest(HttpRequestBase request, String username,
+            String password,
             boolean ignoreNoProxy) throws IOException {
         // Setup authentication
         if (!StringUtils.isBlank(username) && !StringUtils.isBlank(password)) {
             Credentials creds = new UsernamePasswordCredentials(username, password);
             URI uri = request.getURI();
-            httpClient.getState().setCredentials(
-                    new AuthScope(uri.getHost(), uri.getPort()), creds);
+            credentialsProvider.setCredentials(new AuthScope(uri.getHost(), uri.getPort()),
+                    creds);
         }
 
         return executeRequest(request, ignoreNoProxy);
@@ -179,7 +256,7 @@ public class HttpClientAdapter {
      * @param uri the URI to check
      * @return true if proxy should be used, else false
      */
-    private boolean useProxyFor(URI uri) throws URIException {
+    private boolean useProxyFor(URI uri) {
         if (uri.getScheme().equals("file")) {
             return false;
         }
