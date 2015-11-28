@@ -17,7 +17,7 @@ hibernate.connection.driver_proto=jdbc:postgresql
 
 hibernate.use_outer_join = true
 hibernate.jdbc.batch_size = 0
-hibernate.cache.provider_class = org.hibernate.cache.OSCacheProvider
+hibernate.cache.provider_class = org.hibernate.cache.EhCacheProvider
 hibernate.cache.use_query_cache = true
 hibernate.bytecode.use_reflection_optimizer = false
 hibernate.jdbc.batch_size = 0
