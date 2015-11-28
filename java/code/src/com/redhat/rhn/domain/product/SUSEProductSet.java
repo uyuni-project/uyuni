@@ -59,8 +59,8 @@ public class SUSEProductSet {
      * @param products list of installed products
      */
     public SUSEProductSet(Set<InstalledProduct> products) {
-        for(InstalledProduct prd : products) {
-            if(prd.isBaseproduct()) {
+        for (InstalledProduct prd : products) {
+            if (prd.isBaseproduct()) {
                 setBaseProduct(prd.getSUSEProduct());
             }
             else {
