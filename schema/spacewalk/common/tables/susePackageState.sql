@@ -15,29 +15,31 @@
 
 CREATE TABLE susePackageState
 (
-    id               NUMBER NOT NULL
-                         CONSTRAINT suse_pkgstate_id_pk PRIMARY KEY,
-    name_id          NUMBER NOT NULL
-                         CONSTRAINT suse_pkgstate_nid_fk
-                             REFERENCES rhnPackageName (id),
-    evr_id           NUMBER
-                         CONSTRAINT suse_pkgstate_eid_fk
-                             REFERENCES rhnPackageEVR (id),
-    package_arch_id  NUMBER
-                         CONSTRAINT suse_pkgstate_paid_fk
-                             REFERENCES rhnPackageArch (id),
-    group_id         NUMBER NOT NULL,
-    package_state_id NUMBER NOT NULL
-                         CONSTRAINT suse_pkgstate_psid_fk
-                             REFERENCES susePackageStateType (id),
+    id                    NUMBER NOT NULL
+                              CONSTRAINT suse_pkg_state_id_pk PRIMARY KEY,
+    name_id               NUMBER NOT NULL
+                              CONSTRAINT suse_pkg_state_nid_fk
+                                  REFERENCES rhnPackageName (id),
+    evr_id                NUMBER
+                              CONSTRAINT suse_pkg_state_eid_fk
+                                  REFERENCES rhnPackageEVR (id),
+    package_arch_id       NUMBER
+                              CONSTRAINT suse_pkg_state_paid_fk
+                                  REFERENCES rhnPackageArch (id),
+    state_revision_id     NUMBER NOT NULL
+                              CONSTRAINT suse_pkg_state_srid_fk
+                                  REFERENCES suseStateRevision (id),
+    package_state_id      NUMBER NOT NULL
+                              CONSTRAINT suse_pkg_state_psid_fk
+                                  REFERENCES susePackageStateType (id),
     version_constraint_id NUMBER NOT NULL
-                         CONSTRAINT suse_pkgstate_vcid_fk
-                             REFERENCES suseVersionConstraintType (id)
+                              CONSTRAINT suse_pkg_state_vcid_fk
+                                  REFERENCES suseVersionConstraintType (id)
 )
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_pkgstate_id_seq;
+CREATE SEQUENCE suse_pkg_state_id_seq;
 
 ALTER TABLE susePackageState
-    ADD CONSTRAINT suse_pkgstate_nid_gid_uq UNIQUE (name_id, group_id);
+    ADD CONSTRAINT suse_pkg_state_nid_gid_uq UNIQUE (name_id, state_id);

@@ -13,14 +13,10 @@
 -- in this software or its documentation.
 --
 
-CREATE TABLE suseServerState
+CREATE TABLE suseStateRevision
 (
     id               NUMBER NOT NULL
-                         CONSTRAINT suse_server_state_id_pk PRIMARY KEY,
-    server_id        NUMBER NOT NULL
-                         CONSTRAINT suse_server_state_sid_fk
-                             REFERENCES rhnServer (id),
-    package_state_group_id NUMBER NOT NULL,
+                         CONSTRAINT suse_state_revision_id_pk PRIMARY KEY,
     revision         NUMBER NOT NULL
                          DEFAULT (0),
     created          timestamp with local time zone
@@ -29,7 +25,4 @@ CREATE TABLE suseServerState
 ENABLE ROW MOVEMENT
 ;
 
-CREATE SEQUENCE suse_server_state_id_seq;
-
-ALTER TABLE suseServerState
-    ADD CONSTRAINT suse_server_state_sid_rev_uq UNIQUE (server_id, revision);
+CREATE SEQUENCE suse_state_revision_id_seq;
