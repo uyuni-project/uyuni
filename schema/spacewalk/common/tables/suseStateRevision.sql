@@ -17,8 +17,7 @@ CREATE TABLE suseStateRevision
 (
     id               NUMBER NOT NULL
                          CONSTRAINT suse_state_revision_id_pk PRIMARY KEY,
-    revision         NUMBER NOT NULL
-                         DEFAULT (0),
+    revision         NUMBER NOT NULL,
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL
 )
