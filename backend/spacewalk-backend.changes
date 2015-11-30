@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:36:32 CET 2015 - mc@suse.de
+
+- version 2.5.4.1-1
+- Fix lookup virtual instance by uuid in virtualization backend in case so that
+  it ignores the host id when uuid is not null. Removed invalid comment.
+- Change the virtualization backend not to duplicate data in case host and
+  guests are in different organizations
+- fix patch syning if no issued date is given. Use now as date (bsc#953584)
+- fix SUSE patch style detection for RES4 (bsc#953825)
+- move support report creation to spacewalk-debug
+- don't print python object details in reposync.py
+- spacewalk-repo-sync: support multiple '-c channel' as in satellite-sync
+
+-------------------------------------------------------------------
 Thu Oct 22 16:35:50 CEST 2015 - mc@suse.de
 
 - version 2.5.1.2-1
