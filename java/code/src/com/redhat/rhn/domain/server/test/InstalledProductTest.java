@@ -49,14 +49,16 @@ public class InstalledProductTest extends RhnBaseTestCase {
         TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet());
-        assertNotNull(server.getInstalledProducts());
 
-        server.getInstalledProducts().forEach( p -> {
-                    assertEquals("SLES", p.getName());
-                    assertEquals("12.1", p.getVersion());
-                    assertNull(p.getRelease());
-                    assertEquals("x86_64", p.getArch().getLabel());
-                    assertTrue(p.isBaseproduct());
-                });
+        Set<InstalledProduct> readProducts = server.getInstalledProducts();
+        assertNotNull(readProducts);
+
+        readProducts.forEach( p -> {
+                assertEquals(installedPrd.getName(), p.getName());
+                assertEquals(installedPrd.getVersion(), p.getVersion());
+                assertNull(p.getRelease());
+                assertEquals(installedPrd.getArch(), p.getArch());
+                assertEquals(installedPrd.isBaseproduct(), p.isBaseproduct());
+        });
     }
 }
