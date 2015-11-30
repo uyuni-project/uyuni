@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:06:37 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- python is not part of basic Fedora installation anymore
+
+-------------------------------------------------------------------
 Wed Oct 07 16:02:00 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
