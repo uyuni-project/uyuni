@@ -74,8 +74,8 @@ public class MgrSyncUtils {
      * @return the response code of the request
      * @throws IOException in case of an error
      */
-    private static HttpResponse sendHeadRequest(String url, String username, String password,
-            boolean ignoreNoProxy) throws IOException {
+    private static HttpResponse sendHeadRequest(String url, String username,
+            String password, boolean ignoreNoProxy) throws IOException {
         HttpClientAdapter httpClient = new HttpClientAdapter();
         HttpHead headRequest = new HttpHead(url);
         try {
