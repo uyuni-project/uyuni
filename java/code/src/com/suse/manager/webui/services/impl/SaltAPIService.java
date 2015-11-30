@@ -171,7 +171,8 @@ public enum SaltAPIService implements SaltService {
     /**
      * {@inheritDoc}
      */
-    public Map<String, Map<String, Object>> applyState(Target<?> target, List<String> mods) {
+    public Map<String, Map<String, Object>> applyState(Target<?> target,
+                                                       List<String> mods) {
         try {
             return SALT_CLIENT.callSync(State.apply(), target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
