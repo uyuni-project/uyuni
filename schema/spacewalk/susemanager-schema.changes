@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:13:50 CET 2015 - mc@suse.de
+
+- version 3.0.3-1
+- avoid cascade at function dropping
+- When deleting a server, delete all associated rhnSet entries, even if it was
+  migrated to a different Org (bsc#950748)
+- drop obsolete postgresql functions on schema_upgrade
+- drop removed functions from rhn_channel and rhn_entitlements
+- remove current_members and available_members from rhnAvailableChannels view
+- Add new foreign and saltstack server groups during schema update
+- Enlarge rhnServer.digital_server_id size to 1024 characters
+- clear log_id also for postgresql DB
+
+-------------------------------------------------------------------
 Thu Oct 22 16:29:40 CEST 2015 - mc@suse.de
 
 - version 3.0.2-1
