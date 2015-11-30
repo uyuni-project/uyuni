@@ -94,7 +94,6 @@ public class TokenUtils {
                 channels -> claims.setStringListClaim("onlyChannels",
                         new ArrayList<String>(channels)));
 
-
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
         jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.HMAC_SHA256);
