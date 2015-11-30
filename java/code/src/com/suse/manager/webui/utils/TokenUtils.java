@@ -62,12 +62,13 @@ public class TokenUtils {
     /**
      * Create a cryptographic key from the given secret.
      *
-     * @param secret the secret to use for generating the key.
+     * @param secret the secret to use for generating the key in hex
+     *               string format
      * @return the key
      */
     public static Key getKeyForSecret(String secret) {
-        ConcatKeyDerivationFunction func = new ConcatKeyDerivationFunction("SHA-256");
-        return new HmacKey(func.kdf(secret.getBytes(), 256, new byte[]{}));
+        byte[] bytes = javax.xml.bind.DatatypeConverter.parseHexBinary(secret);
+        return new HmacKey(bytes);
     }
 
     /**
