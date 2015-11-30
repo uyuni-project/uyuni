@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:51:21 CET 2015 - mc@suse.de
+
+- version 2.5.2.1-1
+- Configure multiple file roots for the Salt Master
+- migration from SUMA 2.1 to SUMA 3
+- adapt checks for cert trust dirs
+- use --upgrade option for sw-dump-schema during migrations
+
+-------------------------------------------------------------------
 Wed Oct 07 13:58:26 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
