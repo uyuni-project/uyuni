@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:54:19 CET 2015 - mc@suse.de
+
+- version 2.5.5.1-1
+- BugFix: check mirror credentials required fields (bsc#955970)
+- change minion cmd api endpoint to use post
+- URL scheme conventions: /minions/:id and MinionController.show
+- Add default setting for task timeout
+- bring back call_procedure and call_function to RHN::DB
+- fix to have the side bar 100%% height
+- New ui for the login page and relogin
+
+-------------------------------------------------------------------
 Thu Oct 22 16:24:20 CEST 2015 - mc@suse.de
 
 - version 2.5.1.3-1
