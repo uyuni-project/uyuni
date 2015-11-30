@@ -11,7 +11,7 @@
         <many-to-one name="evr" column="evr_id" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"/>
         <many-to-one name="arch" column="package_arch_id" class="com.redhat.rhn.domain.rhnpackage.PackageArch"/>
         <many-to-one name="stateRevision" column="state_revision_id" class="com.redhat.rhn.domain.state.StateRevision"/>
-        <property name="packageStateId" column="package_state_id" type="int" not-null="true"/>
+        <property name="packageStateTypeId" column="package_state_type_id" type="int" not-null="true"/>
         <property name="versionConstraintId" column="version_constraint_id" type="int" not-null="true"/>
     </class>
 </hibernate-mapping>

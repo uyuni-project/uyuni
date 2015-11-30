@@ -29,8 +29,8 @@ CREATE TABLE susePackageState
     state_revision_id     NUMBER NOT NULL
                               CONSTRAINT suse_pkg_state_srid_fk
                                   REFERENCES suseStateRevision (id),
-    package_state_id      NUMBER NOT NULL
-                              CONSTRAINT suse_pkg_state_psid_fk
+    package_state_type_id NUMBER NOT NULL
+                              CONSTRAINT suse_pkg_state_pstid_fk
                                   REFERENCES susePackageStateType (id),
     version_constraint_id NUMBER NOT NULL
                               CONSTRAINT suse_pkg_state_vcid_fk

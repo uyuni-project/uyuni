@@ -35,7 +35,7 @@ public class PackageState {
     private StateRevision stateRevision;
 
     // IDs of enum values
-    private int packageStateId;
+    private int packageStateTypeId;
     private int versionConstraintId;
 
     /**
@@ -109,24 +109,24 @@ public class PackageState {
     }
 
     /**
-     * @return the packageStateId
+     * @return the packageStateTypeId
      */
-    public int getPackageStateId() {
-        return packageStateId;
+    public int getPackageStateTypeId() {
+        return packageStateTypeId;
     }
 
     /**
-     * @param packageStateIdIn the packageStateId to set
+     * @param packageStateTypeIdIn the packageStateTypeId to set
      */
-    public void setPackageStateId(int packageStateIdIn) {
-        this.packageStateId = packageStateIdIn;
+    public void setPackageStateTypeId(int packageStateTypeIdIn) {
+        this.packageStateTypeId = packageStateTypeIdIn;
     }
 
     /**
      * @return the packageState
      */
     public PackageStates getPackageState() {
-        return PackageStates.byId(packageStateId).
+        return PackageStates.byId(packageStateTypeId).
                 orElseGet(() -> { throw new RuntimeException("Invalid package state"); });
     }
 
@@ -134,7 +134,7 @@ public class PackageState {
      * @param packageState the packageState to set
      */
     public void setPackageState(PackageStates packageState) {
-        this.packageStateId = packageState.id();
+        this.packageStateTypeId = packageState.id();
     }
 
     /**
@@ -180,7 +180,7 @@ public class PackageState {
                 .append(getEvr(), otherState.getEvr())
                 .append(getArch(), otherState.getArch())
                 .append(getStateRevision(), otherState.getStateRevision())
-                .append(getPackageStateId(), otherState.getPackageStateId())
+                .append(getPackageStateTypeId(), otherState.getPackageStateTypeId())
                 .append(getVersionConstraintId(), otherState.getVersionConstraintId())
                 .isEquals();
     }
@@ -195,7 +195,7 @@ public class PackageState {
                 .append(getEvr())
                 .append(getArch())
                 .append(getStateRevision())
-                .append(getPackageStateId())
+                .append(getPackageStateTypeId())
                 .append(getVersionConstraintId())
                 .toHashCode();
     }
