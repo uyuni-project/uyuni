@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:49:07 CET 2015 - mc@suse.de
+
+- version 3.0.3-1
+- move support report creation to spacewalk-debug
+- add full listing of /srv/www/htdocs/pub to supportconfig
+
+-------------------------------------------------------------------
 Thu Oct 22 16:22:30 CEST 2015 - mc@suse.de
 
 - version 3.0.2-1
