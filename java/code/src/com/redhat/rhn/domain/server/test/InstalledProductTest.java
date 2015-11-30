@@ -37,7 +37,7 @@ public class InstalledProductTest extends RhnBaseTestCase {
         installedPrd.setBaseproduct(true);
         assertNull(installedPrd.getId());
 
-        User u = UserTestUtils.findNewUser("testUser", "testOrgCreateTestDmi");
+        User u = UserTestUtils.findNewUser("testUser", "testOrgCreateTestInstalledProduct");
         Server server = ServerFactoryTest.createTestServer(u, true);
         assertNotNull(server);
         assertNotNull(server.getId());
