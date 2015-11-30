@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.state;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -47,10 +48,7 @@ public enum VersionConstraints {
      * @return enum value or empty if the given id is invalid
      */
     public static Optional<VersionConstraints> byId(int id) {
-        switch (id) {
-            case 0: return Optional.of(LATEST);
-            case 1: return Optional.of(EQUAL);
-            default: return Optional.empty();
-        }
+        return Arrays.asList(VersionConstraints.values()).stream()
+                .filter(constraint -> constraint.ID == id).findFirst();
     }
 }

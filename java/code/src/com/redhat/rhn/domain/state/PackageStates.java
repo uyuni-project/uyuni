@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.state;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -46,11 +47,7 @@ public enum PackageStates {
      * @return enum value or empty if the given id is invalid
      */
     public static Optional<PackageStates> byId(int id) {
-        switch (id) {
-            case 0: return Optional.of(INSTALLED);
-            case 1: return Optional.of(REMOVED);
-            case 2: return Optional.of(PURGED);
-            default: return Optional.empty();
-        }
+        return Arrays.asList(PackageStates.values()).stream()
+                .filter(state -> state.ID == id).findFirst();
     }
 }
