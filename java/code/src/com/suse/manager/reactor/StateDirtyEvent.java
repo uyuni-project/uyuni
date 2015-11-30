@@ -79,8 +79,8 @@ public class StateDirtyEvent implements EventMessage {
 
     @Override
     public String toString() {
-        return "StateDirtyEvent[serverId: " + serverId + ", stateNames: "
-                + stateNames.stream().collect(Collectors.joining(", ")) + "]";
+        return "StateDirtyEvent[serverId: " + serverId + ", stateNames: " +
+                stateNames.stream().collect(Collectors.joining(", ")) + "]";
     }
 
 }

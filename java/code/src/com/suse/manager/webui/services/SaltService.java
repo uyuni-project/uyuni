@@ -98,8 +98,9 @@ public interface SaltService {
      * Apply states on a given target
      *
      * @param target the target to apply the states to
-     * @param mods a list of states to apply. If empty list is provided all states will be applied.
-     * @return
+     * @param mods a list of states to apply. If empty list is provided all
+     *             states will be applied.
+     * @return the result of applying the states
      */
     Map<String, Map<String, Object>> applyState(Target<?> target, List<String> mods);
 
