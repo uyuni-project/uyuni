@@ -179,6 +179,7 @@ public class PackageState {
                 .append(getName(), otherState.getName())
                 .append(getEvr(), otherState.getEvr())
                 .append(getArch(), otherState.getArch())
+                .append(getStateRevision(), otherState.getStateRevision())
                 .append(getPackageStateId(), otherState.getPackageStateId())
                 .append(getVersionConstraintId(), otherState.getVersionConstraintId())
                 .isEquals();
@@ -193,6 +194,7 @@ public class PackageState {
                 .append(getName())
                 .append(getEvr())
                 .append(getArch())
+                .append(getStateRevision())
                 .append(getPackageStateId())
                 .append(getVersionConstraintId())
                 .toHashCode();

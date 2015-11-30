@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A state revision that is assigned to a server.
@@ -50,8 +51,7 @@ public class ServerStateRevision extends StateRevision {
         }
         ServerStateRevision otherRevision = (ServerStateRevision) other;
         return new EqualsBuilder()
-                .append(getRevision(), otherRevision.getRevision())
-                .append(getPackageStates(), otherRevision.getPackageStates())
+                .appendSuper(super.equals(otherRevision))
                 .append(getServer(), otherRevision.getServer())
                 .isEquals();
     }
@@ -62,9 +62,19 @@ public class ServerStateRevision extends StateRevision {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(getRevision())
-                .append(getPackageStates())
+                .appendSuper(super.hashCode())
                 .append(getServer())
                 .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .appendSuper(super.toString())
+                .append("server", getServer())
+                .toString();
     }
 }
