@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:58:04 CET 2015 - mc@suse.de
+
+- version 3.0.4-1
+- make sure SSL is enabled
+- ignore nocpulse stuff (no monitoring anymore in SUMA3)
+- create certificate symlink
+- migration from SUMA 2.1 to SUMA 3
+- Require SUSEfirewall2 and postfix (bsc#952853)
+- Require yast2-users for the password cracklib check (bsc#952852)
+- bootstrap data only need SCC product IDs
+
+-------------------------------------------------------------------
 Thu Oct 22 16:25:57 CEST 2015 - mc@suse.de
 
 - version 3.0.3-1
