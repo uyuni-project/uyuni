@@ -16,6 +16,9 @@ package com.suse.manager.reactor;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -38,6 +41,7 @@ import org.apache.log4j.Logger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,11 +56,16 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
     // Reference to the SaltService instance
     private final SaltService SALT_SERVICE;
 
+
+    //HACK: set installed product depending on the grains
+    // to get access to suse channels
+    private final HashMap<String, Long> productIdMap = new HashMap<>();
+
     /**
      * Default constructor.
      */
     public RegisterMinionAction() {
-        SALT_SERVICE = SaltAPIService.INSTANCE;
+        this(SaltAPIService.INSTANCE);
     }
 
     /**
@@ -66,6 +75,13 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
      */
     protected RegisterMinionAction(SaltService saltService) {
         SALT_SERVICE = saltService;
+        productIdMap.put("SLES12x86_64", 1117L);
+        productIdMap.put("SLES12.1x86_64", 1322L);
+        productIdMap.put("SLES11x86_64", 824L);
+        productIdMap.put("SLES11.1x86_64", 769L);
+        productIdMap.put("SLES11.2x86_64", 690L);
+        productIdMap.put("SLES11.3x86_64", 814L);
+        productIdMap.put("SLES11.4x86_64", 1300L);
     }
 
     /**
@@ -99,9 +115,15 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
             // TODO: Set complete OS, hardware and network information here
             Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
-            server.setOs((String) grains.get("osfullname"));
-            server.setRelease((String) grains.get("osrelease"));
-            server.setRunningKernel((String) grains.get("kernelrelease"));
+
+            String osfullname = (String) grains.get("osfullname");
+            String osrelease = (String) grains.get("osrelease");
+            String kernelrelease = (String) grains.get("kernelrelease");
+            String cpuarch = (String) grains.get("cpuarch");
+
+            server.setOs(osfullname);
+            server.setRelease(osrelease);
+            server.setRunningKernel(kernelrelease);
             server.setSecret(RandomStringUtils.randomAlphanumeric(64));
             server.setAutoUpdate("N");
             server.setLastBoot(System.currentTimeMillis() / 1000);
@@ -127,6 +149,15 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             // Assign the SaltStack base entitlement by default
             server.setBaseEntitlement(
                     EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
+
+
+            //HACK: set installed product depending on the grains
+            // to get access to suse channels
+            String key = osfullname + osrelease + cpuarch;
+            Optional.ofNullable(productIdMap.get(key)).ifPresent(productId -> {
+                SUSEProduct product =  SUSEProductFactory.lookupByProductId(productId);
+                SUSEProductTestUtils.installSUSEProductOnServer(product, server);
+            });
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);

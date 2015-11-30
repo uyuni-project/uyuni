@@ -95,6 +95,15 @@ public interface SaltService {
     void rejectKey(String minionId);
 
     /**
+     * Apply states on a given target
+     *
+     * @param target the target to apply the states to
+     * @param mods a list of states to apply. If empty list is provided all states will be applied.
+     * @return
+     */
+    Map<String, Map<String, Object>> applyState(Target<?> target, List<String> mods);
+
+    /**
      * Return the stream of events happening in salt.
      *
      * @return the event stream
