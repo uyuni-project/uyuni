@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:19:59 CET 2015 - mc@suse.de
+
+- version 2.5.0.2-1
+- do not change the sm component id
+- attributes require-starttls and register-enable are enabled
+  if they are specified
+
+-------------------------------------------------------------------
 Wed Oct 07 14:25:26 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
