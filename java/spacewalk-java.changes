@@ -1,4 +1,53 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:40:06 CET 2015 - mc@suse.de
+
+- version 2.5.16.1-1
+- BugFix: check mirror credentials required fields (bsc#955970)
+- use new version of httpclient
+- implement UI for managing Virtual Host managers
+- add params parameter to scheduleSingleSatBunch()
+- BugFix: sort channel list by name (bsc#955204)
+- Consider old products only if no patch available (bsc#954983)
+- (bsc#953129) remove message proxy.header, update context sourcefile
+- (bsc#953129) remove proxy.jsp, action and struts config
+- Router: use list instead of index
+- BugFix: remove inconsistency and make more general the action description for
+  package page title and tab-title in Schedule
+- better log than nothing
+- introduce conventions about router, templates and urls
+- Use non-immediate errata cache rebuilding on channel unsubscription
+  (bsc#949158)
+- Bug fix: remove 'Locale Preferences' link from header (bsc#955252)
+- (bsc#953129) add proxy version info to proxyclients page
+- (bsc#953129) change details->proxy to point to proxyclients page as it was in
+  Suma2.1
+- Add support for timing out on an ssh connection
+- Ensure subdirectories are present when writing repo files
+- publishToChannel optimization
+- Fix extremely slow channel.software.syncErrata API
+- BugFix: remove inconsistency and make more general the action description for
+  package page title and tab-title in Schedule (bsc#935375)
+- Linked pages are not always opening in separate window (bsc#939358)
+- login screen of SUMA3 still has reference to Oracle (bsc#954740)
+- Add classes for managing .repo files
+- Enable channel ui for salt minions
+- implement token verification
+- use the new algorithm based on package names to determine patch
+  applicable/inapplicable (bnc#948964)
+- Fix LTSS channels by looking at individual packages (bnc#944729)
+- Remove url decoding since values are already decoded at this point bsc#951549
+- Store only an integer value for cpu MHz in DB
+- Virtual Systems list: show virtual hosts from different Orgs
+- Call virtual-host-gatherer with configured HTTP proxy values
+- BugFix: skip similar tasks only if task is 'single threaded' (bsc#953271)
+- New ui for the login page and relogin
+- Add accept/reject all button and show number of pending /rejected minions
+- Send event to salt when minion is registered
+- optimize queries
+- allowing RHEL7 kickstart repositories
+- support listing errata by last_modified date
+
+-------------------------------------------------------------------
 Thu Oct 22 16:36:21 CEST 2015 - mc@suse.de
 
 - version 2.5.2.3-1
