@@ -35,10 +35,10 @@ public class ServerStateRevision extends StateRevision {
     }
 
     /**
-     * @param server the server to set
+     * @param serverIn the server to set
      */
-    public void setServer(Server server) {
-        this.server = server;
+    public void setServer(Server serverIn) {
+        this.server = serverIn;
     }
 
     /**
