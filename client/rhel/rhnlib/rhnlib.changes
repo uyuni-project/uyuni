@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:48:24 CET 2015 - mc@suse.de
+
+- version 2.5.77.2-1
+- python 2.7 httplib changed function _set_hostport to _get_hostport
+
+-------------------------------------------------------------------
 Wed Oct 07 15:09:31 CEST 2015 - mc@suse.de
 
 - version 2.5.77.1-1
