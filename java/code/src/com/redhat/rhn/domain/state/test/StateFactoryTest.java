@@ -19,9 +19,10 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
-import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.PackageStates;
-import com.redhat.rhn.domain.state.ServerState;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateRevision;
+import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -36,8 +37,8 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
 
-        // Clear all package states that might be there already (temporarily)
-        StateFactory.clearPackageStates();
+        // Clear all state revisions and package states (temporarily)
+        StateFactory.clearStateRevisions();
     }
 
     /**
@@ -49,9 +50,13 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         // Create a test package
         Package pkg = PackageTest.createTestPackage(user.getOrg());
 
-        // Setup and save a state for this package
+        // Every package state references a state revision
+        StateRevision stateRevision = new StateRevision();
+        StateFactory.save(stateRevision);
+
+        // Setup and save a package state
         PackageState packageState = new PackageState();
-        packageState.setGroupId(1L);
+        packageState.setStateRevision(stateRevision);
         packageState.setName(pkg.getPackageName());
         packageState.setEvr(pkg.getPackageEvr());
         packageState.setArch(pkg.getPackageArch());
@@ -60,50 +65,52 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         StateFactory.save(packageState);
 
         // Verify the state attributes
-        List<PackageState> packageStates = StateFactory.lookupPackageStates(1L);
+        List<PackageState> packageStates = StateFactory.lookupPackageStates();
         assertEquals(1, packageStates.size());
-        packageStates.forEach(state -> {
-            assertEquals(pkg.getPackageName(), state.getName());
-            assertEquals(pkg.getPackageEvr(), state.getEvr());
-            assertEquals(pkg.getPackageArch(), state.getArch());
-            assertEquals(PackageStates.INSTALLED, state.getPackageState());
-            assertEquals(VersionConstraints.LATEST, state.getVersionConstraint());
+        packageStates.forEach(pkgState -> {
+            assertEquals(pkg.getPackageName(), pkgState.getName());
+            assertEquals(pkg.getPackageEvr(), pkgState.getEvr());
+            assertEquals(pkg.getPackageArch(), pkgState.getArch());
+            assertEquals(stateRevision, pkgState.getStateRevision());
+            assertEquals(PackageStates.INSTALLED, pkgState.getPackageState());
+            assertEquals(VersionConstraints.LATEST, pkgState.getVersionConstraint());
         });
     }
 
     /**
-     * Assign a group of package states to a server.
+     * Create a server state revision.
      *
      * @throws Exception in case of an error
      */
-    public void testSaveServerState() throws Exception {
-        // Create a test package and a server
+    public void testSaveServerStateRevision() throws Exception {
+        // Create a test package and server
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         Server server = ServerFactoryTest.createTestServer(user);
 
-        // Setup and save a package state
+        // Create a new server state revision
+        ServerStateRevision serverState = new ServerStateRevision();
+        serverState.setServer(server);
+
+        // Add a package state and save
         PackageState packageState = new PackageState();
-        packageState.setGroupId(1L);
+        packageState.setStateRevision(serverState);
         packageState.setName(pkg.getPackageName());
         packageState.setEvr(pkg.getPackageEvr());
         packageState.setArch(pkg.getPackageArch());
         packageState.setPackageState(PackageStates.INSTALLED);
         packageState.setVersionConstraint(VersionConstraints.LATEST);
-        StateFactory.save(packageState);
-
-        // Create server state and assign the package state
-        ServerState serverState = new ServerState();
-        serverState.setServer(server);
-        serverState.setPackageStateGroupId(packageState.getGroupId());
+        serverState.addPackageState(packageState);
         StateFactory.save(serverState);
 
-        // Verify the server state
-        List<ServerState> serverStates = StateFactory.lookupServerStates(server);
-        assertEquals(1, serverStates.size());
-        serverStates.forEach(state -> {
-            assertEquals(0, state.getRevision());
-            assertEquals(server, state.getServer());
-            assertEquals(packageState.getGroupId(), state.getPackageStateGroupId());
+        // Verify the contents
+        List<ServerStateRevision> serverStateRevisions =
+                StateFactory.lookupServerStateRevisions(server);
+        assertEquals(1, serverStateRevisions.size());
+        serverStateRevisions.forEach(stateRevision -> {
+            assertEquals(0, stateRevision.getRevision());
+            assertEquals(server, stateRevision.getServer());
+            assertEquals(1, stateRevision.getPackageStates().size());
+            assertEquals(packageState, stateRevision.getPackageStates().iterator().next());
         });
     }
 }
