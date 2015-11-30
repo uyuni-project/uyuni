@@ -106,6 +106,7 @@ public class StateRevision {
         StateRevision otherRevision = (StateRevision) other;
         return new EqualsBuilder()
                 .append(getRevision(), otherRevision.getRevision())
+                .append(getCreated(), otherRevision.getCreated())
                 .isEquals();
     }
 
@@ -116,6 +117,7 @@ public class StateRevision {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getRevision())
+                .append(getCreated())
                 .toHashCode();
     }
 
@@ -126,6 +128,7 @@ public class StateRevision {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("revision", getRevision())
+                .append("created", getCreated())
                 .toString();
     }
 }
