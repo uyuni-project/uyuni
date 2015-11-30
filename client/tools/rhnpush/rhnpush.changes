@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:59:38 CET 2015 - mc@suse.de
+
+- version 5.5.90.1-1
+- rhn-satellite-activate: manual references removed
+
+-------------------------------------------------------------------
 Wed Oct 07 15:56:48 CEST 2015 - mc@suse.de
 
 - version 5.5.89.1-1
