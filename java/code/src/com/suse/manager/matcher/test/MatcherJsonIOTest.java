@@ -1,19 +1,12 @@
 package com.suse.manager.matcher.test;
 
-import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
-import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.common.LoggingFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
-import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 
@@ -24,20 +17,9 @@ public class MatcherJsonIOTest extends TestCase {
     public void testSystemsToJson() throws Exception {
         LoggingFactory.clearLogId();
 
-        // Make sure that channel family "7261" exists
-        User admin = UserTestUtils.createUserInOrgOne();
-        ChannelFamilyTest.ensureChannelFamilyExists(admin, "7261");
-        ChannelFamilyTest.ensureChannelFamilyExists(admin, "sle-ha");
-
         Server h1 = ServerTestUtils.createTestSystem();
         h1.setName("host1.example.com");
         h1.setCpu(createCPU(h1, 8L));
-
-        ChannelFamily family = ChannelFamilyFactory.lookupByLabel("7261", null);
-        SUSEProduct slesProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
-
-        ChannelFamily family2 = ChannelFamilyFactory.lookupByLabel("sle-ha", null);
-        SUSEProduct haProduct = SUSEProductTestUtils.createTestSUSEProduct(family2);
 
         /* FIXME: add products to systems */
 
