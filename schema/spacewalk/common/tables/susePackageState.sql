@@ -42,4 +42,4 @@ ENABLE ROW MOVEMENT
 CREATE SEQUENCE suse_pkg_state_id_seq;
 
 ALTER TABLE susePackageState
-    ADD CONSTRAINT suse_pkg_state_nid_gid_uq UNIQUE (name_id, state_id);
+    ADD CONSTRAINT suse_pkg_state_nid_gid_uq UNIQUE (name_id, state_revision_id);
