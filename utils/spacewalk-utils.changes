@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:05:27 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- adapt checks for cert trust dirs
+- disable spacewalk-dump-schema functionality when rhn-upgrade
+  package is found
+
+-------------------------------------------------------------------
 Wed Oct 07 13:32:35 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
