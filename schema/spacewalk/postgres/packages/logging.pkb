@@ -22,66 +22,64 @@ create or replace function clear_log_id()
 returns void
 as
 $$
-    global the_log_id
-    set the_log_id 0
-    global the_user_id
-    set the_user_id 0
-    global the_stamp
-    set the_stamp ""
-    return
-$$ language pltclu set search_path from current;
+begin
+    return;
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function _set_log_auth(user_id in numeric, stamp in varchar)
 returns void
 as
 $$
-    global the_user_id
-    set the_user_id $1
-    global the_stamp
-    set the_stamp $2
-$$ language pltclu set search_path from current;
+begin
+    return;
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function set_log_auth(user_id in numeric)
 returns void
 as
 $$
 begin
-    perform _set_log_auth(user_id, current_timestamp::varchar);
-end
+    return;
+end;
 $$ language plpgsql set search_path from current;
 
 create or replace function _get_log_auth()
 returns numeric
 as
 $$
-    global the_user_id
-    return $the_user_id
-$$ language pltclu set search_path from current;
+begin
+    return 0;
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function _get_log_stamp()
 returns varchar
 as
 $$
-    global the_stamp
-    return $the_stamp
-$$ language pltclu set search_path from current;
+begin
+    return '';
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function _get_log_id()
 returns numeric
 as
 $$
-    global the_log_id
-    return $the_log_id
-$$ language pltclu set search_path from current;
+begin
+    return 0;
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function _set_log_id(log_id in numeric)
 returns void
 as
 $$
-    global the_log_id
-    set the_log_id $1
-    return
-$$ language pltclu set search_path from current;
+begin
+    return;
+end;
+$$ language plpgsql set search_path from current;
 
 create or replace function get_log_id()
 returns numeric
