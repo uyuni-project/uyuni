@@ -1,6 +1,7 @@
 package com.suse.manager.matcher.test;
 
 import com.redhat.rhn.domain.common.LoggingFactory;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledProduct;
@@ -20,6 +21,7 @@ import junit.framework.TestCase;
 public class MatcherJsonIOTest extends TestCase {
 
     public void testSystemsToJson() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProducts();
         LoggingFactory.clearLogId();
 
         Server h1 = ServerTestUtils.createTestSystem();
