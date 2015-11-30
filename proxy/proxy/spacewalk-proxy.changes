@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:01:33 CET 2015 - mc@suse.de
+
+- version 2.5.0.2-1
+- remove deprecated DefaultType in apache proxy configuration.
+- fix start of proxy services
+- add module 'version' to apache configuration
+
+-------------------------------------------------------------------
 Wed Oct 07 14:35:40 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
