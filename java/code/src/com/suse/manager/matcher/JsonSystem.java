@@ -74,9 +74,9 @@ public class JsonSystem {
             baseProduct = productSet.getBaseProduct();
         }
         if (baseProduct != null) {
-            products.put(baseProduct.getId(), baseProduct.getFriendlyName());
+            products.put(baseProduct.getProductId(), baseProduct.getFriendlyName());
             for (SUSEProduct p : productSet.getAddonProducts()) {
-                products.put(p.getId(), p.getFriendlyName());
+                products.put(p.getProductId(), p.getFriendlyName());
             }
         }
         virtualSystemIds = new LinkedList<>();
