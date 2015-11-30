@@ -32,7 +32,7 @@ public class PackageState {
     private PackageName name;
     private PackageEvr evr;
     private PackageArch arch;
-    private long groupId;
+    private StateRevision stateRevision;
 
     // IDs of enum values
     private int packageStateId;
@@ -95,17 +95,17 @@ public class PackageState {
     }
 
     /**
-     * @return the groupId
+     * @return the state revision
      */
-    public long getGroupId() {
-        return groupId;
+    public StateRevision getStateRevision() {
+        return stateRevision;
     }
 
     /**
-     * @param groupIdIn the groupId to set
+     * @param stateRevisionIn the state revision to set
      */
-    public void setGroupId(long groupIdIn) {
-        this.groupId = groupIdIn;
+    public void setStateRevision(StateRevision stateRevisionIn) {
+        this.stateRevision = stateRevisionIn;
     }
 
     /**
@@ -179,7 +179,6 @@ public class PackageState {
                 .append(getName(), otherState.getName())
                 .append(getEvr(), otherState.getEvr())
                 .append(getArch(), otherState.getArch())
-                .append(getGroupId(), otherState.getGroupId())
                 .append(getPackageStateId(), otherState.getPackageStateId())
                 .append(getVersionConstraintId(), otherState.getVersionConstraintId())
                 .isEquals();
@@ -194,7 +193,6 @@ public class PackageState {
                 .append(getName())
                 .append(getEvr())
                 .append(getArch())
-                .append(getGroupId())
                 .append(getPackageStateId())
                 .append(getVersionConstraintId())
                 .toHashCode();
@@ -210,7 +208,7 @@ public class PackageState {
                 .append("name", getName())
                 .append("evr", getEvr())
                 .append("arch", getArch())
-                .append("groupId", getGroupId())
+                .append("stateRevision", getStateRevision())
                 .append("packageState", getPackageState())
                 .append("versionConstraint", getVersionConstraint())
                 .toString();

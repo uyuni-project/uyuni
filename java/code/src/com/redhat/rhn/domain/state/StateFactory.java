@@ -43,45 +43,43 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link ServerState}.
+     * Save a {@link StateRevision}.
      *
-     * @param serverState the server state to save
+     * @param stateRevision the state revision to save
      */
-    public static void save(ServerState serverState) {
-        singleton.saveObject(serverState);
+    public static void save(StateRevision stateRevision) {
+        singleton.saveObject(stateRevision);
     }
 
     /**
-     * Lookup all package states belonging to a state group given by group id.
+     * Lookup all package states.
      *
-     * @param groupId the group id
-     * @return list of states with a given state id
+     * @return list of all package states
      */
     @SuppressWarnings("unchecked")
-    public static List<PackageState> lookupPackageStates(long groupId) {
+    public static List<PackageState> lookupPackageStates() {
         return getSession().createCriteria(PackageState.class)
-                .add(Restrictions.eq("groupId", groupId))
                 .list();
     }
 
     /**
-     * Lookup server states for a given server.
+     * Lookup all {@link ServerStateRevision} objects for a given server.
      *
      * @param server the server
-     * @return the states for this server
+     * @return the state revisions for this server
      */
     @SuppressWarnings("unchecked")
-    public static List<ServerState> lookupServerStates(Server server) {
-        return getSession().createCriteria(ServerState.class)
+    public static List<ServerStateRevision> lookupServerStateRevisions(Server server) {
+        return getSession().createCriteria(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
                 .list();
     }
 
     /**
-     * Clear all package states from the database.
+     * Clear all state revisions from the database.
      */
-    public static void clearPackageStates() {
-        getSession().getNamedQuery("PackageState.deleteAll").executeUpdate();
+    public static void clearStateRevisions() {
+        getSession().getNamedQuery("StateRevision.deleteAll").executeUpdate();
     }
 
     /**
