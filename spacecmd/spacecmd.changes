@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:02:34 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- mimetype detection to set the binary flag requires 'file' tool
+- fix export/cloning: always base64
+- Always base64 encode to avoid trim() bugs in the XML-RPC library.
+
+-------------------------------------------------------------------
 Thu Nov 19 14:07:08 UTC 2015 - dmacvicar@suse.de
 
 - set binary mode on uploaded files based on content
