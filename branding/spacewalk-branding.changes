@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:38:14 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- spacewalk-icons: add VHM and subscription counting icons
+- Add link to Virtual Host Managers page to the side navigation bar
+- minions.jade: adapt to new translation class
+- fix font to use installed version
+- New header style moved into the susemanager-theme file. Main colours modified
+  in the variables file
+- New ui for the login page and relogin
+- branding: fix image urls
+- Rename System/Minions menu entry to Salt Master
+
+-------------------------------------------------------------------
 Thu Oct 22 16:42:24 CEST 2015 - mc@suse.de
 
 - version 2.5.0.3-1
