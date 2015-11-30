@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:23:28 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- remove new created files in data/crawl_www/
+- updating doc indexes
+- updating doc URLs
+
+-------------------------------------------------------------------
 Wed Oct 07 14:29:14 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
