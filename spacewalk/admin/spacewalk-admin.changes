@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:18:41 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- spacewalk-admin.spec: incorrect cd removed
+- spacewalk-admin: drop validate-sat-cert.pl
+
+-------------------------------------------------------------------
 Wed Oct 07 13:36:42 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
