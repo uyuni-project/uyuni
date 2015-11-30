@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:46:32 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- run indexing tasks only after previous one finishes
+
+-------------------------------------------------------------------
 Wed Oct 07 14:30:25 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
