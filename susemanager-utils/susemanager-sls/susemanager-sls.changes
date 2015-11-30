@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:15:47 CET 2015 - mc@suse.de
+
+- version 0.1.2-1
+- force link creation
+- use osfullname instead of os
+- Cover sles12 machines reporing os grain SUSE
+- Add support for deploying certificates to SLES11 minions
+
+-------------------------------------------------------------------
 Tue Nov 17 09:35:38 CET 2015 - jrenner@suse.com
 
 - version 0.1.1-1
