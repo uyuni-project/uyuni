@@ -17,6 +17,7 @@ package com.suse.manager.webui.services.impl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.utils.salt.State;
 import com.suse.saltstack.netapi.AuthModule;
 import com.suse.saltstack.netapi.calls.WheelResult;
 import com.suse.saltstack.netapi.calls.modules.Cmd;
@@ -160,6 +161,19 @@ public enum SaltAPIService implements SaltService {
     public void rejectKey(String minionId) {
         try {
             SALT_CLIENT.callSync(Key.reject(minionId),
+                    SALT_USER, SALT_PASSWORD, AUTH_MODULE);
+        }
+        catch (SaltStackException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Map<String, Object>> applyState(Target<?> target, List<String> mods) {
+        try {
+            return SALT_CLIENT.callSync(State.apply(), target,
                     SALT_USER, SALT_PASSWORD, AUTH_MODULE);
         }
         catch (SaltStackException e) {
