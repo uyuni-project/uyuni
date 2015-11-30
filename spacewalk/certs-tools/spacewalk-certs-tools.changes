@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 10:56:28 CET 2015 - mc@suse.de
+
+- version 2.5.0.3-1
+- remove sm-client-tools from spacewalk-cert-tools package
+- fix paths to trust dir and update-ca-certificates tool
+- handle SUSE trust tools and directories correct
+
+-------------------------------------------------------------------
 Wed Oct 14 09:51:33 CEST 2015 - mc@suse.de
 
 - version 2.5.0.2-1
