@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.state;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -105,7 +106,6 @@ public class StateRevision {
         StateRevision otherRevision = (StateRevision) other;
         return new EqualsBuilder()
                 .append(getRevision(), otherRevision.getRevision())
-                .append(getPackageStates(), otherRevision.getPackageStates())
                 .isEquals();
     }
 
@@ -116,7 +116,16 @@ public class StateRevision {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(getRevision())
-                .append(getPackageStates())
                 .toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("revision", getRevision())
+                .toString();
     }
 }
