@@ -4,7 +4,7 @@
 %endif
 
 Name:        spacewalk-remote-utils
-Version:     2.5.1
+Version:     2.5.1.1
 Release:     1%{?dist}
 Summary:     Utilities to interact with a Spacewalk server remotely.
 
