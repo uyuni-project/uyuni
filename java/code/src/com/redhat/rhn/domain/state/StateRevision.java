@@ -68,7 +68,7 @@ public class StateRevision {
     }
 
     /**
-     * @param created the created to set
+     * @param createdIn the created to set
      */
     public void setCreated(Date createdIn) {
         this.created = createdIn;
