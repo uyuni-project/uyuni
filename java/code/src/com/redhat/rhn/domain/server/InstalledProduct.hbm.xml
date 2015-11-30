@@ -23,8 +23,4 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                      column="arch_type_id" />
 
     </class>
-
-    <query name="InstalledProduct.findById">
-        <![CDATA[from com.redhat.rhn.domain.server.InstalledProduct as p where p.id = :id]]>
-    </query>
 </hibernate-mapping>
