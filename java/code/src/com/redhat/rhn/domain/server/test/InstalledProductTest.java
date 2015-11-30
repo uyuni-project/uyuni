@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.server.test;
 
-import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
@@ -31,7 +31,7 @@ import java.util.Set;
 public class InstalledProductTest extends RhnBaseTestCase {
 
     public void testInstalledProduct() throws Exception {
-        createSUSEProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
 
         InstalledProduct installedPrd = new InstalledProduct();
         installedPrd.setName("SLES");
@@ -63,23 +63,5 @@ public class InstalledProductTest extends RhnBaseTestCase {
                 assertEquals(installedPrd.getArch(), p.getArch());
                 assertEquals(installedPrd.isBaseproduct(), p.isBaseproduct());
         });
-    }
-
-    private void createSUSEProducts() throws Exception {
-        SUSEProduct product = new SUSEProduct();
-        product.setName("sles");
-        product.setVersion("12.1");
-        product.setFriendlyName("SUSE Linux Enterprise Server 12 SP1");
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setProductId(1322);
-        TestUtils.saveAndFlush(product);
-
-        product = new SUSEProduct();
-        product.setName("sle-ha");
-        product.setVersion("12.1");
-        product.setFriendlyName("SUSE Linux Enterprise High Availability Extension 12 SP1");
-        product.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
-        product.setProductId(1324);
-        TestUtils.saveAndFlush(product);
     }
 }
