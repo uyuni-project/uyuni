@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:16:55 CET 2015 - mc@suse.de
+
+- version 5.10.87.1-1
+- python 2.4 compatibility
+- remove temporary files when exception occurs
+
+-------------------------------------------------------------------
 Wed Oct 07 15:51:28 CEST 2015 - mc@suse.de
 
 - version 5.10.85.1-1
