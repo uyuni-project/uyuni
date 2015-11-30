@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:07:27 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- fix start of proxy services
+- make sure ssl build directory exists (bsc#949516)
+
+-------------------------------------------------------------------
 Thu Oct 22 16:28:32 CEST 2015 - mc@suse.de
 
 - version 2.5.0.2-1
