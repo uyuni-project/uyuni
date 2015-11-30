@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Nov 30 11:17:49 CET 2015 - mc@suse.de
+
+- version 2.5.1.1-1
+- apache config: Set new download endpoint as static
+- hide error message for not existing directories (bsc#952845)
+- Enable DEFLATE compression in Apache
+
+-------------------------------------------------------------------
 Wed Oct 07 13:54:50 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
