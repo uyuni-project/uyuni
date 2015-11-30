@@ -59,7 +59,12 @@ public class JsonSystem {
     public JsonSystem(Server s) {
         id = s.getId();
         name = s.getName();
-        cpus = s.getCpu().getNrsocket();
+        if (s.getCpu() == null) {
+            cpus = null;
+        }
+        else {
+            cpus = s.getCpu().getNrsocket();
+        }
 
         products = new HashMap<>();
 
