@@ -70,8 +70,8 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(jsonString.contains("\"name\": \"guest2.example.com\""));
         assertTrue(jsonString.contains("      " + g1.getId()));
         assertTrue(jsonString.contains("      " + g2.getId()));
-        assertTrue(jsonString.contains("\"359\": \"SUSE Linux Enterprise Server 12 SP1\""));
-        assertTrue(jsonString.contains("\"361\": \"SUSE Linux Enterprise High Availability Extension 12 SP1\""));
+        assertTrue(jsonString.contains("\"1322\": \"SUSE Linux Enterprise Server 12 SP1\""));
+        assertTrue(jsonString.contains("\"1324\": \"SUSE Linux Enterprise High Availability Extension 12 SP1\""));
     }
 
     private VirtualInstance createVirtualInstance(Server host, Server guest, String uuid) {
