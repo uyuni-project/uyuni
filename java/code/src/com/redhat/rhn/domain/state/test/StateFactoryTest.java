@@ -21,8 +21,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
@@ -90,6 +90,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         // Create a new server state revision
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
+        serverState.setCreator(user);
 
         // Add a package state and save
         PackageState packageState = new PackageState();
@@ -109,6 +110,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         serverStateRevisions.forEach(stateRevision -> {
             assertEquals(0, stateRevision.getRevision());
             assertEquals(server, stateRevision.getServer());
+            assertEquals(user, stateRevision.getCreator());
             assertEquals(1, stateRevision.getPackageStates().size());
             assertEquals(packageState, stateRevision.getPackageStates().iterator().next());
         });

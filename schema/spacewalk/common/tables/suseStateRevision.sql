@@ -18,6 +18,10 @@ CREATE TABLE suseStateRevision
     id               NUMBER NOT NULL
                          CONSTRAINT suse_state_revision_id_pk PRIMARY KEY,
     revision         NUMBER NOT NULL,
+    creator_id       NUMBER
+                         CONSTRAINT suse_state_revision_cid_fk
+                             REFERENCES web_contact (id)
+                             ON DELETE SET NULL,
     created          timestamp with local time zone
                          DEFAULT (current_timestamp) NOT NULL
 )
