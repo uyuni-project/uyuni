@@ -54,9 +54,7 @@ public class DownloadController {
     private static final int BUF_SIZE = 4096;
     private static final Key KEY = TokenUtils.getServerKey();
     private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
-            .setDecryptionKey(KEY)
-            .setDisableRequireSignature()
-            .setEnableRequireEncryption()
+            .setVerificationKey(KEY)
             .build();
 
     private DownloadController() {

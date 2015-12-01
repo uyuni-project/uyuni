@@ -28,6 +28,7 @@ import com.suse.manager.webui.utils.TokenUtils;
 import junit.extensions.TestSetup;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FilenameUtils;
 import spark.Request;
 import spark.RequestResponseFactory;
@@ -69,7 +70,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 // comparator, which makes it sometimes override the test rhn.conf with
                 // the defaults, nullifying server.secret_key.
                 // Until this is fixed, set it manually
-                Config.get().setString("server.secret_key", TestUtils.randomString());
+                Config.get().setString("server.secret_key",
+                        DigestUtils.sha256Hex(TestUtils.randomString()));
                 originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
             }
         };
