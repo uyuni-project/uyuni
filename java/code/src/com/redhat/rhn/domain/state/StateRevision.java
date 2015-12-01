@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.state;
 
+import com.redhat.rhn.domain.user.User;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -30,6 +32,7 @@ public class StateRevision {
     private long id;
     private long revision;
     private Date created;
+    private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
 
     /**
@@ -75,6 +78,20 @@ public class StateRevision {
     }
 
     /**
+     * @return the creator
+     */
+    public User getCreator() {
+        return creator;
+    }
+
+    /**
+     * @param creatorIn the creator to set
+     */
+    public void setCreator(User creatorIn) {
+        this.creator = creatorIn;
+    }
+
+    /**
      * @return the packageStates
      */
     public Set<PackageState> getPackageStates() {
@@ -107,6 +124,7 @@ public class StateRevision {
         return new EqualsBuilder()
                 .append(getRevision(), otherRevision.getRevision())
                 .append(getCreated(), otherRevision.getCreated())
+                .append(getCreator(), otherRevision.getCreator())
                 .isEquals();
     }
 
@@ -118,6 +136,7 @@ public class StateRevision {
         return new HashCodeBuilder()
                 .append(getRevision())
                 .append(getCreated())
+                .append(getCreator())
                 .toHashCode();
     }
 
@@ -129,6 +148,7 @@ public class StateRevision {
         return new ToStringBuilder(this)
                 .append("revision", getRevision())
                 .append("created", getCreated())
+                .append("creator", getCreator())
                 .toString();
     }
 }
