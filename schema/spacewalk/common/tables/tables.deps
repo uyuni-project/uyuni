@@ -222,9 +222,13 @@ suseInstalledProduct           :: rhnPackageArch
 suseMdData                     :: rhnChannel rhnPackage suseMdKeyword
 susePackageEula                :: rhnPackage suseEula
 susePackageProductFile         :: suseProductFile rhnPackage
+susePackageState               :: rhnPackageName rhnPackageEVR rhnPackageArch suseStateRevision \
+                                  susePackageStateType suseVersionConstraintType
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
+suseServerStateRevision        :: rhnServer suseStateRevision
+suseStateRevision              :: web_contact
 suseUpgradePath                :: suseProducts
 suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
 suseVHMConfig                  :: suseVirtualHostManager
