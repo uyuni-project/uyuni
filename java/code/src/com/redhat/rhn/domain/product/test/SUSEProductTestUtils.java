@@ -14,9 +14,7 @@
  */
 package com.redhat.rhn.domain.product.test;
 
-import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -26,13 +24,16 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.TestUtils;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -135,33 +136,20 @@ public class SUSEProductTestUtils {
      * @param product the product
      * @param server the server
      */
-    @SuppressWarnings("unchecked")
     public static void installSUSEProductOnServer(SUSEProduct product, Server server) {
-        // Get the next id from the sequence
-        SelectMode selectMode = ModeFactory.getMode("test_queries",
-                "select_next_suseinstalledproduct_id");
-        DataResult<Map<String, Long>> dataResults = selectMode.execute();
-        Long installedProductId = dataResults.get(0).get("id");
-
         // Insert into suseInstalledProduct
-        WriteMode writeMode1 = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseinstalledproduct");
-        Map<String, Object> params1 = new HashMap<String, Object>();
-        params1.put("id", installedProductId);
-        params1.put("name", product.getName());
-        params1.put("version", product.getVersion());
-        params1.put("arch_type_id", product.getArch().getId());
-        params1.put("release", product.getRelease());
-        params1.put("is_baseproduct", "Y");
-        writeMode1.executeUpdate(params1);
+        InstalledProduct prd = new InstalledProduct();
+        prd.setName(product.getName());
+        prd.setVersion(product.getVersion());
+        prd.setRelease(product.getRelease());
+        prd.setArch(product.getArch());
+        prd.setBaseproduct(true);
+
+        Set<InstalledProduct> products = new HashSet<>();
+        products.add(prd);
 
         // Insert into suseServerInstalledProduct
-        WriteMode writeMode2 = ModeFactory.getWriteMode("test_queries",
-                "insert_into_suseserverinstalledproduct");
-        Map<String, Object> params2 = new HashMap<String, Object>();
-        params2.put("rhn_server_id", server.getId());
-        params2.put("suse_installed_product_id", installedProductId);
-        writeMode2.executeUpdate(params2);
+        server.setInstalledProducts(products);
         HibernateFactory.getSession().flush();
     }
 }
