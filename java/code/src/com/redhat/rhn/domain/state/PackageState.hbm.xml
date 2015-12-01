@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.redhat.rhn.domain.state.PackageState" table="susePackageState">
+        <id name="id" type="long" column="id">
+            <generator class="sequence">
+                <param name="sequence">suse_pkg_state_id_seq</param>
+            </generator>
+        </id>
+        <many-to-one name="name" column="name_id" class="com.redhat.rhn.domain.rhnpackage.PackageName"/>
+        <many-to-one name="evr" column="evr_id" class="com.redhat.rhn.domain.rhnpackage.PackageEvr"/>
+        <many-to-one name="arch" column="package_arch_id" class="com.redhat.rhn.domain.rhnpackage.PackageArch"/>
+        <many-to-one name="stateRevision" column="state_revision_id" class="com.redhat.rhn.domain.state.StateRevision"/>
+        <property name="packageStateTypeId" column="package_state_type_id" type="int" not-null="true"/>
+        <property name="versionConstraintId" column="version_constraint_id" type="int" not-null="true"/>
+    </class>
+</hibernate-mapping>
