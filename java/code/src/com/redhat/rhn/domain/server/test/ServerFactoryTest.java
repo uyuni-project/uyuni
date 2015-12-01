@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Network;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Note;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.SatelliteServer;
 import com.redhat.rhn.domain.server.Server;
@@ -937,5 +938,31 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Server minion = ServerFactory.findRegisteredMinion(server.getDigitalServerId());
         assertEquals(server, minion);
+    }
+
+    /**
+     * Test pinning Subscriptions to Systems
+     *
+     * @throws Exception
+     */
+    public void testSubscriptionPinning() throws Exception {
+        Server s = ServerFactoryTest.createTestServer(user, true);
+
+        Set<PinnedSubscription> pins = new HashSet<>();
+        PinnedSubscription pin = new PinnedSubscription();
+        pin.setSubscriptionId(42L);
+        pin.setServer(s);
+        pins.add(pin);
+        TestUtils.saveAndFlush(pin);
+
+        Long sid = s.getId();
+
+        HibernateFactory.getSession().clear();
+        s = ServerFactory.lookupById(sid);
+        assertNotNull(s.getId());
+        Set<PinnedSubscription> newPins = s.getPinnedSubscriptions();
+        for (PinnedSubscription p : newPins) {
+            assertEquals(p.getSubscriptionId(), pin.getSubscriptionId());
+        }
     }
 }
