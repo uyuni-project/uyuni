@@ -228,6 +228,7 @@ suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 suseServerStateRevision        :: rhnServer suseStateRevision
+suseServerSubscription         :: rhnServer
 suseStateRevision              :: web_contact
 suseUpgradePath                :: suseProducts
 suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
