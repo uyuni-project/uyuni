@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -75,6 +77,10 @@ public class JsonSystem {
         }
         if (baseProduct != null) {
             products.put(baseProduct.getProductId(), baseProduct.getFriendlyName());
+
+            // We have a Vendor Product, so add a SystemEntitlement if needed
+            addSystemEntitlementToProducts(s);
+
             for (SUSEProduct p : productSet.getAddonProducts()) {
                 products.put(p.getProductId(), p.getFriendlyName());
             }
@@ -162,6 +168,42 @@ public class JsonSystem {
      */
     public void setVirtualSystemIds(List<Long> virtualSystemIds) {
         this.virtualSystemIds = virtualSystemIds;
+    }
+
+    /**
+     * Check if a System Entitlement is required and add the right one if needed.
+     *
+     * Criterias are:
+     * - System uses a Vendor Channel or a clone of it (vendor product is installed) and
+     * - System is managed either with management_entitled or saltstack_entitled
+     *
+     * This method always add Management and Provisioning because they are now merged into one
+     * subscription.
+     * This method check the architecture and the Virtualization entitlement to decide which
+     * product flavor need to be added.
+     * @param s the server
+     */
+    private void addSystemEntitlementToProducts(Server s) {
+        if (s.hasEntitlement(EntitlementManager.MANAGEMENT) ||
+                s.hasEntitlement(EntitlementManager.SALTSTACK)) {
+            if (s.getServerArch().equals(ServerFactory.lookupServerArchByLabel("s390x"))) {
+                addSystemEntitlementProduct("SUSE-Manager-Mgmt-Unlimited-Virtual-Z");
+                addSystemEntitlementProduct("SUSE-Manager-Prov-Unlimited-Virtual-Z");
+            }
+            else if (s.hasVirtualizationEntitlement()) {
+                addSystemEntitlementProduct("SUSE-Manager-Mgmt-Unlimited-Virtual");
+                addSystemEntitlementProduct("SUSE-Manager-Prov-Unlimited-Virtual");
+            }
+            else {
+                addSystemEntitlementProduct("SUSE-Manager-Mgmt-Single");
+                addSystemEntitlementProduct("SUSE-Manager-Prov-Single");
+            }
+        }
+    }
+
+    private void addSystemEntitlementProduct(String name) {
+        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(name, "1.2", null, null, true);
+        products.put(ent.getProductId(), ent.getFriendlyName());
     }
 }
 
