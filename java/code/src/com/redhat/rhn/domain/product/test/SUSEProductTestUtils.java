@@ -177,4 +177,50 @@ public class SUSEProductTestUtils {
         TestUtils.saveAndFlush(product);
     }
 
+    /**
+     * Create standard SUSE Vendor Entitlement products.
+     */
+    public static void createVendorEntitlementProducts() {
+        SUSEProduct product = new SUSEProduct();
+        product.setName("suse-manager-mgmt-unlimited-virtual-z");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Mgmt Unlimited Virtual Z 1.2");
+        product.setProductId(1200);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-prov-unlimited-virtual-z");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Prov Unlimited Virtual Z 1.2");
+        product.setProductId(1205);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mgmt-unlimited-virtual");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Mgmt Unlimited Virtual 1.2");
+        product.setProductId(1078);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-prov-unlimited-virtual");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Prov Unlimited Virtual 1.2");
+        product.setProductId(1204);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-mgmt-single");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Mgmt Single 1.2");
+        product.setProductId(1076);
+        TestUtils.saveAndFlush(product);
+
+        product = new SUSEProduct();
+        product.setName("suse-manager-prov-single");
+        product.setVersion("1.2");
+        product.setFriendlyName("SUSE Manager Prov Single 1.2");
+        product.setProductId(1097);
+        TestUtils.saveAndFlush(product);
+    }
 }
