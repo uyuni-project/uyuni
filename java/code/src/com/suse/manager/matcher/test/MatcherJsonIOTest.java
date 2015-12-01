@@ -1,6 +1,7 @@
 package com.suse.manager.matcher.test;
 
 import com.redhat.rhn.domain.common.LoggingFactory;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
@@ -21,7 +22,9 @@ import junit.framework.TestCase;
 public class MatcherJsonIOTest extends TestCase {
 
     public void testSystemsToJson() throws Exception {
+        SUSEProductFactory.clearAllProducts();
         SUSEProductTestUtils.createVendorSUSEProducts();
+        SUSEProductTestUtils.createVendorEntitlementProducts();
         LoggingFactory.clearLogId();
 
         Server h1 = ServerTestUtils.createTestSystem();
@@ -72,6 +75,8 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(jsonString.contains("      " + g2.getId()));
         assertTrue(jsonString.contains("\"1322\": \"SUSE Linux Enterprise Server 12 SP1\""));
         assertTrue(jsonString.contains("\"1324\": \"SUSE Linux Enterprise High Availability Extension 12 SP1\""));
+        assertTrue(jsonString.contains("\"1076\": \"SUSE Manager Mgmt Single 1.2\""));
+        assertTrue(jsonString.contains("\"1097\": \"SUSE Manager Prov Single 1.2\""));
     }
 
     private VirtualInstance createVirtualInstance(Server host, Server guest, String uuid) {
