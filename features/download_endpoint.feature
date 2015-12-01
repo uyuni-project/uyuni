@@ -1,0 +1,14 @@
+Feature: Endpoint to download packages
+  In Order distribute software to the clients
+  As an authorized user
+  I want to download packages from the channels
+
+  Scenario: user without token
+    Given I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "sles11-sp3-updates-x86_64-channel"
+    Then the download should get a 403 response
+
+  Scenario: user with a valid token for the org
+    Given I have a valid token for organization "1"
+    Then I try download "virgo-dummy-2.0-1.1.noarch.rpm" from channel "sles11-sp3-updates-x86_64-channel"
+    Then the download should get no error
+
