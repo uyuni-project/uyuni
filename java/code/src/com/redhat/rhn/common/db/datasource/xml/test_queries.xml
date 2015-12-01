@@ -610,46 +610,6 @@ SELECT 1 FROM dual
   </query>
 </write-mode>
 
-<mode name="select_next_suseinstalledproduct_id">
-	<query>
-      SELECT sequence_nextval('suse_inst_pr_id_seq') AS id FROM dual    
-	</query>
-</mode>
-
-<write-mode name="insert_into_suseinstalledproduct">
-  <query params="id, name, version, arch_type_id, release, is_baseproduct">
-    INSERT INTO suseinstalledproduct(
-      id,
-      name,
-      version,
-      arch_type_id,
-      release,
-      is_baseproduct
-    )
-    VALUES (
-      :id,
-      :name,
-      :version,
-      :arch_type_id,
-      :release,
-      :is_baseproduct
-    )
-  </query>
-</write-mode>
-
-<write-mode name="insert_into_suseserverinstalledproduct">
-  <query params="rhn_server_id, suse_installed_product_id">
-    INSERT INTO suseserverinstalledproduct(
-      rhn_server_id,
-      suse_installed_product_id
-    )
-    VALUES (
-      :rhn_server_id,
-      :suse_installed_product_id
-    )
-  </query>
-</write-mode>
-
 <mode name="find_relevant_channels" class="com.redhat.rhn.manager.audit.ServerChannelIdPair">
   <query params="sid">
       SELECT server_id sid, channel_id cid, channel_rank FROM suseCVEServerChannel
