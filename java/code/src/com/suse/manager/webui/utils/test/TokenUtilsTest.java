@@ -3,6 +3,7 @@ package com.suse.manager.webui.utils.test;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.suse.manager.webui.utils.TokenUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.security.Key;
 
@@ -12,9 +13,19 @@ import java.security.Key;
 public class TokenUtilsTest extends RhnBaseTestCase {
 
     public void testGetKey() {
-        Key key = TokenUtils.getKeyForSecret(TestUtils.randomString());
+        String secret = DigestUtils.sha256Hex(TestUtils.randomString());
+        Key key = TokenUtils.getKeyForSecret(secret);
         assertNotNull(key);
-        System.out.println(key.toString());
-        assertEquals(16, key.getEncoded().length);
+        assertEquals(32, key.getEncoded().length);
+    }
+
+    public void testExpectsHexSecret() {
+        try {
+            // randomString() len is 13
+            TokenUtils.getKeyForSecret(TestUtils.randomString());
+            fail("secret should be a hex string");
+        } catch(IllegalArgumentException e) {
+            assertContains(e.getMessage(), "hexBinary needs to be even-length");
+        }
     }
 }
