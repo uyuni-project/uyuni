@@ -2,7 +2,7 @@
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
-  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}")
+  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
   step %[I restart salt-minion]
 end
 
