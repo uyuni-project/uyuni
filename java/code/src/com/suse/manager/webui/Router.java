@@ -50,6 +50,9 @@ public class Router implements SparkApplication {
         post("/manager/minions/:id/reject", MinionController::reject);
         post("/manager/minions/:id/delete", MinionController::destroy);
 
+        // Package Management
+        get("/manager/systems/details/packages", MinionController::packages, jade);
+
         // Minion APIs
         post("/manager/api/minions/cmd", MinionsAPI::run);
         get("/manager/api/minions/match", MinionsAPI::match);
