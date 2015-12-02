@@ -41,6 +41,8 @@ public class SCCSubscription {
     private Integer virtualCount;
     @SerializedName("product_classes")
     private List<String> productClasses;
+    @SerializedName("product_ids")
+    private List<Long> productIds;
     private List<SCCSystem> systems;
 
     /**
@@ -127,6 +129,13 @@ public class SCCSubscription {
     }
 
     /**
+     * @return the productIds
+     */
+    public List<Long> getProductIds() {
+        return productIds;
+    }
+
+    /**
      * @return the systems
      */
     public List<SCCSystem> getSystems() {
@@ -210,6 +219,13 @@ public class SCCSubscription {
      */
     public void setProductClasses(List<String> productClassesIn) {
         this.productClasses = productClassesIn;
+    }
+
+    /**
+     * @param productIdsIn the productIds to set
+     */
+    public void setProductIds(List<Long> productIdsIn) {
+        this.productIds = productIdsIn;
     }
 
     /**
