@@ -47,6 +47,9 @@
       <rhn-tab name="system.detail.nav.list" acl="not system_feature(ftr_package_remove)">
         <rhn-tab-url>/rhn/systems/details/packages/PackageList.do</rhn-tab-url>
       </rhn-tab>
+      <rhn-tab name="Manage" acl="system_has_salt_entitlement()">
+        <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
+      </rhn-tab>
       <rhn-tab name="Upgrade" acl="system_feature(ftr_package_updates)">
         <rhn-tab-url>/rhn/systems/details/packages/UpgradableList.do</rhn-tab-url>
       </rhn-tab>
