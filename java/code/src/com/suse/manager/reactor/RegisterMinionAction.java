@@ -18,13 +18,13 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -144,11 +145,6 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             ).collect(Collectors.toSet());
 
             server.setPackages(packages);
-            ServerFactory.save(server);
-
-            // Assign the SaltStack base entitlement by default
-            server.setBaseEntitlement(
-                    EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
 
 
             //HACK: set installed product depending on the grains
@@ -156,8 +152,28 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             String key = osfullname + osrelease + cpuarch;
             Optional.ofNullable(productIdMap.get(key)).ifPresent(productId -> {
                 SUSEProduct product =  SUSEProductFactory.lookupByProductId(productId);
-                SUSEProductTestUtils.installSUSEProductOnServer(product, server);
+                if (product != null) {
+                    // Insert into suseInstalledProduct
+                    InstalledProduct prd = new InstalledProduct();
+                    prd.setName(product.getName());
+                    prd.setVersion(product.getVersion());
+                    prd.setRelease(product.getRelease());
+                    prd.setArch(product.getArch());
+                    prd.setBaseproduct(true);
+
+                    Set<InstalledProduct> products = new HashSet<>();
+                    products.add(prd);
+
+                    // Insert into suseServerInstalledProduct
+                    server.setInstalledProducts(products);
+                }
             });
+
+            ServerFactory.save(server);
+
+            // Assign the SaltStack base entitlement by default
+            server.setBaseEntitlement(
+                    EntitlementManager.getByName(EntitlementManager.SALTSTACK_ENTITLED));
 
             Map<String, String> data = new HashMap<>();
             data.put("minionId", minionId);

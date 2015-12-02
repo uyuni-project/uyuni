@@ -148,7 +148,7 @@
             <td><bean:message key="sdc.details.overview.sysid"/></td>
             <td><c:out value="${system.id}" /></td>
           </tr>
-          <rhn:require acl="system_has_management_entitlement()">
+          <rhn:require acl="system_has_management_entitlement() or system_has_salt_entitlement()">
           <tr>
             <td><bean:message key="sdc.details.overview.activationkey"/></td>
             <td>
