@@ -2,6 +2,10 @@
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
+  if File.exist?(filename)
+    File.delete(filename)
+    puts "File #{filename} has been removed"
+  end
   File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
   step %[I restart salt-minion]
 end
@@ -27,13 +31,6 @@ end
 
 When(/^I delete the key of this client$/) do
   sshcmd("yes | salt-key -d #{$myhostname}")
-end
-
-When(/^I remove possible Salt Master key "(.*?)"$/) do |filename|
-  if File.exist?(filename)
-    File.delete(filename)
-    puts "File #{filename} has been removed"
-  end
 end
 
 When(/^I restart salt-minion$/) do

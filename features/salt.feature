@@ -18,7 +18,6 @@ Feature: SaltStack is configured and running
 
   Scenario: The minion is running
    Given the Salt Minion is configured
-    When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
     And I restart salt-minion
     Then the Salt Minion should be running
 
