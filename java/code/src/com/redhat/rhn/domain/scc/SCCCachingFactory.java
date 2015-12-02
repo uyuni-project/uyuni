@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.scc;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -25,7 +27,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -72,6 +76,74 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static void clearRepositories() {
         getSession().getNamedQuery("SCCRepository.deleteAll").executeUpdate();
+    }
+
+    /**
+     * Store {@link SCCSubscription} to the database.
+     * @param subscription the subscription
+     */
+    public static void saveSubscription(SCCSubscription subscription) {
+        subscription.setModified(new Date());
+        singleton.saveObject(subscription);
+    }
+
+    /**
+     * Store {@link SCCSubscription} to the database.
+     * @param jsonSub the json subscription
+     */
+    public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub, Credentials creds) {
+        SCCSubscription sub = new SCCSubscription();
+        sub.setCredentials(creds);
+        sub.setSccId(jsonSub.getId());
+        sub.setName(jsonSub.getName());
+        sub.setStartsAt(jsonSub.getStartsAt());
+        sub.setExpiresAt(jsonSub.getExpiresAt());
+        sub.setStatus(jsonSub.getStatus());
+        sub.setRegcode(jsonSub.getRegcode());
+        sub.setType(jsonSub.getType());
+        sub.setSystemLimit(jsonSub.getSystemLimit().longValue());
+        Set<SUSEProduct> products = new HashSet<>();
+        for (Long pid : jsonSub.getProductIds()) {
+            SUSEProduct prd = SUSEProductFactory.lookupByProductId(pid);
+            if (prd != null) {
+                products.add(prd);
+            }
+            else {
+                log.error("unable to find product for scc product id: " + pid);
+            }
+        }
+        sub.setProducts(products);
+        sub.setModified(new Date());
+        singleton.saveObject(sub);
+    }
+
+    /**
+     * Lookup all Subscriptions
+     * @return list of subscriptions
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SCCSubscription> lookupSubscriptions() {
+        log.debug("Retrieving subscriptions from cache");
+        Session session = getSession();
+        Criteria c = session.createCriteria(SCCSubscription.class);
+        return c.list();
+    }
+
+    /**
+     * Clear all subscriptions from the database.
+     */
+    public static void clearSubscriptions() {
+        getSession().getNamedQuery("SCCSubscription.deleteAll").executeUpdate();
+    }
+
+    /**
+     * Clear all subscriptions from the database.
+     */
+    public static void clearSubscriptions(Credentials c) {
+        getSession()
+        .getNamedQuery("SCCSubscription.deleteByCredential")
+        .setParameter("creds", c)
+        .executeUpdate();
     }
 
     /**
