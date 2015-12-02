@@ -350,9 +350,9 @@ sub setup_salt_master {
     # Configure different file roots
     print SALT_MASTER "file_roots:\n";
     print SALT_MASTER "  base:\n";
-    print SALT_MASTER "    /usr/share/susemanager/salt\n";
-    print SALT_MASTER "    /srv/susemanager/salt\n";
-    print SALT_MASTER "    /srv/salt\n";
+    print SALT_MASTER "    - /usr/share/susemanager/salt\n";
+    print SALT_MASTER "    - /srv/susemanager/salt\n";
+    print SALT_MASTER "    - /srv/salt\n";
 
     close(SALT_MASTER);
 }
