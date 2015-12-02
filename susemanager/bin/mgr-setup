@@ -338,6 +338,7 @@ copy_remote_files_suse() {
     chown -R wwwrun.www /var/spacewalk
     rsync -e "ssh -i $KEYFILE -l root" -av --ignore-existing root@$SATELLITE_IP:/srv/www/htdocs/pub/ /srv/www/htdocs/pub/
     ln -s /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT /etc/pki/trust/anchors
+    update-ca-certificates
 
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.crt/spacewalk.crt /etc/apache2/ssl.crt/spacewalk.crt
     scp -i $KEYFILE root@$SATELLITE_IP:/etc/apache2/ssl.key/spacewalk.key /etc/apache2/ssl.key/spacewalk.key
@@ -500,8 +501,8 @@ do_setup() {
             rm -f /usr/share/rhn/$certname
             certname=RHN-ORG-TRUSTED-SSL-CERT
         else
-            ln -s /usr/share/rhn/$certname /etc/ssl/certs/$certname.pem
-            c_rehash /etc/ssl/certs/ >/dev/null
+            ln -s /usr/share/rhn/$certname /etc/pki/trust/anchors
+            update-ca-certificates
         fi
         echo "
         INSERT INTO rhnISSMaster (id, label, is_current_master, ca_cert)
