@@ -20,7 +20,6 @@ Feature: SaltStack is configured and running
    Given the Salt Minion is configured
     When I remove possible Salt Master key "/etc/salt/pki/minion/minion_master.pub"
     And I restart salt-minion
-    And I wait for "20" seconds
     Then the Salt Minion should be running
 
   Scenario: The minion key can be accepted
@@ -33,7 +32,7 @@ Feature: SaltStack is configured and running
 
   Scenario: The minion communicates with the master and can register
     # It takes a while before we can get the grains and registration is done
-    When I wait for "15" seconds
+    Given that the master can reach this client
     And I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
     And I should see this client in spacewalk

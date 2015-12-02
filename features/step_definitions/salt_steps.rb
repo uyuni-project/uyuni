@@ -6,6 +6,21 @@ Given(/^the Salt Minion is configured$/) do
   step %[I restart salt-minion]
 end
 
+Given(/^that the master can reach this client$/) do
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        @output = sshcmd("salt #{$myhostname} test.ping", ignore_err: true)
+        break if @output[:stdout].include?($myhostname) &&
+           @output[:stdout].include?('True')
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+      fail "Master can not communicate with the minion: #{@output[:stdout]}"
+  end
+end
+
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
   @output = sshcmd("cat #{filename}")
 end
@@ -26,9 +41,16 @@ When(/^I restart salt-minion$/) do
 end
 
 Then(/^the Salt Minion should be running$/) do
-  out = `systemctl status salt-minion`
-  unless $?.success?
-    raise "salt-minion status: #{out}"
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        out = `systemctl status salt-minion`
+        break if $?.success?
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    fail "salt-minion status: #{out}"
   end
 end
 
