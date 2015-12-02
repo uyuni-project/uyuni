@@ -48,6 +48,7 @@ import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.XMLChannelFamily;
 import com.suse.mgrsync.XMLProduct;
 import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -58,6 +59,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.bind.DatatypeConverter;
+
 /**
  * Tests for {@link ContentSyncManager}.
  */
@@ -67,6 +70,37 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+
+    private static final String SUBSCRIPTIONS_JSON = JARPATH + "sccdata/organizations_subscriptions.json";
+
+    public void testListSubscriptionsCaching() throws Exception {
+        File subJson = new File(TestUtils.findTestData(SUBSCRIPTIONS_JSON).getPath());
+        String fromdir = subJson.getParent();
+        try {
+            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir);
+
+            ContentSyncManager cm = new ContentSyncManager();
+            Collection<SCCSubscription> s = cm.getSubscriptions();
+            assertNotNull(s);
+
+            for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
+                assertEquals("55REGCODE180", dbs.getRegcode());
+                assertEquals("EMEA SLES x86/x86_64 Standard Support & Training", dbs.getName());
+                assertEquals(1234, dbs.getSccId());
+                assertEquals("ACTIVE", dbs.getStatus());
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1212));
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1307));
+                assertEquals(702, dbs.getSystemLimit().longValue());
+                assertEquals(DatatypeConverter.parseDateTime("2017-12-31T00:00:00.000Z").getTime(),
+                        dbs.getExpiresAt());
+            }
+            s = cm.getSubscriptions();
+        }
+        finally {
+            Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+            SUSEProductTestUtils.deleteIfTempFile(subJson);
+        }
+    }
 
     /**
      * Test for {@link ContentSyncManager#updateChannels}.

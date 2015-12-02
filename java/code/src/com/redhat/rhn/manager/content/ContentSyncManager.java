@@ -606,6 +606,25 @@ public class ContentSyncManager {
     }
 
     /**
+     * Refresh the subscription cache by reading subscriptions from SCC for all available mirror
+     * credentials, consolidating and inserting into the database.
+     *
+     * @throws ContentSyncException in case of an error
+     */
+    public void refreshSubscriptionCache(List<SCCSubscription> subscriptions,
+            Credentials c) {
+
+        SCCCachingFactory.clearSubscriptions(c);
+        for (SCCSubscription s : subscriptions) {
+            SCCCachingFactory.saveJsonSubscription(s, c);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + subscriptions.size() +
+                    " subscriptions with credentials: " + c);
+        }
+    }
+
+    /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
      * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
@@ -615,7 +634,9 @@ public class ContentSyncManager {
             throws SCCClientException {
         try {
             SCCClient scc = this.getSCCClient(credentials);
-            return scc.listSubscriptions();
+            List<SCCSubscription> subscriptions = scc.listSubscriptions();
+            refreshSubscriptionCache(subscriptions, credentials);
+            return subscriptions;
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:" + e.getMessage());
