@@ -1,8 +1,8 @@
 # Copyright 2015 SUSE LLC
+require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
-  File.rename("/etc/salt/minion", "/etc/salt/minion.orig")
-  File.open("/etc/salt/minion", 'w') { |file| file.write("master: #{ENV['TESTHOST']}") }
+  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}")
   step %[I restart salt-minion]
 end
 
