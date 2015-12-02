@@ -2,9 +2,10 @@
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
-  if File.exist?(filename)
-    File.delete(filename)
-    puts "File #{filename} has been removed"
+  key = '/etc/salt/pki/minion/minion_master.pub'
+  if File.exist?(key)
+    File.delete(key)
+    puts "Key #{key} has been removed"
   end
   File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
   step %[I restart salt-minion]
