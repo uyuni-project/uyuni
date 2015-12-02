@@ -226,6 +226,9 @@ susePackageState               :: rhnPackageName rhnPackageEVR rhnPackageArch su
                                   susePackageStateType suseVersionConstraintType
 suseProducts                   :: rhnPackageArch
 suseProductChannel             :: suseProducts rhnChannel
+suseSCCRepository              :: suseCredentials
+suseSCCSubscription            :: suseCredentials
+suseSCCSubscriptionProduct     :: suseSCCSubscription suseProducts
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 suseServerStateRevision        :: rhnServer suseStateRevision
 suseServerSubscription         :: rhnServer
