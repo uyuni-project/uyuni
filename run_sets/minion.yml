@@ -1,0 +1,6 @@
+---
+# Salt related features
+- features/salt.feature
+- features/salt_minions_page.feature
+- features/salt_minion_details.feature
+- features/download_endpoint.feature
