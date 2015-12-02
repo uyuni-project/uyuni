@@ -24,7 +24,6 @@ Feature: SaltStack is configured and running
   Scenario: The minion key can be accepted
     When I list unaccepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
-    When I delete this client's system profile
     And I accept all Salt unaccepted keys
     And I list accepted keys at Salt Master
     Then the list of the keys should contain this client's hostname
@@ -36,11 +35,3 @@ Feature: SaltStack is configured and running
     Then it should contain a "SLES" text
     And I should see this client in spacewalk
 
-  Scenario: The minion key can be deleted
-    When I delete the key of this client
-    # This is to clean up for the following tests
-    And I delete this client's system profile
-    And I restart salt-minion
-    And I wait for "2" seconds
-    And I list unaccepted keys at Salt Master
-    Then the list of the keys should contain this client's hostname
