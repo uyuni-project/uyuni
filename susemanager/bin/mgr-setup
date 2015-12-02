@@ -272,22 +272,30 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
 }
 
 dump_remote_db() {
-    echo "Dumping remote database. Please wait..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | gzip -9 > /tmp/$DBDUMPFILE\""
+    echo "`date +"%H:%M:%S"`   Dumping remote database. Please wait..."
+    scp -i $KEYFILE /usr/lib/susemanager/bin/tclfilter root@$SATELLITE_IP:/tmp
+    ssh -i $KEYFILE root@$SATELLITE_IP "su -s /bin/bash - postgres -c \"pg_dump $MANAGER_DB_NAME | /tmp/tclfilter | gzip -9 > /tmp/$DBDUMPFILE\""
+    if [ $? -eq 0 ]; then
+        echo "`date +"%H:%M:%S"`   Database successfully dumped."
+    else
+        echo "`date +"%H:%M:%S"`   FAILURE!"
+    fi
 
     echo "Copy remote database dump to local machine..."
     scp -i $KEYFILE root@$SATELLITE_IP:/tmp/$DBDUMPFILE /tmp
 
     echo "Delete remote database dump..."
-    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/$DBDUMPFILE"
+    ssh -i $KEYFILE root@$SATELLITE_IP "rm -f /tmp/$DBDUMPFILE /tmp/tclfilter"
 }
 
 import_db() {
-    echo "Importing database dump. Please wait..."
+    echo "`date +"%H:%M:%S"`   Importing database dump. Please wait..."
     su -s /bin/bash - postgres -c "zcat /tmp/$DBDUMPFILE | psql $MANAGER_DB_NAME > /dev/null"
     if [ $? -eq 0 ]; then
-        echo "Database dump successfully imported."
+        echo "`date +"%H:%M:%S"`   Database dump successfully imported."
         rm -f /tmp/$DBDUMPFILE
+    else
+        echo "`date +"%H:%M:%S"`   FAILURE!"
     fi
 }
 
