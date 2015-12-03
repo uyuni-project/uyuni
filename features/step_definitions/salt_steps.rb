@@ -2,8 +2,30 @@
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
-  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}")
+  # cleanup the key in case the image was reused
+  # to run the test twice
+  key = '/etc/salt/pki/minion/minion_master.pub'
+  if File.exist?(key)
+    File.delete(key)
+    puts "Key #{key} has been removed"
+  end
+  File.write('/etc/salt/minion.d/master.conf', "master: #{ENV['TESTHOST']}\n")
   step %[I restart salt-minion]
+end
+
+Given(/^that the master can reach this client$/) do
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        @output = sshcmd("salt #{$myhostname} test.ping", ignore_err: true)
+        break if @output[:stdout].include?($myhostname) &&
+           @output[:stdout].include?('True')
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+      fail "Master can not communicate with the minion: #{@output[:stdout]}"
+  end
 end
 
 When(/^I get the contents of the remote file "(.*?)"$/) do |filename|
@@ -14,21 +36,22 @@ When(/^I delete the key of this client$/) do
   sshcmd("yes | salt-key -d #{$myhostname}")
 end
 
-When(/^I remove possible Salt Master key "(.*?)"$/) do |filename|
-  if File.exist?(filename)
-    File.delete(filename)
-    puts "File #{filename} has been removed"
-  end
-end
-
 When(/^I restart salt-minion$/) do
   system("systemctl restart salt-minion")
 end
 
 Then(/^the Salt Minion should be running$/) do
-  out = `systemctl status salt-minion`
-  unless $?.success?
-    raise "salt-minion status: #{out}"
+  out = ""
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        out = `systemctl status salt-minion`
+        break if $?.success?
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+    fail "salt-minion status: #{out}"
   end
 end
 
@@ -64,11 +87,3 @@ Then(/^salt\-master should be listening on public port (\d+)$/) do |port|
   fail if not sshcmd("ss -nta | grep #{port}")[:stdout].include? "*:#{port}"
 end
 
-# Delete the system profile of this client
-When(/^I delete this client's system profile/) do
-  steps %[
-    Given I am on the Systems overview page of this client
-    Then I follow "Delete System"
-    And I click on "Delete Profile"
-  ]
-end
