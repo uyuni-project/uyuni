@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -66,12 +67,13 @@ public class StateFactory extends HibernateFactory {
      * Lookup all {@link ServerStateRevision} objects for a given server.
      *
      * @param server the server
-     * @return the state revisions for this server
+     * @return the state revisions for this server, newest first
      */
     @SuppressWarnings("unchecked")
     public static List<ServerStateRevision> lookupServerStateRevisions(Server server) {
         return getSession().createCriteria(ServerStateRevision.class)
                 .add(Restrictions.eq("server", server))
+                .addOrder(Order.desc("created"))
                 .list();
     }
 
