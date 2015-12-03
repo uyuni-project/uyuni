@@ -628,6 +628,7 @@ public class ContentSyncManager {
 
     /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
+     * Additionally order items are fetched and put into the DB.
      * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
      * @throws SCCClientException in case of an error
@@ -638,6 +639,7 @@ public class ContentSyncManager {
             SCCClient scc = this.getSCCClient(credentials);
             List<SCCSubscription> subscriptions = scc.listSubscriptions();
             refreshSubscriptionCache(subscriptions, credentials);
+            refreshOrderItemCache(credentials);
             return subscriptions;
         }
         catch (URISyntaxException e) {
@@ -825,6 +827,7 @@ public class ContentSyncManager {
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
+        //FIXME: not used, we now refresh the cache in getSubscriptions(c). DELETE?
     }
 
     /**
