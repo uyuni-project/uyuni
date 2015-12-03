@@ -2,6 +2,8 @@
 require 'timeout'
 
 Given(/^the Salt Minion is configured$/) do
+  # cleanup the key in case the image was reused
+  # to run the test twice
   key = '/etc/salt/pki/minion/minion_master.pub'
   if File.exist?(key)
     File.delete(key)
