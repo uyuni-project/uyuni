@@ -659,6 +659,12 @@
           <context context-type="sourcefile">500 error page</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="500.jsp.backhome">
+        <source>Go back to the home page</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">500 error page</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="orgadmin.displayname">
         <source>Org Admin?*</source>
         <context-group name="ctx">
