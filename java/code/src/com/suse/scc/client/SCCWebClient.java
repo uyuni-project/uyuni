@@ -168,7 +168,7 @@ public class SCCWebClient implements SCCClient {
 
                 // Parse result type from JSON
                 Gson gson = new GsonBuilder()
-                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                         .create();
                 T result = gson.fromJson(streamReader, resultType);
 
