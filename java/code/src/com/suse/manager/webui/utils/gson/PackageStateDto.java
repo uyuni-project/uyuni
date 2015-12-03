@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import java.util.Optional;
+
 /**
  * Transfer object for serializing package states as JSON.
  */
@@ -22,8 +24,8 @@ public class PackageStateDto {
     private final String name;
     private final String evr;
     private final String arch;
-    private final Integer packageStateId;
-    private final Integer versionConstraintId;
+    private final Optional<Integer> packageStateId;
+    private final Optional<Integer> versionConstraintId;
 
     /**
      * @param nameIn the package name
@@ -33,12 +35,25 @@ public class PackageStateDto {
      * @param versionConstraintIdIn the version constraint id
      */
     public PackageStateDto(String nameIn, String evrIn, String archIn,
-            Integer packageStateIdIn, Integer versionConstraintIdIn) {
+            Optional<Integer> packageStateIdIn, Optional<Integer> versionConstraintIdIn) {
         this.name = nameIn;
         this.evr = evrIn;
         this.arch = archIn;
         this.packageStateId = packageStateIdIn;
         this.versionConstraintId = versionConstraintIdIn;
+    }
+
+    /**
+     * @param nameIn the package name
+     * @param evrIn the package evr
+     * @param archIn the package arch
+     */
+    public PackageStateDto(String nameIn, String evrIn, String archIn) {
+        this.name = nameIn;
+        this.evr = evrIn;
+        this.arch = archIn;
+        this.packageStateId = Optional.empty();
+        this.versionConstraintId = Optional.empty();
     }
 
     /**
@@ -65,14 +80,14 @@ public class PackageStateDto {
     /**
      * @return the state type id
      */
-    public int getPackageStateId() {
+    public Optional<Integer> getPackageStateId() {
         return packageStateId;
     }
 
     /**
      * @return the version constraint id
      */
-    public int getVersionConstraintId() {
+    public Optional<Integer> getVersionConstraintId() {
         return versionConstraintId;
     }
 }
