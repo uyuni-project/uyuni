@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.frontend.dto.PackageListItem;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.suse.manager.webui.utils.gson.PackageStateDto;
 import spark.Request;
@@ -73,5 +76,24 @@ public class StatesAPI {
                 )
         ).collect(Collectors.toList());
         return GSON.toJson(collect);
+    }
+
+    /**
+     * API endpoint to search all packages available to a given server (installed or not
+     * installed) for a given string returning all matching packages.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return json result of the API call
+     */
+    public static String match(Request request, Response response) {
+        String target = ".*" + request.queryParams("target") + ".*";
+        String serverId = request.queryParams("sid");
+        List<PackageListItem> matchingPackages = PackageManager
+                .systemTotalPackages(Long.valueOf(serverId), null).stream()
+                .filter(pkg -> pkg.getName().matches(target))
+                .collect(Collectors.toList());
+        response.type("application/json");
+        return GSON.toJson(matchingPackages);
     }
 }
