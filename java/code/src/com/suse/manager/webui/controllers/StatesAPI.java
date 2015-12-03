@@ -52,7 +52,7 @@ public class StatesAPI {
      * @param response the response object
      * @return json result of the API call
      */
-    public static String packageStates(Request request, Response response) {
+    public static String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Server server = ServerFactory.lookupById(new Long(serverId));
         // Lookup all revisions and take package states from the latest one
