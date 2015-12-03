@@ -73,8 +73,8 @@ public class StatesAPI {
                                 .map(PackageEvr::toString).orElse(""),
                         Optional.ofNullable(state.getArch())
                                 .map(PackageArch::getLabel).orElse(""),
-                        state.getPackageStateTypeId(),
-                        state.getVersionConstraintId()
+                        Optional.of(state.getPackageStateTypeId()),
+                        Optional.of(state.getVersionConstraintId())
                 )
         ).collect(Collectors.toList());
 
