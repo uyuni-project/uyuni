@@ -137,9 +137,15 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
-     * Clear all subscriptions from the database.
+     * Clear all subscriptions from the database assigned to the
+     * credential.
+     * @param c the credentials
      */
     public static void clearSubscriptions(Credentials c) {
+        if (c == null) {
+            clearSubscriptions();
+            return;
+        }
         getSession()
         .getNamedQuery("SCCSubscription.deleteByCredential")
         .setParameter("creds", c)
