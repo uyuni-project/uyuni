@@ -41,6 +41,7 @@ When(/^I restart salt-minion$/) do
 end
 
 Then(/^the Salt Minion should be running$/) do
+  out = ""
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
       loop do
