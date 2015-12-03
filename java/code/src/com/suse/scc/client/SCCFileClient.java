@@ -114,7 +114,7 @@ public class SCCFileClient implements SCCClient {
     private <T> T readJSON(String filename, Type resultType)
             throws IOException {
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
         return (T) gson.fromJson(
                 new BufferedReader(new InputStreamReader(new FileInputStream(
