@@ -109,6 +109,12 @@ public class SCCOrderItem extends BaseDomainHelper {
     }
 
     /**
+     * @return the SCC Subscription
+     */
+    public SCCSubscription getSubscription() {
+        return SCCCachingFactory.lookupSubscriptionBySccId(subscriptionId);
+    }
+    /**
      * @param subscriptionId the subscriptionId to set
      */
     public void setSubscriptionId(Long subscriptionId) {
@@ -195,6 +201,8 @@ public class SCCOrderItem extends BaseDomainHelper {
         return new ToStringBuilder(this)
         .append("sccId", getSccId())
         .append("sku", getSku())
+        .append("quantity", getQuantity())
+        .append("end", getEndDate())
         .toString();
     }
 }
