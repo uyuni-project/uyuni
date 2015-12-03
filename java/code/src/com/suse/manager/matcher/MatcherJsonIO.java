@@ -15,6 +15,8 @@
 
 package com.suse.manager.matcher;
 
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 
@@ -52,6 +54,18 @@ public class MatcherJsonIO {
             systems.add(sys);
         }
         return gson.toJson(systems);
+    }
+
+    /**
+     * @return a json string with all subscriptions
+     */
+    public String getJsonSubscriptions() {
+        List<JsonSubscription> subscriptions = new LinkedList<>();
+        for(SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
+            JsonSubscription sub = new JsonSubscription(item);
+            subscriptions.add(sub);
+        }
+        return gson.toJson(subscriptions);
     }
 
 }

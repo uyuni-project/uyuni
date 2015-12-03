@@ -130,6 +130,20 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup a {@link SCCSubscription} object for given sccId.
+     * @param id the scc id
+     * @return SCC Subscription or null
+     */
+    public static SCCSubscription lookupSubscriptionBySccId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Session session = getSession();
+        Criteria c = session.createCriteria(SCCSubscription.class);
+        c.add(Restrictions.eq("sccId", id));
+        return (SCCSubscription) c.uniqueResult();
+    }
+    /**
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
