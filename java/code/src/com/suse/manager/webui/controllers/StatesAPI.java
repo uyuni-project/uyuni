@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
@@ -94,24 +93,14 @@ public class StatesAPI {
         String target = ".*" + request.queryParams("target") + ".*";
         String serverId = request.queryParams("sid");
 
-        // Find all matching packages among the available ones
-        List<PackageListItem> matchingPackages = PackageManager
+        // Find matches among available packages and convert to DTOs
+        List<PackageStateDto> matchingPackages = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
-                .filter(pkg -> pkg.getName().matches(target))
+                .filter(p -> p.getName().matches(target))
+                .map(p -> new PackageStateDto(p.getName(), p.getEvr(), p.getArch()))
                 .collect(Collectors.toList());
 
-        // Convert search results into a list of DTOs
-        List<PackageStateDto> packageDtos = matchingPackages.stream().map(pkg ->
-                new PackageStateDto(
-                        pkg.getName(),
-                        pkg.getEvr(),
-                        pkg.getArch(),
-                        null,
-                        null
-                )
-        ).collect(Collectors.toList());
-
         response.type("application/json");
-        return GSON.toJson(packageDtos);
+        return GSON.toJson(matchingPackages);
     }
 }
