@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.suse.manager.webui.utils.gson.PackageStateDto;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,7 +34,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.suse.manager.webui.utils.gson.PackageStateDto;
 import spark.Request;
 import spark.Response;
 
@@ -43,8 +43,6 @@ import spark.Response;
 public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
-
-
 
     private StatesAPI() { }
 
@@ -58,6 +56,7 @@ public class StatesAPI {
     public static String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+
         // Lookup all revisions and take package states from the latest one
         List<ServerStateRevision> stateRevisions =
                 StateFactory.lookupServerStateRevisions(server);
@@ -65,16 +64,21 @@ public class StatesAPI {
         if (stateRevisions != null && !stateRevisions.isEmpty()) {
             packageStates = stateRevisions.get(0).getPackageStates();
         }
-        response.type("application/json");
+
+        // Convert into a list of DTOs
         List<PackageStateDto> collect = packageStates.stream().map(state ->
                 new PackageStateDto(
                         state.getName().getName(),
-                        Optional.ofNullable(state.getEvr()).map(PackageEvr::toString).orElse(""),
-                        Optional.ofNullable(state.getArch()).map(PackageArch::getLabel).orElse(""),
+                        Optional.ofNullable(state.getEvr())
+                                .map(PackageEvr::toString).orElse(""),
+                        Optional.ofNullable(state.getArch())
+                                .map(PackageArch::getLabel).orElse(""),
                         state.getPackageStateTypeId(),
                         state.getVersionConstraintId()
                 )
         ).collect(Collectors.toList());
+
+        response.type("application/json");
         return GSON.toJson(collect);
     }
 
