@@ -119,7 +119,7 @@ public class SCCOrderItem extends BaseDomainHelper {
      * @return the quantity
      */
     public Long getQuantity() {
-        return quantity;
+        return quantity == null ? 0 : quantity;
     }
 
     /**
