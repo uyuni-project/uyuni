@@ -60,6 +60,7 @@ public class Router implements SparkApplication {
 
         // States API
         get("/manager/api/states/packages", StatesAPI::packages);
+        get("/manager/api/states/packages/match", StatesAPI::match);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",
