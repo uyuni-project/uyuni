@@ -153,6 +153,52 @@ public class SCCCachingFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup all Order Items
+     * @return list of Order Items
+     */
+    @SuppressWarnings("unchecked")
+    public static List<SCCOrderItem> lookupOrderItems() {
+        log.debug("Retrieving orderItems from cache");
+        Session session = getSession();
+        Criteria c = session.createCriteria(SCCOrderItem.class);
+        return c.list();
+    }
+
+    /**
+     * Store {@link SCCOrderItem} to the database.
+     * @param item order item
+     */
+    public static void saveOrderItem(SCCOrderItem item) {
+        item.setModified(new Date());
+        singleton.saveObject(item);
+    }
+
+    /**
+     * Clear all order items from the database assigne to the given
+     * credentials
+     * @param c the credentials
+     */
+    public static void clearOrderItems(Credentials c) {
+        if (c == null) {
+            clearOrderItems();
+            return;
+        }
+        getSession()
+        .getNamedQuery("SCCOrderItem.deleteByCredential")
+        .setParameter("creds", c)
+        .executeUpdate();
+    }
+
+    /**
+     * Clear all order items from the database
+     */
+    public static void clearOrderItems() {
+        getSession()
+        .getNamedQuery("SCCOrderItem.deleteAll")
+        .executeUpdate();
+    }
+
+    /**
      * Check if the cache needs a refresh.
      * @return true if refresh is needed, false otherwise
      */
