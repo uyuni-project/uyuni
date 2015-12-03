@@ -89,11 +89,25 @@ public class StatesAPI {
     public static String match(Request request, Response response) {
         String target = ".*" + request.queryParams("target") + ".*";
         String serverId = request.queryParams("sid");
+
+        // Find all matching packages among the available ones
         List<PackageListItem> matchingPackages = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(pkg -> pkg.getName().matches(target))
                 .collect(Collectors.toList());
+
+        // Convert search results into a list of DTOs
+        List<PackageStateDto> packageDtos = matchingPackages.stream().map(pkg ->
+                new PackageStateDto(
+                        pkg.getName(),
+                        pkg.getEvr(),
+                        pkg.getArch(),
+                        null,
+                        null
+                )
+        ).collect(Collectors.toList());
+
         response.type("application/json");
-        return GSON.toJson(matchingPackages);
+        return GSON.toJson(packageDtos);
     }
 }
