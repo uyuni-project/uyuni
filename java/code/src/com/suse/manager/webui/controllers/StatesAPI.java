@@ -57,7 +57,7 @@ public class StatesAPI {
      */
     public static String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
-        Server server = ServerFactory.lookupById(new Long(serverId));
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
         // Lookup all revisions and take package states from the latest one
         List<ServerStateRevision> stateRevisions =
                 StateFactory.lookupServerStateRevisions(server);
