@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -81,6 +82,7 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
 
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscription> s = cm.getSubscriptions();
+            HibernateFactory.getSession().flush();
             assertNotNull(s);
 
             for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
@@ -95,6 +97,26 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
                         dbs.getExpiresAt());
             }
             s = cm.getSubscriptions();
+            HibernateFactory.getSession().flush();
+            for (SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
+                if (item.getSccId() == 9998L) {
+                    assertEquals(10, item.getQuantity().longValue());
+                    assertEquals(1234, item.getSubscriptionId().longValue());
+                    assertEquals(DatatypeConverter.parseDateTime("2013-01-01T00:00:00.000Z").getTime(),
+                            item.getEndDate());
+                    assertEquals("662644474670", item.getSku());
+                }
+                else if (item.getSccId() == 9999L) {
+                    assertEquals(100, item.getQuantity().longValue());
+                    assertEquals(1234, item.getSubscriptionId().longValue());
+                    assertEquals(DatatypeConverter.parseDateTime("2017-01-01T00:00:00.000Z").getTime(),
+                            item.getEndDate());
+                    assertEquals("874-005117", item.getSku());
+                }
+                else {
+                    assertTrue(false);
+                }
+            }
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
