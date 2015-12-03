@@ -19,6 +19,8 @@ import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.suse.scc.model.SCCOrder;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -109,6 +111,15 @@ public class SCCWebClient implements SCCClient {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SCCOrder> listOrders() throws SCCClientException {
+        return getList("/connect/organizations/orders",
+                SCCOrder.class);
+    }
+
+    /**
      * Perform a GET request and parse the result into list of given {@link Class}.
      *
      * @param <T> the generic type
@@ -156,7 +167,9 @@ public class SCCWebClient implements SCCClient {
                         config.getUsername(), config.getLoggingDir());
 
                 // Parse result type from JSON
-                Gson gson = new Gson();
+                Gson gson = new GsonBuilder()
+                        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                        .create();
                 T result = gson.fromJson(streamReader, resultType);
 
                 String nextUrl = null;
