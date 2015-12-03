@@ -1017,6 +1017,7 @@ class Registration(rhnHandler):
         h.execute(server_id=sid)
         row = h.fetchone_dict()
         if row:
+            primif = None
             ipaddr=row['ipaddr']
             ip6addr=row['ip6addr']
             if ipaddr:
