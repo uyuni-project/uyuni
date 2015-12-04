@@ -232,7 +232,7 @@ suseSCCSubscription            :: suseCredentials
 suseSCCSubscriptionProduct     :: suseSCCSubscription suseProducts
 suseServerInstalledProduct     :: rhnServer suseInstalledProduct
 suseServerStateRevision        :: rhnServer suseStateRevision
-suseServerSubscription         :: rhnServer
+susePinnedSubscription         :: rhnServer
 suseStateRevision              :: web_contact
 suseUpgradePath                :: suseProducts
 suseServerVirtualHostManager   :: rhnServer suseVirtualHostManager
