@@ -11,7 +11,6 @@
             <key column="state_revision_id"/>
             <one-to-many class="com.redhat.rhn.domain.state.PackageState"/>
         </set>
-        <property name="revision" column="revision" type="long" not-null="true"/>
         <property name="created" column="created" type="timestamp" insert="false" update="false"/>
         <many-to-one name="creator" column="creator_id" class="com.redhat.rhn.domain.user.legacy.UserImpl" lazy="proxy"/>
         <joined-subclass name="com.redhat.rhn.domain.state.ServerStateRevision" table="suseServerStateRevision">
