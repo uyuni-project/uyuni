@@ -37,7 +37,7 @@ import java.util.Map;
  */
 public class GathererJob extends RhnJavaJob {
 
-    private static final String VHM_LABEL = "vhmLabel";
+    public static final String VHM_LABEL = "vhmLabel";
 
     /**
      * {@inheritDoc}
