@@ -21,11 +21,14 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.utils.gson.PackageStateDto;
+import com.suse.manager.webui.utils.gson.ServerPackageStatesDto;
 
 import java.util.HashSet;
 import java.util.List;
@@ -102,5 +105,32 @@ public class StatesAPI {
 
         response.type("application/json");
         return GSON.toJson(matchingPackages);
+    }
+
+    /**
+     * Save a new state revision for a server given an incoming list of package states in
+     * the request body.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @param user the user
+     * @return null to make spark happy
+     */
+    public static Object save(Request request, Response response, User user) {
+        // Parse the JSON content of the body into an object
+        ServerPackageStatesDto dto = GSON.fromJson(request.body(),
+                ServerPackageStatesDto.class);
+
+        // Save a new state revision for the specified server
+        ServerStateRevision state = new ServerStateRevision();
+        state.setServer(ServerFactory.lookupById(dto.getServerId()));
+        state.setCreator(user);
+        dto.getPackageStates().forEach(pkgState -> {
+            pkgState.convertToPackageState().ifPresent(state::addPackageState);
+        });
+        StateFactory.save(state);
+
+        // Make spark happy
+        return null;
     }
 }

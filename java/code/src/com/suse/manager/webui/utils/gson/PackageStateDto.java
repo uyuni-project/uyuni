@@ -14,12 +14,22 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.state.PackageState;
+import com.redhat.rhn.domain.state.PackageStates;
+import com.redhat.rhn.domain.state.VersionConstraints;
+import com.redhat.rhn.manager.rhnpackage.PackageManager;
+
+import org.apache.log4j.Logger;
+
 import java.util.Optional;
 
 /**
  * Transfer object for serializing package states as JSON.
  */
 public class PackageStateDto {
+
+    private static final Logger LOG = Logger.getLogger(PackageStateDto.class);
 
     private final String name;
     private final String evr;
@@ -89,5 +99,39 @@ public class PackageStateDto {
      */
     public Optional<Integer> getVersionConstraintId() {
         return versionConstraintId;
+    }
+
+    /**
+     * Convert this object to a {@link PackageState} object to be persisted.
+     *
+     * @return this object as a PackageState
+     */
+    public Optional<PackageState> convertToPackageState() {
+        Optional<PackageStates> state = getPackageStateId().flatMap(PackageStates::byId);
+
+        // Create the return object only if we have a valid state
+        Optional<PackageState> ret = state.flatMap(ps -> {
+            PackageState packageState = new PackageState();
+            packageState.setPackageState(ps);
+            packageState.setName(PackageManager.lookupPackageName(getName()));
+            // TODO: state.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(e, v, r));
+            packageState.setArch(PackageFactory.lookupPackageArchByLabel(getArch()));
+
+            // Some package states *require* a version constraint
+            Optional<VersionConstraints> versionConstraint = getVersionConstraintId()
+                    .flatMap(VersionConstraints::byId);
+            if (PackageStates.requiresVersionConstraint(ps) &&
+                    !versionConstraint.isPresent()) {
+                LOG.error("Version constraint required for " + ps + ": " +
+                        packageState.getName());
+                return Optional.empty();
+            }
+            else {
+                versionConstraint.ifPresent(packageState::setVersionConstraint);
+                return Optional.of(packageState);
+            }
+        });
+
+        return ret;
     }
 }
