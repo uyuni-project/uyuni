@@ -8,6 +8,7 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.InstalledProduct;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -114,6 +115,59 @@ public class MatcherJsonIOTest extends TestCase {
         }
     }
 
+    public void testPinsToJson() throws Exception {
+        File subJson = new File(TestUtils.findTestData(SUBSCRIPTIONS_JSON).getPath());
+        String fromdir = subJson.getParent();
+        try {
+            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.createVendorSUSEProducts();
+            SUSEProductTestUtils.createVendorEntitlementProducts();
+            LoggingFactory.clearLogId();
+
+            Server h1 = ServerTestUtils.createTestSystem();
+            h1.setName("host1.example.com");
+            h1.setCpu(createCPU(h1, 8L));
+            ServerFactory.save(h1);
+
+            Set<InstalledProduct> installedProducts = new HashSet<>();
+            InstalledProduct instPrd = new InstalledProduct();
+            instPrd.setName("SLES");
+            instPrd.setVersion("12.1");
+            instPrd.setRelease("0");
+            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+            instPrd.setBaseproduct(true);
+            installedProducts.add(instPrd);
+
+            instPrd = new InstalledProduct();
+            instPrd.setName("sle-ha");
+            instPrd.setVersion("12.1");
+            instPrd.setRelease("0");
+            instPrd.setArch(PackageFactory.lookupPackageArchByLabel("x86_64"));
+            instPrd.setBaseproduct(false);
+            installedProducts.add(instPrd);
+
+            h1.setInstalledProducts(installedProducts);
+
+            ContentSyncManager cm = new ContentSyncManager();
+            Collection<SCCSubscription> s = cm.getSubscriptions();
+            HibernateFactory.getSession().flush();
+
+            PinnedSubscription pin = new PinnedSubscription();
+            pin.setServer(h1);
+            pin.setSubscriptionId(9999L);
+            TestUtils.saveAndFlush(pin);
+            HibernateFactory.getSession().clear();
+
+            String jsonString = new MatcherJsonIO().getJsonPinnedMatches();
+            assertNotNull(jsonString);
+            assertTrue(jsonString.contains("\"system_id\": " + h1.getId()));
+            assertTrue(jsonString.contains("\"subscription_id\": 9999"));
+        }
+        finally {
+            Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+            SUSEProductTestUtils.deleteIfTempFile(subJson);
+        }
+    }
     private VirtualInstance createVirtualInstance(Server host, Server guest, String uuid) {
         VirtualInstance virtualInstance = new VirtualInstance();
         virtualInstance.setHostSystem(host);
