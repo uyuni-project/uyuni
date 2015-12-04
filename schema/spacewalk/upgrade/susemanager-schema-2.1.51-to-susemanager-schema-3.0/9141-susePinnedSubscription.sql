@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-
 CREATE TABLE susePinnedSubscription
 (
     id               NUMBER NOT NULL
