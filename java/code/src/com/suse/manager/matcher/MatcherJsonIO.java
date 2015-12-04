@@ -79,7 +79,7 @@ public class MatcherJsonIO {
             Set<PinnedSubscription> sysPins = s.getPinnedSubscriptions();
             if (! sysPins.isEmpty()) {
                 for (PinnedSubscription pin : sysPins) {
-                    pins.add(new JsonPinnedMatch(s.getId(), pin.getSubscriptionId()));
+                    pins.add(new JsonPinnedMatch(s.getId(), pin.getOrderitemId()));
                 }
             }
         }

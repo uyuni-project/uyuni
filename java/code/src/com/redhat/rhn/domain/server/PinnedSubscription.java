@@ -23,7 +23,7 @@ public class PinnedSubscription {
 
     private Long id;
     private Server server;
-    private Long subscriptionId;
+    private Long orderitemId;
 
     /**
      * @return the id
@@ -34,17 +34,17 @@ public class PinnedSubscription {
 
     /**
      * Getter for server
-     * @return the server associated with the subscription id
+     * @return the server associated with the orderitem id
      */
     public Server getServer() {
         return server;
     }
 
     /**
-     * @return the subscriptionId
+     * @return the orderitemId
      */
-    public Long getSubscriptionId() {
-        return subscriptionId;
+    public Long getOrderitemId() {
+        return orderitemId;
     }
 
     /**
@@ -63,10 +63,10 @@ public class PinnedSubscription {
     }
 
     /**
-     * @param subscriptionIdIn the subscriptionId to set
+     * @param orderitemIdIn the orderitemId to set
      */
-    public void setSubscriptionId(Long subscriptionIdIn) {
-        this.subscriptionId = subscriptionIdIn;
+    public void setOrderitemId(Long orderitemIdIn) {
+        this.orderitemId = orderitemIdIn;
     }
 
     /**
@@ -78,7 +78,7 @@ public class PinnedSubscription {
         }
         PinnedSubscription castOther = (PinnedSubscription) other;
         return new EqualsBuilder().append(getServer(), castOther.getServer())
-                .append(getSubscriptionId(), castOther.getSubscriptionId())
+                .append(getOrderitemId(), castOther.getOrderitemId())
                 .isEquals();
     }
 
@@ -87,7 +87,7 @@ public class PinnedSubscription {
      */
     public int hashCode() {
         return new HashCodeBuilder().append(getServer())
-                .append(getSubscriptionId())
+                .append(getOrderitemId())
                 .toHashCode();
     }
 }
