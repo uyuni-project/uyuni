@@ -49,11 +49,11 @@ public class StatesAPI {
     private StatesAPI() { }
 
     /**
-     * API endpoint to query the current list of package states for a given system.
+     * Query the current list of package states for a given server.
      *
      * @param request the request object
      * @param response the response object
-     * @return json result of the API call
+     * @return JSON result of the API call
      */
     public static String packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
@@ -85,12 +85,12 @@ public class StatesAPI {
     }
 
     /**
-     * API endpoint to search all packages available to a given server (installed or not
-     * installed) for a given string returning all matching packages.
+     * Search all packages available to a given server (installed or not installed) for a
+     * given string returning all matching packages.
      *
      * @param request the request object
      * @param response the response object
-     * @return json result of the API call
+     * @return JSON result of the API call
      */
     public static String match(Request request, Response response) {
         String target = ".*" + request.queryParams("target") + ".*";
