@@ -16,6 +16,7 @@
 package com.redhat.rhn.taskomatic.task.matcher;
 
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
+import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -30,6 +31,13 @@ public class MatcherJob extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext jobExecutionContext)
             throws JobExecutionException {
+        if (jobExecutionContext.getJobDetail().getJobDataMap()
+                .containsKey(GathererJob.VHM_LABEL)) {
+            log.warn("Gatherer-matcher bunch was run for a specific Virtual Host " +
+                    "Manager. NOT running matcher.");
+            return;
+        }
+
         log.warn("TODO: run matcher here!");
     }
 
