@@ -29,7 +29,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Serializes and deserializes objects from and to JSON.
+ */
 public class MatcherJsonIO {
 
     /** (De)serializer instance. */
@@ -51,7 +53,7 @@ public class MatcherJsonIO {
      */
     public String getJsonSystems() {
         List<JsonSystem> systems = new LinkedList<JsonSystem>();
-        for(Server s : ServerFactory.list()) {
+        for (Server s : ServerFactory.list()) {
             JsonSystem sys = new JsonSystem(s);
             systems.add(sys);
         }
@@ -63,7 +65,7 @@ public class MatcherJsonIO {
      */
     public String getJsonSubscriptions() {
         List<JsonSubscription> subscriptions = new LinkedList<>();
-        for(SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
+        for (SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
             JsonSubscription sub = new JsonSubscription(item);
             subscriptions.add(sub);
         }
@@ -75,9 +77,9 @@ public class MatcherJsonIO {
      */
     public String getJsonPinnedMatches() {
         List<JsonPinnedMatch> pins = new LinkedList<>();
-        for(Server s : ServerFactory.list()) {
+        for (Server s : ServerFactory.list()) {
             Set<PinnedSubscription> sysPins = s.getPinnedSubscriptions();
-            if (! sysPins.isEmpty()) {
+            if (!sysPins.isEmpty()) {
                 for (PinnedSubscription pin : sysPins) {
                     pins.add(new JsonPinnedMatch(s.getId(), pin.getOrderitemId()));
                 }

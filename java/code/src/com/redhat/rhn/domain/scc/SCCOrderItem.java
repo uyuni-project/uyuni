@@ -81,10 +81,10 @@ public class SCCOrderItem extends BaseDomainHelper {
     }
 
     /**
-     * @param endDate the endDate to set
+     * @param endDateIn the endDate to set
      */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(Date endDateIn) {
+        this.endDate = endDateIn;
     }
 
     /**
@@ -95,10 +95,10 @@ public class SCCOrderItem extends BaseDomainHelper {
     }
 
     /**
-     * @param startDate the startDate to set
+     * @param startDateIn the startDate to set
      */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDate(Date startDateIn) {
+        this.startDate = startDateIn;
     }
 
     /**
@@ -115,10 +115,10 @@ public class SCCOrderItem extends BaseDomainHelper {
         return SCCCachingFactory.lookupSubscriptionBySccId(subscriptionId);
     }
     /**
-     * @param subscriptionId the subscriptionId to set
+     * @param subscriptionIdIn the subscriptionId to set
      */
-    public void setSubscriptionId(Long subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    public void setSubscriptionId(Long subscriptionIdIn) {
+        this.subscriptionId = subscriptionIdIn;
     }
 
     /**
@@ -129,10 +129,10 @@ public class SCCOrderItem extends BaseDomainHelper {
     }
 
     /**
-     * @param quantity the quantity to set
+     * @param quantityIn the quantity to set
      */
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
+    public void setQuantity(Long quantityIn) {
+        this.quantity = quantityIn;
     }
 
     /**

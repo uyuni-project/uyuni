@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * JSON representation of a system
+ */
 public class JsonSystem {
 
     /** system id */
@@ -57,6 +59,7 @@ public class JsonSystem {
 
     /**
      * Constructor
+     * @param s the server
      */
     public JsonSystem(Server s) {
         id = s.getId();
@@ -132,42 +135,42 @@ public class JsonSystem {
 
 
     /**
-     * @param id the id to set
+     * @param idIn the id to set
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
 
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
 
     /**
-     * @param cpus the cpus to set
+     * @param cpusIn the cpus to set
      */
-    public void setCpus(Long cpus) {
-        this.cpus = cpus;
+    public void setCpus(Long cpusIn) {
+        this.cpus = cpusIn;
     }
 
 
     /**
-     * @param products the products to set
+     * @param productsIn the products to set
      */
-    public void setProducts(Map<Long, String> products) {
-        this.products = products;
+    public void setProducts(Map<Long, String> productsIn) {
+        this.products = productsIn;
     }
 
 
     /**
-     * @param virtual_systems_ids the virtual_systems_ids to set
+     * @param virtualSystemIdsIn the virtual_systems_ids to set
      */
-    public void setVirtualSystemIds(List<Long> virtualSystemIds) {
-        this.virtualSystemIds = virtualSystemIds;
+    public void setVirtualSystemIds(List<Long> virtualSystemIdsIn) {
+        this.virtualSystemIds = virtualSystemIdsIn;
     }
 
     /**
@@ -177,10 +180,10 @@ public class JsonSystem {
      * - System uses a Vendor Channel or a clone of it (vendor product is installed) and
      * - System is managed either with management_entitled or saltstack_entitled
      *
-     * This method always add Management and Provisioning because they are now merged into one
-     * subscription.
-     * This method check the architecture and the Virtualization entitlement to decide which
-     * product flavor need to be added.
+     * This method always add Management and Provisioning because they are now merged
+     * into one subscription.
+     * This method check the architecture and the Virtualization entitlement to decide
+     * which product flavor need to be added.
      * @param s the server
      */
     private void addSystemEntitlementToProducts(Server s) {
@@ -201,8 +204,9 @@ public class JsonSystem {
         }
     }
 
-    private void addSystemEntitlementProduct(String name) {
-        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(name, "1.2", null, null, true);
+    private void addSystemEntitlementProduct(String productName) {
+        SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null,
+                null, true);
         products.put(ent.getProductId(), ent.getFriendlyName());
     }
 }

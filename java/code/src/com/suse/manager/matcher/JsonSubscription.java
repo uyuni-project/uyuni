@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+/**
+ * JSON representation of a Subscription
+ */
 public class JsonSubscription {
 
     /** SCC OrderItem sccId */
@@ -53,6 +56,10 @@ public class JsonSubscription {
 
     private String sccOrgId;
 
+    /**
+     * Constructor
+     * @param order an order item
+     */
     public JsonSubscription(SCCOrderItem order) {
         id = order.getSccId();
         partNumber = order.getSku();
@@ -166,10 +173,10 @@ public class JsonSubscription {
     }
 
     /**
-     * @param partNumber the partNumber to set
+     * @param partNumberIn the partNumber to set
      */
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
+    public void setPartNumber(String partNumberIn) {
+        this.partNumber = partNumberIn;
     }
 
     /**
@@ -194,31 +201,31 @@ public class JsonSubscription {
     }
 
     /**
-     * @param name the name to set
+     * @param nameIn the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     /**
-     * @param status the status to set
+     * @param statusIn the status to set
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String statusIn) {
+        this.status = statusIn;
     }
 
     /**
-     * @param regcode the regcode to set
+     * @param regcodeIn the regcode to set
      */
-    public void setRegcode(String regcode) {
-        this.regcode = regcode;
+    public void setRegcode(String regcodeIn) {
+        this.regcode = regcodeIn;
     }
 
     /**
-     * @param type the type to set
+     * @param typeIn the type to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**

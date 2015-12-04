@@ -15,12 +15,19 @@
 
 package com.suse.manager.matcher;
 
-
+/**
+ * JSON representation of a Pinned Match
+ */
 public class JsonPinnedMatch {
 
     private Long systemId;
     private Long subscriptionId;
 
+    /**
+     * Constructor
+     * @param systemIdIn the system Id
+     * @param subscriptionIdIn the subscription Id (order Item Id)
+     */
     public JsonPinnedMatch(Long systemIdIn, Long subscriptionIdIn) {
         systemId = systemIdIn;
         subscriptionId = subscriptionIdIn;
@@ -41,16 +48,16 @@ public class JsonPinnedMatch {
     }
 
     /**
-     * @param systemId the systemId to set
+     * @param systemIdIn the systemId to set
      */
-    public void setSystemId(Long systemId) {
-        this.systemId = systemId;
+    public void setSystemId(Long systemIdIn) {
+        this.systemId = systemIdIn;
     }
 
     /**
-     * @param subscriptionId the subscriptionId to set
+     * @param subscriptionIdIn the subscriptionId to set
      */
-    public void setSubscriptionId(Long subscriptionId) {
-        this.subscriptionId = subscriptionId;
+    public void setSubscriptionId(Long subscriptionIdIn) {
+        this.subscriptionId = subscriptionIdIn;
     }
 }

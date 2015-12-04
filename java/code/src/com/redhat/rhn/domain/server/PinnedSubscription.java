@@ -18,7 +18,9 @@ package com.redhat.rhn.domain.server;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-
+/**
+ * Representing Subscriptions pinned to systems
+ */
 public class PinnedSubscription {
 
     private Long id;
@@ -48,10 +50,10 @@ public class PinnedSubscription {
     }
 
     /**
-     * @param id the id to set
+     * @param idIn the id to set
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     /**
