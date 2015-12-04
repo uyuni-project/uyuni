@@ -28,7 +28,7 @@ ENABLE ROW MOVEMENT
 ;
 
 CREATE UNIQUE INDEX suse_pinsub_sid_oid_uq
-    ON suseServerSubscription (server_id, orderitem_id)
+    ON susePinnedSubscription (server_id, orderitem_id)
     TABLESPACE [[8m_tbs]];
 
 CREATE SEQUENCE suse_pinsub_id_seq;
