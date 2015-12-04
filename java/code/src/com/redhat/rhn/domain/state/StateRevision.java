@@ -30,7 +30,6 @@ import java.util.Set;
 public class StateRevision {
 
     private long id;
-    private long revision;
     private Date created;
     private User creator;
     private Set<PackageState> packageStates = new HashSet<>();
@@ -47,20 +46,6 @@ public class StateRevision {
      */
     public void setId(long idIn) {
         this.id = idIn;
-    }
-
-    /**
-     * @return the revision
-     */
-    public long getRevision() {
-        return revision;
-    }
-
-    /**
-     * @param revisionIn the revision to set
-     */
-    public void setRevision(long revisionIn) {
-        this.revision = revisionIn;
     }
 
     /**
@@ -122,7 +107,6 @@ public class StateRevision {
         }
         StateRevision otherRevision = (StateRevision) other;
         return new EqualsBuilder()
-                .append(getRevision(), otherRevision.getRevision())
                 .append(getCreated(), otherRevision.getCreated())
                 .append(getCreator(), otherRevision.getCreator())
                 .isEquals();
@@ -134,7 +118,6 @@ public class StateRevision {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-                .append(getRevision())
                 .append(getCreated())
                 .append(getCreator())
                 .toHashCode();
@@ -146,7 +129,6 @@ public class StateRevision {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("revision", getRevision())
                 .append("created", getCreated())
                 .append("creator", getCreator())
                 .toString();

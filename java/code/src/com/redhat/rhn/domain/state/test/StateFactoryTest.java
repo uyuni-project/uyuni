@@ -108,7 +108,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
                 StateFactory.lookupServerStateRevisions(server);
         assertEquals(1, serverStateRevisions.size());
         serverStateRevisions.forEach(stateRevision -> {
-            assertEquals(0, stateRevision.getRevision());
             assertEquals(server, stateRevision.getServer());
             assertEquals(user, stateRevision.getCreator());
             assertEquals(1, stateRevision.getPackageStates().size());
