@@ -50,4 +50,17 @@ public enum PackageStates {
         return Arrays.asList(PackageStates.values()).stream()
                 .filter(state -> state.ID == id).findFirst();
     }
+
+    /**
+     * Indicate for a given state if a version constraint is required.
+     *
+     * @param packageState the package state
+     * @return true if a version constraint is required, otherwise false
+     */
+    public static boolean requiresVersionConstraint(PackageStates packageState) {
+        switch (packageState) {
+            case INSTALLED: return true;
+            default: return false;
+        }
+    }
 }
