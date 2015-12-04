@@ -35,11 +35,11 @@ public class JsonSubscription {
     /** SCC OrderItem sku */
     private String partNumber;
     /** SCC OrderItem endDate */
-    private Date expiresAt;
+    private Date endDate;
     /** SCC OrderItem startDate */
-    private Date startsAt;
+    private Date startDate;
     /** SCC OrderItem quantity */
-    private Long systemLimit;
+    private Long quantity;
 
     /** SCC Subscription name */
     private String name;
@@ -54,7 +54,8 @@ public class JsonSubscription {
     /** SCC Subscription products */
     private List<Long> productIds;
 
-    private String sccOrgId;
+    /** SCC Username (mirror credetial) */
+    private String sccUsername;
 
     /**
      * Constructor
@@ -63,15 +64,15 @@ public class JsonSubscription {
     public JsonSubscription(SCCOrderItem order) {
         id = order.getSccId();
         partNumber = order.getSku();
-        expiresAt = order.getEndDate();
-        startsAt = order.getStartDate();
-        systemLimit = order.getQuantity();
+        endDate = order.getEndDate();
+        startDate = order.getStartDate();
+        quantity = order.getQuantity();
         Credentials c = order.getCredentials();
         if (c != null) {
-            sccOrgId = c.getUsername();
+            sccUsername = c.getUsername();
         }
         else {
-            sccOrgId = "extFile";
+            sccUsername = "extFile";
         }
         SCCSubscription s = order.getSubscription();
         if (s != null) {
@@ -103,24 +104,24 @@ public class JsonSubscription {
     }
 
     /**
-     * @return the expiresAt
+     * @return the endDate
      */
-    public Date getExpiresAt() {
-        return expiresAt;
+    public Date getEndDate() {
+        return endDate;
     }
 
     /**
-     * @return the startsAt
+     * @return the startDate
      */
-    public Date getStartsAt() {
-        return startsAt;
+    public Date getStartDate() {
+        return startDate;
     }
 
     /**
-     * @return the systemLimit
+     * @return the quantity
      */
-    public Long getSystemLimit() {
-        return systemLimit;
+    public Long getQuantity() {
+        return quantity;
     }
 
     /**
@@ -159,10 +160,10 @@ public class JsonSubscription {
     }
 
     /**
-     * @return the credentials
+     * @return the SCC username (mirror credential)
      */
-    public String getSccOrgId() {
-        return sccOrgId;
+    public String getSccUsername() {
+        return sccUsername;
     }
 
     /**
@@ -180,24 +181,24 @@ public class JsonSubscription {
     }
 
     /**
-     * @param expiresAtIn the expiresAt to set
+     * @param endDateIn the endDate to set
      */
-    public void setExpiresAt(Date expiresAtIn) {
-        this.expiresAt = expiresAtIn;
+    public void setEndDate(Date endDateIn) {
+        this.endDate = endDateIn;
     }
 
     /**
-     * @param startsAtIn the startDate to set
+     * @param startDateIn the startDate to set
      */
-    public void setStartsAt(Date startsAtIn) {
-        this.startsAt = startsAtIn;
+    public void setStartDate(Date startDateIn) {
+        this.startDate = startDateIn;
     }
 
     /**
-     * @param systemLimitIn the systemLimit to set
+     * @param quantityIn the quantity to set
      */
-    public void setQuantity(Long systemLimitIn) {
-        this.systemLimit = systemLimitIn;
+    public void setQuantity(Long quantityIn) {
+        this.quantity = quantityIn;
     }
 
     /**
@@ -236,9 +237,9 @@ public class JsonSubscription {
     }
 
     /**
-     * @param sccOrgIdIn the scc org id to set
+     * @param sccUsernameIn the SCC username (mirror credential)
      */
-    public void setSccOrgId(String sccOrgIdIn) {
-        this.sccOrgId = sccOrgIdIn;
+    public void setSccUsername(String sccUsernameIn) {
+        this.sccUsername = sccUsernameIn;
     }
 }
