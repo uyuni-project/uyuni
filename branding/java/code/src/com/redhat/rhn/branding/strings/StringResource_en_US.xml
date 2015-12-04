@@ -1820,8 +1820,8 @@ tree will not be usable for autoinstalling.
       <trans-unit id="bunch.jsp.description.mgr-sync-refresh-bunch">
         <source>Refreshes data about channels, products and subscriptions</source>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.gatherer-bunch">
-        <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results</source>
+      <trans-unit id="bunch.jsp.description.gatherer-matcher-bunch">
+        <source>Runs Virtual Host Gatherer on Virtual Host Managers and processes its results. After this Subscription Matcher job is run.</source>
       </trans-unit>
 
       <!-- Server Contact Methods -->

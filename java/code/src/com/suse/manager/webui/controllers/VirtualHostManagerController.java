@@ -195,7 +195,8 @@ public class VirtualHostManagerController {
         Map<String, String> params = new HashMap<>();
         params.put("vhmlabel", label);
         try {
-            new TaskomaticApi().scheduleSingleSatBunch(user, "gatherer-bunch", params);
+            new TaskomaticApi()
+                    .scheduleSingleSatBunch(user, "gatherer-matcher-bunch", params);
         }
         catch (TaskomaticApiException e) {
             message  = "Problem when running Taskomatic job: " + e.getMessage();
