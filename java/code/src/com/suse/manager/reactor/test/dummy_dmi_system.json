@@ -1,0 +1,18 @@
+{
+  "suma3pg.vagrant.local": [
+    {
+      "type": 1,
+      "handle": "0x0100",
+      "description": "System Information",
+      "data": {
+        "uuid": "75299898-533C-FF48-8B5C-BE026DF56F74",
+        "wake-up_type": "Power Switch",
+        "version": "pc-i440fx-2.1",
+        "serial_number": "Not Specified",
+        "sku_number": "Not Specified",
+        "product_name": "Standard PC (i440FX + PIIX, 1996)",
+        "manufacturer": "QEMU"
+      }
+    }
+  ]
+}

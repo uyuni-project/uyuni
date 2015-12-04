@@ -14,6 +14,18 @@
  */
 package com.suse.manager.reactor;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.log4j.Logger;
+
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
@@ -28,23 +40,17 @@ import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.CPUArch;
+import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.frontend.events.AbstractDatabaseAction;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
 
+import com.suse.manager.webui.services.impl.Smbios;
 import com.suse.saltstack.netapi.calls.modules.Pkg;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Event handler to create system records for salt minions.
@@ -114,13 +120,15 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             // All registered minions initially belong to the default organization
             server.setOrg(OrgFactory.getSatelliteOrg());
 
+            SALT_SERVICE.syncGrains(minionId);
+
             // TODO: Set complete OS, hardware and network information here
             Map<String, Object> grains = SALT_SERVICE.getGrains(minionId);
 
-            String osfullname = (String) grains.get("osfullname");
-            String osrelease = (String) grains.get("osrelease");
-            String kernelrelease = (String) grains.get("kernelrelease");
-            String cpuarch = (String) grains.get("cpuarch");
+            String osfullname = getValueAsString(grains, "osfullname");
+            String osrelease = getValueAsString(grains, "osrelease");
+            String kernelrelease = getValueAsString(grains, "kernelrelease");
+            String osarch = getValueAsString(grains, "osarch");
 
             server.setOs(osfullname);
             server.setRelease(osrelease);
@@ -132,11 +140,12 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
             server.setModified(server.getCreated());
             server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
             server.setServerArch(
-                    ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+                    ServerFactory.lookupServerArchByLabel(osarch + "-redhat-linux"));
             ServerInfo serverInfo = new ServerInfo();
             serverInfo.setServer(server);
             server.setServerInfo(serverInfo);
-            server.setRam(((Double) grains.get("mem_total")).longValue());
+
+            mapHardwareDetails(minionId, server, grains);
 
             Map<String, Pkg.Info> saltPackages =
                     SALT_SERVICE.getInstalledPackageDetails(minionId);
@@ -149,7 +158,7 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
 
             //HACK: set installed product depending on the grains
             // to get access to suse channels
-            String key = osfullname + osrelease + cpuarch;
+            String key = osfullname + osrelease + osarch;
             Optional.ofNullable(productIdMap.get(key)).ifPresent(productId -> {
                 SUSEProduct product =  SUSEProductFactory.lookupByProductId(productId);
                 if (product != null) {
@@ -183,6 +192,130 @@ public class RegisterMinionAction extends AbstractDatabaseAction {
         }
         catch (Throwable t) {
             LOG.error("Error registering minion for event: " + event, t);
+        }
+    }
+
+    private void mapHardwareDetails(String minionId, Server server,
+            Map<String, Object> grains) {
+        String cpuarch = getValueAsString(grains, "cpuarch");
+        server.setRam(getValueAsLong(grains, "mem_total"));
+
+        mapCpuDetails(minionId, server, grains, cpuarch);
+        mapDmiInfo(minionId, server);
+
+        // TODO devices information
+    }
+
+    private CPU mapCpuDetails(String minionId, Server server, Map<String, Object> grains,
+            String cpuarch) {
+        CPU cpu = new CPU();
+
+        cpu.setModel(getValueAsString(grains, "cpu_model"));
+        cpu.setNrCPU(getValueAsLong(grains, "num_cpus"));
+
+        CPUArch arch = ServerFactory.lookupCPUArchByName(cpuarch);
+        cpu.setArch(arch);
+
+        Map<String, Object> cpuinfo = SALT_SERVICE.getCpuInfo(minionId);
+
+        cpu.setMHz(getValueAsString(cpuinfo, "cpu MHz"));
+        cpu.setVendor(getValueAsString(cpuinfo, "vendor_id"));
+        cpu.setStepping(getValueAsString(cpuinfo, "stepping"));
+        cpu.setFamily(getValueAsString(cpuinfo, "cpu family"));
+        cpu.setCache(getValueAsString(cpuinfo, "cache size"));
+        cpu.setNrsocket(getValueAsLong(grains, "cpusockets"));
+
+        if (arch != null) {
+            // shuld not happen but if we don't have the arch we cannot insert the cpu data
+            cpu.setServer(server);
+            server.setCpu(cpu);
+        }
+
+        return cpu;
+    }
+
+    private Dmi mapDmiInfo(String minionId, Server server) {
+        Dmi dmi = new Dmi();
+
+        Map<String, Object> bios =
+                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.BIOS);
+        Map<String, Object> system =
+                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.SYSTEM);
+        Map<String, Object> chassis =
+                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.CHASSIS);
+        Map<String, Object> board =
+                SALT_SERVICE.getDmiRecords(minionId, Smbios.RecordType.BASEBOARD);
+
+        String biosVendor = getValueAsString(bios, "vendor");
+        String biosVersion = getValueAsString(bios, "version");
+        String biosReleseDate = getValueAsString(bios, "release_date");
+
+        String productName = getValueAsString(system, "product_name");
+        String systemVersion = getValueAsString(system, "version");
+        String systemSerial = getValueAsString(system, "serial_number");
+
+        String chassisSerial = getValueAsString(chassis, "serial_number");
+        String chassisTag = getValueAsString(chassis, "asset_tag");
+
+        String boardSerial = getValueAsString(board, "serial_number");
+
+        dmi.setSystem(productName + " " + systemVersion);
+        dmi.setProduct(productName);
+        dmi.setBios(biosVendor, biosVersion, biosReleseDate);
+        dmi.setVendor(biosVendor);
+
+        dmi.setAsset(String.format("(chassis: %s) (chassis: %s) (board: %s) (system: %s)",
+                chassisSerial, chassisTag, boardSerial, systemSerial));
+
+        dmi.setServer(server);
+        server.setDmi(dmi);
+
+        return dmi;
+
+    }
+
+
+    private Long getValueAsLong(Map<String, Object> valueMap, String key) {
+        if (valueMap == null) {
+            return 0L;
+        }
+        Object value = valueMap.get(key);
+        if (value instanceof Double) {
+            return ((Double)value).longValue();
+        }
+        else if (value instanceof Long) {
+            return (Long)value;
+        }
+        else if (value instanceof Integer) {
+            return ((Integer)value).longValue();
+        }
+        else if (value instanceof String) {
+            try {
+                return Long.parseLong((String) value);
+            }
+            catch (NumberFormatException e) {
+                LOG.warn("Error converting  '" + value + "' to long", e);
+                return 0L;
+            }
+        }
+        else {
+            LOG.warn("Value '" + ObjectUtils.toString(value) +
+                    "' could not be converted to long.");
+            return 0L;
+        }
+    }
+
+    private String getValueAsString(Map<String, Object> valueMap, String key) {
+        if (valueMap == null) {
+            return "";
+        }
+        Object value = valueMap.get(key);
+        if (value instanceof String) {
+            return (String)value;
+        }
+        else {
+            LOG.warn("Value of '" + key + "' is not a string. Using value.toString()");
+            return ObjectUtils.toString(value);
         }
     }
 
