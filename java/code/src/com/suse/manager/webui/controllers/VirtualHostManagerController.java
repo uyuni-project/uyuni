@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -193,7 +194,7 @@ public class VirtualHostManagerController {
         String label = virtualHostManager.getLabel();
         String message = null;
         Map<String, String> params = new HashMap<>();
-        params.put("vhmlabel", label);
+        params.put(GathererJob.VHM_LABEL, label);
         try {
             new TaskomaticApi()
                     .scheduleSingleSatBunch(user, "gatherer-matcher-bunch", params);
