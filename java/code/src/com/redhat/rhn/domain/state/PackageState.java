@@ -127,7 +127,7 @@ public class PackageState {
      */
     public PackageStates getPackageState() {
         return PackageStates.byId(packageStateTypeId).
-                orElseGet(() -> { throw new RuntimeException("Invalid package state"); });
+                orElseThrow(() -> new RuntimeException("Invalid package state"));
     }
 
     /**
@@ -156,7 +156,7 @@ public class PackageState {
      */
     public VersionConstraints getVersionConstraint() {
         return VersionConstraints.byId(versionConstraintId).
-                orElseGet(() -> { throw new RuntimeException("Invalid constraint"); });
+                orElseThrow(() -> new RuntimeException("Invalid constraint"));
     }
 
     /**
