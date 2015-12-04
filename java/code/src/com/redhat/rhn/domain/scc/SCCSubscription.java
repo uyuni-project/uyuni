@@ -25,8 +25,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import java.util.Date;
 import java.util.Set;
 
-import javax.xml.bind.DatatypeConverter;
-
 /**
  * This is a subscription representation in the DB from SCC.
  */
@@ -44,7 +42,7 @@ public class SCCSubscription extends BaseDomainHelper {
     private String type;
     private Long systemLimit;
     private Set<SUSEProduct> products;
-    
+
     /**
      * @return the id
      */
@@ -134,10 +132,10 @@ public class SCCSubscription extends BaseDomainHelper {
     }
 
     /**
-     * @param sccId the sccId to set
+     * @param sccIdIn the sccId to set
      */
-    public void setSccId(long sccId) {
-        this.sccId = sccId;
+    public void setSccId(long sccIdIn) {
+        this.sccId = sccIdIn;
     }
 
     /**

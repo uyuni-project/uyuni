@@ -90,8 +90,10 @@ public class SCCCachingFactory extends HibernateFactory {
     /**
      * Store {@link SCCSubscription} to the database.
      * @param jsonSub the json subscription
+     * @param creds the credentials
      */
-    public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub, Credentials creds) {
+    public static void saveJsonSubscription(com.suse.scc.model.SCCSubscription jsonSub,
+            Credentials creds) {
         SCCSubscription sub = new SCCSubscription();
         sub.setCredentials(creds);
         sub.setSccId(jsonSub.getId());

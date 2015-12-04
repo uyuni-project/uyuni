@@ -608,9 +608,11 @@ public class ContentSyncManager {
     }
 
     /**
-     * Refresh the subscription cache by reading subscriptions from SCC for all available mirror
-     * credentials, consolidating and inserting into the database.
+     * Refresh the subscription cache by reading subscriptions from SCC for all available
+     * mirror credentials, consolidating and inserting into the database.
      *
+     * @param subscriptions list of scc subscriptions
+     * @param c credentials
      * @throws ContentSyncException in case of an error
      */
     public void refreshSubscriptionCache(List<SCCSubscription> subscriptions,
@@ -676,7 +678,7 @@ public class ContentSyncManager {
      * deletes all order items stored in the database below the given credentials
      * and inserts the new ones.
      * @param c the credentials
-     * @throws SCCClientException
+     * @throws SCCClientException  in case of an error
      */
     public void refreshOrderItemCache(Credentials c) throws SCCClientException  {
         try {
@@ -698,6 +700,7 @@ public class ContentSyncManager {
     /**
      * Deletes all order items stored in the database, fetch the new once
      * and inserts them into the database
+     * @throws ContentSyncException  in case of an error
      */
     public void refreshOrderItemCache() throws ContentSyncException {
         // FIXME: currently unused
