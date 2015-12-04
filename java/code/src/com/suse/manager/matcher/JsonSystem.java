@@ -22,10 +22,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -42,19 +40,21 @@ public class JsonSystem {
     /** Number of CPU Sockets or IFLs */
     private Long cpus;
 
+    /** True if this system is made of metal */
+    private Boolean physical;
+
     /** Virtual Guests running on this host */
     private List<Long> virtualSystemIds;
 
-    /** Map with installed products; ids to names */
-    private Map<Long, String> products;
-
+    /** Installed product IDs */
+    private List<Long> productIds;
 
     /**
      * Constructor
      */
     public JsonSystem() {
-        products = new HashMap<>();
         virtualSystemIds = new LinkedList<>();
+        productIds = new LinkedList<>();
     }
 
     /**
@@ -70,8 +70,7 @@ public class JsonSystem {
         else {
             cpus = s.getCpu().getNrsocket();
         }
-
-        products = new HashMap<>();
+        physical = !s.isVirtualGuest() && !s.isVirtualHost();
 
         SUSEProductSet productSet = s.getInstalledProductSet();
         SUSEProduct baseProduct = null;
@@ -79,13 +78,13 @@ public class JsonSystem {
             baseProduct = productSet.getBaseProduct();
         }
         if (baseProduct != null) {
-            products.put(baseProduct.getProductId(), baseProduct.getFriendlyName());
+            productIds.add(baseProduct.getProductId());
 
             // We have a Vendor Product, so add a SystemEntitlement if needed
             addSystemEntitlementToProducts(s);
 
             for (SUSEProduct p : productSet.getAddonProducts()) {
-                products.put(p.getProductId(), p.getFriendlyName());
+                productIds.add(p.getProductId());
             }
         }
         virtualSystemIds = new LinkedList<>();
@@ -117,14 +116,19 @@ public class JsonSystem {
         return cpus;
     }
 
-
     /**
-     * @return the products
+     * @return true if this is a physical system
      */
-    public Map<Long, String> getProducts() {
-        return products;
+    public Boolean getPhysical() {
+        return physical;
     }
 
+    /**
+     * @return the product ids
+     */
+    public List<Long> getProductIds() {
+        return productIds;
+    }
 
     /**
      * @return the virtualSystemIds
@@ -157,14 +161,19 @@ public class JsonSystem {
         this.cpus = cpusIn;
     }
 
-
     /**
-     * @param productsIn the products to set
+     * @param physicalIn true if this is a physical system
      */
-    public void setProducts(Map<Long, String> productsIn) {
-        this.products = productsIn;
+    public void setPhysical(Boolean physicalIn) {
+        physical = physicalIn;
     }
 
+    /**
+     * @param productIdsIn the new product ids
+     */
+    public void setProductIds(List<Long> productIdsIn) {
+        productIds = productIdsIn;
+    }
 
     /**
      * @param virtualSystemIdsIn the virtual_systems_ids to set
@@ -207,7 +216,7 @@ public class JsonSystem {
     private void addSystemEntitlementProduct(String productName) {
         SUSEProduct ent = SUSEProductFactory.findSUSEProduct(productName, "1.2", null,
                 null, true);
-        products.put(ent.getProductId(), ent.getFriendlyName());
+        productIds.add(ent.getProductId());
     }
 }
 
