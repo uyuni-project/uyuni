@@ -17,6 +17,7 @@ package com.suse.manager.matcher;
 
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
+import com.redhat.rhn.domain.server.PinnedSubscription;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 
@@ -26,6 +27,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 
 public class MatcherJsonIO {
@@ -68,4 +70,19 @@ public class MatcherJsonIO {
         return gson.toJson(subscriptions);
     }
 
+    /**
+     * @return a json string with all pinned matches
+     */
+    public String getJsonPinnedMatches() {
+        List<JsonPinnedMatch> pins = new LinkedList<>();
+        for(Server s : ServerFactory.list()) {
+            Set<PinnedSubscription> sysPins = s.getPinnedSubscriptions();
+            if (! sysPins.isEmpty()) {
+                for (PinnedSubscription pin : sysPins) {
+                    pins.add(new JsonPinnedMatch(s.getId(), pin.getSubscriptionId()));
+                }
+            }
+        }
+        return gson.toJson(pins);
+    }
 }
