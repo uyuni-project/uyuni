@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:53:36 CET 2015 - mc@suse.de
+
+- version 2.1.2.5-1
+- config-defaults directory changed, read rhn_audit defaults from
+  new location
+
+-------------------------------------------------------------------
 Tue Feb 03 13:20:53 CET 2015 - mc@suse.de
 
 - version 2.1.2.4-1
