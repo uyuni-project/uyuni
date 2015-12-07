@@ -131,7 +131,9 @@ class PackageStates extends React.Component {
                       original: packageState.original,
                       current: {
                          arch: state.current.arch,
-                         evr: state.current.evr,
+                         epoch: state.current.epoch,
+                         version: state.current.version,
+                         release: state.current.release,
                          name: state.current.name,
                          packageStateId: newPackageStateId,
                          versionConstraintId: state.current.versionConstraintId

@@ -71,7 +71,7 @@ public class StatesAPI {
                 new JSONPackageState(
                         state.getName().getName(),
                         Optional.ofNullable(state.getEvr())
-                                .map(PackageEvr::toString).orElse(""),
+                                .orElse(new PackageEvr("", "", "")),
                         Optional.ofNullable(state.getArch())
                                 .map(PackageArch::getLabel).orElse(""),
                         Optional.of(state.getPackageStateTypeId()),
@@ -99,7 +99,8 @@ public class StatesAPI {
         List<JSONPackageState> matchingPackages = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(p -> p.getName().matches(target))
-                .map(p -> new JSONPackageState(p.getName(), p.getEvr(), p.getArch()))
+                .map(p -> new JSONPackageState(p.getName(), new PackageEvr(
+                        p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
                 .collect(Collectors.toList());
 
         response.type("application/json");
