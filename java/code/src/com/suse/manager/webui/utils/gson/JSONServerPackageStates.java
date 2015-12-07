@@ -17,12 +17,15 @@ package com.suse.manager.webui.utils.gson;
 import java.util.List;
 
 /**
- * Container object holding a reference to a server and a list of package states.
+ * JSON representation of a server and a list of package states.
  */
-public class ServerPackageStatesDto {
+public class JSONServerPackageStates {
 
+    /** Server id */
     private long sid;
-    private List<PackageStateDto> packageStates;
+
+    /** List of package states */
+    private List<JSONPackageState> packageStates;
 
     /**
      * @return the server id
@@ -34,7 +37,7 @@ public class ServerPackageStatesDto {
     /**
      * @return the package states
      */
-    public List<PackageStateDto> getPackageStates() {
+    public List<JSONPackageState> getPackageStates() {
         return packageStates;
     }
 }

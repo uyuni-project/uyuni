@@ -25,16 +25,26 @@ import org.apache.log4j.Logger;
 import java.util.Optional;
 
 /**
- * Transfer object for serializing package states as JSON.
+ * JSON representation of a package state.
  */
-public class PackageStateDto {
+public class JSONPackageState {
 
-    private static final Logger LOG = Logger.getLogger(PackageStateDto.class);
+    /** Logger */
+    private static final Logger LOG = Logger.getLogger(JSONPackageState.class);
 
+    /** Name of the package */
     private final String name;
+
+    /** Package EVR */
     private final String evr;
+
+    /** Package architecture */
     private final String arch;
+
+    /** Id to represent the state of the package */
     private final Optional<Integer> packageStateId;
+
+    /** Id to represent a version constraint as part of the state */
     private final Optional<Integer> versionConstraintId;
 
     /**
@@ -44,7 +54,7 @@ public class PackageStateDto {
      * @param packageStateIdIn the state type id
      * @param versionConstraintIdIn the version constraint id
      */
-    public PackageStateDto(String nameIn, String evrIn, String archIn,
+    public JSONPackageState(String nameIn, String evrIn, String archIn,
             Optional<Integer> packageStateIdIn, Optional<Integer> versionConstraintIdIn) {
         this.name = nameIn;
         this.evr = evrIn;
@@ -58,7 +68,7 @@ public class PackageStateDto {
      * @param evrIn the package evr
      * @param archIn the package arch
      */
-    public PackageStateDto(String nameIn, String evrIn, String archIn) {
+    public JSONPackageState(String nameIn, String evrIn, String archIn) {
         this.name = nameIn;
         this.evr = evrIn;
         this.arch = archIn;
@@ -102,7 +112,7 @@ public class PackageStateDto {
     }
 
     /**
-     * Convert this object to a {@link PackageState} object to be persisted.
+     * Convert this object into a {@link PackageState} object to be persisted.
      *
      * @return this object as a PackageState
      */
