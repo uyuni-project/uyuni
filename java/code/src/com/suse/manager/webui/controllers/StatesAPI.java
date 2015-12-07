@@ -26,8 +26,8 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.suse.manager.webui.utils.gson.PackageStateDto;
-import com.suse.manager.webui.utils.gson.ServerPackageStatesDto;
+import com.suse.manager.webui.utils.gson.JSONPackageState;
+import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
 
 import java.util.HashSet;
 import java.util.List;
@@ -67,8 +67,8 @@ public class StatesAPI {
         }
 
         // Convert into a list of DTOs
-        List<PackageStateDto> collect = packageStates.stream().map(state ->
-                new PackageStateDto(
+        List<JSONPackageState> collect = packageStates.stream().map(state ->
+                new JSONPackageState(
                         state.getName().getName(),
                         Optional.ofNullable(state.getEvr())
                                 .map(PackageEvr::toString).orElse(""),
@@ -96,10 +96,10 @@ public class StatesAPI {
         String serverId = request.queryParams("sid");
 
         // Find matches among available packages and convert to DTOs
-        List<PackageStateDto> matchingPackages = PackageManager
+        List<JSONPackageState> matchingPackages = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(p -> p.getName().matches(target))
-                .map(p -> new PackageStateDto(p.getName(), p.getEvr(), p.getArch()))
+                .map(p -> new JSONPackageState(p.getName(), p.getEvr(), p.getArch()))
                 .collect(Collectors.toList());
 
         response.type("application/json");
@@ -117,8 +117,8 @@ public class StatesAPI {
      */
     public static Object save(Request request, Response response, User user) {
         // Parse the JSON content of the body into an object
-        ServerPackageStatesDto dto = GSON.fromJson(request.body(),
-                ServerPackageStatesDto.class);
+        JSONServerPackageStates dto = GSON.fromJson(request.body(),
+                JSONServerPackageStates.class);
 
         // Save a new state revision for the specified server
         ServerStateRevision state = new ServerStateRevision();
