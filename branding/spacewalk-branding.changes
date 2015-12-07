@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:51:55 CET 2015 - mc@suse.de
+
+- version 2.1.33.14-1
+- Calculate and set correctly height of aside menu (bsc#934865)
+- branding: fix image urls
+
+-------------------------------------------------------------------
 Wed Sep 23 15:08:32 CEST 2015 - mc@suse.de
 
 - version 2.1.33.13-1
