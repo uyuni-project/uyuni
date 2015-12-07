@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:50:31 CET 2015 - mc@suse.de
+
+- version 2.1.50.15-1
+- When deleting a server, delete all associated rhnSet entries,
+  even if it was migrated to a different Org (bsc#950748)
+- adding on delete cascade to sppf_pid_fk (bsc#948238)
+
+-------------------------------------------------------------------
 Sun Sep 27 14:42:36 CEST 2015 - mc@suse.de
 
 - version 2.1.50.14-1
