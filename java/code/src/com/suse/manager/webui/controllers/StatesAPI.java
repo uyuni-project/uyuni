@@ -26,7 +26,6 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.suse.manager.webui.utils.gson.PackageStateDto;
 import com.suse.manager.webui.utils.gson.ServerPackageStatesDto;
 
