@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:46:15 CET 2015 - mc@suse.de
+
+- version 2.1.60.14-1
+- Bug Fix: add custom rule to scroll to the url hash for pages in
+  'rhn/systems/ssm/misc' path (bsc#934865)
+- Calculate and set correctly height of aside menu (bsc#934865)
+- Add default setting for task timeout
+
+-------------------------------------------------------------------
 Wed Sep 23 14:56:25 CEST 2015 - mc@suse.de
 
 - version 2.1.60.13-1
