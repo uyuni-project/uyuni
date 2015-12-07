@@ -110,7 +110,7 @@ public class PackageStateDto {
         Optional<PackageStates> state = getPackageStateId().flatMap(PackageStates::byId);
 
         // Create the return object only if we have a valid state
-        Optional<PackageState> ret = state.flatMap(ps -> {
+        return state.flatMap(ps -> {
             PackageState packageState = new PackageState();
             packageState.setPackageState(ps);
             packageState.setName(PackageManager.lookupPackageName(getName()));
@@ -131,7 +131,5 @@ public class PackageStateDto {
                 return Optional.of(packageState);
             }
         });
-
-        return ret;
     }
 }
