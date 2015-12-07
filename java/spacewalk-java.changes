@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:56:40 CET 2015 - mc@suse.de
+
+- version 2.1.165.20-1
+- Fix NPE caused by bugfix to bsc#949158
+- BugFix: prevent return null on merging path slices (bsc#950975)
+- BugFix: sort channel list by name (bsc#955204)
+- Consider old products only if no patch available (bsc#954983)
+- Extended logging in case of multiple source products
+- Avoid updating channel family counts when changing cloned channels via API
+  (bsc#949158)
+- Use non-immediate errata cache rebuilding on channel unsubscription
+  (bsc#949158)
+- Add support for timing out on an ssh connection (bsc#945719)
+- BugFix: remove inconsistency and make more general the action description for
+  package page title and tab-title in Schedule (bsc#935375)
+- use the new algorithm based on package names to determine patch
+  applicable/inapplicable (bnc#948964)
+- Remove url decoding since values are already decoded at this point (bsc#951549)
+- fix broken link from blue 'not-checking-in' system status icon (bsc#943517)
+- fix incomplete enabling of config actions via snippet (bsc#949528)
+- deactivate all non spacewalk plugin services and repos via snippet
+  (bsc#949554)
+- add SUSE Enterprise Storage 2 (bsc#949285)
+- define only the source part and set the timeout to 150
+- add snippet to wait for NetworkManager (bsc#937802)
+- Support for SLE12 SP1 product family (bsc#949726)
+
+-------------------------------------------------------------------
 Sun Sep 27 14:44:59 CEST 2015 - mc@suse.de
 
 - version 2.1.165.19-1
