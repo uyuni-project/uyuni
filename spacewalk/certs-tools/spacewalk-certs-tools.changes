@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:46:57 CET 2015 - mc@suse.de
+
+- version 2.1.6.8-1
+- Fixed issue with sudo being checked, even if not set
+
+-------------------------------------------------------------------
 Wed Sep 23 14:58:02 CEST 2015 - mc@suse.de
 
 - version 2.1.6.7-1
