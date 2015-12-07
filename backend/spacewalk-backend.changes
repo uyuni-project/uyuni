@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Dec 07 12:55:16 CET 2015 - mc@suse.de
+
+- version 2.1.55.22-1
+- avoid referencing unassigned variable (bsc#956981)
+- fix patch syning if no issued date is given. Use "now" as date (bsc#953584)
+- fix SUSE patch style detection for RES4 (bsc#953825)
+- additional debug data: listing of /srv/www/htdocs/pub and activation keys
+
+-------------------------------------------------------------------
 Sun Sep 27 14:44:12 CEST 2015 - mc@suse.de
 
 - version 2.1.55.21-1
