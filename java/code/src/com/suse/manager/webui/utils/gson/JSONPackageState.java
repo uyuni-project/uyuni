@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.state.PackageState;
 import com.redhat.rhn.domain.state.PackageStates;
@@ -35,8 +37,14 @@ public class JSONPackageState {
     /** Name of the package */
     private final String name;
 
-    /** Package EVR */
-    private final String evr;
+    /** Package epoch */
+    private final String epoch;
+
+    /** Package version */
+    private final String version;
+
+    /** Package release */
+    private final String release;
 
     /** Package architecture */
     private final String arch;
@@ -54,10 +62,12 @@ public class JSONPackageState {
      * @param packageStateIdIn the state type id
      * @param versionConstraintIdIn the version constraint id
      */
-    public JSONPackageState(String nameIn, String evrIn, String archIn,
+    public JSONPackageState(String nameIn, PackageEvr evrIn, String archIn,
             Optional<Integer> packageStateIdIn, Optional<Integer> versionConstraintIdIn) {
         this.name = nameIn;
-        this.evr = evrIn;
+        this.epoch = evrIn.getEpoch();
+        this.version = evrIn.getVersion();
+        this.release = evrIn.getRelease();
         this.arch = archIn;
         this.packageStateId = packageStateIdIn;
         this.versionConstraintId = versionConstraintIdIn;
@@ -68,9 +78,11 @@ public class JSONPackageState {
      * @param evrIn the package evr
      * @param archIn the package arch
      */
-    public JSONPackageState(String nameIn, String evrIn, String archIn) {
+    public JSONPackageState(String nameIn, PackageEvr evrIn, String archIn) {
         this.name = nameIn;
-        this.evr = evrIn;
+        this.epoch = evrIn.getEpoch();
+        this.version = evrIn.getVersion();
+        this.release = evrIn.getRelease();
         this.arch = archIn;
         this.packageStateId = Optional.empty();
         this.versionConstraintId = Optional.empty();
@@ -84,10 +96,24 @@ public class JSONPackageState {
     }
 
     /**
-     * @return the package evr
+     * @return the package epoch
      */
-    public String getEvr() {
-        return evr;
+    public String getEpoch() {
+        return epoch;
+    }
+
+    /**
+     * @return the package version
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * @return the package release
+     */
+    public String getRelease() {
+        return release;
     }
 
     /**
@@ -124,7 +150,8 @@ public class JSONPackageState {
             PackageState packageState = new PackageState();
             packageState.setPackageState(ps);
             packageState.setName(PackageManager.lookupPackageName(getName()));
-            // TODO: state.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(e, v, r));
+            packageState.setEvr(PackageEvrFactory.lookupOrCreatePackageEvr(
+                    getEpoch(), getVersion(), getRelease()));
             packageState.setArch(PackageFactory.lookupPackageArchByLabel(getArch()));
 
             // Some package states *require* a version constraint
