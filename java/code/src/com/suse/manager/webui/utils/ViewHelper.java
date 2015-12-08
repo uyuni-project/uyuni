@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 
 import org.apache.commons.lang.WordUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import spark.Request;
 
 /**
  * Utility class for Jade views.
@@ -57,11 +57,11 @@ public enum ViewHelper {
      * @param menuDefinition the menu definition
      * @return the navigation menu markup as string
      */
-    public String renderNavigationMenu(HttpServletRequest request, String menuDefinition) {
+    public String renderNavigationMenu(Request request, String menuDefinition) {
         String rendererClass = "com.redhat.rhn.frontend.nav.DialognavRenderer";
         try {
             return RenderUtils.INSTANCE.renderNavigationMenu(
-                    request, menuDefinition, rendererClass, 0, 3);
+                    request.raw(), menuDefinition, rendererClass, 0, 3);
         }
         catch (Exception e) {
             throw new RuntimeException("Error rendering the navigation menu.", e);

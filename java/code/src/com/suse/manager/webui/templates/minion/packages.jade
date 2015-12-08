@@ -9,7 +9,7 @@
     a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{serverId}", target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
 
-!{navigation}
+!{h.renderNavigationMenu(request, "/WEB-INF/nav/system_detail.xml")}
 #package-states
 
 if isDevMode

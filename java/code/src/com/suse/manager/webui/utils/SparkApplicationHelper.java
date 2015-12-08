@@ -115,7 +115,13 @@ public class SparkApplicationHelper {
      * @return the jade template engine
      */
     public static JadeTemplateEngine setup() {
+        // set up shared variables
+        Map<String, Object> sharedVariables = new HashMap<>();
+
+        // this filter is evaluated before every request
         Spark.before((request, response) -> {
+            // add the current request to shared variables
+            sharedVariables.put("request", request);
             // default for text/html or OpenSynphony will complain
             response.type("text/html");
             // init the flash scope
@@ -126,7 +132,6 @@ public class SparkApplicationHelper {
         JadeTemplateEngine jade = new JadeTemplateEngine(TEMPLATE_ROOT);
 
         // set up i10n engine and other default template variables
-        Map<String, Object> sharedVariables = new HashMap<>();
         sharedVariables.put("l", Languages.getInstance());
         sharedVariables.put("h", ViewHelper.getInstance());
         sharedVariables.put("isDevMode",
