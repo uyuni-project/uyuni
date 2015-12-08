@@ -1,3 +1,15 @@
+.spacewalk-toolbar-h1
+  .spacewalk-toolbar
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{serverId}")
+        i.fa.fa-trash-o(title='Delete System')
+        | #{l.t("Delete System")}
+  h1
+    i.fa.fa-desktop
+    | #{" " + serverName + " "}
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{serverId}", target="_blank")
+      i.fa.fa-question-circle.spacewalk-help-link
+
+!{navigation}
 #package-states
 
 if isDevMode

@@ -153,25 +153,23 @@ class PackageStates extends React.Component {
   render() {
     return (
       <div>
-        <div className="spacewalk-toolbar-h1">
-          <h1>
-            <i className="fa spacewalk-icon-package-add"></i>
-            Package States for {serverName}
-          </h1>
-          <div className="row col-md-12">
-            <div className="panel panel-default">
-              <input type="text" value={this.state.filter} onChange={this.onSearchChange}/>
-              <button className="btn" onClick={this.search}>Search</button>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Package Name</th>
-                    <th>State</th>
-                  </tr>
-                </thead>
-                {this.tableBody(this.state.packageStates)}
-              </table>
-            </div>
+        <h2>
+          <i className="fa spacewalk-icon-package-add"></i>
+          Package States
+        </h2>
+        <div className="row col-md-12">
+          <div className="panel panel-default">
+            <input type="text" value={this.state.filter} onChange={this.onSearchChange}/>
+            <button className="btn" onClick={this.search}>Search</button>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Package Name</th>
+                  <th>State</th>
+                </tr>
+              </thead>
+              {this.tableBody(this.state.packageStates)}
+            </table>
           </div>
         </div>
       </div>
