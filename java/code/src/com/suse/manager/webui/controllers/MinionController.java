@@ -136,13 +136,12 @@ public class MinionController {
      */
     public static ModelAndView packages(Request request, Response response) {
         String serverId = request.queryParams("sid");
-        Server server = ServerFactory.lookupById(new Long(serverId));
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
         data.put("navigation", ViewHelper.getInstance().renderNavigationMenu(
                 request.raw(), "/WEB-INF/nav/system_detail.xml"));
         data.put("serverId", serverId);
-        data.put("serverName", server.getName());
+        data.put("serverName", ServerFactory.lookupById(new Long(serverId)).getName());
         return new ModelAndView(data, "minion/packages.jade");
     }
 }
