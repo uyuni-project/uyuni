@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.suse.manager.webui.services.SaltService;
 import com.suse.manager.webui.services.impl.SaltAPIService;
+import com.suse.manager.webui.utils.ViewHelper;
 import com.suse.saltstack.netapi.calls.wheel.Key;
 
 import java.util.HashMap;
@@ -138,6 +139,8 @@ public class MinionController {
         Server server = ServerFactory.lookupById(new Long(serverId));
         Map<String, Object> data = new HashMap<>();
         data.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
+        data.put("navigation", ViewHelper.getInstance().renderNavigationMenu(
+                request.raw(), "/WEB-INF/nav/system_detail.xml"));
         data.put("serverId", serverId);
         data.put("serverName", server.getName());
         return new ModelAndView(data, "minion/packages.jade");
