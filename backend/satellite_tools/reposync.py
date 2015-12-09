@@ -192,7 +192,7 @@ class RepoSync(object):
                     self.import_updates(plugin, data['source_url'])
 
                 # only for repos obtained from the DB
-                if self.sync_kickstart and repo_label:
+                if self.sync_kickstart and data['label']:
                     try:
                         self.import_kickstart(plugin, data['source_url'], data['label'])
                     except:
