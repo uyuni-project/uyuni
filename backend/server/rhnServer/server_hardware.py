@@ -19,13 +19,17 @@
 
 import string
 import sys
+import uuid
 
 from rhn.UserDictCase import UserDictCase
 from spacewalk.common.rhnLog import log_debug, log_error
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnTB import Traceback
-from spacewalk.server import rhnSQL
+from spacewalk.common import rhnFlags
+from spacewalk.server import rhnSQL, rhnVirtualization, rhnUser
 
+# Local imports
+import server_class
 
 def kudzu_mapping(dict=None):
     """ this is a class we use to get the mapping for a kudzu entry """
@@ -883,6 +887,120 @@ class InstallInformation(Device):
         Device.__init__(self, fields, dict, mapping)
         self.sequence = 'rhn_server_install_info_id_seq'
 
+class SystemInformation():
+    def __init__(self, hw=None, guest=None):
+        log_debug(4, hw, guest)
+        if not hw or "identifier" not in hw or not guest:
+            # incomplete data
+            log_debug(1, "incomplete data")
+            return
+        host = rhnSQL.Row("rhnServer", "digital_server_id")
+        host.load(hw['identifier'])
+        hid = host.get('id')
+        guest.user = rhnUser.User("", "")
+        guest.user.reload(guest.server['creator_id'])
+        guestid = guest.getid()
+        if not hid:
+            # create a new host entry
+            rhnSQL.set_log_auth(guest.user.getid())
+            host = server_class.Server(guest.user, hw.get('arch'))
+            host.server["name"] = hw.get('name')
+            host.server["release"] = hw.get('type')
+            host.default_description()
+            host.virt_type = rhnVirtualization.VirtualizationType.FULLY
+            host.virt_uuid = None
+            fake_token = False
+            if not rhnFlags.test("registration_token"):
+                # we need to fake it
+                rhnFlags.set("registration_token", 'fake')
+                fake_token = True
+            host.save(1, None)
+            host.server["digital_server_id"] = hw['identifier']
+            entitle_server = rhnSQL.Procedure("rhn_entitlements.entitle_server")
+            entitle_server(host.getid(), 'foreign_entitled')
+            host.save(1, None)
+            if fake_token:
+                rhnFlags.set("registration_token", None)
+
+            hid = host.getid()
+            host.reload(hid)
+        else:
+            host = server_class.Server(None)
+            host.reload(hid)
+        cpu = {
+            'class' : 'CPU',
+            'desc' : 'Processor',
+            'count' : hw.get('total_ifls'),
+            'model_ver' : '',
+            'speed' : '0',
+            'cache' : '',
+            'model_number' : '',
+            'bogomips' : '',
+            'socket_count' : hw.get('total_ifls'),
+            'platform' : hw.get('arch'),
+            'other' : '',
+            'model_rev' : '',
+            'model' : hw.get('arch'),
+            'type' : hw.get('type')}
+        host.delete_hardware()
+        host.add_hardware(cpu)
+        host.save_hardware()
+
+        h = rhnSQL.prepare("""
+            select host_system_id
+              from rhnVirtualInstance
+             where virtual_system_id = :guestid""")
+        h.execute(guestid=guestid)
+        row = h.fetchone_dict()
+        log_debug(1, "has host?", row)
+        if not row or not row['host_system_id']:
+            self._insert_virtual_instance(hid, None, fakeuuid=False)
+            self._insert_virtual_instance(hid, guestid, fakeuuid=True)
+        elif row['host_system_id'] != hid:
+            log_debug(4, "update_virtual_instance", hid, guestid)
+            q_update = rhnSQL.prepare("""
+                UPDATE rhnVirtualInstance
+                   SET host_system_id = :host_id
+                 WHERE virtual_system_id = :guest_id
+                   AND host_system_id = :old_host_id
+            """)
+            q_update.execute(host_id=hid, guest_id=guestid, old_host_id=row['host_system_id'])
+        rhnSQL.commit()
+
+
+    def _insert_virtual_instance(self, hostid, guestid, fakeuuid=True):
+        log_debug(4, hostid, guestid, fakeuuid)
+        viid = rhnSQL.Sequence('rhn_vi_id_seq')()
+        q_insert = rhnSQL.prepare("""
+            INSERT INTO rhnVirtualInstance
+                (id, host_system_id, virtual_system_id, uuid, confirmed)
+            VALUES
+                (:viid, :host_id, :guest_id, :uuid, 1)
+        """)
+        fake_uuid = None
+        if fakeuuid:
+            fake_uuid = str(uuid.uuid4())
+            fake_uuid = fake_uuid.replace('-', '').strip()
+        q_insert.execute(viid=viid, host_id=hostid, guest_id=guestid, uuid=fake_uuid)
+
+        q_insert = rhnSQL.prepare("""
+            INSERT INTO rhnVirtualInstanceInfo
+                (instance_id, state, instance_type)
+            VALUES
+                (:viid,
+                 (
+                     SELECT rvis.id
+                     FROM rhnVirtualInstanceState rvis
+                     WHERE rvis.label = 'unknown'
+                 ),
+                 (
+                     SELECT rvit.id
+                     FROM rhnVirtualInstanceType rvit
+                     WHERE rvit.label = :virt_type
+                 ))
+        """)
+        q_insert.execute(viid=viid, virt_type='fully_virtualized')
+
 
 class Hardware:
 
@@ -931,6 +1049,11 @@ class Hardware:
             class_type = InstallInformation
         elif hw_class == "netinterfaces":
             class_type = NetIfaceInformation
+        elif hw_class == "sysinfo":
+            # special case: we got info about a virtual host
+            # where this system is running on
+            SystemInformation(hardware, self)
+            return 0
         else:
             log_error("UNKNOWN CLASS TYPE `%s'" % hw_class)
             # Same trick: try-except and raise the exception so that Traceback
