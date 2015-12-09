@@ -681,17 +681,18 @@ def read_network_interfaces():
 
         ip6_list = []
         dev_info = ethtool.get_interfaces_info(interface)
-        for info in dev_info:
-            # one interface may have more IPv6 addresses
-            for ip6 in info.get_ipv6_addresses():
-                scope = ip6.scope
-                if scope == 'global':
-                    scope = 'universe'
-                ip6_list.append({
-                    'scope':   scope,
-                    'addr':    ip6.address,
-                    'netmask': ip6.netmask
-                })
+        if (str(interface).find(':') == -1):
+            for info in dev_info:
+                # one interface may have more IPv6 addresses
+                for ip6 in info.get_ipv6_addresses():
+                    scope = ip6.scope
+                    if scope == 'global':
+                        scope = 'universe'
+                    ip6_list.append({
+                        'scope':   scope,
+                        'addr':    ip6.address,
+                        'netmask': ip6.netmask
+                    })
         intDict[interface] = {'hwaddr':hwaddr,
                               'ipaddr':ipaddr,
                               'netmask':netmask,
