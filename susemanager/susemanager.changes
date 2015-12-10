@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Dec 10 17:57:22 CET 2015 - mc@suse.de
+
+- version 3.0.5-1
+- do not use maximum compression for database dump; default of -6 is a good
+  compromise
+- replace old tclu functions with dummy functions during migration to SUMA3
+- fix certificate location for ISS case; update-ca-certificates
+- get rid of pltcl by disabling upstream logging.
+
+-------------------------------------------------------------------
 Mon Nov 30 10:58:04 CET 2015 - mc@suse.de
 
 - version 3.0.4-1
