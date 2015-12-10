@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Thu Dec 10 17:54:52 CET 2015 - mc@suse.de
+
+- version 3.0.4-1
+ Initial sql to create the suseServerState table
+- SQL files for package states
+- get rid of pltcl by disabling upstream logging.
+
+-------------------------------------------------------------------
 Mon Nov 30 11:13:50 CET 2015 - mc@suse.de
 
 - version 3.0.3-1
