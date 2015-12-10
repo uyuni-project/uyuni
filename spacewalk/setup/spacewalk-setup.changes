@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 10 17:50:32 CET 2015 - mc@suse.de
+
+- version 2.5.2.2-1
+- Fix a syntax errors when writing the configuration for the Salt Master
+
+-------------------------------------------------------------------
 Mon Nov 30 10:51:21 CET 2015 - mc@suse.de
 
 - version 2.5.2.1-1
