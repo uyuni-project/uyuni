@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Thu Dec 10 17:58:59 CET 2015 - mc@suse.de
+
+- version 2.5.16.2-1
+- fix state apply not passing the module names
+- Cascade all operations to the package states
+- change installed product registration to use new hibernate mapping
+  and enable ui
+- Simplify channel token key derivation
+- do not encrypt tokens, only sign them
+- use hibernate to insert a installed product
+- refactor listPossibleSuseBaseChannelsForServer() using hibernate queries
+- Use hibernat mapping to create the SUSEProductSet
+- Get matching SUSEProduct out of the InstalledProduct if available
+- create SUSEProducts before starting the test
+- Set installed according to grains to get access to suse channels
+- Automatically apply channels state after repo file creation
+- Hibernate mapping for installed products
+- Mapping and classes for PackageState
+
+-------------------------------------------------------------------
 Mon Nov 30 11:40:06 CET 2015 - mc@suse.de
 
 - version 2.5.16.1-1
