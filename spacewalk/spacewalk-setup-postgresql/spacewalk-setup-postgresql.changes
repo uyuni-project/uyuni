@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 10 17:56:36 CET 2015 - mc@suse.de
+
+- version 2.5.0.2-1
+- remove creation of pltclu language in spacewalk-setup-postgresql
+- get rid of pltcl by disabling upstream logging.
+
+-------------------------------------------------------------------
 Wed Oct 07 17:08:24 CEST 2015 - mc@suse.de
 
 - version 2.5.0.1-1
