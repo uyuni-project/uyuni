@@ -1,0 +1,25 @@
+/etc/zypp/repos.d/susemanager:bootstrap.repo:
+  file.managed:
+    - source:
+      - salt://bootstrap/{{ grains['osfullname'] + grains['osrelease'].replace('.', '_') }}.repo
+    - user: root
+    - group: root
+    - mode: 644
+
+salt-minion:
+  pkg.installed:
+    - require:
+      - file: /etc/zypp/repos.d/susemanager:bootstrap.repo
+  service.running:
+    - watch:
+      - file: /etc/salt/minion.d/susemanager.conf
+    - require:
+      - pkg: salt-minion
+
+/etc/salt/minion.d/susemanager.conf:
+  file.managed:
+    - source:
+      - salt://bootstrap/susemanager.conf
+    - user: root
+    - group: root
+    - mode: 644
