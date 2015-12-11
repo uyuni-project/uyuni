@@ -931,24 +931,35 @@ class SystemInformation():
         else:
             host = server_class.Server(None)
             host.reload(hid)
-        cpu = {
-            'class' : 'CPU',
-            'desc' : 'Processor',
-            'count' : hw.get('total_ifls'),
-            'model_ver' : '',
-            'speed' : '0',
-            'cache' : '',
-            'model_number' : '',
-            'bogomips' : '',
-            'socket_count' : hw.get('total_ifls'),
-            'platform' : hw.get('arch'),
-            'other' : '',
-            'model_rev' : '',
-            'model' : hw.get('arch'),
-            'type' : hw.get('type')}
-        host.delete_hardware()
-        host.add_hardware(cpu)
-        host.save_hardware()
+            host.checkin(commit=0)
+            log_debug(4, "Found host: ", host)
+        host.reload_hardware()
+        hostcpu = host.hardware_by_class(CPUDevice)
+        if hostcpu and len(hostcpu) > 0:
+            hostcpu = hostcpu[0].data
+        else:
+            hostcpu = None
+        if not hostcpu or str(hostcpu.get('nrsocket')) != hw.get('total_ifls'):
+            # update only if the number has changed
+            log_debug(1, "update host cpu:", hw.get('total_ifls'))
+            cpu = {
+                'class' : 'CPU',
+                'desc' : 'Processor',
+                'count' : hw.get('total_ifls'),
+                'model_ver' : '',
+                'speed' : '0',
+                'cache' : '',
+                'model_number' : '',
+                'bogomips' : '',
+                'socket_count' : hw.get('total_ifls'),
+                'platform' : hw.get('arch'),
+                'other' : '',
+                'model_rev' : '',
+                'model' : hw.get('arch'),
+                'type' : hw.get('type')}
+            host.delete_hardware()
+            host.add_hardware(cpu)
+            host.save_hardware()
 
         h = rhnSQL.prepare("""
             select host_system_id
@@ -968,7 +979,6 @@ class SystemInformation():
                    AND host_system_id = :old_host_id
             """)
             q_update.execute(host_id=hid, guest_id=guestid, old_host_id=row['host_system_id'])
-        rhnSQL.commit()
 
 
     def _insert_virtual_instance(self, hostid, guestid, fakeuuid=True):
