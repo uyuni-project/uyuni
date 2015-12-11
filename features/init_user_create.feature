@@ -8,9 +8,10 @@ Feature: Create initial users
   I need to create the admin and a testing users
 
   @first
-  Scenario: Create Admin users
+  Scenario: Create Admin users and first org
     Given I access the host the first time
     When I go to the home page
+    And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
     And I enter "admin" as "desiredpassword"
     And I enter "admin" as "desiredpasswordConfirm"
@@ -18,7 +19,7 @@ Feature: Create initial users
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
-    And I click on "Create Login"
+    And I click on "Create Organization"
     Then I am logged-in
 
   @third
