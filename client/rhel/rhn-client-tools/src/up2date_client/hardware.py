@@ -826,14 +826,17 @@ def get_sysinfo():
                     continue
                 k, v = line.split(':', 1)
                 sysvalues[k.strip()] = v.strip()
-            sysdict["class"] = "SYSINFO"
-            sysdict["identifier"] = sysvalues.get("Sequence Code", "unknown")
-            sysdict["name"] = "IBM Mainframe %s %s" % (sysvalues.get("Type", "unknown"),
-                    sysvalues.get("Sequence Code", "unknown"))
-            sysdict["arch"] = os.uname()[4].lower()
-            sysdict["total_ifls"] = sysvalues.get("CPUs IFL", "0")
-            sysdict["total_cpus"] = sysvalues.get("CPUs Total", "0")
-            sysdict["type"] = sysvalues.get("Type", "unknown")
+            if sysvalues.get("Sequence Code") and sysvalues.get("Type") and \
+                os.uname()[4].lower().startswith("s390"):
+                sysdict["class"] = "SYSINFO"
+                sysdict["identifier"] = "Z-%s" % sysvalues.get("Sequence Code")
+                sysdict["os"] = "z/OS"
+                sysdict["name"] = "IBM Mainframe %s %s" % (sysvalues.get("Type"),
+                        sysvalues.get("Sequence Code"))
+                sysdict["arch"] = os.uname()[4].lower()
+                sysdict["total_ifls"] = sysvalues.get("CPUs IFL", "0")
+                sysdict["total_cpus"] = sysvalues.get("CPUs Total", "0")
+                sysdict["type"] = sysvalues.get("Type")
         except:
             pass
     return sysdict
