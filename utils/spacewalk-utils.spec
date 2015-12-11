@@ -4,7 +4,7 @@
 %endif
 
 Name:		spacewalk-utils
-Version:	2.5.1.1
+Version:	2.5.3
 Release:	1%{?dist}
 Summary:	Utilities that may be run against a Spacewalk server.
 
@@ -120,6 +120,12 @@ spacewalk-pylint $RPM_BUILD_ROOT%{rhnroot}
 %doc COPYING.GPLv2 COPYING.GPLv3
 
 %changelog
+* Wed Dec 09 2015 Jan Dobes 2.5.3-1
+- Updated Oracle yum repo URLs and added new repositories for OL6 and OL7.
+
+* Thu Nov 26 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.2-1
+- make clone-by-date python 2.4 compatible
+
 * Mon Oct 12 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.1-1
 - 1262348 - disable spacewalk-dump-schema functionality when rhn-upgrade
   package is found

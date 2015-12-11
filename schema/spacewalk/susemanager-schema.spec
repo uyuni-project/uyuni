@@ -78,6 +78,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/spacewalk-sql*
 
 %changelog
+* Mon Dec 07 2015 Jan Dobes 2.5.4-1
+- first org needs id = 1
+
+* Fri Dec 04 2015 Jan Dobes 2.5.3-1
+- when installing insert default SSL crypto key with null org
+
 * Tue Nov 24 2015 Jan Dobes 2.5.2-1
 - fixing sha
 - schema upgrade: org entitlement related tables

@@ -1,5 +1,5 @@
 Name:		spacewalk-jpp-workaround
-Version:	2.3.4
+Version:	2.3.5
 Release:	1%{?dist}
 Summary:	Workaround package to fulfill jpackage broken dependencies
 
@@ -68,6 +68,10 @@ Provides:   jakarta-commons-collections = 3.2.0
 Obsoletes:  jakarta-commons-collections < 3.2.0
 %endif
 
+%if 0%{?fedora} >= 23
+Provides:   mvn(org.apache.taglibs:taglibs-standard-jstlel)
+%endif
+
 %description
 This package fulfills jpackage missing msv-msv dependency.
 
@@ -97,6 +101,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Dec 04 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.5-1
+- provide mvn(org.apache.taglibs:taglibs-standard-jstlel) on F23
+
 * Fri May 29 2015 Tomas Kasparek <tkasparek@redhat.com> 2.3.4-1
 - add epoch for jakarta-commons-fileupload
 

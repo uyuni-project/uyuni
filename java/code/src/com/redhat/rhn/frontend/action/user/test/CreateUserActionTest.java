@@ -15,8 +15,6 @@
 package com.redhat.rhn.frontend.action.user.test;
 
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.action.user.CreateUserAction;
 import com.redhat.rhn.frontend.action.user.UserActionHelper;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
@@ -52,9 +50,8 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
     public void testNewUserIntoOrgSatellite() throws Exception {
 
 
-        setRequestPathInfo("/newlogin/CreateSatelliteSubmit");
-        RhnMockDynaActionForm form =
-            fillOutForm("createSatelliteForm", CreateUserAction.TYPE_INTO_ORG);
+        setRequestPathInfo("/newlogin/CreateUserSubmit");
+        RhnMockDynaActionForm form = fillOutForm("userCreateForm");
         setActionForm(form);
         actionPerform();
         String forwardPath = getActualForward();
@@ -62,37 +59,12 @@ public class CreateUserActionTest extends RhnPostMockStrutsTestCase {
         assertTrue(forwardPath.startsWith("/users/ActiveList.do?uid="));
     }
 
-    // This had better  fail if there are any users created in this satellite!
-    public void testCreateFirstSatUser() {
-        setRequestPathInfo("/newlogin/CreateFirstUserSubmit");
-        RhnMockDynaActionForm form =
-            fillOutForm("createSatelliteForm", CreateUserAction.TYPE_CREATE_SAT);
-        setActionForm(form);
-        actionPerform();
-        assertTrue(getActualForward().startsWith(CreateUserAction.PERMISSION_ERROR));
-    }
-
-    /**
-     * Ensure this action does not work when one user exists (CVE-2013-4480,
-     * bnc#848639)
-     */
-    public void testCreateMultipleFirstSatUser() {
-        UserFactory.createUser();
-        setRequestPathInfo("/newlogin/CreateFirstUserSubmit");
-        RhnMockDynaActionForm form = fillOutForm("createSatelliteForm",
-            CreateUserAction.TYPE_CREATE_SAT);
-        setActionForm(form);
-        actionPerform();
-        this.verifyForwardPath("/errors/Permission.do");
-    }
-
     /**
      * @return Properly filled out user creation form.
      */
-    private RhnMockDynaActionForm fillOutForm(String formName, String accountType) {
+    private RhnMockDynaActionForm fillOutForm(String formName) {
         RhnMockDynaActionForm f = new RhnMockDynaActionForm(formName);
         f.set("login", "testUser" + TestUtils.randomString());
-        f.set("account_type", accountType);
         f.set("address1", "123 somewhere ln");
         f.set("address2", "");
         f.set("city", "Cincinnati");

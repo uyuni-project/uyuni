@@ -8,29 +8,12 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/user/user_attribute_sizes.jspf"%>
 
-<!-- Setup the account_type variable, which is used throughout this page -->
-<c:if test="${empty param.account_type}">
-  <c:set var="account_type" value="create_corporate" scope="page" />
-</c:if>
-<c:if test="${!empty param.account_type}">
-  <c:set var="account_type" value="${param.account_type}" scope="page"/>
-</c:if>
-
-<c:if test="${account_type == 'into_org'}" >
   <rhn:toolbar base="h1" icon="header-user" imgAlt="user.common.userAlt"
        helpUrl="/rhn/help/user/en-US/s1-sm-users.jsp">
   <bean:message key="usercreate.toolbar" />
   </rhn:toolbar>
-</c:if>
 
-
-  <c:if test="${empty param.action_path}">
-    <c:set var="action_path" value="/newlogin/CreateSatelliteSubmit" scope="page" />
-  </c:if>
-  <c:if test="${!empty param.action_path}">
-    <c:set var="action_path" value="${param.action_path}" scope="page"/>
-  </c:if>
-<html:form action="${action_path}">
+<html:form action="/newlogin/CreateUserSubmit" styleClass="form-horizontal">
 
   <rhn:csrf />
       <div class="panel panel-default">
@@ -38,37 +21,36 @@
           <h4><bean:message key="usercreate.login" /></h4>
         </div>
         <div class="panel-body">
-          <table class="table">
-              <tr>
-                <td><label for="login"><rhn:required-field key="desiredlogin"/>:</label></td>
-                <td>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="login"><rhn:required-field key="desiredlogin"/>:</label>
+                <div class="col-sm-6">
                   <html:text property="login" styleClass="form-control" maxlength="${loginLength}" styleId="loginname"/>
-                </td>
-              </tr>
-              <tr>
-                <td><label for="desiredpass"><bean:message key="desiredpass" /><span name="password-asterisk"
-                      class="required-form-field">*</span>:</label></td>
-                <td>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="desiredpass"><bean:message key="desiredpass" /><span name="password-asterisk"
+                      class="required-form-field">*</span>:</label>
+                <div class="col-sm-6">
                   <div id="desiredpassword-input-group" class="input-group">
                       <html:password property="desiredpassword" styleClass="form-control" size="15" maxlength="${passwordLength}"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
                       </span>
                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td><label for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
-                      class="required-form-field">*</span>:</label></td>
-                <td>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="confirmpass"><bean:message key="confirmpass" /><span name="password-asterisk"
+                      class="required-form-field">*</span>:</label>
+                <div class="col-sm-6">
                   <div class="input-group">
                       <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" maxlength="${passwordLength}" styleId="confirmpass"/>
                       <span class="input-group-addon">
                           <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
                       </span>
                   </div>
-                </td>
-              </tr>
+                </div>
+              </div>
               <script type="text/javascript" src="/javascript/pwstrength-bootstrap-1.0.2.js"></script>
               <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js"></script>
               <script type="text/javascript">
@@ -76,18 +58,18 @@ function toggleAsterisk() {
   $("[name='password-asterisk']").toggle()
 }
               </script>
-              <tr>
-                <td><label><bean:message key="help.credentials.jsp.passwordstrength"/>:</label></td>
-                <td>
+              <div class="form-group">
+                <label class="col-sm-3 control-label"><bean:message key="help.credentials.jsp.passwordstrength"/>:</label>
+                <div class="col-sm-6">
                     <div id="pwstrenghtfield">
                       <!-- progress-bar will attach to this container -->
                     </div>
-                </td>
-              </tr>
-              <c:if test="${displaypam == 'true' && account_type != 'create_sat'}">
-                <tr>
-                  <td><label for="pam"><bean:message key="usercreate.jsp.pam"/></label></td>
-                  <td>
+                </div>
+              </div>
+              <c:if test="${displaypam == 'true'}">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label" for="pam"><bean:message key="usercreate.jsp.pam"/></label>
+                  <div class="col-sm-6">
                     <c:choose>
                       <c:when test="${displaypamcheckbox == 'true'}">
                       <html:checkbox property="usepam" onclick="toggleAsterisk()" styleId="pam"/>
@@ -100,10 +82,9 @@ function toggleAsterisk() {
                         <bean:message key="usercreate.jsp.pam.reference"/>
                       </c:otherwise>
                     </c:choose>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               </c:if>
-            </table>
         </div>
       </div>
       <div class="panel panel-default">
@@ -111,10 +92,9 @@ function toggleAsterisk() {
           <h4><bean:message key="usercreate.accountInfo" /></h4>
         </div>
         <div class="panel-body">
-          <table class="table">
-            <tr>
-              <td><label for="firstNames"><rhn:required-field key="usercreate.names"/>:</label></td>
-              <td>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="firstNames"><rhn:required-field key="usercreate.names"/>:</label>
+              <div class="col-sm-6">
                 <html:select styleClass="form-control margin-bottom-xs box-small" property="prefix">
                   <html:options collection="availablePrefixes"
                     property="value"
@@ -123,33 +103,29 @@ function toggleAsterisk() {
 
                 <html:text property="firstNames" size="15" styleClass="form-control margin-bottom-xs box-large" maxlength="${firstNameLength}" styleId="firstNames"/>
                 <html:text property="lastName" size="15" styleClass="form-control margin-bottom-xs box-large" maxlength="${lastNameLength}"/>
-              </td>
-            </tr>
+              </div>
+            </div>
 
-            <tr>
-               <td><label for="email"><rhn:required-field key="email"/>:</label></td>
-               <td>
+            <div class="form-group">
+               <label class="col-sm-3 control-label" for="email"><rhn:required-field key="email"/>:</label>
+               <div class="col-sm-6">
                    <html:text property="email" styleClass="form-control" maxlength="${emailLength}" styleId="email"/>
-               </td>
-            </tr>
-            <c:if test="${!firstUserMode}">
-              <tr>
-                 <td><label for="readonly"><bean:message key="usercreate.jsp.api.readOnly" /></label></td>
-                 <td>
-                    <html:checkbox property="readonly" />
-                    <br/><small><bean:message key="usercreate.jsp.api.readOnlyHelp"/></small>
-                 </td>
-              </tr>
-            </c:if>
-            <html:hidden property="account_type" value="${account_type}" />
-            <tr>
-              <td colspan="2"><span class="required-form-field">*</span> - <bean:message key="usercreate.requiredField" /></td>
-            </tr>
-          </table>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="col-sm-3 control-label" for="readonly"><bean:message key="usercreate.jsp.api.readOnly" /></label>
+               <div class="col-sm-6">
+                   <html:checkbox property="readonly" />
+                   <br/><small><bean:message key="usercreate.jsp.api.readOnlyHelp"/></small>
+               </div>
+            </div>
+            <hr />
+            <p>
+              <span class="required-form-field">*</span> - <bean:message key="usercreate.requiredField" />
+            </p>
         </div>
       </div>
 
-<c:if test="${account_type == 'into_org'}">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4><bean:message key="preferences.jsp.tz"/></h4>
@@ -179,9 +155,8 @@ function toggleAsterisk() {
       <p><bean:message key="preferences.jsp.langs" /></p>
       <div class="well well-sm">
         <c:set var="counter" value="0" />
-        <table width="75%" cellpadding="0">
-          <tr>
-            <td width="50%">
+          <div class="form-group">
+            <div class="col-sm-6">
               <input type="radio" name="preferredLocale" value="<c:out value="${noLocale.languageCode}" />"
               <c:if test="${noLocale.languageCode == currentLocale}">
                 checked="checked"
@@ -189,21 +164,21 @@ function toggleAsterisk() {
               <c:out value="${noLocale.localizedName}" />
               <br />
               <br />
-            </td>
-           </tr>
+            </div>
+          </div>
         <c:forEach var="item" items="${supportedLocales}">
           <c:if test="${counter == 0}">
-            <tr>
+            <div class="form-group">
           </c:if>
-          <td width="50%">
+          <div class="col-sm-6">
             <input type="radio" name="preferredLocale" value="<c:out value="${item.key}" />"
               <c:if test="${item.key == currentLocale}">
                 checked="checked"
               </c:if>/>
             <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
-          </td>
+          </div>
           <c:if test="${counter == 1}">
-            </tr>
+            </div>
           </c:if>
           <c:set var="counter" value="${counter + 1}" />
           <c:if test="${counter == 2}">
@@ -212,14 +187,12 @@ function toggleAsterisk() {
         </c:forEach>
 
         <c:if test="${counter == 1}">
-                </tr>
+                </div>
         </c:if>
-        </table>
       </div>
     </div>
   </div>
 
-</c:if>
 <hr/>
 <div class="text-center">
   <html:submit styleClass="btn btn-success">
