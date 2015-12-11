@@ -19,6 +19,7 @@
 
 import string
 import sys
+import time
 import uuid
 
 from rhn.UserDictCase import UserDictCase
@@ -905,7 +906,9 @@ class SystemInformation():
             rhnSQL.set_log_auth(guest.user.getid())
             host = server_class.Server(guest.user, hw.get('arch'))
             host.server["name"] = hw.get('name')
+            host.server["os"] = hw.get('os')
             host.server["release"] = hw.get('type')
+            host.server["last_boot"] = time.time()
             host.default_description()
             host.virt_type = rhnVirtualization.VirtualizationType.FULLY
             host.virt_uuid = None
