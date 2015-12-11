@@ -1,6 +1,6 @@
 Name:		simple-core		
 Version:	3.1.3
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	Embeddable Java HTTP engine capable of handling large loads
 Group:	 	Development/Libraries	
 License:	GNU
@@ -12,6 +12,9 @@ BuildArch: noarch
 BuildRequires:  ant
 %if 0%{?fedora} >= 20 || 0%{?rhel} >= 7
 BuildRequires: javapackages-tools
+%endif
+%if 0%{?fedora} >= 23
+BuildRequires: java-devel
 %endif
 BuildRequires:  java >= 1.5
 Requires:       java >= 1.5
@@ -60,6 +63,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_javadocdir}/*
 
 %changelog
+* Mon Nov 30 2015 Tomas Lestach <tlestach@redhat.com> 3.1.3-7
+- java-devel is required in simple-core fc23 buildroot
+
 * Fri Oct 17 2014 Tomas Lestach <tlestach@redhat.com> 3.1.3-6
 - change simple-core package to be noarch
 

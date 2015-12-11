@@ -515,14 +515,18 @@ public class KickstartFactory extends HibernateFactory {
      * @return CryptoKey if found.
      */
     public static CryptoKey lookupCryptoKey(String description, Org org) {
-        Session session = null;
-        CryptoKey retval = null;
-        session = HibernateFactory.getSession();
-        retval = (CryptoKey) session.getNamedQuery("CryptoKey.findByDescAndOrg")
-                .setString("description", description)
-                .setLong("org_id", org.getId().longValue())
-                .uniqueResult();
-        return retval;
+        Session session = HibernateFactory.getSession();
+        Query query = null;
+        if (org != null) {
+            query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
+                           .setString("description", description)
+                           .setLong("org_id", org.getId().longValue());
+        }
+        else {
+            query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
+                           .setString("description", description);
+        }
+        return (CryptoKey) query.uniqueResult();
     }
 
     /**

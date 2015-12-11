@@ -27,7 +27,7 @@ Name: spacewalk-backend
 Summary: Common programs needed to be installed on the Spacewalk servers/proxies
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.4.2
+Version: 2.5.8
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0: https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -807,6 +807,18 @@ rm -f %{rhnconf}/rhnSecret.py*
 %{pythonrhnroot}/satellite_tools/exporter/xmlWriter.py*
 
 %changelog
+* Thu Dec 10 2015 Jan Dobes 2.5.8-1
+- making synced channels in null org visible to all orgs
+
+* Mon Dec 07 2015 Jan Dobes 2.5.7-1
+- fixing append to None when no org is found
+
+* Fri Dec 04 2015 Jan Dobes 2.5.6-1
+- when installing insert default SSL crypto key with null org
+
+* Mon Nov 30 2015 Tomas Lestach <tlestach@redhat.com> 2.5.5-1
+- fix typo: lastest -> latest
+
 * Tue Nov 24 2015 Jan Dobes 2.5.4-1
 - ignore all not any longer supported entitlements
 - backend: remove repoll parameter from

@@ -1,4 +1,3 @@
-%{!?__redhat_release:%define __redhat_release UNKNOWN}
 %define cobprofdir      %{_localstatedir}/lib/rhn/kickstarts
 %define cobprofdirup    %{_localstatedir}/lib/rhn/kickstarts/upload
 %define cobprofdirwiz   %{_localstatedir}/lib/rhn/kickstarts/wizard
@@ -6,10 +5,6 @@
 %define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
 %define cobblerdir          %{_localstatedir}/lib/cobbler
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-%define appdir          %{_localstatedir}/lib/tomcat5/webapps
-%define jardir          %{_localstatedir}/lib/tomcat5/webapps/rhn/WEB-INF/lib
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
 %define jardir          %{_localstatedir}/lib/tomcat/webapps/rhn/WEB-INF/lib
@@ -22,18 +17,14 @@
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
 %endif
 %endif
-%endif
 
-%if 0%{?fedora} || 0%{?rhel} >= 6
-# RHEL5 checkstyle4 is incompatible with checkstyle5
 %define run_checkstyle  1
-%endif
 
 Name: spacewalk-java
 Summary: Java web application files for Spacewalk
 Group: Applications/Internet
 License: GPLv2
-Version: 2.5.16.2
+Version: 2.5.26
 Release: 1%{?dist}
 URL:       https://fedorahosted.org/spacewalk
 Source0:   https://fedorahosted.org/releases/s/p/spacewalk/%{name}-%{version}.tar.gz
@@ -133,15 +124,6 @@ BuildRequires: hibernate3 = 0:3.2.4
 %endif
 %endif
 # EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
-%if 0%{?rhel} && 0%{?rhel} < 6
-Requires: jasper5
-Requires: struts >= 1.2.9
-Requires: tomcat5
-Requires: tomcat5-servlet-2.4-api
-BuildRequires: jasper5
-BuildRequires: jsp
-BuildRequires: struts >= 0:1.2.9
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: struts >= 0:1.3.0
 Requires: tomcat >= 7
@@ -169,7 +151,6 @@ BuildRequires: struts >= 0:1.3.0
 BuildRequires: struts-taglib >= 0:1.3.0
 BuildRequires: tomcat6
 BuildRequires: tomcat6-lib
-%endif
 %endif
 %endif
 %if 0%{?fedora} || 0%{?rhel} >=7
@@ -303,9 +284,6 @@ and taskomatic process.
 Summary: Oracle database backend support files for Spacewalk Java
 Group: Applications/Internet
 Requires: ojdbc14
-%if  0%{?rhel} && 0%{?rhel} < 6
-Requires: tomcat5
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires: tomcat >= 7
 %else
@@ -313,7 +291,6 @@ Requires: tomcat >= 7
 Requires: tomcat >= 8
 %else
 Requires: tomcat6
-%endif
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
@@ -326,9 +303,6 @@ This package contains Oracle database backend files for the Spacewalk Java.
 Summary: PostgreSQL database backend support files for Spacewalk Java
 Group: Applications/Internet
 Requires: postgresql-jdbc
-%if  0%{?rhel} && 0%{?rhel} < 6
-Requires: tomcat5
-%else
 %if 0%{?fedora} || 0%{?rhel} >=7
 Requires: tomcat >= 7
 %else
@@ -336,7 +310,6 @@ Requires: tomcat >= 7
 Requires: tomcat >= 8
 %else
 Requires: tomcat6
-%endif
 %endif
 %endif
 Provides: spacewalk-java-jdbc = %{version}-%{release}
@@ -574,11 +547,6 @@ ln -s -f %{_javadir}/jboss-logging/jboss-logging.jar $RPM_BUILD_ROOT%{_javadir}/
 
 %endif
 
-%if  0%{?rhel} && 0%{?rhel} < 6
-ant -Dprefix=$RPM_BUILD_ROOT install-tomcat5
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/
-install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat7
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalina/localhost/
@@ -592,7 +560,6 @@ install -m 755 conf/rhn-tomcat8.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat/Catalin
 ant -Dprefix=$RPM_BUILD_ROOT install-tomcat6
 install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/
 install -m 755 conf/rhn.xml $RPM_BUILD_ROOT%{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
-%endif
 %endif
 %endif
 
@@ -912,21 +879,11 @@ fi
 %{jardir}/xerces-j2.jar
 %{jardir}/xml-commons-apis.jar
 
-# asm-1.5.3-7.jpp5.noarch (F14, F13, EL6)
-# asm-1.5.3-1jpp.ep1.1.el5.2.noarch (EL5)
-%{jardir}/objectweb-asm_asm.jar
-#%{jardir}/asmasm.jar
-#%{jardir}/asmasm-analysis.jar
-#%{jardir}/asmasm-attrs.jar
-#%{jardir}/asmasm-tree.jar
-#%{jardir}/asmasm-util.jar
-#%{jardir}/asmasm-xml.jar
-#%{jardir}/asmkasm.jar
-
-# EL5 = Struts 1.2 and Tomcat 5, EL6+/recent Fedoras = 1.3 and Tomcat 6
-%if 0%{?rhel} && 0%{?rhel} < 6 || 0%{suse_version}
+%if 0%{suse_version}
 %{jardir}/struts.jar
+%{jardir}/objectweb-asm_asm.jar
 %else
+%{jardir}/asm_asm.jar
 %{jardir}/struts*.jar
 %{jardir}/commons-chain.jar
 %endif
@@ -944,9 +901,6 @@ fi
 %config %{cobdirsnippets}/sles_register_script
 %config %{cobdirsnippets}/sles_no_signature_checks
 %config %{cobdirsnippets}/wait_for_networkmanager_script
-%if  0%{?rhel} && 0%{?rhel} < 6
-%config(noreplace) %{_sysconfdir}/tomcat5/Catalina/localhost/rhn.xml
-%else
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %config(noreplace) %{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
 %else
@@ -956,7 +910,6 @@ fi
 %attr(755,root,root) %dir %{realcobsnippetsdir}
 %else
 %config(noreplace) %{_sysconfdir}/tomcat6/Catalina/localhost/rhn.xml
-%endif
 %endif
 %endif
 %{realcobsnippetsdir}/spacewalk
@@ -1014,6 +967,55 @@ fi
 %{jardir}/postgresql-jdbc.jar
 
 %changelog
+* Thu Dec 10 2015 Jan Dobes 2.5.26-1
+- 1274282 - Teach CobblerSyncProfile that profiles might disappear in mid-run
+
+* Wed Dec 09 2015 Jan Dobes 2.5.25-1
+- moving smtp_server parameter to java
+- making chat icon visible and better placed
+- moving chat_enabled parameter to java
+- moving actions_display_limit parameter to java
+- moving base_domain and base_port parameters to java
+- compile jspf files differently to avoid problems with Tomcat 8
+- fix jar versions on fedora23
+
+* Mon Dec 07 2015 Jan Dobes 2.5.24-1
+- cleanup create user page since we don't create first user there anymore
+
+* Mon Dec 07 2015 Jan Dobes 2.5.23-1
+- better set logging user earlier
+- removing entitlements info
+
+* Mon Dec 07 2015 Jan Dobes 2.5.22-1
+- adding setup for first organization
+- fixing select with null
+- redirecting jsp files to create first org instead of user
+
+* Fri Dec 04 2015 Tomas Lestach <tlestach@redhat.com> 2.5.21-1
+- 1287829 - make sure package from a right child channel is provided for
+  kickstart
+
+* Fri Dec 04 2015 Jan Dobes 2.5.20-1
+- when installing insert default SSL crypto key with null org
+
+* Thu Dec 03 2015 Jan Dobes 2.5.19-1
+- fixing confusing name and making difference between create first user form
+  and create normal user form
+- restyle page for creating users
+- remove RHEL 5 related things - we don't build on el5 anymore
+- remove remnants of old Fedora/RHEL versions
+- remove unused macro
+- removing unused code
+
+* Fri Nov 27 2015 Tomas Lestach <tlestach@redhat.com> 2.5.18-1
+- BugFix: skip similar tasks only if task is 'single threaded'
+- 1076490 - prefer the package from the given channel
+
+* Thu Nov 26 2015 Jan Dobes 2.5.17-1
+- removing link to removed page
+- ActionChainHandler: javadoc fixes
+- replace html:select with simple select to fix plain text printing
+
 * Wed Nov 25 2015 Tomas Kasparek <tkasparek@redhat.com> 2.5.16-1
 - BZ-1284101 Incorrect query parameters cause unique constraint violations when
   cloning errata
