@@ -111,12 +111,12 @@ else {
     die "No idea how to install to database: " . $answers{'db-backend'};
 }
 
-print Spacewalk::Setup::loc("* Configuring tomcat.\n");
-setup_tomcat(\%opts, \%answers);
-
 if ($opts{'db-only'}) {
     exit;
 }
+
+print Spacewalk::Setup::loc("* Configuring tomcat.\n");
+setup_tomcat(\%opts, \%answers);
 
 remove_old_jvm(\%opts, \%answers);
 remove_tomcat_cache(\%opts);
