@@ -4,6 +4,7 @@
 %define cobdirsnippets  %{_localstatedir}/lib/rhn/kickstarts/snippets
 %define realcobsnippetsdir  %{_localstatedir}/lib/cobbler/snippets
 %define cobblerdir          %{_localstatedir}/lib/cobbler
+%define run_checkstyle  1
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %define appdir          %{_localstatedir}/lib/tomcat/webapps
@@ -12,13 +13,13 @@
 %if  0%{?suse_version}
 %define appdir          /srv/tomcat/webapps
 %define jardir          /srv/tomcat/webapps/rhn/WEB-INF/lib
+%define run_checkstyle  0
 %else
 %define appdir          %{_localstatedir}/lib/tomcat6/webapps
 %define jardir          %{_localstatedir}/lib/tomcat6/webapps/rhn/WEB-INF/lib
 %endif
 %endif
 
-%define run_checkstyle  1
 
 Name: spacewalk-java
 Summary: Java web application files for Spacewalk
