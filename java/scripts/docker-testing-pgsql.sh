@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 
 cd /manager/susemanager-utils/testing/docker/scripts/
 # Move Postgres database to tmpfs to speed initialization and testing up
