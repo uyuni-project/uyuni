@@ -927,6 +927,7 @@ class SystemInformation():
 
             hid = host.getid()
             host.reload(hid)
+            log_debug(4, "New host created: ", host)
         else:
             host = server_class.Server(None)
             host.reload(hid)
@@ -955,7 +956,6 @@ class SystemInformation():
              where virtual_system_id = :guestid""")
         h.execute(guestid=guestid)
         row = h.fetchone_dict()
-        log_debug(1, "has host?", row)
         if not row or not row['host_system_id']:
             self._insert_virtual_instance(hid, None, fakeuuid=False)
             self._insert_virtual_instance(hid, guestid, fakeuuid=True)
