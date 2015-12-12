@@ -1,4 +1,4 @@
--- oracle equivalent source sha1 cc4d41837c8b4dcbd4597606d789c1f45b9793e9
+-- oracle equivalent source sha1 419f52a400ca68a4f7895a76798c29f59fe71557
 --
 -- Copyright (c) 2008--2012 Red Hat, Inc.
 --
@@ -29,7 +29,7 @@ declare
         org_id_out		numeric;
 begin
 
-        select nextval('web_customer_id_seq') into new_org_id;
+        select nextval('web_customer_id_seq') into new_org_id from dual;
 
         insert into web_customer (
                 id, name
@@ -37,7 +37,7 @@ begin
                 new_org_id, name_in
         );
 
-        select nextval('rhn_user_group_id_seq') into group_val;
+        select nextval('rhn_user_group_id_seq') into group_val from dual;
 
         select  id
         into    ug_type
@@ -54,7 +54,7 @@ begin
                 NULL, ug_type, new_org_id
         );
 
-        select nextval('rhn_user_group_id_seq') into group_val;
+        select nextval('rhn_user_group_id_seq') into group_val from dual;
 
         select  id
         into    ug_type
@@ -72,7 +72,7 @@ begin
         );
 
 
-        select nextval('rhn_user_group_id_seq') into group_val;
+        select nextval('rhn_user_group_id_seq') into group_val from dual;
 
         select  id
         into    ug_type
@@ -89,7 +89,7 @@ begin
                 NULL, ug_type, new_org_id
         );
 
-        select nextval('rhn_user_group_id_seq') into group_val;
+        select nextval('rhn_user_group_id_seq') into group_val from dual;
 
         select  id
         into    ug_type
@@ -105,6 +105,25 @@ begin
                 'Channel Administrators for Org ' || name_in,
                 NULL, ug_type, new_org_id
         );
+
+	if new_org_id = 1 then
+            select nextval('rhn_user_group_id_seq') into group_val from dual;
+
+            select  id
+            into    ug_type
+            from    rhnUserGroupType
+            where   label = 'satellite_admin';
+
+            insert into rhnUserGroup (
+                    id, name,
+                    description,
+                    max_members, group_type, org_id
+            ) values (
+                    group_val, 'SUSE Manager Administrators',
+                    'SUSE Manager Administrators for Org ' || name_in,
+                    NULL, ug_type, new_org_id
+            );
+        end if;
 
         select nextval('rhn_user_group_id_seq') into group_val from dual;
 
