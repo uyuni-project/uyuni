@@ -104,6 +104,25 @@ begin
 		NULL, ug_type, new_org_id
 	);
 
+        if new_org_id = 1 then
+            select rhn_user_group_id_seq.nextval into group_val from dual;
+
+            select  id
+            into    ug_type
+            from    rhnUserGroupType
+            where   label = 'satellite_admin';
+
+            insert into rhnUserGroup (
+                    id, name,
+                    description,
+                    max_members, group_type, org_id
+            ) values (
+                    group_val, 'SUSE Manager Administrators',
+                    'SUSE Manager Administrators for Org ' || name_in,
+                    NULL, ug_type, new_org_id
+            );
+        end if;
+
         select rhn_user_group_id_seq.nextval into group_val from dual;
 
         select  id
