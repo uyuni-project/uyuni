@@ -600,17 +600,6 @@ if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then
             /usr/sbin/spacewalk-service restart
         fi
     fi
-    if [ "$DO_SETUP" = "1" ]; then
-        if [ -n "$SCC_USER" -o -n "$ISS_PARENT" ]; then
-            # wait for taskomatic port is open
-            sleep 1
-            /usr/sbin/spacewalk-startup-helper wait-for-taskomatic
-            # schedule refresh
-            mgr-sync refresh --schedule
-        fi
-    fi
-    # we cannot do this for SCC - the Java API requires a first user
-    # which does not exist yet.
 fi
 
 if [ "$DO_SETUP" = "1" -o "$DO_MIGRATION" = "1" ]; then

@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.manager.org;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
@@ -26,6 +29,8 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
 import com.redhat.rhn.manager.user.CreateUserCommand;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import org.apache.log4j.Logger;
 
@@ -173,6 +178,17 @@ public class CreateOrgCommand {
 
         ChannelFamilyFactory.lookupOrCreatePrivateFamily(createdOrg);
 
+        if (firstOrg) {
+            Map<String, String> params = new HashMap<>();
+            params.put("noRepoSync", "true");
+            try {
+                new TaskomaticApi().scheduleSingleSatBunch(newUser, "mgr-sync-refresh-bunch", params);
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Problem when running Taskomatic mgr-sync-refresh job: " + e.getMessage());
+                // FIXME: return validator error ?
+            }
+        }
         return null;
     }
 
