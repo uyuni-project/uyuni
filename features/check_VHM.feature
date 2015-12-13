@@ -36,7 +36,7 @@ Feature: Test "virtualhostmanager" Web UI.
      And I follow "Virtual Host Managers"
      And I follow "file-vmware"
     Then I should see a "file:///var/tmp/vCenter.json" text
-     And I should see a "Novell" text
+     And I should see a "SUSE Test" text
     When I click on "Refresh data from this Virtual Host Manager"
     Then I should see a "Refresh for Virtual Host Manager with label 'file-vmware' was triggered." text
 
