@@ -182,10 +182,12 @@ public class CreateOrgCommand {
             Map<String, String> params = new HashMap<>();
             params.put("noRepoSync", "true");
             try {
-                new TaskomaticApi().scheduleSingleSatBunch(newUser, "mgr-sync-refresh-bunch", params);
+                new TaskomaticApi().scheduleSingleSatBunch(newUser,
+                        "mgr-sync-refresh-bunch", params);
             }
             catch (TaskomaticApiException e) {
-                log.error("Problem when running Taskomatic mgr-sync-refresh job: " + e.getMessage());
+                log.error("Problem when running Taskomatic mgr-sync-refresh job: " +
+                        e.getMessage());
                 // FIXME: return validator error ?
             }
         }
