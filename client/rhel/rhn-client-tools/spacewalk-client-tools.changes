@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Dec 14 13:24:51 CET 2015 - mc@suse.de
+
+- version 2.1.16.10-1
+- fix client registration for network interfaces with
+  labels (bsc#956981)
+
+-------------------------------------------------------------------
 Wed Sep 23 15:09:28 CEST 2015 - mc@suse.de
 
 - version 2.1.16.9-1
