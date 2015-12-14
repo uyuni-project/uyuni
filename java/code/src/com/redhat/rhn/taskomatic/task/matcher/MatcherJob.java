@@ -15,8 +15,13 @@
 
 package com.redhat.rhn.taskomatic.task.matcher;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 import com.redhat.rhn.taskomatic.task.gatherer.GathererJob;
+
+import com.suse.manager.matcher.MatcherRunner;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -24,6 +29,8 @@ import org.quartz.JobExecutionException;
  * Taskomatic job for running subscription matcher and processing its results.
  */
 public class MatcherJob extends RhnJavaJob {
+
+    public static final String CSV_SEPARATOR = "server.susemanager.matchercsvseparator";
 
     /**
      * {@inheritDoc}
@@ -38,7 +45,16 @@ public class MatcherJob extends RhnJavaJob {
             return;
         }
 
-        log.warn("TODO: run matcher here!");
+        try {
+            String sep = Config.get().getString(CSV_SEPARATOR, ",");
+            new MatcherRunner().run(sep);
+        }
+        catch (Throwable t) {
+            log.error(t.getMessage(), t);
+            HibernateFactory.rollbackTransaction();
+        }
+        finally {
+            HibernateFactory.closeSession();
+        }
     }
-
 }
