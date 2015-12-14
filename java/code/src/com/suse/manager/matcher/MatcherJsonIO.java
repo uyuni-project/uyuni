@@ -89,4 +89,16 @@ public class MatcherJsonIO {
             .reduce(Stream::concat).get()
             .collect(toList());
     }
+
+    /**
+     * @return an object representation of the JSON input for the matcher
+     */
+    public String getMatcherInput() {
+        JsonInput result = new JsonInput();
+        result.setSystems(getJsonSystems());
+        result.setProducts(getJsonProducts());
+        result.setSubscriptions(getJsonSubscriptions());
+        result.setPinnedMatches(getJsonPinnedMatches());
+        return gson.toJson(result);
+    }
 }
