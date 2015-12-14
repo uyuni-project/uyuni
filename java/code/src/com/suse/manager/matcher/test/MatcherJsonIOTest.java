@@ -104,7 +104,12 @@ public class MatcherJsonIOTest extends TestCase {
         Files.copy(orderJson.toPath(), ordertempFile.toPath());
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
+            SUSEProductFactory.clearAllProducts();
+            SUSEProductTestUtils.createVendorSUSEProducts();
+
             ContentSyncManager cm = new ContentSyncManager();
+
+            // this will also refresh the DB cache of subscriptions
             Collection<SCCSubscription> s = cm.getSubscriptions();
             HibernateFactory.getSession().flush();
             assertNotNull(s);
@@ -113,8 +118,9 @@ public class MatcherJsonIOTest extends TestCase {
             assertTrue(jsonString.contains("\"part_number\": \"662644474670\""));
             assertTrue(jsonString.contains("\"system_limit\": 10,"));
             assertTrue(jsonString.contains("\"regcode\": \"55REGCODE180\""));
-            assertTrue(jsonString.contains("706,"));
             assertTrue(jsonString.contains("\"scc_org_id\": \"extFile\""));
+            assertTrue(jsonString.contains("1324"));
+            assertTrue(jsonString.contains("1322"));
             assertTrue(jsonString.contains("\"id\": 9998"));
             assertTrue(jsonString.contains("\"id\": 9999"));
             assertTrue(jsonString.contains("\"system_limit\": 100,"));
