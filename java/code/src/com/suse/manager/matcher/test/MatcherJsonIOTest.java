@@ -91,6 +91,21 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(jsonString.contains("1097"));
     }
 
+    public void testProductsToJson() throws Exception {
+        SUSEProductFactory.clearAllProducts();
+        SUSEProductTestUtils.createVendorSUSEProducts();
+        LoggingFactory.clearLogId();
+
+        Server h1 = ServerTestUtils.createTestSystem();
+        String jsonString = new MatcherJsonIO().getJsonProducts();
+        assertNotNull(jsonString);
+        assertTrue(jsonString.contains("1322"));
+        assertTrue(jsonString.contains("SUSE Linux Enterprise Server 12 SP1"));
+        assertTrue(jsonString.contains("1324"));
+        assertTrue(jsonString.contains(
+                "SUSE Linux Enterprise High Availability Extension 12 SP1"));
+    }
+
     public void testSubscriptionsToJson() throws Exception {
         File subJson = new File(TestUtils.findTestData(
                 new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
