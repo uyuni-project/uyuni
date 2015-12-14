@@ -77,8 +77,8 @@ public class JsonSystem {
         if (productSet != null) {
             baseProduct = productSet.getBaseProduct();
         }
+        productIds = new LinkedList<>();
         if (baseProduct != null) {
-            productIds = new LinkedList<>();
             productIds.add(baseProduct.getProductId());
 
             // We have a Vendor Product, so add a SystemEntitlement if needed
