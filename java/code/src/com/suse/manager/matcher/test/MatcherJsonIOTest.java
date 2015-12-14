@@ -85,10 +85,10 @@ public class MatcherJsonIOTest extends TestCase {
         assertTrue(jsonString.contains("\"name\": \"guest2.example.com\""));
         assertTrue(jsonString.contains("      " + g1.getId()));
         assertTrue(jsonString.contains("      " + g2.getId()));
-        assertTrue(jsonString.contains("\"1322\": \"SUSE Linux Enterprise Server 12 SP1\""));
-        assertTrue(jsonString.contains("\"1324\": \"SUSE Linux Enterprise High Availability Extension 12 SP1\""));
-        assertTrue(jsonString.contains("\"1076\": \"SUSE Manager Mgmt Single 1.2\""));
-        assertTrue(jsonString.contains("\"1097\": \"SUSE Manager Prov Single 1.2\""));
+        assertTrue(jsonString.contains("1322"));
+        assertTrue(jsonString.contains("1324"));
+        assertTrue(jsonString.contains("1076"));
+        assertTrue(jsonString.contains("1097"));
     }
 
     public void testSubscriptionsToJson() throws Exception {
@@ -116,14 +116,14 @@ public class MatcherJsonIOTest extends TestCase {
             String jsonString = new MatcherJsonIO().getJsonSubscriptions();
             assertNotNull(jsonString);
             assertTrue(jsonString.contains("\"part_number\": \"662644474670\""));
-            assertTrue(jsonString.contains("\"system_limit\": 10,"));
+            assertTrue(jsonString.contains("\"quantity\": 10,"));
             assertTrue(jsonString.contains("\"regcode\": \"55REGCODE180\""));
-            assertTrue(jsonString.contains("\"scc_org_id\": \"extFile\""));
             assertTrue(jsonString.contains("1324"));
             assertTrue(jsonString.contains("1322"));
+            assertTrue(jsonString.contains("\"scc_username\": \"extFile\""));
             assertTrue(jsonString.contains("\"id\": 9998"));
             assertTrue(jsonString.contains("\"id\": 9999"));
-            assertTrue(jsonString.contains("\"system_limit\": 100,"));
+            assertTrue(jsonString.contains("\"quantity\": 100,"));
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
