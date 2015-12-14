@@ -124,15 +124,14 @@ public class StatesAPI {
      * @return null to make spark happy
      */
     public static Object save(Request request, Response response, User user) {
-        // Parse the JSON content of the body into an object
-        JSONServerPackageStates dto = GSON.fromJson(request.body(),
+        JSONServerPackageStates json = GSON.fromJson(request.body(),
                 JSONServerPackageStates.class);
 
         // Save a new state revision for the specified server
         ServerStateRevision state = new ServerStateRevision();
-        state.setServer(ServerFactory.lookupById(dto.getServerId()));
+        state.setServer(ServerFactory.lookupById(json.getServerId()));
         state.setCreator(user);
-        dto.getPackageStates().forEach(pkgState -> {
+        json.getPackageStates().forEach(pkgState -> {
             pkgState.convertToPackageState().ifPresent(state::addPackageState);
         });
         StateFactory.save(state);
