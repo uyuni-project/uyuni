@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import java.util.LinkedList;
@@ -89,9 +90,12 @@ public class JsonSystem {
             }
         }
         virtualSystemIds = new LinkedList<>();
-        virtualSystemIds = s.getGuests().stream()
-                .map(h -> h.getGuestSystem().getId())
-                .collect(Collectors.toList());
+        for (VirtualInstance vi : s.getGuests()) {
+            Server guest = vi.getGuestSystem();
+            if (guest != null) {
+                virtualSystemIds.add(guest.getId());
+            }
+        }
     }
 
     /**
