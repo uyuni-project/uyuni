@@ -681,7 +681,10 @@ def read_network_interfaces():
 
         ip6_list = []
         dev_info = ethtool.get_interfaces_info(interface)
-        if (str(interface).find(':') == -1):
+        # an interface with label (contains character ':' does not have ipv6
+        # addresses assigned which confuses python-ethtool
+        # so collect info about ipv6 addresses for the "base" interface only
+        if ':' not in interface:
             for info in dev_info:
                 # one interface may have more IPv6 addresses
                 for ip6 in info.get_ipv6_addresses():
