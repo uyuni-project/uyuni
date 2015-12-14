@@ -136,7 +136,8 @@ public class MatcherJsonIOTest extends TestCase {
     }
 
     public void testPinsToJson() throws Exception {
-        File subJson = new File(TestUtils.findTestData(SUBSCRIPTIONS_JSON).getPath());
+        File subJson = new File(TestUtils.findTestData(
+                new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
         String fromdir = subJson.getParent();
         try {
             Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir);
