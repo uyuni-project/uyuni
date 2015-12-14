@@ -65,34 +65,13 @@ public class StatesAPI {
         String serverId = request.queryParams("sid");
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
 
-        // Lookup all revisions and take package states from the latest one
-        List<ServerStateRevision> stateRevisions =
-                StateFactory.lookupServerStateRevisions(server);
-        Set<PackageState> packageStates = new HashSet<>();
-        if (stateRevisions != null && !stateRevisions.isEmpty()) {
-            packageStates = stateRevisions.get(0).getPackageStates();
-        }
-
-        // Convert into a list of DTOs
-        List<JSONPackageState> collect = packageStates.stream().map(state ->
-                new JSONPackageState(
-                        state.getName().getName(),
-                        Optional.ofNullable(state.getEvr())
-                                .orElse(new PackageEvr("", "", "")),
-                        Optional.ofNullable(state.getArch())
-                                .map(PackageArch::getLabel).orElse(""),
-                        Optional.of(state.getPackageStateTypeId()),
-                        Optional.of(state.getVersionConstraintId())
-                )
-        ).collect(Collectors.toList());
-
         response.type("application/json");
-        return GSON.toJson(collect);
+        return GSON.toJson(currentPackageStates(server));
     }
 
     /**
-     * Search all packages available to a given server (installed or not installed) for a
-     * given string returning all matching packages.
+     * Find matches among this server's current packages states as well as among the
+     * available packages and convert to JSON.
      *
      * @param request the request object
      * @param response the response object
@@ -102,16 +81,22 @@ public class StatesAPI {
         String target = ".*" + request.queryParams("target") + ".*";
         String serverId = request.queryParams("sid");
 
-        // Find matches among available packages and convert to DTOs
-        List<JSONPackageState> matchingPackages = PackageManager
+        // Find matches among this server's current packages states
+        Server server = ServerFactory.lookupById(Long.valueOf(serverId));
+        Set<JSONPackageState> matchingCurrent = currentPackageStates(server).stream()
+                .filter(p -> p.getName().matches(target))
+                .collect(Collectors.toSet());
+
+        // Find matches among available packages and convert to JSON objects
+        Set<JSONPackageState> matchingAvailable = PackageManager
                 .systemTotalPackages(Long.valueOf(serverId), null).stream()
                 .filter(p -> p.getName().matches(target))
                 .map(p -> new JSONPackageState(p.getName(), new PackageEvr(
                         p.getEpoch(), p.getVersion(), p.getRelease()), p.getArch()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         response.type("application/json");
-        return GSON.toJson(matchingPackages);
+        return GSON.toJson(matchingCurrent.addAll(matchingAvailable));
     }
 
     /**
@@ -156,5 +141,36 @@ public class StatesAPI {
 
         response.type("application/json");
         return GSON.toJson(results);
+    }
+
+    /**
+     * Get the current set of package states for a given server.
+     *
+     * @param server the server
+     * @return the current set of package states
+     */
+    private static Set<JSONPackageState> currentPackageStates(Server server) {
+        // Lookup all revisions and take package states from the latest one
+        List<ServerStateRevision> stateRevisions =
+                StateFactory.lookupServerStateRevisions(server);
+        Set<PackageState> packageStates = new HashSet<>();
+        if (stateRevisions != null && !stateRevisions.isEmpty()) {
+            packageStates = stateRevisions.get(0).getPackageStates();
+        }
+
+        // Convert into a list of JSON objects
+        Set<JSONPackageState> currentStates = packageStates.stream().map(state ->
+                new JSONPackageState(
+                        state.getName().getName(),
+                        Optional.ofNullable(state.getEvr())
+                                .orElse(new PackageEvr("", "", "")),
+                        Optional.ofNullable(state.getArch())
+                                .map(PackageArch::getLabel).orElse(""),
+                        Optional.of(state.getPackageStateTypeId()),
+                        Optional.of(state.getVersionConstraintId())
+                )
+        ).collect(Collectors.toSet());
+
+        return currentStates;
     }
 }
