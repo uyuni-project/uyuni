@@ -19,18 +19,14 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
-import com.redhat.rhn.domain.scc.SCCOrderItem;
-import com.redhat.rhn.domain.server.PinnedSubscription;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Serializes and deserializes objects from and to JSON.
@@ -52,53 +48,45 @@ public class MatcherJsonIO {
     }
 
     /**
-     * @return a json string with all systems on this Server
+     * @return an object representation of the JSON input for the matcher
+     * about systems on this Server
      */
-    public String getJsonSystems() {
-        List<JsonSystem> systems = new LinkedList<JsonSystem>();
-        for (Server s : ServerFactory.list()) {
-            JsonSystem sys = new JsonSystem(s);
-            systems.add(sys);
-        }
-        return gson.toJson(systems);
+    public List<JsonSystem> getJsonSystems() {
+        return ServerFactory.list().stream()
+            .map(s -> new JsonSystem(s))
+            .collect(toList());
     }
 
     /**
-     * @return a json string with all SUSE products on this Server
+     * @return an object representation of the JSON input for the matcher
+     * about SUSE products on this Server
      */
-    public String getJsonProducts() {
-        return gson.toJson(
-            SUSEProductFactory.findAllSUSEProducts().stream()
-                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
-                .collect(toList())
-        );
+    public List<JsonProduct> getJsonProducts() {
+        return SUSEProductFactory.findAllSUSEProducts().stream()
+            .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
+            .collect(toList());
     }
 
     /**
-     * @return a json string with all subscriptions
+     * @return an object representation of the JSON input for the matcher
+     * about subscriptions on this Server
      */
-    public String getJsonSubscriptions() {
-        List<JsonSubscription> subscriptions = new LinkedList<>();
-        for (SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
-            JsonSubscription sub = new JsonSubscription(item);
-            subscriptions.add(sub);
-        }
-        return gson.toJson(subscriptions);
+    public List<JsonSubscription> getJsonSubscriptions() {
+        return SCCCachingFactory.lookupOrderItems().stream()
+            .map(s -> new JsonSubscription(s))
+            .collect(toList());
     }
 
     /**
-     * @return a json string with all pinned matches
+     * @return an object representation of the JSON input for the matcher
+     * about pinned matches
      */
-    public String getJsonPinnedMatches() {
-        List<JsonPinnedMatch> pins = new LinkedList<>();
-        for (Server s : ServerFactory.list()) {
-            Set<PinnedSubscription> sysPins = s.getPinnedSubscriptions();
-            if (!sysPins.isEmpty()) {
-                for (PinnedSubscription pin : sysPins) {
-                    pins.add(new JsonPinnedMatch(s.getId(), pin.getOrderitemId()));
-                }
-            }
-        }
-        return gson.toJson(pins);
+    public List<JsonPinnedMatch> getJsonPinnedMatches() {
+        return ServerFactory.list().stream()
+            .map(s -> s.getPinnedSubscriptions().stream()
+               .map(p -> new JsonPinnedMatch(s.getId(), p.getOrderitemId()))
+            )
+            .reduce(Stream::concat).get()
+            .collect(toList());
     }
 }
