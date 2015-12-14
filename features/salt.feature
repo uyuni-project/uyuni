@@ -31,7 +31,7 @@ Feature: SaltStack is configured and running
   Scenario: The minion communicates with the master and can register
     # It takes a while before we can get the grains and registration is done
     Given that the master can reach this client
-    And I get OS information of the Minion from the Master
+    When I get OS information of the Minion from the Master
     Then it should contain a "SLES" text
-    And I should see this client in spacewalk
+    And this client should appear in spacewalk
 

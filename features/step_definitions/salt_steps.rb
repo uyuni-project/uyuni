@@ -67,6 +67,12 @@ When(/^I list accepted keys at Salt Master$/) do
   end
 end
 
+When(/^I list rejected keys at Salt Master$/) do
+  @action = lambda do
+    return sshcmd("salt-key --list rejected")
+  end
+end
+
 Then(/^the list of the keys should contain this client's hostname$/) do
   begin
     Timeout.timeout(DEFAULT_TIMEOUT) do
@@ -79,6 +85,64 @@ Then(/^the list of the keys should contain this client's hostname$/) do
   rescue Timeout::Error
       fail "#{$myhostname} is not listed in the key list: #{@output[:stdout]}"
   end
+end
+
+Given(/^this minion key is unaccepted$/) do
+  steps %{
+    Then I delete this minion key in the Salt master
+    And we wait till Salt master sees this minion as unaccepted
+  }
+end
+
+When(/^we wait till Salt master sees this minion as unaccepted$/) do
+  steps %{
+    When I list unaccepted keys at Salt Master
+    Then the list of the keys should contain this client's hostname
+  }
+end
+
+Given(/^this minion key is accepted$/) do
+  steps %{
+    Then I accept this minion key in the Salt master
+    And we wait till Salt master sees this minion as accepted
+  }
+end
+
+When(/^we wait till Salt master sees this minion as accepted$/) do
+  steps %{
+    When I list accepted keys at Salt Master
+    Then the list of the keys should contain this client's hostname
+  }
+end
+
+Given(/^this minion key is rejected$/) do
+  steps %{
+    Then I reject this minion key in the Salt master
+    And we wait till Salt master sees this minion as rejected
+  }
+end
+
+When(/^we wait till Salt master sees this minion as rejected$/) do
+  steps %{
+    When I list rejected keys at Salt Master
+    Then the list of the keys should contain this client's hostname
+  }
+end
+
+When(/^I delete this minion key in the Salt master$/) do
+  sshcmd("yes | salt-key --delete=#{$myhostname}")
+end
+
+When(/^I accept this minion key in the Salt master$/) do
+  sshcmd("yes | salt-key --accept=#{$myhostname}")
+end
+
+When(/^I reject this minion key in the Salt master$/) do
+  sshcmd("yes | salt-key --reject=#{$myhostname}")
+end
+
+When(/^I delete all keys in the Salt master$/) do
+  sshcmd("yes | salt-key -D")
 end
 
 When(/^I accept all Salt unaccepted keys$/) do

@@ -23,3 +23,13 @@ end
 When(/^I accept this client's minion key$/) do
   click_link('', :href => "/rhn/manager/minions/accept/#{$myhostname}")
 end
+
+When(/^I go to the minion onboarding page$/) do
+  steps %{
+    And I follow "Systems"
+    And I follow "Salt Master"
+    And I follow "Onboarding"
+  }
+end
+
+
