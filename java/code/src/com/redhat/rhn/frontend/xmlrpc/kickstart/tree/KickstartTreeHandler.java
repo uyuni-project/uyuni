@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartableTreeDetail;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
+import com.redhat.rhn.frontend.xmlrpc.RhnXmlRpcServer;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.kickstart.tree.TreeCreateOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeDeleteOperation;
@@ -133,6 +134,8 @@ public class KickstartTreeHandler extends BaseHandler {
         create.setChannel(getChannel(channelLabel, loggedInUser));
         create.setInstallType(getInstallType(installType));
         create.setLabel(treeLabel);
+        create.setServerName(RhnXmlRpcServer.getServerName());
+
         ValidatorError ve = create.store();
         if (ve != null) {
             throw new InvalidKickstartTreeException(ve.getKey(), ve.getValues());
