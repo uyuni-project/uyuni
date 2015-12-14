@@ -56,15 +56,29 @@ Then(/^the Salt Minion should be running$/) do
 end
 
 When(/^I list unaccepted keys at Salt Master$/) do
-  @output = sshcmd("salt-key --list unaccepted")
+  @action = lambda do
+    return sshcmd("salt-key --list unaccepted")
+  end
 end
 
 When(/^I list accepted keys at Salt Master$/) do
-  @output = sshcmd("salt-key --list accepted")
+  @action = lambda do
+    return sshcmd("salt-key --list accepted")
+  end
 end
 
 Then(/^the list of the keys should contain this client's hostname$/) do
-  fail if not @output[:stdout].include? $myhostname
+  begin
+    Timeout.timeout(DEFAULT_TIMEOUT) do
+      loop do
+        @output = @action.call
+        break if @output[:stdout].include?($myhostname)
+        sleep(1)
+      end
+    end
+  rescue Timeout::Error
+      fail "#{$myhostname} is not listed in the key list: #{@output[:stdout]}"
+  end
 end
 
 When(/^I accept all Salt unaccepted keys$/) do
