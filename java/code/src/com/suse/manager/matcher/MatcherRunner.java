@@ -53,8 +53,8 @@ public class MatcherRunner {
         try {
             Process p = r.exec(args.toArray(new String[0]));
             PrintWriter stdin = new PrintWriter(p.getOutputStream());
-            // FIXME: replace with the overall function
-            stdin.println(new MatcherJsonIO().getJsonSubscriptions());
+            String s = new MatcherJsonIO().getMatcherInput();
+            stdin.println(s);
             stdin.flush();
             stdin.close();
 
