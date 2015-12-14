@@ -16,6 +16,10 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.matcher.JsonPinnedMatch;
+import com.suse.manager.matcher.JsonProduct;
+import com.suse.manager.matcher.JsonSubscription;
+import com.suse.manager.matcher.JsonSystem;
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.scc.model.SCCSubscription;
 
@@ -24,6 +28,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import junit.framework.TestCase;
@@ -78,17 +84,34 @@ public class MatcherJsonIOTest extends TestCase {
         VirtualInstance refGuest2 = createVirtualInstance(h1, g2, uuid2);
         h1.addGuest(refGuest2);
 
-        String jsonString = new MatcherJsonIO().getJsonSystems();
-        assertNotNull(jsonString);
-        assertTrue(jsonString.contains("\"name\": \"host1.example.com\""));
-        assertTrue(jsonString.contains("\"name\": \"guest1.example.com\""));
-        assertTrue(jsonString.contains("\"name\": \"guest2.example.com\""));
-        assertTrue(jsonString.contains("      " + g1.getId()));
-        assertTrue(jsonString.contains("      " + g2.getId()));
-        assertTrue(jsonString.contains("1322"));
-        assertTrue(jsonString.contains("1324"));
-        assertTrue(jsonString.contains("1076"));
-        assertTrue(jsonString.contains("1097"));
+        List<JsonSystem> result = new MatcherJsonIO().getJsonSystems();
+        assertNotNull(result);
+
+        JsonSystem resultH1 =
+                result.stream().filter(s -> s.getId() == h1.getId()).findFirst().get();
+        assertNotNull(resultH1);
+        assertEquals("host1.example.com", resultH1.getName());
+        assertEquals(0, resultH1.getProductIds().size());
+
+        JsonSystem resultG1 =
+                result.stream().filter(s -> s.getId() == g1.getId()).findFirst().get();
+        assertNotNull(resultG1);
+        assertEquals("guest1.example.com", resultG1.getName());
+        assertEquals(4, resultG1.getProductIds().size());
+        assertTrue(resultG1.getProductIds().contains(1322L));
+        assertTrue(resultG1.getProductIds().contains(1076L));
+        assertTrue(resultG1.getProductIds().contains(1097L));
+        assertTrue(resultG1.getProductIds().contains(1324L));
+
+        JsonSystem resultG2 =
+                result.stream().filter(s -> s.getId() == g2.getId()).findFirst().get();
+        assertNotNull(resultG2);
+        assertEquals("guest2.example.com", resultG2.getName());
+        assertEquals(4, resultG2.getProductIds().size());
+        assertTrue(resultG2.getProductIds().contains(1322L));
+        assertTrue(resultG2.getProductIds().contains(1076L));
+        assertTrue(resultG2.getProductIds().contains(1097L));
+        assertTrue(resultG2.getProductIds().contains(1324L));
     }
 
     public void testProductsToJson() throws Exception {
@@ -96,14 +119,16 @@ public class MatcherJsonIOTest extends TestCase {
         SUSEProductTestUtils.createVendorSUSEProducts();
         LoggingFactory.clearLogId();
 
-        Server h1 = ServerTestUtils.createTestSystem();
-        String jsonString = new MatcherJsonIO().getJsonProducts();
-        assertNotNull(jsonString);
-        assertTrue(jsonString.contains("1322"));
-        assertTrue(jsonString.contains("SUSE Linux Enterprise Server 12 SP1"));
-        assertTrue(jsonString.contains("1324"));
-        assertTrue(jsonString.contains(
-                "SUSE Linux Enterprise High Availability Extension 12 SP1"));
+        List<JsonProduct> result = new MatcherJsonIO().getJsonProducts();
+        assertNotNull(result);
+
+        assertEquals("SUSE Linux Enterprise Server 12 SP1",
+                result.stream().filter(p -> p.getId() == 1322L)
+                    .findFirst().get().getName());
+
+        assertEquals("SUSE Linux Enterprise High Availability Extension 12 SP1",
+                result.stream().filter(p -> p.getId() == 1324L)
+                    .findFirst().get().getName());
     }
 
     public void testSubscriptionsToJson() throws Exception {
@@ -128,17 +153,29 @@ public class MatcherJsonIOTest extends TestCase {
             Collection<SCCSubscription> s = cm.getSubscriptions();
             HibernateFactory.getSession().flush();
             assertNotNull(s);
-            String jsonString = new MatcherJsonIO().getJsonSubscriptions();
-            assertNotNull(jsonString);
-            assertTrue(jsonString.contains("\"part_number\": \"662644474670\""));
-            assertTrue(jsonString.contains("\"quantity\": 10,"));
-            assertTrue(jsonString.contains("\"regcode\": \"55REGCODE180\""));
-            assertTrue(jsonString.contains("1324"));
-            assertTrue(jsonString.contains("1322"));
-            assertTrue(jsonString.contains("\"scc_username\": \"extFile\""));
-            assertTrue(jsonString.contains("\"id\": 9998"));
-            assertTrue(jsonString.contains("\"id\": 9999"));
-            assertTrue(jsonString.contains("\"quantity\": 100,"));
+            List<JsonSubscription> result = new MatcherJsonIO().getJsonSubscriptions();
+
+            JsonSubscription resultSubscription1 = result.stream()
+                    .filter(rs -> rs.getId() == 9998L)
+                    .findFirst().get();
+
+            assertEquals("662644474670", resultSubscription1.getPartNumber());
+            assertEquals(new Long(10), resultSubscription1.getQuantity());
+            assertEquals("55REGCODE180", resultSubscription1.getRegcode());
+            assertTrue(resultSubscription1.getProductIds().contains(1322L));
+            assertTrue(resultSubscription1.getProductIds().contains(1324L));
+            assertEquals("extFile", resultSubscription1.getSccUsername());
+
+            JsonSubscription resultSubscription2 = result.stream()
+                    .filter(rs -> rs.getId() == 9999L)
+                    .findFirst().get();
+
+            assertEquals("874-005117", resultSubscription2.getPartNumber());
+            assertEquals(new Long(100), resultSubscription2.getQuantity());
+            assertEquals("55REGCODE180", resultSubscription2.getRegcode());
+            assertTrue(resultSubscription2.getProductIds().contains(1322L));
+            assertTrue(resultSubscription2.getProductIds().contains(1324L));
+            assertEquals("extFile", resultSubscription2.getSccUsername());
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
@@ -196,10 +233,13 @@ public class MatcherJsonIOTest extends TestCase {
             TestUtils.saveAndFlush(pin);
             HibernateFactory.getSession().clear();
 
-            String jsonString = new MatcherJsonIO().getJsonPinnedMatches();
-            assertNotNull(jsonString);
-            assertTrue(jsonString.contains("\"system_id\": " + h1.getId()));
-            assertTrue(jsonString.contains("\"subscription_id\": 9999"));
+            List<JsonPinnedMatch> result = new MatcherJsonIO().getJsonPinnedMatches();
+            Optional<JsonPinnedMatch> resultPin = result.stream()
+                .filter(p -> p.getSystemId().equals(h1.getId()) &&
+                    p.getSubscriptionId().equals(9999L))
+                .findFirst();
+
+            assertTrue(resultPin.isPresent());
         }
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
