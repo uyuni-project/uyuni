@@ -22,6 +22,8 @@ import com.redhat.rhn.domain.state.PackageStates;
 import com.redhat.rhn.domain.state.VersionConstraints;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.log4j.Logger;
 
 import java.util.Optional;
@@ -168,5 +170,29 @@ public class JSONPackageState {
                 return Optional.of(packageState);
             }
         });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof JSONPackageState)) {
+            return false;
+        }
+        JSONPackageState otherState = (JSONPackageState) other;
+        return new EqualsBuilder()
+                .append(getName(), otherState.getName())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getName())
+                .toHashCode();
     }
 }
