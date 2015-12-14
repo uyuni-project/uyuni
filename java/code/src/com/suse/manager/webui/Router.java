@@ -59,6 +59,7 @@ public class Router implements SparkApplication {
         get("/manager/api/minions/match", MinionsAPI::match);
 
         // States API
+        post("/manager/api/states/apply", StatesAPI::apply);
         get("/manager/api/states/packages", StatesAPI::packages);
         post("/manager/api/states/packages/save", withUser(StatesAPI::save));
         get("/manager/api/states/packages/match", StatesAPI::match);

@@ -26,11 +26,17 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import com.suse.manager.webui.services.SaltService;
+import com.suse.manager.webui.services.impl.SaltAPIService;
 import com.suse.manager.webui.utils.gson.JSONPackageState;
+import com.suse.manager.webui.utils.gson.JSONServerApplyStates;
 import com.suse.manager.webui.utils.gson.JSONServerPackageStates;
+import com.suse.manager.webui.utils.salt.Grains;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,6 +50,7 @@ import spark.Response;
 public class StatesAPI {
 
     private static final Gson GSON = new GsonBuilder().create();
+    private static final SaltService SALT_SERVICE = SaltAPIService.INSTANCE;
 
     private StatesAPI() { }
 
@@ -132,5 +139,23 @@ public class StatesAPI {
 
         // Make spark happy
         return null;
+    }
+
+    /**
+     * Apply a list of states to a minion and return the results as JSON.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return JSON results of state application
+     */
+    public static Object apply(Request request, Response response) {
+        JSONServerApplyStates json = GSON.fromJson(request.body(),
+                JSONServerApplyStates.class);
+        Server server = ServerFactory.lookupById(Long.valueOf(json.getServerId()));
+        Map<String, Map<String, Object>> results = SALT_SERVICE.applyState(
+                new Grains("machine_id", server.getDigitalServerId()), json.getStates());
+
+        response.type("application/json");
+        return GSON.toJson(results);
     }
 }
