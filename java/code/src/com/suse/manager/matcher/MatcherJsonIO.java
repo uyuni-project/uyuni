@@ -15,6 +15,9 @@
 
 package com.suse.manager.matcher;
 
+import static java.util.stream.Collectors.toList;
+
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.server.PinnedSubscription;
@@ -58,6 +61,17 @@ public class MatcherJsonIO {
             systems.add(sys);
         }
         return gson.toJson(systems);
+    }
+
+    /**
+     * @return a json string with all SUSE products on this Server
+     */
+    public String getJsonProducts() {
+        return gson.toJson(
+            SUSEProductFactory.findAllSUSEProducts().stream()
+                .map(p -> new JsonProduct(p.getProductId(), p.getFriendlyName()))
+                .collect(toList())
+        );
     }
 
     /**
