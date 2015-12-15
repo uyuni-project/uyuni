@@ -54,6 +54,8 @@ import com.suse.scc.model.SCCSubscription;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -72,13 +74,21 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
 
-    private static final String SUBSCRIPTIONS_JSON = JARPATH + "sccdata/organizations_subscriptions.json";
+    private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
+    private static final String ORDERS_JSON = "organizations_orders.json";
 
     public void testListSubscriptionsCaching() throws Exception {
-        File subJson = new File(TestUtils.findTestData(SUBSCRIPTIONS_JSON).getPath());
-        String fromdir = subJson.getParent();
+        File subJson = new File(TestUtils.findTestData(
+                new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
+        File orderJson = new File(TestUtils.findTestData(
+                new File(JARPATH, "sccdata/" + ORDERS_JSON).getAbsolutePath()).getPath());
+        Path fromdir = Files.createTempDirectory("sumatest");
+        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
+        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
+        Files.copy(subJson.toPath(), subtempFile.toPath());
+        Files.copy(orderJson.toPath(), ordertempFile.toPath());
         try {
-            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir);
+            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
 
             ContentSyncManager cm = new ContentSyncManager();
             Collection<SCCSubscription> s = cm.getSubscriptions();
@@ -121,6 +131,10 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
             SUSEProductTestUtils.deleteIfTempFile(subJson);
+            SUSEProductTestUtils.deleteIfTempFile(orderJson);
+            subtempFile.delete();
+            ordertempFile.delete();
+            fromdir.toFile().delete();
         }
     }
 

@@ -136,7 +136,7 @@ public class MatcherJsonIOTest extends TestCase {
                 new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
         File orderJson = new File(TestUtils.findTestData(
                 new File(JARPATH, ORDERS_JSON).getAbsolutePath()).getPath());
-        //String fromdir = subJson.getParent();
+
         Path fromdir = Files.createTempDirectory("sumatest");
         File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
         File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
@@ -190,9 +190,16 @@ public class MatcherJsonIOTest extends TestCase {
     public void testPinsToJson() throws Exception {
         File subJson = new File(TestUtils.findTestData(
                 new File(JARPATH, SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
-        String fromdir = subJson.getParent();
+        File orderJson = new File(TestUtils.findTestData(
+                new File(JARPATH, ORDERS_JSON).getAbsolutePath()).getPath());
+
+        Path fromdir = Files.createTempDirectory("sumatest");
+        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
+        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
+        Files.copy(subJson.toPath(), subtempFile.toPath());
+        Files.copy(orderJson.toPath(), ordertempFile.toPath());
         try {
-            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir);
+            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
 
             SUSEProductFactory.clearAllProducts();
             SUSEProductTestUtils.createVendorSUSEProducts();
@@ -244,6 +251,10 @@ public class MatcherJsonIOTest extends TestCase {
         finally {
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
             SUSEProductTestUtils.deleteIfTempFile(subJson);
+            SUSEProductTestUtils.deleteIfTempFile(orderJson);
+            subtempFile.delete();
+            ordertempFile.delete();
+            fromdir.toFile().delete();
         }
     }
     private VirtualInstance createVirtualInstance(Server host, Server guest, String uuid) {
