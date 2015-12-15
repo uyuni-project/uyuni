@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.utils.gson;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * JSON representation of a server and a list of package states.
@@ -25,7 +25,7 @@ public class JSONServerPackageStates {
     private long sid;
 
     /** List of package states */
-    private List<JSONPackageState> packageStates;
+    private Set<JSONPackageState> packageStates;
 
     /**
      * @return the server id
@@ -37,7 +37,7 @@ public class JSONServerPackageStates {
     /**
      * @return the package states
      */
-    public List<JSONPackageState> getPackageStates() {
+    public Set<JSONPackageState> getPackageStates() {
         return packageStates;
     }
 }
