@@ -215,12 +215,7 @@ public class StatesAPI {
                     new SaltPkgInstalled(server.getDigitalServerId());
             for (PackageState state : packageStates) {
                 if (state.getPackageState() == PackageStates.INSTALLED) {
-                    if (state.getVersionConstraint() == VersionConstraints.EQUAL) {
-                        pkgInstalled.addPackage(state.getName().getName(),
-                                state.getEvr().getVersion());
-                    } else if (state.getVersionConstraint() == VersionConstraints.LATEST) {
-                        pkgInstalled.addPackage(state.getName().getName());
-                    }
+                    pkgInstalled.addPackage(state.getName().getName());
                 }
             }
 
