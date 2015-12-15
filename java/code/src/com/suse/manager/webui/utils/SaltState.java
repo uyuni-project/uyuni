@@ -17,9 +17,12 @@ package com.suse.manager.webui.utils;
 import java.util.Map;
 
 /**
- *
- * @author bo
+ * Generic interface for sls files
  */
 public interface SaltState {
-    public Map<String, Object> getData();
+    /**
+     * Returns the data of this state for outputting it to yaml
+     * @return yamlable data
+     */
+    Map<String, Object> getData();
 }

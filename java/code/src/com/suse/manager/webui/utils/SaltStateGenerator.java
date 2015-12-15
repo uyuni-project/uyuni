@@ -15,7 +15,6 @@
 package com.suse.manager.webui.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -33,32 +32,30 @@ public class SaltStateGenerator {
     /**
      * Constructor.
      *
-     * @param destination
+     * @param destinationIn writer to write the state to
      */
-    public SaltStateGenerator(Writer destination) {
-        this.destination = destination;
+    public SaltStateGenerator(Writer destinationIn) {
+        this.destination = destinationIn;
     }
 
     /**
      * Constructor.
      *
-     * @param destination
-     * @throws IOException
+     * @param destinationIn writer to write the state to
+     * @throws IOException when file io fails
      */
-    public SaltStateGenerator(File destination)
+    public SaltStateGenerator(File destinationIn)
             throws IOException {
-        this.destination = new FileWriter(destination);
+        this.destination = new FileWriter(destinationIn);
     }
 
     /**
      * Generate the YAML.
      *
-     * @param state
-     * @throws FileNotFoundException
-     * @throws IOException
+     * @param states the states to output
+     *
      */
-    public void generate(SaltState... states)
-            throws IOException {
+    public void generate(SaltState... states) {
         DumperOptions setup = new DumperOptions();
         setup.setIndent(4);
         setup.setAllowUnicode(true);

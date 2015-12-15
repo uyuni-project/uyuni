@@ -25,7 +25,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * JSON representation of a system

@@ -16,11 +16,9 @@ package com.suse.manager.webui.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * YAML generator for the Salt Package State.
@@ -34,10 +32,10 @@ public class SaltPkgInstalled implements SaltState {
         private final String version;
         private final String operator;
 
-        public Package(String name, String version, String operator) {
-            this.name = name;
-            this.version = version;
-            this.operator = operator != null ? (operator.isEmpty() ? null : operator) : null;
+        Package(String nameIn, String versionIn, String operatorIn) {
+            this.name = nameIn;
+            this.version = versionIn;
+            this.operator = operatorIn;
         }
 
         public String getName() {
@@ -53,34 +51,20 @@ public class SaltPkgInstalled implements SaltState {
         }
     }
 
-    private final Set<String> repos;
     private final Map<String, SaltPkgInstalled.Package> packages;
 
     /**
      * Constructor.
-     * @param machineId
      */
     public SaltPkgInstalled() {
-        this.repos = new HashSet<>();
         this.packages = new LinkedHashMap<>();
-    }
-
-    /**
-     * Add a repository.
-     *
-     * @param repo
-     * @return
-     */
-    public SaltPkgInstalled addRepo(String repo) {
-        this.repos.add(repo);
-        return this;
     }
 
     /**
      * Add package.
      *
-     * @param name
-     * @return
+     * @param name package name
+     * @return this
      */
     public SaltPkgInstalled addPackage(String name) {
         return this.addPackage(name, null, null);
@@ -89,9 +73,9 @@ public class SaltPkgInstalled implements SaltState {
     /**
      * Add package.
      *
-     * @param name
-     * @param version
-     * @return
+     * @param name package name
+     * @param version package version
+     * @return this
      */
     public SaltPkgInstalled addPackage(String name, String version) {
         return this.addPackage(name, version, null);
@@ -100,10 +84,10 @@ public class SaltPkgInstalled implements SaltState {
     /**
      * Add package.
      *
-     * @param name
-     * @param version
-     * @param operator
-     * @return
+     * @param name package name
+     * @param version package version
+     * @param operator package operator
+     * @return this
      */
     public SaltPkgInstalled addPackage(String name, String version, String operator) {
         this.packages.put(name, new SaltPkgInstalled.Package(name, version, operator));
