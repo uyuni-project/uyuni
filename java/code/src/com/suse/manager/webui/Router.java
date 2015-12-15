@@ -23,6 +23,7 @@ import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.DownloadController;
 import com.suse.manager.webui.controllers.MinionsAPI;
+import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.MinionController;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
 
@@ -50,9 +51,18 @@ public class Router implements SparkApplication {
         post("/manager/minions/:id/reject", MinionController::reject);
         post("/manager/minions/:id/delete", MinionController::destroy);
 
+        // Package Management
+        get("/manager/systems/details/packages", MinionController::packages, jade);
+
         // Minion APIs
         post("/manager/api/minions/cmd", MinionsAPI::run);
         get("/manager/api/minions/match", MinionsAPI::match);
+
+        // States API
+        post("/manager/api/states/apply", StatesAPI::apply);
+        get("/manager/api/states/packages", StatesAPI::packages);
+        post("/manager/api/states/packages/save", withUser(StatesAPI::save));
+        get("/manager/api/states/packages/match", StatesAPI::match);
 
         // Download endpoint
         get("/manager/download/:channel/getPackage/:file",

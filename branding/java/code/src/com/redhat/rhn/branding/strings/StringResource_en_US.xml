@@ -2174,6 +2174,9 @@ tree will not be usable for autoinstalling.
       <trans-unit id="Remote Commands">
         <source>Remote Commands</source>
       </trans-unit>
+      <trans-unit id="Manage">
+        <source>Manage</source>
+      </trans-unit>
       <trans-unit id="yourrhn.jsp.tasks.minions">
         <source>Manage &lt;strong&gt;Pending Minions&lt;/strong&gt; ({0})</source>
         <context-group name="ctx">
