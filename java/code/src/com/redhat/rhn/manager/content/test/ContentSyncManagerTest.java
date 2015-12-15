@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -48,15 +49,20 @@ import com.suse.mgrsync.XMLChannel;
 import com.suse.mgrsync.XMLChannelFamily;
 import com.suse.mgrsync.XMLProduct;
 import com.suse.scc.model.SCCProduct;
+import com.suse.scc.model.SCCSubscription;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Tests for {@link ContentSyncManager}.
@@ -67,6 +73,70 @@ public class ContentSyncManagerTest extends BaseTestCaseWithUser {
     private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
     private static final String CHANNELS_XML = JARPATH + "channels.xml";
     private static final String UPGRADE_PATHS_XML = JARPATH + "upgrade_paths.xml";
+
+    private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
+    private static final String ORDERS_JSON = "organizations_orders.json";
+
+    public void testListSubscriptionsCaching() throws Exception {
+        File subJson = new File(TestUtils.findTestData(
+                new File(JARPATH,  "sccdata/" + SUBSCRIPTIONS_JSON).getAbsolutePath()).getPath());
+        File orderJson = new File(TestUtils.findTestData(
+                new File(JARPATH, "sccdata/" + ORDERS_JSON).getAbsolutePath()).getPath());
+        Path fromdir = Files.createTempDirectory("sumatest");
+        File subtempFile = new File(fromdir.toString(), SUBSCRIPTIONS_JSON);
+        File ordertempFile = new File(fromdir.toString(), ORDERS_JSON);
+        Files.copy(subJson.toPath(), subtempFile.toPath());
+        Files.copy(orderJson.toPath(), ordertempFile.toPath());
+        try {
+            Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
+
+            ContentSyncManager cm = new ContentSyncManager();
+            Collection<SCCSubscription> s = cm.getSubscriptions();
+            HibernateFactory.getSession().flush();
+            assertNotNull(s);
+
+            for (com.redhat.rhn.domain.scc.SCCSubscription dbs : SCCCachingFactory.lookupSubscriptions()) {
+                assertEquals("55REGCODE180", dbs.getRegcode());
+                assertEquals("EMEA SLES x86/x86_64 Standard Support & Training", dbs.getName());
+                assertEquals(1234, dbs.getSccId());
+                assertEquals("ACTIVE", dbs.getStatus());
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1212));
+                assertContains(dbs.getProducts(), SUSEProductFactory.lookupByProductId(1307));
+                assertEquals(702, dbs.getSystemLimit().longValue());
+                assertEquals(DatatypeConverter.parseDateTime("2017-12-31T00:00:00.000Z").getTime(),
+                        dbs.getExpiresAt());
+            }
+            s = cm.getSubscriptions();
+            HibernateFactory.getSession().flush();
+            for (SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
+                if (item.getSccId() == 9998L) {
+                    assertEquals(10, item.getQuantity().longValue());
+                    assertEquals(1234, item.getSubscriptionId().longValue());
+                    assertEquals(DatatypeConverter.parseDateTime("2013-01-01T00:00:00.000Z").getTime(),
+                            item.getEndDate());
+                    assertEquals("662644474670", item.getSku());
+                }
+                else if (item.getSccId() == 9999L) {
+                    assertEquals(100, item.getQuantity().longValue());
+                    assertEquals(1234, item.getSubscriptionId().longValue());
+                    assertEquals(DatatypeConverter.parseDateTime("2017-01-01T00:00:00.000Z").getTime(),
+                            item.getEndDate());
+                    assertEquals("874-005117", item.getSku());
+                }
+                else {
+                    fail();
+                }
+            }
+        }
+        finally {
+            Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+            SUSEProductTestUtils.deleteIfTempFile(subJson);
+            SUSEProductTestUtils.deleteIfTempFile(orderJson);
+            subtempFile.delete();
+            ordertempFile.delete();
+            fromdir.toFile().delete();
+        }
+    }
 
     /**
      * Test for {@link ContentSyncManager#updateChannels}.

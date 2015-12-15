@@ -35,6 +35,7 @@ import com.redhat.rhn.domain.product.SUSEUpgradePath;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCOrderItem;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.suse.mgrsync.MgrSyncStatus;
@@ -49,6 +50,7 @@ import com.suse.mgrsync.XMLUpgradePaths;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientFactory;
+import com.suse.scc.model.SCCOrder;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -606,7 +608,29 @@ public class ContentSyncManager {
     }
 
     /**
+     * Refresh the subscription cache by reading subscriptions from SCC for all available
+     * mirror credentials, consolidating and inserting into the database.
+     *
+     * @param subscriptions list of scc subscriptions
+     * @param c credentials
+     * @throws ContentSyncException in case of an error
+     */
+    public void refreshSubscriptionCache(List<SCCSubscription> subscriptions,
+            Credentials c) {
+
+        SCCCachingFactory.clearSubscriptions(c);
+        for (SCCSubscription s : subscriptions) {
+            SCCCachingFactory.saveJsonSubscription(s, c);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Found " + subscriptions.size() +
+                    " subscriptions with credentials: " + c);
+        }
+    }
+
+    /**
      * Get subscriptions from SCC for a single pair of mirror credentials.
+     * Additionally order items are fetched and put into the DB.
      * @param credentials username/password pair
      * @return list of subscriptions as received from SCC.
      * @throws SCCClientException in case of an error
@@ -615,7 +639,10 @@ public class ContentSyncManager {
             throws SCCClientException {
         try {
             SCCClient scc = this.getSCCClient(credentials);
-            return scc.listSubscriptions();
+            List<SCCSubscription> subscriptions = scc.listSubscriptions();
+            refreshSubscriptionCache(subscriptions, credentials);
+            refreshOrderItemCache(credentials);
+            return subscriptions;
         }
         catch (URISyntaxException e) {
             log.error("Invalid URL:" + e.getMessage());
@@ -644,6 +671,49 @@ public class ContentSyncManager {
             log.debug("Found " + subscriptions.size() + " available subscriptions.");
         }
         return subscriptions;
+    }
+
+    /**
+     * Fetch new Order Items from SCC for the given credentials,
+     * deletes all order items stored in the database below the given credentials
+     * and inserts the new ones.
+     * @param c the credentials
+     * @throws SCCClientException  in case of an error
+     */
+    public void refreshOrderItemCache(Credentials c) throws SCCClientException  {
+        try {
+            SCCClient scc = this.getSCCClient(c);
+            List<SCCOrder> orders = scc.listOrders();
+            SCCCachingFactory.clearOrderItems(c);
+            for (SCCOrder order : orders) {
+                for (SCCOrderItem item : order.getOrderItems()) {
+                    item.setCredentials(c);
+                    SCCCachingFactory.saveOrderItem(item);
+                }
+            }
+        }
+        catch (URISyntaxException e) {
+            log.error("Invalid URL:" + e.getMessage());
+        }
+    }
+
+    /**
+     * Deletes all order items stored in the database, fetch the new once
+     * and inserts them into the database
+     * @throws ContentSyncException  in case of an error
+     */
+    public void refreshOrderItemCache() throws ContentSyncException {
+        // FIXME: currently unused
+        List<Credentials> credentials = filterCredentials();
+        try {
+            // Query subscriptions for all mirror credentials
+            for (Credentials creds : credentials) {
+                refreshOrderItemCache(creds);
+            }
+        }
+        catch (SCCClientException e) {
+            throw new ContentSyncException(e);
+        }
     }
 
     /**
@@ -760,6 +830,7 @@ public class ContentSyncManager {
      */
     public void updateSubscriptions(Collection<SCCSubscription> subscriptions)
             throws ContentSyncException {
+        //FIXME: not used, we now refresh the cache in getSubscriptions(c). DELETE?
     }
 
     /**

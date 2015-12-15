@@ -17,6 +17,8 @@ package com.suse.scc.client;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.suse.scc.model.SCCOrder;
 import com.suse.scc.model.SCCProduct;
 import com.suse.scc.model.SCCSubscription;
 
@@ -72,6 +74,15 @@ public class SCCFileClient implements SCCClient {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<SCCOrder> listOrders() throws SCCClientException {
+        return getList("organizations_orders.json",
+                SCCOrder.class);
+    }
+
+    /**
      * Returns a list from a serialized JSON file.
      *
      * @param <T> the generic type
@@ -102,7 +113,10 @@ public class SCCFileClient implements SCCClient {
     @SuppressWarnings("unchecked")
     private <T> T readJSON(String filename, Type resultType)
             throws IOException {
-        return (T) new Gson().fromJson(
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        return (T) gson.fromJson(
                 new BufferedReader(new InputStreamReader(new FileInputStream(
                         new File(config.getLocalResourcePath() + "/" + filename)))),
                 resultType);

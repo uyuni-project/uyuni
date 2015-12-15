@@ -170,6 +170,10 @@ public class SCCClientTest extends TestCase {
         assertEquals(new Integer(6), s.getSystemLimit());
         assertEquals(new Integer(1), s.getSystemsCount());
         assertEquals(null, s.getVirtualCount());
+        assertFalse(s.getProductIds().contains(11L));
+        assertTrue(s.getProductIds().contains(12L));
+        assertTrue(s.getProductIds().contains(13L));
+        assertTrue(s.getProductIds().contains(14L));
 
         // Product classes
         List<String> productClasses = s.getProductClasses();

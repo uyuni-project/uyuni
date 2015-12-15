@@ -122,6 +122,6 @@ INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
 -- Once a day at 00:00
 
 INSERT INTO rhnTaskoSchedule (id, job_label, bunch_id, active_from, cron_expr)
-    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'gatherer-default',
-        (SELECT id FROM rhnTaskoBunch WHERE name='gatherer-bunch'),
+    VALUES (sequence_nextval('rhn_tasko_schedule_id_seq'), 'gatherer-matcher-default',
+        (SELECT id FROM rhnTaskoBunch WHERE name='gatherer-matcher-bunch'),
         current_timestamp, '0 0 0 ? * *');
