@@ -83,7 +83,7 @@ public class StatesAPI {
 
         // Find matches among this server's current packages states
         Server server = ServerFactory.lookupById(Long.valueOf(serverId));
-        Set<JSONPackageState> matchingCurrent = currentPackageStates(server).stream()
+        Set<JSONPackageState> matching = currentPackageStates(server).stream()
                 .filter(p -> p.getName().matches(target))
                 .collect(Collectors.toSet());
 
@@ -96,7 +96,8 @@ public class StatesAPI {
                 .collect(Collectors.toSet());
 
         response.type("application/json");
-        return GSON.toJson(matchingCurrent.addAll(matchingAvailable));
+        matching.addAll(matchingAvailable);
+        return GSON.toJson(matching);
     }
 
     /**
