@@ -243,6 +243,7 @@ public class StatesAPI {
      *
      * @param server the server
      */
+    @SuppressWarnings("unused")
     private void importPackageStates(Server server) {
         ServerStateRevision serverRev =  new ServerStateRevision();
         serverRev.setServer(server);
